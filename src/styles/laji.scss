@@ -1364,6 +1364,15 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     margin-left:10px;
   }
 
+  
+  .omni-search-results .match .flag-taxonRank {
+    float: left;
+    position: relative;
+    top: -8px;
+    margin-left: 0px;
+    display: block;
+    width: 100%;
+  }
 
   .container-flag-taxonRank {
     display:  inline-block;

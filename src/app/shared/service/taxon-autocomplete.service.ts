@@ -44,35 +44,33 @@ export class TaxonAutocompleteService {
     const scientificName = (payload['cursiveName'] ? '<i>' + this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
     const vernacularName = this.addBold(payload['vernacularName'], text);
     this.matchingName = this.addBold(payload['matchingName'], text);
-
+    let string;
+    
     switch (payload['nameType']) {
       case 'MX.scientificName':
         return this.createAutocompleteDisplayNameRow(scientificName, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        var string = this.matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span>';
+        string = this.matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span>';
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.vernacularName':
-        var string = (payload['vernacularName'] !== '' ? vernacularName + ' <span class="taxon-second-element">- ' + scientificName + '</span> '
+        string = (payload['vernacularName'] !== '' ? vernacularName + ' <span class="taxon-second-element">- ' + scientificName + '</span> '
         : scientificName + '<span class="taxon-second-element"> (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName +'</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        var string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
+        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
         : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       default:
-        var string = scientificName +' <span class="taxon-second-element">(' + this.matchingName + ')</span>'; 
+        string = scientificName +' <span class="taxon-second-element">(' + this.matchingName + ')</span>'; 
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
     }
   }
 
   private createAutocompleteDisplayNameRow(start, taxonRankId, informalTaxonGroups, isFinnish ) {
-    let taxonGroups = '';
-    (informalTaxonGroups || []).forEach(el => {
-     taxonGroups += '<span class="container-taxon-group informal-group-image ' + el.id +'"></span>'
-    })
+    const taxonGroups = '<span class="container-taxon-group informal-group-image ' + (informalTaxonGroups || []).map(el => el.id).join(' ') + '"></span>';
     return start + '<span class="flag-taxonRank">'+(taxonRankId ? ' (' + taxonRankId + ') ' : '') + '<span class="container-flag-taxonRank"><span class="taxon-groups">'+ taxonGroups + '</span>' + (isFinnish ? '<span class="autocomplete-small-flag finnish-flag"></span>' : '<span class="autocomplete-small-flag no-border"></span>' ) + '</span></span>';
   }
 
