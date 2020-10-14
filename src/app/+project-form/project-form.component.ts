@@ -126,6 +126,9 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], rights: Rights) {
+    if (form.options?.secondaryCopy) {
+     return [];
+    };
     const _subForms = subForms.filter(_form => _form.options?.sidebarFormLabel);
     return [form, ..._subForms].filter(_form =>
       _form.options?.useNamedPlaces && rights.view
