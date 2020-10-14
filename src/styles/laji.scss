@@ -1391,9 +1391,16 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     vertical-align: sub;
 }
  
+laji-form ul.rw-list>li.rw-list-option, .rw-selectlist>li.rw-list-option {
+  min-height: 25px;
+  display: inline-block;
+  line-height: 25px;
+  width: 100%;
+}
 
-
-  
+span.simple-option {
+  vertical-align: bottom;
+}
 
   @media only screen and (max-width : 767px) {
     .flag-taxonRank {
