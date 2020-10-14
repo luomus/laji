@@ -1295,3 +1295,121 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     padding-top: 10px;
   }
 }
+
+  /* autocomplete */
+  .taxon-select-bar .informal-group-image {
+    display: inline-block;
+    padding-right: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+    background-position: center center;
+    position: relative;
+    padding: 5px 20px 5px 5px;
+    margin-left: 5px;
+  }
+
+  .finnish-flag {
+    background-image: url('/static/images/icons/flag_fi_small.png');
+  }
+
+  typeahead-container.dropdown ul li a {
+    display: inline-block
+  }
+
+  .autocomplete-small-flag {
+    display: inline-block;
+    width: 24px;
+    height: 14px;
+    margin-left: 5px;
+    background-position: center center;
+    position: relative;
+    border: 1px solid gray;
+    top: 2px;
+  }
+
+  .flag_icon {
+    float: right;
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  .dropdown-menu>li>a {
+    width: 100%;
+  }
+
+  .responsive_container {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+  }
+
+  .no-border {
+    border: 0;
+  }
+
+  .container-taxon-group {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-position: center center;
+    background-size: 80%;
+    position: relative;
+    top: 4px;
+  }
+
+  .flag-taxonRank {
+    float: right;
+    position: relative;
+    top: -3px;
+    margin-left:10px;
+  }
+
+  
+  .omni-search-results .match .flag-taxonRank {
+    float: left;
+    position: relative;
+    top: -8px;
+    margin-left: 0px;
+    display: block;
+    width: 100%;
+  }
+
+  .omni-search-results .match.active .informal-group-image {
+    -webkit-filter: none;
+    filter: none;
+  }
+
+  .container-flag-taxonRank {
+    display:  inline-block;
+  }
+  
+  typeahead-container ul li a ~ span{
+    display:inline-block
+  }
+  
+  span.autocomplete-container {
+    vertical-align: sub;
+}
+ 
+
+
+  
+
+  @media only screen and (max-width : 767px) {
+    .flag-taxonRank {
+      float: none;
+      position: relative;
+      top: -6px;
+      display: block;
+      opacity: 0.5;
+      margin-left: 0px;
+    }
+
+    .taxon-second-element, .taxon-third-element {
+      display: block;
+    }
+  }
+
+
+
+

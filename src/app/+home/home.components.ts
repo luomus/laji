@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'laji-home',
@@ -23,7 +24,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private sourceService: SourceService,
     private homeDataService: HomeDataService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public router: Router
   ) {
   }
 
@@ -44,5 +46,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       newScriptElem.src = 'https://platform.twitter.com/widgets.js';
       scriptElem.parentNode.insertBefore(newScriptElem, scriptElem);
     }
+  }
+
+  taxonSelect(e) {
+    this.router.navigate(['/taxon/' + e]);
   }
 }

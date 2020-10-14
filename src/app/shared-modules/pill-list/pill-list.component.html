@@ -1,1 +1,15 @@
-<ng-container *ngIf="_list"><ng-container *ngFor="let item of _list"><span class="label label-success link" (click)="remove(item)">{{ isLabel ? (item | label) : item }} x</span> </ng-container></ng-container>
+<ng-container *ngIf="_list">
+    <ng-container *ngIf="isTaxonAutocomplete else normalList">
+        <ng-container *ngFor="let item of _list; let i = index">
+            <span *ngIf="findIndexValue(item); else id" class="label label-success link" (click)="remove(item)">{{ findIndexValue(item) }} x</span>
+            <ng-template #id>
+                <span class="label label-success link" (click)="remove(item)">{{ item | taxon:'scientific' }} x</span>
+            </ng-template> 
+        </ng-container>
+    </ng-container>
+    <ng-template #normalList>
+        <ng-container *ngFor="let item of _list">
+            <span class="label label-success link" (click)="remove(item)">{{ isLabel ? (item | label) : item }} x</span> 
+        </ng-container>
+    </ng-template>
+</ng-container>

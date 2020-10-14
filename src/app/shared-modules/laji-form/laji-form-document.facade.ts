@@ -22,6 +22,7 @@ import { NamedPlacesService } from '../named-place/named-places.service';
 import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
+import { LajiFormUtil } from '../../shared-modules/laji-form/laji-form-util.service';
 
 export enum FormError {
   ok,
@@ -286,7 +287,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
       this.updateState({..._state, hasChanges: true, hasLocalData: true});
       return this.userService.user$.pipe(
         take(1),
-        mergeMap(p => this.documentStorage.getItem(documentID, p))
+        mergeMap(p => this.documentStorage.getItem(documentID, p).pipe(
+          map(doc => LajiFormUtil.removeLajiFormIds(doc, form.schema))
+        ))
       );
     }
     return this.userService.user$.pipe(

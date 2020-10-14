@@ -26,7 +26,14 @@ switch (environment.type) {
 const MAIN_DESCRIPTION = 'footer.intro1';
 
 const ALL_META_KEYS = [
-  'description'
+  'description',
+  'og:description',
+  'twitter:description'
+];
+
+const ALL_IMAGE_KEYS = [
+  'og:image',
+  'twitter:image'
 ];
 
 @Injectable({
@@ -78,7 +85,8 @@ export class HeaderService implements OnDestroy {
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
         map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
       ).subscribe(meta => {
-        ALL_META_KEYS.map((key) => {
+        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS];
+        ArraysMeta.map((key) => {
           const propertySelector = `property='${key}'`;
           if (meta?.[key]) {
             this.metaService.updateTag({property: key, content: this.translateService.instant(meta[key])}, propertySelector);
@@ -95,6 +103,20 @@ export class HeaderService implements OnDestroy {
 
       this.updateAlternativeLinks(newRoute);
     });
+  }
+
+  public updateMetaDescription(description) {
+    this.removeMetaTags(ALL_META_KEYS);
+    ALL_META_KEYS.forEach((key) => {
+      this.metaService.addTag({ property: key, content: description });
+    })
+  }
+
+  public updateFeatureImage(image){
+    this.removeMetaTags(ALL_IMAGE_KEYS);
+    ALL_IMAGE_KEYS.forEach((key) => {
+      this.metaService.addTag({ property: key, content: image });
+    })
   }
 
   ngOnDestroy() {
@@ -118,6 +140,19 @@ export class HeaderService implements OnDestroy {
         rel: 'alternative'
       });
     });
+  }
+
+  private removeMetaTags(metaTagsDescription) {
+    RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
+      map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+    ).subscribe(meta => {
+      metaTagsDescription.forEach((key) => {
+        const propertySelector = `property='${key}'`;
+        if(meta?.[key]) {
+          this.metaService.removeTag(propertySelector);
+        }
+      })
+    })
   }
 
   private removeElements(selector: string) {
@@ -149,4 +184,5 @@ export class HeaderService implements OnDestroy {
     }
     return ObservableOf(title);
   }
+
 }

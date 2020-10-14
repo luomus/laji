@@ -6,6 +6,7 @@ import { AbstractObservation } from './abstract-observation';
 import { ReloadObservationViewService } from '../shared/service/reload-observation-view.service';
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'laji-observation',
   templateUrl: './observation.component.html',

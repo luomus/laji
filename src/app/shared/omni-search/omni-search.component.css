@@ -15,7 +15,7 @@
   border-bottom: 1px solid #999;
   color: #aaa;
   border-radius: 10px;
-  min-width: 250px;
+  min-width: 300px;
 }
 .omni-search-results.right {
   right: 0;
@@ -34,6 +34,13 @@
 .taxon-match {
 
 }
+
+.omni-search-results .match {
+  display: block;
+  width: 100%;
+  float: left;
+}
+
 
 .btn-default {
   border-left-color: #fff;
@@ -60,13 +67,22 @@
   background-position: top right;
 }
 
+
+::ng-deep .omni-search-results span.active div, ::ng-deep .omni-search-results span.link div {
+  display: block;
+  float: none;
+  margin-left: 0px;
+  position: relative;
+  top: -5px;
+}
+
 @media only screen and (min-width : 992px) {
   .omni-search-results {
     min-width: 727px;
   }
 
-  .omni-search-results .taxon-match {
-    border-left: 1px solid #999;
+  .omni-search-results .taxon-list {
+    border-right: 1px solid #999;
   }
 }
 

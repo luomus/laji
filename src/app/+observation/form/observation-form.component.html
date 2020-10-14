@@ -40,7 +40,7 @@
       [typeaheadWaitMs]="200"
       [typeaheadMinLength]="3"
       [typeaheadSelectFirstItem]="false"
-      [typeaheadOptionField]="'value'"
+      [typeaheadOptionField]="'autocompleteSelectedName'"
       [typeaheadItemTemplate]="taxonItem"
       (typeaheadLoading)="changeTypeaheadLoading($event)"
       (typeaheadOnSelect)="onTaxonSelect($event)"
@@ -48,14 +48,15 @@
       autocomplete="off"
       autocorrect="off"
     >
-    <ng-template #taxonItem let-model="item">
-      <h5 class="autosuggest-value {{model.groups}} informal-group-image">
-        {{ model.value }}
-      </h5>
+    <ng-template #taxonItem  let-model="item">
+      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName']"></span>
     </ng-template>
+    
     <laji-pill-list
       [isLabel]="true"
       [list]="query.target || []"
+      [isTaxonAutocomplete]="true"
+      [selectedTaxonNames]="selectedNameTaxon"
       (updateList)="updateSearchQuery('target', $event)"
     ></laji-pill-list>
   </div>
