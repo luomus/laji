@@ -165,7 +165,7 @@ export class ProjectFormComponent implements OnInit {
         link: ['generate'],
         label: 'excel.generate'
       },
-      rights.edit && {
+      rights.edit && !form.options?.secondaryCopy && {
         link: ['submissions'],
         label: this.projectFormService.getSubmissionsPageTitle(form, rights.admin)
       },
