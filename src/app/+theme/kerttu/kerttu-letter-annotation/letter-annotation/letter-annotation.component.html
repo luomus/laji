@@ -96,7 +96,7 @@
       [recording]="candidate?.recording"
       [xRangePadding]="xRangePadding"
       [xRange]="candidate?.xRange"
-      [yRange]="candidateYRange"
+      [yRange]="candidate?.yRange"
       [zoomed]="zoomed"
       [autoplay]="autoplayCandidate"
       [autoplayRepeat]="3"
@@ -115,7 +115,7 @@
       *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
       [xRange]="candidate?.xRange"
-      [yRange]="candidateYRange"
+      [yRange]="candidate?.yRange"
       [zoomed]="zoomed"
     ></laji-audio-viewer>
   </div>
