@@ -1,7 +1,3 @@
-:host >>> .no-controls .leaflet-control-container {
-  display: none;
-}
-
 .laji-map-wrap {
   width:100%;
   height: 100%;

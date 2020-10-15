@@ -25,7 +25,7 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 @Component({
   selector: 'laji-map',
   template: `
-    <div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls}">
+    <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
@@ -172,6 +172,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           googleApiKey: Global.googleApiKey,
           data: this.data
         };
+        if (!this.showControls) {
+          options.controls = false;
+        }
         try {
           this.map = new LajiMap(options);
           this.map.map.on('moveend', _ => {
