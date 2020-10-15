@@ -5,7 +5,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {debounceTime} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
-import { ResultService } from '../../../../+project-form/results/common/service/result.service';
+import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 
 @Component({
   selector: 'laji-letter-annotation',
@@ -42,9 +42,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   private debounceTime = 500;
 
   constructor(
-    private resultService: ResultService,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private taxonomyApi: TaxonomyApi
   ) { }
 
   ngOnInit() {
@@ -70,7 +70,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     }, 0);
     if (changes.template && this.template) {
       this.autoplayCandidate = false;
-      this.taxon$ = this.resultService.getTaxon(this.template.taxonId);
+      this.taxon$ = this.taxonomyApi.taxonomyFindBySubject(
+        this.template.taxonId, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName,cursiveName'}
+      );
     }
     if (this.template && this.candidate) {
       this.candidateYRange = [
