@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ILetterStatusInfo, LetterAnnotation} from '../../model/letter';
-import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
+import {ILetterStatusInfo, LetterAnnotation} from '../../models';
+import {ILetterCandidate, ILetterTemplate} from '../../models';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {debounceTime} from 'rxjs/operators';
@@ -25,8 +25,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   loadingCandidate = false;
   candidateLongerVisible = false;
   autoplayCandidate = false;
-
-  candidateYRange: number[];
 
   zoomed = true;
   xRangePadding = 1;
@@ -73,11 +71,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
       this.taxon$ = this.taxonomyApi.taxonomyFindBySubject(
         this.template.taxonId, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName,cursiveName'}
       );
-    }
-    if (this.template && this.candidate) {
-      this.candidateYRange = [
-        this.template.yRange[0] + this.candidate.yDiff, this.template.yRange[1] + this.candidate.yDiff
-      ];
     }
   }
 

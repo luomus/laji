@@ -158,17 +158,21 @@ export class AudioSpectrogramComponent implements OnChanges {
       .text('Taajuus (kHz)');
 
     // draw white rectangle
-    const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
-    const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+    if (this.xRange || this.yRange) {
+      const rectX = this.xRange ? this.margin.left + this.xScale(this.xRange[0]) : this.margin.left;
+      const rectWidth = this.xRange ? this.xScale(this.xRange[1] - this.xRange[0]) : width;
+      const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
+      const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
 
-    svg.append('rect')
-      .attr('x', this.margin.left + this.xScale(this.xRange[0]))
-      .attr('y', rectY)
-      .attr('width', this.xScale(this.xRange[1] - this.xRange[0]))
-      .attr('height', rectHeight)
-      .attr('stroke-width', 2)
-      .attr('stroke', 'white')
-      .attr('fill', 'none');
+      svg.append('rect')
+        .attr('x', rectX)
+        .attr('y', rectY)
+        .attr('width', rectWidth)
+        .attr('height', rectHeight)
+        .attr('stroke-width', 2)
+        .attr('stroke', 'white')
+        .attr('fill', 'none');
+    }
 
     // draw scroll line
     const drag = d3Drag.drag()
