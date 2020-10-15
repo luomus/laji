@@ -45,7 +45,7 @@ export class FrontComponent implements OnInit, OnDestroy {
       type: 'FeatureCollection',
       features: []
     },
-    showMeasurements: { showOnHover: true }
+    showMeasurements: true
   };
 
   hasQuery = false;
