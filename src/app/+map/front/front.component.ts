@@ -7,7 +7,6 @@ import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { GeometryUtil as LGeometryUtil, latLng as LlatLng } from 'leaflet';
 
 @Component({
   selector: 'laji-map-front',
@@ -21,11 +20,6 @@ export class FrontComponent implements OnInit, OnDestroy {
     zoom: 3,
     tileLayerName: LajiMapTileLayerName.maastokartta,
     availableTileLayerNamesBlacklist: [LajiMapTileLayerName.pohjakartta],
-    draw: {
-      marker: true,
-      polygon: true,
-      polyline: true
-    },
     controls: {
       draw: {
         marker: true,
@@ -51,43 +45,7 @@ export class FrontComponent implements OnInit, OnDestroy {
       type: 'FeatureCollection',
       features: []
     },
-    getTooltip: ({feature: {geometry}}) => {
-      switch (geometry.type) {
-          case 'LineString': {
-            let prevLatLng;
-            let length = geometry.coordinates.slice(0).reduce((cumulative, coords) => {
-              const latLng = LlatLng(coords.reverse());
-              cumulative += prevLatLng ? LlatLng(latLng).distanceTo(prevLatLng) : 0;
-              prevLatLng = latLng;
-              return cumulative;
-            }, 0);
-
-            let suffix = 'm';
-            if (length > 1000) {
-              length = length / 1000;
-              length = +parseFloat(length).toFixed(2);
-              suffix = 'km';
-            } else {
-              length = parseInt(length, 10);
-            }
-
-            return `${length}${suffix}`;
-          }
-          case 'Polygon': {
-            const latLngs = geometry.coordinates[0].slice(1).map(c => LlatLng(c.reverse()));
-            return LGeometryUtil.readableArea(LGeometryUtil.geodesicArea(latLngs), true);
-          }
-          case 'Point': {
-            if (geometry.radius === undefined) { return; }
-            const {radius} = geometry;
-            const area = (Math.PI) * (radius * radius);
-            return LGeometryUtil.readableArea(area, true);
-          }
-      }
-    },
-    tooltipOptions: {
-      permanent: true
-    }
+    showMeasurements: { showOnHover: true }
   };
 
   hasQuery = false;
