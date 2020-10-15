@@ -254,12 +254,4 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.map.triggerDrawing('Rectangle');
     }
   }
-
-  getDrawingDraftStyle(type): any {
-    if (type === 'marker') {
-      return {};
-    } else {
-      return {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}};
-    }
-  }
 }
