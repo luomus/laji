@@ -3,7 +3,7 @@
     <ul>
       <li *ngFor="let obj of taxon[synonymType]">
         <a [routerLink]="['/taxon', obj.id, 'taxonomy'] | localize" [queryParams]="{context: null, showTree: null}" [queryParamsHandling]="'merge'" target="_blank">
-          <laji-taxon-name [taxon]="obj" [addLink]="false"></laji-taxon-name>
+          <laji-taxon-name [capitalizeName]="true" [taxon]="obj" [addLink]="false"></laji-taxon-name>
         </a>
         <span class="author" *ngIf="obj.scientificNameAuthorship">{{ obj.scientificNameAuthorship }}</span>
         <p *ngIf="obj.notes">{{ obj.notes }}</p>

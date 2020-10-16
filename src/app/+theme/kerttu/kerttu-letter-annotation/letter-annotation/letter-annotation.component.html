@@ -1,6 +1,6 @@
 <div class="mt-6" style="margin-bottom: 10px">
   <h2 class="d-inline">
-    <laji-taxon-name [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
+    <laji-taxon-name [capitalizeName]="true" [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
   </h2>
   <span class="gray ml-2"> ({{ template?.name }})</span>
   <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
