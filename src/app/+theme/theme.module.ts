@@ -54,6 +54,7 @@ import { ProtaxFormComponent } from './protax/protax-form/protax-form.component'
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
+import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annotation/kerttu-occurrence-table/kerttu-occurrence-table.component';
 
 /* tslint:enable:max-line-length */
 
@@ -107,7 +108,8 @@ import { GeneticResourceInstructionsComponent } from './genetic-resource/instruc
     ProtaxFormComponent,
     NotFoundComponent,
     GeneticResourceLayoutComponent,
-    GeneticResourceInstructionsComponent
+    GeneticResourceInstructionsComponent,
+    KerttuOccurrenceTableComponent
   ],
   providers: [
     QualityService,

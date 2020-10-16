@@ -3,6 +3,7 @@ import {map} from 'rxjs/operators';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import {SelectionType} from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'laji-expertise-form',
@@ -42,6 +43,8 @@ export class ExpertiseFormComponent implements OnInit {
     }
   ];
   taxonList: Taxonomy[];
+
+  selectionType = SelectionType;
 
   private otherTaxonIds: string[];
 

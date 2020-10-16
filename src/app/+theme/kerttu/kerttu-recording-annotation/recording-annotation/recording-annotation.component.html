@@ -1,5 +1,16 @@
 <laji-spinner [spinning]="!recording">
-  <div class="row">
+  <div class="row lu-section">
+    <div class="col-md-12">
+      <div style="margin-top: 10px; float: right">
+        <lu-button
+          [role]="'success'"
+          [disabled]="!recording"
+          (click)="toNextRecording()">
+          {{ 'theme.kerttu.nextRecording' | translate }}
+        </lu-button>
+      </div>
+      <h2 style="display: inline-block">{{ 'theme.kerttu.recordingAnnotation.title' | translate }}</h2>
+    </div>
     <div class="col-md-12">
       <laji-audio-viewer
         [recording]="recording?.recording"
@@ -7,27 +18,26 @@
         [xRangePadding]="0"
       ></laji-audio-viewer>
     </div>
-    <!--div class="col-md-6">
-      <h3>{{ 'theme.kerttu.listSpecies' | translate }}</h3>
-      <laji-taxon-autocomplete
-        [informalTaxonGroup]="'MVL.1'"
-        [onlyFinnish]="true"
-        [showResult]="false"
-        (taxonSelect)="onTaxonSelect($event)"
-      ></laji-taxon-autocomplete>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="currentAnnotation"
-        (updateList)="onTaxonListUpdate($event)"
-      ></laji-pill-list>
-      <div style="margin-top: 10px">
-        <button
-          class="btn btn-default"
-          [disabled]="!recording"
-          (click)="toNextRecording()">
-          {{ 'theme.kerttu.nextRecording' | translate }}
-        </button>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="species-select">{{ 'theme.kerttu.listSpecies' | translate }}</label>
+        <laji-taxon-autocomplete
+          id="species-select"
+          [informalTaxonGroup]="'MVL.1'"
+          [onlyFinnish]="true"
+          [showResult]="false"
+          (taxonSelect)="onTaxonSelect($event)"
+        ></laji-taxon-autocomplete>
       </div>
-    </div-->
+      <laji-kerttu-occurrence-table
+        [selectedTaxons]="selectedTaxons"
+      >
+      </laji-kerttu-occurrence-table>
+    </div>
   </div>
 </laji-spinner>
+<!--laji-pill-list
+  [isLabel]="true"
+  [list]="currentAnnotation"
+  (updateList)="onTaxonListUpdate($event)"
+></laji-pill-list-->

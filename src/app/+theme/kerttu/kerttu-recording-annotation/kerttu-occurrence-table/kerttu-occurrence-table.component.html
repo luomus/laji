@@ -1,0 +1,13 @@
+<laji-datatable
+  [selectionType]="selectionType.multi"
+  [columns]="columns"
+  [rows]="selectedTaxons"
+  [clientSideSorting]="true"
+  [virtualScrolling]="false"
+></laji-datatable>
+
+<ng-template let-rowIndex="rowIndex" #radioButton>
+  <label class="datatable-checkbox">
+    <input type="radio" name="occurrence_{{ rowIndex }}" [checked]="" (change)="$event"/>
+  </label>
+</ng-template>

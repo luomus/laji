@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IRecording} from '../../models';
+import {Taxonomy} from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-recording-annotation',
@@ -10,24 +11,19 @@ import {IRecording} from '../../models';
 export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
 
-  currentAnnotation = [];
+  selectedTaxons: Taxonomy[] = [];
 
-  @Output() annotationsChange = new EventEmitter<any>();
+  // @Output() annotationsChange = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.currentAnnotation = [];
+    this.selectedTaxons = [];
   }
 
   onTaxonSelect(taxon) {
-    this.currentAnnotation.push(taxon.key);
-    this.annotationsChange.emit(this.currentAnnotation);
-  }
-
-  onTaxonListUpdate(taxonList: string[]) {
-    this.currentAnnotation = taxonList;
-    this.annotationsChange.emit(this.currentAnnotation);
+    console.log(taxon);
+    this.selectedTaxons = [...this.selectedTaxons, taxon.payload];
   }
 
   toNextRecording() {

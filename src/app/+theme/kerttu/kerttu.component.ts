@@ -32,6 +32,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         width: 100%;
     }
 
+    :host ::ng-deep lu-button button.success,
+    :host ::ng-deep lu-button button.danger,
+    :host ::ng-deep lu-button button.other {
+      padding: 0.5em 1em;
+    }
+
     @media only screen and (min-width : 768px) {
       main {
         padding: 20px 40px;
