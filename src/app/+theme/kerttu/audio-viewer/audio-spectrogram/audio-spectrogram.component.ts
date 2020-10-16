@@ -117,6 +117,8 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('width', width + (this.margin.left + this.margin.right))
       .attr('height', height + (this.margin.top + this.margin.bottom));
 
+    svg.selectAll('*').remove();
+
     this.xScale = scaleLinear().domain([0, this.buffer.duration]).range([0, width]);
     this.yScale = scaleLinear().domain([this.endFreq / 1000, this.startFreq / 1000]).range([0, height]);
 
