@@ -128,8 +128,13 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #multiLang>
-  <span *ngIf="value" title="{{value | multiLang}}">
+  <span class="capitalize" *ngIf="value" title="{{value | multiLang}}">
     {{ value | multiLang }}
+  </span>
+</ng-template>
+<ng-template let-value="value" #multiLangFalse>
+  <span class="capitalize" *ngIf="value" title="{{value | multiLang:false}}">
+    {{ value | multiLang:false }}
   </span>
 </ng-template>
 <ng-template let-value="value" #multiLangAll>
