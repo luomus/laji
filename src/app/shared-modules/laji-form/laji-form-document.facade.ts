@@ -143,6 +143,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   loadForm(formID: string, documentID?: string, isTemplate = false): void {
+    console.log('ciao')
     if (!formID) {
       this.updateState({..._state, error: FormError.incomplete});
       return;

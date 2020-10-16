@@ -7,7 +7,7 @@
       <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
     </div>
     <div class="col-sm-pull-4 col-sm-8">
-      <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
+      <h1><laji-taxon-name [taxon]="taxon" [capitalizeName]="true" [addLink]="false"></laji-taxon-name></h1>
       <h2>
         {{ 'iucn.taxon.missingInSpeciesLevel' | translate }} {{ year }}
         <div class="year-select">
@@ -31,7 +31,7 @@
       <h1 class="hidden-xs" style="display: inline-block">&nbsp;</h1>
     </div>
     <div class="col-sm-pull-4 col-sm-8">
-      <h1><laji-taxon-name [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
+      <h1><laji-taxon-name [capitalizeName]="true" [taxon]="taxon" [addLink]="false"></laji-taxon-name></h1>
       <h2>
         {{ 'iucn.taxon.evaluation' | translate }} {{ latestStatus.evaluationYear }}
         <div class="year-select">

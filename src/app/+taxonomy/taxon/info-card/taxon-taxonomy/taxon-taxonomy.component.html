@@ -10,7 +10,7 @@
         <p *ngIf="!taxon.nameAccordingTo">
           <span class="red-text" *ngIf="synonymType">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'" target="_blank">
-            <laji-taxon-name [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
+            <laji-taxon-name [capitalizeName]="true" [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
           </a>
           <span *ngIf="taxon.synonymOf.scientificNameAuthorship" class="author">{{ taxon.synonymOf.scientificNameAuthorship }}</span>
         </p>
@@ -46,7 +46,7 @@
          [open]="true"
          [autoToggle]="true"
     >
-      <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
+      <laji-taxon-names [capitalizeName]="true" [taxon]="taxon"></laji-taxon-names>
     </div>
     <div class="panel panel-default"
          laji-panel
