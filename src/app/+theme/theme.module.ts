@@ -31,6 +31,7 @@ import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
+import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
 import { AudioService } from './kerttu/service/audio.service';
 import { SpectrogramService } from './kerttu/service/spectrogram.service';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
@@ -114,6 +115,7 @@ import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annota
   providers: [
     QualityService,
     KerttuApi,
+    KerttuTaxonService,
     AudioService,
     SpectrogramService,
     ProtaxApi,

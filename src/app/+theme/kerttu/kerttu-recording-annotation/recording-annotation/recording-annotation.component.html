@@ -1,4 +1,4 @@
-<laji-spinner [spinning]="!recording">
+<laji-spinner [spinning]="!recording || !taxonList">
   <div class="row lu-section">
     <div class="col-md-12">
       <div style="margin-top: 10px; float: right">
@@ -18,6 +18,13 @@
         [xRangePadding]="0"
       ></laji-audio-viewer>
     </div>
+    <div class="col-sm-12" style="margin-bottom: 20px">
+      <!--laji-pill-list
+        [isLabel]="true"
+        [list]="currentAnnotation"
+        (updateList)="onTaxonListUpdate($event)"
+      ></laji-pill-list-->
+    </div>
     <div class="col-md-12">
       <div class="form-group">
         <label for="species-select">{{ 'theme.kerttu.listSpecies' | translate }}</label>
@@ -26,6 +33,7 @@
           [informalTaxonGroup]="'MVL.1'"
           [onlyFinnish]="true"
           [showResult]="false"
+          [whiteList]="taxonList"
           (taxonSelect)="onTaxonSelect($event)"
         ></laji-taxon-autocomplete>
       </div>
@@ -36,8 +44,3 @@
     </div>
   </div>
 </laji-spinner>
-<!--laji-pill-list
-  [isLabel]="true"
-  [list]="currentAnnotation"
-  (updateList)="onTaxonListUpdate($event)"
-></laji-pill-list-->

@@ -1,6 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
 import {SelectionType} from '@swimlane/ngx-datatable';
@@ -11,15 +9,10 @@ import {SelectionType} from '@swimlane/ngx-datatable';
   styleUrls: ['./expertise-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExpertiseFormComponent implements OnInit {
-  @Input() taxonId = 'MX.37580';
-  @Input() countThreshold = 50;
-  @Input() set selectedTaxonIds(selectedTaxonIds: string[]) {
-    this._seletedTaxonIds = selectedTaxonIds;
-    this.updateSelected();
-  }
+export class ExpertiseFormComponent implements OnChanges {
+  @Input() taxonList: Taxonomy[];
+  @Input() selectedTaxonIds: string[];
 
-  _seletedTaxonIds: string[];
   selected: Taxonomy[] = [];
 
   columns: DatatableColumn[] = [
@@ -42,7 +35,6 @@ export class ExpertiseFormComponent implements OnInit {
       cellTemplate: 'taxonScientificName'
     }
   ];
-  taxonList: Taxonomy[];
 
   selectionType = SelectionType;
 
@@ -50,42 +42,10 @@ export class ExpertiseFormComponent implements OnInit {
 
   @Output() taxonIdSelect = new EventEmitter<string[]>();
 
-  constructor(
-    private taxonomyService: TaxonomyApi,
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.taxonomyService
-      .taxonomyFindSpecies(
-        this.taxonId,
-        'fi',
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        '1',
-        '1000',
-        'taxonomic',
-        {
-          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCountFinland'],
-          onlyFinnish: true,
-          taxonRanks: ['MX.species']
-        }
-      ).pipe(
-        map((result) => result.results),
-        map((result) => result.reduce((arr, taxon) => {
-          if (taxon.observationCountFinland > this.countThreshold) {
-            arr.push(taxon);
-          }
-          return arr;
-        }, []))
-      ).subscribe(taxonList => {
-        this.taxonList = taxonList;
-        this.updateSelected();
-        this.cdr.markForCheck();
-    });
+  ngOnChanges() {
+    this.updateSelected();
   }
 
   onSelect(selected: Taxonomy[]) {
@@ -107,10 +67,10 @@ export class ExpertiseFormComponent implements OnInit {
   }
 
   private updateSelected() {
-    if (this.taxonList && this._seletedTaxonIds) {
-      this.selected = this.taxonList.filter(taxon => this._seletedTaxonIds.indexOf(taxon.id) > -1);
+    if (this.taxonList && this.selectedTaxonIds) {
+      this.selected = this.taxonList.filter(taxon => this.selectedTaxonIds.indexOf(taxon.id) > -1);
       const selectedIds = this.selected.map(taxon => taxon.id);
-      this.otherTaxonIds = this._seletedTaxonIds.filter(id => selectedIds.indexOf(id) === -1);
+      this.otherTaxonIds = this.selectedTaxonIds.filter(id => selectedIds.indexOf(id) === -1);
     }
   }
 }

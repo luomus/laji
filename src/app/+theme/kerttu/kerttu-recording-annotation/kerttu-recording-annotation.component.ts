@@ -3,6 +3,8 @@ import {KerttuApi} from '../service/kerttu-api';
 import {IRecording} from '../models';
 import {UserService} from '../../../shared/service/user.service';
 import {Observable} from 'rxjs';
+import {KerttuTaxonService} from '../service/kerttu-taxon-service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
@@ -12,14 +14,19 @@ import {Observable} from 'rxjs';
 })
 export class KerttuRecordingAnnotationComponent implements OnInit {
   recording$: Observable<IRecording>;
+  taxonList$: Observable<string[]>;
 
   constructor(
     private kerttuApi: KerttuApi,
+    private taxonService: KerttuTaxonService,
     private userService: UserService
   ) { }
 
   ngOnInit() {
     this.recording$ = this.kerttuApi.getRecording(this.userService.getToken());
+    this.taxonList$ = this.taxonService.getTaxonList().pipe(
+      map(taxons => taxons.map(taxon => taxon.id))
+    );
   }
 
 }
