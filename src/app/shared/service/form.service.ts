@@ -85,7 +85,7 @@ export class FormService {
   }
 
   getAddUrlPath(formId) {
-    return formId === Global.forms.default
+    return (formId === Global.forms.default || formId === Global.forms.privateCollection)
       ? `/vihko/${formId}`
       : `/project/${formId}/form`;
   }
