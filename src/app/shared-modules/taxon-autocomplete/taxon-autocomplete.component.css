@@ -13,4 +13,8 @@
         min-width: 250px;
         max-width: 250px;
     }
+
+    :host ::ng-deep typeahead-container.dropdown ul {
+      min-width: 250px!important;
+    }
   }

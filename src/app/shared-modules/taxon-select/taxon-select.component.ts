@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
     type="text/html"
+    container="{{containerTypeAhead}}"
     [class]="class"
     [name]="name"
     [placeholder]="placeholder"
@@ -20,7 +21,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     [typeaheadOptionsLimit]="typeaheadLimit"
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
-    [typeaheadSelectFirstItem]="!allowInvalid"
+    [typeaheadSelectFirstItem]="true"
     [typeaheadOptionField]="'autocompleteSelectedName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
@@ -43,6 +44,7 @@ export class TaxonSelectComponent{
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
   @Input() convertIdToName = true;
+  @Input() container: string;
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
@@ -54,6 +56,7 @@ export class TaxonSelectComponent{
   public _taxonName: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
+  public containerTypeAhead: string;
   public dataSource: Observable<any>;
   currentLang: string;
 
@@ -86,6 +89,10 @@ export class TaxonSelectComponent{
           return ObservableOf([]);
         })
       );
+  }
+
+  ngOnInit() {
+    this.containerTypeAhead = this.container ? this.container : '';
   }
 
   @Input() set taxonId(id: string) {

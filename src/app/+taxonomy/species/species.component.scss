@@ -35,13 +35,14 @@
 
 :host ::ng-deep typeahead-container.dropdown {
   right: 40px !important;
-  left: unset !important;
+  left: -341px !important;
   min-width: 600px;
 }
 
 :host ::ng-deep typeahead-container.dropdown ul {
   min-width: 600px;
 }
+
 
 
 @media only screen and (max-width : 767px) {
@@ -58,7 +59,7 @@
 
   :host ::ng-deep typeahead-container.dropdown {
     right: 80px !important;
-    left: unset !important;
+    left: 0px !important;
     min-width: 220px;
     max-width: 220px;
   }
