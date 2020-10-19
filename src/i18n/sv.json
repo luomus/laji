@@ -1342,6 +1342,7 @@
   "taxonomy.map": "Kartan av observationer",
   "taxonomy.map.disclaimer": "Kartan visar observationer av denna taxonen, men den får inte användas som en utbredningskarta.",
   "taxonomy.map.finland": "Observationer i Finland",
+  "taxonomy.map.info": "Observationer med koordinater från Finland, som har kvalitetsbetyget \"inte bedömt\" eller \"Verifierat\", och som inte har markerats som behöver granskas.",
   "taxonomy.map.summary": "Sammanfattande karta",
   "taxonomy.map.totalObservations": "Totalt",
   "taxonomy.map.totalObservationsNumber": " observationer i Finland",
