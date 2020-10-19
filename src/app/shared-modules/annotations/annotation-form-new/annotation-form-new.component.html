@@ -153,7 +153,7 @@
       </div>
     </div>
     <div class="taxon-name mt-2" *ngIf="annotation.identification.taxonID" [hidden]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''">
-      <laji-taxon-name [taxon]="taxonomy"></laji-taxon-name>
+      <laji-taxon-name [capitalizeName]="true" [taxon]="taxonomy"></laji-taxon-name>
     </div>
     <ng-template #taxonItem let-model="item">
       <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>

@@ -3,7 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { TaxonomyApi } from '../api/TaxonomyApi';
 import { Taxonomy } from '../model/Taxonomy';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 /**
  * This is meant for getting single taxon names and is not yet usable on lists
@@ -27,7 +28,12 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _updateValue(key: string): Observable<any> {
-    return this.taxonApi.taxonomyFindBySubject(key, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName'});
+    return this.taxonApi.taxonomyFindBySubject(key, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName'}).pipe(
+      catchError(() => of({
+        vernacularName: key,
+        scientificName: key
+      }))
+    )
   }
 
   protected _parseValue(res: Taxonomy): string {

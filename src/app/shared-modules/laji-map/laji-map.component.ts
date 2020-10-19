@@ -25,7 +25,7 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 @Component({
   selector: 'laji-map',
   template: `
-    <div class="laji-map-wrap" [ngClass]="{'no-controls': !showControls, 'map-fullscreen': fullScreen}">
+    <div class="laji-map-wrap">
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
@@ -42,7 +42,6 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   @Input() data: any = [];
-  @Input() showFullScreenControl = false;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
@@ -60,7 +59,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   map: any;
   _options: Options = {};
   _legend: {color: string, label: string}[];
-  fullScreen = false;
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -68,8 +66,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   private subSet: Subscription;
   private userSettings: Options = {};
   private mapData: any;
-
-  private customControlsSub: Subscription;
 
   constructor(
     private userService: UserService,
@@ -160,9 +156,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.showFullScreenControl) {
-      this.updateCustomControls();
-    }
   }
 
   initMap() {
@@ -179,6 +172,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           googleApiKey: Global.googleApiKey,
           data: this.data
         };
+        if (!this.showControls) {
+          options.controls = false;
+        }
         try {
           this.map = new LajiMap(options);
           this.map.map.on('moveend', _ => {
@@ -188,7 +184,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.moveEvent('movestart');
           });
           this.moveEvent('moveend');
-          this.updateCustomControls();
           if (this.mapData) {
             this.setData(this.mapData);
             this.mapData = undefined;
@@ -257,47 +252,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.map.openCoordinatesInputDialog();
     } else if (['Rectangle'].indexOf(type) > -1) {
       this.map.triggerDrawing('Rectangle');
-    }
-  }
-
-  getDrawingDraftStyle(type): any {
-    if (type === 'marker') {
-      return {};
-    } else {
-      return {shapeOptions: {color: '#00aa00', opacity: 1, fillOpacity: 0}};
-    }
-  }
-
-
-  private toggleFullscreen() {
-    this.fullScreen = !this.fullScreen;
-    this.updateCustomControls();
-    this.cd.detectChanges();
-    this.invalidateSize();
-  }
-
-  private updateCustomControls() {
-    if (!this.map) {
-      return;
-    }
-    if (this.customControlsSub) {
-      this.customControlsSub.unsubscribe();
-    }
-
-    if (!this.showFullScreenControl) {
-      this.map.setCustomControls([]);
-    } else {
-      this.customControlsSub = this.translate.get(this.fullScreen ? 'map.exitFullScreen' : 'map.fullScreen')
-        .subscribe(text => {
-          this.map.setCustomControls(
-            [{
-              iconCls: 'glyphicon glyphicon-resize-' + (this.fullScreen ? 'small' : 'full'),
-              fn: this.toggleFullscreen.bind(this),
-              position: 'bottomright',
-              text: text
-            }]
-          );
-        });
     }
   }
 }
