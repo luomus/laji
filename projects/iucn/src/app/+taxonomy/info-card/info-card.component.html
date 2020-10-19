@@ -18,7 +18,7 @@
       <ul>
         <li *ngFor="let species of species$ | async">
           <a [routerLink]="['..', species.id]" [queryParams]="{checklist: checklistId}">
-            <laji-taxon-name [taxon]="species" [addLink]="false"></laji-taxon-name>
+            <laji-taxon-name [taxon]="species" [capitalizeName]="true" [addLink]="false"></laji-taxon-name>
           </a>
         </li>
       </ul>
