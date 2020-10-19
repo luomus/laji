@@ -7,6 +7,10 @@
     background-position: bottom center;
   }
 
+  ::ng-deep typeahead-container {
+    left: 0px!important;
+  }
+
   ::ng-deep typeahead-container .dropdown-menu {
     position: relative;
   }
@@ -30,5 +34,13 @@
 
     typeahead-container ul li a span span {
      display: block
+    }
+
+    ::ng-deep typeahead-container {
+      left: 0px!important;
+    }
+
+    ::ng-deep typeahead-container ul{
+      min-width: 250px!important;
     }
   }

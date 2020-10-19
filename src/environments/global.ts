@@ -13,6 +13,7 @@ export const Global = {
     namedPlace: 'MHL.36',
     whichSpecies: 'MHL.9',
     collectionContest: 'MHL.25',
+    privateCollection: 'JX.5190'
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
@@ -45,6 +46,15 @@ export const Global = {
   sources: {
     kotka: 'KE.3'
   },
+  canHaveTemplate: [
+    'JX.519',
+    'MHL.6',
+    'MHL.33',
+    'MHL.35',
+    'MHL.9',
+    'MHL.25',
+    'JX.5190'
+  ],
   documentCountUnitProperties: [
     'count',
     'individualCount',

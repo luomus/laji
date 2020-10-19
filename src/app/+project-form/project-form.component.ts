@@ -56,14 +56,7 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit(): void {
     const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
 
-    const rights$ = projectForm$.pipe(
-      switchMap(projectForm => this.formPermissionService.getRights(projectForm.form).pipe(
-        mergeMap(_rights => this.userService.user$.pipe(
-          map(user => ({..._rights, ictAdmin: UserService.isIctAdmin(user)} as Rights))
-        ))
-        )
-      )
-    );
+    const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
     this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
       map(([projectForm, rights, queryParams]) => ({
@@ -133,18 +126,17 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private static getFormRoutes(form: Form.SchemaForm, subForms: Form.List[], rights: Rights) {
-    if (!rights.view) {
-      return [];
-    }
-    const hasVisibleSubForms = (subForms.some(f => f.options?.sidebarFormLabel));
-    const formRoute = {
-      link: [`form${hasVisibleSubForms ? `/${form.id}` : ''}`],
-      label: form.options?.sidebarFormLabel || 'nafi.form'
+    if (form.options?.secondaryCopy) {
+     return [];
     };
-    return [formRoute, ...subForms.filter(_form => form.options?.sidebarFormLabel).map(_form => ({
-      link: ['form', _form.id],
-      label: _form.options.sidebarFormLabel
-    }))];
+    const _subForms = subForms.filter(_form => _form.options?.sidebarFormLabel);
+    return [form, ..._subForms].filter(_form =>
+      _form.options?.useNamedPlaces && rights.view
+      || !_form.options?.useNamedPlaces && rights.edit
+    ).map(_form => ({
+      link:  [`form${(_form === form && !_subForms.length) ? '' : `/${_form.id}`}`],
+      label: _form.options.sidebarFormLabel || 'nafi.form'
+    }));
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -173,7 +165,7 @@ export class ProjectFormComponent implements OnInit {
         link: ['generate'],
         label: 'excel.generate'
       },
-      rights.edit && {
+      rights.edit && !form.options?.secondaryCopy && {
         link: ['submissions'],
         label: this.projectFormService.getSubmissionsPageTitle(form, rights.admin)
       },

@@ -62,4 +62,8 @@ export class AboutComponent implements OnInit {
   enterForm() {
      this.router.navigate(['..', 'form'], {relativeTo: this.route});
   }
+
+  login() {
+    this.userService.redirectToLogin();
+  }
 }

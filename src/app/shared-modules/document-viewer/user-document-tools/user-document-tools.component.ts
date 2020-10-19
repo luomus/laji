@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,11 +13,10 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service'
-import { catchError, map, switchMap, flatMap, mergeMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { Person } from '../../../shared/model/Person';
 import { Global } from '../../../../environments/global';
-import { of, forkJoin, Observable } from 'rxjs';
-import { Form } from '../../../shared/model/Form';
+import { of, forkJoin, Subscription } from 'rxjs';
 // import { EventEmitter } from 'protractor';
 // import { EventEmitter } from 'redlock';
 
@@ -43,7 +41,6 @@ export class UserDocumentToolsComponent implements OnInit {
   linkLocation = '';
   _editors: string[];
   _formID: string;
-  _allowTemplate: boolean;
   _personID: string;
   _documentID: string;
   hasEditRights = false;
@@ -51,6 +48,8 @@ export class UserDocumentToolsComponent implements OnInit {
   hasAdminRights = false;
   modalRef: any;
   modalIsOpen = false;
+  subAdminEditRights: Subscription;
+  subLogin: Subscription;
 
 
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
@@ -91,14 +90,8 @@ export class UserDocumentToolsComponent implements OnInit {
 
   @Input()
   set formID(formID: string) {
-    this.formService.getAllForms(this.translate.currentLang).pipe(
-      map(forms => forms.find(form => form.id === formID)),
-      take(1)
-    ).subscribe(form => {
-      this._formID = form.id;
-      this._allowTemplate = form.options?.allowTemplate;
-      this.updateLink();
-    });
+    this._formID = IdService.getId(formID);
+    this.updateLink();
   }
 
   ngOnInit() {
@@ -112,8 +105,16 @@ export class UserDocumentToolsComponent implements OnInit {
       }
     });
 
-    this.userService.isLoggedIn$.subscribe(login => {
-      if ((this._editors.indexOf(this._personID) !== -1 || this._editors.length === 0) && login ){
+    if(this.subAdminEditRights) {
+      this.subAdminEditRights.unsubscribe();
+    }
+
+    if(this.subLogin) {
+      this.subLogin.unsubscribe();
+    }
+    
+    this.subLogin = this.userService.isLoggedIn$.subscribe(login => {
+      if ((this._editors.indexOf(this._personID)!== -1 || this._editors.length === 0) && login){
         this.checkAdminRight();
       }
     })
@@ -140,6 +141,7 @@ export class UserDocumentToolsComponent implements OnInit {
       }
     }
   }
+
 
   saveTemplate() {
     if (this.loading) {
@@ -204,6 +206,12 @@ export class UserDocumentToolsComponent implements OnInit {
     this.closeModal(event);
   }
 
+  showMakeTemplate(formID: string): boolean {
+    if (formID) {
+      return Global.canHaveTemplate.indexOf(formID) > -1;
+    }
+  }
+
   private checkEditRight() {
     if (!this._personID || !this._editors) {
       this.hasEditRights = false;
@@ -216,15 +224,6 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   private checkAdminRight() {
-    /*this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
-      map(document => document.creator),
-      map(creator => this._personID === creator),
-      catchError(() => of(false))
-    ).subscribe(hasAdminRights => {
-      this.hasAdminRights = hasAdminRights;
-      this.cd.markForCheck();
-    });*/
-
     const documentCreator$ = this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
       map(document => document.creator),
       map(creator => this._personID === creator),
@@ -237,7 +236,7 @@ export class UserDocumentToolsComponent implements OnInit {
       catchError(() => of(false))
     )
 
-    forkJoin(documentCreator$, documentEditor$).subscribe(([hasAdminRights, hasEditRights]) => {
+    this.subAdminEditRights = forkJoin(documentCreator$, documentEditor$).subscribe(([hasAdminRights, hasEditRights]) => {
       this.hasAdminRights = hasAdminRights;
       this.hasEditRights = hasEditRights;
       if(this.hasEditRights) {
@@ -255,13 +254,22 @@ export class UserDocumentToolsComponent implements OnInit {
     this.linkLocation = this.formService.getEditUrlPath(this._formID, this._documentID);
   }
 
+  ngOnDestroy() {
+    if(this.subAdminEditRights) {
+      this.subAdminEditRights.unsubscribe();
+    }
+
+    if(this.subLogin) {
+      this.subLogin.unsubscribe();
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   documentToolsKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27 && this.modalIsOpen) {
       e.stopImmediatePropagation();
        this.closeModal(event);
       }
-
   }
 
 }

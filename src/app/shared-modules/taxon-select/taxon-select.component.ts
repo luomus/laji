@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, OnInit } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,15 +12,16 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
     type="text/html"
+    container="{{containerTypeAhead}}"
     [class]="class"
     [name]="name"
     [placeholder]="placeholder"
-    [(ngModel)]="_taxonId"
+    [(ngModel)]="_taxonName"
     [typeahead]="dataSource"
     [typeaheadOptionsLimit]="typeaheadLimit"
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
-    [typeaheadSelectFirstItem]="!allowInvalid"
+    [typeaheadSelectFirstItem]="true"
     [typeaheadOptionField]="'autocompleteSelectedName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
@@ -30,7 +31,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     autocorrect="off">
 
     <ng-template #taxonItem let-model="item">
-     <span [innerHtml]="model['autocompleteDisplayName' ]"></span>
+     <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName' ]"></span>
     </ng-template>
   `,
   styleUrls: ['taxon-select.scss'],
@@ -43,6 +44,7 @@ export class TaxonSelectComponent{
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
   @Input() convertIdToName = true;
+  @Input() container: string;
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
@@ -51,9 +53,10 @@ export class TaxonSelectComponent{
   private typeaheadMatch: {id: string, match: string};
   private enteredValue: string;
 
-  public _taxonId: string;
+  public _taxonName: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
+  public containerTypeAhead: string;
   public dataSource: Observable<any>;
   currentLang: string;
 
@@ -64,19 +67,19 @@ export class TaxonSelectComponent{
     private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = Observable.create((observer: any) => {
-      observer.next(this._taxonId);
+      observer.next(this._taxonName);
     })
       .pipe(
         distinctUntilChanged(),
         switchMap((token: string) => this.getTaxa(token)),
-        switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this._taxonId)),
+        switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this._taxonName)),
         switchMap((data: any[]) => {
           this.typeaheadMatch = undefined;
-          if (this._taxonId) {
-            const searchTerm = this._taxonId.toLowerCase();
+          if (this._taxonName) {
+            const searchTerm = this._taxonName.toLowerCase();
             if (data.length > 0 && (data[0].value.toLowerCase() === searchTerm || data[0].key.toLowerCase() === searchTerm)) {
-              this.typeaheadMatch = {id: data[0].key, match: this._taxonId};
-              if (this.enteredValue === this._taxonId) {
+              this.typeaheadMatch = {id: data[0].key, match: this._taxonName};
+              if (this.enteredValue === this._taxonName) {
                 this.selectValue(this.typeaheadMatch.id, true);
                 return ObservableOf([]);
               }
@@ -88,17 +91,21 @@ export class TaxonSelectComponent{
       );
   }
 
+  ngOnInit() {
+    this.containerTypeAhead = this.container ? this.container : '';
+  }
+
   @Input() set taxonId(id: string) {
     if (!id) {
-      this._taxonId = id;
+      this._taxonName = id;
     }
-    if (this._taxonId || !this.convertIdToName) {
+    if (this._taxonName || !this.convertIdToName) {
       return;
     }
     this.getTaxa(id).pipe(
       take(1)
     ).subscribe(result => {
-      this._taxonId = result[0] && result[0].value || id;
+      this._taxonName = result[0] && result[0].value || id;
       this.cdr.markForCheck();
     });
   }
@@ -109,23 +116,24 @@ export class TaxonSelectComponent{
 
   onTaxonSelect(event) {
     this.enteredValue = undefined;
-    this._taxonId = event.item.autocompleteSelectedName;
+    this._taxonName = event.item.autocompleteSelectedName;
     if (event.item && event.item.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
-    } else if (this._taxonId === '') {
+    } else if (this._taxonName === '') {
       this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
-      if (this.typeaheadMatch && this.typeaheadMatch.match === this._taxonId) {
+      if (this.typeaheadMatch && this.typeaheadMatch.match === this._taxonName) {
         this.selectValue(this.typeaheadMatch.id, true);
       } else {
-        this.enteredValue = this._taxonId;
+        this.enteredValue = this._taxonName;
       }
     }
   }
 
   private selectValue(key: string, blur?: boolean) {
     this.taxonIdChange.emit(key);
+    this._taxonName = '';
     if (blur) {
       this.blur();
     }

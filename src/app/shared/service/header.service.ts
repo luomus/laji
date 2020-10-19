@@ -36,6 +36,10 @@ const ALL_IMAGE_KEYS = [
   'twitter:image'
 ];
 
+const TWITTER_CARD = [
+  'twitter:card'
+]
+
 @Injectable({
   providedIn: 'root'
 })
@@ -85,7 +89,7 @@ export class HeaderService implements OnDestroy {
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
         map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
       ).subscribe(meta => {
-        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS];
+        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
           const propertySelector = `property='${key}'`;
           if (meta?.[key]) {
@@ -107,13 +111,14 @@ export class HeaderService implements OnDestroy {
 
   public updateMetaDescription(description) {
     this.removeMetaTags(ALL_META_KEYS);
+    this.metaService.addTag({property: 'twitter:card', content: 'summary'});
     ALL_META_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: description });
     })
   }
 
   public updateFeatureImage(image){
-    this.removeMetaTags(ALL_META_KEYS);
+    this.removeMetaTags(ALL_IMAGE_KEYS);
     ALL_IMAGE_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: image });
     })
@@ -143,6 +148,7 @@ export class HeaderService implements OnDestroy {
   }
 
   private removeMetaTags(metaTagsDescription) {
+    this.metaService.removeTag('property="twitter:card"');
     RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
       map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
     ).subscribe(meta => {

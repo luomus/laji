@@ -56,7 +56,7 @@
       <div class="col-md-4 col-xs-12" *lajiLoggedIn="true">
         <div class="form-group">
           <div class="col-sm-12 well">
-            <laji-find-person (select)="selectPerson($event)"></laji-find-person>
+            <laji-find-person (selectChange)="selectPerson($event)"></laji-find-person>
             <laji-friends [profile]="profile" [usersProfile]="personsProfile"></laji-friends>
           </div>
         </div>

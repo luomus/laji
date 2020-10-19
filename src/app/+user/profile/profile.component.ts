@@ -9,14 +9,12 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Person } from '../../shared/model/Person';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { UsersPipe } from '../../shared/pipe/users.pipe';
 
 
 @Component({
   selector: 'laji-user',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [ UsersPipe ]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
@@ -56,7 +54,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private logger: Logger,
-              private userPipe: UsersPipe,
               private cdr: ChangeDetectorRef
   ) {
     this.personSelfUrl = environment.selfPage;
@@ -104,10 +101,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
               intellectualRights: undefined,
             };
           }
-          this.profile.settings['capturerVerbatim'] = this.profile.settings && (this.profile.settings['capturerVerbatim'] || this.profile.settings['capturerVerbatim'] !== '') ? this.profile.settings['capturerVerbatim']  : this.userFullName;
-          this.profile.settings['intellectualOwner'] = this.profile.settings && (this.profile.settings['intellectualOwner'] || this.profile.settings['intellectualOwner'] !== '') ? this.profile.settings.intellectualOwner : this.userFullName;
-          this.profile.settings['intellectualRights'] = this.profile.settings && (this.profile.settings['intellectualRights'] || this.profile.settings['intellectualRights'] !== undefined) ?
-          this.profile.settings['intellectualRights'] : Profile.IntellectualRightsEnum.IntellectualRightsCCBY;
+          this.profile.settings['capturerVerbatim'] = this.profile?.settings?.capturerVerbatim || this.userFullName;
+          this.profile.settings['intellectualOwner'] = this.profile?.settings?.intellectualOwner || this.userFullName;
+          this.profile.settings['intellectualRights'] = this.profile?.settings?.intellectualRights || Profile.IntellectualRightsEnum.IntellectualRightsCCBY;
           this.personsProfile = data.currentProfile || {};
           this.loading = false;
           this.editing = false;
@@ -176,9 +172,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       intellectualOwner: this.profile.intellectualOwner,
       intellectualRights: this.profile.intellectualRights,
       settings: {
-        capturerVerbatim: this.profile.settings['capturerVerbatim'] !== '' ? this.profile.settings['capturerVerbatim'] : this.userFullName,
-        intellectualOwner: this.profile.settings['intellectualOwner'] !== '' ? this.profile.settings['intellectualOwner']: this.userFullName,
-        intellectualRights: this.profile.settings['intellectualRights'],
+        capturerVerbatim: this.profile?.settings?.capturerVerbatim || this.userFullName,
+        intellectualOwner: this.profile?.settings?.intellectualOwner || this.userFullName,
+        intellectualRights: this.profile?.settings?.intellectualRights
       }
     };
   }
