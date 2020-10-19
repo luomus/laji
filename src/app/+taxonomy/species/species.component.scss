@@ -30,6 +30,7 @@
 
 ::ng-deep .sidebar {
   overflow-x: visible !important;
+  overflow-y: auto;
 }
 
 :host ::ng-deep typeahead-container.dropdown {
