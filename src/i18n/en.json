@@ -1343,6 +1343,7 @@
   "taxonomy.map": "Map of observations",
   "taxonomy.map.disclaimer": "The map represents observations of this taxon, but it may not be used as a distribution map.",
   "taxonomy.map.finland": "Observations in Finland",
+  "taxonomy.map.info": "Observations with coordinates from Finland, which have quality grade of \"not assessed\" or \"verified\", and which have not been marked as needing review.",
   "taxonomy.map.summary": "Summary map",
   "taxonomy.map.totalObservations": "A total of",
   "taxonomy.map.totalObservationsNumber": " observations in Finland",

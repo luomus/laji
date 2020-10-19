@@ -1343,6 +1343,7 @@
   "taxonomy.map": "Havaintokartta",
   "taxonomy.map.disclaimer": "Kartta esittää havaintoja tästä taksonista, mutta sitä ei voi käyttää levinneisyyskarttana.",
   "taxonomy.map.finland": "Havainnot Suomesta",
+  "taxonomy.map.info": "Havainnot, joiden koordinaatit ovat Suomessa, joiden laatuluokitus on neutraali tai varmistettu, ja joita ei ole merkitty tarkistusta vaativiksi.",
   "taxonomy.map.summary": "Yhteenvetokartta",
   "taxonomy.map.totalObservations": "Suomessa yhteensä",
   "taxonomy.map.totalObservationsNumber": " havaintoa",
