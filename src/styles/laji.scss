@@ -1320,6 +1320,15 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
     display: inline-block
   }
 
+  typeahead-container {
+    left: -380px !important;
+    min-width: 600px !important;
+  }
+
+  typeahead-container ul{
+    min-width: 600px !important;
+  }
+
   .autocomplete-small-flag {
     display: inline-block;
     width: 24px;
@@ -1418,6 +1427,15 @@ span.simple-option {
 
     .taxon-second-element, .taxon-third-element {
       display: block;
+    }
+
+    typeahead-container {
+      left: 0px !important;
+      min-width: 250px !important;
+    }
+  
+    typeahead-container ul{
+      min-width: 250px !important;
     }
   }
 

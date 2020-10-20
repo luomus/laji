@@ -46,9 +46,6 @@ laji-observation-form {
   display: none;
 }
 
-::ng-deep .sidebar {
-  overflow-x: visible !important;
-}
 
 :host ::ng-deep typeahead-container.dropdown {
   right: 80px !important;

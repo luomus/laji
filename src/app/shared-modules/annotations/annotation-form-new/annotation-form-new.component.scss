@@ -342,9 +342,13 @@ $taxon-input-height: 30px;
 
   :host ::ng-deep typeahead-container.dropdown {
     right: 64px !important;
-    left: unset !important;
+    left: 0 !important;
     min-width: 250px;
     max-width: 250px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown ul {
+    min-width: 250px !important;
   }
 
   ::ng-deep typeahead-container ul li a span div {

@@ -10,6 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { forEach } from 'jszip';
+import { BrowserService } from 'src/app/shared/service/browser.service';
 
 
 interface ISections {
@@ -128,12 +129,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   delayedSearch = new Subject();
   delayedSub: Subscription;
+  screenWidthSub: Subscription;
+  containerTypeAhead: string;
 
   private _query: WarehouseQueryInterface;
 
   constructor(
     private observationFacade: ObservationFacade,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private browserService: BrowserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -157,11 +161,22 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateVisibleSections();
     this.updateVisibleAdvancedSections();
+    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
+      if(data === true) {
+        this.containerTypeAhead = 'body';
+      } else {
+        this.containerTypeAhead = 'laji-observation-form';
+      }
+    })
   }
 
   ngOnDestroy(): void {
     if (this.delayedSub) {
       this.delayedSub.unsubscribe();
+    }
+
+    if(this.screenWidthSub) {
+      this.screenWidthSub.unsubscribe();
     }
   }
 

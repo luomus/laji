@@ -16,6 +16,7 @@ img {
 }
 
 .container-link {
+  text-decoration: none;
   cursor: pointer;
   &:hover .nav-container, &:focus .nav-container {
     color: $neutral-5;
