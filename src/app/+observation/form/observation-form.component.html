@@ -32,7 +32,7 @@
     <input
       [ngClass]="{loading: typeaheadLoading}"
       type="text"
-      container="body"
+      container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
       [(ngModel)]="formQuery.taxon"
