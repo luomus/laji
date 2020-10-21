@@ -39,11 +39,10 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
 
-  start = 0;
-  stop: number;
+  xRangeInSegment: number[];
 
   buffer: AudioBuffer;
-  currentTime = 0;
+  currentTime: number;
 
   isPlaying = false;
 
@@ -57,6 +56,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   private startTime: number;
 
   private autoplayCounter = 0;
+  private startedOutsideHighlighted = false;
 
   private audioSub: Subscription;
   private timeupdateInterval;
@@ -71,7 +71,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording || changes.xRangePadding) {
+    if (changes.recording || changes.xRange || changes.xRangePadding) {
       this.clear();
       this.setAudioLoading(true);
 
@@ -83,8 +83,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
             return;
           }
 
-          [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
-          buffer = this.audioService.extractSegment(buffer, this.start, this.stop);
+          const range = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
+          if (this.xRange) {
+            this.xRangeInSegment = [this.xRange[0] - range[0], this.xRange[1] - range[0]];
+          }
+          this.currentTime = this.getStartTime();
+
+          buffer = this.audioService.extractSegment(buffer, range[0], range[1]);
           this.buffer = buffer;
 
           if (this.autoplay && changes.recording) {
@@ -116,8 +121,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.isPlaying) {
       this.isPlaying = true;
 
-      if (this.currentTime === this.buffer.duration) {
-        this.currentTime = 0;
+      if (!this.currentTime || this.currentTime >= this.getEndTime()) {
+        this.currentTime = this.getStartTime();
       }
       this.startOffset = this.currentTime;
 
@@ -148,14 +153,36 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       this.source.onended = (args) => {
         this.ngZone.run(() => {
           this.sourceOnEnded();
-          this.currentTime = time;
-          this.toggleAudio();
+          this.startAudioFromMiddle(time);
           this.cdr.markForCheck();
         });
       };
     } else {
-      this.currentTime = time;
-      this.toggleAudio();
+      this.startAudioFromMiddle(time);
+    }
+  }
+
+  private startAudioFromMiddle(time: number) {
+    if (this.highlightSelection && (time < this.xRangeInSegment[0] || time > this.xRangeInSegment[1])) {
+      this.startedOutsideHighlighted = true;
+    }
+    this.currentTime = time;
+    this.toggleAudio();
+  }
+
+  private getStartTime() {
+    if (this.highlightSelection && !this.startedOutsideHighlighted) {
+      return this.xRangeInSegment[0];
+    } else {
+      return 0;
+    }
+  }
+
+  private getEndTime() {
+    if (this.highlightSelection && !this.startedOutsideHighlighted) {
+      return this.xRangeInSegment[1];
+    } else {
+      return this.buffer.duration;
     }
   }
 
@@ -163,6 +190,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
     this.isPlaying = false;
+    this.startedOutsideHighlighted = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
       if (this.currentTime === this.buffer.duration) {
@@ -194,7 +222,13 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       this.currentTime = this.startOffset;
     }
 
-    this.currentTime = Math.min(this.currentTime, this.buffer.duration);
+    const endTime = this.getEndTime();
+
+    this.currentTime = Math.min(this.currentTime, endTime);
+
+    if (this.currentTime === endTime) {
+      this.source.stop(0);
+    }
   }
 
   private clear() {
@@ -210,7 +244,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.buffer = undefined;
-    this.currentTime = 0;
+    this.currentTime = undefined;
     this.isPlaying = false;
     this.source = undefined;
     this.hasError = false;

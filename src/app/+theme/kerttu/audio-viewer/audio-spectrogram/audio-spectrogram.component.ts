@@ -157,6 +157,24 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('x', -this.margin.top - height / 2)
       .text('Taajuus (kHz)');
 
+    // draw scroll line
+    const drag = d3Drag.drag()
+      .on('start', () => { this.startDrag.emit(); })
+      .on('drag', () => {
+        this.setTimeToPosition(event.x);
+      })
+      .on('end', () => { this.endDrag.emit(this.currentTime); });
+
+    this.scrollLine = svg.append('line')
+      .attr('y1', this.margin.top)
+      .attr('y2', this.margin.top + height)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'black')
+      .call(drag)
+      .style('cursor', 'pointer');
+
+    this.updateScrollLinePosition();
+
     // draw white rectangle
     if (this.xRange || this.yRange) {
       const rectX = this.xRange ? this.margin.left + this.xScale(this.xRange[0]) : this.margin.left;
@@ -203,24 +221,6 @@ export class AudioSpectrogramComponent implements OnChanges {
         .attr('stroke', 'white')
         .attr('fill', 'none');
     }
-
-    // draw scroll line
-    const drag = d3Drag.drag()
-      .on('start', () => { this.startDrag.emit(); })
-      .on('drag', () => {
-        this.setTimeToPosition(event.x);
-      })
-      .on('end', () => { this.endDrag.emit(this.currentTime); });
-
-    this.scrollLine = svg.append('line')
-      .attr('y1', this.margin.top)
-      .attr('y2', this.margin.top + height)
-      .attr('stroke-width', 2)
-      .attr('stroke', 'black')
-      .call(drag)
-      .style('cursor', 'pointer');
-
-    this.updateScrollLinePosition();
   }
 
   private setTimeToPosition(x: number) {
