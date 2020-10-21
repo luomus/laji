@@ -34,12 +34,12 @@
 }
 
 :host ::ng-deep typeahead-container.dropdown {
-  left: -341px !important;
-  min-width: 600px;
+  margin-left: -341px;
+  width: 600px;
 }
 
 :host ::ng-deep typeahead-container.dropdown ul {
-  min-width: 600px;
+  width: 600px;
 }
 
 
@@ -52,15 +52,12 @@
   }
 
   :host ::ng-deep typeahead-container.dropdown ul {
-    max-width: 220px;
-    min-width: 220px;
+    width: 220px;
   }
 
   :host ::ng-deep typeahead-container.dropdown {
-    right: 80px !important;
-    left: 0px !important;
-    min-width: 220px;
-    max-width: 220px;
+    margin-left: 0px;
+    width: 220px;
   }
 
   ::ng-deep typeahead-container ul li a span div {

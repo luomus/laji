@@ -35,6 +35,7 @@
       container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
+      [adaptivePosition]="true"
       [(ngModel)]="formQuery.taxon"
       [typeahead]="dataSource"
       [typeaheadOptionsLimit]="autocompleteLimit"
