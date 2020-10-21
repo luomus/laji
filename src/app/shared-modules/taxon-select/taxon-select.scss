@@ -8,7 +8,7 @@
   }
 
   ::ng-deep typeahead-container {
-    left: 0px!important;
+    margin-left: 0px;
   }
 
   ::ng-deep typeahead-container .dropdown-menu {
@@ -37,10 +37,11 @@
     }
 
     ::ng-deep typeahead-container {
-      left: 0px!important;
+      margin-left: 0px;
+      width: 250px;
     }
 
     ::ng-deep typeahead-container ul{
-      min-width: 250px!important;
+      width: 250px;
     }
   }

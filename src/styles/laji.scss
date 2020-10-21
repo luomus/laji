@@ -1321,12 +1321,12 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   }
 
   typeahead-container {
-    left: -380px !important;
-    min-width: 600px !important;
+    margin-left: -380px;
+    width: 600px;
   }
 
   typeahead-container ul{
-    min-width: 600px !important;
+    width: 600px;
   }
 
   .autocomplete-small-flag {
