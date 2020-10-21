@@ -29,6 +29,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() xRangePadding: number;
   @Input() xRange: number[];
   @Input() yRange: number[];
+  @Input() highlightSelection = false;
 
   @Input() zoomed = false;
   @Input() autoplay = false;

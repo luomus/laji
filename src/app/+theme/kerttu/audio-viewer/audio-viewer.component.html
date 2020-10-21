@@ -10,6 +10,7 @@
       [xRange]="xRange && xRange.length > 0 && xRangePadding !== 0 ? [xRange[0] - start, xRange[1] - start] : undefined"
       [yRange]="yRange"
       [zoomed]="zoomed"
+      [showDarkBackground]="highlightSelection"
       (spectrogramReady)="setAudioLoading(false)"
       (startDrag)="onSpectrogramDragStart()"
       (endDrag)="onSpectrogramDragEnd($event)"

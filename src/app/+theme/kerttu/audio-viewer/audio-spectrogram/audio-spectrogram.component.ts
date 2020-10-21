@@ -42,6 +42,7 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   @Input() zoomed = false;
   @Input() frequencyPadding = 500;
+  @Input() showDarkBackground = false;
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() startDrag = new EventEmitter();
@@ -162,6 +163,36 @@ export class AudioSpectrogramComponent implements OnChanges {
       const rectWidth = this.xRange ? this.xScale(this.xRange[1] - this.xRange[0]) : width;
       const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
       const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+
+      if (this.showDarkBackground) {
+        const group = svg.append('g')
+          .attr('fill', 'black')
+          .attr('opacity', 0.4);
+
+        group.append('rect')
+          .attr('x', this.margin.left)
+          .attr('y', this.margin.top)
+          .attr('width', rectX - this.margin.left)
+          .attr('height', height);
+
+        group.append('rect')
+          .attr('x', rectX + rectWidth)
+          .attr('y', this.margin.top)
+          .attr('width', width - (rectX + rectWidth - this.margin.left))
+          .attr('height', height);
+
+        group.append('rect')
+          .attr('x', this.margin.left)
+          .attr('y', this.margin.top)
+          .attr('width', width)
+          .attr('height', rectY - this.margin.top);
+
+        group.append('rect')
+          .attr('x', this.margin.left)
+          .attr('y', rectY + rectHeight)
+          .attr('width', width)
+          .attr('height', height - (rectY + rectHeight - this.margin.top));
+      }
 
       svg.append('rect')
         .attr('x', rectX)
