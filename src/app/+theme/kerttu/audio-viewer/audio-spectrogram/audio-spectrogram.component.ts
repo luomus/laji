@@ -14,7 +14,8 @@ import {
 import { axisBottom, axisLeft } from 'd3-axis';
 import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
-import * as d3Drag from 'd3-drag';
+import { drag } from 'd3-drag';
+import { brush } from 'd3-brush';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {SpectrogramService} from '../../service/spectrogram.service';
@@ -43,10 +44,12 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() zoomed = false;
   @Input() frequencyPadding = 500;
   @Input() showDarkBackground = false;
+  @Input() inBrushMode = false;
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() startDrag = new EventEmitter();
   @Output() endDrag = new EventEmitter<number>();
+  @Output() brushEnd = new EventEmitter<number[][]>();
 
   margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
 
@@ -110,6 +113,9 @@ export class AudioSpectrogramComponent implements OnChanges {
       if (changes.zoomed && this.imageData) {
         this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
       }
+      if (changes.inBrushMode) {
+        this.onResize();
+      }
     }
   }
 
@@ -126,13 +132,15 @@ export class AudioSpectrogramComponent implements OnChanges {
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
 
-    // make spectrogram clickable
-    svg.on('click', () => {
-      const x = clientPoint(event.target, event)[0];
-      this.setTimeToPosition(x);
-      this.endDrag.emit(this.currentTime);
-    });
-    svg.style('cursor', 'pointer');
+    if (!this.inBrushMode) {
+      // make spectrogram clickable
+      svg.on('click', () => {
+        const x = clientPoint(event.target, event)[0];
+        this.setTimeToPosition(x);
+        this.endDrag.emit(this.currentTime);
+      });
+      svg.style('cursor', 'pointer');
+    }
 
     // draw axes
     svg.append('g')
@@ -158,7 +166,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       .text('Taajuus (kHz)');
 
     // draw scroll line
-    const drag = d3Drag.drag()
+    const scrollLineDrag = drag()
       .on('start', () => { this.startDrag.emit(); })
       .on('drag', () => {
         this.setTimeToPosition(event.x);
@@ -169,9 +177,10 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('y1', this.margin.top)
       .attr('y2', this.margin.top + height)
       .attr('stroke-width', 2)
-      .attr('stroke', 'black')
-      .call(drag)
-      .style('cursor', 'pointer');
+      .attr('stroke', 'black');
+    if (!this.inBrushMode) {
+      this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
+    }
 
     this.updateScrollLinePosition();
 
@@ -220,6 +229,31 @@ export class AudioSpectrogramComponent implements OnChanges {
         .attr('stroke-width', 2)
         .attr('stroke', 'white')
         .attr('fill', 'none');
+    }
+
+    if (this.inBrushMode) {
+      const brushFunc = brush()
+        .extent([[this.margin.left, this.margin.top], [this.margin.left + width, this.margin.top + height]])
+        .on('end', () => {
+          if (!event.selection) {
+            return;
+          }
+          const [[x0, y0], [x1, y1]] = event.selection;
+
+          const xMin = Math.min(x0, x1);
+          const xMax = Math.max(x0, x1);
+          const yMin = Math.min(y0, y1);
+          const yMax = Math.max(y0, y1);
+
+          this.brushEnd.emit([
+            [this.xScale.invert(xMin - this.margin.left), this.xScale.invert(xMax - this.margin.left)],
+            [this.yScale.invert(yMax - this.margin.top) * 1000, this.yScale.invert(yMin - this.margin.top) * 1000]
+          ]);
+        });
+
+      svg.append('g')
+        .attr('class', 'brush')
+        .call(brushFunc);
     }
   }
 

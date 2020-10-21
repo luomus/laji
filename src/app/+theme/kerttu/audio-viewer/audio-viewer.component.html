@@ -11,9 +11,11 @@
       [yRange]="yRange"
       [zoomed]="zoomed"
       [showDarkBackground]="highlightSelection"
+      [inBrushMode]="isInBrushMode"
       (spectrogramReady)="setAudioLoading(false)"
       (startDrag)="onSpectrogramDragStart()"
       (endDrag)="onSpectrogramDragEnd($event)"
+      (brushEnd)="onSpectrogramBrushEnd($event)"
     ></laji-audio-spectrogram>
   </div>
 
@@ -25,5 +27,9 @@
       >
       </span>
     </button>
+    <ng-container *ngIf="showBrushControl">
+      <lu-button [role]="isInBrushMode ? 'other' : undefined" (click)="toggleBrushMode()">Rajaa alue</lu-button>
+      <lu-button>Palauta oletusrajaus</lu-button>
+    </ng-container>
   </div>
 </laji-spinner>

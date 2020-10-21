@@ -34,6 +34,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() zoomed = false;
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
+  @Input() showBrushControl = false;
 
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
@@ -45,6 +46,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   currentTime: number;
 
   isPlaying = false;
+  isInBrushMode = false;
 
   loading = false;
   @Output() audioLoading = new EventEmitter<boolean>();
@@ -160,6 +162,18 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.startAudioFromMiddle(time);
     }
+  }
+
+  toggleBrushMode() {
+    if (this.isPlaying) {
+      this.toggleAudio();
+    }
+    this.isInBrushMode = !this.isInBrushMode;
+  }
+
+  onSpectrogramBrushEnd([xRange, yRange]: number[][]) {
+    console.log(xRange);
+    console.log(yRange);
   }
 
   private startAudioFromMiddle(time: number) {
