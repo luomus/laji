@@ -18,7 +18,7 @@ import { Annotation } from '../../shared/model/Annotation';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';
-import { NamedPlacesService } from '../named-place/named-places.service';
+import { NamedPlacesService } from '../../shared/service/named-places.service';
 import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
@@ -47,7 +47,7 @@ export interface ISuccessEvent {
   namedPlace?: NamedPlace;
 }
 
-interface FormWithData extends Form.SchemaForm {
+export interface FormWithData extends Form.SchemaForm {
   formData?: Document;
   annotations?: Form.IAnnotationMap;
   rights?: Rights;

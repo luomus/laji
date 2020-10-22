@@ -21,6 +21,9 @@ export class LajiFormComponent {
   reactElem: any;
   renderElem: any;
 
+  static TOP_OFFSET = 50;
+  static BOTTOM_OFFSET = 61;
+
   constructor() { }
 
   block() { }
