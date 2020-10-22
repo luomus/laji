@@ -18,8 +18,9 @@ import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
-import {SpectrogramService} from '../../service/spectrogram.service';
-import { KerttuUtils } from '../../service/kerttu-utils';
+import {SpectrogramService} from '../service/spectrogram.service';
+import { AudioViewerUtils } from '../service/audio-viewer-utils';
+import {AudioViewerMode, IAudioViewerArea} from '../models';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -38,17 +39,15 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() noverlap: number;
   @Input() currentTime: number;
 
-  @Input() xRange: number[];
-  @Input() yRange: number[];
-
-  @Input() zoomed = false;
-  @Input() frequencyPadding = 500;
-  @Input() showDarkBackground = false;
-  @Input() inBrushMode = false;
+  @Input() focusArea: IAudioViewerArea;
+  @Input() highlightFocusArea = false;
+  @Input() zoomFrequency = false;
+  @Input() frequencyPaddingOnZoom = 500;
+  @Input() mode: AudioViewerMode;
 
   @Output() spectrogramReady = new EventEmitter();
-  @Output() startDrag = new EventEmitter();
-  @Output() endDrag = new EventEmitter<number>();
+  @Output() dragStart = new EventEmitter();
+  @Output() dragEnd = new EventEmitter<number>();
   @Output() brushEnd = new EventEmitter<number[][]>();
 
   margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
@@ -110,10 +109,10 @@ export class AudioSpectrogramComponent implements OnChanges {
       if (changes.currentTime && this.scrollLine) {
         this.updateScrollLinePosition();
       }
-      if (changes.zoomed && this.imageData) {
+      if (changes.zoomFrequency && this.imageData) {
         this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
       }
-      if (changes.inBrushMode) {
+      if (changes.mode) {
         this.onResize();
       }
     }
@@ -132,12 +131,12 @@ export class AudioSpectrogramComponent implements OnChanges {
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
 
-    if (!this.inBrushMode) {
+    if (this.mode === 'default') {
       // make spectrogram clickable
       svg.on('click', () => {
         const x = clientPoint(event.target, event)[0];
         this.setTimeToPosition(x);
-        this.endDrag.emit(this.currentTime);
+        this.dragEnd.emit(this.currentTime);
       });
       svg.style('cursor', 'pointer');
     }
@@ -167,31 +166,31 @@ export class AudioSpectrogramComponent implements OnChanges {
 
     // draw scroll line
     const scrollLineDrag = drag()
-      .on('start', () => { this.startDrag.emit(); })
+      .on('start', () => { this.dragStart.emit(); })
       .on('drag', () => {
         this.setTimeToPosition(event.x);
       })
-      .on('end', () => { this.endDrag.emit(this.currentTime); });
+      .on('end', () => { this.dragEnd.emit(this.currentTime); });
 
     this.scrollLine = svg.append('line')
       .attr('y1', this.margin.top)
       .attr('y2', this.margin.top + height)
       .attr('stroke-width', 2)
       .attr('stroke', 'black');
-    if (!this.inBrushMode) {
+    if (this.mode === 'default') {
       this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
     }
 
     this.updateScrollLinePosition();
 
     // draw white rectangle
-    if (this.xRange || this.yRange) {
-      const rectX = this.xRange ? this.margin.left + this.xScale(this.xRange[0]) : this.margin.left;
-      const rectWidth = this.xRange ? this.xScale(this.xRange[1] - this.xRange[0]) : width;
-      const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
-      const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+    if (this.focusArea) {
+      const rectX = this.focusArea.xRange ? this.margin.left + this.xScale(this.focusArea.xRange[0]) : this.margin.left;
+      const rectWidth = this.focusArea.xRange ? this.xScale(this.focusArea.xRange[1] - this.focusArea.xRange[0]) : width;
+      const rectY = this.focusArea.yRange ? this.margin.top + this.yScale(this.focusArea.yRange[1] / 1000) : this.margin.top;
+      const rectHeight = this.focusArea.yRange ? this.yScale((this.endFreq - (this.focusArea.yRange[1] - this.focusArea.yRange[0])) / 1000) : height;
 
-      if (this.showDarkBackground) {
+      if (this.highlightFocusArea) {
         const group = svg.append('g')
           .attr('fill', 'black')
           .attr('opacity', 0.4);
@@ -231,7 +230,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         .attr('fill', 'none');
     }
 
-    if (this.inBrushMode) {
+    if (this.mode === 'brush') {
       const brushFunc = brush()
         .extent([[this.margin.left, this.margin.top], [this.margin.left + width, this.margin.top + height]])
         .on('end', () => {
@@ -271,7 +270,9 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
     const maxFreq = Math.floor(this.sampleRate / 2);
-    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, maxFreq);
+    [this.startFreq, this.endFreq] = AudioViewerUtils.getPaddedRange(
+      this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, 0, maxFreq
+    );
 
     const ratio1 = this.startFreq / maxFreq;
     const ratio2 = this.endFreq / maxFreq;

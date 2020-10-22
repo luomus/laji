@@ -14,9 +14,11 @@
     <div class="col-md-12">
       <laji-audio-viewer
         [recording]="recording?.recording"
-        [xRange]="recording?.xRange"
-        [xRangePadding]="2"
-        [highlightSelection]="true"
+        [focusArea]="{
+          xRange: recording?.xRange
+        }"
+        [focusAreaTimePadding]="2"
+        [highlightFocusArea]="true"
         [showBrushControl]="true"
       ></laji-audio-viewer>
     </div>

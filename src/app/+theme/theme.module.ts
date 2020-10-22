@@ -32,8 +32,8 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
-import { AudioService } from './kerttu/service/audio.service';
-import { SpectrogramService } from './kerttu/service/spectrogram.service';
+import { AudioService } from './kerttu/audio-viewer/service/audio.service';
+import { SpectrogramService } from './kerttu/audio-viewer/service/spectrogram.service';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
 import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';

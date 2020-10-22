@@ -80,10 +80,12 @@
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="xRangePadding"
-      [xRange]="template?.xRange"
-      [yRange]="template?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: template?.xRange,
+        yRange: template?.yRange
+      }"
+      [focusAreaTimePadding]="xRangePadding"
+      [zoomFrequency]="zoomed"
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
@@ -94,10 +96,12 @@
     </h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="xRangePadding"
-      [xRange]="candidate?.xRange"
-      [yRange]="candidate?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: candidate?.xRange,
+        yRange: candidate?.yRange
+      }"
+      [focusAreaTimePadding]="xRangePadding"
+      [zoomFrequency]="zoomed"
       [autoplay]="autoplayCandidate"
       [autoplayRepeat]="3"
       (audioLoading)="loadingCandidate = $event"
@@ -114,9 +118,11 @@
     <laji-audio-viewer
       *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
-      [xRange]="candidate?.xRange"
-      [yRange]="candidate?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: candidate?.xRange,
+        yRange: candidate?.yRange
+      }"
+      [zoomFrequency]="zoomed"
     ></laji-audio-viewer>
   </div>
 </div>
