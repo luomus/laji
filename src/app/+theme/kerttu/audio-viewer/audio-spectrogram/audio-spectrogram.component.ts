@@ -162,7 +162,6 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('height', height);
 
     this.drawInnerChart(innerSvg, width, height);
-    this.addChartFuncs(svg, innerSvg);
   }
 
   private drawInnerChart(svg: Selection<SVGSVGElement, any, any, any>, width: number, height: number) {
@@ -176,52 +175,34 @@ export class AudioSpectrogramComponent implements OnChanges {
     const rectHeight = this.yScale((this.endFreq - (yRange[1] - yRange[0])) / 1000);
 
     if (this.highlightFocusArea) {
-      const nonClickable = !this.brushArea && this.highlightFocusArea;
-
       const group = svg.append('g')
         .attr('fill', 'black')
         .attr('opacity', 0.4);
-
-      if (nonClickable) {
-        group.attr('cursor', 'default');
-      }
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', 0)
         .attr('width', rectX)
-        .attr('height', height)
-        .attr('class', nonClickable ? 'non-clickable' : undefined);
+        .attr('height', height);
 
       group.append('rect')
         .attr('x', rectX + rectWidth)
         .attr('y', 0)
         .attr('width', width - (rectX + rectWidth))
-        .attr('height', height)
-        .attr('class', nonClickable ? 'non-clickable' : undefined);
+        .attr('height', height);
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', 0)
         .attr('width', width)
-        .attr('height', rectY)
-        .attr('class', nonClickable ? 'non-clickable' : undefined);
+        .attr('height', rectY);
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', rectY + rectHeight)
         .attr('width', width)
-        .attr('height', height - (rectY + rectHeight))
-        .attr('class', nonClickable ? 'non-clickable' : undefined);
+        .attr('height', height - (rectY + rectHeight));
     }
-
-    // draw scroll line
-    this.scrollLine = svg.append('line')
-      .attr('y1', 0)
-      .attr('y2', height)
-      .attr('stroke-width', 2)
-      .attr('stroke', 'black');
-    this.updateScrollLinePosition();
 
     // draw focus area with white rectangle
     if (this.focusArea) {
@@ -234,26 +215,38 @@ export class AudioSpectrogramComponent implements OnChanges {
         .attr('stroke', 'white')
         .attr('fill', 'none');
     }
-  }
 
-  private addChartFuncs(svg: Selection<SVGElement, any, any, any>, innerSvg: Selection<SVGSVGElement, any, any, any>) {
+    // draw scroll line
+    this.scrollLine = svg.append('line')
+      .attr('id', 'scrollLine')
+      .attr('y1', 0)
+      .attr('y2', height)
+      .attr('stroke-width', 2)
+      .attr('stroke', 'red');
+    this.updateScrollLinePosition();
+
+    // add functions
     if (this.mode === 'default') {
-      // make spectrogram clickable
-      if (this.mode === 'default') {
-        svg.on('click', () => {
-          if (event.target.classList.contains('non-clickable')) {
-            return;
-          }
-          const x = clientPoint(this.chartRef.nativeElement as ContainerElement, event)[0];
-          this.dragEnd.emit(this.getTimeFromPosition(x));
+      // make spectrogram clickable by adding a transparent rectangle that catches click events
+      const onlyFocusAreaClickable = this.highlightFocusArea && !this.brushArea;
+
+      svg.attr('pointer-events', 'all');
+      svg.insert('rect', '#scrollLine')
+        .attr('x', onlyFocusAreaClickable ? rectX : 0)
+        .attr('y', onlyFocusAreaClickable ? rectY : 0)
+        .attr('width', onlyFocusAreaClickable ? rectWidth : width)
+        .attr('height', onlyFocusAreaClickable ? rectHeight : height)
+        .attr('fill', 'none')
+        .on('click', () => {
+          const x = clientPoint(event.target, event)[0];
+          this.dragEnd.emit(this.getTimeFromPosition(x, onlyFocusAreaClickable));
         }).style('cursor', 'pointer');
-      }
 
       // make scroll line draggable
       const scrollLineDrag = drag()
         .on('start', () => { this.dragStart.emit(); })
         .on('drag', () => {
-          this.currentTime = this.getTimeFromPosition(event.x);
+          this.currentTime = this.getTimeFromPosition(event.x - this.margin.left, onlyFocusAreaClickable);
           this.updateScrollLinePosition();
         })
         .on('end', () => { this.dragEnd.emit(this.currentTime); });
@@ -278,16 +271,16 @@ export class AudioSpectrogramComponent implements OnChanges {
           });
         });
 
-      innerSvg.append('g')
+      svg.append('g')
         .attr('class', 'brush')
         .call(brushFunc);
     }
   }
 
-  private getTimeFromPosition(x: number) {
-    const time = this.xScale.invert(x - this.margin.left);
-    const minTime = !this.brushArea && this.highlightFocusArea ? this.focusArea?.xRange[0] : this.startTime;
-    const maxTime = !this.brushArea && this.highlightFocusArea ? this.focusArea?.xRange[1] : this.endTime;
+  private getTimeFromPosition(x: number, onlyFocusAreaClickable: boolean) {
+    const time = this.xScale.invert(x);
+    const minTime = onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.startTime;
+    const maxTime = onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.endTime;
     return Math.min(Math.max(time, minTime), maxTime);
   }
 
