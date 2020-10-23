@@ -22,7 +22,7 @@
     [loading]="false"
     [count]="data.length"
     [sorts]="sorts"
-    [sortType]="'multi'"
+    [sortType]="multisort ? 'multi' : 'single'"
     [page]="1"
     [pageSize]="data.length"
     [columns]="columns"
