@@ -37,12 +37,8 @@ const ALL_IMAGE_KEYS = [
 ];
 
 const TWITTER_CARD = [
-<<<<<<< HEAD
-  'twitter:card'
-=======
   'twitter:card',
   'twitter:title'
->>>>>>> ad9cf79856a9f3f41d52eca4e3f1504e3a8e7f56
 ]
 
 @Injectable({
@@ -96,11 +92,7 @@ export class HeaderService implements OnDestroy {
       ).subscribe(meta => {
         const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
-<<<<<<< HEAD
-          const propertySelector = `property='${key}'`;
-=======
           const propertySelector = ((key === 'twitter:card' || key === 'twitter:title' ) ? `name='${key}'` : `property='${key}'`);
->>>>>>> ad9cf79856a9f3f41d52eca4e3f1504e3a8e7f56
           if (meta?.[key]) {
             this.metaService.updateTag({property: key, content: this.translateService.instant(meta[key])}, propertySelector);
           } else {
