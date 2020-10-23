@@ -167,6 +167,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.formQueryToQuery();
     this.searchQuery.updateUrl();
     this.searchQuery.query = {...this.searchQuery.query};
+    this.formQuery.taxon = this.searchQuery.query.target ? this.formQuery.taxon : '';
     return false;
   }
 
