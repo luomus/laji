@@ -148,7 +148,7 @@ export class TaxonSelectComponent{
 
   private selectValue(key: string, blur?: boolean) {
     this.taxonIdChange.emit(key);
-    this._taxonName = '';
+    this._taxonName = (this.container === 'laji-taxonomy') ? '' : this._taxonName;
     if (blur) {
       this.blur();
     }
