@@ -5,7 +5,7 @@
         <lu-button
           [role]="'success'"
           [disabled]="!recording"
-          (click)="toNextRecording()">
+          (click)="nextRecordingClick.emit()">
           {{ 'theme.kerttu.nextRecording' | translate }}
         </lu-button>
       </div>

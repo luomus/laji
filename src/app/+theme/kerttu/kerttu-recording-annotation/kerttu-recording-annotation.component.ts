@@ -29,4 +29,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     );
   }
 
+  getNextRecording() {
+    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken());
+  }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IRecording} from '../../models';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 
@@ -15,6 +15,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   selectedTaxons: Taxonomy[] = [];
 
   // @Output() annotationsChange = new EventEmitter<any>();
+  @Output() nextRecordingClick = new EventEmitter();
 
   constructor() { }
 
@@ -24,10 +25,6 @@ export class RecordingAnnotationComponent implements OnChanges {
 
   onTaxonSelect(taxon) {
     this.selectedTaxons = [...this.selectedTaxons, taxon.payload];
-  }
-
-  toNextRecording() {
-
   }
 }
 
