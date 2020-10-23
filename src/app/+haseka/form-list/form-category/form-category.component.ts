@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormList } from '../haseka-form-list.interface';
+import { Form } from '../../../shared/model/Form';
 
 
 @Component({
@@ -11,7 +11,7 @@ import { FormList } from '../haseka-form-list.interface';
 export class FormCategoryComponent {
 
   @Input() title: string;
-  @Input() formList: FormList[] = [];
+  @Input() formList: Form.List[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
 
   constructor() { }

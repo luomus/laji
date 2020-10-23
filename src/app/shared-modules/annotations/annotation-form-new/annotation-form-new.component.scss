@@ -177,6 +177,15 @@ label {
     -moz-transition: ease-in-out 0.3s;
   }
 
+  :host ::ng-deep typeahead-container.dropdown {
+    width: 600px;
+    margin-left: -272px;
+  }
+  
+  :host ::ng-deep typeahead-container.dropdown ul {
+    width: 600px;
+  }
+
 
   :host ::ng-deep lu-checkbox label {
     cursor: pointer;
@@ -258,6 +267,12 @@ label {
     }
 
   }
+  
+  ::ng-deep typeahead-container ul li a span div {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+  }
 
   :host ::ng-deep typeahead-container.dropdown {
     right: 20px !important;
@@ -284,6 +299,15 @@ label {
    .agree {
      margin-top: 5px;
    }
+
+   :host ::ng-deep typeahead-container.dropdown {
+    width: 600px;
+    margin-left: 0px;
+  }
+  
+  :host ::ng-deep typeahead-container.dropdown ul {
+    width: 600px;
+  }
   }
 
 @mixin joined-btn {
@@ -335,16 +359,13 @@ $taxon-input-height: 30px;
 }
 
 @media only screen and (max-width : 767px) {
-  :host ::ng-deep typeahead-container.dropdown ul {
-    max-width: 250px;
-    min-width: 250px;
-  }
-
   :host ::ng-deep typeahead-container.dropdown {
-    right: 64px !important;
-    left: unset !important;
-    min-width: 250px;
-    max-width: 250px;
+    width: 250px;
+    margin-left: 0px;
+  }
+  
+  :host ::ng-deep typeahead-container.dropdown ul {
+    width: 250px;
   }
 
   ::ng-deep typeahead-container ul li a span div {

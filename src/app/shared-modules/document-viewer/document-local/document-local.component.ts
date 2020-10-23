@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
+import { Form } from '../../../shared/model/Form';
 
 const { JSONPath } = require('jsonpath-plus');
 
@@ -128,11 +129,16 @@ export class DocumentLocalComponent implements OnChanges {
 
   private getForm(formId: string): Observable<any> {
     return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
-      .pipe(tap(form => {
-        this.setAllFields(form.fields, form.uiSchema, ['document', 'gatherings', 'units', 'identifications'], (form.namedPlaceOptions || {}).documentViewerForcedFields);
-        if (form.namedPlaceOptions && form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath) {
-          this.gatheringGeometryJSONPath = form.namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
-          this.zoomToData = form.namedPlaceOptions.documentViewerZoomToData;
+      .pipe(tap((form: Form.JsonForm) => {
+        this.setAllFields(
+          form.fields,
+          form.uiSchema,
+          ['document', 'gatherings', 'units', 'identifications'],
+          form.options?.namedPlaceOptions?.documentViewerForcedFields
+        );
+        if (form.options?.namedPlaceOptions?.documentViewerGatheringGeometryJSONPath) {
+          this.gatheringGeometryJSONPath = form.options.namedPlaceOptions.documentViewerGatheringGeometryJSONPath;
+          this.zoomToData = form.options.namedPlaceOptions.documentViewerZoomToData;
         }
       }));
   }

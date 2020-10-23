@@ -31,8 +31,9 @@
   font-style: italic;
 }
 
-.taxon-match {
-
+.omni-search-results .match {
+  display: block;
+  width: 100%;
 }
 
 .omni-search-results .match {

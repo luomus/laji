@@ -52,8 +52,6 @@ export class AudioSpectrogramComponent implements OnChanges {
   private drawSub: Subscription;
 
   private imageData: ImageData;
-  private maxFreq: number;
-  private maxTime: number;
   private xScale: ScaleLinear<number, number>;
   private yScale: ScaleLinear<number, number>;
   private scrollLine: Selection<SVGLineElement, any, any, any>;
@@ -69,7 +67,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   @HostListener('window:resize')
   onResize() {
     const canvas = this.spectrogramRef.nativeElement;
-    if (!isNaN(this.maxFreq) && !isNaN(this.maxTime)) {
+    if (this.imageData) {
       const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
       if (elementWidth < 0) {
         setTimeout(() => {
@@ -87,6 +85,9 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.buffer) {
+      this.imageData = undefined;
+      this.clearSpectrogram();
+
       if (this.drawSub) {
         this.drawSub.unsubscribe();
       }
@@ -94,9 +95,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
           .pipe(delay(0))
           .subscribe((result) => {
-            this.imageData = result.imageData;
-            this.maxFreq = result.maxFreq;
-            this.maxTime = result.maxTime;
+            this.imageData = result;
             this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
 
             this.spectrogramReady.emit();
@@ -120,7 +119,7 @@ export class AudioSpectrogramComponent implements OnChanges {
 
     svg.selectAll('*').remove();
 
-    this.xScale = scaleLinear().domain([0, this.maxTime]).range([0, width]);
+    this.xScale = scaleLinear().domain([0, this.buffer.duration]).range([0, width]);
     this.yScale = scaleLinear().domain([this.endFreq / 1000, this.startFreq / 1000]).range([0, height]);
 
     const xAxis = axisBottom(this.xScale);
@@ -158,17 +157,21 @@ export class AudioSpectrogramComponent implements OnChanges {
       .text('Taajuus (kHz)');
 
     // draw white rectangle
-    const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
-    const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+    if (this.xRange || this.yRange) {
+      const rectX = this.xRange ? this.margin.left + this.xScale(this.xRange[0]) : this.margin.left;
+      const rectWidth = this.xRange ? this.xScale(this.xRange[1] - this.xRange[0]) : width;
+      const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
+      const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
 
-    svg.append('rect')
-      .attr('x', this.margin.left + this.xScale(this.xRange[0]))
-      .attr('y', rectY)
-      .attr('width', this.xScale(this.xRange[1] - this.xRange[0]))
-      .attr('height', rectHeight)
-      .attr('stroke-width', 2)
-      .attr('stroke', 'white')
-      .attr('fill', 'none');
+      svg.append('rect')
+        .attr('x', rectX)
+        .attr('y', rectY)
+        .attr('width', rectWidth)
+        .attr('height', rectHeight)
+        .attr('stroke-width', 2)
+        .attr('stroke', 'white')
+        .attr('fill', 'none');
+    }
 
     // draw scroll line
     const drag = d3Drag.drag()
@@ -202,19 +205,27 @@ export class AudioSpectrogramComponent implements OnChanges {
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, this.maxFreq);
+    const maxFreq = Math.floor(this.sampleRate / 2);
+    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, maxFreq);
 
-    const ratio1 = this.startFreq / this.maxFreq;
-    const ratio2 = this.endFreq / this.maxFreq;
+    const ratio1 = this.startFreq / maxFreq;
+    const ratio2 = this.endFreq / maxFreq;
     const startY = data.height - (data.height * ratio2);
 
     canvas.width = data.width;
     canvas.height = data.height * (ratio2 - ratio1);
 
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, data.width, data.height);
     ctx.putImageData(data, 0, -startY, 0, startY, canvas.width, canvas.height);
 
     this.onResize();
+  }
+
+  private clearSpectrogram() {
+    const canvas = this.spectrogramRef.nativeElement;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const svg = select(this.chartRef.nativeElement);
+    svg.selectAll('*').remove();
   }
 }

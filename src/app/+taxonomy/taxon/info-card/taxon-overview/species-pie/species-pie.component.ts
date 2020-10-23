@@ -81,12 +81,12 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             const chartInstance = this.chart,
             ctx = chartInstance.ctx;
             const chart_width = chartInstance['width'];
-            const font_size = Math.round(chart_width / 78) > 10 ? Math.round(chart_width / 78) : 10;
+            const font_size = Math.round(chart_width / 80) > 10 ? Math.round(chart_width / 80) : 10;
             ctx.font = Chart.helpers.fontString(font_size, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
-            ctx.textBaseline = 'middle';
-            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 40) {
+            ctx.textBaseline = 'bottom';
+            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 200) {
               this.data.datasets.forEach(function (dataset, i) {
                 const meta = chartInstance.controller.getDatasetMeta(i);
                 meta.data.forEach(function (bar, index) {

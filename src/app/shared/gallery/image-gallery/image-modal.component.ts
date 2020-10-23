@@ -157,7 +157,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
       return;
     }
     this._isShown = false;
-    this._overlay.hide();
+    this._overlay.hide(); 
   }
 
   setView(viewType) {
@@ -168,7 +168,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
 
 
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('body:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {

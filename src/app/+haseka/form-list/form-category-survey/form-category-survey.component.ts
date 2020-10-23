@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Global } from '../../../../environments/global';
-import { FormList } from '../haseka-form-list.interface';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-form-category-survey',
@@ -10,20 +9,11 @@ import { FormList } from '../haseka-form-list.interface';
 })
 export class FormCategorySurveyComponent {
   @Input() title: string;
-  @Input() formList: FormList[] = [];
+  @Input() formList: Form.List[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
   @Input() category: string;
 
   trackForm(idx, form) {
     return form ? form.id : undefined;
-  }
-
-  get showWaterbirdComingSoonBox() {
-    return this.category === 'MHL.categoryBirdMonitoringSchemes'
-    && (
-      this.formList && this.formList.filter(
-        form => (form.id === Global.forms.waterbirdJuvenileForm || form.id === Global.forms.waterbirdPairForm)
-      ).length === 0
-    );
   }
 }
