@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
-import {IRecording} from '../models';
+import {IRecording, IRecordingAnnotation} from '../models';
 import {UserService} from '../../../shared/service/user.service';
 import {Observable} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
@@ -31,5 +31,9 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
 
   getNextRecording() {
     this.recording$ = this.kerttuApi.getRecording(this.userService.getToken());
+  }
+
+  save(annotation: IRecordingAnnotation) {
+    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), annotation).subscribe();
   }
 }

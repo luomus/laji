@@ -1,3 +1,5 @@
+import {Taxonomy} from '../../shared/model/Taxonomy';
+
 export interface IRecording {
   id: number;
   recording: string;
@@ -27,4 +29,22 @@ export enum LetterAnnotation {
   yes = 1,
   no = 0,
   unsure = -1
+}
+
+export interface IRecordingAnnotation {
+  taxonAnnotations: ITaxonAnnotation[];
+}
+
+export interface ITaxonAnnotation {
+  taxonId: string;
+  type: TaxonAnnotationType;
+}
+
+export enum TaxonAnnotationType {
+  occurs = 1,
+  possible_occurs = 2
+}
+
+export interface ITaxonWithAnnotation extends Taxonomy {
+  annotation: ITaxonAnnotation;
 }

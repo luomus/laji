@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording} from '../models';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation} from '../models';
 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;
@@ -71,5 +71,12 @@ export class KerttuApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get<IRecording>(path, { params });
+  }
+
+  public setRecordingAnnotation(personToken: string, annotation: IRecordingAnnotation) {
+    const path = this.basePath + '/recording/annotation';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, { annotation }, { params });
   }
 }

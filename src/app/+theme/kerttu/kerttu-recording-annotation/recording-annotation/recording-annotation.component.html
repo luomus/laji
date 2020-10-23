@@ -2,6 +2,7 @@
   <div class="row lu-section">
     <div class="col-md-12">
       <div style="margin-top: 10px; float: right">
+        <lu-button (click)="save()">Tallenna</lu-button>
         <lu-button
           [role]="'success'"
           [disabled]="!recording"
@@ -44,6 +45,7 @@
       </div>
       <laji-kerttu-occurrence-table
         [selectedTaxons]="selectedTaxons"
+        (annotationChange)="this.selectedTaxons = $event"
       >
       </laji-kerttu-occurrence-table>
     </div>

@@ -1,7 +1,7 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, OnChanges, ViewChild, TemplateRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import {ITaxonWithAnnotation, TaxonAnnotationType} from '../../models';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
-import {Taxonomy} from '../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-kerttu-occurrence-table',
@@ -9,14 +9,18 @@ import {Taxonomy} from '../../../../shared/model/Taxonomy';
   styleUrls: ['./kerttu-occurrence-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuOccurrenceTableComponent implements OnInit, OnChanges {
-  @Input() selectedTaxons: Taxonomy[];
+export class KerttuOccurrenceTableComponent implements OnInit {
+  @Input() selectedTaxons: ITaxonWithAnnotation[];
 
-  @ViewChild('radioButton', { static: true }) radioButtonTpl: TemplateRef<any>;
+  @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
+  @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
 
   columns: DatatableColumn[];
 
   selectionType = SelectionType;
+  taxonAnnotationType = TaxonAnnotationType;
+
+  @Output() annotationChange = new EventEmitter<ITaxonWithAnnotation[]>();
 
   constructor() { }
 
@@ -33,16 +37,17 @@ export class KerttuOccurrenceTableComponent implements OnInit, OnChanges {
       },
       {
         label: 'Esiintyy varmasti',
-        cellTemplate: this.radioButtonTpl
+        cellTemplate: this.occursTpl
       },
       {
         label: 'Esiintyy mahdollisesti',
-        cellTemplate: this.radioButtonTpl
+        cellTemplate: this.possiblyOccursTpl
       },
     ];
   }
 
-  ngOnChanges(changes) {
-
+  annotationTypeChange(rowIndex: number, value: number) {
+    this.selectedTaxons[rowIndex].annotation.type = value;
+    this.annotationChange.emit(this.selectedTaxons);
   }
 }
