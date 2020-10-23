@@ -43,6 +43,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() noverlap = 256 - 160;
 
   localFocusArea: IAudioViewerArea;
+  brushArea: IAudioViewerArea;
 
   mode: AudioViewerMode = 'default';
   buffer: AudioBuffer;
@@ -109,9 +110,9 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.audioPlayer.startFrom(time);
   }
 
-  onSpectrogramBrushEnd([xRange, yRange]: number[][]) {
-    console.log(xRange);
-    console.log(yRange);
+  onSpectrogramBrushEnd(area: IAudioViewerArea) {
+    this.mode = 'default';
+    this.brushArea = area;
   }
 
   toggleBrushMode() {
