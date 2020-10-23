@@ -37,6 +37,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() onlyFinnish = false;
   @Input() excludeNameTypes = '';
   @Input() onlyInvasive = false;
+  @Input() onlySpecies = false;
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
@@ -111,7 +112,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         informalTaxonGroup: this.informalTaxonGroup,
         excludeNameTypes: this.excludeNameTypes,
         onlyFinnish: this.onlyFinnish,
-        onlyInvasive: this.onlyInvasive
+        onlyInvasive: this.onlyInvasive,
+        onlySpecies: this.onlySpecies
       })),
       map(data => {
         if (this.whiteList) {
