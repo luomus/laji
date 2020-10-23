@@ -176,33 +176,43 @@ export class AudioSpectrogramComponent implements OnChanges {
     const rectHeight = this.yScale((this.endFreq - (yRange[1] - yRange[0])) / 1000);
 
     if (this.highlightFocusArea) {
+      const nonClickable = !this.brushArea && this.highlightFocusArea;
+
       const group = svg.append('g')
         .attr('fill', 'black')
         .attr('opacity', 0.4);
+
+      if (nonClickable) {
+        group.attr('cursor', 'default');
+      }
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', 0)
         .attr('width', rectX)
-        .attr('height', height);
+        .attr('height', height)
+        .attr('class', nonClickable ? 'non-clickable' : undefined);
 
       group.append('rect')
         .attr('x', rectX + rectWidth)
         .attr('y', 0)
         .attr('width', width - (rectX + rectWidth))
-        .attr('height', height);
+        .attr('height', height)
+        .attr('class', nonClickable ? 'non-clickable' : undefined);
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', 0)
         .attr('width', width)
-        .attr('height', rectY);
+        .attr('height', rectY)
+        .attr('class', nonClickable ? 'non-clickable' : undefined);
 
       group.append('rect')
         .attr('x', 0)
         .attr('y', rectY + rectHeight)
         .attr('width', width)
-        .attr('height', height - (rectY + rectHeight));
+        .attr('height', height - (rectY + rectHeight))
+        .attr('class', nonClickable ? 'non-clickable' : undefined);
     }
 
     // draw scroll line
@@ -231,6 +241,9 @@ export class AudioSpectrogramComponent implements OnChanges {
       // make spectrogram clickable
       if (this.mode === 'default') {
         svg.on('click', () => {
+          if (event.target.classList.contains('non-clickable')) {
+            return;
+          }
           const x = clientPoint(this.chartRef.nativeElement as ContainerElement, event)[0];
           this.dragEnd.emit(this.getTimeFromPosition(x));
         }).style('cursor', 'pointer');
@@ -273,7 +286,9 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   private getTimeFromPosition(x: number) {
     const time = this.xScale.invert(x - this.margin.left);
-    return Math.min(Math.max(time, 0), this.buffer.duration);
+    const minTime = !this.brushArea && this.highlightFocusArea ? this.focusArea?.xRange[0] : this.startTime;
+    const maxTime = !this.brushArea && this.highlightFocusArea ? this.focusArea?.xRange[1] : this.endTime;
+    return Math.min(Math.max(time, minTime), maxTime);
   }
 
   private updateScrollLinePosition() {

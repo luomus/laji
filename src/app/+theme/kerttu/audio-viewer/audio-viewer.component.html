@@ -29,7 +29,7 @@
     </button>
     <ng-container *ngIf="showBrushControl">
       <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">Rajaa alue</lu-button>
-      <lu-button (click)="brushArea = undefined">Palauta oletusrajaus</lu-button>
+      <lu-button (click)="clearBrushArea()">Palauta oletusrajaus</lu-button>
     </ng-container>
   </div>
 </laji-spinner>

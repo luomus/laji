@@ -94,7 +94,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     } else if (changes.zoomFrequency || changes.highlightFocusArea) {
-      this.audioPlayer.setPlayArea(this.getDefaultPlayArea());
+      this.audioPlayer.setPlayArea(this.getPlayArea());
     }
   }
 
@@ -113,6 +113,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   onSpectrogramBrushEnd(area: IAudioViewerArea) {
     this.mode = 'default';
     this.brushArea = area;
+    this.audioPlayer.setPlayArea(this.getPlayArea());
+  }
+
+  clearBrushArea() {
+    this.brushArea = undefined;
+    this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
   toggleBrushMode() {
@@ -146,7 +152,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     buffer = this.audioService.extractSegment(buffer, xRange[0], xRange[1]);
     this.buffer = buffer;
 
-    this.audioPlayer.setBuffer(buffer, this.getDefaultPlayArea());
+    this.audioPlayer.setBuffer(buffer, this.getPlayArea());
   }
 
   private areaIsValid(buffer: AudioBuffer, area: IAudioViewerArea): boolean {
@@ -170,7 +176,11 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private getDefaultPlayArea(): IAudioViewerArea {
+  private getPlayArea(): IAudioViewerArea {
+    if (this.brushArea) {
+      return this.brushArea;
+    }
+
     return {
       xRange: this.highlightFocusArea ? this.localFocusArea?.xRange : undefined,
       yRange: (this.highlightFocusArea || this.zoomFrequency) ? this.localFocusArea?.yRange : undefined

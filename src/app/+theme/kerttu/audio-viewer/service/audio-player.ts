@@ -16,7 +16,7 @@ export class AudioPlayer {
   private startOffset = 0;
   private startTime: number;
 
-  private startedOutsidePlayArea = false;
+  // private startedOutsidePlayArea = false;
   private autoplayCounter = 0;
 
   private timeupdateInterval;
@@ -47,7 +47,7 @@ export class AudioPlayer {
     if (!this.isPlaying) {
       this.isPlaying = true;
 
-      if (!this.currentTime || this.currentTime >= this.getEndTime()) {
+      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
         this.currentTime = this.getStartTime();
       }
       this.startOffset = this.currentTime;
@@ -107,9 +107,9 @@ export class AudioPlayer {
   }
 
   private startFromMiddle(time: number) {
-    if (time < this.playArea?.xRange[0] || time > this.playArea?.xRange[1]) {
+    /*if (time < this.playArea?.xRange[0] || time > this.playArea?.xRange[1]) {
       this.startedOutsidePlayArea = true;
-    }
+    }*/
 
     this.currentTime = time;
     this.toggle();
@@ -119,7 +119,7 @@ export class AudioPlayer {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
     this.isPlaying = false;
-    this.startedOutsidePlayArea = false;
+    // this.startedOutsidePlayArea = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
       if (this.currentTime === this.buffer.duration) {
@@ -161,7 +161,9 @@ export class AudioPlayer {
   }
 
   private getStartTime() {
-    if (this.playArea?.xRange && !this.startedOutsidePlayArea) {
+    if (this.playArea?.xRange
+    //  && !this.startedOutsidePlayArea
+    ) {
       return this.playArea.xRange[0];
     } else {
       return 0;
@@ -169,7 +171,9 @@ export class AudioPlayer {
   }
 
   private getEndTime() {
-    if (this.playArea?.xRange && !this.startedOutsidePlayArea) {
+    if (this.playArea?.xRange
+    // && !this.startedOutsidePlayArea
+    ) {
       return this.playArea.xRange[1];
     } else {
       return this.buffer.duration;
