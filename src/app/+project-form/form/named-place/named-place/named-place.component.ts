@@ -1,4 +1,4 @@
-import { catchError, map, mergeMap, pairwise, startWith, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
@@ -244,10 +244,15 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   onCreateNew() {
-    this.router.navigate(['./new'], {
-      queryParams: {municipality: this.route.snapshot.queryParams.municipality, birdAssociationArea: this.route.snapshot.queryParams.birdAssociationArea},
-      relativeTo: this.route
-    });
+    this.projectFormService.getProjectFormFromRoute$(this.route).pipe(take(1)).subscribe(projectForm => {
+      this.router.navigate(['./new'], {
+        queryParams: this.projectFormService.trimNamedPlacesQuery(projectForm.form, {
+          municipality: this.route.snapshot.queryParams.municipality,
+          birdAssociationArea: this.route.snapshot.queryParams.birdAssociationArea
+        }, false),
+        relativeTo: this.route
+      });
+    })
   }
 
   use() {
@@ -289,9 +294,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     const query: NamedPlaceQuery = {
       collectionID: documentForm.collectionID,
-      municipality: municipality,
-      birdAssociationArea: birdAssociationArea,
-      tags: tags.join(','),
+      municipality,
+      birdAssociationArea,
+      tags: (tags || []).join(','),
       includeUnits: documentForm.options?.namedPlaceOptions?.includeUnits,
       selectedFields: selected.filter(field => field.charAt(0) !== '_').join(',')
     };
