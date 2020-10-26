@@ -161,7 +161,7 @@ export class NpEditFormComponent implements OnInit {
               || data.municipality,
             birdAssociationArea: namedPlace?.birdAssociationArea?.join(',')
               || data.birdAssociationArea,
-            tags: data.tags.join(','),
+            tags: (data.tags || []).join(','),
             activeNP: namedPlace?.id || data.namedPlace?.id
           })}
       );
