@@ -1383,6 +1383,7 @@
   "taxonomy.source": "Källa",
   "taxonomy.species": "arter",
   "taxonomy.species.singular": "art",
+  "taxonomy.species.socialDefaultText": "Information, bilder, statistik om",
   "taxonomy.speciesList.found": "arter hittades",
   "taxonomy.speciesPage": "Artlistan",
   "taxonomy.speciesPage.intro": "Filtera, bläddra och ladda ner artlistor",

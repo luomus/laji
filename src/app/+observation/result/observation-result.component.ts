@@ -132,11 +132,9 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log('ciao')
   }
 
   ngOnChanges() {
-    console.log(this.route.snapshot)
     if (((this.route.snapshot.queryParams["editorOrObserverPersonToken"] === undefined &&
     this.route.snapshot.queryParams["observerPersonToken"] === undefined &&
     this.route.snapshot.queryParams["editorPersonToken"] === undefined) || this.route.snapshot.queryParams["editorOrObserverIsNotPersonToken"] ) &&

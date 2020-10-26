@@ -1383,6 +1383,7 @@
   "taxonomy.source": "Source",
   "taxonomy.species": "species",
   "taxonomy.species.singular": "species",
+  "taxonomy.species.socialDefaultText": "Informations, images, statistics about",
   "taxonomy.speciesList.found": "species found",
   "taxonomy.speciesPage": "List of species",
   "taxonomy.speciesPage.intro": "Filter, browse and download lists of species",

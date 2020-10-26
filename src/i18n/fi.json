@@ -1383,6 +1383,7 @@
   "taxonomy.source": "Lähde",
   "taxonomy.species": "lajia",
   "taxonomy.species.singular": "laji",
+  "taxonomy.species.socialDefaultText": "Tietoa, kuvia, tilastoja",
   "taxonomy.speciesList.found": "lajia löytyi",
   "taxonomy.speciesPage": "Lajiluettelo",
   "taxonomy.speciesPage.intro": "Hae lajiluetteloita eri tarkoituksiin. Luettelot kattavat kansallisen lajiluettelon lajit sekä niihin liitetyt hallinnolliset ominaisuudet.",

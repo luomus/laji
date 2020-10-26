@@ -132,7 +132,9 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
         this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
 
         this.setTitle();
-        this.headerService.updateMetaDescription(this.getMetaDescription());
+        setTimeout(() => {
+          this.headerService.updateMetaDescription(this.getMetaDescription());
+        }, 0);
         if (taxon.multimedia) {
           this.headerService.updateFeatureImage(this.taxon.multimedia[0]['fullURL']);
         }
@@ -150,6 +152,8 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
       title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }
     title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
+    
+    this.headerService.createTwitterCard((title ? this.capitalizeFirstLetter(title) + ' | '  : '')+ this.title.getTitle());
     this.title.setTitle((title ? this.capitalizeFirstLetter(title) + ' | '  : '') + this.title.getTitle());
   }
 
@@ -180,7 +184,8 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
         });
       });
     }
-    return this.metaText ? this.metaText : this.translate.instant('footer.intro1');
+    return this.metaText ? this.metaText : this.translate.instant('taxonomy.species.socialDefaultText') + ' ' +
+    (this.taxon.vernacularName[this.translate.currentLang] ? this.taxon.vernacularName[this.translate.currentLang] : this.taxon.scientificName);
   }
 
   private getIsFromMasterChecklist() {
