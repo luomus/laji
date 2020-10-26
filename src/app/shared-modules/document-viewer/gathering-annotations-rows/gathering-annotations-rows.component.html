@@ -11,7 +11,7 @@
       </laji-row>
     </ng-template>
     <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon" [title]="'annotation.title.taxon' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
-      <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+      <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
     </laji-row>
   </ng-container> 
   <ng-container *ngIf="unit.unitId === highlight && unit.wild === false">

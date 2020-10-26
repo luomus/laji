@@ -36,6 +36,11 @@ const ALL_IMAGE_KEYS = [
   'twitter:image'
 ];
 
+const TWITTER_CARD = [
+  'twitter:card',
+  'twitter:title'
+]
+
 @Injectable({
   providedIn: 'root'
 })
@@ -85,9 +90,9 @@ export class HeaderService implements OnDestroy {
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
         map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
       ).subscribe(meta => {
-        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS];
+        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
-          const propertySelector = `property='${key}'`;
+          const propertySelector = ((key === 'twitter:card' || key === 'twitter:title' ) ? `name='${key}'` : `property='${key}'`);
           if (meta?.[key]) {
             this.metaService.updateTag({property: key, content: this.translateService.instant(meta[key])}, propertySelector);
           } else {
@@ -103,6 +108,16 @@ export class HeaderService implements OnDestroy {
 
       this.updateAlternativeLinks(newRoute);
     });
+  }
+
+  public createTwitterCard(title) {
+    this.removeMetaTags(TWITTER_CARD);
+    this.metaService.addTag({name: 'twitter:card', content: 'summary_large_image'});
+    TWITTER_CARD.forEach((key) => {
+      if (key !== 'twitter:card') {
+        this.metaService.addTag({ name: key, content: title });
+      }
+    })
   }
 
   public updateMetaDescription(description) {
@@ -144,6 +159,7 @@ export class HeaderService implements OnDestroy {
   }
 
   private removeMetaTags(metaTagsDescription) {
+    this.metaService.removeTag('property="twitter:card"');
     RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
       map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
     ).subscribe(meta => {

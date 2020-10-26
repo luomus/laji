@@ -23,7 +23,7 @@
       <div class="d-flex flex-row justify-between items-end mb-4 np-info-header">
         <h3 [tooltip]="'MNP.name' | label">{{ namedPlace?.name }}</h3>
         <div *ngIf="documentForm.options?.printType || (allowEdit && editButtonVisible)">
-          <span>
+          <span *ngIf="documentForm.options?.printType">
             <a class="btn btn-sm btn-default"
                 target="_blank"
                 [routerLink]="['./', namedPlace.id, 'print'] | localize">{{ documentForm.options?.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>

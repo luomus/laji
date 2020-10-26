@@ -8,10 +8,10 @@
     <div *ngIf="(unit.linkings && (unit.linkings.taxon || unit.linkings.originalTaxon)); else informalTaxonGroup">
         <div class="taxon">
             <ng-container *ngIf="unit.linkings.taxon; then originalTaxon; else originalTaxon">
-                <laji-taxon-name [taxon]="unit.linkings.taxon"></laji-taxon-name>
+                <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon"></laji-taxon-name>
             </ng-container>
             <ng-template #originalTaxon>
-                <laji-taxon-name [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
+                <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon"></laji-taxon-name>
             </ng-template>
         </div>
     </div>

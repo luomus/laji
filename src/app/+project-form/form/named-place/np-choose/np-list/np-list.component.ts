@@ -35,6 +35,7 @@ export class NpListComponent implements OnDestroy {
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   showLegendList = false;
+  multisort = false;
   filterBy: string;
   legendList = [
     {label: 'Vapaa', color: '#ffffff'},
@@ -185,6 +186,7 @@ export class NpListComponent implements OnDestroy {
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
     this.showLegendList = documentForm.options?.namedPlaceOptions?.showLegendList;
+    this.multisort = documentForm.options?.namedPlaceOptions?.listColumnsMultisort;
     this.initData();
   }
 

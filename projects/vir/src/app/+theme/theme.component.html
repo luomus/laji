@@ -6,48 +6,48 @@
     {{ 'theme.intro' | translate }}
   </p>
 
-  <h4><span class="glyphicon glyphicon-cloud-download"></span> Tiedon kopioiminen Lajitietokeskuksesta</h4>
+  <h4><span class="glyphicon glyphicon-cloud-download"></span> {{ "theme.export" | translate }}</h4>
   <div class="d-flex">
     <div [routerLink]="['/about/1068'] | localize" tabindex="-1" class="navbox">
-      <h5>Tiedon vienti Exceliin</h5>
-      <p>Tämän ohjeen avulla voit tuoda TSV-tiedostot Exceliin. Erityisesti tässä neuvotaan, kuinka erikoismerkit, kuten Ä, ф ja ♀, saadaan näkymään Excelissä oikein ja kuinka estää Exceliä muuttamasta lukuja päivämääriksi.</p>
+      <h5 translate>theme.excel</h5>
+      <p translate>theme.excel.desc</p>
     </div>
     <div [routerLink]="['/about/3478'] | localize" tabindex="-1" class="navbox">
-      <h5>Tiedon vienti ArcGiSiin</h5>
-      <p>Tämän ohjeen  avulla voit viedä havaintotiedot  ArcGIS Pro -paikkatietojärjestelmään.</p>
+      <h5 translate>theme.arcgis</h5>
+      <p translate>theme.arcgis.desc</p>
     </div>
   </div>
 
-  <h4><span class="glyphicon glyphicon-cloud-upload"></span> Tiedon jakaminen Lajitietokeskukseen</h4>
+  <h4><span class="glyphicon glyphicon-cloud-upload"></span> {{ "theme.import" | translate }}</h4>
   <div class="d-flex">
     <div [routerLink]="['/about/1289'] | localize" tabindex="-1" class="navbox">
-      <h5>Aineistojen liittäminen</h5>
-      <p>Tällä ohjesivulla kuvataan vaihtoehtoja kuinka oma aineistosi voidaan liittää Suomen Lajitietokeskukseen.</p>
+      <h5 translate>theme.import.1</h5>
+      <p translate>theme.import.1.desc</p>
     </div>
     <div [routerLink]="['/about/3977'] | localize" tabindex="-1" class="navbox">
-      <h5>Primääri- vs. sekundääritieto</h5>
-      <p>Tällä ohjesivulla kuvataan primääri-ja sekundääritieto eroja ja sitä kuinka niitä käsitellään Lajitietokeskuksessa.</p>
+      <h5 translate>theme.import.2</h5>
+      <p translate>theme.import.2.desc</p>
     </div>
     <a href="https://laji.fi/theme/datasets" tabindex="-1" class="navbox" target="_blank">
-      <h5>Aineistojen tuontipalvelu</h5>
-      <p>Tällä sivulla voit viedä organisaatiosi (esim. kunnan, tutkimusryhmän tm.) havaintotietoaineistoja ja niiden päivityksiäLajitietokeskuksen Laji.fi portaaliin.</p>
+      <h5 translate>theme.import.3</h5>
+      <p translate>theme.import.3.desc</p>
     </a>
   </div>
 
-  <h4><span class="glyphicon glyphicon-leaf"></span> Seurantatutkimukset</h4>
-  <p>Voit osallistua viranomaisille suunnattuihin seurantoihin, joita ylläpidetään Lajitietokeskuksen Vihko-palvelussa.</p>
+  <h4><span class="glyphicon glyphicon-leaf"></span> {{ "theme.monitoring" | translate }}</h4>
+  <p translate>theme.monitoring.desc</p>
   <div class="d-flex flex-wrap">
     <a href="https://laji.fi/vesilintulaskenta" rel="noopener nofollow" target="_blank" tabindex="-1" class="navbox">
-      <h5>Vesilintulaskenta</h5>
-      <p>Sisävesien ja merenlahtien pesiviä vesilintuja lasketaan vakioiduin menetelmin Luonnonvarakeskuksen ja Luonnontieteellisen keskusmuseon koordinoimana.</p>
+      <h5 translate>theme.wbc</h5>
+      <p translate>theme.wbc.desc</p>
     </a>
     <a href="https://laji.fi/vieraslajit" rel="noopener nofollow" target="_blank" tabindex="-1" class="navbox">
-      <h5>Vieraslajit</h5>
-      <p>Palvelu vieraslajien torjuntaan.</p>
+      <h5 translate>theme.invasive</h5>
+      <p translate>theme.invasive.desc</p>
     </a>
     <a href="https://laji.fi/lolife" rel="noopener nofollow" target="_blank" tabindex="-1" class="navbox">
-      <h5>Liito-oravien seuranta</h5>
-      <p>Tämän seurantalomakepalvelun avulla voit perustaa liito-oravahavainnoille seurantapaikan, lisätä siihen tarpeellisia aluerajauksia, liittää alueelle havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.</p>
+      <h5 translate>theme.lolife</h5>
+      <p translate>theme.lolife.desc</p>
     </a>
   </div>
 

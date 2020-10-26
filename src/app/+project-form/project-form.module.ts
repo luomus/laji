@@ -21,6 +21,9 @@ import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.mod
 import { TemplatesComponent } from './templates/templates.component';
 import { TermsComponent } from './about/terms/terms.component';
 import { StatisticsModule } from './submissions/statistics/statistics.module';
+import { HasAdminPermission } from './guards/has-admin-permission';
+import { HasFormPermission } from './guards/has-form-permission';
+import { HasViewPermission } from './guards/has-view-permission';
 
 @NgModule({
   imports: [
@@ -48,7 +51,12 @@ import { StatisticsModule } from './submissions/statistics/statistics.module';
     TemplatesComponent,
     TermsComponent,
   ],
-  providers: [ProjectFormService]
+  providers: [
+    ProjectFormService,
+    HasAdminPermission,
+    HasFormPermission,
+    HasViewPermission
+  ]
 })
 export class ProjectFormModule {
 }

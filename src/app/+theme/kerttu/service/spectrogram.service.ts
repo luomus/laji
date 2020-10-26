@@ -21,11 +21,11 @@ export class SpectrogramService {
   ) {}
 
   public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
-    : Observable<{ imageData: ImageData, maxFreq: number, maxTime: number }> {
+    : Observable<ImageData> {
     return this.getColormap().pipe(map(colormap => {
-      const {spectrogram, width, heigth, maxFreq, maxTime} = this.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
+      const {spectrogram, width, heigth} = this.computeSpectrogram(buffer, sampleRate, nperseg, noverlap);
       const imageData = this.spectrogramToImageData(spectrogram, width, heigth, colormap);
-      return {imageData, maxFreq, maxTime};
+      return imageData;
     }));
   }
 
@@ -50,7 +50,7 @@ export class SpectrogramService {
   }
 
   private computeSpectrogram(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {
-    spectrogram: Float32Array, width: number, heigth: number, maxFreq: number, maxTime: number
+    spectrogram: Float32Array, width: number, heigth: number
   } {
     const {data, sumByColumn} = this.getData(buffer, sampleRate, nperseg, noverlap);
 
@@ -66,10 +66,7 @@ export class SpectrogramService {
     const blurredData = new Float32Array(flattenedData.length);
     gaussBlur_4(flattenedData, blurredData, width, heigth, 1);
 
-    const maxFreq = Math.floor(sampleRate / 2);
-    const maxTime = (data.length - 1) * ((nperseg - noverlap) / sampleRate) + nperseg / sampleRate;
-
-    return {spectrogram: blurredData, width, heigth, maxFreq, maxTime};
+    return {spectrogram: blurredData, width, heigth};
   }
 
   private getData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): {data: Float32Array[], sumByColumn: number[]} {

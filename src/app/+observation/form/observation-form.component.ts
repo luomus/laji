@@ -10,6 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { forEach } from 'jszip';
+import { BrowserService } from 'src/app/shared/service/browser.service';
 
 
 interface ISections {
@@ -128,12 +129,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   delayedSearch = new Subject();
   delayedSub: Subscription;
+  screenWidthSub: Subscription;
+  containerTypeAhead: string;
 
   private _query: WarehouseQueryInterface;
 
   constructor(
     private observationFacade: ObservationFacade,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private browserService: BrowserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -157,11 +161,22 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateVisibleSections();
     this.updateVisibleAdvancedSections();
+    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
+      if(data === true) {
+        this.containerTypeAhead = 'body';
+      } else {
+        this.containerTypeAhead = 'laji-observation-form';
+      }
+    })
   }
 
   ngOnDestroy(): void {
     if (this.delayedSub) {
       this.delayedSub.unsubscribe();
+    }
+
+    if(this.screenWidthSub) {
+      this.screenWidthSub.unsubscribe();
     }
   }
 
@@ -366,20 +381,20 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if ((event.key === 'Enter' || (event.value && event.item)) && this.formQuery.taxon) {
       const target = event.item && event.item.key ? event.item.key : this.formQuery.taxon;
       this.query['target'] = this.query['target'] ? [...this.query['target'], target] : [target];
+      this.selectedNameTaxon.push({id: event.item ? event.item.key : this.formQuery.taxon, value: event.item ? event.item.autocompleteSelectedName : this.formQuery.taxon})
       this.formQuery.taxon = '';
-      this.selectedNameTaxon.push({id: event.item.key, value: event.item.autocompleteSelectedName})
       this.onQueryChange();
     }
   }
 
   updateSearchQuery(field, value) {
     this.query[field] = value;
-    let porco = this.selectedNameTaxon.filter(item => {
+    let taxonName = this.selectedNameTaxon.filter(item => {
       if (value.indexOf(item.id) > -1) {
         return item;
       }
     })
-    this.selectedNameTaxon = porco;
+    this.selectedNameTaxon = taxonName;
     this.onQueryChange();
   }
 

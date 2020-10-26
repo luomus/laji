@@ -1,11 +1,11 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ILetterStatusInfo, LetterAnnotation} from '../../model/letter';
-import {ILetterCandidate, ILetterTemplate} from '../../model/letter';
+import {ILetterStatusInfo, LetterAnnotation} from '../../models';
+import {ILetterCandidate, ILetterTemplate} from '../../models';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Taxonomy} from '../../../../shared/model/Taxonomy';
 import {debounceTime} from 'rxjs/operators';
 import {TranslateService} from '@ngx-translate/core';
-import { ResultService } from '../../../../+project-form/results/common/service/result.service';
+import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 
 @Component({
   selector: 'laji-letter-annotation',
@@ -26,8 +26,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   candidateLongerVisible = false;
   autoplayCandidate = false;
 
-  candidateYRange: number[];
-
   zoomed = true;
   xRangePadding = 1;
 
@@ -42,9 +40,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   private debounceTime = 500;
 
   constructor(
-    private resultService: ResultService,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private taxonomyApi: TaxonomyApi
   ) { }
 
   ngOnInit() {
@@ -70,12 +68,9 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
     }, 0);
     if (changes.template && this.template) {
       this.autoplayCandidate = false;
-      this.taxon$ = this.resultService.getTaxon(this.template.taxonId);
-    }
-    if (this.template && this.candidate) {
-      this.candidateYRange = [
-        this.template.yRange[0] + this.candidate.yDiff, this.template.yRange[1] + this.candidate.yDiff
-      ];
+      this.taxon$ = this.taxonomyApi.taxonomyFindBySubject(
+        this.template.taxonId, this.translate.currentLang, {selectedFields: 'scientificName,vernacularName,cursiveName'}
+      );
     }
   }
 

@@ -63,10 +63,10 @@ export namespace Form {
     forms?: string[];
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
+    useNamedPlaces?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
-    useNamedPlaces?: boolean;
     restrictAccess?: RestrictAccess;
     hasAdmins?: boolean;
     documentsViewableForAll?: boolean;
@@ -149,6 +149,7 @@ export namespace Form {
       chooseDescription?: string;
       birdAssociationAreaHelp?: string;
       documentViewerZoomToData?: boolean;
+      listColumnsMultisort?: boolean;
     };
   }
 

@@ -16,7 +16,6 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
 
   @Input() taxon: Taxonomy;
-  @Input() showFullScreenControl = false;
   @Input() height = '605px';
   @Input() set mapOptions(mapOptions: LajiMapOptions) {
     this._mapOptions = {

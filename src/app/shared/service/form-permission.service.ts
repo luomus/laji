@@ -96,9 +96,10 @@ export class FormPermissionService {
       {edit: false, admin: false, view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict},
       {edit: true, admin: false, view: true},
       (formPermission: FormPermission, person: Person) => ({
+        view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
         edit: this.isEditAllowed(formPermission, person, form),
         admin: this.isAdmin(formPermission, person),
-        view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
+        ictAdmin: UserService.isIctAdmin(person)
       }));
   }
 

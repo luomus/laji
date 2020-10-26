@@ -67,7 +67,6 @@ export class IdentificationSpeciesListComponent {
   }
 
   openImage(index) {
-    console.log(index);
     this.overlayLoader
       .attach(ImageModalOverlayComponent)
       .to('body')

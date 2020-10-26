@@ -135,7 +135,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   onDocumentClick(docID: string) {
     this.documentViewerFacade.showRemoteDocument({
       document: docID,
-      own: this.admin,
+      own: true,
       forceLocal: this.forceLocalDocument
     });
   }

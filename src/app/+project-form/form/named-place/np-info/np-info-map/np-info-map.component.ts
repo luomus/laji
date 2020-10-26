@@ -17,7 +17,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   mapOptions: LajiMapOptions = {
     tileLayerName: LajiMapTileLayerName.maastokartta,
     tileLayerOpacity: 0.5,
-    controls: {location: false}
+    controls: {location: false, fullscreen: true},
   };
 
   private _data: any;

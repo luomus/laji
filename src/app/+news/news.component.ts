@@ -34,7 +34,9 @@ export class NewsComponent implements OnInit, OnDestroy {
       map(state => state.current),
       distinctUntilChanged(),
       filter(info => !!info),
-      tap(info => this.title.setTitle(info.title + ' | ' + this.title.getTitle()))
+      tap(info => {
+        this.title.setTitle(info.title + ' | ' + this.title.getTitle());
+      })
     );
     this.subTrans = this.route.params.pipe(
       map(params => params['id']),
@@ -42,16 +44,17 @@ export class NewsComponent implements OnInit, OnDestroy {
         ObservableOf(this.store.state.current) : this.newsService.get(id))
     ).subscribe(newsItem => {
       this.store.setCurrent(newsItem);
-      this.headerService.updateMetaDescription(this.prepareDescriptionTag(newsItem.content));
-      this.headerService.updateFeatureImage(newsItem.featuredImage)
+      if(newsItem.featuredImage) {
+        this.headerService.updateFeatureImage(newsItem.featuredImage);
+      }
+      setTimeout(() => {
+        let paragraph = (document.getElementById("wrapper")).getElementsByTagName("p").item(0).innerText;
+        this.headerService.updateMetaDescription(paragraph);
+        this.headerService.createTwitterCard(newsItem.title + ' | ' + this.title.getTitle());
+      }, 0);
     });
   }
 
-  private prepareDescriptionTag(description) {
-    return description.substring(description.indexOf('<p>')+3, description.indexOf('</p>')-1).replace(/<[^>]*>/g, '')
-  }
-
-  
   ngOnDestroy() {
     if (this.subTrans) {
       this.subTrans.unsubscribe();

@@ -13,7 +13,7 @@ export class FindPersonComponent implements OnInit {
 
   @Input() limit = 10;
   @Input() showUserID = false;
-  @Output() select = new EventEmitter<Person>();
+  @Output() selectChange = new EventEmitter<Person>();
 
   dataSource: Observable<any>;
   typeaheadLoading = false;
@@ -38,7 +38,7 @@ export class FindPersonComponent implements OnInit {
 
   personSelected(event) {
     this.value = '';
-    this.select.emit({
+    this.selectChange.emit({
       id: event.item.key || '',
       fullName: event.item.value || ''
     });

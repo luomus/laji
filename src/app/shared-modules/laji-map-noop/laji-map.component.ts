@@ -8,7 +8,6 @@ export class LajiMapComponent {
 
   @Input() legend: any;
   @Input() options: any;
-  @Input() showFullScreenControl: boolean;
   @Input() settingsKey: string;
   @Input() data: any = [];
   @Input() loading = false;

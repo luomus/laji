@@ -38,7 +38,7 @@
         <ng-template #taxonNoResolving>
             <div *ngIf="unit.linkings && unit.linkings.taxon || unit.taxonVerbatim || unit.reportedInformalTaxonGroup">
                 <span *ngIf="unit.linkings && unit.linkings.taxon; else taxonVerbatim">
-                    <laji-taxon-name [taxon]="unit.linkings.taxon"></laji-taxon-name>
+                    <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon"></laji-taxon-name>
                 </span>
                 <ng-template #taxonVerbatim>
                    <span *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup">{{ unit.taxonVerbatim | toQName | label }}</span>

@@ -16,6 +16,7 @@ import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import 'rxjs-compat/add/operator/distinctUntilChanged';
 import 'rxjs-compat/add/operator/switchMap';
 
@@ -53,7 +54,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   constructor(
     private lajiApi: LajiApiService,
     private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
@@ -61,6 +63,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.dataSource = this.dataSource.pipe(
       distinctUntilChanged(),
       switchMap((token: string) => this.getTaxa(token)),
+      switchMap((taxa:any[]) => this.taxonAutocompleteService.getInfo(taxa, this.value)),
       switchMap((data) => {
         if (this.value) {
           return ObservableOf(data);

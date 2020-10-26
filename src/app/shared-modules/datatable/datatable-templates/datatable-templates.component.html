@@ -132,6 +132,11 @@
     {{ value | multiLang }}
   </span>
 </ng-template>
+<ng-template let-value="value" #multiLangFalse>
+  <span *ngIf="value" title="{{value | multiLang:false}}">
+    {{ value | multiLang:false | lowercase }}
+  </span>
+</ng-template>
 <ng-template let-value="value" #multiLangAll>
   <span *ngIf="value" title="{{value | multiLangAll}}">
     {{ value | multiLangAll }}
@@ -162,7 +167,7 @@
     <ng-container *ngFor="let field of synonymKeys">
       <ng-container *ngIf="row[field]">
         <ng-container *ngFor="let synonymTaxon of row[field]">
-          <li><laji-taxon-name [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
+          <li><laji-taxon-name [capitalizeName]="true" [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
         </ng-container>
       </ng-container>
     </ng-container>
@@ -172,7 +177,7 @@
   <ul class="semicolon separated-list">
       <ng-container *ngIf="row['misappliedNames']">
         <ng-container *ngFor="let synonymTaxon of row['misappliedNames']">
-          <li><laji-taxon-name [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
+          <li><laji-taxon-name [capitalizeName]="true" [taxon]="synonymTaxon" [addAuthor]="true"></laji-taxon-name></li>
         </ng-container>
       </ng-container>
   </ul>

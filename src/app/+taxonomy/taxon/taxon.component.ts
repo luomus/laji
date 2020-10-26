@@ -150,7 +150,7 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
       title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
     }
     title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
-    this.title.setTitle((title ? title + ' | '  : '') + this.title.getTitle());
+    this.title.setTitle((title ? this.capitalizeFirstLetter(title) + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {
@@ -194,5 +194,8 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
     return this.taxon.nameAccordingTo === masterChecklist;
   }
 
+  private capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   
 }

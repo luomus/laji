@@ -1,24 +1,26 @@
-interface ILetter {
+export interface IRecording {
   id: number;
   recording: string;
   xRange: number[];
+}
+
+interface  ILetter extends IRecording {
+  yRange: number[];
+}
+
+export interface ILetterCandidate extends ILetter {
+  crossCorrelation: number;
+}
+
+export interface ILetterTemplate extends ILetter {
+  name: string;
+  taxonId: string;
 }
 
 export interface ILetterStatusInfo {
   userAnnotationCount: number;
   targetAnnotationCount: number;
   hasPreviousCandidate: boolean;
-}
-
-export interface ILetterCandidate extends ILetter {
-  crossCorrelation: number;
-  yDiff: number;
-}
-
-export interface ILetterTemplate extends ILetter {
-  name: string;
-  taxonId: string;
-  yRange: number[];
 }
 
 export enum LetterAnnotation {

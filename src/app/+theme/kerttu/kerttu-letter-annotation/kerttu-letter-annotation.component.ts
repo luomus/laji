@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {map, share, switchMap} from 'rxjs/operators';
-import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, LetterAnnotation} from '../model/letter';
+import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, LetterAnnotation} from '../models';
 import {Observable, of, Subscription} from 'rxjs';
 import {WINDOW} from '@ng-toolkit/universal';
 import {KerttuApi} from '../service/kerttu-api';

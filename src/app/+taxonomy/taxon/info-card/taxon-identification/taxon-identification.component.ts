@@ -5,6 +5,7 @@ import { TaxonomyApi } from 'src/app/shared/api/TaxonomyApi';
 import { switchMap, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { PagedResult } from 'src/app/shared/model/PagedResult';
+import { TranslateService } from '@ngx-translate/core';
 
 type TaxonChildren = {
   taxonomy: Taxonomy,
@@ -23,15 +24,21 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
 
   taxonChildren: TaxonChildren = [];
 
-  constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef) { }
+  loading = false;
+
+  constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef, private translate: TranslateService) { }
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      // if taxon.taxonRank === 'MX.species' ... load species related stuff
-      // else load parent related stuff
-      this.taxonomyApi.taxonomyFindChildren(this.taxon.id).pipe(
+      if (this.taxon.taxonRank === 'MX.species') {
+        this.loading = false;
+        this.taxonChildren = [];
+        return;
+      }
+      this.loading = true;
+      this.taxonomyApi.taxonomyFindChildren(this.taxon.id, this.translate.currentLang).pipe(
         switchMap(result => {
           return forkJoin(
             ...result.map(
@@ -41,7 +48,7 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
                 includeMedia: true,
                 pageSize: 8,
                 sortOrder: 'observationCountFinland DESC'
-              }).pipe(
+              }, this.translate.currentLang).pipe(
                 map(res => {
                   return {
                     taxonomy: taxon,
@@ -54,9 +61,9 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         })
       ).subscribe(res => {
         this.taxonChildren = res;
+        this.loading = false;
         this.cdr.markForCheck();
       });
-      return;
     }
   }
 }

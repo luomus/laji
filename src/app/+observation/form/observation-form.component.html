@@ -32,14 +32,16 @@
     <input
       [ngClass]="{loading: typeaheadLoading}"
       type="text"
+      container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
+      [adaptivePosition]="true"
       [(ngModel)]="formQuery.taxon"
       [typeahead]="dataSource"
       [typeaheadOptionsLimit]="autocompleteLimit"
       [typeaheadWaitMs]="200"
       [typeaheadMinLength]="3"
-      [typeaheadSelectFirstItem]="false"
+      [typeaheadSelectFirstItem]="true"
       [typeaheadOptionField]="'autocompleteSelectedName'"
       [typeaheadItemTemplate]="taxonItem"
       (typeaheadLoading)="changeTypeaheadLoading($event)"
@@ -48,8 +50,8 @@
       autocomplete="off"
       autocorrect="off"
     >
-    <ng-template #taxonItem let-model="item">
-      <span [innerHtml]="model['autocompleteDisplayName']"></span>
+    <ng-template #taxonItem  let-model="item">
+      <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName']"></span>
     </ng-template>
     
     <laji-pill-list

@@ -7,12 +7,13 @@ import { NpPrintComponent } from './named-place/np-print/np-print.component';
 import { OnlyLoggedIn } from '../../shared/route/only-logged-in';
 import { DocumentDeActivateGuard } from '../../shared/guards/document-de-activate.guard';
 import { HasFormPermission } from '../guards/has-form-permission';
-import { HasViewPermission } from '../guards/has-view-permission.service';
+import { HasViewPermission } from '../guards/has-view-permission';
 
 export const routes: Routes = [
   {
     path: '', component: FormComponent,
-    canDeactivate: [DocumentDeActivateGuard]
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false}
   },
   {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,

@@ -14,7 +14,10 @@
 <laji-taxon-select
   (taxonIdChange)="onTaxonSelect($event)"
   [taxonId]="formQuery.taxon"
-  [searchParams]="taxonSelectFilters">
+  [searchParams]="taxonSelectFilters"
+  [container]="'laji-taxon-browse'"
+  [convertIdToName]="false"
+  >
 </laji-taxon-select>
 
 <bSwitch

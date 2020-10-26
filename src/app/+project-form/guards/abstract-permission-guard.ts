@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { flatMap, map, take, tap } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
-import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../shared/service/form.service';
-import { FormPermissionService } from '../../shared/service/form-permission.service';
-import { ProjectFormService } from '../project-form.service';
+import { TranslateService } from '@ngx-translate/core';
+import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
+import { PlatformService } from '../../shared/service/platform.service';
 
 @Injectable()
-export class HasViewPermission implements CanActivate {
+export abstract class AbstractPermissionGuard implements CanActivate {
 
   constructor(private userService: UserService,
               private formService: FormService,
@@ -17,10 +17,14 @@ export class HasViewPermission implements CanActivate {
               private router: Router,
               private route: ActivatedRoute,
               private translate: TranslateService,
-              private projectFormService: ProjectFormService
-  ) { }
+              private platformService: PlatformService,
+) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    if (this.platformService.isServer) {
+      return of(true);
+    }
+
     let formID;
     do {
       if (route.params?.projectID) {
@@ -31,7 +35,7 @@ export class HasViewPermission implements CanActivate {
     } while (route);
 
     if (!formID) {
-      console.warn('HasViewPermission guard used for non project page');
+      console.warn('HasFormPermission guard used for non project page');
       this.router.navigate(['/', 'project', formID]);
       return;
     }
@@ -39,13 +43,14 @@ export class HasViewPermission implements CanActivate {
     return this.formService.getForm(formID, this.translate.currentLang).pipe(
       take(1),
       flatMap(form => this.formPermissionService.getRights(form)),
-      map(fp => fp.view || fp.edit || fp.admin),
+      map(fp => this.checkPermission(fp)),
       tap((hasPermission) => {
         if (!hasPermission) {
-            this.router.navigate(['/', 'project', formID]);
+          this.router.navigate(['/', 'project', formID]);
         }
       })
     );
   }
 
+  abstract checkPermission(rights: Rights): boolean;
 }

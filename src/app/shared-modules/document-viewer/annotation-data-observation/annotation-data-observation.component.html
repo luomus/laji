@@ -9,7 +9,7 @@
                 <li *ngIf="occurrence && ((occurrence.taxonId && occurrence.taxonId !== '') || (occurrence.linkings && occurrence.linkings.taxon))">
                     <b>{{ 'annotation.title.taxon' | translate }}: </b>
                     <ng-container *ngIf="occurrence.linkings && occurrence.linkings.taxon; else taxonNameSimple">
-                        <laji-taxon-name [taxon]="occurrence.linkings.taxon"></laji-taxon-name>
+                        <laji-taxon-name [capitalizeName]="true" [taxon]="occurrence.linkings.taxon"></laji-taxon-name>
                     </ng-container>
                     <ng-template #taxonNameSimple>
                         <span>
