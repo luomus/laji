@@ -24,6 +24,7 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
     this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
+    console.log('ciao')
   }
 
   ngOnDestroy() {
