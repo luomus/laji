@@ -9,7 +9,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, toArray } from 'rxjs/operators';
+import { switchMap, toArray, tap, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-observation-effective-tags-taxon',
@@ -47,6 +47,24 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     ) { }
 
   ngOnInit() {
+    !this.annotationTags ? setTimeout(() => {
+     this.loadEffectiveTags()
+    }, 0) : this.loadEffectiveTags();
+
+     this.unit.addedTags = [];
+     this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
+      this.annotationResolving = event;
+      this.cd.markForCheck();
+    });
+
+    if (this.unit.linkings && this.unit.linkings.taxon && this.unit.linkings.originalTaxon) {
+      this.haschangedTaxon = (this.toQname.transform(this.unit.linkings.taxon.id) !== this.toQname.transform(this.unit.linkings.originalTaxon.id)) ? true : false;
+    } else {
+      this.haschangedTaxon = false;
+    }
+  }
+
+  loadEffectiveTags() {
     this.convertEffective$ = from(this.unit?.interpretations?.effectiveTags || []).pipe(
       switchMap(tag => this.warehouseValueMappingService.getOriginalKey(tag as string)),
       toArray(),
@@ -58,20 +76,6 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
         )
       )
     );
-
-     this.unit.addedTags = [];
-     this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
-      this.annotationResolving = event;
-      this.cd.markForCheck();
-    });
-
-
-
-    if (this.unit.linkings && this.unit.linkings.taxon && this.unit.linkings.originalTaxon) {
-      this.haschangedTaxon = (this.toQname.transform(this.unit.linkings.taxon.id) !== this.toQname.transform(this.unit.linkings.originalTaxon.id)) ? true : false;
-    } else {
-      this.haschangedTaxon = false;
-    }
   }
 
   ngOnDestroy() {
