@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Global } from '../../../../environments/global';
-import { Subject, Subscription, of } from 'rxjs';
+import { Subject, Subscription, of, from, Observable } from 'rxjs';
 import { TaxonTagEffectiveService } from '../../../shared-modules/document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../../../shared-modules/document-viewer/loading-elements.service';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
@@ -9,6 +9,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
+import { switchMap, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-observation-effective-tags-taxon',
@@ -32,7 +33,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
   annotationTagsObservation = Global.annotationTags;
   countItems: number;
   haschangedTaxon = false;
-  convertEffective: any;
+  convertEffective$: Observable<any>;
   subEffectiveTags: Subscription;
 
   constructor(
@@ -42,25 +43,21 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     private loadingElements: LoadingElementsService,
     private annotationService: AnnotationService,
     private translate: TranslateService,
-    private WarehouseValueMappingService: WarehouseValueMappingService
+    private warehouseValueMappingService: WarehouseValueMappingService
     ) { }
 
   ngOnInit() {
-    let array = [];
-    let array2 = [];
-    this.unit.interpretations.effectiveTags.forEach(element => {
-      return this.WarehouseValueMappingService.getOriginalKey(element).subscribe(key => {
-        array.push(key);
-        if (this.annotationTags) {
-          this.convertEffective = of(this.annotationTags.filter(item => array.includes(item.id)));
-        } else {
-          this.annotationService.getTag(key, this.translate.currentLang).subscribe(tag => {
-             array2.push(tag);
-             this.convertEffective = of(array2);
-          })  
-        }
-      });
-    });
+    this.convertEffective$ = from(this.unit?.interpretations?.effectiveTags || []).pipe(
+      switchMap(tag => this.warehouseValueMappingService.getOriginalKey(tag as string)),
+      toArray(),
+      switchMap(keys => this.annotationTags ?
+        of(this.annotationTags.filter(item => keys.includes(item.id))) :
+        from(keys).pipe(
+          switchMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
+          toArray(),
+        )
+      )
+    );
 
      this.unit.addedTags = [];
      this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
