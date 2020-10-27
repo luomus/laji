@@ -2,7 +2,7 @@
   <div class="img-container">
     <img src="/static/images/icons/chart.svg">
   </div>
-  <a routerLink="usage/downloads" (click)="onClose()" class="nav-container">
+  <a [routerLink]="['/usage/downloads'] | localize" (click)="onClose()" class="nav-container">
     <div class="nav-title">
       {{ 'usage.byCollection' | translate }}
     </div>
@@ -15,7 +15,7 @@
   <div class="img-container">
     <img src="/static/images/icons/person.svg">
   </div>
-  <a routerLink="usage/by-organization" (click)="onClose()" class="nav-container">
+  <a [routerLink]="['/usage/by-organization'] | localize" (click)="onClose()" class="nav-container">
     <div class="nav-title">
       {{ 'usage.byOrganization' | translate }}
     </div>
@@ -28,7 +28,7 @@
   <div class="img-container">
     <span class="glyphicon glyphicon-download-alt"></span>
   </div>
-  <a routerLink="usage/my-downloads" (click)="onClose()" class="nav-container">
+  <a [routerLink]="['/usage/my-downloads'] | localize" (click)="onClose()" class="nav-container">
     <div class="nav-title">
       {{ 'usage.byUser' | translate }}
     </div>

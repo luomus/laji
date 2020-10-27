@@ -6,23 +6,6 @@ import { Annotation } from './Annotation';
 import { MultiLanguage } from '../../../../projects/laji-api-client/src/lib/models';
 
 export namespace Form {
-  export enum Feature {
-    FilterNamedPlacesByMunicipality = <any> 'MHL.featureFilterNamedPlacesByMunicipality',
-    FilterNamedPlacesByBirdAssociationArea = <any> 'MHL.featureFilterNamedPlacesByBirdAssociationArea',
-    FilterNamedPlacesByTags = <any> 'MHL.featureFilterNamedPlacesByTags',
-    NamedPlace = <any> 'MHL.featureNamedPlace',
-    NoPrivate = <any> 'MHL.featureNoPrivate',
-    Reserve = <any> 'MHL.featureReserve',
-    Restricted = <any> 'MHL.featureRestrictAccess',
-    Administer = <any> 'MHL.featureAdminister',
-    DocumentsViewableForAll = <any> 'MHL.featureDocumentsViewableForAll',
-    AdminLockable = <any> 'MHL.featureAdminLockable',
-    Mobile = <any> 'MHL.featureMobile',
-    EditingOldWarning = <any> 'MHL.featureEditingOldDocumentWarning',
-    AutoLock = <any> 'MHL.featureAutoLock',
-    SecondaryCopy = <any> 'MHL.featureSecondaryCopy',
-    AddingPublicNamedPlacesAllowed = <any> 'MHL.featureAddingPublicNamedPlacesAllowed'
-  }
   export enum PrintType {
     lineTransect = 'MHL.printTypeLineTransect',
   }
@@ -30,16 +13,27 @@ export namespace Form {
     lineTransect = 'MHL.viewerTypeLineTransect',
     birdPointCount = 'MHL.viewerTypeBirdPointCount',
   }
+  export enum ResultServiceType {
+    lineTransect = 'MHL.resultServiceTypeLineTransect',
+    winterbirdCount = 'MHL.resultServiceTypeWinterBirdCount',
+    nafi = 'MHL.resultServiceTypeNafi',
+  }
+  export enum RestrictAccess {
+    restrictAccessStrict = 'MHL.restrictAccessStrict',
+    restrictAccessLoose = 'MHL.restrictAccessLoose'
+  }
   export interface List {
     id: string;
     title: string;
+    shortTitle: string;
     description: string;
-    shortDescription: string;
+    shortDescription?: string;
     supportedLanguage: string[];
     logo?: string;
     category?: string;
-    collectionID: string;
-    features: Form.Feature[];
+    collectionID?: string;
+    baseFormID?: string;
+    options: ListOptions;
   }
 
   export interface IEnum {
@@ -61,33 +55,75 @@ export namespace Form {
     placeholderGeometry?: any;
   }
 
-  export interface SchemaForm extends List {
-    schema: any;
-    uiSchema: any;
-    uiSchemaContext?: IUISchemaContext;
-    instructions?: MultiLanguage;
-    excludeFromCopy?: string[];
-    language?: string;
-    options?: {
-      forms?: string;
-      namedPlaceList?: string[],
-      messages?: {
-        success: string
-      },
-      season?: {
-        start: string;
-        end: string;
-      },
-      disableRequestDescription?: boolean
-      editingOldWarningDuration?: string,
-      ownSubmissionsColumns?: string[]
-      ownSubmissionsActions?: string[]
+  interface ListOptions {
+    prepopulateWithInformalTaxonGroups?: string[];
+    emptyOnNoCount?: boolean;
+    allowExcel?: true;
+    allowTemplate?: true;
+    forms?: string[];
+    secondaryCopy?: boolean;
+    sidebarFormLabel?: string;
+    useNamedPlaces?: boolean;
+  }
+
+  export interface FormOptions extends ListOptions {
+    restrictAccess?: RestrictAccess;
+    hasAdmins?: boolean;
+    documentsViewableForAll?: boolean;
+    adminLockable?: boolean;
+    warnEditingOldDocument?: boolean;
+    mobile?: boolean;
+    saveSuccessMessage?: string;
+    saveDraftSuccessMessage?: string;
+    saveErrorMessage?: string;
+    season?: {
+      start: string;
+      end: string;
     };
+    disableRequestDescription?: boolean;
+    warnEditingOldDocumentDuration?: string;
+    ownSubmissionsColumns?: string[];
+    ownSubmissionsActions?: string[];
+    prepopulatedDocument?: Document;
+    instructions?: MultiLanguage;
+    about?: MultiLanguage;
+    saveLabel?: string;
+    cancelLabel?: string;
+    draftLabel?: string;
+    editLabel?: string;
+    hideSaveButton?: boolean;
+    hideCancelButton?: boolean;
+    hideDraftButton?: boolean;
+    printType?: PrintType;
+    viewerType?: ViewerType;
+    resultServiceType?: ResultServiceType;
+    footerDescription?: string;
+    footerLogos?: {
+      [imageURL: string]: string;
+    };
+    formPermissionDescription?: string;
+    formOwnSubmissionsLabel?: string;
+    hideTES?: boolean;
+    ownSubmissionsTitle?: string;
+    ownSubmissionsAdminTitle?: string;
+    shortTitleFromCollectionName?: boolean;
+    displayOwnSubmissions?: boolean;
     namedPlaceOptions?: {
-      description?: string;
+      copyLatestDocumentToNamedPlace?: boolean;
+      filterByMunicipality?: boolean;
+      filterByBirdAssociationArea?: boolean;
+      filterByTags?: boolean;
+      allowAddingPublic?: boolean;
+      namedPlaceFormID?: string;
       useLabel?: string;
+      createNewButtonLabel?: string;
+      createNewButtonPrependingTextLabel?: string;
       includeUnits?: boolean;
       startWithMap?: boolean;
+      hideMapTab?: boolean;
+      zoomToData: boolean;
+      mapTileLayerName: string;
+      mapOverlayNames: string[];
       listLabel?: string;
       listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
@@ -99,12 +135,39 @@ export namespace Form {
       documentListUseLocalDocumentViewer?: string;
       documentViewerGatheringGeometryJSONPath?: string | string[];
       documentViewerForcedFields?: string[]
+      listColumns?: string[];
+      prepopulatedDocumentFields?: any;
+      lastCensusLabel?: string;
+      reservedLabel?: string;
+      reservableLabel?: string;
+      releaseLabel?: string;
+      adminShowCopyLink?: boolean;
+      earlierLabel?: string;
+      myEarlierLabel?: string;
+      editDescription?: string;
+      createDescription?: string;
+      chooseDescription?: string;
+      birdAssociationAreaHelp?: string;
+      documentViewerZoomToData?: boolean;
+      listColumnsMultisort?: boolean;
     };
-    prepopulatedDocument?: Document;
-    printType?: PrintType;
-    viewerType?: ViewerType;
+  }
+
+  export interface SchemaForm extends List {
+    options: FormOptions;
+    schema: any;
+    uiSchema: any;
+    uiSchemaContext?: IUISchemaContext;
+    excludeFromCopy?: string[];
+    language?: string;
     attributes?: {[key: string]: string};
     validators?: any;
     warnings?: any;
+  }
+
+  export interface JsonForm extends List {
+    options: FormOptions;
+    uiSchema: any;
+    fields: any[];
   }
 }

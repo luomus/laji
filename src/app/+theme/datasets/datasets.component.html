@@ -17,9 +17,9 @@
         {{ 'datasets.accessNone' | translate }}
       </li>
       <li *ngFor="let form of forms">
-        <a [routerLink]="[form.id]">
+        <a [routerLink]="['/project/', form.id]">
           {{ form.collectionID | label }},
-          <ng-container *ngIf="form | formHasFeature: features.SecondaryCopy; else primary">
+          <ng-container *ngIf="form.options?.secondaryCopy; else primary">
             {{ 'datasets.secondary' | translate }}
           </ng-container>
         </a>

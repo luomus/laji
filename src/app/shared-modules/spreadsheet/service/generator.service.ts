@@ -6,7 +6,7 @@ import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { forkJoin as ObservableForkJoin } from 'rxjs';
-import { NamedPlacesService } from '../../named-place/named-places.service';
+import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { TranslateService } from '@ngx-translate/core';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { ExportService } from '../../../shared/service/export.service';

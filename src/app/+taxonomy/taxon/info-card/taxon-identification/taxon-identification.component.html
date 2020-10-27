@@ -1,34 +1,25 @@
-<div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
-  <div *ngFor="let media of taxon.multimedia">
-    <img lajiLazyImage [src]="media.largeURL">
+<laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
+  <div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
+    <div *ngFor="let media of taxon.multimedia">
+      <img lajiLazyImage [src]="media.largeURL">
+    </div>
   </div>
-</div>
+</laji-spinner>
 
 <ng-template #parent>
   <div *ngFor="let child of taxonChildren">
     <div class="child-name">
       <div class="child-scientific-name-container">
-        <a class="child-scientific-name" [routerLink]="['/taxon', child.taxonomy.id, 'identification']">{{child.taxonomy.scientificName}}</a>
+        <a class="child-scientific-name" [ngClass]="child.taxonomy.cursiveName ? 'cursive' : null" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" preserveQueryParams>{{child.taxonomy.scientificName}}</a>
         <span class="child-rank"> ({{ child.taxonomy.taxonRank | label }})</span>
       </div>
-      <div class="child-vernacular-name">
-        {{child.taxonomy.vernacularName}}
+      <div class="child-vernacular-name-row">
+        <span *ngIf="child.taxonomy.vernacularName" class="child-vernacular-name">{{child.taxonomy.vernacularName}}</span>
+        {{child.taxonomy.vernacularName ? ' - ' : ''}}{{ child.species.total | formattedNumber:' ' }} {{ (child.species.total === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} - {{ child.taxonomy.observationCountFinland | formattedNumber:' ' }} {{ (child.taxonomy.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
       </div>
     </div>
-    <div class="d-flex species-container mb-8">
-      <div *ngFor="let species of child.species?.results" class="species d-flex flex-col mr-4">
-        <div class="species-name-container">
-          <div><a [routerLink]="['/taxon', species.id, 'identification']" class="species-scientific-name">
-            {{ species.scientificName }}
-          </a></div>
-          <div class="species-vernacular-name">{{ species.vernacularName }}</div>
-        </div>
-        <div class="species-img-container flex-grow">
-          <ng-container *ngIf="species.multimedia?.length > 0">
-            <img [src]="species.multimedia[0].largeURL">
-          </ng-container>
-        </div>
-      </div>
-    </div>
+    <laji-identification-species-list
+      [speciesList]="child.species?.results"
+    ></laji-identification-species-list>
   </div>
 </ng-template>

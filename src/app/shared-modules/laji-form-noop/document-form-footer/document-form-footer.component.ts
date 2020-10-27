@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { FormWithData } from '@laji-form/laji-form-document.facade';
 
 @Component({
   selector: 'laji-document-form-footer',
@@ -7,7 +8,7 @@ import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentFormFooterComponent {
-  @Input() form: any;
+  @Input() form: FormWithData;
   @Input() status = '';
   @Input() saving = false;
   @Input() edit: any;

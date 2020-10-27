@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../../../shared-modules/document-viewer/document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -142,6 +141,7 @@ export class UserDocumentToolsComponent implements OnInit {
       }
     }
   }
+
 
   saveTemplate() {
     if (this.loading) {

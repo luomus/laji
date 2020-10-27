@@ -17,3 +17,8 @@ lu-sidebar {
 main > div {
   max-width: 1000px;
 }
+
+:host ::ng-deep table {
+  display: block;
+  overflow-x: auto;
+}

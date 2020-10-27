@@ -15,6 +15,7 @@ export class ExportService {
   private tsvMimeType = 'text/tab-separated-values';
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  private txtMimeType = 'text/plain;charset=utf-8';
 
   constructor(
     private translateService: TranslateService,
@@ -42,8 +43,10 @@ export class ExportService {
       type = this.xlsxMimeType;
     } else if (fileExtension === 'tsv') {
       type = this.tsvMimeType;
-    } else {
+    } else if (fileExtension === 'csv') {
       type = this.csvMimeType;
+    } else {
+      type = this.txtMimeType;
     }
 
     const data: Blob = new Blob([buffer], {

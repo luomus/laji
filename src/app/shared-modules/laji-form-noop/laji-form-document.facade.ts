@@ -18,8 +18,8 @@ import { Annotation } from '../../shared/model/Annotation';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Logger } from '../../shared/logger';
 import { Form } from '../../shared/model/Form';
-import { NamedPlacesService } from '../named-place/named-places.service';
-import { FormPermissionService, Rights } from '../../+haseka/form-permission/form-permission.service';
+import { NamedPlacesService } from '../../shared/service/named-places.service';
+import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
 
@@ -47,7 +47,7 @@ export interface ISuccessEvent {
   namedPlace?: NamedPlace;
 }
 
-interface FormWithData extends Form.SchemaForm {
+export interface FormWithData extends Form.SchemaForm {
   formData?: Document;
   annotations?: Form.IAnnotationMap;
   rights?: Rights;
@@ -285,9 +285,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
           map((document: Document) => {
             if (document.isTemplate) {
-              if (form.prepopulatedDocument) {
+              if (form.options?.prepopulatedDocument) {
                 return merge(
-                  form.prepopulatedDocument,
+                  form.options?.prepopulatedDocument,
                   this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']),
                   { arrayMerge: Util.arrayCombineMerge }
                 );
@@ -313,7 +313,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
     return of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
-      map(base => form.prepopulatedDocument ? merge(form.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
+      map(base => form.options?.prepopulatedDocument ? merge(form.options.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data))
     );
   }
@@ -346,7 +346,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private addNamedPlaceData(form: Form.SchemaForm, data: Document) {
-    if (!FormService.hasFeature(form, Form.Feature.NamedPlace)) {
+    if (!form.options?.useNamedPlaces) {
       return data;
     }
     if (_state.namedPlaceForFormID !== form.id) {
@@ -375,7 +375,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
 
     let removeList = form.excludeFromCopy || DocumentService.removableGathering;
-    if (form.namedPlaceOptions && form.namedPlaceOptions.includeUnits) {
+    if (form.options?.namedPlaceOptions?.includeUnits) {
       removeList = removeList.filter(item => item !== 'units');
     }
     this.updateState({..._state, namedPlaceForFormID: ''});
@@ -408,7 +408,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         tap(namedPlace => this.updateState({..._state, namedPlace})),
         map(() => void 0)
       );
-    } else if (!FormService.hasFeature(form, Form.Feature.NamedPlace) && _state.namedPlace) {
+    } else if (!form?.options?.useNamedPlaces && _state.namedPlace) {
       this.updateState({..._state, namedPlace: null});
     }
     return of(void 0);

@@ -8,15 +8,14 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { merge, Observable, of, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FooterService } from '../../shared/service/footer.service';
 import { ComponentCanDeactivate } from '../../shared/guards/document-de-activate.guard';
 import { DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { FormService } from '../../shared/service/form.service';
-import { map, take, switchMap } from 'rxjs/operators';
-import { Form } from '../../shared/model/Form';
+import { switchMap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Document } from '../../shared/model/Document';
@@ -35,10 +34,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   form$: Observable<any>;
   formId: string;
   documentId: string;
-  showMobileEntryPage$: Observable<boolean>;
-  isMobile$: Observable<boolean>;
-  mobileWelcomePageClosed = false;
-  _mobileWelcomePageShown: Subject<boolean>;
 
   private subParam: Subscription;
 
@@ -64,17 +59,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
     this.form$ = this.route.params.pipe(
       switchMap(params => this.formService.getForm(params['formId'], this.translate.currentLang))
     );
-
-    this.isMobile$ = this.form$.pipe(
-      map(form => FormService.hasFeature(form, Form.Feature.Mobile))
-    );
-    this._mobileWelcomePageShown = new Subject();
-    this.showMobileEntryPage$ = merge(this.route.params.pipe(
-      switchMap(params => params['documentId']
-        ? of(false)
-        : this.isMobile$
-      )
-    ), this._mobileWelcomePageShown);
   }
 
   ngOnDestroy() {
@@ -90,34 +74,18 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
   }
 
   onSuccess(data) {
-    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-      if (isMobile) {
-        return this.navigateToMobileFront();
+    this.browserService.goBack(() => {
+      if (data.form && data.form.viewerType && data.document && data.document.id) {
+        return this.router.navigate(
+          this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
+        );
       }
-      this.browserService.goBack(() => {
-        if (data.form && data.form.viewerType && data.document && data.document.id) {
-          return this.router.navigate(
-            this.localizeRouterService.translateRoute(['/vihko/statistics/', data.document.id])
-          );
-        }
-        this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
-      });
+      this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']));
     });
   }
 
   private navigateToFront() {
-    this.isMobile$.pipe(take(1)).subscribe(isMobile => {
-      if (isMobile) {
-        return this.navigateToMobileFront();
-      }
-      this.browserService.goBack(() => this.router.navigate(this.localizeRouterService.translateRoute(['/vihko'])));
-    });
-  }
-
-  private navigateToMobileFront() {
-    return this.router.navigate(this.localizeRouterService.translateRoute(['/vihko']), {skipLocationChange: true}).then(() =>
-      this.router.navigate(this.localizeRouterService.translateRoute(['/vihko', this.formId]))
-    );
+    this.browserService.goBack(() => this.router.navigate(this.localizeRouterService.translateRoute(['/vihko'])));
   }
 
   onAccessDenied(collectionID) {
@@ -136,11 +104,6 @@ export class HaSeKaFormComponent implements OnInit, OnDestroy, ComponentCanDeact
 
   onCancel() {
     this.navigateToFront();
-  }
-
-  enterForm() {
-    this.mobileWelcomePageClosed = true;
-    this._mobileWelcomePageShown.next(false);
   }
 
   showDocumentViewer(document: Document) {

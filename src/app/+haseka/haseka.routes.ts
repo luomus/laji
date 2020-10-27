@@ -1,22 +1,13 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
-import { StatisticsComponent } from '../shared-modules/statistics/statistics.component';
 import { HaSeKaTermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { HaSeKaFormComponent } from './form/haseka-form.component';
-import { NpPrintComponent } from '../shared-modules/named-place/np-print/np-print.component';
-import { RequestWrapperComponent } from './form-permission/request/request-wrapper.component';
-import { AdminComponent } from './form-permission/admin/admin.component';
-import { IntroComponent } from './form-permission/admin/intro/intro.component';
-import { AcceptComponent } from './form-permission/admin/accept/accept.component';
-import { ManageComponent } from './form-permission/admin/manage/manage.component';
 import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
-import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HasekaFeedbackComponent } from './haseka-feedback/haseka-feedback.component';
-import { ParticipantsComponent } from './form-permission/admin/participants/participants.component';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
 import { TemplateHasekaFormComponent } from './template-haseka-form/template-haseka-form.component';
 
@@ -35,8 +26,6 @@ export const hasekaRoutes: Routes = [
           {path: 'forms', pathMatch: 'full', redirectTo: 'home'},
           {path: 'ownSubmissions', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: OwnSubmissionsComponent},
           {path: 'templates', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: TemplatesComponent},
-          {path: 'statistics', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
-          {path: 'statistics/:documentID', pathMatch: 'full', canActivate: [OnlyLoggedIn], component: StatisticsComponent},
           {path: 'tools',  canActivate: [OnlyLoggedIn], loadChildren: () => import('./tools/tools.module').then(m => m.ToolsModule)},
         ]
       },
@@ -44,32 +33,6 @@ export const hasekaRoutes: Routes = [
         path: 'terms-of-service',
         pathMatch: 'full',
         component: HaSeKaTermsOfServiceComponent
-      },
-      {
-        path: 'places/:npId/print/:type',
-        component: NpPrintComponent
-      },
-      {
-        path: 'places/:collectionId/:formId',
-        pathMatch: 'full',
-        component: NamedPlaceWrapperComponent
-      },
-      {
-        path: 'fp/:collectionId/admin',
-        canActivate: [OnlyLoggedIn],
-        component: AdminComponent,
-        children: [
-          {path: '', pathMatch: 'full', component: IntroComponent},
-          {path: 'accept', pathMatch: 'full', component: AcceptComponent},
-          {path: 'manage/:type', pathMatch: 'full', component: ManageComponent},
-          {path: 'participants', pathMatch: 'full', component: ParticipantsComponent},
-        ]
-      },
-      {
-        path: 'fp/:collectionId',
-        pathMatch: 'full',
-        canActivate: [OnlyLoggedIn],
-        component: RequestWrapperComponent
       },
       {
         path: 'template',

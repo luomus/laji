@@ -3,10 +3,10 @@ import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../../../../src/app/shared/service/form.service';
-import { FormList } from '../../../../../src/app/+haseka/form-list/haseka-form-list.interface';
+import { Form } from '../../../../../src/app/shared/model/Form';
 
 interface State {
-  monitoringForms: FormList[];
+  monitoringForms: Form.List[];
 }
 
 @Injectable()

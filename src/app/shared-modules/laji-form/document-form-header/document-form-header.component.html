@@ -10,7 +10,7 @@
   <laji-own-submissions *ngIf="form && displayObservationList"
                         [actions]="isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
                         [columns]="['dateObserved', 'observer', 'dateEdited']"
-                        [columnNameMapping]="form.namedPlaceOptions?.columnNameMapping"
+                        [columnNameMapping]="form.options?.namedPlaceOptions?.listColumnNameMapping"
                         [collectionID]="form.collectionID"
                         [formID]="form.id"
                         [namedPlace]="namedPlace?.id"
@@ -22,14 +22,14 @@
     <div [innerHtml]="description | translate"></div>
     <br>
   </ng-container>
-  <ng-container *ngIf="!description && form.description">
+  <ng-container *ngIf="!description && form.description && displayDescription">
     <div [innerHtml]="form.description"></div><br>
   </ng-container>
-  <span *ngIf="form.instructions && form.instructions[translate.currentLang]">
-    <a href="{{form.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
+  <span *ngIf="displayInstructions && form.options?.instructions && form.options.instructions[translate.currentLang]">
+    <a href="{{form.options.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
     |
   </span>
-  <a *ngIf="!form.options || !form.options.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+  <a *ngIf="!form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
 </div>
 <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">

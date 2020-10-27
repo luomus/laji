@@ -1,7 +1,7 @@
 <ng-container *ngIf="information$ | async; let information">
   <lu-sidebar position="right" [displayNav]="information.children">
     <main class="d-flex justify-center">
-      <div class="mt-4 mb-8 mx-3">
+      <div class="mt-4 mb-8 mx-3 d-flex flex-col flex-nowrap width-0">
         <ol class="breadcrumb">
           <ng-container *ngFor="let parent of information.parents; let i = index">
             <li *ngIf="i !== 0">

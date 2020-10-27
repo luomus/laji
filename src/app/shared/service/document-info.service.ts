@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Document } from '../model/Document';
 import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
+import { Form } from '../model/Form';
 
 /**
  * Document Info service
  */
 @Injectable({providedIn: 'root'})
 export class DocumentInfoService {
-  static getGatheringInfo(document: Document, form: any) {
+  static getGatheringInfo(document: Document, form: Form.List) {
     const info = {
       dateBegin: null,
       dateEnd: null,
@@ -26,7 +27,7 @@ export class DocumentInfoService {
         const gathering = document.gatherings[i];
         if (i === 0) {
           info.locality = gathering.locality;
-          info.municipality = gathering.municipality ? gathering.municipality : '',
+          info.municipality = gathering.municipality ? gathering.municipality : '';
           info.namedPlaceID = gathering.namedPlaceID;
           info.localityCount = document.gatherings.length - 1;
         }
@@ -79,12 +80,8 @@ export class DocumentInfoService {
     }
   }
 
-  public static isEmptyUnit(unit: Units, form: any) {
-    if (form && Array.isArray(form.features) && (
-        form.features.indexOf('MHL.featurePrepopulateWithInformalTaxonGroups') !== -1 ||
-        form.features.indexOf('MHL.featureEmptyOnNoCount') !== -1
-      )
-    ) {
+  public static isEmptyUnit(unit: Units, form: Form.List) {
+    if (form?.options?.prepopulateWithInformalTaxonGroups || form?.options?.emptyOnNoCount) {
       let result = true;
       Global.documentCountUnitProperties.forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {

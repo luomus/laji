@@ -60,7 +60,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   get mapOptions() {
     return this._mapOptions;
   }
-  @Input() showFullScreenControl = false;
   @Input() taxon: Taxonomy;
   @Input() useStatistics = false;
   @Input() loading = false;
@@ -77,9 +76,6 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   private subQuery: Subscription;
   private subLang: Subscription;
   private _mapOptions: LajiMapOptions = {
-    controls: {
-      draw: false
-    },
     center: [64.709804, 25],
     zoom: 2,
     tileLayerOpacity: 0.5

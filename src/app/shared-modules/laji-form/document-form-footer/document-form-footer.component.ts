@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
-import { Readonly } from '@laji-form/laji-form-document.facade';
+import { FormWithData, Readonly } from '@laji-form/laji-form-document.facade';
 import { FormService } from '../../../shared/service/form.service';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
@@ -23,7 +23,7 @@ export class DocumentFormFooterComponent {
   @Output() submitTemplate = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
-  _form: any;
+  _form: FormWithData;
   _locked: boolean;
   _admin = false;
   show = {
@@ -40,32 +40,23 @@ export class DocumentFormFooterComponent {
   constructor() { }
 
   @Input()
-  set form(form: any) {
+  set form(form: FormWithData) {
     if (!form) {
       return;
     }
     this._form = form;
     this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = (form.formData.id?.indexOf('T:') !== 0 && FormService.hasFeature(form, Form.Feature.AdminLockable))
+    this._locked = (form.formData.id?.indexOf('T:') !== 0 && form.options?.adminLockable)
       ? (form.formData && !!form.formData.locked)
       : undefined;
-    ['save', 'temp', 'cancel'].forEach(prop => {
-      let show: boolean;
+    const isReadOnly = [Readonly.noEdit, Readonly.true].includes(this.readonly);
+    this.show = {
+      save: !form.options?.hideSaveButton && !isReadOnly,
+      temp: !form.options?.hideDraftButton && !isReadOnly && !form.options?.mobile ,
+      cancel: !form.options?.hideCancelButton
+    };
 
-      if (!form || !form.actions) {
-        if (prop !== 'temp' || !FormService.hasFeature(form, Form.Feature.Mobile)) {
-          show = true;
-        }
-      } else {
-        show = prop in form.actions;
-      }
-      if ((prop === 'save' || prop === 'temp') && [Readonly.noEdit, Readonly.true].includes(this.readonly)) {
-        show = false;
-      }
-      this.show[prop] = show;
-    });
-
-    if ((form.features || []).indexOf(Form.Feature.Mobile) !== -1) {
+    if (form.options?.mobile) {
       this.displayFeedback = false;
     }
   }
@@ -93,18 +84,17 @@ export class DocumentFormFooterComponent {
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {
-    if (this._form && this._form.actions && this._form.actions[prop]) {
-      if (prop === 'save' && this.edit && this._form.actions.edit) {
-        return this._form.actions.edit;
-      }
-      return this._form.actions[prop];
-    }
-    if (prop === 'save') {
-      return 'haseka.form.savePublic';
-    } else if (prop === 'temp') {
-      return 'haseka.form.savePrivate';
-    }
-    return 'haseka.form.back';
+    const options = this._form.options || {} as Form.FormOptions;
+    switch (prop) {
+      case 'save':
+        return this.edit && options.editLabel
+          || !this.edit && options.saveLabel
+          || 'haseka.form.savePublic';
+      case 'temp':
+        return options.draftLabel || 'haseka.form.savePrivate';
+      case 'cancel':
+        return options.cancelLabel || 'haseka.form.back';
+    };
   }
 
   highlightErrorContainer() {

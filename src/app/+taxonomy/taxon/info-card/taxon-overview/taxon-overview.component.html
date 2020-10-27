@@ -45,8 +45,10 @@
     >
       <p class="disclaimer">
         {{ 'taxonomy.map.disclaimer' | translate }}
-        <span style="display: block;">{{ 'taxonomy.map.totalObservations' | translate}} <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206',  reliability: ['RELIABLE', 'UNDEFINED'], needsCheck: false}">
-          <laji-observation-count [query]="queryCount"></laji-observation-count>{{ 'taxonomy.map.totalObservationsNumber' | translate }}</a></span>
+        <span style="display: block;">{{ 'taxonomy.map.totalObservations' | translate}}
+          <a [routerLink]="'/observation/map' | localize" [queryParams]="{target: taxon.id, countryId: 'ML.206',  recordQuality: ['EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL'], needsCheck: false}"><laji-observation-count [query]="queryCount"></laji-observation-count>{{ 'taxonomy.map.totalObservationsNumber' | translate }}</a>
+          <laji-info placement="top">{{ 'taxonomy.map.info' | translate }}</laji-info>
+        </span>
       </p>
       <laji-ykj-map
         [query]="mapQuery"
@@ -151,7 +153,7 @@
           {
             name: 'vernacularName',
             label: 'taxonomy.vernacular.name',
-            cellTemplate: 'multiLang',
+            cellTemplate: 'multiLangFalse',
             sortable: true
           },
           {

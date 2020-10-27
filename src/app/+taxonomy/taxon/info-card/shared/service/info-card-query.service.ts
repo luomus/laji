@@ -9,7 +9,7 @@ export class InfoCardQueryService {
       sourceId: ['KE.3', 'KE.167'],
       typeSpecimen: typeSpecimen,
       includeNonValidTaxa: false,
-      recordQuality: ['COMMUNITY_VERIFIED', 'EXPERT_VERIFIED', 'NEUTRAL'],
+      reliability: ['RELIABLE', 'UNDEFINED'],
       cache: true
     };
   }
@@ -18,7 +18,7 @@ export class InfoCardQueryService {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED'],
+      reliability: ['RELIABLE', 'UNDEFINED'],
       includeNonValidTaxa: false,
       cache: true
     };

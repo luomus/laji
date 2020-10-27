@@ -6,12 +6,11 @@ import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
-import { FormPermissionService } from '../form-permission/form-permission.service';
+import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Person } from '../../shared/model/Person';
-import { environment } from '../../../environments/environment';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
-import { FormCategory, FormList } from './haseka-form-list.interface';
+import { FormCategory } from './haseka-form-list.interface';
 
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
@@ -81,7 +80,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
       this.subFetch.unsubscribe();
     }
     this.loadedLang = lang;
-    this.subFetch = this.formService.getAllForms(this.loadedLang, true).pipe(
+    this.subFetch = this.formService.getAllForms(this.loadedLang).pipe(
       switchMap(forms => this.triplestoreLabelService.getAll([...forms.map(form => form.category)], lang).pipe(
         map(labels => {
           this.categoryLabels = labels;
@@ -91,41 +90,9 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     ).subscribe(
         forms => {
           this.updateCategories(forms);
-          this.updateAdminRights();
         },
         err => this.logger.log('Failed to fetch all forms', err)
       );
-  }
-
-  updateAdminRights() {
-    if (!this.categories) {
-      return;
-    }
-    const formsSub = [];
-    this.categories.forEach(category => {
-      category.forms.forEach(form => {
-        formsSub.push(this.hasAdminRight(form).pipe(map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))));
-      });
-    });
-    ObservableForkJoin(formsSub).subscribe(forms => this.updateCategories(forms));
-  }
-
-  hasAdminRight(form: Form.List): Observable<boolean> {
-    if (!form.collectionID || !form.features ||
-      (form.features.indexOf(Form.Feature.Restricted) === -1 && form.features.indexOf(Form.Feature.Administer) === -1)
-    ) {
-      return ObservableOf(false);
-    }
-    return this.userService.isLoggedIn$.pipe(
-      take(1)).pipe(
-      switchMap(loggedIn => loggedIn ?
-        this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
-          combineLatest(
-            this.person ? ObservableOf(this.person) : this.userService.user$.pipe(take(1)),
-            (permission, person) => ({permission, person})
-          )).pipe(
-          map(data => this.formPermissionService.isAdmin(data.permission, data.person))) :
-        ObservableOf(false)));
   }
 
   trackCategory(idx, category) {
@@ -136,8 +103,7 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     const categories: FormCategory[] = [];
     const idxRef = {};
     let idx = 0;
-    forms.sort((a, b) => environment.formWhitelist.indexOf(a.id) - environment.formWhitelist.indexOf(b.id));
-    forms.forEach((form: FormList) => {
+    forms.forEach((form: Form.List) => {
       const category = form.category || DEFAULT_CATEGORY;
       if (typeof idxRef[category] === 'undefined') {
         categories.push({
