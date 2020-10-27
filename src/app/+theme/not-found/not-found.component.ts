@@ -29,7 +29,7 @@ export class NotFoundComponent implements OnInit {
     const redirectionBase = `/project/${formID}`;
     let redirectionSubRoute = '';
     if (subRoute === '/instructions') {
-      redirectionSubRoute = '/instructions';
+      redirectionSubRoute = '/about';
     } else if (subRoute === '/own-submissions') {
       redirectionSubRoute = '/submissions';
     } else if (subRoute === '/form') {

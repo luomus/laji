@@ -1,5 +1,12 @@
 import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { from, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
@@ -17,15 +24,15 @@ interface FormList {
   styleUrls: ['./form-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormSelectComponent implements OnInit {
+export class FormSelectComponent {
 
   @Input() formID = '';
-  @Input() forms: string[] = [];
   @Input() disabled = false;
   @Output() selected = new EventEmitter<any>();
 
-  forms$: Observable<FormList[]>;
+  forms$: Observable<FormList[]> = of([]);
   loaded = false;
+  _forms: string[] = [];
 
   constructor(
     private formService: FormService,
@@ -34,7 +41,21 @@ export class FormSelectComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+  @Input()
+  set forms(forms: string[]) {
+    this._forms = forms;
+    this.initForms();
+  }
+
+  get forms() {
+    return this._forms;
+  }
+
+  private initForms() {
+    if (!this.forms) {
+      this.forms$ = of([]);
+      return;
+    }
     this.forms$ = from(this.forms).pipe(
       mergeMap(id => this.formService.getForm(id, this.translateService.currentLang).pipe(
         switchMap(form => this.formPermissionService.hasAccessToForm(id).pipe(
