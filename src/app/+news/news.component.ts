@@ -49,8 +49,8 @@ export class NewsComponent implements OnInit, OnDestroy {
       }
       setTimeout(() => {
         let paragraph = (document.getElementById("wrapper")).getElementsByTagName("p").item(0).innerText;
-        this.headerService.updateMetaDescription(paragraph);
         this.headerService.createTwitterCard(newsItem.title + ' | ' + this.title.getTitle());
+        this.headerService.updateMetaDescription(paragraph);
       }, 0);
     });
   }
