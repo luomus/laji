@@ -114,8 +114,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const routeData$ = this.projectFormService.getNamedPlacesRouteData$(this.route);
-    this.documentForm$ = routeData$.pipe(map(data => data.documentForm));
-    const placeForm$ = routeData$.pipe(map(data => data.placeForm));
+    this.documentForm$ = routeData$.pipe(take(1), map(data => data.documentForm));
+    const placeForm$ = routeData$.pipe(take(1), map(data => data.placeForm));
 
     const activeNP$ = combineLatest(routeData$, this.reloadNamedPlaces$).pipe(switchMap(([query]) =>
       this.namedPlaceService.getNamedPlace(query['activeNP'], undefined, (query.documentForm.options?.namedPlaceOptions || {}).includeUnits)
