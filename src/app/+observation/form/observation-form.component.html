@@ -53,7 +53,7 @@
     <ng-template #taxonItem  let-model="item">
       <span class="autocomplete-container" [innerHtml]="model['autocompleteDisplayName']"></span>
     </ng-template>
-    
+
     <laji-pill-list
       [isLabel]="true"
       [list]="query.target || []"
@@ -592,9 +592,7 @@
 <!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
   <ng-container *ngIf="advancedMode || query.administrativeStatusId">
-    <p>
-      {{ 'observation.intro.adminStatus' | translate }}
-    </p>
+    <p [innerHTML]="'observation.intro.adminStatus' | translate"></p>
     <laji-metadata-select
       [info]="'observation.info.adminStatus' | translate"
       [(ngModel)]="query.administrativeStatusId"
