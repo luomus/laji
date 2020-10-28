@@ -9,7 +9,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { WarehousePipe } from '../../../shared/pipe/warehouse.pipe';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
-import { switchMap, toArray, tap, distinctUntilChanged, map } from 'rxjs/operators';
+import { switchMap, toArray, concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-observation-effective-tags-taxon',
@@ -47,10 +47,17 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     ) { }
 
   ngOnInit() {
-    !this.annotationTags ? setTimeout(() => {
-     this.loadEffectiveTags()
-    }, 0) : this.loadEffectiveTags();
-
+    this.convertEffective$ = from(this.unit?.interpretations?.effectiveTags || []).pipe(
+      concatMap(tag => this.warehouseValueMappingService.getOriginalKey(tag as string)),
+      toArray(),
+      switchMap(keys => this.annotationTags ?
+        of(this.annotationTags.filter(item => keys.includes(item.id))) :
+        from(keys).pipe(
+          concatMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
+          toArray()
+        )
+      )
+    );
      this.unit.addedTags = [];
      this.subscriptParent = this.loadingElements.childEventListner().subscribe(event => {
       this.annotationResolving = event;
@@ -62,20 +69,6 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     } else {
       this.haschangedTaxon = false;
     }
-  }
-
-  loadEffectiveTags() {
-    this.convertEffective$ = from(this.unit?.interpretations?.effectiveTags || []).pipe(
-      switchMap(tag => this.warehouseValueMappingService.getOriginalKey(tag as string)),
-      toArray(),
-      switchMap(keys => this.annotationTags ?
-        of(this.annotationTags.filter(item => keys.includes(item.id))) :
-        from(keys).pipe(
-          switchMap(key => this.annotationService.getTag(key, this.translate.currentLang)),
-          toArray(),
-        )
-      )
-    );
   }
 
   ngOnDestroy() {
