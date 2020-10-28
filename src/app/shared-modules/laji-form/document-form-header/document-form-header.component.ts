@@ -8,6 +8,7 @@ import { ILajiFormState } from '@laji-form/laji-form-document.facade';
 import * as moment from 'moment';
 import { AreaService } from '../../../shared/service/area.service';
 import { Form } from '../../../shared/model/Form';
+import { HeaderService } from '../../../../app/shared/service/header.service'
 
 @Component({
   selector: 'laji-document-form-header',
@@ -54,7 +55,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private userService: UserService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private areaService: AreaService
+    private areaService: AreaService,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
@@ -91,7 +93,18 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
             this.editingOldWarning = true;
           }
         }
+        this.headerService.createTwitterCard(form.title + ' | ' + this.title.getTitle());
         this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        if(this.form.logo) {
+          this.headerService.updateFeatureImage(this.form.logo);
+        }
+        setTimeout(() => {
+          let paragraph = document.getElementsByTagName("laji-info-page").item(0) ? 
+          (document.getElementsByTagName("laji-info-page")).item(0).getElementsByTagName("p").item(0).innerText : 
+          this.translate.instant('haseka.metaDescription.text');
+
+          this.headerService.updateMetaDescription(paragraph);
+        }, 3000);
         this.namedPlaceHeader = this.getNamedPlaceHeader();
         this.cd.markForCheck();
       });
