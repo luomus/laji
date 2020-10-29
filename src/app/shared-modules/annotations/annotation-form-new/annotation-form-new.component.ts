@@ -426,7 +426,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   checkInsideRemovableTags(value) {
-    console.log('ciao')
     this.annotationRemovableTags$.subscribe(data => {
       this.tmpTags = data;
       if (this.annotation.addedTags.indexOf('MMAN.5') === -1 && this.annotation.addedTags.indexOf('MMAN.8') === -1

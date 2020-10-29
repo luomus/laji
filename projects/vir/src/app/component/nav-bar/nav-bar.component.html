@@ -19,6 +19,7 @@
               [placeholder]="'species.search' | translate"
               (visibleTaxon)="updateView()"
               [visible]="showSearch"
+              [container]="'navbar'"
               [expand]="'right'"></laji-omni-search>
           </div>
         </div>
@@ -33,7 +34,7 @@
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
               </a>
               <div *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
-                <laji-taxon-dropdown (close)="onCloseTaxonDropdown()"></laji-taxon-dropdown>
+                <laji-taxon-dropdown [visible]="taxonMenu.isOpen" (close)="onCloseTaxonDropdown()"></laji-taxon-dropdown>
               </div>
             </li>
             <li [routerLinkActive]="['active']">
@@ -76,6 +77,7 @@
                 [placeholder]="'species.search' | translate"
                 (visibleTaxon)="updateView()"
                 [visible]="showSearch"
+                [container]="'navbar'"
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
