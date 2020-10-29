@@ -21,6 +21,8 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SurveyBoxComponent } from 'src/app/shared-modules/survey-box/survey-box.component';
+
 
 @Component({
   selector: 'laji-omni-search',
@@ -38,8 +40,10 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() minLength = 3;
   @Input() expand = '';
   @Input() visible = true;
+  @Input() container: string = 'body';
   @Output() visibleTaxon = new EventEmitter<any>();
   @Output() close = new EventEmitter<void>();
+
   public search = '';
   public searchControl = new FormControl();
   public active = 0;
@@ -90,6 +94,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.search = '';
     this.taxa = [];
     this.close.emit();
+    this.changeDetector.markForCheck();
   }
 
   activate(index: number): void {
@@ -153,6 +158,11 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.changeDetector.markForCheck();
       return;
     }
+    if (!this.visible) {
+      this.search = '';
+      return;
+    }
+
     this.loading = true;
     this.subTaxa = this.lajiApi
       .get(LajiApi.Endpoints.autocomplete, 'taxon', {
