@@ -1,12 +1,13 @@
-<div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)">
+<div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)" (lajiClickOutSide)="onClose()">
   <label class="sr-only" for="search-box">{{ placeholder }}</label>
   <input type="text"
          class="form-control input-sm omni"
-         id="search-box"
+         #searchBox
+         name="search"
          [class.expandRight]="expand === 'right'"
          [class.expand]="expand === 'right' || expand === 'left'"
          [class.open]="taxa.length > 0 && search.length > 0"
-         [value]="search"
+         [ngModel]="search"
          [formControl]="searchControl"
          placeholder="{{placeholder}}" autoComplete="off"/>
     <!--<span class="input-group-btn">
@@ -22,7 +23,7 @@
     </span>-->
   <div style="clear: both"></div>
   <div class="col-sm-12" *ngIf="taxa.length > 0 && search.length > 0">
-    <div class="omni-search-results" [class.right]="expand === 'right'" (lajiClickOutSide)="onClose()">
+    <div class="omni-search-results" [class.right]="expand === 'right'">
       <div class="row" *ngIf="taxon">
         <div class="col-md-4 matches taxon-list">
           <span
