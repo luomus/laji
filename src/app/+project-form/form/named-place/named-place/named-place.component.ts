@@ -64,10 +64,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   documentForm$: Observable<Form.SchemaForm>;
   vm$: Observable<DerivedFromInput>;
 
-  namedPlaces: NamedPlace[];
-  namedPlace: NamedPlace;
-
-  userID: string;
   areaTypes = Area.AreaType;
   loading = false;
 
@@ -236,6 +232,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   onActivePlaceChange(activeNP: string) {
+    this.vm$.pipe(take(1)).subscribe(({activeNP: _activeNP}) => {
+      if (activeNP && activeNP === _activeNP?.id) {
+        this.infoView.npClick();
+      }
+    });
     this.updateQuery({activeNP});
   }
 
