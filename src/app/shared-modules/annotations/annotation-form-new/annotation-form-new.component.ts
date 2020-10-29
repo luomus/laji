@@ -454,6 +454,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           if (tag.id !== value.id) {
             if ((tag.id === 'MMAN.5' || tag.id === 'MMAN.8' || tag.id === 'MMAN.9' || tag.id === 'MMAN.3'
             || tag.id === 'MMAN.50' || tag.id === 'MMAN.51')
+            && this.annotationTagsObservation[value.id].type !== 'check' && this.annotationTagsObservation[value.id].type !== 'info'
             && this.annotation.removedTags.indexOf(tag.id) === -1 && this.annotation.addedTags.indexOf(tag.id) === -1) {
               this.addToRemoveTags(tag.id);
             }
@@ -471,17 +472,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
             }
           });
         } else {
-          this.tmpTags.forEach(tag => {
-            if ((this.annotationTagsObservation[tag.id].type === 'check' || this.annotationTagsObservation[tag.id].type === 'info')
-            && this.annotation.removedTags.indexOf(tag.id) !== -1) {
-              if (this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1 ||
-             this.annotation.addedTags.indexOf('MMAN.50') !== -1 ||
-              this.annotation.addedTags.indexOf('MMAN.51') !== -1) {
-                const index = this.annotation.removedTags.indexOf(tag.id);
-                this.annotation.removedTags.splice(index, 1);
-              }
-            }
-          });
+         
         }
 
         if (this.annotation.removedTags.indexOf(value.id) !== -1 &&

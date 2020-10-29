@@ -46,6 +46,18 @@
     </div>
 </div>
 </ng-template>
+<div class="row removed-tags" *ngIf="(annotationRemovableTags$ | async)?.length > 0 && expert && (personRoleAnnotation === 'MMAN.expert' || personRoleAnnotation === 'MMAN.ictAdmin' ) && (unit.interpretations && unit.interpretations.effectiveTags && unit.interpretations.effectiveTags.length > 0)">
+      <div class="col-sm-12">
+         <label>{{ 'annotation.removeTags' | translate }}</label>
+         <div *ngFor="let item of annotationRemovableTags$ | async " class="list-checkbox">
+           <main class="lu">
+               <lu-checkbox (input)="addToRemoveTags(item.id)" [disabled]="((annotation.addedTags.indexOf('MMAN.5') !== -1 || annotation.addedTags.indexOf('MMAN.3') !== -1))" [checked]="annotation.removedTags.indexOf(item.id) !== -1">
+                 <div class="pill" [ngClass]="{'success': item.quality==='positive', 'warning': item.quality==='check', 'danger': item.quality==='negative' }">{{ item.id | toQName | label }}</div>
+               </lu-checkbox>
+            </main>
+          </div>
+      </div>
+</div>
 <!--
 <div class="d-flex flex-row flex-nowrap">
   <ng-container *ngIf="expert else checkTags">
