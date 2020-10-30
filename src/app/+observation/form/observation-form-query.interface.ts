@@ -6,9 +6,11 @@ export interface ObservationFormQuery {
   timeEnd: string;
   informalTaxonGroupId: string;
   includeOnlyValid: boolean;
-  nationallySignificantInvasiveSpecies: boolean;
   euInvasiveSpeciesList: boolean;
+  controllingRisksOfInvasiveAlienSpeciesGovernment: boolean;
   quarantinePlantPest: boolean;
+  qualityPlantPest: boolean;
+  otherPlantPest: boolean;
   otherInvasiveSpeciesList: boolean;
   nationalInvasiveSpeciesStrategy: boolean;
   controllingRisksOfInvasiveAlienSpecies: boolean;

@@ -22,22 +22,26 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     onlyInvasive: false,
     onlyNonInvasive: false,
     euInvasiveSpeciesList: false,
-    nationallySignificantInvasiveSpecies: false,
     controllingRisksOfInvasiveAlienSpecies: false,
     quarantinePlantPest: false,
-    allInvasiveSpecies: false
+    allInvasiveSpecies: false,
+    nationalInvasiveSpeciesStrategy: false,
+    otherInvasiveSpeciesList: false,
+    otherPlantPest: false,
+    qualityPlantPest: false
   };
 
   public subUpdate: Subscription;
 
   public invasiveSelected: string[] = [];
   public invasiveStatuses: string[] = [
+    'euInvasiveSpeciesList',
     'controllingRisksOfInvasiveAlienSpecies',
-    'nationallySignificantInvasiveSpecies',
+    'quarantinePlantPest',
+    'qualityPlantPest',
+    'otherPlantPest',
     'nationalInvasiveSpeciesStrategy',
     'otherInvasiveSpeciesList',
-    'euInvasiveSpeciesList',
-    'quarantinePlantPest'
   ];
 
   constructor(
@@ -63,7 +67,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+
 
   ngOnDestroy() {
     if (this.subUpdate) {
@@ -101,8 +105,16 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   private updateInvasiveSelected() {
     const invasiveSelected = [];
     const allFields = [
-      'onlyInvasive', 'onlyNonInvasive', 'euInvasiveSpeciesList',
-      'nationallySignificantInvasiveSpecies', 'controllingRisksOfInvasiveAlienSpecies', 'quarantinePlantPest', 'allInvasiveSpecies'
+      'onlyInvasive',
+      'onlyNonInvasive',
+      'euInvasiveSpeciesList',
+      'controllingRisksOfInvasiveAlienSpecies',
+      'quarantinePlantPest',
+      'qualityPlantPest',
+      'otherPlantPest',
+      'nationalInvasiveSpeciesStrategy',
+      'otherInvasiveSpeciesList',
+      'allInvasiveSpecies',
     ];
     for (const i in allFields) {
       if (this.formQuery[allFields[i]]) {
@@ -213,9 +225,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       onlyInvasive: query.invasiveSpeciesFilter === true,
       onlyNonInvasive: query.invasiveSpeciesFilter === false,
       taxon: query.target,
-      nationallySignificantInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
+      qualityPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.qualityPlantPest'),
+      otherPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.otherPlantPest'),
       quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
+      nationalInvasiveSpeciesStrategy: this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
+      otherInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
       allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
     };

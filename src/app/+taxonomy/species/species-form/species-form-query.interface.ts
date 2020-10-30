@@ -4,8 +4,11 @@ export interface SpeciesFormQuery {
   onlyInvasive: boolean;
   onlyNonInvasive: boolean;
   euInvasiveSpeciesList: boolean;
-  nationallySignificantInvasiveSpecies: boolean;
   controllingRisksOfInvasiveAlienSpecies: boolean;
   quarantinePlantPest: boolean;
+  qualityPlantPest: boolean;
+  otherPlantPest: boolean;
+  nationalInvasiveSpeciesStrategy: boolean;
+  otherInvasiveSpeciesList: boolean;
   allInvasiveSpecies: boolean;
 }
