@@ -24,4 +24,4 @@ export const observationRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(observationRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(observationRoutes);

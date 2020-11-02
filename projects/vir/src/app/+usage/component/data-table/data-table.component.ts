@@ -108,7 +108,6 @@ export class DataTableComponent implements AfterViewInit {
       prop: 'id',
       name: 'download',
       label: 'usage.dataDownload',
-      cellTemplate: this.downloadFileTpl,
       canAutoResize: true
     }
   ];
