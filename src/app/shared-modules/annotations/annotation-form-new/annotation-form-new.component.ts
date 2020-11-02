@@ -472,7 +472,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
             }
           });
         } else {
-         
+          
         }
 
         if (this.annotation.removedTags.indexOf(value.id) !== -1 &&
