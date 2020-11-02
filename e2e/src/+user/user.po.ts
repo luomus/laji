@@ -1,19 +1,21 @@
 import { browser, by, element } from 'protractor';
 
-const testUsers = {
+export const DEFAULT_TEST_USER = 'vixriihi+e2e-no@gmail.com';
+
+export const TEST_USERS = {
   'vixriihi+e2e-no@gmail.com': {
     id: 'MA.1437',
-    name: 'E2E Testing ((no access))',
+    nameWithGroup: 'E2E Testing ((no access))',
+    name: 'E2E Testing',
     pw: '3Lr4nzZvfZVPPic'
   }
 };
 
-let currentUser;
-
 export class UserPage {
 
-  private usernameElem = element.all(by.id('logged-in-user'));
+  private usernameElem = element(by.id('logged-in-user'));
   private loginElem = element(by.id('login-link'));
+  private logoutElem = element(by.css('[href$="/user/logout"]'));
 
   // laji-auth
   private authLocal = element(by.id('local-login'));
@@ -25,26 +27,21 @@ export class UserPage {
     return browser.get('/user') as Promise<void>;
   }
 
-  getLoggedInUser() {
+  getLoggedInUsersName() {
     return this.usernameElem.getText() as Promise<string>;
   }
 
-  isPresentUsername() {
+  isPresentLoggedInUsersName() {
     return this.usernameElem.isPresent() as Promise<boolean>;
   }
 
-  getUsersName() {
-    return testUsers[currentUser].name;
-  }
-
-  async login(user = 'vixriihi+e2e-no@gmail.com'): Promise<void> {
+  async login(user = DEFAULT_TEST_USER): Promise<void> {
     await browser.waitForAngularEnabled(false);
     if (!await this.usernameElem.isPresent()) {
-      currentUser = user;
       await this.loginElem.click();
       await this.authLocal.click();
       await this.authUsername.sendKeys(user);
-      await this.authPassword.sendKeys(testUsers[user].pw);
+      await this.authPassword.sendKeys(TEST_USERS[user].pw);
       await this.submitButton.click();
     }
     browser.waitForAngularEnabled(true);
@@ -52,7 +49,8 @@ export class UserPage {
 
   async logout(): Promise<void> {
     if (await this.usernameElem.isPresent()) {
-      await this.loginElem.click();
+      await this.usernameElem.click();
+      await this.logoutElem.click();
     }
   }
 }

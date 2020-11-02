@@ -1,5 +1,5 @@
 import { SaveObservationsPage } from './save-observations.po';
-import { UserPage } from '../+user/user.po';
+import { DEFAULT_TEST_USER, TEST_USERS, UserPage } from '../+user/user.po';
 import { ErrorPage } from '../+error/error.page';
 import { ProjectFormPage } from '../+project-form/project-form.po';
 
@@ -20,12 +20,14 @@ describe('Save observations page', () => {
     done();
   });
 
-  afterAll(() => {
-    user.logout();
+  afterAll(async (done) => {
+    await user.logout();
+    done();
   });
 
-  afterEach(() => {
-    expect(error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+  afterEach(async (done) => {
+    expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+    done();
   });
 
   it('should show list of forms', async (done) => {
@@ -49,7 +51,7 @@ describe('Save observations page', () => {
         if (!await projectPage.hasNamedPlace()) {
           expect(await page.isPresentLegInput()).toBe(true, 'No leg input found on ' + id);
           expect(await page.isPresentSubmitButton()).toBe(true, 'No submit button found on ' + id);
-          expect(await page.getLegInputValue()).toBe(user.getUsersName(), 'Leg value didn\'t match expected on ' + id);
+          expect(await page.getLegInputValue()).toBe(TEST_USERS[DEFAULT_TEST_USER].nameWithGroup, 'Leg value didn\'t match expected on ' + id);
           expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible on ' + id);
         }
       }
