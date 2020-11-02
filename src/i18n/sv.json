@@ -681,6 +681,7 @@
   "nafi.stats.intro": "Valtakunnallinen päiväperhosseuranta (NAFI) on <a href=\"http://www.ekay.net/ymparisto/perhosseuranta/\" target=\"_blank\">Etelä-Karjalan Allergia- ja Ympäristöinstituutin</a> ja <a href=\"http://www.perhostutkijainseura.fi\" target=\"_blank\">Suomen Perhostutkijain Seuran</a> koordinoima tutkimushanke.",
   "nafi.stats.times": "Välj tidsperiod för att observera:",
   "nafi.stats.title": "Den riksomfattande dagfjärilsmoniteringen i Finland (NAFI)",
+  "nafi.stats.description": "Den riksomfattande dagfjärilsmoniteringen i Finland (NAFI) {{fromMonth}}{{fromYear}}. More description SV",
   "navigation.birdPointCount": "Punkttaxering",
   "navigation.checklist": "Artlistan över finska arter",
   "navigation.collection": "Informationskällör",

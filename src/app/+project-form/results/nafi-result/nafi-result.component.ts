@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -6,6 +6,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
+import { HeaderService } from '../../../../app/shared/service/header.service'
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-nafi-result',
@@ -13,7 +15,7 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./nafi-result.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiResultComponent implements OnInit, OnDestroy {
+export class NafiResultComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() form: Form.SchemaForm;
 
@@ -41,7 +43,9 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private resultService: ResultService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private headerService: HeaderService,
+    private title: Title
   ) {
     const now = new Date();
     this.currentYear = now.getFullYear();
@@ -54,9 +58,11 @@ export class NafiResultComponent implements OnInit, OnDestroy {
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;
     });
+
     this.subQuery = this.route.queryParams.subscribe(params => {
       const time = (params['time'] && Array.isArray(params['time'])) ?
         params['time'][0] : params['time'];
+        console.log(time)
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
         params['taxonId'][0] : params['taxonId'];
       this.emptyTime();
@@ -78,8 +84,16 @@ export class NafiResultComponent implements OnInit, OnDestroy {
         this.query.ykj10kmCenter = params['grid'];
       }
       this.page = +params['page'] || 1;
+
+      this.headerService.createTwitterCard(this.translate.instant('nafi.stats.title') + ' | ' + this.title.getTitle());
+      this.title.setTitle(this.translate.instant('nafi.stats.title') + ' | ' + this.title.getTitle());
+      this.headerService.updateMetaDescription(this.translate.instant('nafi.stats.description', {fromMonth: this.fromMonth !=='' ? this.translate.instant(this.fromMonth) : '', fromYear: this.fromYear || this.currentYear}));
       this.cdr.detectChanges();
     });
+  }
+
+  ngOnChanges(changes) {
+   console.log(changes)
   }
 
   ngOnDestroy() {

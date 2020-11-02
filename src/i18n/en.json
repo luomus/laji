@@ -681,6 +681,7 @@
   "nafi.stats.intro": "The National Butterfly Survey (NAFI) is a <a href=\"http://www.ekay.net/environment/flower monitoring/\" target=\"_blank\">South Karelian Institute of Allergy and the Environment</a> research project coordinated by the <a href = \"http : //www.perhostutkijainseura.fi \"target =\" _ blank \">Finnish Society of Butterfly Researchers</a>.",
   "nafi.stats.times": "Choose the time period to observe:",
   "nafi.stats.title": "National butterfly survey of Finland",
+  "nafi.stats.description": "National butterfly survey of Finland {{fromMonth}}{{fromYear}}. More description EN",
   "navigation.birdPointCount": "Point count",
   "navigation.checklist": "Checklist of Finnish species",
   "navigation.collection": "Information sources",
