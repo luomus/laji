@@ -92,21 +92,7 @@ export class ObservationFacade {
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
     settingsMap: this.settingsMap$
-  }).pipe(
-    startWith({
-      lgScreen: true,
-      query: {},
-      loadingUnits: false,
-      loadingTaxa: false,
-      advanced: false,
-      activeTab: _state.activeTab,
-      showIntro: this.persistentState.showIntro,
-      countUnit: null,
-      countTaxa: null,
-      filterVisible: _state.filterVisible,
-      settingsMap: _state.settingsMap
-    })
-  );
+  });
 
   private hashCache: {[key: string]: string} = {};
   private _emptyQuery: WarehouseQueryInterface = {};

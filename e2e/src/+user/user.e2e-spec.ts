@@ -1,5 +1,4 @@
-import { UserPage } from './user.page';
-import config from '../../config';
+import { DEFAULT_TEST_USER, TEST_USERS, UserPage } from './user.po';
 import { ErrorPage } from '../+error/error.page';
 
 describe('User page', () => {
@@ -11,19 +10,21 @@ describe('User page', () => {
     error = new ErrorPage();
   });
 
-  afterEach(() => {
-    expect(error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+  afterEach(async (done) => {
+    expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+    done();
   });
 
-  it('should login user', () => {
-    page.login();
-    page.navigateTo();
-    expect(page.getLoggedInUser()).toEqual(config.person.name);
+  it('should login user', async (done) => {
+    await page.navigateTo();
+    await page.login();
+    expect(await page.getLoggedInUsersName()).toEqual(TEST_USERS[DEFAULT_TEST_USER].name);
+    done();
   });
 
-  it('should logout user', () => {
-    page.logout();
-    page.navigateTo();
-    expect(page.isPresentUsername()).toBeFalsy();
+  it('should logout user', async (done) => {
+    await page.logout();
+    expect(await page.isPresentLoggedInUsersName()).toBeFalsy();
+    done();
   });
 });

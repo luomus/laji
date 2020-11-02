@@ -8,4 +8,4 @@ export const routes: Routes = [
   {path: '', pathMatch: 'full', component: SubmissionsComponent}
 ]
 
-export const routing: ModuleWithProviders = RouterModule.forChild(routes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

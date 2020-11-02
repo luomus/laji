@@ -41,9 +41,10 @@
       [typeaheadOptionsLimit]="autocompleteLimit"
       [typeaheadWaitMs]="200"
       [typeaheadMinLength]="3"
-      [typeaheadSelectFirstItem]="true"
+      [typeaheadSelectFirstItem]="false"
       [typeaheadOptionField]="'autocompleteSelectedName'"
       [typeaheadItemTemplate]="taxonItem"
+      [typeaheadIsFirstItemActive]="false"
       (typeaheadLoading)="changeTypeaheadLoading($event)"
       (typeaheadOnSelect)="onTaxonSelect($event)"
       (keyup)="onTaxonSelect($event)"
@@ -671,13 +672,22 @@
     <label class="small-label"><laji-checkbox [value]="formQuery.euInvasiveSpeciesList" (valueChange)="onInvasiveCheckBoxToggle('euInvasiveSpeciesList')"></laji-checkbox>{{ 'MX.euInvasiveSpeciesList' | label }}</label>
   </div>
   <div>
-    <label class="small-label"><laji-checkbox [value]="formQuery.nationallySignificantInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle('nationallySignificantInvasiveSpecies')"></laji-checkbox>{{ 'MX.nationallySignificantInvasiveSpecies' | label }}</label>
+    <label class="small-label"><laji-checkbox [value]="formQuery.controllingRisksOfInvasiveAlienSpecies" (valueChange)="onInvasiveCheckBoxToggle('controllingRisksOfInvasiveAlienSpecies')"></laji-checkbox>{{ 'MX.controllingRisksOfInvasiveAlienSpecies' | label }}</label>
   </div>
   <div>
-      <label class="small-label"><laji-checkbox [value]="formQuery.quarantinePlantPest" (valueChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"></laji-checkbox>{{ 'MX.quarantinePlantPest' | label }}</label>
+    <label class="small-label"><laji-checkbox [value]="formQuery.quarantinePlantPest" (valueChange)="onInvasiveCheckBoxToggle('quarantinePlantPest')"></laji-checkbox>{{ 'MX.quarantinePlantPest' | label }}</label>
   </div>
   <div>
-      <label class="small-label"><laji-checkbox [value]="formQuery.controllingRisksOfInvasiveAlienSpecies" (valueChange)="onInvasiveCheckBoxToggle('controllingRisksOfInvasiveAlienSpecies')"></laji-checkbox>{{ 'MX.controllingRisksOfInvasiveAlienSpecies' | label }}</label>
+    <label class="small-label"><laji-checkbox [value]="formQuery.qualityPlantPest" (valueChange)="onInvasiveCheckBoxToggle('qualityPlantPest')"></laji-checkbox>{{ 'MX.qualityPlantPest' | label }}</label>
+  </div>
+  <div>
+    <label class="small-label"><laji-checkbox [value]="formQuery.otherPlantPest" (valueChange)="onInvasiveCheckBoxToggle('otherPlantPest')"></laji-checkbox>{{ 'MX.otherPlantPest' | label }}</label>
+  </div>
+  <div>
+    <label class="small-label"><laji-checkbox [value]="formQuery.nationalInvasiveSpeciesStrategy" (valueChange)="onInvasiveCheckBoxToggle('nationalInvasiveSpeciesStrategy')"></laji-checkbox>{{ 'MX.nationalInvasiveSpeciesStrategy' | label }}</label>
+  </div>
+  <div>
+      <label class="small-label"><laji-checkbox [value]="formQuery.otherInvasiveSpeciesList" (valueChange)="onInvasiveCheckBoxToggle('otherInvasiveSpeciesList')"></laji-checkbox>{{ 'MX.otherInvasiveSpeciesList' | label }}</label>
   </div>
   <div>
     <label class="small-label"><laji-checkbox [value]="formQuery.allInvasiveSpecies" (valueChange)="onInvasiveCheckBoxToggle(invasiveStatuses)"></laji-checkbox>{{ 'observation.form.allInvasive' | translate }}</label>

@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { Document } from '../../shared/model/Document';
@@ -56,7 +56,8 @@ export class LatestDocumentsFacade implements OnDestroy {
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private formService: FormService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private ngZone: NgZone
   ) {
     this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
       this.updateLocal();
@@ -77,7 +78,9 @@ export class LatestDocumentsFacade implements OnDestroy {
       delete this.remoteRefresh;
     }
     // ES is not reflecting deletes immediately so we'll make another remote update after 10sec.
-    this.remoteRefresh = setTimeout(() => this.updateRemote(), 10000);
+    this.ngZone.runOutsideAngular(() => {
+      this.remoteRefresh = setTimeout(() => this.ngZone.run(() => this.updateRemote()), 10000);
+    });
   }
 
   discardTmpData(id: string): void {

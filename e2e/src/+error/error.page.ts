@@ -2,9 +2,9 @@ import { by, element } from 'protractor';
 
 export class ErrorPage {
 
-  private errorDialog = element.all(by.css('.toast-error'));
+  private errorDialog = element(by.css('.toast-error'));
 
-  async isPresentErrorDialog(): Promise<boolean> {
-    return await this.errorDialog.isPresent();
+  isPresentErrorDialog() {
+    return this.errorDialog.isPresent() as Promise<boolean>;
   }
 }

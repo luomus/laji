@@ -73,12 +73,13 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   drawing = false;
   drawingShape: string;
   invasiveStatuses: string[] = [
-    'nationallySignificantInvasiveSpecies',
+    'euInvasiveSpeciesList',
+    'controllingRisksOfInvasiveAlienSpecies',
+    'quarantinePlantPest',
+    'qualityPlantPest',
+    'otherPlantPest',
     'nationalInvasiveSpeciesStrategy',
     'otherInvasiveSpeciesList',
-    'euInvasiveSpeciesList',
-    'quarantinePlantPest',
-    'controllingRisksOfInvasiveAlienSpecies'
   ];
 
   subQueryUpdate: Subscription;

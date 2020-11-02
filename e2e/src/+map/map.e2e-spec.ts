@@ -1,4 +1,4 @@
-import { MapPage } from './map.page';
+import { MapPage } from './map.po';
 import { ErrorPage } from '../+error/error.page';
 
 describe('Map page', () => {
@@ -10,12 +10,14 @@ describe('Map page', () => {
     error = new ErrorPage();
   });
 
-  afterEach(() => {
-    expect(error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+  afterEach(async (done) => {
+    expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+    done();
   });
 
-  it('should zoom in to data on the map', () => {
-    page.navigateToMapWithObservationData();
-    expect(page.isZoomedIn()).toBe(true, 'Map was not zoomed to data');
+  it('should zoom in to data on the map', async (done) => {
+    await page.navigateToMapWithObservationData();
+    expect(await page.isZoomedIn()).toBe(true, 'Map was not zoomed to data');
+    done();
   });
 });
