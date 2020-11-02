@@ -1,4 +1,4 @@
-import { MapPage } from './map.page';
+import { MapPage } from './map.po';
 import { ErrorPage } from '../+error/error.page';
 
 describe('Map page', () => {

@@ -6,4 +6,4 @@ export const routes: Routes = [
   {path: '', component: ResultsComponent, data: {noScrollToTop: true}}
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(routes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

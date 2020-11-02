@@ -2,7 +2,7 @@ import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, NgZone,
   OnDestroy,
   OnInit,
   ViewChild
@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   devRibbon = false;
   showSearch = false;
   env = environment.type;
- 
+
   notificationsNotSeen = 0;
   notificationsTotal$: Observable<number>;
 
@@ -49,7 +49,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     protected changeDetector: ChangeDetectorRef,
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private ngZone: NgZone
   ) {
     this.devRibbon = !environment.production || environment.type === Global.type.beta;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
@@ -70,14 +71,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.changeDetector.detectChanges();
     });
     this.notificationsTotal$ = this.notificationsFacade.total$;
-    timer(1000, 60000).pipe(
-      switchMap(() => this.browserService.visibility$),
-      filter(visible => visible),
-      switchMap(() => this.userService.isLoggedIn$),
-      filter(res => !!res),
-      takeUntil(this.unsubscribe$)
-    ).subscribe(() => {
-      this.notificationsFacade.checkForNewNotifications();
+    this.ngZone.runOutsideAngular(() => {
+      timer(1000, 60000).pipe(
+        switchMap(() => this.browserService.visibility$),
+        filter(visible => visible),
+        switchMap(() => this.userService.isLoggedIn$),
+        filter(res => !!res),
+        takeUntil(this.unsubscribe$)
+      ).subscribe(() => {
+        this.ngZone.run(() => this.notificationsFacade.checkForNewNotifications());
+      });
     });
   }
 

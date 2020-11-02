@@ -18,4 +18,4 @@ export const viewerRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(viewerRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(viewerRoutes);

@@ -1,9 +1,8 @@
+import {Apollo} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {InMemoryCache, NormalizedCacheObject} from '@apollo/client/core';
 import { NgModule } from '@angular/core';
-
-import { Apollo, ApolloModule } from 'apollo-angular';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,9 +17,7 @@ const GRAPH_QL_STATE_KEY = makeStateKey<any>('graphql.state');
 @NgModule({
   declarations: [],
   exports: [
-    HttpClientModule,
-    ApolloModule,
-    HttpLinkModule
+    HttpClientModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AcceptLanguageInterceptor, multi: true},

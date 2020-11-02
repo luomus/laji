@@ -82,4 +82,4 @@ export const hasekaRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(hasekaRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(hasekaRoutes);

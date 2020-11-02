@@ -1,4 +1,4 @@
-import { HomePage } from './home.page';
+import { HomePage } from './home.po';
 import { ErrorPage } from '../+error/error.page';
 
 describe('Home page', () => {
