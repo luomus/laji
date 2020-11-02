@@ -22,7 +22,7 @@ import { BrowserService } from 'src/app/shared/service/browser.service';
     [typeaheadOptionsLimit]="typeaheadLimit"
     [typeaheadWaitMs]="200"
     [typeaheadMinLength]="3"
-    [typeaheadSelectFirstItem]="true"
+    [typeaheadSelectFirstItem]="!allowInvalid"
     [typeaheadOptionField]="'autocompleteSelectedName'"
     (typeaheadLoading)="changeTypeaheadLoading($event)"
     (typeaheadOnSelect)="onTaxonSelect($event)"
