@@ -44,6 +44,7 @@
       [typeaheadSelectFirstItem]="false"
       [typeaheadOptionField]="'autocompleteSelectedName'"
       [typeaheadItemTemplate]="taxonItem"
+      [typeaheadIsFirstItemActive]="false"
       (typeaheadLoading)="changeTypeaheadLoading($event)"
       (typeaheadOnSelect)="onTaxonSelect($event)"
       (keyup)="onTaxonSelect($event)"
