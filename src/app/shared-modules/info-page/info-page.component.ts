@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { map, startWith, tap } from 'rxjs/operators';
 import { InformationItem } from '../../shared/model/InformationItem';
+import { HeaderService } from '../../shared/service/header.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-info-page',
@@ -36,7 +38,9 @@ export class InfoPageComponent implements OnChanges {
 
   constructor(
     private translateService: TranslateService,
-    private lajiApiService: LajiApiService
+    private lajiApiService: LajiApiService,
+    private headerService: HeaderService,
+    private metaTitle: Title
   ) { }
 
   @Input()
@@ -72,6 +76,13 @@ export class InfoPageComponent implements OnChanges {
         }));
         this.children.emit(result.children || []);
         this.hasContent.emit(!!result.content.trim());
+        if(result.title){
+          this.metaTitle.setTitle(result.title + ' | ' + this.metaTitle.getTitle());
+          this.headerService.createTwitterCard(result.title);
+        }
+        if(result.content) {
+          this.headerService.updateMetaDescription(this.extractMetaDescription(result.content));
+        }
       }),
       map(result => result.content),
       startWith('')
@@ -82,6 +93,15 @@ export class InfoPageComponent implements OnChanges {
     const parts = (url || '').split('/');
 
     return parts.pop();
+  }
+
+  private extractMetaDescription(str) {
+    str.substring(
+      str.lastIndexOf("<p>") + 1, 
+      str.lastIndexOf("</p>")-1
+    );
+
+    return str.replace(/<[^>]*>?/gm, '');
   }
 
 }

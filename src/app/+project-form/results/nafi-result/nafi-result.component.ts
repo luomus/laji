@@ -62,7 +62,6 @@ export class NafiResultComponent implements OnInit, OnChanges, OnDestroy {
     this.subQuery = this.route.queryParams.subscribe(params => {
       const time = (params['time'] && Array.isArray(params['time'])) ?
         params['time'][0] : params['time'];
-        console.log(time)
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?
         params['taxonId'][0] : params['taxonId'];
       this.emptyTime();
@@ -85,15 +84,19 @@ export class NafiResultComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.page = +params['page'] || 1;
 
-      this.headerService.createTwitterCard(this.translate.instant('nafi.stats.title') + ' | ' + this.title.getTitle());
-      this.title.setTitle(this.translate.instant('nafi.stats.title') + ' | ' + this.title.getTitle());
-      this.headerService.updateMetaDescription(this.translate.instant('nafi.stats.description', {fromMonth: this.fromMonth !=='' ? this.translate.instant(this.fromMonth) : '', fromYear: this.fromYear || this.currentYear}));
+      
+      setTimeout(() => {
+        let variable_title = ' '+(this.fromMonth !=='' ? this.translate.instant(this.fromMonth)+' ' : '') + 
+        (this.fromYear || this.currentYear);
+        this.headerService.createTwitterCard(this.translate.instant('nafi.stats.title') + variable_title + ' | ' + this.title.getTitle());
+        this.title.setTitle(this.translate.instant('nafi.stats.title') + variable_title + ' | ' + this.title.getTitle());
+        this.headerService.updateMetaDescription(this.translate.instant('nafi.stats.description', {fromMonth: this.fromMonth !=='' ? this.translate.instant(this.fromMonth)+' ' : '', fromYear: this.fromYear || this.currentYear}));
+      }, 0);
       this.cdr.detectChanges();
     });
   }
 
   ngOnChanges(changes) {
-   console.log(changes)
   }
 
   ngOnDestroy() {
