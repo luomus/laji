@@ -15,7 +15,7 @@ describe('Project form', () => {
   describe('when logged in', () => {
 
     beforeAll(async (done) => {
-      await userPage.navigateTo();
+      await projectFormPage.navigateTo(FORM_WITH_NAMED_PLACES);
       await userPage.login();
       done();
     });
@@ -26,11 +26,6 @@ describe('Project form', () => {
     });
 
     describe('named places', () => {
-
-      beforeAll(async (done) => {
-        await projectFormPage.navigateTo(FORM_WITH_NAMED_PLACES);
-        done();
-      });
 
       it('view can be navigated to and is displayed', async (done) => {
         await projectFormPage.$formLink.click();
