@@ -76,7 +76,7 @@ export class FormComponent implements OnInit {
               switchMap(usedSubForm => {
                 const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
                 const namedPlace$ = namedPlaceID
-                  ? this.namedPlacesService.getNamedPlace(namedPlaceID)
+                  ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, usedSubForm.options?.namedPlaceOptions?.includeUnits)
                   : of(null);
                 if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
                   this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
