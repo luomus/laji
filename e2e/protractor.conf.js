@@ -22,6 +22,7 @@ exports.config = {
     home: './src/+home/**/*.e2e-spec.ts',
     user: './src/+user/**/*.e2e-spec.ts',
     map: './src/+map/**/*.e2e-spec.ts',
+    projectForm: './src/+project-form/**/*.e2e-spec.ts',
   },
   baseUrl: 'http://localhost:3000/',
   framework: 'jasmine',
