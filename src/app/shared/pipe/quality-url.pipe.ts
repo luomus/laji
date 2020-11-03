@@ -19,7 +19,7 @@ export class QualityUrlPipe implements PipeTransform {
       case 'UNCERTAIN':
         return this.recordPath + 'uncertain.svg'
       case 'ERRONEOUS':
-        return this.recordPath + 'erreneus.svg'
+        return this.recordPath + 'erroneus.svg'
       case 'PROFESSIONAL':
         return this.collectionPath + 'professional_collection.svg'
       case 'HOBBYIST':

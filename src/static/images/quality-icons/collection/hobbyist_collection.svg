@@ -5,36 +5,12 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 145 145"
    height="145mm"
    width="145mm"
-   sodipodi:docname="hobbyist_collection.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1157"
-     inkscape:window-height="480"
-     id="namedview7"
-     showgrid="false"
-     showborder="false"
-     inkscape:zoom="0.43063218"
-     inkscape:cx="-269.37141"
-     inkscape:cy="238.40918"
-     inkscape:window-x="167"
-     inkscape:window-y="220"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg8" />
+   shape-rendering="crispEdges">
   <defs
      id="defs2" />
   <metadata
@@ -50,12 +26,21 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="matrix(1,0,0,1.5,-4.2922443,-44.395239)"
-     id="layer1">
+     id="layer1"
+     transform="matrix(1.5000003,0,0,1.5,-103.93839,-44.395239)"
+     style="fill:#bcbcbc;fill-opacity:1">
     <path
-       d="m 53.042244,37.930159 h 20 v 80.000001 h -20 z m 27.5,0 H 100.54224 V 117.93016 H 80.542244 Z"
-       style="fill:#e5e5e5;fill-opacity:1;stroke-width:0.26458299"
-       id="rect861"
-       inkscape:connector-curvature="0" />
+       id="path868"
+       style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.26458299"
+       d="M 94.292244,37.930159 H 114.29224 V 117.93016 H 94.292244 Z" />
+  </g>
+  <g
+     style="fill:#bcbcbc;fill-opacity:1"
+     transform="matrix(1.5000003,0,0,1.5,-63.938394,-44.39524)"
+     id="g820">
+    <path
+       d="M 94.292244,37.930159 H 114.29224 V 117.93016 H 94.292244 Z"
+       style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.26458299"
+       id="path818" />
   </g>
 </svg>

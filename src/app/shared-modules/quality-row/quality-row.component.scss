@@ -1,13 +1,14 @@
 .quality-row {
   display: flex;
-  align-items: center;
 }
 
 .quality-image {
   float: left;
-  height: 30px;
-  width: 30px;
   padding-right: 5px;
+  min-height: 25px;
+  min-width: 25px;
+  height: 25px;
+  width: 25px;
 }
 
 .quality-label {
