@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
 import { NavPage } from '../shared/nav.page';
 
 export class SaveObservationsPage {
@@ -33,7 +33,12 @@ export class SaveObservationsPage {
     return this.legInput.isPresent() as Promise<boolean>;
   }
 
-  getLegInputValue() {
+  async getLegInputValue(waitForText?: string) {
+    if (waitForText) {
+      const EC = protractor.ExpectedConditions;
+      const hasValue = EC.textToBePresentInElementValue(this.legInput, waitForText);
+      await browser.wait(hasValue, 1000);
+    }
     return this.legInput.getAttribute('value') as Promise<string>;
   }
 
