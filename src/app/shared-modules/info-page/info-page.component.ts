@@ -76,6 +76,7 @@ export class InfoPageComponent implements OnChanges {
         }));
         this.children.emit(result.children || []);
         this.hasContent.emit(!!result.content.trim());
+        console.log(result)
         if(result.title){
           this.metaTitle.setTitle(result.title + ' | ' + this.metaTitle.getTitle());
           this.headerService.createTwitterCard(result.title);

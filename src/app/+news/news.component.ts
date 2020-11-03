@@ -44,13 +44,14 @@ export class NewsComponent implements OnInit, OnDestroy {
         ObservableOf(this.store.state.current) : this.newsService.get(id))
     ).subscribe(newsItem => {
       this.store.setCurrent(newsItem);
-      if(newsItem.featuredImage) {
-        this.headerService.updateFeatureImage(newsItem.featuredImage);
-      }
+      
       setTimeout(() => {
         let paragraph = (document.getElementById("wrapper")).getElementsByTagName("p").item(0).innerText;
         this.headerService.createTwitterCard(newsItem.title + ' | ' + this.title.getTitle());
         this.headerService.updateMetaDescription(paragraph);
+        if(newsItem.featuredImage) {
+          this.headerService.updateFeatureImage(newsItem.featuredImage);
+        }
       }, 0);
     });
   }

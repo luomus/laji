@@ -8,6 +8,7 @@ import { ILajiFormState } from '@laji-form/laji-form-document.facade';
 import * as moment from 'moment';
 import { AreaService } from '../../../shared/service/area.service';
 import { Form } from '../../../shared/model/Form';
+import { HeaderService } from '../../../shared/service/header.service';
 
 @Component({
   selector: 'laji-document-form-header',
@@ -54,7 +55,8 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private userService: UserService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private areaService: AreaService
+    private areaService: AreaService,
+    private headerService: HeaderService
   ) { }
 
   ngOnInit() {
@@ -91,6 +93,18 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
             this.editingOldWarning = true;
           }
         }
+
+        setTimeout(() => {
+          this.headerService.createTwitterCard(this.form.title + ' | ' + this.title.getTitle());
+          if(this.form.description && this.form.title){
+            let paragraph = (document.getElementsByTagName("laji-document-form-header")).item(0).getElementsByTagName("h3").item(0).nextElementSibling.innerHTML;
+            this.headerService.updateMetaDescription(this.cleanHtml(paragraph));
+          }
+          if(this.form.logo) {
+            this.headerService.updateFeatureImage(this.form.logo);
+          }
+        }, 0);
+
         this.namedPlaceHeader = this.getNamedPlaceHeader();
         this.cd.markForCheck();
       });
@@ -125,5 +139,9 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
         return f[1](val);
       }
     });
+  }
+
+  private cleanHtml(str) {
+   return str.replace(/<[^>]*>?/gm, '');
   }
 }

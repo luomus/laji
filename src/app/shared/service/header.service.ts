@@ -88,7 +88,7 @@ export class HeaderService implements OnDestroy {
 
       // Set page meta tags
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
-        map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+        map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, 'twitter:title': MAIN_TITLE, ...meta}))
       ).subscribe(meta => {
         const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
@@ -161,10 +161,10 @@ export class HeaderService implements OnDestroy {
   private removeMetaTags(metaTagsDescription) {
     this.metaService.removeTag('property="twitter:card"');
     RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
-      map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
+      map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, 'twitter:title': MAIN_TITLE, ...meta}))
     ).subscribe(meta => {
       metaTagsDescription.forEach((key) => {
-        const propertySelector = `property='${key}'`;
+        const propertySelector = key === 'twitter:title' ? `name='${key}'` : `property='${key}'`;
         if(meta?.[key]) {
           this.metaService.removeTag(propertySelector);
         }
@@ -206,7 +206,7 @@ export class HeaderService implements OnDestroy {
     if (str.length <= maxLen) {
       return str;
     } 
-    return str.substr(0, str.lastIndexOf(separator, maxLen));
+    return str.substr(0, str.lastIndexOf(separator, maxLen))+ '...';
   }
 
 }
