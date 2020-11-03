@@ -57,15 +57,13 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   @Input() allowedCombineOptions: CombineToDocument[];
 
-  _forms: Observable<string[]>;
+  _forms: Observable<string[]> = this.formService.getSpreadsheetForms().pipe(
+    map(_forms => _forms.map(form => form.id))
+  );
 
   @Input()
   set forms(forms: string[]) {
-    if (forms) {
-      this._forms = of(forms);
-    } else {
-      this._forms = this.formService.getSpreadsheetForms().pipe(map(_forms => _forms.map(form => form.id)));
-    }
+    this._forms = of(forms);
   }
 
   data: {[key: string]: any}[];
