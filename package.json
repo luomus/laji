@@ -39,7 +39,7 @@
     "lint": "tslint --project tsconfig.app.json \\\"src/**/*.ts\\\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor e2e/protractor.conf.js --port 3000",
+    "e2e": "protractor e2e/protractor.conf.js",
     "e2e:ci": "ng e2e --port 3000",
     "postinstall": "patch-package && node ./scripts/remove-extras.js && ngcc",
     "package:label-designer": "npm run build:label-designer-electron && npm run prepare:package:label-designer",
