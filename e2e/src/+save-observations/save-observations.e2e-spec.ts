@@ -8,6 +8,12 @@ describe('Save observations page', () => {
   let projectPage: ProjectFormPage;
   let user: UserPage;
   let error: ErrorPage;
+  let originalTimeout;
+
+  beforeEach(function() {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
+  });
 
   beforeAll(async (done) => {
     page = new SaveObservationsPage();
@@ -22,6 +28,7 @@ describe('Save observations page', () => {
 
   afterAll(async (done) => {
     await user.logout();
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     done();
   });
 
@@ -51,7 +58,7 @@ describe('Save observations page', () => {
         if (!await projectPage.hasNamedPlace()) {
           expect(await page.isPresentLegInput()).toBe(true, 'No leg input found on ' + id);
           expect(await page.isPresentSubmitButton()).toBe(true, 'No submit button found on ' + id);
-          expect(await page.getLegInputValue()).toBe(TEST_USERS[DEFAULT_TEST_USER].nameWithGroup, 'Leg value didn\'t match expected on ' + id);
+          expect(await page.getLegInputValue(TEST_USERS[DEFAULT_TEST_USER].nameWithGroup)).toBe(TEST_USERS[DEFAULT_TEST_USER].nameWithGroup, 'Leg value didn\'t match expected on ' + id);
           expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible on ' + id);
         }
       }
