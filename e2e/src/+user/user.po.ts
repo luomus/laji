@@ -44,7 +44,7 @@ export class UserPage {
       await this.authPassword.sendKeys(TEST_USERS[user].pw);
       await this.submitButton.click();
     }
-    browser.waitForAngularEnabled(true);
+    await browser.waitForAngularEnabled(true);
   }
 
   async logout(): Promise<void> {
