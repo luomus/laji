@@ -1439,6 +1439,30 @@ span.simple-option {
     }
   }
 
+  /*custom style FinBif publications */
+
+  p.author-name, p.publication-journal, p.publication-doi {
+    margin-bottom: 5px!important;
+  }
+
+  p.publication-doi {
+    margin-bottom:20px !important;
+  }
+
+  p.publication-doi:last-child {
+    margin-bottom: 0px !important;
+  }
+
+  p.publication-doi, p.publication-journal {
+    font-size: 14px !important;
+  }
+
+  h4.publication-title {
+    margin-top: 20px !important;
+    margin-bottom: 10px !important;
+    font-size: 22px !important;
+  }
+
 
 
   
