@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
 import { SelectionType } from '@swimlane/ngx-datatable';
-import {ITaxonWithAnnotation, TaxonAnnotationType} from '../../models';
+import {ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -18,7 +18,7 @@ export class KerttuOccurrenceTableComponent implements OnInit {
   columns: DatatableColumn[];
 
   selectionType = SelectionType;
-  taxonAnnotationType = TaxonAnnotationType;
+  taxonAnnotationEnum = TaxonAnnotationEnum;
 
   @Output() annotationChange = new EventEmitter<ITaxonWithAnnotation[]>();
 
@@ -47,7 +47,7 @@ export class KerttuOccurrenceTableComponent implements OnInit {
   }
 
   annotationTypeChange(rowIndex: number, value: number) {
-    this.selectedTaxons[rowIndex].annotation.type = value;
+    this.selectedTaxons[rowIndex].annotation.annotation = value;
     this.annotationChange.emit(this.selectedTaxons);
   }
 }

@@ -73,10 +73,17 @@ export class KerttuApi {
     return this.httpClient.get<IRecording>(path, { params });
   }
 
-  public setRecordingAnnotation(personToken: string, annotation: IRecordingAnnotation) {
-    const path = this.basePath + '/recording/annotation';
+  public getRecordingAnnotation(personToken: string, recordingId: number): Observable<IRecordingAnnotation> {
+    const path = this.basePath + '/recording/annotation/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.post(path, { annotation }, { params });
+    return this.httpClient.get<IRecordingAnnotation>(path, { params });
+  }
+
+  public setRecordingAnnotation(personToken: string, recordingId: number, annotation: IRecordingAnnotation) {
+    const path = this.basePath + '/recording/annotation/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotation, { params });
   }
 }

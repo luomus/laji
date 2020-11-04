@@ -7,10 +7,10 @@
 ></laji-datatable>
 
 <ng-template let-row="row" let-rowIndex="rowIndex" #occurs>
-  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationType.occurs}"></ng-container>
+  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationEnum.occurs}"></ng-container>
 </ng-template>
 <ng-template let-row="row" let-rowIndex="rowIndex" #possiblyOccurs>
-  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationType.possible_occurs}"></ng-container>
+  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationEnum.possible_occurs}"></ng-container>
 </ng-template>
 
 <ng-template let-row="row" let-rowIndex="rowIndex" let-value="value" #radioButton>

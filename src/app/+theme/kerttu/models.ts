@@ -37,10 +37,10 @@ export interface IRecordingAnnotation {
 
 export interface ITaxonAnnotation {
   taxonId: string;
-  type: TaxonAnnotationType;
+  annotation: TaxonAnnotationEnum;
 }
 
-export enum TaxonAnnotationType {
+export enum TaxonAnnotationEnum {
   occurs = 1,
   possible_occurs = 2
 }

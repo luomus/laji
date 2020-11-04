@@ -1,5 +1,6 @@
 <laji-recording-annotation
   [recording]="recording$ | async"
+  [annotation]="recordingAnnotation$ | async"
   [taxonList]="taxonList$ | async"
   (nextRecordingClick)="getNextRecording()"
   (saveClick)="save($event)"

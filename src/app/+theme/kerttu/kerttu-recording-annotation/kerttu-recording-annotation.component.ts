@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
 import {IRecording, IRecordingAnnotation} from '../models';
 import {UserService} from '../../../shared/service/user.service';
 import {Observable} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
@@ -14,6 +14,7 @@ import {map} from 'rxjs/operators';
 })
 export class KerttuRecordingAnnotationComponent implements OnInit {
   recording$: Observable<IRecording>;
+  recordingAnnotation$: Observable<IRecordingAnnotation>;
   taxonList$: Observable<string[]>;
 
   constructor(
@@ -23,17 +24,25 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken());
+    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken()).pipe(
+      tap(recording => {
+        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id);
+      })
+    );
     this.taxonList$ = this.taxonService.getTaxonList().pipe(
       map(taxons => taxons.map(taxon => taxon.id))
     );
   }
 
   getNextRecording() {
-    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken());
+    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken()).pipe(
+      tap(recording => {
+        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id);
+      })
+    );
   }
 
-  save(annotation: IRecordingAnnotation) {
-    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), annotation).subscribe();
+  save(data: {recordingId: number, annotation: IRecordingAnnotation}) {
+    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), data.recordingId, data.annotation).subscribe();
   }
 }
