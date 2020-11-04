@@ -1,4 +1,3 @@
-
 <div class="row lu-section">
   <div class="col-md-12">
     <div style="margin-top: 10px; float: right">
@@ -23,7 +22,45 @@
       [showBrushControl]="true"
     ></laji-audio-viewer>
   </div>
-  <div class="col-sm-12" style="margin-bottom: 20px">
+  <div class="col-sm-12 checkbox-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div>
+          <label>
+            <laji-checkbox [(value)]="generalAnnotation.isLowQuality"></laji-checkbox>Äänite on huonolaatuinen (kohinaa, sadetta tmv.)
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div>
+          <label>
+            <laji-checkbox [(value)]="generalAnnotation.containsNoiseCausedByHumanActivity"></laji-checkbox>Ääniteellä kuuluu ihmistoiminnan ääniä (liikenne tmv.)
+          </label>
+          <laji-info></laji-info>
+        </div>
+        <div>
+          <label>
+            <laji-checkbox [(value)]="generalAnnotation.containsHumanSpeech"></laji-checkbox>Ääniteellä kuuluu ihmisten puhetta
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div>
+          <label>
+            <laji-checkbox [(value)]="generalAnnotation.containsUnknownBirds"></laji-checkbox>Ääniteellä kuuluu linnun ääniä, joita en tunnista
+          </label>
+          <laji-info></laji-info>
+        </div>
+        <div>
+          <label>
+            <laji-checkbox [(value)]="generalAnnotation.doesNotContainBirds"></laji-checkbox>Ääniteellä ei kuulu linnun ääniä
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+    </div>
     <!--laji-pill-list
       [isLabel]="true"
       [list]="currentAnnotation"

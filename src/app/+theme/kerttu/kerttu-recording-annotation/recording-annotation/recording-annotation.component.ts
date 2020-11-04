@@ -16,6 +16,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() taxonList: string[];
   @Input() loadingAnnotation = false;
 
+  generalAnnotation: IRecordingAnnotation = {};
   selectedTaxons: ITaxonWithAnnotation[] = [];
 
   // @Output() annotationsChange = new EventEmitter<any>();

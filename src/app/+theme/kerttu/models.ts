@@ -32,7 +32,13 @@ export enum LetterAnnotation {
 }
 
 export interface IRecordingAnnotation {
-  taxonAnnotations: ITaxonAnnotation[];
+  isLowQuality?: boolean;
+  containsNoiseCausedByHumanActivity?: boolean;
+  containsHumanSpeech?: boolean;
+  containsUnknownBirds?: boolean;
+  doesNotContainBirds?: boolean;
+
+  taxonAnnotations?: ITaxonAnnotation[];
 }
 
 export interface ITaxonAnnotation {
