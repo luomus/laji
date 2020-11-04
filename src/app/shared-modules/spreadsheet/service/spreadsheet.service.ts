@@ -179,8 +179,8 @@ export class SpreadsheetService {
         if (regEx.test(filename)) {
           return id;
         }
-        return '';
       }
+      return '';
     }));
   }
 

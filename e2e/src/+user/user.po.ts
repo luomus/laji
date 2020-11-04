@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
 
 export const DEFAULT_TEST_USER = 'vixriihi+e2e-no@gmail.com';
 
@@ -43,14 +43,23 @@ export class UserPage {
       await this.authUsername.sendKeys(user);
       await this.authPassword.sendKeys(TEST_USERS[user].pw);
       await this.submitButton.click();
+
+
+      const EC = protractor.ExpectedConditions;
+      const loginDone = EC.urlContains(browser.baseUrl);
+      await browser.wait(loginDone, 2000);
     }
-    browser.waitForAngularEnabled(true);
+    await browser.waitForAngularEnabled(true);
   }
 
   async logout(): Promise<void> {
     if (await this.usernameElem.isPresent()) {
       await this.usernameElem.click();
       await this.logoutElem.click();
+
+      const EC = protractor.ExpectedConditions;
+      const logoutDone = EC.urlIs(browser.baseUrl);
+      await browser.wait(logoutDone, 2000);
     }
   }
 }

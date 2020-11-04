@@ -1,5 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <lu-sidebar *ngIf="!vm.form.options?.mobile; else mobileContent" [open]="(showNav$ | async)">
+  <lu-sidebar *ngIf="!vm.form.options?.mobile; else mobileContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
     <nav>
       <h5>
         <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
