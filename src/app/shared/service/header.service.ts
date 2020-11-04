@@ -24,6 +24,7 @@ switch (environment.type) {
     break;
 }
 const MAIN_DESCRIPTION = 'footer.intro1';
+const MAIN_IMAGE = 'https://cdn.laji.fi/images/logos/LAJI_FI_valk.png';
 
 const ALL_META_KEYS = [
   'description',
@@ -84,13 +85,14 @@ export class HeaderService implements OnDestroy {
         switchMap(titles => this.translateService.get(titles))
       ).subscribe(pageTitle => {
         this.title.setTitle(Object.keys(pageTitle).map(key => decodeURI(pageTitle[key])).join(' | '));
+        this.createTwitterCard(Object.keys(pageTitle).map(key => decodeURI(pageTitle[key])).join(' | '))
       });
 
       // Set page meta tags
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
-        map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, 'twitter:title': MAIN_TITLE, ...meta}))
+        map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, ...meta}))
       ).subscribe(meta => {
-        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
+        const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS];
         ArraysMeta.map((key) => {
           const propertySelector = ((key === 'twitter:card' || key === 'twitter:title' ) ? `name='${key}'` : `property='${key}'`);
           if (meta?.[key]) {
@@ -107,6 +109,8 @@ export class HeaderService implements OnDestroy {
       });
 
       this.updateAlternativeLinks(newRoute);
+
+      this.addDefaultMetaImageLink();
     });
   }
 
@@ -161,7 +165,7 @@ export class HeaderService implements OnDestroy {
   private removeMetaTags(metaTagsDescription) {
     this.metaService.removeTag('property="twitter:card"');
     RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
-      map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, 'twitter:title': MAIN_TITLE, ...meta}))
+      map(meta => ({description: MAIN_DESCRIPTION, 'og:description': MAIN_DESCRIPTION, 'twitter:description': MAIN_DESCRIPTION, 'twitter:title': MAIN_TITLE, 'og:image': MAIN_IMAGE, 'twitter:image': MAIN_IMAGE,  ...meta}))
     ).subscribe(meta => {
       metaTagsDescription.forEach((key) => {
         const propertySelector = key === 'twitter:title' ? `name='${key}'` : `property='${key}'`;
@@ -200,6 +204,12 @@ export class HeaderService implements OnDestroy {
       );
     }
     return ObservableOf(title);
+  }
+
+  private addDefaultMetaImageLink(){
+    ALL_IMAGE_KEYS.forEach((key) => {
+      this.metaService.addTag({ property: key, content: MAIN_IMAGE });
+    })
   }
 
   truncateString(str, maxLen, separator) {
