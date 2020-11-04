@@ -17,6 +17,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   recordingAnnotation$: Observable<IRecordingAnnotation>;
   taxonList$: Observable<string[]>;
 
+  loadingAnnotation = false;
+
   constructor(
     private kerttuApi: KerttuApi,
     private taxonService: KerttuTaxonService,
@@ -26,7 +28,12 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   ngOnInit() {
     this.recording$ = this.kerttuApi.getRecording(this.userService.getToken()).pipe(
       tap(recording => {
-        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id);
+        this.loadingAnnotation = true;
+        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id).pipe(
+          tap(() => {
+            this.loadingAnnotation = false;
+          })
+        );
       })
     );
     this.taxonList$ = this.taxonService.getTaxonList().pipe(
@@ -35,11 +42,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   }
 
   getNextRecording() {
-    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken()).pipe(
-      tap(recording => {
-        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id);
-      })
-    );
+    this.recordingAnnotation$ = undefined;
+    this.recording$ = this.kerttuApi.getNextRecording(this.userService.getToken());
   }
 
   save(data: {recordingId: number, annotation: IRecordingAnnotation}) {

@@ -2,6 +2,7 @@
   [recording]="recording$ | async"
   [annotation]="recordingAnnotation$ | async"
   [taxonList]="taxonList$ | async"
+  [loadingAnnotation]="loadingAnnotation"
   (nextRecordingClick)="getNextRecording()"
   (saveClick)="save($event)"
 ></laji-recording-annotation>

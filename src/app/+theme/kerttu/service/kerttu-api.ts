@@ -73,6 +73,13 @@ export class KerttuApi {
     return this.httpClient.get<IRecording>(path, { params });
   }
 
+  public getNextRecording(personToken: string): Observable<IRecording> {
+    const path = this.basePath + '/recording/next';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IRecording>(path, { params });
+  }
+
   public getRecordingAnnotation(personToken: string, recordingId: number): Observable<IRecordingAnnotation> {
     const path = this.basePath + '/recording/annotation/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);

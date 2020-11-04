@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
-import {forkJoin} from 'rxjs';
+import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -14,6 +14,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
   @Input() annotation: IRecordingAnnotation;
   @Input() taxonList: string[];
+  @Input() loadingAnnotation = false;
 
   selectedTaxons: ITaxonWithAnnotation[] = [];
 
@@ -21,26 +22,34 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Output() nextRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
 
+  private selectedTaxonsSub: Subscription;
+
   constructor(
     private taxonService: TaxonomyApi,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.annotation) {
-      const obs = this.annotation.taxonAnnotations.map(
-        a => this.taxonService.taxonomyFindBySubject(
+    if (changes.annotation) {
+      this.selectedTaxons = [];
+      if (this.selectedTaxonsSub) {
+        this.selectedTaxonsSub = undefined;
+      }
+
+      if (this.annotation?.taxonAnnotations.length > 0) {
+        const obs = this.annotation.taxonAnnotations.map(
+          a => this.taxonService.taxonomyFindBySubject(
             a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive']}
           ).pipe(map(taxon => {
             return {...taxon, annotation: a};
           }))
-      );
-      forkJoin(obs).subscribe(results => {
-        this.selectedTaxons = results;
-        this.cdr.markForCheck();
-      });
+        );
+        this.selectedTaxonsSub = forkJoin(obs).subscribe(results => {
+          this.selectedTaxons = results;
+          this.cdr.markForCheck();
+        });
+      }
     }
-
   }
 
   onTaxonSelect(taxon) {

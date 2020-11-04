@@ -11,6 +11,7 @@ import {DatatableColumn} from '../../../../shared-modules/datatable/model/datata
 })
 export class KerttuOccurrenceTableComponent implements OnInit {
   @Input() selectedTaxons: ITaxonWithAnnotation[];
+  @Input() loading = false;
 
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
   @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
