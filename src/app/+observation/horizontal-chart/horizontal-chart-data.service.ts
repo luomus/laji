@@ -1,7 +1,8 @@
+import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import gql from 'graphql-tag';
+
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 
 export const MAX_TAXA_SIZE = 30;

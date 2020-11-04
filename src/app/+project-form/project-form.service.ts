@@ -16,9 +16,9 @@ export interface ProjectForm {
 }
 
 export interface NamedPlacesQuery {
-  tags: string;
-  birdAssociationArea: string;
-  municipality: string;
+  tags?: string;
+  birdAssociationArea?: string;
+  municipality?: string;
   activeNP?: string;
 }
 export interface NamedPlacesQueryModel {
@@ -114,15 +114,20 @@ export class ProjectFormService {
     );
   }
 
-  trimNamedPlacesQuery(documentForm: Form.SchemaForm, queryParams: Params): NamedPlacesQuery {
-    return {
-      tags: queryParams['tags'] || '',
-      birdAssociationArea: queryParams['birdAssociationArea'] || '',
-      municipality: documentForm?.options?.namedPlaceOptions?.filterByMunicipality
-        ? (queryParams['municipality'] || 'all')
-        : '',
-      activeNP: queryParams['activeNP'],
+  trimNamedPlacesQuery(documentForm: Form.SchemaForm, queryParams: Params, municipalityAllIfEmpty = true): NamedPlacesQuery {
+    const query: NamedPlacesQuery = {
+      activeNP: queryParams['activeNP']
     };
+    if (documentForm.options?.namedPlaceOptions?.filterByMunicipality && (queryParams.municipality || municipalityAllIfEmpty)) {
+      query.municipality = queryParams['municipality'] || 'all';
+    }
+    if (documentForm.options?.namedPlaceOptions?.filterByBirdAssociationArea && queryParams.birdAssociationArea) {
+      query.birdAssociationArea = queryParams['birdAssociationArea'];
+    }
+    if (documentForm.options?.namedPlaceOptions?.filterByTags && queryParams.tags) {
+      query.tags = queryParams['tags'];
+    }
+    return query;
   }
 
   queryToModelFormat(queryParams): NamedPlacesQueryModel {

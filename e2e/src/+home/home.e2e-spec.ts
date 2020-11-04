@@ -1,4 +1,4 @@
-import { HomePage } from './home.page';
+import { HomePage } from './home.po';
 import { ErrorPage } from '../+error/error.page';
 
 describe('Home page', () => {
@@ -10,22 +10,26 @@ describe('Home page', () => {
     error = new ErrorPage();
   });
 
-  afterEach(() => {
-    expect(error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+  afterEach(async (done) => {
+    expect(await error.isPresentErrorDialog()).toBe(false, 'Error dialog was visible when it should not be');
+    done();
   });
 
-  it('should display title in finnish', () => {
-    page.navigateTo();
-    expect(page.getPageTitle()).toEqual('Suomen Lajitietokeskus');
+  it('should display title in finnish', async (done) => {
+    await page.navigateTo();
+    expect(await page.getPageTitle()).toEqual('Suomen Lajitietokeskus');
+    done();
   });
 
-  it('should display title in english', () => {
-    page.navigateTo('en');
-    expect(page.getPageTitle()).toEqual('Finnish Biodiversity Information Facility');
+  it('should display title in english', async (done) => {
+    await page.navigateTo('en');
+    expect(await page.getPageTitle()).toEqual('Finnish Biodiversity Information Facility');
+    done();
   });
 
-  it('should display title in swedish', () => {
-    page.navigateTo('sv');
-    expect(page.getPageTitle()).toEqual('Finlands Artdatacenter');
+  it('should display title in swedish', async (done) => {
+    await page.navigateTo('sv');
+    expect(await page.getPageTitle()).toEqual('Finlands Artdatacenter');
+    done();
   });
 });

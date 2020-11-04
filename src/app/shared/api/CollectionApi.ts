@@ -22,20 +22,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Headers, Http, RequestOptionsArgs, Response, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { Collection } from '../model/Collection';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/map';
+import { HttpClient } from '@angular/common/http';
+import { Util } from '../service/util.service';
 
 @Injectable()
 export class CollectionApi {
   protected basePath = environment.apiBase;
-  public defaultHeaders: Headers = new Headers();
 
-  constructor(protected http: Http) {
+  constructor(protected http: HttpClient) {
   }
 
   /**
@@ -49,38 +49,24 @@ export class CollectionApi {
   public findAll(lang?: string, idIn?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
     const path = this.basePath + '/collections';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (idIn !== undefined) {
-      queryParameters.set('idIn', idIn);
+      queryParameters['idIn'] = idIn;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<Collection>>(path, {params: queryParameters});
   }
 
   /**
@@ -93,30 +79,16 @@ export class CollectionApi {
     const path = this.basePath + '/collections/{id}'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling collectionFindBySubject.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<Collection>(path, {params: queryParameters});
   }
 
   /**
@@ -127,42 +99,29 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
+  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
     const path = this.basePath + '/collections/{id}/children'
         .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling collectionFindChildren.');
     }
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<Collection>>(path, {params: queryParameters});
   }
 
   /**
@@ -172,37 +131,24 @@ export class CollectionApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<Collection>>> {
+  public findRoots(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
     const path = this.basePath + '/collections/roots';
 
-    let queryParameters = new URLSearchParams();
-    let headerParams = this.defaultHeaders;
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
     if (lang !== undefined) {
-      queryParameters.set('lang', lang);
+      queryParameters['lang'] = lang;
     }
 
     if (page !== undefined) {
-      queryParameters.set('page', page);
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters.set('pageSize', pageSize);
+      queryParameters['pageSize'] = pageSize;
     }
 
-    let requestOptions: RequestOptionsArgs = {
-      method: 'GET',
-      headers: headerParams,
-      search: queryParameters
-    };
-
-    return this.http.request(path, requestOptions)
-      .map((response: Response) => {
-        if (response.status === 204) {
-          return undefined;
-        } else {
-          return response.json();
-        }
-      });
+    return this.http.get<PagedResult<Collection>>(path, {params: queryParameters});
   }
 
 }

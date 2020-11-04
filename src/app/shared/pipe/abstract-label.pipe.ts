@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, OnDestroy, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
-// tslint:disable-next-line:use-pipe-decorator
+@Pipe({
+  name: 'abstract-label-pipe'
+})
 export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;

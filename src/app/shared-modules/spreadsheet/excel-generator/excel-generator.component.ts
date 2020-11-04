@@ -4,8 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
-import { environment } from '../../../../environments/environment';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -27,15 +26,13 @@ export class ExcelGeneratorComponent implements OnInit {
 
   private isSecondary = false;
 
-  _forms: Observable<string[]>;
+  _forms: Observable<string[]> = this.formService.getSpreadsheetForms().pipe(
+    map(_forms => _forms.map(form => form.id))
+  );
 
   @Input()
   set forms(forms: string[]) {
-    if (forms) {
-      this._forms = of(forms);
-    } else {
-      this._forms = this.formService.getSpreadsheetForms().pipe(map(_forms => _forms.map(form => form.id)));
-    }
+    this._forms = of(forms);
   }
 
   constructor(

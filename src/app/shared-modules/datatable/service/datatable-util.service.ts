@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { forkJoin as ObservableForkJoin, from, Observable, of as ObservableOf } from 'rxjs';
+import { concatMap, map, toArray } from 'rxjs/operators';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { MultiLangService } from '../../../shared-modules/lang/service/multi-lang.service';
 import { PublicationService } from '../../../shared/service/publication.service';
@@ -28,6 +28,14 @@ export class DatatableUtil {
         .indexOf(template) === -1) {
         return ObservableOf('');
       }
+    }
+
+    if (Array.isArray(value)) {
+      return from(value).pipe(
+        concatMap(val => this.getVisibleValue(val, row, template)),
+        toArray(),
+        map(values => values.join(', '))
+      );
     }
 
     let observable;

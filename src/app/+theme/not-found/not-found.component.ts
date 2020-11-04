@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Global } from '../../../environments/global';
 import { BrowserService } from '../../shared/service/browser.service';
+import { FormService } from '../../shared/service/form.service';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-theme-not-found',
@@ -16,7 +18,8 @@ export class NotFoundComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private translate: TranslateService,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private formService: FormService
   ) { }
 
   ngOnInit() {
@@ -29,7 +32,13 @@ export class NotFoundComponent implements OnInit {
     const redirectionBase = `/project/${formID}`;
     let redirectionSubRoute = '';
     if (subRoute === '/instructions') {
-      redirectionSubRoute = '/instructions';
+      this.formService.getForm(formID, this.translate.currentLang).pipe(
+        take(1),
+        map(form => form.options?.instructions ? '/instructions' : '/about')
+      ).subscribe(sub => {
+        this.router.navigate([`${redirectionBase}${sub}`], {queryParams});
+      });
+      return;
     } else if (subRoute === '/own-submissions') {
       redirectionSubRoute = '/submissions';
     } else if (subRoute === '/form') {

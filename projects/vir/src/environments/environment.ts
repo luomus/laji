@@ -45,13 +45,45 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   globalMessageIds: {
-    '\/observation.*': '3999',
-    '\/taxon\/.*\/taxonomy': '4011',
-    '\/taxon\/.*': '3995',
-    '\/taxon.*': '3997',
-    '\/usage\/my-downloads.*': '4238',
-    '\/usage\/downloads.*': '4005',
-    '\/usage\/by-organization.*': '4003',
-    '\/usage.*': '4001',
+    '\/observation.*': {
+      fi: '3999',
+      sv: '4367',
+      en: ''
+    },
+    '\/taxon\/.*\/taxonomy': {
+      fi: '4011',
+      sv: '4353',
+      en: ''
+    },
+    '\/taxon\/.*': {
+      fi: '3995',
+      sv: '4341',
+      en: ''
+    },
+    '\/taxon.*': {
+      fi: '3997',
+      sv: '4375',
+      en: ''
+    },
+    '\/usage\/my-downloads.*': {
+      fi: '4238',
+      sv: '4363',
+      en: ''
+    },
+    '\/usage\/downloads.*': {
+      fi: '4005',
+      sv: '4358',
+      en: ''
+    },
+    '\/usage\/by-organization.*': {
+      fi: '4003',
+      sv: '4355',
+      en: ''
+    },
+    '\/usage.*': {
+      fi: '4001',
+      sv: '4378',
+      en: ''
+    },
   }
 };

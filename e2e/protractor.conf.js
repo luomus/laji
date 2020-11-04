@@ -4,58 +4,31 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 const { JUnitXmlReporter } = require('jasmine-reporters');
 
-let base =  {
-  directConnect: true,
-  capabilities: {
-    chromeOptions: {
-      args: [ "--headless", "--disable-gpu", "--window-size=1200x800" ]
-    },
-    browserName: 'chrome'
-  }
-};
-
-switch (process.platform) {
-  case "darwin":
-    base = {
-      directConnect: true,
-      multiCapabilities: [
-        { browserName: 'firefox' },
-        { browserName: 'chrome' },
-//        { browserName: 'safari' }
-      ]
-    };
-    break;
-  case "win32":
-    base = {
-      directConnect: false,
-      multiCapabilities: [
-        { browserName: 'firefox' },
-        { browserName: 'chrome' },
-        { browserName: 'internet explorer' }
-      ]
-    };
-    break;
-}
-
 exports.config = {
-  ...base,
+  SELENIUM_PROMISE_MANAGER: false,
+  directConnect: false,
+  multiCapabilities: [
+    // { browserName: 'firefox' },
+    { browserName: 'chrome' },
+    // { browserName: 'MicrosoftEdge', platform: 'windows'}
+  ],
   port: 3000,
   allScriptsTimeout: 20000,
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
   suites: {
-    vihko: './src/+haseka/**/*.e2e-spec.ts',
+    saveObservations: './src/+save-observations/**/*.e2e-spec.ts',
     home: './src/+home/**/*.e2e-spec.ts',
     user: './src/+user/**/*.e2e-spec.ts',
     map: './src/+map/**/*.e2e-spec.ts',
+    projectForm: './src/+project-form/**/*.e2e-spec.ts',
   },
   baseUrl: 'http://localhost:3000/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
-    print: function() {}
+    defaultTimeoutInterval: 30000
   },
   onPrepare() {
     require('ts-node').register({
@@ -68,5 +41,11 @@ exports.config = {
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
+    browser.driver.manage().window().setSize(1200, 800);
+  },
+  onComplete() {
+    browser.driver.close().then(function(){
+      browser.driver.quit();
+    });
   }
 };

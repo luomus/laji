@@ -1,7 +1,8 @@
+import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import gql from 'graphql-tag';
+
 import { DocumentNode } from 'graphql';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';

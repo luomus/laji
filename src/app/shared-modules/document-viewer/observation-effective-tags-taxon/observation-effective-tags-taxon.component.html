@@ -23,7 +23,7 @@
                     {{ 'annotation.notEffectiveTags' | translate }}
               </div>
               <ng-template #tags>
-                  <div class="tag" *ngFor="let item of convertEffective">
+                  <div class="tag" *ngFor="let item of convertEffective$ | async">
                       <div class="annotation-marker" [ngClass]="{'positive': item.type==='MMAN.typePositiveQuality', 'check': item.type==='MMAN.typeCheck', 'negative': (item.type==='MMAN.typeNegativeQuality' || item.type==='MMAN.typeAdmin'), 'info': item.type ==='MMAN.typeSelf', 'self': item.type ==='MMAN.typeInfo' }" >
                           <span>{{ item.name }}</span>
                       </div>
@@ -38,7 +38,7 @@
         <ng-template #taxonNoResolving>
             <div *ngIf="unit.linkings && unit.linkings.taxon || unit.taxonVerbatim || unit.reportedInformalTaxonGroup">
                 <span *ngIf="unit.linkings && unit.linkings.taxon; else taxonVerbatim">
-                    <laji-taxon-name [taxon]="unit.linkings.taxon"></laji-taxon-name>
+                    <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.taxon"></laji-taxon-name>
                 </span>
                 <ng-template #taxonVerbatim>
                    <span *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup">{{ unit.taxonVerbatim | toQName | label }}</span>

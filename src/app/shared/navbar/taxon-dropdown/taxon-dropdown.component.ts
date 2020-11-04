@@ -9,8 +9,11 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input, R
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonDropdownComponent implements OnInit, OnDestroy {
+  @Input() visible: boolean;
   @Output() close = new EventEmitter<void>();
+  
   private destroyListener;
+
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
   ngOnInit() {
     this.destroyListener = this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {

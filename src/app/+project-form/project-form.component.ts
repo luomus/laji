@@ -41,6 +41,7 @@ export class ProjectFormComponent implements OnInit {
   vm$: Observable<ViewModel>;
   formPermissions$: Observable<FormPermission>;
   showNav$: Observable<boolean>;
+  isPrintPage$: Observable<boolean>;
 
   constructor (
     private route: ActivatedRoute,
@@ -78,10 +79,13 @@ export class ProjectFormComponent implements OnInit {
       )
     );
 
-    this.showNav$ = this.router.events.pipe(
+    const routerEvents$ = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(event => (event as NavigationEnd).url),
-      startWith(this.router.url),
+      startWith(this.router.url)
+    );
+
+    this.showNav$ = routerEvents$.pipe(
       mergeMap((url: string) =>
         form$.pipe(
           map(form =>
@@ -92,9 +96,10 @@ export class ProjectFormComponent implements OnInit {
             )
           )
         )
-
       )
     );
+
+    this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
   }
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {

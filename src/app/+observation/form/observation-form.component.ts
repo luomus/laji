@@ -10,6 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { forEach } from 'jszip';
+import { BrowserService } from 'src/app/shared/service/browser.service';
 
 
 interface ISections {
@@ -57,8 +58,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     informalTaxonGroupId: '',
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
-    nationallySignificantInvasiveSpecies: undefined,
+    controllingRisksOfInvasiveAlienSpeciesGovernment: undefined,
     quarantinePlantPest: undefined,
+    qualityPlantPest: undefined,
+    otherPlantPest: undefined,
     otherInvasiveSpeciesList: undefined,
     nationalInvasiveSpeciesStrategy: undefined,
     controllingRisksOfInvasiveAlienSpecies: undefined,
@@ -128,12 +131,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   delayedSearch = new Subject();
   delayedSub: Subscription;
+  screenWidthSub: Subscription;
+  containerTypeAhead: string;
 
   private _query: WarehouseQueryInterface;
 
   constructor(
     private observationFacade: ObservationFacade,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private browserService: BrowserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -157,11 +163,22 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateVisibleSections();
     this.updateVisibleAdvancedSections();
+    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
+      if(data === true) {
+        this.containerTypeAhead = 'body';
+      } else {
+        this.containerTypeAhead = 'laji-observation-form';
+      }
+    })
   }
 
   ngOnDestroy(): void {
     if (this.delayedSub) {
       this.delayedSub.unsubscribe();
+    }
+
+    if(this.screenWidthSub) {
+      this.screenWidthSub.unsubscribe();
     }
   }
 
@@ -480,12 +497,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
         query.informalTaxonGroupId[0] : '',
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
-      nationallySignificantInvasiveSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.nationallySignificantInvasiveSpecies'),
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.administrativeStatusId, 'MX.nationalInvasiveSpeciesStrategy'),
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpecies'),
+      controllingRisksOfInvasiveAlienSpeciesGovernment: this.hasInMulti(query.administrativeStatusId, 'MX.controllingRisksOfInvasiveAlienSpeciesGovernment'),
+      qualityPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.qualityPlantPest'),
+      otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
       onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,

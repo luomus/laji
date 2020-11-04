@@ -1,8 +1,9 @@
+import { gql, QueryRef } from 'apollo-angular';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
-import gql from 'graphql-tag';
-import { GraphQLService, QueryRef } from './graph-ql.service';
+
+import { GraphQLService } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
 
 export interface IBaseData {

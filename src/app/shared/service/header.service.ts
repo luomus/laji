@@ -37,7 +37,8 @@ const ALL_IMAGE_KEYS = [
 ];
 
 const TWITTER_CARD = [
-  'twitter:card'
+  'twitter:card',
+  'twitter:title'
 ]
 
 @Injectable({
@@ -91,7 +92,7 @@ export class HeaderService implements OnDestroy {
       ).subscribe(meta => {
         const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
-          const propertySelector = `property='${key}'`;
+          const propertySelector = ((key === 'twitter:card' || key === 'twitter:title' ) ? `name='${key}'` : `property='${key}'`);
           if (meta?.[key]) {
             this.metaService.updateTag({property: key, content: this.translateService.instant(meta[key])}, propertySelector);
           } else {
@@ -109,9 +110,18 @@ export class HeaderService implements OnDestroy {
     });
   }
 
+  public createTwitterCard(title) {
+    this.removeMetaTags(TWITTER_CARD);
+    this.metaService.addTag({name: 'twitter:card', content: 'summary_large_image'});
+    TWITTER_CARD.forEach((key) => {
+      if (key !== 'twitter:card') {
+        this.metaService.addTag({ name: key, content: title });
+      }
+    })
+  }
+
   public updateMetaDescription(description) {
     this.removeMetaTags(ALL_META_KEYS);
-    this.metaService.addTag({property: 'twitter:card', content: 'summary'});
     ALL_META_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: description });
     })

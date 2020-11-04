@@ -1,0 +1,8 @@
+:host ::ng-deep typeahead-container {
+  width: auto;
+  margin-left: auto;
+}
+
+:host ::ng-deep typeahead-container ul {
+    width: auto;
+}

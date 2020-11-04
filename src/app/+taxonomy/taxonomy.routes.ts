@@ -53,4 +53,4 @@ export const taxonomyRoutes: Routes = [
     component: TaxonComponent
   },
 ];
-export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(taxonomyRoutes);

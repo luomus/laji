@@ -10,4 +10,4 @@ export const herpetologyRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(herpetologyRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(herpetologyRoutes);

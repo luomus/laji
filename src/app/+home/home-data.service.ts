@@ -1,7 +1,8 @@
+import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import gql from 'graphql-tag';
+
 import * as moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 import { HistoryService } from '../shared/service/history.service';

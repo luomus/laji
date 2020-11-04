@@ -31,14 +31,9 @@
   font-style: italic;
 }
 
-.taxon-match {
-
-}
-
 .omni-search-results .match {
   display: block;
   width: 100%;
-  float: left;
 }
 
 

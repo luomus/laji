@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, OnInit, HostListener } from '@angular/core';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
+import { BrowserService } from 'src/app/shared/service/browser.service';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplet
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
     type="text/html"
+    container="{{containerTypeAhead}}"
     [class]="class"
     [name]="name"
     [placeholder]="placeholder"
@@ -43,6 +45,7 @@ export class TaxonSelectComponent{
   @Input() typeaheadItemTemplate;
   @Input() allowInvalid = true;
   @Input() convertIdToName = true;
+  @Input() container: string;
   @Input() class = 'form-control input-sm taxonomy-search';
   @Output() taxonIdChange = new EventEmitter<string>();
 
@@ -54,13 +57,16 @@ export class TaxonSelectComponent{
   public _taxonName: string;
   public typeaheadLimit = 10;
   public typeaheadLoading = false;
+  public containerTypeAhead: string;
   public dataSource: Observable<any>;
   currentLang: string;
+  public screenWidthSub: Subscription;
 
   constructor(
     private lajiApi: LajiApiService,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
+    private browserService: BrowserService,
     private taxonAutocompleteService: TaxonAutocompleteService
   ) {
     this.dataSource = Observable.create((observer: any) => {
@@ -86,6 +92,22 @@ export class TaxonSelectComponent{
           return ObservableOf([]);
         })
       );
+  }
+
+  ngOnInit() {
+    this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
+      if(data === true) {
+        this.containerTypeAhead = this.container ? this.container : '';
+      } else {
+        this.containerTypeAhead = this.container === 'laji-taxon-browse' ? 'laji-species-form' : 'body';
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    if (this.screenWidthSub) {
+      this.screenWidthSub.unsubscribe();
+    }
   }
 
   @Input() set taxonId(id: string) {
@@ -126,7 +148,7 @@ export class TaxonSelectComponent{
 
   private selectValue(key: string, blur?: boolean) {
     this.taxonIdChange.emit(key);
-    this._taxonName = '';
+    this._taxonName = (this.container === 'laji-taxonomy') ? '' : this._taxonName;
     if (blur) {
       this.blur();
     }

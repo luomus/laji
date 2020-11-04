@@ -34,7 +34,9 @@ export class NewsComponent implements OnInit, OnDestroy {
       map(state => state.current),
       distinctUntilChanged(),
       filter(info => !!info),
-      tap(info => this.title.setTitle(info.title + ' | ' + this.title.getTitle()))
+      tap(info => {
+        this.title.setTitle(info.title + ' | ' + this.title.getTitle());
+      })
     );
     this.subTrans = this.route.params.pipe(
       map(params => params['id']),
@@ -48,6 +50,7 @@ export class NewsComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         let paragraph = (document.getElementById("wrapper")).getElementsByTagName("p").item(0).innerText;
         this.headerService.updateMetaDescription(paragraph);
+        this.headerService.createTwitterCard(newsItem.title + ' | ' + this.title.getTitle());
       }, 0);
     });
   }
