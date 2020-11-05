@@ -1,0 +1,33 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.group {
+  width: 200px;
+
+  font-size: $fs-2;
+  color: $neutral-8;
+  background: linear-gradient(to bottom, $neutral-1, saturate($neutral-2, 20%));
+  padding: $sp-2 $sp-4;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px 0 rgba($primary-6, 0.4);
+  border: 1px solid rgba($neutral-1, 0);
+  cursor: pointer;
+  &:hover, &:focus {
+    box-shadow: 0 4px 12px 0 rgba($primary-6, 0.3);
+    border-color: $primary-3;
+    transition: box-shadow .1s, border-color .1s;
+    text-decoration: none;
+  }
+}
+
+.group .group-image {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.group .group-name {
+  font-size: $fs-3;
+  color: $primary-6;
+  margin-top: $sp-2;
+  margin-bottom: $sp-2;
+  padding-bottom: $sp-1;
+}

@@ -1,0 +1,42 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.taxon-select-bar {
+  background-color: $primary-6;
+  padding: $sp-3 $sp-5;
+}
+
+laji-taxon-select {
+  display: block;
+  max-width: 400px;
+}
+
+.parents-spinner {
+  padding-bottom: 3px;
+}
+
+.glyphicon.glyphicon-chevron-right {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+@media only screen and (max-width : 767px) {
+  :host ::ng-deep typeahead-container.dropdown ul {
+    max-width: 250px;
+    min-width: 250px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 126px !important;
+    min-width: 250px;
+    max-width: 250px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: block;
+    float: none;
+    margin-left: 0px;
+    top: -6px;
+    position: relative;
+    opacity: 0.7;
+  }
+}

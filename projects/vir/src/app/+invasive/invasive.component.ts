@@ -1,12 +1,12 @@
 import { map, tap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { TaxonomyApi } from '../../../../../src/app/shared/api/TaxonomyApi';
-import { WarehouseApi } from '../../../../../src/app/shared/api/WarehouseApi';
-import { Taxonomy } from '../../../../../src/app/shared/model/Taxonomy';
-import { IdService } from '../../../../../src/app/shared/service/id.service';
+import { TaxonomyApi } from '../../../../laji/src/app/shared/api/TaxonomyApi';
+import { WarehouseApi } from '../../../../laji/src/app/shared/api/WarehouseApi';
+import { Taxonomy } from '../../../../laji/src/app/shared/model/Taxonomy';
+import { IdService } from '../../../../laji/src/app/shared/service/id.service';
 import { Observable, of as ObservableOf } from 'rxjs';
 import * as moment from 'moment';
-import { DocumentViewerFacade } from '../../../../../src/app/shared-modules/document-viewer/document-viewer.facade';
+import { DocumentViewerFacade } from '../../../../laji/src/app/shared-modules/document-viewer/document-viewer.facade';
 
 interface IAggregated {
   isNew: boolean;
