@@ -197,6 +197,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     } else {
       this.hasError = true;
     }
+    this.cdr.markForCheck();
   }
 
   private getErrorMessage(error) {
