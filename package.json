@@ -70,6 +70,7 @@
     "@angular/platform-browser-dynamic": "^10.2.1",
     "@angular/platform-server": "^10.2.1",
     "@angular/router": "^10.2.1",
+    "@apollo/client": "^3.0.0",
     "@ng-select/ng-select": "^5.0.8",
     "@ng-toolkit/universal": "^8.1.0",
     "@nguniversal/common": "^10.1.0",
@@ -106,7 +107,7 @@
     "jsonpath-plus": "^4.0.0",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "label-designer": "^4.0.2",
-    "laji-form": "^5.7.4",
+    "laji-form": "^5.8.1",
     "laji-map": "^3.3.9",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.9.0",
@@ -126,8 +127,7 @@
     "vm": "^0.1.0",
     "web-animations-js": "^2.3.2",
     "xlsx": "0.16.8",
-    "zone.js": "~0.11.2",
-    "@apollo/client": "^3.0.0"
+    "zone.js": "~0.11.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1002.0",

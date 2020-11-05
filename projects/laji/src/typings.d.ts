@@ -2,7 +2,6 @@
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 declare module 'electron';
 declare module 'jsonpath-plus';
-declare module 'laji-form/lib/laji-form';
 declare let d3: any;
 
 declare module '*.json' {
