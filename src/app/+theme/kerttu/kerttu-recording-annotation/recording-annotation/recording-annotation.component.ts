@@ -32,6 +32,8 @@ export class RecordingAnnotationComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.annotation) {
+      this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
+
       this.selectedTaxons = [];
       if (this.selectedTaxonsSub) {
         this.selectedTaxonsSub = undefined;
@@ -68,6 +70,7 @@ export class RecordingAnnotationComponent implements OnChanges {
     this.saveClick.emit({
       recordingId: this.recording.id,
       annotation: {
+        ...this.generalAnnotation,
         taxonAnnotations: taxonAnnotations
       }
     });

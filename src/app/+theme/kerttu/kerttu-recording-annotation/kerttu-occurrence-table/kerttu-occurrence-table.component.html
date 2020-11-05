@@ -16,6 +16,6 @@
 
 <ng-template let-row="row" let-rowIndex="rowIndex" let-value="value" #radioButton>
   <label class="datatable-checkbox">
-    <input type="radio" name="occurrence_{{ rowIndex }}" [checked]="row.annotation.type === value" (change)="annotationTypeChange(rowIndex, value)"/>
+    <input type="radio" name="occurrence_{{ rowIndex }}" [checked]="row.annotation.annotation === value" (change)="annotationTypeChange(rowIndex, value)"/>
   </label>
 </ng-template>
