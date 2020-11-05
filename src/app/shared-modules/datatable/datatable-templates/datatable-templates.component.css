@@ -12,6 +12,13 @@ img.compact {
   display: block;
   margin: auto;
 }
+img.quality {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
 .annotation-positive {
   color: #4cae4c;
 }

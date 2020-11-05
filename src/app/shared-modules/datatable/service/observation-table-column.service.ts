@@ -174,9 +174,11 @@ export const COLUMNS: IColumns = {
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},
   'unit.interpretations.recordQuality': {
     name: 'unit.interpretations.recordQuality',
-    cellTemplate: 'warehouseLabel',
+    cellTemplate: 'qualityIcon',
     label: 'result.unit.quality.taxon',
-    sortable: false
+    sortable: true,
+    sortBy: 'unit.interpretations.recordQualityNumeric',
+    width: 50,
   },
   'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: environment.type === Global.type.vir},
   'gathering.interpretations.countryDisplayname': {
@@ -232,7 +234,12 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
+  'document.linkings.collectionQuality': {
+    name: 'document.linkings.collectionQuality', 
+    cellTemplate: 'qualityIcon', 
+    sortable: false,
+    width: 50
+  },
   'document.createdDate': {name: 'document.createdDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
   'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
   'document.dateObserved': {name: 'document.dateObserved', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
@@ -373,6 +380,8 @@ export const COLUMNS: IColumns = {
 export class ObservationTableColumnService extends TableColumnService<ObservationTableColumn, IColumns> {
 
   protected defaultFields: Array<keyof IColumns> = [
+    'unit.interpretations.recordQuality',
+    'document.linkings.collectionQuality',
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',

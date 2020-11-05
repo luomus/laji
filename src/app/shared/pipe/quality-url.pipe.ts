@@ -8,7 +8,6 @@ export class QualityUrlPipe implements PipeTransform {
   recordPath = 'static/images/quality-icons/record/'
   collectionPath = 'static/images/quality-icons/collection/'
   transform(value: any, args?: any): any {
-    console.log('VALUE ', value)
     switch (value) {
       case 'EXPERT_VERIFIED':
         return this.recordPath + 'expert_verified.svg'
