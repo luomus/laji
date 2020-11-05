@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of as ObservableOf } from 'rxjs';
-import { TaxonomyApi } from '../../../../../../src/app/shared/api/TaxonomyApi';
+import { TaxonomyApi } from '../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { TriplestoreLabelService } from '../../../../../../src/app/shared/service/triplestore-label.service';
+import { TriplestoreLabelService } from '../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TranslateService } from '@ngx-translate/core';
 
 export const DEFAULT_YEAR = '2019';

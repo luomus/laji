@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
-import { PlatformService } from '../../../../../../../src/app/shared/service/platform.service';
+import { PlatformService } from '../../../../../../laji/src/app/shared/service/platform.service';
 import { map } from 'rxjs/operators';
 
 @Component({

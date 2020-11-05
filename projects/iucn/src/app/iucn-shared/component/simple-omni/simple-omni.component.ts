@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DEFAULT_YEAR, ResultService } from '../../service/result.service';
-import { LocalizeRouterService } from '../../../../../../../src/app/locale/localize-router.service';
+import { LocalizeRouterService } from '../../../../../../laji/src/app/locale/localize-router.service';
 import { Router } from '@angular/router';
-import { TaxonSelectComponent } from '../../../../../../../src/app/shared-modules/taxon-select/taxon-select.component';
+import { TaxonSelectComponent } from '../../../../../../laji/src/app/shared-modules/taxon-select/taxon-select.component';
 
 @Component({
   selector: 'laji-simple-omni',

@@ -1,0 +1,10 @@
+<ng-container *ngIf="(namedPlace$ | async) as namedPlace">
+  <div class="no-print print-wrap">
+    <laji-spinner [spinning]="loading" [overlay]="true">
+    <button type="button" [disabled]="loading" class="btn btn-default no-print" (click)="print(namedPlace.name)">PDF <img src="/projects/laji/src/static/images/icons/pdf_16x16.png"></button>
+    </laji-spinner>
+  </div>
+  <laji-line-transect-print
+    [namedPlace]="namedPlace"
+  ></laji-line-transect-print>
+</ng-container>

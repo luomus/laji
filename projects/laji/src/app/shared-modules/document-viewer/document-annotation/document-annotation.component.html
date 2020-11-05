@@ -1,0 +1,168 @@
+
+<ng-container *ngIf="hasDoc && document && unitExist === true">
+    <div class="shortcut-content" *ngIf="showShortcuts" [@shortcutsInOut]>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="shortcut-item col-sm-12">
+              <h3>Shortcuts</h3>
+              <span class="close" (click)="toggleShortcuts()">x</span>
+            </div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>Esc</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.closePopup' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>i</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.openImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>←</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.previousImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>→</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.nextImage' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>c</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusComment' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>t</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.focusTaxon' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>1</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.addConvincing' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>0</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.addErroneus' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>r</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.deleteAddedTags' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>ctrl</code> + <code>s</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.saveAnnotation' | translate }}</div></div>
+             <div class="shortcut-item col-sm-12 no-padding"><div class="col-sm-4"><code>alt</code> + <code>?</code></div><div class="col-sm-8">{{ 'annotation.shortcuts.showShortcuts' | translate }}</div></div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+          <div class="page-header" *ngIf="!hideHeader" [ngClass]="{tight: !showTitle}">
+            <h3 ngPreserveWhitespaces>
+              {{ 'viewer.document' | translate }}
+              <small>
+                <a [routerLink]="['/view'] | localize" [queryParams]="{uri: document.documentId}" target="_blank">
+                  {{ document.documentId }}
+                </a>
+              </small>
+              <a type="button"
+                 class="btn btn-sm btn-default"
+                 [routerLink]="['/view/print'] | localize"
+                 [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
+                 target="_blank"
+                 [tooltip]="'haseka.submissions.toPrint' | translate">
+                {{ 'print' | translate }}
+                <img src="/projects/laji/src/static/images/icons/pdf_16x16.png">
+              </a>
+                <laji-user-document-tools
+                [editors]="editors"
+                [personID]="personID"
+                [documentID]="document.documentId"
+                [formID]="document.formId"
+                (documentDeleted)="onDocumentDeleted($event)"
+              ></laji-user-document-tools>
+              <div class="manual-shortcuts">
+                <span [ngSwitch]="currentLang">
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'sv'" [routerLink]="['/about', '3928'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'en'" [routerLink]="['/about', '3926'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                  <a target="_blank" (click)="onManualLinkClick($event)" class="manual btn btn-sm btn-default" *ngSwitchCase="'fi'" [routerLink]="['/about', '3806'] | localize">{{ 'vihko.home.form.trip.1' | translate}}<img src="../../../static/images/icons/icons8-user-manual-32.png"></a>
+                </span>
+                <a class="shortcuts btn btn-sm btn-default" (click)="toggleShortcuts()"><img src="../../../../static/images/icons/keyboard_24px.svg" />Shortcuts</a>
+              </div>
+            </h3>
+          </div>
+        </div>
+    </div>
+
+        <div class="row container-col">
+          <div class="col-sm-4 column-modal">
+            <div class="title">{{ 'annotation.mediaFiles' | translate }}</div>
+            <laji-images [document]="document" [highlight]="highlight" [shortcut]="true"></laji-images>
+          </div>
+          <div class="col-sm-4 column-modal">
+              <div class="title">{{ 'annotation.list' | translate }}</div>
+            <ng-container *ngIf="activeGathering">
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="true"
+              [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
+            </ng-container>
+          </div>
+          <div class="col-sm-4 column-modal">
+            <div class="title">{{ 'annotation.data.info' | translate }}</div>
+                <div>
+                  <div *ngIf="activeGathering">
+                    <div *ngFor="let unit of activeGathering?.units">
+                       <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
+                         <alert type="info">
+                           {{ 'viewer.secured.none' | translate }}
+                         </alert>
+                       </ng-container>
+                    </div>
+                  </div>
+                  <alert *ngIf="document.secured" type="warning">
+                    <span *ngIf="document.public">
+                        <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
+                          {{ 'viewer.secured.secured' | translate }}
+                        </span>
+                        <span *ngIf="document.partial">
+                          {{ 'viewer.secured.partial' | translate }}
+                        </span>
+                      </span>
+                      <span *ngIf="!document.public">
+                        {{ 'viewer.secured.own1' | translate }}
+                        <ng-container *lajiForTypes="['vir']; exclude: true">
+                          (<a [routerLink]="['/view'] | localize"
+                              [queryParams]="{uri: document.documentId,highlight: highlight}"
+                              target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
+                        </ng-container>
+                      </span>
+                      <div *ngIf="document.secured">
+                        <laji-secure-info
+                          [secureLevel]="document.secureLevel"
+                          [secureReasons]="document.secureReasons"
+                        ></laji-secure-info>
+                        <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
+                          <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
+                        </ng-container>
+                      </div>
+                  </alert>
+                </div>
+            <h5>{{ 'annotation.collectionEditor' | translate }}</h5>
+            <laji-issues [data]="document"></laji-issues>
+            <laji-row [title]="'result.document.collectionId' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+              <span>{{ document.collectionId | toQName | collectionName }}</span>
+              <span><a href="{{document.collectionId}}" target="_blank">[metadata]</a></span>
+            </laji-row>
+            <laji-row [title]="'annotation.collectionQuality' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
+              <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
+            </laji-row>
+            <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors.length > 0 && hasEditors">
+              <ul class="separated-list">
+                <li *ngFor="let user of document.linkings.editors">
+                  <span *ngIf="user.id && user.fullName">
+                    <a target="_blank" href="user/{{user | values:'':'id' | toQName }}">
+                      {{ user.fullName }}
+                    </a>
+                  </span>
+                </li>
+              </ul>
+            </laji-row>
+            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'L'"></laji-row>
+            <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'L'"></laji-row>
+            <laji-row [noTitleSpace]="false" ngPreserveWhitespaces>
+              <a href="view?uri={{document.documentId}}" target="_blank">
+                <span>{{ unitCnt }}
+                  <span *ngIf="unitCnt > 1"> {{ 'annotation.observations.count' | translate }}</span>
+                  <span *ngIf="unitCnt === 1"> {{ 'annotation.observation.count' | translate }}</span>
+                </span>
+              </a>
+            </laji-row>
+            <ng-container *ngIf="activeGathering">
+              <laji-gathering-annotation (showAllUnits)="toggleShowOnlyHighlighted()" [annotationTags]="annotationTags$ | async" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt" [showOnlyHighlightedUnit]="showOnlyHighlighted" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID"  [personRoleAnnotation]="personRoleAnnotation" [gathering]="activeGathering" [highlight]="highlight" [showAnnotation]="false"
+              [loadDate]="document.loadDate" [createdDate]="document.createdDate" [observerId]="document.editorUserIds" [collectionId]="document.collectionId"></laji-gathering-annotation>
+            </ng-container>
+            <laji-viewer-map [settingsKey]="'viewer-map'" [useWorldMap]="useWorldMap" [active]="active" *ngIf="hasMapData" [data]="mapData" [hideCoordinates]="showCoordinates"></laji-viewer-map>
+            <laji-image-gallery *ngIf="activeGathering && activeGathering.media" [modalImages]="activeGathering.media" [showOverlay]="true"></laji-image-gallery>
+          </div>
+        </div>
+</ng-container>
+<ng-container *ngIf="hasDoc === false">
+  <div class="page-header">
+    <h2>{{ 'viewer.notFound' | translate }}</h2>
+  </div>
+</ng-container>
+<ng-container *ngIf="unitExist === false && hasDoc">
+  <div class="page-header">
+    <h2>{{ 'observation.notFound' | translate }}</h2>
+  </div>
+</ng-container>
+<div>
+  <a *ngIf="result && indexPagination>0" class="arrow left" (click)="previous()"></a>
+  <a *ngIf="result && indexPagination < result.length-1" class="arrow right" (click)="next()"></a>
+</div>

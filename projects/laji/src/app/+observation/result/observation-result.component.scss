@@ -1,0 +1,76 @@
+@import "../../../styles/variables";
+@import 'projects/laji-ui/src/lib/vars';
+@import '../../../styles/styles';
+
+.results, .whole-data-list {
+  padding-top: 20px;
+}
+
+.counts {
+  padding: 10px 0 0 20px;
+  color: #777;
+}
+
+.nav-pills li {
+  min-width: 200px;
+  text-align: center;
+}
+
+.toggle-intro {
+  margin-top: -15px;
+  padding: 0 15px 0 0;
+  z-index: 2;
+  font-size: 13px;
+  color: $color-main-dark;
+}
+
+
+@media only screen and (min-width : 768px) {
+  .spacer, .species-list {
+    padding-right: 10px;
+  }
+}
+
+@media only screen and (max-width : 480px) {
+  .nav-pills li:first-child {
+    margin-bottom: 10px;
+  }
+}
+
+.finnish-selector {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin-bottom: 10px;
+  > * {
+    margin-right: 10px;
+  }
+}
+
+.finnish-selector-buttons {
+  margin-right: 0px !important;
+}
+
+.finnish-selector-buttons > *:first-child {
+  margin-right: 10px;
+}
+
+:host ::ng-deep lu-checkbox {
+  margin-left: 20px;
+  @include media-query-small-phone {
+    display: block;
+    margin-left: 0;
+  }
+}
+
+:host ::ng-deep lu-checkbox label.checked .info {
+  background-color: $blue_graph;
+  color: white;
+}
+
+.stats-buttons {
+  display: inline;
+  @include  media-query-tablet {
+    display: block;
+  }
+}

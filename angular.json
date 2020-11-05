@@ -4,8 +4,8 @@
   "newProjectRoot": "projects",
   "projects": {
     "laji": {
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/laji",
+      "sourceRoot": "projects/laji/src",
       "prefix": "laji",
       "projectType": "application",
       "architect": {
@@ -14,21 +14,21 @@
           "options": {
             "aot": true,
             "outputPath": "dist/browser",
-            "index": "src/index.html",
-            "main": "src/main.ts",
+            "index": "projects/laji/src/index.html",
+            "main": "projects/laji/src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": "projects/laji/src/polyfills.ts",
             "assets": [
-              "src/static",
-              "src/favicon.ico",
-              "src/robots.txt"
+              "projects/laji/src/static",
+              "projects/laji/src/favicon.ico",
+              "projects/laji/src/robots.txt"
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles/laji.scss",
+              "projects/laji/src/styles/laji.scss",
               "projects/laji-ui/src/lib/exports.scss"
             ],
             "stylePreprocessorOptions": {
@@ -58,8 +58,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.prod.ts"
                 }
               ]
             },
@@ -81,8 +81,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.beta.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.beta.ts"
                 }
               ]
             },
@@ -104,8 +104,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev-embedded.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.dev-embedded.ts"
                 }
               ]
             },
@@ -127,8 +127,8 @@
               "buildOptimizer": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.embedded.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.embedded.ts"
                 }
               ]
             },
@@ -145,8 +145,8 @@
               "vendorChunk": false,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local.ts"
                 }
               ]
             },
@@ -201,22 +201,22 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
+            "main": "projects/laji/src/test.ts",
             "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": "projects/laji/src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "scripts": [],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/angular-tree-component/dist/angular-tree-component.css",
-              "src/styles/ng2-toastr.min.css",
-              "src/styles/laji.scss"
+              "projects/laji/src/styles/ng2-toastr.min.css",
+              "projects/laji/src/styles/laji.scss"
             ],
             "assets": [
-              "src/static",
-              "src/favicon.ico",
-              "src/robots.txt"
+              "projects/laji/src/static",
+              "projects/laji/src/favicon.ico",
+              "projects/laji/src/robots.txt"
             ]
           }
         },
@@ -252,8 +252,8 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.prod.ts"
                 }
               ]
             },
@@ -265,8 +265,8 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.beta.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.beta.ts"
                 }
               ]
             },
@@ -285,8 +285,8 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.embedded.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.embedded.ts"
                 }
               ]
             },
@@ -298,8 +298,8 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local.ts"
                 }
               ]
             }
@@ -321,8 +321,8 @@
       }
     },
     "laji-e2e": {
-      "root": "e2e/",
-      "sourceRoot": "e2e",
+      "root": "projects/laji/e2e/",
+      "sourceRoot": "projects/laji/e2e",
       "projectType": "application",
       "architect": {
         "e2e": {
@@ -340,7 +340,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": "projects/laji/e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
@@ -409,7 +409,7 @@
               "projects/iucn/src/robots.txt",
               {
                 "glob": "**/*",
-                "input": "src/static",
+                "input": "projects/laji/src/static",
                 "output": "/static/"
               }
             ],
@@ -417,7 +417,7 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles/laji.scss",
+              "projects/laji/src/styles/laji.scss",
               "projects/iucn/src/styles.css"
             ],
             "stylePreprocessorOptions": {
@@ -450,7 +450,7 @@
                   "with": "projects/iucn/src/environments/environment.prod.ts"
                 },
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.prod.ts"
                 }
               ]
@@ -464,7 +464,7 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
@@ -844,14 +844,14 @@
               "projects/vir/src/assets",
               {
                 "glob": "**/*",
-                "input": "src/static",
+                "input": "projects/laji/src/static",
                 "output": "/static/"
               }
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles/laji.scss",
+              "projects/laji/src/styles/laji.scss",
               "projects/vir/src/styles.scss",
               "projects/laji-ui/src/lib/exports.scss"
             ],
@@ -866,7 +866,7 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 },
                 {
@@ -909,7 +909,7 @@
                   "with": "projects/vir/src/environments/environment.dev.ts"
                 },
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.dev.ts"
                 }
               ],
@@ -931,7 +931,7 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/vir/src/environments/environment.ts"
                 }
               ],
@@ -981,7 +981,7 @@
               "projects/vir/src/assets",
               {
                 "glob": "**/*",
-                "input": "src/static",
+                "input": "projects/laji/src/static",
                 "output": "/static/"
               }
             ],
@@ -1008,18 +1008,6 @@
             "exclude": [
               "**/node_modules/**"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/vir/e2e/protractor.conf.js",
-            "devServerTarget": "vir:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "vir:serve:production"
-            }
           }
         }
       }
