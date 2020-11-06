@@ -58,8 +58,9 @@ export namespace Form {
   interface ListOptions {
     prepopulateWithInformalTaxonGroups?: string[];
     emptyOnNoCount?: boolean;
-    allowExcel?: true;
-    allowTemplate?: true;
+    allowExcel?: boolean;
+    excludeFromGlobalExcel?: boolean;
+    allowTemplate?: boolean;
     forms?: string[];
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
