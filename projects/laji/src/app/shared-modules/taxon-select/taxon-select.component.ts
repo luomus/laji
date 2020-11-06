@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, OnInit, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component,
+EventEmitter, Input, Output, ViewChild, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,7 +39,7 @@ import { BrowserService } from 'projects/laji/src/app/shared/service/browser.ser
   styleUrls: ['taxon-select.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonSelectComponent {
+export class TaxonSelectComponent implements OnInit, OnDestroy {
   @Input() searchParams = {};
   @Input() name = 'target';
   @Input() placeholder = '';

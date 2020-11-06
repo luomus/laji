@@ -39,7 +39,7 @@ export class SaveObservationsFacade {
     this.formService.getAllForms(this.translate.currentLang).pipe(
       map((forms) => {
         const c = [];
-        const b = [];
+        const d = [];
         const r = [];
         forms.sort((a, b) =>
           a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
@@ -49,14 +49,14 @@ export class SaveObservationsFacade {
               c.push(form);
               break;
             case 'MHL.categoryBirdMonitoringSchemes':
-              b.push(form);
+              d.push(form);
               break;
             case 'MHL.categorySurvey':
               r.push(form);
               break;
           }
         });
-        return [c, b, r];
+        return [c, d, r];
       })
     ).subscribe(this.reducer.bind(this));
   }

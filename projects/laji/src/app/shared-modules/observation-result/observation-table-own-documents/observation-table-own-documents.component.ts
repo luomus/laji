@@ -476,7 +476,9 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
               id: this.toQName.transform(document['aggregateBy']['document.documentId']),
               locked: true,
               index: idx,
-              _editUrl: this.formService.getEditUrlPath(this.toQName.transform(document['aggregateBy']['document.formId']), this.toQName.transform(document['aggregateBy']['document.documentId'])),
+              _editUrl: this.formService.getEditUrlPath(
+                this.toQName.transform(document['aggregateBy']['document.formId']), this.toQName.transform(document['aggregateBy']['document.documentId'])
+              ),
             } as RowDocument;
           })
         );

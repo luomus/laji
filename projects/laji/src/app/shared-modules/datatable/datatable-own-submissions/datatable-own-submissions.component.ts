@@ -39,7 +39,7 @@ interface Settings {[key: string]: DatatableColumn; }
   styleUrls: ['./datatable-own-submissions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableOwnSubmissionsComponent implements OnInit {
+export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;

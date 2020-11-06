@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
-  HostListener, EventEmitter, ChangeDetectorRef, OnInit} from '@angular/core';
+HostListener, EventEmitter, ChangeDetectorRef, OnInit, OnDestroy} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
@@ -26,7 +26,7 @@ import { of, forkJoin, Subscription } from 'rxjs';
   styleUrls: ['./user-document-tools.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserDocumentToolsComponent implements OnInit {
+export class UserDocumentToolsComponent implements OnInit, OnDestroy {
 
   @Input() actions: string[]|false = ['edit', 'template', 'delete'];
   @Input() templateForm: TemplateForm = {
