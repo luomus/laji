@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
 import {IRecording, IRecordingAnnotation} from '../models';
 import {UserService} from '../../../shared/service/user.service';
@@ -17,12 +17,14 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   recordingAnnotation$: Observable<IRecordingAnnotation>;
   taxonList$: Observable<string[]>;
 
+  saving = false;
   loadingAnnotation = false;
 
   constructor(
     private kerttuApi: KerttuApi,
     private taxonService: KerttuTaxonService,
-    private userService: UserService
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,10 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   }
 
   save(data: {recordingId: number, annotation: IRecordingAnnotation}) {
-    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), data.recordingId, data.annotation).subscribe();
+    this.saving = true;
+    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), data.recordingId, data.annotation).subscribe(() => {
+      this.saving = false;
+      this.cdr.markForCheck();
+    });
   }
 }

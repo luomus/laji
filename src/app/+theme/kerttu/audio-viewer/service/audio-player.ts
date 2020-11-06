@@ -37,6 +37,7 @@ export class AudioPlayer {
   setPlayArea(playArea: IAudioViewerArea) {
     this.stop();
     this.playArea = playArea;
+    this.currentTime = this.getStartTime();
   }
 
   toggle() {
