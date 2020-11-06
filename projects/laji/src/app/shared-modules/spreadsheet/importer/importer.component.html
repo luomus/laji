@@ -111,10 +111,10 @@
               <div class="col-sm-6">
                 <div class="row">
                   <div class="col-sm-12">
-                    <button type="button" (click)="save(publ)" class="btn btn-success pull-right action">
+                    <button type="button" (click)="save(publ)" class="btn btn-success pull-right action public">
                       {{ buttonLabel('save') | translate }}
                     </button>
-                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action" *ngIf="hasButton('temp')">
+                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="hasButton('temp')">
                       {{ buttonLabel('temp') | translate }}
                     </button>
                     <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
@@ -124,7 +124,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
-                    <span class="pull-right" [innerHTML]="'excel.import.observations' | translate:{cnt:docCnt}"></span><br>
+                    <span class="pull-right doc-count" [innerHTML]="'excel.import.observations' | translate:{cnt:docCnt}"></span><br>
                   </div>
                 </div>
               </div>
@@ -132,12 +132,12 @@
           </ng-container>
           <div class="row" style="margin-top: 15px;" *ngIf="vm.step !== step.validating">
             <div class="col-sm-4">
-              <select class="form-control" (change)="changeImportType($event.target.value)">
+              <select name="row-handling" class="form-control" (change)="changeImportType($event.target.value)">
                 <option *ngFor="let item of combineOptions" [selected]="item === combineBy" [value]="item">{{ 'excel.combine.' + item | translate }}</option>
               </select>
             </div>
             <div class="col-sm-3">
-              <select class="form-control" (change)="changeImportType($event.target.value)">
+              <select name="count-handling" class="form-control" (change)="changeImportType($event.target.value)">
                 <option [selected]="true === onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
                 <option [selected]="false === onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
               </select>

@@ -229,7 +229,7 @@ export class MappingService {
     switch (field.type) {
       case 'string':
         if (!field.enum) {
-          realValue = value;
+          realValue = ['number', 'boolean', 'bigint'].includes(typeof value) ? '' + value : value;
         } else {
           this.initStringMap(field);
           realValue = Array.isArray(upperValue) ?
@@ -348,7 +348,15 @@ export class MappingService {
         return `${first}T${parts.join('')}`;
       }
       return parts.join('T');
+    } else if (value instanceof Date) {
+      if (value.getHours() === 23 && value.getMinutes() === 59 && value.getSeconds() === 11) {
+        const tmpDate = new Date(value);
+        tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
+        return tmpDate.toISOString().substr(0, 10);
+      }
+      return value.toISOString();
     }
+
     return value;
   }
 
