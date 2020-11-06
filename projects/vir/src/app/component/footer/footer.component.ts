@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } 
 import { Observable } from 'rxjs';
 import { FooterService } from 'projects/laji/src/app/shared/service/footer.service';
 import { BaseDataService } from 'projects/laji/src/app/graph-ql/service/base-data.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 const informationWhitelist = [
   // FinBIF
@@ -22,7 +22,11 @@ const informationWhitelist = [
 ];
 
 const augment = {
-  '263': [{id: '4271', title: 'Lokitus'}]
+  '263': [{id: '4271', title: 'Lokitus'}],
+  '261': [
+    {id: '4404', title: 'Usein kysytyt kysymykset'},
+    {id: '4515', title: 'Webinaarit'}
+  ]
 };
 
 @Component({
