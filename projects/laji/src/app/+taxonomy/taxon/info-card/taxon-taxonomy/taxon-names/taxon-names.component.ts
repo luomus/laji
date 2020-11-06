@@ -13,7 +13,7 @@ export class TaxonNamesComponent implements OnInit {
 
   @Input() set taxon(taxon: Taxonomy) {
     this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
-    for (const lang of ['fi', 'sv', 'en']) {
+    for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
       if (taxon.vernacularName && taxon.vernacularName[lang]) {
         this.availableLangs.vernacularName.push(lang);
       }
