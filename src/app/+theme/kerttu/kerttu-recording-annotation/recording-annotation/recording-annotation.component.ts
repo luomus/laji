@@ -17,7 +17,11 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() loadingAnnotation = false;
 
   generalAnnotation: IRecordingAnnotation = {};
-  selectedTaxons: ITaxonWithAnnotation[] = [];
+  selectedTaxons: {
+    main: ITaxonWithAnnotation[];
+    otherBird: ITaxonWithAnnotation[];
+    other: ITaxonWithAnnotation[];
+  };
 
   // @Output() annotationsChange = new EventEmitter<any>();
   @Output() nextRecordingClick = new EventEmitter();
@@ -34,29 +38,47 @@ export class RecordingAnnotationComponent implements OnChanges {
     if (changes.annotation) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
 
-      this.selectedTaxons = [];
+      this.selectedTaxons = {
+        'main': [],
+        'otherBird': [],
+        'other': []
+      };
       if (this.selectedTaxonsSub) {
         this.selectedTaxonsSub = undefined;
       }
 
-      if (this.annotation?.taxonAnnotations.length > 0) {
-        const obs = this.annotation.taxonAnnotations.map(
-          a => this.taxonService.taxonomyFindBySubject(
-            a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive']}
-          ).pipe(map(taxon => {
-            return {...taxon, annotation: a};
-          }))
-        );
-        this.selectedTaxonsSub = forkJoin(obs).subscribe(results => {
-          this.selectedTaxons = results;
+      const taxonAnnotations = this.annotation?.taxonAnnotations;
+      if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.otherBirds?.length > 0  || taxonAnnotations?.other?.length > 0) {
+        const observables = [];
+        for (const type of ['main', 'otherBird', 'other']) {
+          if (taxonAnnotations[type]?.length > 0) {
+            const obs = taxonAnnotations[type].map(
+              a => this.taxonService.taxonomyFindBySubject(
+                a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName']}
+              ).pipe(map(taxon => {
+                return {...taxon, annotation: a};
+              }))
+            );
+            observables.push(forkJoin(obs));
+          } else {
+            observables.push(of([]));
+          }
+        }
+
+        this.selectedTaxonsSub = forkJoin(observables).subscribe((results: ITaxonWithAnnotation[][])  => {
+          this.selectedTaxons = {
+            'main': results[0],
+            'otherBird': results[1],
+            'other': results[2]
+          };
           this.cdr.markForCheck();
         });
       }
     }
   }
 
-  onTaxonSelect(taxon) {
-    this.selectedTaxons = [...this.selectedTaxons, {
+  addTaxonToSelected(taxon: any, type: 'main'|'otherBird'|'other') {
+    this.selectedTaxons[type] = [...this.selectedTaxons[type], {
       ...taxon.payload,
       annotation: {
         taxonId: taxon.key,
@@ -66,7 +88,11 @@ export class RecordingAnnotationComponent implements OnChanges {
   }
 
   save() {
-    const taxonAnnotations = this.selectedTaxons.map(taxon => taxon.annotation);
+    const taxonAnnotations = {};
+    for (const key of Object.keys(this.selectedTaxons)) {
+      taxonAnnotations[key] = this.selectedTaxons[key].map(taxon => taxon.annotation);
+    }
+
     this.saveClick.emit({
       recordingId: this.recording.id,
       annotation: {

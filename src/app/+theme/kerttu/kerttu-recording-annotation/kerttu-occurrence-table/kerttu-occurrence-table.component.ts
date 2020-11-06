@@ -1,5 +1,4 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
-import { SelectionType } from '@swimlane/ngx-datatable';
 import {ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
 
@@ -12,16 +11,17 @@ import {DatatableColumn} from '../../../../shared-modules/datatable/model/datata
 export class KerttuOccurrenceTableComponent implements OnInit {
   @Input() selectedTaxons: ITaxonWithAnnotation[];
   @Input() loading = false;
+  @Input() componentId = 0;
 
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
   @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
+  @ViewChild('deleteBtn', { static: true }) deleteBtnTpl: TemplateRef<any>;
 
   columns: DatatableColumn[];
 
-  selectionType = SelectionType;
   taxonAnnotationEnum = TaxonAnnotationEnum;
 
-  @Output() annotationChange = new EventEmitter<ITaxonWithAnnotation[]>();
+  @Output() selectedTaxonsChange = new EventEmitter<ITaxonWithAnnotation[]>();
 
   constructor() { }
 
@@ -44,11 +44,19 @@ export class KerttuOccurrenceTableComponent implements OnInit {
         label: 'Esiintyy mahdollisesti',
         cellTemplate: this.possiblyOccursTpl
       },
+      {
+        cellTemplate: this.deleteBtnTpl
+      }
     ];
   }
 
   annotationTypeChange(rowIndex: number, value: number) {
     this.selectedTaxons[rowIndex].annotation.annotation = value;
-    this.annotationChange.emit(this.selectedTaxons);
+    this.selectedTaxonsChange.emit(this.selectedTaxons);
+  }
+
+  deleteRow(rowIndex: number) {
+    this.selectedTaxons.splice(rowIndex, 1);
+    this.selectedTaxonsChange.emit([...this.selectedTaxons]);
   }
 }

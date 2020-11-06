@@ -37,6 +37,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     :host ::ng-deep lu-button button.other {
       padding: 0.5em 1em;
     }
+    :host ::ng-deep .ngx-datatable lu-button button {
+      padding: 0.1em 0.6em;
+    }
 
     @media only screen and (min-width : 768px) {
       main {

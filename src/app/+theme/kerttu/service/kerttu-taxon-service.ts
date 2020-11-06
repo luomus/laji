@@ -27,7 +27,7 @@ export class KerttuTaxonService {
         '1000',
         'taxonomic',
         {
-          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursive', 'observationCountFinland'],
+          selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName', 'observationCountFinland'],
           onlyFinnish: true,
           taxonRanks: ['MX.species']
         }

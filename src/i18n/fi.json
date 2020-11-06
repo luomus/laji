@@ -1486,6 +1486,8 @@
   "theme.kerttu.recordingAnnotation": "Tunnista äänitteitä",
   "theme.kerttu.recordingAnnotation.title": "Tunnista äänitteellä esiintyvät lintulajit",
   "theme.kerttu.listSpecies": "Lisää äänitteellä esiintyvä lintulaji:",
+  "theme.kerttu.listOtherBirdSpecies": "Lisää äänitteellä esiintyvä lintulaji, joka ei ole yllä olevassa listassa:",
+  "theme.kerttu.listOtherSpecies": "Lisää äänitteellä kuuluva muu eläinlaji:",
   "theme.kerttu.nextRecording": "Seuraava äänite",
   "theme.linetransect.intro": "Maalintujen linjalaskennoilla voidaan nopeasti saada edustava kuva seudun pesimälinnustosta. Tutustu tuloksiin, varaa laskentareitti ja kirjaa laskentatulokset.",
   "theme.lolife.about": "Tietoa",
