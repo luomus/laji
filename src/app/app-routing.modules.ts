@@ -37,7 +37,8 @@ const baseRoutes: Routes = [
   {path: 'forum', component: ForumComponent},
   {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
   {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
-  {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)}
+  {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)},
+  {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)}
 ];
 
 const routesWithLang: Routes = [

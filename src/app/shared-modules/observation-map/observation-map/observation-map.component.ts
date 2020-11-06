@@ -54,6 +54,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         ? LajiMapTileLayerName.openStreetMap
         : LajiMapTileLayerName.taustakartta
     };
+    console.log(this._mapOptions);
   }
   @Input() lastPage = 0; // 0 = no page limit
   @Input() set draw(draw: any) {
