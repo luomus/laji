@@ -14,7 +14,7 @@ type TaxonChildren = {
 }[];
 
 interface TaxonomyWithChildren extends Taxonomy {
-  children: TaxonomyWithChildren[]
+  children: TaxonomyWithChildren[];
 }
 
 const rankWhiteList = [
@@ -102,10 +102,10 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         ...subTaxa.map(subTaxon => {
           if (this.isMainRank(subTaxon.taxonRank)) {
             if (depth <= 1) {
-              return of(subTaxon).pipe(map(s => { return {...s, children: []} }));
+              return of(subTaxon).pipe(map(s => ({...s, children: []})));
             } else {
               return this.getChildTree(subTaxon, depth - 1, maxDepth - 1).pipe(
-                map(children => { return { ...subTaxon, children }})
+                map(children => ({ ...subTaxon, children }))
               );
             }
           } else {
@@ -128,8 +128,8 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
     } : {
       selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
       sortOrder: 'observationCountFinland DESC'
-    }
-    return this.taxonomyApi.taxonomyFindChildren(id, this.translate.currentLang, "1", params);
+    };
+    return this.taxonomyApi.taxonomyFindChildren(id, this.translate.currentLang, '1', params);
   }
 
   isMainRank(s: string): boolean {
