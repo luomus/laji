@@ -38,15 +38,9 @@ export class SaveObservationsFacade {
   loadAll() {
     this.formService.getAllForms(this.translate.currentLang).pipe(
       map((forms) => {
-<<<<<<< HEAD
-        const c = [];
-        const d = [];
-        const r = [];
-=======
         const citizen = [];
         const birdMon = [];
         const surveys = [];
->>>>>>> b9822f01917d2bf8dbbc19f1b4cce4cb4e61c579
         forms.sort((a, b) =>
           a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
         ).forEach((form) => {
@@ -55,22 +49,14 @@ export class SaveObservationsFacade {
               citizen.push(form);
               break;
             case 'MHL.categoryBirdMonitoringSchemes':
-<<<<<<< HEAD
-              d.push(form);
-=======
               birdMon.push(form);
->>>>>>> b9822f01917d2bf8dbbc19f1b4cce4cb4e61c579
               break;
             case 'MHL.categorySurvey':
               surveys.push(form);
               break;
           }
         });
-<<<<<<< HEAD
-        return [c, d, r];
-=======
         return [citizen, birdMon, surveys];
->>>>>>> b9822f01917d2bf8dbbc19f1b4cce4cb4e61c579
       })
     ).subscribe(this.reducer.bind(this));
   }
