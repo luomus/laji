@@ -40,7 +40,6 @@ export interface IRecordingAnnotation {
 
   taxonAnnotations?: {
     main?: ITaxonAnnotation[];
-    otherBirds?: ITaxonAnnotation[];
     other?: ITaxonAnnotation[];
   };
 }

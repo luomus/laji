@@ -14,16 +14,15 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
   @Input() annotation: IRecordingAnnotation;
   @Input() taxonList: string[];
-  @Input() loadingAnnotation = false;
 
   generalAnnotation: IRecordingAnnotation = {};
   selectedTaxons: {
     main: ITaxonWithAnnotation[];
-    otherBird: ITaxonWithAnnotation[];
     other: ITaxonWithAnnotation[];
   };
 
-  // @Output() annotationsChange = new EventEmitter<any>();
+  loadingTaxons = false;
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
 
@@ -40,7 +39,6 @@ export class RecordingAnnotationComponent implements OnChanges {
 
       this.selectedTaxons = {
         'main': [],
-        'otherBird': [],
         'other': []
       };
       if (this.selectedTaxonsSub) {
@@ -48,9 +46,9 @@ export class RecordingAnnotationComponent implements OnChanges {
       }
 
       const taxonAnnotations = this.annotation?.taxonAnnotations;
-      if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.otherBirds?.length > 0  || taxonAnnotations?.other?.length > 0) {
+      if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.other?.length > 0) {
         const observables = [];
-        for (const type of ['main', 'otherBird', 'other']) {
+        for (const type of ['main', 'other']) {
           if (taxonAnnotations[type]?.length > 0) {
             const obs = taxonAnnotations[type].map(
               a => this.taxonService.taxonomyFindBySubject(
@@ -65,19 +63,23 @@ export class RecordingAnnotationComponent implements OnChanges {
           }
         }
 
+        this.loadingTaxons = true;
         this.selectedTaxonsSub = forkJoin(observables).subscribe((results: ITaxonWithAnnotation[][])  => {
           this.selectedTaxons = {
             'main': results[0],
-            'otherBird': results[1],
-            'other': results[2]
+            'other': results[1]
           };
+          this.loadingTaxons = false;
           this.cdr.markForCheck();
         });
       }
     }
   }
 
-  addTaxonToSelected(taxon: any, type: 'main'|'otherBird'|'other') {
+  addTaxonToSelected(taxon: any, type: 'main'|'other') {
+    if (this.selectedTaxons[type].filter(t => t.annotation.taxonId === taxon.key).length > 0) {
+      return;
+    }
     this.selectedTaxons[type] = [...this.selectedTaxons[type], {
       ...taxon.payload,
       annotation: {

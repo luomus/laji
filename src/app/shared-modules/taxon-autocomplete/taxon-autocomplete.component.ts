@@ -44,6 +44,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() renderButton = true;
   @Input() useValue = '';
   @Input() whiteList: string[];
+  @Input() blackList: string[];
   @Output() complete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
@@ -118,6 +119,9 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       map(data => {
         if (this.whiteList) {
           data = data.filter(item => this.whiteList.includes(item.key));
+        }
+        if (this.blackList) {
+          data = data.filter(item => !this.blackList.includes(item.key));
         }
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (

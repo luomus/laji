@@ -55,7 +55,7 @@ export class KerttuOccurrenceTableComponent implements OnInit {
     this.selectedTaxonsChange.emit(this.selectedTaxons);
   }
 
-  deleteRow(rowIndex: number) {
+  deleteRow(rowIndex) {
     this.selectedTaxons.splice(rowIndex, 1);
     this.selectedTaxonsChange.emit([...this.selectedTaxons]);
   }

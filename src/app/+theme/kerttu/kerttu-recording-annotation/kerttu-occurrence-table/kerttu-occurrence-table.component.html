@@ -15,10 +15,10 @@
 
 <ng-template let-row="row" let-rowIndex="rowIndex" let-value="value" #radioButton>
   <label class="datatable-checkbox">
-    <input type="radio" name="{{ componentId }}_occurrence_{{ rowIndex }}" [checked]="row.annotation.annotation === value" (change)="annotationTypeChange(rowIndex, value)"/>
+    <input type="radio" name="{{ componentId }}_occurrence_{{ rowIndex }}" [checked]="row.annotation.annotation === value" (change)="annotationTypeChange(row.preSortIndex, value)"/>
   </label>
 </ng-template>
 
-<ng-template let-rowIndex="rowIndex" #deleteBtn>
-  <lu-button [role]="'danger'" (click)="deleteRow(rowIndex)">x</lu-button>
+<ng-template let-row="row" #deleteBtn>
+  <lu-button [role]="'danger'" (click)="deleteRow(row.preSortIndex)">x</lu-button>
 </ng-template>

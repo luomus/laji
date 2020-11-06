@@ -61,11 +61,6 @@
         </div>
       </div>
     </div>
-    <!--laji-pill-list
-      [isLabel]="true"
-      [list]="currentAnnotation"
-      (updateList)="onTaxonListUpdate($event)"
-    ></laji-pill-list-->
   </div>
   <div class="col-md-12">
     <div class="form-group">
@@ -82,41 +77,25 @@
     </div>
     <laji-kerttu-occurrence-table
       [(selectedTaxons)]="selectedTaxons.main"
-      [loading]="!taxonList || loadingAnnotation"
+      [loading]="!taxonList || loadingTaxons"
       [componentId]="0"
     >
     </laji-kerttu-occurrence-table>
   </div>
-  <!--div class="col-md-12">
-    <div class="form-group">
-      <label for="other-bird-species-select">{{ 'theme.kerttu.listOtherBirdSpecies' | translate }}</label>
-      <laji-taxon-autocomplete
-        id="other-bird-species-select"
-        [onlySpecies]="true"
-        [showResult]="false"
-        (taxonSelect)="addTaxonToSelected($event, 'otherBird')"
-      ></laji-taxon-autocomplete>
-    </div>
-    <laji-kerttu-occurrence-table
-      [(selectedTaxons)]="selectedTaxons.otherBird"
-      [loading]="loadingAnnotation"
-      [componentId]="1"
-    >
-    </laji-kerttu-occurrence-table>
-  </div-->
   <div class="col-md-12">
     <div class="form-group">
       <label for="other-animal-species-select">{{ 'theme.kerttu.listOtherSpecies' | translate }}</label>
       <laji-taxon-autocomplete
         id="other-animal-species-select"
         [showResult]="false"
+        [blackList]="taxonList"
         (taxonSelect)="addTaxonToSelected($event, 'other')"
       ></laji-taxon-autocomplete>
     </div>
     <laji-kerttu-occurrence-table
       [(selectedTaxons)]="selectedTaxons.other"
-      [loading]="loadingAnnotation"
-      [componentId]="2"
+      [loading]="!taxonList || loadingTaxons"
+      [componentId]="1"
     >
     </laji-kerttu-occurrence-table>
   </div>
