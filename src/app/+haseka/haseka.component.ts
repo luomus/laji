@@ -5,6 +5,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
+import { HeaderService } from '../../app/shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
+
 
 /* tslint:disable:component-selector */
 @Component({
@@ -23,7 +26,9 @@ export class HasekaComponent implements OnInit, OnDestroy {
   constructor(
     public userService: UserService,
     public router: Router,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private headerService: HeaderService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -34,6 +39,10 @@ export class HasekaComponent implements OnInit, OnDestroy {
       startWith(true))
       .subscribe(() => {
         this.isFront = this.router.isActive('/vihko/home', true);
+        setTimeout(() => {
+          let paragraph = (document.getElementsByTagName("main")).item(0).getElementsByTagName("p").item(0).innerText;
+          this.headerService.updateMetaDescription(paragraph);
+        }, 0);
       });
   }
 
