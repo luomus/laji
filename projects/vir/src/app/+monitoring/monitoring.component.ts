@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MonitoringFacade } from './monitoring.facade';
 import { Observable } from 'rxjs';
 import { Global } from '../../environments/global';
-import { FormList } from '../../../../../src/app/+haseka/form-list/haseka-form-list.interface';
+import { Form } from '../../../../laji/src/app/shared/model/Form';
 
 @Component({
   selector: 'vir-monitoring',
@@ -11,7 +11,7 @@ import { FormList } from '../../../../../src/app/+haseka/form-list/haseka-form-l
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonitoringComponent implements OnInit {
-  monitoringForms$: Observable<FormList[]>;
+  monitoringForms$: Observable<Form.List[]>;
 
   constructor(private facade: MonitoringFacade) { }
 

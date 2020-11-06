@@ -1,0 +1,161 @@
+@import "../../../styles/variables";
+
+:host {
+  min-height: 100%;
+}
+
+laji-observation-form {
+  display: block;
+  max-width: 250px;
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+:host >>> .alert.alert-info {
+  margin-right: 10px;
+}
+.toggle-intro {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: $color-main-dark;
+}
+:host >>> .alert-warning {
+  margin-right: 10px;
+}
+
+.form-filters {
+  z-index: 1029;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  right: 0;
+  padding: 0;
+}
+
+.mobileMargin {
+  margin-top:10px;
+}
+
+.close-filters-mobile {
+  display: none;
+}
+
+
+:host ::ng-deep typeahead-container.dropdown {
+  right: 80px !important;
+  left: unset !important;
+  min-width: 600px;
+}
+
+:host ::ng-deep typeahead-container.dropdown ul {
+  min-width: 600px;
+}
+
+::ng-deep typeahead-container ul li a span div {
+  display: inline-block;
+  float: right;
+  margin-left: 5px;
+  position: relative;
+  top: -5px;
+}
+
+@media only screen and (max-width : 1024px) {
+  .toggle-intro {
+    font-size: 30px;
+  }
+}
+
+
+@media only screen and (max-width : 767px) {
+  .form-filters {
+    height: auto;
+    width: 100%;
+    bottom: 0;
+    top: 40px;
+  }
+
+  .close-filters-mobile{
+    position: fixed;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+    top: 50px;
+  }
+
+  .grc .close-filters-mobile {
+    position: absolute;
+    display: block;
+    height: 40px;
+    z-index: 1059;
+    width: 100%;
+    background: #c7c7c7;
+    padding: 0 15px;
+    top: 0px;
+  }
+
+  .close-filters-mobile div {
+    height: 100%;
+    line-height: 40px;
+    float: right;
+    padding: 0 0 0 15px;
+  }
+
+  .close-filters-mobile div label {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .mobileMargin {
+    margin-top:50px;
+  }
+
+  .result-list {
+    margin-top: 50px;
+  }
+
+  :host >>> .navbar-collapse {
+    z-index: 9999;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown ul {
+    max-width: 220px;
+    min-width: 220px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 80px !important;
+    left: unset !important;
+    min-width: 220px;
+    max-width: 220px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: block;
+    float: none;
+    margin-left: 0px;
+    top: -6px;
+    position: relative;
+    opacity: 0.7;
+  }
+
+  ::ng-deep .sidebar {
+    overflow-x: hidden !important;
+  }
+
+}
+
+@media only screen and (min-width : 768px) {
+  main {
+    padding: 20px 40px;
+    padding-bottom: 0px;
+  }
+}

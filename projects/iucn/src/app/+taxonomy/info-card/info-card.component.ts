@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { RedListEvaluation, Taxonomy } from '../../../../../../src/app/shared/model/Taxonomy';
+import { RedListEvaluation, Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';

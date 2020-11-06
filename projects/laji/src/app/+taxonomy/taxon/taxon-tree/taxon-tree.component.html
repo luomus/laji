@@ -1,0 +1,35 @@
+<div class="tree-wrapper">
+  <laji-tree
+    [activeId]="activeId"
+    [getData]="getDataFunc"
+    [getChildren]="getChildrenFunc"
+    [getParents]="getParentsFunc"
+    [skipParams]="skipParams"
+  >
+    <ng-template #label let-value="value">
+      <ng-container *ngIf="value.id !== activeId">
+        <a [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
+          <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
+        </a>
+        <img *ngIf="value.finnish" src="/projects/laji/src/static/images/icons/flag_fi_small.png" class="small-flag"/>
+      </ng-container>
+      <strong *ngIf="value.id === activeId">
+        <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
+        <img *ngIf="value.finnish" src="/projects/laji/src/static/images/icons/flag_fi_small.png" class="small-flag"/>
+      </strong>
+      <span class="rank">{{ value.taxonRank | label }}</span>
+    </ng-template>
+  </laji-tree>
+</div>
+<div class="show-main-levels-wrapper">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="showMainLevels"
+      (ngModelChange)="setSkipParams()"
+      name="showMainLevels"
+    >
+    {{ 'species.tree.showMainLevels' | translate }}
+  </label>
+  <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+</div>

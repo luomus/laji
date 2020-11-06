@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="filterBy">
+      <input class="form-control inline-block"
+             type='text'
+             placeholder="{{'haseka.submissions.filter' | translate}}"
+             (keyup)="updateFilter($event)">
+    </div>
+  </div>
+</div>
+<div class="table-responsive np-list">
+  <laji-datatable
+    #dataTable
+    class="observation-table"
+    (rowSelect)="changeActivePlace($event)"
+    [getRowClass]="getRowClass"
+    [virtualScrolling]="true"
+    [clientSideSorting]="true"
+    [height]="height"
+    [rows]="data"
+    [filterBy]="filterBy"
+    [loading]="false"
+    [count]="data.length"
+    [sorts]="sorts"
+    [sortType]="multisort ? 'multi' : 'single'"
+    [page]="1"
+    [pageSize]="data.length"
+    [columns]="columns"
+    [selectionType]="'single'"
+    [preselectedRowIndex]="activeNP"
+    >
+  </laji-datatable>
+  <div class="test"></div>
+  <ul class="legend" *ngIf="showLegendList">
+    <li *ngFor="let leg of legendList">
+      <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
+    </li>
+  </ul>
+</div>
+
+<ng-template let-value="value" ngx-datatable-cell-template #label>
+  <span *ngIf="value">
+    {{ value | label }}
+  </span>
+</ng-template>
+
+<ng-template let-value="value" ngx-datatable-cell-template #boolToStr>
+  <span *ngIf="value">
+    {{ value | boolToString }}
+  </span>
+</ng-template>
+
+<ng-template let-value="value" ngx-datatable-cell-template #status>
+  <ng-container *ngIf="value">
+    <ng-container [ngSwitch]="value">
+      <span *ngSwitchCase="'free'" >
+        Vapaa
+      </span>
+      <span *ngSwitchCase="'sent'">
+        Ilmoitettu
+      </span>
+      <span *ngSwitchDefault="">
+        Varattu
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-template>

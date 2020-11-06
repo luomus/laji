@@ -1,0 +1,93 @@
+<div class="main-container"> <!-- main container -->
+  <section class="mb-8"> <!-- Tallenna luontohavaintoja lajitietokeskukseen -->
+    <h1>{{ 'saveObservations.h1' | translate }}</h1>
+    <p>{{ 'saveObservations.desc' | translate }}</p>
+    <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
+    <div class="d-flex flex-row my-6 flex-nowrap sm:flex-wrap">
+      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Helppo -->
+        <div>
+          <h3>{{ 'saveObservations.easy' | translate }}</h3>
+          <ul>
+            <li>{{ 'saveObservations.easy.1' | translate }}</li>
+            <li>{{ 'saveObservations.easy.2' | translate }}</li>
+            <li>{{ 'saveObservations.easy.3' | translate }}</li>
+          </ul>
+        </div>
+        <lu-button anchor="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
+      </div>
+      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Mobiili -->
+        <div>
+          <a class="d-block mb-4 inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
+            <img src="/projects/laji/src/static/images/inat-sufi.png" alt="iNaturalist Suomi">
+          </a>
+          <ul>
+            <li>{{ 'saveObservations.mobile.1' | translate }}</li>
+            <li>{{ 'saveObservations.mobile.2' | translate }}</li>
+            <li>{{ 'saveObservations.mobile.3' | translate }}</li>
+          </ul>
+        </div>
+        <div class="d-flex flex-row">
+          <a class="inaturalist-download mr-2" href="https://play.google.com/store/apps/details?id=org.inaturalist.android" target="_blank">
+            <img src="/projects/laji/src/static/images/badge-download-on-google-play.png" alt="Get it on Google Play">
+          </a>
+          <a class="inaturalist-download" href="https://apps.apple.com/us/app/inaturalist/id421397028" target="_blank">
+            <img src="/projects/laji/src/static/images/badge-download-on-the-app-store.png" alt="Get it on the App Store">
+          </a>
+        </div>
+      </div>
+      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Monipuolinen -->
+        <div>
+          <a [routerLink]="['/vihko'] | localize" class="vihko-logo">{{ 'saveObservations.vihko' | translate }}</a>
+          <ul>
+            <li>{{ 'saveObservations.vihko.1' | translate }}</li>
+            <li>{{ 'saveObservations.vihko.2' | translate }}</li>
+            <li>{{ 'saveObservations.vihko.3' | translate }}</li>
+          </ul>
+        </div>
+        <lu-button [anchor]="['/vihko'] | localize">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-8" *lajiLoggedIn="false">
+    <div role="alert" class="alert alert-warning">
+      {{ 'vihko.home.notLogged' | translate }}
+    </div>
+  </section>
+
+  <section class="mb-8"> <!-- Kansalaistiede -->
+    <h2>{{ 'saveObservations.citizenScience' | translate }}</h2>
+    <p>{{ 'saveObservations.citizenScience.desc' | translate }}</p>
+    <div class="d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let form of citizenScienceForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
+    </div>
+  </section>
+
+  <section class="mb-8"> <!-- Bird Monitoring -->
+    <h2>{{ 'saveObservations.birdMonitoring' | translate }}</h2>
+<!--     <p>{ 'saveObservations.birdMonitoring.desc' | translate }}</p> -->
+    <div class="d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let form of birdMonitoringForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
+      <!--laji-survey-box class="d-block mr-3" [comingSoonForm]="{
+        'link': 'https://laji.fi/news/3617',
+        'title': 'navigation.waterbird',
+        'logo': 'https://cdn.laji.fi/images/logos/vesilintulaskenta_1.jpg'
+       }"
+      ></laji-survey-box-->
+    </div>
+  </section>
+
+  <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
+    <h2>{{ 'saveObservations.researchProjects' | translate }}</h2>
+    <p>{{ 'saveObservations.researchProjects.desc' | translate }}</p>
+    <div class="d-flex flex-row flex-wrap">
+      <ng-container *ngFor="let form of researchProjectForms$ | async">
+        <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
+      </ng-container>
+    </div>
+  </section>
+</div>
