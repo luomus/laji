@@ -38,7 +38,9 @@ export class UserPage {
   async login(user = DEFAULT_TEST_USER): Promise<void> {
     await browser.waitForAngularEnabled(false);
     if (!await this.usernameElem.isPresent()) {
-      await this.loginElem.click();
+      if (!await this.authLocal.isPresent()) {
+        await this.loginElem.click();
+      }
       await this.authLocal.click();
       await this.authUsername.sendKeys(user);
       await this.authPassword.sendKeys(TEST_USERS[user].pw);
@@ -48,6 +50,7 @@ export class UserPage {
       const EC = protractor.ExpectedConditions;
       const loginDone = EC.urlContains(browser.baseUrl);
       await browser.wait(loginDone, 2000);
+      await browser.sleep(1000);
     }
     await browser.waitForAngularEnabled(true);
   }
