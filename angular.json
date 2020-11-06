@@ -37,7 +37,19 @@
               ]
             },
             "scripts": [],
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "webWorkerTsConfig": "tsconfig.worker.json",
+            "allowedCommonJsDependencies": [
+              "graphql-tag",
+              "zen-observable",
+              "openseadragon",
+              "xlsx",
+              "deep-diff",
+              "deep-equal",
+              "chart.js",
+              "chartjs-plugin-datalabels",
+              "file-saver",
+              "laji-map"
+            ]
           },
           "configurations": {
             "production": {
