@@ -34,7 +34,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.annotation) {
+    if (changes.recording || changes.annotation) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
 
       this.selectedTaxons = {
