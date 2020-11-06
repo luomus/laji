@@ -92,6 +92,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   hasTaxonData: boolean;
   metaFetch: Subscription;
   taxonSub: Subscription;
+  speciesList: string;
   
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
@@ -145,12 +146,14 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     ) {
       this.onSelect(0);
     }
+
+    
+    this.listQueryParamsOptions(this.route.snapshot.queryParams, 'target');
     
     setTimeout(() => {
       this.headerService.createTwitterCard(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
       this.title.setTitle(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
     });
-    this.headerService.updateMetaDescription(this.buildDescription());
   }
 
   ngDestroy() {
@@ -193,35 +196,35 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.storage.store('onlycount', this.onlyCount);
   }
 
-  buildDescription() {
+  buildDescription(listSpecies) {
     let tab = '';
 
     if (this.mode !== 'finnish') {
       switch(this.selectedTabIdx) {
         case 0:
-          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions();
+          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions(listSpecies);
         case 1:
-          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions();
+          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions(listSpecies);
         case 2:
-          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(); 
+          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(listSpecies); 
         case 3:
-          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(); 
+          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(listSpecies); 
         case 4:
-          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions();  
+          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions(listSpecies);  
         case 5:
-          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(); 
+          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(listSpecies); 
         case 6:
-          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(); 
+          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(listSpecies); 
         default:
           return tab += '';             
       }
     } else {
-      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions();
+      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions(listSpecies);
     }
     
   }
 
-  buildQueryParamsOptions(){
+  buildQueryParamsOptions(listSpecies){
     let observationParams = this.route.snapshot.queryParams;
     let text = this.mode === 'finnish' ?
     ' ' + this.translate.instant('omniSearch.allObservation') + ' ' :
@@ -231,23 +234,26 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       {countryMeta: this.mode === 'finnish' ? this.translate.instant('finland') : this.translate.instant('world')});
     } else {
       if (observationParams.hasOwnProperty('target')) {
-        text += this.translate.instant('about') + this.listQueryParamsOptions(observationParams, 'target');
+        text += this.translate.instant('about') + ' ' + listSpecies;
       }
     }
 
     return text;
   }
 
-  listQueryParamsOptions(query, option): Observable<string[]> {
-    let elements = query[option].split(',');
+  listQueryParamsOptions(query, option) {
+    let elements = query[option] === undefined ? [] : query[option].split(',');
 
-    return from(elements).pipe(
+    from(elements).pipe(
       concatMap((taxon: any) => this.taxonService.getTaxon(taxon)),
       map((taxa: Taxonomy) => taxa.vernacularName[this.translate.currentLang] ? 
         taxa.vernacularName[this.translate.currentLang] : taxa.scientificName 
       ),
       toArray(),
-    );
+    ).subscribe(species => {
+      this.speciesList = species.length > 0 ? species.join() : '';
+      this.headerService.updateMetaDescription(this.buildDescription(this.speciesList));
+    })
   }
 
   showPrint(string){
