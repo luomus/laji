@@ -17,8 +17,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Autocomplete } from '../../shared/model/Autocomplete';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import 'rxjs-compat/add/operator/distinctUntilChanged';
-import 'rxjs-compat/add/operator/switchMap';
 
 @Component({
   selector: 'laji-taxon-autocomplete',

@@ -18,7 +18,7 @@ import { LajiMapLineTransectGeometry, LajiMapOptions, LajiMapTileLayerName } fro
 import { LajiMapComponent } from '../../../../../shared-modules/laji-map/laji-map.component';
 import { Document } from '../../../../../shared/model/Document';
 import { ToastsService } from '../../../../../shared/service/toasts.service';
-import * as equals from 'deep-equal';
+import equals from 'deep-equal';
 import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';

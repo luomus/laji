@@ -38,25 +38,25 @@ export class SaveObservationsFacade {
   loadAll() {
     this.formService.getAllForms(this.translate.currentLang).pipe(
       map((forms) => {
-        const c = [];
-        const b = [];
-        const r = [];
+        const citizen = [];
+        const birdMon = [];
+        const surveys = [];
         forms.sort((a, b) =>
           a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
         ).forEach((form) => {
           switch (form.category) {
             case 'MHL.categoryCitizenScience':
-              c.push(form);
+              citizen.push(form);
               break;
             case 'MHL.categoryBirdMonitoringSchemes':
-              b.push(form);
+              birdMon.push(form);
               break;
             case 'MHL.categorySurvey':
-              r.push(form);
+              surveys.push(form);
               break;
           }
         });
-        return [c, b, r];
+        return [citizen, birdMon, surveys];
       })
     ).subscribe(this.reducer.bind(this));
   }

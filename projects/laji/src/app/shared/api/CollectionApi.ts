@@ -27,7 +27,6 @@ import { Observable } from 'rxjs/Observable';
 import { PagedResult } from '../model/PagedResult';
 import { Collection } from '../model/Collection';
 import { environment } from '../../../environments/environment';
-import 'rxjs/add/operator/map';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 
