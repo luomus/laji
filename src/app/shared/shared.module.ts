@@ -157,6 +157,7 @@ export class SharedModule {
         ToQNamePipe,
         TaxonNamePipe,
         ToQNamePipe,
+        QualityUrlPipe,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthenticatedHttpInterceptor,

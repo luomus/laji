@@ -4,6 +4,7 @@ import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { SourceService } from '../../shared/service/source.service';
 import { CollectionNamePipe } from '../../shared/pipe/collection-name.pipe';
 import { FormattedNumber } from '../../shared/pipe/formated-number.pipe';
+import { QualityUrlPipe } from '../../shared/pipe/quality-url.pipe';
 import { DateFormatPipe } from 'ngx-moment';
 
 @Injectable()
@@ -31,7 +32,9 @@ export class ValueDecoratorService {
     'gathering.conversions.ykj': 'makeMinMaxYkj',
     'gathering.conversions.wgs84': 'makeMinMaxCoordinate',
     'gathering.conversions.euref': 'makeMinMaxCoordinate',
-    'gathering.interpretations.coordinateAccuracy': 'makeLongNumber'
+    'gathering.interpretations.coordinateAccuracy': 'makeLongNumber',
+    'unit.interpretations.recordQuality': 'makeIcon',
+    'document.linkings.collectionQuality': 'makeIcon'
   };
 
   constructor(
@@ -40,7 +43,8 @@ export class ValueDecoratorService {
     private toQNamePipe: ToQNamePipe,
     private source: SourceService,
     private collectionName: CollectionNamePipe,
-    private numberFormater: FormattedNumber
+    private numberFormater: FormattedNumber,
+    private qualityUrlPipe: QualityUrlPipe
   ) {
   }
 
@@ -178,5 +182,11 @@ export class ValueDecoratorService {
       result += ' <i class="scientificName">(' + value.scientificName + ')</i>';
     }
     return result;
+  }
+
+  protected makeIcon(value): any {
+    return '<img style="height:10px;width:10px;margin-right:5px" src="' + 
+      this.qualityUrlPipe.transform(value) + '">' +
+      this.labelPipe.transform(value, 'warehouse')
   }
 }
