@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input,
+OnInit, OnChanges, SimpleChanges, ChangeDetectorRef,
+ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
@@ -12,7 +14,7 @@ const SCROLL_SPEED = 500; // pixels per second
   styleUrls: ['./species-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationSpeciesListComponent {
+export class IdentificationSpeciesListComponent implements OnDestroy {
   @Input() speciesList: Taxonomy[];
 
   @ViewChild('speciesContainer') speciesContainer: ElementRef;

@@ -29,8 +29,8 @@ export class AnnotationItemComponent implements OnInit {
       this.moreTags = this.item.unit.interpretations.effectiveTags.length - 2;
     }
     this.annotationTags.forEach(element => {
-      let key = element.id;
-      let obj = {};
+      const key = element.id;
+      const obj = {};
       obj[key] = element;
       this.tagsConverted = Object.assign(this.tagsConverted, obj);
     });
