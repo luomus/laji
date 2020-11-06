@@ -2,15 +2,32 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, SimpleCha
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { TaxonomyApi } from 'src/app/shared/api/TaxonomyApi';
-import { switchMap, map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { switchMap, map, tap, flatMap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 import { PagedResult } from 'src/app/shared/model/PagedResult';
 import { TranslateService } from '@ngx-translate/core';
+import { isArray } from 'underscore';
 
 type TaxonChildren = {
   taxonomy: Taxonomy,
   species: PagedResult<Taxonomy>
 }[];
+
+interface TaxonomyWithChildren extends Taxonomy {
+  children: TaxonomyWithChildren[]
+}
+
+const rankWhiteList = [
+  'MX.superdomain',
+  'MX.domain',
+  'MX.kingdom',
+  'MX.phylum',
+  'MX.class',
+  'MX.order',
+  'MX.family',
+  'MX.genus',
+  'MX.species'
+];
 
 @Component({
   selector: 'laji-taxon-identification',
@@ -38,6 +55,8 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         return;
       }
       this.loading = true;
+      // this.getChildTree(this.taxon, 2, 5).subscribe(d => console.log(d));
+
       this.taxonomyApi.taxonomyFindChildren(this.taxon.id, this.translate.currentLang).pipe(
         switchMap(result => {
           return forkJoin(
@@ -65,5 +84,55 @@ export class TaxonIdentificationComponent implements OnInit, OnChanges {
         this.cdr.markForCheck();
       });
     }
+  }
+
+  getChildTree(taxon: Taxonomy, depth: number, maxDepth: number): Observable<TaxonomyWithChildren[]> {
+    if (!taxon.hasChildren) {
+      return of([<TaxonomyWithChildren>{
+        ...taxon,
+        children: []
+      }]);
+    }
+    if (maxDepth <= 0) {
+      return of([]);
+    }
+    return of(null).pipe(
+      switchMap(() => this.getChildren(taxon.id, depth <= 1)),
+      switchMap(subTaxa => forkJoin(
+        ...subTaxa.map(subTaxon => {
+          if (this.isMainRank(subTaxon.taxonRank)) {
+            if (depth <= 1) {
+              return of(subTaxon).pipe(map(s => { return {...s, children: []} }));
+            } else {
+              return this.getChildTree(subTaxon, depth - 1, maxDepth - 1).pipe(
+                map(children => { return { ...subTaxon, children }})
+              );
+            }
+          } else {
+            return this.getChildTree(subTaxon, depth, maxDepth - 1);
+          }
+        }
+      ))),
+      map((arr: any[]) => arr.reduce((acc: any[], curr) => {
+        Array.isArray(curr) ? acc.push(...curr) : acc.push(curr);
+        return acc;
+      }, []))
+    );
+  }
+
+  getChildren(id: string, isLeaf?: boolean): Observable<Taxonomy[]> {
+    const params = isLeaf ? {
+      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
+      includeMedia: true,
+      sortOrder: 'observationCountFinland DESC'
+    } : {
+      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
+      sortOrder: 'observationCountFinland DESC'
+    }
+    return this.taxonomyApi.taxonomyFindChildren(id, this.translate.currentLang, "1", params);
+  }
+
+  isMainRank(s: string): boolean {
+    return rankWhiteList.includes(s);
   }
 }
