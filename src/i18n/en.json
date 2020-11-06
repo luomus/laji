@@ -1278,6 +1278,7 @@
   "species.tree.info.showMainLevels": "Hides taxa from classification, whose taxonomic level does not belong to the main levels. Main levels are biota, domain, kingdom, phylum, class, order, family, genus and species.",
   "species.tree.showMainLevels": "Show only the main taxonomic levels",
   "species.tree.taxonSearch": "Taxon search",
+  "species.defaultText": "Default text for species page",
   "Sun": "Sun",
   "sv": "Swedish",
   "taxonomy.acceptedName": "Accepted name",

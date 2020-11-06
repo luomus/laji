@@ -12,6 +12,9 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { FooterService } from '../../shared/service/footer.service';
+import { HeaderService } from '../../../app/shared/service/header.service'
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 const tabNameToIndex = {
   list: 0,
@@ -38,7 +41,10 @@ export class SpeciesComponent implements OnInit, OnDestroy {
     private router: Router,
     public searchQuery: TaxonomySearchQuery,
     private cd: ChangeDetectorRef,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private headerService: HeaderService,
+    private title: Title,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -48,6 +54,11 @@ export class SpeciesComponent implements OnInit, OnDestroy {
       map(data => data['tab']),
     ).subscribe(tab => {
         this.selectedIndex = tabNameToIndex[tab];
+        this.headerService.createTwitterCard(this.title.getTitle());
+        setTimeout(() => {
+          let paragraph = (document.getElementsByTagName("main")).item(0).getElementsByTagName("p").item(0).innerText;
+          this.headerService.updateMetaDescription(this.translate.instant(paragraph));
+        })
         this.cd.markForCheck();
     });
 

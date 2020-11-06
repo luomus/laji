@@ -1278,6 +1278,7 @@
   "species.tree.info.showMainLevels": " Döljer taxa från klassifikation, vars taxonomiska nivå inte hör till huvudnivåerna. Huvudnivåerna är liv, domän, rike, fylum, klass, ordning, familj, släkte och art.",
   "species.tree.showMainLevels": "Visa bara taksonomiska huvudnivåerna",
   "species.tree.taxonSearch": "Taxon sökning",
+  "species.defaultText": "SV Default text for species page",
   "Sun": "sun",
   "sv": "svenska",
   "taxonomy.acceptedName": "Accepterad namn",

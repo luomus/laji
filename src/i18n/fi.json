@@ -1278,6 +1278,7 @@
   "species.tree.info.showMainLevels": "Piilottaa luokittelusta taksonit, joiden taksonominen taso ei kuulu päätasoihin. Päätasoja ovat luonto, yläkunta, kunta, pääjakso, luokka, lahko, heimo, suku ja laji.",
   "species.tree.showMainLevels": "Näytä vain taksonomiset päätasot",
   "species.tree.taxonSearch": "Taksoni-haku",
+  "species.defaultText": "FI Default text for species page",
   "Sun": "su",
   "sv": "ruotsi",
   "taxonomy.acceptedName": "Hyväksytty nimi",

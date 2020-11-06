@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { TaxonomySearchQuery } from '../species/service/taxonomy-search-query';
 import { Subscription } from 'rxjs';
 import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { HeaderService } from '../../../app/shared/service/header.service'
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-browse-species',
@@ -18,12 +21,17 @@ export class BrowseSpeciesComponent implements OnInit, OnDestroy {
   constructor(
     public searchQuery: TaxonomySearchQuery,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private headerService: HeaderService,
+    private title: Title,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
     this.searchQuery.setQueryFromParams({...this.route.snapshot.queryParams, onlyFinnish: 'true'});
+    this.headerService.createTwitterCard(this.title.getTitle());
+    this.headerService.updateMetaDescription(this.translate.instant('species.defaultText'));
   }
 
   ngOnDestroy() {
