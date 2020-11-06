@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestro
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, takeUntil, switchMap, map, tap } from 'rxjs/operators';
 import { Subject, of, Observable } from 'rxjs';
-import { LajiApiService, LajiApi } from 'src/app/shared/service/laji-api.service';
+import { LajiApiService, LajiApi } from 'projects/laji/src/app/shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';

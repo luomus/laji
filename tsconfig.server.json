@@ -7,17 +7,17 @@
       "node"
     ],
     "paths": {
-      "@laji-map/*": ["src/app/shared-modules/laji-map-noop/*"],
-      "@laji-form/*": ["src/app/shared-modules/laji-form-noop/*"],
-      "@swimlane/ngx-charts": ["src/app/shared-modules/ngx-charts-module-noop/ngx-charts.module"]
+      "@laji-map/*": ["projects/laji/src/app/shared-modules/laji-map-noop/*"],
+      "@laji-form/*": ["projects/laji/src/app/shared-modules/laji-form-noop/*"],
+      "@swimlane/ngx-charts": ["projects/laji/src/app/shared-modules/ngx-charts-module-noop/ngx-charts.module"]
     }
   },
   "files": [
-    "src/main.server.ts",
+    "projects/laji/src/main.server.ts",
     "server.ts"
   ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": false,
-    "entryModule": "./src/app/app.server.module#AppServerModule"
+    "entryModule": "./projects/laji/src/app/app.server.module#AppServerModule"
   }
 }

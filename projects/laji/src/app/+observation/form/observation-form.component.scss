@@ -1,0 +1,86 @@
+@import '../../../styles/variables';
+@import 'projects/laji-ui/src/lib/vars';
+
+.mode-select {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  border-bottom: 1px solid $neutral-4;
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  laji-observation-active {
+    align-self: center;
+  }
+}
+
+.mode-switch-btn {
+  background: unset;
+  border: unset;
+  border-bottom: 3px solid rgba(0,0,0,0);
+  color: $neutral-7;
+  &:not(.active):hover {
+    color: $primary-5;
+  }
+  &.active {
+    border-bottom: 3px solid $primary-5;
+    cursor: default;
+  }
+}
+
+:host ::ng-deep laji-observation-active .open-select {
+  border-bottom: 3px solid rgba(0,0,0,0)
+}
+
+.top-section {
+  padding: 15px;
+  > * {
+    margin-bottom: 10px;
+  }
+}
+
+.laji-panel {
+  background-color: $neutral-2;
+  box-shadow: 0 1px 3px 0 $neutral-4;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .panel-body > * {
+  margin-bottom: 10px;
+}
+
+laji-select, laji-metadata-select {
+  margin-bottom: 5px;
+}
+
+hr {
+  margin: 4px 0;
+}
+#logCoordinateAccuracyMax:focus {
+  border: none;
+  box-shadow: none;
+}
+
+label {
+  display: inline;
+}
+
+:host ::ng-deep p {
+  font-size: small;
+}
+.small-label {
+  font-weight: normal;
+  font-size: smaller;
+}
+
+fieldset {
+  padding: 0 0 0 5px;
+  border-left: 2px solid #3c9cdd;
+}
+
+.title {
+  text-transform: capitalize;
+}
+

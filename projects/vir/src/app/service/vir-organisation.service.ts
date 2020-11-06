@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { filter, shareReplay, switchMap } from 'rxjs/operators';
-import { UserService } from '../../../../../src/app/shared/service/user.service';
+import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 
 export interface IVirUser {
   id: string;

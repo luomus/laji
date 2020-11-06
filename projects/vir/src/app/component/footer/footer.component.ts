@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FooterService } from 'src/app/shared/service/footer.service';
-import { BaseDataService } from 'src/app/graph-ql/service/base-data.service';
+import { FooterService } from 'projects/laji/src/app/shared/service/footer.service';
+import { BaseDataService } from 'projects/laji/src/app/graph-ql/service/base-data.service';
 import { map } from 'rxjs/operators';
 
 const informationWhitelist = [
@@ -29,7 +29,7 @@ const augment = {
   selector: 'vir-footer',
   templateUrl: './footer.component.html',
   styleUrls: [
-    '../../../../../../src/app/shared/footer/footer.component.scss',
+    '../../../../../laji/src/app/shared/footer/footer.component.scss',
     './footer.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
