@@ -26,7 +26,7 @@ export class ExcelGeneratorComponent implements OnInit {
 
   private isSecondary = false;
 
-  _forms: Observable<string[]> = this.formService.getSpreadsheetForms().pipe(
+  _forms: Observable<string[]> = this.formService.getGloballyAllowedSpreadsheetForms().pipe(
     map(_forms => _forms.map(form => form.id))
   );
 
