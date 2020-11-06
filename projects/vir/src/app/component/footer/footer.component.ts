@@ -65,8 +65,7 @@ export class FooterComponent implements OnInit {
             ]
           };
         });
-      }),
-      tap(console.log)
+      })
     );
   }
 }
