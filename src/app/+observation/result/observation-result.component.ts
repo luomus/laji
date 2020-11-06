@@ -15,10 +15,11 @@ import { ActivatedRoute } from "@angular/router";
 import { HeaderService } from '../../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
-import { map, concatMap, toArray, switchMap } from 'rxjs/operators';
+import { map, concatMap, toArray, switchMap, tap } from 'rxjs/operators';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { TaxonTaxonomyService } from '../../+taxonomy/taxon/service/taxon-taxonomy.service'
 import { TaxonService } from 'projects/iucn/src/app/iucn-shared/service/taxon.service';
+
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -91,6 +92,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   hasTaxonData: boolean;
   metaFetch: Subscription;
   taxonSub: Subscription;
+  
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
   onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
@@ -104,7 +106,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private headerService: HeaderService,
     private translate: TranslateService,
-    private taxonService: TaxonTaxonomyService
+    private taxonService: TaxonTaxonomyService,
+    private title: Title
   ) { }
 
   @Input()
@@ -143,8 +146,11 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       this.onSelect(0);
     }
     
+    setTimeout(() => {
+      this.headerService.createTwitterCard(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
+      this.title.setTitle(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
+    });
     this.headerService.updateMetaDescription(this.buildDescription());
-    this.headerService.updateFeatureImage('https://cdn.laji.fi/images/logos/LAJI_FI_valk.png')
   }
 
   ngDestroy() {
@@ -190,34 +196,42 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   buildDescription() {
     let tab = '';
 
-    switch(this.selectedTabIdx) {
-      case 0:
-        return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions();
-      case 1:
-        return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions();
-      case 2:
-        return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(); 
-      case 3:
-        return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(); 
-      case 4:
-        return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions();  
-      case 5:
-        return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(); 
-      case 6:
-        return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(); 
-      default:
-        return tab += '';             
+    if (this.mode !== 'finnish') {
+      switch(this.selectedTabIdx) {
+        case 0:
+          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions();
+        case 1:
+          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions();
+        case 2:
+          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(); 
+        case 3:
+          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(); 
+        case 4:
+          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions();  
+        case 5:
+          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(); 
+        case 6:
+          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(); 
+        default:
+          return tab += '';             
+      }
+    } else {
+      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions();
     }
+    
   }
 
   buildQueryParamsOptions(){
     let observationParams = this.route.snapshot.queryParams;
-    let text = ' of observations ';
+    let text = this.mode === 'finnish' ?
+    ' ' + this.translate.instant('omniSearch.allObservation') + ' ' :
+    this.translate.instant('search.result.observation');
     if (Object.keys(observationParams).length === 0) {
-      text += 'around the World during last 100 years';
+      text += this.translate.instant('search.result.metaDescription',
+      {countryMeta: this.mode === 'finnish' ? this.translate.instant('finland') : this.translate.instant('world')});
     } else {
       if (observationParams.hasOwnProperty('target')) {
-        text += 'about ' + this.listQueryParamsOptions(observationParams, 'target');
+        text += this.translate.instant('about') + this.listQueryParamsOptions(observationParams, 'target');
       }
     }
 
@@ -232,12 +246,20 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       map((taxa: Taxonomy) => taxa.vernacularName[this.translate.currentLang] ? 
         taxa.vernacularName[this.translate.currentLang] : taxa.scientificName 
       ),
-      toArray()
+      toArray(),
     );
   }
 
   showPrint(string){
    alert(string)
+  }
+
+  private addTabNameTitle(str, indexTab) {
+    const sub = str.split('|');
+    
+    return sub[0] + '| '
+    +(this.mode === 'finnish' ? this.translate.instant('search.result.onlyFinnish') : this.translate.instant('search.result.'+tabOrder[indexTab]) ) 
+    + ' |' + sub[sub.length-1];
   }
 
 }
