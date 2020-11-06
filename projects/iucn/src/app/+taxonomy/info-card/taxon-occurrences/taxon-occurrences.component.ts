@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Occurrence } from '../../../../../../../src/app/shared/model/Taxonomy';
+import { Occurrence } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-occurrences',

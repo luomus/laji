@@ -26,7 +26,7 @@ win.process = process;
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
 
-import { AppServerModule } from './src/main.server';
+import { AppServerModule } from './projects/laji/src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
@@ -171,4 +171,4 @@ if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }
 
-export * from './src/main.server';
+export * from './projects/laji/src/main.server';

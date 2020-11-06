@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { TaxonomyApi } from '../../../../../../src/app/shared/api/TaxonomyApi';
+import { TaxonomyApi } from '../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { Taxonomy } from '../../../../../../src/app/shared/model/Taxonomy';
+import { Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
 import { map, share, tap } from 'rxjs/operators';
-import { RedListTaxonGroup } from '../../../../../../src/app/shared/model/RedListTaxonGroup';
-import { RedListTaxonGroupApi } from '../../../../../../src/app/shared/api/RedListTaxonGroupApi';
+import { RedListTaxonGroup } from '../../../../../laji/src/app/shared/model/RedListTaxonGroup';
+import { RedListTaxonGroupApi } from '../../../../../laji/src/app/shared/api/RedListTaxonGroupApi';
 
 @Injectable({
   providedIn: 'root'
