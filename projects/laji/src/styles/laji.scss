@@ -1470,6 +1470,7 @@ span.simple-option {
     }
     @include media-query-tablet {
       max-width: 1200px;
+      margin-top: 30px;
     }
   }
 
