@@ -18,8 +18,8 @@
     ]
   },
   "files": [
-    "src/test.ts",
-    "polyfills.ts"
+    "projects/laji/src/test.ts",
+    "projects/laji/src/polyfills.ts"
   ],
   "include": [
     "**/*.spec.ts"

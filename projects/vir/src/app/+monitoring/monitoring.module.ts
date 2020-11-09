@@ -6,7 +6,7 @@ import { MonitoringComponent } from './monitoring.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { MonitoringFacade } from './monitoring.facade';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
-import { SurveyBoxModule } from '../../../../../src/app/shared-modules/survey-box/survey-box.module';
+import { SurveyBoxModule } from '../../../../laji/src/app/shared-modules/survey-box/survey-box.module';
 
 
 @NgModule({

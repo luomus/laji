@@ -5,14 +5,14 @@
     "types": []
   },
   "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
+    "projects/laji/src/main.ts",
+    "projects/laji/src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "projects/laji/src/**/*.d.ts"
   ],
   "exclude": [
-    "src/test.ts",
+    "projects/laji/src/test.ts",
     "**/*.spec.ts"
   ]
 }

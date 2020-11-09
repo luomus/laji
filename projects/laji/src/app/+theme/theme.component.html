@@ -1,0 +1,139 @@
+<div class="container lu-text-content">
+  <h1 class="mt-6">
+    {{ 'theme.title' | translate }}
+  </h1>
+  <p>
+    {{ 'theme.intro' | translate }}
+  </p>
+
+  <h4><span class="glyphicon glyphicon-leaf"></span> {{ 'theme.census.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.nafi] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'nafi.stats.title' | translate }}</h5>
+      <p>{{ 'theme.nafi.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.talvilintulaskenta] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'wbc.title' | translate }}</h5>
+      <p>{{ 'theme.wbc.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.linjalaskenta] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.linetransect' | translate }}</h5>
+      <p>{{ 'theme.linetransect.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vesilintulaskenta] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.waterbird' | translate }}</h5>
+      <p>{{ 'theme.waterbird.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/herpetology'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.herpetology' | translate }}</h5>
+      <p>{{ 'theme.herpetology.intro' | translate }}</p>
+    </a>
+    <a href="https://satelliitti.laji.fi" target="_blank" rel="noopener" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.satelliitti' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
+      <p>{{ 'theme.satellite.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vieraslajit] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.invasiveSpecies' | translate }}</h5>
+      <p>{{ 'theme.invasiveSpecies.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kunnat] | localize" tabindex="-1" *lajiForTypes="['dev']" class="navbox">
+      <h5>{{ 'navigation.municipalityMonitoring' | translate }}</h5>
+      <p>{{ 'theme.municipalityMonitoring.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.lolife] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.lolife' | translate }}</h5>
+      <p>{{ 'theme.lolife.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting['syke-perhoset']] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.syke-butterfly' | translate }}</h5>
+      <p>{{ 'theme.syke-butterfly.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.pistelaskenta] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.birdPointCount' | translate }}</h5>
+      <p>{{ 'theme.birdPointCount.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kiiltomadot] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.glowWormForm' | translate }}</h5>
+      <p>{{ 'theme.glowWormForm.intro' | translate }}</p>
+    </a>
+  </div>
+
+  <h4><span class="glyphicon glyphicon-eye-open"></span> {{ 'theme.observation.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/theme/quality'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.quality' | translate }}</h5>
+      <p>{{ 'theme.quality.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/identify'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.identify' | translate }}</h5>
+      <p>{{ 'theme.identify.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/datasets'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'datasets.label' | translate }}</h5>
+      <p [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></p>
+    </a>
+  </div>
+
+  <h4><span class="glyphicon glyphicon-picture"></span> {{ 'theme.speciesIdentification.main' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/theme/pinkka'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.pinkka' | translate }}</h5>
+      <p>{{ 'theme.pinkka.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/hyonteisopas'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.hyonteisopas' | translate }}</h5>
+      <p>{{ 'theme.hyonteisopas.intro' | translate }}</p>
+    </a>
+  </div>
+
+  <h4><span class="glyphicon glyphicon-list"></span> {{ 'theme.names.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.checklist' | translate }}</h5>
+      <p>{{ 'theme.checklist.intro' | translate }}</p>
+    </a>
+  </div>
+
+  <h4><span class="glyphicon glyphicon-map-marker"></span> {{ 'theme.place.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/map'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.map' | translate }}</h5>
+      <p>{{ 'theme.map.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/ykj'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.ykj' | translate }}</h5>
+      <p>{{ 'theme.ykj.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/emk'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.emk' | translate }}</h5>
+      <p>{{ 'theme.emk.intro' | translate }}</p>
+    </a>
+  </div>
+
+  <h4><span class="glyphicon glyphicon-search"></span> {{ 'theme.research.main' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/about/2272'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'navigation.research' | translate }}</h5>
+      <p>{{ 'theme.research.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/luomusgrc'] | localize" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.grc.title' | translate }}</h5>
+      <p>{{ 'theme.grc.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/kerttu'] | localize" *lajiForTypes="['dev']" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.kerttu' | translate }}</h5>
+      <p>{{ 'theme.kerttu.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/protax'] | localize" *lajiForTypes="['dev']" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.protax' | translate }}</h5>
+      <p>{{ 'theme.protax.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/theme/lahdeluettelo'] | localize" *lajiForTypes="['dev']" tabindex="-1" class="navbox">
+      <h5>{{ 'theme.finBif.bibliography' | translate }}</h5>
+      <p>{{ 'theme.finBif.intro' | translate }}</p>
+    </a>
+  </div>
+
+  <div class="my-8"></div>
+</div>
+

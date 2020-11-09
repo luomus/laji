@@ -1,0 +1,87 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.species-container-container {
+  position: relative;
+}
+
+.species-container {
+  padding: $sp-6 100px;
+  background-color: $neutral-3;
+  overflow-x: scroll;
+  box-shadow: inset 1px 1px 3px 0 rgba(#000, .2);
+}
+
+.species-navigation {
+  position: absolute;
+  top: 0;
+
+  height: 100%;
+  width: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  color: $neutral-1;
+  font-size: $fs-6;
+}
+.species-navigation.back {
+  left: 0;
+  background: linear-gradient(to right, rgba($neutral-9, .1), rgba($neutral-9, 0));
+  &:hover {
+    background: linear-gradient(to right, rgba($neutral-9, .2), rgba($neutral-9, 0));
+  }
+}
+.species-navigation.next {
+  right: 0;
+  background: linear-gradient(to left, rgba($neutral-9, .1), rgba($neutral-9, 0));
+  &:hover {
+    background: linear-gradient(to left, rgba($neutral-9, .2), rgba($neutral-9, 0));
+  }
+}
+.species-navigation .glyphicon {
+  text-shadow: 0 1px 3px rgba($neutral-9, .5);
+}
+
+.species {
+}
+
+.species-name-container {
+  padding-bottom: $sp-3;
+}
+
+.species-scientific-name {
+  font-weight: 600;
+}
+
+.species-vernacular-name {
+  color: $neutral-7;
+}
+
+.species-img-container {
+  box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
+  background-color: $neutral-4;
+  min-width: 250px;
+}
+
+.species-img-container > img {
+  max-width: 400px;
+  max-height: 400px;
+
+  cursor: pointer;
+  transition: box-shadow 200ms;
+  box-shadow: 0 0 0 0 rgba($neutral-9, 0);
+
+  &:hover {
+    box-shadow: 0 4px 16px 0 rgba($neutral-9, .5);
+  }
+}
+
+::-webkit-scrollbar {
+  height: 11px;
+}
+
+.cursive {
+  font-style: italic;
+}

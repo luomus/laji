@@ -1,0 +1,42 @@
+@import '../../../../styles/variables';
+@import 'projects/laji-ui/src/lib/vars';
+
+.form-footer {
+  overflow: scroll;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding:10px;
+  background-color: rgba(44, 62, 80, 0.9);
+  display: flex;
+  flex-flow: row nowrap;
+  > div, > button, > lu-button {
+    margin-right: $sp-default;
+  }
+
+  button, .lock-button {
+    height: 27px;
+    align-self: center;
+  }
+}
+
+.status {
+  padding: $sp-btn;
+  color: #fff;
+
+  .success {
+    color: #8cc182;
+  }
+
+  .error {
+    color: #fd8d8d;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-footer button {
+    padding: 5px;
+  }
+}

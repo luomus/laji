@@ -7,9 +7,9 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { DatatableColumn } from '../../../../../../../src/app/shared-modules/datatable/model/datatable-column';
-import { DatatableHeaderComponent } from '../../../../../../../src/app/shared-modules/datatable/datatable-header/datatable-header.component';
-import { ExportService } from '../../../../../../../src/app/shared/service/export.service';
+import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
+import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
 
 type TableType = 'downloads'|'people'|'user';

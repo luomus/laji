@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
+import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 
 @Component({
   selector: 'vir-app',
@@ -14,7 +14,7 @@ import { AppComponent } from '../../../../src/app/shared-modules/app-component/a
     <laji-viewer-modal></laji-viewer-modal>
   `,
   styleUrls: [
-    '../../../../src/app/shared-modules/app-component/app.component.scss',
+    '../../../laji/src/app/shared-modules/app-component/app.component.scss',
     './vir-app.component.scss'
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
