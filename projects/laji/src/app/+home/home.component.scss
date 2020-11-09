@@ -160,6 +160,7 @@
   padding: 50px $sp-4;
   background-color: $neutral-2;
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  flex-wrap: wrap;
 }
 
 .home-main {
@@ -183,6 +184,13 @@ laji-news-list {
 .content-max-width {
   width: 100%;
   max-width: 1200px;
+}
+
+.content-50-width {
+  width: 50%;
+  @include media-query-phone {
+    width: 100%;
+  }
 }
 
 
