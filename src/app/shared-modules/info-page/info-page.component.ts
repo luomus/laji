@@ -83,6 +83,12 @@ export class InfoPageComponent implements OnChanges {
         }
         if(result.content) {
           this.headerService.updateMetaDescription(this.extractMetaDescription(result.content));
+          setTimeout(() => {
+            const image = (document.getElementsByTagName("laji-info-page")).item(0).getElementsByTagName("img").item(0).src;
+            if (image) {
+              this.headerService.updateFeatureImage(image);
+            }
+          },0)
         }
       }),
       map(result => result.content),

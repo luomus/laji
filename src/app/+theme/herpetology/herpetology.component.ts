@@ -9,6 +9,8 @@ import { Taxonomy, TaxonomyImage } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { LocalStorage } from 'ngx-webstorage';
+import { HeaderService } from '../../../app/shared/service/header.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-herpetology',
@@ -38,6 +40,8 @@ export class HerpetologyComponent implements OnInit {
     private translate: TranslateService,
     private taxonomyApi: TaxonomyApi,
     private cd: ChangeDetectorRef,
+    private headerService: HeaderService,
+    private title: Title,
     private logger: Logger) {
     const now = new Date();
     this.currentYear = now.getFullYear() + '-01-01';
@@ -52,6 +56,13 @@ export class HerpetologyComponent implements OnInit {
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;
     });
+    setTimeout(() => {
+      this.headerService.createTwitterCard(this.title.getTitle());
+      const paragraph = (document.getElementById("all-content")).getElementsByTagName("p").item(0).innerText;
+      const image = (document.getElementById("all-content")).getElementsByTagName("img").item(0).src;
+      this.headerService.updateMetaDescription(paragraph);
+      this.headerService.updateFeatureImage(image);
+    }, 0);
 }
 
   updateTaxa() {
