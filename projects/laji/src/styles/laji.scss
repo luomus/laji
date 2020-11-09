@@ -1463,6 +1463,16 @@ span.simple-option {
     font-size: 22px !important;
   }
 
+  .finBif-publications {
+    max-width: 600px;
+    @include media-query-laptop {
+      max-width: 500px;
+    }
+    @include media-query-tablet {
+      max-width: 1200px;
+    }
+  }
+
 
 
 
