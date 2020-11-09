@@ -133,11 +133,12 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
 
         this.setTitle();
         setTimeout(() => {
+
           this.headerService.updateMetaDescription(this.getMetaDescription());
+          if (taxon.multimedia) {
+            this.headerService.updateFeatureImage(this.taxon.multimedia[0]['fullURL']);
+          }
         }, 0);
-        if (taxon.multimedia) {
-          this.headerService.updateFeatureImage(this.taxon.multimedia[0]['fullURL']);
-        }
       })
     );
   }
@@ -153,8 +154,9 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
     }
     title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     
-    this.headerService.createTwitterCard((title ? this.capitalizeFirstLetter(title) + ' | '  : '')+ this.title.getTitle());
-    this.title.setTitle((title ? this.capitalizeFirstLetter(title) + ' | '  : '') + this.title.getTitle());
+    const defaultTitle = this.title.getTitle().split('|');
+    this.headerService.createTwitterCard((title ? this.capitalizeFirstLetter(title) + ' | ' + this.translate.instant('taxonomy.'+this.infoCardTab) + ' |'  : '')+ defaultTitle[1]);
+    this.title.setTitle((title ? this.capitalizeFirstLetter(title) + ' | ' + this.translate.instant('taxonomy.'+this.infoCardTab) + ' |'  : '') + defaultTitle[1]);
   }
 
   private getTaxon(id) {
@@ -202,5 +204,6 @@ export class TaxonComponent implements OnInit, OnDestroy, OnChanges {
   private capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+  
   
 }
