@@ -84,6 +84,10 @@ export class FormService {
     return this.getAllForms(this.currentLang).pipe(map(forms => forms.filter(form => form.options?.allowExcel)));
   }
 
+  getGloballyAllowedSpreadsheetForms() {
+   return this.getSpreadsheetForms().pipe(map(forms => forms.filter(form => !form.options?.excludeFromGlobalExcel)));
+  }
+
   getAddUrlPath(formId) {
     return (formId === Global.forms.default || formId === Global.forms.privateCollection)
       ? `/vihko/${formId}`

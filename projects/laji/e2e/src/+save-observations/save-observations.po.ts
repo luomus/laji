@@ -1,5 +1,5 @@
 import { browser, by, element, protractor } from 'protractor';
-import { NavPage } from '../shared/nav.page';
+import { NavPage } from '../shared/nav.po';
 
 export class SaveObservationsPage {
 

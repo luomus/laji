@@ -78,7 +78,8 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   private _mapOptions: LajiMapOptions = {
     center: [64.709804, 25],
     zoom: 2,
-    tileLayerOpacity: 0.5
+    tileLayerOpacity: 0.5,
+    controls: true
   };
 
   constructor(
