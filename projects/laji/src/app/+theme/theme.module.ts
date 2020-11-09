@@ -40,6 +40,7 @@ import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotati
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { PinkkaComponent } from './pinkka/pinkka.component';
+import { BibliographyComponent } from './bibliography/bibliography.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import { AudioSpectrogramComponent } from './kerttu/audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { KerttuExpertiseFormComponent } from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
@@ -79,6 +80,7 @@ import { GeneticResourceInstructionsComponent } from './genetic-resource/instruc
     HerpetologyComponent,
     ChecklistComponent,
     PinkkaComponent,
+    BibliographyComponent,
     InsectGuideComponent,
     YkjComponent,
     EmkComponent,
