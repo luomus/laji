@@ -1,0 +1,30 @@
+@import 'projects/laji-ui/src/lib/vars';
+@import '../../../../styles/styles';
+
+:host ::ng-deep .chart-legend .legend-label {
+  cursor: initial !important;
+}
+:host ::ng-deep .day-chart .ngx-charts .bar {
+  cursor: initial !important;
+}
+.info-card-chart {
+  margin: auto;
+  width: 100%;
+  min-height: 450px;
+  max-width: 1200px;
+}
+
+.info-card-chart.day-chart {
+  height: 100%;
+  overflow-x: auto;
+}
+
+.chart-container {
+  position: relative;
+  min-height: 450px;
+  width: 100%;
+}
+
+laji-chart {
+  height: 450px;
+}

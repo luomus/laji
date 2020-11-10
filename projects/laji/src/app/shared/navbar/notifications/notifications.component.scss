@@ -1,0 +1,56 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+header {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 10px;
+  align-items: flex-end;
+  .notifications-title {
+    padding-left: 10px;
+    color: $neutral-6;
+    flex-grow: 1;
+  }
+  > a {
+    margin-left: 15px;
+    cursor: pointer;
+  }
+}
+
+.notification-list {
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.notification-pager {
+  display: flex;
+  > * {
+    flex-grow: 1;
+  }
+}
+
+.fs-1 {
+  font-size: $fs-1;
+}
+
+cdk-virtual-scroll-viewport {
+  height: 400px;
+  width: 400px;
+  @media only screen and (max-width: 900px) {
+    height: 250px;
+    width: 100%;
+  }
+}
+
+:host ::ng-deep {
+  @media only screen and (max-width: 900px) {
+    .notifications-title {
+      color: $neutral-1 !important;
+    }
+    header > a {
+      color: $primary-2;
+      text-decoration: underline;
+    }
+  }
+}
+

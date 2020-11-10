@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MonitoringFacade } from './monitoring.facade';
 import { Observable } from 'rxjs';
 import { Global } from '../../environments/global';
-import { Form } from '../../../../../src/app/shared/model/Form';
+import { Form } from '../../../../laji/src/app/shared/model/Form';
 
 @Component({
   selector: 'vir-monitoring',
