@@ -19,6 +19,32 @@
   </label>
 </ng-template>
 
-<ng-template let-row="row" #deleteBtn>
+<ng-template let-row="row" #buttons>
   <lu-button [role]="'danger'" (click)="deleteRow(row.preSortIndex)">x</lu-button>
+  <lu-button
+    *ngIf="taxonExpertise && taxonExpertise.indexOf(row.annotation.taxonId) === -1"
+    (click)="showModal(row)"
+    [role]="'warning'"
+    style="float: right">
+    <i class="fa fa-exclamation-triangle"></i> Puuttuva laji
+  </lu-button>
 </ng-template>
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Puuttuva laji</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
+        </p>
+        <div>
+          <lu-button (click)="closeModal(true)" [role]="'success'">{{ 'yes' | translate }}</lu-button>
+          <lu-button (click)="closeModal()" style="float: right">{{ 'cancel' | translate }}</lu-button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

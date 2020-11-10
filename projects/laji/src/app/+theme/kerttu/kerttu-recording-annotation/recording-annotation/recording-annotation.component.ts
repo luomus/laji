@@ -14,6 +14,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
   @Input() annotation: IRecordingAnnotation;
   @Input() taxonList: string[];
+  @Input() taxonExpertise: string[];
 
   generalAnnotation: IRecordingAnnotation = {};
   selectedTaxons: {
@@ -25,6 +26,7 @@ export class RecordingAnnotationComponent implements OnChanges {
 
   @Output() nextRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
+  @Output() addToTaxonExpertise = new EventEmitter<string>();
 
   private selectedTaxonsSub: Subscription;
 
