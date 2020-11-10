@@ -1,4 +1,4 @@
-@import '../../../../../../../laji-ui/src/lib/vars';
+@import 'projects/laji-ui/src/lib/vars';
 
 #letterInfo {
   dl {
@@ -50,10 +50,6 @@ h3, h4 {
 }
 
 :host ::ng-deep {
-  lu-button button.success, lu-button button.danger, lu-button button.other {
-    padding: 0.5em 1em;
-  }
-
   lu-button button, button.lu-btn {
     transition: none;
   }

@@ -1,6 +1,6 @@
 import {ComponentFactoryResolver, Directive, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import {PlatformService} from '../../../shared/service/platform.service';
-import {AudioService} from '../service/audio.service';
+import {AudioService} from '../audio-viewer/service/audio.service';
 import {AudioNotSupportedErrorComponent} from './audio-not-supported-error.component';
 
 @Directive({ selector: '[lajiRequiresAudioSupport]' })

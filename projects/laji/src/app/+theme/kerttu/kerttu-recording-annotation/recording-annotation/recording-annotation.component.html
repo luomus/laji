@@ -1,33 +1,102 @@
-<laji-spinner [spinning]="!recording">
-  <div class="row">
-    <div class="col-md-12">
-      <laji-audio-viewer
-        [recording]="recording?.recording"
-        [xRange]="recording?.xRange"
-        [xRangePadding]="0"
-      ></laji-audio-viewer>
+<div class="row lu-section">
+  <div class="col-md-12">
+    <div class="button-container">
+      <lu-button (click)="save()">Tallenna</lu-button>
+      <lu-button
+        [role]="'success'"
+        [disabled]="!recording"
+        (click)="nextRecordingClick.emit()">
+        {{ 'theme.kerttu.nextRecording' | translate }}
+      </lu-button>
     </div>
-    <!--div class="col-md-6">
-      <h3>{{ 'theme.kerttu.listSpecies' | translate }}</h3>
+    <h2 style="display: inline-block">{{ 'theme.kerttu.recordingAnnotation.title' | translate }}</h2>
+  </div>
+  <div class="col-md-12">
+    <laji-audio-viewer
+      [recording]="recording?.recording"
+      [focusArea]="{
+          xRange: recording?.xRange
+        }"
+      [focusAreaTimePadding]="2"
+      [highlightFocusArea]="true"
+      [showBrushControl]="true"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-sm-12 checkbox-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.isLowQuality"/>Äänite on huonolaatuinen (kohinaa, sadetta tmv.)
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsNoiseCausedByHumanActivity">Ääniteellä kuuluu ihmistoiminnan ääniä (liikenne tmv.)
+          </label>
+          <laji-info></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsHumanSpeech">Ääniteellä kuuluu ihmisten puhetta
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsUnknownBirds">Ääniteellä kuuluu linnun ääniä, joita en tunnista
+          </label>
+          <laji-info></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.doesNotContainBirds">Ääniteellä ei kuulu linnun ääniä
+          </label>
+          <laji-info></laji-info>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="species-select">{{ 'theme.kerttu.listSpecies' | translate }}</label>
       <laji-taxon-autocomplete
+        id="species-select"
         [informalTaxonGroup]="'MVL.1'"
         [onlyFinnish]="true"
+        [onlySpecies]="true"
         [showResult]="false"
-        (taxonSelect)="onTaxonSelect($event)"
+        [whiteList]="taxonList"
+        (taxonSelect)="addTaxonToSelected($event, 'main')"
       ></laji-taxon-autocomplete>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="currentAnnotation"
-        (updateList)="onTaxonListUpdate($event)"
-      ></laji-pill-list>
-      <div style="margin-top: 10px">
-        <button
-          class="btn btn-default"
-          [disabled]="!recording"
-          (click)="toNextRecording()">
-          {{ 'theme.kerttu.nextRecording' | translate }}
-        </button>
-      </div>
-    </div-->
+    </div>
+    <laji-kerttu-occurrence-table
+      [(selectedTaxons)]="selectedTaxons.main"
+      [loading]="!taxonList || loadingTaxons"
+      [componentId]="0"
+    >
+    </laji-kerttu-occurrence-table>
   </div>
-</laji-spinner>
+  <div class="col-md-12">
+    <div class="form-group">
+      <label for="other-animal-species-select">{{ 'theme.kerttu.listOtherSpecies' | translate }}</label>
+      <laji-taxon-autocomplete
+        id="other-animal-species-select"
+        [showResult]="false"
+        [blackList]="taxonList"
+        (taxonSelect)="addTaxonToSelected($event, 'other')"
+      ></laji-taxon-autocomplete>
+    </div>
+    <laji-kerttu-occurrence-table
+      [(selectedTaxons)]="selectedTaxons.other"
+      [loading]="!taxonList || loadingTaxons"
+      [componentId]="1"
+    >
+    </laji-kerttu-occurrence-table>
+  </div>
+</div>

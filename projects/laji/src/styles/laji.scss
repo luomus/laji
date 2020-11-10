@@ -933,6 +933,10 @@ body > .ui-select-bootstrap.open {
   margin-top:25px;
 }
 
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
 .block {
   display: block;
 }
@@ -1466,6 +1470,15 @@ span.simple-option {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
     font-size: 22px !important;
+  }
+
+  .finBif-publications h2 {
+    display: inline;
+  }
+
+  .finBif-info {
+    position: relative;
+    top: -3px;
   }
 
   .finBif-publications {
