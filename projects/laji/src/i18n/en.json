@@ -1432,6 +1432,8 @@
   "theme.countShort": "Count",
   "theme.emk.intro": "Information about the Finnish biogeographical provinces.",
   "theme.filterAll": "Whole material {{from}} - {{to}}",
+  "theme.finBif.bibliography": "FinBif lähdeluettelo",
+  "theme.finBif.intro": "intro text EN",
   "theme.glowWormForm.intro": "Glow worm citizen science project",
   "theme.grc.instructions": "Introduction",
   "theme.grc.intro": "Luomus GRC stores and loans genomic samples for academic research purposes",
