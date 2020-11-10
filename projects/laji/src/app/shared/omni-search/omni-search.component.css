@@ -36,6 +36,11 @@
   width: 100%;
 }
 
+.omni-search-results .match {
+  display: block;
+  width: 100%;
+}
+
 
 .btn-default {
   border-left-color: #fff;

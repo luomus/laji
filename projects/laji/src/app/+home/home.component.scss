@@ -157,7 +157,7 @@
 }
 
 .section-4 {
-  padding: 50px $sp-4;
+  padding: 50px $sp-5;
   background-color: $neutral-2;
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
   flex-wrap: wrap;
@@ -237,4 +237,13 @@ hr {
   height: 400px;
   background-color: $neutral-4;
   box-shadow: 0 2px 4px rgba(#000, .2);
+}
+
+.twitter-box {
+  @include media-query-laptop {
+    max-width: 600px;
+  }
+  @include media-query-tablet {
+    max-width: 1200px;
+  }
 }
