@@ -9,6 +9,7 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { LajiFormDocumentFacade } from '../../../shared-modules/laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { DocumentFormComponent as _DocumentFormComponent } from '../../../shared-modules/laji-form/document-form/document-form.component';
+import { ProjectFormService } from '../../project-form.service';
 
 @Component({
   template: `
@@ -49,7 +50,8 @@ export class DocumentFormComponent implements OnDestroy {
     private browserService: BrowserService,
     private route: ActivatedRoute,
     private namedPlacesService: NamedPlacesService,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade
+    private lajiFormDocumentFacade: LajiFormDocumentFacade,
+    private projectFormService: ProjectFormService,
   ) {}
 
   ngOnDestroy(): void {
@@ -57,6 +59,11 @@ export class DocumentFormComponent implements OnDestroy {
   }
 
   goBack() {
+    if (this.form.options?.simple && !this.form.category) {
+      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      return;
+    }
+
     let levels = 1;
     if (this.documentID) {
       levels++;
@@ -70,16 +77,12 @@ export class DocumentFormComponent implements OnDestroy {
   }
 
   onSuccess() {
-    const findProjectRootRoute = (route) => route.params.pipe(switchMap(params => {
-      if (params['projectID']) {
-        return of(route);
-      } else {
-        return findProjectRootRoute(route.parent);
-      }
-    }));
-
+    if (this.form.options?.simple) {
+      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      return;
+    }
     this.browserService.goBack(() => {
-      findProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
+      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
         const page = this.form.options?.resultServiceType
           ? 'stats'
           : this.form.options?.mobile

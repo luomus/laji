@@ -65,4 +65,15 @@ export class UserPage {
       await browser.wait(logoutDone, 2000);
     }
   }
+
+  async ensureIsLoggedIn() {
+    if (await this.usernameElem.isPresent()) {
+      return;
+    }
+    const currentUrl = await browser.getCurrentUrl();
+    if (!currentUrl) {
+      throw new Error('You must navigate to page before ensuring logged in!');
+    }
+    await this.login();
+  }
 }
