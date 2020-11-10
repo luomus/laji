@@ -93,6 +93,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   metaFetch: Subscription;
   taxonSub: Subscription;
   speciesList: string;
+  observationParams = ['target', 'time'];
+  speciesTime: string;
   
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
@@ -147,8 +149,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       this.onSelect(0);
     }
 
-    
-    this.listQueryParamsOptions(this.route.snapshot.queryParams, 'target');
+    this.listQueryParamsOptions(this.route.snapshot.queryParams);
     
     setTimeout(() => {
       this.headerService.createTwitterCard(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
@@ -196,55 +197,62 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.storage.store('onlycount', this.onlyCount);
   }
 
-  buildDescription(listSpecies) {
+  buildDescription(listSpecies, time) {
     let tab = '';
 
     if (this.mode !== 'finnish') {
       switch(this.selectedTabIdx) {
         case 0:
-          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions(listSpecies);
+          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions(listSpecies, time);
         case 1:
-          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions(listSpecies);
+          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions(listSpecies, time);
         case 2:
-          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(listSpecies); 
+          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(listSpecies, time); 
         case 3:
-          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(listSpecies); 
+          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(listSpecies, time); 
         case 4:
-          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions(listSpecies);  
+          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions(listSpecies, time);  
         case 5:
-          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(listSpecies); 
+          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(listSpecies, time); 
         case 6:
-          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(listSpecies); 
+          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(listSpecies, time); 
         default:
           return tab += '';             
       }
     } else {
-      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions(listSpecies);
+      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions(listSpecies, time);
     }
     
   }
 
-  buildQueryParamsOptions(listSpecies){
+  buildQueryParamsOptions(listSpecies, time){
     let observationParams = this.route.snapshot.queryParams;
     let text = this.mode === 'finnish' ?
     ' ' + this.translate.instant('omniSearch.allObservation') + ' ' :
     this.translate.instant('search.result.observation');
-    if (Object.keys(observationParams).length === 0) {
+    if (!this.hasAtLeastOneProperty(observationParams, this.observationParams)) {
       text += this.translate.instant('search.result.metaDescription',
       {countryMeta: this.mode === 'finnish' ? this.translate.instant('finland') : this.translate.instant('world')});
     } else {
-      if (observationParams.hasOwnProperty('target')) {
-        text += this.translate.instant('about') + ' ' + listSpecies;
+      if (listSpecies !== '') {
+        text += this.translate.instant('about') + ' ' + listSpecies + ' ';
+      }
+      if (time !== undefined) {
+        text += this.translate.instant('observation.active.time') + ' ' + time;
       }
     }
 
     return text;
   }
 
-  listQueryParamsOptions(query, option) {
-    let elements = query[option] === undefined ? [] : query[option].split(',');
+  listQueryParamsOptions(query) {
+    let speciesItems = query['target'] === undefined ? [] : query['target'].split(',');
+    this.speciesTime = query['time'] === undefined ? undefined :
+    (query['time'].split('/')[1] === '' ? query['time'].split('/')[0] + ' - ' + this.translate.instant('today') :
+    query['time'].split('/')[0] + ' - ' + query['time'].split('/')[1]);
+    
 
-    from(elements).pipe(
+    from(speciesItems).pipe(
       concatMap((taxon: any) => this.taxonService.getTaxon(taxon)),
       map((taxa: Taxonomy) => taxa.vernacularName[this.translate.currentLang] ? 
         taxa.vernacularName[this.translate.currentLang] : taxa.scientificName 
@@ -252,7 +260,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       toArray(),
     ).subscribe(species => {
       this.speciesList = species.length > 0 ? species.join() : '';
-      this.headerService.updateMetaDescription(this.buildDescription(this.speciesList));
+      this.headerService.updateMetaDescription(this.buildDescription(this.speciesList,this.speciesTime));
     })
   }
 
@@ -266,6 +274,15 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     return sub[0] + '| '
     +(this.mode === 'finnish' ? this.translate.instant('search.result.onlyFinnish') : this.translate.instant('search.result.'+tabOrder[indexTab]) ) 
     + ' |' + sub[sub.length-1];
+  }
+
+  private hasAtLeastOneProperty(obj, props) {
+    let count = 0;
+    for (var i = 0; i < props.length; i++) {
+        if (!obj.hasOwnProperty(props[i]))
+            count++;
+    }
+    return count === props.length ? false : true;
   }
 
 }
