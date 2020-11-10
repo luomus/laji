@@ -17,7 +17,6 @@ export class KerttuOccurrenceTableComponent implements OnInit {
 
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
   @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
-  @ViewChild('warning', { static: true }) warningTpl: TemplateRef<any>;
   @ViewChild('buttons', { static: true }) buttonsTpl: TemplateRef<any>;
 
   @ViewChild('modal') public modalComponent: ModalDirective;
