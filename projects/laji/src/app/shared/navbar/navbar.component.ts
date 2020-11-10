@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   devRibbon = false;
   showSearch = false;
   env = environment.type;
-
+ 
   notificationsNotSeen = 0;
   notificationsTotal$: Observable<number>;
 
