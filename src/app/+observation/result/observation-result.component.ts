@@ -235,10 +235,10 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       {countryMeta: this.mode === 'finnish' ? this.translate.instant('finland') : this.translate.instant('world')});
     } else {
       if (listSpecies !== '') {
-        text += this.translate.instant('about') + ' ' + listSpecies + ' ';
+        text += ' '+this.translate.instant('search.result.species') + ':' + listSpecies + '.';
       }
       if (time !== undefined) {
-        text += this.translate.instant('observation.active.time') + ' ' + time;
+        text += ' '+this.translate.instant('observation.active.time') + ':' + time + '.';
       }
     }
 
