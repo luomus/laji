@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@
 import { ActivatedRoute } from '@angular/router';
 import { TaxonomySearchQuery } from '../species/service/taxonomy-search-query';
 import { Subscription } from 'rxjs';
-import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { LoadedElementsStore } from '../../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { HeaderService } from '../../../app/shared/service/header.service'
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';

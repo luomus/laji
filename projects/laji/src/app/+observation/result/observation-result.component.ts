@@ -8,7 +8,7 @@ import { VisibleSections } from '../view/observation-view.component';
 import { ObservationDownloadComponent } from '../download/observation-download.component';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
-import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { LoadedElementsStore } from '../../../../../../projects/laji-ui/src/lib/tabs/tab-utils';
 import { Subscription, from, Observable } from 'rxjs';
 import {LocalStorageService} from 'ngx-webstorage';
 import { ActivatedRoute } from "@angular/router";

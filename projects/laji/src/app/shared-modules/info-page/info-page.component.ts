@@ -77,11 +77,11 @@ export class InfoPageComponent implements OnChanges {
         this.children.emit(result.children || []);
         this.hasContent.emit(!!result.content.trim());
 
-        if(result.title){
+        if(result.title && !document.getElementsByTagName("laji-home").item(0)){
           this.metaTitle.setTitle(result.title + ' | ' + this.metaTitle.getTitle());
           this.headerService.createTwitterCard(result.title);
         }
-        if(result.content) {
+        if(result.content && !document.getElementsByTagName("laji-home").item(0)) {
           this.headerService.updateMetaDescription(this.extractMetaDescription(result.content));
           setTimeout(() => {
             const image = (document.getElementsByTagName("laji-info-page")).item(0).getElementsByTagName("img").item(0).src;
