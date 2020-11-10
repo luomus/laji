@@ -53,9 +53,7 @@ export class TripFormPage {
     return this.pageTitleElem.getText();
   }
 
-  async hasOverlayPresent() {
-    // This is for testing purposes only and should be removed when no longer needed:
-    await browser.sleep(10000);
-    return this.overlayElem.isDisplayed();
+  hasOverlayPresent() {
+    return this.overlayElem.isPresent();
   }
 }
