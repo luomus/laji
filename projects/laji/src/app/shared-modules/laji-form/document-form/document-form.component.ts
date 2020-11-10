@@ -27,6 +27,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { PlatformService } from '../../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -83,7 +84,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               private documentApi: DocumentApi,
               private documentService: DocumentService,
               private latestFacade: LatestDocumentsFacade,
-              private router: Router) {
+              private router: Router,
+              private platformService: PlatformService
+  ) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
     this.formSubscription = this.vm$.subscribe(state => {
@@ -105,6 +108,12 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.footerService.footerVisible = true;
     if (this.subErrors) {
       this.subErrors.unsubscribe();
+    }
+    if (this.platformService.isBrowser) {
+      try {
+        const element = document.querySelector('.laji-form.blocking-loader.leaving');
+        element.parentNode.removeChild(element);
+      } catch (e) {}
     }
   }
 
