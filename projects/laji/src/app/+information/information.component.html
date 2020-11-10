@@ -1,0 +1,30 @@
+<ng-container *ngIf="information$ | async; let information">
+  <lu-sidebar position="right" [staticWidth]="280" [displayNav]="information.children">
+    <main class="d-flex">
+      <div class="d-flex justify-center flex-grow">
+        <div class="mt-4 mb-8 mx-4 d-flex flex-col flex-nowrap width-0 information-container">
+          <ol class="breadcrumb">
+            <ng-container *ngFor="let parent of information.parents; let i = index">
+              <li *ngIf="i !== 0">
+                <a [routerLink]="['/about/' + parent.id] | localize">
+                  {{ parent.title }}
+                </a>
+              </li>
+            </ng-container>
+            <li class="active">{{ information.title }}</li>
+          </ol>
+          <div class="laji-information" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
+        </div>
+      </div>
+      <div *ngIf="!information.children" class="makeup-width flex-grow flex-shrink"></div>
+    </main>
+    <nav *ngIf="information.children">
+      <h4>
+        {{ 'information.more' | translate }}
+      </h4>
+      <lu-sidebar-link *ngFor="let child of information.children" [link]="['/about/' + child.id] | localize">
+        {{ child.title }}
+      </lu-sidebar-link>
+    </nav>
+  </lu-sidebar>
+</ng-container>

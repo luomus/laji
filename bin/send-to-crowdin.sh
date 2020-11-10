@@ -6,7 +6,7 @@ echo "Fetching the latest laji-cli tools"
 docker pull luomus/laji-cli >/dev/null 2>&1
 
 echo "Sending laji.fi to crowdin"
-docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../src/i18n:/data luomus/laji-cli \
+docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../projects/laji/src/i18n:/data luomus/laji-cli \
   crowdin:send:json LAJI \
   fi:/data/fi.json  \
   en-GB:/data/en.json \

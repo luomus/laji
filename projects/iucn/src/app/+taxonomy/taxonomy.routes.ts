@@ -17,4 +17,4 @@ export const taxonomyRoutes: Routes = [
     data: { title: 'iucn.results.title' }
   },
 ];
-export const routing: ModuleWithProviders = RouterModule.forChild(taxonomyRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(taxonomyRoutes);

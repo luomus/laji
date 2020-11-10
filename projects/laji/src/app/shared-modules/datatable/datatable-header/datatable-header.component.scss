@@ -1,0 +1,8 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.menu-row {
+  display: flex;
+  flex-direction: row;
+  font-size: $fs-1;
+  height: 40px;
+}

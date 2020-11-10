@@ -1,0 +1,288 @@
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
+OnInit, ChangeDetectorRef, OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
+import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
+import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { ISettingResultList } from '../../shared/service/user.service';
+import { Router } from '@angular/router';
+import { VisibleSections } from '../view/observation-view.component';
+import { ObservationDownloadComponent } from '../download/observation-download.component';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { SearchQueryService } from '../search-query.service';
+import { LoadedElementsStore } from '../../../../projects/laji-ui/src/lib/tabs/tab-utils';
+import { Subscription, from, Observable } from 'rxjs';
+import {LocalStorageService} from 'ngx-webstorage';
+import { ActivatedRoute } from "@angular/router";
+import { HeaderService } from '../../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
+import { map, concatMap, toArray, switchMap, tap } from 'rxjs/operators';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { TaxonTaxonomyService } from '../../+taxonomy/taxon/service/taxon-taxonomy.service'
+import { TaxonService } from 'projects/iucn/src/app/iucn-shared/service/taxon.service';
+
+
+const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
+@Component({
+  selector: 'laji-observation-result',
+  templateUrl: './observation-result.component.html',
+  styleUrls: ['./observation-result.component.scss'],
+  providers: [TaxonTaxonomyService],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ObservationResultComponent implements OnInit, OnChanges {
+  private _visible: VisibleSections = {
+    finnish: true,
+    countTaxa: true,
+    countHits: true,
+    map: true,
+    list: true,
+    images: true,
+    species: true,
+    statistics: true,
+    download: true,
+    annotations: true,
+    own: true
+  };
+  @Input() set visible(v: VisibleSections) {
+    this._visible = v;
+    const tabs = Object.entries(v).filter(([key, val]) => val && tabOrder.includes(key)).map(([key, val]) => key);
+    tabs.sort((a, b) => {
+      const i = tabOrder.findIndex(name => name === a);
+      const j = tabOrder.findIndex(name => name === b);
+      if (i > j) { return 1; }
+      if (i < j) { return -1; }
+      return 0;
+    });
+    this.loadedTabs = new LoadedElementsStore(tabs);
+  }
+  get visible() { return this._visible; }
+  @Input() skipUrlParameters: string[] = [
+    'selected',
+    'pageSize',
+    'page'
+  ];
+  @Input() resultBase: 'unit'|'sample' = 'unit';
+  @Input() basePath = '/observation';
+  @Input() query: WarehouseQueryInterface = {};
+  @Input() lgScreen = true;
+  @Input() unitCount: number;
+  @Input() speciesCount: number;
+  @Input() loadingUnits: boolean;
+  @Input() loadingTaxa: boolean;
+  @Input() lang: string;
+  @Input() listSettings: ISettingResultList;
+
+  @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
+
+  @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
+  @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
+
+  /**
+   * Prevent re-fetching data by keeping loaded pages in memory
+   */
+  mode: 'all' | 'finnish' = 'all';
+  loadedModes: LoadedElementsStore = new LoadedElementsStore(['all', 'finnish']);
+
+  lastTabActive = 'list';
+  loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
+
+  hasMonthDayData: boolean;
+  hasYearData: boolean;
+  hasTaxonData: boolean;
+  metaFetch: Subscription;
+  taxonSub: Subscription;
+  speciesList: string;
+  observationParams = ['target', 'time'];
+  speciesTime: string;
+  
+
+  selectedTabIdx = 0; // stores which tab index was provided by @Input active
+  onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
+
+  constructor(
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+    private searchQueryService: SearchQueryService,
+    private cd: ChangeDetectorRef,
+    private storage: LocalStorageService,
+    private route: ActivatedRoute,
+    private headerService: HeaderService,
+    private translate: TranslateService,
+    private taxonService: TaxonTaxonomyService,
+    private title: Title
+  ) { }
+
+  @Input()
+  set active(value) {
+    if (value === 'finnish') {
+      this.mode = 'finnish';
+      this.loadedModes.load('finnish');
+    } else {
+      this.mode = 'all';
+      this.loadedModes.load('all');
+      this.lastTabActive = value;
+      this.loadedTabs.load(value);
+      this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
+    }
+  }
+
+  onSelect(tabIndex: number) {
+    const tabName = this.loadedTabs.getNameFromIdx(tabIndex);
+    this.router.navigate(
+      this.localizeRouterService.translateRoute([this.basePath, tabName]), {
+        // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
+        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+      }
+    );
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnChanges() {
+    if (((this.route.snapshot.queryParams['editorOrObserverPersonToken'] === undefined &&
+    this.route.snapshot.queryParams['observerPersonToken'] === undefined &&
+    this.route.snapshot.queryParams['editorPersonToken'] === undefined) || this.route.snapshot.queryParams['editorOrObserverIsNotPersonToken'] ) &&
+    this.selectedTabIdx === 6
+    ) {
+      this.onSelect(0);
+    }
+
+    this.listQueryParamsOptions(this.route.snapshot.queryParams);
+    
+    setTimeout(() => {
+      this.headerService.createTwitterCard(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
+      this.title.setTitle(this.addTabNameTitle(this.title.getTitle(), this.selectedTabIdx));
+    });
+  }
+
+  ngDestroy() {
+    this.metaFetch.unsubscribe();
+    this.taxonSub.unsubscribe();
+  }
+
+  reloadTabs() {
+    this.loadedTabs.reset();
+    this.loadedTabs.load(this.lastTabActive);
+  }
+
+  pickLocation(e) {
+    if (!e) {
+      return;
+    }
+    const query = {...this.query};
+    if (e.coordinateVerbatim) {
+      query.coordinates = [e.coordinateVerbatim + ':YKJ'];
+    } else if (
+      e.type === 'Polygon' &&
+      e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
+    ) {
+      query.coordinates = [
+        e.coordinates[0][0][1] + ':' + e.coordinates[0][2][1] + ':' +
+        e.coordinates[0][0][0] + ':' + e.coordinates[0][2][0] + ':WGS84'
+      ];
+    } else {
+      query.coordinates = undefined;
+    }
+    this.queryChange.emit(query);
+  }
+
+  openDownloadModal() {
+    this.downloadModal.openModal();
+  }
+
+  toggleOnlyCount() {
+    this.onlyCount = !this.onlyCount;
+    this.storage.store('onlycount', this.onlyCount);
+  }
+
+  buildDescription(listSpecies, time) {
+    let tab = '';
+
+    if (this.mode !== 'finnish') {
+      switch(this.selectedTabIdx) {
+        case 0:
+          return tab += this.translate.instant('search.result.list') + this.buildQueryParamsOptions(listSpecies, time);
+        case 1:
+          return tab += this.translate.instant('search.result.map') + this.buildQueryParamsOptions(listSpecies, time);
+        case 2:
+          return tab += this.translate.instant('search.result.images') + this.buildQueryParamsOptions(listSpecies, time); 
+        case 3:
+          return tab += this.translate.instant('search.result.species') + this.buildQueryParamsOptions(listSpecies, time); 
+        case 4:
+          return tab += this.translate.instant('search.result.stats') + this.buildQueryParamsOptions(listSpecies, time);  
+        case 5:
+          return tab += this.translate.instant('search.result.annotations') + this.buildQueryParamsOptions(listSpecies, time); 
+        case 6:
+          return tab += this.translate.instant('haseka.ownSubmissions.title') + this.buildQueryParamsOptions(listSpecies, time); 
+        default:
+          return tab += '';             
+      }
+    } else {
+      return tab += this.translate.instant('search.result.onlyFinnish') + this.buildQueryParamsOptions(listSpecies, time);
+    }
+    
+  }
+
+  buildQueryParamsOptions(listSpecies, time){
+    let observationParams = this.route.snapshot.queryParams;
+    let text = this.mode === 'finnish' ?
+    ' ' + this.translate.instant('omniSearch.allObservation') + ' ' :
+    this.translate.instant('search.result.observation');
+    if (!this.hasAtLeastOneProperty(observationParams, this.observationParams)) {
+      text += this.translate.instant('search.result.metaDescription',
+      {countryMeta: this.mode === 'finnish' ? this.translate.instant('finland') : this.translate.instant('world')});
+    } else {
+      if (listSpecies !== '') {
+        text += ' '+this.translate.instant('search.result.species') + ':' + listSpecies + '.';
+      }
+      if (time !== undefined) {
+        text += ' '+this.translate.instant('observation.active.time') + ':' + time + '.';
+      }
+    }
+
+    return text;
+  }
+
+  listQueryParamsOptions(query) {
+    let speciesItems = query['target'] === undefined ? [] : query['target'].split(',');
+    this.speciesTime = query['time'] === undefined ? undefined :
+    (query['time'].split('/')[1] === '' ? query['time'].split('/')[0] + ' - ' + this.translate.instant('today') :
+    query['time'].split('/')[0] + ' - ' + query['time'].split('/')[1]);
+    
+
+    from(speciesItems).pipe(
+      concatMap((taxon: any) => this.taxonService.getTaxon(taxon)),
+      map((taxa: Taxonomy) => taxa.vernacularName[this.translate.currentLang] ? 
+        taxa.vernacularName[this.translate.currentLang] : taxa.scientificName 
+      ),
+      toArray(),
+    ).subscribe(species => {
+      this.speciesList = species.length > 0 ? species.join() : '';
+      this.headerService.updateMetaDescription(this.buildDescription(this.speciesList,this.speciesTime));
+    })
+  }
+
+  showPrint(string){
+   alert(string)
+  }
+
+  private addTabNameTitle(str, indexTab) {
+    const sub = str.split('|');
+    
+    return sub[0] + '| '
+    +(this.mode === 'finnish' ? this.translate.instant('search.result.onlyFinnish') : this.translate.instant('search.result.'+tabOrder[indexTab]) ) 
+    + ' |' + sub[sub.length-1];
+  }
+
+  private hasAtLeastOneProperty(obj, props) {
+    let count = 0;
+    for (var i = 0; i < props.length; i++) {
+        if (!obj.hasOwnProperty(props[i]))
+            count++;
+    }
+    return count === props.length ? false : true;
+  }
+
+}

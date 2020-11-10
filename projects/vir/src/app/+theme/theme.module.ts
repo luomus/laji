@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ThemeRoutingModule } from './theme-routing.module';
 import { ThemeComponent } from './theme.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { SharedModule } from '../../../../../src/app/shared/shared.module';
+import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 
 
 @NgModule({

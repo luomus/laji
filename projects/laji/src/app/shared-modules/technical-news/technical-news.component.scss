@@ -1,0 +1,27 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  display: block;
+}
+
+.news-article {
+  background-color: $danger-2;
+  color: $danger-7;
+  border: 1px solid $danger-4;
+  border-radius: 5px;
+  padding: 10px;
+  width: max-content;
+  h5 {
+    color: $danger-6;
+    font-weight: 400;
+  }
+  .technical-news-link, a {
+    font-size: $fs-2;
+    font-weight: 500;
+    margin: 0;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

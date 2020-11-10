@@ -3,7 +3,7 @@ import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from 'label-designer';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
-import { LajiApi, LajiApiService } from '../../../../src/app/shared/service/laji-api.service';
+import { LajiApi, LajiApiService } from '../../../laji/src/app/shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { SchemaService } from '../../../label-designer/src/lib/schema.service';
 

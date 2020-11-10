@@ -1,0 +1,45 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.np-info-container {
+  margin-top: 18px;
+  padding-left: 25px;
+}
+
+.np-info {
+}
+
+.np-info-header {
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    color: $neutral-6;
+    letter-spacing: .5px;
+  }
+}
+
+.row-container {
+  margin: 10px 10px 0 0;
+  width: 100%;
+}
+
+.own-submissions-container {
+  margin-top: 15px;
+}
+
+laji-np-info-map {
+  float: right;
+  width: 55%;
+  padding-top: 55%;
+  position: relative;
+}
+
+.button-container {
+  display: flex;
+  margin: 0 0 6px -3px;
+}
+
+#btn-container {
+  text-align: right;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}

@@ -5,7 +5,7 @@ import { InfoCardComponent } from './info-card/info-card.component';
 import { TaxonomyComponent } from './taxonomy.component';
 import { ListComponent } from './list/list.component';
 import { routing } from './taxonomy.routes';
-import { SharedModule } from '../../../../../src/app/shared/shared.module';
+import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { TaxonImageComponent } from './info-card/taxon-image/taxon-image.component';
 import { TaxonStatusComponent } from './info-card/taxon-status/taxon-status.component';
 import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redlist-year-select.component';
@@ -21,14 +21,14 @@ import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-
 import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { RedListHabitatComponent } from './list/results/red-list-habitat/red-list-habitat.component';
 import { RedListHabitatListComponent } from './list/results/red-list-habitat/red-list-habitat-list/red-list-habitat-list.component';
-import { TaxonSelectModule } from '../../../../../src/app/shared-modules/taxon-select/taxon-select.module';
-import { DatatableModule } from '../../../../../src/app/shared-modules/datatable/datatable.module';
+import { TaxonSelectModule } from '../../../../laji/src/app/shared-modules/taxon-select/taxon-select.module';
+import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ActiveFiltersComponent } from './list/active-filters/active-filters.component';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
-import { SelectFieldsModule } from '../../../../../src/app/shared-modules/select-fields/select-fields.module';
-import { DownloadModule } from '../../../../../src/app/shared-modules/download/download.module';
-import { IucnCommonModule } from '../../../../../src/app/shared-modules/iucn/iucn.module';
+import { SelectFieldsModule } from '../../../../laji/src/app/shared-modules/select-fields/select-fields.module';
+import { DownloadModule } from '../../../../laji/src/app/shared-modules/download/download.module';
+import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
 /* tslint:enable:max-line-length */
 

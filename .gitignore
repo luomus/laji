@@ -30,7 +30,7 @@ settings.json
 # e2e
 /e2e/*.js
 /e2e/*.map
-!/e2e/protractor.conf.js
+!/projects/laji/e2e/protractor.conf.js
 
 # Don't include script with this repo!
 **/*.sh

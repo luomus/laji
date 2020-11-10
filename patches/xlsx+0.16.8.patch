@@ -1,0 +1,32 @@
+diff --git a/node_modules/xlsx/xlsx.js b/node_modules/xlsx/xlsx.js
+index a104595..ec7f6ab 100644
+--- a/node_modules/xlsx/xlsx.js
++++ b/node_modules/xlsx/xlsx.js
+@@ -13301,6 +13301,19 @@ function write_ws_xml_merges(merges) {
+ 	return o + '</mergeCells>';
+ }
+ 
++function write_ws_xml_datavalidation(validations) {
++  var o = '<dataValidations count="' + validations.length + '">';
++  for(var i=0; i < validations.length; i++) {
++    var validation = validations[i];
++    o += '<dataValidation type="list" operator="equal" allowBlank="1" showInputMessage="1" sqref="' + validation.sqref + '">';
++    o += '<formula1>' + validation.sqtarget + '</formula1>';
++    o += '</dataValidation>';
++  }
++  o += '</dataValidations>';
++
++  return o;
++}
++
+ /* 18.3.1.82-3 sheetPr CT_ChartsheetPr / CT_SheetPr */
+ function parse_ws_xml_sheetpr(sheetPr, s, wb, idx) {
+ 	var data = parsexmltag(sheetPr);
+@@ -13758,6 +13771,7 @@ function write_ws_xml(idx, opts, wb, rels) {
+ 	/* customSheetViews */
+ 
+ 	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
++	if(ws['!dataValidation']) o[o.length] = write_ws_xml_datavalidation(ws['!dataValidation']);
+ 
+ 	/* phoneticPr */
+ 	/* conditionalFormatting */

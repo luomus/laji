@@ -1,0 +1,52 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  position: relative;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.notification-container {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+  border-top: 1px solid $neutral-4;
+}
+
+.notification {
+  padding: 3px 20px;
+  display: block;
+  text-decoration: none;
+  background-color: $neutral-2;
+  color: $neutral-8;
+  flex-grow: 1;
+}
+
+.notification:not(.ghost):hover {
+  background-color: $neutral-3;
+}
+
+.notification.unseen {
+  background-color: #fcf8e3;
+}
+
+.notification.unseen:hover {
+  background-color: #faebcc;
+}
+
+.delete {
+  width: 30px;
+  background-color: $neutral-2;
+  border: 1px solid $neutral-4;
+  border-top: none;
+  border-bottom: none;
+}
+
+.delete:not(.ghost):hover,
+.delete:not(.ghost):focus {
+  background: $neutral-3;
+}
+
+:host .ghost ::ng-deep p {
+  margin: 0;
+}

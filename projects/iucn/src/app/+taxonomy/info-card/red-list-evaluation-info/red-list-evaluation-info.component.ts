@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RedListEvaluation } from '../../../../../../../src/app/shared/model/Taxonomy';
+import { RedListEvaluation } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { TranslateService } from '@ngx-translate/core';
 

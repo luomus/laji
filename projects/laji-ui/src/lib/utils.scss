@@ -81,6 +81,15 @@ $displays: flex, block, inline, inline-block, none;
 .flex-grow-2 {
   flex-grow: 2 !important;
 }
+.flex-shrink {
+  flex-shrink: 1 !important;
+}
+.flex-shrink-1 {
+  flex-shrink: 1 !important;
+}
+.flex-shrink-2 {
+  flex-shrink: 2 !important;
+}
 @each $breakpoint, $px in $breakpoints {
   @media only screen and (max-width: $px) {
     .#{$breakpoint}\:flex-grow {
@@ -91,6 +100,15 @@ $displays: flex, block, inline, inline-block, none;
     }
     .#{$breakpoint}\:flex-grow-2 {
       flex-grow: 2 !important;
+    }
+    .#{$breakpoint}\:flex-shrink {
+      flex-shrink: 1 !important;
+    }
+    .#{$breakpoint}\:flex-shrink-1 {
+      flex-shrink: 1 !important;
+    }
+    .#{$breakpoint}\:flex-shrink-2 {
+      flex-shrink: 2 !important;
     }
   }
 }

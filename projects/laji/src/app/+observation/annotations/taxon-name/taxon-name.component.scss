@@ -1,0 +1,92 @@
+@import 'projects/laji-ui/src/lib/vars';
+@import '../../../../styles/styles';
+
+div {
+    &.unit {
+        background-color: $neutral-1;
+        position: relative;
+        padding-bottom: 7px;
+        border-bottom: 1px solid $neutral-4;
+        margin-bottom: 7px;
+        div {
+            &.image {
+                /*min-height:200px;*/
+                margin-bottom: 10px;
+                position: relative;
+                background-color: $neutral-9;
+                height: 125px;
+                @include media-query-laptop {
+                    min-height: auto;
+                }
+                div {
+                    &.number-images {
+                        position: absolute;
+                        bottom: 10px;
+                        left: 10px;
+                        width: 100px;
+                        background: url('../../../../static/images/icons/images_white.png') no-repeat;
+                        span {
+                            margin-left: 26px;
+                            color: $white;
+                        }
+                    }
+                }
+                img {
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: 100%;
+                    width: auto;
+                    max-height: 200px;
+
+                }
+            }
+            &.taxon {
+                font-weight: bold;
+                padding: 0 10px;
+                line-height: 1.2;
+            }
+            &.no-media {
+                background-color: $neutral-4;
+                height: 125px;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: $neutral-7;
+                }
+            }
+            &.status-annotation {
+                position: absolute;
+                top: 0px;
+                width: 40px;
+                height: 40px;
+                right: 0px;
+                background-color: #F5F5F5;
+                span {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-right: -50%;
+                    transform: translate(-50%, -50%);
+                    font-weight: bold;
+                    @include font-size(3.2);
+                    &.need-id {
+                        color: $needId;
+                        &::after {
+                            content: "?";
+                        }
+                    }
+                    &.disagreed {
+                        color: $disagreed;
+                        &::after {
+                            content: "!";
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}

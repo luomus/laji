@@ -1,0 +1,202 @@
+@import '../../../../styles/styles';
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  color: $neutral-9;
+}
+
+h5 {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+.tight {
+    margin-top: 0;
+  }
+  .gatherings {
+    padding-bottom: 5px;
+  }
+  .doc-meta {
+    padding-top: 20px;
+  }
+
+  :host >>> .popover {
+    width: 430px;
+    max-width: 430px;
+  }
+
+  .container-col {
+    display: flex;
+    min-height: 700px;
+    @include media-query-tablet {
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column-reverse;
+      flex-wrap: wrap;
+      flex-direction: row;
+    }
+  }
+
+  .manual-shortcuts {
+    float: right;
+    position: relative;
+  }
+
+  a.manual img {
+    width: 24%;
+    margin-left: 5px;
+  }
+
+  .column-modal {
+    flex: 1;
+    @include media-query-tablet {
+      padding: 5px 15px;
+      flex: none;
+    }
+  }
+
+  .column-modal:nth-child(1), .column-modal:nth-child(3) {
+    @include media-query-tablet {
+      width: 100%;
+      order: 1;
+      display: inline-block;
+    }
+  }
+
+  .column-modal:nth-child(2) {
+    @include media-query-tablet {
+      width: 100%;
+      order: 0;
+    }
+  }
+
+  .column-modal .title {
+    font-size:20px;
+    font-weight: bold;
+  }
+
+  .page-header {
+    padding-bottom: 5px;
+    margin: 0 0 15px 0;
+    float: left;
+    width: 100%;
+  }
+
+  .page-header h3 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    max-width: none;
+  }
+
+  .shortcuts {
+    position: relative;
+  }
+
+  .shortcuts img {
+    float: right;
+    width: 24%;
+  }
+
+  /*.shortcuts:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(0, 0, 0, .54);
+    clear: both;
+    margin-left: -5px;
+  }
+
+  .shortcuts.up:after {
+    border-bottom: 5px solid rgba(0, 0, 0, .54);
+    border-top: 0;
+  }*/
+
+  .shortcut-content {
+    position: absolute;
+    width: 300px;
+    z-index: 9999;
+    background: white;
+    height: 95%;
+    -webkit-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 11px -9px rgba(0,0,0,0.75);
+    border: 1px solid #e0e0e0;
+    -webkit-transition:  height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -ms-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+  }
+
+  .shortcut-item {
+    margin-bottom: 10px;
+  }
+
+  .shortcut-item .close {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  ::ng-deep .key {
+    text-align: left;
+  }
+
+  .arrow {
+    width:23px;
+    height:28px;
+    position: absolute;
+    cursor: pointer;
+    z-index: 1000;
+    top: 50%;
+    background:url('../../../../static/images/icons/arrow.png');
+    &.left{
+      left:-30px;
+      transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+    }
+    &.right{
+      right:-30px;
+    }
+  }
+
+  .refresh {
+    position: absolute;
+    z-index: 9000;
+    opacity: 0.8;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  .refresh span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: #ffe455;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .manual-shortcuts {
+      float: left;
+    }
+  }
+
+
+
+
+

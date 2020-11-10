@@ -94,7 +94,6 @@ export * from './formPermissionPerson';
 export * from './gatheringEvent';
 export * from './gatheringFact';
 export * from './gathering';
-export * from './geometry';
 export * from './htmlToPdf';
 export * from './identification';
 export * from './identifications';

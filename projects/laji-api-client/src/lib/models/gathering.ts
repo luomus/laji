@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { GatheringFact } from './gatheringFact';
-import { Geometry } from './geometry';
 import { TaxonCensus } from './taxonCensus';
 import { Unit } from './unit';
 
@@ -252,7 +251,7 @@ export interface Gathering {
   /**
    * Geological information about gathering in wgs84 format
    */
-  wgs84Geometry?: Geometry;
+  wgs84Geometry?: any;
   wgs84Latitude?: string;
   wgs84Longitude?: string;
 }

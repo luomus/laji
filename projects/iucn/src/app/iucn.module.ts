@@ -1,13 +1,13 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { SharedModule } from '../../../../src/app/shared/shared.module';
+import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { LajiErrorHandler } from '../../../../src/app/shared/error/laji-error-handler';
-import { ConsoleLogger, HttpLogger, Logger } from '../../../../src/app/shared/logger/index';
-import { LoggerApi } from '../../../../src/app/shared/api/LoggerApi';
-import { ILogger } from '../../../../src/app/shared/logger/logger.interface';
-import { TranslateFileLoader } from '../../../../src/app/shared/translate/translate-file-loader';
+import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
+import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/logger/index';
+import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
+import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
+import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -18,18 +18,18 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { LocalizeRouterService } from '../../../../src/app/locale/localize-router.service';
+import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
-import { DocumentService } from '../../../../src/app/shared-modules/own-submissions/service/document.service';
+import { DocumentService } from '../../../laji/src/app/shared-modules/own-submissions/service/document.service';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { IucnRoutingModule } from './iucn-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponentModule } from '../../../../src/app/shared-modules/app-component/app-component.module';
-import { AppComponent } from '../../../../src/app/shared-modules/app-component/app.component';
-import { GraphQLModule } from '../../../../src/app/graph-ql/graph-ql.module';
+import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
+import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
+import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {

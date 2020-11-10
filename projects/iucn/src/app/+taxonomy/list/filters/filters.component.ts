@@ -5,9 +5,9 @@ import {Observable} from 'rxjs';
 import {SelectOption} from '../select/select.component';
 import {TaxonService} from '../../../iucn-shared/service/taxon.service';
 import { map } from 'rxjs/operators';
-import { RedListTaxonGroup } from '../../../../../../../src/app/shared/model/RedListTaxonGroup';
-import { MetadataService } from '../../../../../../../src/app/shared/service/metadata.service';
-import { MultiLangService } from '../../../../../../../src/app/shared-modules/lang/service/multi-lang.service';
+import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
+import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
+import { MultiLangService } from '../../../../../../laji/src/app/shared-modules/lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

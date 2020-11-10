@@ -61,6 +61,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() staticWidth: number;
   @Input() menuTitle: string;
   @Input() displayNav = true;
+  @Input() noPrint: boolean;
 
   sidebarMinWidth = 50;
 

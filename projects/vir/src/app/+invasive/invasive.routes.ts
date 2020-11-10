@@ -10,4 +10,4 @@ export const invasiveRoutes: Routes = [
   }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(invasiveRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(invasiveRoutes);

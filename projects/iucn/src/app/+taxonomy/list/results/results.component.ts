@@ -9,25 +9,25 @@ import {
 } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
-import { TaxonomyApi } from '../../../../../../../src/app/shared/api/TaxonomyApi';
+import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin, of } from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { Util } from '../../../../../../../src/app/shared/service/util.service';
-import { Taxonomy } from '../../../../../../../src/app/shared/model/Taxonomy';
+import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
-import { TriplestoreLabelService } from '../../../../../../../src/app/shared/service/triplestore-label.service';
+import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
-import { RedListTaxonGroup } from '../../../../../../../src/app/shared/model/RedListTaxonGroup';
+import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
-import { MetadataService } from '../../../../../../../src/app/shared/service/metadata.service';
-import { IPageChange } from '../../../../../../../src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
+import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
+import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { TranslateService } from '@ngx-translate/core';
-import { ISelectFields } from '../../../../../../../src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { TaxonExportService } from '../../../../../../../src/app/+taxonomy/species/service/taxon-export.service';
-import { TaxonomyColumns } from '../../../../../../../src/app/+taxonomy/species/service/taxonomy-columns';
-import { DatatableColumn } from '../../../../../../../src/app/shared-modules/datatable/model/datatable-column';
-import { DownloadComponent } from '../../../../../../../src/app/shared-modules/download/download.component';
+import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
+import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
+import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
+import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download/download.component';
 
 @Component({
   selector: 'laji-results',

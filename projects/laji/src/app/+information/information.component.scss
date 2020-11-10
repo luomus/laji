@@ -1,0 +1,28 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+lu-sidebar {
+  flex-grow: 1;
+}
+
+.breadcrumb {
+  background-color: $neutral-3;
+}
+
+.information-container {
+  max-width: 1000px;
+}
+
+.makeup-width {
+  max-width: 280px;
+}
+
+:host ::ng-deep table {
+  display: block;
+  overflow-x: auto;
+}

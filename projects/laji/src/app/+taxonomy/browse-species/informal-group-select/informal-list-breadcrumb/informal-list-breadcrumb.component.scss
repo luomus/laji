@@ -1,0 +1,15 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.breadcrumb {
+  padding: 0;
+  margin-bottom: 10px;
+  background-color: unset;
+}
+
+.breadcrumb .active {
+  color: $neutral-7;
+}
+
+a {
+  cursor: pointer;
+}

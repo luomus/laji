@@ -1,0 +1,17 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+#protaxParams > div {
+  display: inline-block;
+  margin-right: 8px;
+
+  @media only screen and (max-width: map-get($map: $breakpoints, $key: "sm")) {
+    select.input-sm {
+      height: 36px;
+    }
+  }
+
+  @media only screen and (max-width: map-get($map: $breakpoints, $key: "xs")) {
+    display: block;
+    margin-right: auto;
+  }
+}

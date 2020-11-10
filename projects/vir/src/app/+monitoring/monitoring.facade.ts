@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../../../../../src/app/shared/service/form.service';
-import { Form } from '../../../../../src/app/shared/model/Form';
+import { FormService } from '../../../../laji/src/app/shared/service/form.service';
+import { Form } from '../../../../laji/src/app/shared/model/Form';
 
 interface State {
   monitoringForms: Form.List[];
