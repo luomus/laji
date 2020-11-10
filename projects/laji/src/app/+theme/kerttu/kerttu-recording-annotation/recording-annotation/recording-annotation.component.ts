@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
+import {IRecording, IRecordingAnnotation, ITaxonAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -36,43 +36,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.recording || changes.annotation) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
-
-      this.selectedTaxons = {
-        'main': [],
-        'other': []
-      };
-      if (this.selectedTaxonsSub) {
-        this.selectedTaxonsSub = undefined;
-      }
-
-      const taxonAnnotations = this.annotation?.taxonAnnotations;
-      if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.other?.length > 0) {
-        const observables = [];
-        for (const type of ['main', 'other']) {
-          if (taxonAnnotations[type]?.length > 0) {
-            const obs = taxonAnnotations[type].map(
-              a => this.taxonService.taxonomyFindBySubject(
-                a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName']}
-              ).pipe(map(taxon => {
-                return {...taxon, annotation: a};
-              }))
-            );
-            observables.push(forkJoin(obs));
-          } else {
-            observables.push(of([]));
-          }
-        }
-
-        this.loadingTaxons = true;
-        this.selectedTaxonsSub = forkJoin(observables).subscribe((results: ITaxonWithAnnotation[][])  => {
-          this.selectedTaxons = {
-            'main': results[0],
-            'other': results[1]
-          };
-          this.loadingTaxons = false;
-          this.cdr.markForCheck();
-        });
-      }
+      this.updateSelectedTaxons();
     }
   }
 
@@ -102,6 +66,47 @@ export class RecordingAnnotationComponent implements OnChanges {
         taxonAnnotations: taxonAnnotations
       }
     });
+  }
+
+  private updateSelectedTaxons() {
+    if (this.selectedTaxonsSub) {
+      this.selectedTaxonsSub = undefined;
+    }
+
+    this.selectedTaxons = {
+      'main': [],
+      'other': []
+    };
+
+    const taxonAnnotations = this.annotation?.taxonAnnotations;
+
+    if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.other?.length > 0) {
+      const observables = [];
+      for (const type of ['main', 'other']) {
+        if (taxonAnnotations[type]?.length > 0) {
+          const obs: Observable<ITaxonWithAnnotation>[] = taxonAnnotations[type].map(
+            a => this.taxonService.taxonomyFindBySubject(
+              a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName']}
+            ).pipe(map(taxon => {
+              return {...taxon, annotation: a};
+            }))
+          );
+          observables.push(forkJoin(obs));
+        } else {
+          observables.push(of([]));
+        }
+      }
+
+      this.loadingTaxons = true;
+      this.selectedTaxonsSub = forkJoin(observables).subscribe((results: ITaxonWithAnnotation[][])  => {
+        this.selectedTaxons = {
+          'main': results[0],
+          'other': results[1]
+        };
+        this.loadingTaxons = false;
+        this.cdr.markForCheck();
+      });
+    }
   }
 }
 
