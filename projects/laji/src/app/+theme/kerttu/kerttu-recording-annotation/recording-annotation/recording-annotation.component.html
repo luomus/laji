@@ -1,9 +1,8 @@
 <div class="row lu-section">
   <div class="col-md-12">
     <div class="button-container">
-      <lu-button (click)="save()">Tallenna</lu-button>
+      <lu-button [role]="'success'" (click)="save()">Tallenna</lu-button>
       <lu-button
-        [role]="'success'"
         [disabled]="!recording"
         (click)="nextRecordingClick.emit()">
         {{ 'theme.kerttu.nextRecording' | translate }}
@@ -77,8 +76,10 @@
     </div>
     <laji-kerttu-occurrence-table
       [(selectedTaxons)]="selectedTaxons.main"
-      [loading]="!taxonList || loadingTaxons"
+      [loading]="!taxonList || loadingTaxons || !taxonExpertise"
       [componentId]="0"
+      [taxonExpertise]="taxonExpertise"
+      (addToTaxonExpertise)="addToTaxonExpertise.emit($event)"
     >
     </laji-kerttu-occurrence-table>
   </div>

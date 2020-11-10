@@ -1,6 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
 import {ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import {ModalDirective} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'laji-kerttu-occurrence-table',
@@ -12,16 +13,23 @@ export class KerttuOccurrenceTableComponent implements OnInit {
   @Input() selectedTaxons: ITaxonWithAnnotation[];
   @Input() loading = false;
   @Input() componentId = 0;
+  @Input() taxonExpertise: string[];
 
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
   @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
-  @ViewChild('deleteBtn', { static: true }) deleteBtnTpl: TemplateRef<any>;
+  @ViewChild('warning', { static: true }) warningTpl: TemplateRef<any>;
+  @ViewChild('buttons', { static: true }) buttonsTpl: TemplateRef<any>;
+
+  @ViewChild('modal') public modalComponent: ModalDirective;
 
   columns: DatatableColumn[];
 
   taxonAnnotationEnum = TaxonAnnotationEnum;
 
+  modalTaxon: ITaxonWithAnnotation;
+
   @Output() selectedTaxonsChange = new EventEmitter<ITaxonWithAnnotation[]>();
+  @Output() addToTaxonExpertise = new EventEmitter<string>();
 
   constructor() { }
 
@@ -45,7 +53,9 @@ export class KerttuOccurrenceTableComponent implements OnInit {
         cellTemplate: this.possiblyOccursTpl
       },
       {
-        cellTemplate: this.deleteBtnTpl
+        cellTemplate: this.buttonsTpl,
+        width: 150,
+        minWidth: 150
       }
     ];
   }
@@ -58,5 +68,17 @@ export class KerttuOccurrenceTableComponent implements OnInit {
   deleteRow(rowIndex) {
     this.selectedTaxons.splice(rowIndex, 1);
     this.selectedTaxonsChange.emit([...this.selectedTaxons]);
+  }
+
+  showModal(taxon: ITaxonWithAnnotation) {
+    this.modalTaxon = taxon;
+    this.modalComponent.show();
+  }
+
+  closeModal(addTaxonToExpertise = false) {
+    if (addTaxonToExpertise) {
+      this.addToTaxonExpertise.emit(this.modalTaxon.annotation.taxonId);
+    }
+    this.modalComponent.hide();
   }
 }
