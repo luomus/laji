@@ -37,6 +37,13 @@ export class UserPage {
 
   async login(user = DEFAULT_TEST_USER): Promise<void> {
     await browser.waitForAngularEnabled(false);
+
+    try {
+      const userEC = protractor.ExpectedConditions;
+      const userNameExists = userEC.presenceOf(this.usernameElem);
+      await browser.wait(userNameExists, 500);
+    } catch (e) {}
+
     if (!await this.usernameElem.isPresent()) {
       if (!await this.authLocal.isPresent()) {
         await this.loginElem.click();
