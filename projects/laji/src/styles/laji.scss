@@ -1445,13 +1445,31 @@ span.simple-option {
 
   /*custom style FinBif publications */
 
-  p.author-name, p.publication-journal, p.publication-doi {
+  ul.authors, p.publication-journal, p.publication-doi {
     margin-bottom: 0px!important;
   }
 
-  p.author-name {
+  ul.authors {
     line-height: 16px;
     font-size: 14px;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  ul.authors li {
+    display: inline;
+  }
+
+  ul.authors li:last-child {
+    &::before {
+        content: " & ";
+    }
+  }
+ 
+  ul.authors li:nth-of-type(n + 2):not(:last-child) {
+    &::before {
+      content: ", ";
+    }
   }
 
   p.publication-doi {
