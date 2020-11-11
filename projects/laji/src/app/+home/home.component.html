@@ -117,13 +117,13 @@
     </div>
     <div class="flex-grow finBif-publications">
       <div class="margin-bottom-20">
-        <h2 class="width-0" translate>{{ 'home.some.finbifPublications' | translate }}</h2>
-        <laji-info class="finBif-info" placement="bottom">{{ 'theme.finBif.intro' | translate }}</laji-info>
+        <h2 class="width-0" translate>{{ 'finbif-bib.title' | translate }}</h2>
+        <laji-info class="finBif-info" placement="bottom">{{ 'finbif-bib.intro' | translate }}</laji-info>
       </div>
       <div class="d-flex flex-wrap">
         <laji-info-page [rootPage]="{'fi': '4442', 'en': '4440', 'sv': '4444'}"></laji-info-page>
-        <lu-button role="primary" [anchor]="['/theme/lahdeluettelo'] | localize">
-          {{ 'theme.finBif.seeAll' | translate }}
+        <lu-button role="primary" [anchor]="['/theme/publications'] | localize">
+          {{ 'finbif-bib.seeAll' | translate }}
         </lu-button>
       </div>
     </div>

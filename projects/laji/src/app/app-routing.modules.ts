@@ -102,14 +102,10 @@ const routesWithLang: Routes = [
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
     {path: 'pinkka', redirectTo: '/theme/pinkka', pathMatch: 'full'},
-    {path: 'pinkka', redirectTo: '/sv/theme/pinkka', pathMatch: 'full'},
-    {path: 'pinkka', redirectTo: '/en/theme/pinkka', pathMatch: 'full'},
-    {path: 'lahdeluettelo', redirectTo: '/theme/lahdeluettelo', pathMatch: 'full'},
-    {path: 'lahdeluettelo', redirectTo: '/sv/theme/lahdeluettelo', pathMatch: 'full'},
-    {path: 'lahdeluettelo', redirectTo: '/en/theme/lahdeluettelo', pathMatch: 'full'},
+    {path: 'julkaisut', redirectTo: '/theme/publications', pathMatch: 'full'},
+    {path: 'bibliografi', redirectTo: '/sv/theme/publications', pathMatch: 'full'},
+    {path: 'publications', redirectTo: '/en/theme/publications', pathMatch: 'full'},
     {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
-    {path: 'hyonteisopas', redirectTo: '/sv/theme/hyonteisopas', pathMatch: 'full'},
-    {path: 'hyonteisopas', redirectTo: '/en/theme/hyonteisopas', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
