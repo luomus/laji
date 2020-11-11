@@ -30,7 +30,7 @@ describe('Trip form page', () => {
   it('should be able to save form with simple data', async (done) => {
     await page.clickSavePrivate();
     expect(await page.getToasterText()).toContain('Havainnot tallennettu!', 'Success toast should show success message');
-    expect(await page.overlayElem.isPresent()).toBe(false, 'Overlay was still present after successful save');
+    expect(await page.hasOverlayPresent()).toBe(false, 'Overlay was still present after successful save');
     done();
   });
 

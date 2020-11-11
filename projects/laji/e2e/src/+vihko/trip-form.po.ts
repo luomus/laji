@@ -10,7 +10,7 @@ export class TripFormPage {
   private readonly countryElem = element(by.id('root_gatherings_0_country'));
   private readonly toastElement = element(by.id('toast-container'));
   private readonly pageTitleElem = element(by.css('.form-header h3'));
-  public readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
+  private readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
 
   async navigateTo() {
     await browser.waitForAngularEnabled(false);
@@ -51,5 +51,9 @@ export class TripFormPage {
 
   getPageTitle() {
     return this.pageTitleElem.getText();
+  }
+
+  async hasOverlayPresent() {
+    return this.overlayElem.isPresent();
   }
 }
