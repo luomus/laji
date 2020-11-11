@@ -304,6 +304,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   }
 }
 
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
 .small-flag {
   height: 11px;
   width: auto;
@@ -931,11 +935,7 @@ body > .ui-select-bootstrap.open {
 
 .margin-top-25 {
   margin-top:25px;
-}
-
-.margin-bottom-20 {
-  margin-bottom: 20px;
-}
+}¨
 
 .block {
   display: block;
@@ -1480,14 +1480,11 @@ span.simple-option {
     font-size: 12px !important;
   }
 
-  laji-info-page h4:first-child {
-   margin-top: 10px!important;
-  }
-  
   h4.publication-title {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
     font-size: 16px !important;
+    display: inline;
   }
 
   .finBif-publications h2 {
