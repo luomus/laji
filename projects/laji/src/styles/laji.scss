@@ -304,6 +304,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   }
 }
 
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
 .small-flag {
   height: 11px;
   width: auto;
@@ -931,7 +935,7 @@ body > .ui-select-bootstrap.open {
 
 .margin-top-25 {
   margin-top:25px;
-}
+}¨
 
 .block {
   display: block;
@@ -1441,16 +1445,35 @@ span.simple-option {
 
   /*custom style FinBif publications */
 
-  p.author-name, p.publication-journal, p.publication-doi {
-    margin-bottom: 5px!important;
+  ul.authors, p.publication-journal, p.publication-doi {
+    margin-bottom: 0px!important;
+  }
+
+  ul.authors {
+    line-height: 16px;
+    font-size: 14px;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  ul.authors li {
+    display: inline;
+  }
+
+  ul.authors li:last-child {
+    &::before {
+        content: " & ";
+    }
+  }
+ 
+  ul.authors li:nth-of-type(n + 2):not(:last-child) {
+    &::before {
+      content: ", ";
+    }
   }
 
   p.publication-doi {
     margin-bottom:20px !important;
-  }
-
-  p.publication-doi:last-child {
-    margin-bottom: 0px !important;
   }
 
   p.publication-doi, p.publication-journal {
@@ -1461,6 +1484,27 @@ span.simple-option {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
     font-size: 16px !important;
+    display: inline;
+  }
+
+  .finBif-publications h2 {
+    display: inline;
+  }
+
+  .finBif-info {
+    position: relative;
+    top: -3px;
+  }
+
+  .finBif-publications {
+    max-width: 600px;
+    @include media-query-laptop {
+      max-width: 500px;
+    }
+    @include media-query-tablet {
+      max-width: 1200px;
+      margin-top: 30px;
+    }
   }
 
 
