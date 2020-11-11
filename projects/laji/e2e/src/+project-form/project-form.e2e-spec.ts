@@ -23,12 +23,7 @@ describe('Project form', () => {
 
     beforeAll(async (done) => {
       await projectFormPage.navigateTo(FORM_WITH_SIMPLE);
-      await userPage.ensureIsLoggedIn();
-      done();
-    });
-
-    afterAll(async (done) => {
-      await userPage.logout();
+      await userPage.login();
       done();
     });
 
