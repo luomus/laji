@@ -1,11 +1,11 @@
 <laji-datatable
-  [selectionType]="'checkbox'"
+  [selectionType]="selectionType.checkbox"
   (select)='onSelect($event.selected)'
   [selected]="selected"
   [columns]="columns"
   [rows]="taxonList"
   [height]="'calc(70vh - 30px)'"
-  [loading]="!_seletedTaxonIds || !taxonList"
+  [loading]="!selectedTaxonIds || !taxonList"
   [clientSideSorting]="true"
   (rowSelect)="onRowSelect($event)"
 ></laji-datatable>

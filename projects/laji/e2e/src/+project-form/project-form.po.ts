@@ -3,6 +3,7 @@ import { browser, $, $$ } from 'protractor';
 export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
+  public readonly $sidebar = $('.sidebar');
   private aboutElem = $('laji-about');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
@@ -52,5 +53,6 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
 
 export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $form = $('laji-form .laji-form');
+  public readonly $cancel = $('laji-document-form-footer .btn-danger');
   $findLajiFormNode = (locator: string) => this.$form.$(`#_laji-form_0_root_${locator.replace(/\./g, '_')}`);
 }

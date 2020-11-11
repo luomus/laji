@@ -6,23 +6,30 @@
       [sampleRate]="sampleRate"
       [nperseg]="nperseg"
       [noverlap]="noverlap"
-      [currentTime]="currentTime"
-      [xRange]="xRange && xRange.length > 0 && xRangePadding !== 0 ? [xRange[0] - start, xRange[1] - start] : undefined"
-      [yRange]="yRange"
-      [zoomed]="zoomed"
+      [currentTime]="audioPlayer.currentTime"
+      [focusArea]="localFocusArea"
+      [highlightFocusArea]="highlightFocusArea"
+      [brushArea]="brushArea"
+      [zoomFrequency]="zoomFrequency"
+      [mode]="mode"
       (spectrogramReady)="setAudioLoading(false)"
-      (startDrag)="onSpectrogramDragStart()"
-      (endDrag)="onSpectrogramDragEnd($event)"
+      (dragStart)="onSpectrogramDragStart()"
+      (dragEnd)="onSpectrogramDragEnd($event)"
+      (brushEnd)="onSpectrogramBrushEnd($event)"
     ></laji-audio-spectrogram>
   </div>
 
   <div id="audioControls" [ngClass]="{'visibility-hidden': loading}">
-    <button class="btn btn-default" (click)="toggleAudio()" [disabled]="loading">
+    <button class="btn btn-default" (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"
-        [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}"
+        [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
       >
       </span>
     </button>
+    <ng-container *ngIf="showBrushControl">
+      <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">Rajaa alue</lu-button>
+      <lu-button [role]="'primary'" (click)="clearBrushArea()" *ngIf="brushArea">Palauta oletusrajaus</lu-button>
+    </ng-container>
   </div>
 </laji-spinner>
