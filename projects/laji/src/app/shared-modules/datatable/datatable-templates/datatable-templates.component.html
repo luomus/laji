@@ -207,9 +207,7 @@
 </span>
 </ng-template>
 <ng-template let-value="value" #user>
-    <span *ngIf="value" title="{{value | users}}">
-    {{ value | users }}
-  </span>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | users}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #publication>
   <span *ngIf="value" title="{{value | publication}}">

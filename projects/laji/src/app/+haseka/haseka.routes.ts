@@ -61,22 +61,12 @@ export const hasekaRoutes: Routes = [
       {
         path: ':formId',
         pathMatch: 'full',
-        canActivate: [OnlyLoggedIn],
-        component: HaSeKaFormComponent,
-        canDeactivate: [DocumentDeActivateGuard],
-        data: {
-          displayFeedback: false
-        }
+        redirectTo: '/project/:formId'
       },
       {
         path: ':formId/:documentId',
         pathMatch: 'full',
-        canActivate: [OnlyLoggedIn],
-        component: HaSeKaFormComponent,
-        canDeactivate: [DocumentDeActivateGuard],
-        data: {
-          displayFeedback: false
-        }
+        redirectTo: '/project/:formId/form/:documentId'
       }
     ]
   }

@@ -109,6 +109,7 @@ export namespace Form {
     ownSubmissionsAdminTitle?: string;
     shortTitleFromCollectionName?: boolean;
     displayOwnSubmissions?: boolean;
+    simple?: boolean;
     namedPlaceOptions?: {
       copyLatestDocumentToNamedPlace?: boolean;
       filterByMunicipality?: boolean;

@@ -99,12 +99,23 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit(): void {
     const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
 
+    if (!this.route.children.length) {
+      projectForm$.pipe(take(1)).subscribe(projectForm => {
+        const mainPage = projectForm.form.options?.simple
+          ? 'form'
+          : 'about';
+        this.router.navigate([`./${mainPage}`], {relativeTo: this.route});
+      });
+    }
+
     const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
     this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
       map(([projectForm, rights, queryParams]) => ({
           form: projectForm.form,
-          navLinks: this.getNavLinks(projectForm, rights, queryParams),
+          navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
+            ? this.getNavLinks(projectForm, rights, queryParams)
+            : undefined
         })
       )
     );

@@ -1,5 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <lu-sidebar *ngIf="!vm.form.options?.mobile; else mobileContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
+  <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
     <nav>
       <h5>
         <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
@@ -18,7 +18,7 @@
 </lu-sidebar>
 </ng-container>
 
-<ng-template #mobileContent>
+<ng-template #simpleContent>
   <div class="container-fluid">
   <ng-container [ngTemplateOutlet]="content"></ng-container>
   </div>

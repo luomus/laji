@@ -22,6 +22,7 @@ exports.config = {
     home: './src/+home/**/*.e2e-spec.ts',
     user: './src/+user/**/*.e2e-spec.ts',
     map: './src/+map/**/*.e2e-spec.ts',
+    vihko: './src/+vihko/**/*.e2e-spec.ts',
     projectForm: './src/+project-form/**/*.e2e-spec.ts',
   },
   baseUrl: 'http://localhost:3000/',
@@ -41,7 +42,7 @@ exports.config = {
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
-    browser.driver.manage().window().setSize(1200, 800);
+    browser.driver.manage().window().setSize(1200, 1000);
   },
   onComplete() {
     browser.driver.close().then(function(){
