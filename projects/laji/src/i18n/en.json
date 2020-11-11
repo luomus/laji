@@ -1524,10 +1524,7 @@
   "theme.protax.sequenceDescription": "Enter the DNA sequence (FASTA formatted) in the text field below or select the file using the selector.",
   "theme.protax.textArea": "Text field",
   "theme.protax.tooLargeSequence": "Tiedosto on liian suuri.",
-<<<<<<< HEAD
   "theme.finBif.seeAll": "More publications",
-=======
->>>>>>> 5dc5a7c1e37a1d0647f318b28d294be0f27f8c10
   "theme.quality.intro": "Browse comments regarding observations.",
   "theme.research.intro": "Tools and examples of FinBIF data research use.",
   "theme.research.main": "Research",
