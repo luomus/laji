@@ -933,10 +933,6 @@ body > .ui-select-bootstrap.open {
   margin-top:25px;
 }
 
-.margin-bottom-20 {
-  margin-bottom: 20px;
-}
-
 .block {
   display: block;
 }
@@ -1446,72 +1442,30 @@ span.simple-option {
   /*custom style FinBif publications */
 
   p.author-name, p.publication-journal, p.publication-doi {
-<<<<<<< HEAD
-<<<<<<< HEAD
     margin-bottom: 5px!important;
-=======
-    margin-bottom: 0px!important;
-  }
-
-  p.author-name {
-    line-height: 16px;
-    font-size: 14px;
->>>>>>> 6d6c71872... style and content fixes - [#175552782]
-=======
-    margin-bottom: 0px!important;
->>>>>>> 0adf9d5a94ff0f50f34fdcd67b37fb8b248e67e2
-  }
-
-  p.author-name {
-    line-height: 18px;
-    font-size: 16px;
   }
 
   p.publication-doi {
     margin-bottom:20px !important;
   }
 
+  p.publication-doi:last-child {
+    margin-bottom: 0px !important;
+  }
+
   p.publication-doi, p.publication-journal {
     font-size: 12px !important;
   }
 
-  laji-info-page h4:first-child {
-   margin-top: 10px!important;
-  }
-  
   h4.publication-title {
     margin-top: 20px !important;
 <<<<<<< HEAD
-<<<<<<< HEAD
     margin-bottom: 10px !important;
-=======
-    margin-bottom: 5px !important;
->>>>>>> 0adf9d5a94ff0f50f34fdcd67b37fb8b248e67e2
     font-size: 22px !important;
 =======
     margin-bottom: 5px !important;
     font-size: 16px !important;
 >>>>>>> 6d6c71872... style and content fixes - [#175552782]
-  }
-
-  .finBif-publications h2 {
-    display: inline;
-  }
-
-  .finBif-info {
-    position: relative;
-    top: -3px;
-  }
-
-  .finBif-publications {
-    max-width: 600px;
-    @include media-query-laptop {
-      max-width: 500px;
-    }
-    @include media-query-tablet {
-      max-width: 1200px;
-      margin-top: 30px;
-    }
   }
 
 
