@@ -28,12 +28,12 @@ import { ProjectFormService } from '../../project-form.service';
   selector: 'laji-project-form-document-form',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent implements OnDestroy {
+export class DocumentFormComponent {
   @Input() form: Form.SchemaForm;
   @Input() documentID: string;
 
   npLoaded$ = new BehaviorSubject<boolean>(false);
-  npSubscription: Subscription;
+  np: NamedPlace;
 
   @ViewChild(_DocumentFormComponent) documentComponent: _DocumentFormComponent;
 
@@ -42,6 +42,7 @@ export class DocumentFormComponent implements OnDestroy {
       this.lajiFormDocumentFacade.useNamedPlace(namedPlace, this.form.id);
     }
     this.npLoaded$.next(true);
+    this.np = namedPlace;
   }
 
   constructor(
@@ -54,25 +55,19 @@ export class DocumentFormComponent implements OnDestroy {
     private projectFormService: ProjectFormService,
   ) {}
 
-  ngOnDestroy(): void {
-    this.npSubscription?.unsubscribe();
-  }
-
   goBack() {
     if (this.form.options?.simple && !this.form.category) {
       this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
       return;
     }
 
-    let levels = 1;
-    if (this.documentID) {
-      levels++;
-    }
+    const levels = [!!this.documentID, !!this.np].reduce((count, check) => count + (check ? 1 : 0), 1);
+
     this.browserService.goBack(() => {
-      this.router.navigate(
-        [new Array(levels).fill('..').join('/')],
-        {relativeTo: this.route.parent, replaceUrl: true}
-      );
+      const urlRelativeFromFull = Array(levels)
+        .fill(undefined)
+        .reduce(_urlRelativeFromFull => _urlRelativeFromFull.replace(/\/[^/]+$/, '') , this.router.url);
+      this.router.navigateByUrl(urlRelativeFromFull, {replaceUrl: true});
     });
   }
 
