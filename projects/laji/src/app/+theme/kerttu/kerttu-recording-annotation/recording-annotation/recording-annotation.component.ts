@@ -48,6 +48,9 @@ export class RecordingAnnotationComponent implements OnChanges {
   }
 
   addTaxonToSelected(taxon: Autocomplete, type: 'main'|'other') {
+    if (!this.taxonList || !this.taxonExpertise || this.loadingTaxons) {
+      return;
+    }
     if (this.selectedTaxons[type].filter(t => t.annotation.taxonId === taxon.key).length > 0) {
       return;
     }

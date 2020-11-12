@@ -7,8 +7,12 @@
         (click)="nextRecordingClick.emit()">
         {{ 'theme.kerttu.nextRecording' | translate }}
       </lu-button>
+      <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
     </div>
-    <h2 style="display: inline-block">{{ 'theme.kerttu.recordingAnnotation.title' | translate }}</h2>
+    <h2 style="display: inline-block">
+      {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+    </h2>
   </div>
   <div class="col-md-12">
     <laji-audio-viewer
@@ -28,7 +32,7 @@
           <label>
             <input type="checkbox" [(ngModel)]="generalAnnotation.isLowQuality"/>Äänite on huonolaatuinen (kohinaa, sadetta tmv.)
           </label>
-          <laji-info></laji-info>
+          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
         </div>
       </div>
       <div class="col-sm-4">
@@ -36,13 +40,13 @@
           <label>
             <input type="checkbox" [(ngModel)]="generalAnnotation.containsNoiseCausedByHumanActivity">Ääniteellä kuuluu ihmistoiminnan ääniä (liikenne tmv.)
           </label>
-          <laji-info></laji-info>
+          <laji-info [html]="'theme.kerttu.info.containsNoiseCausedByHumanActivity' | translate"></laji-info>
         </div>
         <div class="checkbox">
           <label>
             <input type="checkbox" [(ngModel)]="generalAnnotation.containsHumanSpeech">Ääniteellä kuuluu ihmisten puhetta
           </label>
-          <laji-info></laji-info>
+          <laji-info [html]="'theme.kerttu.info.containsHumanSpeech' | translate"></laji-info>
         </div>
       </div>
       <div class="col-sm-4">
@@ -50,20 +54,23 @@
           <label>
             <input type="checkbox" [(ngModel)]="generalAnnotation.containsUnknownBirds">Ääniteellä kuuluu linnun ääniä, joita en tunnista
           </label>
-          <laji-info></laji-info>
+          <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate"></laji-info>
         </div>
         <div class="checkbox">
           <label>
             <input type="checkbox" [(ngModel)]="generalAnnotation.doesNotContainBirds">Ääniteellä ei kuulu linnun ääniä
           </label>
-          <laji-info></laji-info>
+          <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-12">
     <div class="form-group">
-      <label for="species-select">{{ 'theme.kerttu.listSpecies' | translate }}</label>
+      <label for="species-select">
+        {{ 'theme.kerttu.listSpecies' | translate }}
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+      </label>
       <laji-taxon-autocomplete
         id="species-select"
         [informalTaxonGroup]="'MVL.1'"
@@ -85,7 +92,10 @@
   </div>
   <div class="col-md-12">
     <div class="form-group">
-      <label for="other-animal-species-select">{{ 'theme.kerttu.listOtherSpecies' | translate }}</label>
+      <label for="other-animal-species-select">
+        {{ 'theme.kerttu.listOtherSpecies' | translate }}
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listOtherSpecies' | translate"></laji-info>
+      </label>
       <laji-taxon-autocomplete
         id="other-animal-species-select"
         [showResult]="false"
