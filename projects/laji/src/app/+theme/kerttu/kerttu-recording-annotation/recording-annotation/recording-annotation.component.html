@@ -79,7 +79,7 @@
       [loading]="!taxonList || loadingTaxons || !taxonExpertise"
       [componentId]="0"
       [taxonExpertise]="taxonExpertise"
-      (addToTaxonExpertise)="addToTaxonExpertise.emit($event)"
+      (missingTaxonClick)="showModal($event)"
     >
     </laji-kerttu-occurrence-table>
   </div>
@@ -101,3 +101,22 @@
     </laji-kerttu-occurrence-table>
   </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Puuttuva laji</h3>
+      </div>
+      <div class="modal-body">
+        <div>
+          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
+        </div>
+      </div>
+      <div class="modal-footer">
+        <lu-button (click)="closeModal(true)" [role]="'success'">{{ 'yes' | translate }}</lu-button>
+        <lu-button (click)="closeModal()">{{ 'haseka.delete.cancel' | translate }}</lu-button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

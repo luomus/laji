@@ -1,8 +1,10 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {ModalDirective} from 'ngx-bootstrap/modal';
+import {Autocomplete} from '../../../../shared/model/Autocomplete';
 
 @Component({
   selector: 'laji-recording-annotation',
@@ -16,6 +18,8 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() taxonList: string[];
   @Input() taxonExpertise: string[];
 
+  @ViewChild('modal') public modalComponent: ModalDirective;
+
   generalAnnotation: IRecordingAnnotation = {};
   selectedTaxons: {
     main: ITaxonWithAnnotation[];
@@ -23,6 +27,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   };
 
   loadingTaxons = false;
+  modalTaxon: ITaxonWithAnnotation;
 
   @Output() nextRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
@@ -42,17 +47,21 @@ export class RecordingAnnotationComponent implements OnChanges {
     }
   }
 
-  addTaxonToSelected(taxon: any, type: 'main'|'other') {
+  addTaxonToSelected(taxon: Autocomplete, type: 'main'|'other') {
     if (this.selectedTaxons[type].filter(t => t.annotation.taxonId === taxon.key).length > 0) {
       return;
     }
-    this.selectedTaxons[type] = [...this.selectedTaxons[type], {
+    const newTaxon = {
       ...taxon.payload,
       annotation: {
         taxonId: taxon.key,
         annotation: TaxonAnnotationEnum.occurs
       }
-    }];
+    };
+    if (this.taxonList.includes(taxon.key) && !this.taxonExpertise.includes(taxon.key)) {
+      this.showModal(newTaxon);
+    }
+    this.selectedTaxons[type] = [...this.selectedTaxons[type], newTaxon];
   }
 
   save() {
@@ -68,6 +77,18 @@ export class RecordingAnnotationComponent implements OnChanges {
         taxonAnnotations: taxonAnnotations
       }
     });
+  }
+
+  showModal(taxon: ITaxonWithAnnotation) {
+    this.modalTaxon = taxon;
+    this.modalComponent.show();
+  }
+
+  closeModal(addTaxonToExpertise = false) {
+    if (addTaxonToExpertise) {
+      this.addToTaxonExpertise.emit(this.modalTaxon.annotation.taxonId);
+    }
+    this.modalComponent.hide();
   }
 
   private updateSelectedTaxons() {
