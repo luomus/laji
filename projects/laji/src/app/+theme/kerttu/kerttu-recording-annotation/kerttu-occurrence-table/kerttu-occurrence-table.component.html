@@ -1,0 +1,50 @@
+<laji-datatable
+  [columns]="columns"
+  [rows]="selectedTaxons"
+  [clientSideSorting]="true"
+  [virtualScrolling]="false"
+  [loading]="loading"
+></laji-datatable>
+
+<ng-template let-row="row" let-rowIndex="rowIndex" #occurs>
+  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationEnum.occurs}"></ng-container>
+</ng-template>
+<ng-template let-row="row" let-rowIndex="rowIndex" #possiblyOccurs>
+  <ng-container *ngTemplateOutlet="radioButton; context: {row: row, rowIndex: rowIndex, value: taxonAnnotationEnum.possible_occurs}"></ng-container>
+</ng-template>
+
+<ng-template let-row="row" let-rowIndex="rowIndex" let-value="value" #radioButton>
+  <label class="datatable-checkbox">
+    <input type="radio" name="{{ componentId }}_occurrence_{{ rowIndex }}" [checked]="row.annotation.annotation === value" (change)="annotationTypeChange(row.preSortIndex, value)"/>
+  </label>
+</ng-template>
+
+<ng-template let-row="row" #buttons>
+  <lu-button [role]="'danger'" (click)="deleteRow(row.preSortIndex)">x</lu-button>
+  <lu-button
+    *ngIf="taxonExpertise && taxonExpertise.indexOf(row.annotation.taxonId) === -1"
+    (click)="showModal(row)"
+    [role]="'warning'"
+    style="float: right">
+    <i class="fa fa-exclamation-triangle"></i> Puuttuva laji
+  </lu-button>
+</ng-template>
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Puuttuva laji</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
+        </p>
+        <div>
+          <lu-button (click)="closeModal(true)" [role]="'success'">{{ 'yes' | translate }}</lu-button>
+          <lu-button (click)="closeModal()" style="float: right">{{ 'cancel' | translate }}</lu-button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

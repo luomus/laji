@@ -12,13 +12,15 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select, event, clientPoint} from 'd3-selection';
+import {Selection, select, event, clientPoint, ContainerElement} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
-import * as d3Drag from 'd3-drag';
+import { drag } from 'd3-drag';
+import { brush } from 'd3-brush';
 import {Subscription} from 'rxjs';
 import {delay} from 'rxjs/operators';
-import {SpectrogramService} from '../../service/spectrogram.service';
-import { KerttuUtils } from '../../service/kerttu-utils';
+import {SpectrogramService} from '../service/spectrogram.service';
+import { AudioViewerUtils } from '../service/audio-viewer-utils';
+import {AudioViewerMode, IAudioViewerArea} from '../models';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -37,15 +39,17 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() noverlap: number;
   @Input() currentTime: number;
 
-  @Input() xRange: number[];
-  @Input() yRange: number[];
-
-  @Input() zoomed = false;
-  @Input() frequencyPadding = 500;
+  @Input() focusArea: IAudioViewerArea;
+  @Input() highlightFocusArea = false;
+  @Input() brushArea: IAudioViewerArea;
+  @Input() zoomFrequency = false;
+  @Input() frequencyPaddingOnZoom = 500;
+  @Input() mode: AudioViewerMode;
 
   @Output() spectrogramReady = new EventEmitter();
-  @Output() startDrag = new EventEmitter();
-  @Output() endDrag = new EventEmitter<number>();
+  @Output() dragStart = new EventEmitter();
+  @Output() dragEnd = new EventEmitter<number>();
+  @Output() brushEnd = new EventEmitter<IAudioViewerArea>();
 
   margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
 
@@ -58,6 +62,8 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   private startFreq: number;
   private endFreq: number;
+  private startTime: number;
+  private endTime: number;
 
   constructor(
     private spectrogramService: SpectrogramService,
@@ -103,35 +109,28 @@ export class AudioSpectrogramComponent implements OnChanges {
           });
       }
     } else {
-      if (changes.currentTime && this.scrollLine) {
-        this.updateScrollLinePosition();
-      }
-      if (changes.zoomed && this.imageData) {
+      if ((changes.zoomFrequency || changes.brushArea) && this.imageData) {
         this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
+      } else if (changes.mode) {
+        this.onResize();
+      } else if (changes.currentTime && this.scrollLine) {
+        this.updateScrollLinePosition();
       }
     }
   }
 
-  private updateChart(width, height) {
+  private updateChart(width: number, height: number) {
     const svg = select(this.chartRef.nativeElement)
       .attr('width', width + (this.margin.left + this.margin.right))
       .attr('height', height + (this.margin.top + this.margin.bottom));
 
     svg.selectAll('*').remove();
 
-    this.xScale = scaleLinear().domain([0, this.buffer.duration]).range([0, width]);
+    this.xScale = scaleLinear().domain([this.startTime, this.endTime]).range([0, width]);
     this.yScale = scaleLinear().domain([this.endFreq / 1000, this.startFreq / 1000]).range([0, height]);
 
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
-
-    // make spectrogram clickable
-    svg.on('click', () => {
-      const x = clientPoint(event.target, event)[0];
-      this.setTimeToPosition(x);
-      this.endDrag.emit(this.currentTime);
-    });
-    svg.style('cursor', 'pointer');
 
     // draw axes
     svg.append('g')
@@ -156,13 +155,57 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('x', -this.margin.top - height / 2)
       .text('Taajuus (kHz)');
 
-    // draw white rectangle
-    if (this.xRange || this.yRange) {
-      const rectX = this.xRange ? this.margin.left + this.xScale(this.xRange[0]) : this.margin.left;
-      const rectWidth = this.xRange ? this.xScale(this.xRange[1] - this.xRange[0]) : width;
-      const rectY = this.yRange ? this.margin.top + this.yScale(this.yRange[1] / 1000) : this.margin.top;
-      const rectHeight = this.yRange ? this.yScale((this.endFreq - (this.yRange[1] - this.yRange[0])) / 1000) : height;
+    const innerSvg = svg.append('svg')
+      .attr('x', this.margin.left)
+      .attr('y', this.margin.top)
+      .attr('width', width)
+      .attr('height', height);
 
+    this.drawInnerChart(innerSvg, width, height);
+  }
+
+  private drawInnerChart(svg: Selection<SVGSVGElement, any, any, any>, width: number, height: number) {
+    const maxFreq = Math.floor(this.sampleRate / 2);
+    const xRange = this.focusArea?.xRange ? this.focusArea.xRange : [0, this.buffer.duration];
+    const yRange = this.focusArea?.yRange ? this.focusArea.yRange : [0, maxFreq];
+
+    const rectX = this.xScale(xRange[0]);
+    const rectWidth = this.xScale(xRange[1] - xRange[0] + this.startTime);
+    const rectY = this.yScale(yRange[1] / 1000);
+    const rectHeight = this.yScale((this.endFreq - (yRange[1] - yRange[0])) / 1000);
+
+    if (this.highlightFocusArea) {
+      const group = svg.append('g')
+        .attr('fill', 'black')
+        .attr('opacity', 0.4);
+
+      group.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', rectX)
+        .attr('height', height);
+
+      group.append('rect')
+        .attr('x', rectX + rectWidth)
+        .attr('y', 0)
+        .attr('width', width - (rectX + rectWidth))
+        .attr('height', height);
+
+      group.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', rectY);
+
+      group.append('rect')
+        .attr('x', 0)
+        .attr('y', rectY + rectHeight)
+        .attr('width', width)
+        .attr('height', height - (rectY + rectHeight));
+    }
+
+    // draw focus area with white rectangle
+    if (this.focusArea) {
       svg.append('rect')
         .attr('x', rectX)
         .attr('y', rectY)
@@ -174,49 +217,106 @@ export class AudioSpectrogramComponent implements OnChanges {
     }
 
     // draw scroll line
-    const drag = d3Drag.drag()
-      .on('start', () => { this.startDrag.emit(); })
-      .on('drag', () => {
-        this.setTimeToPosition(event.x);
-      })
-      .on('end', () => { this.endDrag.emit(this.currentTime); });
-
     this.scrollLine = svg.append('line')
-      .attr('y1', this.margin.top)
-      .attr('y2', this.margin.top + height)
+      .attr('id', 'scrollLine')
+      .attr('y1', 0)
+      .attr('y2', height)
       .attr('stroke-width', 2)
-      .attr('stroke', 'black')
-      .call(drag)
-      .style('cursor', 'pointer');
-
+      .attr('stroke', 'red');
     this.updateScrollLinePosition();
+
+    // add functions
+    if (this.mode === 'default') {
+      // make spectrogram clickable by adding a transparent rectangle that catches click events
+      const onlyFocusAreaClickable = this.highlightFocusArea && !this.brushArea;
+
+      svg.attr('pointer-events', 'all');
+      svg.insert('rect', '#scrollLine')
+        .attr('x', onlyFocusAreaClickable ? rectX : 0)
+        .attr('y', onlyFocusAreaClickable ? rectY : 0)
+        .attr('width', onlyFocusAreaClickable ? rectWidth : width)
+        .attr('height', onlyFocusAreaClickable ? rectHeight : height)
+        .attr('fill', 'none')
+        .on('click', () => {
+          const x = clientPoint(event.target, event)[0];
+          this.dragEnd.emit(this.getTimeFromPosition(x, onlyFocusAreaClickable));
+        }).style('cursor', 'pointer');
+
+      // make scroll line draggable
+      const scrollLineDrag = drag()
+        .on('start', () => { this.dragStart.emit(); })
+        .on('drag', () => {
+          this.currentTime = this.getTimeFromPosition(event.x - this.margin.left, onlyFocusAreaClickable);
+          this.updateScrollLinePosition();
+        })
+        .on('end', () => { this.dragEnd.emit(this.currentTime); });
+      this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
+    } else if (this.mode === 'brush') {
+      // add brush functionality
+      const brushFunc = brush()
+        .on('end', () => {
+          if (!event.selection) {
+            return;
+          }
+          const [[x0, y0], [x1, y1]] = event.selection;
+
+          const xMin = Math.min(x0, x1);
+          const xMax = Math.max(x0, x1);
+          const yMin = Math.min(y0, y1);
+          const yMax = Math.max(y0, y1);
+
+          this.brushEnd.emit({
+            xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
+            yRange: [this.yScale.invert(yMax) * 1000, this.yScale.invert(yMin) * 1000]
+          });
+        });
+
+      svg.append('g')
+        .attr('class', 'brush')
+        .call(brushFunc);
+    }
   }
 
-  private setTimeToPosition(x: number) {
-    const time = this.xScale.invert(x - this.margin.left);
-    this.currentTime = Math.min(Math.max(time, 0), this.buffer.duration);
-    this.updateScrollLinePosition();
+  private getTimeFromPosition(x: number, onlyFocusAreaClickable: boolean) {
+    const time = this.xScale.invert(x);
+    const minTime = onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.startTime;
+    const maxTime = onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.endTime;
+    return Math.min(Math.max(time, minTime), maxTime);
   }
 
   private updateScrollLinePosition() {
-    const position = this.margin.left + this.xScale(this.currentTime);
+    const position = this.xScale(this.currentTime);
     this.scrollLine.attr('x1', position);
     this.scrollLine.attr('x2', position);
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
+    const maxTime = this.buffer.duration;
     const maxFreq = Math.floor(this.sampleRate / 2);
-    [this.startFreq, this.endFreq] = KerttuUtils.getPaddedRange(this.yRange, this.zoomed ? this.frequencyPadding : undefined, 0, maxFreq);
 
-    const ratio1 = this.startFreq / maxFreq;
-    const ratio2 = this.endFreq / maxFreq;
-    const startY = data.height - (data.height * ratio2);
+    if (this.brushArea) {
+      [this.startTime, this.endTime] = this.brushArea.xRange;
+      [this.startFreq, this.endFreq] = this.brushArea.yRange;
+    } else {
+      [this.startTime, this.endTime] = [0, maxTime];
+      [this.startFreq, this.endFreq] = AudioViewerUtils.getPaddedRange(
+        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, 0, maxFreq
+      );
+    }
 
-    canvas.width = data.width;
-    canvas.height = data.height * (ratio2 - ratio1);
+    const ratioX1 = this.startTime / maxTime;
+    const ratioX2 = this.endTime / maxTime;
+    const startX = data.width * ratioX1;
+
+    const ratioY1 = this.startFreq / maxFreq;
+    const ratioY2 = this.endFreq / maxFreq;
+    const startY = data.height - (data.height * ratioY2);
+
+    canvas.width = data.width * (ratioX2 - ratioX1);
+    canvas.height = data.height * (ratioY2 - ratioY1);
 
     const ctx = canvas.getContext('2d');
-    ctx.putImageData(data, 0, -startY, 0, startY, canvas.width, canvas.height);
+    ctx.putImageData(data, -startX, -startY, startX, startY, canvas.width, canvas.height);
 
     this.onResize();
   }

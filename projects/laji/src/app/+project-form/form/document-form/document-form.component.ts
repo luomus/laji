@@ -9,6 +9,7 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { LajiFormDocumentFacade } from '../../../shared-modules/laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { DocumentFormComponent as _DocumentFormComponent } from '../../../shared-modules/laji-form/document-form/document-form.component';
+import { ProjectFormService } from '../../project-form.service';
 
 @Component({
   template: `
@@ -27,12 +28,12 @@ import { DocumentFormComponent as _DocumentFormComponent } from '../../../shared
   selector: 'laji-project-form-document-form',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent implements OnDestroy {
+export class DocumentFormComponent {
   @Input() form: Form.SchemaForm;
   @Input() documentID: string;
 
   npLoaded$ = new BehaviorSubject<boolean>(false);
-  npSubscription: Subscription;
+  np: NamedPlace;
 
   @ViewChild(_DocumentFormComponent) documentComponent: _DocumentFormComponent;
 
@@ -41,6 +42,7 @@ export class DocumentFormComponent implements OnDestroy {
       this.lajiFormDocumentFacade.useNamedPlace(namedPlace, this.form.id);
     }
     this.npLoaded$.next(true);
+    this.np = namedPlace;
   }
 
   constructor(
@@ -49,37 +51,33 @@ export class DocumentFormComponent implements OnDestroy {
     private browserService: BrowserService,
     private route: ActivatedRoute,
     private namedPlacesService: NamedPlacesService,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade
+    private lajiFormDocumentFacade: LajiFormDocumentFacade,
+    private projectFormService: ProjectFormService,
   ) {}
 
-  ngOnDestroy(): void {
-    this.npSubscription?.unsubscribe();
-  }
-
   goBack() {
-    let levels = 1;
-    if (this.documentID) {
-      levels++;
+    if (this.form.options?.simple && !this.form.category) {
+      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      return;
     }
+
+    const levels = [!!this.documentID, !!this.np].reduce((count, check) => count + (check ? 1 : 0), 1);
+
     this.browserService.goBack(() => {
-      this.router.navigate(
-        [new Array(levels).fill('..').join('/')],
-        {relativeTo: this.route.parent, replaceUrl: true}
-      );
+      const urlRelativeFromFull = Array(levels)
+        .fill(undefined)
+        .reduce(_urlRelativeFromFull => _urlRelativeFromFull.replace(/\/[^/]+$/, '') , this.router.url);
+      this.router.navigateByUrl(urlRelativeFromFull, {replaceUrl: true});
     });
   }
 
   onSuccess() {
-    const findProjectRootRoute = (route) => route.params.pipe(switchMap(params => {
-      if (params['projectID']) {
-        return of(route);
-      } else {
-        return findProjectRootRoute(route.parent);
-      }
-    }));
-
+    if (this.form.options?.simple) {
+      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      return;
+    }
     this.browserService.goBack(() => {
-      findProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
+      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
         const page = this.form.options?.resultServiceType
           ? 'stats'
           : this.form.options?.mobile

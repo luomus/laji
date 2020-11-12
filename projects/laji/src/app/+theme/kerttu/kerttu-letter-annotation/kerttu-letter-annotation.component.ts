@@ -5,7 +5,7 @@ import {Observable, of, Subscription} from 'rxjs';
 import {WINDOW} from '@ng-toolkit/universal';
 import {KerttuApi} from '../service/kerttu-api';
 import {UserService} from '../../../shared/service/user.service';
-import {AudioService} from '../service/audio.service';
+import {AudioService} from '../audio-viewer/service/audio.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -197,6 +197,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     } else {
       this.hasError = true;
     }
+    this.cdr.markForCheck();
   }
 
   private getErrorMessage(error) {

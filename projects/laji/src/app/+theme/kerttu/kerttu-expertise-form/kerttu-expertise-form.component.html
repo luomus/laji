@@ -51,6 +51,7 @@
 
   <strong>Valitse taulukosta lajit, jotka osaat tunnistaa äänen perusteella</strong>
   <laji-expertise-form
+    [taxonList]="taxonList$ | async"
     [selectedTaxonIds]="selectedTaxonIds"
     (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
   ></laji-expertise-form>

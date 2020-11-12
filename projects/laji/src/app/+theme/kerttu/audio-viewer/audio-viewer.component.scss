@@ -1,4 +1,4 @@
-@import '../../../../../../laji-ui/src/lib/vars';
+@import 'projects/laji-ui/src/lib/vars';
 
 :host {
   display: inline-block;
@@ -23,12 +23,12 @@ alert {
   display: inline-block;
   width: 100%;
 
-  button {
-    display: inline-block;
-    margin: 0 2px;
+  * {
+    vertical-align: middle;
   }
 
-  #volumeSlider {
-    width: 50px;
+  button, lu-button {
+    display: inline-block;
+    margin: 0 2px;
   }
 }

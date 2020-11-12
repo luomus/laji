@@ -42,7 +42,7 @@ exports.config = {
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
-    browser.driver.manage().window().setSize(1200, 800);
+    browser.driver.manage().window().setSize(1200, 1000);
   },
   onComplete() {
     browser.driver.close().then(function(){

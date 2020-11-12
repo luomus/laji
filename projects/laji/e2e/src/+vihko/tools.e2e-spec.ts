@@ -25,7 +25,7 @@ describe('Tools page', () => {
     done();
   });
 
-  it('should links should be visible on tools page', async (done) => {
+  it('should show links on tools page', async (done) => {
     expect(await page.toolsLink.isDisplayed()).toBe(true, 'Tools link should be visible on tools page');
     expect(await page.importLink.isDisplayed()).toBe(true, 'Import link should be visible on tools page');
     done();

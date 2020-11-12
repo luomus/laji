@@ -36,7 +36,19 @@ export class UserPage {
   }
 
   async login(user = DEFAULT_TEST_USER): Promise<void> {
+    const currentUrl = await browser.getCurrentUrl();
+    if (!currentUrl) {
+      throw new Error('You must navigate to page before ensuring logged in!');
+    }
+
     await browser.waitForAngularEnabled(false);
+
+    try {
+      const userEC = protractor.ExpectedConditions;
+      const userNameExists = userEC.presenceOf(this.usernameElem);
+      await browser.wait(userNameExists, 500);
+    } catch (e) {}
+
     if (!await this.usernameElem.isPresent()) {
       if (!await this.authLocal.isPresent()) {
         await this.loginElem.click();

@@ -89,9 +89,7 @@ export class FormService {
   }
 
   getAddUrlPath(formId) {
-    return (formId === Global.forms.default || formId === Global.forms.privateCollection)
-      ? `/vihko/${formId}`
-      : `/project/${formId}/form`;
+    return `/project/${formId}/form`;
   }
 
   getEditUrlPath(formId, documentId) {

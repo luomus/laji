@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
+import { from } from 'rxjs';
+import { concatMap, toArray } from 'rxjs/operators';
 
 /**
  * Return users data from strings
@@ -15,8 +17,8 @@ import { Person } from '../model/Person';
   pure: false
 })
 export class UsersPipe implements PipeTransform {
-  value = '';
-  lastId: string;
+  value: string|string[] = '';
+  lastId: string|string[];
   lastFormat: string;
 
   constructor(private userService: UserService,
@@ -41,13 +43,17 @@ export class UsersPipe implements PipeTransform {
     return this.value;
   }
 
-  private updateValue(id: string, format: keyof Person | 'fullNameWithGroup'): void {
-    this.userService.getPersonInfo(id, format)
-      .subscribe(
-        (name: string) => {
-          this.value = name;
-          this._ref.markForCheck();
-        }
-      );
+  private updateValue(id: string|string[], format: keyof Person | 'fullNameWithGroup'): void {
+    const nameObs$ = Array.isArray(id) ?
+      from(id).pipe(
+        concatMap(userId => this.userService.getPersonInfo(userId, format)),
+        toArray<string>(),
+      ) :
+      this.userService.getPersonInfo(id, format);
+
+    nameObs$.subscribe(name => {
+      this.value = name;
+      this._ref.markForCheck();
+    });
   }
 }
