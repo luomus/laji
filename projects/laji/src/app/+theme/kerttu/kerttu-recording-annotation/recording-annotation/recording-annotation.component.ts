@@ -29,7 +29,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   loadingTaxons = false;
   modalTaxon: ITaxonWithAnnotation;
 
-  @Output() nextRecordingClick = new EventEmitter();
+  @Output() nextRecordingClick = new EventEmitter<number>();
   @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
   @Output() addToTaxonExpertise = new EventEmitter<string>();
 
@@ -54,13 +54,16 @@ export class RecordingAnnotationComponent implements OnChanges {
     if (this.selectedTaxons[type].filter(t => t.annotation.taxonId === taxon.key).length > 0) {
       return;
     }
+
     const newTaxon = {
       ...taxon.payload,
       annotation: {
         taxonId: taxon.key,
-        annotation: TaxonAnnotationEnum.occurs
+        annotation: TaxonAnnotationEnum.occurs,
+        bird: taxon.payload.informalTaxonGroups.filter(g => g.id === 'MVL.1').length > 0
       }
     };
+
     if (this.taxonList.includes(taxon.key) && !this.taxonExpertise.includes(taxon.key)) {
       this.showModal(newTaxon);
     }

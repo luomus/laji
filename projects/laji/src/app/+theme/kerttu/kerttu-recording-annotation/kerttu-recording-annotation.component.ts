@@ -1,8 +1,8 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
-import {IRecording, IRecordingAnnotation} from '../models';
+import {IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
 import {UserService} from '../../../shared/service/user.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -20,6 +20,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   taxonExpertise$: Observable<string[]>;
 
   saving = false;
+  loadingNextRecording = false;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -43,9 +44,21 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     }));
   }
 
-  getNextRecording() {
-    this.recordingAnnotation$ = undefined;
-    this.recording$ = this.kerttuApi.getNextRecording(this.userService.getToken());
+  getNextRecording(recordingId: number) {
+    this.loadingNextRecording = true;
+
+    this.kerttuApi.getNextRecording(this.userService.getToken(), recordingId).subscribe((recording: IRecording) => {
+      this.recordingAnnotation$ = undefined;
+      this.recording$ = of(recording);
+      this.loadingNextRecording = false;
+      this.cdr.markForCheck();
+    }, (error) => {
+      if (KerttuApi.getErrorMessage(error) === KerttuErrorEnum.invalidRecordingAnnotation)  {
+        alert('Kirjaa vähintään yksi lintu tai valitse ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.');
+        this.loadingNextRecording = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   save(data: {recordingId: number, annotation: IRecordingAnnotation}) {

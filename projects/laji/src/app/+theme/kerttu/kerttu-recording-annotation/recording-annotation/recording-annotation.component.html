@@ -4,7 +4,7 @@
       <lu-button [role]="'success'" (click)="save()">Tallenna</lu-button>
       <lu-button
         [disabled]="!recording"
-        (click)="nextRecordingClick.emit()">
+        (click)="nextRecordingClick.emit(recording.id)">
         {{ 'theme.kerttu.nextRecording' | translate }}
       </lu-button>
       <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
@@ -18,8 +18,8 @@
     <laji-audio-viewer
       [recording]="recording?.recording"
       [focusArea]="{
-          xRange: recording?.xRange
-        }"
+        xRange: recording?.xRange
+      }"
       [focusAreaTimePadding]="2"
       [highlightFocusArea]="true"
       [showBrushControl]="true"
@@ -111,22 +111,3 @@
     </laji-kerttu-occurrence-table>
   </div>
 </div>
-
-<div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Puuttuva laji</h3>
-      </div>
-      <div class="modal-body">
-        <div>
-          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
-        </div>
-      </div>
-      <div class="modal-footer">
-        <lu-button (click)="closeModal(true)" [role]="'success'">{{ 'yes' | translate }}</lu-button>
-        <lu-button (click)="closeModal()">{{ 'haseka.delete.cancel' | translate }}</lu-button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

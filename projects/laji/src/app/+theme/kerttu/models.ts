@@ -47,6 +47,7 @@ export interface IRecordingAnnotation {
 export interface ITaxonAnnotation {
   taxonId: string;
   annotation: TaxonAnnotationEnum;
+  bird: boolean;
 }
 
 export enum TaxonAnnotationEnum {
@@ -56,4 +57,12 @@ export enum TaxonAnnotationEnum {
 
 export interface ITaxonWithAnnotation extends Taxonomy {
   annotation: ITaxonAnnotation;
+}
+
+export enum KerttuErrorEnum {
+  taxonExpertiseMissing = 'TaxonExpertiseMissingError',
+  invalidTemplateId = 'InvalidTemplateIdError',
+  invalidCandidateId = 'InvalidCandidateIdError',
+  invalidRecordingId = 'InvalidRecordingIdError',
+  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
 }

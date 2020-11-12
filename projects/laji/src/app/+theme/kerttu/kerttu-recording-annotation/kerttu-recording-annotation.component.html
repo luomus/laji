@@ -1,10 +1,13 @@
-<laji-recording-annotation
-  [recording]="recording$ | async"
-  [annotation]="recordingAnnotation$ | async"
-  [taxonList]="taxonList$ | async"
-  [taxonExpertise]="taxonExpertise$ | async"
-  (nextRecordingClick)="getNextRecording()"
-  (saveClick)="save($event)"
-  (addToTaxonExpertise)="addToTaxonExpertise($event)"
-></laji-recording-annotation>
+<laji-spinner [spinning]="loadingNextRecording" [overlay]="true">
+  <laji-recording-annotation
+    [recording]="recording$ | async"
+    [annotation]="recordingAnnotation$ | async"
+    [taxonList]="taxonList$ | async"
+    [taxonExpertise]="taxonExpertise$ | async"
+    (nextRecordingClick)="getNextRecording($event)"
+    (saveClick)="save($event)"
+    (addToTaxonExpertise)="addToTaxonExpertise($event)"
+  ></laji-recording-annotation>
+</laji-spinner>
+
 <div *ngIf="saving" class="modal-backdrop fade in"></div>
