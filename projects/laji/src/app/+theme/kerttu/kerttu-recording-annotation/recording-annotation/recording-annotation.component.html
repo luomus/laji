@@ -1,5 +1,5 @@
 <div class="row lu-section">
-  <div class="col-md-12">
+  <div class="col-sm-12">
     <div class="button-container">
       <lu-button [role]="'success'" (click)="save()">Tallenna</lu-button>
       <lu-button
@@ -11,10 +11,10 @@
     </div>
     <h2 style="display: inline-block">
       {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
-      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+      <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
     </h2>
   </div>
-  <div class="col-md-12">
+  <div class="col-sm-12">
     <laji-audio-viewer
       [recording]="recording?.recording"
       [focusArea]="{
@@ -65,11 +65,11 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-sm-12">
     <div class="form-group">
       <label for="species-select">
         {{ 'theme.kerttu.listSpecies' | translate }}
-        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+        <laji-info [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
       </label>
       <laji-taxon-autocomplete
         id="species-select"
@@ -90,11 +90,11 @@
     >
     </laji-kerttu-occurrence-table>
   </div>
-  <div class="col-md-12">
+  <div class="col-sm-12">
     <div class="form-group">
       <label for="other-animal-species-select">
         {{ 'theme.kerttu.listOtherSpecies' | translate }}
-        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listOtherSpecies' | translate"></laji-info>
+        <laji-info [html]="'theme.kerttu.info.listOtherSpecies' | translate"></laji-info>
       </label>
       <laji-taxon-autocomplete
         id="other-animal-species-select"
