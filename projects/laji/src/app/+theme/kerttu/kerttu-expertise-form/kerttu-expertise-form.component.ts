@@ -10,6 +10,8 @@ import FinnishBirdSongRecognitionSkillLevelEnum = Profile.FinnishBirdSongRecogni
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
 import {Taxonomy} from '../../../shared/model/Taxonomy';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
+import { HeaderService } from '../../../shared/service/header.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'laji-kerttu-expertise-form',
@@ -42,7 +44,9 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private personService: PersonApi,
-    private taxonService: KerttuTaxonService
+    private taxonService: KerttuTaxonService,
+    private headerService: HeaderService,
+    private title: Title
   ) { }
 
   ngOnInit() {
@@ -67,6 +71,16 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
           this.cdr.markForCheck();
         }
       );
+
+      setTimeout(() => {
+        const paragraph = (document.getElementsByTagName("laji-kerttu-expertise-form")).item(0).getElementsByTagName("p").item(0).innerText;
+        const image = (document.getElementsByTagName("laji-kerttu-expertise-form")).item(0).getElementsByTagName("img")?.item(0)?.src;
+        this.headerService.createTwitterCard(this.title.getTitle());
+        this.headerService.updateMetaDescription(paragraph);
+        if (image) {
+          this.headerService.updateFeatureImage(image);
+        }
+      }, 0);
   }
 
   ngOnDestroy() {
