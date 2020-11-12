@@ -2,9 +2,9 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@an
 import {KerttuApi} from '../service/kerttu-api';
 import {IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
 import {UserService} from '../../../shared/service/user.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {PersonApi} from '../../../shared/api/PersonApi';
 
 @Component({
@@ -14,13 +14,13 @@ import {PersonApi} from '../../../shared/api/PersonApi';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuRecordingAnnotationComponent implements OnInit {
-  recording$: Observable<IRecording>;
-  recordingAnnotation$: Observable<IRecordingAnnotation>;
+  recording: IRecording;
+  annotation: IRecordingAnnotation;
+
   taxonList$: Observable<string[]>;
   taxonExpertise$: Observable<string[]>;
 
   saving = false;
-  loadingNextRecording = false;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -31,11 +31,20 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.recording$ = this.kerttuApi.getRecording(this.userService.getToken()).pipe(
-      tap(recording => {
-        this.recordingAnnotation$ = this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id);
+    this.kerttuApi.getRecording(this.userService.getToken()).pipe(
+      switchMap(recording => {
+        return this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id).pipe(map(annotation => {
+          return {
+            recording,
+            annotation
+          };
+        }));
       })
-    );
+    ).subscribe((result) => {
+      this.recording = result.recording;
+      this.annotation = result.annotation || {};
+      this.cdr.markForCheck();
+    });
     this.taxonList$ = this.taxonService.getTaxonList().pipe(
       map(taxons => taxons.map(taxon => taxon.id))
     );
@@ -44,26 +53,37 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     }));
   }
 
-  getNextRecording(recordingId: number) {
-    this.loadingNextRecording = true;
+  getNextRecording() {
+    if (!this.recording || !this.annotation) {
+      return;
+    }
 
-    this.kerttuApi.getNextRecording(this.userService.getToken(), recordingId).subscribe((recording: IRecording) => {
-      this.recordingAnnotation$ = undefined;
-      this.recording$ = of(recording);
-      this.loadingNextRecording = false;
+    this.saving = true;
+    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
+      switchMap(() => {
+        return this.kerttuApi.getNextRecording(this.userService.getToken(), this.recording.id);
+      })
+    ).subscribe(recording => {
+      this.recording = recording;
+      this.annotation = {};
+      this.saving = false;
       this.cdr.markForCheck();
     }, (error) => {
       if (KerttuApi.getErrorMessage(error) === KerttuErrorEnum.invalidRecordingAnnotation)  {
         alert('Kirjaa vähintään yksi lintu tai valitse ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.');
-        this.loadingNextRecording = false;
+        this.saving = false;
         this.cdr.markForCheck();
       }
     });
   }
 
-  save(data: {recordingId: number, annotation: IRecordingAnnotation}) {
+  save() {
+    if (!this.recording || !this.annotation) {
+      return;
+    }
+
     this.saving = true;
-    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), data.recordingId, data.annotation).subscribe(() => {
+    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
     });
@@ -82,5 +102,9 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
           map(() => (taxonExpertise))
         );
       }));
+  }
+
+  onAnnotationChange() {
+
   }
 }

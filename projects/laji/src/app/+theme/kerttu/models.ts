@@ -38,10 +38,12 @@ export interface IRecordingAnnotation {
   containsUnknownBirds?: boolean;
   doesNotContainBirds?: boolean;
 
-  taxonAnnotations?: {
-    main?: ITaxonAnnotation[];
-    other?: ITaxonAnnotation[];
-  };
+  taxonAnnotations?: ITaxonAnnotations;
+}
+
+export interface ITaxonAnnotations {
+  main?: ITaxonWithAnnotation[];
+  other?: ITaxonWithAnnotation[];
 }
 
 export interface ITaxonAnnotation {

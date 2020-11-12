@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
+import {IRecording, IRecordingAnnotation, ITaxonAnnotations, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -29,9 +29,10 @@ export class RecordingAnnotationComponent implements OnChanges {
   loadingTaxons = false;
   modalTaxon: ITaxonWithAnnotation;
 
-  @Output() nextRecordingClick = new EventEmitter<number>();
-  @Output() saveClick = new EventEmitter<{recordingId: number, annotation: IRecordingAnnotation}>();
+  @Output() nextRecordingClick = new EventEmitter();
+  @Output() saveClick = new EventEmitter();
   @Output() addToTaxonExpertise = new EventEmitter<string>();
+  @Output() annotationChange = new EventEmitter<IRecordingAnnotation>();
 
   private selectedTaxonsSub: Subscription;
 
@@ -41,7 +42,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording || changes.annotation) {
+    if (changes.recording) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
       this.updateSelectedTaxons();
     }
@@ -68,20 +69,19 @@ export class RecordingAnnotationComponent implements OnChanges {
       this.showModal(newTaxon);
     }
     this.selectedTaxons[type] = [...this.selectedTaxons[type], newTaxon];
+
+    this.updateAnnotation();
   }
 
-  save() {
+  updateAnnotation() {
     const taxonAnnotations = {};
     for (const key of Object.keys(this.selectedTaxons)) {
       taxonAnnotations[key] = this.selectedTaxons[key].map(taxon => taxon.annotation);
     }
 
-    this.saveClick.emit({
-      recordingId: this.recording.id,
-      annotation: {
-        ...this.generalAnnotation,
-        taxonAnnotations: taxonAnnotations
-      }
+    this.annotationChange.emit({
+      ...this.generalAnnotation,
+      taxonAnnotations: taxonAnnotations
     });
   }
 
