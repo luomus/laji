@@ -184,7 +184,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deleteClick() {
-    this.deleteButtonClick.emit();
+    this.deleteButtonClick.emit(this.namedPlace);
   }
 
   copyLink() {
