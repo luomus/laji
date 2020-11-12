@@ -32,7 +32,7 @@ export class SaveObservationsComponent implements OnInit {
     this.title.setTitle(this.translate.instant('saveObservations.h1') + ' | ' + this.title.getTitle());
     // Fixes https://www.pivotaltracker.com/story/show/174379048
     setTimeout(() => {
-      const paragraph = (document.getElementsByTagName("section")).item(0).getElementsByTagName("p").item(0).innerText;
+      const paragraph = (document.getElementsByTagName("section")).item(0).getElementsByTagName("p")?.item(0)?.innerText;
       this.headerService.updateMetaDescription(paragraph);
       this.cdr.markForCheck()
     });

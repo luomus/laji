@@ -41,7 +41,7 @@ export class IdentifyComponent implements OnInit {
 
     setTimeout(() => {
       this.headerService.createTwitterCard(this.title.getTitle());
-      const paragraph = (document.getElementsByClassName("identify-intro")).item(0).getElementsByTagName("p").item(0).innerText;
+      const paragraph = (document.getElementsByClassName("identify-intro")).item(0).getElementsByTagName("p")?.item(0)?.innerText;
       this.headerService.updateMetaDescription(paragraph);
     }, 0);
   }

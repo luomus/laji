@@ -17,7 +17,7 @@ export class YkjComponent implements OnInit {
     ngOnInit() {
       this.headerService.createTwitterCard(this.title.getTitle());
       setTimeout(() => {
-        const paragraph = (document.getElementsByTagName("laji-ykj")).item(0).getElementsByTagName("p").item(0).innerText;
+        const paragraph = (document.getElementsByTagName("laji-ykj")).item(0).getElementsByTagName("p")?.item(0)?.innerText;
         const image = (document.getElementsByTagName("laji-ykj")).item(0).getElementsByTagName("img")?.item(0)?.src;
         this.headerService.updateMetaDescription(paragraph);
         if (image) {

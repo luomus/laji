@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { InformationStore } from './information.store';
+import { HeaderService } from '../shared/service/header.service';
 
 @Component({
   selector: 'laji-information',
@@ -28,7 +29,8 @@ export class InformationComponent implements OnDestroy {
               private logger: Logger,
               private cd: ChangeDetectorRef,
               private title: Title,
-              private store: InformationStore
+              private store: InformationStore,
+              private headerService: HeaderService
   ) {
 
     this.information$ = this.store.state$.pipe(
@@ -51,6 +53,16 @@ export class InformationComponent implements OnDestroy {
           this.logger.warn('Failed to fetch root informations', err);
           this.cd.markForCheck();
         });
+
+    setTimeout(() => {
+        const paragraph = ((document.getElementsByClassName("laji-information").item(0).innerHTML)).replace(/(<([^>]+)>)/gi, "");
+        const image = (document.getElementsByClassName("laji-information")).item(0).getElementsByTagName("img")?.item(0)?.src;
+        this.headerService.createTwitterCard(this.title.getTitle());
+        this.headerService.updateMetaDescription(paragraph);
+        if (image) {
+          this.headerService.updateFeatureImage(image);
+        }
+      }, 0);    
   }
 
   ngOnDestroy() {

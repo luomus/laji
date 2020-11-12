@@ -58,7 +58,7 @@ export class HerpetologyComponent implements OnInit {
     });
     setTimeout(() => {
       this.headerService.createTwitterCard(this.title.getTitle());
-      const paragraph = (document.getElementById("all-content")).getElementsByTagName("p").item(0).innerText;
+      const paragraph = (document.getElementById("all-content")).getElementsByTagName("p")?.item(0)?.innerText;
       const image = (document.getElementById("all-content")).getElementsByTagName("img")?.item(0)?.src;
       this.headerService.updateMetaDescription(paragraph);
       this.headerService.updateFeatureImage(image);
