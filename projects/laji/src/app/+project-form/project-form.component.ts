@@ -1,10 +1,10 @@
 import { Form } from '../shared/model/Form';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, Observable, of } from 'rxjs';
+import { combineLatest, merge, Observable, of, Subscription } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from './project-form.service';
@@ -36,7 +36,7 @@ interface BadgeTemplate {
   styleUrls: ['./project-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectFormComponent implements OnInit {
+export class ProjectFormComponent implements OnInit, OnDestroy {
 
   constructor (
     private route: ActivatedRoute,
@@ -53,6 +53,7 @@ export class ProjectFormComponent implements OnInit {
   formPermissions$: Observable<FormPermission>;
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
+  redirectionSubscription: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -99,15 +100,6 @@ export class ProjectFormComponent implements OnInit {
   ngOnInit(): void {
     const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
 
-    if (!this.route.children.length) {
-      projectForm$.pipe(take(1)).subscribe(projectForm => {
-        const mainPage = projectForm.form.options?.simple
-          ? 'form'
-          : 'about';
-        this.router.navigate([`./${mainPage}`], {relativeTo: this.route});
-      });
-    }
-
     const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
     this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
@@ -125,6 +117,7 @@ export class ProjectFormComponent implements OnInit {
       switchMap(form => this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())),
       take(1)
     );
+
     this.formPermissions$ = this.userService.isLoggedIn$.pipe(
       switchMap(isLoggedIn => isLoggedIn
         ? merge(initialFp$, this.formPermissionService.changes$)
@@ -153,6 +146,20 @@ export class ProjectFormComponent implements OnInit {
     );
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
+
+    this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
+      if (!this.route.children.length) {
+        const mainPage = projectForm.form.options?.simple
+          ? 'form'
+          : 'about';
+        this.router.navigate([`./${mainPage}`], {relativeTo: this.route});
+      }
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    this.redirectionSubscription.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
