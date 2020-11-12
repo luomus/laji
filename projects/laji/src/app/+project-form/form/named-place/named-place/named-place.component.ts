@@ -262,20 +262,22 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   confirmDelete(namedPlace: NamedPlace) {
     this.translate.get('np.delete.confirm').pipe(
-      switchMap(txt => this.dialogService.confirm(txt)))
-      .subscribe(result => {
-        if (result) {
-          this.namedPlaceService.deleteNamedPlace(namedPlace.id, this.userService.getToken()).subscribe(() => {
-              this.updateQuery({activeNP: null}).then(() => {
-                this.reloadNamedPlaces$.next();
-              });
-              this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
-            },
-            () => {
-              this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
-            }
-          );
+      switchMap(txt => this.dialogService.confirm(txt)),
+      take(1),
+    ).subscribe(result => {
+        if (!result) {
+          return;
         }
+        this.namedPlaceService.deleteNamedPlace(namedPlace.id, this.userService.getToken()).subscribe(() => {
+            this.updateQuery({activeNP: null}).then(() => {
+              this.reloadNamedPlaces$.next();
+            });
+            this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
+          },
+          () => {
+            this.translate.get('np.delete.fail').subscribe(text => this.toastrService.error(text));
+          }
+        );
       });
   }
 
