@@ -76,7 +76,7 @@
     </div>
   </div>
 
-  <div class="col-md-6 col-md-push-6">
+  <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
@@ -89,7 +89,7 @@
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
-  <div class="col-md-6 col-md-pull-6">
+  <div id="letterCandidateContainer" class="col-md-6 col-md-pull-6">
     <h4>
       {{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})
       <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
