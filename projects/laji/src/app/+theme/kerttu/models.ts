@@ -38,15 +38,18 @@ export interface IRecordingAnnotation {
   containsUnknownBirds?: boolean;
   doesNotContainBirds?: boolean;
 
-  taxonAnnotations?: {
-    main?: ITaxonAnnotation[];
-    other?: ITaxonAnnotation[];
-  };
+  taxonAnnotations?: ITaxonAnnotations;
+}
+
+export interface ITaxonAnnotations {
+  main?: ITaxonWithAnnotation[];
+  other?: ITaxonWithAnnotation[];
 }
 
 export interface ITaxonAnnotation {
   taxonId: string;
   annotation: TaxonAnnotationEnum;
+  bird: boolean;
 }
 
 export enum TaxonAnnotationEnum {
@@ -56,4 +59,12 @@ export enum TaxonAnnotationEnum {
 
 export interface ITaxonWithAnnotation extends Taxonomy {
   annotation: ITaxonAnnotation;
+}
+
+export enum KerttuErrorEnum {
+  taxonExpertiseMissing = 'TaxonExpertiseMissingError',
+  invalidTemplateId = 'InvalidTemplateIdError',
+  invalidCandidateId = 'InvalidCandidateIdError',
+  invalidRecordingId = 'InvalidRecordingIdError',
+  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
 }
