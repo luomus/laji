@@ -11,11 +11,11 @@ export class MobileFormPage {
 
   async fillInSimpleForm() {
     await this.fillAsEmpty();
-    const $taxon = this.documentFormView.$findLajiFormNode('gatherings.0.units.0.identifications.0.taxon');
+    const $taxon = await this.documentFormView.$findLajiFormNode('gatherings.0.units.0.identifications.0.taxon');
     await $taxon.$('input').sendKeys('kettu');
     await $taxon.$('input').sendKeys(protractor.Key.ENTER);
     await browser.wait(EC.visibilityOf($taxon.$('.glyphicon-ok')));
-    const $date = this.documentFormView.$findLajiFormNode('gatherings.0.dateBegin');
+    const $date = await this.documentFormView.$findLajiFormNode('gatherings.0.dateBegin');
     const scrollToDate = `document.querySelector("#${await $date.$('input').getAttribute('id')}").scrollIntoView()`;
     await browser.driver.executeScript(scrollToDate);
     await $date.$('.today').click();
