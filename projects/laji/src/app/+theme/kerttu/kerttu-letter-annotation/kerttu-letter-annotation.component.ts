@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Inject, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {map, share, switchMap} from 'rxjs/operators';
-import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, LetterAnnotation} from '../models';
+import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, KerttuErrorEnum, LetterAnnotation} from '../models';
 import {Observable, of, Subscription} from 'rxjs';
 import {WINDOW} from '@ng-toolkit/universal';
 import {KerttuApi} from '../service/kerttu-api';
@@ -136,7 +136,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
         this.statusInfo = result.statusInfo;
         this.cdr.markForCheck();
       }, error => {
-        if (this.getErrorMessage(error) === 'TaxonExpertiseMissingError') {
+        if (KerttuApi.getErrorMessage(error) === KerttuErrorEnum.taxonExpertiseMissing) {
           this.taxonExpertiseMissing = true;
         } else {
           this.hasError = true;
@@ -191,19 +191,12 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   }
 
   private onLetterError(error) {
-    const msg = this.getErrorMessage(error);
-    if (msg === 'InvalidTemplateIdError' || msg === 'InvalidCandidateIdError') {
+    const msg = KerttuApi.getErrorMessage(error);
+    if (msg === KerttuErrorEnum.invalidTemplateId || msg === KerttuErrorEnum.invalidCandidateId) {
       this.getLetterTemplate();
     } else {
       this.hasError = true;
     }
     this.cdr.markForCheck();
-  }
-
-  private getErrorMessage(error) {
-    while (error.error) {
-      error = error.error;
-    }
-    return error.message || error.body?.message;
   }
 }
