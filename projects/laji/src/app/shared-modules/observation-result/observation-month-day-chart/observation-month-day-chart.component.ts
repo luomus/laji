@@ -34,7 +34,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
-  @Input() taxonPage: boolean = false;
+  @Input() taxonPage: boolean;
   monthChartData: any[];
   dayChartDataByMonth = {};
 

@@ -42,7 +42,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: MapBoxTypes = 'count';
   @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
-  @Input() taxonPage: boolean = false;
+  @Input() taxonPage: boolean;
   @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
