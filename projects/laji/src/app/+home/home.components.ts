@@ -14,7 +14,7 @@ import { Global } from '../../environments/global';
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
 
   mapStartDate;
   images$: Observable<Image[]>;
@@ -36,16 +36,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       map(data => data.identify && data.identify.results || []),
       map(data => data.map(item => item.unit.media[0]))
     );
-  }
-
-  ngAfterViewInit() {
-    if (!document.getElementById('twitter-wjs')) {
-      const scriptElem = document.getElementsByTagName('script')[0];
-      const newScriptElem = document.createElement('script');
-      newScriptElem.id = 'twitter-wjs';
-      newScriptElem.src = 'https://platform.twitter.com/widgets.js';
-      scriptElem.parentNode.insertBefore(newScriptElem, scriptElem);
-    }
   }
 
   taxonSelect(e) {
