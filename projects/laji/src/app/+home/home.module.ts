@@ -11,11 +11,12 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
 import { InfoModule } from '../shared-modules/info/info.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
+import { TwitterFeedComponent } from './twitter-feed/twitter-feed.component';
 
 
 @NgModule({
   imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule],
-  declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
+  declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent, TwitterFeedComponent]
 })
 export class HomeModule {
 }
