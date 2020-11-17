@@ -19,7 +19,7 @@ export class InfoCardQueryService {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      reliability: ['RELIABLE', 'UNDEFINED'],
+      reliability: ['RELIABLE'],
       includeNonValidTaxa: false,
       cache: true
     };
