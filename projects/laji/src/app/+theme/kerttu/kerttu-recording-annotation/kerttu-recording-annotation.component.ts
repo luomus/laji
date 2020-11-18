@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@an
 import {KerttuApi} from '../service/kerttu-api';
 import {IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
 import {UserService} from '../../../shared/service/user.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 import {map, switchMap} from 'rxjs/operators';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -20,7 +20,12 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   taxonList$: Observable<string[]>;
   taxonExpertise$: Observable<string[]>;
 
+  firstRecordingLoaded = false;
   saving = false;
+
+  taxonExpertiseMissing = false;
+  allRecordingsAnnotated = false;
+  hasError = false;
 
   constructor(
     private kerttuApi: KerttuApi,
@@ -33,6 +38,9 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   ngOnInit() {
     this.kerttuApi.getRecording(this.userService.getToken()).pipe(
       switchMap(recording => {
+        if (!recording) {
+          return of(null);
+        }
         return this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id).pipe(map(annotation => {
           return {
             recording,
@@ -41,9 +49,16 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
         }));
       })
     ).subscribe((result) => {
-      this.recording = result.recording;
-      this.annotation = result.annotation || {};
+      if (result) {
+        this.recording = result.recording;
+        this.annotation = result.annotation || {};
+        this.firstRecordingLoaded = true;
+      } else {
+        this.allRecordingsAnnotated = true;
+      }
       this.cdr.markForCheck();
+    }, (err) => {
+      this.handleError(err);
     });
     this.taxonList$ = this.taxonService.getTaxonList().pipe(
       map(taxons => taxons.map(taxon => taxon.id))
@@ -68,12 +83,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
       this.annotation = {};
       this.saving = false;
       this.cdr.markForCheck();
-    }, (error) => {
-      if (KerttuApi.getErrorMessage(error) === KerttuErrorEnum.invalidRecordingAnnotation)  {
-        alert('Kirjaa vähintään yksi lintu tai valitse ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.');
-        this.saving = false;
-        this.cdr.markForCheck();
-      }
+    }, (err) => {
+      this.handleError(err);
     });
   }
 
@@ -86,6 +97,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
+    }, (err) => {
+      this.handleError(err);
     });
   }
 
@@ -106,5 +119,19 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
 
   onAnnotationChange() {
 
+  }
+
+  private handleError(err: any) {
+    this.saving = false;
+
+    const msg = KerttuApi.getErrorMessage(err);
+    if (msg === KerttuErrorEnum.taxonExpertiseMissing) {
+      this.taxonExpertiseMissing = true;
+    } else if (msg === KerttuErrorEnum.invalidRecordingAnnotation) {
+      alert('Kirjaa vähintään yksi lintu tai valitse ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.');
+    } else {
+      this.hasError = true;
+    }
+    this.cdr.markForCheck();
   }
 }
