@@ -99,6 +99,7 @@
       </label>
       <laji-taxon-autocomplete
         id="other-animal-species-select"
+        [informalTaxonGroup]="'MVL.1,MVL.2,MVL.161'"
         [showResult]="false"
         [blackList]="taxonList"
         (taxonSelect)="addTaxonToSelected($event, 'other')"
