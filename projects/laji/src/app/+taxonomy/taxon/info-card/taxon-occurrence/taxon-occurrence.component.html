@@ -152,7 +152,7 @@
     >
       <laji-observation-month-day-chart
         [query]="chartQuery"
-        [disableOnlyCount]="true"
+        [enableOnlyCount]="true"
         (hasData)="hasMonthDayData = $event"
       ></laji-observation-month-day-chart>
     </div>
@@ -168,7 +168,7 @@
       </p>
       <laji-observation-year-chart
         [query]="chartQuery"
-        [disableOnlyCount]="true"
+        [enableOnlyCount]="true"
         (hasData)="hasYearData = $event"
       ></laji-observation-year-chart>
     </div>
