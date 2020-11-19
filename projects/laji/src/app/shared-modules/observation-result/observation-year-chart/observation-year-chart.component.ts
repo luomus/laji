@@ -28,7 +28,7 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
 
 export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;
-  @Input() disableOnlyCount: boolean;
+  @Input() enableOnlyCount: boolean;
   @Input() colors: string[] =
   ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
   newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
@@ -134,7 +134,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       10000,
       1,
       undefined,
-      this.disableOnlyCount
+      this.enableOnlyCount
     ).pipe(
       map(res => res.results)
     ).subscribe(res => {
