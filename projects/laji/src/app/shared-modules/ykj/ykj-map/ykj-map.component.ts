@@ -42,6 +42,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() type: MapBoxTypes = 'count';
   @Input() types: MapBoxTypes[] = ['count', 'individualCount', 'newest'];
   @Input() typeLabels: any = {};
+  @Input() taxonPage: boolean;
   @Input() colorRange: string[] = ['violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualColorRange: string[] = ['#ffffff', '#cccccc', 'violet', '#1e90ff', 'lime', 'yellow', 'orange', '#dc143c'];
   @Input() individualBreak: number[] = [0, null, 1, 10, 100, 1000, 10000, 100000];
@@ -144,10 +145,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       geoJson$ = of(this.data);
     } else {
       geoJson$ = this.zeroObservationQuery ? forkJoin([
-        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
+        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true, this.taxonPage),
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.taxonPage)
       ]).pipe(map(geoJsons => (this.ykjService.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.taxonPage);
     }
 
     this.subQuery = geoJson$

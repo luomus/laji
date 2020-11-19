@@ -1,3 +1,26 @@
-<h1>{{ 'theme.kerttu.recordingAnnotation' | translate }}</h1>
+<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
-<laji-recording-annotation [recording]="recording$ | async"></laji-recording-annotation>
+<ng-container *ngIf="!hasError">
+  <ng-container *lajiRequiresAudioSupport>
+    <div *ngIf="!(taxonExpertiseMissing || allRecordingsAnnotated)">
+      <laji-spinner [spinning]="saving || !firstRecordingLoaded" [overlay]="true">
+        <laji-recording-annotation
+          *ngIf="firstRecordingLoaded"
+          [recording]="recording"
+          [(annotation)]="annotation"
+          [taxonList]="taxonList$ | async"
+          [taxonExpertise]="taxonExpertise$ | async"
+          (nextRecordingClick)="getNextRecording()"
+          (saveClick)="save()"
+          (addToTaxonExpertise)="addToTaxonExpertise($event)"
+          (annotationChange)="onAnnotationChange()"
+        ></laji-recording-annotation>
+      </laji-spinner>
+    </div>
+    <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
+    </div>
+    <div *ngIf="allRecordingsAnnotated">
+      Kaikki äänitteet käyty läpi! Suuri kiitos panoksestasi lintujen äänten automaattisen tunnistuksen kehittämiseen!
+    </div>
+  </ng-container>
+</ng-container>

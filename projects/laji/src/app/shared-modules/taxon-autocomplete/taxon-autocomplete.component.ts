@@ -35,11 +35,14 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() onlyFinnish = false;
   @Input() excludeNameTypes = '';
   @Input() onlyInvasive = false;
+  @Input() onlySpecies = false;
   @Input() showResult = true;
   @Input() clearValueOnSelect = true;
   @Input() allowEmpty = false;
   @Input() renderButton = true;
   @Input() useValue = '';
+  @Input() whiteList: string[];
+  @Input() blackList: string[];
   @Output() complete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
@@ -108,9 +111,16 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         informalTaxonGroup: this.informalTaxonGroup,
         excludeNameTypes: this.excludeNameTypes,
         onlyFinnish: this.onlyFinnish,
-        onlyInvasive: this.onlyInvasive
+        onlyInvasive: this.onlyInvasive,
+        onlySpecies: this.onlySpecies
       })),
       map(data => {
+        if (this.whiteList) {
+          data = data.filter(item => this.whiteList.includes(item.key));
+        }
+        if (this.blackList) {
+          data = data.filter(item => !this.blackList.includes(item.key));
+        }
         if (onlyExact) {
           if (data[0] && data[0].payload.matchType && data[0].payload.matchType === 'exactMatches' && (
             !data[1] || data[1].payload.matchType && data[1].payload.matchType !== 'exactMatches'

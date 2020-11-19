@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording} from '../models';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;
@@ -19,9 +19,16 @@ interface ILetterAnnotationResponse extends ILetterResponse {
 
 @Injectable()
 export class KerttuApi {
-  protected basePath = environment.kerttuApi;
 
   constructor(protected httpClient: HttpClient) {
+  }
+  protected basePath = environment.kerttuApi;
+
+  public static getErrorMessage(error): KerttuErrorEnum {
+    while (error.error) {
+      error = error.error;
+    }
+    return error.message || error.body?.message;
   }
 
   public getLetterTemplate(personToken: string): Observable<ILetterTemplateResponse> {
@@ -71,5 +78,26 @@ export class KerttuApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get<IRecording>(path, { params });
+  }
+
+  public getNextRecording(personToken: string, recordingId: number): Observable<IRecording> {
+    const path = this.basePath + '/recording/next/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IRecording>(path, { params });
+  }
+
+  public getRecordingAnnotation(personToken: string, recordingId: number): Observable<IRecordingAnnotation> {
+    const path = this.basePath + '/recording/annotation/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IRecordingAnnotation>(path, { params });
+  }
+
+  public setRecordingAnnotation(personToken: string, recordingId: number, annotation: IRecordingAnnotation) {
+    const path = this.basePath + '/recording/annotation/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotation, { params });
   }
 }

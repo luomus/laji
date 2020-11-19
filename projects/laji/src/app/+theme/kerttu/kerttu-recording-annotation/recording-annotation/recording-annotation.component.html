@@ -1,33 +1,135 @@
-<laji-spinner [spinning]="!recording">
-  <div class="row">
-    <div class="col-md-12">
-      <laji-audio-viewer
-        [recording]="recording?.recording"
-        [xRange]="recording?.xRange"
-        [xRangePadding]="0"
-      ></laji-audio-viewer>
+<div class="row lu-section">
+  <div class="col-sm-12">
+    <div class="button-container">
+      <lu-button (click)="saveClick.emit()">Välitallenna</lu-button>
+      <lu-button
+        [role]="'success'"
+        (click)="nextRecordingClick.emit()">
+        Seuraava äänite
+      </lu-button>
+      <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
     </div>
-    <!--div class="col-md-6">
-      <h3>{{ 'theme.kerttu.listSpecies' | translate }}</h3>
+    <h2 style="display: inline-block">
+      {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
+      <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+    </h2>
+  </div>
+  <div class="col-sm-12">
+    <laji-audio-viewer
+      [recording]="recording?.recording"
+      [focusArea]="{
+        xRange: recording?.xRange
+      }"
+      [focusAreaTimePadding]="2"
+      [highlightFocusArea]="true"
+      [showBrushControl]="true"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-sm-12 checkbox-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.isLowQuality" (change)="updateAnnotation()"/>Äänite on huonolaatuinen (kohinaa, sadetta tmv.)
+          </label>
+          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsNoiseCausedByHumanActivity" (change)="updateAnnotation()">Ääniteellä kuuluu ihmistoiminnan ääniä (liikenne tmv.)
+          </label>
+          <laji-info [html]="'theme.kerttu.info.containsNoiseCausedByHumanActivity' | translate"></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsHumanSpeech" (change)="updateAnnotation()">Ääniteellä kuuluu ihmisten puhetta
+          </label>
+          <laji-info [html]="'theme.kerttu.info.containsHumanSpeech' | translate"></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsUnknownBirds" (change)="updateAnnotation()">Ääniteellä kuuluu linnun ääniä, joita en tunnista
+          </label>
+          <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate"></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="generalAnnotation.doesNotContainBirds" (change)="updateAnnotation()">Ääniteellä ei kuulu linnun ääniä
+          </label>
+          <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="species-select">
+        {{ 'theme.kerttu.listSpecies' | translate }}
+        <laji-info [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+      </label>
       <laji-taxon-autocomplete
+        id="species-select"
         [informalTaxonGroup]="'MVL.1'"
         [onlyFinnish]="true"
+        [onlySpecies]="true"
         [showResult]="false"
-        (taxonSelect)="onTaxonSelect($event)"
+        [whiteList]="taxonList"
+        (taxonSelect)="addTaxonToSelected($event, 'main')"
       ></laji-taxon-autocomplete>
-      <laji-pill-list
-        [isLabel]="true"
-        [list]="currentAnnotation"
-        (updateList)="onTaxonListUpdate($event)"
-      ></laji-pill-list>
-      <div style="margin-top: 10px">
-        <button
-          class="btn btn-default"
-          [disabled]="!recording"
-          (click)="toNextRecording()">
-          {{ 'theme.kerttu.nextRecording' | translate }}
-        </button>
-      </div>
-    </div-->
+    </div>
+    <laji-kerttu-occurrence-table
+      [(selectedTaxons)]="selectedTaxons.main"
+      [loading]="!taxonList || loadingTaxons || !taxonExpertise"
+      [componentId]="0"
+      [taxonExpertise]="taxonExpertise"
+      (selectedTaxonsChange)="updateAnnotation()"
+      (missingTaxonClick)="showModal($event)"
+    >
+    </laji-kerttu-occurrence-table>
   </div>
-</laji-spinner>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="other-animal-species-select">
+        {{ 'theme.kerttu.listOtherSpecies' | translate }}
+        <laji-info [html]="'theme.kerttu.info.listOtherSpecies' | translate"></laji-info>
+      </label>
+      <laji-taxon-autocomplete
+        id="other-animal-species-select"
+        [informalTaxonGroup]="'MVL.1,MVL.2,MVL.161'"
+        [showResult]="false"
+        [blackList]="taxonList"
+        (taxonSelect)="addTaxonToSelected($event, 'other')"
+      ></laji-taxon-autocomplete>
+    </div>
+    <laji-kerttu-occurrence-table
+      [(selectedTaxons)]="selectedTaxons.other"
+      [loading]="!taxonList || loadingTaxons"
+      [componentId]="1"
+      (selectedTaxonsChange)="updateAnnotation()"
+    >
+    </laji-kerttu-occurrence-table>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Puuttuva laji</h3>
+      </div>
+      <div class="modal-body">
+        <div>
+          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
+        </div>
+      </div>
+      <div class="modal-footer">
+        <lu-button (click)="closeModal(true)" [role]="'success'">{{ 'yes' | translate }}</lu-button>
+        <lu-button (click)="closeModal()">{{ 'haseka.delete.cancel' | translate }}</lu-button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,21 +1,23 @@
 <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
-<div *lajiRequiresAudioSupport>
-  <laji-spinner [spinning]="!(allLettersAnnotated || taxonExpertiseMissing) && loadingLetters" [overlay]="true">
-    <laji-letter-annotation
-      *ngIf="!(allLettersAnnotated || taxonExpertiseMissing) && firstTemplateLoaded"
-      [ngClass]="{'visibility-hidden': loadingLetters}"
-      [template]="letterTemplate"
-      [candidate]="letterCandidate"
-      [statusInfo]="statusInfo"
-      (annotationChange)="onLetterAnnotationChange($event)"
-      (skipLetterClick)="skipLetter()"
-      (backToPreviousCandidateClick)="goBackToPreviousCandidate()"
-    ></laji-letter-annotation>
-  </laji-spinner>
-  <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
-  </div>
-  <div *ngIf="allLettersAnnotated" [innerHTML]="'theme.kerttu.allLettersAnnotated' | translate">
-  </div>
-</div>
-
+<ng-container *ngIf="!hasError">
+  <ng-container *lajiRequiresAudioSupport>
+    <div *ngIf="!(allLettersAnnotated || taxonExpertiseMissing)">
+      <laji-spinner [spinning]="loadingLetters" [overlay]="true">
+        <laji-letter-annotation
+          *ngIf="firstTemplateLoaded"
+          [template]="letterTemplate"
+          [candidate]="letterCandidate"
+          [statusInfo]="statusInfo"
+          (annotationChange)="onLetterAnnotationChange($event)"
+          (skipLetterClick)="skipLetter()"
+          (backToPreviousCandidateClick)="goBackToPreviousCandidate()"
+        ></laji-letter-annotation>
+      </laji-spinner>
+    </div>
+    <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
+    </div>
+    <div *ngIf="allLettersAnnotated" [innerHTML]="'theme.kerttu.allLettersAnnotated' | translate">
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
-HostListener, EventEmitter, ChangeDetectorRef, OnInit, OnDestroy} from '@angular/core';
+HostListener, EventEmitter, ChangeDetectorRef, OnInit, OnDestroy, TemplateRef} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
@@ -52,8 +52,8 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   subLogin: Subscription;
 
 
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: TemplateRef<any>;
+  @ViewChild('deleteModal', { static: true }) public deleteModal: TemplateRef<any>;
 
   constructor(
     private formService: FormService,

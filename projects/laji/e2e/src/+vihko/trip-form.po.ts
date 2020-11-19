@@ -1,16 +1,17 @@
 import { browser, by, element, protractor } from 'protractor';
+import { MapPage } from '../+map/map.po';
 
 export class TripFormPage {
 
   private readonly todayButton = element(by.buttonText('Tänään'));
   private readonly savePrivateButton = element(by.buttonText('Tallenna julkaisematta'));
-  private readonly markerButton = element(by.css('.leaflet-draw-draw-marker'));
   private readonly tripFormLink = element(by.linkText('Retki'));
-  private readonly lajiMapElem = element(by.css('.laji-map'));
   private readonly countryElem = element(by.id('root_gatherings_0_country'));
   private readonly toastElement = element(by.id('toast-container'));
   private readonly pageTitleElem = element(by.css('.form-header h3'));
-  public readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
+  private readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
+
+  private readonly mapPage = new MapPage();
 
   async navigateTo() {
     await browser.waitForAngularEnabled(false);
@@ -19,10 +20,7 @@ export class TripFormPage {
 
   async fillInSimpleForm() {
     await this.todayButton.click();
-    await this.markerButton.click();
-    await browser.actions().mouseMove(this.lajiMapElem).perform();
-    await browser.actions().click().perform();
-
+    await this.mapPage.map.drawMarker();
 
     const EC = protractor.ExpectedConditions;
     const countryFetched = EC.textToBePresentInElementValue(this.countryElem, 'Suomi');
@@ -51,5 +49,9 @@ export class TripFormPage {
 
   getPageTitle() {
     return this.pageTitleElem.getText();
+  }
+
+  async hasOverlayPresent() {
+    return this.overlayElem.isPresent();
   }
 }

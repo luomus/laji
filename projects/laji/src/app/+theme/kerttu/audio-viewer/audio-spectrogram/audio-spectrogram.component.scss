@@ -1,14 +1,14 @@
-#container {
+.spectrogram-container {
   position: relative;
   margin-bottom: 20px; // space for x-axis label
   margin-left: 20px; // space for y-axis label
 }
 
-#spectrogram {
+.spectrogram-canvas {
   position: absolute;
 }
 
-#chart {
+.spectrogram-chart {
   overflow: visible;
   position: relative;
 }
