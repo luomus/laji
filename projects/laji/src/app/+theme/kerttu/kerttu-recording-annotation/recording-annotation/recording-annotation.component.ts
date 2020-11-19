@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
-import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {Autocomplete} from '../../../../shared/model/Autocomplete';
+import {KerttuTaxonService} from '../../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-recording-annotation',
@@ -37,11 +37,13 @@ export class RecordingAnnotationComponent implements OnChanges {
   private selectedTaxonsSub: Subscription;
 
   constructor(
-    private taxonService: TaxonomyApi,
+    private taxonService: KerttuTaxonService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    console.log(this.annotation);
     if (changes.recording) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
       this.updateSelectedTaxons();
@@ -114,9 +116,7 @@ export class RecordingAnnotationComponent implements OnChanges {
       for (const type of ['main', 'other']) {
         if (taxonAnnotations[type]?.length > 0) {
           const obs: Observable<ITaxonWithAnnotation>[] = taxonAnnotations[type].map(
-            a => this.taxonService.taxonomyFindBySubject(
-              a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName']}
-            ).pipe(map(taxon => {
+            a => this.taxonService.getTaxon(a.taxonId).pipe(map(taxon => {
               return {...taxon, annotation: a};
             }))
           );
