@@ -42,8 +42,6 @@ export class RecordingAnnotationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    console.log(this.annotation);
     if (changes.recording) {
       this.generalAnnotation = {...this.annotation, taxonAnnotations: undefined};
       this.updateSelectedTaxons();
