@@ -26,6 +26,6 @@
     (click)="missingTaxonClick.emit(row)"
     [role]="'warning'"
     style="float: right">
-    <i class="fa fa-exclamation-triangle"></i> Puuttuva laji
+    <i class="fa fa-exclamation-triangle"></i> {{ 'theme.kerttu.speciesMissing' | translate }}
   </lu-button>
 </ng-template>

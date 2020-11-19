@@ -12,7 +12,7 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select, event, clientPoint, ContainerElement} from 'd3-selection';
+import {Selection, select, event, clientPoint} from 'd3-selection';
 import {ScaleLinear, scaleLinear} from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
@@ -21,6 +21,7 @@ import {delay} from 'rxjs/operators';
 import {SpectrogramService} from '../service/spectrogram.service';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import {AudioViewerMode, IAudioViewerArea} from '../models';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -66,6 +67,7 @@ export class AudioSpectrogramComponent implements OnChanges {
   private endTime: number;
 
   constructor(
+    private translate: TranslateService,
     private spectrogramService: SpectrogramService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -145,7 +147,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('text-anchor', 'middle')
       .attr('x', this.margin.left + width / 2)
       .attr('y', height + this.margin.top + 35)
-      .text('Aika (s)');
+      .text(this.translate.instant('theme.kerttu.audioViewer.time') + ' (s)');
 
     // y-axis label
     svg.append('text')
@@ -153,7 +155,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       .attr('transform', 'rotate(-90)')
       .attr('y', -this.margin.left + 25)
       .attr('x', -this.margin.top - height / 2)
-      .text('Taajuus (kHz)');
+      .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
 
     const innerSvg = svg.append('svg')
       .attr('x', this.margin.left)

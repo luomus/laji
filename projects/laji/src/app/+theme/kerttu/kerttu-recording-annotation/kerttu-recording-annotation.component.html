@@ -19,8 +19,7 @@
     </div>
     <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
     </div>
-    <div *ngIf="allRecordingsAnnotated">
-      Kaikki äänitteet käyty läpi! Suuri kiitos panoksestasi lintujen äänten automaattisen tunnistuksen kehittämiseen!
+    <div *ngIf="allRecordingsAnnotated" [innerHTML]="'theme.kerttu.allRecordingsAnnotated' | translate">
     </div>
   </ng-container>
 </ng-container>

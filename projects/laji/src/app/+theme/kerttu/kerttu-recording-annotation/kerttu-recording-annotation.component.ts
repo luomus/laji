@@ -6,6 +6,7 @@ import {Observable, of} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 import {map, switchMap} from 'rxjs/operators';
 import {PersonApi} from '../../../shared/api/PersonApi';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
@@ -32,6 +33,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     private taxonService: KerttuTaxonService,
     private userService: UserService,
     private personService: PersonApi,
+    private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -128,7 +130,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     if (msg === KerttuErrorEnum.taxonExpertiseMissing) {
       this.taxonExpertiseMissing = true;
     } else if (msg === KerttuErrorEnum.invalidRecordingAnnotation) {
-      alert('Kirjaa vähintään yksi lintu tai valitse ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.');
+      alert(this.translate.instant('theme.kerttu.nextRecording.validation'));
     } else {
       this.hasError = true;
     }

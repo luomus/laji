@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonAnnotations, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
+import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
