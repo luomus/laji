@@ -27,14 +27,14 @@ export class YkjService {
   ) { }
 
   getGeoJson(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
-             useStatistics = false, zeroObservations = false, taxonPage = false): Observable<any> {
-    return this.getList(query, grid, key, useStatistics, zeroObservations, [], taxonPage).pipe(
+             useStatistics = false, zeroObservations = false, disableOnlyCount = false): Observable<any> {
+    return this.getList(query, grid, key, useStatistics, zeroObservations, [], disableOnlyCount).pipe(
       map(data => this.resultToGeoJson(data, grid, zeroObservations))
     );
   }
 
   getList(query: WarehouseQueryInterface, grid: Grid = '10kmCenter', key?: string,
-             useStatistics = false, zeroObservations = false, selected = [], taxonPage = false): Observable<any> {
+             useStatistics = false, zeroObservations = false, selected = [], disableOnlyCount = false): Observable<any> {
     if (!key) {
       key = JSON.stringify(query);
     }
@@ -62,7 +62,7 @@ export class YkjService {
         10000,
         1,
         false,
-        taxonPage === true ? undefined : false
+        disableOnlyCount
       ).pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
         map(data => data.results)
