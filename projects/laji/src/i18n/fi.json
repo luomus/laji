@@ -1500,6 +1500,7 @@
   "theme.kerttu.notSure": "En tiedä",
   "theme.kerttu.recordingAnnotation": "Tunnista äänitteitä",
   "theme.kerttu.recordingAnnotation.title": "Tunnista äänitteellä esiintyvät lintulajit",
+  "theme.kerttu.recordingAnnotation.leaveConfirm": "Haluatko varmasti hylätä viimeisen tallennuksen jälkeen tekemäsi muutokset?",
   "theme.kerttu.setDefaultSettings": "Palauta oletusasetukset",
   "theme.kerttu.show": "Näytä",
   "theme.kerttu.skipLetter": "Jätä kirjain väliin",
