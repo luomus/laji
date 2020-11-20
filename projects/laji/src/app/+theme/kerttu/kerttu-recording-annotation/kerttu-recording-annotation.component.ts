@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
-import {IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
+import {IRecording, IRecordingAnnotation, IRecordingStatusInfo, KerttuErrorEnum} from '../models';
 import {UserService} from '../../../shared/service/user.service';
 import {Observable, of} from 'rxjs';
 import {KerttuTaxonService} from '../service/kerttu-taxon-service';
@@ -17,6 +17,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class KerttuRecordingAnnotationComponent implements OnInit {
   recording: IRecording;
   annotation: IRecordingAnnotation;
+  statusInfo: IRecordingStatusInfo;
 
   taxonList$: Observable<string[]>;
   taxonExpertise$: Observable<string[]>;
@@ -38,22 +39,11 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.kerttuApi.getRecording(this.userService.getToken()).pipe(
-      switchMap(recording => {
-        if (!recording) {
-          return of(null);
-        }
-        return this.kerttuApi.getRecordingAnnotation(this.userService.getToken(), recording.id).pipe(map(annotation => {
-          return {
-            recording,
-            annotation
-          };
-        }));
-      })
-    ).subscribe((result) => {
-      if (result) {
+    this.kerttuApi.getRecording(this.userService.getToken()).subscribe((result) => {
+      if (result.recording) {
         this.recording = result.recording;
         this.annotation = result.annotation || {};
+        this.statusInfo = result.statusInfo;
         this.firstRecordingLoaded = true;
       } else {
         this.allRecordingsAnnotated = true;
@@ -71,19 +61,27 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   }
 
   getNextRecording() {
-    if (!this.recording || !this.annotation) {
-      return;
-    }
-
     this.saving = true;
-    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
+    this.kerttuApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
       switchMap(() => {
         return this.kerttuApi.getNextRecording(this.userService.getToken(), this.recording.id);
       })
-    ).subscribe(recording => {
-      this.recording = recording;
-      this.annotation = {};
+    ).subscribe(result => {
+      this.recording = result.recording;
+      this.annotation = result.annotation || {};
+      this.statusInfo = result.statusInfo;
       this.saving = false;
+      this.cdr.markForCheck();
+    }, (err) => {
+      this.handleError(err);
+    });
+  }
+
+  getPreviousRecording() {
+    this.kerttuApi.getPreviousRecording(this.userService.getToken(), this.recording.id).subscribe(result => {
+      this.recording = result.recording;
+      this.annotation = result.annotation || {};
+      this.statusInfo = result.statusInfo;
       this.cdr.markForCheck();
     }, (err) => {
       this.handleError(err);
@@ -96,7 +94,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     }
 
     this.saving = true;
-    this.kerttuApi.setRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
+    this.kerttuApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
       this.saving = false;
       this.cdr.markForCheck();
     }, (err) => {
@@ -117,10 +115,6 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
           map(() => (taxonExpertise))
         );
       }));
-  }
-
-  onAnnotationChange() {
-
   }
 
   private handleError(err: any) {

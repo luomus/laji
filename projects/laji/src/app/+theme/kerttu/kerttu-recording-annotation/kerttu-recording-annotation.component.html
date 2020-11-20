@@ -8,12 +8,13 @@
           *ngIf="firstRecordingLoaded"
           [recording]="recording"
           [(annotation)]="annotation"
+          [statusInfo]="statusInfo"
           [taxonList]="taxonList$ | async"
           [taxonExpertise]="taxonExpertise$ | async"
           (nextRecordingClick)="getNextRecording()"
+          (previousRecordingClick)="getPreviousRecording()"
           (saveClick)="save()"
           (addToTaxonExpertise)="addToTaxonExpertise($event)"
-          (annotationChange)="onAnnotationChange()"
         ></laji-recording-annotation>
       </laji-spinner>
     </div>

@@ -61,6 +61,10 @@ export interface ITaxonWithAnnotation extends Taxonomy {
   annotation: ITaxonAnnotation;
 }
 
+export interface IRecordingStatusInfo {
+  hasPreviousRecording: boolean;
+}
+
 export enum KerttuErrorEnum {
   taxonExpertiseMissing = 'TaxonExpertiseMissingError',
   invalidTemplateId = 'InvalidTemplateIdError',

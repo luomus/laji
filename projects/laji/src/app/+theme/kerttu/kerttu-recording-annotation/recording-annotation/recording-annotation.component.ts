@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
+import {IRecording, IRecordingAnnotation, IRecordingStatusInfo, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ModalDirective} from 'ngx-bootstrap/modal';
@@ -15,6 +15,7 @@ import {KerttuTaxonService} from '../../service/kerttu-taxon-service';
 export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
   @Input() annotation: IRecordingAnnotation;
+  @Input() statusInfo: IRecordingStatusInfo;
   @Input() taxonList: string[];
   @Input() taxonExpertise: string[];
 
@@ -30,6 +31,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   modalTaxon: ITaxonWithAnnotation;
 
   @Output() nextRecordingClick = new EventEmitter();
+  @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
   @Output() addToTaxonExpertise = new EventEmitter<string>();
   @Output() annotationChange = new EventEmitter<IRecordingAnnotation>();

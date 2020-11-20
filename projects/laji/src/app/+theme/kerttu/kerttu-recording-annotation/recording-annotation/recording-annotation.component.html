@@ -1,6 +1,7 @@
 <div class="row lu-section">
   <div class="col-sm-12">
     <div class="button-container">
+      <lu-button [disabled]="!statusInfo?.hasPreviousRecording" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
       <lu-button (click)="saveClick.emit()">{{ 'theme.kerttu.saveRecording' | translate }}</lu-button>
       <lu-button
         [role]="'success'"
