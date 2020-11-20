@@ -3,7 +3,7 @@
 <ng-container *ngIf="!hasError">
   <ng-container *lajiRequiresAudioSupport>
     <div *ngIf="!(taxonExpertiseMissing || allRecordingsAnnotated)">
-      <laji-spinner [spinning]="saving || !firstRecordingLoaded" [overlay]="true">
+      <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
         <laji-recording-annotation
           *ngIf="firstRecordingLoaded"
           [recording]="recording"
@@ -11,6 +11,7 @@
           [statusInfo]="statusInfo"
           [taxonList]="taxonList$ | async"
           [taxonExpertise]="taxonExpertise$ | async"
+          [buttonsAreDisabled]="loading"
           (nextRecordingClick)="getNextRecording()"
           (previousRecordingClick)="getPreviousRecording()"
           (saveClick)="save()"

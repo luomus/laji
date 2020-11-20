@@ -7,16 +7,16 @@ import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;
 }
-interface ILetterTemplateResponse extends ILetterResponse {
+export interface ILetterTemplateResponse extends ILetterResponse {
   template: ILetterTemplate;
 }
-interface ILetterCandidateResponse extends ILetterResponse {
+export interface ILetterCandidateResponse extends ILetterResponse {
   candidate: ILetterCandidate;
 }
-interface ILetterAnnotationResponse extends ILetterResponse {
+export interface ILetterAnnotationResponse extends ILetterResponse {
   annotation: LetterAnnotation;
 }
-interface IRecordingResponse {
+export interface IRecordingResponse {
   statusInfo: IRecordingStatusInfo;
   annotation: IRecordingAnnotation;
   recording: IRecording;

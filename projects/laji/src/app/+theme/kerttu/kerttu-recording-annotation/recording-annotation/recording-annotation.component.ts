@@ -19,6 +19,8 @@ export class RecordingAnnotationComponent implements OnChanges {
   @Input() taxonList: string[];
   @Input() taxonExpertise: string[];
 
+  @Input() buttonsAreDisabled = false;
+
   @ViewChild('modal') public modalComponent: ModalDirective;
 
   generalAnnotation: IRecordingAnnotation = {};
