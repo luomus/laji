@@ -137,6 +137,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.buffer = undefined;
+    this.brushArea = undefined;
     this.hasError = false;
     this.audioPlayer.clear();
   }
