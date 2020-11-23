@@ -15,12 +15,20 @@ const template = readFileSync(join(distFolder, 'index.html')).toString();
 const win = domino.createWindow(template);
 
 win.process = process;
+
+// next 4 lines and the require('leaflet') needed to get leaflet to work on nodejs
+if (!win.screen) {
+  win.screen = {};
+}
+win.screen.devicePixelRatio = 1;
+
 (global as any).window = win;
 (global as any).document = win.document;
 (global as any).navigator = win.navigator;
 (global as any).KeyboardEvent = domino.impl.Event;
 (global as any).CSS = null;
 (global as any).Prism = null;
+(global as any).L = require('leaflet');
 
 win.devicePixelRatio = 2; // this is used by the leaflet library
 Object.assign(global, domino.impl);
