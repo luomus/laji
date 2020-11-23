@@ -2,7 +2,6 @@ import 'zone.js/dist/zone-node';
 
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as redis from 'redis';
-import * as Redlock from 'redlock';
 import * as express from 'express';
 import * as compression from 'compression';
 import { join } from 'path';
@@ -32,7 +31,6 @@ import { existsSync } from 'fs';
 import { REQUEST, RESPONSE } from '@nguniversal/express-engine/tokens';
 
 const RedisClient = redis.createClient({host: process.env.REDIS_HOST || 'localhost'});
-const Lock = new Redlock([RedisClient]);
 
 const render = (req, res, cb: (err: any, html: string) => void) => {
   res.render(
@@ -47,7 +45,7 @@ const startsWith = (url: string, start: string): boolean => {
     url.startsWith('/en' + start) ||
     url.startsWith('/sv' + start) ||
     url.startsWith('/fi' + start);
-}
+};
 
 const cache = () => {
   return (req, res, next) => {
@@ -58,25 +56,17 @@ const cache = () => {
       .filter((v) => !!v);
 
     // Skip cache for these requests
-    if (req.originalUrl.indexOf('/user') !== -1 || parts.length > 1) {
-      // If it start with any of there then cache it
-      if (!(startsWith(url, '/view') || startsWith(url, '/taxon') || startsWith(url, '/user/login'))) {
+    if (
+      !RedisClient.connected ||
+      ((req.originalUrl.indexOf('/user') !== -1 || parts.length > 1) && !(startsWith(url, '/view') || startsWith(url, '/taxon') || startsWith(url, '/user/login')))
+    ) {
         return next();
-      }
     }
 
     const cacheKey = 'page:' + (parts[0].replace(/\/$/, '') || '/') + '?' + (parts[1] ?? '');
-    const updateLock = function(key, cb: () => void) {
-      const lockKey = '_lock:' + key;
-      Lock.lock(lockKey, CACHE_UPDATE * 1000, (err, lock) => {
-        if (lock) {
-          cb();
-        }
-      });
-    };
     const cacheSet = function(html) {
       if (res.statusCode === 200 || res.statusCode === 304) {
-        RedisClient.set(cacheKey, html, 'EX', CACHE_TIME);
+        RedisClient.setex(cacheKey, CACHE_TIME, html);
       }
     };
 
@@ -87,23 +77,21 @@ const cache = () => {
 
         RedisClient.TTL(cacheKey, (error, ttl) => {
           if (CACHE_TIME - ttl > CACHE_UPDATE || ttl < 0 || error) {
-            updateLock(cacheKey, () => {
-              render(req, res, (err, html) => {
-                if (err) {
-                  return;
-                }
-                cacheSet(html);
-              });
+            render(req, res, (err, html) => {
+              if (err) {
+                return;
+              }
+              cacheSet(html);
             });
           }
         });
         return;
       } else {
+        const sendResponse = res.send.bind(res);
         res.header('x-cache', 'miss');
-        res.sendResponse = res.send;
         res.send = (body) => {
           cacheSet(body);
-          res.sendResponse(body);
+          sendResponse(body);
         };
         next();
       }
