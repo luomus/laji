@@ -6,7 +6,7 @@
                                  [displayInstructions]="false"
       ></laji-document-form-header>
       <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                      [child]="data.form.options?.about | multiLang"
+                      [child]="data.form.options?.about | multiLang: true:undefined:'%value%'"
       ></laji-info-page>
     </ng-container>
     <ng-template #datasetIntro>
