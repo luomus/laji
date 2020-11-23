@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
     this.subscriptionPublications = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {}).subscribe(
       publications => {
         this.publications = publications.content.split('</article>');
-        console.log(this.publications)
       }
     );
   }
