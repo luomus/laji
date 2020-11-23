@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 
-export class BibliographyComponent implements OnInit{
+export class BibliographyComponent implements OnInit {
 
   publications$: Observable<Information>;
 
