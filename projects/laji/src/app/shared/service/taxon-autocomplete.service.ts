@@ -44,7 +44,7 @@ export class TaxonAutocompleteService {
     const scientificName = (payload['cursiveName'] ? '<i>' +
     this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
     const vernacularName = this.addBold(payload['vernacularName'], text);
-    this.matchingName = this.addBold(payload['matchingName'], text);
+    this.matchingName = this.capitalizeFirstLetter(this.addBold(payload['matchingName'], text));
     let string;
 
     switch (payload['nameType']) {
