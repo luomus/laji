@@ -14,6 +14,8 @@ export class ProjectFormPage {
   public readonly documentFormView = new DocumentFormView();
   public readonly namedPlacesView = new NamedPlacesView();
   public readonly namedPlacesFormPage = new DocumentFormView();
+  public readonly aboutPage = new AboutPage();
+  public readonly mobileAboutPage = new MobileAboutPage();
 
   navigateTo(id, subPage = '') {
     return browser.get(`/project/${id}${subPage}`) as Promise<void>;
@@ -88,3 +90,12 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   }
 }
 
+class AboutPage {
+  public readonly $loginButton = $('.login-button');
+}
+
+class MobileAboutPage extends AboutPage {
+  public readonly $useButton = $('.use-button');
+  public readonly $terms = $('laji-project-form-terms');
+  public readonly $termsAcceptButton = this.$terms.$('button');
+}

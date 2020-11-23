@@ -35,6 +35,10 @@ export class UserPage {
     return this.usernameElem.isPresent() as Promise<boolean>;
   }
 
+  authPageIsDisplayed() {
+    return this.authLocal.isDisplayed() as Promise<boolean>;
+  }
+
   async login(user = DEFAULT_TEST_USER): Promise<void> {
     const currentUrl = await browser.getCurrentUrl();
     if (!currentUrl) {
@@ -76,16 +80,5 @@ export class UserPage {
       const logoutDone = EC.urlIs(browser.baseUrl);
       await browser.wait(logoutDone, 2000);
     }
-  }
-
-  async ensureIsLoggedIn() {
-    if (await this.usernameElem.isPresent()) {
-      return;
-    }
-    const currentUrl = await browser.getCurrentUrl();
-    if (!currentUrl) {
-      throw new Error('You must navigate to page before ensuring logged in!');
-    }
-    await this.login();
   }
 }
