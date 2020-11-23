@@ -35,10 +35,6 @@ export class UserPage {
     return this.usernameElem.isPresent() as Promise<boolean>;
   }
 
-  authPageIsDisplayed() {
-    return this.authLocal.isDisplayed() as Promise<boolean>;
-  }
-
   async login(user = DEFAULT_TEST_USER): Promise<void> {
     const currentUrl = await browser.getCurrentUrl();
     if (!currentUrl) {

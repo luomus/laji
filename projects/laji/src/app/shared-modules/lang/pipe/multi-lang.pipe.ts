@@ -19,15 +19,15 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
   }
 
-  transform(value: any, useFallback = true, lang?: string): any {
+  transform(value: any, useFallback = true, lang?: string, fallbackFormat?: string): any {
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;
     }
     if (Array.isArray(value)) {
-      return value.map(v => this.transform(v, useFallback, lang));
+      return value.map(v => this.transform(v, useFallback, lang, fallbackFormat));
     }
 
-    this.value = this.pickLang(value, useFallback, lang);
+    this.value = this.pickLang(value, useFallback, lang, fallbackFormat);
     if (!this.onLangChange) {
       this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
         this.value = this.pickLang(value, useFallback, lang);
@@ -44,13 +44,13 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
     }
   }
 
-  private pickLang(value, useFallback, lang?: string) {
+  private pickLang(value, useFallback, lang?: string, fallbackFormat = '%value% (%lang%)') {
     lang = lang || this.translate.currentLang;
     const hasLang = MultiLangService.hasValue(value, lang);
     if (!hasLang && !useFallback) {
       return '';
     }
 
-    return MultiLangService.getValue(value, lang, '%value% (%lang%)');
+    return MultiLangService.getValue(value, lang, fallbackFormat);
   }
 }
