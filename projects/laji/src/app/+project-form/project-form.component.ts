@@ -139,6 +139,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
               (!form.options?.useNamedPlaces && url.match(/\/form$/))
               || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
               || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
+              || (form.options?.useNamedPlaces && (url.match(/\/form\/places/) || url.match(/\/form\/MHL.*\/places/)))
             )
           )
         )
