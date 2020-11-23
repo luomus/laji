@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { Information } from '../shared/model/Information';
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   mapStartDate;
   images$: Observable<Image[]>;
@@ -48,6 +48,12 @@ export class HomeComponent implements OnInit {
         this.publications = publications.content.split('</article>');
       }
     );
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptionPublications) {
+      this.subscriptionPublications.unsubscribe();
+    }
   }
 
   taxonSelect(e) {
