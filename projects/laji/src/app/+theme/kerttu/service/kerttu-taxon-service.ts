@@ -3,6 +3,7 @@ import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
 import {Observable} from 'rxjs';
 import {Taxonomy} from '../../../shared/model/Taxonomy';
 import {map} from 'rxjs/operators';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class KerttuTaxonService {
@@ -10,6 +11,7 @@ export class KerttuTaxonService {
   private countThreshold = 50;
 
   constructor(
+    private translate: TranslateService,
     private taxonomyService: TaxonomyApi
   ) { }
 
@@ -17,7 +19,7 @@ export class KerttuTaxonService {
     return this.taxonomyService
       .taxonomyFindSpecies(
         this.birdsId,
-        'fi',
+        this.translate.currentLang,
         undefined,
         undefined,
         undefined,
@@ -39,6 +41,12 @@ export class KerttuTaxonService {
         }
         return arr;
       }, []))
+    );
+  }
+
+  public getTaxon(id: string): Observable<Taxonomy> {
+    return this.taxonomyService.taxonomyFindBySubject(
+      id, this.translate.currentLang, {selectedFields: ['vernacularName', 'scientificName', 'cursiveName']}
     );
   }
 }

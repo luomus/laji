@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording, IRecordingAnnotation, ITaxonAnnotations, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
-import {TaxonomyApi} from '../../../../shared/api/TaxonomyApi';
+import {IRecording, IRecordingAnnotation, IRecordingStatusInfo, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
 import {forkJoin, of, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {Autocomplete} from '../../../../shared/model/Autocomplete';
+import {KerttuTaxonService} from '../../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-recording-annotation',
@@ -15,8 +15,11 @@ import {Autocomplete} from '../../../../shared/model/Autocomplete';
 export class RecordingAnnotationComponent implements OnChanges {
   @Input() recording: IRecording;
   @Input() annotation: IRecordingAnnotation;
+  @Input() statusInfo: IRecordingStatusInfo;
   @Input() taxonList: string[];
   @Input() taxonExpertise: string[];
+
+  @Input() buttonsAreDisabled = false;
 
   @ViewChild('modal') public modalComponent: ModalDirective;
 
@@ -30,6 +33,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   modalTaxon: ITaxonWithAnnotation;
 
   @Output() nextRecordingClick = new EventEmitter();
+  @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
   @Output() addToTaxonExpertise = new EventEmitter<string>();
   @Output() annotationChange = new EventEmitter<IRecordingAnnotation>();
@@ -37,7 +41,7 @@ export class RecordingAnnotationComponent implements OnChanges {
   private selectedTaxonsSub: Subscription;
 
   constructor(
-    private taxonService: TaxonomyApi,
+    private taxonService: KerttuTaxonService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -114,9 +118,7 @@ export class RecordingAnnotationComponent implements OnChanges {
       for (const type of ['main', 'other']) {
         if (taxonAnnotations[type]?.length > 0) {
           const obs: Observable<ITaxonWithAnnotation>[] = taxonAnnotations[type].map(
-            a => this.taxonService.taxonomyFindBySubject(
-              a.taxonId, 'fi', {selectedFields: ['id', 'vernacularName', 'scientificName', 'cursiveName']}
-            ).pipe(map(taxon => {
+            a => this.taxonService.getTaxon(a.taxonId).pipe(map(taxon => {
               return {...taxon, annotation: a};
             }))
           );

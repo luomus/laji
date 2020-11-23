@@ -1,11 +1,13 @@
 <div class="row lu-section">
   <div class="col-sm-12">
     <div class="button-container">
-      <lu-button (click)="saveClick.emit()">Välitallenna</lu-button>
+      <lu-button [disabled]="!statusInfo?.hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
+      <lu-button [disabled]="buttonsAreDisabled" (click)="saveClick.emit()">{{ 'theme.kerttu.saveRecording' | translate }}</lu-button>
       <lu-button
+        [disabled]="buttonsAreDisabled"
         [role]="'success'"
         (click)="nextRecordingClick.emit()">
-        Seuraava äänite
+        {{ 'theme.kerttu.nextRecording' | translate }}
       </lu-button>
       <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
     </div>
@@ -30,7 +32,7 @@
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="generalAnnotation.isLowQuality" (change)="updateAnnotation()"/>Äänite on huonolaatuinen (kohinaa, sadetta tmv.)
+            <input type="checkbox" [(ngModel)]="generalAnnotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'theme.kerttu.isLowQuality' | translate }}
           </label>
           <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
         </div>
@@ -38,13 +40,13 @@
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="generalAnnotation.containsNoiseCausedByHumanActivity" (change)="updateAnnotation()">Ääniteellä kuuluu ihmistoiminnan ääniä (liikenne tmv.)
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsNoiseCausedByHumanActivity" (change)="updateAnnotation()">{{ 'theme.kerttu.containsNoiseCausedByHumanActivity' | translate }}
           </label>
           <laji-info [html]="'theme.kerttu.info.containsNoiseCausedByHumanActivity' | translate"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="generalAnnotation.containsHumanSpeech" (change)="updateAnnotation()">Ääniteellä kuuluu ihmisten puhetta
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'theme.kerttu.containsHumanSpeech' | translate }}
           </label>
           <laji-info [html]="'theme.kerttu.info.containsHumanSpeech' | translate"></laji-info>
         </div>
@@ -52,13 +54,13 @@
       <div class="col-sm-4">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="generalAnnotation.containsUnknownBirds" (change)="updateAnnotation()">Ääniteellä kuuluu linnun ääniä, joita en tunnista
+            <input type="checkbox" [(ngModel)]="generalAnnotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.containsUnknownBirds' | translate }}
           </label>
           <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="generalAnnotation.doesNotContainBirds" (change)="updateAnnotation()">Ääniteellä ei kuulu linnun ääniä
+            <input type="checkbox" [(ngModel)]="generalAnnotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.doesNotContainBirds' | translate }}
           </label>
           <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
         </div>
@@ -119,11 +121,13 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">Puuttuva laji</h3>
+        <h3 class="modal-title">{{ 'theme.kerttu.speciesMissing' | translate }}</h3>
       </div>
       <div class="modal-body">
         <div>
-          Laji "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>" puuttuu niiden lajien joukosta, jotka olet määritelly <em>Kirjaa asiantuntijuutesti</em> -osiossa. Haluatko lisätä sen?
+          <span [innerHTML]="'theme.kerttu.speciesMissing.description.part1' | translate"></span>
+          "<laji-taxon-name style="display: inline-block" [taxon]="modalTaxon" [addLink]="false"></laji-taxon-name>"
+          <span [innerHTML]="'theme.kerttu.speciesMissing.description.part2' | translate"></span>
         </div>
       </div>
       <div class="modal-footer">

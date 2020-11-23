@@ -2,19 +2,24 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum} from '../models';
+import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum, IRecordingStatusInfo} from '../models';
 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;
 }
-interface ILetterTemplateResponse extends ILetterResponse {
+export interface ILetterTemplateResponse extends ILetterResponse {
   template: ILetterTemplate;
 }
-interface ILetterCandidateResponse extends ILetterResponse {
+export interface ILetterCandidateResponse extends ILetterResponse {
   candidate: ILetterCandidate;
 }
-interface ILetterAnnotationResponse extends ILetterResponse {
+export interface ILetterAnnotationResponse extends ILetterResponse {
   annotation: LetterAnnotation;
+}
+export interface IRecordingResponse {
+  statusInfo: IRecordingStatusInfo;
+  annotation: IRecordingAnnotation;
+  recording: IRecording;
 }
 
 @Injectable()
@@ -73,28 +78,28 @@ export class KerttuApi {
     return this.httpClient.put<ILetterTemplateResponse>(path, { templateId }, { params });
   }
 
-  public getRecording(personToken: string): Observable<IRecording> {
+  public getRecording(personToken: string): Observable<IRecordingResponse> {
     const path = this.basePath + '/recording';
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IRecording>(path, { params });
+    return this.httpClient.get<IRecordingResponse>(path, { params });
   }
 
-  public getNextRecording(personToken: string, recordingId: number): Observable<IRecording> {
+  public getNextRecording(personToken: string, recordingId: number): Observable<IRecordingResponse> {
     const path = this.basePath + '/recording/next/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IRecording>(path, { params });
+    return this.httpClient.get<IRecordingResponse>(path, { params });
   }
 
-  public getRecordingAnnotation(personToken: string, recordingId: number): Observable<IRecordingAnnotation> {
-    const path = this.basePath + '/recording/annotation/' + recordingId;
+  public getPreviousRecording(personToken: string, recordingId: number): Observable<IRecordingResponse> {
+    const path = this.basePath + '/recording/previous/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IRecordingAnnotation>(path, { params });
+    return this.httpClient.get<IRecordingResponse>(path, { params });
   }
 
-  public setRecordingAnnotation(personToken: string, recordingId: number, annotation: IRecordingAnnotation) {
+  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IRecordingAnnotation) {
     const path = this.basePath + '/recording/annotation/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);
 

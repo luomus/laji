@@ -87,7 +87,7 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
       {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
       {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
+      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]}
     ]
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},

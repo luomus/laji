@@ -9,6 +9,10 @@ lu-sidebar-link .badge {
   background-color: #2e921c;
 }
 
+:host ::ng-deep lu-sidebar .sidebar {
+  height: 100vh;
+}
+
 @media only screen and (min-width : 768px) {
   main {
     padding: 20px 40px;
