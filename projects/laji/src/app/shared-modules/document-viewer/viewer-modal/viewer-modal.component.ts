@@ -42,6 +42,7 @@ export class ViewerModalComponent implements OnInit, OnDestroy {
   }
 
   onModalHide() {
+    console.log('ciao')
     const body = document.body;
     if (body.classList.contains('modal-open-after')) {
       body.classList.remove('modal-open-after');

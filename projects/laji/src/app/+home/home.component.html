@@ -126,9 +126,7 @@
       </div>
       <div class="d-flex flex-wrap">
         <!--<laji-info-page [rootPage]="{'fi': '4442', 'en': '4440', 'sv': '4444'}"></laji-info-page>-->
-        <ng-container *ngFor="let publication of publications; let i= index">
-          <div innerHTML="{{publication}}" *ngIf="i<3"></div>
-        </ng-container>
+        <div innerHTML="{{ (publications$ | async).content }}"></div>
         <lu-button role="primary" [anchor]="['/theme/publications'] | localize">
           {{ 'finbif-bib.seeAll' | translate }}
         </lu-button>
