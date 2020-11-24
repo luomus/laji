@@ -1494,7 +1494,7 @@ span.simple-option {
   }
 
   article p {
-    margin-bottom: 0px!important;
+    margin-bottom: 2px!important;
   }
 
   article p.publication-doi {
@@ -1503,9 +1503,9 @@ span.simple-option {
 
   h1.publication-title {
     margin-top: 20px;
-    margin-bottom: 5px;
+    padding-bottom: 4px;
     font-size: 16px;
-    display: inline;
+    display: inline-block;
     line-height: 20px;
     font-weight: 400;
     margin: 0;
@@ -1522,6 +1522,18 @@ span.simple-option {
   .finBif-info {
     position: relative;
     top: -3px;
+  }
+
+  span.publication-journal::after {
+    content: ' ';
+  }
+
+  article p time::before {
+    content: ' ';
+  }
+
+  article p span {
+    font-size: 12px;
   }
 
   .finBif-publications {
