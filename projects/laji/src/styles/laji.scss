@@ -1508,9 +1508,15 @@ span.simple-option {
   h1.publication-title {
     margin-top: 20px !important;
     margin-bottom: 5px !important;
-    font-size: 20px !important;
+    font-size: 16px !important;
     display: inline;
     line-height: 20px;
+    font-weight: 400 !important;
+    margin: 0;
+  }
+
+  article.publication header {
+    margin-bottom: 0px;
   }
 
   .finBif-publications h2 {

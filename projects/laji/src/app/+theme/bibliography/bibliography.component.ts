@@ -28,7 +28,7 @@ export class BibliographyComponent implements OnInit {
   }
 
 ngOnInit() {
-  this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
+  this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-all', {});
 }
 
 }

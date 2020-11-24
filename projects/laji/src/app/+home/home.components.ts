@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
@@ -17,13 +17,12 @@ import { Information } from '../shared/model/Information';
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
 
   mapStartDate;
   images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
-  publications: any;
-  subscriptionPublications: Subscription;
+  publications$: Observable<Information>;
 
   formId = Global.forms.whichSpecies;
 
@@ -43,17 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       map(data => data.identify && data.identify.results || []),
       map(data => data.map(item => item.unit.media[0]))
     );
-    this.subscriptionPublications = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {}).subscribe(
-      publications => {
-        this.publications = publications.content.split('</article>');
-      }
-    );
-  }
-
-  ngOnDestroy() {
-    if (this.subscriptionPublications) {
-      this.subscriptionPublications.unsubscribe();
-    }
+    this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
   }
 
   taxonSelect(e) {
