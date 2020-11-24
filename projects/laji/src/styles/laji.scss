@@ -1454,7 +1454,7 @@ span.simple-option {
     font-size: 14px;
     padding: 0;
     list-style-type: none;
-    margin-bottom: 0px !important;
+    margin-bottom: 0px;
   }
 
   article p {
@@ -1498,7 +1498,7 @@ span.simple-option {
   }
 
   article p {
-    margin-bottom: 0px!important;
+    margin-bottom: 0px;
   }
 
   article p.publication-doi {
@@ -1506,9 +1506,9 @@ span.simple-option {
   }
 
   h1.publication-title {
-    margin-top: 20px !important;
-    margin-bottom: 5px !important;
-    font-size: 16px !important;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
     display: inline;
     line-height: 20px;
     font-weight: 400;
