@@ -304,6 +304,13 @@ treenode:last-child > .tree-node > .tree-children::after {
   }
 }
 
+popover-container.bottom, popover-container.top {
+  .popover-arrow {
+    border-right-color: rgba(0,0,0,0) !important;
+    border-left-color: rgba(0,0,0,0) !important;
+  }
+}
+
 .margin-bottom-20 {
   margin-bottom: 20px;
 }
