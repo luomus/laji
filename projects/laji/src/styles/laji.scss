@@ -1489,12 +1489,8 @@ span.simple-option {
     line-height: 14px;
   }
 
-  span.publication-doi {
-    margin-bottom:20px !important;
-  }
-
   p.publication-doi, span.publication-journal, .publication-page-start, .publication-volume {
-    font-size: 12px !important;
+    font-size: 12px;
   }
 
   article p {
@@ -1506,12 +1502,12 @@ span.simple-option {
   }
 
   h1.publication-title {
-    margin-top: 20px !important;
-    margin-bottom: 5px !important;
-    font-size: 16px !important;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 16px;
     display: inline;
     line-height: 20px;
-    font-weight: 400 !important;
+    font-weight: 400;
     margin: 0;
   }
 
