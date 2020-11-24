@@ -1536,6 +1536,10 @@ span.simple-option {
     font-size: 12px;
   }
 
+  .publication-issue:before {
+    content: ' ';
+  }
+
   .finBif-publications {
     max-width: 600px;
     @include media-query-laptop {
