@@ -39,7 +39,7 @@
     >
       <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
     </div>-->
-    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxon.obsoleteVernacularName"
+    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxon.synonyms || taxon.obsoleteVernacularName"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.otherNames' | translate"
@@ -47,7 +47,6 @@
          [autoToggle]="true"
     >
       <laji-taxon-names [taxon]="taxon"></laji-taxon-names>
-      <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
     </div>
     <div class="panel panel-default"
          laji-panel
