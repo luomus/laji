@@ -49,4 +49,23 @@ export class TaxonNamesComponent implements OnInit {
   ngOnInit() {
   }
 
+  taxonHasSynonymKey(taxon) {
+    for (let i = 0; i < this.synonymTypes.length; i++) {
+      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  hasOtherNamesBefore(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (this.availableLangs[array[i]].length > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
