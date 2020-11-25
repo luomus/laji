@@ -295,22 +295,6 @@ treenode:last-child > .tree-node > .tree-children::after {
   z-index: 1070;
 }
 
-.popover-lg {
-  border: none;
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1), 0 4px 16px 0 rgba(0,0,0,0.1);
-  .popover-arrow {
-    border-right-color: rgba(0,0,0,.1) !important;
-    border-left-color: rgba(0,0,0,.1) !important;
-  }
-}
-
-popover-container.bottom, popover-container.top {
-  .popover-arrow {
-    border-right-color: rgba(0,0,0,0) !important;
-    border-left-color: rgba(0,0,0,0) !important;
-  }
-}
-
 .margin-bottom-20 {
   margin-bottom: 20px;
 }
@@ -1481,7 +1465,7 @@ span.simple-option {
         content: " & ";
     }
   }
- 
+
   ol.authors li:nth-of-type(n + 2):not(:last-child) {
     &::before {
       content: ", ";
