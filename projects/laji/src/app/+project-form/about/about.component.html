@@ -6,7 +6,7 @@
                                  [displayInstructions]="false"
       ></laji-document-form-header>
       <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
-                      [child]="data.form.options?.about | multiLang"
+                      [child]="data.form.options?.about | multiLang: true:undefined:'%value%'"
       ></laji-info-page>
     </ng-container>
     <ng-template #datasetIntro>
@@ -21,18 +21,20 @@
 </ng-container>
 
 <ng-template #loginButton>
-  <lu-button (click)="login()" role="primary">{{ 'project-form.about.login' | translate }}</lu-button>
+  <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
 </ng-template>
 
 <ng-template #mobile>
   <ng-container *ngIf="aboutData$ | async as data">
     <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
     <laji-document-form-header [formID]="data.form.id"></laji-document-form-header>
-    <button type="button"
-            class="btn btn-md btn-primary btn-block use-button"
-            (click)="enterForm()">
-      {{ 'haseka.mobile.newObservation' | translate }}
-    </button>
+    <ng-container *ngIf="data.loggedIn; else loginButton">
+      <button type="button"
+              class="btn btn-md btn-primary btn-block use-button"
+              (click)="enterForm()">
+        {{ 'haseka.mobile.newObservation' | translate }}
+      </button>
+    </ng-container>
     <laji-haseka-latest [forms]="[data.form.id]"
                         [showFormNames]="false"
                         [complainLocality]="false"

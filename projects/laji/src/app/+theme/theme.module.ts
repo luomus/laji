@@ -31,8 +31,9 @@ import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
-import { AudioService } from './kerttu/service/audio.service';
-import { SpectrogramService } from './kerttu/service/spectrogram.service';
+import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
+import { AudioService } from './kerttu/audio-viewer/service/audio.service';
+import { SpectrogramService } from './kerttu/audio-viewer/service/spectrogram.service';
 import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
 import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
@@ -55,6 +56,7 @@ import { ProtaxFormComponent } from './protax/protax-form/protax-form.component'
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
+import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annotation/kerttu-occurrence-table/kerttu-occurrence-table.component';
 
 /* tslint:enable:max-line-length */
 
@@ -109,11 +111,13 @@ import { GeneticResourceInstructionsComponent } from './genetic-resource/instruc
     ProtaxFormComponent,
     NotFoundComponent,
     GeneticResourceLayoutComponent,
-    GeneticResourceInstructionsComponent
+    GeneticResourceInstructionsComponent,
+    KerttuOccurrenceTableComponent
   ],
   providers: [
     QualityService,
     KerttuApi,
+    KerttuTaxonService,
     AudioService,
     SpectrogramService,
     ProtaxApi,

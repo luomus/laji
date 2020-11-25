@@ -1,6 +1,6 @@
 <div class="mt-6" style="margin-bottom: 10px">
   <h2 class="d-inline">
-    <laji-taxon-name [capitalizeName]="true" [taxon]="taxon$ | async" [capitalizeName]="true"></laji-taxon-name>
+    <laji-taxon-name [capitalizeName]="true" [taxon]="taxon$ | async"></laji-taxon-name>
   </h2>
   <span class="gray ml-2"> ({{ template?.name }})</span>
   <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
@@ -76,28 +76,32 @@
     </div>
   </div>
 
-  <div class="col-md-6 col-md-push-6">
+  <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
     <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
     <laji-audio-viewer
       [recording]="template?.recording"
-      [xRangePadding]="xRangePadding"
-      [xRange]="template?.xRange"
-      [yRange]="template?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: template?.xRange,
+        yRange: template?.yRange
+      }"
+      [focusAreaTimePadding]="xRangePadding"
+      [zoomFrequency]="zoomed"
       (audioLoading)="loadingTemplate = $event"
     ></laji-audio-viewer>
   </div>
-  <div class="col-md-6 col-md-pull-6">
+  <div id="letterCandidateContainer" class="col-md-6 col-md-pull-6">
     <h4>
       {{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})
       <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
     </h4>
     <laji-audio-viewer
       [recording]="candidate?.recording"
-      [xRangePadding]="xRangePadding"
-      [xRange]="candidate?.xRange"
-      [yRange]="candidate?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: candidate?.xRange,
+        yRange: candidate?.yRange
+      }"
+      [focusAreaTimePadding]="xRangePadding"
+      [zoomFrequency]="zoomed"
       [autoplay]="autoplayCandidate"
       [autoplayRepeat]="3"
       (audioLoading)="loadingCandidate = $event"
@@ -114,9 +118,11 @@
     <laji-audio-viewer
       *ngIf="candidateLongerVisible"
       [recording]="candidate?.recording"
-      [xRange]="candidate?.xRange"
-      [yRange]="candidate?.yRange"
-      [zoomed]="zoomed"
+      [focusArea]="{
+        xRange: candidate?.xRange,
+        yRange: candidate?.yRange
+      }"
+      [zoomFrequency]="zoomed"
     ></laji-audio-viewer>
   </div>
 </div>

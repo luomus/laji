@@ -1,4 +1,6 @@
-import { browser, $, $$ } from 'protractor';
+import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
+
+const EC = ExpectedConditions;
 
 export class ProjectFormPage {
 
@@ -8,6 +10,12 @@ export class ProjectFormPage {
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
   private modalBody = $('body.modal-open');
+
+  public readonly documentFormView = new DocumentFormView();
+  public readonly namedPlacesView = new NamedPlacesView();
+  public readonly namedPlacesFormPage = new DocumentFormView();
+  public readonly aboutPage = new AboutPage();
+  public readonly mobileAboutPage = new MobileAboutPage();
 
   navigateTo(id, subPage = '') {
     return browser.get(`/project/${id}${subPage}`) as Promise<void>;
@@ -47,12 +55,47 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
   public readonly $container = $('laji-named-place');
   public readonly $list = this.$container.$('laji-np-list');
   public readonly $$listItems = this.$list.$$('datatable-body-row');
+  public readonly $listActiveItem = this.$list.$('datatable-body-row.active');
   public readonly $viewer = $$('.np-info').filter($elem => $elem.isDisplayed()).first();
+  public readonly getNameInViewer = () => this.$viewer.$('h3').getText();
   public readonly $useButton = this.$viewer.$('.lu-btn.primary');
+  public readonly $addButton = this.$container.$('.choose-label .lu-btn.secondary');
+  public readonly $deleteButton = this.$viewer.$('#np-delete');
+  public readonly $modal = this.$container.$('laji-np-info .modal.in');
+  public readonly $modalCloseButton = this.$modal.$('.modal-header lu-button');
+
+  async delete() {
+    await this.$deleteButton.click();
+    await browser.switchTo().alert().accept();
+  }
 }
 
 export class DocumentFormView { // tslint:disable-line max-classes-per-file
+  public readonly $container = $('laji-project-form-form');
   public readonly $form = $('laji-form .laji-form');
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
-  $findLajiFormNode = (locator: string) => this.$form.$(`#_laji-form_0_root_${locator.replace(/\./g, '_')}`);
+  public readonly $save = $('laji-document-form-footer .btn-success');
+  public readonly $blockingLoader = $('.laji-form.blocking-loader');
+
+  getContextId = async () => (await this.$form.$('.rjsf > .form-group').getAttribute('id')).match(/\d+/)[0];
+
+  $findLajiFormNode = async (locator: string) => {
+    const contextId = await this.getContextId();
+    return this.$form.$(`#_laji-form_${contextId}_root_${locator.replace(/\./g, '_')}`);
+  }
+
+  async save() {
+    await this.$save.click();
+    await browser.wait(EC.invisibilityOf(this.$blockingLoader));
+  }
+}
+
+class AboutPage {
+  public readonly $loginButton = $('.login-button');
+}
+
+class MobileAboutPage extends AboutPage {
+  public readonly $useButton = $('.use-button');
+  public readonly $terms = $('laji-project-form-terms');
+  public readonly $termsAcceptButton = this.$terms.$('button');
 }

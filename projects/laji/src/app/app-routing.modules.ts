@@ -106,6 +106,8 @@ const routesWithLang: Routes = [
     {path: 'bibliografi', redirectTo: '/sv/theme/publications', pathMatch: 'full'},
     {path: 'publications', redirectTo: '/en/theme/publications', pathMatch: 'full'},
     {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
+    {path: 'laadunvalvonta', redirectTo: '/about/772', pathMatch: 'full'},
+    {path: 'sensitiiviset', redirectTo: '/about/709', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

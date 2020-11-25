@@ -2,11 +2,14 @@ import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { Router } from '@angular/router';
 import { Global } from '../../environments/global';
+import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
+import { Information } from '../shared/model/Information';
+
 
 @Component({
   selector: 'laji-home',
@@ -14,18 +17,21 @@ import { Global } from '../../environments/global';
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
 
   mapStartDate;
   images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
+  publications$: Observable<Information>;
+
   formId = Global.forms.whichSpecies;
 
   constructor(
     private sourceService: SourceService,
     private homeDataService: HomeDataService,
     public translate: TranslateService,
-    public router: Router
+    public router: Router,
+    private apiService: LajiApiService
   ) {
   }
 
@@ -36,16 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       map(data => data.identify && data.identify.results || []),
       map(data => data.map(item => item.unit.media[0]))
     );
-  }
-
-  ngAfterViewInit() {
-    if (!document.getElementById('twitter-wjs')) {
-      const scriptElem = document.getElementsByTagName('script')[0];
-      const newScriptElem = document.createElement('script');
-      newScriptElem.id = 'twitter-wjs';
-      newScriptElem.src = 'https://platform.twitter.com/widgets.js';
-      scriptElem.parentNode.insertBefore(newScriptElem, scriptElem);
-    }
+    this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
   }
 
   taxonSelect(e) {

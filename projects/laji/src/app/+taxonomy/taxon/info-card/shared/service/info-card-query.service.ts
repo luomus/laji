@@ -10,7 +10,8 @@ export class InfoCardQueryService {
       typeSpecimen: typeSpecimen,
       includeNonValidTaxa: false,
       reliability: ['RELIABLE', 'UNDEFINED'],
-      cache: true
+      cache: true,
+      needsCheck: false
     };
   }
 
@@ -18,7 +19,7 @@ export class InfoCardQueryService {
     return {
       taxonId: [taxonId],
       superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
-      reliability: ['RELIABLE', 'UNDEFINED'],
+      reliability: ['RELIABLE'],
       includeNonValidTaxa: false,
       cache: true
     };
@@ -29,7 +30,7 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       countryId: ['ML.206'],
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
-      reliability: ['RELIABLE', 'UNDEFINED'],
+      recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED', 'NEUTRAL'],
       needsCheck: false,
       includeNonValidTaxa: false,
       cache: true

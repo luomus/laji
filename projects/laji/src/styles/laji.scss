@@ -304,6 +304,13 @@ treenode:last-child > .tree-node > .tree-children::after {
   }
 }
 
+popover-container.bottom, popover-container.top {
+  .popover-arrow {
+    border-right-color: rgba(0,0,0,0) !important;
+    border-left-color: rgba(0,0,0,0) !important;
+  }
+}
+
 .margin-bottom-20 {
   margin-bottom: 20px;
 }
@@ -1449,42 +1456,70 @@ span.simple-option {
     margin-bottom: 0px!important;
   }
 
-  ul.authors {
+  ol.authors {
     line-height: 16px;
     font-size: 14px;
     padding: 0;
     list-style-type: none;
+    margin-bottom: 0px !important;
   }
 
-  ul.authors li {
+  article p {
+    margin-bottom: 0px;
+  }
+
+  article p time {
+    font-size: 12px;
+  }
+
+  ol.authors li {
     display: inline;
   }
 
-  ul.authors li:last-child {
+  ol.authors li:last-child {
     &::before {
         content: " & ";
     }
   }
  
-  ul.authors li:nth-of-type(n + 2):not(:last-child) {
+  ol.authors li:nth-of-type(n + 2):not(:last-child) {
     &::before {
       content: ", ";
     }
   }
 
-  p.publication-doi {
-    margin-bottom:20px !important;
-  }
-
-  p.publication-doi, p.publication-journal {
-    font-size: 12px !important;
-  }
-
-  h4.publication-title {
-    margin-top: 20px !important;
-    margin-bottom: 5px !important;
-    font-size: 16px !important;
+  ol.authors li address {
     display: inline;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0;
+    line-height: 14px;
+  }
+
+  p.publication-doi, span.publication-journal, .publication-page-start, .publication-volume {
+    font-size: 12px;
+  }
+
+  article p {
+    margin-bottom: 2px!important;
+  }
+
+  article p.publication-doi {
+    margin-bottom: 20px!important;
+  }
+
+  h1.publication-title {
+    margin-top: 20px;
+    padding-bottom: 4px;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 20px;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  article.publication header {
+    margin-bottom: 0px;
   }
 
   .finBif-publications h2 {
@@ -1494,6 +1529,22 @@ span.simple-option {
   .finBif-info {
     position: relative;
     top: -3px;
+  }
+
+  span.publication-journal::after {
+    content: ' ';
+  }
+
+  article p time::before {
+    content: ' ';
+  }
+
+  article p span {
+    font-size: 12px;
+  }
+
+  .publication-issue:before {
+    content: ' ';
   }
 
   .finBif-publications {
