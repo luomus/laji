@@ -19,7 +19,6 @@ export class LoadedElementsStore {
   }
 
   getIdxFromName(s: string): number {
-    console.log(this.names.findIndex(name => name === s))
     return this.names.findIndex(name => name === s);
   }
 
