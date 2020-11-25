@@ -226,7 +226,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     return [
       {e: this.hasImageData, t: 'images'},
       {e: this.hasBiologyData, t: 'biology'},
-      {e: this.isFromMasterChecklist, t: 'observations'},
       {e: this.isFromMasterChecklist, t: 'specimens'},
       {e: this.isEndangered, t: 'endangerment'},
       {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
