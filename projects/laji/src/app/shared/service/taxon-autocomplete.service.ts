@@ -44,8 +44,7 @@ export class TaxonAutocompleteService {
     const scientificName = (payload['cursiveName'] ? '<i>' +
     this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
     const vernacularName = this.addBold(payload['vernacularName'], text);
-    this.matchingName = payload['matchingName'][0] === payload['matchingName'][0].toUpperCase() ?
-    this.capitalizeFirstLetter(this.addBold(payload['matchingName'], text)) : this.addBold(payload['matchingName'], text);
+    this.matchingName = this.addBold(payload['matchingName'], text);
     let string;
 
     switch (payload['nameType']) {
@@ -103,7 +102,10 @@ export class TaxonAutocompleteService {
     words.forEach(el => {
       const newOriginal = original.toLowerCase();
       const newString = el.toLowerCase();
-      original = newOriginal.includes(newString) ? newOriginal.replace(newString, '<b>' + newString + '</b>') : newOriginal;
+      const index = newOriginal.indexOf(newString);
+      original = index > -1 ?
+      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
+      : original;
     });
     return original;
   }
