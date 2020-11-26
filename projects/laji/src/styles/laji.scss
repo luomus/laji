@@ -1457,10 +1457,14 @@ span.simple-option {
   }
 
   ol.authors li {
-    display: inline;
+    display: inline-block;
+    -webkit-margin-after: 0;
+    -moz-margin-after: 0;
+    margin-right: -4px;
   }
 
   ol.authors li:last-child {
+    margin-left: 4px;
     &::before {
         content: " & ";
     }
@@ -1473,7 +1477,7 @@ span.simple-option {
   }
 
   ol.authors li address {
-    display: inline;
+    display: inline-block;
     margin-top: 0px;
     margin-bottom: 0px;
     padding: 0;
@@ -1519,16 +1523,31 @@ span.simple-option {
     content: ' ';
   }
 
-  article p time::before {
-    content: ' ';
-  }
-
   article p span {
     font-size: 12px;
+    display: inline-block;
+  }
+
+  article p span time {
+    margin-left: 4px;
+  }
+
+  article p span:nth-child(2) + time {
+    margin-left: 4px;
+  }
+
+
+
+  span.publication-volume, span.publication-issue {
+    margin-right: -4px;
   }
 
   .publication-issue:before {
     content: ' ';
+  }
+
+  .publication-page-start, .publication-page-start + span, .publication-page-start + span + .publication-page-end {
+    margin-left: -4px;
   }
 
   .finBif-publications {
