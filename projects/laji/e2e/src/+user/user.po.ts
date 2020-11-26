@@ -11,6 +11,8 @@ export const TEST_USERS = {
   }
 };
 
+const EC = protractor.ExpectedConditions;
+
 export class UserPage {
 
   private usernameElem = element(by.id('logged-in-user'));
@@ -41,11 +43,9 @@ export class UserPage {
       throw new Error('You must navigate to page before ensuring logged in!');
     }
 
-    await browser.waitForAngularEnabled(false);
 
     try {
-      const userEC = protractor.ExpectedConditions;
-      const userNameExists = userEC.presenceOf(this.usernameElem);
+      const userNameExists = EC.presenceOf(this.usernameElem);
       await browser.wait(userNameExists, 500);
     } catch (e) {}
 
@@ -53,28 +53,42 @@ export class UserPage {
       if (!await this.authLocal.isPresent()) {
         await this.loginElem.click();
       }
-      await this.authLocal.click();
-      await this.authUsername.sendKeys(user);
-      await this.authPassword.sendKeys(TEST_USERS[user].pw);
-      await this.submitButton.click();
-
-
-      const EC = protractor.ExpectedConditions;
-      const loginDone = EC.urlContains(browser.baseUrl);
-      await browser.wait(loginDone, 2000);
-      await browser.sleep(1000);
+      await this.doExternalLogin(user);
     }
+  }
+
+  async doExternalLogin(user = DEFAULT_TEST_USER) {
+    await browser.waitForAngularEnabled(false);
+
+    await browser.wait(EC.visibilityOf(this.authLocal), 1000);
+    await this.authLocal.click();
+    await this.authUsername.sendKeys(user);
+    await this.authPassword.sendKeys(TEST_USERS[user].pw);
+    await this.submitButton.click();
+
+    const loginDone = EC.urlContains(browser.baseUrl);
+    await browser.wait(loginDone, 2000);
+    await browser.sleep(1000);
+
     await browser.waitForAngularEnabled(true);
   }
 
   async logout(): Promise<void> {
+    const currentUrl = await browser.getCurrentUrl();
+    if (!currentUrl) {
+      throw new Error('You must navigate to page before ensuring logged in!');
+    }
     if (await this.usernameElem.isPresent()) {
       await this.usernameElem.click();
       await this.logoutElem.click();
 
-      const EC = protractor.ExpectedConditions;
       const logoutDone = EC.urlIs(browser.baseUrl);
       await browser.wait(logoutDone, 2000);
     }
+  }
+
+  async isOnExternalLoginPage() {
+    await browser.wait(EC.visibilityOf(this.authLocal), 2000);
+    return (await this.authLocal.isPresent()) && (await this.authLocal.isDisplayed());
   }
 }
