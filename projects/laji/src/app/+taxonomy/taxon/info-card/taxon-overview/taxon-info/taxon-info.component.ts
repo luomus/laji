@@ -23,13 +23,10 @@ export class TaxonInfoComponent implements OnInit {
   }
 
   initLangTaxonNames() {
-    for (let key in this.langs) {
+    for (const key in this.langs) {
       if (this.taxon.vernacularName.hasOwnProperty(key)) {
-        
         this.availableVernacularNames.push({'lang': key, 'fullLang': this.langs[key]});
       }
     }
   }
-  
-
 }

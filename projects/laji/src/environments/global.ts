@@ -214,10 +214,10 @@ export const Global = {
     simpleDownload: 10000
   },
   langs : {
-    fi: "suomi",
-    sv: "svenska",
-    en: "english",
-    se: "same",
-    ru: "русский"
+    fi: 'suomi',
+    sv: 'svenska',
+    en: 'english',
+    se: 'same',
+    ru: 'русский'
   }
 };
