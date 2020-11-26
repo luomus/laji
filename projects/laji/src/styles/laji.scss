@@ -299,6 +299,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   margin-bottom: 20px;
 }
 
+.border-top-1 {
+  border-top: 1px solid #ddd !important;
+}
+
 .small-flag {
   height: 11px;
   width: auto;
