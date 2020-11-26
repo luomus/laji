@@ -6,7 +6,6 @@ export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
   public readonly $sidebar = $('.sidebar');
-  private aboutElem = $('laji-about');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
   private modalBody = $('body.modal-open');
@@ -30,7 +29,7 @@ export class ProjectFormPage {
   }
 
   hasAboutText() {
-    return this.aboutElem.isPresent();
+    return this.aboutPage.$aboutContent.isPresent();
   }
 
   clickFormLink() {
@@ -91,6 +90,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
 }
 
 class AboutPage {
+  public readonly $aboutContent = $('laji-about');
   public readonly $loginButton = $('.login-button');
 }
 

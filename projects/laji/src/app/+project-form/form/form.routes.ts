@@ -4,7 +4,6 @@ import { FormComponent } from './form.component';
 import { NamedPlaceComponent } from './named-place/named-place/named-place.component';
 import { NpEditFormComponent } from './named-place/np-edit-form/np-edit-form.component';
 import { NpPrintComponent } from './named-place/np-print/np-print.component';
-import { OnlyLoggedIn } from '../../shared/route/only-logged-in';
 import { DocumentDeActivateGuard } from '../../shared/guards/document-de-activate.guard';
 import { HasFormPermission } from '../guards/has-form-permission';
 import { HasViewPermission } from '../guards/has-view-permission';
@@ -17,7 +16,7 @@ export const routes: Routes = [
   },
   {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     data: {displayFeedback: false}
   },
   {
@@ -25,12 +24,12 @@ export const routes: Routes = [
   },
   {
     path: ':formOrDocument/places/:namedPlace/edit', component: NpEditFormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     data: {displayFeedback: false}
   },
   {
     path: ':formOrDocument/places/:namedPlace', component: FormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false}
   },
@@ -41,12 +40,12 @@ export const routes: Routes = [
   },
   {
     path: 'places/new', component: NpEditFormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     data: {displayFeedback: false}
    },
   {
     path: 'places/:namedPlace/edit', component: NpEditFormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     data: {displayFeedback: false}
   },
   {
@@ -54,7 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'places/:namedPlace', component: FormComponent,
-    canActivate: [OnlyLoggedIn, HasFormPermission],
+    canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false}
   },
