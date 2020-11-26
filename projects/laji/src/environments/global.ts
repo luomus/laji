@@ -212,5 +212,12 @@ export const Global = {
   },
   limit: {
     simpleDownload: 10000
+  },
+  langs : {
+    fi: "suomi",
+    sv: "svenska",
+    en: "english",
+    se: "same",
+    ru: "русский"
   }
 };

@@ -11,7 +11,6 @@ export class TaxonNamesComponent implements OnInit {
   _taxon: Taxonomy;
   availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
 
-  
   @Input() set taxon(taxon: Taxonomy) {
     this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
     for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
