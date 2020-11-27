@@ -13,10 +13,8 @@ export const SYNONYM_KEYS = [
   'subjectiveSynonyms',
   'homotypicSynonyms',
   'heterotypicSynonyms',
-  'alternativeNames',
   'synonyms',
   'misspelledNames',
-  'misappliedNames',
   'orthographicVariants',
   'uncertainSynonyms'
 ];

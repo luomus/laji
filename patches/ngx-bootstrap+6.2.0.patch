@@ -1,0 +1,64 @@
+diff --git a/node_modules/ngx-bootstrap/modal/fesm2015/ngx-bootstrap-modal.js b/node_modules/ngx-bootstrap/modal/fesm2015/ngx-bootstrap-modal.js
+index 6ea143e..0ed9222 100644
+--- a/node_modules/ngx-bootstrap/modal/fesm2015/ngx-bootstrap-modal.js
++++ b/node_modules/ngx-bootstrap/modal/fesm2015/ngx-bootstrap-modal.js
+@@ -207,6 +207,7 @@ class ModalContainerComponent {
+         this.isShown = false;
+         this.isModalHiding = false;
+         this.clickStartedInContent = false;
++        this.clickStartedInScrollBar = false;
+         this.config = Object.assign({}, options);
+     }
+     /**
+@@ -241,6 +242,7 @@ class ModalContainerComponent {
+      */
+     onClickStarted(event) {
+         this.clickStartedInContent = event.target !== this._element.nativeElement;
++        this.clickStartedInScrollBar = event.clientX > this._element.nativeElement.clientWidth;
+     }
+     /**
+      * @param {?} event
+@@ -248,11 +250,12 @@ class ModalContainerComponent {
+      */
+     onClickStop(event) {
+         /** @type {?} */
+-        const clickedInBackdrop = event.target === this._element.nativeElement && !this.clickStartedInContent;
++        const clickedInBackdrop = event.target === this._element.nativeElement && !this.clickStartedInContent && !this.clickStartedInScrollBar;
+         if (this.config.ignoreBackdropClick ||
+             this.config.backdrop === 'static' ||
+             !clickedInBackdrop) {
+             this.clickStartedInContent = false;
++            this.clickStartedInScrollBar = false;
+             return;
+         }
+         this.bsModalService.setDismissReason(DISMISS_REASONS.BACKRDOP);
+@@ -527,6 +530,7 @@ class ModalDirective {
+         this.timerRmBackDrop = 0;
+         this.isNested = false;
+         this.clickStartedInContent = false;
++        this.clickStartedInScrollBar = false;
+         this._backdrop = clf.createLoader(_element, _viewContainerRef, _renderer);
+         this._config = modalDefaultOption || modalConfigDefaults;
+     }
+@@ -556,6 +560,7 @@ class ModalDirective {
+      */
+     onClickStarted(event) {
+         this.clickStartedInContent = event.target !== this._element.nativeElement;
++        this.clickStartedInScrollBar = event.clientX > this._element.nativeElement.clientWidth;
+     }
+     /**
+      * @param {?} event
+@@ -563,11 +568,12 @@ class ModalDirective {
+      */
+     onClickStop(event) {
+         /** @type {?} */
+-        const clickedInBackdrop = event.target === this._element.nativeElement && !this.clickStartedInContent;
++        const clickedInBackdrop = event.target === this._element.nativeElement && !this.clickStartedInContent && !this.clickStartedInScrollBar;
+         if (this.config.ignoreBackdropClick ||
+             this.config.backdrop === 'static' ||
+             !clickedInBackdrop) {
+             this.clickStartedInContent = false;
++            this.clickStartedInScrollBar = false;
+             return;
+         }
+         this.dismissReason = DISMISS_REASONS.BACKRDOP;

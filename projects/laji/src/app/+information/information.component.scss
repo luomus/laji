@@ -14,8 +14,12 @@ lu-sidebar {
   background-color: $neutral-3;
 }
 
-main > div {
+.information-container {
   max-width: 1000px;
+}
+
+.makeup-width {
+  max-width: 280px;
 }
 
 :host ::ng-deep table {

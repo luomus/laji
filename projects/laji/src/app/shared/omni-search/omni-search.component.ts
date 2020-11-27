@@ -48,6 +48,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   public taxa = [];
   public taxon: any;
   public loading = false;
+  public dropdownVisible = false;
   private subTaxa: Subscription;
   private subCnt: Subscription;
   private inputChange: Subscription;
@@ -89,6 +90,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onClose() {
+    this.dropdownVisible = false;
     this.search = '';
     this.taxa = [];
     this.close.emit();
@@ -179,6 +181,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.taxa = data;
           this.loading = false;
           this.activate(0);
+          this.dropdownVisible = this.taxa.length > 0 && this.search.length > 0;
           this.changeDetector.markForCheck();
         },
         err => {

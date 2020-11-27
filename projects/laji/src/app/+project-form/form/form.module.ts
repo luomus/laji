@@ -27,9 +27,10 @@ import { SelectModule } from '../../shared-modules/select/select.module';
   ],
   declarations: [
     FormComponent,
-    DocumentFormComponent
+    DocumentFormComponent,
   ],
-  providers: []
+  providers: [
+  ]
 })
 export class FormModule {
 }

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ProjectForm, ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../project-form.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-generate-spreadsheet',
@@ -10,13 +11,16 @@ import { ProjectForm, ProjectFormService } from '../project-form.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenerateSpreadsheetComponent {
-  readonly projectForm$: Observable<ProjectForm>;
+  readonly excelForm$: Observable<string[]>;
 
   constructor(
     private route: ActivatedRoute,
     public projectFormService: ProjectFormService
 ) {
-    this.projectForm$ = projectFormService.getProjectFormFromRoute$(this.route);
+    this.excelForm$ = projectFormService.getProjectFormFromRoute$(this.route).pipe(
+      map(form => projectFormService.getExcelFormIDs(form)),
+      map(form => Array.isArray(form) ? form : [form])
+    );
   }
 
 }

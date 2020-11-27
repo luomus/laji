@@ -81,6 +81,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     tileLayerOpacity: 0.5,
     controls: true
   };
+  private onlyCount = true;
 
   constructor(
     public translate: TranslateService,
@@ -103,6 +104,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    this.onlyCount = (this.types.includes('count') && this.types.length === 1) ? true : false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -144,10 +146,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       geoJson$ = of(this.data);
     } else {
       geoJson$ = this.zeroObservationQuery ? forkJoin([
-        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
+        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true, this.onlyCount),
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.onlyCount)
       ]).pipe(map(geoJsons => (this.ykjService.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.onlyCount);
     }
 
     this.subQuery = geoJson$

@@ -30,7 +30,7 @@
         </ul>
       </div>
     </div>
-    <div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
+    <!--<div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.synonyms' | translate"
@@ -38,8 +38,8 @@
          [autoToggle]="true"
     >
       <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
-    </div>
-    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxon.obsoleteVernacularName"
+    </div>-->
+    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxonHasSynonymKey(taxon) || taxon.obsoleteVernacularName"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.otherNames' | translate"
