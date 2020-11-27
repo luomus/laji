@@ -2,14 +2,18 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-quality-row',
-  templateUrl: './quality-row.component.html',
+  template: `
+    <div class="quality-row">
+      <div class="quality-image">
+        <img [src]="qualityIcon">
+      </div>
+      <p class="quality-label">{{quality}}</p>
+    </div>
+  `,
   styleUrls: ['./quality-row.component.scss']
 })
-export class QualityRowComponent implements OnInit {
+
+export class QualityRowComponent {
   @Input() quality: string;
   @Input() qualityIcon: string;
-
-  constructor() { }
-
-  ngOnInit() { }
 }

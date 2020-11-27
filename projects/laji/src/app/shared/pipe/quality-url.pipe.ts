@@ -26,6 +26,8 @@ export class QualityUrlPipe implements PipeTransform {
         return this.collectionPath + 'hobbyist_collection.svg';
       case 'AMATEUR':
         return this.collectionPath + 'amateur_collection.svg';
+      default:
+        return '';
     }
   }
 
