@@ -46,7 +46,13 @@ export abstract class AbstractPermissionGuard implements CanActivate {
       map(fp => this.checkPermission(fp)),
       tap((hasPermission) => {
         if (!hasPermission) {
-          this.router.navigate(['/', 'project', formID]);
+          return this.userService.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
+            if (isLoggedIn) {
+              return this.router.navigate(['/', 'project', formID]);
+            } else {
+              return this.userService.redirectToLogin();
+            }
+          });
         }
       })
     );

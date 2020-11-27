@@ -102,7 +102,10 @@ export class TaxonAutocompleteService {
     words.forEach(el => {
       const newOriginal = original.toLowerCase();
       const newString = el.toLowerCase();
-      original = newOriginal.includes(newString) ? newOriginal.replace(newString, '<b>' + newString + '</b>') : newOriginal;
+      const index = newOriginal.indexOf(newString);
+      original = index > -1 ?
+      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
+      : original;
     });
     return original;
   }
@@ -114,5 +117,6 @@ export class TaxonAutocompleteService {
     return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
+
 
 }

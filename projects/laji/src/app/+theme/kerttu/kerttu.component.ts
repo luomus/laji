@@ -16,7 +16,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         <lu-sidebar-link [link]="['letters'] | localize" routerLinkActive>
           {{ 'theme.kerttu.letterAnnotation' | translate }}
         </lu-sidebar-link>
-        <lu-sidebar-link *lajiForTypes="['dev']" [link]="['recordings'] | localize" routerLinkActive>
+        <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['recordings'] | localize" routerLinkActive>
           {{ 'theme.kerttu.recordingAnnotation' | translate }}
         </lu-sidebar-link>
       </nav>
@@ -30,6 +30,15 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         display: flex;
         flex: 1 0 auto;
         width: 100%;
+    }
+
+    :host ::ng-deep lu-button button.success,
+    :host ::ng-deep lu-button button.danger,
+    :host ::ng-deep lu-button button.other {
+      padding: 0.5em 1em;
+    }
+    :host ::ng-deep .ngx-datatable lu-button button {
+      padding: 0.1em 0.6em;
     }
 
     @media only screen and (min-width : 768px) {

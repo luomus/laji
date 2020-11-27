@@ -10,12 +10,14 @@ import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
+import { UserService } from '../../shared/service/user.service';
 
 interface ViewModel {
   form: Form.SchemaForm;
   documentID?: string;
   namedPlace?: NamedPlace;
 }
+
 @Component({
   template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
@@ -44,7 +46,8 @@ export class FormComponent implements OnInit {
               private browserService: BrowserService,
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -82,11 +85,18 @@ export class FormComponent implements OnInit {
                   this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                   return;
                 }
-                return namedPlace$.pipe(map(namedPlace => ({
-                  form,
-                  documentID,
-                  namedPlace
-                })));
+
+                return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
+                  if (!isLoggedIn) {
+                    this.userService.redirectToLogin();
+                    return;
+                  }
+                  return namedPlace$.pipe(map(namedPlace => ({
+                    form,
+                    documentID,
+                    namedPlace
+                  })));
+                }));
               })
             );
           }))

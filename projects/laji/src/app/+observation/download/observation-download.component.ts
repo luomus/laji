@@ -208,7 +208,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.speciesCsvLoading = true;
     this.cd.markForCheck();
     this.updateQueryParamsDownloadTaxon(e);
-    this.downloadService.download('/api/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
+    this.downloadService.downloadTextFile(environment.apiBase + '/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
       this.speciesCsvLoading = false;
       this.cd.markForCheck();
     });

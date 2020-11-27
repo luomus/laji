@@ -1,4 +1,4 @@
-export class KerttuUtils {
+export class AudioViewerUtils {
   public static getPaddedRange(range: number[], padding: number, minValue: number, maxValue: number) {
     if (padding == null) {
       return [minValue, maxValue];

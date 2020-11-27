@@ -34,6 +34,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
+  @Input() enableOnlyCount: boolean;
   monthChartData: any[];
   dayChartDataByMonth = {};
 
@@ -172,7 +173,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       10000,
       1,
       undefined,
-      false
+      this.enableOnlyCount
     ).pipe(
       map(res => {
         this.resultList = res.results;

@@ -50,9 +50,9 @@ describe('Save observations page', () => {
       if (await projectPage.isMobileForm()) {
         expect(await projectPage.isTermsModalOpen()).toBe(true, 'No use terms visible when it should on ' + id);
         await projectPage.closeTermsDialog();
-      } else if (!await projectPage.hasFormLink()) {
-        expect(await projectPage.hasAboutText()).toBe(true, 'About page should be first thing visible for other than mobile forms ' + id);
-      } else {
+      } else if (await projectPage.$sidebar.isPresent() && !await projectPage.hasFormLink()) {
+        expect(await projectPage.hasAboutText()).toBe(true, 'About page should be first thing visible for forms with sidebar ' + id);
+      } else if (await projectPage.$sidebar.isPresent() && await projectPage.hasFormLink()) {
         expect(await projectPage.hasAboutText()).toBe(true, 'About page should be first thing visible for other than mobile forms ' + id);
         await projectPage.clickFormLink();
         if (!await projectPage.hasNamedPlace()) {

@@ -7,8 +7,12 @@
 <laji-taxon-info-row *ngIf="taxon.scientificNameAuthorship" [label]="'taxonomy.author' | translate">
   {{ taxon.scientificNameAuthorship }}
 </laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.name' | translate">
-  {{ taxon.vernacularName | multiLang }}
+<laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.names' | translate">
+  <ul>
+    <li *ngFor="let item of availableVernacularNames | keyvalue">
+        {{ taxon.vernacularName[item.value['lang']] }} ({{ item.value['fullLang'] }})
+    </li>
+  </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row [label]="'taxonomy.card.id' | translate">
   {{ taxon.id | toFullUri }}
@@ -26,7 +30,7 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.invasiveSpecies" [keyTextContentGhost]="false">
   <ng-template #label>
-    <img src="/projects/laji/src/static/images/vieraslaji.png" class="img-responsive" width="70px" height="70px"/>
+    <img src="/static/images/vieraslaji.png" class="img-responsive" width="70px" height="70px"/>
   </ng-template>
   {{ 'taxonomy.invasive.phrase' | translate }}
   <a href="http://vieraslajit.fi"> {{ 'taxonomy.invasive.title' | translate }}</a>

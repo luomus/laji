@@ -20,7 +20,6 @@ export const routes: Routes = [
     path: ':projectID',
     component: ProjectFormComponent,
     children : [
-      {path: '', redirectTo: 'about'},
       {path: 'about', component: AboutComponent},
       {path: 'instructions', component: InstructionsComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
       {path: 'stats', loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)},

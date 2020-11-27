@@ -10,7 +10,7 @@
           </div>
         </div>
       </ng-container>
-      <div [innerHtml]="'haseka.intro' | translate" *ngIf="isFront"></div>
+      <div [innerHtml]="'haseka.intro' | translate" class="haseka-home" *ngIf="isFront"></div>
       <laji-haseka-terms *ngIf="isFront"></laji-haseka-terms>
       <a [routerLink]="'/about/823' | localize" target="_blank">{{ 'haseka.instructions' | translate }}</a> |
       <a [routerLink]="'/vihko/terms-of-service' | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>

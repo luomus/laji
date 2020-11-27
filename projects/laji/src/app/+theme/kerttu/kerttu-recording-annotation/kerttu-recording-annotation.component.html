@@ -1,3 +1,30 @@
-<h1>{{ 'theme.kerttu.recordingAnnotation' | translate }}</h1>
+<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
-<laji-recording-annotation [recording]="recording$ | async"></laji-recording-annotation>
+<ng-container *ngIf="!hasError">
+  <ng-container *lajiRequiresAudioSupport>
+    <div *ngIf="!(taxonExpertiseMissing || notEnoughLetterAnnotations || allRecordingsAnnotated)">
+      <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
+        <laji-recording-annotation
+          *ngIf="firstRecordingLoaded"
+          [recording]="recording"
+          [(annotation)]="annotation"
+          [statusInfo]="statusInfo"
+          [taxonList]="taxonList$ | async"
+          [taxonExpertise]="taxonExpertise$ | async"
+          [buttonsAreDisabled]="loading"
+          (nextRecordingClick)="getNextRecording()"
+          (previousRecordingClick)="getPreviousRecording()"
+          (saveClick)="save()"
+          (addToTaxonExpertise)="addToTaxonExpertise($event)"
+          (annotationChange)="onAnnotationChange()"
+        ></laji-recording-annotation>
+      </laji-spinner>
+    </div>
+    <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
+    </div>
+    <div *ngIf="notEnoughLetterAnnotations" [innerHTML]="'theme.kerttu.notEnoughLetterAnnotations' | translate">
+    </div>
+    <div *ngIf="allRecordingsAnnotated" [innerHTML]="'theme.kerttu.allRecordingsAnnotated' | translate">
+    </div>
+  </ng-container>
+</ng-container>

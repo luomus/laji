@@ -15,6 +15,7 @@ import { DatasetsComponent } from './datasets/datasets.component';
 import { KerttuComponent } from './kerttu/kerttu.component';
 import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
+import { BibliographyComponent } from './bibliography/bibliography.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
 import {KerttuExpertiseFormComponent} from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
 import {KerttuLetterAnnotationComponent} from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
@@ -86,7 +87,7 @@ const routes: Routes = [
       {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
       {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
       {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn]}
+      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]}
     ]
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
@@ -97,6 +98,7 @@ const routes: Routes = [
   {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
   {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}},
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
+  {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},
   {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},
   {path: '**', component: NotFoundComponent}
 ];
