@@ -67,6 +67,7 @@ export interface IRecordingStatusInfo {
 
 export enum KerttuErrorEnum {
   taxonExpertiseMissing = 'TaxonExpertiseMissingError',
+  notEnoughLetterAnnotations = 'NotEnoughLetterAnnotationsError',
   invalidTemplateId = 'InvalidTemplateIdError',
   invalidCandidateId = 'InvalidCandidateIdError',
   invalidRecordingId = 'InvalidRecordingIdError',
