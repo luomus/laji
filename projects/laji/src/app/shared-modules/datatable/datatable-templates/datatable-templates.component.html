@@ -292,3 +292,8 @@
     {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | label:undefined:'habitat' | values:'; ' }}</ng-container>
   </span>
 </ng-template>
+<ng-template let-value="value" #qualityIcon>
+  <span *ngIf="value" [tooltip]="value | label:'warehouse'">
+    <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
+  </span>
+</ng-template>
