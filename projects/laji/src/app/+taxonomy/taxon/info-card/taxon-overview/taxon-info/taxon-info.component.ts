@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
-import { Global } from 'projects/laji/src/environments/global';
 
 @Component({
   selector: 'laji-taxon-info',
