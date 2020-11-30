@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 145 145"
+   height="145mm"
+   width="145mm"
+   shape-rendering="crispEdges">
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="matrix(1.2500003,0,0,1.25,-57.865334,-24.912699)"
+     style="fill:#bcbcbc;fill-opacity:1">
+    <path
+       id="path868"
+       style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.26458299"
+       d="M 94.292244,37.930159 H 114.29224 V 117.93016 H 94.292244 Z" />
+  </g>
+  <path
+     style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.99999994"
+     d="M 47.244141 9.4492188 C 26.305558 9.4492187 9.4492188 26.305558 9.4492188 47.244141 L 9.4492188 500.78711 C 9.4492187 521.72569 26.305558 538.58203 47.244141 538.58203 L 500.78711 538.58203 C 521.72569 538.58203 538.58203 521.72569 538.58203 500.78711 L 538.58203 47.244141 C 538.58203 26.305558 521.72569 9.4492188 500.78711 9.4492188 L 47.244141 9.4492188 z M 56.693359 47.244141 L 491.33789 47.244141 C 496.57254 47.244141 500.78711 51.458714 500.78711 56.693359 L 500.78711 491.33789 C 500.78711 496.57254 496.57254 500.78711 491.33789 500.78711 L 56.693359 500.78711 C 51.458714 500.78711 47.244141 496.57254 47.244141 491.33789 L 47.244141 56.693359 C 47.244141 51.458714 51.458714 47.244141 56.693359 47.244141 z "
+     transform="scale(0.26458333)"
+     id="rect822" />
+  <g
+     style="fill:#bcbcbc;fill-opacity:1"
+     transform="matrix(1.2500003,0,0,1.25,-95.365333,-24.6627)"
+     id="g824">
+    <path
+       d="M 94.292244,37.930159 H 114.29224 V 117.93016 H 94.292244 Z"
+       style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.26458299"
+       id="path822" />
+  </g>
+  <g
+     style="fill:#bcbcbc;fill-opacity:1"
+     transform="matrix(1.2500003,0,0,1.25,-20.365333,-24.6627)"
+     id="g828">
+    <path
+       d="M 94.292244,37.930159 H 114.29224 V 117.93016 H 94.292244 Z"
+       style="fill:#bcbcbc;fill-opacity:1;stroke-width:0.26458299"
+       id="path826" />
+  </g>
+</svg>

@@ -90,7 +90,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     'gathering.team',
     'gathering.eventDate',
     'document.documentId',
-    'unit.unitId'
+    'unit.unitId',
+    'unit.interpretations.recordQuality',
+    'document.linkings.collectionQuality'
   ];
   limitResults = false;
 

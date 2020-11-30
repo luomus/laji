@@ -45,6 +45,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('country', { static: true }) country: TemplateRef<any>;
   @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
   @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
+  @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
 
 
   annotationTypes = Annotation.TypeEnum;

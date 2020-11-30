@@ -47,6 +47,7 @@ export class LajiErrorHandler extends ErrorHandler {
     const url = location instanceof PathLocationStrategy ? location.path() : '';
     this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error.toString()});
     this.pauseMessage();
+    /*
     this.getTranslateService()
       .get(['error.500.title', 'error.500.intro'])
       .subscribe(tranlations => {
@@ -55,6 +56,7 @@ export class LajiErrorHandler extends ErrorHandler {
           tranlations['error.500.title']
         );
       });
+     */
     return super.handleError(error);
   }
 
