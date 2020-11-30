@@ -27,6 +27,6 @@ export class TaxonInfoComponent implements OnInit {
     if (this.taxon.vernacularName.hasOwnProperty(value)) {
       this.availableVernacularNames.push({'lang': value});
     }
-   }) 
+   });
   }
 }
