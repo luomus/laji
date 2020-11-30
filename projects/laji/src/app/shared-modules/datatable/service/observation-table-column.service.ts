@@ -136,6 +136,8 @@ export const COLUMNS: IColumns = {
     label: 'taxonomy.latestRedListStatusFinland',
     aggregateBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
     cellTemplate: 'iucnStatus',
+    // sortBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    sortable: false,
     width: 140
   },
   'unit.species': {
