@@ -12,6 +12,7 @@ export interface IColumns {
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
   'unit.linkings.taxon.scientificName': ObservationTableColumn;
   'unit.linkings.taxon.taxonomicOrder': ObservationTableColumn;
+  'unit.linkings.taxon.latestRedListStatusFinland': ObservationTableColumn;
   'unit.species': ObservationTableColumn;
   'unit.linkings.species.vernacularName': ObservationTableColumn;
   'unit.linkings.species.scientificName': ObservationTableColumn;
@@ -129,6 +130,13 @@ export const COLUMNS: IColumns = {
     label: 'result.taxonomicOrder',
     aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
     width: 70
+  },
+  'unit.linkings.taxon.latestRedListStatusFinland': {
+    name: 'unit.linkings.taxon.latestRedListStatusFinland',
+    label: 'taxonomy.latestRedListStatusFinland',
+    aggregateBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    cellTemplate: 'iucnStatus',
+    width: 140
   },
   'unit.species': {
     name: 'unit.species',
@@ -402,6 +410,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
     COLUMNS['unit.linkings.taxon.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.latestRedListStatusFinland'],
     COLUMNS['unit.species'],
     COLUMNS['unit.linkings.species.vernacularName'],
     COLUMNS['unit.linkings.species.scientificName'],
@@ -466,7 +475,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
-          'unit.linkings.taxon.taxonomicOrder'
+          'unit.linkings.taxon.taxonomicOrder',
+          'unit.linkings.taxon.latestRedListStatusFinland'
         ]
       },
       {
