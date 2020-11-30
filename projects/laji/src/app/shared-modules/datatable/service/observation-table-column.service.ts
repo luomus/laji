@@ -465,7 +465,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.taxon',
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
-          'unit.taxonVerbatim'
+          'unit.taxonVerbatim',
+          'unit.linkings.taxon.taxonomicOrder'
         ]
       },
       {
