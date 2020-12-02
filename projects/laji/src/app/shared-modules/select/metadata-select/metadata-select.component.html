@@ -1,8 +1,8 @@
 <ng-container [ngSwitch]="selectStyle">
   <ng-template [ngSwitchCase]="selectStyles.advanced">
     <laji-select
-      [options]="_options || []"
-      [title]="(placeholder || '') | translate"
+      [options]="_options"
+      [title]="placeholder | translate"
       [filterPlaceHolder]="'haseka.submissions.filter' | translate"
       [useFilter]="useFilter"
       [selected]="active"
@@ -22,7 +22,7 @@
       [disabled]="disabled || _options === null"
     >
       <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
-      <option *ngFor="let option of (_options || [])" [value]="option.id">{{ option.value }}</option>
+      <option *ngFor="let option of _options" [value]="option.id">{{ option.value }}</option>
     </select>
   </ng-template>
 </ng-container>
