@@ -75,7 +75,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'sampleCollectionId',
     'aggregateBy',
     'selected',
-    'orderBy'
+    'orderBy',
+    'collectionAndRecordQuality'
   ];
 
   private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [

@@ -13,6 +13,7 @@ import { forEach } from 'jszip';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
 
+
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -106,7 +107,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
-    quality: ['recordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
+    quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
@@ -421,6 +422,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   indirectQueryChange(field, value) {
     this.query[field] = value;
     this.onQueryChange();
+  }
+
+  subCategoryChange(event) {
+   this.query.collectionAndRecordQuality = undefined;
+   this.query.recordQuality = undefined;
+   this.onQueryChange();
   }
 
   onQueryChange() {
