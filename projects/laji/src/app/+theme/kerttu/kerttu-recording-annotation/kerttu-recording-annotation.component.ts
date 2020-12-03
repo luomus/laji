@@ -7,7 +7,7 @@ import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 import {map, switchMap} from 'rxjs/operators';
 import {PersonApi} from '../../../shared/api/PersonApi';
 import {TranslateService} from '@ngx-translate/core';
-import { Util } from '../../../shared/service/util.service';
+import {Util} from '../../../shared/service/util.service';
 import equals from 'deep-equal';
 import {DialogService} from '../../../shared/service/dialog.service';
 
@@ -30,6 +30,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   unsavedChanges = false;
 
   taxonExpertiseMissing = false;
+  notEnoughLetterAnnotations = false;
   allRecordingsAnnotated = false;
   hasError = false;
 
@@ -151,6 +152,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     const msg = KerttuApi.getErrorMessage(err);
     if (msg === KerttuErrorEnum.taxonExpertiseMissing) {
       this.taxonExpertiseMissing = true;
+    } else if (msg === KerttuErrorEnum.notEnoughLetterAnnotations) {
+      this.notEnoughLetterAnnotations = true;
     } else if (msg === KerttuErrorEnum.invalidRecordingAnnotation) {
       alert(this.translate.instant('theme.kerttu.nextRecording.validation'));
     } else {

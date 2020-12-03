@@ -193,7 +193,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.unselectedOptions = [];
     this.options.map(option => {
-      if (selected.indexOf(option.id) > -1) {
+      if (selected.includes(option.id)) {
         this.selectedOptions.push(option);
       } else {
         this.unselectedOptions.push(option);

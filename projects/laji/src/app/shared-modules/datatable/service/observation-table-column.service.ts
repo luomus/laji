@@ -12,6 +12,7 @@ export interface IColumns {
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
   'unit.linkings.taxon.scientificName': ObservationTableColumn;
   'unit.linkings.taxon.taxonomicOrder': ObservationTableColumn;
+  'unit.linkings.taxon.latestRedListStatusFinland': ObservationTableColumn;
   'unit.species': ObservationTableColumn;
   'unit.linkings.species.vernacularName': ObservationTableColumn;
   'unit.linkings.species.scientificName': ObservationTableColumn;
@@ -130,6 +131,15 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
     width: 70
   },
+  'unit.linkings.taxon.latestRedListStatusFinland': {
+    name: 'unit.linkings.taxon.latestRedListStatusFinland',
+    label: 'taxonomy.latestRedListStatusFinland',
+    aggregateBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    cellTemplate: 'iucnStatus',
+    // sortBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    sortable: false,
+    width: 140
+  },
   'unit.species': {
     name: 'unit.species',
     prop: 'unit',
@@ -174,9 +184,11 @@ export const COLUMNS: IColumns = {
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},
   'unit.interpretations.recordQuality': {
     name: 'unit.interpretations.recordQuality',
-    cellTemplate: 'warehouseLabel',
+    cellTemplate: 'qualityIcon',
     label: 'result.unit.quality.taxon',
-    sortable: false
+    sortable: true,
+    sortBy: 'unit.interpretations.recordQualityNumeric',
+    width: 50,
   },
   'gathering.team': {name: 'gathering.team', cellTemplate: 'toSemicolon', required: environment.type === Global.type.vir},
   'gathering.interpretations.countryDisplayname': {
@@ -232,7 +244,12 @@ export const COLUMNS: IColumns = {
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
-  'document.linkings.collectionQuality': {name: 'document.linkings.collectionQuality', cellTemplate: 'warehouseLabel', sortable: false},
+  'document.linkings.collectionQuality': {
+    name: 'document.linkings.collectionQuality',
+    cellTemplate: 'qualityIcon',
+    sortable: false,
+    width: 50
+  },
   'document.createdDate': {name: 'document.createdDate', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
   'document.modifiedDate': {name: 'document.modifiedDate', label: 'haseka.submissions.dateEdited', cellTemplate: 'date', sortable: false},
   'document.dateObserved': {name: 'document.dateObserved', label: 'haseka.submissions.dateObserved', cellTemplate: 'date', sortable: false},
@@ -373,6 +390,8 @@ export const COLUMNS: IColumns = {
 export class ObservationTableColumnService extends TableColumnService<ObservationTableColumn, IColumns> {
 
   protected defaultFields: Array<keyof IColumns> = [
+    'unit.interpretations.recordQuality',
+    'document.linkings.collectionQuality',
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
@@ -393,6 +412,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
     COLUMNS['unit.linkings.taxon.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.latestRedListStatusFinland'],
     COLUMNS['unit.species'],
     COLUMNS['unit.linkings.species.vernacularName'],
     COLUMNS['unit.linkings.species.scientificName'],
@@ -456,7 +476,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.taxon',
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
-          'unit.taxonVerbatim'
+          'unit.taxonVerbatim',
+          'unit.linkings.taxon.taxonomicOrder',
+          'unit.linkings.taxon.latestRedListStatusFinland'
         ]
       },
       {

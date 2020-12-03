@@ -2,7 +2,7 @@
 
 <ng-container *ngIf="!hasError">
   <ng-container *lajiRequiresAudioSupport>
-    <div *ngIf="!(taxonExpertiseMissing || allRecordingsAnnotated)">
+    <div *ngIf="!(taxonExpertiseMissing || notEnoughLetterAnnotations || allRecordingsAnnotated)">
       <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
         <laji-recording-annotation
           *ngIf="firstRecordingLoaded"
@@ -21,6 +21,8 @@
       </laji-spinner>
     </div>
     <div *ngIf="taxonExpertiseMissing" [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate">
+    </div>
+    <div *ngIf="notEnoughLetterAnnotations" [innerHTML]="'theme.kerttu.notEnoughLetterAnnotations' | translate">
     </div>
     <div *ngIf="allRecordingsAnnotated" [innerHTML]="'theme.kerttu.allRecordingsAnnotated' | translate">
     </div>

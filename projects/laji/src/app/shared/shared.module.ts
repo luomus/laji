@@ -73,6 +73,7 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
+import { QualityUrlPipe } from './pipe/quality-url.pipe';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     WarehousePipe,
     DateCutoffFuturePipe,
     IncludesPipe,
-    SsrDisableDirective
+    SsrDisableDirective,
+    QualityUrlPipe,
   ],
   imports: [
     FormsModule,
@@ -140,7 +142,8 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
     UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
     SsrDisableDirective,
-    NotFoundComponent
+    NotFoundComponent,
+    QualityUrlPipe,
   ]
 })
 export class SharedModule {
@@ -154,6 +157,7 @@ export class SharedModule {
         ToQNamePipe,
         TaxonNamePipe,
         ToQNamePipe,
+        QualityUrlPipe,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthenticatedHttpInterceptor,

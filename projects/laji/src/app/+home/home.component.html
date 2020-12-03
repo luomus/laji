@@ -126,7 +126,7 @@
       </div>
       <div class="d-flex flex-wrap">
         <!--<laji-info-page [rootPage]="{'fi': '4442', 'en': '4440', 'sv': '4444'}"></laji-info-page>-->
-        <div innerHTML="{{ (publications$ | async).content }}"></div>
+        <div innerHTML="{{ (publications$ | async)?.content }}"></div>
         <lu-button role="primary" [anchor]="['/theme/publications'] | localize">
           {{ 'finbif-bib.seeAll' | translate }}
         </lu-button>

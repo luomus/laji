@@ -10,6 +10,7 @@ export class TaxonInfoRowComponent implements OnInit {
   @Input() label: string;
   @Input() keyTextContentGhost = true;
   @Input() valueTextContentGhost = true;
+  @Input() hasOtherItemBefore = false;
 
   constructor() { }
 

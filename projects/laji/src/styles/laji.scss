@@ -299,6 +299,10 @@ treenode:last-child > .tree-node > .tree-children::after {
   margin-bottom: 20px;
 }
 
+.border-top-1 {
+  border-top: 1px solid #ddd !important;
+}
+
 .small-flag {
   height: 11px;
   width: auto;
@@ -1440,14 +1444,6 @@ span.simple-option {
     margin-bottom: 0px!important;
   }
 
-  ol.authors {
-    line-height: 16px;
-    font-size: 14px;
-    padding: 0;
-    list-style-type: none;
-    margin-bottom: 0px !important;
-  }
-
   article p {
     margin-bottom: 0px;
   }
@@ -1456,28 +1452,21 @@ span.simple-option {
     font-size: 12px;
   }
 
-  ol.authors li {
-    display: inline;
+  article p span {
+    font-size: 12px;
   }
 
-  ol.authors li:last-child {
+  span.authors span.author:last-child {
+    margin-left: 4px;
     &::before {
         content: " & ";
     }
   }
 
-  ol.authors li:nth-of-type(n + 2):not(:last-child) {
+  span.authors span.author:nth-of-type(n + 2):not(:last-child) {
     &::before {
       content: ", ";
     }
-  }
-
-  ol.authors li address {
-    display: inline;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 0;
-    line-height: 14px;
   }
 
   p.publication-doi, span.publication-journal, .publication-page-start, .publication-volume {
@@ -1492,12 +1481,17 @@ span.simple-option {
     margin-bottom: 20px!important;
   }
 
+  article p.authors {
+    margin-bottom: 0px !important;
+    line-height: 14px;
+  }
+
   h1.publication-title {
     margin-top: 20px;
     padding-bottom: 4px;
     font-size: 16px;
     display: inline-block;
-    line-height: 20px;
+    line-height: 20px !important;
     font-weight: 400;
     margin: 0;
   }
@@ -1515,20 +1509,12 @@ span.simple-option {
     top: -3px;
   }
 
-  span.publication-journal::after {
-    content: ' ';
+  article p span time {
+    margin-left: 4px;
   }
 
-  article p time::before {
-    content: ' ';
-  }
-
-  article p span {
-    font-size: 12px;
-  }
-
-  .publication-issue:before {
-    content: ' ';
+  .publication-page-start {
+    margin-right: 0px;
   }
 
   .finBif-publications {

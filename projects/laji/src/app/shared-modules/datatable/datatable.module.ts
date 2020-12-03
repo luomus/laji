@@ -13,6 +13,7 @@ import { DownloadModule } from '../download/download.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { DatatableOwnSubmissionsComponent } from './datatable-own-submissions/datatable-own-submissions.component';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
+import { IucnStatusPipe } from './pipes/iucn-status.pipe';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module'
     LajiUiModule,
     OwnSubmissionsModule
   ],
-  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent],
+  declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent, IucnStatusPipe],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent,
     DatatableOwnSubmissionsComponent, OwnSubmissionsModule]
 })
