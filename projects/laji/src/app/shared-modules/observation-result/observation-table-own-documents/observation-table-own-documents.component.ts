@@ -252,7 +252,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   refreshTable() {
-    this.datatable.refreshTable();
+    this.datatable?.refreshTable();
   }
 
   initColumns() {
