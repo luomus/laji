@@ -444,17 +444,20 @@
     [placeholder]="'reliability' | translate"
     [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>-->
 
-    <laji-metadata-select-with-subcategories
-    [(ngModel)]="query.recordQuality"
-    [info]="'observation.info.reliability' | translate"
-    (update)="subCategoryChange($event)"
-    [multiple]="true"
-    [useFilter]="false"
-    name="recordQuality"
-    [mapToWarehouse]="true"
-    [subCategories]="['GLOBAL', 'PROFESSIONAL', 'HOBBYIST', 'AMATEUR']"
-    [placeholder]="'reliability' | translate"
-    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
+    <ng-container *ngIf="query.recordQuality || query.collectionAndRecordQuality">
+      <laji-metadata-select-with-subcategories
+      [(ngModel)]="query.recordQuality"
+      [info]="'observation.info.reliability' | translate"
+      (update)="subCategoryChange($event)"
+      [multiple]="true"
+      [useFilter]="false"
+      name="recordQuality"
+      [mapToWarehouse]="true"
+      [subCategories]="['GLOBAL', 'PROFESSIONAL', 'HOBBYIST', 'AMATEUR']"
+      [placeholder]="'reliability' | translate"
+      [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
+    </ng-container>
+
 
   <laji-select
     [selected]="[query.unidentified]"

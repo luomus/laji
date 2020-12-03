@@ -103,8 +103,22 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.selected = {};
       }
       this.selected[category] = [...this.selected[category] || [], id];
+      if (category === 'GLOBAL') {
+        this.subCategories.forEach(element => {
+          if (element !== 'GLOBAL') {
+            this.selected[element] = [...this.selected[element] || [], id];
+          }
+        });
+      }
     } else {
       this.selected[category] = id;
+      if (category === 'GLOBAL') {
+        this.subCategories.forEach(element => {
+          if (element !== 'GLOBAL') {
+            this.selected[element] = id;
+          }
+        });
+      }
     }
     this.selectedIdx[category] = -1;
     this.initOptions(this.selected);
@@ -117,6 +131,13 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   remove(id: string, category: string) {
     this.selected[category] = this.selected[category].filter(value => value !== id);
+    if (category === 'GLOBAL') {
+      this.subCategories.forEach(element => {
+        if (element !== 'GLOBAL') {
+          this.selected[element] = this.selected[element].filter(value => value !== id);
+        }
+      });
+    }
     this.selectedIdx[category] = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {

@@ -134,6 +134,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
   screenWidthSub: Subscription;
   containerTypeAhead: string;
+  collectionAndRecordQualityString: any;
 
   private _query: WarehouseQueryInterface;
 
@@ -426,8 +427,25 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   subCategoryChange(event) {
     console.log(event);
-   this.query.collectionAndRecordQuality = undefined;
-   this.query.recordQuality = undefined;
+    this.query.collectionAndRecordQuality = undefined;
+    this.query.recordQuality = undefined;
+
+    const categories = Object.keys(event);
+    this.query.recordQuality = this.checkSubcategoriesAreEquals(categories, event) ? event['GLOBAL'] : undefined;
+    if (this.query.recordQuality !== undefined) {
+      this.onQueryChange();
+      return;
+    }
+
+    this.collectionAndRecordQualityString = '';
+    categories.forEach(element => {
+      if (element !== 'GLOBAL' && event[element].length > 0) {
+        this.collectionAndRecordQualityString += element + ':' + event[element].join() + ';';
+      }
+    });
+
+    this.query.collectionAndRecordQuality = this.collectionAndRecordQualityString;
+
    this.onQueryChange();
   }
 
@@ -607,5 +625,16 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.query[endTarget] = undefined;
       this.onQueryChange();
     }
+  }
+
+  private checkSubcategoriesAreEquals(keys, array) {
+      for (let i = 0; i < keys.length - 1; i++) {
+        console.log(array[keys[i]]);
+        console.log(array[keys[i]]);
+        if (array[keys[i]].toString() !== array[keys[i + 1]].toString()) {
+        return false;
+      }
+    }
+    return true;
   }
 }
