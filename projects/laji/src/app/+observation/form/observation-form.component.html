@@ -444,7 +444,7 @@
     [placeholder]="'reliability' | translate"
     [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>-->
 
-    <ng-container *ngIf="query.recordQuality || query.collectionAndRecordQuality">
+    <ng-container>
       <laji-metadata-select-with-subcategories
       [(ngModel)]="query.recordQuality"
       [info]="'observation.info.reliability' | translate"
