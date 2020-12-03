@@ -131,6 +131,9 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(event) {
+    if (!event.item?.autocompleteSelectedName) {
+      return;
+    }
     this.enteredValue = undefined;
     this._taxonName = event.item.autocompleteSelectedName;
     if (event.item && event.item.key) {
