@@ -170,18 +170,10 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
   }
 
   refreshValue(value: any): void {
-    if (value.id) {
-      this.value = {id: value.id, category: value.category};
-    } else if (typeof value.id === 'string') {
-      this.value.id = value.id;
-    } else {
-      try {
-        this.value = value;
-      } catch (e) {
-        this.value = {id: [], category: null};
-      }
+    if (!value) {
+     return;
     }
-    this.update.emit({id: this.value['id'], category: this.value['category']});
+    this.update.emit(value);
   }
 
   writeValue(value: any): void {

@@ -39,7 +39,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<{id: string[]|string, category: string}>();
+  @Output() selectedChange = new EventEmitter<object>();
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
@@ -50,7 +50,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   unselectedOptions = {};
   filterInput = new Subject<string>();
   filterBy: string;
-  selectedIdx = -1;
+  selectedIdx = [];
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -84,11 +84,13 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleValue(id: string, category: string) {
+    this.selectedIdx[category] = 0;
     if (!this.selectedOptions[category]) {
       this.add(id, category);
       return;
     }
-    if (this.selectedOptions[category].findIndex(option => option.id === id) === -1) {
+
+    if (this.selectedOptions[category].indexOf(id) === -1) {
       this.add(id, category);
     } else {
       this.remove(id, category);
@@ -100,28 +102,27 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       if (!Array.isArray(this.selected)) {
         this.selected = {};
       }
-      this.selected['id'] = [...this.selected['id'] || [], id];
-      this.selected['category'] = category;
+      this.selected[category] = [...this.selected[category] || [], id];
     } else {
-      this.selected['category'] = category;
+      this.selected[category] = id;
     }
-    this.selectedIdx = -1;
+    this.selectedIdx[category] = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChange.emit({id, category});
+      this.selectedChange.emit(this.selectedOptions);
     } else {
-      this.selectedChange.emit({id: this.selected['id'], category: this.selected['category']});
+      this.selectedChange.emit(this.selectedOptions);
     }
   }
 
   remove(id: string, category: string) {
-    this.selected['id'] = this.selected['id'].filter(value => value !== id);
-    this.selectedIdx = -1;
+    this.selected[category] = this.selected[category].filter(value => value !== id);
+    this.selectedIdx[category] = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
-      this.selectedChange.emit({id, category});
+      this.selectedChange.emit(this.selectedOptions);
     } else {
-      this.selectedChange.emit({id: this.selected['id'], category: this.selected['category']});
+      this.selectedChange.emit(this.selectedOptions);
     }
   }
 
@@ -154,34 +155,34 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.initOptions(this.selected);
         return;
       case 'Enter':
-        if (!this.filterBy && this.selectedIdx === -1) {
+        if (!this.filterBy && this.selectedIdx[category] === -1) {
           return;
         }
         const filterItems = this.filterService.filter(this.unselectedOptions, this.filterBy);
-        if (this.selectedIdx === -1) {
+        if (this.selectedIdx[category] === -1) {
           if (filterItems.length > 0) {
             this.add(filterItems[0].id, category);
           }
-        } else if (filterItems[this.selectedIdx]) {
-          this.add(filterItems[this.selectedIdx].id, category);
+        } else if (filterItems[this.selectedIdx[category]]) {
+          this.add(filterItems[this.selectedIdx[category]].id, category);
         }
         return;
       case 'ArrowUp':
-        if (this.selectedIdx <= 0) {
-          this.selectedIdx = this.unselectedOptions['id'].length - 1;
+        if (this.selectedIdx[category] <= 0) {
+          this.selectedIdx[category] = this.unselectedOptions[category].length - 1;
         } else {
-          this.selectedIdx--;
+          this.selectedIdx[category]--;
         }
         return;
       case 'ArrowDown':
-        if (this.selectedIdx >= this.unselectedOptions['id'].length - 1) {
-          this.selectedIdx = 0;
+        if (this.selectedIdx[category] >= this.unselectedOptions[category].length - 1) {
+          this.selectedIdx[category] = 0;
         } else {
-          this.selectedIdx++;
+          this.selectedIdx[category]++;
         }
         return;
       default:
-        this.selectedIdx = -1;
+        this.selectedIdx[category] = -1;
     }
     this.filterInput.next(value);
   }
@@ -191,11 +192,11 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   private initOptions(selected) {
-    if (!this.options || !this.options[this.selected['category']]) {
+    if (!this.options || !this.selected) {
       return;
     }
     // this.selectedOptions = [];
-    if (!selected || !selected['id'] || !selected['category']) {
+    if (!selected) {
       this.unselectedOptions = this.options;
       return;
     }
@@ -209,22 +210,24 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     });*/
 
 
-    console.log(Array.isArray(this.options[this.selected['category']]));
-
-  for (const i in this.options[this.selected['category']]) {
-    if (selected['id'].indexOf(this.options[this.selected['category']][i]['id']) > -1) {
-      if (!this.selectedOptions[this.selected['category']]) {
-        this.selectedOptions[this.selected['category']] = [this.options[this.selected['category']][i]];
+  for (const i in this.selected) {
+    this.selectedOptions[i] = [];
+    this.unselectedOptions[i] = [];
+    this.options[i].map(option => {
+      if (selected[i].includes(option.id)) {
+        if (!this.selectedOptions[i]) {
+          this.selectedOptions[i] = option.id;
+        } else {
+          this.selectedOptions[i].push(option.id);
+        }
       } else {
-        this.selectedOptions[this.selected['category']].push(this.options[this.selected['category']][i]);
+        if (!this.unselectedOptions[i]) {
+          this.unselectedOptions[i] = option.id;
+        } else {
+          this.unselectedOptions[i].push(option.id);
+        }
       }
-    } else {
-      if (!this.unselectedOptions[this.selected['category']]) {
-        this.unselectedOptions[this.selected['category']] = [this.options[this.selected['category']][i]];
-      } else {
-        this.unselectedOptions[this.selected['category']].push(this.options[this.selected['category']][i]);
-      }
-    }
+    });
   }
 
   }

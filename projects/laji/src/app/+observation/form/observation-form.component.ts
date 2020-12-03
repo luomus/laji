@@ -425,6 +425,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   subCategoryChange(event) {
+    console.log(event);
    this.query.collectionAndRecordQuality = undefined;
    this.query.recordQuality = undefined;
    this.onQueryChange();
