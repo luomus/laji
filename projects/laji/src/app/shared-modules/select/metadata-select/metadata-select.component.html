@@ -22,7 +22,9 @@
       [disabled]="disabled || _options === null"
     >
       <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
-      <option *ngFor="let option of _options" [value]="option.id">{{ option.value }}</option>
+      <ng-container *ngIf="_options">
+        <option *ngFor="let option of _options; trackBy: trackingBy" [value]="option.id">{{ option.value }}</option>
+      </ng-container>
     </select>
   </ng-template>
 </ng-container>
