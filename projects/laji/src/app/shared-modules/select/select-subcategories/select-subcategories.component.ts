@@ -124,6 +124,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }
     }
     this.selectedIdx[category] = -1;
+    this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
+    this.selected[this.subCategories[1]] : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
       this.selectedChange.emit(this.selectedOptions);
@@ -142,6 +145,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       });
     }
     this.selectedIdx[category] = -1;
+    this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
+    this.selected[this.subCategories[1]] : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
       this.selectedChange.emit(this.selectedOptions);
@@ -254,6 +260,23 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     });
   }
 
+  }
+
+
+  private checkSubcategoriesExceptGlobalAreEquals(selected) {
+    const keys = Object.keys(selected);
+    const filteredKeys = keys.filter(item => item !== 'GLOBAL');
+
+    if (filteredKeys.length < this.subCategories.length - 1) {
+      return false;
+    }
+
+    for (let i = 1; i < filteredKeys.length - 1; i++) {
+        if (selected[filteredKeys[i]].toString() !== selected[filteredKeys[i + 1]].toString()) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
