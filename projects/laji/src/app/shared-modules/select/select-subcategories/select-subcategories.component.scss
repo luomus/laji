@@ -8,7 +8,6 @@
   overflow: auto;
   margin: 0 -20px;
   padding: 10px 20px;
-  border-bottom: 1px solid $neutral-4;
   position: relative;
 }
 .lj-item {
@@ -68,6 +67,14 @@
 .lj-container {
   position: relative;
   display: block;
+}
+
+.subCategoryItem {
+  margin-left: 10px;
+}
+
+.subCategoryBox {
+  padding-bottom: 0px;
 }
 
 ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{

@@ -426,7 +426,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   subCategoryChange(event) {
-    console.log(event);
     this.query.collectionAndRecordQuality = undefined;
     this.query.recordQuality = undefined;
 
@@ -629,8 +628,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   private checkSubcategoriesAreEquals(keys, array) {
       for (let i = 0; i < keys.length - 1; i++) {
-        console.log(array[keys[i]]);
-        console.log(array[keys[i]]);
         if (array[keys[i]].toString() !== array[keys[i + 1]].toString()) {
         return false;
       }

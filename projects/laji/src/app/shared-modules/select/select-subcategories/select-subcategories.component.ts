@@ -44,6 +44,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() info: string;
   @Input() loading = false;
   @Input() subCategories = [];
+  @Input() subTitleBase = '';
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions = {};
@@ -51,6 +52,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = [];
+  parentTitle: string;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -67,6 +69,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.filterBy = value;
         this.cd.markForCheck();
       });
+
 
   }
 
