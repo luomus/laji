@@ -1,4 +1,4 @@
-import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, toArray, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -131,6 +131,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
+      tap(options => console.log(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
@@ -236,7 +237,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
       map(alt => (alt && alt.options || []).map(option => ({id: option.id, value: option.label, info: this.addOptionInfo(option)}))),
       map(options => this.whiteList ? options.filter(option => this.whiteList.includes(option.id)) : options),
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
-      map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
+      map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options),
     );
   }
 

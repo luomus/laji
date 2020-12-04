@@ -1,4 +1,4 @@
-import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, toArray, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -128,6 +128,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
+      tap(options => console.log(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options

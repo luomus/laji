@@ -271,12 +271,20 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       return false;
     }
 
-    for (let i = 1; i < filteredKeys.length - 1; i++) {
-        if (selected[filteredKeys[i]].toString() !== selected[filteredKeys[i + 1]].toString()) {
+    for (let i = 0; i < filteredKeys.length - 1; i++) {
+        if (!this.arrayEquals(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
         return false;
       }
     }
     return true;
+  }
+
+
+  private arrayEquals(a, b) {
+    return Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index]);
   }
 
 }
