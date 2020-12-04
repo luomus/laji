@@ -57,6 +57,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
   @Input() labelAsValue = false;
   @Input() subCategories = [];
   @Input() subTitleBase = '';
+  @Input() filtersName = [];
   @Input() selectStyle = SelectStyle.advanced;
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();

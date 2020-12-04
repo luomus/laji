@@ -14,6 +14,7 @@ import {
 import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
 export interface SelectOptions {
   id: string;
@@ -45,6 +46,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() loading = false;
   @Input() subCategories = [];
   @Input() subTitleBase = '';
+  @Input() filtersName = [];
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions = {};
@@ -56,7 +58,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   constructor(
     private cd: ChangeDetectorRef,
-    private filterService: FilterService
+    private filterService: FilterService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -69,8 +73,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.filterBy = value;
         this.cd.markForCheck();
       });
-
-
   }
 
   ngOnChanges() {
@@ -79,6 +81,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.open = false;
     }
     this.initOptions(this.selected);
+    this.buildSelectedOptions(this.filtersName);
   }
 
   ngOnDestroy() {
@@ -285,6 +288,21 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       Array.isArray(b) &&
       a.length === b.length &&
       a.every((val, index) => val === b[index]);
+  }
+
+  private buildSelectedOptions(filters) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const param = params[filters[0]] ? params[filters[0]] : (params[filters[1]] ? params[filters[1]] : undefined);
+      if (param) {
+        if (!param.includes(':')) {
+          const splitParam = param.split(',');
+          this.subCategories.forEach(elem => {
+
+            this.selectedOptions[elem] = param.split(',');
+          });
+        }
+      }
+    });
   }
 
 }

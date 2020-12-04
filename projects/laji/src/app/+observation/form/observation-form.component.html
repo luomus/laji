@@ -450,11 +450,11 @@
       (update)="subCategoryChange($event)"
       [multiple]="true"
       [useFilter]="false"
-      name="recordQuality"
       [mapToWarehouse]="true"
       [subCategories]="['GLOBAL', 'PROFESSIONAL', 'HOBBYIST', 'AMATEUR']"
       [placeholder]="'reliability' | translate"
       [subTitleBase]="'observation.active.recordQuality'"
+      [filtersName]="['recordQuality', 'collectionAndRecordQuality']"
       [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
     </ng-container>
 
