@@ -1,27 +1,27 @@
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
   Input,
   OnChanges,
-  SimpleChanges,
-  ElementRef,
-  ViewChild,
-  HostListener,
   Output,
-  EventEmitter,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select, event, clientPoint} from 'd3-selection';
-import {ScaleLinear, scaleLinear} from 'd3-scale';
+import { clientPoint, event, select, Selection } from 'd3-selection';
+import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import {Subscription} from 'rxjs';
-import {delay} from 'rxjs/operators';
-import {SpectrogramService} from '../service/spectrogram.service';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { SpectrogramService } from '../service/spectrogram.service';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
-import {AudioViewerMode, IAudioViewerArea} from '../models';
-import {TranslateService} from '@ngx-translate/core';
+import { AudioViewerMode, IAudioViewerArea } from '../models';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-audio-spectrogram',

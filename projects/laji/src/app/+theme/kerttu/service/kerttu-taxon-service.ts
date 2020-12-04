@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {TaxonomyApi} from '../../../shared/api/TaxonomyApi';
-import {Observable} from 'rxjs';
-import {Taxonomy} from '../../../shared/model/Taxonomy';
-import {map} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
+import { Injectable } from '@angular/core';
+import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
+import { Observable } from 'rxjs';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class KerttuTaxonService {

@@ -4,7 +4,7 @@ import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { NewsService } from '../shared/service/news.service';
 import { Logger } from '../shared/logger/logger.service';
 import { News } from '../shared/model/News';
-import { distinctUntilChanged, map, switchMap, tap, filter } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { NewsStore } from './news.store';
 import { HeaderService } from '../shared/service/header.service';
 import { Title } from '@angular/platform-browser';

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import {Inject, Injectable, NgZone} from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
-import {WINDOW} from '@ng-toolkit/universal';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Injectable()
 export class AudioService {

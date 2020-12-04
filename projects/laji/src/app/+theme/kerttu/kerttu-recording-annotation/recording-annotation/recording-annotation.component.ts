@@ -1,10 +1,26 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {IRecording, IRecordingAnnotation, IRecordingStatusInfo, ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
-import {forkJoin, of, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {ModalDirective} from 'ngx-bootstrap/modal';
-import {Autocomplete} from '../../../../shared/model/Autocomplete';
-import {KerttuTaxonService} from '../../service/kerttu-taxon-service';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {
+  IRecording,
+  IRecordingAnnotation,
+  IRecordingStatusInfo,
+  ITaxonWithAnnotation,
+  TaxonAnnotationEnum
+} from '../../models';
+import { forkJoin, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Autocomplete } from '../../../../shared/model/Autocomplete';
+import { KerttuTaxonService } from '../../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-recording-annotation',

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SourceService } from '../shared/service/source.service';
 import { map } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HomeDataService, IHomeData } from './home-data.service';
 import { Image } from '../shared/gallery/image-gallery/image.interface';
 import { Router } from '@angular/router';

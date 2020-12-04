@@ -1,11 +1,21 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {ILetterStatusInfo, LetterAnnotation} from '../../models';
-import {ILetterCandidate, ILetterTemplate} from '../../models';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {Taxonomy} from '../../../../shared/model/Taxonomy';
-import {debounceTime} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {KerttuTaxonService} from '../../service/kerttu-taxon-service';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
+import { ILetterCandidate, ILetterStatusInfo, ILetterTemplate, LetterAnnotation } from '../../models';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
+import { debounceTime } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { KerttuTaxonService } from '../../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-letter-annotation',

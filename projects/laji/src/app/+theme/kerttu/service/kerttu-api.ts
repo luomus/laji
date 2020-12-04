@@ -2,7 +2,16 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum, IRecordingStatusInfo} from '../models';
+import {
+  ILetterCandidate,
+  ILetterStatusInfo,
+  ILetterTemplate,
+  IRecording,
+  IRecordingAnnotation,
+  IRecordingStatusInfo,
+  KerttuErrorEnum,
+  LetterAnnotation
+} from '../models';
 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;

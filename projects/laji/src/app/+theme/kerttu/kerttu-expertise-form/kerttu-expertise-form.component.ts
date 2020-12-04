@@ -1,15 +1,15 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, HostListener} from '@angular/core';
-import {Observable, of, Subject, Subscription} from 'rxjs';
-import {debounceTime, map, switchMap, tap} from 'rxjs/operators';
-import {UserService} from '../../../shared/service/user.service';
-import {PersonApi} from '../../../shared/api/PersonApi';
-import {Profile} from '../../../shared/model/Profile';
-import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activate.guard';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { UserService } from '../../../shared/service/user.service';
+import { PersonApi } from '../../../shared/api/PersonApi';
+import { Profile } from '../../../shared/model/Profile';
+import { ComponentCanDeactivate } from '../../../shared/guards/document-de-activate.guard';
 import { SelectStyle } from '../../../shared-modules/select/metadata-select/metadata-select.component';
+import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { KerttuTaxonService } from '../service/kerttu-taxon-service';
 import FinnishBirdSongRecognitionSkillLevelEnum = Profile.FinnishBirdSongRecognitionSkillLevelEnum;
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
-import {Taxonomy} from '../../../shared/model/Taxonomy';
-import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-kerttu-expertise-form',

@@ -1,5 +1,5 @@
-import {Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
-import {ProtaxModelEnum} from '../models';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ProtaxModelEnum } from '../models';
 import { TranslateService } from '@ngx-translate/core';
 
 enum Tab {

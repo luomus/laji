@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { Resampler } from './assets/resample';
-import {Observable, of} from 'rxjs';
-import {map, share, tap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, share, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SpectrogramService {

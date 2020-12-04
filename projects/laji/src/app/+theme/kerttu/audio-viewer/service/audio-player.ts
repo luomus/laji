@@ -1,6 +1,6 @@
-import {IAudioViewerArea} from '../models';
-import {ChangeDetectorRef, NgZone} from '@angular/core';
-import {AudioService} from './audio.service';
+import { IAudioViewerArea } from '../models';
+import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { AudioService } from './audio.service';
 
 export class AudioPlayer {
   isPlaying = false;

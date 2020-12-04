@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {ProtaxApi} from './protax-api';
-import {ExportService} from '../../shared/service/export.service';
-import {TranslateService} from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ProtaxApi } from './protax-api';
+import { ExportService } from '../../shared/service/export.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-protax',

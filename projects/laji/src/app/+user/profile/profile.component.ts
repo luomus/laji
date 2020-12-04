@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
