@@ -132,7 +132,6 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
-      tap(options => console.log(options)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options

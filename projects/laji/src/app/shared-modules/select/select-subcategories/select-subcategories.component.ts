@@ -80,8 +80,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selected = [];
       this.open = false;
     }
-    this.initOptions(this.selected);
-    this.buildSelectedOptions(this.filtersName);
+    this.initOptions(Object.keys(this.selected).length > 0 && this.selected !== undefined ? this.selected : this.buildSelectedOptions(this.filtersName));
   }
 
   ngOnDestroy() {
@@ -230,7 +229,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
     // this.selectedOptions = [];
     if (!selected) {
-      this.unselectedOptions = this.options;
+      this.unselectedOptions = [];
       return;
     }
     // this.unselectedOptions = [];
@@ -293,16 +292,106 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   private buildSelectedOptions(filters) {
     this.activatedRoute.queryParams.subscribe(params => {
       const param = params[filters[0]] ? params[filters[0]] : (params[filters[1]] ? params[filters[1]] : undefined);
-      if (param) {
-        if (!param.includes(':')) {
-          const splitParam = param.split(',');
-          this.subCategories.forEach(elem => {
+      if (Object.keys(this.options).length > 0) {
+        if (param) {
+          if (!param.includes(':')) {
+            const splitParamGlobal = param.split(',');
+            this.loopInsideOptions(this.subCategories, this.options, splitParamGlobal, false);
+            /*for (const i in this.subCategories) {
+              this.selectedOptions[this.subCategories[i]] = [];
+              this.unselectedOptions[this.subCategories[i]] = [];
 
-            this.selectedOptions[elem] = param.split(',');
-          });
+              Object.values(this.options[this.subCategories[i]]).map(option => {
+                console.log(option)
+                if (splitParamGlobal.includes(option.id)) {
+                  if (!this.selectedOptions[this.subCategories[i]]) {
+                    this.selectedOptions[this.subCategories[i]] = option.id;
+                  } else {
+                    this.selectedOptions[this.subCategories[i]].push(option.id);
+                  }
+                } else {
+                  if (!this.unselectedOptions[this.subCategories[i]]) {
+                    this.unselectedOptions[this.subCategories[i]] = option.id;
+                  } else {
+                    this.unselectedOptions[this.subCategories[i]].push(option.id);
+                  }
+                }
+              });
+            }*/
+
+          } else {
+            const splitParamCategories = this.rubuiltParamSubCategory(param);
+            this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
+
+            /*for (const i in this.subCategories) {
+              this.selectedOptions[this.subCategories[i]] = [];
+              this.unselectedOptions[this.subCategories[i]] = [];
+
+              Object.values(this.options[this.subCategories[i]]).map(option => {
+                if (this.subCategories[i] !== 'GLOBAL') {
+                  if (splitParamCategories[this.subCategories[i]].includes(option.id)) {
+                    if (!this.selectedOptions[this.subCategories[i]]) {
+                      this.selectedOptions[this.subCategories[i]] = option.id;
+                    } else {
+                      this.selectedOptions[this.subCategories[i]].push(option.id);
+                    }
+                  } else {
+                    if (!this.unselectedOptions[this.subCategories[i]]) {
+                      this.unselectedOptions[this.subCategories[i]] = option.id;
+                    } else {
+                      this.unselectedOptions[this.subCategories[i]].push(option.id);
+                    }
+                  }
+                }
+
+              });
+            }*/
+          }
+        } else {
+          this.unselectedOptions = this.options;
         }
       }
     });
+  }
+
+  private rubuiltParamSubCategory(urlString) {
+     const rebuilt = urlString.slice(0, -1).split(';');
+     const finalRebuilt = [];
+
+     rebuilt.forEach((element, index) => {
+        const subSplit = element.split(':');
+        finalRebuilt[subSplit[0]] = subSplit[1].split(',');
+     });
+
+     return finalRebuilt;
+  }
+
+  private loopInsideOptions(subCategories, options, splitParam, excludeGlobal = false) {
+
+    subCategories = excludeGlobal ? subCategories.filter(category => category !== 'GLOBAL') : subCategories;
+
+    for (const i in subCategories) {
+      this.selectedOptions[subCategories[i]] = [];
+      this.unselectedOptions[subCategories[i]] = [];
+      for (let j = 0; j < options[subCategories[i]].length; j++) {
+          if (splitParam[subCategories[i]].includes(options[subCategories[i]][j].id)) {
+            if (!this.selectedOptions[subCategories[i]]) {
+              this.selectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
+            } else {
+              this.selectedOptions[subCategories[i]].push(options[subCategories[i]][j].id);
+            }
+          } else {
+            if (!this.unselectedOptions[subCategories[i]]) {
+              this.unselectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
+            } else {
+              this.unselectedOptions[subCategories[i]].push(options[subCategories[i]][j].id);
+            }
+          }
+
+      }
+    }
+    return this.selected = this.selectedOptions;
+
   }
 
 }
