@@ -104,7 +104,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   add(id: string, category: string) {
     if (this.multiple) {
-      if (!Array.isArray(this.selected)) {
+      if (typeof this.selected !== 'object' || this.selected === null) {
         this.selected = {};
       }
       this.selected[category] = [...this.selected[category] || [], id];
@@ -374,7 +374,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selectedOptions[subCategories[i]] = [];
       this.unselectedOptions[subCategories[i]] = [];
       for (let j = 0; j < options[subCategories[i]].length; j++) {
-          if (splitParam[subCategories[i]].includes(options[subCategories[i]][j].id)) {
+          if (splitParam[subCategories[i]] && splitParam[subCategories[i]].includes(options[subCategories[i]][j].id) ||
+          (splitParam && splitParam.includes(options[subCategories[i]][j].id))) {
             if (!this.selectedOptions[subCategories[i]]) {
               this.selectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
             } else {
@@ -390,7 +391,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
       }
     }
-    return this.selected = this.selectedOptions;
+    return this.selectedOptions;
 
   }
 

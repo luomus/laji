@@ -430,8 +430,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.query.recordQuality = undefined;
 
     const categories = Object.keys(event);
-    this.query.recordQuality = this.checkSubcategoriesAreEquals(categories, event) ? event['GLOBAL'] : undefined;
-    if (this.query.recordQuality !== undefined) {
+    this.query.recordQuality = this.checkSubcategoriesExceptGlobalAreEquals(event, categories) ? event['GLOBAL'] : undefined;
+    if (this.query.recordQuality !== undefined && this.query.recordQuality.length > 0) {
       this.onQueryChange();
       return;
     }
@@ -626,12 +626,27 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkSubcategoriesAreEquals(keys, array) {
-      for (let i = 0; i < keys.length - 1; i++) {
-        if (array[keys[i]].toString() !== array[keys[i + 1]].toString()) {
+  private checkSubcategoriesExceptGlobalAreEquals(selected, categories) {
+    const keys = Object.keys(selected);
+    const filteredKeys = keys.filter(item => item !== 'GLOBAL');
+
+    if (filteredKeys.length < categories.length - 1) {
+      return false;
+    }
+
+    for (let i = 0; i < filteredKeys.length - 1; i++) {
+        if (!this.arrayEquals(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
         return false;
       }
     }
     return true;
+  }
+
+
+  private arrayEquals(a, b) {
+    return Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index]);
   }
 }
