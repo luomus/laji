@@ -55,6 +55,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   filterBy: string;
   selectedIdx = [];
   parentTitle: string;
+  status = {};
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -232,15 +233,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.unselectedOptions = [];
       return;
     }
-    // this.unselectedOptions = [];
-    /*this.options.map(option => {
-      if (selected['id'].indexOf(option.id) > -1) {
-        this.selectedOptions.push(option);
-      } else {
-        this.unselectedOptions.push(option);
-      }
-    });*/
-
 
   for (const i in this.selected) {
     this.selectedOptions[i] = [];
@@ -297,55 +289,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           if (!param.includes(':')) {
             const splitParamGlobal = param.split(',');
             this.loopInsideOptions(this.subCategories, this.options, splitParamGlobal, false);
-            /*for (const i in this.subCategories) {
-              this.selectedOptions[this.subCategories[i]] = [];
-              this.unselectedOptions[this.subCategories[i]] = [];
-
-              Object.values(this.options[this.subCategories[i]]).map(option => {
-                console.log(option)
-                if (splitParamGlobal.includes(option.id)) {
-                  if (!this.selectedOptions[this.subCategories[i]]) {
-                    this.selectedOptions[this.subCategories[i]] = option.id;
-                  } else {
-                    this.selectedOptions[this.subCategories[i]].push(option.id);
-                  }
-                } else {
-                  if (!this.unselectedOptions[this.subCategories[i]]) {
-                    this.unselectedOptions[this.subCategories[i]] = option.id;
-                  } else {
-                    this.unselectedOptions[this.subCategories[i]].push(option.id);
-                  }
-                }
-              });
-            }*/
-
           } else {
             const splitParamCategories = this.rubuiltParamSubCategory(param);
             this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
-
-            /*for (const i in this.subCategories) {
-              this.selectedOptions[this.subCategories[i]] = [];
-              this.unselectedOptions[this.subCategories[i]] = [];
-
-              Object.values(this.options[this.subCategories[i]]).map(option => {
-                if (this.subCategories[i] !== 'GLOBAL') {
-                  if (splitParamCategories[this.subCategories[i]].includes(option.id)) {
-                    if (!this.selectedOptions[this.subCategories[i]]) {
-                      this.selectedOptions[this.subCategories[i]] = option.id;
-                    } else {
-                      this.selectedOptions[this.subCategories[i]].push(option.id);
-                    }
-                  } else {
-                    if (!this.unselectedOptions[this.subCategories[i]]) {
-                      this.unselectedOptions[this.subCategories[i]] = option.id;
-                    } else {
-                      this.unselectedOptions[this.subCategories[i]].push(option.id);
-                    }
-                  }
-                }
-
-              });
-            }*/
           }
         } else {
           this.unselectedOptions = this.options;
@@ -395,5 +341,32 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   }
 
+
+  checkStatus(id, cat) {
+    const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
+    let countOptionForNotGlobal = 0;
+    if (this.selectedOptions[cat]) {
+      if (cat === 'GLOBAL') {
+        if (this.selectedOptions[cat].indexOf(id) === -1) {
+          return undefined;
+        } else {
+          categoriesExceptGlobal.forEach(item => {
+            if (this.selectedOptions[item].indexOf(id) > -1) {
+              countOptionForNotGlobal++;
+            }
+          });
+          return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? true : false);
+        }
+      } else {
+        if (this.selectedOptions[cat].indexOf(id) > -1) {
+          return true;
+        } else {
+          return undefined;
+        }
+      }
+    } else {
+      return undefined;
+    }
+  }
 }
 
