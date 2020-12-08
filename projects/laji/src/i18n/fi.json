@@ -1526,6 +1526,8 @@
   "theme.kerttu.targetFrequency": "Kohdenna taajuus",
   "theme.kerttu.taxonExpertiseMissing": "Kirjaa ensin asiantuntijuutesi <strong>Kirjaa asiantuntijuutesi</strong> -osiossa.",
   "theme.kerttu.timeBuffer": "Aikapuskuri",
+  "theme.kerttu.occurs": "Esiintyy varmasti",
+  "theme.kerttu.possiblyOccurs": "Esiintyy mahdollisesti",
   "theme.linetransect.intro": "Maalintujen linjalaskennoilla voidaan nopeasti saada edustava kuva seudun pesimälinnustosta. Tutustu tuloksiin, varaa laskentareitti ja kirjaa laskentatulokset.",
   "theme.lolife.about": "Tietoa",
   "theme.lolife.intro": "Perusta liito-oravien seurantapaikka, lisätä siihen aluerajauksia, liitä havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.",
