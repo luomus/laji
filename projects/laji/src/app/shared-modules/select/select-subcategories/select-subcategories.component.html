@@ -67,7 +67,7 @@
         <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (options[subCategory] | filter:filterBy ); let i = index; trackBy: track">
           <label class="lj-item" (click)="labelClick($event)">
-            <laji-checkbox [threeState]="true" [value]="selectedOptions[subCategory] | includes:option.id" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox>{{ option.value }} aa
+            <laji-checkbox [threeState]="true" [value]="checkStatus(option.id, subCategory)" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox>{{ option.value }} aa
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </div>

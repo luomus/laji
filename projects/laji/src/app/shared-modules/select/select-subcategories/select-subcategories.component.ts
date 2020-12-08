@@ -282,6 +282,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   private buildSelectedOptions(filters) {
+    const tmpOptions = this.options;
     this.activatedRoute.queryParams.subscribe(params => {
       const param = params[filters[0]] ? params[filters[0]] : (params[filters[1]] ? params[filters[1]] : undefined);
       if (Object.keys(this.options).length > 0) {
@@ -294,7 +295,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
           }
         } else {
-          this.unselectedOptions = this.options;
+          this.unselectedOptions ? this.unselectedOptions : [];
         }
       }
     });
@@ -343,9 +344,10 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
 
   checkStatus(id, cat) {
+    console.log(this.selectedOptions)
     const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
     let countOptionForNotGlobal = 0;
-    if (this.selectedOptions[cat]) {
+    if (this.selectedOptions[cat] && this.selectedOptions[cat].length > 0) {
       if (cat === 'GLOBAL') {
         if (this.selectedOptions[cat].indexOf(id) === -1) {
           return undefined;
