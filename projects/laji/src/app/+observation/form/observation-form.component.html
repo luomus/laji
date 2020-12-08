@@ -737,4 +737,15 @@
     [placeholder]="'observation.form.secureLevel'"
     name="secureLevel"
     [alt]="'MX.secureLevels'"></laji-metadata-select>
+  <laji-select
+    [selected]="[query.secured]"
+    (selectedChange)="indirectQueryChange('secured', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.secured' | translate"
+    [info]="'observation.info.secured' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.secured.true' | translate)},
+        {id: false, value: ('observation.form.secured.false' | translate)}
+      ]"></laji-select>
 </section>
