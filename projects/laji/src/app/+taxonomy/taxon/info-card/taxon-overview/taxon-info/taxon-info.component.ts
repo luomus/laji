@@ -23,7 +23,7 @@ export class TaxonInfoComponent implements OnInit {
 
   initLangTaxonNames() {
    this.langs.forEach(value => {
-    if (this.taxon.vernacularName?.hasOwnProperty(value)) {
+    if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
       this.availableVernacularNames.push({'lang': value});
     }
    });

@@ -49,6 +49,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
+    console.log('login')
     this.subParam = combineLatest(this.route.params, this.route.queryParams).subscribe(data => {
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
