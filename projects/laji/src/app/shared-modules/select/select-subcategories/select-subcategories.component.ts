@@ -295,7 +295,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
           }
         } else {
-          this.unselectedOptions ? this.unselectedOptions : [];
+          this.unselectedOptions = this.unselectedOptions ? this.unselectedOptions : [];
         }
       }
     });
@@ -338,18 +338,36 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
       }
     }
+
+    if (excludeGlobal) {
+      this.selectedOptions['GLOBAL'] = [];
+      this.unselectedOptions['GLOBAL'] = [];
+      options['GLOBAL'].map(option => {
+        let checkMatches = 0;
+        subCategories.forEach(element => {
+          if (this.selectedOptions[element].indexOf(option.id) > -1) {
+            checkMatches++;
+          }
+        });
+        checkMatches === subCategories.length && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 ?
+        this.selectedOptions['GLOBAL'].push(option.id) : this.selectedOptions['GLOBAL'];
+        checkMatches === subCategories.length && this.unselectedOptions['GLOBAL'].indexOf(option.id) > -1 ?
+        this.unselectedOptions['GLOBAL'].splice(this.unselectedOptions['GLOBAL'].indexOf(option.id), 1) : this.unselectedOptions['GLOBAL'];
+      });
+    }
+
     return this.selectedOptions;
 
   }
 
 
   checkStatus(id, cat) {
-    console.log(this.selectedOptions)
+    console.log(this.selectedOptions);
     const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
     let countOptionForNotGlobal = 0;
-    if (this.selectedOptions[cat] && this.selectedOptions[cat].length > 0) {
+    if (this.selectedOptions[cat] /*&& this.selectedOptions[cat].length > 0*/) {
       if (cat === 'GLOBAL') {
-        if (this.selectedOptions[cat].indexOf(id) === -1) {
+        /*if (this.selectedOptions[cat].indexOf(id) === -1) {
           return undefined;
         } else {
           categoriesExceptGlobal.forEach(item => {
@@ -358,7 +376,17 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             }
           });
           return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? true : false);
+        }*/
+
+        categoriesExceptGlobal.forEach(item => {
+          if (this.selectedOptions[item].indexOf(id) > -1) {
+            countOptionForNotGlobal++;
+          }
+        });
+        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedOptions['GLOBAL'].indexOf(id) === -1) {
+          this.selectedOptions['GLOBAL'].push(id);
         }
+        return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
       } else {
         if (this.selectedOptions[cat].indexOf(id) > -1) {
           return true;
