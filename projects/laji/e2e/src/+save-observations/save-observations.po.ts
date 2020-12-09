@@ -25,6 +25,10 @@ export class SaveObservationsPage {
     return this.simpleForms.count() as Promise<number>;
   }
 
+  async pageIsDisplayed() {
+    return !!(await this.countSimpleForms());
+  }
+
   isPresentSubmitButton() {
     return this.submitButton.isPresent() as Promise<boolean>;
   }

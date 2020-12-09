@@ -272,9 +272,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         });
         this.dataColumns = columns;
         setTimeout(() => {
-          if (this.datatable) {
-            this.datatable.refreshTable();
-          }
+          this.datatable?.refreshTable();
         }, 200);
       });
   }

@@ -7,7 +7,7 @@
           <span *ngIf="taxon.scientificNameAuthorship" class="author">{{ taxon.scientificNameAuthorship }}</span>
         </p>
         <p *ngIf="taxon.nameAccordingTo" class="green-text">{{ 'taxonomy.acceptedName' | translate }}, {{ taxon.nameAccordingTo | checklist }}</p>
-        <p *ngIf="!taxon.nameAccordingTo">
+        <p *ngIf="!taxon.nameAccordingTo && taxon.synonymOf">
           <span class="red-text" *ngIf="synonymType">{{ 'MX.has' + synonymType[0].toUpperCase() + synonymType.substring(1, synonymType.length - 1) | label | uppercase }} {{ 'taxonomy.ofTaxon' | translate }} </span>
           <a [routerLink]="['/taxon', taxon.synonymOf.id, 'taxonomy'] | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'" target="_blank">
             <laji-taxon-name [capitalizeName]="true" [taxon]="taxon.synonymOf" [addLink]="false"></laji-taxon-name>
@@ -30,7 +30,7 @@
         </ul>
       </div>
     </div>
-    <div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
+    <!--<div *ngIf="taxon.synonymNames && taxon.synonymNames.length > 0"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.synonyms' | translate"
@@ -38,8 +38,8 @@
          [autoToggle]="true"
     >
       <laji-taxon-synonyms [taxon]="taxon" [synonymTypes]="synonymTypes"></laji-taxon-synonyms>
-    </div>
-    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxon.obsoleteVernacularName"
+    </div>-->
+    <div *ngIf="taxon.vernacularName || taxon.alternativeVernacularName || taxon.tradeName || taxonHasSynonymKey(taxon) || taxon.obsoleteVernacularName"
          class="panel panel-default"
          laji-panel
          [title]="'taxonomy.otherNames' | translate"

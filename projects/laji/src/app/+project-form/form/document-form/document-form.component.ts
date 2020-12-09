@@ -56,7 +56,7 @@ export class DocumentFormComponent {
   ) {}
 
   goBack() {
-    if (this.form.options?.simple && !this.form.category) {
+    if (this.form.options?.simple) {
       this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
       return;
     }

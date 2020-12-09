@@ -10,6 +10,19 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 export class TaxonNamesComponent implements OnInit {
   _taxon: Taxonomy;
   availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
+  synonymTypes = [
+    'basionyms',
+    'objectiveSynonyms',
+    'subjectiveSynonyms',
+    'homotypicSynonyms',
+    'heterotypicSynonyms',
+    'synonyms',
+    'misspelledNames',
+    'orthographicVariants',
+    'uncertainSynonyms',
+    'misappliedNames',
+    'alternativeNames'
+  ];
 
   @Input() set taxon(taxon: Taxonomy) {
     this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
@@ -34,6 +47,25 @@ export class TaxonNamesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  taxonHasSynonymKey(taxon) {
+    for (let i = 0; i < this.synonymTypes.length; i++) {
+      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  hasOtherNamesBefore(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (this.availableLangs[array[i]].length > 0) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

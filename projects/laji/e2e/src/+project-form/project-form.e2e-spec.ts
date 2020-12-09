@@ -2,9 +2,11 @@ import { ProjectFormPage } from './project-form.po';
 import { UserPage } from '../+user/user.po';
 import { VihkoHomePage } from '../+vihko/home.po';
 import { MobileFormPage } from '../+vihko/mobile-form.po';
+import { SaveObservationsPage } from '../+save-observations/save-observations.po';
 import { browser } from 'protractor';
 
-const FORM_WITH_SIMPLE = 'JX.519';
+const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
+const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
 const FORM_WITH_MOBILE = 'MHL.51';
 const FORM_NO_SIMPLE_NO_NAMED_PLACES = 'MHL.6';
 const FORM_NAMED_PLACES_NO_ACCESS_RESTRICTION = 'MHL.3';
@@ -16,6 +18,7 @@ const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
 const vihkoHomePage = new VihkoHomePage();
 const mobileFormPage = new MobileFormPage();
+const saveObservationsPage = new SaveObservationsPage();
 
 async function expectLandsOnExternalLogin(form, subPage?) {
   await browser.waitForAngularEnabled(false);
@@ -65,7 +68,7 @@ describe('Project form', () =>  {
 
     describe('and has simple option,', () => {
       it('form page redirects to login', async (done) => {
-        await expectLandsOnExternalLogin(FORM_WITH_SIMPLE);
+        await expectLandsOnExternalLogin(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         done();
       });
     });
@@ -88,7 +91,7 @@ describe('Project form', () =>  {
       });
 
       it('navigating to /form redirects to login', async (done) => {
-        await expectLandsOnExternalLogin(FORM_WITH_SIMPLE, '/form');
+        await expectLandsOnExternalLogin(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, '/form');
         done();
       });
     });
@@ -109,13 +112,13 @@ describe('Project form', () =>  {
 
   describe('when logged in', () => {
 
-    beforeAll(async (done) => {
-      await projectFormPage.navigateTo(FORM_WITH_SIMPLE);
-      await userPage.login();
-      done();
-    });
-
     describe('and has simple option,', () => {
+
+      beforeAll(async (done) => {
+        await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        await userPage.login();
+        done();
+      });
 
       it('displays form', async (done) => {
         expect(await projectFormPage.documentFormView.$form.isDisplayed()).toBe(true);
@@ -132,6 +135,14 @@ describe('Project form', () =>  {
         expect (await vihkoHomePage.$content.isDisplayed()).toBe(true);
         done();
       });
+
+    });
+
+    it('and has simple option and has category, canceling document save redirects to save observations page if no history', async (done) => {
+      await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_CATEGORY);
+      await projectFormPage.documentFormView.$cancel.click();
+      expect (await saveObservationsPage.pageIsDisplayed()).toBe(true);
+      done();
     });
 
     describe('and has mobile option,', () => {

@@ -218,8 +218,8 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
-    {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
+  <span *ngIf="value" title="{{value.status | toQName | iucnStatus }} ({{value.year}})">
+    {{ value.status | toQName | iucnStatus }} ({{ value.year }})
   </span>
 </ng-template>
 <ng-template let-value="value" #formName>
@@ -290,5 +290,10 @@
 <ng-template let-row="row" #taxonHabitats>
   <span class="habitat" *ngIf="row.primaryHabitat || row.secondaryHabitats" title="{{ row.primaryHabitat.habitat | label }}{{ row.secondaryHabitats ? '; ' + (row.secondaryHabitats | label:undefined:'habitat' | values:'; ') : '' }}">
     {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | label:undefined:'habitat' | values:'; ' }}</ng-container>
+  </span>
+</ng-template>
+<ng-template let-value="value" #qualityIcon>
+  <span *ngIf="value" [tooltip]="value | label:'warehouse'">
+    <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
   </span>
 </ng-template>

@@ -12,9 +12,20 @@ export class TaxonInfoComponent implements OnInit {
 
   @Input() taxon: Taxonomy;
 
-  constructor(public translate: TranslateService) {}
+  langs = ['fi', 'sv', 'en', 'se', 'ru'];
+  availableVernacularNames = [];
+
+  constructor(public translate: TranslateService) { }
 
   ngOnInit() {
+    this.initLangTaxonNames();
   }
 
+  initLangTaxonNames() {
+   this.langs.forEach(value => {
+    if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
+      this.availableVernacularNames.push({'lang': value});
+    }
+   });
+  }
 }

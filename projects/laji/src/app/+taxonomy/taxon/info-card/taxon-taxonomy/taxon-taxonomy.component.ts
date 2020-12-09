@@ -53,7 +53,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
       }
       this.synonymType = undefined;
 
-      if (!this.taxon.nameAccordingTo) {
+      if (!this.taxon.nameAccordingTo && this.taxon.synonymOf) {
         this.synonymSub = this.taxonService.taxonomyFindBySubject(
           this.taxon.synonymOf.id,
           this.translate.currentLang,
@@ -111,4 +111,15 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
         this.cd.markForCheck();
       });
   }
+
+  taxonHasSynonymKey(taxon) {
+    for (let i = 0; i < this.synonymTypes.length; i++) {
+      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }

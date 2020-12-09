@@ -21,12 +21,12 @@ export class IdService {
   static getId(value) {
     if (typeof value !== 'string' || value === '') {
       return value;
-    }
-    if (value.indexOf('http') === 0) {
+    } else if (value.indexOf(DEFAULT_DOMAIN) === 0) {
+      return value.replace(DEFAULT_DOMAIN, '');
+    } else if (value.indexOf('http') === 0) {
       Object.keys(IdService.domainMap).map(prefix => {
         value = value.replace(IdService.domainMap[prefix], prefix);
       });
-      return value.replace(DEFAULT_DOMAIN, '');
     }
     return value;
   }

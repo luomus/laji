@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { ChecklistService } from '../service/checklist.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Pipe({
   name: 'checklist',
@@ -19,8 +19,7 @@ export class ChecklistPipe extends AbstractLabelPipe implements PipeTransform {
 
   protected _updateValue(key: string): Observable<any> {
     if (this.checklists) {
-      this.value = this.checklists[key] || key;
-      return;
+      return of(this.checklists);
     }
     const value$ = this.checklistService.getAllAsLookUp(this.translate.currentLang);
     value$.subscribe(checklists => {

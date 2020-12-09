@@ -37,7 +37,10 @@
         <span *ngIf="showFacts"><a target="_blank" href="{{document.collectionId}}">{{ document.collectionId }}</a></span>
       </laji-row>
       <laji-row [title]="'annotation.collectionQuality' | translate" ngPreserveWhitespaces>
-        <span>{{ document.linkings.collectionQuality | label:'warehouse' }}</span>
+        <laji-quality-row
+          [quality]="document.linkings.collectionQuality | label:'warehouse'" 
+          [qualityIcon]="document.linkings.collectionQuality | qualityUrl">
+        </laji-quality-row>
       </laji-row>
       <laji-row [title]="'MY.notes' | label" [value]="document.notes"></laji-row>
       <laji-row [title]="'MY.keywords' | label" [value]="document.keywords"></laji-row>

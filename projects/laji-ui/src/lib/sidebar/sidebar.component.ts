@@ -113,7 +113,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       distinctUntilChanged(),
       takeUntil(this.unsubscribe$)
     ).subscribe(this.checkScreenWidth.bind(this));
-    this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
+    this.ogWidth = this.sidebarRef?.nativeElement.offsetWidth;
     this.checkCloseOnClickListener();
 
     if (this.sidebarLinks) {
