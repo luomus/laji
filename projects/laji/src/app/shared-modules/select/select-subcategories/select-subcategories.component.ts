@@ -51,6 +51,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   selectedOptions = {};
   unselectedOptions = {};
+  tmpSelectedOption = {};
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = [];
@@ -90,6 +91,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleValue(id: string, category: string) {
+    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
     this.selectedIdx[category] = 0;
     if (!this.selectedOptions[category]) {
       this.add(id, category);
@@ -320,13 +322,16 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     for (const i in subCategories) {
       this.selectedOptions[subCategories[i]] = [];
       this.unselectedOptions[subCategories[i]] = [];
+      this.tmpSelectedOption[subCategories[i]] = [];
       for (let j = 0; j < options[subCategories[i]].length; j++) {
           if (splitParam[subCategories[i]] && splitParam[subCategories[i]].includes(options[subCategories[i]][j].id) ||
           (splitParam && splitParam.includes(options[subCategories[i]][j].id))) {
-            if (!this.selectedOptions[subCategories[i]]) {
+            if (!this.selectedOptions[subCategories[i]] && !this.tmpSelectedOption[subCategories[i]]) {
               this.selectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
+              this.tmpSelectedOption[subCategories[i]] = options[subCategories[i]][j].id;
             } else {
               this.selectedOptions[subCategories[i]].push(options[subCategories[i]][j].id);
+              this.tmpSelectedOption[subCategories[i]].push(options[subCategories[i]][j].id);
             }
           } else {
             if (!this.unselectedOptions[subCategories[i]]) {
@@ -379,7 +384,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         }*/
 
         categoriesExceptGlobal.forEach(item => {
-          if (this.selectedOptions[item].indexOf(id) > -1) {
+          if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(id) > -1) {
             countOptionForNotGlobal++;
           }
         });
