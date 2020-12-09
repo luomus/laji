@@ -17,7 +17,7 @@ import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.ser
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
 import { FormService } from '../../../../shared/service/form.service';
-import { LajiMapLineTransectGeometry } from '../../../../shared-modules/laji-map/laji-map.interface';
+import { LajiMapLineTransectGeometry } from '@laji-map/laji-map.interface';
 
 interface LineTransectCount {
   psCouples: number;

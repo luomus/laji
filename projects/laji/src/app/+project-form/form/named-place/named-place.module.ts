@@ -12,8 +12,8 @@ import { NpInfoMapComponent } from './np-info/np-info-map/np-info-map.component'
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectPrintComponent } from './np-print/line-transect-print/line-transect-print.component';
 import { AreaSelectComponent } from './area-select/area-select.component';
-import { LajiMapModule } from '../../../shared-modules/laji-map/laji-map.module';
-import { LajiFormModule } from '../../../shared-modules/laji-form/laji-form.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 import { ClipboardModule } from 'ngx-clipboard';
 import { LajiUiModule } from '../../../../../../laji-ui/src/public-api';
 import { TaxonAutocompleteModule } from '../../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';

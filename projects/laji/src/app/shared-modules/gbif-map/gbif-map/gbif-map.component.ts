@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { LajiMapOptions, LajiMapTileLayerName } from '../../laji-map/laji-map.interface';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
