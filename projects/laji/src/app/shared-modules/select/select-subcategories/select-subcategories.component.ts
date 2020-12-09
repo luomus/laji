@@ -113,8 +113,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selected[category] = [...this.selected[category] || [], id];
       if (category === 'GLOBAL') {
         this.subCategories.forEach(element => {
-          if (element !== 'GLOBAL') {
-            this.selected[element] = [...this.selected[element] || [], id];
+          if (element !== 'GLOBAL' && this.selected[element]) {
+            this.selected[element] = this.selected[element].indexOf(id) === -1 ?  [...this.selected[element] || [], id] : [...this.selected[element]];
           }
         });
       }
@@ -347,6 +347,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     if (excludeGlobal) {
       this.selectedOptions['GLOBAL'] = [];
       this.unselectedOptions['GLOBAL'] = [];
+      this.tmpSelectedOption['GLOBAL'] = [];
       options['GLOBAL'].map(option => {
         let checkMatches = 0;
         subCategories.forEach(element => {
@@ -354,10 +355,20 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             checkMatches++;
           }
         });
-        checkMatches === subCategories.length && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 ?
-        this.selectedOptions['GLOBAL'].push(option.id) : this.selectedOptions['GLOBAL'];
-        checkMatches === subCategories.length && this.unselectedOptions['GLOBAL'].indexOf(option.id) > -1 ?
-        this.unselectedOptions['GLOBAL'].splice(this.unselectedOptions['GLOBAL'].indexOf(option.id), 1) : this.unselectedOptions['GLOBAL'];
+
+        if (checkMatches === subCategories.length && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 && this.tmpSelectedOption['GLOBAL'].indexOf(option.id) === -1) {
+          this.selectedOptions['GLOBAL'].push(option.id);
+          this.tmpSelectedOption['GLOBAL'].push(option.id);
+        } else {
+          this.selectedOptions['GLOBAL'] = this.selectedOptions['GLOBAL'];
+          this.tmpSelectedOption['GLOBAL'] = this.tmpSelectedOption['GLOBAL'];
+        }
+
+        if (checkMatches === subCategories.length && this.unselectedOptions['GLOBAL'] && this.unselectedOptions['GLOBAL'].indexOf(option.id) > -1) {
+          this.unselectedOptions['GLOBAL'].splice(this.unselectedOptions['GLOBAL'].indexOf(option.id), 1);
+        } else {
+          this.unselectedOptions['GLOBAL'] = this.unselectedOptions['GLOBAL'];
+        }
       });
     }
 
@@ -367,7 +378,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
 
   checkStatus(id, cat) {
-    console.log(this.selectedOptions);
     const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
     let countOptionForNotGlobal = 0;
     if (this.selectedOptions[cat] /*&& this.selectedOptions[cat].length > 0*/) {
@@ -388,7 +398,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             countOptionForNotGlobal++;
           }
         });
-        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedOptions['GLOBAL'].indexOf(id) === -1) {
+        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(id) === -1) {
           this.selectedOptions['GLOBAL'].push(id);
         }
         return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
