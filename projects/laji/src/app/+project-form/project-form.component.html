@@ -1,4 +1,4 @@
-<ng-container *ngIf="vm$ | async as vm">
+<ng-container *ngIf="vm$ | async as vm; else loader">
   <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
     <nav>
       <h5>
@@ -45,4 +45,8 @@
         class="badge pull-right">
           {{ (formPermissions$ | async)[badge.count].length }}
       </span>
+</ng-template>
+
+<ng-template #loader>
+  <laji-spinner></laji-spinner>
 </ng-template>

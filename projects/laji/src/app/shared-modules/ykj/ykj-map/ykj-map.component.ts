@@ -14,10 +14,10 @@ import {
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '../../laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|

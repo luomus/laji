@@ -7,11 +7,11 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { LajiMapComponent } from '../../../../laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '../../../../laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-special-geometry',

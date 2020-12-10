@@ -21,8 +21,8 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
-import { LajiMapOptions, LajiMapTileLayerName } from '../../laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
@@ -178,7 +178,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   clearDrawData() {
-    this.lajiMap.map.clearDrawData();
+    if (this.lajiMap && this.lajiMap.map) {
+      this.lajiMap.map.clearDrawData();
+    }
   }
 
   drawToMap(type) {
