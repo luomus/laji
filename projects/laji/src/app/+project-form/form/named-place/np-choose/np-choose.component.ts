@@ -34,7 +34,6 @@ export class NpChooseComponent implements OnInit, OnChanges {
   @Input() placeForm: Form.SchemaForm;
   @Input() visible = true;
   @Input() allowCreate = true;
-  @Input() showMap = true;
   @Input() formRights: Rights;
 
   @Output() activePlaceChange = new EventEmitter<string>();
