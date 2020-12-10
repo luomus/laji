@@ -40,7 +40,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.annotationTags.forEach(element => {
+    (this.annotationTags || []).forEach(element => {
       const key = element.id;
       const obj = {};
       obj[key] = element;
