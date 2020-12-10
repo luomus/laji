@@ -10,7 +10,7 @@
             </ng-container>
             <span class="item" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
               <label class="lj-item selected" (click)="labelClick($event)">
-                <laji-checkbox [threeState]="true" [value]="true" (valueChange)="remove(option, subCategory)"></laji-checkbox> {{ option | warehouse | label }}
+                <laji-checkbox [threeState]="true" [hasSubCategories]="true" [value]="true" (valueChange)="remove(option, subCategory)"></laji-checkbox> {{ option | warehouse | label }}
               </label>
               <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
             </span>
@@ -21,7 +21,7 @@
             <laji-spinner [spinning]="loading"></laji-spinner>
             <div [ngClass]="{'subCategoryItem' : subCategory !== 'GLOBAL', '' : subCategory === 'GLOBAL'}" *ngFor="let option of options[subCategory]; let i = index; trackBy: track" style="position: relative;">
               <label class="lj-item" (click)="labelClick($event)">
-                <laji-checkbox [threeState]="true" [value]="checkStatus(option.id, subCategory)" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox> {{ option.value}}
+                <laji-checkbox [threeState]="true" [hasSubCategories]="true" [hasSubCategories]="true" [value]="checkStatus(option.id, subCategory)" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox> {{ option.value}}
               </label>
               <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
             </div>
@@ -30,7 +30,7 @@
         <ng-template #multiWithFilter>
           <span class="lj-container" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
             <label class="lj-item selected" (click)="labelClick($event)">
-              <laji-checkbox [threeState]="true" [value]="true" (valueChange)="remove(option.id, subCategory)"></laji-checkbox>{{option.value}}
+              <laji-checkbox [hasSubCategories]="true" [value]="true" (valueChange)="remove(option.id, subCategory)"></laji-checkbox>{{option.value}}
             </label>
             <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
           </span>
@@ -40,7 +40,7 @@
           <div *ngIf="open" class="lj-item-container">
             <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (unselectedOptions[subCategory] | filter:filterBy ); let i = index; trackBy: track" style="position: relative;">
               <label class="lj-item" (click)="labelClick($event)">
-                <laji-checkbox [threeState]="true" (valueChange)="add(option.id, subCategory)"></laji-checkbox> {{option.value}}
+                <laji-checkbox [threeState]="true" [hasSubCategories]="true" (valueChange)="add(option.id, subCategory)"></laji-checkbox> {{option.value}}
               </label>
               <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
             </div>
@@ -55,7 +55,7 @@
     <ng-container *ngIf="!open">
         <span class="lj-container" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
           <label class="lj-item selected" (click)="labelClick($event)">
-            <laji-checkbox [threeState]="true" [value]="true" (valueChange)="remove(option.id, subCategory)"></laji-checkbox> {{ option.value }}
+            <laji-checkbox [threeState]="true" [hasSubCategories]="true" [value]="true" (valueChange)="remove(option.id, subCategory)"></laji-checkbox> {{ option.value }}
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </span>
@@ -67,7 +67,7 @@
         <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (options[subCategory] | filter:filterBy ); let i = index; trackBy: track">
           <label class="lj-item" (click)="labelClick($event)">
-            <laji-checkbox [threeState]="true" [value]="checkStatus(option.id, subCategory)" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox>{{ option.value }} aa
+            <laji-checkbox [threeState]="true" [hasSubCategories]="true" [value]="checkStatus(option.id, subCategory)" (valueChange)="toggleValue(option.id, subCategory)"></laji-checkbox>{{ option.value }} aa
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </div>
