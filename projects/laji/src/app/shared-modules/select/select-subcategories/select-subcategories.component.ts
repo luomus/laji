@@ -83,6 +83,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.open = false;
     }
     this.initOptions(Object.keys(this.selected).length > 0 && this.selected !== undefined ? this.selected : this.buildSelectedOptions(this.filtersName));
+    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
   }
 
   ngOnDestroy() {
@@ -175,6 +176,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           } catch (e) { }
         });
     }
+    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
   }
 
   labelClick(event) {
