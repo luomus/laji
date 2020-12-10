@@ -6,6 +6,7 @@ import { browser } from 'protractor';
 const FORM_WITH_INCLUDE_UNITS = 'MHL.33';
 const FORM_WITH_NAMED_PLACES = 'MHL.33';
 const FORM_WITH_INCLUDE_UNITS_NP = 'MNP.37866';
+const FORM_WITH_NO_MAP_TAB = 'MHL.65';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -21,6 +22,13 @@ describe('Project form when logged in named places', () => {
     it('view can be navigated to and is displayed', async (done) => {
       await projectFormPage.$formLink.click();
       expect(await projectFormPage.namedPlacesView.$container.isDisplayed()).toBe(true);
+      done();
+    });
+
+    it('has list and map tab', async (done) => {
+      expect(await projectFormPage.namedPlacesView.$tabs.isDisplayed()).toBe(true, 'tabs not displayed');
+      expect(await projectFormPage.namedPlacesView.$listTab.isDisplayed()).toBe(true, 'list tab not displayed');
+      expect(await projectFormPage.namedPlacesView.$mapTab.isDisplayed()).toBe(true, 'map tab not displayed');
       done();
     });
 
@@ -88,6 +96,19 @@ describe('Project form when logged in named places', () => {
       expect(await projectFormPage.namedPlacesView.$viewer.isPresent()).toBe(false);
       expect(await projectFormPage.namedPlacesView.$$listItems.count()).toBe(count - 1);
       done();
+    });
+
+    describe('map', () => {
+      it('tab is displayed', async (done) => {
+        expect(await projectFormPage.namedPlacesView.$mapTab.isDisplayed()).toBe(true, 'map tab not displayed');
+        done();
+      });
+
+      it('mab tab is hidden if namedPlaceOptions.hideMapTab is true', async (done) => {
+        await projectFormPage.navigateTo(FORM_WITH_NO_MAP_TAB, '/form');
+        expect(await projectFormPage.namedPlacesView.$mapTab.isPresent()).toBe(false, 'map tab was displayed');
+        done();
+      });
     });
   });
 

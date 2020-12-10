@@ -51,10 +51,18 @@ export class ProjectFormPage {
 }
 
 export class NamedPlacesView { // tslint:disable-line max-classes-per-file
-  public readonly $container = $('laji-named-place');
+ public readonly $container = $('laji-named-place');
+
   public readonly $list = this.$container.$('laji-np-list');
   public readonly $$listItems = this.$list.$$('datatable-body-row');
   public readonly $listActiveItem = this.$list.$('datatable-body-row.active');
+
+  public readonly $tabs = this.$container.$('lu-tabs');
+  public readonly $listTab = this.$tabs.$$('li').first();
+  public readonly $mapTab = this.$tabs.$$('li').last();
+
+  public readonly $map = this.$container.$('laji-np-map');
+
   public readonly $viewer = $$('.np-info').filter($elem => $elem.isDisplayed()).first();
   public readonly getNameInViewer = () => this.$viewer.$('h3').getText();
   public readonly $useButton = this.$viewer.$('.lu-btn.primary');
