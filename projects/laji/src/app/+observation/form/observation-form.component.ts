@@ -330,13 +330,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ownItemSelected(field, selectValue: any = true) {
-    /*if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
-      delete this.query.editorOrObserverPersonToken;
-    }
-    if (this.formQuery.asEditor || this.formQuery.asObserver) {
-      this.query.qualityIssues = 'BOTH';
-    }*/
-
     this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
     (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
 

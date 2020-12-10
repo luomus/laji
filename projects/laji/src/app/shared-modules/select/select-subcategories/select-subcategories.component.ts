@@ -384,17 +384,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     let countOptionForNotGlobal = 0;
     if (this.selectedOptions[cat] /*&& this.selectedOptions[cat].length > 0*/) {
       if (cat === 'GLOBAL') {
-        /*if (this.selectedOptions[cat].indexOf(id) === -1) {
-          return undefined;
-        } else {
-          categoriesExceptGlobal.forEach(item => {
-            if (this.selectedOptions[item].indexOf(id) > -1) {
-              countOptionForNotGlobal++;
-            }
-          });
-          return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? true : false);
-        }*/
-
         categoriesExceptGlobal.forEach(item => {
           if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(id) > -1) {
             countOptionForNotGlobal++;

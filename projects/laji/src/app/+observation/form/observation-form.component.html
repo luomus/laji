@@ -433,18 +433,6 @@
 
 <!-- Quality -->
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
-  <!--<laji-metadata-select
-    [(ngModel)]="query.recordQuality"
-    [info]="'observation.info.reliability' | translate"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [useFilter]="false"
-    name="recordQuality"
-    [mapToWarehouse]="true"
-    [placeholder]="'reliability' | translate"
-    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>-->
-
-    <ng-container>
       <laji-metadata-select-with-subcategories
       [info]="'observation.info.reliability' | translate"
       (update)="subCategoryChange($event)"
@@ -456,7 +444,6 @@
       [subTitleBase]="'observation.active.recordQuality'"
       [filtersName]="['recordQuality', 'collectionAndRecordQuality']"
       [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
-    </ng-container>
 
 
   <laji-select

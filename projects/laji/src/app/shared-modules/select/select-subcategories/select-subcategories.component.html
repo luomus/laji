@@ -10,7 +10,7 @@
             </ng-container>
             <span class="item" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
               <label class="lj-item selected" (click)="labelClick($event)">
-                <laji-checkbox [threeState]="true" [value]="true" (valueChange)="remove(option, subCategory)"></laji-checkbox> {{ option | warehouse | label }} oo
+                <laji-checkbox [threeState]="true" [value]="true" (valueChange)="remove(option, subCategory)"></laji-checkbox> {{ option | warehouse | label }}
               </label>
               <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
             </span>
