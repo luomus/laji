@@ -129,7 +129,7 @@ export class HomeDataService {
         sources: { total: null },
         preservedSpecimens: { total: null },
         preservedSpecimensWithImage: { total: null },
-        identify: { results: [ { unit: { media: [] } } ] },
+        identify: { results: [ ] },
         news: { prevPage: null, nextPage: null, results: [] }
       })
     );
