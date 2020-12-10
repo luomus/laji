@@ -11,6 +11,7 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../../shared-modules/info/info.module';
 import { SelectModule } from '../../shared-modules/select/select.module';
+import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { SelectModule } from '../../shared-modules/select/select.module';
     SpinnerModule,
     LajiFormModule,
     NamedPlaceModule,
+    NpEditFormModule,
     TranslateModule,
     LajiUiModule,
     SharedModule,

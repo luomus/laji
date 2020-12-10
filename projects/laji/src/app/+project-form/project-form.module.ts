@@ -24,6 +24,7 @@ import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
+import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { HasViewPermission } from './guards/has-view-permission';
     ResultsModule,
     OwnSubmissionsModule,
     SpreadsheetModule,
-    StatisticsModule
+    StatisticsModule,
+    DocumentFormHeaderModule
   ],
   declarations: [
     ProjectFormComponent,
