@@ -195,6 +195,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     this.onTouched = fn;
   }
 
+  trackingBy(idx, item) {
+    return item.id ?? idx;
+  }
+
   private optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
     return from(options).pipe(
       concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(

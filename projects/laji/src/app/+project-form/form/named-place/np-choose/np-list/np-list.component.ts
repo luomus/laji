@@ -233,7 +233,7 @@ export class NpListComponent implements OnDestroy {
     }
     if (this.data.length === 0) {
       setTimeout(() => {
-        this.datatable.refreshTable();
+        this.datatable?.refreshTable();
       }, 500);
     }
     if (municipalities$.length) {
