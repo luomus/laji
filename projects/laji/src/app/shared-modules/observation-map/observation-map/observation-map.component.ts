@@ -178,7 +178,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   clearDrawData() {
-    this.lajiMap.map.clearDrawData();
+    if (this.lajiMap && this.lajiMap.map) {
+      this.lajiMap.map.clearDrawData();
+    }
   }
 
   drawToMap(type) {
