@@ -1,7 +1,7 @@
 import {gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
@@ -119,7 +119,19 @@ export class HomeDataService {
       fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
       errorPolicy: 'all'
     }).pipe(
-      map(({data}) => data)
+      map(res => res?.data),
+      catchError(e => of(null)),
+      map<any, IHomeData>(data => data ?? {
+        observations: { total: null },
+        today: { total: null },
+        speciesToday: { total: null },
+        species: { total: null },
+        sources: { total: null },
+        preservedSpecimens: { total: null },
+        preservedSpecimensWithImage: { total: null },
+        identify: { results: [ { unit: { media: [] } } ] },
+        news: { prevPage: null, nextPage: null, results: [] }
+      })
     );
   }
 }
