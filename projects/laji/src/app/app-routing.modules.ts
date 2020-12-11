@@ -8,7 +8,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
 import { NgModule } from '@angular/core';
-import { QuicklinkStrategy } from 'ngx-quicklink';
+import {QuicklinkStrategy } from 'ngx-quicklink';
 
 
 const baseRoutes: Routes = [
