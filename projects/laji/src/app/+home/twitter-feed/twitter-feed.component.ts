@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 import { PlatformService } from '../../shared/service/platform.service';
+import { tryCatch } from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'laji-twitter-feed',
@@ -15,7 +16,9 @@ export class TwitterFeedComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.platformService.isBrowser) {
-      (<any>window).twttr.widgets.load();
+      try {
+        (<any>window).twttr.widgets.load();
+      } catch (e) {}
     }
   }
 

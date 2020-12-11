@@ -15,10 +15,10 @@
     "target": "es2015",
     "paths": {
       "@laji-map/*": [
-        "src/app/shared-modules/laji-map/*"
+        "projects/laji/src/app/shared-modules/laji-map/*"
       ],
       "@laji-form/*": [
-        "src/app/shared-modules/laji-form/*"
+        "projects/laji/src/app/shared-modules/laji-form/*"
       ],
       "laji-ui": [
         "dist/laji-ui"

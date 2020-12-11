@@ -48,11 +48,11 @@ export class KerttuOccurrenceTableComponent implements OnInit {
         cellTemplate: 'taxonScientificName'
       },
       {
-        label: 'Esiintyy varmasti',
+        label: 'theme.kerttu.occurs',
         cellTemplate: this.occursTpl
       },
       {
-        label: 'Esiintyy mahdollisesti',
+        label: 'theme.kerttu.possiblyOccurs',
         cellTemplate: this.possiblyOccursTpl
       },
       {

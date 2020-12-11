@@ -17,7 +17,7 @@ import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../lang/lang.module';
 import { AnnotationsModule } from '../annotations/annotations.module';
 import { UserDocumentToolsComponent } from './user-document-tools/user-document-tools.component';
-import { LajiMapModule } from '../laji-map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
 import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';

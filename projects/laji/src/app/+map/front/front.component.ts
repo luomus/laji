@@ -5,8 +5,8 @@ import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
-import { LajiMapComponent } from '../../shared-modules/laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '../../shared-modules/laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-map-front',

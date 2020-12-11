@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '../../../../shared-modules/laji-form/laji-form/laji-form.component';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
