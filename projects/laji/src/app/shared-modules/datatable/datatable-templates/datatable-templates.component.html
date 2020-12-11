@@ -218,8 +218,8 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
-    {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
+  <span *ngIf="value" title="{{value.status | toQName | iucnStatus }} ({{value.year}})">
+    {{ value.status | toQName | iucnStatus }} ({{ value.year }})
   </span>
 </ng-template>
 <ng-template let-value="value" #formName>

@@ -6,9 +6,9 @@ import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 import { Form } from '../../../shared/model/Form';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
-import { LajiFormDocumentFacade } from '../../../shared-modules/laji-form/laji-form-document.facade';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
-import { DocumentFormComponent as _DocumentFormComponent } from '../../../shared-modules/laji-form/document-form/document-form.component';
+import { DocumentFormComponent as _DocumentFormComponent } from '@laji-form/document-form/document-form.component';
 import { ProjectFormService } from '../../project-form.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class DocumentFormComponent {
   ) {}
 
   goBack() {
-    if (this.form.options?.simple && !this.form.category) {
+    if (this.form.options?.simple) {
       this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
       return;
     }

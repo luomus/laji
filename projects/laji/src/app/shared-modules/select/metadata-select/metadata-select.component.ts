@@ -1,8 +1,7 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
-/* tslint:disable:no-use-before-declare */
+import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { from, Observable, of, Subscription } from 'rxjs';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { CollectionService } from '../../../shared/service/collection.service';
@@ -61,10 +60,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   selectStyles = SelectStyle;
   lang: string;
-  _options: SelectOptions[] = null;
   active = [];
   selectedTitle = '';
-  shouldSort = false;
+  _shouldSort = false;
+  _options: SelectOptions[] = null;
+
   private subOptions: Subscription;
   private innerValue = '';
 
@@ -81,17 +81,18 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     return this.innerValue;
   }
 
-  constructor(public warehouseMapper: WarehouseValueMappingService,
-              private annotationService: AnnotationService,
-              private metadataService: MetadataService,
-              private collectionService: CollectionService,
-              private areaService: AreaService,
-              private sourceService: SourceService,
-              private cd: ChangeDetectorRef,
-              private logger: Logger,
-              private translate: TranslateService,
-              private adminStatusInfoPipe: AdminStatusInfoPipe,
-              private baseDataService: BaseDataService
+  constructor(
+    public warehouseMapper: WarehouseValueMappingService,
+    private adminStatusInfoPipe: AdminStatusInfoPipe,
+    private annotationService: AnnotationService,
+    private collectionService: CollectionService,
+    private baseDataService: BaseDataService,
+    private metadataService: MetadataService,
+    private sourceService: SourceService,
+    private translate: TranslateService,
+    private areaService: AreaService,
+    private cd: ChangeDetectorRef,
+    private logger: Logger,
   ) {
   }
 
@@ -116,57 +117,23 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     const byField$ = this.getDataObservable().pipe(
       map(result => this.pickValue(result)),
       catchError(err => {
-        this.logger.warn('Failed to fetch metadata select', {
-          field: this.field,
-          alt: this.alt,
-          lang: this.lang,
-          err: err
-        });
-        return ObservableOf([]);
-      }), );
+        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err: err });
+        return of([]);
+      })
+    );
 
-    const byOptions$ = ObservableOf(this.options).pipe(
-      map(options => options.map(option => ({id: option, value: option}))));
+    const byOptions$ = of(this.options).pipe(
+      map(options => options.map(option => ({id: option, value: option})))
+    );
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
-      switchMap(options => {
-        if (this.mapToWarehouse) {
-          const requests = [];
-          options.map(item => {
-            requests.push(this.warehouseMapper.getWarehouseKey(item.id));
-          });
-          return ObservableForkJoin(requests).pipe(
-            map(mapping => options.reduce((prev, curr, idx) => {
-                if (mapping[idx] !== options[idx].id) {
-                  prev.push({id: mapping[idx], value: curr.value, info: curr.info});
-                } else {
-                  this.logger.log('No ETL mapping for', mapping[idx]);
-                }
-                return prev;
-              }, [])
-            ));
-        } else {
-          return ObservableOf(options);
-        }
-      }),
-      map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options)
+      switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
+      map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
+      map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
+        this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
+      ))
     ).subscribe(options => {
-        if (this.firstOptions.length > 0) {
-          this._options = options.sort((a, b) => {
-            const hasA = this.firstOptions.indexOf(a.id) > -1;
-            const hasB = this.firstOptions.indexOf(b.id) > -1;
-            if (hasA || hasB) {
-              if (hasA && hasB) {
-                return a.value.localeCompare(b.value);
-              } else {
-                return hasA ? -1 : 1;
-              }
-            }
-            return a.value.localeCompare(b.value);
-          });
-        } else {
-          this._options = this.shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options;
-        }
+        this._options = options;
         this.initActive();
         this.cd.markForCheck();
       });
@@ -228,9 +195,23 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     this.onTouched = fn;
   }
 
+  trackingBy(idx, item) {
+    return item.id ?? idx;
+  }
+
+  private optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
+    return from(options).pipe(
+      concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(
+        filter(warehouseID => warehouseID !== option.id),
+        map(warehouseID => ({ ...option, id: warehouseID })),
+      )),
+      toArray()
+    );
+  }
+
   private getDataObservable(): Observable<any> {
     if (this.field) {
-      this.shouldSort = true;
+      this._shouldSort = true;
       switch (this.field) {
         case 'MMAN.tag':
           return this.annotationService.getAllTags('multi').pipe(
@@ -255,7 +236,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
           throw new Error('Could not find mapping for ' + this.field);
       }
     }
-    this.shouldSort = false;
+    this._shouldSort = false;
     return this.baseDataService.getBaseData().pipe(
       map(data => data.alts || []),
       map(alts => alts.find(alt => alt.id === this.alt)),
@@ -264,6 +245,21 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       map(options => this.skip ? options.filter(option => this.skip.indexOf(option.id) === -1) : options),
       map(options => this.skipBefore ? options.slice(options.findIndex(o => o.id === this.skipBefore)) : options)
     );
+  }
+
+  private sortOptionsByAnotherList(options: SelectOptions[]): SelectOptions[] {
+    return options.sort((a, b) => {
+      const hasA = this.firstOptions.includes(a.id);
+      const hasB = this.firstOptions.includes(b.id);
+      if (hasA || hasB) {
+        if (hasA && hasB) {
+          return a.value.localeCompare(b.value);
+        } else {
+          return hasA ? -1 : 1;
+        }
+      }
+      return a.value.localeCompare(b.value);
+    });
   }
 
   private pickValue(data) {

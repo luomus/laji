@@ -10,7 +10,7 @@
 <laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.names' | translate">
   <ul>
     <li *ngFor="let item of availableVernacularNames | keyvalue">
-        {{ taxon.vernacularName[item.value['lang']] }} ({{ item.value['fullLang'] }})
+        {{ taxon.vernacularName[item.value['lang']] }} ({{ 'lang.'+item.value['lang'] | translate }})
     </li>
   </ul>
 </laji-taxon-info-row>

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
-import { Global } from 'projects/laji/src/environments/global';
 
 @Component({
   selector: 'laji-taxon-info',
@@ -13,7 +12,7 @@ export class TaxonInfoComponent implements OnInit {
 
   @Input() taxon: Taxonomy;
 
-  langs = Global.langs;
+  langs = ['fi', 'sv', 'en', 'se', 'ru'];
   availableVernacularNames = [];
 
   constructor(public translate: TranslateService) { }
@@ -23,10 +22,10 @@ export class TaxonInfoComponent implements OnInit {
   }
 
   initLangTaxonNames() {
-    for (const key in this.langs) {
-      if (this.taxon.vernacularName.hasOwnProperty(key)) {
-        this.availableVernacularNames.push({'lang': key, 'fullLang': this.langs[key]});
-      }
+   this.langs.forEach(value => {
+    if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
+      this.availableVernacularNames.push({'lang': value});
     }
+   });
   }
 }

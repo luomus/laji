@@ -90,10 +90,20 @@ export class UserService {
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
   static getLoginUrl(next = '', lang = 'fi', base = '') {
-    return ((base || environment.loginUrl)
-    + '?target=' + environment.systemID
-    + '&redirectMethod=GET&locale=%lang%'
-    + '&next=' + next).replace('%lang%', lang);
+    let url = (base || environment.loginUrl);
+    url += url.includes('?') ? '&' : '?';
+
+    const params: string[] = [
+      `target=${environment.systemID}`,
+      'redirectMethod=GET',
+      'locale=%lang%'
+    ];
+
+    if (!url.includes('next=')) {
+      params.push(`next=${next}`);
+    }
+
+    return (url + params.join('&')).replace('%lang%', lang);
   }
 
   static isIctAdmin(person: Person): boolean {

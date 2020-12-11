@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ProjectFormService } from '../project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
 import { NamedPlacesService } from '../../shared/service/named-places.service';
@@ -56,7 +56,7 @@ export class FormComponent implements OnInit {
         switchMap(routeParams => this.tryRedirectToSubForm(form, routeParams).pipe(
           switchMap(redirected => {
             if (redirected) {
-              return;
+              return EMPTY;
             }
             const paramsStack = [
               routeParams['document'],
@@ -69,7 +69,7 @@ export class FormComponent implements OnInit {
             const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
             if (hasManyForms && !_usedSubForm) {
               this.router.navigate([form.id], {relativeTo: this.route});
-              return;
+              return EMPTY;
             }
             const documentID = paramsStack.pop();
             return (_usedSubForm === form ?
@@ -83,13 +83,13 @@ export class FormComponent implements OnInit {
                   : of(null);
                 if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
                   this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
-                  return;
+                  return EMPTY;
                 }
 
                 return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
                   if (!isLoggedIn) {
                     this.userService.redirectToLogin();
-                    return;
+                    return EMPTY;
                   }
                   return namedPlace$.pipe(map(namedPlace => ({
                     form,

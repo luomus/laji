@@ -145,6 +145,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   ngOnDestroy() {
     try {
       this.map.destroy();
+      this.map = undefined;
     } catch (e) {}
     if (this.subSet) {
       this.subSet.unsubscribe();
