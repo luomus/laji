@@ -1,0 +1,16 @@
+<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
+  <div *ngIf="open">
+    <div class="link btn btn-sm btn-default" (click)="openModal()">
+      {{modalButtonLabel}}
+    </div>
+    <ng-container *ngIf="selectedOptions?.length">
+      <ng-container *ngIf="collections$ | async; let collections; else loading">
+        <laji-selected-collections [selectedOptions]='collections' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+      </ng-container>
+      <ng-template #loading>
+        <laji-spinner></laji-spinner>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>

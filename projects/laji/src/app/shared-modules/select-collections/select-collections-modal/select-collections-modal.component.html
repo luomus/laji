@@ -1,0 +1,50 @@
+<div ng-template #collectionsModal>
+  <div class="modal-header"> <!--*ngIf="modalTitle">-->
+    <button type="button" class="close" (click)="close()">&times;</button>
+    <h4 class="modal-title pull-left">{{modalTitle}}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container-flex">
+      <div class="row">
+        <div class="col-md-8">
+          <h5>{{browseTitle}}</h5>
+        </div>
+        <div class="col-md-4">
+          <h5>{{selectedTitle}}</h5>
+        </div>
+      </div>
+      <ng-container *ngIf="collectionsTree$ | async; let collectionsTree; else loading">
+        <div class="row">
+          <div class="col-md-8">
+            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange($event.target.value)"/>
+            <div class="scrollable-tree">
+              <tree-root 
+                #tree 
+                [nodes]="collectionsTree" 
+                [options]="options"
+                (initialized)="treeInit($event)"
+              >
+                <ng-template #treeNodeTemplate let-node>
+                  <span [class]="node.getClass()">{{node.data.longName + " (" + node.data.count + ")"}}</span>
+                </ng-template>
+              </tree-root>
+            </div>
+          </div>
+          <div class="col-md-4 scrollable-selection-list">
+            <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+          </div>
+        </div>   
+      </ng-container>
+      <ng-template #loading>
+        <laji-spinner></laji-spinner>
+      </ng-template>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="confirm()">{{clearButtonLabel}}</button>
+    <button type="button" class="btn btn-default" (click)="confirm()">{{okButtonLabel}}</button>
+  </div>
+</div>
+
+
+
