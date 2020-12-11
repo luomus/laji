@@ -58,6 +58,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
   @Input() subCategories = [];
   @Input() subTitleBase = '';
   @Input() filtersName = [];
+  @Input() filtersValues = [];
   @Input() selectStyle = SelectStyle.advanced;
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
@@ -68,6 +69,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
   selectedTitle = '';
   _shouldSort = false;
   _options: SelectOptions[] = [];
+  queryToSelect = [];
 
   private subOptions: Subscription;
   private innerValue = '';
@@ -105,6 +107,7 @@ export class MetadataSelectWithSubcategoriesComponent implements OnChanges, OnDe
   ngOnChanges(changes) {
     this.lang = this.translate.currentLang;
     this.initOptions();
+    this.queryToSelect = this.filtersValues;
   }
 
   ngOnDestroy() {

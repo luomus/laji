@@ -436,6 +436,7 @@
       <laji-metadata-select-with-subcategories
       [info]="'observation.info.reliability' | translate"
       (update)="subCategoryChange($event)"
+      (ngModelChange)="onSubCategoryChange()"
       [multiple]="true"
       [useFilter]="false"
       [mapToWarehouse]="true"
@@ -443,6 +444,7 @@
       [placeholder]="'reliability' | translate"
       [subTitleBase]="'observation.active.recordQuality'"
       [filtersName]="['recordQuality', 'collectionAndRecordQuality']"
+      [filtersValues]="[query.recordQuality, query.collectionAndRecordQuality]"
       [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
 
 

@@ -857,6 +857,7 @@
   "observation.active.recordQuality.PROFESSIONAL": "Ammattilainen",
   "observation.active.recordQuality.HOBBYIST": "Harrastaja",
   "observation.active.recordQuality.AMATEUR": "Amatööri",
+  "observation.active.collectionAndRecordQuality": "Kokoelman ja levyn laatu",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.commonness": "Yleisyys",
   "observation.count": "Havaintojen määrä",

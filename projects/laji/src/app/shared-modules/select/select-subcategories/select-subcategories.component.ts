@@ -47,6 +47,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() subCategories = [];
   @Input() subTitleBase = '';
   @Input() filtersName = [];
+  @Input() filtersValues = [];
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions = {};
@@ -75,12 +76,19 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.filterBy = value;
         this.cd.markForCheck();
       });
+
   }
 
   ngOnChanges() {
     if (this.disabled) {
       this.selected = [];
       this.open = false;
+    }
+
+    if (this.filtersValues.every(element => element === undefined)) {
+      this.selected = [];
+      this.tmpSelectedOption = [];
+      this.selectedOptions = [];
     }
     this.initOptions(Object.keys(this.selected).length > 0 && this.selected !== undefined ? this.selected : this.buildSelectedOptions(this.filtersName));
     this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
