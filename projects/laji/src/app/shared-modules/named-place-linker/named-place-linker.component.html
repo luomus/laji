@@ -1,0 +1,30 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <alert type="warning" *ngIf="vm.form.options?.useNamedPlaces && !vm.document?.namedPlaceID">
+    Puuttuu nimetty paikka<br>
+    <lu-button (click)="openNamedPlacesChooserModal()">Linkitä havaintoerä nimettyyn paikkaan</lu-button>
+  </alert>
+</ng-container>
+
+<div class="modal fade no-propagation" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ng-container *ngIf="vm$ | async as vm">
+          <laji-named-places [documentForm]="vm.form"
+                             [activeId]="activeNP"
+                             [municipality]="municipality"
+                             [birdAssociationArea]="birdAssociationArea"
+                             [tags]="tags"
+                             (activeIdChange)="onActiveIdChange($event)"
+                             (municipalityChange)="onMunicipalityChange($event)"
+                             (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
+                             (tagsChange)="onTagsChange($event)"
+                             (use)="use($event)"
+                             [useLabel]="'Linkitä'"
+                             [displayHeader]="false"
+          ></laji-named-places>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

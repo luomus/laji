@@ -65,11 +65,11 @@ export namespace Form {
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
     useNamedPlaces?: boolean;
+    restrictAccess?: RestrictAccess;
+    hasAdmins?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
-    restrictAccess?: RestrictAccess;
-    hasAdmins?: boolean;
     documentsViewableForAll?: boolean;
     adminLockable?: boolean;
     warnEditingOldDocument?: boolean;

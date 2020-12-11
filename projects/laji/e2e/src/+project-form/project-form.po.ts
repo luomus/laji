@@ -51,7 +51,7 @@ export class ProjectFormPage {
 }
 
 export class NamedPlacesView { // tslint:disable-line max-classes-per-file
- public readonly $container = $('laji-named-place');
+ public readonly $container = $('laji-named-places');
 
   public readonly $list = this.$container.$('laji-np-list');
   public readonly $$listItems = this.$list.$$('datatable-body-row');

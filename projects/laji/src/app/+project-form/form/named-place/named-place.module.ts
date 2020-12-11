@@ -22,6 +22,7 @@ import { SelectModule } from '../../../shared-modules/select/select.module';
 import { InfoModule } from '../../../shared-modules/info/info.module';
 import { FormPermissionModule } from '../../form-permission/form-permission.module';
 import { DocumentFormHeaderModule } from '../../../shared-modules/laji-form/document-form-header/document-form-header.module';
+import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 
 @NgModule({
   providers: [],
@@ -43,8 +44,8 @@ import { DocumentFormHeaderModule } from '../../../shared-modules/laji-form/docu
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,
     NpInfoComponent, NpInfoRowComponent, NpInfoMapComponent, NpPrintComponent, LineTransectPrintComponent,
-    AreaSelectComponent
+    AreaSelectComponent, NamedPlaceWrapperComponent
   ],
-  exports: [NamedPlaceComponent, NpPrintComponent, AreaSelectComponent]
+  exports: [NamedPlaceComponent, NpPrintComponent, AreaSelectComponent, NpChooseComponent]
 })
 export class NamedPlaceModule {}

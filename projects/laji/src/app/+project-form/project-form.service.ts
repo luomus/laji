@@ -30,7 +30,6 @@ export interface NamedPlacesQueryModel {
 
 export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   documentForm: Form.SchemaForm;
-  placeForm: Form.SchemaForm;
   namedPlace?: NamedPlace;
 }
 
@@ -101,14 +100,12 @@ export class ProjectFormService {
             })
           )
           : this.getFormFromRoute$(route);
-        const placeForm$ = documentForm$.pipe(switchMap(documentForm => this.getPlaceForm$(documentForm)));
         const query$ = documentForm$.pipe(map(documentForm => this.queryToModelFormat(this.trimNamedPlacesQuery(documentForm, queryParams))));
-        return combineLatest(documentForm$, namedPlace$, placeForm$, query$).pipe(
+        return combineLatest(documentForm$, namedPlace$, query$).pipe(
           map(([
             documentForm,
             namedPlace,
-            placeForm,
-            query]) => ({documentForm, namedPlace, placeForm, ...query}))
+            query]) => ({documentForm, namedPlace, ...query}))
         );
       })
     );
@@ -139,7 +136,6 @@ export class ProjectFormService {
   }
 
   getPlaceForm$(documentForm: Form.SchemaForm) {
-    const id = documentForm.options?.namedPlaceOptions?.namedPlaceFormID || Global.forms.namedPlace;
-    return this.formService.getForm(id, this.translate.currentLang);
+    return this.formService.getPlaceForm(documentForm);
   }
 }

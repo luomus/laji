@@ -9,6 +9,7 @@ import { InfoPageModule } from '../info-page/info-page.module';
 import { LajiFormDocumentFacade } from './laji-form-document.facade';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { DocumentFormHeaderModule } from './document-form-header/document-form-header.module';
+import { NamedPlaceLinkerModule } from '../named-place-linker/named-place-linker.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { DocumentFormHeaderModule } from './document-form-header/document-form-h
     AppComponentModule,
     InfoPageModule,
     LajiUiModule,
-    DocumentFormHeaderModule
+    DocumentFormHeaderModule,
+    NamedPlaceLinkerModule
   ],
   declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormFooterComponent],
   exports: [LajiFormComponent, DocumentFormComponent, DocumentFormFooterComponent],
