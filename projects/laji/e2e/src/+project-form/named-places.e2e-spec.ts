@@ -5,6 +5,8 @@ import { browser } from 'protractor';
 
 const FORM_WITH_INCLUDE_UNITS = 'MHL.33';
 const FORM_WITH_NAMED_PLACES = 'MHL.33';
+const FORM_WITH_MUNICIPALITY_FILTER = 'MHL.33';
+const FORM_WITH_BIRD_ASSOCIATION_FILTER = 'MHL.3';
 const FORM_WITH_INCLUDE_UNITS_NP = 'MNP.37866';
 const FORM_WITH_NO_MAP_TAB = 'MHL.65';
 
@@ -104,9 +106,49 @@ describe('Project form when logged in named places', () => {
         done();
       });
 
-      it('mab tab is hidden if namedPlaceOptions.hideMapTab is true', async (done) => {
+      it('mab tab is hidden if $.options.namedPlaceOptions.hideMapTab is true', async (done) => {
         await projectFormPage.navigateTo(FORM_WITH_NO_MAP_TAB, '/form');
         expect(await projectFormPage.namedPlacesView.$mapTab.isPresent()).toBe(false, 'map tab was displayed');
+        done();
+      });
+    });
+
+    describe('municipality filter', () => {
+      beforeAll(async (done) => {
+        await projectFormPage.navigateTo(FORM_WITH_MUNICIPALITY_FILTER, '/form');
+        done();
+      });
+
+      it('displays all by default', async (done) => {
+        expect(await projectFormPage.namedPlacesView.$$listItems.count()).not.toBe(0);
+        done();
+      });
+
+      it('change filters places', async (done) => {
+        const namedPlacesListCount = projectFormPage.namedPlacesView.$$listItems.count();
+        expect(await projectFormPage.namedPlacesView.municipalityFilter.$select.isDisplayed()).toBe(true, 'not displayed');
+        await projectFormPage.namedPlacesView.municipalityFilter.selectByIdx(1);
+        expect(await projectFormPage.namedPlacesView.$$listItems.count()).not.toBe(namedPlacesListCount);
+        done();
+      });
+    });
+
+    describe('bird association filter', () => {
+      beforeAll(async (done) => {
+        await projectFormPage.navigateTo(FORM_WITH_BIRD_ASSOCIATION_FILTER, '/form');
+        done();
+      });
+
+      it('displays none by default', async (done) => {
+        expect(await projectFormPage.namedPlacesView.$$listItems.count()).toBe(0);
+        done();
+      });
+
+      it('change filters places', async (done) => {
+        const namedPlacesListCount = projectFormPage.namedPlacesView.$$listItems.count();
+        expect(await projectFormPage.namedPlacesView.birdAssociationAreaFilter.$select.isDisplayed()).toBe(true, 'not displayed');
+        await projectFormPage.namedPlacesView.birdAssociationAreaFilter.selectByIdx(1);
+        expect(await projectFormPage.namedPlacesView.$$listItems.count()).not.toBe(namedPlacesListCount);
         done();
       });
     });

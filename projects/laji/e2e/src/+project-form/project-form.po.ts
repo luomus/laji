@@ -63,6 +63,9 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
 
   public readonly $map = this.$container.$('laji-np-map');
 
+  public readonly municipalityFilter = new AreaFilter('ML.municipality');
+  public readonly birdAssociationAreaFilter = new AreaFilter('ML.birdAssociationArea');
+
   public readonly $viewer = $$('.np-info').filter($elem => $elem.isDisplayed()).first();
   public readonly getNameInViewer = () => this.$viewer.$('h3').getText();
   public readonly $useButton = this.$viewer.$('.lu-btn.primary');
@@ -74,6 +77,18 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
   async delete() {
     await this.$deleteButton.click();
     await browser.switchTo().alert().accept();
+  }
+}
+
+class AreaFilter { // tslint:disable-line max-classes-per-file
+  $select: ElementFinder;
+  constructor(selector: string) {
+    this.$select = $(`laji-area-select[ng-reflect-field="${selector}"]`);
+  }
+
+  async selectByIdx(idx: number) {
+    await this.$select.click();
+    await this.$select.$$('option').get(idx).click();
   }
 }
 
