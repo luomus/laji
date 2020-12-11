@@ -19,7 +19,7 @@ export class SelectCollectionsModalComponent implements OnInit {
   @Input() clearButtonLabel: string;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<string[]>();
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush;
 
   selectedOptions: SelectOption[] = [];
   treeModel: TreeModel;
@@ -34,7 +34,7 @@ export class SelectCollectionsModalComponent implements OnInit {
     scrollOnActivate: false,
     nodeClass: (node: TreeNode) => {
       if (!this.isActiveParent(node) && node.isActive) {
-        return 'tree-active-child'
+        return 'tree-active-child';
       }
     },
     actionMapping: {
@@ -61,23 +61,23 @@ export class SelectCollectionsModalComponent implements OnInit {
   ) {}
 
   treeInit($event: any) {
-    this.treeModel = this.treeComponent.treeModel
+    this.treeModel = this.treeComponent.treeModel;
 
     this.selected?.forEach(key => {
-      const node = this.treeModel.getNodeById(key)
-      
-      this.nodeToggled(this.treeModel, node, null)
-      this.expandParents(this.treeModel, node, null)
-    })
+      const node = this.treeModel.getNodeById(key);
+
+      this.nodeToggled(this.treeModel, node, null);
+      this.expandParents(this.treeModel, node, null);
+    });
   }
 
   onFilterChange(query) {
     if (query?.length > 0) {
-      this.treeModel.filterNodes(query)
+      this.treeModel.filterNodes(query);
     } else {
       this.treeModel.clearFilter();
       this.treeModel.collapseAll();
-      
+
       this.selectedOptions.forEach(option => {
         const node = this.treeModel.getNodeById(option.id);
 
@@ -87,22 +87,22 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   isActiveParent(node: TreeNode) {
-    return node.isActive && this.selectedOptions.find(option => option.id === node.id)
+    return node.isActive && this.selectedOptions.find(option => option.id === node.id);
   }
 
   expandParents(tree: TreeModel, node: TreeNode, $event: any) {
     if (node.parent) {
-      this.expandParents(tree, node.parent, $event)
-      TREE_ACTIONS.EXPAND(tree, node.parent, $event)
+      this.expandParents(tree, node.parent, $event);
+      TREE_ACTIONS.EXPAND(tree, node.parent, $event);
     }
   }
 
   nodeToggled(tree: TreeModel, node: TreeNode, $event: any) {
     if (this.isActiveParent(node)) {
-      this.removeNodeFromSelection(node)
+      this.removeNodeFromSelection(node);
       this.nodeDeselected(tree, node, $event);
     } else if (!node.isActive) {
-      this.addNodeToSelection(node)
+      this.addNodeToSelection(node);
       this.nodeSelected(tree, node, $event);
     }
   }
@@ -111,23 +111,23 @@ export class SelectCollectionsModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField
-    })
+    });
   }
 
   removeNodeFromSelection(node: TreeNode) {
-    this.selectedOptions = this.selectedOptions.filter(option => option.id !== node.id)
+    this.selectedOptions = this.selectedOptions.filter(option => option.id !== node.id);
   }
 
   nodeSelected(tree: TreeModel, node: TreeNode, $event: any) {
     TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
 
     if (!node.hasChildren) {
-      return
+      return;
     }
 
     node.children.forEach((child: TreeNode) => {
       if (child.isActive) {
-        this.removeNodeFromSelection(child)
+        this.removeNodeFromSelection(child);
       } else {
         this.nodeSelected(tree, child, $event);
       }
@@ -147,10 +147,10 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   deselect(id: string) {
-    const node = this.treeModel.getNodeById(id)
-  
-    this.removeNodeFromSelection(node)
-    this.nodeDeselected(this.treeModel, node, null)
+    const node = this.treeModel.getNodeById(id);
+
+    this.removeNodeFromSelection(node);
+    this.nodeDeselected(this.treeModel, node, null);
   }
 
   close() {
@@ -162,7 +162,7 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   confirm() {
-    this.modalRef.hide()
+    this.modalRef.hide();
     this.emitConfirm.emit(this.selectedOptions.map(option => option.id));
   }
 }
