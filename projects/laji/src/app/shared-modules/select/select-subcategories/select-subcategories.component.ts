@@ -58,6 +58,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   selectedIdx = [];
   parentTitle: string;
   status = {};
+  tmpSelected = {};
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -414,27 +415,41 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleSubCategories(category, categorySelected, options) {
-    this.selectedOptions[category] = [];
-    this.unselectedOptions[category] = [];
-    this.tmpSelectedOption[category] = [];
+    this.tmpSelected[category] = [];
 
     if (!categorySelected || categorySelected.length === 0) {
       options.map(option => {
-        this.selectedOptions[category].push(option.id);
-        this.tmpSelectedOption[category].push(option.id);
+        if (this.tmpSelected[category] && this.tmpSelected[category].indexOf(option.id) === -1) {
+          this.tmpSelected[category].push(option.id);
+        }
       });
     } else {
       if (categorySelected.length === Object.keys(options).length) {
         options.map(option => {
-          this.unselectedOptions[category].push(option.id);
+          if (this.tmpSelected[category] && this.tmpSelected[category].indexOf(option.id) > -1) {
+            this.tmpSelected[category].splice(this.tmpSelected[category].indexOf(option.id), 1);
+          }
         });
       } else {
         options.map(option => {
-          this.selectedOptions[category].push(option.id);
-          this.tmpSelectedOption[category].push(option.id);
+          if (this.tmpSelected[category] && this.tmpSelected[category].indexOf(option.id) === -1) {
+            this.tmpSelected[category].push(option.id);
+          }
         });
       }
     }
+
+      this.selected[category] = this.tmpSelected[category];
+      this.selectedIdx[category] = -1;
+      this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
+      this.selected[this.subCategories[1]] : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+
+      this.initOptions(this.selected);
+      if (this.outputOnlyId) {
+        this.selectedChange.emit(this.selectedOptions);
+      } else {
+        this.selectedChange.emit(this.selectedOptions);
+      }
 
 
   }
