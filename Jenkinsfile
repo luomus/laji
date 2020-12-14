@@ -2,7 +2,7 @@ node {
   nvm('v12.16.3') {
     stage('Prepare environment') {
       cleanWs()
-      git branch: 'development', url: 'https://bitbucket.org/luomus/laji.fi-front.git'
+      git branch: 'development', url: 'https://github.com/luomus/laji.git'
       sh 'npm ci'
     }
     stage('Quality') {
