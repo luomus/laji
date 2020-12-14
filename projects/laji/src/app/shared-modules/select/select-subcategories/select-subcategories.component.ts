@@ -412,5 +412,48 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       return undefined;
     }
   }
+
+  toggleSubCategories(category, categorySelected, options) {
+    this.selectedOptions[category] = [];
+    this.unselectedOptions[category] = [];
+    this.tmpSelectedOption[category] = [];
+
+    if (!categorySelected || categorySelected.length === 0) {
+      options.map(option => {
+        this.selectedOptions[category].push(option.id);
+        this.tmpSelectedOption[category].push(option.id);
+      });
+    } else {
+      if (categorySelected.length === Object.keys(options).length) {
+        options.map(option => {
+          this.unselectedOptions[category].push(option.id);
+        });
+      } else {
+        options.map(option => {
+          this.selectedOptions[category].push(option.id);
+          this.tmpSelectedOption[category].push(option.id);
+        });
+      }
+    }
+
+
+  }
+
+  checkStatusSubCategory(categorySelected, options) {
+    if (!categorySelected) {
+      return undefined;
+    }
+    if (categorySelected.length === options.length) {
+      return true;
+    } else {
+      if (categorySelected.length > 0) {
+        return false;
+      } else {
+        return undefined;
+      }
+    }
+  }
+
+
 }
 

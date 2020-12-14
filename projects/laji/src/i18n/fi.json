@@ -854,6 +854,7 @@
   "observation.active.useIdentificationAnnotations": "Ei laadunvalvonnan määrityksiä",
   "observation.active.wild": "Luonnonvaraisuus",
   "observation.active.recordQuality.GLOBAL": "Tietojoukon tyyppi",
+  "observation.active.recordQuality.GLOBAL.info": "tietoteksti",
   "observation.active.recordQuality.PROFESSIONAL": "Ammattilainen",
   "observation.active.recordQuality.HOBBYIST": "Harrastaja",
   "observation.active.recordQuality.AMATEUR": "Amatööri",

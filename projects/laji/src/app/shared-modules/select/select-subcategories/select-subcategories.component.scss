@@ -77,6 +77,10 @@
   padding-bottom: 0px;
 }
 
+.subMenu {
+  margin-left: 10px;
+}
+
 ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
   position: absolute;
   right: -10px;
