@@ -4,7 +4,7 @@
      [config]="{ keyboard: false}"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div *ngIf="vm$ | async; let vm" class="modal-dialog"
-       [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
+       [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-xl': vm.openAnnotation}">
     <div class="modal-content">
       <div class="modal-body" *ngIf="vm.document">
         <lu-button-round (click)="documentModal.hide()" class="pull-right" role="neutral">
