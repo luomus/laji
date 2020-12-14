@@ -251,6 +251,7 @@ export class SpreadsheetService {
     if (
       typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
       typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.sys] !== 'undefined' ||
       typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
     ) {
       return this.getCombinedCoordinateValue(values);
@@ -268,17 +269,19 @@ export class SpreadsheetService {
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
-    if (!values[GeneratorService.splitCoordinate.system]) {
+    const system = values[GeneratorService.splitCoordinate.system] || values[GeneratorService.splitCoordinate.sys];
+
+    if (!system) {
       return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
     }
     const suffix = typeof values[GeneratorService.splitCoordinate.N] === 'undefined' ||
       typeof values[GeneratorService.splitCoordinate.E] === 'undefined' ?
-      ' ' + values[GeneratorService.splitCoordinate.system] : '';
+      ' ' + system : '';
 
-    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
+    if (system === GeneratorService.splitCoordinateSystem.ykj) {
       return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E] + suffix;
     }
-    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.etrs) {
+    if (system === GeneratorService.splitCoordinateSystem.etrs) {
       return `+${values[GeneratorService.splitCoordinate.N]}+${values[GeneratorService.splitCoordinate.E]}/CRSEPSG:3067`;
     }
     return ('' + values[GeneratorService.splitCoordinate.N]).replace(',', '.') + ',' +
