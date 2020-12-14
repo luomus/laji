@@ -10,6 +10,7 @@ import { DocumentViewerFacade } from '../shared-modules/document-viewer/document
 import { ProjectForm, ProjectFormService } from './project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
+import { BrowserService } from '../shared/service/browser.service'
 import ResultServiceType = Form.ResultServiceType;
 
 interface ViewModel {
@@ -46,7 +47,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private projectFormService: ProjectFormService,
     private formPermissionService: FormPermissionService,
     public userService: UserService,
-    private router: Router
+    private router: Router,
+    private browserService: BrowserService
 ) {}
 
   vm$: Observable<ViewModel>;
@@ -54,6 +56,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
+  isDesktopScreen: boolean;
+  subscriptionScreen: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -131,6 +135,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
+    this.subscriptionScreen = this.browserService.lgScreen$.subscribe(value => this.isDesktopScreen = value );
+    console.log(this.isDesktopScreen)
+
     this.showNav$ = routerEvents$.pipe(
       mergeMap((url: string) =>
         form$.pipe(
@@ -139,8 +146,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
               (!form.options?.useNamedPlaces && url.match(/\/form$/))
               || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
               || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
-              || (form.options?.useNamedPlaces && (url.match(/\/form\/places/) || url.match(/\/form\/MHL.*\/places/)))
-            )
+              || (form.options?.useNamedPlaces && !this.isDesktopScreen && (url.match(/\/form\/places/) || url.match(/\/form\/MHL.*\/places/)))
+             || (!this.isDesktopScreen))
           )
         )
       )
@@ -161,6 +168,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
+    this.subscriptionScreen.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {

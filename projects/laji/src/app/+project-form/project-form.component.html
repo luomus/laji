@@ -1,4 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm; else loader">
+  {{ showNav$ | async}}
   <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
     <nav>
       <h5>
