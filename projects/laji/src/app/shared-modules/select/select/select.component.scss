@@ -76,6 +76,11 @@
   top: 0px;
 }
 
+::ng-deep laji-info.relative {
+  position: relative;
+  left: 10px;
+}
+
 @media only screen and (min-width : 768px) and (max-width: 1024px) {
   .lj-item {
     min-height: 35px;

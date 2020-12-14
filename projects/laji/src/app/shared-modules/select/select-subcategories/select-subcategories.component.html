@@ -18,7 +18,7 @@
             </span>
           </ng-container>
           <div *ngIf="open" class="lj-item-container" [ngClass]="{'subCategoryBox' : subCategory !== 'GLOBAL', '' : subCategory === 'GLOBAL'}">
-            <div><strong *ngIf="y === 1">{{ subTitleBase + '.' + subCategories[y-1] | translate }}</strong></div>
+            <div><strong *ngIf="y === 1">{{ subTitleBase + '.' + subCategories[y-1] | translate }}</strong><laji-info class="relative"  *ngIf="y === 1" placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
             <label class="lj-item" *ngIf="y > 0" (click)="labelClick($event)">
               <laji-checkbox [threeState]="true" [hasSubCategories]="true" [value]="checkStatusSubCategory(selectedOptions[subCategory], options[subCategory])" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options[subCategory])"></laji-checkbox><strong>{{ subCategory === 'GLOBAL' ? (subTitleBase | translate)  : ( subTitleBase + '.' + subCategory | translate ) }}</strong>
             </label>
