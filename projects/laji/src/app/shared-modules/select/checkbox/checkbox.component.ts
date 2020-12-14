@@ -28,9 +28,9 @@ export class CheckboxComponent {
     } else if (value === false && this.threeState) {
       this.checkbox.nativeElement.indeterminate = true;
       this.stateClass = this.hasSubCategories ? 'negative' : 'excluded';
-    } else if (value === false && !this.threeState) {
+    } else if (value === false && (!this.threeState || this.threeState === undefined)) {
       this.checkbox.nativeElement.indeterminate = true;
-      this.stateClass = this.hasSubCategories ? 'negative' : 'excluded';
+      this.stateClass = this.hasSubCategories ? 'negative' : 'clear';
     } else {
       this.checkbox.nativeElement.checked = false;
       this.stateClass = 'clear';
