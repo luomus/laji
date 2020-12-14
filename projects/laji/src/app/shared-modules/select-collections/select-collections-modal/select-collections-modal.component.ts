@@ -158,10 +158,10 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   clear() {
-    this.selectedOptions=[];
+    this.selectedOptions = [];
     this.treeModel.doForAll(node => {
       TREE_ACTIONS.DEACTIVATE(this.treeModel, node, null);
-    })
+    });
     this.treeModel.collapseAll();
   }
 
