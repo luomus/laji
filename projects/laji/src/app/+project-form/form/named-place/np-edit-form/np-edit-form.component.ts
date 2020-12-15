@@ -162,14 +162,15 @@ export class NpEditFormComponent implements OnInit {
         {
           relativeTo: this.route,
           replaceUrl: true,
-          queryParams: this.projectFormService.trimNamedPlacesQuery(data.documentForm, {
+          queryParams: {
             municipality: namedPlace?.municipality?.join(',')
               || data.municipality,
             birdAssociationArea: namedPlace?.birdAssociationArea?.join(',')
               || data.birdAssociationArea,
             tags: (data.tags || []).join(','),
             activeNP: namedPlace?.id || data.namedPlace?.id
-          })}
+          }
+        }
       );
     });
   }

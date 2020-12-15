@@ -29,7 +29,7 @@
                 [routerLink]="['./', namedPlace.id, 'print'] | localize">{{ documentForm.options?.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
           </span>
           <ng-container *ngIf="allowEdit && editButtonVisible">
-            <lu-button (click)="editClick()">{{ 'np.edit' | translate }}</lu-button>
+            <lu-button (click)="editClick()" id="np-edit">{{ 'np.edit' | translate }}</lu-button>
             <lu-button (click)="deleteClick()" [disabled]="!canDelete" id="np-delete">{{ 'np.delete' | translate }}<laji-info *ngIf="!canDelete" [noShow]="true" [tooltip]="'np.delete.disabled.hasDocs' | translate"></laji-info></lu-button>
           </ng-container>
         </div>

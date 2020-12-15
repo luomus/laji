@@ -73,10 +73,10 @@ export class NamedPlaceWrapperComponent implements OnInit {
   create() {
     this.projectFormService.getProjectFormFromRoute$(this.route).pipe(take(1)).subscribe(projectForm => {
       this.router.navigate(['./new'], {
-        queryParams: this.projectFormService.trimNamedPlacesQuery(projectForm.form, {
+        queryParams: {
           municipality: this.route.snapshot.queryParams.municipality,
           birdAssociationArea: this.route.snapshot.queryParams.birdAssociationArea
-        }, false),
+        },
         relativeTo: this.route
       });
     });

@@ -9,12 +9,16 @@
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
     <ng-container *lajiLoggedIn="true">
-      <div *ngIf='data.allowEdit && data.namedPlaces' class="choose-label">
-      <span>{{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel
-      || 'np.chooseLabel' | translate}}</span>
+      <div *ngIf='data.namedPlaces' class="choose-label">
+        <span>
+          {{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
+        </span>
+        <ng-container *ngIf="data.allowEdit">
+          <span class="choose-or">{{'or' | translate}}</span>
         <lu-button (click)='onCreateNew()'>
           {{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
         </lu-button>
+        </ng-container>
       </div>
     </ng-container>
 
@@ -66,11 +70,13 @@
                           [documentForm]="data.documentForm"
                           [placeForm]="data.placeForm"
                           [userID]="data.user.id"
-                          [allowCreate]="data.allowEdit"
                           [activeNP]="data.activeNP?.id"
                           [formRights]="data.formRights"
-                          (activePlaceChange)="onActivePlaceChange($event)"
-                          (createButtonClick)="onCreateNew()"></laji-np-choose>
+                          (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
+          <ng-container *lajiLoggedIn="true">
+            <lu-button *ngIf="data.allowEdit"
+                       (click)="onCreateNew()">{{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
+          </ng-container>
         </div>
         <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
           <laji-np-info *ngIf="data.activeNP"

@@ -68,6 +68,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
   @Input() displayHeader = true;
   @Input() useLabel: string;
+  @Input() readonly = false;
 
   @Output() birdAssociationAreaChange = new EventEmitter<string>();
   @Output() municipalityChange = new EventEmitter<string>();
@@ -187,7 +188,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           filterByBirdAssociationArea: documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea,
           filterByMunicipality: documentForm?.options?.namedPlaceOptions?.filterByMunicipality,
           filterByTags: documentForm?.options?.namedPlaceOptions?.filterByTags,
-          allowEdit: documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin,
+          allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
         }
@@ -319,14 +320,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     const query: NamedPlaceQuery = {
       collectionID: documentForm.collectionID,
-      municipality,
+      municipality: municipality || 'all',
       birdAssociationArea,
       tags: (tags || []).join(','),
       includeUnits: documentForm.options?.namedPlaceOptions?.includeUnits,
       selectedFields: selected.filter(field => field.charAt(0) !== '_').join(',')
     };
 
-    if (this.npRequirementsNotMet(documentForm, municipality, birdAssociationArea)) {
+    if (this.npRequirementsNotMet(documentForm, query.municipality, query.birdAssociationArea)) {
       return of(null);
     }
 

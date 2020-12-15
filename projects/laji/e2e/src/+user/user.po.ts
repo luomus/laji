@@ -43,7 +43,6 @@ export class UserPage {
       throw new Error('You must navigate to page before ensuring logged in!');
     }
 
-
     try {
       const userNameExists = EC.presenceOf(this.usernameElem);
       await browser.wait(userNameExists, 500);

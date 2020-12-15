@@ -2,17 +2,16 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@a
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { FormService } from '../../shared/service/form.service';
 import { Form } from '../../shared/model/Form';
-import { map } from 'rxjs/operators';
-import { combineLatest, Observable, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 import { Document } from '../../shared/model/Document';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../shared/service/dialog.service';
+import { LajiFormDocumentFacade, Readonly } from '../laji-form/laji-form-document.facade';
 
 interface ViewModel {
   document: Document;
-  form: Form.List;
-}
-
-interface NamedPlaceViewModel {
-  documentForm: Form.SchemaForm;
+  form: Form.SchemaForm;
 }
 
 @Component({
@@ -23,8 +22,8 @@ interface NamedPlaceViewModel {
 export class NamedPlaceLinkerComponent implements OnInit {
   @Input() document: Document;
 
+  isLinkable$: Observable<boolean>;
   vm$: Observable<ViewModel>;
-  npVm$: Observable<NamedPlaceViewModel>;
 
   municipality: string;
   birdAssociationArea: string;
@@ -34,17 +33,24 @@ export class NamedPlaceLinkerComponent implements OnInit {
   @ViewChild('modal', {static: true}) public modal: ModalDirective;
 
   constructor(
-    private formService: FormService
+    private formService: FormService,
+    private translate: TranslateService,
+    private dialogService: DialogService,
+    private lajiFormDocumentFacade: LajiFormDocumentFacade
   ) { }
 
   ngOnInit(): void {
     const form$ = this.formService.getAllForms().pipe(map(forms => forms.find(f => f.id === this.document.formID)));
-    const doc$ = of(this.document);
-    this.vm$ = combineLatest(form$, doc$)
-      .pipe(map(([form, document]) => ({form, document})));
+    const documentReadOnly$ = this.lajiFormDocumentFacade.vm$.pipe(map(vm => vm.form.readonly === Readonly.noEdit || vm.form.readonly === Readonly.true));
+    documentReadOnly$.subscribe(r => console.log('R', r));
+    this.isLinkable$ = combineLatest(form$, documentReadOnly$).pipe(map(([form, readonly]) => !readonly && form.options?.useNamedPlaces && !this.document?.namedPlaceID));
   }
 
   openNamedPlacesChooserModal() {
+    const form$ = this.formService.getForm(this.document.formID);
+    if (!this.vm$) {
+      this.vm$ = form$.pipe(map(form => ({form, document: this.document})));
+    }
     this.modal?.show();
   }
 
@@ -66,5 +72,11 @@ export class NamedPlaceLinkerComponent implements OnInit {
   }
 
   use(id: string) {
+    this.translate.get('np.linker.confirm').pipe(
+      take(1),
+      switchMap(txt => this.dialogService.confirm(txt)),
+    ).subscribe(confirmed => {
+      console.log('TODO');
+    });
   }
 }

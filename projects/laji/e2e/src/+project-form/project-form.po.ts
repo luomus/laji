@@ -71,6 +71,7 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
   public readonly $useButton = this.$viewer.$('.lu-btn.primary');
   public readonly $addButton = this.$container.$('.choose-label .lu-btn.secondary');
   public readonly $deleteButton = this.$viewer.$('#np-delete');
+  public readonly $editButton = this.$viewer.$('#np-edit');
   public readonly $modal = this.$container.$('laji-np-info .modal.in');
   public readonly $modalCloseButton = this.$modal.$('.modal-header lu-button');
 
@@ -98,6 +99,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
   public readonly $save = $('laji-document-form-footer .btn-success');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
+  public readonly namedPlaceLinker = new NamedPlaceLinker();
 
   getContextId = async () => (await this.$form.$('.rjsf > .form-group').getAttribute('id')).match(/\d+/)[0];
 
@@ -112,12 +114,19 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   }
 }
 
-class AboutPage {
+class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
+  public readonly $container = $('laji-named-place-linker');
+  public readonly $openModalButton = this.$container.$('button');
+  public readonly $modal = this.$container.$('.named-place-linker-modal');
+  public readonly namedPlacesView = new NamedPlacesView();
+}
+
+class AboutPage { // tslint:disable-line max-classes-per-file
   public readonly $aboutContent = $('laji-about');
   public readonly $loginButton = $('.login-button');
 }
 
-class MobileAboutPage extends AboutPage {
+class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per-file
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');

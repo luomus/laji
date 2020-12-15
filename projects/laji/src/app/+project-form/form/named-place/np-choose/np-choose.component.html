@@ -28,9 +28,4 @@
       ></laji-np-list>
     </div>
   </ng-template>
-
-  <ng-container *lajiLoggedIn="true">
-    <lu-button *ngIf="allowCreate"
-               (click)="createButtonClick.emit()">{{ _documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
-  </ng-container>
 </div>
