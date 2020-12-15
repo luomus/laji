@@ -74,7 +74,13 @@
 }
 
 .subCategoryBox {
-  padding-bottom: 0px;
+  padding-bottom: 0;
+  overflow: unset;
+  max-height: 65vh;
+}
+
+.no-overflow {
+  overflow: unset;
 }
 
 .subMenu {
@@ -101,6 +107,11 @@
 
   .lj-item {
     padding-right: 20px;
+  }
+
+  ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
+    right: -27px;
+    top: -8px;
   }
 
 }

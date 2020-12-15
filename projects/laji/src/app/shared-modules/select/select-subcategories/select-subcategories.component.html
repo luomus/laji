@@ -32,7 +32,7 @@
           </div>
         </ng-container>
         <ng-template #multiWithFilter>
-          <span class="lj-container" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
+          <span class="lj-container no-overflow" *ngFor="let option of selectedOptions[subCategory]; trackBy: track">
             <label class="lj-item selected" (click)="labelClick($event)">
               <laji-checkbox [hasSubCategories]="true" [value]="true" (valueChange)="remove(option.id, subCategory)"></laji-checkbox>{{option.value}}
             </label>
