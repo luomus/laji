@@ -69,6 +69,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   @Input() displayHeader = true;
   @Input() useLabel: string;
   @Input() readonly = false;
+  @Input() useDisabled = false;
 
   @Output() birdAssociationAreaChange = new EventEmitter<string>();
   @Output() municipalityChange = new EventEmitter<string>();

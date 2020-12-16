@@ -56,7 +56,7 @@
         <div *lajiLoggedIn="true" class="button-container" [ngSwitch]="useButton">
           <ng-container *ngSwitchCase="'usable'">
             <div class="row-container">
-              <lu-button [role]="'primary'" (click)="useClick()">{{ useLabel || documentForm.options?.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</lu-button>
+              <lu-button [role]="'primary'" (click)="useClick()" [disabled]="useDisabled">{{ useLabel || documentForm.options?.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</lu-button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByYou'">

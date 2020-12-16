@@ -1,13 +1,20 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { FormService } from '../../shared/service/form.service';
 import { Form } from '../../shared/model/Form';
-import { map, switchMap, take } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { Document } from '../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../shared/service/dialog.service';
-import { LajiFormDocumentFacade, Readonly } from '../laji-form/laji-form-document.facade';
+import { ISuccessEvent, LajiFormDocumentFacade, Readonly } from '../laji-form/laji-form-document.facade';
+import { DocumentApi } from '../../shared/api/DocumentApi';
+import { UserService } from '../../shared/service/user.service';
+import { ToastsService } from '../../shared/service/toasts.service';
+import { FormPermissionService } from '../../shared/service/form-permission.service';
+import { Router } from '@angular/router';
+import { BrowserService } from '../../shared/service/browser.service';
+import { NamedPlacesService } from '../../shared/service/named-places.service';
 
 interface ViewModel {
   document: Document;
@@ -19,16 +26,22 @@ interface ViewModel {
   templateUrl: './named-place-linker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NamedPlaceLinkerComponent implements OnInit {
-  @Input() document: Document;
+export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
+  @Input() documentID: string;
 
+  @Output() linked = new EventEmitter<ISuccessEvent>();
+
+  document$: Observable<Document>;
   isLinkable$: Observable<boolean>;
   vm$: Observable<ViewModel>;
+  loading = false;
 
   municipality: string;
   birdAssociationArea: string;
   tags: string[];
   activeNP: string;
+
+  subscription: Subscription;
 
   @ViewChild('modal', {static: true}) public modal: ModalDirective;
 
@@ -36,22 +49,57 @@ export class NamedPlaceLinkerComponent implements OnInit {
     private formService: FormService,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade
+    private lajiFormDocumentFacade: LajiFormDocumentFacade,
+    private documentApi: DocumentApi,
+    private userService: UserService,
+    private toastsService: ToastsService,
+    private formPermissionService: FormPermissionService,
+    private router: Router,
+    private browserService: BrowserService,
+    private namedPlacesService: NamedPlacesService
   ) { }
 
   ngOnInit(): void {
-    const form$ = this.formService.getAllForms().pipe(map(forms => forms.find(f => f.id === this.document.formID)));
-    const documentReadOnly$ = this.lajiFormDocumentFacade.vm$.pipe(map(vm => vm.form.readonly === Readonly.noEdit || vm.form.readonly === Readonly.true));
-    documentReadOnly$.subscribe(r => console.log('R', r));
-    this.isLinkable$ = combineLatest(form$, documentReadOnly$).pipe(map(([form, readonly]) => !readonly && form.options?.useNamedPlaces && !this.document?.namedPlaceID));
+    this.document$ = this.documentApi.findById(this.documentID, this.userService.getToken());
+    const form$ = this.document$.pipe(
+      switchMap(document => this.formService.getAllForms().pipe(
+        map(forms => forms.find(f => f.id === document.formID))
+      ))
+    );
+    const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
+    const documentReadOnly$ = combineLatest(this.document$, rights$, this.userService.user$).pipe(
+      map(([document, rights, person]) => this.lajiFormDocumentFacade.getReadOnly(document, rights, person)),
+      map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
+    );
+    this.isLinkable$ = combineLatest(this.document$, form$, documentReadOnly$).pipe(
+      map(([document, form, readonly]) => !readonly && form.options?.useNamedPlaces && !document?.namedPlaceID)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 
   openNamedPlacesChooserModal() {
-    const form$ = this.formService.getForm(this.document.formID);
-    if (!this.vm$) {
-      this.vm$ = form$.pipe(map(form => ({form, document: this.document})));
-    }
-    this.modal?.show();
+    this.lajiFormDocumentFacade.vm$.pipe(
+      switchMap(vm =>
+        vm.hasChanges
+        ? this.translate.get('np.linker.acknowledgeChangesLose').pipe(
+            switchMap(txt => this.dialogService.confirm(txt))
+          )
+          : of(true)
+      ),
+      take(1)
+    ).subscribe(confirmedChangesLose => {
+      if (!confirmedChangesLose) {
+        return;
+      }
+      const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
+      if (!this.vm$) {
+        this.vm$ = combineLatest(this.document$, form$).pipe(map(([document, form]) => ({document, form})));
+      }
+      this.modal?.show();
+    });
   }
 
 
@@ -72,11 +120,32 @@ export class NamedPlaceLinkerComponent implements OnInit {
   }
 
   use(id: string) {
-    this.translate.get('np.linker.confirm').pipe(
+    this.loading = true;
+    this.subscription = this.translate.get('np.linker.confirm').pipe(
       take(1),
       switchMap(txt => this.dialogService.confirm(txt)),
-    ).subscribe(confirmed => {
-      console.log('TODO');
+      switchMap(confirmed => {
+        if (!confirmed) {
+          return;
+        }
+        return this.document$.pipe(switchMap((doc) => {
+          return this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken());
+        }));
+      }),
+      switchMap(document => this.formService.getForm(document.formID).pipe(map(form => ({form, document})))),
+      catchError(() => {
+        this.translate.get('np.linker.fail').pipe(take(1)).subscribe(msg => this.toastsService.showError(msg));
+        this.loading = false;
+        return null;
+      })
+    ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
+      if (!res) {
+        return;
+      }
+      this.modal.hide();
+      this.translate.get('np.linker.success').pipe(take(1)).subscribe(msg => this.toastsService.showSuccess(msg));
+      this.linked.emit({success: true, ...res});
+      this.loading = false;
     });
   }
 }

@@ -44,6 +44,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() accessRequested: boolean;
   @Input() formRights: Rights;
   @Input() useLabel: string;
+  @Input() useDisabled = false;
 
   editButtonVisible: boolean;
 

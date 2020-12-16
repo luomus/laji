@@ -27,6 +27,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { Form } from '../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form',
@@ -253,5 +254,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
       type === 'success-temp' ? options.saveDraftSuccessMessage :
       type === 'error' ? options.saveErrorMessage : undefined
     ) ?? defaultValue;
+  }
+
+  onLinkedNamedPlace(res: ISuccessEvent) {
+    this.success.emit(res);
   }
 }

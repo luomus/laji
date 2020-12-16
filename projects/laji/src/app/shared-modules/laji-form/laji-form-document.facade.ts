@@ -45,7 +45,6 @@ export interface ISuccessEvent {
   success: boolean;
   document: Document;
   form: Form.SchemaForm;
-  namedPlace?: NamedPlace;
 }
 
 export interface FormWithData extends Form.SchemaForm {
@@ -423,7 +422,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
+  getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
     if (rights.admin) {
       return Readonly.false;
     }

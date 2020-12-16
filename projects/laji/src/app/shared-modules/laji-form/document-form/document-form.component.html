@@ -27,7 +27,7 @@
       [formData]="vm.form.formData"
       [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
   ></laji-document-form-header>
-  <laji-named-place-linker *ngIf="vm.form?.formData" [document]="vm.form?.formData"></laji-named-place-linker>
+  <laji-named-place-linker *ngIf="vm.form?.formData" [documentID]="documentId" (linked)="onLinkedNamedPlace($event)"></laji-named-place-linker>
   <div class="clear"></div>
   <div class="laji-form" *ngIf="vm.error === errors.ok">
     <laji-form

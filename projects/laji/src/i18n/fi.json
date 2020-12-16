@@ -1701,5 +1701,8 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "or": "tai",
-  "np.linker.confirm": "Linkitetäänkö varmasti kyseinen havaintoerä tähän paikkaan?"
+  "np.linker.confirm": "Linkitetäänkö varmasti kyseinen havaintoerä tähän paikkaan?",
+  "np.linker.acknowledgeChangesLose": "Lomakkeelle tehdyt tallentamattomat muutokset häviävät kun linkität havaintoerän paikkaan. Jatketaanko?",
+  "np.linker.success": "Paikka linkitettiin onnistuneesti",
+  "np.linker.fail": "Paikan linkitys epäonnistui"
 }
