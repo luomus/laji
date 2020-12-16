@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 .scrollable-selection-list {
-  height: calc(50vh + 35px);
-  padding: 10;
+  max-height: calc(50vh + 20px);
+  padding: 10px;
   overflow: auto;
 }

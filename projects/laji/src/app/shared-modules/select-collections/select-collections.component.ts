@@ -100,7 +100,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
       }
     });
 
-    collectionsWithChildren.sort((a, b) => a.longName.localeCompare(b.longName));
+    collectionsWithChildren.sort((a, b) => b.count - a.count);
 
     return collectionsWithChildren;
   }
@@ -122,7 +122,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
       });
 
       if (children.length !== 0) {
-        children.sort((a, b) => a.longName.localeCompare(b.longName));
+        children.sort((a, b) => b.count - a.count);
 
         return {
           ...tree,

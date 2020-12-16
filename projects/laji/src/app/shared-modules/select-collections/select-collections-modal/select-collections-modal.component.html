@@ -5,17 +5,11 @@
   </div>
   <div class="modal-body">
     <div class="container-flex">
-      <div class="row">
-        <div class="col-md-8">
-          <h5>{{browseTitle}}</h5>
-        </div>
-        <div class="col-md-4">
-          <h5>{{selectedTitle}}</h5>
-        </div>
-      </div>
+
       <ng-container *ngIf="collectionsTree$ | async; let collectionsTree; else loading">
         <div class="row">
           <div class="col-md-8">
+            <h5>{{browseTitle}}</h5>
             <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange($event.target.value)"/>
             <div class="scrollable-tree">
               <tree-root 
@@ -25,24 +19,35 @@
                 (initialized)="treeInit($event)"
               >
                 <ng-template #treeNodeTemplate let-node>
-                  <span [class]="node.getClass()">{{node.data.longName + " (" + node.data.count + ")"}}</span>
+                  <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
                 </ng-template>
               </tree-root>
             </div>
           </div>
-          <div class="col-md-4 scrollable-selection-list">
-            <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+          <div class="col-md-4">
+            <h5>{{selectedTitle}}</h5>
+            <div class="scrollable-selection-list">
+              <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+            </div>
           </div>
         </div>   
       </ng-container>
       <ng-template #loading>
+        <div class="row">
+          <div class="col-md-8">
+            <h5>{{browseTitle}}</h5>
+          </div>
+          <div class="col-md-4">
+            <h5>{{selectedTitle}}</h5>
+          </div>
+        </div>
         <laji-spinner></laji-spinner>
       </ng-template>
     </div>
   </div>
   <div class="modal-footer">
-      <button type="button" class="btn btn-default" (click)="clear()">{{clearButtonLabel}}</button>
-    <button type="button" class="btn btn-default" (click)="confirm()">{{okButtonLabel}}</button>
+    <lu-button role="secondary" (click)="clear()">{{clearButtonLabel}}</lu-button>
+    <lu-button role="primary" (click)="confirm()">{{okButtonLabel}}</lu-button>
   </div>
 </div>
 
