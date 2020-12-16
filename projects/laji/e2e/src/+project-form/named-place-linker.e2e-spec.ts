@@ -55,16 +55,4 @@ describe('Named place linker', () => {
     expect(await projectFormPage.documentFormView.namedPlaceLinker.$openModalButton.isPresent()).toBe(false);
     done();
   });
-
-  it('warns user that document changes will be lost if linked', async (done) => {
-    await projectFormPage.navigateTo(FORM_ID, `/form/${DOC_NO_NP_ID_FORM_HAS_NAMED_PLACES}`);
-    const $dateTodayBtn = $('.today');
-    await scrollIntoView($dateTodayBtn);
-    await $dateTodayBtn.click();
-    await scrollIntoView(projectFormPage.documentFormView.namedPlaceLinker.$openModalButton);
-    await projectFormPage.documentFormView.namedPlaceLinker.$openModalButton.click();
-    expect(await browser.switchTo().alert().getText()).not.toBeFalsy();
-    await browser.switchTo().alert().dismiss();
-    done();
-  });
 });

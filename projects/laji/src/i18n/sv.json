@@ -1702,7 +1702,6 @@
   "yes": "Ja",
   "or": "eller",
   "np.linker.confirm": "Är du säker på att du vill koppla observationen till den här platsen",
-  "np.linker.acknowledgeChangesLose": "De osparade ändringarna av dokumentet går förlorade när du länkar dokumentet till en namngiven plats. Är du säker på att du vill fortsätta?",
   "np.linker.success": "Platsen länkades framgångsrikt",
   "np.linker.fail": "Länkplatsen misslyckades"
 }

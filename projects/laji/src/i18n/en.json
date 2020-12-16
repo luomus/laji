@@ -1702,7 +1702,6 @@
   "yes": "Yes",
   "or": "or",
   "np.linker.confirm": "Are you sure you want to link the observation to this place",
-  "np.linker.acknowledgeChangesLose": "The unsaved changes to the document will be lost when you link the document to a named place. Are you sure you want to continue?",
   "np.linker.success": "Place was linked succesfully",
   "np.linker.fail": "Linking place failed"
 }

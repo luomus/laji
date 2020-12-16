@@ -81,25 +81,11 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   }
 
   openNamedPlacesChooserModal() {
-    this.lajiFormDocumentFacade.vm$.pipe(
-      switchMap(vm =>
-        vm.hasChanges
-        ? this.translate.get('np.linker.acknowledgeChangesLose').pipe(
-            switchMap(txt => this.dialogService.confirm(txt))
-          )
-          : of(true)
-      ),
-      take(1)
-    ).subscribe(confirmedChangesLose => {
-      if (!confirmedChangesLose) {
-        return;
-      }
-      const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
-      if (!this.vm$) {
-        this.vm$ = combineLatest(this.document$, form$).pipe(map(([document, form]) => ({document, form})));
-      }
-      this.modal?.show();
-    });
+    const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
+    if (!this.vm$) {
+      this.vm$ = combineLatest(this.document$, form$).pipe(map(([document, form]) => ({document, form})));
+    }
+    this.modal?.show();
   }
 
 
