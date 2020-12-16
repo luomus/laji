@@ -472,18 +472,6 @@
         {id: false, value: ('observation.form.needsCheck.false' | translate)}
       ]"></laji-select>
 
-  <ng-container *ngIf="advancedMode || query.collectionQuality">
-    <laji-metadata-select
-      name="collectionQuality"
-      [(ngModel)]="query.collectionQuality"
-      (ngModelChange)="onQueryChange()"
-      [mapToWarehouse]="true"
-      [multiple]="true"
-      [useFilter]="false"
-      [placeholder]="'observation.form.collectionQuality' | translate"
-      [info]="'observation.info.collectionQuality' | translate"
-      [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
-  </ng-container>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
