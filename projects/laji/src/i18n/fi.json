@@ -106,6 +106,8 @@
   "datasets.new.help": "Voit pyytää pääsyä aineistoihin oman organisaatiosi tai ryhmäsi yhteyshenkilöltä.",
   "datasets.new.intro": "Tässä voit pyytää organisaatiosiollesi tai ryhmällesi uutta aineistoa. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman pian, yleensä muutamassa päivässä.",
   "datasets.new.title": "Perusta uusi aineisto",
+  "datasets.observations.list": "Selaa havaintoja",
+  "datasets.observations.title": "Tehdyt päivitykset",
   "datasets.primary": "primääridata",
   "datasets.secondary": "sekundääridata",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
