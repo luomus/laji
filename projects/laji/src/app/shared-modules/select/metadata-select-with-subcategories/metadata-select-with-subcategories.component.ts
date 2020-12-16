@@ -39,28 +39,10 @@ export const METADATA_SELECT_VALUE_ACCESSOR: any = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComponent implements OnChanges, OnDestroy, ControlValueAccessor {
-  @Input() field: string;
-  @Input() alt: string;
-  @Input() name: string;
-  @Input() multiple = true;
-  @Input() placeholder = 'select';
-  @Input() mapToWarehouse = false;
-  @Input() pick: MetadataSelectPick;
-  @Input() options: string[];
-  @Input() useFilter = true;
-  @Input() firstOptions = [];
-  @Input() info: string;
-  @Input() whiteList: string[];
-  @Input() skip: string[];
-  @Input() skipBefore: string;
-  @Input() open: boolean;
-  @Input() disabled = false;
-  @Input() labelAsValue = false;
   @Input() subCategories = [];
   @Input() subTitleBase = '';
   @Input() filtersName = [];
   @Input() filtersValues = [];
-  @Input() selectStyle = SelectStyle.advanced;
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
 
@@ -114,11 +96,6 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
     this.queryToSelect = this.filtersValues;
   }
 
-  ngOnDestroy() {
-    if (this.subOptions) {
-      this.subOptions.unsubscribe();
-    }
-  }
 
   initOptions() {
     if (!this.field && !this.alt && !this.options) {
@@ -157,16 +134,6 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
      return;
     }
     this.update.emit(value);
-  }
-
-  protected optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
-    return from(options).pipe(
-      concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(
-        filter(warehouseID => warehouseID !== option.id),
-        map(warehouseID => ({ ...option, id: warehouseID })),
-      )),
-      toArray()
-    );
   }
 
 }
