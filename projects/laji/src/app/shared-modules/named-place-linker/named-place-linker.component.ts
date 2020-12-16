@@ -12,9 +12,6 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { UserService } from '../../shared/service/user.service';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
-import { Router } from '@angular/router';
-import { BrowserService } from '../../shared/service/browser.service';
-import { NamedPlacesService } from '../../shared/service/named-places.service';
 
 interface ViewModel {
   document: Document;
@@ -54,9 +51,6 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private toastsService: ToastsService,
     private formPermissionService: FormPermissionService,
-    private router: Router,
-    private browserService: BrowserService,
-    private namedPlacesService: NamedPlacesService
   ) { }
 
   ngOnInit(): void {
