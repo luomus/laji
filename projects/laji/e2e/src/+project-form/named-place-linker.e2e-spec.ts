@@ -27,7 +27,7 @@ describe('Named place linker', () => {
     done();
   });
 
-  it('button open named places chooser modal', async (done) => {
+  it('button open named places chooser np selector', async (done) => {
     await projectFormPage.documentFormView.namedPlaceLinker.$openModalButton.click();
     expect(await projectFormPage.documentFormView.namedPlaceLinker.namedPlacesView.$container.isDisplayed()).toBe(true);
     done();
@@ -52,7 +52,7 @@ describe('Named place linker', () => {
 
   it('isn\'t shown if document is readonly', async (done) => {
     await projectFormPage.navigateTo(FORM_ID, `/form/${DOC_NO_NP_ID_FORM_HAS_NAMED_PLACES_NO_ACCESS}`);
-    expect(await projectFormPage.documentFormView.namedPlaceLinker.$openModalButton.isPresent()).toBe(false);
+    expect(await projectFormPage.documentFormView.namedPlaceLinker.$openModalButton.isPresent()).toBe(false, 'named place linker ');
     done();
   });
 });

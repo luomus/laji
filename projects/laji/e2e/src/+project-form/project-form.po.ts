@@ -116,8 +116,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
 
 class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
   public readonly $container = $('laji-named-place-linker');
-  public readonly $openModalButton = this.$container.$('button');
-  public readonly $modal = this.$container.$('.named-place-linker-modal');
+  public readonly $openModalButton = this.$container.$('#link-to-np');
   public readonly namedPlacesView = new NamedPlacesView();
 }
 
