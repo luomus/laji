@@ -59,7 +59,7 @@ export class UserPage {
   async doExternalLogin(user = DEFAULT_TEST_USER) {
     await browser.waitForAngularEnabled(false);
 
-    await browser.wait(EC.visibilityOf(this.authLocal), 1000);
+    await browser.wait(EC.visibilityOf(this.authLocal), 2000);
     await this.authLocal.click();
     await this.authUsername.sendKeys(user);
     await this.authPassword.sendKeys(TEST_USERS[user].pw);
