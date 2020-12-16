@@ -8,8 +8,8 @@
   <p [innerHTML]="'datasets.generic.primary' | translate"></p>
 </ng-template>
 
-<p><strong>Tehdyt päivitykset</strong></p>
-<p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'home.observation-sub-intro' | translate }}</a></p>
+<p><strong>{{ 'datasets.observations.title' | translate }}</strong></p>
+<p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'datasets.observations.list' | translate }}</a></p>
 
 <div [innerHTML]="'datasets.generic.instructions' | translate"></div>
 

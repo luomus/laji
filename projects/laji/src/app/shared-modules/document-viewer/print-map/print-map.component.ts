@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
-import { LajiMapOptions } from '../../laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-print-map',

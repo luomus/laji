@@ -27,20 +27,20 @@ export class LajiErrorHandler extends ErrorHandler {
       return super.handleError(error);
     }
 
+    if (typeof error.message === 'string' && (
+      (error.message.indexOf(`Cannot read property 'display' of undefined`) !== -1 && this.response) ||
+      error.message.indexOf('QuotaExceededError') !== -1 ||
+      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1
+    )) {
+      return super.handleError(error);
+    }
+
     // Send error response code so that pages that have errors would not be indexed
     if (this.response) {
       this.response.statusCode = 500;
       this.response.statusMessage = 'Internal Server Error';
     }
 
-    if (typeof error.message === 'string') {
-      if (error.message.indexOf('QuotaExceededError') !== -1 ||
-        error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') === 0
-      ) {
-        this.pauseMessage();
-        return super.handleError(error);
-      }
-    }
     if (this.isScheduled()) {
       this.pauseMessage();
       this.getToastsService().showWarning(

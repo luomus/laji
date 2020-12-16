@@ -57,7 +57,7 @@ function replaceToken(token: string, request: any): any {
   if (typeof request.url === 'string') {
     request.url = convertToken(request.url, PERSON_TOKEN, personToken);
   }
-  if (request.body && typeof request.body === 'object' && typeof request.url === 'string' && request.url.includes('graphql')) {
+  if (request.body && typeof request.body === 'object' && typeof request.url === 'string' && request.url.indexOf('graphql') !== -1) {
     if (request.body.variables) {
       const variables = request.body.variables;
       request.body.variables = Object.keys(variables).reduce((result, key) => {
@@ -156,7 +156,7 @@ addEventListener('message', ({ data }) => {
     return;
   } else if (!localKey) {
     localKey = key;
-    if (data.loginUrl.startsWith(environment.loginCheck)) {
+    if (data.loginUrl.indexOf(environment.loginCheck) === 0) {
       loginUrl = data.loginUrl;
     }
   }
@@ -164,7 +164,7 @@ addEventListener('message', ({ data }) => {
     postMessage({type: LOGOUT_MSG});
     return;
   }
-  if (!id || !request || !request.url || !(request.url.startsWith(environment.apiBase) || request.url.startsWith(environment.kerttuApi))) {
+  if (!id || !request || !request.url || !(request.url.indexOf(environment.apiBase) === 0 || request.url.indexOf(environment.kerttuApi) === 0)) {
     return;
   }
 

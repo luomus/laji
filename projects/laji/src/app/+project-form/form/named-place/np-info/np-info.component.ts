@@ -17,7 +17,7 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormUtil } from '../../../../shared-modules/laji-form/laji-form-util.service';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 import { take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Form } from '../../../../shared/model/Form';
