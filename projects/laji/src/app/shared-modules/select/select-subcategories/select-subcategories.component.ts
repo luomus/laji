@@ -291,7 +291,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     return Array.isArray(a) &&
       Array.isArray(b) &&
       a.length === b.length &&
-      a.every((val, index) => val === b[index]);
+      a.every((val) => b.indexOf(val) > -1);
   }
 
   private buildSelectedOptions(filters) {
