@@ -5,6 +5,8 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -12,6 +14,8 @@ import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../../../shared/service/user.service';
+import { Person } from '../../../../shared/model/Person';
 
 @Component({
   selector: 'laji-info-card-header',
@@ -19,7 +23,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./info-card-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoCardHeaderComponent implements OnChanges {
+export class InfoCardHeaderComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() activeTab: string;
   parent: Taxonomy[];
@@ -31,6 +35,8 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   private parentSub: Subscription;
   private siblingSub: Subscription;
+  personRoleAdmin = false;
+  subscribePerson: Subscription;
 
   @Output() taxonSelect = new EventEmitter<string>();
 
@@ -38,7 +44,20 @@ export class InfoCardHeaderComponent implements OnChanges {
     private taxonomyService: TaxonTaxonomyService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private userService: UserService
   ) { }
+
+  ngOnInit() {
+    this.subscribePerson = this.userService.user$.subscribe((person: Person) => {
+      this.personRoleAdmin = UserService.isIctAdmin(person);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscribePerson) {
+      this.subscribePerson.unsubscribe();
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
