@@ -1,0 +1,48 @@
+diff --git a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
+index 871fd61..0d1b613
+--- a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
++++ b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
+@@ -155,7 +155,11 @@
+     var LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+     var SESSION_STORAGE = new i0.InjectionToken('window_session_storage');
+     function getSessionStorage() {
++      try {
+         return (typeof window !== 'undefined') ? window.sessionStorage : null;
++      } catch (e) {
++        return null;
++      }
+     }
+     var SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
+
+diff --git a/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js b/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
+index a2ccb90..801ee9e
+--- a/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
++++ b/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
+@@ -1,7 +1,11 @@
+ import { InjectionToken } from '@angular/core';
+ export const LOCAL_STORAGE = new InjectionToken('window_local_storage');
+ export function getLocalStorage() {
++  try {
+     return (typeof window !== 'undefined') ? window.localStorage : null;
++  } catch (e) {
++    return null;
++  }
+ }
+ export const LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+ export const SESSION_STORAGE = new InjectionToken('window_session_storage');
+diff --git a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
+index 0282b84..9fd5d57
+--- a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
++++ b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
+@@ -139,7 +139,11 @@ StrategyCacheService.decorators = [
+
+ const LOCAL_STORAGE = new InjectionToken('window_local_storage');
+ function getLocalStorage() {
++  try {
+     return (typeof window !== 'undefined') ? window.localStorage : null;
++  } catch (e) {
++    return null;
++  }
+ }
+ const LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+ const SESSION_STORAGE = new InjectionToken('window_session_storage');
