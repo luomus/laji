@@ -23,31 +23,6 @@ index 871fd61..00c5ca5
      }
      var SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
 
-diff --git a/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js b/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
-index a2ccb90..b43d3f8
---- a/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
-+++ b/node_modules/ngx-webstorage/esm2015/lib/core/nativeStorage.js
-@@ -1,12 +1,20 @@
- import { InjectionToken } from '@angular/core';
- export const LOCAL_STORAGE = new InjectionToken('window_local_storage');
- export function getLocalStorage() {
-+  try {
-     return (typeof window !== 'undefined') ? window.localStorage : null;
-+  } catch (e) {
-+    return null;
-+  }
- }
- export const LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
- export const SESSION_STORAGE = new InjectionToken('window_session_storage');
- export function getSessionStorage() {
-+  try {
-     return (typeof window !== 'undefined') ? window.sessionStorage : null;
-+  } catch (e) {
-+    return null;
-+  }
- }
- export const SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
- //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibmF0aXZlU3RvcmFnZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC13ZWJzdG9yYWdlL3NyYy9saWIvY29yZS9uYXRpdmVTdG9yYWdlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBa0IsY0FBYyxFQUFDLE1BQU0sZUFBZSxDQUFDO0FBRzlELE1BQU0sQ0FBQyxNQUFNLGFBQWEsR0FBK0IsSUFBSSxjQUFjLENBQWEsc0JBQXNCLENBQUMsQ0FBQztBQUVoSCxNQUFNLFVBQVUsZUFBZTtJQUM5QixPQUFPLENBQUMsT0FBTyxNQUFNLEtBQUssV0FBVyxDQUFDLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxZQUFZLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQztBQUNyRSxDQUFDO0FBRUQsTUFBTSxDQUFDLE1BQU0sb0JBQW9CLEdBQW9CLEVBQUMsT0FBTyxFQUFFLGFBQWEsRUFBRSxVQUFVLEVBQUUsZUFBZSxFQUFDLENBQUM7QUFFM0csTUFBTSxDQUFDLE1BQU0sZUFBZSxHQUErQixJQUFJLGNBQWMsQ0FBYSx3QkFBd0IsQ0FBQyxDQUFDO0FBRXBILE1BQU0sVUFBVSxpQkFBaUI7SUFDaEMsT0FBTyxDQUFDLE9BQU8sTUFBTSxLQUFLLFdBQVcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxNQUFNLENBQUMsY0FBYyxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUM7QUFDdkUsQ0FBQztBQUVELE1BQU0sQ0FBQyxNQUFNLHNCQUFzQixHQUFvQixFQUFDLE9BQU8sRUFBRSxlQUFlLEVBQUUsVUFBVSxFQUFFLGlCQUFpQixFQUFDLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge0ZhY3RvcnlQcm92aWRlciwgSW5qZWN0aW9uVG9rZW59IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHtXZWJTdG9yYWdlfSBmcm9tICcuL2ludGVyZmFjZXMvd2ViU3RvcmFnZSc7XG5cbmV4cG9ydCBjb25zdCBMT0NBTF9TVE9SQUdFOiBJbmplY3Rpb25Ub2tlbjxXZWJTdG9yYWdlPiA9IG5ldyBJbmplY3Rpb25Ub2tlbjxXZWJTdG9yYWdlPignd2luZG93X2xvY2FsX3N0b3JhZ2UnKTtcblxuZXhwb3J0IGZ1bmN0aW9uIGdldExvY2FsU3RvcmFnZSgpIHtcblx0cmV0dXJuICh0eXBlb2Ygd2luZG93ICE9PSAndW5kZWZpbmVkJykgPyB3aW5kb3cubG9jYWxTdG9yYWdlIDogbnVsbDtcbn1cblxuZXhwb3J0IGNvbnN0IExvY2FsU3RvcmFnZVByb3ZpZGVyOiBGYWN0b3J5UHJvdmlkZXIgPSB7cHJvdmlkZTogTE9DQUxfU1RPUkFHRSwgdXNlRmFjdG9yeTogZ2V0TG9jYWxTdG9yYWdlfTtcblxuZXhwb3J0IGNvbnN0IFNFU1NJT05fU1RPUkFHRTogSW5qZWN0aW9uVG9rZW48V2ViU3RvcmFnZT4gPSBuZXcgSW5qZWN0aW9uVG9rZW48V2ViU3RvcmFnZT4oJ3dpbmRvd19zZXNzaW9uX3N0b3JhZ2UnKTtcblxuZXhwb3J0IGZ1bmN0aW9uIGdldFNlc3Npb25TdG9yYWdlKCkge1xuXHRyZXR1cm4gKHR5cGVvZiB3aW5kb3cgIT09ICd1bmRlZmluZWQnKSA/IHdpbmRvdy5zZXNzaW9uU3RvcmFnZSA6IG51bGw7XG59XG5cbmV4cG9ydCBjb25zdCBTZXNzaW9uU3RvcmFnZVByb3ZpZGVyOiBGYWN0b3J5UHJvdmlkZXIgPSB7cHJvdmlkZTogU0VTU0lPTl9TVE9SQUdFLCB1c2VGYWN0b3J5OiBnZXRTZXNzaW9uU3RvcmFnZX07XG4iXX0=
 diff --git a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
 index 0282b84..2ad0eef
 --- a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
