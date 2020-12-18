@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
-import { UserService } from '../../../../../shared/service/user.service';
-import { Person } from '../../../../../shared/model/Person';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-taxon-names',
@@ -26,12 +23,10 @@ export class TaxonNamesComponent implements OnInit, OnDestroy {
     'misappliedNames',
     'alternativeNames'
   ];
-  personRoleAdmin = false;
-  subscribePerson: Subscription;
+
 
   @Input() set taxon(taxon: Taxonomy) {
-    this.subscribePerson = this.userService.user$.subscribe((person: Person) => {
-      this.personRoleAdmin = UserService.isIctAdmin(person);
+   
       this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
       for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
         if (taxon.vernacularName && taxon.vernacularName[lang]) {
@@ -46,27 +41,18 @@ export class TaxonNamesComponent implements OnInit, OnDestroy {
         if (taxon.tradeName && taxon.tradeName[lang]) {
           this.availableLangs.tradeName.push(lang);
         }
-        if (taxon.colloquialVernacularName && taxon.colloquialVernacularName[lang] && this.personRoleAdmin) {
+        if (taxon.colloquialVernacularName && taxon.colloquialVernacularName[lang]) {
           this.availableLangs.colloquialVernacularName.push(lang);
         }
       }
-    });
-
-
     this._taxon = taxon;
   }
 
-  constructor(
-    private userService: UserService
-  ) { }
+  constructor() { }
 
   ngOnInit() {}
 
-  ngOnDestroy() {
-    if (this.subscribePerson) {
-      this.subscribePerson.unsubscribe();
-    }
-  }
+  ngOnDestroy() {}
 
   taxonHasSynonymKey(taxon) {
     for (let i = 0; i < this.synonymTypes.length; i++) {

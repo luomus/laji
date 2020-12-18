@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@a
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
-import { UserService } from '../../../../../shared/service/user.service';
-import { Person } from '../../../../../shared/model/Person';
 
 @Component({
   selector: 'laji-taxon-info',
@@ -18,25 +16,16 @@ export class TaxonInfoComponent implements OnInit, OnDestroy {
   langs = ['fi', 'sv', 'en', 'se', 'ru'];
   availableVernacularNames = [];
   availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
-  personRoleAdmin = false;
-  subscribePerson: Subscription;
 
   constructor(
-    public translate: TranslateService,
-    private userService: UserService
+    public translate: TranslateService
     ) { }
 
   ngOnInit() {
-    this.subscribePerson = this.userService.user$.subscribe((person: Person) => {
-      this.personRoleAdmin = UserService.isIctAdmin(person);
       this.initLangTaxonNames();
-    });
   }
 
   ngOnDestroy() {
-    if (this.subscribePerson) {
-      this.subscribePerson.unsubscribe();
-    }
   }
 
   initLangTaxonNames() {

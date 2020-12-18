@@ -26,7 +26,6 @@ export class TaxonNameComponent {
   @Input() showScientificNameFirst = false;
   @Input() capitalizeName = false;
   @Input() hideObsoleteVernacularName = false;
-  @Input() showColloquialName = false;
 
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
