@@ -64,6 +64,10 @@ export class TaxonAutocompleteService {
         string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
         : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+      case 'MX.colloquialVernacularName':
+        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + this.matchingName + ') </span>'
+        : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>' );
+        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       default:
         string = scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>';
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
@@ -91,6 +95,7 @@ export class TaxonAutocompleteService {
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
+      case 'MX.colloquialVernacularName':
         return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
       default:
         return payload['scientificName'];
