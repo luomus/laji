@@ -117,6 +117,7 @@
           [showDownloadAll]="false"
           [admin]="formRights.admin"
           [forceLocalDocument]="useLocalDocumentViewer"
+          [reload$]="reloadSubmissions$"
           (documentsLoaded)="onDocumentsLoaded($event)"
         ></laji-own-submissions>
       </div>

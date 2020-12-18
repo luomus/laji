@@ -26,6 +26,7 @@ import { Rights } from '../../../../shared/service/form-permission.service';
 import { Util } from '../../../../shared/service/util.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-np-info',
@@ -45,6 +46,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() formRights: Rights;
   @Input() useLabel: string;
   @Input() useDisabled = false;
+  @Input() reloadSubmissions$: Observable<void>;
 
   editButtonVisible: boolean;
 

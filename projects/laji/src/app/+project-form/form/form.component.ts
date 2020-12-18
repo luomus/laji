@@ -107,8 +107,12 @@ export class FormComponent implements OnInit {
 
   tryRedirectToSubForm(form: Form.SchemaForm, routeParams: Params): Observable<boolean> {
     const navigateToForm = (parentID: string, formID: string) => {
+      const route = [parentID, 'form', formID, routeParams['formOrDocument']];
+      if (this.router.url.match(/\/link$/)) {
+        route.push('link');
+      }
       this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(rootRoute =>
-        this.router.navigate([parentID, 'form', formID, routeParams['formOrDocument']], {relativeTo: rootRoute.parent, replaceUrl: true})
+        this.router.navigate(route, {relativeTo: rootRoute.parent, replaceUrl: true})
       );
       return true;
     };

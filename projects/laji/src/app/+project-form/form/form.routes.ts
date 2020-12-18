@@ -7,6 +7,7 @@ import { DocumentDeActivateGuard } from '../../shared/guards/document-de-activat
 import { HasFormPermission } from '../guards/has-form-permission';
 import { HasViewPermission } from '../guards/has-view-permission';
 import { NamedPlaceWrapperComponent } from './named-place/named-place-wrapper/named-place-wrapper.component';
+import { NamedPlaceLinkerWrapperComponent } from './named-place-linker/named-place-linker-wrapper.component';
 
 export const routes: Routes = [
   {
@@ -68,8 +69,16 @@ export const routes: Routes = [
     data: {displayFeedback: false}
   },
   {
+    path: ':formOrDocument/:document/link', component: NamedPlaceLinkerWrapperComponent,
+    data: {displayFeedback: false}
+  },
+  {
     path: ':formOrDocument', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false}
+  },
+  {
+    path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,
     data: {displayFeedback: false}
   },
 ];

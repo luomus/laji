@@ -12,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../../shared-modules/info/info.module';
 import { SelectModule } from '../../shared-modules/select/select.module';
 import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module';
+import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module
     LajiUiModule,
     SharedModule,
     InfoModule,
-    SelectModule
+    SelectModule,
+    NamedPlaceLinkerModule
   ],
   declarations: [
     FormComponent,

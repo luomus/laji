@@ -15,6 +15,7 @@ export class ProjectFormPage {
   public readonly namedPlacesFormPage = new DocumentFormView();
   public readonly aboutPage = new AboutPage();
   public readonly mobileAboutPage = new MobileAboutPage();
+  public readonly namedPlaceLinker = new NamedPlaceLinker();
 
   navigateTo(id, subPage = '') {
     return browser.get(`/project/${id}${subPage}`) as Promise<void>;
@@ -99,7 +100,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
   public readonly $save = $('laji-document-form-footer .btn-success');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
-  public readonly namedPlaceLinker = new NamedPlaceLinker();
+  public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
 
   getContextId = async () => (await this.$form.$('.rjsf > .form-group').getAttribute('id')).match(/\d+/)[0];
 
@@ -116,7 +117,6 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
 
 class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
   public readonly $container = $('laji-named-place-linker');
-  public readonly $openModalButton = this.$container.$('#link-to-np');
   public readonly namedPlacesView = new NamedPlacesView();
 }
 

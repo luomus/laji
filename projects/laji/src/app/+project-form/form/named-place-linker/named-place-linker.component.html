@@ -1,0 +1,30 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <ng-container *ngIf="vm.isLinkable; else notLinkable">
+    <alert type="warning"  *ngIf="vm.isLinked && !_linked">
+      Huomaa, että havaintoerällä on jo nimetty paikka.
+    </alert>
+    <h4>Nimetyn paikan linkittäminen havaintoerään</h4>
+    <laji-named-places [documentForm]="vm.form"
+                       [activeId]="activeNP"
+                       [municipality]="municipality"
+                       [birdAssociationArea]="birdAssociationArea"
+                       [tags]="tags"
+                       (activeIdChange)="onActiveIdChange($event)"
+                       (municipalityChange)="onMunicipalityChange($event)"
+                       (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
+                       (tagsChange)="onTagsChange($event)"
+                       (use)="use($event)"
+                       [useLabel]="'Linkitä'"
+                       [displayHeader]="false"
+                       [readonly]="true"
+                       [useDisabled]="loading || _linked"
+                       [reloadSubmissions$]="reloadSubmissions$"
+    ></laji-named-places>
+  </ng-container>
+</ng-container>
+
+<ng-template #notLinkable>
+  <alert type="danger">
+    Sinulla ei ole oikeutta linkittää havaintoerää.
+  </alert>
+</ng-template>

@@ -1,21 +1,22 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { FormService } from '../../shared/service/form.service';
-import { Form } from '../../shared/model/Form';
+import { FormService } from '../../../shared/service/form.service';
+import { Form } from '../../../shared/model/Form';
 import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
-import { combineLatest, Observable, of, Subscription } from 'rxjs';
-import { Document } from '../../shared/model/Document';
+import { combineLatest, EMPTY, Observable, of, Subscription } from 'rxjs';
+import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
-import { DialogService } from '../../shared/service/dialog.service';
-import { ISuccessEvent, LajiFormDocumentFacade, Readonly } from '../laji-form/laji-form-document.facade';
-import { DocumentApi } from '../../shared/api/DocumentApi';
-import { UserService } from '../../shared/service/user.service';
-import { ToastsService } from '../../shared/service/toasts.service';
-import { FormPermissionService } from '../../shared/service/form-permission.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { ISuccessEvent, LajiFormDocumentFacade, Readonly } from '@laji-form/laji-form-document.facade';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { UserService } from '../../../shared/service/user.service';
+import { ToastsService } from '../../../shared/service/toasts.service';
+import { FormPermissionService } from '../../../shared/service/form-permission.service';
 
 interface ViewModel {
   document: Document;
   form: Form.SchemaForm;
+  isLinkable: boolean;
+  isLinked: boolean;
 }
 
 @Component({
@@ -27,11 +28,12 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   @Input() documentID: string;
 
   @Output() linked = new EventEmitter<ISuccessEvent>();
+  reloadSubmissions$ = new EventEmitter<void>();
 
   document$: Observable<Document>;
-  isLinkable$: Observable<boolean>;
   vm$: Observable<ViewModel>;
   loading = false;
+  _linked = false;
 
   municipality: string;
   birdAssociationArea: string;
@@ -39,8 +41,6 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   activeNP: string;
 
   subscription: Subscription;
-
-  @ViewChild('modal', {static: true}) public modal: ModalDirective;
 
   constructor(
     private formService: FormService,
@@ -55,31 +55,22 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.document$ = this.documentApi.findById(this.documentID, this.userService.getToken());
-    const form$ = this.document$.pipe(
-      switchMap(document => this.formService.getAllForms().pipe(
-        map(forms => forms.find(f => f.id === document.formID))
-      ))
-    );
+
+    const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
     const documentReadOnly$ = combineLatest(this.document$, rights$, this.userService.user$).pipe(
       map(([document, rights, person]) => this.lajiFormDocumentFacade.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
-    this.isLinkable$ = combineLatest(this.document$, form$, documentReadOnly$).pipe(
-      map(([document, form, readonly]) => !readonly && form.options?.useNamedPlaces && !document?.namedPlaceID)
+    const isLinked$ = combineLatest(this.document$, form$).pipe(map(([document, form]) =>  !!document?.namedPlaceID));
+
+    this.vm$ = combineLatest(this.document$, form$, documentReadOnly$, isLinked$).pipe(
+      map(([document, form, isReadonly, isLinked]) => ({document, form, isLinkable: !isReadonly, isLinked}))
     );
   }
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
-  }
-
-  openNamedPlacesChooserModal() {
-    const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
-    if (!this.vm$) {
-      this.vm$ = combineLatest(this.document$, form$).pipe(map(([document, form]) => ({document, form})));
-    }
-    this.modal?.show();
   }
 
 
@@ -106,7 +97,8 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       switchMap(txt => this.dialogService.confirm(txt)),
       switchMap(confirmed => {
         if (!confirmed) {
-          return;
+          this.loading = false;
+          return EMPTY;
         }
         return this.document$.pipe(switchMap((doc) => {
           return this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken());
@@ -120,12 +112,14 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       })
     ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
       if (!res) {
-        return;
+        this.loading = false;
+        return EMPTY;
       }
-      this.modal.hide();
+      this._linked = true;
+      this.loading = false;
       this.translate.get('np.linker.success').pipe(take(1)).subscribe(msg => this.toastsService.showSuccess(msg));
       this.linked.emit({success: true, ...res});
-      this.loading = false;
+      this.reloadSubmissions$.next();
     });
   }
 }
