@@ -1,5 +1,5 @@
 /* tslint:disable:max-classes-per-file */
-import { NgModule, Injectable } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';

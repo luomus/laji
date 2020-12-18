@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
 import { PlatformService } from '../../../../../../laji/src/app/shared/service/platform.service';
