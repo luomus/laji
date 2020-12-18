@@ -1,9 +1,9 @@
 <ng-container *ngIf="vm$ | async as vm">
   <ng-container *ngIf="vm.isLinkable; else notLinkable">
     <alert type="warning"  *ngIf="vm.isLinked && !_linked">
-      Huomaa, että havaintoerällä on jo nimetty paikka.
+      {{ 'np.linker.hasAlreadyPlace' | translate }}
     </alert>
-    <h4>Nimetyn paikan linkittäminen havaintoerään</h4>
+    <h4>{{ 'np.linker.title' | translate }}</h4>
     <laji-named-places [documentForm]="vm.form"
                        [activeId]="activeNP"
                        [municipality]="municipality"
@@ -25,6 +25,6 @@
 
 <ng-template #notLinkable>
   <alert type="danger">
-    Sinulla ei ole oikeutta linkittää havaintoerää.
+    {{ 'np.linker.noAccess' | translate }}
   </alert>
 </ng-template>

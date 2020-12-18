@@ -1709,5 +1709,10 @@
   "or": "eller",
   "np.linker.confirm": "Är du säker på att du vill koppla observationen till den här platsen",
   "np.linker.success": "Platsen länkades framgångsrikt",
-  "np.linker.fail": "Länkplatsen misslyckades"
+  "np.linker.fail": "Länkplatsen misslyckades",
+  "np.linker.hasAlreadyPlace": "Observera att dokumentet redan har en namngiven plats.",
+  "np.linker.title": "Namngiven platslänkning",
+  "np.linker.noAccess": "Du har inte tillgång till dokumentet.",
+  "np.linker.npMissing": "Namngiven plats saknas",
+  "np.linker.start": "Länka dokumentet till en namngiven plats"
 }

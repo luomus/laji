@@ -22,8 +22,8 @@ interface ViewModel {
   template: `
     <ng-container *ngIf="vm$ | async as vm">
       <alert type="warning" *ngIf="vm.isLinkable">
-        Puuttuu nimetty paikka<br>
-        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link']" id="link-to-np">Linkitä havaintoerä nimettyyn paikkaan</lu-button>
+        {{ 'np.linker.npMissing' | translate }} <br>
+        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link']" id="link-to-np">{{ 'np.linker.start' | translate }}</lu-button>
       </alert>
     </ng-container>
   `,

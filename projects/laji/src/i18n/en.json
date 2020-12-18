@@ -1709,5 +1709,10 @@
   "or": "or",
   "np.linker.confirm": "Are you sure you want to link the observation to this place",
   "np.linker.success": "Place was linked succesfully",
-  "np.linker.fail": "Linking place failed"
+  "np.linker.fail": "Linking place failed",
+  "np.linker.hasAlreadyPlace": "Note, that the document has already a named place.",
+  "np.linker.title": "Named place linking",
+  "np.linker.noAccess": "You don't have access to the document.",
+  "np.linker.npMissing": "Named place missing",
+  "np.linker.start": "Link the document to a named place"
 }
