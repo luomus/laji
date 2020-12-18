@@ -97,7 +97,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   destroyCloseOnClickListener: Function;
 
   constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {
-    console.log('ciao')
     if (isPlatformBrowser(this.platformId)) {
       this.open = !(window.innerWidth < mobileBreakpoint);
     } else {
@@ -106,7 +105,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('porco')
     this.checkScreenWidth();
     this.preCheckScreenWidth = false;
     this.cdr.detectChanges();
@@ -159,6 +157,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   onSwitchOpen() {
     this.open = !this.open;
+    this.toggled.emit(this.open);
     this.cdr.detectChanges();
   }
 
