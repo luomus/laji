@@ -5,19 +5,16 @@
         <ol class="breadcrumb">
           <li class="active">{{ 'news.title' | translate }}</li>
         </ol>
-        <ng-container *ngIf="newsItem$ | async; let newsItem">
-          <div class="laji-information">
-            <h2>
-              {{ newsItem.title }}<br>
-              <small>
-                {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
-                - {{ newsItem.author }}
-                <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
-              </small>
-            </h2>
-            <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
-          </div>
-        </ng-container>
+        <div *ngIf="newsItem$ | async; let newsItem" class="laji-information">
+          <h2>
+            {{ newsItem.title }}<br>
+            <small>
+              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
+              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+            </small>
+          </h2>
+          <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
+        </div>
       </div>
     </div>
   </main>
