@@ -2,7 +2,8 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetect
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { SelectOption } from '../select-collections.component';
-
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'laji-select-collections-modal',
   templateUrl: './select-collections-modal.component.html',
@@ -23,6 +24,8 @@ export class SelectCollectionsModalComponent implements OnInit {
 
   selectedOptions: SelectOption[] = [];
   treeModel: TreeModel;
+
+  filterDebounce = new Subject<string>();
 
   state: ITreeState;
   options: ITreeOptions = {
@@ -58,7 +61,11 @@ export class SelectCollectionsModalComponent implements OnInit {
 
   constructor(
     private modalRef: BsModalRef,
-  ) {}
+  ) {
+    this.filterDebounce.pipe(
+      debounceTime(500)
+    ).subscribe(query => this.filterTree(query));
+  }
 
   treeInit($event: any) {
     this.treeModel = this.treeComponent.treeModel;
@@ -72,6 +79,10 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   onFilterChange(query) {
+    this.filterDebounce.next(query);
+  }
+
+  filterTree(query) {
     if (query?.length > 0) {
       this.treeModel.filterNodes(query);
     } else {
