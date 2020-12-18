@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
-import { catchError, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { combineLatest, EMPTY, Observable, of, Subscription } from 'rxjs';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { ISuccessEvent, LajiFormDocumentFacade, Readonly } from '@laji-form/laji-form-document.facade';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
+import { DocumentService, Readonly } from '../../../shared-modules/own-submissions/service/document.service';
 
 interface ViewModel {
   document: Document;
@@ -27,7 +27,6 @@ interface ViewModel {
 export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   @Input() documentID: string;
 
-  @Output() linked = new EventEmitter<ISuccessEvent>();
   reloadSubmissions$ = new EventEmitter<void>();
 
   document$: Observable<Document>;
@@ -46,11 +45,11 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade,
     private documentApi: DocumentApi,
     private userService: UserService,
     private toastsService: ToastsService,
     private formPermissionService: FormPermissionService,
+    private documentService: DocumentService
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +58,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
     const documentReadOnly$ = combineLatest(this.document$, rights$, this.userService.user$).pipe(
-      map(([document, rights, person]) => this.lajiFormDocumentFacade.getReadOnly(document, rights, person)),
+      map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
     const isLinked$ = combineLatest(this.document$, form$).pipe(map(([document, form]) =>  !!document?.namedPlaceID));
@@ -118,7 +117,6 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       this._linked = true;
       this.loading = false;
       this.translate.get('np.linker.success').pipe(take(1)).subscribe(msg => this.toastsService.showSuccess(msg));
-      this.linked.emit({success: true, ...res});
       this.reloadSubmissions$.next();
     });
   }

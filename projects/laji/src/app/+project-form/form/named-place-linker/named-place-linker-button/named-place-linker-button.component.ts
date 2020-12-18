@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
-import { LajiFormDocumentFacade, Readonly } from '@laji-form/laji-form-document.facade';
+import { combineLatest, EMPTY, Observable } from 'rxjs';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { FormService } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../shared/service/dialog.service';
@@ -9,6 +9,7 @@ import { DocumentApi } from '../../../../shared/api/DocumentApi';
 import { UserService } from '../../../../shared/service/user.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
+import { DocumentService, Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 
 interface ViewModel {
   documentID: string;
@@ -38,15 +39,19 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
     private formService: FormService,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade,
     private documentApi: DocumentApi,
     private userService: UserService,
     private toastsService: ToastsService,
     private formPermissionService: FormPermissionService,
+    private documentService: DocumentService
   ) { }
 
   ngOnInit() {
-    const document$ = this.documentApi.findById(this.documentID, this.userService.getToken());
+    const document$ = this.userService.isLoggedIn$.pipe(
+      switchMap(isLoggedIn => isLoggedIn
+        ? this.documentApi.findById(this.documentID, this.userService.getToken())
+        : EMPTY)
+    );
     const form$ = document$.pipe(
       switchMap(document => this.formService.getAllForms().pipe(
         map(forms => forms.find(f => f.id === document.formID))
@@ -54,7 +59,7 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
     );
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
     const documentReadOnly$ = combineLatest(document$, rights$, this.userService.user$).pipe(
-      map(([document, rights, person]) => this.lajiFormDocumentFacade.getReadOnly(document, rights, person)),
+      map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
     const isLinkable$ = combineLatest(document$, form$, documentReadOnly$).pipe(
