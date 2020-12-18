@@ -1,0 +1,50 @@
+diff --git a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
+index 871fd61..00c5ca5
+--- a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
++++ b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
+@@ -150,12 +150,20 @@
+ 
+     var LOCAL_STORAGE = new i0.InjectionToken('window_local_storage');
+     function getLocalStorage() {
++      try {
+         return (typeof window !== 'undefined') ? window.localStorage : null;
++      } catch (e) {
++        return null;
++      }
+     }
+     var LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+     var SESSION_STORAGE = new i0.InjectionToken('window_session_storage');
+     function getSessionStorage() {
++      try {
+         return (typeof window !== 'undefined') ? window.sessionStorage : null;
++      } catch (e) {
++        return null;
++      }
+     }
+     var SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
+ 
+diff --git a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
+index 0282b84..2ad0eef
+--- a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
++++ b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
+@@ -139,12 +139,20 @@ StrategyCacheService.decorators = [
+ 
+ const LOCAL_STORAGE = new InjectionToken('window_local_storage');
+ function getLocalStorage() {
++  try {
+     return (typeof window !== 'undefined') ? window.localStorage : null;
++  } catch (e) {
++    return null;
++  }
+ }
+ const LocalStorageProvider = { provide: LOCAL_STORAGE, useFactory: getLocalStorage };
+ const SESSION_STORAGE = new InjectionToken('window_session_storage');
+ function getSessionStorage() {
++  try {
+     return (typeof window !== 'undefined') ? window.sessionStorage : null;
++  } catch (e) {
++    return null;
++  }
+ }
+ const SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
+ 
