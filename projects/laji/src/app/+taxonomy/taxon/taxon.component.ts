@@ -113,23 +113,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
         this.canShowTree = this.taxon.hasParent || this.taxon.hasChildren;
-
-        this.setTitle();
       })
     );
-  }
-
-  private setTitle() {
-    let title = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
-    if (title) {
-      const alternativeNames: string[] = [];
-      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
-        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
-      }
-      title += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
-    }
-    title += title ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
-    this.title.setTitle((title ? this.capitalizeFirstLetter(title) + ' | '  : '') + this.title.getTitle());
   }
 
   private getTaxon(id) {
@@ -155,10 +140,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
       return this.taxon.checklist.indexOf(masterChecklist) > -1;
     }
     return this.taxon.nameAccordingTo === masterChecklist;
-  }
-
-  private capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
 }

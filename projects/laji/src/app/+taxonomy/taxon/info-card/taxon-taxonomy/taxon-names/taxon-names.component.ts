@@ -26,7 +26,6 @@ export class TaxonNamesComponent implements OnInit, OnDestroy {
 
 
   @Input() set taxon(taxon: Taxonomy) {
-   
       this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
       for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
         if (taxon.vernacularName && taxon.vernacularName[lang]) {
