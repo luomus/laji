@@ -6,15 +6,17 @@
           <li class="active">{{ 'news.title' | translate }}</li>
         </ol>
         <ng-container *ngIf="newsItem$ | async; let newsItem">
-          <h2>
-            {{ newsItem.title }}<br>
-            <small>
-              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
-              - {{ newsItem.author }}
-              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
-            </small>
-          </h2>
-          <div class="laji-information" [innerHtml]="newsItem.content" lajiRouteTransformer></div>
+          <div class="laji-information">
+            <h2>
+              {{ newsItem.title }}<br>
+              <small>
+                {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
+                - {{ newsItem.author }}
+                <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+              </small>
+            </h2>
+            <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
+          </div>
         </ng-container>
       </div>
     </div>
