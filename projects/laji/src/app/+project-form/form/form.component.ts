@@ -92,7 +92,7 @@ export class FormComponent implements OnInit {
                     return EMPTY;
                   }
                   return namedPlace$.pipe(map(namedPlace => ({
-                    form,
+                    form: usedSubForm,
                     documentID,
                     namedPlace
                   })));
