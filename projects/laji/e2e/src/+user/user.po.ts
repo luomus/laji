@@ -88,7 +88,7 @@ export class UserPage {
   }
 
   async isOnExternalLoginPage() {
-    await browser.wait(EC.visibilityOf(this.authLocal), 2000);
+    await browser.wait(EC.visibilityOf(this.authLocal), 5000);
     return (await this.authLocal.isPresent()) && (await this.authLocal.isDisplayed());
   }
 }
