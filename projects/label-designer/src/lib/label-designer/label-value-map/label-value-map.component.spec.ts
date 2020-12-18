@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelValueMapComponent } from './label-value-map.component';
 
@@ -6,7 +6,7 @@ describe('LabelValueMapComponent', () => {
   let component: LabelValueMapComponent;
   let fixture: ComponentFixture<LabelValueMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelValueMapComponent ]
     })

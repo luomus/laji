@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThemeGenerateSpreadsheetComponent } from './theme-generate-spreadsheet.component';
 
@@ -6,7 +6,7 @@ describe('ThemeGenerateSpreadsheetComponent', () => {
   let component: ThemeGenerateSpreadsheetComponent;
   let fixture: ComponentFixture<ThemeGenerateSpreadsheetComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThemeGenerateSpreadsheetComponent ]
     })

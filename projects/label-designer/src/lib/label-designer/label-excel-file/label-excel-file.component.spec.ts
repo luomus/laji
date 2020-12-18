@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelExcelFileComponent } from './label-excel-file.component';
 
@@ -6,7 +6,7 @@ describe('LabelExcelFileComponent', () => {
   let component: LabelExcelFileComponent;
   let fixture: ComponentFixture<LabelExcelFileComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelExcelFileComponent ]
     })
