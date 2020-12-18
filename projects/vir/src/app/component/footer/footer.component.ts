@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FooterService } from 'projects/laji/src/app/shared/service/footer.service';
 import { BaseDataService } from 'projects/laji/src/app/graph-ql/service/base-data.service';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const informationWhitelist = [
   // FinBIF
