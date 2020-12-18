@@ -6,7 +6,8 @@ import { SelectOption } from '../select-collections.component';
 @Component({
   selector: 'laji-select-collections-modal',
   templateUrl: './select-collections-modal.component.html',
-  styleUrls: ['./select-collections-modal.component.scss']
+  styleUrls: ['./select-collections-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SelectCollectionsModalComponent implements OnInit {
@@ -19,7 +20,6 @@ export class SelectCollectionsModalComponent implements OnInit {
   @Input() clearButtonLabel: string;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<string[]>();
-  changeDetection: ChangeDetectionStrategy.OnPush;
 
   selectedOptions: SelectOption[] = [];
   treeModel: TreeModel;

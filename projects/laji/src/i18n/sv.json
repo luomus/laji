@@ -910,7 +910,7 @@
   "observation.form.countMin": "min",
   "observation.form.dataset": "Informationskallor",
   "observation.form.datasetBrowse": "Sök informationskällör",
-  "observation.form.datasetSelect": "Filtrera",
+  "observation.form.datasetSelect": "Filtrera informationskällor",
   "observation.form.datasetSelected": "Utvalda informationskällor",
   "observation.form.datasetTitle": "Informationskällor",
   "observation.form.date": "Tid",

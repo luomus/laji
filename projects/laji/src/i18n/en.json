@@ -910,7 +910,7 @@
   "observation.form.countMin": "min",
   "observation.form.dataset": "Information source",
   "observation.form.datasetBrowse": "Browse sources",
-  "observation.form.datasetSelect": "Select",
+  "observation.form.datasetSelect": "Select sources",
   "observation.form.datasetSelected": "Selected sources",
   "observation.form.datasetTitle": "Sources",
   "observation.form.date": "Date",
