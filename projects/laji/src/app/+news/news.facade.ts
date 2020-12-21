@@ -31,7 +31,6 @@ export class NewsFacade {
 
   private listSub: Subscription;
   private currentSub: Subscription;
-  private activeList: string;
 
   constructor(
     private newsService: NewsService,
@@ -45,13 +44,9 @@ export class NewsFacade {
 
   loadPage(page: number): void {
     const lang = this.translate.currentLang;
-    const currentKey = [page, lang].join('_');
 
     if (this.listSub) {
       this.listSub.unsubscribe();
-    }
-    if (this.activeList === currentKey) {
-      return;
     }
 
     const newsRemote$ = this.newsService.getPage(lang, page).pipe(take(1));
