@@ -11,7 +11,7 @@ import { HeaderService } from '../shared/service/header.service';
 @Component({
   selector: 'laji-information',
   templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss'],
+  styleUrls: ['../../styles/information.scss', './information.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InformationComponent {
