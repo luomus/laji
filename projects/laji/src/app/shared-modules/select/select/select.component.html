@@ -57,7 +57,7 @@
   <div *ngIf="open" class="lj-item-container">
     <laji-spinner [spinning]="loading"></laji-spinner>
     <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (options | filter:filterBy ); let i = index; trackBy: track">
-      <label class="lj-item" (click)="labelClick($event)">aa
+      <label class="lj-item" (click)="labelClick($event)">
         <laji-checkbox [value]="selectedOptions | includes:option" (valueChange)="toggleValue(option.id)"></laji-checkbox>{{ option.value }}
       </label>
       <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>

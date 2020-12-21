@@ -18,20 +18,7 @@ import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { MetadataSelectComponent } from '../metadata-select/metadata-select.component'
 
-export enum SelectStyle {
-  basic,
-  advanced
-}
 
-export interface MetadataSelectPick {
-  [field: string]: string;
-}
-
-export const METADATA_SELECT_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => MetadataSelectWithSubcategoriesComponent),
-  multi: true
-};
 @Component({
   selector: 'laji-metadata-select-with-subcategories',
   templateUrl: './metadata-select-with-subcategories.component.html',
@@ -46,7 +33,6 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
 
-  selectStyles = SelectStyle;
   lang: string;
   active = [];
   selectedTitle = '';
