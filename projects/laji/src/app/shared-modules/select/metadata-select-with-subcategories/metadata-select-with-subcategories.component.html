@@ -1,5 +1,4 @@
 <ng-container [ngSwitch]="selectStyle">
-    <ng-template [ngSwitchCase]="selectStyles.advanced">
       <laji-select-subcategories
         [options]="_options"
         [title]="placeholder | translate"
@@ -18,8 +17,6 @@
         (selectedChange)="refreshValue($event)"
       >
       </laji-select-subcategories>
-    </ng-template>
-    <ng-template>
       <select
         [(ngModel)]="value"
         class="form-control"
@@ -28,6 +25,5 @@
         <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
         <option *ngFor="let option of _options" [value]="option.id">{{ option.value }}</option>
       </select>
-    </ng-template>
   </ng-container>
   
