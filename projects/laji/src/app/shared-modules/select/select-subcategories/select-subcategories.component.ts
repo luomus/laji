@@ -32,7 +32,7 @@ export interface SelectOptions {
 export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<null>();
 
-  @Input() options: SelectOptions[];
+  @Input() options: [{[key: string]: SelectOptions[]}];
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;

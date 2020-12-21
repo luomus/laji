@@ -17,13 +17,5 @@
         (selectedChange)="refreshValue($event)"
       >
       </laji-select-subcategories>
-      <select
-        [(ngModel)]="value"
-        class="form-control"
-        [disabled]="disabled || _options === null"
-      >
-        <option value="" *ngIf="placeholder">{{ placeholder | translate }}</option>
-        <option *ngFor="let option of _options" [value]="option.id">{{ option.value }}</option>
-      </select>
   </ng-container>
   
