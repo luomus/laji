@@ -37,7 +37,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
   active = [];
   selectedTitle = '';
   _shouldSort = false;
-  _options: SelectOptions[] = [];
+  _Options:  [{[key: string]: SelectOptions[]}] | Array<any> = [];
   queryToSelect = [];
 
   protected subOptions: Subscription;
@@ -108,7 +108,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
       ))
     ).subscribe(options => {
         this.subCategories.forEach(item => {
-          this._options[item] = options;
+          this._Options[item] = options;
         });
         this.initActive();
         this.cd.markForCheck();

@@ -1,6 +1,6 @@
 <ng-container [ngSwitch]="selectStyle">
       <laji-select-subcategories
-        [options]="_options"
+        [options]="_Options"
         [title]="placeholder | translate"
         [filterPlaceHolder]="'haseka.submissions.filter' | translate"
         [useFilter]="useFilter"
@@ -9,7 +9,7 @@
         [info]="info"
         [open]="open"
         [disabled]="disabled"
-        [loading]="_options === null"
+        [loading]="_Options === null"
         [subCategories]="subCategories"
         [subTitleBase]="subTitleBase"
         [filtersName]="filtersName"
