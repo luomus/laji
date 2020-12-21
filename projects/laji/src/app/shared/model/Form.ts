@@ -65,6 +65,7 @@ export namespace Form {
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
     useNamedPlaces?: boolean;
+    dataset?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
