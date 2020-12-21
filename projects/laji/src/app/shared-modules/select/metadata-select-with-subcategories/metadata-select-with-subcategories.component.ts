@@ -37,7 +37,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
   active = [];
   selectedTitle = '';
   _shouldSort = false;
-  _Options:  [{[key: string]: SelectOptions[]}] | Array<any> = [];
+  _Options:  {[key: string]: SelectOptions[]} = {};
   queryToSelect = [];
 
   protected subOptions: Subscription;
