@@ -37,7 +37,7 @@ export class NewsComponent implements OnInit {
 
   private updateHeaders(news: News): void {
     const pageTitle = news.title + ' | ' + this.title.getTitle();
-    const paragraph = this.getNewsDescription(news);
+    const paragraph = HeaderService.getDescription(news.content || '');
 
     this.title.setTitle(pageTitle);
     this.headerService.createTwitterCard(pageTitle);
@@ -46,25 +46,5 @@ export class NewsComponent implements OnInit {
     if (news.featuredImage) {
       this.headerService.updateFeatureImage(news.featuredImage);
     }
-  }
-
-  private getNewsDescription(news: News): string {
-    const html = news.content || '';
-    const firstParagraph = html.split('</p>')[0].replace(/<[^>]*>?/gm, '');
-
-    if (firstParagraph.length <= 180) {
-      return firstParagraph;
-    }
-    const words = firstParagraph.substring(0, 181).split(' ');
-    let description = words[0];
-
-    for (let i = 1; i < words.length; i++) {
-      if (description.length + words[i].length + 1 <= 177) {
-        description += ` ${words[i]}`;
-      } else {
-        break;
-      }
-    }
-    return `${description}...`;
   }
 }
