@@ -124,7 +124,7 @@
     "openseadragon": "^2.4.2",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.3",
-    "ts-loader": "8.0.7",
+    "ts-loader": "8.0.12",
     "vm": "^0.1.0",
     "web-animations-js": "^2.3.2",
     "xlsx": "0.16.8",
