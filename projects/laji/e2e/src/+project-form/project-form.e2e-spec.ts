@@ -3,7 +3,7 @@ import { UserPage } from '../+user/user.po';
 import { VihkoHomePage } from '../+vihko/home.po';
 import { MobileFormPage } from '../+vihko/mobile-form.po';
 import { SaveObservationsPage } from '../+save-observations/save-observations.po';
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -135,6 +135,19 @@ describe('Project form', () =>  {
         expect (await vihkoHomePage.$content.isDisplayed()).toBe(true);
         done();
       });
+
+      it('back navigate works away from form', async (done) => {
+        await vihkoHomePage.navigateTo();
+        await vihkoHomePage.clickFormById(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        const EC = protractor.ExpectedConditions;
+        await browser.wait(EC.visibilityOf(projectFormPage.documentFormView.$form));
+        await browser.navigate().back();
+        expect(await vihkoHomePage.$content.isDisplayed()).toBe(true, 'user wasn\'t on vihko page after back navigation');
+
+        await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        done();
+      });
+
 
     });
 
