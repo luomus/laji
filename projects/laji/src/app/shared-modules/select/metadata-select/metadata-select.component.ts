@@ -133,7 +133,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
       ))
     ).subscribe(options => {
-        this._options = options;
+        this.setOptions(options);
         this.initActive();
         this.cd.markForCheck();
       });
@@ -197,6 +197,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   trackingBy(idx, item) {
     return item.id ?? idx;
+  }
+
+  protected setOptions(options: SelectOptions[]): void {
+    this._options = options;
   }
 
   protected optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
