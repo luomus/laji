@@ -138,8 +138,8 @@
             </div>
             <div class="col-sm-3">
               <select name="count-handling" class="form-control" (change)="changeImportType($event.target.value)">
-                <option [selected]="true === onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
-                <option [selected]="false === onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
+                <option [selected]="true === _onlyWithCount" [value]="true">{{ 'excel.import.onlyWithCount' | translate }}</option>
+                <option *ngIf="!form?.options?.emptyOnNoCount" [selected]="false === _onlyWithCount" [value]="false">{{ 'excel.import.alsoEmptyCount' | translate }}</option>
               </select>
             </div>
             <div class="col-sm-5 checkbox">
