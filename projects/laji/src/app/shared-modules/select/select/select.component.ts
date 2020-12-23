@@ -42,6 +42,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
+  @Input() subCategories = [];
+  @Input() isParentFilter = false;
+  @Input() subCategory = '';
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
@@ -199,6 +202,33 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         this.unselectedOptions.push(option);
       }
     });
+  }
+
+  checkStatus(id, cat) {
+    const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
+    let countOptionForNotGlobal = 0;
+    if (this.selected && this.selected /*&& this.selectedOptions[cat].length > 0*/) {
+      if (cat === 'GLOBAL') {
+        categoriesExceptGlobal.forEach(item => {
+          if (this.selectedOptions[item] && this.selectedOptions[item].id === id) {
+            countOptionForNotGlobal++;
+          }
+        });
+        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(id) === -1) {
+          this.selectedOptions['GLOBAL'].push(id);
+          this.selected.push(id);
+        }
+        return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
+      } else {
+        if (this.selected.indexOf(id) > -1) {
+          return true;
+        } else {
+          return undefined;
+        }
+      }
+    } else {
+      return undefined;
+    }
   }
 
 }

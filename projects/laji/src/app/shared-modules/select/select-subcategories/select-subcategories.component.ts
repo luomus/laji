@@ -50,6 +50,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() filtersValues = [];
   @ViewChild('filter') filter: ElementRef;
 
+  @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
+
   selectedOptions = {};
   unselectedOptions = {};
   tmpSelectedOption = {};
@@ -467,6 +469,88 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         return undefined;
       }
     }
+  }
+
+  selectedOptionsIsEmpty(obj) {
+    if (!obj) {
+      return true;
+    }
+
+    return Object.keys(obj).length === 0;
+  }
+
+
+  refreshValue(value: any, category: string): void {
+    if (!value) {
+      return;
+    }
+
+    this.selectedOptions[category] = value;
+
+
+    this.checkGlobalSubCategories(this.selectedOptions, category);
+
+    
+    this.selectedChange.emit(this.selectedOptions);
+  }
+
+
+  checkGlobalSubCategories(selected, category) {
+    const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
+    this.options['GLOBAL'].map(option => {
+      if (selected && selected['GLOBAL']) {
+        if (selected['GLOBAL'].indexOf(option.id) > -1 && category==='GLOBAL') {
+          categoriesExcludeGlobal.forEach(cat => {
+            if (selected[cat]) {
+               if (selected[cat].indexOf(option.id) === -1) {
+                 selected[cat].push(option.id);
+               }
+            } else {
+              selected[cat] = [option.id];
+            }
+          })
+        } else {
+          if (selected['GLOBAL'].indexOf(option.id) === -1 && category==='GLOBAL') {
+            categoriesExcludeGlobal.forEach(cat => {
+              if (selected[cat]) {
+                 if (selected[cat].indexOf(option.id) > -1) {
+                   selected[cat].slice(selected[cat].indexOf(option.id), 1);
+                 }
+              }
+            })
+          }
+        }
+      }
+    })
+
+    return selected;
+  }
+
+
+  deleteFromSubcategories(selected, categories, option) {
+    categories.map(category => {
+      selected[category].splice(selected[category].indexOf(option), 1);
+    });
+
+    return selected;
+  }
+
+  addToSubCategories(selected, categories, option) {
+    if(!selected) {
+      return;
+    }
+
+    categories.map(category => {
+      if(!selected[category]) {
+        selected[category] = [option];
+      } else {
+        if (selected[category].indexOf(option) === -1) {
+          selected[category].push(option);
+        }     
+      }
+    });
+
+    return selected;
   }
 
 

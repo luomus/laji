@@ -9,6 +9,7 @@ import { InfoModule } from '../info/info.module';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with-subcategories/metadata-select-with-subcategories.component';
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
+import { ExcludeSubcategoryPipe } from './exclude-subcategory.pipe';
 
 /* tslint:enable:max-line-length */
 
@@ -18,14 +19,15 @@ import { SelectSubcategoriesComponent } from './select-subcategories/select-subc
     SharedModule,
     InfoModule
   ],
-  providers: [ AdminStatusInfoPipe ] ,
+  providers: [ AdminStatusInfoPipe, ExcludeSubcategoryPipe ] ,
   declarations: [
     MetadataSelectComponent,
     SelectComponent,
     CheckboxComponent,
     AdminStatusInfoPipe,
     MetadataSelectWithSubcategoriesComponent,
-    SelectSubcategoriesComponent
+    SelectSubcategoriesComponent,
+    ExcludeSubcategoryPipe
   ],
   exports: [
     MetadataSelectComponent,
@@ -33,7 +35,8 @@ import { SelectSubcategoriesComponent } from './select-subcategories/select-subc
     CheckboxComponent,
     AdminStatusInfoPipe,
     MetadataSelectWithSubcategoriesComponent,
-    SelectSubcategoriesComponent
+    SelectSubcategoriesComponent,
+    ExcludeSubcategoryPipe
   ]
 })
 export class SelectModule { }
