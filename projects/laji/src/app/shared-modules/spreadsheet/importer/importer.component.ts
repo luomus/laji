@@ -30,7 +30,6 @@ import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.f
 import { ISpreadsheetState, SpreadsheetFacade, Step } from '../spreadsheet.facade';
 import { FileService, instanceOfFileLoad } from '../service/file.service';
 import { IUserMappingFile, MappingFileService } from '../service/mapping-file.service';
-import { environment } from '../../../../environments/environment';
 import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
@@ -54,6 +53,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   @LocalStorage() partiallyUploadedFiles;
   @LocalStorage('importCombineBy', CombineToDocument.gathering) combineBy: CombineToDocument;
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
+  _onlyWithCount: boolean;
 
   @Input() allowedCombineOptions: CombineToDocument[];
 
@@ -188,6 +188,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           cellDates: !isCsv,
           raw: isCsv
         });
+        this._onlyWithCount = this.form.options?.emptyOnNoCount === true ? true : this.onlyWithCount;
         this.bstr = undefined;
         this.hash = Hash.sha1(data);
         this.combineOptions = this.allowedCombineOptions ? combineOptions.filter(option => this.allowedCombineOptions.includes(option)) : combineOptions;
@@ -344,6 +345,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   changeImportType(value: any) {
     if (value === false || value === true || value === 'true' || value === 'false') {
       this.onlyWithCount = value === true || value === 'true';
+      this._onlyWithCount = this.onlyWithCount;
     } else {
       this.combineBy = value;
     }
@@ -515,7 +517,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.colMap,
         this.fields,
         this.formID,
-        this.onlyWithCount,
+        this._onlyWithCount,
         this.combineBy
       );
     }
