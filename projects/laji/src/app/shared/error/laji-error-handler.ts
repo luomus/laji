@@ -43,10 +43,10 @@ export class LajiErrorHandler extends ErrorHandler {
 
     if (this.isScheduled()) {
       this.pauseMessage();
-      this.getToastsService().showWarning(
-        this.getTranslateService().instant('error.scheduled.intro'),
-        this.getTranslateService().instant('error.scheduled.title'),
-      );
+      // this.getToastsService().showWarning(
+      //   this.getTranslateService().instant('error.scheduled.intro'),
+      //   this.getTranslateService().instant('error.scheduled.title'),
+      // );
       return super.handleError(error);
     }
 
@@ -54,10 +54,10 @@ export class LajiErrorHandler extends ErrorHandler {
     const url = location instanceof PathLocationStrategy ? location.path() : '';
     this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
     this.pauseMessage();
-    this.getToastsService().showError(
-      this.getTranslateService().instant('error.500.intro'),
-      this.getTranslateService().instant('error.500.title')
-    );
+    // this.getToastsService().showError(
+    //   this.getTranslateService().instant('error.500.intro'),
+    //   this.getTranslateService().instant('error.500.title')
+    // );
     return super.handleError(error);
   }
 
