@@ -67,7 +67,7 @@ export class TaxonExportService {
     const misappliedNames: string[] = [];
       if (data['misappliedNames'] && Array.isArray(data['misappliedNames'])) {
         data['misappliedNames'].forEach((misappliedName: any) => {
-          misappliedNames.push(misappliedName.scientificName + (misappliedName.scientificNameAuthorship ? ' ' + misappliedName.scientificNameAuthorship : '')); 
+          misappliedNames.push(misappliedName.scientificName + (misappliedName.scientificNameAuthorship ? ' ' + misappliedName.scientificNameAuthorship : ''));
         });
       }
     return misappliedNames.join('; ');
