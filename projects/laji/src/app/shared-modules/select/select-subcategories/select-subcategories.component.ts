@@ -497,14 +497,17 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           }
         });
         if (count === categoriesExcludeGlobal.length) {
-          this.subCategories.forEach(item => {
+          categoriesExcludeGlobal.forEach(item => {
               if (this.selectedOptions[item].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1) {
                 this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id), 1);
                 this.selected[item].splice(this.selected[item].indexOf(option.id), 1);
               }
+              if (this.selected['GLOBAL']) {
+                this.selected['GLOBAL'].splice(this.selected['GLOBAL'].indexOf(option.id), 1);
+              } 
           });
         } else {
-            this.subCategories.forEach(item => {
+            categoriesExcludeGlobal.forEach(item => {
                 if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(option.id) === -1 &&
                   this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) > -1) {
                   this.selectedOptions[item].push(option.id);
