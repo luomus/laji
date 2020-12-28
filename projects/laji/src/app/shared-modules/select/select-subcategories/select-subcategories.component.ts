@@ -487,25 +487,47 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
 
     this.selectedOptions[category] = value;
+    const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
     if (category === 'GLOBAL') {
-      const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
       this.options['GLOBAL'].map(option => {
         let count = 0;
         categoriesExcludeGlobal.forEach(category => {
-          if (this.selectedOptions && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 &&
+          if (this.selectedOptions && this.selectedOptions['GLOBAL'] &&
           this.selectedOptions[category] && this.selectedOptions[category].indexOf(option.id) > -1) {
             count++;
           }
         })
         if(count === categoriesExcludeGlobal.length) {
           this.subCategories.forEach(item => {
-              if(this.selectedOptions[item].indexOf(option.id) > -1)
+              if(this.selectedOptions[item].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1)
               {
                 this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id),1);
                 this.selected[item].splice(this.selected[item].indexOf(option.id), 1);
               }
           })
-        } 
+        } else {
+            this.subCategories.forEach(item => {
+                if(this.selectedOptions[item] && this.selectedOptions[item].indexOf(option.id) === -1 &&
+                  this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) > -1)
+                {
+                  this.selectedOptions[item].push(option.id);
+                  this.selected[item].push(option.id);
+                }
+            })
+        }
+      })
+    } else {
+      this.options['GLOBAL'].map(option => {
+        let countNoGlobal = 0;
+        categoriesExcludeGlobal.forEach(cat => {
+          if (this.selectedOptions[cat].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1) {
+            countNoGlobal++;
+          }
+        })
+        if (countNoGlobal === categoriesExcludeGlobal.length) {
+          this.selectedOptions['GLOBAL'].push(option.id);
+          this.selected['GLOBAL'].push(option.id);
+        }
       })
     }
    
@@ -518,66 +540,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     this.cd.detectChanges();
     this.selectedChange.emit(this.selectedOptions);
   }
-
-
-  checkGlobalSubCategories(selected, category) {
-    const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
-    this.options['GLOBAL'].map(option => {
-      if (selected && selected['GLOBAL']) {
-        if (selected['GLOBAL'].indexOf(option.id) > -1 && category==='GLOBAL') {
-          categoriesExcludeGlobal.forEach(cat => {
-            if (selected[cat]) {
-               if (selected[cat].indexOf(option.id) === -1) {
-                 selected[cat].push(option.id);
-               }
-            } else {
-              selected[cat] = [option.id];
-            }
-          })
-        } else {
-          if (selected['GLOBAL'].indexOf(option.id) === -1 && category==='GLOBAL') {
-            categoriesExcludeGlobal.forEach(cat => {
-              if (selected[cat]) {
-                 if (selected[cat].indexOf(option.id) > -1) {
-                   selected[cat].slice(selected[cat].indexOf(option.id), 1);
-                 }
-              }
-            })
-          }
-        }
-      }
-    })
-
-    return selected;
-  }
-
-
-  deleteFromSubcategories(selected, categories, option) {
-    categories.map(category => {
-      selected[category].splice(selected[category].indexOf(option), 1);
-    });
-
-    return selected;
-  }
-
-  addToSubCategories(selected, categories, option) {
-    if(!selected) {
-      return;
-    }
-
-    categories.map(category => {
-      if(!selected[category]) {
-        selected[category] = [option];
-      } else {
-        if (selected[category].indexOf(option) === -1) {
-          selected[category].push(option);
-        }     
-      }
-    });
-
-    return selected;
-  }
-
 
 }
 

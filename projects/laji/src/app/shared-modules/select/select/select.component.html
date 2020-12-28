@@ -1,5 +1,4 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open, 'lj-disabled': disabled}">
-  {{ selectedGlobalSubCategories | json }}
   <strong *ngIf="title !== undefined && title !== '' && subCategories.length === 0" class="lj-title link" (click)="toggle($event, filter)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <ng-container *ngIf="multiple; else select">
     <ng-container *ngIf="!useFilter; else multiWithFilter">
