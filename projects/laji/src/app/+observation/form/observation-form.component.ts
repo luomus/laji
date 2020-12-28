@@ -640,6 +640,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     return Array.isArray(a) &&
       Array.isArray(b) &&
       a.length === b.length &&
-      a.every((val, index) => val === b[index]);
+      a.every((val) => b.indexOf(val) > -1);
   }
 }

@@ -504,7 +504,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
               }
               if (this.selected['GLOBAL']) {
                 this.selected['GLOBAL'].splice(this.selected['GLOBAL'].indexOf(option.id), 1);
-              } 
+              }
           });
         } else {
             categoriesExcludeGlobal.forEach(item => {
