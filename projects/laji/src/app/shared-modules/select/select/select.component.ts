@@ -70,7 +70,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         this.cd.markForCheck();
       });
 
-      console.log(this.selectedGlobalSubCategories)
   }
 
   ngOnChanges() {
@@ -217,15 +216,15 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
             countOptionForNotGlobal++;
           }
         });
-        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(id) === -1) {
+        if (countOptionForNotGlobal === categoriesExceptGlobal.length &&
+            this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(id) === -1) {
           this.selected.push(id);
           this.options.forEach(option => {
             if (option.id === id) {
               this.selectedOptions.push(option);
             }
-          })
+          });
         }
-        console.log(this.selected)
         return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
       } else {
         if (this.selected.indexOf(id) > -1) {
