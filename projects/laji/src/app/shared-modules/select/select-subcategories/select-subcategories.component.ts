@@ -95,6 +95,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
     this.initOptions(Object.keys(this.selected).length > 0 && this.selected !== undefined ? this.selected : this.buildSelectedOptions(this.filtersName));
     this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
+    console.log(this.selectedOptions)
   }
 
   ngOnDestroy() {
@@ -486,11 +487,35 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
 
     this.selectedOptions[category] = value;
+    if (category === 'GLOBAL') {
+      const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
+      this.options['GLOBAL'].map(option => {
+        let count = 0;
+        categoriesExcludeGlobal.forEach(category => {
+          if (this.selectedOptions && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 &&
+          this.selectedOptions[category] && this.selectedOptions[category].indexOf(option.id) > -1) {
+            count++;
+          }
+        })
+        if(count === categoriesExcludeGlobal.length) {
+          this.subCategories.forEach(item => {
+              if(this.selectedOptions[item].indexOf(option.id) > -1)
+              {
+                this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id),1);
+                this.selected[item].splice(this.selected[item].indexOf(option.id), 1);
+              }
+          })
+        } 
+      })
+    }
+   
+
+    console.log(this.selectedOptions)
 
 
-    this.checkGlobalSubCategories(this.selectedOptions, category);
+    //this.checkGlobalSubCategories(this.selectedOptions, category);
 
-    
+    this.cd.detectChanges();
     this.selectedChange.emit(this.selectedOptions);
   }
 

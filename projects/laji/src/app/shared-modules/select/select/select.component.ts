@@ -35,6 +35,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() selected: string[] = [];
+  @Input() selectedGlobalSubCategories: {[key: string]: SelectOptions[]} = {};
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -68,6 +69,8 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         this.filterBy = value;
         this.cd.markForCheck();
       });
+
+      console.log(this.selectedGlobalSubCategories)
   }
 
   ngOnChanges() {
@@ -210,14 +213,19 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     if (this.selected && this.selected /*&& this.selectedOptions[cat].length > 0*/) {
       if (cat === 'GLOBAL') {
         categoriesExceptGlobal.forEach(item => {
-          if (this.selectedOptions[item] && this.selectedOptions[item].id === id) {
+          if (this.selectedGlobalSubCategories[item] && this.selectedGlobalSubCategories[item].indexOf(id) > -1) {
             countOptionForNotGlobal++;
           }
         });
-        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(id) === -1) {
-          this.selectedOptions['GLOBAL'].push(id);
+        if (countOptionForNotGlobal === categoriesExceptGlobal.length && this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(id) === -1) {
           this.selected.push(id);
+          this.options.forEach(option => {
+            if (option.id === id) {
+              this.selectedOptions.push(option);
+            }
+          })
         }
+        console.log(this.selected)
         return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
       } else {
         if (this.selected.indexOf(id) > -1) {
