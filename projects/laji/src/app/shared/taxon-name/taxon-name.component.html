@@ -4,7 +4,7 @@
     (<ul class="separated-list colloquialVernacularName">
       <li *ngFor="let obj of (taxon.colloquialVernacularName | multiLang:false)">{{obj}}</li>
     </ul>
-    <laji-info [placement]="'left'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
+    <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
   </ng-container>
   <ng-container *ngIf="((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName">
     &ndash;
