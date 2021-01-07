@@ -19,7 +19,7 @@ export class InstructionsComponent implements OnInit {
 
   ngOnInit() {
     this.instructions$ = this.projectFormService.getFormFromRoute$(this.route)
-      .pipe(map(form => form.options.instructions));
+      .pipe(map(form => {console.log(form); return form.options.instructions; }));
   }
 
 }
