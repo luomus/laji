@@ -19,6 +19,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['recordings'] | localize" routerLinkActive>
           {{ 'theme.kerttu.recordingAnnotation' | translate }}
         </lu-sidebar-link>
+        <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['result'] | localize" routerLinkActive>
+          {{ 'theme.kerttu.result' | translate }}
+        </lu-sidebar-link>
       </nav>
       <main>
         <router-outlet></router-outlet>

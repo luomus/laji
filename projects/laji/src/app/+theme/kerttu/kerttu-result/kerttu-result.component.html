@@ -1,0 +1,59 @@
+<h1>{{ 'theme.kerttu.result' | translate }}</h1>
+<div class="row lu-section">
+  <div class="col-sm-6">
+    <div *ngIf="generalStats$ | async as stats else spinner">
+      <h3>{{ 'theme.kerttu.result.generalCounts' | translate }}</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <laji-kerttu-count
+            [label]="'theme.kerttu.result.letters' | translate"
+            [count]="stats.letterAnnotationCount"
+          ></laji-kerttu-count>
+        </div>
+        <div class="col-sm-6">
+          <laji-kerttu-count
+            [label]="'theme.kerttu.result.recordings' | translate"
+            [count]="stats.recordingAnnotationCount"
+          ></laji-kerttu-count>
+        </div>
+      </div>
+      <ng-container *lajiLoggedIn="true">
+        <h3>{{ 'theme.kerttu.result.userCounts' | translate }}</h3>
+        <div class="row">
+          <div class="col-sm-6">
+            <laji-kerttu-count
+              [label]="'theme.kerttu.result.letters' | translate"
+              [count]="stats.userLetterAnnotationCount"
+              [additionalDescription]="'theme.kerttu.result.shareOfAnnotations' | translate: {
+                percentage: (stats.userLetterAnnotationCount / stats.letterAnnotationCount * 100) | number:'1.0-1'
+              }"
+            ></laji-kerttu-count>
+          </div>
+          <div class="col-sm-6">
+            <laji-kerttu-count
+              [label]="'theme.kerttu.result.recordings' | translate"
+              [count]="stats.userRecordingAnnotationCount"
+              [additionalDescription]="'theme.kerttu.result.shareOfAnnotations' | translate: {
+                percentage: (stats.userRecordingAnnotationCount / stats.recordingAnnotationCount * 100) | number:'1.0-1'
+              }"
+            ></laji-kerttu-count>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="userList$ | async as userList else spinner">
+      <h3>{{ 'theme.kerttu.result.userTable' | translate }}</h3>
+      <laji-kerttu-user-table
+        [userList]="userList"
+        [userId]="userId$ | async"
+      ></laji-kerttu-user-table>
+    </div>
+  </div>
+  <div class="col-sm-6" *lajiLoggedIn="true">
+    <h3>{{ 'theme.kerttu.result.equality' | translate }}</h3>
+    <p>{{ 'theme.kerttu.result.equality.description' | translate }}</p>
+  </div>
+</div>
+<ng-template #spinner>
+  <laji-spinner [overlay]="true"></laji-spinner>
+</ng-template>
