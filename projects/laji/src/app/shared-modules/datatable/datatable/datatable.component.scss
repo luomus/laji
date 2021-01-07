@@ -21,6 +21,12 @@
   background-color: $neutral-2;
 }
 
+:host ::ng-deep .ngx-datatable.striped .datatable-summary-row .datatable-body-row {
+  background: unset;
+  background-color: $neutral-1;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 /* Workaround for ngx-datatable bug where a black bar appears on some rows
    https://github.com/swimlane/ngx-datatable/issues/1616
 */
