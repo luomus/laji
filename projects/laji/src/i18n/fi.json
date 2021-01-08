@@ -1543,6 +1543,7 @@
   "theme.kerttu.timeBuffer": "Aikapuskuri",
   "theme.kerttu.result": "Tulospalvelu",
   "theme.kerttu.result.name": "Nimi",
+  "theme.kerttu.result.allowNameVisible": "Salli nimeni näkyminen muille",
   "theme.kerttu.result.hidden": "Salattu",
   "theme.kerttu.result.shareOfAnnotations": "({{percentage}} % kaikista tunnistuksista.)",
   "theme.kerttu.result.generalCounts": "Kertun tunnistusten lukumäärä",
