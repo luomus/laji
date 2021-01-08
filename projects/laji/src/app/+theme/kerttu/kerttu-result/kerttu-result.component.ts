@@ -1,7 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {KerttuApi} from '../service/kerttu-api';
 import {UserService} from '../../../shared/service/user.service';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {map, switchMap, take} from 'rxjs/operators';
 import {IKerttuStatistics, IUserStatistics} from '../models';
 import {PersonApi} from '../../../shared/api/PersonApi';
@@ -13,10 +13,9 @@ import {PersonApi} from '../../../shared/api/PersonApi';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuResultComponent implements OnInit, OnDestroy {
-  generalStats$: Observable<IKerttuStatistics>;
-  userList$: Observable<IUserStatistics[]>;
-  userId$: any;
+  stats$: Observable<{general: IKerttuStatistics, users: IUserStatistics[]}>;
 
+  userId: string;
   nameVisibility: boolean;
 
   private nameVisibilitySub: Subscription;
@@ -29,19 +28,26 @@ export class KerttuResultComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.userService.isLoggedIn$.pipe(
-      take(1)
-    ).subscribe(isLoggedIn => {
-      const token = isLoggedIn ? this.userService.getToken() : undefined;
-      this.generalStats$ = this.kerttuApi.getGeneralStats(token);
-      this.userList$ = this.kerttuApi.getUsersStats(token);
-      if (isLoggedIn) {
-        this.userId$ = this.userService.user$.pipe(map(user => user?.id));
-        this.personService.personFindProfileByToken(token).pipe(map(profile => profile.nameVisibleInKerttu || false)).subscribe(value => {
+    this.getUserId().subscribe(userId => {
+      const token = userId ? this.userService.getToken() : undefined;
+
+      this.stats$ = this.kerttuApi.getUsersStats(token).pipe(map(users => {
+        return {
+          general: this.generalStatsFromUserStats(users, userId),
+          users: users
+        };
+      }));
+
+      if (userId) {
+        this.nameVisibilitySub = this.personService.personFindProfileByToken(token).pipe(
+          map(profile => profile.nameVisibleInKerttu || false)
+        ).subscribe(value => {
           this.nameVisibility = value;
           this.cd.markForCheck();
         });
       }
+
+      this.userId = userId;
       this.cd.markForCheck();
     });
   }
@@ -65,5 +71,40 @@ export class KerttuResultComponent implements OnInit, OnDestroy {
         this.nameVisibility = value;
         this.cd.markForCheck();
       });
+  }
+
+  private getUserId(): Observable<string> {
+    return this.userService.isLoggedIn$.pipe(
+      take(1),
+      switchMap(isLoggedIn => {
+        if (isLoggedIn) {
+          return this.userService.user$.pipe(map(user => user?.id));
+        }
+        return of(undefined);
+      })
+    );
+  }
+
+  private generalStatsFromUserStats(userList: IUserStatistics[], userId?: string): IKerttuStatistics {
+    let letterAnnotationCount = 0;
+    let recordingAnnotationCount = 0;
+    let userLetterAnnotationCount = 0;
+    let userRecordingAnnotationCount = 0;
+
+    userList.forEach(userStat => {
+      if (userId && userStat.userId === userId) {
+        userLetterAnnotationCount += userStat.letterAnnotationCount;
+        userRecordingAnnotationCount += userStat.recordingAnnotationCount;
+      }
+      letterAnnotationCount += userStat.letterAnnotationCount;
+      recordingAnnotationCount += userStat.recordingAnnotationCount;
+    });
+
+    return {
+      letterAnnotationCount,
+      recordingAnnotationCount,
+      userLetterAnnotationCount,
+      userRecordingAnnotationCount
+    };
   }
 }

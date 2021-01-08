@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum, IRecordingStatusInfo,
-  IKerttuStatistics, IUserStatistics} from '../models';
+  IUserStatistics} from '../models';
 
 interface ILetterResponse {
   statusInfo: ILetterStatusInfo;
@@ -105,13 +105,6 @@ export class KerttuApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.post(path, annotation, { params });
-  }
-
-  public getGeneralStats(personToken: string): Observable<IKerttuStatistics> {
-    const path = this.basePath + '/statistics/general';
-    const params = new HttpParams().set('personToken', personToken);
-
-    return this.httpClient.get<IKerttuStatistics>(path, { params });
   }
 
   public getUsersStats(personToken: string): Observable<IUserStatistics[]> {
