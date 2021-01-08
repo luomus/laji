@@ -43,6 +43,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     :host ::ng-deep .ngx-datatable lu-button button {
       padding: 0.1em 0.6em;
     }
+    :host ::ng-deep .checkbox label {
+      display: initial;
+      font-weight: 700;
+    }
 
     @media only screen and (min-width : 768px) {
       main {

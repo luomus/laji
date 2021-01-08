@@ -50,14 +50,17 @@ export class KerttuUserTableComponent implements OnInit, OnDestroy {
       {
         name: 'letterAnnotationCount',
         label: 'theme.kerttu.result.letters',
+        width: 70
       },
       {
         name: 'recordingAnnotationCount',
         label: 'theme.kerttu.result.recordings',
+        width: 70
       },
       {
         name: 'totalAnnotationCount',
         label: 'theme.total',
+        width: 70
       }
     ];
   }

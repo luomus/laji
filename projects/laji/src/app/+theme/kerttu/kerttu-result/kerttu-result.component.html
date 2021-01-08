@@ -5,13 +5,17 @@
       <label>
         <input [disabled]="nameVisibility == null" type="checkbox" [ngModel]="nameVisibility" (ngModelChange)="saveNameVisibility($event)"/>{{ 'theme.kerttu.result.allowNameVisible' | translate }}
       </label>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.allowNameVisible' | translate"></laji-info>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-6">
       <ng-container *ngIf="stats$ | async as stats else spinner">
         <div>
-          <h3>{{ 'theme.kerttu.result.generalCounts' | translate }}</h3>
+          <h3>
+            {{ 'theme.kerttu.result.generalCounts' | translate }}
+            <laji-info [placement]="'right'" [html]="'theme.kerttu.info.generalCounts' | translate"></laji-info>
+          </h3>
           <div class="row">
             <div class="col-sm-6">
               <laji-kerttu-count
