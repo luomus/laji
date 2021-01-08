@@ -1553,6 +1553,8 @@
   "theme.kerttu.result.userTable": "Tunnistuksia tehneet",
   "theme.kerttu.result.equality": "Tunnistustesi yhtäläisyys muihin käyttäjiin",
   "theme.kerttu.result.equality.description": "Kun tunnistuksia on kertynyt kattavasti, lisätään tähän osio, jossa voit verrata lajikohtaisesti kuinka tunnistuksesi suhtatuvat muiden tekemiin tunnistuksiin.",
+  "theme.kerttu.info.generalCounts": "Tämä kohta näyttää kuinka monta tunnistusta Kertussa on tehty yhteensä kaikkien käyttäjien toimesta. Kirjaimissa lasketaan jokainen ehdokas tunnistukseksi, mutta äänitteissä yksi tunnistus vastaa kaikkia yhdestä 10s äänipätkästä tehtyjä tunnistuksia. Tekemiesi tunnistusten lukumäärä näytetään alempana sekä kuinka isoa osaa kaikista tunnistuksista se vastaa.<br><strong>Huom.</strong> Kaikista uusimmat tunnistukset eivät välttämättä näy luvuissa, sillä niillä kestää hetki päivittyä.",
+  "theme.kerttu.info.allowNameVisible": "Jos sallit, että nimesi näytetään muille käyttäjille alla olevassa listassa ”Tunnistuksia tehneet”, niin valitse tämä laatikko. Oletusarvoisesti nimesi näkyy muodossa ”Salattu”. Muussa kuin tunnistusten lukumäärien yhteydessä nimeäsi ei näytetä muille, vaikka ruksisit tämän kohdan.",
   "theme.linetransect.intro": "Maalintujen linjalaskennoilla voidaan nopeasti saada edustava kuva seudun pesimälinnustosta. Tutustu tuloksiin, varaa laskentareitti ja kirjaa laskentatulokset.",
   "theme.lolife.about": "Tietoa",
   "theme.lolife.intro": "Perusta liito-oravien seurantapaikka, lisätä siihen aluerajauksia, liitä havaintoja liito-oravasta, pesistä, jäljistä ja papanoista.",
