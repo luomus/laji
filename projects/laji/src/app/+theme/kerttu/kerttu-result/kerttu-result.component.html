@@ -1,9 +1,9 @@
 <h1>{{ 'theme.kerttu.result' | translate }}</h1>
 <div class="lu-section">
   <div *lajiLoggedIn="true">
-    <div class="checkbox" *ngIf="nameVisibility != null else spinner">
+    <div class="checkbox">
       <label>
-        <input type="checkbox" [ngModel]="nameVisibility" (ngModelChange)="saveNameVisibility($event)"/>{{ 'theme.kerttu.result.allowNameVisible' | translate }}
+        <input [disabled]="nameVisibility == null" type="checkbox" [ngModel]="nameVisibility" (ngModelChange)="saveNameVisibility($event)"/>{{ 'theme.kerttu.result.allowNameVisible' | translate }}
       </label>
     </div>
   </div>
