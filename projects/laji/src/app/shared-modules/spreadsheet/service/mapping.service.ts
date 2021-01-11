@@ -94,6 +94,8 @@ export class MappingService {
     return value;
   }
 
+  /* comment */
+
   addUserColMapping(mapping) {
     if (typeof mapping !== 'object' || Array.isArray(mapping) || Object.keys(mapping).length === 0) {
       return;
