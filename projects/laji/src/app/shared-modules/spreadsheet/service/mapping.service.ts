@@ -25,6 +25,7 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
+  public static readonly vihkoFormsSplitters = [';', ','];
 
   // from boolean to translation key
   private readonly booleanMap = {
@@ -87,14 +88,13 @@ export class MappingService {
     }
     if (field.isArray) {
       if (typeof value === 'string') {
-        return value.split(MappingService.valueSplitter).map(val => val.trim());
+        return value.split(new RegExp(MappingService.vihkoFormsSplitters.join('|'), 'g')).map(val => val.trim());
+        //return this.splitMultiple(value, MappingService.vihkoFormsSplitters).map(val => val.trim());
       }
       return [value];
     }
     return value;
   }
-
-  /* comment */
 
   addUserColMapping(mapping) {
     if (typeof mapping !== 'object' || Array.isArray(mapping) || Object.keys(mapping).length === 0) {
