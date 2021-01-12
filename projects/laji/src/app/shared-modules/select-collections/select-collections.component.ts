@@ -82,7 +82,6 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
 
   initCollectionsTree() {
     return this.collectionService.getCollectionsTree().pipe(
-      map(({collection}) => collection),
       switchMap((outer) => this.collectionService.getCollectionsAggregate().pipe(
         map(inner => this.buildCollectionTree(outer, inner))
       ))

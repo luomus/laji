@@ -13,6 +13,17 @@ interface ICollectionRange {
   value: string;
 }
 
+interface ICollectionsTreeNode {
+  id: string,
+  longName: string,
+  hasChildren: boolean,
+  children?: ICollectionsTreeNode[] 
+}
+
+interface IQueryResult {
+  collection: ICollectionsTreeNode[]
+}
+
 @Injectable({providedIn: 'root'})
 export class CollectionService extends AbstractCachedHttpService<ICollectionRange> {
 
@@ -98,8 +109,8 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     );
   }
 
-  getCollectionsTree(): Observable<any> {
-    return this.graphQlService.query({
+  getCollectionsTree(): Observable<ICollectionsTreeNode[]> {
+    return this.graphQlService.query<IQueryResult>({
       query: this.TREE_QUERY,
       errorPolicy: 'all',
       fetchPolicy: 'cache-first',
@@ -111,10 +122,11 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
 
     }).pipe(
       map(({data}) => data),
+      map(({collection}) => collection)
     );
   }
 
-  getCollectionsAggregate(page = 1, collections = []): Observable<any> {
+  getCollectionsAggregate(page = 1, collections = []): Observable<ICollectionRange[]> {
     let hasMore = false;
     return this.warehouseApi.warehouseQueryAggregateGet({cache: true}, ['document.collectionId'], undefined, 1000, page).pipe(
       tap(data => hasMore = data.lastPage && data.lastPage > page),
@@ -126,6 +138,6 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
         };
       })),
       map(cols => [...collections, ...cols]),
-      switchMap(cols => hasMore ? this.fetchWarehouseCollections(page + 1, cols) : of(cols)));
+      switchMap(cols => hasMore ? this.getCollectionsAggregate(page + 1, cols) : of(cols)));
   }
 }
