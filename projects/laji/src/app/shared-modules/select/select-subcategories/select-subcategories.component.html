@@ -3,8 +3,8 @@
   <!-- GLOBAL FILTER -->
   <laji-select
   [options]="options['GLOBAL']"
-  [subCategories]="subCategories"
   [filterPlaceHolder]="'haseka.submissions.filter' | translate"
+  [subCategory]="'GLOBAL'"
   [useFilter]="false"
   [selected]="selectedOptions['GLOBAL']"
   [selectedGlobalSubCategories]="selectedOptions"
@@ -26,7 +26,6 @@
     <laji-select
       [options]="options[subCategory]"
       [title]="subTitleBase + '.' + subCategory | translate"
-      [subCategories]="subCategories"
       [subCategory]="subCategory"
       [filterPlaceHolder]="'haseka.submissions.filter' | translate"
       [useFilter]="false"

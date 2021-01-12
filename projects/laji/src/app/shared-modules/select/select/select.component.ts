@@ -44,7 +44,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
-  @Input() subCategories = [];
   @Input() isParentFilter = false;
   @Input() subCategory = '';
   @ViewChild('filter') filter: ElementRef;

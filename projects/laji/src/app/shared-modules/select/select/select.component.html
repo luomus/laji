@@ -1,11 +1,11 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open, 'lj-disabled': disabled}">
-  <strong *ngIf="title !== undefined && title !== '' && subCategories.length === 0" class="lj-title link" (click)="toggle($event, filter)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
+  <strong *ngIf="title !== undefined && title !== '' && subCategory === ''" class="lj-title link" (click)="toggle($event, filter)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <ng-container *ngIf="multiple; else select">
     <ng-container *ngIf="!useFilter; else multiWithFilter">
       <ng-container *ngIf="!open">
         <span class="item" *ngFor="let option of selectedOptions; trackBy: track">
-          <label class="lj-item selected" [ngClass]="{'subCategoriesOptions': subCategories.length > 0, '': subCategories.length === 0}" (click)="labelClick($event)">
-            <ng-container *ngIf="subCategories.length === 0 && !isParentFilter else checkboxSubCategoriesGlobal">
+          <label class="lj-item selected" [ngClass]="{'subCategoriesOptions': subCategory !== '', '': subCategory === ''}" (click)="labelClick($event)">
+            <ng-container *ngIf="subCategory === '' && !isParentFilter else checkboxSubCategoriesGlobal">
               <laji-checkbox [value]="true" (valueChange)="remove(option.id)"></laji-checkbox> {{ option.value}}
             </ng-container>
             <ng-template #checkboxSubCategoriesGlobal>
@@ -15,11 +15,11 @@
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </span>
       </ng-container>
-      <div *ngIf="open" class="lj-item-container" [ngClass]="{'subCategoriesContainer': subCategories.length > 0, '': subCategories.length === 0}">
+      <div *ngIf="open" class="lj-item-container" [ngClass]="{'subCategoriesContainer': subCategory !== '', '': subCategory === ''}">
         <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track" style="position: relative;">
-          <label class="lj-item" [ngClass]="{'subCategoriesOptions': subCategories.length > 0, '': subCategories.length === 0}" (click)="labelClick($event)">
-            <ng-container *ngIf="subCategories.length === 0 && !isParentFilter else checkboxSubCategoriesGlobal">
+          <label class="lj-item" [ngClass]="{'subCategoriesOptions': subCategory !== '', '': subCategory === ''}" (click)="labelClick($event)">
+            <ng-container *ngIf="subCategory === '' && !isParentFilter else checkboxSubCategoriesGlobal">
               <laji-checkbox [value]="selectedOptions | includes:option" (valueChange)="toggleValue(option.id)"></laji-checkbox> {{ option.value}}
             </ng-container>
             <ng-template #checkboxSubCategoriesGlobal>
@@ -33,7 +33,7 @@
     </ng-container>
     <ng-template #multiWithFilter>
       <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
-        <label class="lj-item selected" [ngClass]="{'subMenu': subCategories.length > 0, '': subCategories.length === 0}" (click)="labelClick($event)">
+        <label class="lj-item selected" [ngClass]="{'subMenu': subCategory !== '', '': subCategory === ''}" (click)="labelClick($event)">
           <laji-checkbox [value]="true" (valueChange)="remove(option.id)"></laji-checkbox>{{option.value}}
         </label>
         <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
