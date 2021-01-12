@@ -16,10 +16,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         <lu-sidebar-link [link]="['letters'] | localize" routerLinkActive>
           {{ 'theme.kerttu.letterAnnotation' | translate }}
         </lu-sidebar-link>
-        <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['recordings'] | localize" routerLinkActive>
+        <lu-sidebar-link [link]="['recordings'] | localize" routerLinkActive>
           {{ 'theme.kerttu.recordingAnnotation' | translate }}
         </lu-sidebar-link>
-        <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['result'] | localize" routerLinkActive>
+        <lu-sidebar-link [link]="['result'] | localize" routerLinkActive>
           {{ 'theme.kerttu.result' | translate }}
         </lu-sidebar-link>
       </nav>
