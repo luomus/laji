@@ -22,6 +22,7 @@ export class CheckboxComponent {
   @Input()
   set value(value) {
     this._value = value;
+    console.log(value)
     if (value === true) {
       this.checkbox.nativeElement.checked = true;
       this.stateClass = 'checked';
@@ -30,7 +31,7 @@ export class CheckboxComponent {
       this.stateClass = this.hasSubCategories ? 'negative' : 'excluded';
     } else if (value === false && (!this.threeState || this.threeState === undefined)) {
       this.checkbox.nativeElement.indeterminate = true;
-      this.stateClass = this.hasSubCategories ? 'negative' : 'clear';
+      this.stateClass = 'clear';
     } else {
       this.checkbox.nativeElement.checked = false;
       this.stateClass = 'clear';

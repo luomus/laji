@@ -53,6 +53,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
+  globalValues: any;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -69,7 +70,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         this.filterBy = value;
         this.cd.markForCheck();
       });
-
   }
 
   ngOnChanges() {
@@ -78,11 +78,34 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       this.open = false;
     }
     this.initOptions(this.selected);
+    if(this.isParentFilter) {
+      this.checkGlobalValues();
+    }
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  checkGlobalValues() {
+    this.globalValues = {};
+    const categoriesExceptGlobal = Object.keys(this.selectedGlobalSubCategories).filter(el => el !== 'GLOBAL');
+    (this.options || []).map((option: any) => {
+      let countOptionForNotGlobal = 0;
+      if (this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(option.id) > -1) {
+        return this.globalValues[option.id] = true;
+      } else {
+        categoriesExceptGlobal.forEach(item => {
+          if (this.selectedGlobalSubCategories[item] && this.selectedGlobalSubCategories[item].indexOf(option.id) > -1) {
+            countOptionForNotGlobal++;
+          }
+        });
+        this.globalValues[option.id] = countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
+      }
+     
+    })
+    console.log(this.globalValues)
   }
 
   toggleValue(id: string) {
@@ -206,36 +229,5 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  checkStatus(id, cat) {
-    const categoriesExceptGlobal = this.subCategories.filter(el => el !== 'GLOBAL');
-    let countOptionForNotGlobal = 0;
-    if (this.selected && this.selected /*&& this.selectedOptions[cat].length > 0*/) {
-      if (cat === 'GLOBAL') {
-        categoriesExceptGlobal.forEach(item => {
-          if (this.selectedGlobalSubCategories[item] && this.selectedGlobalSubCategories[item].indexOf(id) > -1) {
-            countOptionForNotGlobal++;
-          }
-        });
-        if (countOptionForNotGlobal === categoriesExceptGlobal.length &&
-            this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(id) === -1) {
-          this.selected.push(id);
-          this.options.forEach(option => {
-            if (option.id === id) {
-              this.selectedOptions.push(option);
-            }
-          });
-        }
-        return countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
-      } else {
-        if (this.selected.indexOf(id) > -1) {
-          return true;
-        } else {
-          return undefined;
-        }
-      }
-    } else {
-      return undefined;
-    }
-  }
 
 }
