@@ -19,6 +19,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
         <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['recordings'] | localize" routerLinkActive>
           {{ 'theme.kerttu.recordingAnnotation' | translate }}
         </lu-sidebar-link>
+        <lu-sidebar-link *lajiForTypes="['dev', 'beta']" [link]="['result'] | localize" routerLinkActive>
+          {{ 'theme.kerttu.result' | translate }}
+        </lu-sidebar-link>
       </nav>
       <main>
         <router-outlet></router-outlet>
@@ -39,6 +42,10 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
     }
     :host ::ng-deep .ngx-datatable lu-button button {
       padding: 0.1em 0.6em;
+    }
+    :host ::ng-deep .checkbox label {
+      display: initial;
+      font-weight: 700;
     }
 
     @media only screen and (min-width : 768px) {
