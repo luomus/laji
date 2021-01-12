@@ -21,6 +21,7 @@ export interface SelectOptions {
   info?: string;
 }
 
+
 @Component({
   selector: 'laji-select',
   templateUrl: './select.component.html',
@@ -54,6 +55,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   filterBy: string;
   selectedIdx = -1;
   globalValues: any;
+  typeCheckbox = 2;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -78,7 +80,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       this.open = false;
     }
     this.initOptions(this.selected);
-    if(this.isParentFilter) {
+    if (this.isParentFilter) {
       this.checkGlobalValues();
     }
   }
@@ -103,9 +105,8 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         });
         this.globalValues[option.id] = countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
       }
-     
-    })
-    console.log(this.globalValues)
+
+    });
   }
 
   toggleValue(id: string) {

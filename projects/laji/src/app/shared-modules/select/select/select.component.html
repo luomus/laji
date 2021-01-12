@@ -9,7 +9,7 @@
               <laji-checkbox [value]="true" (valueChange)="remove(option.id)"></laji-checkbox> {{ option.value}}
             </ng-container>
             <ng-template #checkboxSubCategoriesGlobal>
-              <laji-checkbox [value]="isParentFilter ? globalValues[option.id] : selectedOptions | includes:option" [threeState]="isParentFilter" [hasSubCategories]="true" (valueChange)="remove(option.id)"></laji-checkbox>{{ option.value }}
+              <laji-checkbox [value]="isParentFilter ? globalValues[option.id] : selectedOptions | includes:option" [threeState]="isParentFilter" [checkboxType]="typeCheckbox" (valueChange)="remove(option.id)"></laji-checkbox>{{ option.value }}
             </ng-template>
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
@@ -24,7 +24,7 @@
             </ng-container>
             <ng-template #checkboxSubCategoriesGlobal>
 
-              <laji-checkbox [threeState]="isParentFilter" [hasSubCategories]="true" (valueChange)="toggleValue(option.id)"  [value]="isParentFilter ? globalValues[option.id] : selectedOptions | includes:option"></laji-checkbox> {{option.value}}
+              <laji-checkbox [threeState]="isParentFilter" [checkboxType]="typeCheckbox" (valueChange)="toggleValue(option.id)"  [value]="isParentFilter ? globalValues[option.id] : selectedOptions | includes:option"></laji-checkbox> {{option.value}}
             </ng-template>
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
