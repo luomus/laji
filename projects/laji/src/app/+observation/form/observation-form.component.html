@@ -730,17 +730,6 @@
 
 <!-- Concealment level -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
-  <laji-metadata-select
-    [info]="'observation.info.secureLevel' | translate"
-    [(ngModel)]="query.secureLevel"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [useFilter]="false"
-    [mapToWarehouse]="true"
-    [skip]="['MX.secureLevelNoShow']"
-    [placeholder]="'observation.form.secureLevel'"
-    name="secureLevel"
-    [alt]="'MX.secureLevels'"></laji-metadata-select>
   <laji-select
     [selected]="[query.secured]"
     (selectedChange)="indirectQueryChange('secured', $event[0])"
