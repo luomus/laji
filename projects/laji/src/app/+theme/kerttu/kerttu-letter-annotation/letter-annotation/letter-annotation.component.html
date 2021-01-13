@@ -1,37 +1,40 @@
-<div class="mt-6" style="margin-bottom: 10px">
-  <h2 class="d-inline">
-    <laji-taxon-name [capitalizeName]="true" [taxon]="taxon$ | async"></laji-taxon-name>
-  </h2>
-  <span class="gray ml-2"> ({{ template?.name }})</span>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
-</div>
-<div id="letterInfo">
-  <dl>
-    <dt>{{ 'theme.kerttu.annotationsDone' | translate }}:</dt>
-    <dd>{{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}</dd>
-  </dl>
-</div>
-<div>
-  <lu-button [disabled]="!template" [role]="'danger'" (click)="onSkipLetter()">
-    {{ 'theme.kerttu.skipLetter' | translate }}
-  </lu-button>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
-</div>
-<div>
-  <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
-    {{ 'theme.kerttu.backToPreviousCandidate' | translate }}
-  </lu-button>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
+<div class="row">
+  <div class="mt-6" style="margin-bottom: 10px">
+    <h2 class="d-inline">
+      <laji-taxon-name [capitalizeName]="true" [taxon]="taxon$ | async"></laji-taxon-name>
+    </h2>
+    <span class="gray ml-2"> ({{ template?.name }})</span>
+    <laji-info [placement]="'right'" [html]="'theme.kerttu.info.taxon' | translate"></laji-info>
+  </div>
+  <div id="letterInfo">
+    <div class="letter-info-text">
+      <strong>{{ 'theme.kerttu.annotationsDone' | translate }}:</strong> {{ statusInfo?.userAnnotationCount }}/{{ statusInfo?.targetAnnotationCount }}
+    </div>
+    <div class="pull-right">
+      <div class="letter-info-btn">
+        <lu-button [disabled]="!candidate || !statusInfo?.hasPreviousCandidate" (click)="backToPreviousCandidateClick.emit()">
+          {{ 'theme.kerttu.backToPreviousCandidate' | translate }}
+        </lu-button>
+        <laji-info [placement]="'left'" [html]="'theme.kerttu.info.goBackToPreviousCandidate' | translate"></laji-info>
+      </div>
+      <div class="letter-info-btn">
+        <lu-button [disabled]="!template" [role]="'danger'" (click)="onSkipLetter()">
+          {{ 'theme.kerttu.skipLetter' | translate }}
+        </lu-button>
+        <laji-info [placement]="'left'" [html]="'theme.kerttu.info.skipLetter' | translate"></laji-info>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="letterAnnotationContainer" class="row lu-section">
-  <div class="col-md-12" id="letterAnnotationButtons">
-    <h3>
+  <div class="col-md-12" id="letterAnnotationQuestionContainer">
+    <h3 id="letterAnnotationQuestion">
       {{ 'theme.kerttu.areLettersSame' | translate }}
       <laji-info [html]="'theme.kerttu.info.areLettersSame' | translate"></laji-info>
     </h3>
     <div>
-      <ng-container *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]">
+      <div *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]" class="d-inline" id="letterAnnotationButtons">
         <lu-button
           [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
           [role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : undefined"
@@ -39,7 +42,7 @@
         >
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
         </lu-button>
-      </ng-container>
+      </div>
     </div>
   </div>
 
