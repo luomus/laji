@@ -14,14 +14,14 @@ interface ICollectionRange {
 }
 
 interface ICollectionsTreeNode {
-  id: string,
-  longName: string,
-  hasChildren: boolean,
-  children?: ICollectionsTreeNode[] 
+  id: string;
+  longName: string;
+  hasChildren: boolean;
+  children?: ICollectionsTreeNode[];
 }
 
 interface IQueryResult {
-  collection: ICollectionsTreeNode[]
+  collection: ICollectionsTreeNode[];
 }
 
 @Injectable({providedIn: 'root'})
