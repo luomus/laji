@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { BoldSequenceComponent } from './bold-sequence.component';
 
@@ -6,7 +6,7 @@ describe('BoldSequenceComponent', () => {
   let component: BoldSequenceComponent;
   let fixture: ComponentFixture<BoldSequenceComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ BoldSequenceComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CollectionContestPrintComponent } from './collection-contest-print.component';
 
@@ -6,7 +6,7 @@ describe('CollectionContestPrintComponent', () => {
   let component: CollectionContestPrintComponent;
   let fixture: ComponentFixture<CollectionContestPrintComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionContestPrintComponent ]
     })

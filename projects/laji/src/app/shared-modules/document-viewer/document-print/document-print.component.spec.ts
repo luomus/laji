@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DocumentPrintComponent } from './document-print.component';
 
@@ -6,7 +6,7 @@ describe('DocumentPrintComponent', () => {
   let component: DocumentPrintComponent;
   let fixture: ComponentFixture<DocumentPrintComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DocumentPrintComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThemeImportComponent } from './theme-import.component';
 
@@ -6,7 +6,7 @@ describe('ThemeImportComponent', () => {
   let component: ThemeImportComponent;
   let fixture: ComponentFixture<ThemeImportComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThemeImportComponent ]
     })

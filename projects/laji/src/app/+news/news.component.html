@@ -9,8 +9,8 @@
           <h2>
             {{ newsItem.title }}<br>
             <small>
-              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
-              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
+              {{ newsItem.posted | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
+              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
             </small>
           </h2>
           <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
