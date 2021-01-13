@@ -17,14 +17,13 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
 import { DownloadComponent } from '../../shared-modules/download/download.component';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {
   ObservationTableSettingsComponent
 } from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';

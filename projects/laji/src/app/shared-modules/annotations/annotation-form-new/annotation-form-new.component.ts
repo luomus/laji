@@ -264,7 +264,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
             scientificNameAuthorship: this.unit.linkings.taxon.scientificNameAuthorship,
           };
           this.cd.detectChanges();
-          this.formAnnotation.control.markAsDirty();
       } else {
         this.annotation.identification.taxon = this.getLangCurrentTaxon(
           this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
@@ -377,7 +376,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
           this.annotation = annotation;
           this.success.emit(annotation);
           this.sending = false;
-          this.formAnnotation.control.markAsPristine();
         },
         error => {
           this.error = true;

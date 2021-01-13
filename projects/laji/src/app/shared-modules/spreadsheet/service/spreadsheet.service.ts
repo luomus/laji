@@ -251,6 +251,7 @@ export class SpreadsheetService {
     if (
       typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
       typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
+      typeof values[GeneratorService.splitCoordinate.sys] !== 'undefined' ||
       typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
     ) {
       return this.getCombinedCoordinateValue(values);
@@ -259,30 +260,34 @@ export class SpreadsheetService {
   }
 
   private getCombinedDateValue(values: {[key: string]: string}): string {
-    if (!values[GeneratorService.splitDate.dd] && !values[GeneratorService.splitDate.mm] && !values[GeneratorService.splitDate.yyyy]) {
+    const {
+      [GeneratorService.splitDate.dd]: day = '',
+      [GeneratorService.splitDate.mm]: month = '',
+      [GeneratorService.splitDate.yyyy]: year = ''
+    } = values;
+    if (!day && !month && !year) {
       return '';
     }
-    return values[GeneratorService.splitDate.yyyy] + '-' +
-      Util.addLeadingZero(values[GeneratorService.splitDate.mm]) + '-' +
-      Util.addLeadingZero(values[GeneratorService.splitDate.dd]);
+    return `${year}-${Util.addLeadingZero(month)}-${Util.addLeadingZero(day)}`;
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
-    if (!values[GeneratorService.splitCoordinate.system]) {
-      return values[GeneratorService.splitCoordinate.N] + ' ' + values[GeneratorService.splitCoordinate.E];
-    }
-    const suffix = typeof values[GeneratorService.splitCoordinate.N] === 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.E] === 'undefined' ?
-      ' ' + values[GeneratorService.splitCoordinate.system] : '';
+    const {ykj, etrs} = GeneratorService.splitCoordinateSystem;
+    const system = values[GeneratorService.splitCoordinate.system] || values[GeneratorService.splitCoordinate.sys];
+    const {
+      [GeneratorService.splitCoordinate.N]: N = '',
+      [GeneratorService.splitCoordinate.E]: E = ''
+    } = values;
+    const suffix = (!N || !E) ? ` ${system}` : '';
 
-    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.ykj) {
-      return values[GeneratorService.splitCoordinate.N] + ':' + values[GeneratorService.splitCoordinate.E] + suffix;
+    if (!system) {
+      return `${N} ${E}`;
+    } else if (system === ykj) {
+      return `${N}:${E}${suffix}`;
+    } else if (system === etrs) {
+      return `+${N}+${E}/CRSEPSG:3067`;
     }
-    if (values[GeneratorService.splitCoordinate.system] === GeneratorService.splitCoordinateSystem.etrs) {
-      return `+${values[GeneratorService.splitCoordinate.N]}+${values[GeneratorService.splitCoordinate.E]}/CRSEPSG:3067`;
-    }
-    return ('' + values[GeneratorService.splitCoordinate.N]).replace(',', '.') + ',' +
-      ('' + values[GeneratorService.splitCoordinate.E]).replace(',', '.') + suffix;
+    return `${N.replace(',', '.')},${E.replace(',', '.')}${suffix}`;
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {

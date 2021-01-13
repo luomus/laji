@@ -9,6 +9,7 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;
   protected key: string;
+  updateSub: Subscription;
   onLangChange: Subscription;
 
   constructor(protected translate: TranslateService,
@@ -17,14 +18,14 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   }
 
   updateValue(key: string): Observable<string> {
-    return Observable.create(observer => {
+    return new Observable(subscriber => {
       this.key = key;
-      this._updateValue(key).subscribe(value => {
+      this.updateSub = this._updateValue(key).subscribe(value => {
         const _value = this._parseValue(value);
         this.value = _value;
-        observer.next(this.value);
+        subscriber.next(this.value);
         this._ref.markForCheck();
-      });
+      }, () => {}, () => subscriber.complete());
     });
   }
 
@@ -60,6 +61,9 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
 
   ngOnDestroy(): void {
     this._dispose();
+    if (this.updateSub) {
+      this.updateSub.unsubscribe();
+    }
   }
 
   /**
@@ -68,7 +72,6 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   protected _dispose(): void {
     if (this.onLangChange) {
       this.onLangChange.unsubscribe();
-      this.onLangChange = undefined;
     }
   }
 

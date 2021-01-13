@@ -1,8 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import {
-  IVirUser,
-  VirOrganisationService
-} from '../../../service/vir-organisation.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ExtendedNamedPlace } from '../../model/extended-named-place';
-import { LajiMapComponent } from '../../../../../shared-modules/laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NpInfoComponent } from '../../np-info/np-info.component';
 import { NpInfoRow } from '../../np-info/np-info-row/np-info-row.component';

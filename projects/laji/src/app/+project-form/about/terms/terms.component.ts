@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { UserService } from '../../../shared/service/user.service';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./terms.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TermsComponent implements OnInit, AfterViewInit {
+export class TermsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @LocalStorage() public vihkoSettings;
 
@@ -29,6 +29,10 @@ export class TermsComponent implements OnInit, AfterViewInit {
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };
     }
+  }
+
+  ngOnDestroy(): void {
+    this.showModalSub?.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -51,5 +55,4 @@ export class TermsComponent implements OnInit, AfterViewInit {
       this.modalComponent.hide();
     }
   }
-
 }

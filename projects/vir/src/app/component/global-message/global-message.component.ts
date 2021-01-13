@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, OnDestroy, HostBinding, HostListener, Input, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter, takeUntil, switchMap, map, tap } from 'rxjs/operators';
-import { Subject, of, Observable } from 'rxjs';
-import { LajiApiService, LajiApi } from 'projects/laji/src/app/shared/service/laji-api.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { LajiApi, LajiApiService } from 'projects/laji/src/app/shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';

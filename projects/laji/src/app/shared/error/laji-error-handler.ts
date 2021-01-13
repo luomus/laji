@@ -27,26 +27,26 @@ export class LajiErrorHandler extends ErrorHandler {
       return super.handleError(error);
     }
 
+    if (typeof error.message === 'string' && (
+      (error.message.indexOf(`Cannot read property 'display' of undefined`) !== -1 && this.response) ||
+      error.message.indexOf('QuotaExceededError') !== -1 ||
+      error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') !== -1
+    )) {
+      return super.handleError(error);
+    }
+
     // Send error response code so that pages that have errors would not be indexed
     if (this.response) {
       this.response.statusCode = 500;
       this.response.statusMessage = 'Internal Server Error';
     }
 
-    if (typeof error.message === 'string') {
-      if (error.message.indexOf('QuotaExceededError') !== -1 ||
-        error.message.indexOf('ExpressionChangedAfterItHasBeenCheckedError:') === 0
-      ) {
-        this.pauseMessage();
-        return super.handleError(error);
-      }
-    }
     if (this.isScheduled()) {
       this.pauseMessage();
-      this.getToastsService().showWarning(
-        this.getTranslateService().instant('error.scheduled.intro'),
-        this.getTranslateService().instant('error.scheduled.title'),
-      );
+      // this.getToastsService().showWarning(
+      //   this.getTranslateService().instant('error.scheduled.intro'),
+      //   this.getTranslateService().instant('error.scheduled.title'),
+      // );
       return super.handleError(error);
     }
 
@@ -54,10 +54,10 @@ export class LajiErrorHandler extends ErrorHandler {
     const url = location instanceof PathLocationStrategy ? location.path() : '';
     this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
     this.pauseMessage();
-    this.getToastsService().showError(
-      this.getTranslateService().instant('error.500.intro'),
-      this.getTranslateService().instant('error.500.title')
-    );
+    // this.getToastsService().showError(
+    //   this.getTranslateService().instant('error.500.intro'),
+    //   this.getTranslateService().instant('error.500.title')
+    // );
     return super.handleError(error);
   }
 
