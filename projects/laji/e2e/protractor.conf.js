@@ -4,12 +4,32 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 const { JUnitXmlReporter } = require('jasmine-reporters');
 
+const [width, height] = [1200, 1000];
+
+const chrome = {
+  browserName: 'chrome',
+  shardTestFiles: true,
+  maxInstances: process.env.THREADS ? parseInt(process.env.THREADS) : 2,
+  chromeOptions: {
+    args: [
+      `--window-size=${width},${height}`,
+    ]
+  }
+};
+if (process.env.HEADLESS !== 'false') {
+  chrome.chromeOptions.args = [
+    '--headless',
+    '--disable-gpu',
+    ...chrome.chromeOptions.args
+  ];
+}
+
 exports.config = {
   SELENIUM_PROMISE_MANAGER: false,
   directConnect: false,
   multiCapabilities: [
     // { browserName: 'firefox' },
-    { browserName: 'chrome' },
+    chrome,
     // { browserName: 'MicrosoftEdge', platform: 'windows'}
   ],
   port: 3000,
@@ -42,7 +62,7 @@ exports.config = {
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
-    browser.driver.manage().window().setSize(1200, 1000);
+    browser.driver.manage().window().setSize(width, height);
   },
   onComplete() {
     browser.driver.close().then(function(){

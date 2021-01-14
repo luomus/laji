@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LineTransectPrintComponent } from './line-transect-print.component';
 
@@ -6,7 +6,7 @@ describe('LineTransectPrintComponent', () => {
   let component: LineTransectPrintComponent;
   let fixture: ComponentFixture<LineTransectPrintComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LineTransectPrintComponent ]
     })

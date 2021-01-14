@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaxonOccurrenceMapComponent } from './taxon-occurrence-map.component';
 
@@ -6,7 +6,7 @@ describe('TaxonOccurrenceMapComponent', () => {
   let component: TaxonOccurrenceMapComponent;
   let fixture: ComponentFixture<TaxonOccurrenceMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaxonOccurrenceMapComponent ]
     })

@@ -522,16 +522,20 @@
 </section>
 
 <!--Sources -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
-  <laji-metadata-select
-    [(ngModel)]="query.collectionId"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [field]="'MY.collectionID'"
-    [placeholder]="'observation.form.dataset' | translate"
+<section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
+  <laji-select-collections
+    [(selectedOptions)]="query.collectionId"
+    (selectedOptionsChange)="onQueryChange()"
+    [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
-    [mapToWarehouse]="false"
-    name="collectionID"></laji-metadata-select>
+    [modalTitle]="'observation.form.datasetSelect' | translate"
+    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
+    [browseTitle]="'observation.form.datasetBrowse' | translate"
+    [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [okButtonLabel]="'labelDesigner.Ok' | translate"
+    [clearButtonLabel]="'labelDesigner.Clear' | translate"
+    name='collectionID'
+  ></laji-select-collections>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"
@@ -726,15 +730,15 @@
 
 <!-- Concealment level -->
 <section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
-  <laji-metadata-select
-    [info]="'observation.info.secureLevel' | translate"
-    [(ngModel)]="query.secureLevel"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
+  <laji-select
+    [selected]="[query.secured]"
+    (selectedChange)="indirectQueryChange('secured', $event[0])"
+    [multiple]="false"
     [useFilter]="false"
-    [mapToWarehouse]="true"
-    [skip]="['MX.secureLevelNoShow']"
-    [placeholder]="'observation.form.secureLevel'"
-    name="secureLevel"
-    [alt]="'MX.secureLevels'"></laji-metadata-select>
+    [title]="'observation.form.secured' | translate"
+    [info]="'observation.info.secured' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.secured.true' | translate)},
+        {id: false, value: ('observation.form.secured.false' | translate)}
+      ]"></laji-select>
 </section>

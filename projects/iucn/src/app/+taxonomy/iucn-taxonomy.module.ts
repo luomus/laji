@@ -30,6 +30,7 @@ import { SelectFieldsModule } from '../../../../laji/src/app/shared-modules/sele
 import { DownloadModule } from '../../../../laji/src/app/shared-modules/download/download.module';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
+
 /* tslint:enable:max-line-length */
 
 @NgModule({

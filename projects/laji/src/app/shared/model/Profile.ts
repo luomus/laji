@@ -102,6 +102,9 @@ export interface Profile {
   finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;
 
   birdwatchingActivityLevel?: Profile.BirdwatchingActivityLevelEnum;
+
+  nameVisibleInKerttu?: boolean;
+
 }
 
 export namespace Profile {

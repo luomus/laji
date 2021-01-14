@@ -1,12 +1,12 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UnitComponent } from './unit.component';
 
 describe('UnitComponent', () => {
   let component: UnitComponent;
   let fixture: ComponentFixture<UnitComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnitComponent ]
     })

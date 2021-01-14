@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
@@ -59,8 +59,9 @@ const allRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(allRoutes, {
-    initialNavigation: 'enabled'
-  })],
+    initialNavigation: 'enabled',
+    relativeLinkResolution: 'legacy'
+})],
   exports: [RouterModule]
 })
 export class VirRoutingModule { }

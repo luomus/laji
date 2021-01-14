@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { delay, map, startWith, switchMap } from 'rxjs/operators';
 import { DEFAULT_YEAR, FilterQuery, ResultService } from '../../iucn-shared/service/result.service';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
 import { Title } from '@angular/platform-browser';
 

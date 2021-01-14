@@ -51,6 +51,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
+  @Input() summaryRow = false;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
