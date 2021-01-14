@@ -287,7 +287,7 @@ export class SpreadsheetService {
     } else if (system === etrs) {
       return `+${N}+${E}/CRSEPSG:3067`;
     }
-    return `${N.replace(',', '.')},${E.replace(',', '.')}${suffix}`;
+    return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
