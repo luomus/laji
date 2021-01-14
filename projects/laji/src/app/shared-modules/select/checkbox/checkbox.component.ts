@@ -29,6 +29,9 @@ export class CheckboxComponent {
   @Input()
   set value(value) {
     this._value = value;
+    console.log(value);
+    console.log(this.threeState);
+    console.log(this.checkboxType)
     if (value === true) {
       this.checkbox.nativeElement.checked = true;
       this.stateClass = 'checked';

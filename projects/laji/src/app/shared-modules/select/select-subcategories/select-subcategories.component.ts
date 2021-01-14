@@ -62,6 +62,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   parentTitle: string;
   status = {};
   tmpSelected = {};
+  typeCheckbox = 2;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -174,11 +175,12 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
   }
 
-  toggle(event, el) {
+  toggle(event, el, typeCheckbox = 0) {
     if (event.target.classList.contains('no-propagation')) {
       return;
     }
     this.open = !this.open;
+    this.typeCheckbox = typeCheckbox;
     if (this.open && this.useFilter) {
       ObservableInterval(10).pipe(takeUntil(this.unsubscribe$), take(1))
         .subscribe(() => {
