@@ -1,4 +1,3 @@
-import { debounceTime } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,7 +13,6 @@ import {
   HostListener
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
@@ -28,7 +26,6 @@ import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.c
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
 import { IColumns } from '../service/observation-table-column.service';
 import {
-  IColumnGroup,
   TableColumnService
 } from '../service/table-column.service';
 
@@ -282,31 +279,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
       this.changeDetectorRef.markForCheck();
     }
   }
-
-  _getRowClass(row) {
-    if (this.getRowClass) {
-      const rowClass = this.getRowClass(row);
-      if (rowClass) {
-        return rowClass;
-      }
-    }
-
-    return {
-      'link': this.showRowAsLink,
-      'issues':
-        !!(row.document && row.document.quality && row.document.quality.issue) ||
-        !!(row.gathering && row.gathering.quality && (
-          row.gathering.quality.issue ||
-          row.gathering.quality.locationIssue ||
-          row.gathering.quality.timeIssue
-        )) ||
-        !!(row.unit && row.unit.quality && (
-          row.unit.quality.documentGatheringUnitQualityIssues ||
-          row.unit.quality.issue
-        ))
-    };
-  }
-
 
   showDocument(id: string) {
     this.documentViewerFacade.showDocumentID({
