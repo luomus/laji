@@ -78,7 +78,7 @@
 
     <ngx-datatable-row-detail [rowHeight]="'auto'">
       <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of useColumns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+        <div *ngFor="let col of useColumns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
           <span>{{ row[col.prop] }}</span>
         </div>
@@ -158,7 +158,7 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:this.displayMode"
+    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:displayMode"
                           [prop]="col.prop"
                           [resizeable]="false"
                           [draggable]="false"
