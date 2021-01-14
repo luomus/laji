@@ -15,7 +15,7 @@ export class TaxonImagesComponent implements OnChanges {
   @Input() taxonImages: Array<Image>;
   @Input() isFromMasterChecklist: boolean;
 
-  imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[];
+  imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
