@@ -21,6 +21,7 @@ export interface SelectOptions {
   value: string;
   category: string;
   info?: string;
+  checkboxValue: boolean|undefined;
 }
 
 @Component({
@@ -340,17 +341,23 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           if (splitParam[subCategories[i]] && splitParam[subCategories[i]].includes(options[subCategories[i]][j].id) ||
           (splitParam && splitParam.includes(options[subCategories[i]][j].id))) {
             if (!this.selectedOptions[subCategories[i]] && !this.tmpSelectedOption[subCategories[i]]) {
-              this.selectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
-              this.tmpSelectedOption[subCategories[i]] = options[subCategories[i]][j].id;
+              this.selectedOptions[subCategories[i]] = subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id;
+              this.tmpSelectedOption[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id;
             } else {
-              this.selectedOptions[subCategories[i]].push(options[subCategories[i]][j].id);
-              this.tmpSelectedOption[subCategories[i]].push(options[subCategories[i]][j].id);
+              this.selectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id);
+              this.tmpSelectedOption[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id);
             }
           } else {
             if (!this.unselectedOptions[subCategories[i]]) {
-              this.unselectedOptions[subCategories[i]] = options[subCategories[i]][j].id;
+              this.unselectedOptions[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': undefined} : options[subCategories[i]][j].id;
             } else {
-              this.unselectedOptions[subCategories[i]].push(options[subCategories[i]][j].id);
+              this.unselectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
+              {'id':  options[subCategories[i]][j].id, 'value': undefined} : options[subCategories[i]][j].id);
             }
           }
 
@@ -369,18 +376,13 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           }
         });
 
-        if (checkMatches === subCategories.length && this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1 && this.tmpSelectedOption['GLOBAL'].indexOf(option.id) === -1) {
-          this.selectedOptions['GLOBAL'].push(option.id);
-          this.tmpSelectedOption['GLOBAL'].push(option.id);
-        } else {
-          this.selectedOptions['GLOBAL'] = this.selectedOptions['GLOBAL'];
-          this.tmpSelectedOption['GLOBAL'] = this.tmpSelectedOption['GLOBAL'];
+        if (checkMatches > 0) {
+          this.selectedOptions['GLOBAL'].push({'id': option.id, 'value': checkMatches === subCategories.length ?  true : false});
+          this.tmpSelectedOption['GLOBAL'].push({'id': option.id, 'value': checkMatches === subCategories.length ?  true : false});
         }
 
-        if (checkMatches === subCategories.length && this.unselectedOptions['GLOBAL'] && this.unselectedOptions['GLOBAL'].indexOf(option.id) > -1) {
-          this.unselectedOptions['GLOBAL'].splice(this.unselectedOptions['GLOBAL'].indexOf(option.id), 1);
-        } else {
-          this.unselectedOptions['GLOBAL'] = this.unselectedOptions['GLOBAL'];
+        if (checkMatches === 0) {
+          this.unselectedOptions['GLOBAL'].push({'id': option.id, 'value': undefined});
         }
       });
     }
@@ -491,25 +493,26 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.options['GLOBAL'].map(option => {
         let count = 0;
         categoriesExcludeGlobal.forEach(cat => {
-          if (this.selectedOptions && this.selectedOptions['GLOBAL'] &&
+          if (this.selectedOptions && this.selectedOptions['GLOBAL'] !== undefined &&
           this.selectedOptions[cat] && this.selectedOptions[cat].indexOf(option.id) > -1) {
             count++;
           }
         });
         if (count === categoriesExcludeGlobal.length) {
           categoriesExcludeGlobal.forEach(item => {
-              if (this.selectedOptions[item].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1) {
+              if (this.selectedOptions[item].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) === -1) {
                 this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id), 1);
                 this.selected[item].splice(this.selected[item].indexOf(option.id), 1);
               }
               if (this.selected['GLOBAL']) {
-                this.selected['GLOBAL'].splice(this.selected['GLOBAL'].indexOf(option.id), 1);
+                this.selected['GLOBAL'].splice(this.selected['GLOBAL'].findIndex(x => x.id === option.id), 1);
               }
           });
         } else {
             categoriesExcludeGlobal.forEach(item => {
                 if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(option.id) === -1 &&
-                  this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) > -1) {
+                  this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) > -1 &&
+                  this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id)]?.value === true) {
                   this.selectedOptions[item].push(option.id);
                   this.selected[item].push(option.id);
                 }
@@ -517,23 +520,46 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         }
       });
     } else {
+      this.selectedOptions['GLOBAL'] = [];
       this.options['GLOBAL'].map(option => {
         let countNoGlobal = 0;
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions[cat] && this.selectedOptions[cat].indexOf(option.id) > -1 &&
-              this.selectedOptions['GLOBAL'] && this.selectedOptions['GLOBAL'].indexOf(option.id) === -1) {
+              this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []
+              && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) === -1) {
             countNoGlobal++;
           }
         });
 
-        if (countNoGlobal === categoriesExcludeGlobal.length) {
-          this.selectedOptions['GLOBAL'].push(option.id);
-          this.selected['GLOBAL'].push(option.id);
+        if (this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []) {
+          this.selectedOptions['GLOBAL'].push(
+            {id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+              true : (countNoGlobal === 0 ? undefined : false)
+            }
+          );
+        } else {
+          this.selectedOptions['GLOBAL'] = [{id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+            true : (countNoGlobal === 0 ? undefined : false)
+          }];
         }
+
+        if (this.selected['GLOBAL'] !== undefined && this.selected['GLOBAL'] !== []) {
+          this.selected['GLOBAL'].push(
+            {id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+              true : (countNoGlobal === 0 ? undefined : false)
+            }
+          );
+        } else {
+          this.selected['GLOBAL'] = [{id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+            true : (countNoGlobal === 0 ? undefined : false)
+          }];
+        }
+
       });
     }
 
     this.cd.detectChanges();
+    console.log(this.selectedOptions);
     this.selectedChange.emit(this.selectedOptions);
   }
 

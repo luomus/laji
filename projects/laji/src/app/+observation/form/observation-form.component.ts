@@ -423,7 +423,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.query.recordQuality = undefined;
 
     const categories = Object.keys(event);
-    this.query.recordQuality = this.checkSubcategoriesExceptGlobalAreEquals(event, categories) ? event['GLOBAL'] : undefined;
+    this.query.recordQuality = this.checkSubcategoriesExceptGlobalAreEquals(event, categories) ? this.globalValuesTrue(event['GLOBAL']) : undefined;
     if (this.query.recordQuality !== undefined && this.query.recordQuality.length > 0) {
       this.onQueryChange();
       return;
@@ -623,6 +623,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     const keys = Object.keys(selected);
     const filteredKeys = keys.filter(item => item !== 'GLOBAL');
 
+    if (filteredKeys.length === 0) {
+      return true;
+    }
+
+    if (filteredKeys.length < 2) {
+      return false;
+    }
+
     if (filteredKeys.length < categories.length - 1) {
       return false;
     }
@@ -641,5 +649,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       Array.isArray(b) &&
       a.length === b.length &&
       a.every((val) => b.indexOf(val) > -1);
+  }
+
+  private globalValuesTrue(array) {
+    const result = [];
+
+    array.forEach(element => {
+      if (element.value === true) {
+        result.push(element.id);
+      }
+    });
+
+    return result;
   }
 }

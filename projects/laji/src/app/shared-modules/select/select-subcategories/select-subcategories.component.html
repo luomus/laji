@@ -14,6 +14,7 @@
   [disabled]="false"
   [loading]="options['GLOBAL'] === null"
   [isParentFilter]="true"
+  [checkboxType] = "2"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
   
@@ -36,6 +37,7 @@
       [open]="open"
       [disabled]="false"
       [loading]="options[subCategory] === null"
+      [checkboxType] = "0"
       (selectedChange)="refreshValue($event, subCategory)"
     ></laji-select>
 

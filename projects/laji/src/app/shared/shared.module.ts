@@ -74,6 +74,7 @@ import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
+import { IncludesMultiStatePipe } from './pipe/includes-multi-state.pipe';
 
 
 @NgModule({
@@ -110,6 +111,7 @@ import { QualityUrlPipe } from './pipe/quality-url.pipe';
     IncludesPipe,
     SsrDisableDirective,
     QualityUrlPipe,
+    IncludesMultiStatePipe,
   ],
   imports: [
     FormsModule,
@@ -144,6 +146,7 @@ import { QualityUrlPipe } from './pipe/quality-url.pipe';
     SsrDisableDirective,
     NotFoundComponent,
     QualityUrlPipe,
+    IncludesMultiStatePipe
   ]
 })
 export class SharedModule {

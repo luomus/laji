@@ -14,11 +14,18 @@ import {
 import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
+import { CheckboxType } from '../checkbox/checkbox.component';
 
 export interface SelectOptions {
   id: string;
   value: string;
   info?: string;
+  checkboxValue: boolean|undefined;
+}
+
+export interface SelectedOptions {
+  id: string;
+  value: boolean|undefined;
 }
 
 
@@ -35,21 +42,22 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: string[] = [];
+  @Input() selected: (string|SelectedOptions)[] = [];
   @Input() selectedGlobalSubCategories: {[key: string]: SelectOptions[]} = {};
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<string[]|string>();
+  @Output() selectedChange = new EventEmitter<(SelectedOptions|string)[]|string>();
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
+  @Input() checkboxType = CheckboxType.basic;
   @Input() isParentFilter = false;
   @Input() subCategory = '';
   @ViewChild('filter') filter: ElementRef;
 
-  selectedOptions: SelectOptions[] = [];
-  unselectedOptions: SelectOptions[] = [];
+  selectedOptions: (SelectedOptions|SelectOptions)[] = [];
+  unselectedOptions: (SelectedOptions|SelectOptions)[] = [];
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
@@ -79,9 +87,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       this.open = false;
     }
     this.initOptions(this.selected);
-    if (this.isParentFilter) {
-      this.checkGlobalValues();
-    }
+
   }
 
   ngOnDestroy() {
@@ -108,20 +114,38 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  toggleValue(id: string) {
-    if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
-      this.add(id);
+  toggleValue(id: string, event) {
+    console.log(event);
+    if (this.checkboxType === 2) {
+      if (this.selectedOptions.findIndex(option => option.id === id) === -1 ||
+          this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)].value !== true) {
+        const newEvent = this.selectedOptions === undefined || this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)]?.value !== true ?
+        true : false;
+        this.add(id, newEvent);
+      } else {
+        this.remove(id, event);
+      }
     } else {
-      this.remove(id);
+      if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
+        this.add(id, event);
+      } else {
+        this.remove(id, event);
+      }
     }
+
   }
 
-  add(id: string) {
+  add(id: string, event) {
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
-      this.selected = [...this.selected, id];
+      if (this.checkboxType !== 0) {
+       const tmpSelected = this.selected.filter((v: SelectedOptions) => v.id !== id);
+       this.selected =  [...tmpSelected, {id: id, value: event}];
+      } else {
+        this.selected = [...this.selected, id];
+      }
     } else {
       this.selected = [id];
     }
@@ -134,8 +158,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  remove(id: string) {
-    this.selected = this.selected.filter(value => value !== id);
+  remove(id: string, event) {
+    this.selected = this.checkboxType === 2 ?
+    this.selected.filter((value: SelectedOptions) => value.id !== id) : this.selected.filter(value => value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
@@ -180,10 +205,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         const filterItems = this.filterService.filter(this.unselectedOptions, this.filterBy);
         if (this.selectedIdx === -1) {
           if (filterItems.length > 0) {
-            this.add(filterItems[0].id);
+            this.add(filterItems[0].id, event);
           }
         } else if (filterItems[this.selectedIdx]) {
-          this.add(filterItems[this.selectedIdx].id);
+          this.add(filterItems[this.selectedIdx].id, event);
         }
         return;
       case 'ArrowUp':
@@ -221,11 +246,22 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.unselectedOptions = [];
     this.options.map(option => {
-      if (selected.includes(option.id)) {
-        this.selectedOptions.push(option);
+      if (this.checkboxType === 2) {
+       selected.map(item => {
+         if (item.id === option.id) {
+           this.selectedOptions.push({'id': option.id, 'value': item.value});
+         } else {
+           this.unselectedOptions.push({'id': option.id, 'value': undefined});
+         }
+       });
       } else {
-        this.unselectedOptions.push(option);
+        if (selected.includes(option.id)) {
+          this.selectedOptions.push(option);
+        } else {
+          this.unselectedOptions.push(option);
+        }
       }
+
     });
   }
 
