@@ -184,27 +184,19 @@
         <div ngPreserveWhitespaces>
           <div class="buttons">
             <lu-button *ngIf="(actions | includes:'download') && onlyTemplates === false"
-            [role]="'other'"
-            (click)="openChooseFileTypeModal(row.id)">
-            <i class="glyphicon glyphicon-download-alt"></i>
-            <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
-          </lu-button>
-          </div>
-          <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType"
-              [role]="'other'"
-              [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
-              <i class="glyphicon glyphicon-stats"></i>
-              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
-          </lu-button>
-          </div>
-          <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeBirdPointCount'"
-                [role]="'other'"
-                [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
-              <i class="glyphicon glyphicon-stats"></i>
-              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+                       [role]="'other'"
+                       (click)="openChooseFileTypeModal(row.id)">
+              <i class="glyphicon glyphicon-download-alt"></i>
+              <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
             </lu-button>
+            <ng-container *ngIf="forms$ | async as forms">
+              <lu-button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
+                         [role]="'other'"
+                         [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
+                <i class="glyphicon glyphicon-stats"></i>
+                <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+              </lu-button>
+            </ng-container>
           </div>
         <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
                 [role]="'danger'"
