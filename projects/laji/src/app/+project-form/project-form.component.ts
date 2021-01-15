@@ -162,7 +162,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         const mainPage = projectForm.form.options?.simple
           ? 'form'
           : 'about';
-        this.router.navigate([`./${mainPage}`], {relativeTo: this.route});
+        this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
       }
     });
 

@@ -3,7 +3,7 @@ import { UserPage } from '../+user/user.po';
 import { VihkoHomePage } from '../+vihko/home.po';
 import { MobileFormPage } from '../+vihko/mobile-form.po';
 import { SaveObservationsPage } from '../+save-observations/save-observations.po';
-import { browser } from 'protractor';
+import { browser, protractor } from 'protractor';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -12,7 +12,7 @@ const FORM_NO_SIMPLE_NO_NAMED_PLACES = 'MHL.6';
 const FORM_NAMED_PLACES_NO_ACCESS_RESTRICTION = 'MHL.3';
 const FORM_NAMED_PLACES_LOOSE_ACCESS_RESTRICTION = 'MHL.1';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION = 'MHL.45';
-const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.45';
+const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.50';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -136,6 +136,19 @@ describe('Project form', () =>  {
         done();
       });
 
+      it('back navigate works away from form', async (done) => {
+        await vihkoHomePage.navigateTo();
+        await vihkoHomePage.clickFormById(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        const EC = protractor.ExpectedConditions;
+        await browser.wait(EC.visibilityOf(projectFormPage.documentFormView.$form));
+        await browser.navigate().back();
+        expect(await vihkoHomePage.$content.isDisplayed()).toBe(true, 'user wasn\'t on vihko page after back navigation');
+
+        await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        done();
+      });
+
+
     });
 
     it('and has simple option and has category, canceling document save redirects to save observations page if no history', async (done) => {
@@ -169,17 +182,22 @@ describe('Project form', () =>  {
       });
 
       it('doesn\'t display sidebar', async (done) => {
-        expect (await projectFormPage.$sidebar.isPresent()).toBe(false);
+        expect(await projectFormPage.$sidebar.isPresent()).toBe(false);
         done();
       });
 
       it('use button goes to document form page', async (done) => {
         await projectFormPage.mobileAboutPage.$useButton.click();
-        expect (await projectFormPage.documentFormView.$container.isDisplayed()).toBe(true);
+        expect(await projectFormPage.documentFormView.$container.isDisplayed()).toBe(true);
         done();
       });
 
       it('canceling document save redirects to about page if no history', async (done) => {
+        if (process.env.HEADLESS  !== 'false') {
+          console.log('Skipped since geocoding doesn\'t work on headless');
+          done();
+          return;
+        }
         await mobileFormPage.fillAsEmpty();
         await mobileFormPage.documentFormView.$cancel.click();
         expect(await projectFormPage.hasAboutText()).toBe(true);

@@ -1,4 +1,4 @@
-@import 'projects/laji-ui/src/lib/vars';
+@import 'variables';
 
 :host {
   display: flex;
@@ -12,10 +12,6 @@ lu-sidebar {
 
 .breadcrumb {
   background-color: $neutral-3;
-}
-
-.information-container {
-  max-width: 1000px;
 }
 
 .makeup-width {

@@ -25,7 +25,8 @@ export class GeneratorService {
   public static splitCoordinate = {
     N: '@N',
     E: '@E',
-    system: '@sys'
+    system: '@System',
+    sys: '@sys'
   };
 
   public static splitCoordinateSystem = {

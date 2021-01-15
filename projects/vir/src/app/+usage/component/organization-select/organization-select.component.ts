@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { VirOrganisationService } from '../../../service/vir-organisation.service';
 import { map } from 'rxjs/operators';
 

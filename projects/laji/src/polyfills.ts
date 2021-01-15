@@ -18,6 +18,11 @@
  * BROWSER POLYFILLS
  */
 
+
+import 'core-js/modules/es.array.includes';
+import 'core-js/modules/es.object.values';
+import 'core-js/modules/es.object.entries';
+
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 import 'classlist.js'; // Run `npm install --save classlist.js`.
 /**

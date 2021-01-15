@@ -1,20 +1,20 @@
 import { browser, by, element, protractor } from 'protractor';
 import { MapPage } from '../+map/map.po';
+import { DocumentFormView } from '../+project-form/project-form.po';
 
 export class TripFormPage {
 
   private readonly todayButton = element(by.buttonText('Tänään'));
-  private readonly savePrivateButton = element(by.buttonText('Tallenna julkaisematta'));
   private readonly tripFormLink = element(by.linkText('Retki'));
   private readonly countryElem = element(by.id('root_gatherings_0_country'));
   private readonly toastElement = element(by.id('toast-container'));
   private readonly pageTitleElem = element(by.css('.form-header h3'));
   private readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
+  private readonly documentFormView = new DocumentFormView();
 
   private readonly mapPage = new MapPage();
 
   async navigateTo() {
-    await browser.waitForAngularEnabled(false);
     return browser.get('/vihko/JX.519') as Promise<void>;
   }
 
@@ -32,11 +32,7 @@ export class TripFormPage {
   }
 
   async clickSavePrivate() {
-    await browser.actions().mouseDown(this.savePrivateButton).perform();
-    await browser.sleep(1000);
-    await browser.actions().mouseUp(this.savePrivateButton).perform();
-
-    return this.savePrivateButton.click();
+    await this.documentFormView.savePrivate();
   }
 
   getToasterText() {

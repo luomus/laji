@@ -1,6 +1,6 @@
 <ng-container *ngIf="aboutData$ | async as data">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
-    <ng-container *ngIf="(data.form.options?.about | multiLang) !== 'dataset'; else datasetIntro">
+    <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
       <laji-document-form-header [formID]="data.form.id"
                                  [displayDescription]="false"
                                  [displayInstructions]="false"

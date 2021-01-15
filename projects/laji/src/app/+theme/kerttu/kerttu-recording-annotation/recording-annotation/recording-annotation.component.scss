@@ -1,6 +1,11 @@
 .button-container {
   float: right;
 
+  div {
+    display: inline-block;
+    margin-left: 0.5em;
+  }
+
   lu-button {
     margin-left: 0.25em;
   }
