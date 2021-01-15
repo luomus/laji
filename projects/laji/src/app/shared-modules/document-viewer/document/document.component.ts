@@ -28,7 +28,7 @@ import { DocumentToolsService } from '../document-tools.service';
 import { AnnotationService } from '../service/annotation.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
@@ -72,7 +72,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   childComunicationsubscription: Subscription;
   highlightParents: string[] = [];
   @SessionStorage() showFacts = false;
-  private _uri: string;
   private _highlight: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
@@ -179,7 +178,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
-        err => this.parseDoc(undefined, false)
+        () => this.parseDoc(undefined, false)
       );
   }
 

@@ -120,7 +120,7 @@ export class HomeDataService {
       errorPolicy: 'all'
     }).pipe(
       map(res => res?.data),
-      catchError(e => of(null)),
+      catchError(() => of(null)),
       map<any, IHomeData>(data => data ?? {
         observations: { total: null },
         today: { total: null },

@@ -61,7 +61,7 @@ export class ButtonComponent implements OnChanges, OnInit {
     event.stopImmediatePropagation();
   }
 
-  onMouseDown(event: MouseEvent) {
+  onMouseDown() {
     this.pressed = true;
   }
 

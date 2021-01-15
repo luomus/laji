@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter,
-  Input, Output, OnInit, OnDestroy} from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+  Input, Output, OnDestroy} from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Subject, Subscription } from 'rxjs';
 import { LoadingElementsService } from '../loading-elements.service';

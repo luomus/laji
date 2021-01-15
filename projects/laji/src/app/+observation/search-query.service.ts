@@ -16,6 +16,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'teamMember': ';'
   };
 
+  // noinspection JSUnusedLocalSymbols
   private readonly array: Array<keyof WarehouseQueryInterface|'aggregateBy'|'selected'|'orderBy'> = [
     'taxonId',
     'target',
@@ -78,6 +79,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'orderBy'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
     'pessimisticDateRangeHandling',
     'excludeNulls',
@@ -111,6 +113,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly numeric: Array<keyof WarehouseQueryInterface|'page'|'pageSize'> = [
     'dayOfYearBegin',
     'dayOfYearEnd',
@@ -122,6 +125,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'pageSize'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly string: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
     'taxonRankId',
     'xValue',
@@ -140,6 +144,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',

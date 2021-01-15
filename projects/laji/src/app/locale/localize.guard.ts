@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../shared/service/history.service';
 import { Observable } from 'rxjs';
@@ -21,9 +21,7 @@ export class LocalizeGuard implements CanActivate {
     private historyService: HistoryService
   ) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean | Observable<boolean> {
+  canActivate(next: ActivatedRouteSnapshot): boolean | Observable<boolean> {
     const lang = next.data['lang'] || 'fi';
 
     if (this.translateService.getDefaultLang() !== 'fi' && lang !== 'fi') {

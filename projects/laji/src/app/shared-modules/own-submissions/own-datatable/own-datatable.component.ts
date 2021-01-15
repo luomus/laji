@@ -26,7 +26,6 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { Global } from '../../../../environments/global';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../shared/service/platform.service';
 

@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { PlatformService } from '../../shared/service/platform.service';
-import { tryCatch } from 'rxjs/internal-compatibility';
 
 @Component({
   selector: 'laji-twitter-feed',

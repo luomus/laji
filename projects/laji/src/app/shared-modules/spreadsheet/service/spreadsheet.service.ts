@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin as ObservableForkJoin, Observable } from 'rxjs';
 import * as XLSX from 'xlsx';
-import { environment } from '../../../../environments/environment';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 
 import { IFormField, LEVEL_DOCUMENT } from '../model/excel';

@@ -23,7 +23,6 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   public currentValue: string;
   public label = '';
   public range: number[];
-  private el: Element;
 
   protected subLabel: any;
 

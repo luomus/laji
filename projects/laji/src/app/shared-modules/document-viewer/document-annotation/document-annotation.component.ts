@@ -33,7 +33,7 @@ import { AnnotationService } from '../service/annotation.service';
 import { DocumentToolsService } from '../document-tools.service';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 import { TemplateForm } from '../../own-submissions/models/template-form';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
@@ -92,7 +92,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   documentToolsOpen = false;
   showCoordinates = true;
   @SessionStorage() showFacts = false;
-  private _uri: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
   private metaFetch: Subscription;
@@ -223,7 +222,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, doc),
-        err => this.parseDoc(undefined, false)
+        () => this.parseDoc(undefined, false)
       );
   }
 

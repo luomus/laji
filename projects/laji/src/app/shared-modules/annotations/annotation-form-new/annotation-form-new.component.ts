@@ -1,4 +1,4 @@
-import {map,  mergeMap, filter, switchMap } from 'rxjs/operators';
+import {map,  mergeMap, switchMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnChanges, OnInit,
 Output, ChangeDetectorRef, ElementRef, ViewChild, HostListener,
 ChangeDetectionStrategy, AfterContentChecked } from '@angular/core';
@@ -545,7 +545,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       }
     });
 
-    return count > 0 ? true : false;
+    return count > 0;
   }
 
   onFocus(event) {

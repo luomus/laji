@@ -19,7 +19,7 @@
                                   [openAnnotation]="vm.openAnnotation"
                                   [identifying]="vm.identifying"
                                   [useWorldMap]="vm.useWorldMap"
-                                  (close)="closeModal($event)"
+                                  (close)="closeModal()"
         >
         </laji-document-annotation>
         <ng-template #normal>
@@ -31,12 +31,12 @@
             [openAnnotation]="vm.openAnnotation"
             [identifying]="vm.identifying"
             [useWorldMap]="vm.useWorldMap"
-            (close)="closeModal($event)"
+            (close)="closeModal()"
           >
           </laji-document>
         </ng-template>
         <ng-template #local>
-          <laji-document-local [document]="vm.document" (close)="closeModal($event)">
+          <laji-document-local [document]="vm.document" (close)="closeModal()">
           </laji-document-local>
         </ng-template>
       </div>

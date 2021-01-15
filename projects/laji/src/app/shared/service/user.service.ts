@@ -76,9 +76,8 @@ export class UserService {
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   @SessionStorage() private returnUrl: string;
   @SessionStorage('retry', 0) private retry: number;
+
   private _persistent: IPersistentState;
-  private tabId: string;
-  private mRandom: string;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();

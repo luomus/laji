@@ -1,6 +1,4 @@
-import { Component, OnInit, Input, EventEmitter,
-Output, NgZone } from '@angular/core';
-import { Global } from '../../../../environments/global';
+import { Component, OnInit, Input } from '@angular/core';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 
@@ -14,15 +12,12 @@ export class AnnotationItemComponent implements OnInit {
   @Input() item: any;
   @Input() annotationTags: AnnotationTag[];
 
-  annotationTagsObservation = Global.annotationTags;
   limit = 1;
   moreTags: number;
   tagsConverted: Object = {};
 
 
-  constructor(
-    private zone: NgZone,
-  ) { }
+  constructor() { }
 
   ngOnInit() {
     if (this.item.unit.interpretations && this.item.unit.interpretations.effectiveTags && this.item.unit.interpretations.effectiveTags.length > 0) {

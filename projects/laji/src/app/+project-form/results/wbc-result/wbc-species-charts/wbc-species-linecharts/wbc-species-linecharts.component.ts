@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular
 import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import { Chart, ChartOptions } from 'chart.js';
+import { Color } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
@@ -148,7 +148,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-            const year = data['datasets'][0]['count'].length < 15 ? 15 : 10;
             const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
             let empty = 0;
             const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
@@ -181,7 +180,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             }
           };
           element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
-            const year = data['datasets'][0]['count'].length < 15 ? 15 : 10;
             const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
             const range = (start, end, step) => {
               return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
@@ -189,13 +187,11 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-            const left_offset = 0, right_offset = 0;
 
             let empty = 0;
             const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
             if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
               if ( !dataset[Number(index_chart) + 1]) {
-                const count = 0;
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
                 const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
@@ -204,7 +200,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
               }
               if (!dataset[Number(index_chart) - 1]) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const count = 0;
                   const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
                   const diff = Number(index_chart) - (Number(index_chart) - index);
                     empty = coeff * diff;
@@ -269,15 +264,15 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           this.yScaleMax = 0;
 
           this.counts = data;
-          this.setLines(data['fall'], 'fall', 'wbc.season.fall');
-          this.setLines(data['winter'], 'winter', 'wbc.season.winter');
-          this.setLines(data['spring'], 'spring', 'wbc.season.spring');
+          this.setLines(data['fall'], 'fall');
+          this.setLines(data['winter'], 'winter');
+          this.setLines(data['spring'], 'spring');
           this.cd.markForCheck();
         });
     }
   }
 
-  private setLines(data: any, season: SEASON, label: string) {
+  private setLines(data: any, season: SEASON) {
     this.lineChartData[season] = [];
     this.lineChartData[season][0] = {
         label: this.translate.instant('wbc.stats.abundanceGraphs.yAxis'),

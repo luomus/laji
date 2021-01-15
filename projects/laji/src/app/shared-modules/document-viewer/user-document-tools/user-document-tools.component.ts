@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, Output, ViewChild,
 HostListener, EventEmitter, ChangeDetectorRef, OnInit, OnDestroy, TemplateRef} from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
-import { ModalDirective, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,12 +13,9 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
-import { Person } from '../../../shared/model/Person';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
 import { of, forkJoin, Subscription } from 'rxjs';
-// import { EventEmitter } from 'protractor';
-// import { EventEmitter } from 'redlock';
 
 @Component({
   selector: 'laji-user-document-tools',
@@ -95,7 +92,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.modalService.onHide.subscribe((e) => {
+    this.modalService.onHide.subscribe(() => {
       const body = document.body;
       if (!this.router.url.includes('view')) {
         body.classList.add('modal-open-after');
@@ -132,7 +129,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
     this.modalIsOpen = true;
   }
 
-  closeModal(event) {
+  closeModal() {
     if (this.modalRef) {
       this.modalRef.hide();
       if (!this.router.url.includes('view')) {
@@ -160,7 +157,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
           type: 'gathering'
         };
         this.loading = false;
-        this.closeModal(event);
+        this.closeModal();
         this.cd.markForCheck();
       },
       (err) => {
@@ -185,7 +182,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
           this.loading = false;
           // this.documents = this.documents.filter(doc => doc.id !== docId);
           // this.documentsLoaded.emit(this.documents);
-          this.closeModal(event);
+          this.closeModal();
           this.documentDeleted.emit(this._documentID);
           this.reloadObservationView.emitChildEvent(false);
           this.cd.markForCheck();
@@ -203,7 +200,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   }
 
   onClickOutside() {
-    this.closeModal(event);
+    this.closeModal();
   }
 
   showMakeTemplate(formID: string): boolean {
@@ -268,7 +265,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   documentToolsKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27 && this.modalIsOpen) {
       e.stopImmediatePropagation();
-       this.closeModal(event);
+       this.closeModal();
       }
   }
 

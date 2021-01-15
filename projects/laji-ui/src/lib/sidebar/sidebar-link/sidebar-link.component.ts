@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter, map, startWith, tap, takeUntil } from 'rxjs/operators';
+import { filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -30,7 +30,6 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
     urls$.pipe(takeUntil(this.unsubscribe$)).subscribe((u: string) => {
-      const substrs = u.split('/');
       this.active = u.includes(this.link[this.link.length - 1]);
     });
   }

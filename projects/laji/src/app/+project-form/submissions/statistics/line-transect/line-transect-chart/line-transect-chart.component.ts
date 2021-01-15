@@ -45,7 +45,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() xTickFormat: any;
   @Input() yLabelAnchor: string;
 
-  private nativeElement: any;
+  private readonly nativeElement: any;
   private svg: any;
   private chart: any;
   private width: number;
@@ -53,7 +53,6 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   private xScale: any;
   private yScale: any;
   private xAxis: any;
-  private yAxis: any;
 
   constructor(
     element: ElementRef,

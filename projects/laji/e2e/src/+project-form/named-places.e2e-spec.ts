@@ -93,8 +93,7 @@ describe('Project form when logged in', () => {
   });
 
   it('named place with includeUnits option has unit', async (done) => {
-    const np = FORM_WITH_INCLUDE_UNITS_NP;
-    await projectFormPage.navigateTo(FORM_WITH_INCLUDE_UNITS, `/form/places/${np}`);
+    await projectFormPage.navigateTo(FORM_WITH_INCLUDE_UNITS, `/form/places/${FORM_WITH_INCLUDE_UNITS_NP}`);
     const $taxon = await projectFormPage.documentFormView.$findLajiFormNode('gatherings.0.units.0.identifications.0.taxonID');
     expect((await $taxon.$('input').getAttribute('value')).length).toBeGreaterThan(0, 'didn\'t have taxon');
     done();

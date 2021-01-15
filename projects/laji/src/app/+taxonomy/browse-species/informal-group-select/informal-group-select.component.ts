@@ -60,7 +60,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
       this.informalTaxonService.informalTaxonGroupGetParents(this.id, this.translate.currentLang)
         .subscribe(data => {
           this.groups = data;
-        }, (error) => {
+        }, () => {
           this.groups = [];
         });
     }

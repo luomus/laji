@@ -1,4 +1,4 @@
-import { catchError, map, mergeMap, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
@@ -204,7 +204,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.namedPlaceService
       .releaseReservation(namedPlace.id)
-      .subscribe(np => {
+      .subscribe(() => {
         this.reloadNamedPlaces$.next();
         this.loading = false;
       }, () => {
@@ -223,7 +223,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           : undefined
         );
       }
-    )).subscribe(np => {
+    )).subscribe(() => {
       this.reloadNamedPlaces$.next();
       this.loading = false;
     }, () => {

@@ -1,6 +1,16 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
-import { auditTime, catchError, delay, distinctUntilChanged, map, mergeMap, switchMap, take, tap, } from 'rxjs/operators';
+import {
+  auditTime,
+  catchError,
+  delay,
+  distinctUntilChanged,
+  map,
+  mergeMap,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import * as merge from 'deepmerge';
 import * as moment from 'moment';
@@ -158,7 +168,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -321,40 +331,15 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
-    const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
+  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
+    return of({
+      id: this.getNewTmpId(),
+      formID: form.id,
+      creator: person.id,
+      gatheringEvent: { leg: [person.id] }
+    }).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data))
-    );
-
-    return getEmpty$;
-    /*
-    return this.findTmpData(form, person).pipe(
-      switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
-    );
-     */
-  }
-
-  private findTmpData(form: Form.SchemaForm, person: Person): Observable<undefined|Document> {
-    let key = form.id;
-    let hasNp = false;
-    if (form.options?.useNamedPlaces) {
-      const np: NamedPlace = _state.namedPlace;
-      key += '_' + np.id;
-      hasNp = true;
-    }
-    return form.options?.mobile ? of(undefined) : this.documentStorage.getAll(person, 'onlyTmp').pipe(
-      map(documents => documents.find(d => {
-        let docKey = d.formID;
-        if (hasNp) {
-          docKey += d.namedPlaceID;
-        }
-        if (key === docKey) {
-          this.updateState({..._state, hasLocalData: true, hasChanges: true});
-          return true;
-        }
-        return false;
-      }))
     );
   }
 

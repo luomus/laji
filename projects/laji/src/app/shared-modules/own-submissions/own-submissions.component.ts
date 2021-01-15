@@ -123,7 +123,7 @@ export class OwnSubmissionsComponent implements OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.initDocuments(this.onlyTemplates);
   }
 

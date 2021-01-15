@@ -8,9 +8,8 @@ import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, BaseChartDirective, Label } from 'ng2-charts';
+import { Color, Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { tooltip } from 'leaflet';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -86,7 +85,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
         const dataset = this['tooltip']._data.datasets[0].data;
         if (element[0]) {
-          element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem, data) {
+          element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem) {
             const range = (start, end, step) => {
               return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             };
@@ -123,7 +122,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
-          element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
+          element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem) {
             const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
             const range = (start, end, step) => {
@@ -132,12 +131,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-            const left_offset = 0, right_offset = 0;
 
             let empty = 0;
             if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
               if ( !dataset[Number(index_chart) + 1]) {
-                const count = 0;
                 const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
                 const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
@@ -146,7 +143,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
               }
               if (!dataset[Number(index_chart) - 1]) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const count = 0;
                   const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
                   const diff = Number(index_chart) - (Number(index_chart) - index);
                     empty = 3 * diff;

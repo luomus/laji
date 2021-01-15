@@ -1,4 +1,3 @@
-import { browser } from 'protractor';
 import { ErrorPage } from '../+error/error.page';
 import { UserPage } from '../+user/user.po';
 import { TripFormPage } from './trip-form.po';

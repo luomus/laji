@@ -148,7 +148,7 @@ export class NpMapComponent implements OnInit, OnChanges {
 
     try {
       this._data = {
-        getFeatureStyle: ({feature, featureIdx, dataIdx, active}) => {
+        getFeatureStyle: ({feature, active}) => {
           const style = {
             weight: 5,
             opacity: 1,

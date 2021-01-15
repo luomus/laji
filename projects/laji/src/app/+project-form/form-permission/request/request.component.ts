@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { UserService } from '../../../shared/service/user.service';
-import { FormPermission } from '../../../shared/model/FormPermission';
 import { Logger } from '../../../shared/logger/logger.service';
 import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
@@ -71,7 +70,7 @@ export class RequestComponent implements OnInit {
     this.clicked = true;
     this.formPermissionService.makeAccessRequest(this.collectionId, this.userService.getToken())
       .subscribe(
-        (formPermission: FormPermission) => {
+        () => {
           this.resetVM$.next();
           this.toastsService.showSuccess('Pyyntösi on lähetetty eteenpäin');
         },

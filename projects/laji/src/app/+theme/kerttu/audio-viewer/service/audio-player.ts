@@ -77,7 +77,7 @@ export class AudioPlayer {
   startFrom(time: number) {
     if (this.isPlaying) {
       this.toggle();
-      this.source.onended = (args) => {
+      this.source.onended = () => {
         this.ngZone.run(() => {
           this.sourceOnEnded();
           this.startFromMiddle(time);

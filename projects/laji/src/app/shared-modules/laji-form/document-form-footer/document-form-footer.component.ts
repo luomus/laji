@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 import { FormWithData, Readonly } from '../laji-form-document.facade';
-import { FormService } from '../../../shared/service/form.service';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 

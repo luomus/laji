@@ -1,4 +1,4 @@
-import { browser, by, element, protractor, $ } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
 
 export const DEFAULT_TEST_USER = 'vixriihi+e2e-no@gmail.com';
 

@@ -76,7 +76,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     }
 
     this._data = {
-      getFeatureStyle: (o) => {
+      getFeatureStyle: () => {
         return {
           weight: 5,
           opacity: 1,
