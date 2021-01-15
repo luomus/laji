@@ -68,7 +68,7 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang: string): Observable<Form.List[]> {
+  getAllForms(lang: string = this.currentLang): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(

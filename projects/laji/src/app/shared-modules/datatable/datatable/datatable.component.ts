@@ -78,6 +78,30 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   private filterChange$ = new Subject();
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
+  _getRowClass = (row) => {
+    if (this.getRowClass) {
+      const rowClass = this.getRowClass(row);
+      if (rowClass) {
+        return rowClass;
+      }
+    }
+
+    return {
+      'link': this.showRowAsLink,
+      'issues':
+        !!(row.document && row.document.quality && row.document.quality.issue) ||
+        !!(row.gathering && row.gathering.quality && (
+          row.gathering.quality.issue ||
+          row.gathering.quality.locationIssue ||
+          row.gathering.quality.timeIssue
+        )) ||
+        !!(row.unit && row.unit.quality && (
+          row.unit.quality.documentGatheringUnitQualityIssues ||
+          row.unit.quality.issue
+        ))
+    };
+  }
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private platformService: PlatformService,
@@ -235,30 +259,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this._rows = [...this._rows];
       this.changeDetectorRef.markForCheck();
     }
-  }
-
-  _getRowClass(row) {
-    if (this.getRowClass) {
-      const rowClass = this.getRowClass(row);
-      if (rowClass) {
-        return rowClass;
-      }
-    }
-
-    return {
-      'link': this.showRowAsLink,
-      'issues':
-        !!(row.document && row.document.quality && row.document.quality.issue) ||
-        !!(row.gathering && row.gathering.quality && (
-          row.gathering.quality.issue ||
-          row.gathering.quality.locationIssue ||
-          row.gathering.quality.timeIssue
-        )) ||
-        !!(row.unit && row.unit.quality && (
-          row.unit.quality.documentGatheringUnitQualityIssues ||
-          row.unit.quality.issue
-        ))
-    };
   }
 
   onResize(event) {
