@@ -8,16 +8,13 @@ import { TeamMemberService } from '../team-member.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
-export class MemberIdPillListComponent implements OnInit {
+export class MemberIdPillListComponent {
 
   @Output() updateList = new EventEmitter();
 
   _list;
 
   constructor(private teamMemberService: TeamMemberService) { }
-
-  ngOnInit() {
-  }
 
   @Input() set list(data) {
     if (typeof data === 'string') {

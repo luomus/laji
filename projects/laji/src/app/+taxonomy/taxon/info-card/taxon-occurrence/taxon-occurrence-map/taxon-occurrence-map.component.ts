@@ -53,8 +53,6 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
     'MX.typeOfOccurrenceNotEvaluated': '#c0c0c0'
   };
 
-  constructor() { }
-
   ngOnChanges() {
     this.fillData = {};
     this.statusList = [];

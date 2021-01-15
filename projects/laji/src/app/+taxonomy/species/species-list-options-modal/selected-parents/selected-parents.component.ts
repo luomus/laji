@@ -7,16 +7,11 @@ import { ColumnSelector } from '../../../../shared/columnselector/ColumnSelector
   styleUrls: ['./selected-parents.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedParentsComponent implements OnInit {
+export class SelectedParentsComponent {
   @Input() header: string;
   @Input() parents: string[] = [];
   @Input() selected: string[] = [];
   @Input() columnSelector: ColumnSelector;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   private parentFields(parent: string): string[] {
     return ['parent.' + parent + '.scientificName',

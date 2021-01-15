@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
@@ -7,15 +7,10 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./form-row.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormRowComponent implements OnInit {
+export class FormRowComponent {
 
   @Input() tmpDocuments: {[formId: string]: string} = {};
   @Input() hasAdminRight = false;
   @Input() form: Form.List;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'vir-usage',
@@ -12,11 +12,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsageComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class UsageComponent {
 
 }

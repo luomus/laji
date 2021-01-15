@@ -14,8 +14,6 @@ export class FormCategoryComponent {
   @Input() formList: Form.List[] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
 
-  constructor() { }
-
   trackForm(idx, form) {
     return form ? form.id : undefined;
   }

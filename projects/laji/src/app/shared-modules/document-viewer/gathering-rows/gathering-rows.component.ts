@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-gathering-rows',
@@ -6,13 +6,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   styleUrls: ['./gathering-rows.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GatheringRowsComponent implements OnInit {
+export class GatheringRowsComponent {
   @Input() gathering: any;
   @Input() hideTooltips = false;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

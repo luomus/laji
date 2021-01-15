@@ -22,7 +22,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GatheringAnnotationComponent implements OnInit, OnDestroy {
+export class GatheringAnnotationComponent implements OnDestroy {
 
   @Input() editors: string[];
   @Input() personID: string;
@@ -55,9 +55,6 @@ export class GatheringAnnotationComponent implements OnInit, OnDestroy {
     private loadingElements: LoadingElementsService,
     private taxonTagEffective: TaxonTagEffectiveService
     ) { }
-
-  ngOnInit() {
-  }
 
   checkPending(value: any) {
    this.annotationAddedDeleted = value;

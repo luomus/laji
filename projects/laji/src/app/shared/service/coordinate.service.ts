@@ -5,8 +5,6 @@ import { GeometryCollection } from 'geojson';
 @Injectable({providedIn: 'root'})
 export class CoordinateService {
 
-  constructor() { }
-
   getFeatureFromGeometry(geometry: Object, properties = {}) {
     return {
       type: 'Feature',

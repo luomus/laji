@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   template: `
@@ -56,11 +56,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuComponent implements OnInit {
-  constructor(
+export class KerttuComponent {
 
-  ) { }
-
-  ngOnInit() {
-  }
 }

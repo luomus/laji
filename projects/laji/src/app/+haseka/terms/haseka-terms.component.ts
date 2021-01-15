@@ -19,8 +19,6 @@ export class HasekaTermsComponent implements OnInit, AfterViewInit {
 
   modalIsVisible = false;
 
-  constructor() { }
-
   ngOnInit() {
     if (!this.vihkoSettings) {
       this.vihkoSettings = { showIntro: true };

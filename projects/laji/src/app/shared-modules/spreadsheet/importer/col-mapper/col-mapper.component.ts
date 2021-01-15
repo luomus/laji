@@ -24,8 +24,6 @@ export class ColMapperComponent implements OnChanges {
 
   cols: string[];
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     if (!this.headers) {
       return;

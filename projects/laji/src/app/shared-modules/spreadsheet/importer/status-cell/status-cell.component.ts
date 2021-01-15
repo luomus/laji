@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IFormField } from '../../model/excel';
 
 @Component({
@@ -7,17 +7,12 @@ import { IFormField } from '../../model/excel';
   styleUrls: ['./status-cell.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StatusCellComponent implements OnInit {
+export class StatusCellComponent {
 
   @Input() value: {
     status: 'ok'|'valid'|'invalid'|'fail'|'ignore',
     error: any
   };
   @Input() fields: {[key: string]: IFormField};
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

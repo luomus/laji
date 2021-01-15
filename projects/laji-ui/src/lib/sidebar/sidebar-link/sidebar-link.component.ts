@@ -13,10 +13,13 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
   @Input() linkParams: {
     [k: string]: any;
   };
-  @Output() clicked = new EventEmitter<any>();
   @Input() active = undefined;
+  @Output() clicked = new EventEmitter<any>();
+
   unsubscribe$ = new Subject<void>();
+
   constructor(private router: Router) {}
+
   ngOnInit() {
     if (this.active !== undefined) {
       return;
@@ -31,9 +34,11 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       this.active = u.includes(this.link[this.link.length - 1]);
     });
   }
+
   onClick(event) {
     this.clicked.next(event);
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

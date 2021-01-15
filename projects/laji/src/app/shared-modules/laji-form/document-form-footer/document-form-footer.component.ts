@@ -37,8 +37,6 @@ export class DocumentFormFooterComponent {
   _touchedCounter: number;
   _touchedCounterOnErrors: number;
 
-  constructor() { }
-
   @Input()
   set form(form: FormWithData) {
     if (!form) {

@@ -23,8 +23,6 @@ export class TaxonImagesComponent implements OnChanges {
   hasCollectionImages: boolean;
   hasObservationImages: boolean;
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
       this.typeSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, true);
