@@ -17,7 +17,6 @@ export class CheckboxComponent {
 
   @ViewChild('checkbox', { static: true }) checkbox: ElementRef<HTMLInputElement>;
 
-  @Input() threeState = false;
   @Input() checkboxType = CheckboxType.basic;
   @Output() valueChange = new EventEmitter();
 
@@ -29,18 +28,29 @@ export class CheckboxComponent {
   @Input()
   set value(value) {
     this._value = value;
-    console.log(value);
-    console.log(this.threeState);
-    console.log(this.checkboxType)
     if (value === true) {
       this.checkbox.nativeElement.checked = true;
       this.stateClass = 'checked';
-    } else if (value === false && this.threeState) {
+    } else if (value === false) {
       this.checkbox.nativeElement.indeterminate = true;
-      this.stateClass = this.checkboxType === 2 ? 'negative' : 'excluded';
-    } else if (value === false && (!this.threeState || this.threeState === undefined)) {
-      this.checkbox.nativeElement.indeterminate = true;
-      this.stateClass = 'clear';
+      switch (this.checkboxType) {
+        case 0: {
+           this.stateClass = 'clear';
+           break;
+        }
+        case 1: {
+          this.stateClass = 'excluded';
+           break;
+        }
+        case 2: {
+          this.stateClass = 'negative';
+           break;
+        }
+        default: {
+          this.stateClass = 'clear';
+           break;
+        }
+     }
     } else {
       this.checkbox.nativeElement.checked = false;
       this.stateClass = 'clear';
@@ -48,7 +58,29 @@ export class CheckboxComponent {
   }
 
   changeValue() {
-    this.valueChange.emit(this._value === true ? false : (this._value === false ? (this.threeState ? undefined : true) : true));
+    let valueEmitted;
+    if (this.checkboxType === 2) {
+      if (this._value === true) {
+        valueEmitted = undefined;
+      } else {
+        valueEmitted = true;
+      }
+    } else if (this.checkboxType === 1) {
+      if (this._value === true) {
+        valueEmitted = false;
+      } else if (this._value === false) {
+        valueEmitted = undefined;
+      } else {
+        valueEmitted = true;
+      }
+    } else {
+      if (this._value === true) {
+        valueEmitted = false;
+      } else {
+        valueEmitted = true;
+      }
+    }
+    this.valueChange.emit(valueEmitted);
   }
 
 }

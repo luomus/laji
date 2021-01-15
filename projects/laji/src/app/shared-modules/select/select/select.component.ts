@@ -43,7 +43,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() selected: (string|SelectedOptions)[] = [];
-  @Input() selectedGlobalSubCategories: {[key: string]: SelectOptions[]} = {};
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -52,8 +51,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
-  @Input() isParentFilter = false;
-  @Input() subCategory = '';
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: (SelectedOptions|SelectOptions)[] = [];
@@ -94,24 +91,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  checkGlobalValues() {
-    this.globalValues = {};
-    const categoriesExceptGlobal = Object.keys(this.selectedGlobalSubCategories).filter(el => el !== 'GLOBAL');
-    (this.options || []).map((option: any) => {
-      let countOptionForNotGlobal = 0;
-      if (this.selectedGlobalSubCategories['GLOBAL'] && this.selectedGlobalSubCategories['GLOBAL'].indexOf(option.id) > -1) {
-        return this.globalValues[option.id] = true;
-      } else {
-        categoriesExceptGlobal.forEach(item => {
-          if (this.selectedGlobalSubCategories[item] && this.selectedGlobalSubCategories[item].indexOf(option.id) > -1) {
-            countOptionForNotGlobal++;
-          }
-        });
-        this.globalValues[option.id] = countOptionForNotGlobal === categoriesExceptGlobal.length ? true : (countOptionForNotGlobal === 0 ? undefined : false);
-      }
-
-    });
-  }
 
   toggleValue(id: string, event) {
     console.log(event);
