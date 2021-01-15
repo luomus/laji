@@ -1,3 +1,4 @@
+import { browser } from 'protractor';
 import { ErrorPage } from '../+error/error.page';
 import { UserPage } from '../+user/user.po';
 import { TripFormPage } from './trip-form.po';
@@ -11,8 +12,7 @@ describe('Trip form page', () => {
     user = new UserPage();
     page = new TripFormPage();
     error = new ErrorPage();
-    await page.navigateTo();
-    await user.login();
+    await user.handleNavigationWithExternalLogin(() => page.navigateTo());
     done();
   });
 

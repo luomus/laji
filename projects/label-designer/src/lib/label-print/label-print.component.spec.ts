@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelPrintComponent } from './label-print.component';
 
@@ -6,7 +6,7 @@ describe('LabelPrintComponent', () => {
   let component: LabelPrintComponent;
   let fixture: ComponentFixture<LabelPrintComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelPrintComponent ]
     })

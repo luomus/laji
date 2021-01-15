@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon.component';
 
@@ -6,7 +6,7 @@ describe('ObservationEffectiveTagsTaxonComponent', () => {
   let component: ObservationEffectiveTagsTaxonComponent;
   let fixture: ComponentFixture<ObservationEffectiveTagsTaxonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ObservationEffectiveTagsTaxonComponent ]
     })

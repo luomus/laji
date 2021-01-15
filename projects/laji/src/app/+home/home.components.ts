@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Global } from '../../environments/global';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { Information } from '../shared/model/Information';
+import { NewsFacade } from '../+news/news.facade';
 
 
 @Component({
@@ -31,11 +32,13 @@ export class HomeComponent implements OnInit {
     private homeDataService: HomeDataService,
     public translate: TranslateService,
     public router: Router,
-    private apiService: LajiApiService
+    private apiService: LajiApiService,
+    private newsFacade: NewsFacade
   ) {
   }
 
   ngOnInit() {
+    this.newsFacade.loadPage(1);
     this.mapStartDate = HomeDataService.getRecentDate();
     this.homeData$ = this.homeDataService.getHomeData();
     this.images$ = this.homeData$.pipe(

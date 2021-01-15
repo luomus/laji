@@ -66,7 +66,7 @@ export class PdfLabelService {
         ),
         map(data => data.map(item => {
           item['gatherings.units.id'] = IdService.getUri(item['gatherings.units.id'] || item['id']) || '';
-          item['gatherings.units.id_short'] = item['gatherings.units.id'] || item['id'] || '';
+          item['gatherings.units.id_short'] = IdService.getId(item['gatherings.units.id'] || item['id'] || '');
           item['gatherings.units.id_domain'] = (item['gatherings.units.id'] as string)
             .replace(item['gatherings.units.id_short'] as string, '');
           return item;

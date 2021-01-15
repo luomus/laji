@@ -14,7 +14,7 @@ const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
 const invasiveSpeciesFormPage = new InvasiveSpeciesPlaceFormPage();
 
-describe('Project form when logged in named places', () => {
+describe('Project form when logged in', () => {
   beforeAll(async (done) => {
     await projectFormPage.navigateTo(FORM_WITH_NAMED_PLACES);
     await userPage.login();
@@ -69,7 +69,8 @@ describe('Project form when logged in named places', () => {
      });
 
      it('if modal is shown it can be closed', async(done) => {
-       const isModal = await projectFormPage.namedPlacesView.$modal.isDisplayed();
+       const isModal = await projectFormPage.namedPlacesView.$modal.isPresent()
+         && await projectFormPage.namedPlacesView.$modal.isDisplayed();
        if (isModal) {
          await projectFormPage.namedPlacesView.$modalCloseButton.click();
        }

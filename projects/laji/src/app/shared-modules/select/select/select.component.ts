@@ -15,8 +15,9 @@ import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 
+type idType = string|number|boolean;
 export interface SelectOptions {
-  id: string;
+  id: idType;
   value: string;
   info?: string;
 }
@@ -34,11 +35,11 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: string[] = [];
+  @Input() selected: idType[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<string[]|string>();
+  @Output() selectedChange = new EventEmitter<idType|idType[]>();
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
@@ -80,7 +81,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  toggleValue(id: string) {
+  toggleValue(id: idType) {
     if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
       this.add(id);
     } else {
@@ -88,7 +89,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  add(id: string) {
+  add(id: idType) {
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
@@ -106,7 +107,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  remove(id: string) {
+  remove(id: idType) {
     this.selected = this.selected.filter(value => value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);

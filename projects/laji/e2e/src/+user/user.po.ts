@@ -1,4 +1,4 @@
-import { browser, by, element, protractor } from 'protractor';
+import { browser, by, element, protractor, $ } from 'protractor';
 
 export const DEFAULT_TEST_USER = 'vixriihi+e2e-no@gmail.com';
 
@@ -87,7 +87,27 @@ export class UserPage {
   }
 
   async isOnExternalLoginPage() {
-    await browser.wait(EC.visibilityOf(this.authLocal), 2000);
-    return (await this.authLocal.isPresent()) && (await this.authLocal.isDisplayed());
+    await browser.waitForAngularEnabled(false);
+    await browser.wait(EC.visibilityOf(this.authLocal), 5000);
+    const isOnAuthPage = (await this.authLocal.isPresent()) && (await this.authLocal.isDisplayed());
+    await browser.waitForAngularEnabled(true);
+    return isOnAuthPage;
+  }
+
+  async handleNavigationWithExternalLogin(navigate: () => Promise<void>) {
+    let isFirstNavigation = false;
+    try {
+      await browser.getCurrentUrl();
+    } catch (e) {
+      isFirstNavigation = true;
+    }
+    if (isFirstNavigation) {
+      await browser.waitForAngularEnabled(false);
+    }
+    await navigate();
+    if (isFirstNavigation) {
+      await this.doExternalLogin();
+    }
+    await browser.waitForAngularEnabled(true);
   }
 }

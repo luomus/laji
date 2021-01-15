@@ -2,10 +2,10 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app-server",
-    "module": "commonjs",
     "types": [
       "node"
     ],
+    "target": "es2016",
     "paths": {
       "@laji-map/*": ["projects/laji/src/app/shared-modules/laji-map-noop/*"],
       "@laji-form/*": ["projects/laji/src/app/shared-modules/laji-form-noop/*"],
