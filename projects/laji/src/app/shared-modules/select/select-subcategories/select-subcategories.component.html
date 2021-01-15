@@ -11,12 +11,12 @@
   [open]="open"
   [disabled]="false"
   [loading]="options['GLOBAL'] === null"
-  [checkboxType] = "typeCheckbox"
+  [checkboxType] = "2"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
   
   <!-- SUBCATEGORIES -->
-  <div *ngIf="open || (!open && !selectedOptionsIsEmpty(selectedOptions))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
+  <div *ngIf="open || (!open && !selectedOptionsIsEmpty(selectedOptions['GLOBAL']))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
   <ng-container *ngFor="let subCategory of subCategories | excludeSubcategory : ['GLOBAL']">
     <label *ngIf="open || (!open && !selectedOptionsIsEmpty(selectedOptions[subCategory]))" class="lj-item selected" (click)="labelClick($event)">
       <laji-checkbox [checkboxType]="2" [value]="checkStatusSubCategory(selectedOptions[subCategory], options[subCategory])" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options[subCategory])"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>

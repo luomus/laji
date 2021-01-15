@@ -561,7 +561,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
 
     this.cd.detectChanges();
-    console.log(this.selectedOptions);
     this.selectedChange.emit(this.selectedOptions);
   }
 

@@ -93,7 +93,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
 
   toggleValue(id: string, event) {
-    console.log(event);
     if (this.checkboxType === 2) {
       const newEvent = this.selectedOptions === undefined || this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)]?.value !== true ?
       true : false;
@@ -139,7 +138,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   remove(id: string, event) {
     if (this.checkboxType === 2) {
       if (this.selected[this.selected.findIndex((x: SelectedOptions) => x.id === id && x.value !== true)]) {
-        this.add(id, true);
+        return this.add(id, true);
       }
     }
     this.selected = this.checkboxType === 2 ?
