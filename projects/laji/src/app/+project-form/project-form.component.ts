@@ -166,7 +166,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
-    //this.subscriptionScreen.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {

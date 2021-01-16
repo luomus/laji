@@ -2,7 +2,6 @@
   <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent"
   [open]="(showNav$ | async)"
   [noPrint]="isPrintPage$ | async"
-  (toggled)="checkToggled($event)"
   >
     <nav>
       <h5>
