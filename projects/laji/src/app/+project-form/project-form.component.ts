@@ -12,7 +12,6 @@ import { FormPermissionService, Rights } from '../shared/service/form-permission
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
-
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
@@ -57,8 +56,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
-  subscriptionScreen: Subscription;
-  openSidebar = false;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -136,24 +133,23 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.subscriptionScreen = this.browserService.lgScreen$.subscribe(value => this.isDesktopScreen = value );
-
-    routerEvents$.pipe(
-      mergeMap((url: string) =>
-        form$.pipe(
-          map(form =>
-            !(
-              (!form.options?.useNamedPlaces && url.match(/\/form$/))
-              || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
-              || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
-              || (!this.isDesktopScreen)
-            )
+    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$).pipe(
+      mergeMap(([isDesktopScreen, url]) => 
+      form$.pipe(
+        map(form =>
+          !(
+            (!form.options?.useNamedPlaces && url.match(/\/form$/))
+            || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
+            || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
+            || (!isDesktopScreen)
           )
         )
       )
-    ).subscribe(showNav => {
-      this.showNav$ = showNav !== this.openSidebar ? of(showNav) : of(this.openSidebar);
-    });
+      )
+    )
+    
+
+    
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
@@ -170,7 +166,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
-    this.subscriptionScreen.unsubscribe();
+    //this.subscriptionScreen.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -256,8 +252,5 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     return link.label;
   }
 
-  checkToggledSidebar(event) {
-    this.openSidebar = event;
-    this.showNav$ = of(event);
-  }
+
 }
