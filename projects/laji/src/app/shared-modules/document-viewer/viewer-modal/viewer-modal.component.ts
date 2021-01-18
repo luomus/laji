@@ -34,18 +34,9 @@ export class ViewerModalComponent implements OnInit, OnDestroy {
     if (this.subModal) {
       this.subModal.unsubscribe();
     }
-    const body = document.body;
-    if (body.classList.contains('modal-open-after')) {
-      body.classList.remove('modal-open-after');
-    }
-
   }
 
   onModalHide() {
-    const body = document.body;
-    if (body.classList.contains('modal-open-after')) {
-      body.classList.remove('modal-open-after');
-    }
     this.viewerFacade.close();
   }
 
