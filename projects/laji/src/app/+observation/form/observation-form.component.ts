@@ -437,30 +437,29 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private updateVisibleSections() {
-    Object.keys(this.sections).forEach(section => {
-      let visible = false;
-      for (let i = 0; i < this.sections[section].length; i++) {
-        const value = this.query[this.sections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
-          visible = true;
-          break;
-        }
-      }
-      this.visible[section] = visible;
-    });
+    this.updateVisible('sections', 'visible');
   }
 
   private updateVisibleAdvancedSections() {
-    Object.keys(this.advancedSections).forEach(section => {
+    this.updateVisible('advancedSections', 'visibleAdvanced');
+  }
+
+  private updateVisible(spot: 'advancedSections', visible: 'visibleAdvanced');
+  private updateVisible(spot: 'sections', visible: 'visible');
+  private updateVisible(
+    spot: keyof Pick<this, 'sections' | 'advancedSections'>,
+    visibility: keyof Pick<this, 'visible' | 'visibleAdvanced'>
+  ) {
+    Object.keys(this[spot]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this.advancedSections[section].length; i++) {
-        const value = this.query[this.advancedSections[section][i]];
+      for (let i = 0; i < this[spot][section].length; i++) {
+        const value = this.query[this[spot][section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
       }
-      this.visibleAdvanced[section] = visible;
+      this[visibility][section] = visible;
     });
   }
 

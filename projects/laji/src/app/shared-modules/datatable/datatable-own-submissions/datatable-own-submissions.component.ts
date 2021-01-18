@@ -242,31 +242,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     }
   }
 
-  _getRowClass(row) {
-    if (this.getRowClass) {
-      const rowClass = this.getRowClass(row);
-      if (rowClass) {
-        return rowClass;
-      }
-    }
-
-    return {
-      'link': this.showRowAsLink,
-      'issues':
-        !!(row.document && row.document.quality && row.document.quality.issue) ||
-        !!(row.gathering && row.gathering.quality && (
-          row.gathering.quality.issue ||
-          row.gathering.quality.locationIssue ||
-          row.gathering.quality.timeIssue
-        )) ||
-        !!(row.unit && row.unit.quality && (
-          row.unit.quality.documentGatheringUnitQualityIssues ||
-          row.unit.quality.issue
-        ))
-    };
-  }
-
-
   showDocument(id: string) {
     this.documentViewerFacade.showDocumentID({
       document: id
@@ -281,7 +256,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
     this._page = 1;
-    // this.scrollTo();
   }
 
   private updateDisplayMode() {

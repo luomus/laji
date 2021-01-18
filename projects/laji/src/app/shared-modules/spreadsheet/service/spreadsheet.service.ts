@@ -327,6 +327,22 @@ export class SpreadsheetService {
       return;
     }
     const label = schema.title || lastLabel;
+    const getFieldData = () => {
+      return {
+        type: schema.type,
+        label: label,
+        fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
+        key: root,
+        parent: parent,
+        isArray: root.endsWith('[*]'),
+        required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
+        subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
+        enum: schema.enum,
+        enumNames: schema.enumNames,
+        default: schema.default
+      };
+    };
+
     switch (schema.type) {
       case 'object':
         if (schema.properties) {
@@ -348,19 +364,7 @@ export class SpreadsheetService {
             if (this.isHiddenField(schema.id, root)) {
               return;
             }
-            result.push({
-              type: schema.type,
-              label: label,
-              fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
-              key: root,
-              parent: parent,
-              isArray: root.endsWith('[*]'),
-              required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
-              subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
-              enum: schema.enum,
-              enumNames: schema.enumNames,
-              default: schema.default
-            });
+            result.push(getFieldData());
           }
         }
         break;
@@ -384,19 +388,7 @@ export class SpreadsheetService {
         if (this.isHiddenField(schema.id, root)) {
           return;
         }
-        result.push({
-          type: schema.type,
-          label: label,
-          fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
-          key: root,
-          parent: parent,
-          isArray: root.endsWith('[*]'),
-          required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
-          subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
-          enum: schema.enum,
-          enumNames: schema.enumNames,
-          default: schema.default
-        });
+        result.push(getFieldData());
     }
   }
 

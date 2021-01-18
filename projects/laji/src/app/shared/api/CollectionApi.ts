@@ -91,39 +91,6 @@ export class CollectionApi {
   }
 
   /**
-   * Get all collections belonging to the given id
-   *
-   * @param id
-   * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
-   * @param page Page number
-   * @param pageSize Page size
-   */
-  public findChildren(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Collection>> {
-    const path = this.basePath + '/collections/{id}/children'
-        .replace('{' + 'id' + '}', String(id));
-
-    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-
-    // verify required parameter 'id' is not null or undefined
-    if (id === null || id === undefined) {
-      throw new Error('Required parameter id was null or undefined when calling collectionFindChildren.');
-    }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
-
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<Collection>>(path, {params: queryParameters});
-  }
-
-  /**
    * Get all root collections
    *
    * @param lang Language of fields that have multiple languages. Return english if asked language not found. If multi is selected fields will contain language objects
