@@ -52,7 +52,7 @@
   <lu-button role="primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</lu-button>
   <div class="flex-grow"></div>
   <div class="finnish-selector-buttons" *ngIf="visible.finnish">
-    <lu-button [routerLink]="['/observation', lastTabActive] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
+    <lu-button [routerLink]="['/observation', activeTab] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
     <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
       {{ 'search.result.finnish' | translate }}</lu-button>
@@ -68,7 +68,7 @@
       [showDownloadMenu]="visible.downloadList"
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
-      [visible]="lastTabActive === 'list'"
+      [visible]="activeTab === 'list'"
       [query]="query"
     ></laji-observation-result-list>
   </lu-tab>
@@ -106,7 +106,7 @@
       <div class="row">
         <div class="col-sm-12">
           <laji-observation-table
-            [visible]="lastTabActive === 'species'"
+            [visible]="activeTab === 'species'"
             [pageSize]="100"
             [height]="'calc(80vh - 40px)'"
             [query]="query"
@@ -195,7 +195,7 @@
       </div>
       <div class="form-group spacer">
         <div class="col-lg-12">
-          <laji-observation-filters [visible]="lastTabActive === 'statistics'" [query]="query" [onlyCount]="onlyCount" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
+          <laji-observation-filters [visible]="activeTab === 'statistics'" [query]="query" [onlyCount]="onlyCount" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
         </div>
       </div>
       <div class="lu">
@@ -235,7 +235,7 @@
 </lu-tabs>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
-  <laji-main-result [query]="query" [visible]="lastTabActive === 'finnish'"></laji-main-result>
+  <laji-main-result [query]="query" [visible]="mode === 'finnish'"></laji-main-result>
 </div>
 
 <laji-observation-download
