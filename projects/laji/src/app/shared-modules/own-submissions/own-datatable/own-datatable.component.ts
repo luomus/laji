@@ -29,6 +29,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { Global } from '../../../../environments/global';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { Form } from '../../../shared/model/Form';
 
 export interface RowDocument {
   creator: string;
@@ -166,6 +167,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
   labelFilter$: Observable<LabelFilter>;
+  forms$: Observable<{[id: string]: Form.List}>;
+
   private readonly labelSettingsKey = 'label-filters';
 
   constructor(
@@ -183,6 +186,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   ) {
     this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(value => value || {})
+    );
+    this.forms$ = this.formService.getAllForms().pipe(
+      map(forms => forms.reduce((fs, f) => ({...fs, [f.id]: f}), {}))
     );
   }
 

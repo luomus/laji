@@ -1,0 +1,16 @@
+.tree-filter {
+  padding: 10px;
+}
+.tree-active-child {
+  opacity: 0.5;
+}
+.scrollable-tree {
+  height: 50vh;
+  padding: 10px;
+  overflow: hidden;
+}
+.scrollable-selection-list {
+  max-height: calc(50vh + 20px);
+  padding: 10px;
+  overflow: auto;
+}

@@ -27,7 +27,7 @@
 
     <ngx-datatable-row-detail [rowHeight]="'auto'">
       <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of _columns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+        <div *ngFor="let col of _columns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
           <span>{{ row[col.prop] }}</span>
         </div>
@@ -49,7 +49,7 @@
     <ngx-datatable-column *ngIf="actions.length > 0" [name]="" [sortable]="false"  [flexGrow]="1" >
         <ng-template let-row="row" let-value="value"  ngx-datatable-cell-template>
             <div class="buttons" *ngIf="(actions | includes:'view')">
-                <lu-button 
+                <lu-button
                       [role]="'success'"
                       (click)="showDocument(row['id'])"
                       >
@@ -67,8 +67,8 @@
               </lu-button>
             </div>
         </ng-template>
-    </ngx-datatable-column> 
-    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:this.displayMode; let i = index" [prop]="col.prop" [flexGrow]="1">
+    </ngx-datatable-column>
+    <ngx-datatable-column *ngFor="let col of _columns | filterColumns:displayMode; let i = index" [prop]="col.prop" [flexGrow]="1">
       <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
         <span class="datatable-header-cell-wrapper"
               (click)="sort()"
@@ -89,6 +89,6 @@
       (change)="onPage($event)"
     ></laji-data-table-footer>
 </laji-spinner>
-  
+
   <laji-datatable-templates #dataTableTemplates></laji-datatable-templates>
-  
+

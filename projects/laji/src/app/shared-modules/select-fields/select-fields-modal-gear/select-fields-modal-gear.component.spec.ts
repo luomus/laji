@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SelectFieldsModalGearComponent } from './select-fields-modal-gear.component';
 
@@ -6,7 +6,7 @@ describe('SelectFieldsModalGearComponent', () => {
   let component: SelectFieldsModalGearComponent;
   let fixture: ComponentFixture<SelectFieldsModalGearComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SelectFieldsModalGearComponent ]
     })

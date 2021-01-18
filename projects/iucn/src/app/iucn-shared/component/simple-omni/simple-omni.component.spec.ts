@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SimpleOmniComponent } from './simple-omni.component';
 
@@ -6,7 +6,7 @@ describe('SimpleOmniComponent', () => {
   let component: SimpleOmniComponent;
   let fixture: ComponentFixture<SimpleOmniComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SimpleOmniComponent ]
     })

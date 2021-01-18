@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitRowsComponent } from './unit-rows.component';
 
@@ -6,7 +6,7 @@ describe('UnitRowsComponent', () => {
   let component: UnitRowsComponent;
   let fixture: ComponentFixture<UnitRowsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnitRowsComponent ]
     })

@@ -26,7 +26,7 @@
     <h5 *ngIf="!selectedGrid">{{ 'wbc.stats.routes.noGrid' | translate }}</h5>
   </div>
   <laji-wbc-routes-list
-    [rows]="selectedGrid ? this._data[selectedGrid].data : []"
+    [rows]="selectedGrid ? _data[selectedGrid].data : []"
     [selected]="'document.namedPlace.name'"
     [columnMode]="'flex'"
     [height]="'calc(80vh - 77px)'"

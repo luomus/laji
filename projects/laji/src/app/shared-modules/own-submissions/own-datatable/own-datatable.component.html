@@ -78,7 +78,7 @@
 
     <ngx-datatable-row-detail [rowHeight]="'auto'">
       <ng-template let-row="row" ngx-datatable-row-detail-template>
-        <div *ngFor="let col of useColumns | filterColumns:this.displayMode:true" style="padding-left: 35px">
+        <div *ngFor="let col of useColumns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
           <span>{{ row[col.prop] }}</span>
         </div>
@@ -158,7 +158,7 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:this.displayMode"
+    <ngx-datatable-column *ngFor="let col of useColumns | filterColumns:displayMode"
                           [prop]="col.prop"
                           [resizeable]="false"
                           [draggable]="false"
@@ -184,27 +184,19 @@
         <div ngPreserveWhitespaces>
           <div class="buttons">
             <lu-button *ngIf="(actions | includes:'download') && onlyTemplates === false"
-            [role]="'other'"
-            (click)="openChooseFileTypeModal(row.id)">
-            <i class="glyphicon glyphicon-download-alt"></i>
-            <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
-          </lu-button>
-          </div>
-          <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType"
-              [role]="'other'"
-              [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
-              <i class="glyphicon glyphicon-stats"></i>
-              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
-          </lu-button>
-          </div>
-          <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'stats') && row.formViewerType === 'MHL.viewerTypeBirdPointCount'"
-                [role]="'other'"
-                [routerLink]="'/theme/pistelaskenta/statistics/' + row.id | localize">
-              <i class="glyphicon glyphicon-stats"></i>
-              <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+                       [role]="'other'"
+                       (click)="openChooseFileTypeModal(row.id)">
+              <i class="glyphicon glyphicon-download-alt"></i>
+              <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
             </lu-button>
+            <ng-container *ngIf="forms$ | async as forms">
+              <lu-button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
+                         [role]="'other'"
+                         [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
+                <i class="glyphicon glyphicon-stats"></i>
+                <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
+              </lu-button>
+            </ng-container>
           </div>
         <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
                 [role]="'danger'"
