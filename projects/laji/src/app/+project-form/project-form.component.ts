@@ -52,10 +52,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ViewModel>;
   formPermissions$: Observable<FormPermission>;
-  showNav$: Observable<boolean>;
+  showNav: boolean;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
+  isNavabarToggled = false;
+  subscriptionShowNav: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -133,7 +135,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$).pipe(
+    this.subscriptionShowNav = combineLatest(this.browserService.lgScreen$, routerEvents$).pipe(
       mergeMap(([isDesktopScreen, url]) => 
       form$.pipe(
         map(form =>
@@ -146,7 +148,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         )
       )
       )
-    )
+    ).subscribe(response => {
+      this.showNav = response;
+    })
     
 
     
@@ -166,6 +170,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
+    this.subscriptionShowNav.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -249,6 +254,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   trackByLabel(index, link) {
     return link.label;
+  }
+
+  navBarToggled(event){
+    this.isNavabarToggled = event;  
+    this.showNav = event; 
   }
 
 

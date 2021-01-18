@@ -1,7 +1,8 @@
 <ng-container *ngIf="vm$ | async as vm; else loader">
   <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent"
-  [open]="(showNav$ | async)"
+  [open]="showNav"
   [noPrint]="isPrintPage$ | async"
+  (toggled)="navBarToggled($event)"
   >
     <nav>
       <h5>
@@ -31,7 +32,11 @@
 </ng-template>
 
 <ng-template #sidebarLinks let-navLinks>
-  <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" [link]="link.link | localize" routerLinkActive [linkParams]="link.linkParams" [active]="link.active">
+  <lu-sidebar-link *ngFor="let link of navLinks; trackBy: trackByLabel" 
+  [link]="link.link | localize" 
+  routerLinkActive [linkParams]="link.linkParams" 
+  [active]="link.active"
+  >
     {{ link.label | translate }}
     <ng-container [ngSwitch]="link.content?.template">
       <ng-container *ngSwitchCase="'badge'">
