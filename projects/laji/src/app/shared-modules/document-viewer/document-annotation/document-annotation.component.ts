@@ -363,25 +363,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   next() {
     this.isNavigation = true;
     this.indexPagination += 1;
-    this.document = this.result[this.indexPagination].document;
-    this.uri = this.result[this.indexPagination].document.documentId;
-    this.highlight = this.result[this.indexPagination].unit.unitId;
-    this.showShortcuts = false;
-    this.cd.markForCheck();
-    this.updateDocument();
+    this.move();
   }
-
 
   previous() {
       this.isNavigation = true;
       this.indexPagination -= 1;
-      this.document = this.result[this.indexPagination].document;
-      this.uri = this.result[this.indexPagination].document.documentId;
-      this.highlight = this.result[this.indexPagination].unit.unitId;
-      this.showShortcuts = false;
-      this.cd.markForCheck();
-      this.updateDocument();
-
+      this.move();
   }
 
   setIndexPagination() {
@@ -440,6 +428,15 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
        this.closeDocument();
       }
 
+  }
+
+  private move() {
+    this.document = this.result[this.indexPagination].document;
+    this.uri = this.result[this.indexPagination].document.documentId;
+    this.highlight = this.result[this.indexPagination].unit.unitId;
+    this.showShortcuts = false;
+    this.cd.markForCheck();
+    this.updateDocument();
   }
 
 }

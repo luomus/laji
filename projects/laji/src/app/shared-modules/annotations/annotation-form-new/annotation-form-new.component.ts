@@ -250,36 +250,20 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   copyCurrentTaxon() {
     if (this.unit.linkings && (this.unit.linkings.originalTaxon || this.unit.linkings.taxon)) {
-      if (this.unit.linkings.taxon) {
-        this.annotation.identification.taxon = this.getLangCurrentTaxon(
-          this.unit.linkings.taxon.vernacularName, this.unit, this.translate.currentLang
-          );
-          this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.taxon.id);
-          this.taxonomy = {
-            id: this.annotation.identification.taxonID,
-            qname: null,
-            cursiveName: true,
-            vernacularName: this.unit.linkings.taxon.vernacularName,
-            scientificName: this.unit.linkings.taxon.scientificName,
-            scientificNameAuthorship: this.unit.linkings.taxon.scientificNameAuthorship,
-          };
-          this.cd.detectChanges();
-      } else {
-        this.annotation.identification.taxon = this.getLangCurrentTaxon(
-          this.unit.linkings.originalTaxon.vernacularName, this.unit, this.translate.currentLang
-          );
-          this.annotation.identification.taxonID =  IdService.getId(this.unit.linkings.originalTaxon.id);
-          this.taxonomy = {
-            id: this.annotation.identification.taxonID,
-            qname: null,
-            cursiveName: true,
-            vernacularName: this.unit.linkings.originalTaxon.vernacularName,
-            scientificName: this.unit.linkings.originalTaxon.scientificName,
-            scientificNameAuthorship: this.unit.linkings.originalTaxon.scientificNameAuthorship,
-          };
-          this.cd.detectChanges();
-          this.formAnnotation.control.markAsDirty();
-      }
+      const taxon = this.unit.linkings.taxon || this.unit.linkings.originalTaxon;
+
+      this.annotation.identification.taxon = this.getLangCurrentTaxon(taxon.vernacularName, this.unit, this.translate.currentLang);
+      this.annotation.identification.taxonID = IdService.getId(taxon.id);
+      this.taxonomy = {
+        id: this.annotation.identification.taxonID,
+        qname: null,
+        cursiveName: true,
+        vernacularName: taxon.vernacularName,
+        scientificName: taxon.scientificName,
+        scientificNameAuthorship: taxon.scientificNameAuthorship,
+      };
+      this.cd.detectChanges();
+      this.formAnnotation.control.markAsDirty();
       this.inputName = 'opinion';
       this.inputType = 'blur';
     } else {

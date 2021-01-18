@@ -51,19 +51,8 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<InformalTaxonGroup>>(path, {params: queryParameters});
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
   /**
@@ -99,19 +88,8 @@ export class InformalTaxonGroupApi {
     const path = this.basePath + '/informal-taxon-groups/roots';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<InformalTaxonGroup>>(path, {params: queryParameters});
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
   /**
@@ -131,19 +109,8 @@ export class InformalTaxonGroupApi {
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetChildren.');
     }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<InformalTaxonGroup>>(path, {params: queryParameters});
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
   /**
@@ -176,7 +143,7 @@ export class InformalTaxonGroupApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public informalTaxonGroupGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Array<InformalTaxonGroup>>> {
+  public informalTaxonGroupGetParentLevel(id: string, lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/{id}/parentLevel'
         .replace('{' + 'id' + '}', String(id));
 
@@ -185,19 +152,8 @@ export class InformalTaxonGroupApi {
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetParentLevel.');
     }
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<Array<InformalTaxonGroup>>>(path, {params: queryParameters});
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
   /**
@@ -209,21 +165,9 @@ export class InformalTaxonGroupApi {
    */
   public informalTaxonGroupGetTree(lang?: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<InformalTaxonGroup>> {
     const path = this.basePath + '/informal-taxon-groups/tree';
-
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
-    if (lang !== undefined) {
-      queryParameters['lang'] = lang;
-    }
 
-    if (page !== undefined) {
-      queryParameters['page'] = page;
-    }
-
-    if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize;
-    }
-
-    return this.http.get<PagedResult<InformalTaxonGroup>>(path, {params: queryParameters});
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
   }
 
   /**
@@ -243,6 +187,11 @@ export class InformalTaxonGroupApi {
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling informalTaxonGroupGetWithSiblings.');
     }
+
+    return this.httpGet<InformalTaxonGroup>(path, queryParameters, lang, page, pageSize);
+  }
+
+  private httpGet<T>(path: string, queryParameters: {}, lang: string, page: string, pageSize: string) {
     if (lang !== undefined) {
       queryParameters['lang'] = lang;
     }
@@ -255,7 +204,6 @@ export class InformalTaxonGroupApi {
       queryParameters['pageSize'] = pageSize;
     }
 
-    return this.http.get<PagedResult<InformalTaxonGroup>>(path, {params: queryParameters});
+    return this.http.get<PagedResult<T>>(path, { params: queryParameters });
   }
-
 }
