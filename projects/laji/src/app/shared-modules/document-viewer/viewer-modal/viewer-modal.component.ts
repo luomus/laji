@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { DocumentViewerFacade, IViewerState } from '../document-viewer.facade';
 import { Observable, Subscription } from 'rxjs';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { tap } from 'rxjs/operators';
 import { Document } from '../../../shared/model/Document';
 
@@ -10,29 +10,47 @@ import { Document } from '../../../shared/model/Document';
   templateUrl: './viewer-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewerModalComponent implements OnInit, OnDestroy {
+export class ViewerModalComponent implements OnDestroy {
 
   publicityRestrictionsPublic = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   publicityRestrictionsPrivate = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
 
+  @ViewChild('documentModal', { static: false }) public modal: TemplateRef<any>;
+  readonly vm$: Observable<IViewerState>;
 
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
-  vm$: Observable<IViewerState>;
+  private modalRef: BsModalRef;
+  private subHidden: Subscription;
+  private open: boolean;
+  private annotationOpen: boolean;
 
-  private subModal: Subscription;
+  constructor(
+    private viewerFacade: DocumentViewerFacade,
+    private modalService: BsModalService
+  ) {
+    this.vm$ = this.viewerFacade.vm$.pipe(
+      tap(vm => {
+        if (vm.showModal === this.open && vm.openAnnotation === this.annotationOpen) {
+          return;
+        }
+        if (vm.showModal && !this.open) {
+          this.modalRef = this.modalService.show(this.modal, { keyboard: false });
+          this.subHidden = this.modalRef.onHidden.subscribe(() => this.onModalHide());
+        } else if (!vm.showModal && this.modalRef) {
+          this.modalRef.hide();
+        }
+        if (this.modalRef) {
+          this.modalRef.setClass(vm.openAnnotation ? 'modal-annotation' : 'modal-lg');
+        }
 
-  constructor(private viewerFacade: DocumentViewerFacade) { }
-
-  ngOnInit() {
-    this.vm$ = this.viewerFacade.vm$;
-    this.subModal = this.viewerFacade.showModal$.pipe(
-      tap((visible) => visible ? this.modal.show() : this.modal.hide())
-    ).subscribe();
+        this.open = vm.showModal;
+        this.annotationOpen = vm.openAnnotation;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.subModal) {
-      this.subModal.unsubscribe();
+    if (this.subHidden) {
+      this.subHidden.unsubscribe();
     }
   }
 
@@ -40,11 +58,7 @@ export class ViewerModalComponent implements OnInit, OnDestroy {
     this.viewerFacade.close();
   }
 
-  pnModalShow() {
-
-  }
-
-  closeModal(event) {
+  closeModal() {
     this.viewerFacade.close();
   }
 }
