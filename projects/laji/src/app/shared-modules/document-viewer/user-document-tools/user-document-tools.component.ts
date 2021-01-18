@@ -96,9 +96,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.modalService.onHide.subscribe((e) => {
-      const body = document.body;
       if (!this.router.url.includes('view')) {
-        body.classList.add('modal-open-after');
         this.modalIsOpen = false;
         this.documentToolsService.emitChildEvent(false);
         this.cd.detectChanges();
@@ -135,10 +133,6 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   closeModal(event) {
     if (this.modalRef) {
       this.modalRef.hide();
-      if (!this.router.url.includes('view')) {
-      const body = document.body;
-      body.classList.add('modal-open-after');
-      }
     }
   }
 
