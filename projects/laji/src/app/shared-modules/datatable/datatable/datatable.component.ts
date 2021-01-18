@@ -252,13 +252,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   refreshTable() {
-    if (this.platformService.isServer) {
+    if (this.platformService.isServer || !this.datatable) {
       return;
     }
-    if (this._rows) {
-      this._rows = [...this._rows];
-      this.changeDetectorRef.markForCheck();
-    }
+    this.datatable.bodyComponent.onBodyScroll({scrollXPos: 0, scrollYPos: 0});
   }
 
   onResize(event) {

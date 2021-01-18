@@ -75,7 +75,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   mode: 'all' | 'finnish' = 'all';
   loadedModes: LoadedElementsStore = new LoadedElementsStore(['all', 'finnish']);
 
-  lastTabActive = 'list';
+  activeTab = 'list';
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
 
   hasMonthDayData: boolean;
@@ -103,7 +103,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     } else {
       this.mode = 'all';
       this.loadedModes.load('all');
-      this.lastTabActive = value;
+      this.activeTab = value;
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
@@ -137,7 +137,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   reloadTabs() {
     this.loadedTabs.reset();
-    this.loadedTabs.load(this.lastTabActive);
+    this.loadedTabs.load(this.activeTab);
   }
 
   pickLocation(e) {
