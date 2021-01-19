@@ -56,9 +56,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
-  isNavabarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  isNavabarToggled$ = this.isNavabarToggledSubject.asObservable();
-  subscriptionShowNav: Subscription;
+  isNavbarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  isNavbarToggled$: any;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -136,12 +135,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.isNavabarToggled$).pipe(
-      mergeMap(([isDesktopScreen, url, isNavbarToggled]) => 
+    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.isNavbarToggledSubject.asObservable()).pipe(
+      mergeMap(([isDesktopScreen, url, isNavbarToggled]) =>
       form$.pipe(
         map(form =>
           !(
-            (!form.options?.useNamedPlaces && url.match(/\/form$/))
+            (!form.options?.useNamedPlaces && url.match(/\/form$/) && !isNavbarToggled)
             || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
             || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
             || (!isDesktopScreen && !isNavbarToggled)
@@ -149,8 +148,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         )
       )
       )
-    )
-    
+    );
+
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
     this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
@@ -166,7 +165,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
-    this.subscriptionShowNav.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -252,12 +250,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     return link.label;
   }
 
-  navBarToggled(event){
-    this.isNavabarToggledSubject.next(event);  
+  navBarToggled(event) {
+    this.isNavbarToggledSubject.next(event);
   }
 
-  clickedSidebarLink(){
-    this.isNavabarToggledSubject.next(false);  
+  clickedSidebarLink() {
+    this.isNavbarToggledSubject.next(false);
   }
 
 
