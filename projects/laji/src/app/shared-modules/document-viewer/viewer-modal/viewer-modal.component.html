@@ -1,13 +1,8 @@
-<div class="modal fade" bsModal #documentModal="bs-modal"
-     (onHidden)="onModalHide()"
-     (onShow)="pnModalShow()"
-     [config]="{ keyboard: false}"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div *ngIf="vm$ | async; let vm" class="modal-dialog"
-       [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-xl': vm.openAnnotation}">
+<ng-container *ngIf="vm$ | async; let vm">
+  <ng-template #documentModal>
     <div class="modal-content">
       <div class="modal-body" *ngIf="vm.document">
-        <lu-button-round (click)="documentModal.hide()" class="pull-right" role="neutral">
+        <lu-button-round (click)="closeModal()" class="pull-right" role="neutral">
           <lu-icon type="close"></lu-icon>
         </lu-button-round>
         <div class="clear"></div>
@@ -19,7 +14,7 @@
                                   [openAnnotation]="vm.openAnnotation"
                                   [identifying]="vm.identifying"
                                   [useWorldMap]="vm.useWorldMap"
-                                  (close)="closeModal($event)"
+                                  (close)="closeModal()"
         >
         </laji-document-annotation>
         <ng-template #normal>
@@ -31,15 +26,15 @@
             [openAnnotation]="vm.openAnnotation"
             [identifying]="vm.identifying"
             [useWorldMap]="vm.useWorldMap"
-            (close)="closeModal($event)"
+            (close)="closeModal()"
           >
           </laji-document>
         </ng-template>
         <ng-template #local>
-          <laji-document-local [document]="vm.document" (close)="closeModal($event)">
+          <laji-document-local [document]="vm.document" (close)="closeModal()">
           </laji-document-local>
         </ng-template>
       </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+</ng-container>
