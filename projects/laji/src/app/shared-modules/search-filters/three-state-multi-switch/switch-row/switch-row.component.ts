@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
+export enum CheckboxType {
+  basic = 'basic',
+  excluded = 'excluded',
+  partial = 'partial'
+}
+
 @Component({
   selector: 'laji-switch-row',
   templateUrl: './switch-row.component.html',
@@ -17,7 +23,7 @@ export class SwitchRowComponent implements OnChanges {
   @Output() update = new EventEmitter<{id: string, value: any}>();
 
   state;
-  typeCheckbox: number;
+  typeCheckbox: CheckboxType;
 
   constructor() { }
 
@@ -32,7 +38,7 @@ export class SwitchRowComponent implements OnChanges {
     } else {
       this.state = undefined;
     }
-    this.typeCheckbox = 1;
+    this.typeCheckbox = CheckboxType.excluded;
   }
 
   updateValue() {

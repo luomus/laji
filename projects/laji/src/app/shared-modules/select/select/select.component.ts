@@ -51,6 +51,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
+  @Input() class: string[] = ['subCategoriesOptions', 'subCategoriesContainer', 'subMenu'];
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: (SelectedOptions|SelectOptions)[] = [];
@@ -93,7 +94,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
 
   toggleValue(id: string, event) {
-    if (this.checkboxType === 2) {
+    if (this.checkboxType === CheckboxType.partial) {
       const newEvent = this.selectedOptions === undefined || this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)]?.value !== true ?
       true : false;
       if (this.selectedOptions.findIndex(option => option.id === id) === -1 ||
@@ -117,7 +118,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
-      if (this.checkboxType !== 0) {
+      if (this.checkboxType !== CheckboxType.basic) {
        const tmpSelected = this.selected.filter((v: SelectedOptions) => v.id !== id);
        this.selected =  [...tmpSelected, {id: id, value: event}];
       } else {
@@ -136,12 +137,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   remove(id: string, event) {
-    if (this.checkboxType === 2) {
+    if (this.checkboxType === CheckboxType.partial) {
       if (this.selected[this.selected.findIndex((x: SelectedOptions) => x.id === id && x.value !== true)]) {
         return this.add(id, true);
       }
     }
-    this.selected = this.checkboxType === 2 ?
+    this.selected = this.checkboxType === CheckboxType.partial ?
     this.selected.filter((value: SelectedOptions) => value.id !== id) : this.selected.filter(value => value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);
@@ -228,7 +229,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.unselectedOptions = [];
     this.options.map(option => {
-      if (this.checkboxType === 2) {
+      if (this.checkboxType === CheckboxType.partial) {
        selected.map(item => {
          if (item.id === option.id) {
            this.selectedOptions.push({'id': option.id, 'value': item.value});

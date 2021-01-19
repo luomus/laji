@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 
 export enum CheckboxType {
-  basic,
-  excluded,
-  partial
+  basic = 'basic',
+  excluded = 'excluded',
+  partial = 'partial'
 }
 
 
@@ -34,15 +34,15 @@ export class CheckboxComponent {
     } else if (value === false) {
       this.checkbox.nativeElement.indeterminate = true;
       switch (this.checkboxType) {
-        case 0: {
+        case CheckboxType.basic: {
            this.stateClass = 'clear';
            break;
         }
-        case 1: {
+        case CheckboxType.excluded: {
           this.stateClass = 'excluded';
            break;
         }
-        case 2: {
+        case CheckboxType.partial: {
           this.stateClass = 'negative';
            break;
         }
@@ -59,13 +59,13 @@ export class CheckboxComponent {
 
   changeValue() {
     let valueEmitted;
-    if (this.checkboxType === 2) {
+    if (this.checkboxType === CheckboxType.partial) {
       if (this._value === true) {
         valueEmitted = undefined;
       } else {
         valueEmitted = true;
       }
-    } else if (this.checkboxType === 1) {
+    } else if (this.checkboxType === CheckboxType.excluded) {
       if (this._value === true) {
         valueEmitted = false;
       } else if (this._value === false) {
