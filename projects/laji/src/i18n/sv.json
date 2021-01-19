@@ -1738,5 +1738,6 @@
   "np.linker.title": "Namngiven platslänkning",
   "np.linker.noAccess": "Du har inte tillgång till dokumentet.",
   "np.linker.npMissing": "Namngiven plats saknas",
-  "np.linker.start": "Länka dokumentet till en namngiven plats"
+  "np.linker.start": "Länka dokumentet till en namngiven plats",
+  "np.linker.doLink": "Länka"
 }

@@ -1738,5 +1738,6 @@
   "np.linker.title": "Named place linking",
   "np.linker.noAccess": "You don't have access to the document.",
   "np.linker.npMissing": "Named place missing",
-  "np.linker.start": "Link the document to a named place"
+  "np.linker.start": "Link the document to a named place",
+  "np.linker.doLink": "Link"
 }

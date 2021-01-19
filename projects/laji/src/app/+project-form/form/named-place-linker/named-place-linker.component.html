@@ -14,7 +14,7 @@
                        (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
                        (tagsChange)="onTagsChange($event)"
                        (use)="use($event)"
-                       [useLabel]="'Linkitä'"
+                       [useLabel]="'np.linker.doLink' | translate"
                        [displayHeader]="false"
                        [readonly]="true"
                        [useDisabled]="loading || _linked"
