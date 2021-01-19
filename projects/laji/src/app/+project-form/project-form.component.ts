@@ -4,7 +4,7 @@ import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, Observable, of, Subscription } from 'rxjs';
+import { combineLatest, merge, Observable, of, Subscription, from as ObservableFrom, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from './project-form.service';
@@ -52,11 +52,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ViewModel>;
   formPermissions$: Observable<FormPermission>;
-  showNav: boolean;
+  showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
-  isNavabarToggled = false;
+  isNavabarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  isNavabarToggled$ = this.isNavabarToggledSubject.asObservable();
   subscriptionShowNav: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
@@ -135,26 +136,21 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.subscriptionShowNav = combineLatest(this.browserService.lgScreen$, routerEvents$).pipe(
-      mergeMap(([isDesktopScreen, url]) => 
+    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.isNavabarToggled$).pipe(
+      mergeMap(([isDesktopScreen, url, isNavbarToggled]) => 
       form$.pipe(
         map(form =>
           !(
             (!form.options?.useNamedPlaces && url.match(/\/form$/))
             || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
             || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
-            || (!isDesktopScreen)
+            || (!isDesktopScreen && !isNavbarToggled)
           )
         )
       )
       )
-    ).subscribe(response => {
-      this.showNav = response;
-    })
+    )
     
-
-    
-
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
     this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
@@ -257,8 +253,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   navBarToggled(event){
-    this.isNavabarToggled = event;  
-    this.showNav = event; 
+    this.isNavabarToggledSubject.next(event);  
+  }
+
+  clickedSidebarLink(){
+    this.isNavabarToggledSubject.next(false);  
   }
 
 
