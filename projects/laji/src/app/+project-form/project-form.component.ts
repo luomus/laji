@@ -57,7 +57,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
   isNavbarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  isNavbarToggled$: any;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
