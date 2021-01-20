@@ -99,7 +99,7 @@ export class FormService {
   getParticipants(form: Form.List) {
     return this.http.get(
       `${this.basePath}/${LajiApi.Endpoints.forms}/${form.id}/participants`,
-    {params: {personToken: this.userService.getToken()}}
+    {params: {personToken: this.userService.getToken()}, headers: {timeout: '240000'}}
     ) as Observable<Participant[]>;
   }
 
