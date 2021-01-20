@@ -4,7 +4,7 @@
     <ng-container *ngIf="!useFilter; else multiWithFilter">
       <ng-container *ngIf="!open">
         <span class="item" *ngFor="let option of selectedOptions; trackBy: track">
-          <label class="lj-item selected" [ngClass]="class.length > 0 ? class[0] : ''" (click)="labelClick($event)">
+          <label class="lj-item selected" [ngClass]="classes['options']" (click)="labelClick($event)">
             <ng-container *ngIf="checkboxType === 'basic' else checkboxSubCategoriesGlobal">
               <laji-checkbox [value]="true" (valueChange)="remove(option.id, $event)"></laji-checkbox> {{ option.value}}
             </ng-container>
@@ -15,10 +15,10 @@
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </span>
       </ng-container>
-      <div *ngIf="open" class="lj-item-container" [ngClass]="class.length > 0 ? class[1] : ''">
+      <div *ngIf="open" class="lj-item-container" [ngClass]="classes['optionContainer']">
         <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track" style="position: relative;">
-          <label class="lj-item" [ngClass]="class.length > 0 ? class[0] : ''" (click)="labelClick($event)">
+          <label class="lj-item" [ngClass]="classes['options']" (click)="labelClick($event)">
             <ng-container *ngIf="checkboxType === 'basic' else checkboxSubCategoriesGlobal">
               <laji-checkbox [value]="selectedOptions | includes:option" (valueChange)="toggleValue(option.id, $event)"></laji-checkbox> {{ option.value}}
             </ng-container>
@@ -32,7 +32,7 @@
     </ng-container>
     <ng-template #multiWithFilter>
       <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
-        <label class="lj-item selected" [ngClass]="class.length > 0 ? class[2] : ''" (click)="labelClick($event)">
+        <label class="lj-item selected" [ngClass]="classes['menuContainer']" (click)="labelClick($event)">
           <laji-checkbox [value]="true" (valueChange)="remove(option.id, $event)"></laji-checkbox>{{option.value}}
         </label>
         <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>

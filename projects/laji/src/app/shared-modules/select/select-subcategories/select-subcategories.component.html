@@ -12,7 +12,6 @@
   [disabled]="false"
   [loading]="options['GLOBAL'] === null"
   [checkboxType] = "'partial'"
-  [class]="[]"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
   
@@ -34,6 +33,7 @@
       [loading]="options[subCategory] === null"
       [checkboxType] = "'basic'"
       (selectedChange)="refreshValue($event, subCategory)"
+      [classes]="{options: 'subCategoriesOptions', optionContainer: 'subCategoriesContainer', menuContainer: 'subMenu'}"
     ></laji-select>
 
   </ng-container>

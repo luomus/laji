@@ -46,12 +46,13 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<(SelectedOptions|string)[]|string>();
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
-  @Input() class: string[] = ['subCategoriesOptions', 'subCategoriesContainer', 'subMenu'];
+  @Input() classes: {options: string, optionContainer: string, menuCountainer: string} | {} = {};
+
+  @Output() selectedChange = new EventEmitter<(SelectedOptions|string)[]|string>();
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: (SelectedOptions|SelectOptions)[] = [];
@@ -59,7 +60,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
-  globalValues: any;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -94,17 +94,18 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
 
   toggleValue(id: string, event) {
+    const index = this.selectedOptions.findIndex(option => option.id === id);
     if (this.checkboxType === CheckboxType.partial) {
-      const newEvent = this.selectedOptions === undefined || this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)]?.value !== true ?
+      const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.value !== true ?
       true : false;
       if (this.selectedOptions.findIndex(option => option.id === id) === -1 ||
-          this.selectedOptions[this.selectedOptions.findIndex(option => option.id === id)].value !== true) {
+          this.selectedOptions[index].value !== true) {
         this.add(id, newEvent);
       } else {
         this.remove(id, newEvent);
       }
     } else {
-      if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
+      if (index === -1) {
         this.add(id, event);
       } else {
         this.remove(id, event);
