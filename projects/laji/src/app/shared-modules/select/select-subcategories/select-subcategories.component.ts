@@ -81,7 +81,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         this.filterBy = value;
         this.cd.markForCheck();
       });
-
   }
 
   ngOnChanges() {

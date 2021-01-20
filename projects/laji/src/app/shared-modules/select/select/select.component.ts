@@ -55,8 +55,8 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Output() selectedChange = new EventEmitter<(SelectedOptions|string)[]|string>();
   @ViewChild('filter') filter: ElementRef;
 
-  selectedOptions: (SelectedOptions|SelectOptions)[] = [];
-  unselectedOptions: (SelectedOptions|SelectOptions)[] = [];
+  selectedOptions: SelectOptions[] = [];
+  unselectedOptions: SelectOptions[] = [];
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
@@ -96,10 +96,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   toggleValue(id: string, event) {
     const index = this.selectedOptions.findIndex(option => option.id === id);
     if (this.checkboxType === CheckboxType.partial) {
-      const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.value !== true ?
+      const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.checkboxValue !== true ?
       true : false;
       if (this.selectedOptions.findIndex(option => option.id === id) === -1 ||
-          this.selectedOptions[index].value !== true) {
+          this.selectedOptions[index].checkboxValue !== true) {
         this.add(id, newEvent);
       } else {
         this.remove(id, newEvent);
@@ -225,6 +225,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.selectedOptions = [];
     if (!selected || selected.length === 0) {
+      this.options.map(option => {
+        option.checkboxValue = this.checkboxType === 'basic' ? false : undefined;
+      });
       this.unselectedOptions = this.options;
       return;
     }
@@ -233,16 +236,16 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       if (this.checkboxType === CheckboxType.partial) {
        selected.map(item => {
          if (item.id === option.id) {
-           this.selectedOptions.push({'id': option.id, 'value': item.value});
+           this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.value});
          } else {
-           this.unselectedOptions.push({'id': option.id, 'value': undefined});
+           this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.value});
          }
        });
       } else {
         if (selected.includes(option.id)) {
-          this.selectedOptions.push(option);
+          this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': true});
         } else {
-          this.unselectedOptions.push(option);
+          this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': false});
         }
       }
 
