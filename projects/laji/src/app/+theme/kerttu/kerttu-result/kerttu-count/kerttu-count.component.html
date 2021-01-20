@@ -1,3 +1,3 @@
 {{ label }}:<br>
-<strong class="count-value">{{ count }}</strong><br>
+<strong class="count-value" [innerHtml]="count | formattedNumber:'&nbsp;'"></strong><br>
 <ng-container *ngIf="additionalDescription">{{ additionalDescription }}</ng-container>
