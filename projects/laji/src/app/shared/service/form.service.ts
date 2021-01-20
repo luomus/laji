@@ -43,7 +43,7 @@ export class FormService {
     return !id || (id && id.indexOf(FormService.tmpNs + ':') === 0);
   }
 
-  getForm(formId: string, lang = this.currentLang): Observable<Form.SchemaForm> {
+  getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm> {
     if (!formId) {
       return ObservableOf(null);
     }
@@ -71,7 +71,7 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang = this.currentLang): Observable<Form.List[]> {
+  getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
