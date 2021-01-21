@@ -24,6 +24,7 @@ import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
 import { LajiFormUtil } from './laji-form-util.service';
 import { PersonApi } from '../../shared/api/PersonApi';
+import { Global } from '../../../environments/global';
 
 export enum FormError {
   ok,
@@ -420,16 +421,16 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private addCollectionID(form: Form.SchemaForm, data: Document = {}): Observable<Document> {
-    return !form.schema.properties.keywords
-      ? of(data)
-      : this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+    return form.id === Global.forms.privateCollection
+      ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
           ? {
             ...data,
             keywords: [...(data.keywords || []), profile.personalCollectionIdentifier.trim()]
           }
           : data
-      ));
+      ))
+      : of(data);
   }
 
   getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
