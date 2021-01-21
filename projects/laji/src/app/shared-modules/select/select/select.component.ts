@@ -42,7 +42,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: (string|SelectedOptions)[] = [];
+  @Input() selected: (string|SelectOptions)[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -52,7 +52,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() checkboxType = CheckboxType.basic;
   @Input() classes: {options: string, optionContainer: string, menuCountainer: string} | {} = {};
 
-  @Output() selectedChange = new EventEmitter<(SelectedOptions|string)[]|string>();
+  @Output() selectedChange = new EventEmitter<(SelectOptions|string)[]|string>();
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
@@ -119,9 +119,16 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
+      let tmpOption;
+      let tmpOptionIndex;
       if (this.checkboxType !== CheckboxType.basic) {
-       const tmpSelected = this.selected.filter((v: SelectedOptions) => v.id !== id);
-       this.selected =  [...tmpSelected, {id: id, value: event}];
+        tmpOption = this.options.filter((item: SelectOptions) => item.id === id);
+        tmpOption[0].checkboxValue = true;
+        tmpOptionIndex = this.selected.findIndex((item: SelectOptions) => item.id === tmpOption[0].id);
+        if (tmpOptionIndex > -1) {
+          this.selected[tmpOptionIndex]['checkboxValue'] = true;
+        }
+        this.selected = tmpOptionIndex === -1 ? [...this.selected, ...tmpOption] : this.selected;
       } else {
         this.selected = [...this.selected, id];
       }
@@ -138,13 +145,9 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   remove(id: string, event) {
-    if (this.checkboxType === CheckboxType.partial) {
-      if (this.selected[this.selected.findIndex((x: SelectedOptions) => x.id === id && x.value !== true)]) {
-        return this.add(id, true);
-      }
-    }
-    this.selected = this.checkboxType === CheckboxType.partial ?
-    this.selected.filter((value: SelectedOptions) => value.id !== id) : this.selected.filter(value => value !== id);
+    this.selected = this.checkboxType === CheckboxType.partial ? 
+    this.selected.filter((item: SelectOptions) => item.id !== id) : this.selected.filter(value => value !== id);
+
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
@@ -232,15 +235,18 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.unselectedOptions = [];
+    const countObj = this.selected !== undefined ?
+    this.selected.some((item: any) => item !== undefined && (item.checkboxValue === true || item.checkboxValue === false)) : false;
+
     this.options.map(option => {
-      if (this.checkboxType === CheckboxType.partial) {
-       selected.map(item => {
-         if (item.id === option.id) {
-           this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.value});
-         } else {
-           this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.value});
-         }
-       });
+      if (countObj) {
+        selected.map(item => {
+          if (item.id === option.id) {
+            this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+          } else {
+            this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+          }
+        });
       } else {
         if (selected.includes(option.id)) {
           this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': true});

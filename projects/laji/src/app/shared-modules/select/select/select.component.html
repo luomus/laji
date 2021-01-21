@@ -17,7 +17,7 @@
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track" style="position: relative;">
           <label class="lj-item" [ngClass]="classes['options']" (click)="labelClick($event)">
             <ng-container>
-              <laji-checkbox [checkboxType]="checkboxType" [value]="(selectedOptions | includesMultiState:option:'id':'checkboxValue')" (valueChange)="toggleValue(option.id, $event)"></laji-checkbox> {{ option.value}}
+              <laji-checkbox [checkboxType]="checkboxType" [value]="(selectedOptions | includesMultiState:option:'id':'checkboxValue')" (valueChange)="toggleValue(option.id, $event)"></laji-checkbox> {{ option.value}} {{option.checkboxValue}}
             </ng-container>
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
@@ -66,7 +66,7 @@
           <laji-checkbox [value]="selectedOptions | includes:option" (valueChange)="toggleValue(option.id, $event)"></laji-checkbox> {{ option.value}}
         </ng-container>
         <ng-template #checkboxSubCategoriesGlobal>
-          <laji-checkbox [checkboxType]="checkboxType" (valueChange)="toggleValue(option.id, $event)"  [value]="selectedOptions | includesMultiState: option : 'id'"></laji-checkbox> {{option.value}} 
+          <laji-checkbox [checkboxType]="checkboxType" (valueChange)="toggleValue(option.id, $event)"  [value]="selectedOptions | includesMultiState: option : 'id': 'checkboxValue'"></laji-checkbox> {{option.value}} 
         </ng-template>
       </label>
       <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>

@@ -254,18 +254,29 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   for (const i in this.selected) {
     this.selectedOptions[i] = [];
     this.unselectedOptions[i] = [];
+    const countObj = this.selected[i].filter(item => item.checkboxValue === true).length;
     this.options[i].map(option => {
-      if (selected[i].includes(option.id)) {
-        if (!this.selectedOptions[i]) {
-          this.selectedOptions[i] = option.id;
-        } else {
-          this.selectedOptions[i].push(option.id);
-        }
+      if (countObj > 0) {
+        selected[i].map(item => {
+          if (item.id === option.id) {
+            this.selectedOptions[i].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+          } else {
+            this.unselectedOptions[i].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+          }
+        });
       } else {
-        if (!this.unselectedOptions[i]) {
-          this.unselectedOptions[i] = option.id;
+        if (selected[i].includes(option.id)) {
+          if (!this.selectedOptions[i]) {
+            this.selectedOptions[i] = option.id;
+          } else {
+            this.selectedOptions[i].push(option.id);
+          }
         } else {
-          this.unselectedOptions[i].push(option.id);
+          if (!this.unselectedOptions[i]) {
+            this.unselectedOptions[i] = option.id;
+          } else {
+            this.unselectedOptions[i].push(option.id);
+          }
         }
       }
     });
@@ -343,22 +354,28 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           (splitParam && splitParam.includes(options[subCategories[i]][j].id))) {
             if (!this.selectedOptions[subCategories[i]] && !this.tmpSelectedOption[subCategories[i]]) {
               this.selectedOptions[subCategories[i]] = subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id;
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
+              : options[subCategories[i]][j].id;
               this.tmpSelectedOption[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id;
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
+              : options[subCategories[i]][j].id;
             } else {
               this.selectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id);
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
+              : options[subCategories[i]][j].id);
               this.tmpSelectedOption[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': true} : options[subCategories[i]][j].id);
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
+              : options[subCategories[i]][j].id);
             }
           } else {
             if (!this.unselectedOptions[subCategories[i]]) {
               this.unselectedOptions[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': undefined} : options[subCategories[i]][j].id;
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': undefined}
+              : options[subCategories[i]][j].id;
             } else {
               this.unselectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': undefined} : options[subCategories[i]][j].id);
+              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': undefined}
+              : options[subCategories[i]][j].id);
             }
           }
 
@@ -378,12 +395,16 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         });
 
         if (checkMatches > 0) {
-          this.selectedOptions['GLOBAL'].push({'id': option.id, 'value': checkMatches === subCategories.length ?  true : false});
-          this.tmpSelectedOption['GLOBAL'].push({'id': option.id, 'value': checkMatches === subCategories.length ?  true : false});
+          this.selectedOptions['GLOBAL'].push(
+            {'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': checkMatches === subCategories.length ?
+            true : false});
+          this.tmpSelectedOption['GLOBAL'].push(
+            {'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': checkMatches === subCategories.length ?
+            true : false});
         }
 
         if (checkMatches === 0) {
-          this.unselectedOptions['GLOBAL'].push({'id': option.id, 'value': undefined});
+          this.unselectedOptions['GLOBAL'].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': undefined});
         }
       });
     }
@@ -513,7 +534,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
             categoriesExcludeGlobal.forEach(item => {
                 if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(option.id) === -1 &&
                   this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) > -1 &&
-                  this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id)]?.value === true) {
+                  this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id)]?.checkboxValue === true) {
                   this.selectedOptions[item].push(option.id);
                   this.selected[item].push(option.id);
                 }
@@ -534,24 +555,24 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
         if (this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []) {
           this.selectedOptions['GLOBAL'].push(
-            {id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+            {id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
               true : (countNoGlobal === 0 ? undefined : false)
             }
           );
         } else {
-          this.selectedOptions['GLOBAL'] = [{id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+          this.selectedOptions['GLOBAL'] = [{id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
             true : (countNoGlobal === 0 ? undefined : false)
           }];
         }
 
         if (this.selected['GLOBAL'] !== undefined && this.selected['GLOBAL'] !== []) {
           this.selected['GLOBAL'].push(
-            {id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+            {id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
               true : (countNoGlobal === 0 ? undefined : false)
             }
           );
         } else {
-          this.selected['GLOBAL'] = [{id: option.id, value: countNoGlobal === categoriesExcludeGlobal.length ?
+          this.selected['GLOBAL'] = [{id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
             true : (countNoGlobal === 0 ? undefined : false)
           }];
         }

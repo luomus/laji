@@ -654,8 +654,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private keepGlobalKey(array) {
     let result = [];
 
-    if (array.filter(item => item.value === true).length > 0) {
-      return result = array.filter(item => item.value === true).map(a => a.id);
+    if (array.filter(item => item.checkboxValue === true).length > 0) {
+      return result = array.filter(item => item.checkboxValue === true).map(a => a.id);
     } else {
       return result = array;
     }
