@@ -11,7 +11,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Util } from '../../shared/service/util.service';
-import { DocumentService } from '../own-submissions/service/document.service';
+import { DocumentService, Readonly } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
@@ -35,17 +35,10 @@ export enum FormError {
   noAccessToDocument
 }
 
-export enum Readonly {
-  noEdit,
-  false,
-  true
-}
-
 export interface ISuccessEvent {
   success: boolean;
   document: Document;
   form: Form.SchemaForm;
-  namedPlace?: NamedPlace;
 }
 
 export interface FormWithData extends Form.SchemaForm {
@@ -121,7 +114,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private formService: FormService,
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
-    private documentStorage: DocumentStorage
+    private documentStorage: DocumentStorage,
   ) {
     this.dataSub = this.dataChange$.pipe(
       auditTime(3000),
@@ -423,14 +416,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
-    if (rights.admin) {
-      return Readonly.false;
-    }
-    if (person && person.id && data && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
-      return Readonly.noEdit;
-    }
-    return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
+  getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
+    return this.documentService.getReadOnly(data, rights, person);
   }
 
   private currentDateTime() {

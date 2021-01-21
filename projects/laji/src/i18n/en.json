@@ -1729,5 +1729,15 @@
   "whatsNew.acknowledge": "Thank you for the information!",
   "whatsNew.message": "laji.fi is a test portal for Finnish Biodiversity Information Facility. Information and properties will be improved continuously. Feedback is welcome - you can send it by feedback form or by e-mail to address info@laji.fi. Thank you!",
   "wholeYear": "Whole year {{year}}",
-  "yes": "Yes"
+  "yes": "Yes",
+  "or": "or",
+  "np.linker.confirm": "Are you sure you want to link the observation to this place",
+  "np.linker.success": "Place was linked succesfully",
+  "np.linker.fail": "Linking place failed",
+  "np.linker.hasAlreadyPlace": "Note, that the document has already a named place.",
+  "np.linker.title": "Named place linking",
+  "np.linker.noAccess": "You don't have access to the document.",
+  "np.linker.npMissing": "Named place missing",
+  "np.linker.start": "Link the document to a named place",
+  "np.linker.doLink": "Link"
 }

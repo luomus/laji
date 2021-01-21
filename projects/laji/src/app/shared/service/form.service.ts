@@ -8,6 +8,7 @@ import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface Participant {
   id?: string;
@@ -34,14 +35,15 @@ export class FormService {
   constructor(
     private lajiApi: LajiApiService,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private translate: TranslateService
   ) {}
 
   static isTmpId(id: string): boolean {
     return !id || (id && id.indexOf(FormService.tmpNs + ':') === 0);
   }
 
-  getForm(formId: string, lang: string): Observable<Form.SchemaForm> {
+  getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm> {
     if (!formId) {
       return ObservableOf(null);
     }
@@ -69,7 +71,7 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getAllForms(lang: string = this.currentLang): Observable<Form.List[]> {
+  getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
       this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
@@ -103,12 +105,17 @@ export class FormService {
     ) as Observable<Participant[]>;
   }
 
-  private setLang(lang: string) {
+  private setLang(lang = this.translate.currentLang) {
     if (this.currentLang !== lang) {
       this.formCache = {};
       this.jsonFormCache = {};
       this.allForms = undefined;
       this.currentLang = lang;
     }
+  }
+
+  getPlaceForm(documentForm: Form.SchemaForm) {
+    const id = documentForm.options?.namedPlaceOptions?.namedPlaceFormID || Global.forms.namedPlace;
+    return this.getForm(id, this.translate.currentLang);
   }
 }

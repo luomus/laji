@@ -39,7 +39,7 @@ export class ViewerModalComponent implements OnDestroy {
           this.modalRef.hide();
         }
         if (this.modalRef) {
-          this.modalRef.setClass(vm.openAnnotation ? 'modal-annotation' : 'modal-lg');
+          this.modalRef.setClass(vm.openAnnotation ? 'modal-xl' : 'modal-lg');
         }
 
         this.open = vm.showModal;

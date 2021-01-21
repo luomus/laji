@@ -21,6 +21,10 @@ interface ViewModel extends NamedPlacesRouteData {
   description: string;
 }
 
+interface NamedPlacesRouteDataWithPlaceForm extends NamedPlacesRouteData {
+  placeForm: Form.SchemaForm;
+}
+
 @Component({
   selector: 'laji-np-edit-form',
   templateUrl: './np-edit-form.component.html',
@@ -54,14 +58,16 @@ export class NpEditFormComponent implements OnInit {
 
   ngOnInit() {
     this.asyncData$ = this.projectFormService.getNamedPlacesRouteData$(this.route).pipe(
-      mergeMap(data => this.populateAndDecorateNPForm(data).pipe(
-        map(placeForm => ({
-          ...data,
-          placeForm,
-          description: data.namedPlace
-             ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
-             : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
-        })),
+      mergeMap(data => this.projectFormService.getPlaceForm$(data.documentForm).pipe(
+        mergeMap(_placeForm => this.populateAndDecorateNPForm({...data, placeForm: _placeForm}).pipe(
+          map(placeForm => ({
+            ...data,
+            placeForm,
+            description: data.namedPlace
+               ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
+               : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
+          })),
+        ))
       ))
     );
   }
@@ -156,14 +162,15 @@ export class NpEditFormComponent implements OnInit {
         {
           relativeTo: this.route,
           replaceUrl: true,
-          queryParams: this.projectFormService.trimNamedPlacesQuery(data.documentForm, {
+          queryParams: {
             municipality: namedPlace?.municipality?.join(',')
               || data.municipality,
             birdAssociationArea: namedPlace?.birdAssociationArea?.join(',')
               || data.birdAssociationArea,
             tags: (data.tags || []).join(','),
             activeNP: namedPlace?.id || data.namedPlace?.id
-          })}
+          }
+        }
       );
     });
   }
@@ -220,7 +227,7 @@ export class NpEditFormComponent implements OnInit {
     return detail;
   }
 
-  private populateAndDecorateNPForm(data: NamedPlacesRouteData) {
+  private populateAndDecorateNPForm(data: NamedPlacesRouteDataWithPlaceForm) {
     const {placeForm, namedPlace, documentForm, municipality, birdAssociationArea} = data;
     const mapOptions = NamedPlaceComponent.getMapOptions(data.documentForm);
     if (mapOptions) {

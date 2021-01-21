@@ -1729,5 +1729,15 @@
   "whatsNew.acknowledge": "Tack för informationen",
   "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "wholeYear": "Helt år {{year}}",
-  "yes": "Ja"
+  "yes": "Ja",
+  "or": "eller",
+  "np.linker.confirm": "Är du säker på att du vill koppla observationen till den här platsen",
+  "np.linker.success": "Platsen länkades framgångsrikt",
+  "np.linker.fail": "Länkplatsen misslyckades",
+  "np.linker.hasAlreadyPlace": "Observera att dokumentet redan har en namngiven plats.",
+  "np.linker.title": "Namngiven platslänkning",
+  "np.linker.noAccess": "Du har inte tillgång till dokumentet.",
+  "np.linker.npMissing": "Namngiven plats saknas",
+  "np.linker.start": "Länka dokumentet till en namngiven plats",
+  "np.linker.doLink": "Länka"
 }

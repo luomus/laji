@@ -1,6 +1,5 @@
 import { catchError, map, mergeMap, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
 import * as moment from 'moment';
@@ -17,6 +16,7 @@ import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
 import { ProjectFormService, NamedPlacesQuery } from '../../../project-form.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
+import { FormService } from '../../../../shared/service/form.service';
 
 interface DerivedFromInput {
   collectionId?: string;
@@ -39,16 +39,48 @@ interface DerivedFromInput {
 }
 
 @Component({
-  selector: 'laji-named-place',
+  selector: 'laji-named-places',
   templateUrl: './named-place.component.html',
   styleUrls: ['./named-place.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NamedPlaceComponent implements OnInit, OnDestroy {
 
+  @Input() set documentForm(documentForm: Form.SchemaForm) {
+    this.documentForm$.next(documentForm);
+  }
+
+  @Input() set activeId(activeID: string) {
+    this.activeNP$.next(activeID);
+  }
+
+  @Input() set municipality(municipality: string) {
+    this.municipality$.next(municipality);
+  }
+
+  @Input() set birdAssociationArea(birdAssociationArea: string) {
+    this.birdAssociationArea$.next(birdAssociationArea);
+  }
+
+  @Input() set tags(tags: string[]) {
+    this.tags$.next(tags);
+  }
+
+  @Input() displayHeader = true;
+  @Input() useLabel: string;
+  @Input() readonly = false;
+  @Input() useDisabled = false;
+  @Input() reloadSubmissions$: Observable<void>;
+
+  @Output() birdAssociationAreaChange = new EventEmitter<string>();
+  @Output() municipalityChange = new EventEmitter<string>();
+  @Output() tagsChange = new EventEmitter<string[]>();
+  @Output() activeIdChange = new EventEmitter<string>();
+  @Output() use = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<string>();
+  @Output() create = new EventEmitter<null>();
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private namedPlaceService: NamedPlacesService,
     private footerService: FooterService,
     private translate: TranslateService,
@@ -56,12 +88,12 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private toastrService: ToastrService,
     private formPermissionService: FormPermissionService,
-    private projectFormService: ProjectFormService
+    private projectFormService: ProjectFormService,
+    private formService: FormService
   ) {}
   @ViewChild(NpChooseComponent) chooseView: NpChooseComponent;
   @ViewChild(NpInfoComponent) infoView: NpInfoComponent;
 
-  documentForm$: Observable<Form.SchemaForm>;
   vm$: Observable<DerivedFromInput>;
 
   areaTypes = Area.AreaType;
@@ -70,6 +102,11 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   errorMsg = '';
 
   private updateFromInput: Subscription;
+  private documentForm$ = new BehaviorSubject<Form.SchemaForm>(undefined);
+  private activeNP$ = new BehaviorSubject<string>(undefined);
+  private municipality$ = new BehaviorSubject<string>(undefined);
+  private birdAssociationArea$ = new BehaviorSubject<string>(undefined);
+  private tags$ = new BehaviorSubject<string[]>(undefined);
 
   private reloadNamedPlaces$ = new BehaviorSubject<void>(undefined);
 
@@ -109,19 +146,17 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const routeData$ = this.projectFormService.getNamedPlacesRouteData$(this.route);
-    this.documentForm$ = routeData$.pipe(take(1), map(data => data.documentForm));
-    const placeForm$ = routeData$.pipe(take(1), map(data => data.placeForm));
+    const placeForm$ = this.documentForm$.pipe(switchMap(documentForm => this.formService.getPlaceForm(documentForm)));
 
-    const activeNP$ = combineLatest(routeData$, this.reloadNamedPlaces$).pipe(switchMap(([query]) =>
-      this.namedPlaceService.getNamedPlace(query['activeNP'], undefined, (query.documentForm.options?.namedPlaceOptions || {}).includeUnits)
+    const activeNP$ = combineLatest(this.activeNP$, this.documentForm$, this.reloadNamedPlaces$).pipe(switchMap(([activeNP, documentForm]) =>
+      this.namedPlaceService.getNamedPlace(activeNP, undefined, (documentForm.options?.namedPlaceOptions || {}).includeUnits)
     ));
 
-    const namedPlaces$ = combineLatest(routeData$, this.documentForm$, this.reloadNamedPlaces$).pipe(
+    const namedPlaces$ = combineLatest(this.municipality$, this.birdAssociationArea$, this.tags$, this.documentForm$, this.reloadNamedPlaces$).pipe(
       tap(() => {
         this.loading = true;
       }),
-      switchMap(([params, documentForm]) => this.getNamedPlaces$(documentForm, params.municipality, params.birdAssociationArea, params.tags)),
+      switchMap(([municipality, birdAssociationArea, tags, documentForm]) => this.getNamedPlaces$(documentForm, municipality, birdAssociationArea, tags)),
       tap(() => {
         this.loading = false;
       }),
@@ -129,11 +164,13 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     const user$ = this.userService.user$;
     const formRights$ = this.documentForm$.pipe(switchMap(documentForm => this.formPermissionService.getRights(documentForm)));
 
-    this.vm$ = combineLatest(this.documentForm$, placeForm$, routeData$, activeNP$, namedPlaces$, user$, formRights$).pipe(
+    this.vm$ = combineLatest(this.documentForm$, placeForm$, this.municipality$, this.birdAssociationArea$, this.tags$, activeNP$, namedPlaces$, user$, formRights$).pipe(
       map(([
           documentForm,
           placeForm,
-          {birdAssociationArea, tags, municipality},
+          municipality,
+          birdAssociationArea,
+          tags,
           activeNP,
           namedPlaces,
           user,
@@ -153,7 +190,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           filterByBirdAssociationArea: documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea,
           filterByMunicipality: documentForm?.options?.namedPlaceOptions?.filterByMunicipality,
           filterByTags: documentForm?.options?.namedPlaceOptions?.filterByTags,
-          allowEdit: documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin,
+          allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
         }
@@ -184,20 +221,16 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  updateQuery(queryParams: Partial<NamedPlacesQuery>) {
-    return this.router.navigate([], {queryParams, queryParamsHandling: 'merge'});
-  }
-
   onBirdAssociationAreaChange(birdAssociationArea) {
-    this.updateQuery({birdAssociationArea});
+    this.birdAssociationAreaChange.emit(birdAssociationArea);
   }
 
   onMunicipalityChange(municipality: string) {
-    this.updateQuery({municipality});
+    this.municipalityChange.emit(municipality);
   }
 
-  onTagChange(tags: string[]) {
-    this.updateQuery({tags: tags.join(',')});
+  onTagsChange(tags: string[]) {
+    this.tagsChange.emit(tags);
   }
 
   onRelease(namedPlace: NamedPlace) {
@@ -236,28 +269,20 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
       if (activeNP && activeNP === _activeNP?.id) {
         this.infoView.npClick();
       }
+      this.activeIdChange.emit(activeNP);
     });
-    this.updateQuery({activeNP});
   }
 
   onEdit() {
-    this.router.navigate([`./${this.route.snapshot.queryParams['activeNP']}/edit`], {relativeTo: this.route});
+    this.activeNP$.pipe(take(1)).subscribe(id => this.edit.emit(id));
   }
 
   onCreateNew() {
-    this.projectFormService.getProjectFormFromRoute$(this.route).pipe(take(1)).subscribe(projectForm => {
-      this.router.navigate(['./new'], {
-        queryParams: this.projectFormService.trimNamedPlacesQuery(projectForm.form, {
-          municipality: this.route.snapshot.queryParams.municipality,
-          birdAssociationArea: this.route.snapshot.queryParams.birdAssociationArea
-        }, false),
-        relativeTo: this.route
-      });
-    });
+    this.create.emit();
   }
 
-  use() {
-    this.router.navigate([`./${this.route.snapshot.queryParams['activeNP']}`], {relativeTo: this.route});
+  useClick() {
+    this.activeNP$.pipe(take(1)).subscribe(id => this.use.emit(id));
   }
 
   confirmDelete(namedPlace: NamedPlace) {
@@ -269,9 +294,9 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           return;
         }
         this.namedPlaceService.deleteNamedPlace(namedPlace.id, this.userService.getToken()).subscribe(() => {
-            this.updateQuery({activeNP: null}).then(() => {
-              this.reloadNamedPlaces$.next();
-            });
+            this.activeId = null;
+            this.activeIdChange.emit(null);
+            this.reloadNamedPlaces$.next();
             this.translate.get('np.delete.success').subscribe(text => this.toastrService.success(text));
           },
           () => {
@@ -297,14 +322,14 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     const query: NamedPlaceQuery = {
       collectionID: documentForm.collectionID,
-      municipality,
+      municipality: municipality || 'all',
       birdAssociationArea,
       tags: (tags || []).join(','),
       includeUnits: documentForm.options?.namedPlaceOptions?.includeUnits,
       selectedFields: selected.filter(field => field.charAt(0) !== '_').join(',')
     };
 
-    if (this.npRequirementsNotMet(documentForm, municipality, birdAssociationArea)) {
+    if (this.npRequirementsNotMet(documentForm, query.municipality, query.birdAssociationArea)) {
       return of(null);
     }
 
