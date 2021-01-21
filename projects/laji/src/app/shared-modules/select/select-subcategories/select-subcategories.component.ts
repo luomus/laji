@@ -467,8 +467,15 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
       this.selected[category] = this.tmpSelected[category];
       this.selectedIdx[category] = -1;
+
+      const tmpGlobalSelect = this.selected['GLOBAL'] ? this.selected['GLOBAL'].map(obj => {
+        const newObj = Object.assign({}, obj);
+        newObj.checkboxValue = true;
+        return newObj;
+      }) : [];
       this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
-      this.selected[this.subCategories[1]] : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+      tmpGlobalSelect : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+
 
       this.initOptions(this.selected);
       if (this.outputOnlyId) {
