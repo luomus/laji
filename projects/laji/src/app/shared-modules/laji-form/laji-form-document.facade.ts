@@ -420,13 +420,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private addCollectionID(form: Form.SchemaForm, data: Document = {}): Observable<Document> {
+  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
     return form.id === Global.forms.privateCollection
       ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
         typeof profile?.personalCollectionIdentifier === 'string'
           ? {
-            ...data,
-            keywords: [...(data.keywords || []), profile.personalCollectionIdentifier.trim()]
+            ...(data || {}),
+            keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
           }
           : data
       ))
