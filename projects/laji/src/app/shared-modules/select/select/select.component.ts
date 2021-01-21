@@ -145,8 +145,17 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   remove(id: string, event) {
-    this.selected = this.checkboxType === CheckboxType.partial ? 
-    this.selected.filter((item: SelectOptions) => item.id !== id) : this.selected.filter(value => value !== id);
+    if (this.checkboxType === CheckboxType.partial) {
+    const findIndex = this.selected.findIndex((item: SelectOptions) => item.id === id);
+      if (this.selected[findIndex]['checkboxValue'] === false) {
+        this.add(id, true);
+        return;
+      } else {
+        this.selected = this.selected.filter((item: SelectOptions) => item.id !== id);
+      }
+    } else {
+      this.selected = this.selected.filter(value => value !== id);
+    }
 
     this.selectedIdx = -1;
     this.initOptions(this.selected);

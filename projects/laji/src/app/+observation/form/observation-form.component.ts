@@ -436,7 +436,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.query.collectionAndRecordQuality = this.collectionAndRecordQualityString;
+    this.query.collectionAndRecordQuality = this.collectionAndRecordQualityString !== '' ?
+    this.collectionAndRecordQualityString : undefined;
 
    this.onQueryChange();
   }
@@ -657,7 +658,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (array.filter(item => item.checkboxValue === true).length > 0) {
       return result = array.filter(item => item.checkboxValue === true).map(a => a.id);
     } else {
-      return result = array;
+      return result = undefined;
     }
   }
 
