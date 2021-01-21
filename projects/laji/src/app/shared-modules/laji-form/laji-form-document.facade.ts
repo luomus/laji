@@ -23,6 +23,7 @@ import { FormPermissionService, Rights } from '../../shared/service/form-permiss
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
 import { LajiFormUtil } from './laji-form-util.service';
+import { PersonApi } from '../../shared/api/PersonApi';
 
 export enum FormError {
   ok,
@@ -115,6 +116,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private documentStorage: DocumentStorage,
+    private personApi: PersonApi
   ) {
     this.dataSub = this.dataChange$.pipe(
       auditTime(3000),
@@ -317,8 +319,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
   private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
-      map(data => this.addNamedPlaceData(form, data))
-    );
+      map(data => this.addNamedPlaceData(form, data)),
+      switchMap(data => this.addCollectionID(form, data))
+  );
 
     return getEmpty$;
     /*
@@ -414,6 +417,19 @@ export class LajiFormDocumentFacade implements OnDestroy {
     this.updateState({..._state, namedPlaceForFormID: ''});
 
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
+  }
+
+  private addCollectionID(form: Form.SchemaForm, data: Document = {}): Observable<Document> {
+    return !form.schema.properties.keywords
+      ? of(data)
+      : this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+        typeof profile?.personalCollectionIdentifier === 'string'
+          ? {
+            ...data,
+            keywords: [...(data.keywords || []), profile.personalCollectionIdentifier.trim()]
+          }
+          : data
+      ));
   }
 
   getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
