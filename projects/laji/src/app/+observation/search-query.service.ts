@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
 
 @Injectable({providedIn: 'root'})
@@ -290,11 +290,9 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public updateUrl(query: WarehouseQueryInterface, skipParams: string[]): void {
     const queryParams = this.getQueryObject(query, skipParams);
-    const extra = {};
+    const extra: NavigationExtras = {};
     if (Object.keys(queryParams).length > 0) {
       extra['queryParams'] = queryParams;
-    } else {
-      extra['preserveQueryParams'] = false;
     }
     this.router.navigate(
       [],
