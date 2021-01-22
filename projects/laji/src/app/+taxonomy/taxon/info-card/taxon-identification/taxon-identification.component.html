@@ -10,7 +10,7 @@
   <div *ngFor="let child of taxonChildren">
     <div class="child-name">
       <div class="child-scientific-name-container">
-        <a class="child-scientific-name" [ngClass]="child.taxonomy.cursiveName ? 'cursive' : null" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" preserveQueryParams>{{child.taxonomy.scientificName}}</a>
+        <a class="child-scientific-name" [ngClass]="child.taxonomy.cursiveName ? 'cursive' : null" [routerLink]="['/taxon', child.taxonomy.id, 'identification']" queryParamsHandling="preserve">{{child.taxonomy.scientificName}}</a>
         <span class="child-rank"> ({{ child.taxonomy.taxonRank | label }})</span>
       </div>
       <div class="child-vernacular-name-row">
