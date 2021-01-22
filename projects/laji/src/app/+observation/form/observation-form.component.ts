@@ -444,22 +444,22 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.updateVisible('advancedSections', 'visibleAdvanced');
   }
 
-  private updateVisible(spot: 'advancedSections', visible: 'visibleAdvanced');
-  private updateVisible(spot: 'sections', visible: 'visible');
+  private updateVisible(sectionKey: 'advancedSections', visibilityKey: 'visibleAdvanced');
+  private updateVisible(sectionKey: 'sections', visibilityKey: 'visible');
   private updateVisible(
-    spot: keyof Pick<this, 'sections' | 'advancedSections'>,
-    visibility: keyof Pick<this, 'visible' | 'visibleAdvanced'>
+    sectionKey: keyof Pick<this, 'sections' | 'advancedSections'>,
+    visibilityKey: keyof Pick<this, 'visible' | 'visibleAdvanced'>
   ) {
-    Object.keys(this[spot]).forEach(section => {
+    Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this[spot][section].length; i++) {
-        const value = this.query[this[spot][section][i]];
+      for (let i = 0; i < this[sectionKey][section].length; i++) {
+        const value = this.query[this[sectionKey][section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
       }
-      this[visibility][section] = visible;
+      this[visibilityKey][section] = visible;
     });
   }
 
