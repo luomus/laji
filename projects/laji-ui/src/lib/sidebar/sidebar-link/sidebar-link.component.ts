@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter, map, startWith, tap, takeUntil } from 'rxjs/operators';
+import { filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -13,10 +13,13 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
   @Input() linkParams: {
     [k: string]: any;
   };
-  @Output() clicked = new EventEmitter<any>();
   @Input() active = undefined;
+  @Output() clicked = new EventEmitter<any>();
+
   unsubscribe$ = new Subject<void>();
+
   constructor(private router: Router) {}
+
   ngOnInit() {
     if (this.active !== undefined) {
       return;
@@ -27,13 +30,14 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
     urls$.pipe(takeUntil(this.unsubscribe$)).subscribe((u: string) => {
-      const substrs = u.split('/');
       this.active = u.includes(this.link[this.link.length - 1]);
     });
   }
+
   onClick(event) {
     this.clicked.next(event);
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

@@ -154,7 +154,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -317,7 +317,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data)),

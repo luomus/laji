@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { flatMap, map, take, tap } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
@@ -20,7 +20,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
               private platformService: PlatformService,
 ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     if (this.platformService.isServer) {
       return of(true);
     }

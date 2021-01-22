@@ -65,7 +65,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
     });
 
     if (this.unit.linkings && this.unit.linkings.taxon && this.unit.linkings.originalTaxon) {
-      this.haschangedTaxon = (this.toQname.transform(this.unit.linkings.taxon.id) !== this.toQname.transform(this.unit.linkings.originalTaxon.id)) ? true : false;
+      this.haschangedTaxon = this.toQname.transform(this.unit.linkings.taxon.id) !== this.toQname.transform(this.unit.linkings.originalTaxon.id);
     } else {
       this.haschangedTaxon = false;
     }

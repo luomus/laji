@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
@@ -10,10 +10,10 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { Form } from '../../../../shared/model/Form';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { map, mergeMap, take } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlaceComponent } from '../named-place/named-place.component';
-import { NamedPlacesQueryModel, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
+import { NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
 import { BrowserService } from '../../../../shared/service/browser.service';
 

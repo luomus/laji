@@ -18,8 +18,6 @@ export class SwitchRowComponent implements OnChanges {
 
   state;
 
-  constructor() { }
-
   ngOnChanges() {
     if (!this.option) {
       return;

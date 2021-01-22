@@ -67,7 +67,7 @@ export class SelectCollectionsModalComponent implements OnInit {
     ).subscribe(query => this.filterTree(query));
   }
 
-  treeInit($event: any) {
+  treeInit() {
     this.treeModel = this.treeComponent.treeModel;
 
     this.selected?.forEach(key => {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IFormField, VALUE_AS_IS, VALUE_IGNORE } from '../../model/excel';
 import { SpreadsheetService } from '../../service/spreadsheet.service';
 
@@ -8,7 +8,7 @@ import { SpreadsheetService } from '../../service/spreadsheet.service';
   styleUrls: ['./mapping-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MappingSelectComponent implements OnInit {
+export class MappingSelectComponent {
 
   @Input() options: string[];
   @Input() disabledWhenNoOptions = false;
@@ -22,8 +22,6 @@ export class MappingSelectComponent implements OnInit {
   groups: {[group: string]: string[]};
   fieldGroupsLabel: {[group: string]: string} = {};
   _fields: {[key: string]: IFormField};
-
-  constructor() {}
 
   @Input()
   set value(value: string) {
@@ -48,8 +46,5 @@ export class MappingSelectComponent implements OnInit {
     });
     this.fieldGroups = Object.keys(groups);
     this.groups = groups;
-  }
-
-  ngOnInit() {
   }
 }

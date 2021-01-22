@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, map, share, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, share, switchMap, take, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
 import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';

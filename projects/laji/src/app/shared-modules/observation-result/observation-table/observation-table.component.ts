@@ -112,7 +112,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
-  private modalSub: Subscription;
   private fetchSub: Subscription;
   private queryKey: string;
   private aggregateBy: string[] = [];

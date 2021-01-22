@@ -11,8 +11,6 @@ export class GatheringRowsComponent implements OnInit {
   date = '';
   time = '';
 
-  constructor() { }
-
   ngOnInit() {
     if (this.gathering.displayDateTime) {
       if (this.gathering.displayDateTime.indexOf(' ') !== -1) {

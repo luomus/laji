@@ -87,7 +87,7 @@
     >
       {{ value.linkings.taxon.speciesVernacularName | multiLang }}
       <span class="inline" *ngIf="value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName"> &mdash; </span>
-      <span class="inline" [class.cursive]="true || value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.speciesScientificName">
+      <span class="inline cursive" *ngIf="value.linkings.taxon.speciesScientificName">
           {{ value.linkings.taxon.speciesScientificName }}
       </span>
       <a

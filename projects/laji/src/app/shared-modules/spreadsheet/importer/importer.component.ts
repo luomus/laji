@@ -283,10 +283,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
-  hasButton(place: 'temp') {
-    return !this.form.options?.hideDraftButton;
-  }
-
   buttonLabel(place: 'save'|'temp') {
     switch (place) {
       case 'save':
@@ -530,7 +526,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.dialogService.prompt(this.translateService.instant('filename')).pipe(
       filter(value => !!value),
       switchMap(filename => this.mappingFileService.save(filename, this.mappingService.getUserMappings()))
-    ).subscribe((success) => {});
+    ).subscribe(() => {});
   }
 
   useUserMapping(value: IUserMappingFile) {

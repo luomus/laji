@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, of as ObservableOf } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { Profile } from '../model/Profile';

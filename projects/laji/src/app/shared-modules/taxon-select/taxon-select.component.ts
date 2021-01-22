@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component,
-EventEmitter, Input, Output, ViewChild, OnInit, HostListener, OnDestroy } from '@angular/core';
+EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';

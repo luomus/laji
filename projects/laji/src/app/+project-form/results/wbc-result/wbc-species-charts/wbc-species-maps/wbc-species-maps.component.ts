@@ -4,7 +4,6 @@ import {
   Input,
   OnChanges,
   QueryList,
-  SimpleChanges,
   ViewChildren
 } from '@angular/core';
 import { SEASON, WbcResultService } from '../../wbc-result.service';
@@ -57,7 +56,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.taxonId && this.year) {
       this.updateMapData();
     }

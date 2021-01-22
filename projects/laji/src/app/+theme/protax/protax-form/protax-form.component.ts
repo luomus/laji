@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
 import {ProtaxModelEnum} from '../models';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,7 +13,7 @@ enum Tab {
   styleUrls: ['./protax-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxFormComponent implements OnInit {
+export class ProtaxFormComponent {
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
 
@@ -29,9 +29,6 @@ export class ProtaxFormComponent implements OnInit {
   constructor(
     private translate: TranslateService
   ) { }
-
-  ngOnInit() {
-  }
 
   updateSequenceFile(files: FileList) {
     this.sequenceFile = files.item(0);

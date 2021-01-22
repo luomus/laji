@@ -20,7 +20,7 @@
   <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
   <div class="modal-content">
     <div class="modal-header">
-      <button class="close pull-right" type="button" (click)="closeModal($event)">
+      <button class="close pull-right" type="button" (click)="closeModal()">
         <i class="glyphicon glyphicon-remove"></i>
       </button>
       <h4 class="modal-title">{{ 'template.formTitle' | translate }}</h4>
@@ -45,13 +45,13 @@
   <laji-spinner [spinning]="loading" [overlay]="true"></laji-spinner>
     <div class="modal-content">
       <div class="modal-header">
-        <button class="close pull-right" type="button" aria-label="Close" (click)="closeModal($event)">
+        <button class="close pull-right" type="button" aria-label="Close" (click)="closeModal()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: '1', name: 'a'}"></h4>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-left" (click)="closeModal($event)">
+        <button type="button" class="btn btn-success pull-left" (click)="closeModal()">
           <span>{{ "haseka.delete.cancel" | translate }}</span>
         </button>
         <button type="button" class="btn btn-danger" (click)="deleteDocument()">

@@ -165,7 +165,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     }
   }
 
-  changeClassification(event) {
+  changeClassification() {
     this.updateClasses();
   }
 
@@ -277,7 +277,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
 
   toggleOnlyCount() {
     this.onlyCount = !this.onlyCount;
-    this.changeClassification(event);
+    this.changeClassification();
   }
 
 

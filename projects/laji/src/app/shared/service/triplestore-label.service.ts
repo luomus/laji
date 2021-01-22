@@ -39,7 +39,7 @@ export class TriplestoreLabelService {
               private collectionService: CollectionService,
               private baseDataService: BaseDataService
   ) {
-    this.guidRegEx = /^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/gi;
+    this.guidRegEx = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/gi;
   }
 
   public getAll(keys: string[], lang): Observable<{[key: string]: string}> {

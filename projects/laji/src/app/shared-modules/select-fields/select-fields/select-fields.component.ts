@@ -22,8 +22,6 @@ export class SelectFieldsComponent {
 
   @Output() selectedFieldsChange = new EventEmitter<ISelectFields[]>();
 
-  constructor() { }
-
   drop(event: CdkDragDrop<ISelectFields[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

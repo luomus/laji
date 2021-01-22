@@ -75,7 +75,7 @@ export class DocumentPrintComponent implements AfterViewInit, OnChanges, OnDestr
     findDox$
       .subscribe(
         doc => this.parseDoc(doc, true),
-        err => this.parseDoc(undefined, false)
+        () => this.parseDoc(undefined, false)
       );
   }
 

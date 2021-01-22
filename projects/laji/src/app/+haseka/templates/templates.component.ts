@@ -11,8 +11,6 @@ export class TemplatesComponent implements OnInit {
 
   @LocalStorage() public showTemplateIntro;
 
-  constructor() { }
-
   ngOnInit() {
     if (this.showTemplateIntro === null) {
       this.showTemplateIntro = true;
