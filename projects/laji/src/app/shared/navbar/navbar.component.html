@@ -122,13 +122,13 @@
               </a>
               <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" preserveQueryParams>Suomeksi</a>
+                  <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
                 </li>
                 <li *ngIf="'sv' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" preserveQueryParams>På svenska</a>
+                  <a rel="alternate" hreflang="sv" class="navbar-link link" [routerLink]="[] | localize:'sv'" queryParamsHandling="preserve">På svenska</a>
                 </li>
                 <li *ngIf="'en' !== translate.currentLang" role="menuitem">
-                  <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" preserveQueryParams>In English</a>
+                  <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">In English</a>
                 </li>
               </ul>
             </li>
