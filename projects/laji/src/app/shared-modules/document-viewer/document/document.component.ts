@@ -315,13 +315,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   }
 
   closeDocument() {
-    const body = document.body;
-    body.classList.remove('modal-open-after');
-     if (this.documentToolsOpen) {
-      this.close.emit(false);
-    } else {
-    this.close.emit(true);
-    }
+    this.close.emit(!this.documentToolsOpen);
   }
 
   onDocumentDeleted(e) {

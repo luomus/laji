@@ -44,6 +44,7 @@ import { AnnotationDataObservationComponent } from './annotation-data-observatio
 import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
 import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-player.component';
 import { QualityRowComponent } from './quality-row/quality-row.component';
+import { NamedPlaceLinkerButtonModule } from '../../+project-form/form/named-place-linker/named-place-linker-button/named-place-linker-button.module';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { QualityRowComponent } from './quality-row/quality-row.component';
     AnnotationsModule,
     LajiMapModule,
     LicenseModule,
-    InfoModule
+    InfoModule,
+    NamedPlaceLinkerButtonModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

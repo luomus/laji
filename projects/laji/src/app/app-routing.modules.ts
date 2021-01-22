@@ -42,26 +42,30 @@ const baseRoutes: Routes = [
 ];
 
 const formRouting = {...Global.oldThemeRouting, 'talvilintu': 'MHL.3'};
-const formRedirects = (lang = '') =>
-  Object.keys(formRouting)
-    .map(path => ({path, redirectTo: `${lang}/project/${formRouting[path]}`, pathMatch: 'full'}));
+const formRedirectsEn: Routes = [];
+const formRedirectsSv: Routes = [];
+const formRedirectsFi: Routes = [];
+
+formRedirectsEn.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/en/project/${formRouting[path]}`, pathMatch: 'full'})));
+formRedirectsSv.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/sv/project/${formRouting[path]}`, pathMatch: 'full'})));
+formRedirectsFi.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/project/${formRouting[path]}`, pathMatch: 'full'})));
 
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
-    ...formRedirects('/en'),
+    ...formRedirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
-    ...formRedirects('/sv'),
+    ...formRedirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
-    ...formRedirects(),
+    ...formRedirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},

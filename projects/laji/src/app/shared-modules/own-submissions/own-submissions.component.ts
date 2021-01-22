@@ -5,7 +5,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy, OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -13,7 +13,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf } from 'rxjs';
+import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
 import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
@@ -48,7 +48,7 @@ interface DocumentQuery {
   providers: [DocumentExportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnSubmissionsComponent implements OnChanges {
+export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() collectionID;
   @Input() formID;
@@ -64,6 +64,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   @Input() namedPlace: string;
   @Input() header: string;
   @Input() forceLocalDocument = false;
+  @Input() reload$?: Observable<void>;
 
   @Output() documentsLoaded = new EventEmitter<RowDocument[]>();
 
@@ -72,6 +73,7 @@ export class OwnSubmissionsComponent implements OnChanges {
   documents$: Observable<RowDocument[]>;
   private documents: RowDocument[];
   loading = true;
+  reloadSubscription$: Subscription;
 
   @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
@@ -123,7 +125,17 @@ export class OwnSubmissionsComponent implements OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnInit() {
+    this.reloadSubscription$ = this.reload$?.subscribe(() => {
+      this.initDocuments(this.onlyTemplates);
+    });
+  }
+
+  ngOnDestroy() {
+    this.reloadSubscription$?.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     this.initDocuments(this.onlyTemplates);
   }
 

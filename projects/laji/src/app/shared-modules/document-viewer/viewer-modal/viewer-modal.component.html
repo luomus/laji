@@ -1,13 +1,8 @@
-<div class="modal fade" bsModal #documentModal="bs-modal"
-     (onHidden)="onModalHide()"
-     (onShow)="pnModalShow()"
-     [config]="{ keyboard: false}"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div *ngIf="vm$ | async; let vm" class="modal-dialog"
-       [ngClass]="{'modal-lg': !vm.openAnnotation, 'modal-annotation': vm.openAnnotation}">
+<ng-container *ngIf="vm$ | async; let vm">
+  <ng-template #documentModal>
     <div class="modal-content">
       <div class="modal-body" *ngIf="vm.document">
-        <lu-button-round (click)="documentModal.hide()" class="pull-right" role="neutral">
+        <lu-button-round (click)="closeModal()" class="pull-right" role="neutral">
           <lu-icon type="close"></lu-icon>
         </lu-button-round>
         <div class="clear"></div>
@@ -41,5 +36,5 @@
         </ng-template>
       </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+</ng-container>

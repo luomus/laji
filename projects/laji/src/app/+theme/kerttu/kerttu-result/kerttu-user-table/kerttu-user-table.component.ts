@@ -94,6 +94,7 @@ export class KerttuUserTableComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.nameSub = forkJoin(obs).subscribe(() => {
+      this.data = [...this.data];
       this.loading = false;
       this.cd.markForCheck();
     });
