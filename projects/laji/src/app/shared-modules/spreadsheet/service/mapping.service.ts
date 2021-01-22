@@ -18,6 +18,7 @@ export enum SpecialTypes {
   dateTime = 'dateTime',
   date = 'date',
   time = 'time',
+  keywords = 'keywords'
 }
 
 @Injectable()
@@ -45,6 +46,7 @@ export class MappingService {
   private specials = {
     'editors[*]': SpecialTypes.person,
     'namedPlaceID': SpecialTypes.namedPlaceID,
+    'keywords[*]': SpecialTypes.keywords,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
     'gatheringEvent.dateEnd': SpecialTypes.dateOptionalTime,
@@ -362,6 +364,10 @@ export class MappingService {
     return value;
   }
 
+  mapKeywords(value) {
+    return value;
+  }
+
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
@@ -399,6 +405,9 @@ export class MappingService {
       case SpecialTypes.dateOptionalTime:
         targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
+      case SpecialTypes.keywords:
+        targetValue = this.mapKeywords(targetValue || value);
+        break;  
       default:
         if (targetValue === null) {
           targetValue = this.mapByFieldType(value, field);
