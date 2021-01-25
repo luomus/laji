@@ -293,6 +293,18 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       return false;
     }
 
+    let countEmpty = 0;
+    for (let i = 0; i < filteredKeys.length; i++) {
+      if (selected[filteredKeys[i]].length === 0 || selected[filteredKeys[i]] === undefined) {
+        countEmpty++;
+      }
+    }
+
+    if (countEmpty === filteredKeys.length) {
+      this.selected['GLOBAL'].map(x => x.checkboxValue = undefined);
+      return false;
+    }
+
     for (let i = 0; i < filteredKeys.length - 1; i++) {
         if (!this.arrayEquals(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
         return false;
