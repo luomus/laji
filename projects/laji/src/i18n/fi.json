@@ -110,6 +110,8 @@
   "datasets.observations.title": "Aineiston havainnot",
   "datasets.primary": "primääridata",
   "datasets.secondary": "sekundääridata",
+  "date.dd": "pp",
+  "date.mm": "kk",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
   "delete.noId": "Havaintoerän tunnistetta ei löytynyt. Lataa sivu uudelleen ja kokeile hetken kuluttua uudelleen.",
   "delete.success": "Poisto onnistui.",
