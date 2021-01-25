@@ -370,22 +370,23 @@ export class MappingService {
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
+    const fieldType = this.getSpecial(field);
+
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
-      if (Array.isArray(value[0])) {
-        return value[0];
-      }
       if (!field.isArray) {
         value = value.join(MappingService.valueSplitter);
       } else if (value.length === 0) {
         return null;
+      } else if (fieldType === SpecialTypes.keywords) {
+        value = value.reduce((a, b) => a.concat(b), []);
       }
       return value;
     }
     const upperValue = ('' + value).toLowerCase();
     let targetValue: TUserValueMap|TUserValueMap[] = this.getUserMappedValue(upperValue, field);
 
-    switch (this.getSpecial(field)) {
+    switch (fieldType) {
       case SpecialTypes.geometry:
         if (targetValue === null) {
           targetValue = this.analyzeGeometry(value);
