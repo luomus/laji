@@ -18,25 +18,11 @@ import { environment } from '../../../environments/environment';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
 
-  profile: Profile = {
-    image: '',
-    profileDescription: '',
-    personalCollectionIdentifier: '',
-    friendRequests: [],
-    friends: [],
-    blocked: [],
-    settings: {
-      capturerVerbatim: '',
-      intellectualOwner: '',
-      intellectualRights: undefined,
-    }
-  };
-
-  personsProfile: Profile = {};
+  currentProfile: Profile;
+  userProfile: Profile;
 
   public isCurrentUser = false;
   public userId = '';
-  public userFullName = '';
   public isCreate = true;
   public editing = false;
   public loading = true;
@@ -45,8 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private subProfile: Subscription;
   intellectualRightsArray: any[] = [];
 
-  intellectualRights = Profile.IntellectualRightsEnum;
-
+  intellectualRights = Profile.IntellectualRights;
 
   constructor(private userService: UserService,
               private personService: PersonApi,
@@ -67,66 +52,72 @@ export class ProfileComponent implements OnInit, OnDestroy {
         take(1),
         map(user => ({id: id, currentUser: user}))
       )),
-      concatMap(data => {
-        const currentActive = data.currentUser.id === data.id;
-        const empty$ = ObservableOf({});
-        const false$ = ObservableOf(false);
+      concatMap(({currentUser, id}) => {
+        const empty$ = ObservableOf({} as Profile);
+        const null$ = ObservableOf(null);
+        const userProfile$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError(() => null$));
         return ObservableForkJoin(
-          data.currentUser.id ?
-            this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError((e) => false$)) :
-            empty$,
-          currentActive ?
-            false$ :
-            this.personService.personFindProfileByUserId(data.id).pipe(catchError((e) => empty$))
+          currentUser.id
+            ? userProfile$
+            : empty$,
+          currentUser.id === id
+            ? userProfile$
+            : this.personService.personFindProfileByUserId(id).pipe(catchError(() => empty$))
         ).pipe(
-          map(profiles => ({
-            id: data.id,
-            currentUser: data.currentUser,
-            currentProfile: profiles[0],
-            profile: profiles[1] || profiles[0]
+          map(([userProfile, currentProfile]) => ({
+            id,
+            currentUser,
+            userProfile,
+            currentProfile
           }))
         );
       })
     ).subscribe(
-        data => {
-          this.isCurrentUser = data.id === data.currentUser.id;
-          this.userId = data.id;
-          this.userFullName = data.currentUser.fullName;
-          this.isCreate = !data.currentProfile;
-          this.profile = data.profile || {};
-          if (!this.profile.settings) {
-            this.profile.settings = {
-              capturerVerbatim: '',
-              intellectualOwner: '',
-              intellectualRights: undefined,
-            };
-          }
-          this.profile.settings['capturerVerbatim'] = this.profile?.settings?.capturerVerbatim || this.userFullName;
-          this.profile.settings['intellectualOwner'] = this.profile?.settings?.intellectualOwner || this.userFullName;
-          this.profile.settings['intellectualRights'] = this.profile?.settings?.intellectualRights || Profile.IntellectualRightsEnum.IntellectualRightsCCBY;
-          this.personsProfile = data.currentProfile || {};
+      ({id, currentUser, userProfile, currentProfile}) => {
+          this.isCurrentUser = id === currentUser.id;
+          this.userId = id;
+          this.isCreate = !userProfile;
+          this.currentProfile = this.prepareProfile(currentProfile, currentUser);
+          this.userProfile = this.prepareProfile(userProfile, currentUser);
           this.loading = false;
           this.editing = false;
           this.cdr.detectChanges();
         },
         err => {
-          this.logger.warn('Failed to init profile', err);
+          this.logger.warn('Failed to init currentProfile', err);
           this.loading = false;
           this.cdr.detectChanges();
         }
       );
 
-      const values = Object.values(this.intellectualRights);
-      const keys = Object.keys(this.intellectualRights);
-      for (let i = 0; i < Object.values(this.intellectualRights).length; i++) {
-        this.intellectualRightsArray.push({'key': keys[i], 'value': values[i]});
-      }
+      this.intellectualRightsArray = Object.keys(this.intellectualRights).reduce((rights, key) => ([
+        ...rights,
+        {'key': key, 'value': this.intellectualRights[key]}
+      ]), []);
   }
 
   ngOnDestroy() {
     if (this.subProfile) {
       this.subProfile.unsubscribe();
     }
+  }
+
+  private prepareProfile(profile: Profile | null, user: Person): Profile {
+    if (!profile) {
+      profile = {};
+    }
+    return {
+        ...profile,
+        settings: {
+          ...(profile.settings || {}),
+          defaultMediaMetadata: {
+            capturerVerbatim: user.fullName,
+            intellectualOwner: user.fullName,
+            intellectualRights: Profile.IntellectualRights.intellectualRightsCCBY4,
+            ...(profile.settings?.defaultMediaMetadata || {}),
+          }
+        }
+      };
   }
 
   getCurrentUser() {
@@ -140,12 +131,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   saveProfile() {
     this.loading = true;
     const method = this.isCreate ? 'personCreateProfileByToken' : 'personUpdateProfileByToken';
-    this.personService[method](this.getProfile(), this.userService.getToken())
+    this.personService[method](this.getSaveProfile(), this.userService.getToken())
       .subscribe(
         profile => {
           this.isCreate = false;
-          this.profile = profile;
-          this.personsProfile = profile;
+          this.currentProfile = profile;
+          this.userProfile = profile;
           this.editing = false;
           this.loading = false;
         },
@@ -162,19 +153,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getProfile(): Profile {
+  private getSaveProfile(): Profile {
     return {
-      ...this.personsProfile,
-      image: this.profile.image,
-      profileDescription: this.profile.profileDescription,
-      personalCollectionIdentifier: this.profile.personalCollectionIdentifier,
-      capturerVerbatim: this.profile.capturerVerbatim,
-      intellectualOwner: this.profile.intellectualOwner,
-      intellectualRights: this.profile.intellectualRights,
+      ...this.userProfile,
+      image: this.currentProfile.image,
+      profileDescription: this.currentProfile.profileDescription,
+      personalCollectionIdentifier: this.currentProfile.personalCollectionIdentifier,
       settings: {
-        capturerVerbatim: this.profile?.settings?.capturerVerbatim || this.userFullName,
-        intellectualOwner: this.profile?.settings?.intellectualOwner || this.userFullName,
-        intellectualRights: this.profile?.settings?.intellectualRights
+        ...this.userProfile.settings,
+        defaultMediaMetadata: {
+          ...this.userProfile.settings.defaultMediaMetadata,
+          capturerVerbatim: this.currentProfile?.settings?.defaultMediaMetadata?.capturerVerbatim,
+          intellectualOwner: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualOwner,
+          intellectualRights: this.currentProfile?.settings?.defaultMediaMetadata?.intellectualRights
+        }
       }
     };
   }

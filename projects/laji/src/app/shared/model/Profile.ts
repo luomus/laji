@@ -122,7 +122,7 @@ export namespace Profile {
     intellectualRightsCCBYNCSA3 = 'MZ.intellectualRightsCC-BY-NC-SA-3.0',
     intellectualRightsCCBYND4 = 'MZ.intellectualRightsCC-BY-ND-4.0',
     intellectualRightsCCBYNCND4 = 'MZ.intellectualRightsCC-BY-NC-ND-4.0'
-  };
+  }
 
   export type FinnishBirdSongRecognitionSkillLevelEnum =
     'MA.finnishBirdSongRecognitionSkillLevelEnum1'
