@@ -26,7 +26,6 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
-  public static readonly vihkoFormsSplitters = [';'];
 
   // from boolean to translation key
   private readonly booleanMap = {
@@ -54,8 +53,10 @@ export class MappingService {
     'gatherings[*].leg': SpecialTypes.person,
     'gatherings[*].geometry': SpecialTypes.geometry,
     'gatherings[*].namedPlaceID': SpecialTypes.namedPlaceID,
+    'gatherings[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].unitGathering.geometry': SpecialTypes.geometry,
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
     'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
@@ -363,8 +364,8 @@ export class MappingService {
     return value;
   }
 
-  mapKeywords(value, allowUnMapped) {
-    return value.split(',').map(item => item.trim());
+  mapKeywords(value) {
+    return value.split(new RegExp([...MappingService.valueSplitter, ','].join('|'), 'g')).map(val => val.trim());
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
@@ -408,7 +409,7 @@ export class MappingService {
         targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
       case SpecialTypes.keywords:
-        targetValue = this.mapKeywords(targetValue || value, allowUnMapped);
+        targetValue = this.mapKeywords(targetValue || value);
         break;
       default:
         if (targetValue === null) {
