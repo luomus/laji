@@ -26,6 +26,7 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
+  public static readonly keywordSplitters = [';', ','];
 
   // from boolean to translation key
   private readonly booleanMap = {
@@ -365,7 +366,7 @@ export class MappingService {
   }
 
   mapKeywords(value) {
-    return value.split(new RegExp([...MappingService.valueSplitter, ','].join('|'), 'g')).map(val => val.trim());
+    return value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim());
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
