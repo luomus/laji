@@ -11,7 +11,6 @@ import { NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
 
-
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
   {path: 'news', loadChildren: () => import('./+news/news.module').then(m => m.NewsModule), data: {title: 'news.title', preload: false}},
@@ -41,31 +40,42 @@ const baseRoutes: Routes = [
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)}
 ];
 
-const formRouting = {...Global.oldThemeRouting, 'talvilintu': 'MHL.3'};
-const formRedirectsEn: Routes = [];
-const formRedirectsSv: Routes = [];
-const formRedirectsFi: Routes = [];
+const formRouting = Object.keys(Global.oldThemeRouting).reduce((formRoutes, path) => {
+  formRoutes[path] = `/project/${Global.oldThemeRouting[path]}`;
+  return formRoutes;
+}, {});
 
-formRedirectsEn.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/en/project/${formRouting[path]}`, pathMatch: 'full'})));
-formRedirectsSv.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/sv/project/${formRouting[path]}`, pathMatch: 'full'})));
-formRedirectsFi.push(...Object.keys(formRouting).map(path => ({path, redirectTo: `/project/${formRouting[path]}`, pathMatch: 'full'})));
+const rootRouting = {
+  ...formRouting,
+  'talvilintu': '/project/MHL.3',
+  'ykj': '/theme/ykj',
+  'emk': '/theme/emk',
+};
+
+const redirectsEn: Routes = [];
+const redirectsSv: Routes = [];
+const redirectsFi: Routes = [];
+
+redirectsEn.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsSv.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsFi.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
 
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
-    ...formRedirectsEn,
+    ...redirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
-    ...formRedirectsFi,
+    ...redirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
-    ...formRedirectsFi,
+      ...redirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
