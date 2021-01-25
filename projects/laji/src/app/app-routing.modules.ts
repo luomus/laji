@@ -40,17 +40,15 @@ const baseRoutes: Routes = [
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)}
 ];
 
-const formRouting = Object.keys(Global.oldThemeRouting).reduce((formRoutes, path) => {
-  formRoutes[path] = `/project/${Global.oldThemeRouting[path]}`;
-  return formRoutes;
-}, {});
-
 const rootRouting = {
-  ...formRouting,
   'talvilintu': '/project/MHL.3',
   'ykj': '/theme/ykj',
   'emk': '/theme/emk',
 };
+
+Object.keys(Global.oldThemeRouting).forEach(path => {
+  rootRouting[path] = `/project/${Global.oldThemeRouting[path]}`;
+});
 
 const redirectsEn: Routes = [];
 const redirectsSv: Routes = [];
