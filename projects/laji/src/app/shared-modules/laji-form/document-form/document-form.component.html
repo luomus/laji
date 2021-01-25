@@ -6,10 +6,10 @@
     </div>
     <ng-container [ngSwitch]="vm.error">
       <alert type="danger" *ngSwitchCase="errors.notFoundForm">
-        {{ 'haseka.form.formNotFound' | translate:{formId: this.formId} }}
+        {{ 'haseka.form.formNotFound' | translate:{formId: formId} }}
       </alert>
       <alert type="danger" *ngSwitchCase="errors.notFoundDocument">
-        {{ 'haseka.form.documentNotFound' | translate:{documentId: this.documentId} }}
+        {{ 'haseka.form.documentNotFound' | translate:{documentId: documentId} }}
       </alert>
       <alert type="danger" *ngSwitchCase="errors.loadFailed">
         {{ 'haseka.form.genericError' | translate }}

@@ -130,7 +130,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   draw(type: string) {
     this.drawingShape = type;
     if (this.activeTab !== 'map') {
-      this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), {preserveQueryParams: true});
+      this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);

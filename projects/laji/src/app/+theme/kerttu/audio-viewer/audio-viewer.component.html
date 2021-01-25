@@ -28,9 +28,12 @@
       </span>
     </button>
     <ng-container *ngIf="showBrushControl">
-      <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">
-        {{ 'theme.kerttu.audioViewer.changeView' | translate }}
-      </lu-button>
+      <div class="btn-with-info">
+        <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">
+          {{ 'theme.kerttu.audioViewer.changeView' | translate }}
+        </lu-button>
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.changeView' | translate"></laji-info>
+      </div>
       <lu-button [role]="'primary'" (click)="clearBrushArea()" *ngIf="brushArea">
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>

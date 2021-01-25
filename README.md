@@ -7,8 +7,6 @@ This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.
 
 ## Development server
 ```bash
-# Install yarn globally
-npm install yarn -g
 
 # clone branch
 git clone https://bitbucket.org/luomus/laji.fi-front.git
@@ -22,10 +20,10 @@ git checkout -b development
 # Python and maker sure that the python executable is in the path
 
 # Install js dependencies
-yarn install --frozen-lockfile --check-files
+npm ci
 
 # Run the environment
-yarn run start
+npm run start
 
 # Go with your browser to http://localhost:3000/
 ```

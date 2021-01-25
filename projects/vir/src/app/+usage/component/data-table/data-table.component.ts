@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';

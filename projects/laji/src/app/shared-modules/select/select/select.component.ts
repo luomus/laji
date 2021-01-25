@@ -16,8 +16,9 @@ import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
+type idType = string|number|boolean;
 export interface SelectOptions {
-  id: string;
+  id: idType;
   value: string;
   info?: string;
   checkboxValue: boolean|undefined;
@@ -42,7 +43,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: (string|SelectOptions)[] = [];
+  @Input() selected: (idType|SelectOptions)[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -52,7 +53,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   @Input() checkboxType = CheckboxType.basic;
   @Input() classes: {options: string, optionContainer: string, menuCountainer: string} | {} = {};
 
-  @Output() selectedChange = new EventEmitter<(SelectOptions|string)[]|string>();
+  @Output() selectedChange = new EventEmitter<(SelectOptions|idType)[]|idType>();
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOptions[] = [];
@@ -93,7 +94,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  toggleValue(id: string, event) {
+  toggleValue(id: idType, event) {
     const index = this.selectedOptions.findIndex(option => option.id === id);
     if (this.checkboxType === CheckboxType.partial) {
       const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.checkboxValue !== true ?
@@ -114,7 +115,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  add(id: string, event) {
+  add(id: idType, event) {
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
@@ -144,7 +145,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  remove(id: string, event) {
+  remove(id: idType, event) {
     if (this.checkboxType === CheckboxType.partial) {
     const findIndex = this.selected.findIndex((item: SelectOptions) => item.id === id);
       if (this.selected[findIndex]['checkboxValue'] === false) {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PrintTaxonHeaderComponent } from './print-taxon-header.component';
 
@@ -6,7 +6,7 @@ describe('PrintTaxonHeaderComponent', () => {
   let component: PrintTaxonHeaderComponent;
   let fixture: ComponentFixture<PrintTaxonHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PrintTaxonHeaderComponent ]
     })

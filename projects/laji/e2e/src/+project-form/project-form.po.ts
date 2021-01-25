@@ -74,6 +74,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $form = $('laji-form .laji-form');
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
   public readonly $save = $('laji-document-form-footer .btn-success');
+  public readonly $savePrivate = $('laji-document-form-footer .btn-warning');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
 
   getContextId = async () => (await this.$form.$('.rjsf > .form-group').getAttribute('id')).match(/\d+/)[0];
@@ -85,6 +86,11 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
 
   async save() {
     await this.$save.click();
+    await browser.wait(EC.invisibilityOf(this.$blockingLoader));
+  }
+
+  async savePrivate() {
+    await this.$savePrivate.click();
     await browser.wait(EC.invisibilityOf(this.$blockingLoader));
   }
 }

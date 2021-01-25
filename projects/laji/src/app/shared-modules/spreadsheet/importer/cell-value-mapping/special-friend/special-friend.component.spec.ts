@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SpecialFriendComponent } from './special-friend.component';
 
@@ -6,7 +6,7 @@ describe('SpecialFriendComponent', () => {
   let component: SpecialFriendComponent;
   let fixture: ComponentFixture<SpecialFriendComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SpecialFriendComponent ]
     })

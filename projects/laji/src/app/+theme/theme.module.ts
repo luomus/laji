@@ -57,6 +57,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annotation/kerttu-occurrence-table/kerttu-occurrence-table.component';
+import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
+import { KerttuUserTableComponent } from './kerttu/kerttu-result/kerttu-user-table/kerttu-user-table.component';
+import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu-count.component';
 
 /* tslint:enable:max-line-length */
 
@@ -112,7 +115,10 @@ import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annota
     NotFoundComponent,
     GeneticResourceLayoutComponent,
     GeneticResourceInstructionsComponent,
-    KerttuOccurrenceTableComponent
+    KerttuOccurrenceTableComponent,
+    KerttuResultComponent,
+    KerttuUserTableComponent,
+    KerttuCountComponent
   ],
   providers: [
     QualityService,

@@ -23,7 +23,6 @@ export class MobileFormPage {
 
   async fillAsEmpty() {
     await this.imageModal.$cancel.click();
-
     await browser.wait(EC.visibilityOf(this.mapModal.$cancel));
     await this.mapModal.$cancel.click();
   }

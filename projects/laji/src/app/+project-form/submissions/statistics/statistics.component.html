@@ -7,7 +7,7 @@
       <div *ngSwitchCase="'MHL.viewerTypeBirdPointCount'">
        <laji-bird-point-count-stats [document]="document" [namedPlace]="ns" (namedPlaceChange)="updateNamedPlace($event)"></laji-bird-point-count-stats>
       </div>
-      <div *ngSwitchDefault="">
+      <div *ngSwitchDefault>
         <div *ngTemplateOutlet="wip"></div>
       </div>
     </div>

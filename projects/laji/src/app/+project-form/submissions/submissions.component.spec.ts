@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThemeOwnSubmissionsComponent } from './theme-own-submissions.component';
 
@@ -6,7 +6,7 @@ describe('ThemeOwnSubmissionsComponent', () => {
   let component: ThemeOwnSubmissionsComponent;
   let fixture: ComponentFixture<ThemeOwnSubmissionsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThemeOwnSubmissionsComponent ]
     })

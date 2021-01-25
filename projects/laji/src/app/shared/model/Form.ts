@@ -65,6 +65,8 @@ export namespace Form {
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
     useNamedPlaces?: boolean;
+    dataset?: boolean;
+    viewerType?: ViewerType;
   }
 
   export interface FormOptions extends ListOptions {
@@ -96,7 +98,6 @@ export namespace Form {
     hideCancelButton?: boolean;
     hideDraftButton?: boolean;
     printType?: PrintType;
-    viewerType?: ViewerType;
     resultServiceType?: ResultServiceType;
     footerDescription?: string;
     footerLogos?: {

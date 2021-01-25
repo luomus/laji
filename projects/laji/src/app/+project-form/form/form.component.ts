@@ -68,7 +68,7 @@ export class FormComponent implements OnInit {
               : form.id;
             const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
             if (hasManyForms && !_usedSubForm) {
-              this.router.navigate([form.id], {relativeTo: this.route});
+              this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
               return EMPTY;
             }
             const documentID = paramsStack.pop();
@@ -92,7 +92,7 @@ export class FormComponent implements OnInit {
                     return EMPTY;
                   }
                   return namedPlace$.pipe(map(namedPlace => ({
-                    form,
+                    form: usedSubForm,
                     documentID,
                     namedPlace
                   })));
