@@ -1,10 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-
-export enum CheckboxType {
-  basic = 'basic',
-  excluded = 'excluded',
-  partial = 'partial'
-}
+import { CheckboxType } from '../../../../shared-modules/select/checkbox/checkbox.component';
 
 @Component({
   selector: 'laji-switch-row',
