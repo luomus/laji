@@ -21,6 +21,8 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
+import { PersonApi } from '../../../shared/api/PersonApi';
+import { combineLatest } from 'rxjs';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -38,7 +40,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private personApi: PersonApi
   ) {
     this._onError = this._onError.bind(this);
   }
@@ -127,13 +130,27 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
     import('laji-form').then((formPackage) => {
       this.lajiFormWrapperProto = formPackage.default;
-      this.userService.getUserSetting<any>(this.settingsKey).pipe(
-        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-          map(globalSettings => ({...globalSettings, ...settings}))
-        )),
-        take(1)
-      ).subscribe(settings => {
-        this.settings = settings;
+      combineLatest(
+        this.userService.getUserSetting<any>(this.settingsKey).pipe(
+          concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+            map(globalSettings => ({...globalSettings, ...settings}))
+          )),
+          take(1)
+        ),
+        this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
+          map(profile => profile.settings?.defaultMediaMetadata)
+        )
+      ).subscribe(([settings, defaultMediaMetadata]) => {
+        this.settings = {
+          ...settings,
+          // 'defaultImageMetadata' is used both for images and audio, the term has 'image' for historical reasons.
+          defaultImageMetadata: defaultMediaMetadata
+            ? {
+              ...defaultMediaMetadata,
+              capturerVerbatim: [defaultMediaMetadata.capturerVerbatim],
+            }
+            : settings.defaultImageMetadata
+        };
         this.mountLajiForm();
       });
     });
@@ -199,9 +216,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  private _onSettingsChange(settings: object, global = false) {
+  private _onSettingsChange(settings: any, global = false) {
+    // Don't save defaultImageMetadata in settings, since it's there only for backward compatibility.
+    const {defaultImageMetadata, ..._settings} = settings; // tslint:disable-line no-unused-vars
     this.ngZone.run(() => {
-      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
+      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, _settings);
     });
   }
 
