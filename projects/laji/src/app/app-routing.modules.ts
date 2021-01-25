@@ -40,10 +40,12 @@ const baseRoutes: Routes = [
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)}
 ];
 
-const formRouting = Object.keys(Global.oldThemeRouting).reduce((formRoutes, path) => {
-  formRoutes[path] = `/project/${Global.oldThemeRouting[path]}`;
-  return formRoutes;
-}, {});
+const formRouting = Object
+  .keys(Global.oldThemeRouting)
+  .reduce((formRoutes, path) => {
+    formRoutes[path] = `/project/${ Global.oldThemeRouting[path] }`;
+    return formRoutes;
+  }, {});
 
 const rootRouting = {
   ...formRouting,
