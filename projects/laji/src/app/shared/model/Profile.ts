@@ -83,21 +83,13 @@ export interface Profile {
   /**
    * Settings for the user
    */
-  settings?: any;
-
-    /**
-   * Name of the data owner;
-   */
-  capturerVerbatim?: string;
-
-  /**
-   * Name of the data owner;
-   */
-  intellectualOwner?: string;
-  /**
-   * License which is used when publishing data that belongs to this media.
-   */
-  intellectualRights?: Profile.IntellectualRightsEnum;
+  settings?: {
+    defaultMediaMetadata?: {
+      capturerVerbatim: string;
+      intellectualOwner: string;
+      intellectualRights: Profile.IntellectualRights
+    }
+  };
 
   finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;
 
@@ -108,16 +100,28 @@ export interface Profile {
 }
 
 export namespace Profile {
-  export type IntellectualRightsEnum =
-  'MY.intellectualRightsCC-BY'
-  | 'MY.intellectualRightsCC0'
-  | 'MY.intellectualRightsPD'
-  | 'MY.intellectualRightsARR';
-  export const IntellectualRightsEnum = {
-  IntellectualRightsCCBY: 'MY.intellectualRightsCC-BY' as IntellectualRightsEnum,
-  IntellectualRightsCC0: 'MY.intellectualRightsCC0' as IntellectualRightsEnum,
-  IntellectualRightsPD: 'MY.intellectualRightsPD' as IntellectualRightsEnum,
-  IntellectualRightsARR: 'MY.intellectualRightsARR' as IntellectualRightsEnum
+  export enum IntellectualRights {
+    intellectualRightsCCBYSA4 = 'MZ.intellectualRightsCC-BY-SA-4.0',
+    intellectualRightsCCBYNC4 = 'MZ.intellectualRightsCC-BY-NC-4.0',
+    intellectualRightsCCBYNCSA4 = 'MZ.intellectualRightsCC-BY-NC-SA-4.0',
+    intellectualRightsCCBY4 = 'MZ.intellectualRightsCC-BY-4.0',
+    intellectualRightsCC04 = 'MZ.intellectualRightsCC0-4.0',
+    intellectualRightsODBL1 = 'MZ.intellectualRightsODBL-1.0',
+    intellectualRightsPD = 'MZ.intellectualRightsPD',
+    intellectualRightsARR = 'MZ.intellectualRightsARR',
+    intellectualRightsCCBY2 = 'MZ.intellectualRightsCC-BY-2.0',
+    intellectualRightsCCBYSA2 = 'MZ.intellectualRightsCC-BY-SA-2.0',
+    intellectualRightsCCBYSA2DE = 'MZ.intellectualRightsCC-BY-SA-2.0-DE',
+    intellectualRightsCCBYNC2 = 'MZ.intellectualRightsCC-BY-NC-2.0',
+    intellectualRightsCCBYNCSA2 = 'MZ.intellectualRightsCC-BY-NC-SA-2.0',
+    intellectualRightsCCBYNCND2 = 'MZ.intellectualRightsCC-BY-NC-ND-2.0',
+    intellectualRightsCCBYBY25 = 'MZ.intellectualRightsCC-BY-SA-2.5',
+    intellectualRightsCCBYBY25SE = 'MZ.intellectualRightsCC-BY-SA-2.5-SE',
+    intellectualRightsCCBY3 = 'MZ.intellectualRightsCC-BY-3.0',
+    intellectualRightsCCBYSA3 = 'MZ.intellectualRightsCC-BY-SA-3.0',
+    intellectualRightsCCBYNCSA3 = 'MZ.intellectualRightsCC-BY-NC-SA-3.0',
+    intellectualRightsCCBYND4 = 'MZ.intellectualRightsCC-BY-ND-4.0',
+    intellectualRightsCCBYNCND4 = 'MZ.intellectualRightsCC-BY-NC-ND-4.0'
   };
 
   export type FinnishBirdSongRecognitionSkillLevelEnum =
