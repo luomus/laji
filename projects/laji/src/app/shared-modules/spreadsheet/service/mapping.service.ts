@@ -363,13 +363,16 @@ export class MappingService {
     return value;
   }
 
-  mapKeywords(value) {
-    return value;
+  mapKeywords(value, allowUnMapped) {
+    return value.split(',').map(item => item.trim());
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
+      if (Array.isArray(value[0])) {
+        return value[0];
+      }
       if (!field.isArray) {
         value = value.join(MappingService.valueSplitter);
       } else if (value.length === 0) {
@@ -405,8 +408,8 @@ export class MappingService {
         targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
       case SpecialTypes.keywords:
-        targetValue = this.mapKeywords(targetValue || value);
-        break;  
+        targetValue = this.mapKeywords(targetValue || value, allowUnMapped);
+        break;
       default:
         if (targetValue === null) {
           targetValue = this.mapByFieldType(value, field);
