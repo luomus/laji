@@ -324,12 +324,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
       switchMap(data => this.addCollectionID(form, data))
   );
 
-    return getEmpty$;
-    /*
     return this.findTmpData(form, person).pipe(
       switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
     );
-     */
   }
 
   private findTmpData(form: Form.SchemaForm, person: Person): Observable<undefined|Document> {
