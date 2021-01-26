@@ -18,7 +18,7 @@ export class SwitchRowComponent implements OnChanges {
   @Output() update = new EventEmitter<{id: string, value: any}>();
 
   state;
-  typeCheckbox: CheckboxType;
+  typeCheckbox = CheckboxType.excluded;
 
   constructor() { }
 
@@ -33,7 +33,6 @@ export class SwitchRowComponent implements OnChanges {
     } else {
       this.state = undefined;
     }
-    this.typeCheckbox = CheckboxType.excluded;
   }
 
   updateValue() {

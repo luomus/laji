@@ -245,26 +245,19 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.unselectedOptions = [];
-    const countObj = this.selected !== undefined ?
-    this.selected.some((item: any) => item !== undefined && (item.checkboxValue === true || item.checkboxValue === false)) : false;
 
-    this.options.map(option => {
-      if (countObj) {
-        selected.map(item => {
-          if (item.id === option.id) {
-            this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
-          } else {
-            this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
-          }
-        });
-      } else {
-        if (selected.includes(option.id)) {
-          this.selectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': true});
-        } else {
-          this.unselectedOptions.push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': false});
-        }
-      }
+    this.options.forEach(option => {
+      const selectedItem = selected.find(select =>
+        (option.id === select) ||
+        (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
+      );
+      const targetOptions = selectedItem !== undefined ? this.selectedOptions : this.unselectedOptions;
+      const checkboxValue = selectedItem?.checkboxValue ?? (selectedItem !== undefined ? true : false);
 
+      targetOptions.push({
+        ...option,
+        checkboxValue
+      });
     });
   }
 
