@@ -15,25 +15,21 @@ export class TaxonImagesComponent implements OnChanges {
   @Input() taxonImages: Array<Image>;
   @Input() isFromMasterChecklist: boolean;
 
-  typeSpecimenQuery: WarehouseQueryInterface;
-  collectionSpecimenQuery: WarehouseQueryInterface;
-  reliableObservationQuery: WarehouseQueryInterface;
-
-  hasTypeSpecimens: boolean;
-  hasCollectionImages: boolean;
-  hasObservationImages: boolean;
-
-  constructor() { }
+  imageSets: { title: string; hasData?: boolean; query: WarehouseQueryInterface }[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      this.typeSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, true);
-      this.collectionSpecimenQuery = InfoCardQueryService.getSpecimenQuery(this.taxon.id, false);
-      this.reliableObservationQuery = InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id);
-
-      this.hasTypeSpecimens = undefined;
-      this.hasCollectionImages = undefined;
-      this.hasObservationImages = undefined;
+      this.imageSets = [
+        {
+          title: 'taxonomy.typeSpecimens',
+          query: InfoCardQueryService.getSpecimenQuery(this.taxon.id, true)
+        }, {
+          title: 'taxonomy.collectionSpecimens',
+          query: InfoCardQueryService.getSpecimenQuery(this.taxon.id, false)
+        }, {
+          title: 'taxonomy.confirmedObservations',
+          query: InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id)
+        }];
     }
   }
 

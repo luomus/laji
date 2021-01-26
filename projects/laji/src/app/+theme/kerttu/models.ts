@@ -19,18 +19,6 @@ export interface ILetterTemplate extends ILetter {
   taxonId: string;
 }
 
-export interface ILetterStatusInfo {
-  userAnnotationCount: number;
-  targetAnnotationCount: number;
-  hasPreviousCandidate: boolean;
-}
-
-export enum LetterAnnotation {
-  yes = 1,
-  no = 0,
-  unsure = -1
-}
-
 export interface IRecordingAnnotation {
   isLowQuality?: boolean;
   containsNoiseCausedByHumanActivity?: boolean;
@@ -52,17 +40,43 @@ export interface ITaxonAnnotation {
   bird: boolean;
 }
 
-export enum TaxonAnnotationEnum {
-  occurs = 1,
-  possible_occurs = 2
-}
-
 export interface ITaxonWithAnnotation extends Taxonomy {
   annotation: ITaxonAnnotation;
 }
 
+export interface ILetterStatusInfo {
+  userAnnotationCount: number;
+  targetAnnotationCount: number;
+  hasPreviousCandidate: boolean;
+}
+
 export interface IRecordingStatusInfo {
   hasPreviousRecording: boolean;
+}
+
+export interface IKerttuStatistics {
+  letterAnnotationCount: number;
+  recordingAnnotationCount: number;
+  userLetterAnnotationCount?: number;
+  userRecordingAnnotationCount?: number;
+}
+
+export interface IUserStatistics {
+  userId: string;
+  letterAnnotationCount: number;
+  recordingAnnotationCount: number;
+  totalAnnotationCount: number;
+}
+
+export enum LetterAnnotation {
+  yes = 1,
+  no = 0,
+  unsure = -1
+}
+
+export enum TaxonAnnotationEnum {
+  occurs = 1,
+  possible_occurs = 2
 }
 
 export enum KerttuErrorEnum {

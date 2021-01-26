@@ -20,7 +20,6 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
-import { BrowserService } from '../../../shared/service/browser.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -51,6 +50,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
+  @Input() summaryRow = false;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
@@ -78,13 +78,36 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   private filterChange$ = new Subject();
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
+  _getRowClass = (row) => {
+    if (this.getRowClass) {
+      const rowClass = this.getRowClass(row);
+      if (rowClass) {
+        return rowClass;
+      }
+    }
+
+    return {
+      'link': this.showRowAsLink,
+      'issues':
+        !!(row.document && row.document.quality && row.document.quality.issue) ||
+        !!(row.gathering && row.gathering.quality && (
+          row.gathering.quality.issue ||
+          row.gathering.quality.locationIssue ||
+          row.gathering.quality.timeIssue
+        )) ||
+        !!(row.unit && row.unit.quality && (
+          row.unit.quality.documentGatheringUnitQualityIssues ||
+          row.unit.quality.issue
+        ))
+    };
+  }
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone,
-    private browserService: BrowserService
+    private zone: NgZone
   ) {}
 
   @Input() set height(height: string) {
@@ -236,30 +259,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this._rows = [...this._rows];
       this.changeDetectorRef.markForCheck();
     }
-  }
-
-  _getRowClass(row) {
-    if (this.getRowClass) {
-      const rowClass = this.getRowClass(row);
-      if (rowClass) {
-        return rowClass;
-      }
-    }
-
-    return {
-      'link': this.showRowAsLink,
-      'issues':
-        !!(row.document && row.document.quality && row.document.quality.issue) ||
-        !!(row.gathering && row.gathering.quality && (
-          row.gathering.quality.issue ||
-          row.gathering.quality.locationIssue ||
-          row.gathering.quality.timeIssue
-        )) ||
-        !!(row.unit && row.unit.quality && (
-          row.unit.quality.documentGatheringUnitQualityIssues ||
-          row.unit.quality.issue
-        ))
-    };
   }
 
   onResize(event) {

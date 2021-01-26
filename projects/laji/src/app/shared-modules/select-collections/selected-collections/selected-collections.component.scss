@@ -1,0 +1,18 @@
+@import '../../../../../../laji-ui/src/lib/vars';
+
+.lj-container {
+  position: relative;
+  display: block;
+}
+.lj-item {
+  display: block;
+  padding-left: 15px;
+  font-size: 0.90em;
+  margin-bottom: 0;
+  font-weight: normal;
+  padding-right: 15px;
+}
+.lj-item laji-checkbox {
+  position: relative;
+  margin: 2px 0 -2px -17px;
+}

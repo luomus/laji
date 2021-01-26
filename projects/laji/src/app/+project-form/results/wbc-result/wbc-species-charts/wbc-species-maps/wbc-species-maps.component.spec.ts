@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WbcSpeciesMapsComponent } from './wbc-species-maps.component';
 
@@ -6,7 +6,7 @@ describe('WbcSpeciesMapsComponent', () => {
   let component: WbcSpeciesMapsComponent;
   let fixture: ComponentFixture<WbcSpeciesMapsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WbcSpeciesMapsComponent ]
     })

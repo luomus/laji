@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GbifMapComponent } from './gbif-map.component';
 
@@ -6,7 +6,7 @@ describe('GbifMapComponent', () => {
   let component: GbifMapComponent;
   let fixture: ComponentFixture<GbifMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GbifMapComponent ]
     })

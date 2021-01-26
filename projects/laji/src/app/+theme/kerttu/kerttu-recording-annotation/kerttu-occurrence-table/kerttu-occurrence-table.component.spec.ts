@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KerttuOccurrenceTableComponent } from './kerttu-occurrence-table.component';
 
@@ -6,7 +6,7 @@ describe('KerttuOccurrenceTableComponent', () => {
   let component: KerttuOccurrenceTableComponent;
   let fixture: ComponentFixture<KerttuOccurrenceTableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ KerttuOccurrenceTableComponent ]
     })

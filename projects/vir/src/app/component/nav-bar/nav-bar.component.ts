@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { NavbarComponent as LajiNavBarComponent } from '../../../../../laji/src/app/shared/navbar';
 import { NotificationsFacade } from '../../../../../laji/src/app/shared/navbar/notifications/notifications.facade';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';

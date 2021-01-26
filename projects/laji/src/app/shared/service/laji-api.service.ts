@@ -226,7 +226,7 @@ export class LajiApiService {
   get(endpoint: LajiApi.Endpoints.autocomplete, id: LajiApi.AutocompleteField, query: LajiApi.Query.AutocompleteQuery): Observable<Autocomplete[]>;
   get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsSchemaQuery): Observable<Form.SchemaForm>;
   get(endpoint: LajiApi.Endpoints.forms, id: string, query: LajiApi.Query.FormsQuery): Observable<any>;
-  get(endpoint: LajiApi.Endpoints.information, id: string, query: LajiApi.Query.InformationQuery): Observable<Information>;
+  get(endpoint: LajiApi.Endpoints.information, id: string, query?: LajiApi.Query.InformationQuery): Observable<Information>;
   get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
   get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>;
