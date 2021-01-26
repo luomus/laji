@@ -47,6 +47,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
+  @Output() goBack = new EventEmitter();
   event: EventEmitter<any> = new EventEmitter();
 
   errors = FormError;
@@ -57,6 +58,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   saveVisibility = 'hidden';
   isAdmin = false;
   isFromCancel = false;
+  confirmLeave = true;
   validationErrors: any;
   touchedCounter = 0;
   templateForm: TemplateForm = {
@@ -109,7 +111,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
-    if (!this.lajiFormFacade.hasChanges()) {
+    if (!this.confirmLeave || !this.lajiFormFacade.hasChanges()) {
       return true;
     }
     return this.translate.get(this.isFromCancel ? cancelKey : leaveKey).pipe(
@@ -221,6 +223,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     // Shallow clone so that change detection runs even if errors didn't change
     // so that footer updates buttons disabled correctly.
     this.validationErrors = errors && {...errors} || errors;
+  }
+
+  onGoBack() {
+    this.confirmLeave = false;
+    this.goBack.emit();
   }
 
   private errorHandling(vm: ILajiFormState) {

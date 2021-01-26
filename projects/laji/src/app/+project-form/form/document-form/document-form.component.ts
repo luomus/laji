@@ -22,6 +22,7 @@ import { ProjectFormService } from '../../project-form.service';
       (success)="onSuccess()"
       (error)="goBack()"
       (cancel)="goBack()"
+      (goBack)="goBack()"
     >
     </laji-document-form>
   `,

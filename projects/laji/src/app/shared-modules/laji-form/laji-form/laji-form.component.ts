@@ -52,6 +52,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
+  @Output() goBack = new EventEmitter();
 
   private lajiFormWrapper: any;
   private lajiFormWrapperProto: any;
@@ -107,6 +108,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   reload() {
     this.createNewLajiForm();
     this.errorModal.hide();
+  }
+
+  leave() {
+    this.goBack.emit();
   }
 
   submit() {
@@ -222,7 +227,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onError(error, info) {
-    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData && this.formData.formData});
+    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData?.formData});
     console.error(info);
     this.errorModal.show();
   }
