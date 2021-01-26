@@ -249,4 +249,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.logger.warn('Unmounting failed', err);
     }
   }
+
+  // TODO REMOVE BEFORE MAKING PR
+  triggerError() {
+    this._onError('TEST', 'TEST INFO');
+  }
 }
