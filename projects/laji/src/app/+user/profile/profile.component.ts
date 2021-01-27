@@ -90,10 +90,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
       );
 
-      this.intellectualRightsArray = Object.keys(this.intellectualRights).reduce((rights, key) => ([
-        ...rights,
-        {'key': key, 'value': this.intellectualRights[key]}
-      ]), []);
+    this.intellectualRightsArray = [
+      Profile.IntellectualRights.intellectualRightsCCBYSA4,
+      Profile.IntellectualRights.intellectualRightsCCBYNC4,
+      Profile.IntellectualRights.intellectualRightsCCBYNCSA4,
+      Profile.IntellectualRights.intellectualRightsCCBY4,
+      Profile.IntellectualRights.intellectualRightsCC04,
+      Profile.IntellectualRights.intellectualRightsARR
+    ];
   }
 
   ngOnDestroy() {
