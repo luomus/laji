@@ -1102,6 +1102,7 @@
   "profile.friendsInfo": "Du kan begära att en annan användare blir din vän genom att söka efter dina vänners profil ovanifrån och genom att klicka på knappen \"Be om en vän\" på sin profilsida. Efter att din vän har bekräftat din förfrågan på sin profilsida, blir du vänner och du kan t.ex. göra vanliga observationer i Notebook-observatörstjänsten.",
   "profile.image": "Bild",
   "profile.imagePlaceholder": "Länk till bild t.ex. http://example.com/bild.jpg",
+  "profile.defaultMediaMetadata.title": "Standardvärden för upphovsrätt för foton och ljudfiler som du sparar i Skrivbok",
   "profile.info.capturerVerbatim": "Tekijän nimi. Suositellaan muotoa 'Etunimi Sukunimi'. Jos useita tekijöitä, erota nimet pilkulla.",
   "profile.info.intellectualOwner": "Tekijän nimi siinä muodossa jolla teokseen tulee viitata, esim. 'Maija Meikäläinen, valokuvaajamaija.fi'",
   "profile.info.intellectualRights": "Lisenssi, jolla teosta saa käyttää. Valitse kaikki oikeudet pidätetään jos et halua lisensoida kuvia. Tällöin kuvia voi näyttää vain Lajitietokeskuksen ja Vihkon käyttöehtojen mukaisesti.",
