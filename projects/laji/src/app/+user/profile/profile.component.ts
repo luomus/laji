@@ -29,7 +29,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public personSelfUrl = '/';
 
   private subProfile: Subscription;
-  intellectualRightsArray: Profile.IntellectualRights[] = [];
+  intellectualRightsArray: Profile.IntellectualRights[] = [
+    Profile.IntellectualRights.intellectualRightsCCBYSA4,
+    Profile.IntellectualRights.intellectualRightsCCBYNC4,
+    Profile.IntellectualRights.intellectualRightsCCBYNCSA4,
+    Profile.IntellectualRights.intellectualRightsCCBY4,
+    Profile.IntellectualRights.intellectualRightsCC04,
+    Profile.IntellectualRights.intellectualRightsARR
+  ];
 
   intellectualRights = Profile.IntellectualRights;
 
@@ -89,15 +96,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
-
-    this.intellectualRightsArray = [
-      Profile.IntellectualRights.intellectualRightsCCBYSA4,
-      Profile.IntellectualRights.intellectualRightsCCBYNC4,
-      Profile.IntellectualRights.intellectualRightsCCBYNCSA4,
-      Profile.IntellectualRights.intellectualRightsCCBY4,
-      Profile.IntellectualRights.intellectualRightsCC04,
-      Profile.IntellectualRights.intellectualRightsARR
-    ];
   }
 
   ngOnDestroy() {
