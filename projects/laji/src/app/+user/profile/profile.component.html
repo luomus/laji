@@ -11,10 +11,11 @@
           <div class="profile-image">
             <img *ngIf="currentProfile.image" [src]="currentProfile.image" alt="profile image" class="img-rounded">
           </div>
-          <div *ngIf="isCurrentUser"
-               class="btn-default btn btn-sm edit-text"
+          <lu-button *ngIf="isCurrentUser"
+               [small]="true"
+               class="edit-text"
                (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
-          </div>
+          </lu-button>
           <div *ngIf="!editing">
             <p>{{ currentProfile.profileDescription }}</p>
             <p *ngIf="currentProfile.personalCollectionIdentifier">
@@ -51,7 +52,7 @@
               </select>
             </div>
             <div class="profile-edit-row">
-              <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>
+              <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>
             </div>
           </div>
         </div>
