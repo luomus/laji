@@ -23,6 +23,7 @@ import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { PersonApi } from '../../../shared/api/PersonApi';
 import { combineLatest } from 'rxjs';
+import { Profile } from '../../../shared/model/Profile';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -60,6 +61,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private lajiFormWrapperProto: any;
   private _block = false;
   private settings: any;
+  private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
@@ -141,16 +143,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           map(profile => profile.settings?.defaultMediaMetadata)
         )
       ).subscribe(([settings, defaultMediaMetadata]) => {
-        this.settings = {
-          ...settings,
-          // 'defaultImageMetadata' is used both for images and audio, the term has 'image' for historical reasons.
-          defaultImageMetadata: defaultMediaMetadata
-            ? {
-              ...defaultMediaMetadata,
-              capturerVerbatim: [defaultMediaMetadata.capturerVerbatim],
-            }
-            : settings.defaultImageMetadata
-        };
+        this.defaultMediaMetadata = defaultMediaMetadata;
+        this.settings = settings;
         this.mountLajiForm();
       });
     });
@@ -193,6 +187,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           onSettingsChange: this._onSettingsChange.bind(this),
           onValidationError: this._onValidationError.bind(this),
           settings: this.settings,
+          mediaMetadata: this.defaultMediaMetadata,
           apiClient: this.apiClient,
           lang: this.translate.currentLang,
           renderSubmit: false,
@@ -217,10 +212,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onSettingsChange(settings: any, global = false) {
-    // Don't save defaultImageMetadata in settings, since it's there only for backward compatibility.
-    const {defaultImageMetadata, ..._settings} = settings; // tslint:disable-line no-unused-vars
     this.ngZone.run(() => {
-      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, _settings);
+      this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
     });
   }
 

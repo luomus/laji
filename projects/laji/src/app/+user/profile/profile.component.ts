@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public personSelfUrl = '/';
 
   private subProfile: Subscription;
-  intellectualRightsArray: any[] = [];
+  intellectualRightsArray: Profile.IntellectualRights[] = [];
 
   intellectualRights = Profile.IntellectualRights;
 
