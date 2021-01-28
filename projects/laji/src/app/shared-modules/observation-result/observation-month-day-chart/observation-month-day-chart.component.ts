@@ -154,6 +154,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.dayChartModalVisible = false;
   }
 
+  /* Check */
+
   private updateData() {
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
