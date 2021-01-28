@@ -18,6 +18,7 @@ export enum SpecialTypes {
   dateTime = 'dateTime',
   date = 'date',
   time = 'time',
+  keywords = 'keywords'
 }
 
 @Injectable()
@@ -25,6 +26,7 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
+  public static readonly keywordSplitters = [';', ','];
 
   // from boolean to translation key
   private readonly booleanMap = {
@@ -45,14 +47,17 @@ export class MappingService {
   private specials = {
     'editors[*]': SpecialTypes.person,
     'namedPlaceID': SpecialTypes.namedPlaceID,
+    'keywords[*]': SpecialTypes.keywords,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
     'gatheringEvent.dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].leg': SpecialTypes.person,
     'gatherings[*].geometry': SpecialTypes.geometry,
     'gatherings[*].namedPlaceID': SpecialTypes.namedPlaceID,
+    'gatherings[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].unitGathering.geometry': SpecialTypes.geometry,
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
     'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
@@ -360,20 +365,28 @@ export class MappingService {
     return value;
   }
 
+  mapKeywords(value) {
+    return value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim());
+  }
+
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
+    const fieldType = this.getSpecial(field);
+
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
       if (!field.isArray) {
         value = value.join(MappingService.valueSplitter);
       } else if (value.length === 0) {
         return null;
+      } else if (fieldType === SpecialTypes.keywords) {
+        value = value.reduce((a, b) => a.concat(b), []);
       }
       return value;
     }
     const upperValue = ('' + value).toLowerCase();
     let targetValue: TUserValueMap|TUserValueMap[] = this.getUserMappedValue(upperValue, field);
 
-    switch (this.getSpecial(field)) {
+    switch (fieldType) {
       case SpecialTypes.geometry:
         if (targetValue === null) {
           targetValue = this.analyzeGeometry(value);
@@ -396,6 +409,9 @@ export class MappingService {
         break;
       case SpecialTypes.dateOptionalTime:
         targetValue = this.mapDateOptionalTime(targetValue || value);
+        break;
+      case SpecialTypes.keywords:
+        targetValue = this.mapKeywords(targetValue || value);
         break;
       default:
         if (targetValue === null) {

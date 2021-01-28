@@ -20,8 +20,6 @@ export class SwitchRowComponent implements OnChanges {
   state;
   typeCheckbox = CheckboxType.excluded;
 
-  constructor() { }
-
   ngOnChanges() {
     if (!this.option) {
       return;

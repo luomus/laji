@@ -11,11 +11,11 @@
             <h5>{{browseTitle}}</h5>
             <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange($event.target.value)"/>
             <div class="scrollable-tree">
-              <tree-root 
-                #tree 
-                [nodes]="collectionsTree" 
+              <tree-root
+                #tree
+                [nodes]="collectionsTree"
                 [options]="options"
-                (initialized)="treeInit($event)"
+                (initialized)="treeInit()"
               >
                 <ng-template #treeNodeTemplate let-node>
                   <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
@@ -29,7 +29,7 @@
               <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
             </div>
           </div>
-        </div>   
+        </div>
       </ng-container>
       <ng-template #loading>
         <laji-spinner [overlay]="true">

@@ -9,7 +9,6 @@ import { ObservationFacade } from '../observation.facade';
 import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
-import { forEach } from 'jszip';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
 
@@ -387,12 +386,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   updateSearchQuery(field, value) {
     this.query[field] = value;
-    const taxonName = this.selectedNameTaxon.filter(item => {
+    this.selectedNameTaxon = this.selectedNameTaxon.filter(item => {
       if (value.indexOf(item.id) > -1) {
         return item;
       }
     });
-    this.selectedNameTaxon = taxonName;
     this.onQueryChange();
   }
 
@@ -458,30 +456,29 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private updateVisibleSections() {
-    Object.keys(this.sections).forEach(section => {
-      let visible = false;
-      for (let i = 0; i < this.sections[section].length; i++) {
-        const value = this.query[this.sections[section][i]];
-        if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
-          visible = true;
-          break;
-        }
-      }
-      this.visible[section] = visible;
-    });
+    this.updateVisible('sections', 'visible');
   }
 
   private updateVisibleAdvancedSections() {
-    Object.keys(this.advancedSections).forEach(section => {
+    this.updateVisible('advancedSections', 'visibleAdvanced');
+  }
+
+  private updateVisible(sectionKey: 'advancedSections', visibilityKey: 'visibleAdvanced');
+  private updateVisible(sectionKey: 'sections', visibilityKey: 'visible');
+  private updateVisible(
+    sectionKey: keyof Pick<this, 'sections' | 'advancedSections'>,
+    visibilityKey: keyof Pick<this, 'visible' | 'visibleAdvanced'>
+  ) {
+    Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this.advancedSections[section].length; i++) {
-        const value = this.query[this.advancedSections[section][i]];
+      for (let i = 0; i < this[sectionKey][section].length; i++) {
+        const value = this.query[this[sectionKey][section][i]];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
         }
       }
-      this.visibleAdvanced[section] = visible;
+      this[visibilityKey][section] = visible;
     });
   }
 
@@ -502,8 +499,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   protected searchQueryToFormQuery(query: WarehouseQueryInterface): ObservationFormQuery {
     let timeStart, timeEnd;
     if (query.time && query.time[0] && isRelativeDate(query.time[0])) {
-      const time = query.time[0];
-      timeStart = time;
+      timeStart = query.time[0];
       timeEnd = false;
     } else {
       const time = query.time && query.time[0] ? query.time && query.time[0].split('/') : [];

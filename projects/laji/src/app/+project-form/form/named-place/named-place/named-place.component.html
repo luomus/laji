@@ -1,6 +1,7 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
-    <laji-document-form-header [formID]="data.documentForm.id"
+    <laji-document-form-header *ngIf="displayHeader"
+                               [formID]="data.documentForm.id"
                                [displayObservationList]="false"
                                [description]="data.description"
     class="no-flex"></laji-document-form-header>
@@ -8,12 +9,16 @@
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
     <ng-container *lajiLoggedIn="true">
-      <div *ngIf='data.allowEdit && data.namedPlaces' class="choose-label">
-      <span>{{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel
-      || 'np.chooseLabel' | translate}}</span>
+      <div *ngIf='data.namedPlaces' class="choose-label">
+        <span>
+          {{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
+        </span>
+        <ng-container *ngIf="data.allowEdit">
+          <span class="choose-or">{{'or' | translate}}</span>
         <lu-button (click)='onCreateNew()'>
           {{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
         </lu-button>
+        </ng-container>
       </div>
     </ng-container>
 
@@ -52,7 +57,7 @@
       <laji-metadata-select
         [alt]="'MNP.tagEnum'"
         [ngModel]="data.tags"
-        (ngModelChange)="onTagChange($event)"
+        (ngModelChange)="onTagsChange($event)"
         [multiple]="true"
         [useFilter]="false"
         placeholder="np.tag"
@@ -65,12 +70,13 @@
                           [documentForm]="data.documentForm"
                           [placeForm]="data.placeForm"
                           [userID]="data.user.id"
-                          [allowCreate]="data.allowEdit"
                           [activeNP]="data.activeNP?.id"
-                          [showMap]="data.showMap"
                           [formRights]="data.formRights"
-                          (activePlaceChange)="onActivePlaceChange($event)"
-                          (createButtonClick)="onCreateNew()"></laji-np-choose>
+                          (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
+          <ng-container *lajiLoggedIn="true">
+            <lu-button *ngIf="data.allowEdit"
+                       (click)="onCreateNew()">{{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
+          </ng-container>
         </div>
         <div [ngClass]="{'col-lg-6': true, 'nav-margin': data.showMap}">
           <laji-np-info *ngIf="data.activeNP"
@@ -81,11 +87,14 @@
                         [collectionId]="data.collectionId"
                         [allowEdit]="data.allowEdit"
                         [loading]="loading"
+                        [useLabel]="useLabel"
+                        [useDisabled]="useDisabled"
+                        [reloadSubmissions$]="reloadSubmissions$"
                         (releaseButtonClick)="onRelease($event)"
                         (reserveButtonClick)="onReserve($event)"
                         (editButtonClick)="onEdit()"
                         (deleteButtonClick)="confirmDelete($event)"
-                        (useButtonClick)="use()"></laji-np-info>
+                        (useButtonClick)="useClick()"></laji-np-info>
         </div>
       </div>
     </laji-spinner>

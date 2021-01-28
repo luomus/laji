@@ -104,7 +104,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
-    this.onlyCount = (this.types.includes('count') && this.types.length === 1) ? true : false;
+    this.onlyCount = this.types.includes('count') && this.types.length === 1;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -312,9 +312,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   private getDataLayer() {
     try {
       const layers = this.mapComponent.map.getData();
-      for (const layer of layers) {
-        return layer.group;
-      }
+      return layers?.[0]?.group;
     } catch (e) {
     }
     return null;

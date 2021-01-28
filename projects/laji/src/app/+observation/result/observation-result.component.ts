@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, ChangeDetectorRef, OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
+OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -75,7 +75,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   mode: 'all' | 'finnish' = 'all';
   loadedModes: LoadedElementsStore = new LoadedElementsStore(['all', 'finnish']);
 
-  lastTabActive = 'list';
+  activeTab = 'list';
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(tabOrder);
 
   hasMonthDayData: boolean;
@@ -103,7 +103,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     } else {
       this.mode = 'all';
       this.loadedModes.load('all');
-      this.lastTabActive = value;
+      this.activeTab = value;
       this.loadedTabs.load(value);
       this.selectedTabIdx = this.loadedTabs.getIdxFromName(value);
     }
@@ -137,7 +137,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   reloadTabs() {
     this.loadedTabs.reset();
-    this.loadedTabs.load(this.lastTabActive);
+    this.loadedTabs.load(this.activeTab);
   }
 
   pickLocation(e) {

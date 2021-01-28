@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { iif, of } from 'rxjs';
-import { map, switchMap, mergeMap, filter, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { CollectionService } from '../../shared/service/collection.service';
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
 

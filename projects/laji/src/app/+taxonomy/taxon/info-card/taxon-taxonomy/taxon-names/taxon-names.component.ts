@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
 @Component({
@@ -7,7 +7,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-names.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonNamesComponent implements OnInit {
+export class TaxonNamesComponent {
   _taxon: Taxonomy;
   availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
   synonymTypes = [
@@ -42,11 +42,6 @@ export class TaxonNamesComponent implements OnInit {
     }
 
     this._taxon = taxon;
-  }
-
-  constructor() { }
-
-  ngOnInit() {
   }
 
   taxonHasSynonymKey(taxon) {

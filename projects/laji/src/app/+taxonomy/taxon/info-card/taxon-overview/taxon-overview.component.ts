@@ -55,7 +55,6 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.ylestaHasTranslation = [];
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
     if (this._taxonDescription && this._taxonDescription.length > 0) {
-      const groups = taxonDescription[0].groups;
       this.groupHasTranslation = this.checklang.checkValue(this._taxonDescription);
       this._taxonDescription.forEach((item, idx) => {
         (item.groups || []).forEach(gruppo => {
@@ -64,7 +63,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
               if (variable.variable === 'MX.descriptionText') {
                 this.description = variable.content;
                 this.ingress = variable.title;
-                this.contentHasLanguage = variable.content[this.translate.currentLang] ? true : false;
+                this.contentHasLanguage = !!variable.content[this.translate.currentLang];
               }
             });
           }
@@ -126,7 +125,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
       )
       .subscribe(data => {
         this.taxonChildren = data;
-        this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0 ? true : false;
+        this.isChildrenOnlySpecie = this.taxonChildren.filter(e => e.taxonRank === 'MX.species').length > 0;
         this.cd.markForCheck();
       });
   }

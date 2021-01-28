@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Global } from '../../../environments/global';
 import { Form } from '../../shared/model/Form';
 
 @Component({

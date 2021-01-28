@@ -83,7 +83,7 @@ export class DatatableUtil {
         });
         break;
       case 'iucnStatus':
-        observable = ObservableOf(IdService.getId(value.status).replace('MX.iucn', '') + ' (' + value.year + ')');
+        observable = ObservableOf(IdService.getId(value?.status).replace('MX.iucn', '') + ' (' + value?.year + ')');
         break;
       case 'user':
         observable = this.userService.getPersonInfo(value);

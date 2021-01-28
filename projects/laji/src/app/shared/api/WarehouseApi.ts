@@ -221,7 +221,7 @@ export class WarehouseApi {
     return this.warehouseQueryGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
-  public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string, extraHttpRequestParams?: any): Observable<string> {
+  public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/downloadApprovalRequest';
 
     const queryParameters = {};

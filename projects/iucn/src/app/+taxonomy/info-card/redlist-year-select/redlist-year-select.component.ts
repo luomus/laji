@@ -12,8 +12,6 @@ export class RedlistYearSelectComponent {
 
   @Output() activeChange = new EventEmitter();
 
-  constructor() { }
-
   changeActive(event) {
     event.stopPropagation();
     this.activeChange.emit(event.target.value);

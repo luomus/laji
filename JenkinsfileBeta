@@ -1,5 +1,5 @@
 node {
-   nvm('v12.16.3') {
+   nvm('v14.15.4') {
      stage('Prepare environment') {
       cleanWs()
       git branch: 'beta', url: 'https://github.com/luomus/laji.git'

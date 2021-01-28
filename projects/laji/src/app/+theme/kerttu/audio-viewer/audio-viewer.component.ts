@@ -89,7 +89,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this.cdr.markForCheck();
-        }, e => {
+        }, () => {
           this.onError();
         });
       }
@@ -158,10 +158,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private areaIsValid(buffer: AudioBuffer, area: IAudioViewerArea): boolean {
     const [minValue, maxValue] = [0, buffer.duration];
-    if (area?.xRange && this.rangeIsNotValid(area.xRange, minValue, maxValue)) {
-      return false;
-    }
-    return true;
+    return !(area?.xRange && this.rangeIsNotValid(area.xRange, minValue, maxValue));
   }
 
   private rangeIsNotValid(range: number[], minValue: number, maxValue: number): boolean {

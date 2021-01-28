@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input,
-OnInit, OnChanges, SimpleChanges, ChangeDetectorRef,
 ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';

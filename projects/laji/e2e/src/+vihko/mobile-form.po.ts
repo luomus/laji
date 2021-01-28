@@ -1,4 +1,4 @@
-import { browser, $, $$, protractor } from 'protractor';
+import { browser, $, protractor } from 'protractor';
 import { DocumentFormView } from '../+project-form/project-form.po';
 
 const EC = protractor.ExpectedConditions;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
 
 @Injectable({providedIn: 'root'})
@@ -16,6 +16,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'teamMember': ';'
   };
 
+  // noinspection JSUnusedLocalSymbols
   private readonly array: Array<keyof WarehouseQueryInterface|'aggregateBy'|'selected'|'orderBy'> = [
     'taxonId',
     'target',
@@ -79,6 +80,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'collectionAndRecordQuality'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
     'pessimisticDateRangeHandling',
     'excludeNulls',
@@ -112,6 +114,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly numeric: Array<keyof WarehouseQueryInterface|'page'|'pageSize'> = [
     'dayOfYearBegin',
     'dayOfYearEnd',
@@ -123,6 +126,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'pageSize'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly string: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
     'taxonRankId',
     'xValue',
@@ -141,6 +145,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId'
   ];
 
+  // noinspection JSUnusedLocalSymbols
   private readonly obscure: Array<keyof WarehouseQueryInterface> = [
     'editorPersonToken',
     'observerPersonToken',
@@ -291,11 +296,9 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public updateUrl(query: WarehouseQueryInterface, skipParams: string[]): void {
     const queryParams = this.getQueryObject(query, skipParams);
-    const extra = {};
+    const extra: NavigationExtras = {};
     if (Object.keys(queryParams).length > 0) {
       extra['queryParams'] = queryParams;
-    } else {
-      extra['preserveQueryParams'] = false;
     }
     this.router.navigate(
       [],

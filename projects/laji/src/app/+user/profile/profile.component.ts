@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -73,11 +73,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const false$ = ObservableOf(false);
         return ObservableForkJoin(
           data.currentUser.id ?
-            this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError((e) => false$)) :
+            this.personService.personFindProfileByToken(this.userService.getToken()).pipe(catchError(() => false$)) :
             empty$,
           currentActive ?
             false$ :
-            this.personService.personFindProfileByUserId(data.id).pipe(catchError((e) => empty$))
+            this.personService.personFindProfileByUserId(data.id).pipe(catchError(() => empty$))
         ).pipe(
           map(profiles => ({
             id: data.id,

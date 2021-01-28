@@ -25,8 +25,6 @@ export class KerttuOccurrenceTableComponent implements OnInit {
   @Output() selectedTaxonsChange = new EventEmitter<ITaxonWithAnnotation[]>();
   @Output() missingTaxonClick = new EventEmitter<ITaxonWithAnnotation>();
 
-  constructor() { }
-
   ngOnInit() {
     this.columns = [
       {

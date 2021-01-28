@@ -1,0 +1,30 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <ng-container *ngIf="vm.isLinkable; else notLinkable">
+    <alert type="warning"  *ngIf="vm.isLinked && !_linked">
+      {{ 'np.linker.hasAlreadyPlace' | translate }}
+    </alert>
+    <h4>{{ 'np.linker.title' | translate }}</h4>
+    <laji-named-places [documentForm]="vm.form"
+                       [activeId]="activeNP"
+                       [municipality]="municipality"
+                       [birdAssociationArea]="birdAssociationArea"
+                       [tags]="tags"
+                       (activeIdChange)="onActiveIdChange($event)"
+                       (municipalityChange)="onMunicipalityChange($event)"
+                       (birdAssociationAreaChange)="onBirdAssociationAreaChange($event)"
+                       (tagsChange)="onTagsChange($event)"
+                       (use)="use($event)"
+                       [useLabel]="'np.linker.doLink' | translate"
+                       [displayHeader]="false"
+                       [readonly]="true"
+                       [useDisabled]="loading || _linked"
+                       [reloadSubmissions$]="reloadSubmissions$"
+    ></laji-named-places>
+  </ng-container>
+</ng-container>
+
+<ng-template #notLinkable>
+  <alert type="danger">
+    {{ 'np.linker.noAccess' | translate }}
+  </alert>
+</ng-template>

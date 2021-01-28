@@ -40,7 +40,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
               this._ref.markForCheck();
             }
           },
-          (err) => this._updateValue(key)
+          () => this._updateValue(key)
         );
     } else {
       this._updateValue(key, type);
@@ -73,7 +73,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
 
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.onLangChange = this.translate.onLangChange.subscribe(() => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
         this.updateValue(value, type);
       });
