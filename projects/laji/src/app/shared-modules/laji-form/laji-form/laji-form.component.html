@@ -10,18 +10,27 @@
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-body">
-          <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span>{{ "haseka.form.crash.description" | translate }}</span><br />
-          </div>
-          <lu-button (click)="reload()">
-            {{ "haseka.form.crash.reload" | translate }}
-          </lu-button>
-          <lu-button (click)="leave()">
-            {{ "haseka.form.crash.leave" | translate }}
-          </lu-button>
+          <ng-container *ngIf="errorModalData">
+            <ng-container *ngTemplateOutlet="modalContent; context: errorModalData"></ng-container>
+          </ng-container>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #modalContent let-description="description" let-buttons="buttons">
+  <div class="alert alert-danger" role="alert">
+    <span>{{ description | translate }}</span><br />
+  </div>
+  <ng-container *ngFor="let button of buttons">
+    <ng-component *ngTemplateOutlet="modalButton; context: button"></ng-component>
+  </ng-container>
+</ng-template>
+
+<ng-template #modalButton let-label="label" let-fn="fn">
+  <lu-button (click)="fn()">
+    {{ label | translate }}
+  </lu-button>
+</ng-template>
+

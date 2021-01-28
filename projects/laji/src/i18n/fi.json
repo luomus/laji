@@ -308,7 +308,7 @@
   "haseka.form.crash.description": "Anteeksi, jotain meni pieleen. Ylläpidolle on lähetetty viesti. Kirjaamasi tiedot tallennettiin selaimesi muistiin joten voit yrittää niiden tallennusta uudelleen. Voit myös pyytää ylläpitoa (helpdesk@laji.fi) palauttamaan tiedot, jos selaimesi ei muista niitä.",
   "haseka.form.crash.reload": "Lataa lomake uudelleen",
   "haseka.form.crash.leave": "Poistu",
-  "haseka.reload": "Anteeksi, jotain meni pieleen. Ylläpidolle on lähetetty viesti. Kirjaamasi tiedot tallennettiin selaimesi muistiin joten voit yrittää niiden tallennusta uudelleen. Voit myös pyytää ylläpitoa (helpdesk@laji.fi) palauttamaan tiedot, jos selaimesi ei muista niitä.",
+  "haseka.form.saveError.description": "Anteeksi, jokin meni pieleen. Ylläpidolle on lähetetty viesti. Tiedot ovat tallessa selaimessasi. Voit yrittää jatkaa lomakkeen käyttöä painamalla \"Ok\" tai poistua lomakkeelta ja yrittää myöhemmin uudelleen painamalla \"Poistu\". Mikäli ongelma ei ratkea, ota yhteyttä ylläpitoon (helpdesk@laji.fi) ja voimme palauttaa tiedot.",
   "haseka.slogan": "Tallenna, hallinnoi ja jaa lajihavaintojasi",
   "haseka.statistics.title": "Tilasto",
   "haseka.submissions.chooseFormat": "Aineiston lataus",

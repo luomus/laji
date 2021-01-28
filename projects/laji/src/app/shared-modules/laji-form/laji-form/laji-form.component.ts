@@ -24,6 +24,14 @@ import { TranslateService } from '@ngx-translate/core';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
+interface ErrorModal {
+  description: string;
+  buttons: {
+    label: string;
+    fn: () => void;
+  }[];
+}
+
 @Component({
   selector: 'laji-form',
   templateUrl: './laji-form.component.html',
@@ -53,6 +61,24 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
   @Output() goBack = new EventEmitter();
+
+  errorModalData: ErrorModal;
+
+  reactCrashModalData: ErrorModal = {
+    description: 'haseka.form.crash.description',
+    buttons: [
+      {label: 'haseka.form.crash.reload', fn: () => this.reload()},
+      {label: 'haseka.form.crash.leave', fn: () => this.leave()}
+    ]
+  };
+
+  saveErrorModalData: ErrorModal = {
+    description: 'haseka.form.saveError.description',
+    buttons: [
+      {label: 'Ok', fn: () => this.dismissErrorModal()},
+      {label: 'haseka.form.crash.leave', fn: () => this.leave()}
+    ]
+  };
 
   private lajiFormWrapper: any;
   private lajiFormWrapperProto: any;
@@ -205,6 +231,18 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+  displayErrorModal(type: 'saveError' | 'reactCrash') {
+    this.errorModalData = type === 'reactCrash'
+      ? this.reactCrashModalData
+      : this.saveErrorModalData;
+    this.cd.markForCheck();
+    this.errorModal.show();
+  }
+
+  dismissErrorModal() {
+    this.errorModal.hide();
+  }
+
   private _onSettingsChange(settings: object, global = false) {
     this.ngZone.run(() => {
       this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
@@ -231,7 +269,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _onError(error, info) {
     this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData?.formData});
     console.error(info);
-    this.errorModal.show();
+    this.displayErrorModal('reactCrash');
   }
 
   private _onValidationError(errors) {
