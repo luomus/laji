@@ -50,8 +50,8 @@ export class FriendsComponent implements OnInit {
       this.userService.getToken(),
       profileKy
     ).subscribe(
-      _ => this.requestSend = true,
-      err => this.requestSend = true
+      () => this.requestSend = true,
+      () => this.requestSend = true
     );
   }
 

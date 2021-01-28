@@ -121,7 +121,7 @@ export class DownloadComponent implements OnChanges {
     private modalService: BsModalService
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.checkCanDownloadStatus();
   }
 

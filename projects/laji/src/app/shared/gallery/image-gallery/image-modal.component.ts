@@ -15,7 +15,6 @@ import {
 import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
-import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -84,7 +83,6 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
-  mainURL: string;
   index: number;
   tmpImg: any;
 
@@ -92,8 +90,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer2,
               _elementRef: ElementRef,
-              cis: ComponentLoaderFactory,
-              private childComunication: DocumentViewerChildComunicationService) {
+              cis: ComponentLoaderFactory) {
     this._overlay = cis
       .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
   }

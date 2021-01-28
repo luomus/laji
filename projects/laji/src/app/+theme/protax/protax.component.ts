@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -9,15 +9,12 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./protax.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxComponent implements OnInit {
+export class ProtaxComponent {
   constructor(
     private protaxApi: ProtaxApi,
     private exportService: ExportService,
     private translate: TranslateService
   ) { }
-
-  ngOnInit() {
-  }
 
   analyseData(formData: FormData) {
     this.protaxApi.analyse(formData).subscribe(result => {

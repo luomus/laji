@@ -88,7 +88,7 @@ export class AudioService {
 
   public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
     if (this.source) {
-      this.source.stop(0);
+      this.stopAudio(this.source);
     }
 
     this.source = this.audioContext.createBufferSource();
@@ -106,6 +106,12 @@ export class AudioService {
 
     this.source.start(0, startTime);
     return this.source;
+  }
+
+  public stopAudio(source: AudioBufferSourceNode) {
+    try {
+      source.stop(0);
+    } catch (e) {}
   }
 
   public getTime() {

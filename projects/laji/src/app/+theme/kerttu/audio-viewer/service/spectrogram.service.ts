@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { Resampler } from './assets/resample';
-import {Observable, of} from 'rxjs';
-import {map, share, tap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, share, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class SpectrogramService {
@@ -159,8 +159,7 @@ export class SpectrogramService {
 
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < data[0].length; j++) {
-        const value = data[i][data[0].length - 1 - j];
-        result[j * data.length + i] = value;
+        result[j * data.length + i] = data[i][data[0].length - 1 - j];
       }
     }
 
@@ -187,9 +186,8 @@ export class SpectrogramService {
     const [yMin, yMax] = yRange;
 
     const percent = (inputY - yMin) / (yMax - yMin);
-    const outputX = percent * (xMax - xMin) + xMin;
 
-    return outputX;
+    return percent * (xMax - xMin) + xMin;
   }
 
   private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {

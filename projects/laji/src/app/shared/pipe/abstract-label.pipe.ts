@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 @Pipe({
@@ -12,8 +12,9 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   updateSub: Subscription;
   onLangChange: Subscription;
 
-  constructor(protected translate: TranslateService,
-              protected _ref: ChangeDetectorRef,
+  protected constructor(
+    protected translate: TranslateService,
+    protected _ref: ChangeDetectorRef
   ) {
   }
 
@@ -21,8 +22,7 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
     return new Observable(subscriber => {
       this.key = key;
       this.updateSub = this._updateValue(key).subscribe(value => {
-        const _value = this._parseValue(value);
-        this.value = _value;
+        this.value = this._parseValue(value);
         subscriber.next(this.value);
         this._ref.markForCheck();
       }, () => {}, () => subscriber.complete());
@@ -51,7 +51,7 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
 
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.onLangChange = this.translate.onLangChange.subscribe(() => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
         this.updateValue(value).subscribe();
       });

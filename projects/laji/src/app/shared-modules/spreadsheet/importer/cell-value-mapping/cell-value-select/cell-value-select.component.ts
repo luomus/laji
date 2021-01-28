@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
@@ -7,7 +7,7 @@ import { IFormField, VALUE_IGNORE } from '../../../model/excel';
   styleUrls: ['./cell-value-select.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CellValueSelectComponent implements OnInit {
+export class CellValueSelectComponent {
 
   @Input() invalidValues: string[];
   @Input() mapping: {[value: string]: any} = {};
@@ -25,9 +25,6 @@ export class CellValueSelectComponent implements OnInit {
     if (field.enum) {
       this.labels = [VALUE_IGNORE, ...field.enumNames];
     }
-  }
-
-  ngOnInit() {
   }
 
   valueMapped(value, to) {

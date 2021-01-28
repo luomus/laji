@@ -12,8 +12,6 @@ export class HabitatComponent {
   isMany: boolean;
   _habitat: Habitat | Habitat[];
 
-  constructor() { }
-
   @Input() set habitat(habitat: Habitat | Habitat[]) {
     this.isMany = Array.isArray(habitat);
     this._habitat = habitat;

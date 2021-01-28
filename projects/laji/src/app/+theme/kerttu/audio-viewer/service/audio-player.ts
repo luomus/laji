@@ -64,7 +64,7 @@ export class AudioPlayer {
       };
       this.startTimeupdateInterval();
     } else {
-      this.source.stop(0);
+      this.audioService.stopAudio(this.source);
     }
   }
 
@@ -77,7 +77,7 @@ export class AudioPlayer {
   startFrom(time: number) {
     if (this.isPlaying) {
       this.toggle();
-      this.source.onended = (args) => {
+      this.source.onended = () => {
         this.ngZone.run(() => {
           this.sourceOnEnded();
           this.startFromMiddle(time);
@@ -98,7 +98,7 @@ export class AudioPlayer {
     this.clearTimeupdateInterval();
 
     if (this.source && this.isPlaying) {
-      this.source.stop(0);
+      this.audioService.stopAudio(this.source);
       this.source.onended = () => {};
     }
 
@@ -157,7 +157,7 @@ export class AudioPlayer {
     this.currentTime = Math.min(this.currentTime, endTime);
 
     if (this.currentTime === endTime) {
-      this.source.stop(0);
+      this.audioService.stopAudio(this.source);
     }
   }
 

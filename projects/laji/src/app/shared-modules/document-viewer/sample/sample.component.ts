@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-sample',
   templateUrl: './sample.component.html',
   styleUrls: ['./sample.component.scss']
 })
-export class SampleComponent implements OnInit {
+export class SampleComponent {
 
   private _sample: any;
   @Input() showFacts = false;
@@ -17,11 +17,6 @@ export class SampleComponent implements OnInit {
     'http://tun.fi/MF.collectionID'
   ];
   facts = {};
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   @Input() set sample(sample: any) {
     this._sample = sample;

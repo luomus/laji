@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './wbc-routes-map.component.html',
   styleUrls: ['./wbc-routes-map.component.scss']
 })
-export class WbcRoutesMapComponent implements OnInit {
+export class WbcRoutesMapComponent {
   @Input() loading = true;
   @Input() showNameAsLink = true;
   @Input() countLabel = 'wbc.stats.routeCount';
@@ -52,9 +52,6 @@ export class WbcRoutesMapComponent implements OnInit {
     private ykjService: YkjService,
     private cdr: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {
-  }
 
   gridClick(grid) {
     this.selectedGrid = grid;

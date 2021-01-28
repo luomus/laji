@@ -1,6 +1,5 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, waitForAsync } from '@angular/core/testing';
 import { CountRoundingPipe } from './count-rounding.pipe';
 
 describe('Pipe: CountPipee', () => {

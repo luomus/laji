@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
 @Component({
@@ -7,7 +7,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-names.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonNamesComponent implements OnInit, OnDestroy {
+export class TaxonNamesComponent {
   _taxon: Taxonomy;
   availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
   synonymTypes = [
@@ -23,7 +23,6 @@ export class TaxonNamesComponent implements OnInit, OnDestroy {
     'misappliedNames',
     'alternativeNames'
   ];
-
 
   @Input() set taxon(taxon: Taxonomy) {
       this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
@@ -46,12 +45,6 @@ export class TaxonNamesComponent implements OnInit, OnDestroy {
       }
     this._taxon = taxon;
   }
-
-  constructor() { }
-
-  ngOnInit() {}
-
-  ngOnDestroy() {}
 
   taxonHasSynonymKey(taxon) {
     for (let i = 0; i < this.synonymTypes.length; i++) {

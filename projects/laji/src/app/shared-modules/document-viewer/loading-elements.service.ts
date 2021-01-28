@@ -6,8 +6,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class LoadingElementsService {
 
-  constructor() { }
-
     private childGenerateEvent = new BehaviorSubject<boolean>(false);
 
     emitChildEvent(value: boolean) {

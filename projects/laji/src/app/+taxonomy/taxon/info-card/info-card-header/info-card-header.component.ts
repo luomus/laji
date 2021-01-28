@@ -5,15 +5,12 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card-header',
@@ -21,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./info-card-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoCardHeaderComponent implements OnInit, OnChanges, OnDestroy {
+export class InfoCardHeaderComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() activeTab: string;
   parent: Taxonomy[];
@@ -29,7 +26,6 @@ export class InfoCardHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   loadingParent = false;
   subParam: any;
-  showTaxonomy: boolean;
 
   private parentSub: Subscription;
   private siblingSub: Subscription;
@@ -38,13 +34,8 @@ export class InfoCardHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {}
-
-  ngOnDestroy() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {

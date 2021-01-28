@@ -12,6 +12,4 @@ export class DocumentLocalPrintViewComponent {
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
 
-  constructor() { }
-
 }

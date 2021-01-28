@@ -8,7 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RemoveSuffixPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
+  transform(value: any): any {
     if (typeof value === 'string') {
       const parts = value.split('.');
       parts.pop();

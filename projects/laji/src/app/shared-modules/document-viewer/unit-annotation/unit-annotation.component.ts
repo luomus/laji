@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { AnnotationService } from '../service/annotation.service';
 import { Annotation } from '../../../shared/model/Annotation';
 
 @Component({
@@ -29,8 +28,7 @@ export class UnitAnnotationComponent implements OnInit {
   skipFacts: string[] = ['UnitGUID', 'InformalNameString'];
 
   constructor(
-    private toQname: ToQNamePipe,
-    private annotationService: AnnotationService
+    private toQname: ToQNamePipe
   ) { }
 
   ngOnInit() {

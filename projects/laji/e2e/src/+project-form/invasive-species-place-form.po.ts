@@ -1,4 +1,4 @@
-import { browser, $, $$, protractor } from 'protractor';
+import { browser, protractor } from 'protractor';
 import { DocumentFormView } from './project-form.po';
 import { MapPage } from '../+map/map.po';
 

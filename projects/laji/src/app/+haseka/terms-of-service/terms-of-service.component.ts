@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -7,11 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./terms-of-service-of-service.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HaSeKaTermsOfServiceComponent implements OnInit {
+export class HaSeKaTermsOfServiceComponent {
   constructor(public translate: TranslateService) {
-  }
-
-  ngOnInit() {
   }
 
 }

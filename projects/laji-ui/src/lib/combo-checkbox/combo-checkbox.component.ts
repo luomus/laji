@@ -1,7 +1,4 @@
-import {
-  Component, ChangeDetectionStrategy, ContentChildren, QueryList, ChangeDetectorRef, Input, AfterViewInit, Renderer2, ElementRef
-} from '@angular/core';
-import { ComboCheckboxRowComponent } from './combo-checkbox-row.component';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 
 @Component({
   selector: 'lu-combo-checkbox',

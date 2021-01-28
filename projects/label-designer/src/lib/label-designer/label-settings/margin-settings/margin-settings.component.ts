@@ -22,8 +22,6 @@ export class MarginSettingsComponent {
 
   private _style;
 
-  constructor() { }
-
   @Input() set style(style: IPageStyle | ILabelStyle) {
     this._style = style;
     this.top = style[this.type + 'Top.mm'] || 0;

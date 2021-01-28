@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
-  Inject,
   OnDestroy,
   OnInit,
 } from '@angular/core';

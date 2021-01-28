@@ -52,7 +52,7 @@ export class FormPermissionService {
     );
   }
 
-  isEditAllowed(formPermission: FormPermission, person: Person, form: Form.SchemaForm): boolean {
+  isEditAllowed(formPermission: FormPermission, person: Person, form: Form.List): boolean {
     return !form.options?.restrictAccess
       || formPermission.editors?.indexOf(person.id) > -1
       || formPermission.admins?.indexOf(person.id) > -1;
@@ -90,7 +90,7 @@ export class FormPermissionService {
       tap(fp => this.changes$.emit(fp)));
   }
 
-  getRights(form: Form.SchemaForm): Observable<Rights> {
+  getRights(form: Form.List): Observable<Rights> {
     return this.access(
       form,
       {edit: false, admin: false, view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict},
@@ -103,7 +103,7 @@ export class FormPermissionService {
       }));
   }
 
-  private access(form: Form.SchemaForm, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
+  private access(form: Form.List, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {

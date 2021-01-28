@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MultiLangService } from '../lang/service/multi-lang.service';
 import { TranslateService } from '@ngx-translate/core';
 
 

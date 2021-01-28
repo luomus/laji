@@ -18,6 +18,7 @@ export class TechnicalNewsComponent implements OnInit {
     private apiService: LajiApiService,
     private homeDataService: HomeDataService
   ) {}
+
   ngOnInit() {
     const news$ = this.apiService.getList(LajiApi.Endpoints.news, { tag: 'technical', pageSize: 5 });
     this.technicalNews$ = this.homeDataService.getHomeData().pipe(
