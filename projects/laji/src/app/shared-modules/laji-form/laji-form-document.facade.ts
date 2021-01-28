@@ -341,7 +341,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       map(documents => documents.find(d => {
         let docKey = d.formID;
         if (hasNp) {
-          docKey += d.namedPlaceID;
+          docKey += '_' + d.namedPlaceID;
         }
         if (key === docKey) {
           this.updateState({..._state, hasLocalData: true, hasChanges: true});
