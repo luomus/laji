@@ -58,6 +58,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private lajiFormWrapperProto: any;
   private _block = false;
   private settings: any;
+  private _formData: any;
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
@@ -211,6 +212,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onChange(formData) {
+    this._formData = formData;
     this.ngZone.run(() => {
       this.dataChange.emit(formData);
     });
@@ -253,5 +255,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   // TODO REMOVE BEFORE MAKING PR
   triggerError() {
     this._onError('TEST', 'TEST INFO');
+  }
+  // TODO REMOVE BEFORE MAKING PR
+  triggerAngularError() {
+    this._onSubmit({formData: {...this._formData, invalidPropForTesting: true}});
   }
 }

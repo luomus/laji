@@ -4,6 +4,7 @@
   </alert>
   <!--  REMOVE BEFORE MAKING PR-->
   <lu-button (click)="triggerError()">Trigger a React error</lu-button>
+  <lu-button (click)="triggerAngularError()">Trigger an failed save (Angular error)</lu-button>
   <div #lajiForm></div>
   <div class="modal" tabindex="-1" role="dialog" bsModal #errorModal="bs-modal" [config]="{ backdrop: 'static', keyboard: false }">
     <div class="modal-dialog modal-md">
