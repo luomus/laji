@@ -337,7 +337,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       key += '_' + np.id;
       hasNp = true;
     }
-    return form.options?.mobile ? of(undefined) : this.documentStorage.getAll(person, 'onlyTmp').pipe(
+    return this.documentStorage.getAll(person, 'onlyTmp').pipe(
       map(documents => documents.find(d => {
         let docKey = d.formID;
         if (hasNp) {
