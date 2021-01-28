@@ -243,9 +243,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       if (countObj > 0) {
         selected[i].map(item => {
           if (item.id === option.id) {
-            this.selectedOptions[i].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+            this.selectedOptions[i].push({...option, 'checkboxValue': item.checkboxValue});
           } else {
-            this.unselectedOptions[i].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': item.checkboxValue});
+            this.unselectedOptions[i].push({...option, 'checkboxValue': item.checkboxValue});
           }
         });
       } else {
@@ -391,16 +391,14 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         });
 
         if (checkMatches > 0) {
-          this.selectedOptions['GLOBAL'].push(
-            {'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': checkMatches === subCategories.length ?
-            true : false});
-          this.tmpSelectedOption['GLOBAL'].push(
-            {'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': checkMatches === subCategories.length ?
-            true : false});
+            this.selectedOptions['GLOBAL'].push({...option, 'checkboxValue': checkMatches === subCategories.length ?
+            true : false });
+            this.tmpSelectedOption['GLOBAL'].push({...option, 'checkboxValue': checkMatches === subCategories.length ?
+            true : false });
         }
 
         if (checkMatches === 0) {
-          this.unselectedOptions['GLOBAL'].push({'id': option.id, 'value': option.value, 'info': option.info, 'checkboxValue': undefined});
+          this.unselectedOptions['GLOBAL'].push({...option, 'checkboxValue': undefined});
         }
       });
     }
@@ -531,24 +529,24 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
         if (this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []) {
           this.selectedOptions['GLOBAL'].push(
-            {id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
+            {...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
               true : (countNoGlobal === 0 ? undefined : false)
             }
           );
         } else {
-          this.selectedOptions['GLOBAL'] = [{id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
+          this.selectedOptions['GLOBAL'] = [{...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
             true : (countNoGlobal === 0 ? undefined : false)
           }];
         }
 
         if (this.selected['GLOBAL'] !== undefined && this.selected['GLOBAL'] !== []) {
           this.selected['GLOBAL'].push(
-            {id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
+            {...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
               true : (countNoGlobal === 0 ? undefined : false)
             }
           );
         } else {
-          this.selected['GLOBAL'] = [{id: option.id, value: option.value, info: option.info, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
+          this.selected['GLOBAL'] = [{...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
             true : (countNoGlobal === 0 ? undefined : false)
           }];
         }
