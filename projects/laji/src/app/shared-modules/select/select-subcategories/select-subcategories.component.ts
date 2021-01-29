@@ -267,7 +267,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }
     });
   }
-   console.log(this.selectedOptions)
+
   }
 
 
@@ -312,7 +312,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
     const tmpQueryParam = this.query[this.filtersName[0]] ? this.query[this.filtersName[0]] :
     (this.query[this.filtersName[1]] ? this.query[this.filtersName[1]] : undefined);
-    console.log(tmpQueryParam)
 
     const param = Array.isArray(tmpQueryParam) ? tmpQueryParam.join() : (tmpQueryParam ? tmpQueryParam : undefined);
       if (Object.keys(this.options).length > 0) {
