@@ -1114,6 +1114,7 @@
   "profile.friendsInfo": "Voit pyytää toista käyttäjää kaveriksesi etsimällä hänen profiilinsa ylläolevalla haulla ja klikkaamalla hänen profiili sivullaan olevaa \"Lisää kaveriksi\" -painiketta. Sen jälkeen kun hän on vahvistanut pyyntösi omassa profiilissaan, olette kavereita ja voitte esim. Vihko-palvelussa tallentaa yhteisiä havaintoja.",
   "profile.image": "Kuva",
   "profile.imagePlaceholder": "Linkki kuvaan, esim http//example.com/kuva.jpg",
+  "profile.defaultMediaMetadata.title": "Tekijätietojen oletusarvot kuville ja äänitteille, jotka tallennat Vihkoon",
   "profile.info.capturerVerbatim": "Tekijän nimi. Suositellaan muotoa 'Etunimi Sukunimi'. Jos useita tekijöitä, erota nimet pilkulla.",
   "profile.info.intellectualOwner": "Tekijän nimi siinä muodossa jolla teokseen tulee viitata, esim. 'Maija Meikäläinen, valokuvaajamaija.fi'",
   "profile.info.intellectualRights": "Lisenssi, jolla teosta saa käyttää. Valitse kaikki oikeudet pidätetään jos et halua lisensoida kuvia. Tällöin kuvia voi näyttää vain Lajitietokeskuksen ja Vihkon käyttöehtojen mukaisesti.",
