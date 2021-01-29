@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
 import { PlatformService } from './platform.service';
 
 @Injectable({providedIn: 'root'})

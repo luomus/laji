@@ -14,7 +14,9 @@
           <lu-button *ngIf="isCurrentUser"
                [small]="true"
                class="edit-text"
-               (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
+               (click)="toggleEditing()">
+               {{'np.edit' | translate}}
+               <i class="glyphicon glyphicon-cog"></i>
           </lu-button>
           <div *ngIf="!editing">
             <p>{{ currentProfile.profileDescription }}</p>

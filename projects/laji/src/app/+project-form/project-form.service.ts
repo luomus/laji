@@ -4,7 +4,7 @@ import { FormService } from '../shared/service/form.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../shared/model/Form';
-import { combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { NamedPlacesService } from '../shared/service/named-places.service';
 import { NamedPlace } from '../shared/model/NamedPlace';
 import { Global } from '../../environments/global';

@@ -172,7 +172,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  onDragStart(mousedown) {
+  onDragStart() {
     this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
     this.dragging = true;
     this.destroyDragListeners();

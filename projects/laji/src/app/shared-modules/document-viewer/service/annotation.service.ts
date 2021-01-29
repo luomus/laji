@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
 import { UserService } from '../../../shared/service/user.service';
 import { IdService } from '../../../shared/service/id.service';

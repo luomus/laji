@@ -11,7 +11,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
+import { interval as ObservableInterval, Subject } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 

@@ -8,8 +8,6 @@ import { MultiLangService } from '../service/multi-lang.service';
 export class MultiLangAllPipe implements PipeTransform {
   public value = '';
 
-  constructor() { }
-
   transform(value: any): string {
     if (typeof value === 'string' || typeof value !== 'object') {
       return value;

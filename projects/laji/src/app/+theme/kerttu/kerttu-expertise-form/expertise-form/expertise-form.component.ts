@@ -42,8 +42,6 @@ export class ExpertiseFormComponent implements OnChanges {
 
   @Output() taxonIdSelect = new EventEmitter<string[]>();
 
-  constructor() { }
-
   ngOnChanges() {
     this.updateSelected();
   }

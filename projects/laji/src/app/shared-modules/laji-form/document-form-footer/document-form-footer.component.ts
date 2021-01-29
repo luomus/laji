@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
 import { FormWithData } from '../laji-form-document.facade';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
@@ -36,8 +36,6 @@ export class DocumentFormFooterComponent {
   hasOnlyWarnings = false;
   _touchedCounter: number;
   _touchedCounterOnErrors: number;
-
-  constructor() { }
 
   @Input()
   set form(form: FormWithData) {

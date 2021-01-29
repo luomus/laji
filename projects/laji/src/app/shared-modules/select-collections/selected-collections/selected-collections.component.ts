@@ -19,8 +19,6 @@ export class SelectedCollectionsComponent {
   @Input() selectedOptions: SelectOption[];
   @Output() selectedOptionsChange = new EventEmitter<string>();
 
-  constructor() { }
-
   track(idx, item) {
     return item.id;
   }

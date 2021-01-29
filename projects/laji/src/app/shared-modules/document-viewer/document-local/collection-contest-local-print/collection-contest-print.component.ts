@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 
 @Component({
@@ -6,15 +6,11 @@ import { Document } from '../../../../shared/model/Document';
   templateUrl: './collection-contest-print.component.html',
   styleUrls: ['./collection-contest-print.scss']
 })
-export class CollectionContestPrintComponent implements OnInit {
+export class CollectionContestPrintComponent {
   @Input() document: Document;
   @Input() fields: any;
   @Input() mapData: any[] = [];
   @Input() imageData: {[key: string]: any} = {};
   @Input() formLogo: string;
-
-  constructor() { }
-
-  ngOnInit() { }
 
 }

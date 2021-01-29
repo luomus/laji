@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 
 @Component({
@@ -7,11 +7,6 @@ import { Taxonomy } from '../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-endangerment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonEndangermentComponent implements OnInit {
+export class TaxonEndangermentComponent {
   @Input() taxon: Taxonomy;
-
-  constructor() { }
-
-  ngOnInit() {}
-
 }

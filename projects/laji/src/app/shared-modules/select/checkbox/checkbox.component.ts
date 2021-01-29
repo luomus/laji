@@ -16,8 +16,6 @@ export class CheckboxComponent {
   _value: boolean;
   stateClass = 'clear';
 
-  constructor() { }
-
   @Input()
   set value(value) {
     this._value = value;

@@ -10,9 +10,9 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 })
 export class HideScrollDirective {
 
+  private readonly el: any;
   private disableWindowScroll = false;
   private isTouching = false;
-  private el: any;
 
   constructor(ref: ElementRef) {
     this.el = ref.nativeElement;

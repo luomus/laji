@@ -14,7 +14,7 @@ export class ForTypesDirective implements OnChanges {
     private viewContainer: ViewContainerRef
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (
         (!this.lajiForTypesExclude && this.lajiForTypes.includes(environment.type))
         || (this.lajiForTypesExclude && !this.lajiForTypes.includes(environment.type))

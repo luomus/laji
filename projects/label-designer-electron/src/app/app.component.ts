@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LocalStorage, SessionStorage } from 'ngx-webstorage';
 import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from 'label-designer';
 import { HttpClient } from '@angular/common/http';

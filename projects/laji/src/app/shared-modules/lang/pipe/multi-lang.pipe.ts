@@ -29,7 +29,7 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
     this.value = this.pickLang(value, useFallback, lang, fallbackFormat);
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.onLangChange = this.translate.onLangChange.subscribe(() => {
         this.value = this.pickLang(value, useFallback, lang);
         this._ref.markForCheck();
       });

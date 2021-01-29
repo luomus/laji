@@ -56,6 +56,7 @@ export class GeneratorService {
 
   private instructionMapping: {[place: string]: string} = {
     'editors[*]': 'excel.info.personID',
+    'keywords[*]': 'excel.info.keywords',
     'gatheringEvent.leg[*]': 'excel.info.personID',
     'gatheringEvent.dateBegin': 'excel.info.date',
     'gatheringEvent.dateEnd': 'excel.info.date',

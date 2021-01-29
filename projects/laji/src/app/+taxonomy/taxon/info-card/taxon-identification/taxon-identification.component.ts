@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
-import { switchMap, map, tap, flatMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { isArray } from 'underscore';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 

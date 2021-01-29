@@ -25,9 +25,7 @@ import { FormService } from '../../../shared/service/form.service';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
 import { IColumns } from '../service/observation-table-column.service';
-import {
-  TableColumnService
-} from '../service/table-column.service';
+import { TableColumnService } from '../service/table-column.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 @Component({
@@ -79,7 +77,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   _count: number;
   _offset: number;
   _columns: any[] = []; // This needs to be initialized so that the data table would do initial sort!
-  _columns_new = [];
   @Input() selected: any[] = [];
 
   initialized = false;
@@ -112,7 +109,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   }
 
   @Input() set columns(columns: any[]) {
-    const settings = this.dataTableSettings;
     this._columns = columns;
   }
 
@@ -132,8 +128,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     }
     if (this._preselectedRowIndex !== undefined && this._preselectedRowIndex !== -1) {
       this.preselectedRowIndex = this._preselectedRowIndex;
-    } else {
-      // this.scrollTo();
     }
   }
 
@@ -142,34 +136,9 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     this._offset = page - 1;
   }
 
-
-
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
     this.selected = [this._rows[this._preselectedRowIndex]] || [];
-    if (!this.selected.length) {
-      return;
-    }
-    if (this.initialized) {
-      // this.showActiveRow();
-    }
-  }
-
-  showActiveRow() {
-    if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
-      return;
-    }
-    const postSortIndex = this.datatable._internalRows.findIndex((element) => {
-      return element.preSortIndex === this._preselectedRowIndex;
-    });
-    // Calculate relative position of selected row and scroll to it
-    const rowHeight = this.datatable.bodyComponent.rowHeight as number;
-    const scrollTo = rowHeight * postSortIndex;
-    const maxScroll = rowHeight * this.datatable._internalRows.length - this.datatable.bodyHeight;
-    const currentOffset = this.datatable.bodyComponent.offsetY;
-    if (!isNaN(scrollTo) && (scrollTo < currentOffset || scrollTo > currentOffset + this.datatable.bodyHeight)) {
-      // this.scrollTo(Math.min(scrollTo, maxScroll));
-    }
   }
 
   /**
@@ -248,13 +217,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     };
   }
 
-  getDefaultSort() {
-    if (this._columns && this._columns.length > 0) {
-      return [{prop: this._columns[0].prop, dir: 'asc'}];
-    }
-    return [{ prop: 'dateEdited', dir: 'asc' }];
-  }
-
   onRowSelect(event) {
     if (event.type === 'click' || event.type === 'dblClick') {
       this.zone.run(() => {
@@ -294,7 +256,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
     this._page = 1;
-    // this.scrollTo();
   }
 
   private updateDisplayMode() {

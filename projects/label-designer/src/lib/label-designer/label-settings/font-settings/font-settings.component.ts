@@ -48,8 +48,6 @@ export class FontSettingsComponent implements OnInit {
   @Input() fontSettings: IFontStyle;
   @Output() fontSettingsChange = new EventEmitter<IFontStyle>();
 
-  constructor() { }
-
   ngOnInit() {
     const sizes = [];
     for (let i = 4; i <= 20; i++) {

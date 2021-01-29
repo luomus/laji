@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, ViewChild } from '@angular/core';
-import { switchMap, take } from 'rxjs/operators';
-import { BehaviorSubject, of, Subject, Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';

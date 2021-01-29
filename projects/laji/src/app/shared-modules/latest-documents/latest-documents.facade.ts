@@ -46,8 +46,8 @@ export class LatestDocumentsFacade implements OnDestroy {
     loading: this.loading$
   });
 
+  private readonly localUpdateSub: Subscription;
   private updateSub: Subscription;
-  private localUpdateSub: Subscription;
   private remoteRefresh;
 
   constructor(

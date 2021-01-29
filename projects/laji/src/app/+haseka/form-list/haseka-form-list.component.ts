@@ -1,13 +1,12 @@
-import { combineLatest, map, switchMap, take } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
 import { UserService } from '../../shared/service/user.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
-import { Person } from '../../shared/model/Person';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
 import { FormCategory } from './haseka-form-list.interface';
@@ -28,7 +27,6 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
   private subTrans: Subscription;
   private subFetch: Subscription;
   private subTmp: Subscription;
-  private person: Person;
   private loadedLang: string;
   private categoryLabels: {[key: string]: string} = {};
 

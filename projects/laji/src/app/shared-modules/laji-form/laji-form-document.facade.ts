@@ -23,6 +23,8 @@ import { FormPermissionService, Rights } from '../../shared/service/form-permiss
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
 import { LajiFormUtil } from './laji-form-util.service';
+import { PersonApi } from '../../shared/api/PersonApi';
+import { Global } from '../../../environments/global';
 
 export enum FormError {
   ok,
@@ -115,6 +117,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private documentStorage: DocumentStorage,
+    private personApi: PersonApi
   ) {
     this.dataSub = this.dataChange$.pipe(
       auditTime(3000),
@@ -151,7 +154,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -314,11 +317,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
-      map(data => this.addNamedPlaceData(form, data))
-    );
+      map(data => this.addNamedPlaceData(form, data)),
+      switchMap(data => this.addCollectionID(form, data))
+  );
 
     return getEmpty$;
     /*
@@ -414,6 +418,19 @@ export class LajiFormDocumentFacade implements OnDestroy {
     this.updateState({..._state, namedPlaceForFormID: ''});
 
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
+  }
+
+  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
+    return form.id === Global.forms.privateCollection
+      ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+        typeof profile?.personalCollectionIdentifier === 'string'
+          ? {
+            ...(data || {}),
+            keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
+          }
+          : data
+      ))
+      : of(data);
   }
 
   getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {

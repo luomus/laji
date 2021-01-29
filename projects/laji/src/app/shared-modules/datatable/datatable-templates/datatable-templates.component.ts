@@ -52,8 +52,6 @@ export class DatatableTemplatesComponent {
   synonymKeys = SYNONYM_KEYS;
   annotationTagsObservation = Global.annotationTags;
 
-  constructor() { }
-
   roundNumber(value: number) {
     return Math.round(value * 10 ) / 10;
   }

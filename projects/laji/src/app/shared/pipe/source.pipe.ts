@@ -17,7 +17,7 @@ export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
     super(translate, _ref);
   }
 
-  protected _updateValue(key: string): Observable<any> {
+  protected _updateValue(): Observable<any> {
     if (this.sources) {
       return of(this.sources);
     }

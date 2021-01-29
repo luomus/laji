@@ -1,4 +1,4 @@
-import { catchError, map, mergeMap, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
@@ -14,7 +14,7 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
-import { ProjectFormService, NamedPlacesQuery } from '../../../project-form.service';
+import { ProjectFormService } from '../../../project-form.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
 
@@ -237,7 +237,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.namedPlaceService
       .releaseReservation(namedPlace.id)
-      .subscribe(np => {
+      .subscribe(() => {
         this.reloadNamedPlaces$.next();
         this.loading = false;
       }, () => {
@@ -256,7 +256,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           : undefined
         );
       }
-    )).subscribe(np => {
+    )).subscribe(() => {
       this.reloadNamedPlaces$.next();
       this.loading = false;
     }, () => {

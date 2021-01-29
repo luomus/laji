@@ -98,7 +98,7 @@ export class FrontComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = true;
   }
 
-  onCreate(e) {
+  onCreate() {
     this.router.navigate([], {
       queryParams: {coordinates: geoJSONToISO6709(this.lajiMap.map.getDraw().featureCollection.features)},
       relativeTo: this.route

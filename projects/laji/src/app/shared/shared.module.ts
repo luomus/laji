@@ -39,6 +39,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
+import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
 import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
@@ -124,7 +125,8 @@ import { QualityUrlPipe } from './pipe/quality-url.pipe';
     ScrollingModule,
     LajiUiModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
-    UtilitiesModule
+    UtilitiesModule,
+    InfoModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -144,6 +146,7 @@ import { QualityUrlPipe } from './pipe/quality-url.pipe';
     SsrDisableDirective,
     NotFoundComponent,
     QualityUrlPipe,
+    InfoModule
   ]
 })
 export class SharedModule {

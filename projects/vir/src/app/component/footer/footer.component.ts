@@ -50,7 +50,7 @@ export class FooterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.footerService.footerVisible$.subscribe(visible => {
+    this.footerService.footerVisible$.subscribe(() => {
       this.cdr.markForCheck();
     });
     this.tree$ = this.baseDataService.getBaseData().pipe(

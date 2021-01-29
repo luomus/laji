@@ -15,8 +15,6 @@ export class FieldItemComponent implements OnChanges {
 
   idx: number;
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['field'] || changes['selected']) {
       this.initSpot();

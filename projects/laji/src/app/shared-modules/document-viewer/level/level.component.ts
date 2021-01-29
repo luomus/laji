@@ -16,8 +16,6 @@ export class LevelComponent implements OnChanges {
   @Input() keyMap: KeyMap = {};
   items: ViewRow[] = [];
 
-  constructor() { }
-
   ngOnChanges() {
     this.initDocument();
   }
