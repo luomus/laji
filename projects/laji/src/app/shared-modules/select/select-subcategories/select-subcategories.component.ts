@@ -341,39 +341,20 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
     subCategories = excludeGlobal ? subCategories.filter(category => category !== 'GLOBAL') : subCategories;
 
-    for (const i in subCategories) {
-      this.selectedOptions[subCategories[i]] = [];
-      this.unselectedOptions[subCategories[i]] = [];
-      this.tmpSelectedOption[subCategories[i]] = [];
-      for (let j = 0; j < options[subCategories[i]].length; j++) {
-          if (splitParam[subCategories[i]] && splitParam[subCategories[i]].includes(options[subCategories[i]][j].id) ||
-          (splitParam && splitParam.includes(options[subCategories[i]][j].id))) {
-            if (!this.selectedOptions[subCategories[i]] && !this.tmpSelectedOption[subCategories[i]]) {
-              this.selectedOptions[subCategories[i]] = subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
-              : options[subCategories[i]][j].id;
-              this.tmpSelectedOption[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
-              : options[subCategories[i]][j].id;
-            } else {
-              this.selectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
-              : options[subCategories[i]][j].id);
-              this.tmpSelectedOption[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': true}
-              : options[subCategories[i]][j].id);
-            }
-          } else {
-            if (!this.unselectedOptions[subCategories[i]]) {
-              this.unselectedOptions[subCategories[i]] =  subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': undefined}
-              : options[subCategories[i]][j].id;
-            } else {
-              this.unselectedOptions[subCategories[i]].push(subCategories[i] === 'GLOBAL' ?
-              {'id':  options[subCategories[i]][j].id, 'value': options[subCategories[i]][j].value, 'info': options[subCategories[i]][j].info, 'checkboxValue': undefined}
-              : options[subCategories[i]][j].id);
-            }
-          }
+    for (const category of subCategories) {
+      this.selectedOptions[category] = [];
+      this.unselectedOptions[category] = [];
+      this.tmpSelectedOption[category] = [];
+      for (const option of options[category]) {
+        if (
+          splitParam[category] && splitParam[category].includes(option.id) ||
+          (splitParam && splitParam.includes(option.id))
+        ) {
+          this.selectedOptions[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': true} : option.id);
+          this.tmpSelectedOption[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': true} : option.id);
+        } else {
+          this.unselectedOptions[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': undefined} : option.id);
+        }
 
       }
     }
@@ -452,21 +433,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }
 
 
-  }
-
-  checkStatusSubCategory(categorySelected, options) {
-    if (!categorySelected) {
-      return undefined;
-    }
-    if (categorySelected.length === options.length) {
-      return true;
-    } else {
-      if (categorySelected.length > 0) {
-        return false;
-      } else {
-        return undefined;
-      }
-    }
   }
 
   selectedOptionsIsEmpty(obj) {
