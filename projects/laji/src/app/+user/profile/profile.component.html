@@ -44,11 +44,11 @@
               <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.capturerVerbatim">
             </div>
             <div class="profile-edit-row">
-              {{ 'MY.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
+              {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
               <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualOwner">
             </div>
             <div class="profile-edit-row">
-              {{ 'MY.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
+              {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
               <select class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualRights">
                 <option *ngFor="let c of intellectualRightsArray" [ngValue]="c">{{ c | label }}</option>
               </select>
