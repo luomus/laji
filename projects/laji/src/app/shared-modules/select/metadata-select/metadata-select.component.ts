@@ -98,7 +98,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   onTouched = () => {};
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
     this.lang = this.translate.currentLang;
     this.initOptions();
   }

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SelectedOptionisEmptyPipe implements PipeTransform {
 
-  transform(value: Object, args: any): boolean {
+  transform(value: Object): boolean {
     if (!value) {
       return true;
     }
