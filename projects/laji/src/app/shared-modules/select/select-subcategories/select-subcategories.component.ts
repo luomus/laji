@@ -493,30 +493,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           }
         });
 
-        if (this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []) {
-          this.selectedOptions['GLOBAL'].push(
-            {...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
-              true : (countNoGlobal === 0 ? undefined : false)
-            }
-          );
-        } else {
-          this.selectedOptions['GLOBAL'] = [{...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
-            true : (countNoGlobal === 0 ? undefined : false)
-          }];
-        }
-
-        if (this.selected['GLOBAL'] !== undefined && this.selected['GLOBAL'] !== []) {
-          this.selected['GLOBAL'].push(
-            {...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
-              true : (countNoGlobal === 0 ? undefined : false)
-            }
-          );
-        } else {
-          this.selected['GLOBAL'] = [{...option, checkboxValue: countNoGlobal === categoriesExcludeGlobal.length ?
-            true : (countNoGlobal === 0 ? undefined : false)
-          }];
-        }
-
+        this.updateStatusSelectedOptionsGlobal(this.selectedOptions['GLOBAL'], option, countNoGlobal, categoriesExcludeGlobal);
+        this.updateStatusSelectedOptionsGlobal(this.selected['GLOBAL'], option, countNoGlobal, categoriesExcludeGlobal);
       });
     }
 
@@ -536,6 +514,22 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selectedChange.emit(this.selectedOptions);
     }
   }
+
+  updateStatusSelectedOptionsGlobal(selectedOptionsGlobal, option, noGlobalOptionsSum, categoriesNoGlobal) {
+    if (Array.isArray(selectedOptionsGlobal) && selectedOptionsGlobal.length !== 0) {
+      selectedOptionsGlobal.push(
+        {...option, checkboxValue: noGlobalOptionsSum === categoriesNoGlobal.length ?
+          true : (noGlobalOptionsSum === 0 ? undefined : false)
+        }
+      );
+    } else {
+      selectedOptionsGlobal = [{...option, checkboxValue: noGlobalOptionsSum === categoriesNoGlobal.length ?
+        true : (noGlobalOptionsSum === 0 ? undefined : false)
+      }];
+    }
+   
+    return selectedOptionsGlobal;
+  } 
 
 }
 
