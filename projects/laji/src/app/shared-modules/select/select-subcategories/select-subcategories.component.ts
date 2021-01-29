@@ -55,9 +55,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
 
-  selectedOptions = {};
-  unselectedOptions = {};
-  tmpSelectedOption = {};
+  selectedOptions = <SelectOptions|string[]>{};
+  unselectedOptions = <SelectOptions|string[]>{};
+  tmpSelectedOption = <SelectOptions|string[]>{};
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = [];
@@ -267,7 +267,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }
     });
   }
-
+   console.log(this.selectedOptions)
   }
 
 
@@ -312,8 +312,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
     const tmpQueryParam = this.query[this.filtersName[0]] ? this.query[this.filtersName[0]] :
     (this.query[this.filtersName[1]] ? this.query[this.filtersName[1]] : undefined);
+    console.log(tmpQueryParam)
 
-    const param = tmpQueryParam ? tmpQueryParam.join() : undefined;
+    const param = Array.isArray(tmpQueryParam) ? tmpQueryParam.join() : (tmpQueryParam ? tmpQueryParam : undefined);
       if (Object.keys(this.options).length > 0) {
         if (param) {
           if (!param.includes(':')) {
