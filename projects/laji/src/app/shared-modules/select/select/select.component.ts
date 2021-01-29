@@ -24,12 +24,6 @@ export interface SelectOptions {
   checkboxValue: boolean|undefined;
 }
 
-export interface SelectedOptions {
-  id: string;
-  value: boolean|undefined;
-}
-
-
 @Component({
   selector: 'laji-select',
   templateUrl: './select.component.html',
@@ -97,8 +91,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   toggleValue(id: idType, event) {
     const index = this.selectedOptions.findIndex(option => option.id === id);
     if (this.checkboxType === CheckboxType.partial) {
-      const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.checkboxValue !== true ?
-      true : false;
+      const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.checkboxValue !== true;
       if (index === -1 || this.selectedOptions[index].checkboxValue !== true) {
         this.add(id, newEvent);
       } else {
@@ -251,7 +244,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
       );
       const targetOptions = selectedItem !== undefined ? this.selectedOptions : this.unselectedOptions;
-      const checkboxValue = selectedItem?.checkboxValue ?? (selectedItem !== undefined ? true : false);
+      const checkboxValue = selectedItem?.checkboxValue ?? selectedItem !== undefined;
 
       targetOptions.push({
         ...option,
