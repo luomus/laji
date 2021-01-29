@@ -10,7 +10,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { forkJoin, Observable, of, Subscription, from } from 'rxjs';
+import { Observable, of, Subscription, from } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map, switchMap, tap, concatMap, take, toArray } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,8 +19,8 @@ import { TriplestoreLabelService } from '../../../shared/service/triplestore-lab
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-import {LabelPipe} from '../../../shared/pipe/label.pipe';
+import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
+import { LabelPipe } from '../../../shared/pipe/label.pipe';
 
 
 @Component({
@@ -48,7 +48,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barChartOptions: any;
   private barChartPlugins: any;
   resultList: any[] = [];
-  isNotLoading = false;
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -77,7 +76,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     .subscribe((value) => {
       this.onlyCount = value;
       this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-      this.isNotLoading = true;
       this.getDataSub.unsubscribe();
       this.initializeArrays(this.resultList);
       this.cd.markForCheck();
@@ -185,7 +183,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       switchMap(res => this.setData(res))
     ).subscribe(() => {
       this.hasData.emit(this.barChartData.length > 0);
-      this.isNotLoading = false;
       this.cd.markForCheck();
     });
   }
@@ -329,7 +326,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.setData(list).subscribe(
       () => {
         this.hasData.emit(this.barChartData.length > 0);
-        this.isNotLoading = false;
         this.cd.markForCheck();
       }
     );
