@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { SelectOptions } from '../select/select.component';
 import { MetadataSelectComponent } from '../metadata-select/metadata-select.component';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
+
 
 @Component({
   selector: 'laji-metadata-select-with-subcategories',
@@ -9,6 +11,7 @@ import { MetadataSelectComponent } from '../metadata-select/metadata-select.comp
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComponent implements OnChanges {
+  @Input() query: WarehouseQueryInterface;
   @Input() subCategories = [];
   @Input() subTitleBase = '';
   @Input() filtersName = [];

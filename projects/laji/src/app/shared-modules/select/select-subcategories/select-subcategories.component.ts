@@ -15,6 +15,7 @@ import { interval as ObservableInterval, Subject, Subscription } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 export interface SelectOptions {
   id: string;
@@ -33,6 +34,7 @@ export interface SelectOptions {
 export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<null>();
 
+  @Input() query: WarehouseQueryInterface;
   @Input() options: [{[key: string]: SelectOptions[]}];
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
@@ -307,8 +309,11 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   private buildSelectedOptions(filters) {
     const tmpOptions = this.options;
-    this.activatedRoute.queryParams.subscribe(params => {
-      const param = params[filters[0]] ? params[filters[0]] : (params[filters[1]] ? params[filters[1]] : undefined);
+
+    const tmpQueryParam = this.query[this.filtersName[0]] ? this.query[this.filtersName[0]] :
+    (this.query[this.filtersName[1]] ? this.query[this.filtersName[1]] : undefined);
+
+    const param = tmpQueryParam ? tmpQueryParam.join() : undefined;
       if (Object.keys(this.options).length > 0) {
         if (param) {
           if (!param.includes(':')) {
@@ -322,7 +327,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           this.unselectedOptions = this.unselectedOptions ? this.unselectedOptions : [];
         }
       }
-    });
   }
 
   private rubuiltParamSubCategory(urlString) {
@@ -527,9 +531,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         true : (noGlobalOptionsSum === 0 ? undefined : false)
       }];
     }
-   
+
     return selectedOptionsGlobal;
-  } 
+  }
 
 }
 

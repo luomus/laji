@@ -99,8 +99,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     if (this.checkboxType === CheckboxType.partial) {
       const newEvent = this.selectedOptions === undefined || this.selectedOptions[index]?.checkboxValue !== true ?
       true : false;
-      if (this.selectedOptions.findIndex(option => option.id === id) === -1 ||
-          this.selectedOptions[index].checkboxValue !== true) {
+      if (index === -1 || this.selectedOptions[index].checkboxValue !== true) {
         this.add(id, newEvent);
       } else {
         this.remove(id, newEvent);
