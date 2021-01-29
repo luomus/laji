@@ -439,15 +439,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   }
 
-  selectedOptionsIsEmpty(obj) {
-    if (!obj) {
-      return true;
-    }
-
-    return Object.keys(obj).length === 0;
-  }
-
-
   refreshValue(value: any, category: string): void {
     if (!value) {
       return;

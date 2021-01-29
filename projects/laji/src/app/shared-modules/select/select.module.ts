@@ -11,6 +11,7 @@ import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
 import { ExcludeSubcategoryPipe } from './exclude-subcategory.pipe';
 import { CheckStatusSubCategoryPipe } from './check-status-sub-category.pipe';
+import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
 
 /* tslint:enable:max-line-length */
 
@@ -29,7 +30,8 @@ import { CheckStatusSubCategoryPipe } from './check-status-sub-category.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     ExcludeSubcategoryPipe,
-    CheckStatusSubCategoryPipe
+    CheckStatusSubCategoryPipe,
+    SelectedOptionisEmptyPipe
   ],
   exports: [
     MetadataSelectComponent,
@@ -39,7 +41,8 @@ import { CheckStatusSubCategoryPipe } from './check-status-sub-category.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     ExcludeSubcategoryPipe,
-    CheckStatusSubCategoryPipe
+    CheckStatusSubCategoryPipe,
+    SelectedOptionisEmptyPipe
   ]
 })
 export class SelectModule { }
