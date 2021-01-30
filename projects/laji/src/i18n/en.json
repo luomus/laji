@@ -1117,6 +1117,7 @@
   "profile.friendsInfo": "You may ask another user to become your Friend by copying your profile address (URL) and sending it to your friend. After your friend has clicked the “Add as a Friend” button, and you have confirmed his request at your own profile, you become Friends and you may e.g. make common observation records at the Notebook-observation service.",
   "profile.image": "Image",
   "profile.imagePlaceholder": "Link to picture e.g. http//example.com/image.jpg",
+  "profile.defaultMediaMetadata.title": "Default copyright values for photos and audio files you save to Notebook",
   "profile.info.capturerVerbatim": "Author: \"Forename Surname\" format recommended. Separate multiple authors with a comma.",
   "profile.info.intellectualOwner": "Author name for use in citation (e.g., 'Maija Meikäläinen, valokuvaajamaija.fi').",
   "profile.info.intellectualRights": "License. Select \"All Rights Reserved\" if you do not want apply a license. The images will be displayed in according to the FinBIF & Vihko Terms of Use.",
