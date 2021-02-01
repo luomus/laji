@@ -187,7 +187,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
 
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
-    this.lajiForm.submit();
+    this.lajiForm.submitOnlySchemaValidations();
   }
 
   submitTemplate() {
