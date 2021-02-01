@@ -39,7 +39,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: SelectedOptions = {};
+  @Input() selected: SelectOptions|string[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -85,17 +85,17 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   ngOnChanges() {
     if (this.disabled) {
-      this.selected = [];
+      this.selectedOptions = [];
       this.open = false;
     }
 
     if (this.filtersValues.every(element => element === undefined)) {
-      this.selected = [];
+      this.selectedOptions = [];
       this.tmpSelectedOption = [];
       this.selectedOptions = [];
     }
-    this.initOptions(Object.keys(this.selected).length > 0 && this.selected !== undefined ? this.selected : this.buildSelectedOptions(this.filtersName));
-    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
+    this.initOptions(Object.keys(this.selectedOptions).length > 0 && this.selectedOptions !== undefined ? this.selectedOptions : this.buildSelectedOptions());
+    this.selectedOptions = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selectedOptions : this.tmpSelectedOption;
   }
 
   ngOnDestroy() {
@@ -104,7 +104,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   toggleValue(id: string, category: string) {
-    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
+    this.selectedOptions = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selectedOptions : this.tmpSelectedOption;
     this.selectedIdx[category] = 0;
     if (!this.selectedOptions[category]) {
       this.add(id, category);
@@ -120,23 +120,23 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   add(id: string, category: string) {
     if (this.multiple) {
-      if (typeof this.selected !== 'object' || this.selected === null) {
-        this.selected = {};
+      if (typeof this.selectedOptions !== 'object' || this.selectedOptions === null) {
+        this.selectedOptions = [];
       }
-      this.selected[category] = [...this.selected[category] || [], id];
+      this.selectedOptions[category] = [...this.selectedOptions[category] || [], id];
       if (category === 'GLOBAL') {
         this.subCategories.forEach(element => {
-          if (element !== 'GLOBAL' && this.selected[element]) {
-            this.selected[element] = this.selected[element].indexOf(id) === -1 ?  [...this.selected[element] || [], id] : [...this.selected[element]];
+          if (element !== 'GLOBAL' && this.selectedOptions[element]) {
+            this.selectedOptions[element] = this.selectedOptions[element].indexOf(id) === -1 ?  [...this.selectedOptions[element] || [], id] : [...this.selectedOptions[element]];
           }
         });
       }
     } else {
-      this.selected[category] = id;
+      this.selectedOptions[category] = id;
       if (category === 'GLOBAL') {
         this.subCategories.forEach(element => {
           if (element !== 'GLOBAL') {
-            this.selected[element] = id;
+            this.selectedOptions[element] = id;
           }
         });
       }
@@ -146,11 +146,11 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   remove(id: string, category: string) {
-    this.selected[category] = this.selected[category].filter(value => value !== id);
+    this.selectedOptions[category] = this.selectedOptions[category].filter(value => value !== id);
     if (category === 'GLOBAL') {
       this.subCategories.forEach(element => {
         if (element !== 'GLOBAL') {
-          this.selected[element] = this.selected[element].filter(value => value !== id);
+          this.selectedOptions[element] = this.selectedOptions[element].filter(value => value !== id);
         }
       });
     }
@@ -173,7 +173,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
           } catch (e) { }
         });
     }
-    this.selected = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selected : this.tmpSelectedOption;
+    this.selectedOptions = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ? this.selectedOptions : this.tmpSelectedOption;
   }
 
   labelClick(event) {
@@ -186,7 +186,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     switch (event.key) {
       case 'Esc':
         this.filterBy = '';
-        this.initOptions(this.selected);
+        this.initOptions(this.selectedOptions);
         return;
       case 'Enter':
         if (!this.filterBy && this.selectedIdx[category] === -1) {
@@ -226,7 +226,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   }
 
   private initOptions(selected) {
-    if (!this.options || !this.selected) {
+    if (!this.options || !this.selectedOptions) {
       return;
     }
     // this.selectedOptions = [];
@@ -235,35 +235,37 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       return;
     }
 
-    for (const i in this.selected) {
-      this.selectedOptions[i] = [];
-      this.unselectedOptions[i] = [];
-      const countObj = this.selected[i].filter(item => item.checkboxValue === true).length;
+    for (const i in this.selectedOptions) {
+      let tmpSelectedOptions = [];
+      let tmpUnselectedOptions = [];
+      const countObj = this.selectedOptions[i].filter(item => item.id !== undefined).length;
       this.options[i].map(option => {
         if (countObj > 0) {
           selected[i].map(item => {
             if (item.id === option.id) {
-              this.selectedOptions[i].push({...option, 'checkboxValue': item.checkboxValue});
+              tmpSelectedOptions.push({...option, 'checkboxValue': item.checkboxValue});
             } else {
-              this.unselectedOptions[i].push({...option, 'checkboxValue': item.checkboxValue});
+              tmpUnselectedOptions.push({...option, 'checkboxValue': item.checkboxValue});
             }
           });
         } else {
           if (selected[i].includes(option.id)) {
             if (!this.selectedOptions[i]) {
-              this.selectedOptions[i] = option.id;
+              tmpSelectedOptions = [option.id];
             } else {
-              this.selectedOptions[i].push(option.id);
+              tmpSelectedOptions.push(option.id);
             }
           } else {
             if (!this.unselectedOptions[i]) {
-              this.unselectedOptions[i] = option.id;
+              tmpUnselectedOptions = [option.id];
             } else {
-              this.unselectedOptions[i].push(option.id);
+              tmpUnselectedOptions.push(option.id);
             }
           }
         }
       });
+      this.selectedOptions[i] = tmpSelectedOptions;
+      this.unselectedOptions[i] = tmpUnselectedOptions;
     }
 
   }
@@ -274,7 +276,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     const filteredKeys = keys.filter(item => item !== 'GLOBAL');
 
     if (filteredKeys.length < this.subCategories.length - 1) {
-      return false;
+      return this.buildGlobalOptions(this.selectedOptions, filteredKeys, false);
     }
 
     let countEmpty = 0;
@@ -285,16 +287,16 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
 
     if (countEmpty === filteredKeys.length) {
-      this.selected['GLOBAL'].map(x => x.checkboxValue = undefined);
-      return false;
+      //this.selectedOptions['GLOBAL'].map(x => x.checkboxValue = undefined);
+      return this.buildGlobalOptions(this.selectedOptions, filteredKeys, undefined);
     }
 
     for (let i = 0; i < filteredKeys.length - 1; i++) {
         if (!this.arrayEquals(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
-        return false;
-      }
+          return this.buildGlobalOptions(this.selectedOptions, filteredKeys, false);
+        }
     }
-    return true;
+    return this.buildGlobalOptions(this.selectedOptions, filteredKeys, true);
   }
 
 
@@ -412,19 +414,20 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }
     }
 
-      this.selected[category] = this.tmpSelected[category];
+      this.selectedOptions[category] = this.tmpSelected[category];
       this.selectedIdx[category] = -1;
 
-      const tmpGlobalSelect = this.selected['GLOBAL'] ? this.selected['GLOBAL'].map(obj => {
+      /*const tmpGlobalSelect = this.selectedOptions['GLOBAL'] ? this.selectedOptions['GLOBAL'].map(obj => {
         const newObj = Object.assign({}, obj);
         newObj.checkboxValue = true;
         return newObj;
-      }) : [];
-      this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
-      tmpGlobalSelect : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+      }) : [];*/
+      /*this.selectedOptions['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions) ?
+      tmpGlobalSelect : (this.selectedOptions['GLOBAL'] ? this.selectedOptions['GLOBAL'] : []);*/
+      this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions);
 
 
-      this.initOptions(this.selected);
+      this.initOptions(this.selectedOptions);
       if (this.outputOnlyId) {
         this.selectedChange.emit(this.selectedOptions);
       } else {
@@ -439,6 +442,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       return;
     }
 
+    let ciccio = this.selectedOptions['GLOBAL'];
+    let selectedOptionsDiff = this.arrayDiff(ciccio, value);
+    console.log(selectedOptionsDiff)
     this.selectedOptions[category] = value;
     const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
     if (category === 'GLOBAL') {
@@ -446,46 +452,46 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         let count = 0;
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions && this.selectedOptions['GLOBAL'] !== undefined &&
-          this.selectedOptions[cat] && this.selectedOptions[cat].indexOf(option.id) > -1) {
+          this.selectedOptions[cat]?.indexOf(option.id) > -1 && selectedOptionsDiff?.findIndex(item => item.id === option.id) > -1) {
             count++;
           }
         });
         if (count === categoriesExcludeGlobal.length) {
           categoriesExcludeGlobal.forEach(item => {
-              if (this.selectedOptions[item].indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) === -1) {
+              if (this.selectedOptions[item]?.indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) === -1) {
                 this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id), 1);
-                this.selected[item].splice(this.selected[item].indexOf(option.id), 1);
               }
-              if (this.selected['GLOBAL']) {
-                this.selected['GLOBAL'].splice(this.selected['GLOBAL'].findIndex(x => x.id === option.id), 1);
+              if (this.selectedOptions['GLOBAL'] && selectedOptionsDiff?.findIndex(item => item.checkboxValue === option.id) > -1) {
+                this.selectedOptions['GLOBAL'].splice(this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id), 1);
               }
           });
         } else {
             categoriesExcludeGlobal.forEach(item => {
-                if (this.selectedOptions[item] && this.selectedOptions[item].indexOf(option.id) === -1 &&
+                if ((this.selectedOptions[item] === undefined || this.selectedOptions[item]?.indexOf(option.id) === -1) &&
                   this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) > -1 &&
                   this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id)]?.checkboxValue === true) {
-                  this.selectedOptions[item].push(option.id);
-                  this.selected[item].push(option.id);
+                    this.selectedOptions[item] ? this.selectedOptions[item].push(option.id) : this.selectedOptions[item] = [option.id];
                 }
             });
         }
       });
     } else {
       this.selectedOptions['GLOBAL'] = [];
+      const tmpGlobal = [];
       this.options['GLOBAL'].map(option => {
         let countNoGlobal = 0;
         categoriesExcludeGlobal.forEach(cat => {
-          if (this.selectedOptions[cat] && this.selectedOptions[cat].indexOf(option.id) > -1 &&
+          if (this.selectedOptions[cat].indexOf(option.id) > -1 &&
               this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== []
               && this.selectedOptions['GLOBAL'].findIndex(x => x.id === option.id) === -1) {
             countNoGlobal++;
           }
         });
-
-        this.updateStatusSelectedOptionsGlobal(this.selectedOptions['GLOBAL'], option, countNoGlobal, categoriesExcludeGlobal);
-        this.updateStatusSelectedOptionsGlobal(this.selected['GLOBAL'], option, countNoGlobal, categoriesExcludeGlobal);
+        
+        
+        tmpGlobal.push(this.updateStatusSelectedOptionsGlobal(this.selectedOptions['GLOBAL'], option, countNoGlobal, categoriesExcludeGlobal));
       });
+      this.selectedOptions['GLOBAL'] = tmpGlobal;
     }
 
     this.cd.detectChanges();
@@ -494,10 +500,11 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   emitSelectedOptions(cat)  {
     this.selectedIdx[cat] = -1;
-    this.selected['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selected) ?
-    this.selected[this.subCategories[1]] : (this.selected['GLOBAL'] ? this.selected['GLOBAL'] : []);
+    /*this.selectedOptions['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions) ?
+    this.selectedOptions[this.subCategories[1]] : (this.selectedOptions['GLOBAL'] ? this.selectedOptions['GLOBAL'] : []);*/
+    this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions);
 
-    this.initOptions(this.selected);
+    this.initOptions(this.selectedOptions);
     if (this.outputOnlyId) {
       this.selectedChange.emit(this.selectedOptions);
     } else {
@@ -518,7 +525,48 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       }];
     }
 
-    return selectedOptionsGlobal;
+    return selectedOptionsGlobal[0];
+  }
+
+  buildGlobalOptions(selectedOptions, categories, equals) {
+    this.selectedOptions['GLOBAL'] = [];
+    let tmpCat = [];
+
+    if (equals === false) {
+      for (let i = 0; i<categories.length; i++){
+        selectedOptions[categories[i]].map(item => {
+          tmpCat.push(item.id || item);
+        })
+     }
+ 
+     tmpCat = [...new Set(tmpCat)];
+ 
+     this.options['GLOBAL'].map(item => {
+       this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue': tmpCat.includes(item.id) ? false : undefined})
+     })
+ 
+    } else if (equals === true){
+      this.options['GLOBAL'].map(item => {
+        this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue': true})
+      })
+    } else {
+      this.options['GLOBAL'].map(item => {
+        this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue': undefined})
+      })
+    }
+
+    console.log(this.selectedOptions['GLOBAL'])
+
+  }
+
+  arrayDiff(a, b) {
+    a = a === undefined ? [] : a;
+    if (b.length >= a.length) {
+      return b.filter(({ id: id }) => !a.some(({ id: itemId }) => itemId === id));
+    } else {
+      return a.filter(({ id: id }) => !b.some(({ id: itemId }) => itemId === id));
+    }
+    
   }
 
 }
