@@ -1,4 +1,34 @@
 @import 'projects/laji-ui/src/lib/vars';
+@import 'projects/laji-ui/src/lib/mixins/buttons';
+
+.btn {
+  @include btn();
+}
+
+.btn-default {
+  @include btnTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+}
+
+.btn-primary {
+  @include btnPrimary();
+}
+
+.btn-success {
+  @include btnTheme($success-6, 2px, $success-2, $success-7, $success-6);
+}
+
+.btn-info {
+  @include btnTheme($info-6, 2px, $info-2, $info-7, $info-6);
+}
+
+.btn-warning {
+  @include btnTheme($warning-6, 2px, $warning-2, $warning-6, $warning-6);
+}
+
+.btn-danger {
+  @include btnTheme($danger-6, 2px, $danger-2, $danger-7, $danger-6);
+}
+
 
 :host {
   background: $neutral-2;

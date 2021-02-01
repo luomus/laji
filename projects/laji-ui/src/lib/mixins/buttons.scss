@@ -1,0 +1,111 @@
+$border-radius: 5px;
+
+@mixin btn {
+  display: inline-block;
+  color: $neutral-8;
+  border: none;
+  border-radius: $border-radius;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: 100ms;
+
+  &:active {
+    transition: 50ms;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+  
+  &:disabled {
+    background: unset;
+    background-color: rgba(0,0,0,0);
+    color: $neutral-6;
+    border: 1px solid $neutral-4;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  
+    cursor: unset;
+  
+    &:hover {
+      background-color: unset;
+    }
+  }
+}
+
+@mixin btnTheme($shadowColor, $shadowSpread, $activeBgColor, $color, $activeColor) {
+  background-color: $neutral-1;
+  color: $color;
+  box-shadow: 0 1px 3px $shadowSpread rgba($shadowColor, 0.3), inset 0 1px 6px rgba($shadowColor, 0);
+  &:hover, &:focus {
+    background-color: $activeBgColor;
+  }
+  &:active {
+    background-color: $activeBgColor;
+    color: $activeColor;
+    box-shadow: 0 0px 0px 0px rgba($shadowColor, 0.3), inset 0 1px 6px rgba($shadowColor, 0.2);
+  }
+}
+
+@mixin btnPrimary {
+  position: relative;
+  background: linear-gradient(to bottom right, adjust-hue($primary-5, -10deg), $primary-5);
+  color: $primary-1;
+  box-shadow: 0 2px 6px 1px rgba($primary-8, 0.3), inset 0 0 0 rgba($primary-7, 0);
+  &::before {
+    display: inline-block;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: $primary-7;
+  }
+  &:hover::before, &:focus::before {
+    opacity: .2;
+    transition: opacity .2s ease-in-out;
+  }
+  &:active {
+    color: $primary-2;
+    transition: color .15s;
+    box-shadow: 0 0px 0px rgba($primary-8, 0), inset 0 1px 6px rgba($primary-9, .5);
+  }
+}
+
+@mixin btnDisabled {
+  background-color: rgba(0,0,0,0);
+  color: $neutral-6;
+  border: 1px solid $neutral-4;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+
+  cursor: unset;
+
+  &:hover {
+    background-color: unset;
+  }
+}
+
+@keyframes LoadingAnimation {
+  0%{
+    background-position: 0% 0%;
+  }
+  50%{
+    background-position: 100% 0%;
+  }
+  100%{
+    background-position: 0% 0%;
+  }
+}
+@mixin btnLoading {
+  cursor: unset;
+  border: 1px solid $primary-3;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  color: rgba($primary-7, .8);
+
+  background: linear-gradient(90deg, $neutral-1, $primary-3, $neutral-1);
+  background-size: 200% 200%;
+  animation: LoadingAnimation 2s linear infinite;
+}
