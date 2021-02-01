@@ -2,7 +2,7 @@
   <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter, typeCheckbox)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <!-- GLOBAL FILTER -->
   <laji-select
-  [options]="options['GLOBAL']"
+  [options]="options"
   [filterPlaceHolder]="'haseka.submissions.filter' | translate"
   [useFilter]="false"
   [selected]="selectedOptions['GLOBAL']"
@@ -19,10 +19,10 @@
   <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | selectedOptionisEmpty))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
   <ng-container *ngFor="let subCategory of subCategories | excludeSubcategory : ['GLOBAL']">
     <label *ngIf="open || (!open && !(selectedOptions[subCategory] | selectedOptionisEmpty))" class="lj-item selected" (click)="labelClick($event)">
-      <laji-checkbox [checkboxType]="'partial'" [class]="[]" [value]="selectedOptions[subCategory] | checkStatusSubCategory : options[subCategory]" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options[subCategory])"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
+      <laji-checkbox [checkboxType]="'partial'" [class]="[]" [value]="selectedOptions[subCategory] | checkStatusSubCategory : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
     </label>
     <laji-select
-      [options]="options[subCategory]"
+      [options]="options"
       [filterPlaceHolder]="'haseka.submissions.filter' | translate"
       [useFilter]="false"
       [selected]="selectedOptions[subCategory]"
@@ -30,7 +30,7 @@
       [info]="info"
       [open]="open"
       [disabled]="false"
-      [loading]="options[subCategory] === null"
+      [loading]="options === null"
       [checkboxType] = "'basic'"
       (selectedChange)="refreshValue($event, subCategory)"
       [classes]="{options: 'subCategoriesOptions', optionContainer: 'subCategoriesContainer', menuContainer: 'subMenu'}"

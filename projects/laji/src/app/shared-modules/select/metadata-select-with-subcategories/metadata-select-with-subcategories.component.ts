@@ -29,10 +29,6 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
 
   protected setOptions(options: SelectOptions[]) {
     super.setOptions(options);
-    this.subCategories.forEach(item => {
-      this.categoryOptions[item] = options;
-      console.log(options)
-    });
   }
 
   refreshValue(value: any): void {

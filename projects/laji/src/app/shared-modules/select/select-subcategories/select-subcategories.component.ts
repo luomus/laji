@@ -39,7 +39,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: SelectOptions|string[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -242,7 +241,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       let tmpSelectedOptions = [];
       let tmpUnselectedOptions = [];
       const countObj = this.selectedOptions[i].filter(item => item.id !== undefined).length;
-      this.options[i].map(option => {
+      this.options.map(option => {
         if (countObj > 0) {
           selected[i].map(item => {
             if (item.id === option.id) {
@@ -349,7 +348,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selectedOptions[category] = [];
       this.unselectedOptions[category] = [];
       this.tmpSelectedOption[category] = [];
-      for (const option of options[category]) {
+      for (const option of options) {
         if (
           splitParam[category] && splitParam[category].includes(option.id) ||
           (splitParam && splitParam.includes(option.id))
@@ -367,7 +366,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.selectedOptions['GLOBAL'] = [];
       this.unselectedOptions['GLOBAL'] = [];
       this.tmpSelectedOption['GLOBAL'] = [];
-      options['GLOBAL'].map(option => {
+      options.map(option => {
         let checkMatches = 0;
         subCategories.forEach(element => {
           if (this.selectedOptions[element].indexOf(option.id) > -1) {
@@ -441,7 +440,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     this.selectedOptions[category] = value;
     const categoriesExcludeGlobal = this.subCategories.filter(item => item !== 'GLOBAL');
     if (category === 'GLOBAL') {
-      this.options['GLOBAL'].map(option => {
+      this.options.map(option => {
         let count = 0;
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions && this.selectedOptions['GLOBAL'] !== undefined &&
@@ -471,7 +470,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     } else {
       this.selectedOptions['GLOBAL'] = [];
       const tmpGlobal = [];
-      this.options['GLOBAL'].map(option => {
+      this.options.map(option => {
         let countNoGlobal = 0;
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions[cat]?.indexOf(option.id) > -1 &&
@@ -542,17 +541,17 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
         });
      }
 
-     this.options['GLOBAL'].map(item => {
+     this.options.map(item => {
        this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue':
-       (tmpCat.filter(el => (el.id === item.id && el.count === this.subCategories.length)).length > 0 ?
+       (tmpCat.filter(el => (el.id === item.id && el.count === this.subCategories.length - 1)).length > 0 ?
        true : ((tmpCat.filter(el => (el.id === item.id && el.count > 0)).length > 0) ? false : undefined))});
      });
     } else if (equals === true) {
-      this.options['GLOBAL'].map(item => {
+      this.options.map(item => {
         this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue': true});
       });
     } else {
-      this.options['GLOBAL'].map(item => {
+      this.options.map(item => {
         this.selectedOptions['GLOBAL'].push({...item, 'checkboxValue': undefined});
       });
     }
