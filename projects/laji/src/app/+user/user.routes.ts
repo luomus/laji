@@ -1,15 +1,19 @@
 import { RouterModule, Routes } from '@angular/router';
-import { UserComponent } from './user.component';
+import { ProfileNotLoggedInComponent } from './profile/profile-not-logged-in.component';
 import { UserLoginComponent } from './login/user-login.component';
 import { UserLogoutComponent } from './logout/user-logout.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ModuleWithProviders } from '@angular/core';
+import { ProfileRedirectGuard } from './profile/profile-redirect-guard.service';
 
 export const userRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: UserComponent,
+    component: ProfileNotLoggedInComponent,
+    canActivate: [
+      ProfileRedirectGuard
+    ],
     data: {
       title: 'navigation.user.profile'
     }
