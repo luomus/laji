@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf, Subject } from 'rxjs';
 import { PlatformService } from './platform.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { ConfirmModalComponent } from './confirm.component';
+import { ConfirmComponent } from './confirm.component';
 
 @Injectable({providedIn: 'root'})
 export class DialogService {
-
-  confirmSub: Subject<boolean>;
 
   constructor(
     private platformService: PlatformService,
@@ -18,30 +16,37 @@ export class DialogService {
     if (this.platformService.isServer) {
       return ObservableOf(onServer);
     }
-    this.confirmSub = new Subject();
-    const modalRef = this.modalService.show(ConfirmModalComponent, {backdrop: 'static', keyboard: false});
-    this.modalService.config.backdrop = 'static';
-    this.modalService.config.keyboard = false;
-    modalRef.content.message = message;
-    modalRef.content.confirm.subscribe(() => {
-      this.modalService.hide(modalRef.id);
-      this.confirmSub.next(true);
-      this.confirmSub.complete();
-    });
-    modalRef.content.cancel.subscribe(() => {
-      this.modalService.hide(modalRef.id);
-      this.confirmSub.next(false);
-      this.confirmSub.complete();
-    });
-    modalRef.content.cdr.markForCheck();
-    return this.confirmSub;
+    return this.createDialog(message);
   }
 
   prompt(message: string, _default?: string): Observable<string> {
-    return new Observable((subscriber) => {
-      subscriber.next(window.prompt(message, _default));
-      subscriber.complete();
-    });
+    return this.createDialog(message, true, _default);
   }
 
+  private createDialog(message: string): Subject<boolean>;
+  private createDialog(message: string, prompt: true, promptDefault?: string): Subject<string | null>;
+  private createDialog(message: string, prompt = false, promptDefault?: string): Subject<boolean | (string | null)> {
+    const subject = new Subject<unknown>();
+    const modalRef = this.modalService.show(ConfirmComponent, {backdrop: 'static'});
+    modalRef.content.message = message;
+    modalRef.content.prompt = prompt;
+
+    modalRef.content.confirm.subscribe((value?: string) => {
+      this.modalService.hide(modalRef.id);
+      subject.next(prompt ? value : true);
+      subject.complete();
+    });
+
+    const cancel = () => {
+      this.modalService.hide(modalRef.id);
+      subject.next(prompt ? null : false);
+      subject.complete();
+    };
+    modalRef.content.cancel.subscribe(cancel);
+    modalRef.onHide.subscribe(cancel);
+    modalRef.content.cdr.markForCheck();
+    return prompt
+      ? subject as Subject<string | null>
+      : subject as Subject<boolean>;
+  }
 }

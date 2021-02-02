@@ -10,10 +10,14 @@ import {
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'laji-confirm-modal',
+  selector: 'laji-confirm',
   template: `
     <div #modal class="modal-body">
       <p>{{ message | translate }}</p>
+      <input *ngIf="prompt" #prompt
+             class="form-control"
+             (keyup)="onPromptChange(prompt.value)"
+             (keyup.enter)="onConfirm()" />
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="onCancel()">{{ cancelLabel | translate }}</button>
@@ -22,11 +26,13 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmModalComponent {
+export class ConfirmComponent {
 
   @Input() message: string;
   @Input() confirmLabel = 'OK';
   @Input() cancelLabel = 'cancel';
+  @Input() prompt = false;
+  @Input() promptValue = '';
 
   @Output() confirm = new EventEmitter();
   @Output() cancel = new EventEmitter();
@@ -37,10 +43,14 @@ export class ConfirmModalComponent {
   }
 
   onConfirm() {
-    this.confirm.emit();
+    this.confirm.emit(this.prompt ? this.promptValue : undefined);
   }
 
   onCancel() {
     this.cancel.emit();
+  }
+
+  onPromptChange(value) {
+    this.promptValue = value;
   }
 }
