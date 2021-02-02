@@ -1,4 +1,4 @@
-import { browser, $, $$, ExpectedConditions } from 'protractor';
+import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 
 const EC = ExpectedConditions;
 
