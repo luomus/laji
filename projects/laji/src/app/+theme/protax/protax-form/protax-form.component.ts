@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
 import {ProtaxModelEnum} from '../models';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -14,6 +14,8 @@ enum Tab {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtaxFormComponent {
+  @Input() loading = false;
+
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
 

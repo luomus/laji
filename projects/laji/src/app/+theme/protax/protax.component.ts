@@ -1,7 +1,8 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
 import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'laji-protax',
@@ -9,16 +10,35 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./protax.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxComponent {
+export class ProtaxComponent implements OnDestroy {
+  loading = false;
+
+  private analyseSub: Subscription;
+
   constructor(
     private protaxApi: ProtaxApi,
     private exportService: ExportService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cd: ChangeDetectorRef
   ) { }
 
+  ngOnDestroy() {
+    if (this.analyseSub) {
+      this.analyseSub.unsubscribe();
+    }
+  }
+
   analyseData(formData: FormData) {
-    this.protaxApi.analyse(formData).subscribe(result => {
+    if (this.analyseSub) {
+      this.analyseSub.unsubscribe();
+    }
+
+    this.loading = true;
+
+    this.analyseSub = this.protaxApi.analyse(formData).subscribe(result => {
       this.exportService.exportArrayBuffer(result, 'protax_output', 'txt');
+      this.loading = false;
+      this.cd.markForCheck();
     }, err => {
       if (err.status === 400) {
         alert(this.translate.instant('theme.protax.invalidSequence'));
@@ -27,6 +47,8 @@ export class ProtaxComponent {
       } else {
         alert(this.translate.instant('theme.protax.genericError'));
       }
+      this.loading = false;
+      this.cd.markForCheck();
     });
   }
 }
