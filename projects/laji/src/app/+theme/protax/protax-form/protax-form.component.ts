@@ -35,6 +35,11 @@ export class ProtaxFormComponent {
   }
 
   submitForm() {
+    if (this.probabilityThreshold == null || this.probabilityThreshold < 0 || this.probabilityThreshold > 1) {
+      alert(this.translate.instant('theme.protax.invalidThreshold'));
+      return;
+    }
+
     if ((this.activeTab === Tab.textArea && !this.sequenceData) || (this.activeTab === Tab.fileSelect && !this.sequenceFile)) {
       alert(this.translate.instant('theme.protax.noSequence'));
       return;

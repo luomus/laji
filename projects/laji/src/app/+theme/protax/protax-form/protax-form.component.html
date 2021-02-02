@@ -15,7 +15,7 @@
       type="number"
       min="0"
       max="1"
-      step="0.1"
+      step="0.001"
       id="threshold"
     >
   </div>
@@ -33,4 +33,4 @@
   </lu-tabs>
 </div>
 
-<lu-button [role]="'primary'" (click)="submitForm()">Tunnista</lu-button>
+<lu-button [role]="'primary'" (click)="submitForm()">{{ 'theme.protax.analyse' | translate }}</lu-button>
