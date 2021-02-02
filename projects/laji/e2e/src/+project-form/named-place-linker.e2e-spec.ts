@@ -1,10 +1,11 @@
 import { browser, $ } from 'protractor';
 import { ProjectFormPage } from './project-form.po';
 import { UserPage } from '../+user/user.po';
-import { scrollIntoView } from '../../helper';
+import { ConfirmPO } from '../shared/dialogs.po';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
+const confirmDialog = new ConfirmPO();
 
 const FORM_ID = 'MHL.45';
 const DOC_NO_NP_ID_FORM_HAS_NAMED_PLACES = 'JX.185344';
@@ -45,8 +46,8 @@ describe('Named place linker', () => {
   it('use button doesn\'t direct to form page but shows dialog for linking', async (done) => {
     await projectFormPage.namedPlaceLinker.namedPlacesView.$useButton.click();
 
-    expect(await browser.switchTo().alert().getText()).not.toBeFalsy();
-    await browser.switchTo().alert().dismiss();
+    expect(await confirmDialog.$message.getText()).not.toBeFalsy();
+    await confirmDialog.$cancel.click();
     done();
   });
 

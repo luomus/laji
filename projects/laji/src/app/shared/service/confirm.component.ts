@@ -13,15 +13,15 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   selector: 'laji-confirm',
   template: `
     <div #modal class="modal-body">
-      <p>{{ message | translate }}</p>
+      <p class="laji-dialog-message">{{ message | translate }}</p>
       <input *ngIf="prompt" #prompt
              class="form-control"
              (keyup)="onPromptChange(prompt.value)"
              (keyup.enter)="onConfirm()" />
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">{{ cancelLabel | translate }}</button>
-      <button type="button" class="btn btn-primary" (click)="onConfirm()">{{ confirmLabel | translate }}</button>
+      <button type="button" class="btn btn-secondary laji-dialog-cancel" (click)="onCancel()">{{ cancelLabel | translate }}</button>
+      <button type="button" class="btn btn-primary laji-dialog-confirm" (click)="onConfirm()">{{ confirmLabel | translate }}</button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

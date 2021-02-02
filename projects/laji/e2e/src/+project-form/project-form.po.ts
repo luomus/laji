@@ -1,6 +1,9 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
+import { ConfirmPO } from '../shared/dialogs.po';
 
 const EC = ExpectedConditions;
+
+const confirmDialog = new ConfirmPO();
 
 export class ProjectFormPage {
 
@@ -78,7 +81,7 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
 
   async delete() {
     await this.$deleteButton.click();
-    await browser.switchTo().alert().accept();
+    await confirmDialog.$confirm.click();
   }
 }
 
