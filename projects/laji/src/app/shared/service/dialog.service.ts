@@ -30,6 +30,7 @@ export class DialogService {
     const modalRef = this.modalService.show(ConfirmComponent, {backdrop: 'static'});
     modalRef.content.message = message;
     modalRef.content.prompt = prompt;
+    modalRef.content.promptValue = promptDefault ?? '';
 
     modalRef.content.confirm.subscribe((value?: string) => {
       this.modalService.hide(modalRef.id);
