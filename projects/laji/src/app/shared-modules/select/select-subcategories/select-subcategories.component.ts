@@ -93,8 +93,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
       this.tmpSelectedOption = [];
       this.selectedOptions = [];
     }
-    this.initOptions(Object.keys(this.selectedOptions).length > 0 && this.selectedOptions !== undefined ? this.selectedOptions : this.buildSelectedOptions());
-    this.selectedOptions = Object.keys(this.tmpSelectedOption).length === 0 && this.tmpSelectedOption.constructor === Object ?
+    this.initOptions(this.selectedOptions !== undefined && Object.keys(this.selectedOptions).length > 0 ? this.selectedOptions : this.buildSelectedOptions());
+    this.selectedOptions =  this.tmpSelectedOption.constructor === Object && Object.keys(this.tmpSelectedOption).length === 0 ?
     this.selectedOptions : this.tmpSelectedOption;
   }
 
@@ -376,8 +376,7 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
         if (checkMatches > 0) {
             this.selectedOptions['GLOBAL'].push({...option, 'checkboxValue': checkMatches === subCategories.length });
-            this.tmpSelectedOption['GLOBAL'].push({...option, 'checkboxValue': checkMatches === subCategories.length ?
-            true : false });
+            this.tmpSelectedOption['GLOBAL'].push({...option, 'checkboxValue': checkMatches === subCategories.length });
         }
 
         if (checkMatches === 0) {
@@ -560,9 +559,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   arrayDiff(a, b) {
     a = a === undefined ? [] : a;
     if (b.length >= a.length) {
-      return b.filter(({ id: id }) => !a.some(({ id: itemId }) => itemId === id));
+      return b.filter(item1 => !a.some(item2 => (item2.id === item1.id)));
     } else {
-      return a.filter(({ id: id }) => !b.some(({ id: itemId }) => itemId === id));
+      return a.filter(item1 => !b.some(item2 => (item2.id === item1.id)));
     }
   }
 
