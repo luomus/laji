@@ -1,7 +1,10 @@
 <div class="container">
   <h1>{{ 'theme.protax' | translate }}</h1>
+  <p>{{ 'theme.protax.intro' | translate }}</p>
 
   <div class="lu-section">
     <laji-protax-form (submit)="analyseData($event)"></laji-protax-form>
   </div>
+
+  <laji-info-page [child]="{'fi': '4718', 'en': '4827', 'sv': '4831'} | multiLang"></laji-info-page>
 </div>
