@@ -27,10 +27,6 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
     this.queryToSelect = this.filtersValues;
   }
 
-  protected setOptions(options: SelectOptions[]) {
-    super.setOptions(options);
-  }
-
   refreshValue(value: any): void {
     if (!value) {
       return;
