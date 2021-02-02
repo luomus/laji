@@ -1,6 +1,10 @@
 @import 'projects/laji-ui/src/lib/vars';
 @import 'projects/laji-ui/src/lib/mixins/buttons';
 
+/*
+  BUTTON STYLING
+*/
+
 .btn {
   @include btn();
 }
@@ -27,4 +31,28 @@
 
 .btn.btn-danger {
   @include btnTheme($danger-6, 2px, $danger-2, $danger-7, $danger-6);
+}
+
+/*
+  BUTTON SIZING
+*/
+
+.btn.btn-lg {
+  font-size: $fs-4;
+  padding: 10px 20px;
+}
+
+.btn {
+  font-size: $fs-3;
+  padding: 8px 16px;
+}
+
+.btn.btn-sm {
+  font-size: $fs-2;
+  padding: 6px 12px;
+}
+
+.btn.btn-xs {
+  font-size: $fs-1;
+  padding: 4px 8px;
 }
