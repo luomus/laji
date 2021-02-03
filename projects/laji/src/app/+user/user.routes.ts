@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { ProfileNotLoggedInComponent } from './profile/profile-not-logged-in.component';
+import { ProfilePleaseLoginComponent } from './profile/profile-please-login.component';
 import { UserLoginComponent } from './login/user-login.component';
 import { UserLogoutComponent } from './logout/user-logout.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -10,7 +10,7 @@ export const userRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: ProfileNotLoggedInComponent,
+    component: ProfilePleaseLoginComponent,
     canActivate: [
       ProfileRedirectGuard
     ],

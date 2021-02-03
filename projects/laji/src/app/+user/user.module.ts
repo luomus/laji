@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FriendsComponent, ProfileComponent, routing, ProfileNotLoggedInComponent, UserLoginComponent, UserLogoutComponent } from './index';
+import { FriendsComponent, ProfileComponent, routing, ProfilePleaseLoginComponent, UserLoginComponent, UserLogoutComponent } from './index';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from '../shared/shared.module';
 import { FindPersonModule } from '../shared-modules/find-person/find-person.module';
@@ -17,7 +17,7 @@ import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
     InfoModule,
     LajiUiModule
   ],
-  declarations: [ProfileNotLoggedInComponent, ProfileComponent, FriendsComponent, UserLoginComponent, UserLogoutComponent]
+  declarations: [ProfilePleaseLoginComponent, ProfileComponent, FriendsComponent, UserLoginComponent, UserLogoutComponent]
 })
 export class UserModule {
 }
