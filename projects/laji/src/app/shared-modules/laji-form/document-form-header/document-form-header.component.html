@@ -34,7 +34,7 @@
 <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">
   <div class="col-sm-12">
-    <h4><span *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</span></h4>
+    <h3><span *ngFor="let field of namedPlaceHeader; let last = last">{{ field | async }}{{ !last ? ', ' : '' }}</span></h3>
   </div>
 </div>
 <ng-content></ng-content>

@@ -8,7 +8,7 @@ export class IncludesMultiStatePipe implements PipeTransform {
 
   transform(value: any, option: SelectOptions): boolean|undefined {
     const match = (value || []).filter(v => v['id'] === option['id']);
-    
+
     if (match.length > 0) {
       const tmpValue = match;
       return tmpValue[0]['checkboxValue'];
