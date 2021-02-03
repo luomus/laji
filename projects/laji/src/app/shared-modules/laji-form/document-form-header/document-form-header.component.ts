@@ -59,7 +59,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnInit() {
     this.updateForm();
-    this.subTrans = this.translate.onLangChange.subscribe(() => {
+    this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.updateForm();
     });
   }
