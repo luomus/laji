@@ -499,6 +499,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
 
   private getPopup({featureIdx}, cb: Function) {
+    const lang = this.translate.currentLang;
     this.translate.get('more')
       .subscribe((moreInfo) => {
         try {
@@ -515,7 +516,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             }
           });
           if (properties['documentId'] && properties['unitId']) {
-            description += '<a target="_blank" href="/view?uri=' +
+            description += '<a target="_blank" href="' +
+              (lang !== 'fi' ? '/' + lang : '') +
+              '/view?uri=' +
               properties['documentId'] +
               '&highlight=' +
               properties['unitId'].replace('#', '%23') + '">' +
