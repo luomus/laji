@@ -16,7 +16,7 @@ export class ProfileRedirectGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): UrlTree|boolean|Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): UrlTree|Observable<boolean> {
     return this.userService.user$.pipe(
       take(1),
       switchMap(user => user?.id ?
