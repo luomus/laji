@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, EMPTY, Observable } from 'rxjs';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
@@ -23,7 +23,7 @@ interface ViewModel {
     <ng-container *ngIf="vm$ | async as vm">
       <alert type="warning" *ngIf="vm.isLinkable">
         {{ 'np.linker.npMissing' | translate }} <br>
-        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link']" id="link-to-np">{{ 'np.linker.start' | translate }}</lu-button>
+        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize" id="link-to-np" (click)="this.click.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
       </alert>
     </ng-container>
   `,
@@ -32,6 +32,8 @@ interface ViewModel {
 export class NamedPlaceLinkerButtonComponent implements OnInit {
 
   @Input() documentID: string;
+
+  @Output() click = new EventEmitter();
 
   vm$: Observable<ViewModel>;
 
