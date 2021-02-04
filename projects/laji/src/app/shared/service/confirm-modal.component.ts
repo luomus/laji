@@ -1,7 +1,7 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  OnInit
+  OnInit, ViewChild, ElementRef, AfterViewInit
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -15,13 +15,19 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
              (keyup.enter)="onConfirm()" />
     </div>
     <div class="modal-footer">
-      <button tabIndex="1" type="button" class="btn btn-secondary laji-dialog-cancel" (click)="onCancel()">{{ cancelLabel | translate }}</button>
-      <button tabIndex="1" type="button" class="btn btn-primary laji-dialog-confirm" (click)="onConfirm()">{{ confirmLabel | translate }}</button>
+      <button type="button"
+              class="btn btn-secondary laji-dialog-cancel"
+              (click)="onCancel()"
+              (keyup.enter)="onCancel()">{{ cancelLabel | translate }}</button>
+      <button type="button" #confirm
+              class="btn btn-primary laji-dialog-confirm"
+              (click)="onConfirm()"
+              (keyup.enter)="onConfirm()">{{ confirmLabel | translate }}</button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmModalComponent implements OnInit {
+export class ConfirmModalComponent implements OnInit, AfterViewInit {
 
   message: string;
   confirmLabel = 'OK';
@@ -31,10 +37,16 @@ export class ConfirmModalComponent implements OnInit {
 
   value: boolean | string | null;
 
+  @ViewChild('confirm') confirmElem: ElementRef;
+
   constructor(private modalRef: BsModalRef) { }
 
   ngOnInit() {
     this.value = this.prompt ? null : false;
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.confirmElem.nativeElement.focus());
   }
 
   onConfirm() {
