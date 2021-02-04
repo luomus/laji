@@ -1,7 +1,7 @@
-<div class="lu-btn-group">
-  <button type="button" class="lu-btn lu-btn-small" [ngClass]="_switchState === 'true' ? 'btn-' + onColor : 'btn-default'" (click)="switch('true')" [disabled]="disabled">{{ onText }}</button>
-  <button type="button" class="lu-btn lu-btn-small" [ngClass]="_switchState === 'false' ? 'btn-' + onColor : 'btn-default'" (click)="switch('false')" [disabled]="disabled">{{ offText }}</button>
-  <button type="button" class="lu-btn lu-btn-small" *ngIf="showUndefined" [ngClass]="_switchState === 'undefined' ? 'btn-' + onColor : 'btn-default'" (click)="switch('undefined')" [disabled]="disabled">{{ undefinedText }}</button>
+<div class="btn-group btn-group-xs">
+  <button type="button" class="btn btn-default" [ngClass]="_switchState === 'true' ? 'btn-' + onColor : 'btn-default'" (click)="switch('true')" [disabled]="disabled">{{ onText }}</button>
+  <button type="button" class="btn btn-default" [ngClass]="_switchState === 'false' ? 'btn-' + onColor : 'btn-default'" (click)="switch('false')" [disabled]="disabled">{{ offText }}</button>
+  <button type="button" class="btn btn-default" *ngIf="showUndefined" [ngClass]="_switchState === 'undefined' ? 'btn-' + onColor : 'btn-default'" (click)="switch('undefined')" [disabled]="disabled">{{ undefinedText }}</button>
 </div>
 <!--
 <bSwitch

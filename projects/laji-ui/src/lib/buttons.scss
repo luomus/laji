@@ -49,17 +49,3 @@
 .lu-btn.lu-loading, .lu-btn.lu-loading:disabled {
   @include btnLoading();
 }
-
-.lu-btn-group {
-  .lu-btn {
-    border-radius: 0;
-  }
-  .lu-btn:first-child() {
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-  }
-  .lu-btn:last-child() {
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-  }
-}
