@@ -373,7 +373,11 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   setIndexPagination() {
-    return this.result.findIndex(i => i.unit.unitId === this.highlight);
+    if (!this.identifying) {
+      return this.result.findIndex(i => (i.unit.unitId === this.highlight));
+    } else {
+      return this.result.findIndex(i => (i.unitId === this.highlight));
+    }
   }
 
   closeDocument() {
@@ -432,8 +436,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   private move() {
     this.document = this.result[this.indexPagination].document;
-    this.uri = this.result[this.indexPagination].document.documentId;
-    this.highlight = this.result[this.indexPagination].unit.unitId;
+    this.uri = this.identifying ? this.result[this.indexPagination].documentId : this.result[this.indexPagination].document?.documentId;
+    this.highlight = this.identifying ? this.result[this.indexPagination].unitId : this.result[this.indexPagination].unit?.unitId;
     this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();
