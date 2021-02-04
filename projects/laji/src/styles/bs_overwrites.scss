@@ -46,7 +46,7 @@
   BUTTON SIZING
 */
 
-.btn.btn-lg {
+.btn.btn-lg, .btn-group-lg > .btn {
   font-size: $fs-4;
   padding: 10px 20px;
 }
@@ -56,12 +56,12 @@
   padding: 8px 16px;
 }
 
-.btn.btn-sm {
+.btn.btn-sm, .btn-group-sm > .btn {
   font-size: $fs-2;
   padding: 6px 12px;
 }
 
-.btn.btn-xs {
+.btn.btn-xs, .btn-group-xs > .btn {
   font-size: $fs-1;
   padding: 4px 8px;
 }
