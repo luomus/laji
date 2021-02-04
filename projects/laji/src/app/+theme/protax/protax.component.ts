@@ -47,6 +47,9 @@ export class ProtaxComponent implements OnDestroy {
       }
       this.cd.markForCheck();
     }, err => {
+      this.loading = false;
+      this.cd.markForCheck();
+
       if (err.status === 400) {
         alert(this.translate.instant('theme.protax.invalidSequence'));
       } else if (err.status === 413) {
@@ -54,8 +57,6 @@ export class ProtaxComponent implements OnDestroy {
       } else {
         alert(this.translate.instant('theme.protax.genericError'));
       }
-      this.loading = false;
-      this.cd.markForCheck();
     });
   }
 }
