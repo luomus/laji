@@ -75,7 +75,7 @@ import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
-import { ConfirmComponent } from './service/confirm.component';
+import { ConfirmModalComponent } from './service/confirm-modal.component';
 
 
 @NgModule({
@@ -112,7 +112,7 @@ import { ConfirmComponent } from './service/confirm.component';
     IncludesPipe,
     SsrDisableDirective,
     QualityUrlPipe,
-    ConfirmComponent
+    ConfirmModalComponent
   ],
   imports: [
     FormsModule,
