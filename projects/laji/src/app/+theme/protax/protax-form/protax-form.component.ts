@@ -15,6 +15,7 @@ enum Tab {
 })
 export class ProtaxFormComponent {
   @Input() loading = false;
+  @Input() downloadProgress: number;
 
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;

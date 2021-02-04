@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpEvent} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -10,9 +10,9 @@ export class ProtaxApi {
   constructor(protected httpClient: HttpClient) {
   }
 
-  public analyse(data: FormData): Observable<any> {
+  public analyse(data: FormData): Observable<HttpEvent<ArrayBuffer>> {
     const path = this.basePath + '/analyse';
 
-    return this.httpClient.post(path, data,  {responseType: 'arraybuffer'});
+    return this.httpClient.post(path, data,  {responseType: 'arraybuffer', reportProgress: true, observe: 'events'});
   }
 }

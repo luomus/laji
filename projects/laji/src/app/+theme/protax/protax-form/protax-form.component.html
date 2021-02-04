@@ -33,4 +33,11 @@
   </lu-tabs>
 </div>
 
-<lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">{{ 'theme.protax.analyse' | translate }}</lu-button>
+<lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
+  <ng-container *ngIf="!(loading && downloadProgress)">
+    {{ 'theme.protax.analyse' | translate }}
+  </ng-container>
+  <ng-container *ngIf="loading && downloadProgress">
+    {{ 'theme.protax.downloading' | translate }} {{ downloadProgress | percent:'1.0' }}
+  </ng-container>
+</lu-button>

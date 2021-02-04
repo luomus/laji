@@ -3,6 +3,7 @@ import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
+import {HttpEventType} from '@angular/common/http';
 
 @Component({
   selector: 'laji-protax',
@@ -12,6 +13,7 @@ import {Subscription} from 'rxjs';
 })
 export class ProtaxComponent implements OnDestroy {
   loading = false;
+  downloadProgress: number;
 
   private analyseSub: Subscription;
 
@@ -34,10 +36,15 @@ export class ProtaxComponent implements OnDestroy {
     }
 
     this.loading = true;
+    this.downloadProgress = undefined;
 
-    this.analyseSub = this.protaxApi.analyse(formData).subscribe(result => {
-      this.exportService.exportArrayBuffer(result, 'protax_output', 'txt');
-      this.loading = false;
+    this.analyseSub = this.protaxApi.analyse(formData).subscribe(event => {
+      if (event.type === HttpEventType.DownloadProgress) {
+        this.downloadProgress = event.loaded / event.total;
+      } else if (event.type === HttpEventType.Response) {
+        this.exportService.exportArrayBuffer(event.body, 'protax_output', 'txt');
+        this.loading = false;
+      }
       this.cd.markForCheck();
     }, err => {
       if (err.status === 400) {
