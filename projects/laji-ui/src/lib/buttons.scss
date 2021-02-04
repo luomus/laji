@@ -12,28 +12,37 @@
   }
 }
 
+.lu-btn.primary:disabled,
+.lu-btn.secondary:disabled,
+.lu-btn.success:disabled,
+.lu-btn.info:disabled,
+.lu-btn.warning:disabled,
+.lu-btn.danger:disabled {
+  @include btnDisabled();
+}
+
 .lu-btn.primary {
-  @include btnPrimary();
+  @include btnPrimaryTheme($primary-5, -10deg, $primary-1, $primary-8);
 }
 
 .lu-btn.secondary {
-  @include btnTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
 }
 
 .lu-btn.success {
-  @include btnTheme($success-6, 2px, $success-2, $success-7, $success-6);
+  @include btnPrimaryTheme($success-5, -20deg, $success-2, $success-8);
 }
 
 .lu-btn.info {
-  @include btnTheme($info-6, 2px, $info-2, $info-7, $info-6);
+  @include btnPrimaryTheme($info-5, -20deg, $info-2, $info-8);
 }
 
 .lu-btn.warning {
-  @include btnTheme($warning-6, 2px, $warning-2, $warning-6, $warning-6);
+  @include btnPrimaryTheme($warning-5, 0deg, $warning-2, $warning-8);
 }
 
 .lu-btn.danger {
-  @include btnTheme($danger-6, 2px, $danger-2, $danger-7, $danger-6);
+  @include btnPrimaryTheme($danger-5, 20deg, $danger-2, $danger-8);
 }
 
 .lu-btn.lu-loading, .lu-btn.lu-loading:disabled {
