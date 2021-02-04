@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-status',
   templateUrl: './taxon-status.component.html',
   styleUrls: ['./taxon-status.component.css']
 })
-export class TaxonStatusComponent implements OnInit {
+export class TaxonStatusComponent {
 
   statuses: string[] = [
     'MX.iucnRE',
@@ -17,10 +17,5 @@ export class TaxonStatusComponent implements OnInit {
   ];
 
   @Input() status: string;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

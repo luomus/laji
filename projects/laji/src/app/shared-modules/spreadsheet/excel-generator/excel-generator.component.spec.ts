@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ExcelGeneratorComponent } from './excel-generator.component';
 
@@ -6,7 +6,7 @@ describe('ExcelGeneratorComponent', () => {
   let component: ExcelGeneratorComponent;
   let fixture: ComponentFixture<ExcelGeneratorComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExcelGeneratorComponent ]
     })

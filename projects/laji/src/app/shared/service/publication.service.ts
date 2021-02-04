@@ -20,7 +20,7 @@ export class PublicationService {
       return ObservableOf(this.cache[id]);
     } else if (!this.pending[id]) {
       this.pending[id] = this.lajiApi.get(LajiApi.Endpoints.publications, id, {lang}).pipe(
-        catchError((err) => {
+        catchError(() => {
           return ObservableOf(undefined);
         }),
         tap((res) => {

@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Logger } from '../shared/logger/logger.service';
 import { Information } from '../shared/model/Information';
 import { Title } from '@angular/platform-browser';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
-import { catchError, delay, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, filter, map, switchMap, tap } from 'rxjs/operators';
 import { HeaderService } from '../shared/service/header.service';
 
 @Component({

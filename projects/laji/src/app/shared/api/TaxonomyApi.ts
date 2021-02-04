@@ -75,9 +75,7 @@ export class TaxonomyApi {
     if (scientificName === null || scientificName === undefined) {
       throw new Error('Required parameter scientificName was null or undefined when calling bold.');
     }
-    if (scientificName !== undefined) {
-      queryParameters['scientificName'] = scientificName;
-    }
+    queryParameters['scientificName'] = scientificName;
 
     return this.http.get<Taxonomy[]>(path, {params: queryParameters});
   }
@@ -277,9 +275,7 @@ export class TaxonomyApi {
     if (query === null || query === undefined) {
       throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');
     }
-    if (query !== undefined) {
-      queryParameters['query'] = query
-    }
+    queryParameters['query'] = query
 
     if (limit !== undefined) {
       queryParameters['limit'] = limit

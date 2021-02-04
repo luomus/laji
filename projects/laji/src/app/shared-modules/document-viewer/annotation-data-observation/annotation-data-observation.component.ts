@@ -16,8 +16,6 @@ export class AnnotationDataObservationComponent implements OnInit {
 
   occurrence: any;
 
-  constructor() { }
-
   ngOnInit() {
     this.occurrence = this.unit.annotations[this.unit.annotations.length - 1].occurrenceAtTimeOfAnnotation;
   }

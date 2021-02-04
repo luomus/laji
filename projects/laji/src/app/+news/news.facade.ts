@@ -57,7 +57,8 @@ export class NewsFacade {
     );
 
     this.listSub = (page === 1 ? newsGraph$ : newsRemote$).pipe(
-      catchError(() => newsRemote$)
+      catchError(() => newsRemote$),
+      map(news => ({...news, results: (news.results || []).map(item => this.fixNews(item))}))
     ).subscribe(news => this.updateState({..._state, list: news}));
   }
 
@@ -75,11 +76,22 @@ export class NewsFacade {
   }
 
   private updateActive(news: News) {
-    this.updateState({..._state, active: news});
+    this.updateState({..._state, active: this.fixNews(news)});
   }
 
   private updateState(state: INewsState) {
     this.store.next(_state = state);
+  }
+
+  /**
+   * News from the api have incorrect time zone causing incorrect hour without this hack.
+   */
+  private fixNews(news: News) {
+    return {
+      ...news,
+      posted: news.posted.substr(0, 10),
+      modified: (news.modified || '').substr(0, 10)
+    };
   }
 
 }

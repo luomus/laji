@@ -418,7 +418,6 @@ export namespace Taxon {
     | 'MX.kingdom'
     | 'MX.subkingdom'
     | 'MX.infrakingdom'
-    | 'MX.infrakingdom'
     | 'MX.superphylum'
     | 'MX.phylum'
     | 'MX.subphylum'

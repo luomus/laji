@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Taxonomy } from '../../../../../../shared/model/Taxonomy';
 
 @Component({
@@ -6,13 +6,8 @@ import { Taxonomy } from '../../../../../../shared/model/Taxonomy';
   templateUrl: './bold-synonym.component.html',
   styleUrls: ['./bold-synonym.component.css']
 })
-export class BoldSynonymComponent implements OnInit {
+export class BoldSynonymComponent {
 
   @Input() taxa: Taxonomy[];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

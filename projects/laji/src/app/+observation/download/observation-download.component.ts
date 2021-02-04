@@ -32,7 +32,7 @@ import { ObservationTableColumn } from '../../shared-modules/observation-result/
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
-import { DownloadService } from 'projects/laji/src/app/shared/service/download.service';
+import { DownloadService } from '../../shared/service/download.service';
 
 
 enum RequestStatus {
@@ -251,7 +251,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       },
       err => {
         this.requests[type] = RequestStatus.error;
-        this.toastsService.showError(this.translate.instant(err && err.status ?
+        this.toastsService.showError(this.translate.instant(err?.status === 429 ?
           'observation.download.limitExceededException' :
           'observation.download.error'
         ));

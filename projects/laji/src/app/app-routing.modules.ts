@@ -9,7 +9,7 @@ import { LocalizeInGuard } from './locale/localize-in.guard';
 import { CheckLoginGuard } from './shared/guards/check-login.guard';
 import { NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
-
+import { Global } from '../environments/global';
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
@@ -40,64 +40,40 @@ const baseRoutes: Routes = [
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)}
 ];
 
+const rootRouting = {
+  'talvilintu': '/project/MHL.3',
+  'ykj': '/theme/ykj',
+  'emk': '/theme/emk',
+};
+
+Object.keys(Global.oldThemeRouting).forEach(path => {
+  rootRouting[path] = `/project/${Global.oldThemeRouting[path]}`;
+});
+
+const redirectsEn: Routes = [];
+const redirectsSv: Routes = [];
+const redirectsFi: Routes = [];
+
+redirectsEn.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsSv.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsFi.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
+
 const routesWithLang: Routes = [
   {path: 'in', children: [
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
-    {path: 'nafi', redirectTo: '/en/theme/nafi/', pathMatch: 'full'},
-    {path: 'ykj', redirectTo: '/en/theme/ykj', pathMatch: 'full'},
-    {path: 'emk', redirectTo: '/en/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/en/theme/linjalaskenta', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/en/theme/talvilintulaskenta', pathMatch: 'full'},
-    {path: 'sieniatlas', redirectTo: '/en/theme/sieniatlas', pathMatch: 'full'},
-    {path: 'vesilintulaskenta', redirectTo: '/en/theme/vesilintulaskenta', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/en/theme/vieraslajit', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/en/theme/kunnat', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/en/theme/lolife', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/en/theme/lepakot', pathMatch: 'full'},
-    {path: 'valio', redirectTo: '/en/theme/valio', pathMatch: 'full'},
-    {path: 'syke-perhoset', redirectTo: '/en/theme/syke-perhoset', pathMatch: 'full'},
-    {path: 'pistelaskenta', redirectTo: '/en/theme/pistelaskenta', pathMatch: 'full'},
-    {path: 'kiiltomadot', redirectTo: '/en/theme/kiiltomadot', pathMatch: 'full'},
+    ...redirectsEn,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
-    {path: 'nafi', redirectTo: '/sv/theme/nafi', pathMatch: 'full'},
-    {path: 'ykj', redirectTo: '/sv/theme/ykj', pathMatch: 'full'},
-    {path: 'emk', redirectTo: '/sv/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/sv/theme/linjalaskenta', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/sv/theme/talvilintulaskenta', pathMatch: 'full'},
-    {path: 'sieniatlas', redirectTo: '/sv/theme/sieniatlas', pathMatch: 'full'},
-    {path: 'vesilintulaskenta', redirectTo: '/sv/theme/vesilintulaskenta', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/sv/theme/vieraslajit', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/sv/theme/kunnat', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/sv/theme/lolife', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/sv/theme/lepakot', pathMatch: 'full'},
-    {path: 'valio', redirectTo: '/sv/theme/valio', pathMatch: 'full'},
-    {path: 'syke-perhoset', redirectTo: '/sv/theme/syke-perhoset', pathMatch: 'full'},
-    {path: 'pistelaskenta', redirectTo: '/sv/theme/pistelaskenta', pathMatch: 'full'},
-    {path: 'kiiltomadot', redirectTo: '/sv/theme/kiiltomadot', pathMatch: 'full'},
+    ...redirectsFi,
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
   {path: '', data: {lang: 'fi'}, children: [
-    {path: 'nafi', redirectTo: '/theme/nafi', pathMatch: 'full'},
-    {path: 'ykj', redirectTo: '/theme/ykj', pathMatch: 'full'},
-    {path: 'emk', redirectTo: '/theme/emk', pathMatch: 'full'},
-    {path: 'linjalaskenta', redirectTo: '/theme/linjalaskenta', pathMatch: 'full'},
-    {path: 'talvilintu', redirectTo: '/theme/talvilintulaskenta', pathMatch: 'full'},
-    {path: 'sieniatlas', redirectTo: '/theme/sieniatlas', pathMatch: 'full'},
-    {path: 'vesilintulaskenta', redirectTo: '/theme/vesilintulaskenta', pathMatch: 'full'},
-    {path: 'vieraslajit', redirectTo: '/theme/vieraslajit', pathMatch: 'full'},
-    {path: 'kunnat', redirectTo: '/theme/kunnat', pathMatch: 'full'},
-    {path: 'lolife', redirectTo: '/theme/lolife', pathMatch: 'full'},
-    {path: 'lepakot', redirectTo: '/theme/lepakot', pathMatch: 'full'},
-    {path: 'valio', redirectTo: '/theme/valio', pathMatch: 'full'},
-    {path: 'syke-perhoset', redirectTo: '/theme/syke-perhoset', pathMatch: 'full'},
-    {path: 'pistelaskenta', redirectTo: '/theme/pistelaskenta', pathMatch: 'full'},
-    {path: 'kiiltomadot', redirectTo: '/theme/kiiltomadot', pathMatch: 'full'},
+      ...redirectsFi,
     {path: 'lajiluettelo', redirectTo: '/theme/checklist', pathMatch: 'full'},
     {path: 'artlistan', redirectTo: '/sv/theme/checklist', pathMatch: 'full'},
     {path: 'checklist', redirectTo: '/en/theme/checklist', pathMatch: 'full'},
@@ -121,8 +97,9 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {
     enableTracing: false,
     preloadingStrategy: QuicklinkStrategy,
-    initialNavigation: 'enabled'
-  })],
+    initialNavigation: 'enabled',
+    relativeLinkResolution: 'legacy'
+})],
   exports: [RouterModule],
   declarations: []
 })

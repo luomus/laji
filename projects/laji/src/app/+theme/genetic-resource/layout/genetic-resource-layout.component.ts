@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'laji-genetic-resource-layout',
@@ -6,11 +6,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./genetic-resource-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GeneticResourceLayoutComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class GeneticResourceLayoutComponent {
 
 }

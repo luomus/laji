@@ -14,8 +14,6 @@ export class PrintMapComponent implements OnChanges {
   _data: any;
   mapOptions: LajiMapOptions = {viewLocked: true};
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
       this.initData();

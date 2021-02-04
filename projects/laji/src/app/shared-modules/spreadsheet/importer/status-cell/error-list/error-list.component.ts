@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IFormField } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -8,16 +8,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./error-list.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ErrorListComponent implements OnInit {
+export class ErrorListComponent {
 
   @Input() fields: {[key: string]: IFormField};
 
   _errors: {field: string, errors: string[]}[] = [];
 
   constructor(private translateService: TranslateService) { }
-
-  ngOnInit() {
-  }
 
   @Input()
   set errors(data) {

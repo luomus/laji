@@ -17,6 +17,7 @@ export class TaxonNameComponent {
     scientificNameAuthorship?: string;
     alternativeVernacularName?;
     obsoleteVernacularName?;
+    colloquialVernacularName?;
   };
   @Input() taxonID: string;
   @Input() addLink = true;

@@ -13,8 +13,6 @@ export class ObservationFiltersComponent {
   @Input() onlyCount = true;
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
 
-  constructor() { }
-
   onRecordBasis(event) {
     if (event.row && event.row.unit && event.row.unit.superRecordBasis) {
       this.collectionFilterSelect('superRecordBasis', event.row.unit.superRecordBasis);

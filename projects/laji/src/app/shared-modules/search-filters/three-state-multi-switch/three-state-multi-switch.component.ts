@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { map } from 'rxjs/operators';
-import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 

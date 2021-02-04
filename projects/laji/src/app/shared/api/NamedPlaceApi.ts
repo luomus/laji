@@ -69,9 +69,7 @@ export class NamedPlaceApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling createNamedPlace.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.post<NamedPlace>(path, data, {params: queryParameters});
   }
@@ -156,9 +154,7 @@ export class NamedPlaceApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.put<NamedPlace>(path, data, {params: queryParameters});
   }
@@ -182,9 +178,7 @@ export class NamedPlaceApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling delete.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.delete<NamedPlace>(path, {params: queryParameters});
   }
@@ -202,9 +196,7 @@ export class NamedPlaceApi {
     if (personToken === null || personToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
-    if (personToken !== undefined) {
-      queryParameters['personToken'] = personToken;
-    }
+    queryParameters['personToken'] = personToken;
 
     return this.http.post<NamedPlace>(path, undefined, {params: queryParameters});
   }
@@ -222,9 +214,7 @@ export class NamedPlaceApi {
     if (personToken === null || personToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
-    if (personToken !== undefined) {
-      queryParameters['personToken'] = personToken;
-    }
+    queryParameters['personToken'] = personToken;
 
     return this.http.delete<NamedPlace>(path, {params: queryParameters});
   }

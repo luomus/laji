@@ -17,7 +17,7 @@ export class UsageByOrganizationComponent {
   constructor(
       private virOrganisationService: VirOrganisationService
   ) {
-    this.users$ = this.virOrganisationService.users$
+    this.users$ = this.virOrganisationService.users$;
   }
 
   organizationSelect(org: string) {

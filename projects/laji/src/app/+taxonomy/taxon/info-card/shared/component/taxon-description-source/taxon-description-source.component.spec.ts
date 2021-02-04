@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaxonDescriptionSourceComponent } from './taxon-description-source.component';
 
@@ -6,7 +6,7 @@ describe('TaxonDescriptionSourceComponent', () => {
   let component: TaxonDescriptionSourceComponent;
   let fixture: ComponentFixture<TaxonDescriptionSourceComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaxonDescriptionSourceComponent ]
     })

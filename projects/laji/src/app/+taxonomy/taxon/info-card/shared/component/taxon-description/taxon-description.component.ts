@@ -14,8 +14,6 @@ export class TaxonDescriptionComponent implements OnChanges {
   taxonDescription: TaxonomyDescription;
   descriptionGroup: TaxonomyDescriptionGroup;
 
-  constructor() { }
-
   ngOnChanges() {
     this.descriptionGroup = undefined;
     this.taxonDescription = this.taxonDescriptions && this.taxonDescriptions.length > 0 ? this.taxonDescriptions[0] : undefined;

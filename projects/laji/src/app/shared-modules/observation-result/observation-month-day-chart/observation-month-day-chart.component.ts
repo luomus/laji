@@ -10,17 +10,17 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { Observable, of, Subscription, from } from 'rxjs';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, concatMap, take, toArray } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
 import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-import {LabelPipe} from '../../../shared/pipe/label.pipe';
+import { LocalStorageService, LocalStorage } from 'ngx-webstorage';
+import { LabelPipe } from '../../../shared/pipe/label.pipe';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   @ViewChild('dayChartModal', { static: true }) public modal: ModalDirective;
   @Input() taxonId: string;
   @Input() query: any;
-  @Input() enableOnlyCount: boolean;
+  @Input() enableOnlyCount = true;
   monthChartData: any[];
   dayChartDataByMonth = {};
 
@@ -48,7 +48,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   public barChartOptions: any;
   private barChartPlugins: any;
   resultList: any[] = [];
-  isNotLoading = false;
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -77,7 +76,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     .subscribe((value) => {
       this.onlyCount = value;
       this.onlyCount = this.onlyCount === null ? true : this.onlyCount;
-      this.isNotLoading = true;
+      this.getDataSub.unsubscribe();
       this.initializeArrays(this.resultList);
       this.cd.markForCheck();
     });
@@ -154,6 +153,8 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.dayChartModalVisible = false;
   }
 
+  /* Check */
+
   private updateData() {
     if (this.getDataSub) {
       this.getDataSub.unsubscribe();
@@ -182,7 +183,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       switchMap(res => this.setData(res))
     ).subscribe(() => {
       this.hasData.emit(this.barChartData.length > 0);
-      this.isNotLoading = false;
       this.cd.markForCheck();
     });
   }
@@ -191,64 +191,43 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     if (result.length < 1) {
       return of([]);
     }
-
     this.daybarChartData = this.initDayChartDataDay();
-    const labelObservables = [];
-
-    result.forEach(r => {
-      const month = parseInt(r.aggregateBy['gathering.conversions.month'], 10);
-      const day = parseInt(r.aggregateBy['gathering.conversions.day'], 10);
-      const lifeStage = r.aggregateBy['unit.lifeStage'];
-      const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
-
-      this.addDataToSeriesGiorgio(lifeStage, count, month, labelObservables);
-
-      if (day) {
-        this.addDataDayToSeries(lifeStage, count, month, day, labelObservables);
-      }
-
-      this.initializeGraph();
-    });
-    return labelObservables.length > 0 ? forkJoin(labelObservables) : of([]);
+    this.barChartData = [{label: this.translate.instant('all'), data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }];
+    return from(result).pipe(
+      concatMap(r => {
+        const month = parseInt(r.aggregateBy['gathering.conversions.month'], 10);
+        const day = parseInt(r.aggregateBy['gathering.conversions.day'], 10);
+        const lifeStage = r.aggregateBy['unit.lifeStage'];
+        const count = this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum;
+        const day$: Observable<any> = day ? this.addDataDayToSeries(lifeStage, count, month, day) : of(null);
+        return day$.pipe(
+          concatMap(() => this.addDataToSeriesGiorgio(lifeStage, count, month))
+        );
+      }),
+      toArray(),
+      tap(() => this.initializeGraph())
+    );
   }
-
-  private addDataToSeriesGiorgio(lifeStage: string, count: number, month: number, labelObservables: any[]) {
-    if (this.barChartData.length < 1) {
-      this.barChartData.push({
-        label: this.translate.instant('all'),
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      });
-    }
-    this.barChartData[0].data[month - 1] += count;
+  private addDataToSeriesGiorgio(lifeStage: string, count: number, month: number): Observable<any> {
+    const barChartAllData = this.barChartData[0];
+    barChartAllData.data[month - 1] += count;
     if (lifeStage) {
-      let index = this.barChartData.findIndex(s => (s.label === lifeStage ||
-        s.label === (this.labelPipe.transform(lifeStage, 'warehouse').charAt(0).toUpperCase() + this.labelPipe.transform(lifeStage, 'warehouse').slice(1))));
-      if (index === -1) {
-        index = this.barChartData.length;
-        this.barChartData.push({label: lifeStage, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
-        if (this.isNotLoading) {
-          labelObservables.push(
-            this.getLabel(lifeStage).pipe(
-              map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
-            ).subscribe(label => {
-                this.barChartData[index].label = label;
-              })
-          );
-        } else {
-          labelObservables.push(
-            this.getLabel(lifeStage).pipe(
-              tap(label => {
-                this.barChartData[index].label = label;
-              })
-            )
-          );
-        }
-      }
-      this.barChartData[index].data[month - 1] += count;
+      return this.getLabel(lifeStage).pipe(
+        take(1),
+        map(label => {
+          let data = this.barChartData.find(s => (s.label === label));
+          if (!data) {
+            this.barChartData.push({label, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+            data = this.barChartData[this.barChartData.length - 1];
+          }
+          data.data[month - 1] += count;
+        })
+      );
     }
+    return of(null);
   }
 
-  private addDataDayToSeries(lifeStage: string, count: number, month: number, day: number, labelObservables: any[]) {
+  private addDataDayToSeries(lifeStage: string, count: number, month: number, day: number): Observable<any> {
     if (this.daybarChartData[month - 1].length < 1) {
       const values = this.initDayBarChartData(month);
       this.daybarChartData[month - 1].push({
@@ -257,35 +236,21 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
       });
     }
     this.daybarChartData[month - 1][0].data[day - 1] += count;
-
     if (lifeStage) {
       const values = this.initDayBarChartData(month);
-      let index = this.daybarChartData[month - 1].findIndex(s => (s.label === lifeStage ||
-        s.label === (this.labelPipe.transform(lifeStage, 'warehouse').charAt(0).toUpperCase() + this.labelPipe.transform(lifeStage, 'warehouse').slice(1))));
-      if (index === -1) {
-        index = this.daybarChartData[month - 1].length;
-        this.daybarChartData[month - 1].push({label: lifeStage, data: values});
-        if (this.isNotLoading) {
-          labelObservables.push(
-            this.getLabelChange(lifeStage).pipe(
-              map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
-            ).subscribe(label => {
-                this.daybarChartData[month - 1][index].label = label;
-              })
-          );
-        } else {
-          labelObservables.push(
-            this.getLabel(lifeStage).pipe(
-              tap(label => {
-                this.daybarChartData[month - 1][index].label = label;
-              })
-            )
-          );
-        }
-      }
-
-      this.daybarChartData[month - 1][index].data[day - 1] += count;
+      return this.getLabel(lifeStage).pipe(
+        take(1),
+        map(label => {
+          let data = this.daybarChartData[month - 1].find(s => (s.label === label));
+          if (!data) {
+            this.daybarChartData[month - 1].push({label, data: values});
+            data = this.daybarChartData[month - 1][this.daybarChartData[month - 1].length - 1];
+          }
+          data.data[day - 1] += count;
+        })
+      );
     }
+    return of(null);
   }
 
   private initDayChartDataDay(): any[] {
@@ -313,17 +278,10 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   private getLabel(warehouseKey: string): Observable<string> {
-    if (this.isNotLoading) {
-      return of(this.labelPipe.transform(warehouseKey, 'warehouse'));
-    } else {
-      return this.warehouseService.getOriginalKey(warehouseKey)
-      .pipe(
-        switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
-        map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
-      );
-    }
-
-
+    return this.warehouseService.getOriginalKey(warehouseKey).pipe(
+      switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
+      map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
+    );
   }
 
   private getLabelChange(warehouseKey: string): Observable<string> {
@@ -365,7 +323,12 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
     this.barChartData = [];
     this.daybarChartData = [];
     this.barChartLabels = [];
-    this.setData(list);
+    this.setData(list).subscribe(
+      () => {
+        this.hasData.emit(this.barChartData.length > 0);
+        this.cd.markForCheck();
+      }
+    );
   }
 
 

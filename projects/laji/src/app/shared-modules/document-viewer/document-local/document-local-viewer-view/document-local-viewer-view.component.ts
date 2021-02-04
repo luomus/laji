@@ -4,7 +4,7 @@ import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({

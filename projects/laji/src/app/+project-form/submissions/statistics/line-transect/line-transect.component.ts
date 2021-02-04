@@ -5,8 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  Output,
-  ViewChild
+  Output
 } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 import * as MapUtil from 'laji-map/lib/utils';

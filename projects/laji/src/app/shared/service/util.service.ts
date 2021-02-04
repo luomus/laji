@@ -66,7 +66,7 @@ export class Util {
     pathAsJSONPointer = pathAsJSONPointer
       .replace(/\./g, '/')
       .replace(/\[/g, '/')
-      .replace(/\]/g, '/');
+      .replace(/]/g, '/');
     if (pathAsJSONPointer[pathAsJSONPointer.length - 1] === '/') {
       pathAsJSONPointer = pathAsJSONPointer.substring(0, pathAsJSONPointer.length - 1);
     }

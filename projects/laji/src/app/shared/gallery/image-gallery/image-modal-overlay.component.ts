@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
@@ -7,7 +7,7 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
   styleUrls: ['./image-modal.component.css'],
   templateUrl: './image-modal-overlay.component.html'
 })
-export class ImageModalOverlayComponent implements OnInit {
+export class ImageModalOverlayComponent {
   public img: Image;
   public currentImageIndex: number;
   public close: Function;
@@ -18,13 +18,7 @@ export class ImageModalOverlayComponent implements OnInit {
 
   constructor(
    private childComunication: DocumentViewerChildComunicationService
-  ) {
-
-  }
-
-  ngOnInit() {
-  }
-
+  ) { }
 
   closeGallery() {
     if (this.close) {

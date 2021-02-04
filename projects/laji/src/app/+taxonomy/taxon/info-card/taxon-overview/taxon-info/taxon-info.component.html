@@ -9,8 +9,15 @@
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.vernacularName" [label]="'taxonomy.vernacular.names' | translate">
   <ul>
-    <li *ngFor="let item of availableVernacularNames | keyvalue">
+    <li *ngFor="let item of availableTaxonNames['vernacularNames'] | keyvalue">
         {{ taxon.vernacularName[item.value['lang']] }} ({{ 'lang.'+item.value['lang'] | translate }})
+    </li>
+  </ul>
+</laji-taxon-info-row>
+<laji-taxon-info-row *ngIf="taxon.colloquialVernacularName" [label]="'taxonomy.vernacular.colloquial' | translate">
+  <ul>
+    <li *ngFor="let item of availableTaxonNames['colloquialVernacularNames'] | keyvalue">
+        {{ taxon.colloquialVernacularName[item.value['lang']] }} ({{ 'lang.'+item.value['lang'] | translate }})
     </li>
   </ul>
 </laji-taxon-info-row>

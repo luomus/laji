@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter,
+import { ChangeDetectionStrategy, Component, EventEmitter,
 Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
-import { Color, BaseChartDirective} from 'ng2-charts';
+import { BaseChartDirective} from 'ng2-charts';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
 
@@ -18,8 +18,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children: Taxonomy[];
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   data: any;
-  labelFormatting = this.formatLabel.bind(this);
-  valueFormatting = this.formatValue.bind(this);
   total = 0;
 
   lineChartData: any[] = [];
@@ -29,14 +27,11 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   lineChartColors: any[] = [];
   dataById: {[key: string]: Taxonomy} = {};
   colorPalette = ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5'];
-  private speciesLabel = '';
-  private speciesSingularLabel = '';
 
   @Output() taxonSelect = new EventEmitter<string>();
 
   constructor(
-    private translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -115,7 +110,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.dataById = {};
     this.total = 0;
-    // this.lineChartData = [{data: [], label: []}];
     this.lineChartColors = [{backgroundColor: []}];
     this.lineChartData = [{
       data: [
@@ -140,8 +134,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
       if (count > 0) {
         this.dataById[id] = child;
-        // this.lineChartData[0].data.push(count);
-        // this.lineChartData[0].data.push({x: index, y: count});
         tmp_array.push({value: count,
         label: (child.vernacularName) ?
         ( typeof child.vernacularName  === 'object' ?
@@ -154,15 +146,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     tmp_array.sort((a, b) => (a.value > b.value) ? -1 : 1);
     this.lineChartData[0]['data'][0]['data'] = tmp_array;
 
-  }
-
-  private formatLabel(value: any) {
-    const data = this.dataById[value.label];
-    return data.vernacularName || data.scientificName;
-  }
-
-  private formatValue(value: number) {
-    return value + ' ' + (value === 1 ? this.speciesSingularLabel : this.speciesLabel);
   }
 
 }

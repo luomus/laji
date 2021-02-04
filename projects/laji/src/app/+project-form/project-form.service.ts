@@ -4,7 +4,7 @@ import { FormService } from '../shared/service/form.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../shared/model/Form';
-import { combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { NamedPlacesService } from '../shared/service/named-places.service';
 import { NamedPlace } from '../shared/model/NamedPlace';
 import { Global } from '../../environments/global';
@@ -30,7 +30,6 @@ export interface NamedPlacesQueryModel {
 
 export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   documentForm: Form.SchemaForm;
-  placeForm: Form.SchemaForm;
   namedPlace?: NamedPlace;
 }
 
@@ -101,33 +100,15 @@ export class ProjectFormService {
             })
           )
           : this.getFormFromRoute$(route);
-        const placeForm$ = documentForm$.pipe(switchMap(documentForm => this.getPlaceForm$(documentForm)));
-        const query$ = documentForm$.pipe(map(documentForm => this.queryToModelFormat(this.trimNamedPlacesQuery(documentForm, queryParams))));
-        return combineLatest(documentForm$, namedPlace$, placeForm$, query$).pipe(
+        const query$ = documentForm$.pipe(map(documentForm => this.queryToModelFormat(queryParams)));
+        return combineLatest(documentForm$, namedPlace$, query$).pipe(
           map(([
             documentForm,
             namedPlace,
-            placeForm,
-            query]) => ({documentForm, namedPlace, placeForm, ...query}))
+            query]) => ({documentForm, namedPlace, ...query}))
         );
       })
     );
-  }
-
-  trimNamedPlacesQuery(documentForm: Form.SchemaForm, queryParams: Params, municipalityAllIfEmpty = true): NamedPlacesQuery {
-    const query: NamedPlacesQuery = {
-      activeNP: queryParams['activeNP']
-    };
-    if (documentForm.options?.namedPlaceOptions?.filterByMunicipality && (queryParams.municipality || municipalityAllIfEmpty)) {
-      query.municipality = queryParams['municipality'] || 'all';
-    }
-    if (documentForm.options?.namedPlaceOptions?.filterByBirdAssociationArea && queryParams.birdAssociationArea) {
-      query.birdAssociationArea = queryParams['birdAssociationArea'];
-    }
-    if (documentForm.options?.namedPlaceOptions?.filterByTags && queryParams.tags) {
-      query.tags = queryParams['tags'];
-    }
-    return query;
   }
 
   queryToModelFormat(queryParams): NamedPlacesQueryModel {
@@ -139,7 +120,6 @@ export class ProjectFormService {
   }
 
   getPlaceForm$(documentForm: Form.SchemaForm) {
-    const id = documentForm.options?.namedPlaceOptions?.namedPlaceFormID || Global.forms.namedPlace;
-    return this.formService.getForm(id, this.translate.currentLang);
+    return this.formService.getPlaceForm(documentForm);
   }
 }

@@ -12,7 +12,8 @@ export const Global = {
     default: 'JX.519',
     namedPlace: 'MHL.36',
     whichSpecies: 'MHL.9',
-    collectionContest: 'MHL.25'
+    collectionContest: 'MHL.25',
+    privateCollection: 'JX.5190'
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'

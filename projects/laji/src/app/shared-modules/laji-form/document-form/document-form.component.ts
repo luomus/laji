@@ -142,10 +142,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.touchedCounter++;
   }
 
-  somethingChanged(input, event) {
-    this.templateForm[input] = event.target.value;
-  }
-
   lock(lock) {
     this.lajiFormFacade.lock(lock);
   }
@@ -180,9 +176,6 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.tmpDocument = document;
         this.templateModal.show();
     }
-  }
-
-  onSaveTemplate(event) {
   }
 
   submitPublic() {

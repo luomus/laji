@@ -12,8 +12,6 @@ export class PageSizeSelectComponent {
   @Output() pageSizeChange = new EventEmitter<number>();
   _pageSize: number;
 
-  constructor() { }
-
   @Input() set pageSize(val: any) {
     this._pageSize = +val;
   }

@@ -148,7 +148,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       }));
   }
 
-  onTaxonSelect(result: any, keepValue = false) {
+  onTaxonSelect(result: any) {
     if (result.item) {
       result = result.item;
     }

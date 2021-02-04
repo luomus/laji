@@ -11,7 +11,7 @@ export class IucnHyphensPipe implements PipeTransform {
     'Elinvoimaiset': 'Elinvoi&shy;maiset'
   };
 
-  transform(value: any, args?: any): any {
+  transform(value: any): any {
     return this.map[value] || value;
   }
 

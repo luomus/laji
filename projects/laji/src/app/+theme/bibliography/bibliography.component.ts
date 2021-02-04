@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { Information } from '../../shared/model/Information';
 import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-bibliography',
@@ -22,13 +21,11 @@ export class BibliographyComponent implements OnInit {
   publications$: Observable<Information>;
 
   constructor(
-    private apiService: LajiApiService,
-    private translate: TranslateService
-  ) {
-  }
+    private apiService: LajiApiService
+  ) {}
 
-ngOnInit() {
-  this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-all', {});
-}
+  ngOnInit() {
+    this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-all', {});
+  }
 
 }

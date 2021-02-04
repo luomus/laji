@@ -7,6 +7,9 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Ou
 })
 export class LajiFormComponent {
 
+  static TOP_OFFSET = 50;
+  static BOTTOM_OFFSET = 61;
+
   @Input() formData: any = {};
   @Input() tick: number;
   @Input() settingsKey = '';
@@ -20,11 +23,6 @@ export class LajiFormComponent {
   lajiFormWrapper: any;
   reactElem: any;
   renderElem: any;
-
-  static TOP_OFFSET = 50;
-  static BOTTOM_OFFSET = 61;
-
-  constructor() { }
 
   block() { }
 

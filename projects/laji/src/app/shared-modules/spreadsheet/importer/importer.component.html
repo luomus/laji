@@ -114,7 +114,7 @@
                     <button type="button" (click)="save(publ)" class="btn btn-success pull-right action public">
                       {{ buttonLabel('save') | translate }}
                     </button>
-                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="hasButton('temp')">
+                    <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="!this.form?.options?.hideDraftButton">
                       {{ buttonLabel('temp') | translate }}
                     </button>
                     <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
