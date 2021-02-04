@@ -36,7 +36,7 @@
   <div class="col-sm-12">
     <h3><span *ngFor="let field of namedPlaceHeader; let last = last">
       <ng-container *ngIf="namedPlace[field] | area | values as val">
-        {{ val }}{{ !last ? ', ' : '' }}
+        {{ val }}{{ !last && val ? ', ' : '' }}
       </ng-container>
     </span></h3>
   </div>
