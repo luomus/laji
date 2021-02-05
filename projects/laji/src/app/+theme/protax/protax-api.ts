@@ -13,6 +13,6 @@ export class ProtaxApi {
   public analyse(data: FormData): Observable<HttpEvent<ArrayBuffer>> {
     const path = this.basePath + '/analyse';
 
-    return this.httpClient.post(path, data,  {responseType: 'arraybuffer', reportProgress: true, observe: 'events'});
+    return this.httpClient.post(path, data,  {responseType: 'arraybuffer', reportProgress: true, observe: 'events', headers: {timeout: '3600000'}});
   }
 }
