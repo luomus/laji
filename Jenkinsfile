@@ -8,6 +8,11 @@ node {
     stage('Quality') {
       sh 'npm run lint'
     }
+    stage('Run tests') {
+      sh 'node ./node_modules/protractor/bin/webdriver-manager update'
+      sh 'npm run e2e'
+      junit 'projects/laji/e2e/test-results/**/*.xml'
+    }
     stage('Build') {
       milestone()
       sh 'rm -rf dist'
