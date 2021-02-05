@@ -102,7 +102,6 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   }
 
   getNamedPlaceHeader(): string[] {
-    console.log('ciao')
     if (!this.form || !this._namedPlace) {
       return [];
     }
