@@ -20,5 +20,5 @@ export const environment = {
   // kerttuApi: 'http://localhost:5000',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
-  // protaxApi: 'http://localhost:8000',
+  // protaxApi: 'http://localhost:8080',
 };

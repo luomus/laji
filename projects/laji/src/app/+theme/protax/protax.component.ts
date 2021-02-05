@@ -42,7 +42,7 @@ export class ProtaxComponent implements OnDestroy {
       if (event.type === HttpEventType.DownloadProgress) {
         this.downloadProgress = event.loaded / event.total;
       } else if (event.type === HttpEventType.Response) {
-        this.exportService.exportArrayBuffer(event.body, 'protax_output', 'txt');
+        this.exportService.exportArrayBuffer(event.body, 'protax_output', 'zip');
         this.loading = false;
       }
       this.cd.markForCheck();
