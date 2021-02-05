@@ -46,7 +46,7 @@ export class IdentifyComponent implements OnInit {
   onImageSelect(event) {
     this.documentViewerFacade.showDocumentID({
       document: event.documentId,
-      highlight: event.unitId,
+      highlight: event.fullURL,
       identifying: true,
       openAnnotation: true,
       result: this.totalItemsIdentify

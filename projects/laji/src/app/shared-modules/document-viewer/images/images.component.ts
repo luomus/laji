@@ -11,6 +11,7 @@ export class ImagesComponent implements OnChanges {
   @Input() document: any;
   @Input() highlight: any;
   @Input() eventOnImageClick = false;
+  @Input() identifying = false;
   @Input() showViewSwitch = false;
   @Input() showPopover = false;
   @Input() showOverlay = true;
@@ -50,13 +51,31 @@ export class ImagesComponent implements OnChanges {
           this.gatheringImages = this.gatheringImages.concat(gathering.media);
         }
         if (gathering.units) {
-          gathering.units.filter(unit => unit.unitId === this.highlight).map(
+          if (!this.identifying) {
+            gathering.units.filter(unit => unit.unitId === this.highlight).map(
               item => {
                 if (item.media) {
                   this.unitImages = this.unitImages.concat(item.media);
                 }
               }
-          );
+            );
+          } else {
+            let imgUnitId;
+            gathering.units.forEach(element => {
+              (element.media || []).forEach(image => {
+                if (image.fullURL === this.highlight) {
+                  imgUnitId = element.unitId;
+                }
+              });
+            });
+            gathering.units.filter(unit => unit.unitId === imgUnitId).map(
+              item => {
+                if (item.media) {
+                  this.unitImages = this.unitImages.concat(item.media);
+                }
+              }
+            );
+          }
         }
       });
     }

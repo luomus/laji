@@ -1,5 +1,4 @@
-
-<ng-container *ngIf="hasDoc && document && unitExist === true">
+<ng-container *ngIf="hasDoc && document && (unitExist === true || imgExist === true)">
     <div class="shortcut-content" *ngIf="showShortcuts" [@shortcutsInOut]>
         <div class="row">
           <div class="col-sm-12">
@@ -63,7 +62,7 @@
         <div class="row container-col">
           <div class="col-sm-4 column-modal">
             <div class="title">{{ 'annotation.mediaFiles' | translate }}</div>
-            <laji-images [document]="document" [highlight]="highlight" [shortcut]="true"></laji-images>
+            <laji-images [document]="document" [identifying]="true" [highlight]="highlight" [shortcut]="true"></laji-images>
           </div>
           <div class="col-sm-4 column-modal">
               <div class="title">{{ 'annotation.list' | translate }}</div>
@@ -157,7 +156,7 @@
     <h2>{{ 'viewer.notFound' | translate }}</h2>
   </div>
 </ng-container>
-<ng-container *ngIf="unitExist === false && hasDoc">
+<ng-container *ngIf="(unitExist === false && imgExist === false) && hasDoc">
   <div class="page-header">
     <h2>{{ 'observation.notFound' | translate }}</h2>
   </div>

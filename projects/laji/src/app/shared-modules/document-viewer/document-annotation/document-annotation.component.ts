@@ -102,6 +102,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   currentLang: string;
   hasEditors: boolean;
   unitExist: boolean;
+  imgExist: boolean;
   subscriptDocumentTools: Subscription;
   annotationTags$: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
@@ -283,6 +284,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.hasDoc = found;
     this.hasEditors = false;
     this.unitExist = false;
+    this.imgExist = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -333,9 +335,20 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       if (this.document.gatherings) {
         this.document.gatherings.forEach(gathering => {
           if (gathering.units) {
-            const i = gathering.units.find(unit => unit.unitId === this.highlight);
-            if (i) {
-              return this.unitExist = true;
+            if (!this.identifying) {
+              const i = gathering.units.find(unit => unit.unitId === this.highlight);
+              if (i) {
+                return this.unitExist = true;
+              }
+            } else {
+              gathering.units.forEach(element => {
+                (element.media || []).forEach(image => {
+                  const i = image.fullURL === this.highlight;
+                  if (i) {
+                    return this.imgExist = true;
+                  }
+                });
+              });
             }
           }
         });
@@ -376,7 +389,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.identifying) {
       return this.result.findIndex(i => (i.unit.unitId === this.highlight));
     } else {
-      return this.result.findIndex(i => (i.unitId === this.highlight));
+      return this.result.findIndex(i => (i.fullURL === this.highlight));
     }
   }
 
@@ -437,7 +450,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   private move() {
     this.document = this.result[this.indexPagination].document;
     this.uri = this.identifying ? this.result[this.indexPagination].documentId : this.result[this.indexPagination].document?.documentId;
-    this.highlight = this.identifying ? this.result[this.indexPagination].unitId : this.result[this.indexPagination].unit?.unitId;
+    this.highlight = this.identifying ? this.result[this.indexPagination].fullURL : this.result[this.indexPagination].unit?.unitId;
     this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();
