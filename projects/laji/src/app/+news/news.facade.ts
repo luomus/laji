@@ -85,8 +85,6 @@ export class NewsFacade {
 
   /**
    * News from the api have incorrect time zone causing incorrect hour without this hack.
-   * @param news
-   * @private
    */
   private fixNews(news: News) {
     return {

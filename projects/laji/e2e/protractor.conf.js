@@ -1,8 +1,6 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-import { browser } from "protractor";
-
 const { SpecReporter } = require('jasmine-spec-reporter');
 const { JUnitXmlReporter } = require('jasmine-reporters');
 
@@ -22,6 +20,8 @@ if (process.env.HEADLESS !== 'false') {
   chrome.chromeOptions.args = [
     '--headless',
     '--disable-gpu',
+    '--disable-dev-shm-usage',
+    '--no-sandbox',
     ...chrome.chromeOptions.args
   ];
 }
@@ -60,7 +60,7 @@ exports.config = {
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
 
     const junitReporter = new JUnitXmlReporter({
-      savePath: '../test-results/E2E',
+      savePath: 'projects/laji/e2e/test-results/E2E',
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);

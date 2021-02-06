@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TaxonomySearchQuery } from './service/taxonomy-search-query';
 import { FooterService } from '../../shared/service/footer.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 const tabNameToIndex = {
   list: 0,
@@ -37,7 +38,8 @@ export class SpeciesComponent implements OnInit, OnDestroy {
     private router: Router,
     public searchQuery: TaxonomySearchQuery,
     private cd: ChangeDetectorRef,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private localizeRouterService: LocalizeRouterService
   ) { }
 
   ngOnInit() {
@@ -71,6 +73,9 @@ export class SpeciesComponent implements OnInit, OnDestroy {
   }
 
   onSelect(tabIndex: number) {
-    this.router.navigate(['taxon', tabIndexToName[tabIndex]], {queryParams: this.route.snapshot.queryParams});
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/taxon', tabIndexToName[tabIndex]]),
+      {queryParams: this.route.snapshot.queryParams}
+    );
   }
 }

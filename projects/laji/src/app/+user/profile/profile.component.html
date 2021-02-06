@@ -1,74 +1,80 @@
 <div class="container container-relative">
   <h1>{{ 'navigation.user.profile' | translate }}</h1>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    <div class="row" *ngIf="!profile.profileKey">
-      {{ 'profile.missing'|translate }}
-    </div>
-    <div class="row" *ngIf="profile.profileKey || isCurrentUser">
-      <div class="col-md-8 col-xs-12 margin-bottom-5">
-        <h3>{{ profile.userID | users }}</h3>
-        <div class="profile-image">
-          <img *ngIf="profile.image" [src]="profile.image" alt="profile image" class="img-rounded">
+    <ng-container *ngIf="currentProfile && userProfile">
+      <div class="row" *ngIf="!currentProfile.profileKey">
+        {{ 'profile.missing' | translate }}
+      </div>
+      <div class="row" *ngIf="currentProfile.profileKey || isCurrentUser">
+        <div class="col-md-8 col-xs-12 margin-bottom-5">
+          <h3>{{ currentProfile.userID | users }}</h3>
+          <div class="profile-image">
+            <img *ngIf="currentProfile.image" [src]="currentProfile.image" alt="profile image" class="img-rounded">
+          </div>
+          <lu-button *ngIf="isCurrentUser"
+               [small]="true"
+               class="edit-text"
+               (click)="toggleEditing()">
+               {{'np.edit' | translate}}
+               <i class="glyphicon glyphicon-cog"></i>
+          </lu-button>
+          <div *ngIf="!editing">
+            <p>{{ currentProfile.profileDescription }}</p>
+            <p *ngIf="currentProfile.personalCollectionIdentifier">
+              {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ currentProfile.personalCollectionIdentifier }}
+            </p>
+          </div>
+          <div *ngIf="editing" class="profile-edit">
+            <p>{{ 'profile.info.intro' | translate }}</p>
+            <div class="profile-edit-row">
+              {{ 'profile.image' | translate }}
+              <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="currentProfile.image">
+            </div>
+            <div class="profile-edit-row">
+              {{ 'profile.description' | translate }}
+              <textarea class="form-control" [(ngModel)]="currentProfile.profileDescription"></textarea>
+            </div>
+            <div class="profile-edit-row">
+              {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+              <input class="form-control" [(ngModel)]="currentProfile.personalCollectionIdentifier">
+            </div>
+            <h4>{{ 'profile.defaultMediaMetadata.title' | translate }}</h4>
+            <div class="profile-edit-row">
+              {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
+              <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.capturerVerbatim">
+            </div>
+            <div class="profile-edit-row">
+              {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
+              <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualOwner">
+            </div>
+            <div class="profile-edit-row">
+              {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
+              <select class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualRights">
+                <option *ngFor="let c of intellectualRightsArray" [ngValue]="c">{{ c | label }}</option>
+              </select>
+            </div>
+            <div class="profile-edit-row">
+              <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>
+            </div>
+          </div>
         </div>
-        <div *ngIf="isCurrentUser"
-             class="btn-default btn btn-sm edit-text"
-             (click)="toggleEditing()"><i class="glyphicon glyphicon-cog"></i>
-        </div>
-        <div *ngIf="!editing">
-          <p>{{ profile.profileDescription }}</p>
-          <p *ngIf="profile.personalCollectionIdentifier">
-            {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ profile.personalCollectionIdentifier }}
-          </p>
-        </div>
-        <div *ngIf="editing" class="profile-edit">
-          <p>{{ 'profile.info.intro' | translate }}</p>
-          <div class="profile-edit-row">
-            {{ 'profile.image' | translate }}
-            <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="profile.image">
+        <div class="col-md-4 col-xs-12" *lajiLoggedIn="true">
+          <div class="form-group">
+            <div class="col-sm-12 well">
+              <laji-find-person (selectChange)="selectPerson($event)"></laji-find-person>
+              <laji-friends [profile]="currentProfile" [usersProfile]="userProfile"></laji-friends>
+            </div>
           </div>
-          <div class="profile-edit-row">
-            {{ 'profile.description' | translate }}
-            <textarea class="form-control" [(ngModel)]="profile.profileDescription"></textarea>
-          </div>
-          <div class="profile-edit-row">
-            {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
-            <input class="form-control" [(ngModel)]="profile.personalCollectionIdentifier">
-          </div>
-          <div class="profile-edit-row">
-            {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
-            <input class="form-control" [(ngModel)]="profile.settings.capturerVerbatim">
-          </div>
-          <div class="profile-edit-row">
-            {{ 'MY.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
-            <input class="form-control" [(ngModel)]="profile.settings.intellectualOwner">
-          </div>
-          <div class="profile-edit-row">
-            {{ 'MY.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
-            <select class="form-control" [(ngModel)]="profile.settings.intellectualRights">
-              <option *ngFor="let c of intellectualRightsArray" [ngValue]="c.value">{{ c.value | label }}</option>
-            </select>
-          </div>
-          <div class="profile-edit-row">
-            <div class="btn btn-default" (click)="saveProfile()">{{ 'profile.save' | translate }}</div>
+          <div class="form-group" *ngIf="(getCurrentUser() | async).id === userId">
+            <div class="col-sm-12 well">
+              <p>{{ 'selfUrl.introStart' | translate }}</p>
+              <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{ 'profile.accountSettings'|translate }}</a>
+              <p>{{ 'selfUrl.introEnd' | translate }}</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4 col-xs-12" *lajiLoggedIn="true">
-        <div class="form-group">
-          <div class="col-sm-12 well">
-            <laji-find-person (selectChange)="selectPerson($event)"></laji-find-person>
-            <laji-friends [profile]="profile" [usersProfile]="personsProfile"></laji-friends>
-          </div>
-        </div>
-        <div class="form-group" *ngIf="(getCurrentUser() | async).id === userId">
-          <div class="col-sm-12 well">
-            <p>{{ 'selfUrl.introStart' | translate }}</p>
-            <a [href]="personSelfUrl | safe:'url'" class="btn btn-success self-link">{{ 'profile.accountSettings'|translate }}</a>
-            <p>{{ 'selfUrl.introEnd' | translate }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    </ng-container>
   </laji-spinner>
 </div>
 

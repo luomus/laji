@@ -57,11 +57,11 @@
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
             <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
             </li>
-            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
-            </li>
             <li [ngClass]="{'hidden-sm': showSearch}" *lajiForTypes="['dev', 'prod', 'beta']">
               <a (click)="goToForum($event)" class="link" href="http://foorumi.laji.fi/">{{ 'Forum' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+              <a [routerLink]="['/theme'] | localize">{{ 'navigation.theme' | translate }}</a>
             </li>
           </ul>
           <ul class="nav navbar-nav pull-right">
