@@ -194,7 +194,9 @@
               "browserTarget": "laji:build:embedded"
             },
             "local": {
-              "browserTarget": "laji:build:local"
+              "browserTarget": "laji:build:local",
+              "proxyConfig": "proxy.conf.js",
+              "port": 3000
             }
           }
         },
@@ -328,7 +330,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "projects/laji/e2e/protractor.conf.js",
-            "devServerTarget": "laji:serve"
+            "devServerTarget": "laji:serve:local"
           },
           "configurations": {
             "production": {

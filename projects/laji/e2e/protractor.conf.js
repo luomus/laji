@@ -20,7 +20,6 @@ if (process.env.HEADLESS !== 'false') {
   chrome.chromeOptions.args = [
     '--headless',
     '--disable-gpu',
-    '--disable-dev-shm-usage',
     '--no-sandbox',
     ...chrome.chromeOptions.args
   ];
