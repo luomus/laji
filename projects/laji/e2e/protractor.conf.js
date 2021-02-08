@@ -59,7 +59,7 @@ exports.config = {
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
 
     const junitReporter = new JUnitXmlReporter({
-      savePath: 'projects/laji/e2e/test-results/E2E',
+      savePath: 'test-results/E2E',
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
