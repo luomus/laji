@@ -67,3 +67,23 @@
   padding: 3px 6px;
   border-radius: 3px;
 }
+
+/*
+  BUTTON GROUP
+*/
+
+.btn-group {
+  box-shadow: 0 1px 3px 0 rgba($neutral-9, 0.3);
+}
+
+.btn-group .btn {
+  box-shadow: none;
+}
+
+.btn-group .btn+.btn {
+  margin: 0;
+}
+
+.btn-group .btn:not(:last-child) {
+  border-right: 1px solid $neutral-4;
+}
