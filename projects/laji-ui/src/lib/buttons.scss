@@ -23,7 +23,7 @@
 }
 
 .lu-btn.primary {
-  @include btnPrimaryTheme($primary-5, -10deg, $primary-1, $primary-8);
+  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
 }
 
 .lu-btn.secondary {

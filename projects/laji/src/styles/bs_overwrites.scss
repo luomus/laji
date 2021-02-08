@@ -14,7 +14,7 @@
 }
 
 .btn.btn-primary {
-  @include btnPrimaryTheme($primary-5, -20deg, $primary-1, $primary-8);
+  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
 }
 
 .btn.btn-success {
@@ -26,7 +26,7 @@
 }
 
 .btn.btn-warning {
-  @include btnPrimaryTheme($warning-5, 0deg, $warning-2, $warning-8);
+  @include btnPrimaryTheme($warning-5, 0deg, $warning-1, $warning-8);
 }
 
 .btn.btn-danger {
@@ -58,10 +58,12 @@
 
 .btn.btn-sm, .btn-group-sm > .btn {
   font-size: $fs-2;
-  padding: 6px 12px;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .btn.btn-xs, .btn-group-xs > .btn {
   font-size: $fs-1;
-  padding: 4px 8px;
+  padding: 3px 6px;
+  border-radius: 3px;
 }
