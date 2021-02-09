@@ -29,7 +29,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() displayTitle = true;
   @Input() edit: boolean;
 
-  namedPlaceHeader: Observable<string>[];
+  namedPlaceHeader: string[];
   _namedPlace: any;
   @Input('namedPlace')
   get namedPlace(): any {
@@ -101,30 +101,10 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
-  getNamedPlaceHeader(): Observable<string>[] {
+  getNamedPlaceHeader(): string[] {
     if (!this.form || !this._namedPlace) {
       return [];
     }
-    const headerFields = this.form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
-    const fields: [string, ((value: string) => Observable<string>)?][] = headerFields.map(field => {
-      if (field === 'municipality') {
-        return [field, val => this.areaService.getName(val, this.translate.currentLang)];
-      }
-      return [field];
-    });
-    return fields.filter(f => {
-      const val = this._namedPlace[f[0]];
-      const hasValue = v => v || v === '0' || v === 0;
-      if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
-        return true;
-      }
-    }).map(f => {
-      const val = this._namedPlace[f[0]];
-      if ((!f[1])) {
-        return of(val);
-      } else {
-        return f[1](val);
-      }
-    });
+    return this.form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 }
