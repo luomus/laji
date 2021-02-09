@@ -489,8 +489,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
 
   emitSelectedOptions(cat)  {
     this.selectedIdx[cat] = -1;
-    /*this.selectedOptions['GLOBAL'] = this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions) ?
-    this.selectedOptions[this.subCategories[1]] : (this.selectedOptions['GLOBAL'] ? this.selectedOptions['GLOBAL'] : []);*/
     this.checkSubcategoriesExceptGlobalAreEquals(this.selectedOptions);
 
     this.initOptions(this.selectedOptions);
