@@ -51,7 +51,6 @@ export interface FormWithData extends Form.SchemaForm {
 }
 
 export interface ILajiFormState {
-  documentID?: string;
   form?: FormWithData;
   hasChanges: boolean;
   hasLocalData: boolean;
