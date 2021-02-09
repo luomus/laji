@@ -238,6 +238,9 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
 
     for (const i in this.selectedOptions) {
+      if (!this.selectedOptions.hasOwnProperty(i)) {
+        continue;
+      }
       let tmpSelectedOptions = [];
       let tmpUnselectedOptions = [];
       const countObj = this.selectedOptions[i].filter((item: SelectOptions) => item.id !== undefined).length;
