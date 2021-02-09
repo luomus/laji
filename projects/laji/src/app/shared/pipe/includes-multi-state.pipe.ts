@@ -4,7 +4,7 @@ import { SelectOptions } from '../../shared-modules/select/select/select.compone
 @Pipe({
   name: 'checkboxValue'
 })
-export class IncludesMultiStatePipe implements PipeTransform {
+export class CheckboxValuePipe implements PipeTransform {
 
   transform(value: any, option: SelectOptions): boolean|undefined {
     const match = (value || []).filter(v => v['id'] === option['id']);
