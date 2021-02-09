@@ -219,7 +219,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   save(rawDocument: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<ISuccessEvent> {
     this.updateState({..._state, saving: true});
     const document = {...rawDocument};
-    const isTmpId = FormService.isTmpId(document.id);
+    const isTmpId = !document.id || FormService.isTmpId(document.id);
     document.publicityRestrictions = publicityRestriction;
     delete document._hasChanges;
     delete document._isTemplate;
@@ -319,14 +319,13 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
-
     return of({
       ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
       isAdmin: form.rights && form.rights.admin,
-      isEdit: !FormService.isTmpId(documentID),
+      isEdit: documentID && !FormService.isTmpId(documentID),
       placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
     });
   }

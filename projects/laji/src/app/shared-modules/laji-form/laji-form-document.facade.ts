@@ -222,7 +222,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   save(rawDocument: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<ISuccessEvent> {
     this.updateState({..._state, saving: true});
     const document = {...rawDocument};
-    const isTmpId = FormService.isTmpId(document.id);
+    const isTmpId = !document.id || FormService.isTmpId(document.id);
     document.publicityRestrictions = publicityRestriction;
     delete document._hasChanges;
     delete document._isTemplate;
@@ -276,7 +276,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
     this.updateState({..._state, hasLocalData: false});
-    if (FormService.isTmpId(documentID)) {
+    if (!documentID || FormService.isTmpId(documentID)) {
       this.updateState({..._state, hasChanges: true, hasLocalData: true});
       return this.userService.user$.pipe(
         take(1),
@@ -353,20 +353,19 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
-
     return of({
       ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
       isAdmin: form.rights && form.rights.admin,
-      isEdit: !FormService.isTmpId(documentID),
+      isEdit: documentID && !FormService.isTmpId(documentID),
       placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
     });
   }
 
   private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
-    return FormService.isTmpId(documentID) ?
+    return (!documentID || FormService.isTmpId(documentID)) ?
       ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,
