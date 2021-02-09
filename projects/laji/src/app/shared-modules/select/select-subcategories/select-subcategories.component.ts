@@ -21,10 +21,6 @@ export interface SelectOptions extends SelectComponentOptions {
   category: string;
 }
 
-export interface SelectedOptions {
-  [category: string]: Array<string|SelectOptions>;
-}
-
 @Component({
   selector: 'laji-select-subcategories',
   templateUrl: './select-subcategories.component.html',
