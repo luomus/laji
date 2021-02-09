@@ -17,12 +17,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
     <div class="modal-footer">
       <button type="button"
               class="btn btn-secondary laji-dialog-cancel"
-              (click)="onCancel()"
-              (keyup.enter)="onCancel()">{{ cancelLabel | translate }}</button>
+              (click)="onCancel()">{{ cancelLabel | translate }}</button>
       <button type="button" #confirm
               class="btn btn-primary laji-dialog-confirm"
-              (click)="onConfirm()"
-              (keyup.enter)="onConfirm()">{{ confirmLabel | translate }}</button>
+              (click)="onConfirm()">{{ confirmLabel | translate }}</button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
