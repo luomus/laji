@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -54,10 +53,6 @@ export class SelectSubcategoriesComponent implements OnChanges {
   status = {};
   tmpSelected = {};
   typeCheckbox = 2;
-
-  constructor(
-    private cd: ChangeDetectorRef
-  ) { }
 
   ngOnChanges() {
     if (this.disabled) {
@@ -143,10 +138,6 @@ export class SelectSubcategoriesComponent implements OnChanges {
     if (event.target.classList.contains('no-propagation')) {
       event.preventDefault();
     }
-  }
-
-  track(idx, item) {
-    return item.id;
   }
 
   private initOptions(selected) {
@@ -401,8 +392,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       });
       this.selectedOptions['GLOBAL'] = tmpGlobal;
     }
-
-    this.cd.detectChanges();
+    this.selectedOptions = {...this.selectedOptions};
     this.selectedChange.emit(this.selectedOptions);
   }
 
