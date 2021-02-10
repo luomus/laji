@@ -11,8 +11,6 @@ import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
-
-
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -31,7 +29,6 @@ interface ISections {
   image: Array<keyof WarehouseQueryInterface>;
   secure: Array<keyof WarehouseQueryInterface>;
 }
-
 
 @Component({
   selector: 'laji-observation-form',
@@ -624,37 +621,23 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return true;
     }
 
-    if (filteredKeys.length < 2) {
-      return false;
-    }
-
     if (filteredKeys.length < categories.length - 1) {
       return false;
     }
 
     for (let i = 0; i < filteredKeys.length - 1; i++) {
-        if (!this.arrayEquals(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
+      if (!Util.equalsArray(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
         return false;
       }
     }
     return true;
   }
 
-
-  private arrayEquals(a, b) {
-    return Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val) => b.indexOf(val) > -1);
-  }
-
   private keepGlobalKey(array) {
-    let result = [];
-
     if (array.filter(item => item.checkboxValue === true).length > 0) {
-      return result = array.filter(item => item.checkboxValue === true).map(a => a.id);
+      return array.filter(item => item.checkboxValue === true).map(a => a.id);
     } else {
-      return result = undefined;
+      return undefined;
     }
   }
 
