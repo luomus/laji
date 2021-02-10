@@ -14,7 +14,7 @@
   [checkboxType] = "'partial'"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
-  
+
   <!-- SUBCATEGORIES -->
   <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | selectedOptionisEmpty))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
   <ng-container *ngFor="let subCategory of subCategories | excludeSubcategory : ['GLOBAL']">
