@@ -1,6 +1,7 @@
 import {IAudioViewerArea} from '../models';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {AudioService} from './audio.service';
+import {interval, Subscription} from 'rxjs';
 
 export class AudioPlayer {
   isPlaying = false;
@@ -19,7 +20,8 @@ export class AudioPlayer {
   // private startedOutsidePlayArea = false;
   private autoplayCounter = 0;
 
-  private timeupdateInterval;
+  private timeupdateInterval = interval(20);
+  private timeupdateIntervalSub: Subscription;
 
   constructor(
     private audioService: AudioService,
@@ -133,15 +135,15 @@ export class AudioPlayer {
   }
 
   private startTimeupdateInterval() {
-    this.timeupdateInterval = setInterval(() => {
+    this.timeupdateIntervalSub = this.timeupdateInterval.subscribe(() => {
       this.updateCurrentTime();
       this.cdr.markForCheck();
-    }, 10);
+    });
   }
 
   private clearTimeupdateInterval() {
-    if (this.timeupdateInterval) {
-      clearInterval(this.timeupdateInterval);
+    if (this.timeupdateIntervalSub) {
+      this.timeupdateIntervalSub.unsubscribe();
     }
   }
 

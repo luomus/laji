@@ -18,7 +18,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() candidate: ILetterCandidate;
   @Input() statusInfo: ILetterStatusInfo;
 
-  currentAnnotation: LetterAnnotation;
   annotation = LetterAnnotation;
 
   loadingTemplate = false;
@@ -61,11 +60,8 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    setTimeout(() => {
-      this.currentAnnotation = undefined;
-      this.candidateLongerVisible = false;
-      this.cdr.markForCheck();
-    }, 0);
+    this.candidateLongerVisible = false;
+
     if (changes.template && this.template) {
       this.autoplayCandidate = false;
       this.taxon$ = this.taxonService.getTaxon(this.template.taxonId);
@@ -85,7 +81,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
 
   onAnnotationChange(annotation: LetterAnnotation) {
     this.autoplayCandidate = true;
-    this.currentAnnotation = annotation;
     this.annotationChange.emit(annotation);
   }
 

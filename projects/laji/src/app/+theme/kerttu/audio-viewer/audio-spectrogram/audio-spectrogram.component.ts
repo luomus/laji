@@ -77,12 +77,6 @@ export class AudioSpectrogramComponent implements OnChanges {
     const canvas = this.spectrogramRef.nativeElement;
     if (this.imageData) {
       const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
-      if (elementWidth < 0) {
-        setTimeout(() => {
-          this.onResize();
-        }, 10);
-        return;
-      }
       const elementHeight = this.imageData.height;
       canvas.style.width = elementWidth + 'px';
       canvas.style.height = elementHeight + 'px';
