@@ -10,7 +10,7 @@
   [info]="info"
   [open]="open"
   [disabled]="false"
-  [loading]="options['GLOBAL'] === null"
+  [loading]="options === null"
   [checkboxType] = "'partial'"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
