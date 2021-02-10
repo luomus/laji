@@ -39,7 +39,7 @@ export class SampleTableColumnService extends TableColumnService<ObservationTabl
       },
       {
         header: 'Locality', fields: [
-          'gathering.interpretations.country',
+          'gathering.interpretations.countryDisplayname',
           'gathering.conversions.wgs84',
           'gathering.team'
         ]
@@ -76,7 +76,7 @@ export class SampleTableColumnService extends TableColumnService<ObservationTabl
   allColumns: ObservationTableColumn[] = [
     COLUMNS['unit.taxonVerbatim'],
     {...COLUMNS['gathering.team'], required: false},
-    COLUMNS['gathering.interpretations.country'],
+    {...COLUMNS['gathering.interpretations.countryDisplayname'], required: false},
     COLUMNS['gathering.team.memberName'],
     COLUMNS['sample.sampleId'],
     COLUMNS['sample.type'],
