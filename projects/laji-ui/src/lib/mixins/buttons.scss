@@ -1,3 +1,5 @@
+@import '../vars';
+
 $border-radius: 5px;
 
 @mixin btn {
@@ -98,4 +100,32 @@ $border-radius: 5px;
   background: linear-gradient(90deg, $neutral-1, $primary-3, $neutral-1);
   background-size: 200% 200%;
   animation: LoadingAnimation 2s linear infinite;
+}
+
+/*
+  THEMES
+*/
+
+@mixin btnSecondary {
+  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+}
+
+@mixin btnPrimary {
+  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
+}
+
+@mixin btnSuccess {
+  @include btnPrimaryTheme($success-5, -20deg, $success-2, $success-8);
+}
+
+@mixin btnInfo {
+  @include btnPrimaryTheme($info-5, -20deg, $info-2, $info-8);
+}
+
+@mixin btnWarning {
+  @include btnPrimaryTheme($warning-5, 0deg, $warning-1, $warning-8);
+}
+
+@mixin btnDanger {
+  @include btnPrimaryTheme($danger-5, 20deg, $danger-2, $danger-8);
 }

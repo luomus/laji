@@ -23,27 +23,27 @@
 }
 
 .lu-btn.primary {
-  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
+  @include btnPrimary();
 }
 
 .lu-btn.secondary {
-  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+  @include btnSecondary();
 }
 
 .lu-btn.success {
-  @include btnPrimaryTheme($success-5, -20deg, $success-2, $success-8);
+  @include btnSuccess();
 }
 
 .lu-btn.info {
-  @include btnPrimaryTheme($info-5, -20deg, $info-2, $info-8);
+  @include btnInfo();
 }
 
 .lu-btn.warning {
-  @include btnPrimaryTheme($warning-5, 0deg, $warning-2, $warning-8);
+  @include btnWarning();
 }
 
 .lu-btn.danger {
-  @include btnPrimaryTheme($danger-5, 20deg, $danger-2, $danger-8);
+  @include btnDanger();
 }
 
 .lu-btn.lu-loading, .lu-btn.lu-loading:disabled {

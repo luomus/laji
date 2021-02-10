@@ -10,27 +10,27 @@
 }
 
 .btn.btn-default {
-  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+  @include btnSecondary();
 }
 
 .btn.btn-primary {
-  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
+  @include btnPrimary();
 }
 
 .btn.btn-success {
-  @include btnPrimaryTheme($success-5, -20deg, $success-2, $success-8);
+  @include btnSuccess();
 }
 
 .btn.btn-info {
-  @include btnPrimaryTheme($info-5, -20deg, $info-2, $info-8);
+  @include btnInfo();
 }
 
 .btn.btn-warning {
-  @include btnPrimaryTheme($warning-5, 0deg, $warning-1, $warning-8);
+  @include btnWarning();
 }
 
 .btn.btn-danger {
-  @include btnPrimaryTheme($danger-5, 20deg, $danger-2, $danger-8);
+  @include btnDanger();
 }
 
 .btn.btn-primary:disabled,
