@@ -78,6 +78,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             active: queryParams['tab'] === 'censuses'
           }
         ];
+        case ResultServiceType.nafiBumblebee:
+        return [
+          {
+            link: ['stats'],
+            label: 'wbc.stats.routes',
+            linkParams: {tab: 'routes'},
+            active: queryParams['tab'] === 'routes'
+          }
+        ];
       default:
         return [];
     }
