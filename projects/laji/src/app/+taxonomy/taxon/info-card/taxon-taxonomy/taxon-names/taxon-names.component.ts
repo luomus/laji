@@ -9,7 +9,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 })
 export class TaxonNamesComponent {
   _taxon: Taxonomy;
-  availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
+  availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
   synonymTypes = [
     'basionyms',
     'objectiveSynonyms',
@@ -25,22 +25,24 @@ export class TaxonNamesComponent {
   ];
 
   @Input() set taxon(taxon: Taxonomy) {
-    this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'tradeName': []};
-    for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
-      if (taxon.vernacularName && taxon.vernacularName[lang]) {
-        this.availableLangs.vernacularName.push(lang);
+      this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
+      for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
+        if (taxon.vernacularName && taxon.vernacularName[lang]) {
+          this.availableLangs.vernacularName.push(lang);
+        }
+        if (taxon.alternativeVernacularName && taxon.alternativeVernacularName[lang]) {
+          this.availableLangs.alternativeVernacularName.push(lang);
+        }
+        if (taxon.obsoleteVernacularName && taxon.obsoleteVernacularName[lang]) {
+          this.availableLangs.obsoleteVernacularName.push(lang);
+        }
+        if (taxon.tradeName && taxon.tradeName[lang]) {
+          this.availableLangs.tradeName.push(lang);
+        }
+        if (taxon.colloquialVernacularName && taxon.colloquialVernacularName[lang]) {
+          this.availableLangs.colloquialVernacularName.push(lang);
+        }
       }
-      if (taxon.alternativeVernacularName && taxon.alternativeVernacularName[lang]) {
-        this.availableLangs.alternativeVernacularName.push(lang);
-      }
-      if (taxon.obsoleteVernacularName && taxon.obsoleteVernacularName[lang]) {
-        this.availableLangs.obsoleteVernacularName.push(lang);
-      }
-      if (taxon.tradeName && taxon.tradeName[lang]) {
-        this.availableLangs.tradeName.push(lang);
-      }
-    }
-
     this._taxon = taxon;
   }
 

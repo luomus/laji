@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
-import { combineLatest, EMPTY, Observable } from 'rxjs';
-import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { FormService } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../../shared/service/dialog.service';
@@ -23,7 +22,7 @@ interface ViewModel {
     <ng-container *ngIf="vm$ | async as vm">
       <alert type="warning" *ngIf="vm.isLinkable">
         {{ 'np.linker.npMissing' | translate }} <br>
-        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link']" id="link-to-np">{{ 'np.linker.start' | translate }}</lu-button>
+        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize" id="link-to-np" (click)="this.click.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
       </alert>
     </ng-container>
   `,
@@ -32,6 +31,8 @@ interface ViewModel {
 export class NamedPlaceLinkerButtonComponent implements OnInit {
 
   @Input() documentID: string;
+
+  @Output() click = new EventEmitter();
 
   vm$: Observable<ViewModel>;
 
@@ -48,9 +49,12 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
 
   ngOnInit() {
     const document$ = this.userService.isLoggedIn$.pipe(
-      switchMap(isLoggedIn => isLoggedIn
-        ? this.documentApi.findById(this.documentID, this.userService.getToken())
-        : EMPTY)
+      switchMap(isLoggedIn => isLoggedIn && this.documentID
+        ? this.documentApi.findById(this.documentID, this.userService.getToken()).pipe(
+          catchError(() => EMPTY)
+        )
+        : EMPTY),
+      shareReplay(1)
     );
     const form$ = document$.pipe(
       switchMap(document => this.formService.getAllForms().pipe(
@@ -62,12 +66,16 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
       map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
-    const isLinkable$ = combineLatest(document$, form$, documentReadOnly$).pipe(
-      map(([document, form, readonly]) => !readonly && form.options?.useNamedPlaces && !document?.namedPlaceID)
-    );
+    const isLinkable$ = form$.pipe(switchMap(form =>
+      form.options?.useNamedPlaces
+        ? combineLatest(document$, documentReadOnly$).pipe(
+          map(([document, readonly]) => !readonly && !document.namedPlaceID)
+        )
+        : of(false)
+    ));
 
-    this.vm$ = combineLatest(isLinkable$, form$, document$).pipe(
-      map(([isLinkable, form, document]) => ({isLinkable, formID: form.id, documentID: document.id})
+    this.vm$ = combineLatest(isLinkable$, form$).pipe(
+      map(([isLinkable, form]) => ({isLinkable, formID: form.id, documentID: this.documentID})
     ));
   }
 }

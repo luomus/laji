@@ -1,8 +1,8 @@
-<ng-container *ngFor="let name of ['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName', 'synonyms', 'tradeName']; let i = index">
+<ng-container *ngFor="let name of ['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName', 'colloquialVernacularName', 'synonyms', 'tradeName']; let i = index">
   <laji-taxon-synonyms *ngIf="name === 'synonyms' && taxonHasSynonymKey(_taxon)"
   [taxon]="_taxon"
   [synonymTypes]="synonymTypes"
-  [hasOtherNamesBefore]="hasOtherNamesBefore(['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName'])"
+  [hasOtherNamesBefore]="hasOtherNamesBefore(['vernacularName', 'alternativeVernacularName', 'obsoleteVernacularName', 'colloquialVernacularName'])"
   ></laji-taxon-synonyms>
   <ng-container *ngIf="name !== 'synonyms'">
     <laji-taxon-info-row

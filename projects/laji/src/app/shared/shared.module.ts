@@ -39,6 +39,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
+import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
 import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
@@ -74,6 +75,7 @@ import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
+import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 
 
@@ -111,6 +113,7 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
     IncludesPipe,
     SsrDisableDirective,
     QualityUrlPipe,
+    ConfirmModalComponent,
     CheckboxValuePipe,
   ],
   imports: [
@@ -126,7 +129,8 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
     ScrollingModule,
     LajiUiModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
-    UtilitiesModule
+    UtilitiesModule,
+    InfoModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -146,6 +150,7 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
     SsrDisableDirective,
     NotFoundComponent,
     QualityUrlPipe,
+    InfoModule,
     CheckboxValuePipe
   ]
 })
