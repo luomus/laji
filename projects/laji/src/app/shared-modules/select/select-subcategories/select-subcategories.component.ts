@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { SelectOptions as SelectComponentOptions } from '../select/select.component';
+import { SelectOption as SelectComponentOptions } from '../select/select.component';
 import { Util } from '../../../shared/service/util.service';
 
 export interface SelectOptions extends SelectComponentOptions {

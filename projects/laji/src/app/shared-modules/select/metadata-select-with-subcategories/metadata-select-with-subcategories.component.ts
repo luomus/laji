@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { SelectOptions } from '../select/select.component';
+import { SelectOption } from '../select/select.component';
 import { MetadataSelectComponent } from '../metadata-select/metadata-select.component';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
@@ -19,7 +19,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
 
   @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
 
-  categoryOptions:  {[key: string]: SelectOptions[]} = {};
+  categoryOptions:  {[key: string]: SelectOption[]} = {};
   queryToSelect = [];
 
   ngOnChanges(changes) {
