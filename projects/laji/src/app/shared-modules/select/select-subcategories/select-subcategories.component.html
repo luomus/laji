@@ -16,9 +16,9 @@
 ></laji-select>
 
   <!-- SUBCATEGORIES -->
-  <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | selectedOptionisEmpty))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
+  <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | isEmptyArray))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
   <ng-container *ngFor="let subCategory of subCategories | filter:'GLOBAL':false ">
-    <label *ngIf="open || (!open && !(selectedOptions[subCategory] | selectedOptionisEmpty))" class="lj-item selected" (click)="labelClick($event)">
+    <label *ngIf="open || (!open && !(selectedOptions[subCategory] | isEmptyArray))" class="lj-item selected" (click)="labelClick($event)">
       <laji-checkbox [checkboxType]="'partial'" [class]="[]" [value]="selectedOptions[subCategory] | subCategoryCheckboxValue : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
     </label>
     <laji-select

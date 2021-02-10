@@ -10,7 +10,7 @@ import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with-subcategories/metadata-select-with-subcategories.component';
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
 import { SubCategoryCheckboxValuePipe } from './sub-category-checkbox-value.pipe';
-import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
+import { IsEmptyArrayPipe } from './is-empty-array.pipe';
 
 /* tslint:enable:max-line-length */
 
@@ -29,7 +29,7 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     SubCategoryCheckboxValuePipe,
-    SelectedOptionisEmptyPipe
+    IsEmptyArrayPipe
   ],
   exports: [
     MetadataSelectComponent,
@@ -39,7 +39,7 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     SubCategoryCheckboxValuePipe,
-    SelectedOptionisEmptyPipe
+    IsEmptyArrayPipe
   ]
 })
 export class SelectModule { }
