@@ -6,14 +6,10 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
-import { Subject, timer } from 'rxjs';
-import { debounceTime, take, takeUntil } from 'rxjs/operators';
-import { FilterService } from '../../../shared/service/filter.service';
+import { Subject } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { SelectOptions as SelectComponentOptions } from '../select/select.component';
 import { Util } from '../../../shared/service/util.service';
@@ -28,14 +24,11 @@ export interface SelectOptions extends SelectComponentOptions {
   styleUrls: ['./select-subcategories.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestroy {
-  private unsubscribe$ = new Subject<null>();
+export class SelectSubcategoriesComponent implements OnChanges {
 
   @Input() query: WarehouseQueryInterface;
   @Input() options: SelectOptions[];
   @Input() title: string;
-  @Input() filterPlaceHolder = 'Search...';
-  @Input() useFilter = true;
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
@@ -63,19 +56,8 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
   typeCheckbox = 2;
 
   constructor(
-    private cd: ChangeDetectorRef,
-    private filterService: FilterService
+    private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {
-    this.filterInput.asObservable().pipe(
-        takeUntil(this.unsubscribe$),
-        debounceTime(200)
-      ).subscribe((value) => {
-        this.filterBy = value;
-        this.cd.markForCheck();
-      });
-  }
 
   ngOnChanges() {
     if (this.disabled) {
@@ -90,11 +72,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
     this.initOptions(this.selectedOptions !== undefined && Object.keys(this.selectedOptions).length > 0 ? this.selectedOptions : this.buildSelectedOptions());
     this.selectedOptions = Util.isEmptyObj(this.tmpSelectedOption) ? this.selectedOptions : this.tmpSelectedOption;
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   toggleValue(id: string, category: string) {
@@ -159,15 +136,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     }
     this.open = !this.open;
     this.typeCheckbox = typeCheckbox;
-    if (this.open && this.useFilter) {
-      timer(10).pipe(takeUntil(this.unsubscribe$), take(1))
-        .subscribe(() => {
-          try {
-            // No IE support
-            el.focus();
-          } catch (e) { }
-        });
-    }
     this.selectedOptions = Util.isEmptyObj(this.tmpSelectedOption) ? this.selectedOptions : this.tmpSelectedOption;
   }
 
@@ -175,45 +143,6 @@ export class SelectSubcategoriesComponent implements OnInit, OnChanges, OnDestro
     if (event.target.classList.contains('no-propagation')) {
       event.preventDefault();
     }
-  }
-
-  onFilterChange(event: KeyboardEvent, value, category) {
-    switch (event.key) {
-      case 'Esc':
-        this.filterBy = '';
-        this.initOptions(this.selectedOptions);
-        return;
-      case 'Enter':
-        if (!this.filterBy && this.selectedIdx[category] === -1) {
-          return;
-        }
-        const filterItems = this.filterService.filter(this.unselectedOptions, this.filterBy);
-        if (this.selectedIdx[category] === -1) {
-          if (filterItems.length > 0) {
-            this.add(filterItems[0].id, category);
-          }
-        } else if (filterItems[this.selectedIdx[category]]) {
-          this.add(filterItems[this.selectedIdx[category]].id, category);
-        }
-        return;
-      case 'ArrowUp':
-        if (this.selectedIdx[category] <= 0) {
-          this.selectedIdx[category] = this.unselectedOptions[category].length - 1;
-        } else {
-          this.selectedIdx[category]--;
-        }
-        return;
-      case 'ArrowDown':
-        if (this.selectedIdx[category] >= this.unselectedOptions[category].length - 1) {
-          this.selectedIdx[category] = 0;
-        } else {
-          this.selectedIdx[category]++;
-        }
-        return;
-      default:
-        this.selectedIdx[category] = -1;
-    }
-    this.filterInput.next(value);
   }
 
   track(idx, item) {
