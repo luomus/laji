@@ -37,6 +37,7 @@ import { ObservationTableColumnService } from '../../shared-modules/datatable/se
 import { NafiResultComponent } from './nafi-result/nafi-result.component';
 import { ResultService } from './common/service/result.service';
 import { NamedPlaceModule } from '../form/named-place/named-place.module';
+import { NafiBumblebeeResultComponent } from './nafi-bumblebee-result/nafi-bumblebee-result.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { NamedPlaceModule } from '../form/named-place/named-place.module';
     WbcRoutesMapComponent,
     ThemeResultComponent,
     ThemeObservationListComponent,
-    NafiResultComponent
+    NafiResultComponent,
+    NafiBumblebeeResultComponent
   ],
   providers: [
     WbcResultService,
