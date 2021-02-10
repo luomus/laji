@@ -2,14 +2,14 @@
   <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
   <div class="spectrogram-container" [ngClass]="{'visibility-hidden': loading}">
     <laji-audio-spectrogram
-      [buffer]="buffer"
+      [buffer]="extractedBuffer"
       [sampleRate]="sampleRate"
       [nperseg]="nperseg"
       [noverlap]="noverlap"
       [currentTime]="audioPlayer.currentTime"
       [focusArea]="localFocusArea"
       [highlightFocusArea]="highlightFocusArea"
-      [brushArea]="brushArea"
+      [brushArea]="localBrushArea"
       [zoomFrequency]="zoomFrequency"
       [mode]="mode"
       (spectrogramReady)="setAudioLoading(false)"
@@ -34,7 +34,7 @@
         </lu-button>
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.changeView' | translate"></laji-info>
       </div>
-      <lu-button [role]="'primary'" (click)="clearBrushArea()" *ngIf="brushArea">
+      <lu-button [role]="'primary'" (click)="clearBrushArea()" *ngIf="localBrushArea">
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>

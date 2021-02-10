@@ -131,17 +131,15 @@ export class AudioService {
 
   private removeOldBuffersFromCache() {
     const keys = Object.keys(this.buffer);
-    while (keys.length > 2) {
+    while (keys.length > 3) {
       const times = keys.map(key => this.buffer[key].time);
       const removed = times.indexOf(Math.min(...times));
-      keys.splice(removed, 1);
-      delete this.buffer$[removed];
-    }
+      const removedKey = keys[removed];
 
-    const newBuffer = {};
-    for (const key of keys) {
-      newBuffer[key] = this.buffer[key];
+      delete this.buffer$[removedKey];
+      delete this.buffer[removedKey];
+
+      keys.splice(removed, 1);
     }
-    this.buffer = newBuffer;
   }
 }
