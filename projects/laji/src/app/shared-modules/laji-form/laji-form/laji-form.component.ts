@@ -138,7 +138,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   reload() {
-    this.createNewLajiForm();
+    this.mountLajiForm();
     this.errorModal.hide();
   }
 
@@ -166,40 +166,37 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.lajiFormWrapper.app.refs.lajiform.popErrorListIfNeeded();
   }
 
-  private mount() {
-    if (!this.formData?.formData) {
+
+  displayErrorModal(type: 'saveError' | 'reactCrash') {
+    this.errorModalData = type === 'reactCrash'
+      ? this.reactCrashModalData
+      : this.saveErrorModalData;
+    this.cd.markForCheck();
+    this.errorModal.show();
+  }
+
+  dismissErrorModal() {
+    this.errorModal.hide();
+  }
+
+  mountLajiForm() {
+    if (!this.settings) {
       return;
     }
-    import('laji-form').then((formPackage) => {
-      this.lajiFormWrapperProto = formPackage.default;
-      combineLatest(
-        this.userService.getUserSetting<any>(this.settingsKey).pipe(
-          concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-            map(globalSettings => ({...globalSettings, ...settings}))
-          )),
-          take(1)
-        ),
-        this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
-          map(profile => profile.settings?.defaultMediaMetadata)
-        )
-      ).subscribe(([settings, defaultMediaMetadata]) => {
-        this.defaultMediaMetadata = defaultMediaMetadata;
-        this.settings = settings;
-        this.mountLajiForm();
+
+    this.createNewLajiForm(() => {
+      this.ngZone.runOutsideAngular(() => {
+        if (this.lajiFormWrapper) {
+          try {
+            this.lajiFormWrapper.invalidateSize();
+          } catch (e) {
+            console.error(e);
+          }
+        }
       });
     });
   }
 
-  private mountLajiForm() {
-    if (!this.settings) {
-      return;
-    }
-    this.createNewLajiForm(() => {
-      if (this.lajiFormWrapper) {
-        this.lajiFormWrapper.invalidateSize();
-      }
-    });
-  }
 
   private createNewLajiForm(onReady?: () => void) {
     if (!this.lajiFormWrapperProto) {
@@ -251,16 +248,29 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  displayErrorModal(type: 'saveError' | 'reactCrash') {
-    this.errorModalData = type === 'reactCrash'
-      ? this.reactCrashModalData
-      : this.saveErrorModalData;
-    this.cd.markForCheck();
-    this.errorModal.show();
-  }
 
-  dismissErrorModal() {
-    this.errorModal.hide();
+  private mount() {
+    if (!this.formData?.formData) {
+      return;
+    }
+    import('laji-form').then((formPackage) => {
+      this.lajiFormWrapperProto = formPackage.default;
+      combineLatest(
+        this.userService.getUserSetting<any>(this.settingsKey).pipe(
+          concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+            map(globalSettings => ({...globalSettings, ...settings}))
+          )),
+          take(1)
+        ),
+        this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
+          map(profile => profile.settings?.defaultMediaMetadata)
+        )
+      ).subscribe(([settings, defaultMediaMetadata]) => {
+        this.defaultMediaMetadata = defaultMediaMetadata;
+        this.settings = settings;
+        this.mountLajiForm();
+      });
+    });
   }
 
   private _onSettingsChange(settings: any, global = false) {

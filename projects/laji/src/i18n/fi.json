@@ -282,6 +282,8 @@
   "haseka.form.genericError": "Odottamaton virhe tapahtui. Yritä hetken kuluttua uudestaan ja jos virhe ei korjaannu, ota yhteyttä ylläpitoon.",
   "haseka.form.hasChanges": "Havaintoerässä on muutoksia, joita ei ole vielä tallennettu",
   "haseka.form.hasOnlyWarnings": "Tarkista varoitukset",
+  "haseka.form.hasLocalData": "Palautimme tälle lomakkeelle aikaisemmin tallentamatta jääneet tiedot. Voit jatkaa niiden tallennusta alla, tai poistaa tiedot ja palata muokkaamaan viimeksi tallennettuja tietoja",
+  "haseka.form.hasLocalData.delete": "Poista muutokset",
   "haseka.form.leaveConfirm": "Haluatko poistua lomakkeelta?",
   "haseka.form.localData": "Tästä lomakkeesta on tallentamaton havaintoerä. Klikkaa tästä palataksesi siihen.",
   "haseka.form.noAccessToDocument": "Sinulla ei ole oikeuksia muokata tätä dokumenttia.",

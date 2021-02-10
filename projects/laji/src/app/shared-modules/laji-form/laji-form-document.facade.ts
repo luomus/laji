@@ -137,7 +137,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
   }
 
-  loadForm(formID: string, documentID?: string, isTemplate = false): void {
+  loadForm(formID: string, documentID?: string, isTemplate = false, loadLocal = true): void {
     if (!formID) {
       this.updateState({..._state, error: FormError.incomplete});
       return;
@@ -145,22 +145,27 @@ export class LajiFormDocumentFacade implements OnDestroy {
     if (this.formSub) {
       this.formSub.unsubscribe();
     }
-    this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete, isTemplate});
+    const state = {..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete, isTemplate};
+    if (!loadLocal) {
+      state.hasLocalData = false;
+    }
+    this.updateState(state);
     this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
       map(data => isTemplate ? this.prepareTemplateForm(data) : data),
       switchMap(form => this.userService.user$.pipe(
         take(1),
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
-          tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
-          mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
-                map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
-                map((res: FormWithData) => res.readonly !== Readonly.false ?
-                  {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
-                  res
-                )
-              );
-            }
+          tap(rights => rights.edit === false && this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}})),
+          mergeMap(rights => (documentID
+              ? this.fetchExistingDocument(form, documentID, loadLocal)
+              : this.fetchEmptyData(form, person, isTemplate, loadLocal)
+            ).pipe(
+              map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
+              map((res: FormWithData) => res.readonly !== Readonly.false ?
+                {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
+                res
+              )
+            )
           )
         ))
       )),
@@ -261,6 +266,17 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
   }
 
+  discardLocalData() {
+    const id = _state.form.formData.id;
+    const isTemplate = _state.form.formData.isTemplate;
+    this.userService.user$.pipe(
+      take(1),
+      switchMap(person => this.documentStorage.removeItem(id, person))
+    ).subscribe(() => {
+      this.loadForm(_state.form.id, FormService.isTmpId(id) ? undefined : id, isTemplate, false);
+    });
+  }
+
   private isAdmin(form: FormWithData): boolean {
     return form && form.rights && form.rights.admin;
   }
@@ -273,9 +289,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return FormService.tmpNs + ':' +  this.tmpDocId;
   }
 
-  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
+  private fetchExistingDocument(form: Form.SchemaForm, documentID: string, loadLocal = true): Observable<Document> {
     this.updateState({..._state, hasLocalData: false});
-    if (!documentID || FormService.isTmpId(documentID)) {
+    if (FormService.isTmpId(documentID)) {
+      if (!loadLocal) {
+        throw new Error('Tried to load tmp document and not local at the same time.');
+      }
       this.updateState({..._state, hasChanges: true, hasLocalData: true});
       return this.userService.user$.pipe(
         take(1),
@@ -286,7 +305,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
     }
     return this.userService.user$.pipe(
       take(1),
-      mergeMap(person => this.documentStorage.getItem(documentID, person).pipe(
+      mergeMap(person => (loadLocal ? this.documentStorage.getItem(documentID, person) : of(undefined)).pipe(
         mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
           map((document: Document) => {
             if (document.isTemplate) {
@@ -316,14 +335,14 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean, loadLocal = true): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data)),
       switchMap(data => this.addCollectionID(form, data))
   );
 
-    return this.findTmpData(form, person).pipe(
+    return (loadLocal ? this.findTmpData(form, person) : of(undefined)).pipe(
       switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
     );
   }
@@ -356,10 +375,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
       ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
-      creator: form.formData && form.formData.creator || undefined,
-      isAdmin: form.rights && form.rights.admin,
+      creator: form.formData?.creator,
+      isAdmin: form.rights?.admin,
       isEdit: documentID && !FormService.isTmpId(documentID),
-      placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
+      placeholderGeometry: _state.namedPlace?.geometry
     });
   }
 

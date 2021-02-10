@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ProjectFormService } from '../project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable, of, Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
 import { NamedPlacesService } from '../../shared/service/named-places.service';
@@ -11,6 +11,7 @@ import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
+import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 
 interface ViewModel {
   form: Form.SchemaForm;
@@ -47,7 +48,7 @@ export class FormComponent implements OnInit {
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,
-              private userService: UserService,
+              private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -116,7 +117,9 @@ export class FormComponent implements OnInit {
       );
       return true;
     };
-    if (routeParams['formOrDocument']?.match(/^((JX\.)|(T:))/)) {
+
+    const documentIdMatch = /^((JX\.)|(T:))/;
+    if (routeParams['formOrDocument']?.match(documentIdMatch)) {
       if (form.options?.forms?.length) {
         return of(navigateToForm(form.id, form.id));
       }

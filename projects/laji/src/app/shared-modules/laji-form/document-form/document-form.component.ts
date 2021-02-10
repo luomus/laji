@@ -27,6 +27,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { FormService } from '../../../shared/service/form.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -67,6 +68,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     type: 'gathering'
   };
   tmpDocument: any = {};
+  showDiscardLocal: boolean;
 
   private subErrors: Subscription;
   private subSaving: Subscription;
@@ -90,6 +92,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     this.footerService.footerVisible = false;
     this.formSubscription = this.vm$.subscribe(state => {
      this.form = state.form;
+     this.showDiscardLocal = !FormService.isTmpId(this.documentId) && state.hasLocalData && state.hasChanges;
     });
   }
 
@@ -228,6 +231,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   onGoBack() {
     this.confirmLeave = false;
     this.goBack.emit();
+  }
+
+  discardLocalData() {
+    this.lajiFormFacade.discardLocalData();
+    this.lajiForm.mountLajiForm();
   }
 
   private errorHandling(vm: ILajiFormState) {

@@ -9,6 +9,8 @@ import { Form } from '../model/Form';
 import { UserService } from './user.service';
 import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
+import { NamedPlace } from '../model/NamedPlace';
+import { Document} from '../model/Document';
 
 export interface Participant {
   id?: string;
