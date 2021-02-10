@@ -21,7 +21,7 @@ export interface SelectOptions {
   id: idType;
   value: string;
   info?: string;
-  checkboxValue: boolean|undefined;
+  checkboxValue?: boolean|undefined;
 }
 
 @Component({

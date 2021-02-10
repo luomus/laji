@@ -10,7 +10,9 @@ export class CheckboxValuePipe implements PipeTransform {
     const match = (value || []).find(v => typeof v === 'string' ? v === option.id : v?.id === option.id);
 
     if (match) {
-      return typeof match === 'string' ? true : match.checkboxValue;
+      return typeof match === 'string' ?
+        true :
+        ('checkboxValue' in match ? match.checkboxValue : true);
     } else {
       return undefined;
     }
