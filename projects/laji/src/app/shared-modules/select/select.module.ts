@@ -10,7 +10,7 @@ import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with-subcategories/metadata-select-with-subcategories.component';
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
 import { ExcludeSubcategoryPipe } from './exclude-subcategory.pipe';
-import { CheckStatusSubCategoryPipe } from './check-status-sub-category.pipe';
+import { SubCategoryCheckboxValuePipe } from './sub-category-checkbox-value.pipe';
 import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
 
 /* tslint:enable:max-line-length */
@@ -30,7 +30,7 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     ExcludeSubcategoryPipe,
-    CheckStatusSubCategoryPipe,
+    SubCategoryCheckboxValuePipe,
     SelectedOptionisEmptyPipe
   ],
   exports: [
@@ -41,7 +41,7 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
     ExcludeSubcategoryPipe,
-    CheckStatusSubCategoryPipe,
+    SubCategoryCheckboxValuePipe,
     SelectedOptionisEmptyPipe
   ]
 })
