@@ -115,11 +115,11 @@ $border-radius: 5px;
 }
 
 @mixin btnSuccess {
-  @include btnPrimaryTheme($success-5, -20deg, $success-2, $success-8);
+  @include btnPrimaryTheme($success-5, -20deg, $success-1, $success-8);
 }
 
 @mixin btnInfo {
-  @include btnPrimaryTheme($info-5, -20deg, $info-2, $info-8);
+  @include btnPrimaryTheme($info-5, -20deg, $info-1, $info-8);
 }
 
 @mixin btnWarning {
@@ -127,5 +127,5 @@ $border-radius: 5px;
 }
 
 @mixin btnDanger {
-  @include btnPrimaryTheme($danger-5, 20deg, $danger-2, $danger-8);
+  @include btnPrimaryTheme($danger-5, 20deg, $danger-1, $danger-8);
 }
