@@ -15,8 +15,9 @@ export class FilterService {
    * Filters the given value
    * @param value array of values
    * @param filterBy filter by these values
+   * @param matching if true returns matching if false returns those not matching
    */
-  filter(value: any, filterBy: FilterByType): any {
+  filter(value: any, filterBy: FilterByType, matching = true): any {
     if (!Array.isArray(value) || !filterBy) {
       return value;
     }
@@ -31,7 +32,11 @@ export class FilterService {
         needle = (needle as string).toLocaleLowerCase();
         break;
     }
-    return value.filter(val => this.contains(needle as FilterBaseType, val, properties));
+    return value.filter(val => {
+      const contains = this.contains(needle as FilterBaseType, val, properties);
+
+      return matching ? contains : !contains;
+    });
   }
 
   /**

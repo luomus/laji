@@ -9,7 +9,6 @@ import { InfoModule } from '../info/info.module';
 import { AdminStatusInfoPipe } from './admin-status-info.pipe';
 import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with-subcategories/metadata-select-with-subcategories.component';
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
-import { ExcludeSubcategoryPipe } from './exclude-subcategory.pipe';
 import { SubCategoryCheckboxValuePipe } from './sub-category-checkbox-value.pipe';
 import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
 
@@ -21,7 +20,7 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     SharedModule,
     InfoModule
   ],
-  providers: [ AdminStatusInfoPipe, ExcludeSubcategoryPipe ] ,
+  providers: [ AdminStatusInfoPipe ] ,
   declarations: [
     MetadataSelectComponent,
     SelectComponent,
@@ -29,7 +28,6 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     AdminStatusInfoPipe,
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
-    ExcludeSubcategoryPipe,
     SubCategoryCheckboxValuePipe,
     SelectedOptionisEmptyPipe
   ],
@@ -40,7 +38,6 @@ import { SelectedOptionisEmptyPipe } from './selected-optionis-empty.pipe';
     AdminStatusInfoPipe,
     MetadataSelectWithSubcategoriesComponent,
     SelectSubcategoriesComponent,
-    ExcludeSubcategoryPipe,
     SubCategoryCheckboxValuePipe,
     SelectedOptionisEmptyPipe
   ]
