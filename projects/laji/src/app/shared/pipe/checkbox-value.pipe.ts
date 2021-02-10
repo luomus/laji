@@ -7,7 +7,7 @@ import { SelectOption } from '../../shared-modules/select/select/select.componen
 export class CheckboxValuePipe implements PipeTransform {
 
   transform(value: Array<string|SelectOption>, option: SelectOption): boolean|undefined {
-    const match = (value || []).find(v => typeof v === 'string' ? v === option.id : v?.id === option.id);
+    const match = (value || []).find(v => typeof v === 'object' ? v.id === option.id : v === option.id);
 
     if (match) {
       return typeof match === 'string' ?
