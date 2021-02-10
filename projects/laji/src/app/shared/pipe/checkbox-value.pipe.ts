@@ -6,12 +6,11 @@ import { SelectOptions } from '../../shared-modules/select/select/select.compone
 })
 export class CheckboxValuePipe implements PipeTransform {
 
-  transform(value: any, option: SelectOptions): boolean|undefined {
-    const match = (value || []).filter(v => v['id'] === option['id']);
+  transform(value: Array<string|SelectOptions>, option: SelectOptions): boolean|undefined {
+    const match = (value || []).find(v => typeof v === 'string' ? v === option.id : v?.id === option.id);
 
-    if (match.length > 0) {
-      const tmpValue = match;
-      return tmpValue[0]['checkboxValue'];
+    if (match) {
+      return typeof match === 'string' ? true : match.checkboxValue;
     } else {
       return undefined;
     }
