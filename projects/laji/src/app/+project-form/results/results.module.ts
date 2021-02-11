@@ -32,7 +32,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { routing } from './results.routes';
 import { WbcResultService } from './wbc-result/wbc-result.service';
-import { NafiBumblebeeResultService } from './nafi-bumblebee-result/nafi-bumblebee-result.service';
+import { NafiBumblebeeResultService } from '../results/nafi-bumblebee-result/nafi-bumblebee-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { NafiResultComponent } from './nafi-result/nafi-result.component';
