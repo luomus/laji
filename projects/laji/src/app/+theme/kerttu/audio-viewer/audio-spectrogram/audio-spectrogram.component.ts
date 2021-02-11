@@ -242,7 +242,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       const scrollLineDrag = drag()
         .on('start', () => { this.dragStart.emit(); })
         .on('drag', () => {
-          this.currentTime = this.getTimeFromPosition(event.x - this.margin.left, onlyFocusAreaClickable);
+          this.currentTime = this.getTimeFromPosition(event.x, onlyFocusAreaClickable);
           this.updateScrollLinePosition();
         })
         .on('end', () => { this.dragEnd.emit(this.currentTime); });
