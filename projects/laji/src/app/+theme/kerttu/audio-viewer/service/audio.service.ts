@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {from, Observable, of} from 'rxjs';
+import {from, fromEventPattern, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioPlayer} from './audio-player';
 
 @Injectable()
 export class AudioService {
@@ -11,7 +12,7 @@ export class AudioService {
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  private source: AudioBufferSourceNode;
+  private activePlayer: AudioPlayer;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -86,35 +87,46 @@ export class AudioService {
     return emptySegment;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): Observable<AudioBufferSourceNode> {
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): Observable<AudioBufferSourceNode> {
     if (this.audioContext.state !== 'running') {
-      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime)));
+      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime, player)));
     }
 
-    if (this.source) {
-      this.stopAudio(this.source);
+    if (this.activePlayer) {
+      this.activePlayer.stop();
     }
+    this.activePlayer = player;
 
-    this.source = this.audioContext.createBufferSource();
-    this.source.buffer = buffer;
+    const source = this.audioContext.createBufferSource();
+    source.buffer = buffer;
 
     if (frequencyRange) {
       const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
       const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
-      this.source.connect(highpassFilter);
+      source.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(this.audioContext.destination);
     } else {
-      this.source.connect(this.audioContext.destination);
+      source.connect(this.audioContext.destination);
     }
-
-    this.source.start(0, startTime);
-    return of(this.source);
+    source.start(0, startTime);
+    return of(source);
   }
 
-  public stopAudio(source: AudioBufferSourceNode) {
+  public stopAudio(source: AudioBufferSourceNode): Observable<Event> {
+    if (this.audioContext.state !== 'running') {
+      return from(this.audioContext.resume()).pipe(switchMap(() => this.stopAudio(source)));
+    }
+
     try {
       source.stop(0);
+      return fromEventPattern((handler => {
+        source.onended = () => {
+          this.ngZone.run(() => {
+            handler();
+          });
+        };
+      }));
     } catch (e) {}
   }
 
