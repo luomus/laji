@@ -1,0 +1,31 @@
+<ng-container *ngIf="route$ | async; else main">
+    <laji-wbc-route></laji-wbc-route>
+  </ng-container>
+  <ng-template #main>
+    <h3>{{ 'wbc.stats.routes' | translate }}</h3>
+  
+    <lu-tabs [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
+      <lu-tab [heading]="'np.list' | translate">
+        <ng-container *ngIf="loadedTabs.isLoaded('list')">
+          <laji-nafi-bumblebee-routes-list
+            [rows]="data"
+            [loading]="!data"
+            [selected]="selected"
+            [sorts]="sorts"
+            (rowSelect)="rowSelect($event)"
+          ></laji-nafi-bumblebee-routes-list>
+        </ng-container>
+      </lu-tab>
+      <lu-tab [heading]="'np.map' | translate">
+        <ng-container *ngIf="loadedTabs.isLoaded('map')">
+          <laji-nafi-bumblebee-map
+            [data]="data"
+            [loading]="!data"
+            (rowSelect)="rowSelect($event)"
+          ></laji-nafi-bumblebee-map>
+        </ng-container>
+      </lu-tab>
+    </lu-tabs>
+  </ng-template>
+  
+  

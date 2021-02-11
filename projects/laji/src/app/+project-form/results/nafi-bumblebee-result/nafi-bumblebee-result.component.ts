@@ -13,7 +13,7 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./nafi-bumblebee-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeResultComponent implements OnInit {
+export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
 
   @Input() form: Form.SchemaForm;
 

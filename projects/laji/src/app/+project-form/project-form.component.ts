@@ -56,7 +56,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   redirectionSubscription: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
-    console.log(resultServiceType)
     switch (resultServiceType) {
       case ResultServiceType.winterbirdCount:
         return [

@@ -1,4 +1,23 @@
-<h3>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>
+        {{ 'nafi.stats.title' | translate }}
+      </h3>
+      <p>content</p>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-logo pull-right">
+        <img *ngIf="form.logo" src="{{form.logo}}">
+      </div>
+    </div>
+  </div>
+  <hr style="width: 100%">
+  <laji-nafi-bumblebee-routes></laji-nafi-bumblebee-routes>
+</div>
+
+
+<!--<h3>
     {{ 'nafi.stats.title' | translate }}
     <span *ngIf="fromYear">
       {{ fromMonth | translate }}
@@ -71,5 +90,5 @@
               [height]="'calc(80vh - 50px)'"
       ></laji-theme-observation-list>
     </div>
-  </div>
+  </div>-->
   

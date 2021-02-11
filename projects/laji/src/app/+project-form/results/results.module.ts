@@ -32,12 +32,16 @@ import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { routing } from './results.routes';
 import { WbcResultService } from './wbc-result/wbc-result.service';
+import { NafiBumblebeeResultService } from './nafi-bumblebee-result/nafi-bumblebee-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { NafiResultComponent } from './nafi-result/nafi-result.component';
 import { ResultService } from './common/service/result.service';
 import { NamedPlaceModule } from '../form/named-place/named-place.module';
 import { NafiBumblebeeResultComponent } from './nafi-bumblebee-result/nafi-bumblebee-result.component';
+import { NafiBumblebeeRoutesComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-routes.component';
+import { NafiBumblebeeRoutesListComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-routes-list/nafi-bumblebee-routes-list.component';
+import { NafiBumblebeeMapComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-map/nafi-bumblebee-map.component';
 
 @NgModule({
   imports: [
@@ -77,10 +81,14 @@ import { NafiBumblebeeResultComponent } from './nafi-bumblebee-result/nafi-bumbl
     ThemeResultComponent,
     ThemeObservationListComponent,
     NafiResultComponent,
-    NafiBumblebeeResultComponent
+    NafiBumblebeeResultComponent,
+    NafiBumblebeeRoutesComponent,
+    NafiBumblebeeRoutesListComponent,
+    NafiBumblebeeMapComponent
   ],
   providers: [
     WbcResultService,
+    NafiBumblebeeResultService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
     ResultService
   ]
