@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
 
@@ -86,7 +86,11 @@ export class AudioService {
     return emptySegment;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): Observable<AudioBufferSourceNode> {
+    if (this.audioContext.state !== 'running') {
+      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime)));
+    }
+
     if (this.source) {
       this.stopAudio(this.source);
     }
@@ -105,7 +109,7 @@ export class AudioService {
     }
 
     this.source.start(0, startTime);
-    return this.source;
+    return of(this.source);
   }
 
   public stopAudio(source: AudioBufferSourceNode) {

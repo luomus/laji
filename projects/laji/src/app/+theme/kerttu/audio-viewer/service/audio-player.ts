@@ -55,16 +55,18 @@ export class AudioPlayer {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime);
-      this.startTime = this.audioService.getTime();
+      this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime).subscribe(source => {
+        this.source = source;
+        this.startTime = this.audioService.getTime();
 
-      this.source.onended = () => {
-        this.ngZone.run(() => {
-          this.sourceOnEnded();
-          this.cdr.markForCheck();
-        });
-      };
-      this.startTimeupdateInterval();
+        this.source.onended = () => {
+          this.ngZone.run(() => {
+            this.sourceOnEnded();
+            this.cdr.markForCheck();
+          });
+        };
+        this.startTimeupdateInterval();
+      });
     } else {
       this.audioService.stopAudio(this.source);
     }
