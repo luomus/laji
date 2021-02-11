@@ -120,20 +120,20 @@
   .navbar-text .navbar-link {
     color: $neutral-8;
   }
-  
+
   .navbar-brand {
     color: $neutral-8;
   }
-  
+
   #navbar .active a {
     color: $neutral-7;
     background-color: $neutral-3;
   }
-  
+
   #navbar a {
     color: $neutral-8;
   }
-  
+
   .navbar-link, .navbar-profile .language-toggle {
     color: $neutral-8;
   }
@@ -142,9 +142,7 @@
 .red-theme.navbar {
   color: $neutral-8;
   background-color: $neutral-1;
-  & > .container-fluid {
-    border-top: 4px solid #d62022;
-  }
+  border-top: 4px solid #d62022;
 }
 .red-theme #navbar .active a,
 .red-theme.navbar-inverse .navbar-nav > li > a:hover,
@@ -168,7 +166,9 @@
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-color: $neutral-3;
+  border-left-color: $neutral-3;
+  border-right-color: $neutral-3;
+  border-bottom-color: $neutral-3;
 }
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
