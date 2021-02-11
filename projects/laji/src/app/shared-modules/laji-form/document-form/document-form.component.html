@@ -28,7 +28,7 @@
       [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
   ></laji-document-form-header>
   <laji-named-place-linker-button [documentID]="documentId"></laji-named-place-linker-button>
-  <alert *ngIf="showDiscardLocal" type="warning">
+  <alert *ngIf="showDiscardLocal" type="warning" class="discard-local-data">
     {{ 'haseka.form.hasLocalData' | translate }}<br>
     <button type="button" class="btn btn-danger btn-sm mt-3" (click)="discardLocalData()">{{ 'haseka.form.hasLocalData.delete' | translate }}</button>
   </alert>

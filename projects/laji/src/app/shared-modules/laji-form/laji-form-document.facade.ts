@@ -282,7 +282,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private getNewTmpId(): string {
-    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003) ) {
+    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003)) {
       this.tmpDocId = 0;
     }
     this.tmpDocId = this.tmpDocId + 1;

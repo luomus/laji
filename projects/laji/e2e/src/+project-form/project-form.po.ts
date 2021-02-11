@@ -105,6 +105,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $savePrivate = $('laji-document-form-footer .btn-warning');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
   public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
+  public readonly $discardLocalDataBtn = this.$container.$('.discard-local-data button');
 
   getContextId = async () => (await this.$form.$('.rjsf > .form-group').getAttribute('id')).match(/\d+/)[0];
 

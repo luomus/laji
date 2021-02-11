@@ -1,12 +1,13 @@
 import { browser, by, element, protractor } from 'protractor';
 import { MapPage } from '../+map/map.po';
 import { DocumentFormView } from '../+project-form/project-form.po';
+import { isDisplayed } from '../../helper';
 
 export class TripFormPage {
 
   private readonly todayButton = element(by.buttonText('Tänään'));
   private readonly tripFormLink = element(by.linkText('Retki'));
-  private readonly countryElem = element(by.id('root_gatherings_0_country'));
+  public readonly countryElem = element(by.id('root_gatherings_0_country'));
   private readonly toastElement = element(by.id('toast-container'));
   private readonly pageTitleElem = element(by.css('.form-header h3'));
   private readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
@@ -47,7 +48,15 @@ export class TripFormPage {
     return this.pageTitleElem.getText();
   }
 
-  async hasOverlayPresent() {
+  hasOverlayPresent() {
     return this.overlayElem.isPresent();
+  }
+
+  hasDiscardLocalData() {
+    return isDisplayed(this.documentFormView.$discardLocalDataBtn);
+  }
+
+  discardLocalData() {
+    return this.documentFormView.$discardLocalDataBtn.click();
   }
 }
