@@ -30,6 +30,7 @@ export class NafiBumblebeeMapComponent {
     this.selectedGrid = undefined;
 
     data.map(item => {
+      console.log(item)
       if (!item['document.namedPlace.ykj10km.lat'] || !item['document.namedPlace.ykj10km.lon']) {
         return;
       }
@@ -47,6 +48,7 @@ export class NafiBumblebeeMapComponent {
         this.geoJsons.push({type: 'Feature', geometry: geometry, properties: {grid: grid, count: 1}});
       }
     });
+    console.log(this.geoJsons)
   }
 
   constructor(
