@@ -13,24 +13,28 @@ export class DialogService {
     private modalService: BsModalService,
   ) { }
 
-  confirm(message: string, onServer = false): Observable<boolean> {
+  confirm(message: string, confirmLabel?: string, onServer = false): Observable<boolean> {
     if (this.platformService.isServer) {
       return ObservableOf(onServer);
     }
-    return this.createDialog(message);
+    return this.createDialog(message, confirmLabel);
   }
 
-  prompt(message: string, _default?: string): Observable<string | null> {
-    return this.createDialog(message, true, _default);
+  prompt(message: string, confirmLabel?: string, _default?: string): Observable<string | null> {
+    return this.createDialog(message, confirmLabel, true, _default);
   }
 
-  private createDialog(message: string): Observable<boolean>;
-  private createDialog(message: string, prompt: true, promptDefault?: string): Observable<string | null>;
-  private createDialog(message: string, prompt = false, promptDefault?: string): Observable<boolean | string | null> {
+  private createDialog(message: string, confirmLabel?: string): Observable<boolean>;
+  private createDialog(message: string, confirmLabel: string | undefined, prompt: true, promptDefault?: string): Observable<string | null>;
+  private createDialog(message: string, confirmLabel?: string, prompt = false, promptDefault?: string): Observable<boolean | string | null> {
+    const initialState = {message, prompt, promptValue: promptDefault ?? ''} as any;
+    if (typeof confirmLabel === 'string') {
+      initialState.confirmLabel = confirmLabel;
+    }
     const modalRef = this.modalService.show(ConfirmModalComponent, {
       backdrop: 'static',
       class: 'modal-sm',
-      initialState: {message, prompt, promptValue: promptDefault ?? ''}
+      initialState
     });
 
     return modalRef.onHide.pipe(

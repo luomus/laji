@@ -117,8 +117,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     if (!this.confirmLeave || !this.lajiFormFacade.hasChanges()) {
       return true;
     }
-    return this.translate.get(this.isFromCancel ? cancelKey : leaveKey).pipe(
-      switchMap(txt => this.dialogService.confirm(txt)),
+    const msg = this.isFromCancel ? cancelKey : leaveKey;
+    const confirmLabel = this.isFromCancel
+      ? 'haseka.form.discardConfirm.confirm'
+      : 'haseka.form.leaveConfirm.confirm';
+    return this.dialogService.confirm(msg, confirmLabel).pipe(
       tap(confirmed => {
         if (confirmed && this.isFromCancel) {
           this.lajiFormFacade.discardChanges();
