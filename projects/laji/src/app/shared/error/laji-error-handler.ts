@@ -16,6 +16,7 @@ export class LajiErrorHandler extends ErrorHandler {
   private translate: TranslateService;
   private logger: Logger;
   private pause = false;
+  private errorSent = false;
 
   constructor(
     private injector: Injector,
@@ -56,9 +57,12 @@ export class LajiErrorHandler extends ErrorHandler {
       return super.handleError(error);
     }
 
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy ? location.path() : '';
-    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    if (!this.errorSent) {
+      this.errorSent = true;
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy ? location.path() : '';
+      this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    }
     this.pauseMessage();
 
     if (enabledEnvs.includes(environment.type)) {
