@@ -196,7 +196,7 @@ export class NafiBumblebeeResultService {
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         query,
         ['document.documentId', 'document.namedPlace.name', 'document.namedPlace.municipalityDisplayName',
-          'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon', 'gathering.eventDate.begin'],
+          'document.namedPlace.ykj10km.lat', 'document.namedPlace.ykj10km.lon', 'gathering.eventDate.begin', 'gathering.eventDate.end'],
         ['gathering.eventDate.begin DESC'],
         10000,
         1,

@@ -42,6 +42,10 @@ import { NafiBumblebeeResultComponent } from './nafi-bumblebee-result/nafi-bumbl
 import { NafiBumblebeeRoutesComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-routes.component';
 import { NafiBumblebeeRoutesListComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-routes-list/nafi-bumblebee-routes-list.component';
 import { NafiBumblebeeMapComponent } from './nafi-bumblebee-result/nafi-bumblebee-routes/nafi-bumblebee-map/nafi-bumblebee-map.component';
+import { NafiBumblebeeCensusesComponent } from './nafi-bumblebee-result/nafi-bumblebee-censuses/nafi-bumblebee-censuses.component';
+import { NafiBumblebeeResultFiltersComponent } from './nafi-bumblebee-result/nafi-bumblebee-result-filters/nafi-bumblebee-result-filters.component';
+import { NafiBumblebeeRouteComponent } from './nafi-bumblebee-result/nafi-bumblebee-route/nafi-bumblebee-route.component';
+import { NafiBumblebeeRouteTableComponent } from './nafi-bumblebee-result/nafi-bumblebee-route-table/nafi-bumblebee-route-table.component';
 
 @NgModule({
   imports: [
@@ -84,7 +88,11 @@ import { NafiBumblebeeMapComponent } from './nafi-bumblebee-result/nafi-bumblebe
     NafiBumblebeeResultComponent,
     NafiBumblebeeRoutesComponent,
     NafiBumblebeeRoutesListComponent,
-    NafiBumblebeeMapComponent
+    NafiBumblebeeMapComponent,
+    NafiBumblebeeCensusesComponent,
+    NafiBumblebeeResultFiltersComponent,
+    NafiBumblebeeRouteComponent,
+    NafiBumblebeeRouteTableComponent
   ],
   providers: [
     WbcResultService,
