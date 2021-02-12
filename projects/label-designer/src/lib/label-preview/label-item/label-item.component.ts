@@ -78,10 +78,10 @@ export class LabelItemComponent {
           content: LabelService.getFieldValue(field, this._data[dataKey], this._map, true) as string
         };
       }
-      if (field.separatorOnlyWhenNextNotEmpty && nextField[dataKey] && !LabelService.hasValue(this._data[nextField[dataKey]])) {
-        newField.separator = '';
-      }
       if (newField) {
+        if (field.separatorOnlyWhenNextNotEmpty && nextField[dataKey] && !LabelService.hasValue(this._data[nextField[dataKey]])) {
+          newField.separator = '';
+        }
         fields.push(newField);
       }
     });

@@ -44,6 +44,7 @@ const rootRouting = {
   'talvilintu': '/project/MHL.3',
   'ykj': '/theme/ykj',
   'emk': '/theme/emk',
+  'profile': '/user',
 };
 
 Object.keys(Global.oldThemeRouting).forEach(path => {

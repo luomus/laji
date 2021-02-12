@@ -40,3 +40,10 @@
   left: 2px;
   position: relative;
 }
+
+.lj-cb-marker.excluded:after {
+  content: "✗";
+  top: -2px;
+  left: 1px;
+  position: relative;
+}
