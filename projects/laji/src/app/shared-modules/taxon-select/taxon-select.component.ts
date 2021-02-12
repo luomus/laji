@@ -131,17 +131,15 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(event) {
-    if (!this._taxonName) {
-      return this.selectValue(undefined, false);
-    } else if (event.item?.autocompleteSelectedName) {
+    if (event.item?.autocompleteSelectedName) {
       this._taxonName = event.item.autocompleteSelectedName;
     }
     this.enteredValue = undefined;
-    if (event.item?.key) {
+    if (this._taxonName === '') {
+      this.selectValue(undefined, false);
+    } else if (event.item?.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
-    } else if (this._taxonName === '') {
-      this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
       if (this.typeaheadMatch && this.typeaheadMatch.match === this._taxonName) {
         this.selectValue(this.typeaheadMatch.id, true);
