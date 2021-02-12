@@ -297,16 +297,6 @@ export interface Document {
     acknowledgedWarnings?: {location: string, messages: string[]}[];
 
     dataOrigin?: Document.DataOriginEnum[];
-
-  /**
-   * Fields that tels if there is local changes on the form
-   */
-  _hasChanges?: boolean;
-
-  /**
-   * Fields that tels if the data is from template
-   */
-  _isTemplate?: boolean;
 }
 export namespace Document {
 

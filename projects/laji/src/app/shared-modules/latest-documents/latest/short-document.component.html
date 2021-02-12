@@ -2,7 +2,7 @@
   <div *ngIf="unsaved" class="unsaved" [tooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
     <div>!</div>
   </div>
-  
+
   <header>
     <h1>{{ getLocality$() | async }}</h1>
     <div class="label label-warning" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
@@ -10,13 +10,13 @@
     </div>
     <div *ngIf="showFormName" class="label label-default form-name">{{ document.formID | formName }}</div>
   </header>
-  
+
   <section>
     <div class="observation-last-edit" *ngIf="!changingLocale && document.dateEdited"><span class="glyphicon glyphicon-edit"></span> {{ document.dateEdited | dateCutoffFuture | amTimeAgo }}</div>
     <div class="observation-start" *ngIf="gatheringDates.start"> <span class="glyphicon glyphicon-time"></span> {{ gatheringDates.start | amDateFormat:'DD.MM.YYYY' }} </div>
     <div class="observation-end" *ngIf="gatheringDates.end && gatheringDates.end !== gatheringDates.start">- {{ gatheringDates.end | amDateFormat:'DD.MM.YYYY' }}</div>
   </section>
-  
+
   <section class="unit-list">
     <div *ngIf="document.gatherings?.length > 1">({{ document.gatherings.length - 1 }} {{ 'haseka.users.latest.other' | translate }})</div>
     <div>
@@ -33,7 +33,7 @@
           [ngClass]="{ 'glyphicon-triangle-bottom': showList, 'glyphicon-triangle-right': !showList }"></span>
       </div>
     </div>
-  
+
     <ul *ngIf="showList">
       <li *ngFor="let taxon of unitList | slice:0:5;">
         {{ taxon }}
@@ -41,7 +41,7 @@
       <li *ngIf="unitList.length > 5">{{ unitList.length - 5 }} {{ 'haseka.users.latest.other' | translate }}</li>
     </ul>
   </section>
-  
+
   <section class="d-flex flex-row flex-nowrap justify-end">
     <div class="label link label-default button-tools ml-2"
          [tooltip]="'result.showViewer' | translate"
@@ -55,7 +55,7 @@
          (click)="editDocument(document.formID, document.id)">
       <span class="glyphicon glyphicon-edit"></span>
     </div>
-    <div *ngIf="document._hasChanges"
+    <div *ngIf="hasChanges"
          class="label label-default button-tools link ml-2"
          [tooltip]="'haseka.form.hasChanges' | translate"
          [placement]="'bottom'"
@@ -63,5 +63,5 @@
       <span class="glyphicon glyphicon-trash"></span>
     </div>
   </section>
-  
+
 </div>

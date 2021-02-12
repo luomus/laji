@@ -228,8 +228,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
     const document = {...rawDocument};
     const isTmpId = !document.id || FormService.isTmpId(document.id);
     document.publicityRestrictions = publicityRestriction;
-    delete document._hasChanges;
-    delete document._isTemplate;
     if (isTmpId) { delete document.id; }
 
     return (isTmpId ?
