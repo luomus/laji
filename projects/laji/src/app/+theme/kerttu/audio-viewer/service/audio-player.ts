@@ -117,6 +117,7 @@ export class AudioPlayer {
       this.clearTimeupdateInterval();
       this.updateCurrentTime();
       this.isPlaying = false;
+
       this.autoplayCounter = this.autoplayRepeat;
 
       return this.audioService.stopAudio(this.source).pipe(
@@ -129,6 +130,7 @@ export class AudioPlayer {
 
   private onPlayingEnded() {
     this.clearTimeupdateInterval();
+    this.updateCurrentTime();
     this.isPlaying = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
