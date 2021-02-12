@@ -28,7 +28,9 @@ export class LabelPipe implements PipeTransform {
               private cdr: ChangeDetectorRef) {
   }
 
-  transform<T extends string|string[]>(value: T, type?: labelType): T {
+  transform(value: string, type?: labelType): string;
+  transform(value: string[], type?: labelType): string[];
+  transform(value: string|string[], type?: labelType): string|string[] {
     if (!value || (typeof value !== 'string' && !Array.isArray(value)) || value.length === 0) {
       return value;
     }
@@ -36,7 +38,7 @@ export class LabelPipe implements PipeTransform {
 
     // if we ask another time for the same key, return the last value
     if (key === this.lastKey) {
-      return this.value as T;
+      return this.value;
     }
     this.lastKey = key;
 
@@ -51,7 +53,7 @@ export class LabelPipe implements PipeTransform {
       this.fetchValue(value, type).subscribe(v => this.updateValue(v));
     }
 
-    return this.value as T;
+    return this.value;
   }
 
   private updateValue(value: string|string[]) {
@@ -76,10 +78,13 @@ export class LabelPipe implements PipeTransform {
         obs = this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
           map(value => value !== key ? (value || '') + ' (' + key + ')' : value));
         break;
-      default:
-        obs = this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
-          map((res: string) => res && res !== key ? res : (type === 'emptyWhenMissing' ? '' : key))
+      case 'emptyWhenMissing':
+        obs = this.fetchValue(key).pipe(
+          map(res => res === key ? '' : key)
         );
+        break;
+      default:
+        obs = this.triplestoreLabelService.get(key, this.translate.currentLang);
         break;
     }
     return obs;
