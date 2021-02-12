@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
+import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-nafi-bumblebee-route',
@@ -20,11 +21,22 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];
 
+  activeIndex = 0;
+  loadedTabs = new LoadedElementsStore(['list', 'map']);
+
   loadingCensusList = false;
   loadingObservationStats = false;
 
   season: SEASON;
+  year: number;
   observationStats: any;
+  activeYear: number;
+  activeSeason: SEASON;
+
+  loading = false;
+  queryKey: string;
+  resultSub: Subscription;
+  filterBy = '';
 
   private routeSub: Subscription;
 
@@ -39,26 +51,16 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     this.routeSub = this.route.queryParams.subscribe(queryParams => {
       this.routeId = queryParams['route'];
       this.season = queryParams['season'];
+      this.year = queryParams['year'];
       this.cd.markForCheck();
 
-      if (!this.season && !this.rows && !this.loadingCensusList) {
-        this.loadingCensusList = true;
-        this.resultService.getCensusListForRoute(this.routeId)
-          .subscribe(censuses => {
-            this.rows = censuses;
-            this.loadingCensusList = false;
-            this.cd.markForCheck();
-          });
+      if ((!this.season && !this.year && !this.rows && !this.loadingCensusList) ||
+         (!this.season && !this.year && this.rows)) {
+        this.censusListForRoute(this.routeId);
       }
 
       if (this.season && !this.observationStats && !this.loadingObservationStats) {
-        this.loadingObservationStats = true;
-        this.resultService.getObservationStatsForRoute(this.routeId)
-          .subscribe(data => {
-            this.observationStats = data;
-            this.loadingObservationStats = false;
-            this.cd.markForCheck();
-          });
+        this.observationStatsForRoute(this.routeId);
       }
     });
   }
@@ -74,5 +76,52 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       document: fullId,
       useWorldMap: false
     });
+  }
+
+  onFilterChange() {
+    if (this.activeYear) {
+      const queryKey = 'year:' + this.activeYear + ',season:' + this.activeSeason;
+      if (this.loading && this.queryKey === queryKey) {
+        return;
+      }
+      this.queryKey = queryKey;
+
+      if (this.resultSub) {
+        this.resultSub.unsubscribe();
+      }
+
+      this.loading = true;
+      this.resultSub = this.resultService.getCensusList(this.activeYear, this.activeSeason)
+        .subscribe(list => {
+          this.rows = list;
+          this.loading = false;
+          this.cd.markForCheck();
+        });
+    }
+  }
+
+  setActive(newActive: number) {
+    this.activeIndex = newActive;
+    this.loadedTabs.load(newActive);
+  }
+
+  censusListForRoute(routeId) {
+    this.loadingCensusList = true;
+    this.resultService.getCensusListForRoute(routeId)
+      .subscribe(censuses => {
+        this.rows = censuses;
+        this.loadingCensusList = false;
+        this.cd.markForCheck();
+      });
+  }
+
+  observationStatsForRoute(routeId) {
+    this.loadingObservationStats = true;
+    this.resultService.getObservationStatsForRoute(routeId)
+      .subscribe(data => {
+        this.observationStats = data;
+        this.loadingObservationStats = false;
+        this.cd.markForCheck();
+      });
   }
 }

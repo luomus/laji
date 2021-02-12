@@ -1,16 +1,12 @@
-<h3>{{ routeId | label }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
+<h3>{{ routeId }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
 
-<div class="panel panel-default" style="max-width: 400px">
-  <div class="panel-heading">
-    <strong>{{ 'wbc.stats.route.table' | translate }}</strong>
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'fall'}" queryParamsHandling="merge">{{ 'wbc.season.fall' | translate }}</a></div>
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'winter'}" queryParamsHandling="merge">{{ 'wbc.season.winter' | translate }}</a></div>
-      <div class="col-xs-4" style="text-align: center"><a [routerLink]="[]" [queryParams]="{season: 'spring'}" queryParamsHandling="merge">{{ 'wbc.season.spring' | translate }}</a></div>
-    </div>
-  </div>
+<div style="max-width: 400px">
+  <laji-wbc-result-filters
+    (yearChange)="activeYear = $event; onFilterChange()"
+    (seasonChange)="activeSeason = $event; onFilterChange()"
+    [yearRequired]="false"
+    [showAreaFilter]="false"
+  ></laji-wbc-result-filters>
 </div>
 
 <ng-container *ngIf="!season">
