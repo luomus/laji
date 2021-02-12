@@ -35,6 +35,12 @@ h2 {
 .row {
   margin-bottom: 15px;
 }
+
+:host ::ng-deep typeahead-container.dropdown {
+  margin-left: 0px;
+  min-width: 600px;
+}
+
 @media only screen and (min-width : 768px) {
   .header .intro {
     margin-top: 90px;

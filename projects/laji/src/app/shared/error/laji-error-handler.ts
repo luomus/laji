@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 
 const pauseBeforeResendError = 30000;
 const enabledEnvs = ['dev', 'beta'];
+let errorSent = false;
 
 @Injectable()
 export class LajiErrorHandler extends ErrorHandler {
@@ -56,9 +57,12 @@ export class LajiErrorHandler extends ErrorHandler {
       return super.handleError(error);
     }
 
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy ? location.path() : '';
-    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    if (!errorSent) {
+      errorSent = true;
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy ? location.path() : '';
+      this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    }
     this.pauseMessage();
 
     if (enabledEnvs.includes(environment.type)) {
