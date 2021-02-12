@@ -17,7 +17,7 @@
 
     <ng-container *ngIf="taxonDescription.length > 0">
       <select style="margin-bottom: 8px;" class="form-control"
-              (change)="contextChange.emit($event.target.value)"
+              (change)="contextChange.emit(toHtmlSelectElement($event.target).value)"
               *ngIf="taxonDescription.length > 1">
         <option *ngFor="let description of taxonDescription; let i = index"
                 [value]="description.id"

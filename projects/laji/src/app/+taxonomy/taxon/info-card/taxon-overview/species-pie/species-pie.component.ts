@@ -6,6 +6,7 @@ import { ChartOptions, Chart } from 'chart.js';
 import { BaseChartDirective} from 'ng2-charts';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
+import * as chartJs from 'chart.js';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   data: any;
   total = 0;
 
+  chartType = 'treemap' as chartJs.ChartType;
   lineChartData: any[] = [];
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
