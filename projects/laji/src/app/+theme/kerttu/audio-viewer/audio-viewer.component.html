@@ -20,7 +20,7 @@
   </div>
 
   <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}">
-    <button class="btn btn-default" (click)="audioPlayer.toggle()" [disabled]="loading || audioPlayer.isLoading">
+    <button class="btn btn-default" (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"
         [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
