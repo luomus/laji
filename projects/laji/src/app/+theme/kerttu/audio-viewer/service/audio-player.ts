@@ -117,12 +117,7 @@ export class AudioPlayer {
 
   private stopPlaying(): Observable<boolean> {
     if (this.isPlaying && !this.resumingContext) {
-      this.clearTimeupdateInterval();
-      this.updateCurrentTime();
-      this.isPlaying = false;
-
-      this.autoplayCounter = this.autoplayRepeat;
-
+      this.onPlayingEnded();
       return this.audioService.stopAudio(this.source).pipe(
         map((event) => event != null)
       );
@@ -137,9 +132,11 @@ export class AudioPlayer {
     this.isPlaying = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      if (this.currentTime === this.buffer.duration) {
+      if (this.currentTime === this.getEndTime()) {
         this.autoplayCounter += 1;
         this.toggle();
+      } else {
+        this.autoplayCounter = this.autoplayRepeat;
       }
     }
   }
