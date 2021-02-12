@@ -41,7 +41,7 @@ $border-radius: 5px;
 .lu-btn.primary {
   position: relative;
   background: linear-gradient(to bottom right, adjust-hue($primary-5, -10deg), $primary-5);
-  color: adjust-hue($color: $neutral-1, $degrees: -20%);
+  color: adjust-hue($color: $neutral-1, $degrees: -20);
   box-shadow: 0 2px 6px rgba($primary-6, 0.3);
   &::before {
     display: inline-block;
