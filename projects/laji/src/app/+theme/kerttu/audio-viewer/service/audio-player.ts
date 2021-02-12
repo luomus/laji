@@ -6,7 +6,6 @@ import {map, switchMap, tap} from 'rxjs/operators';
 
 export class AudioPlayer {
   isPlaying = false;
-  isLoading = false;
   currentTime: number;
 
   autoplay = false;
@@ -31,6 +30,7 @@ export class AudioPlayer {
   ) { }
 
   setBuffer(buffer: AudioBuffer, playArea?: IAudioViewerArea) {
+    this.clear();
     this.buffer = buffer;
     this.playArea = playArea;
     this.currentTime = this.getStartTime();
@@ -43,10 +43,6 @@ export class AudioPlayer {
   }
 
   toggle() {
-    if (this.isLoading) {
-      return;
-    }
-
     const obs: Observable<boolean> = this.isPlaying ? this.stopPlaying() : this.startPlaying();
     obs.subscribe(() => {
       this.cdr.markForCheck();
@@ -54,20 +50,12 @@ export class AudioPlayer {
   }
 
   stop() {
-    if (this.isLoading) {
-      return;
-    }
-
     this.stopPlaying().subscribe(() => {
       this.cdr.markForCheck();
     });
   }
 
   startFrom(time: number) {
-    if (this.isLoading) {
-      return;
-    }
-
     this.stopPlaying().pipe(switchMap(() => {
       this.currentTime = time;
       return this.startPlaying();
@@ -77,10 +65,6 @@ export class AudioPlayer {
   }
 
   startAutoplay() {
-    if (this.isLoading) {
-      return;
-    }
-
     this.autoplayCounter = 0;
     this.startPlaying().subscribe(() => {
       this.cdr.markForCheck();
@@ -101,13 +85,13 @@ export class AudioPlayer {
 
   private startPlaying(): Observable<boolean> {
     if (!this.isPlaying) {
-      this.isLoading = true;
+      this.isPlaying = true;
       if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
         this.currentTime = this.getStartTime();
       }
       this.startOffset = this.currentTime;
 
-      return this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime, this).pipe(
+      return this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime).pipe(
         tap(source => {
           this.startAudioContextTime = this.audioService.getTime();
 
@@ -118,9 +102,6 @@ export class AudioPlayer {
               this.cdr.markForCheck();
             });
           };
-
-          this.isPlaying = true;
-          this.isLoading = false;
 
           this.startTimeupdateInterval();
         }),
@@ -133,10 +114,13 @@ export class AudioPlayer {
 
   private stopPlaying(): Observable<boolean> {
     if (this.isPlaying) {
-      this.isLoading = true;
+      this.clearTimeupdateInterval();
+      this.updateCurrentTime();
+      this.isPlaying = false;
+      this.autoplayCounter = this.autoplayRepeat;
+
       return this.audioService.stopAudio(this.source).pipe(
-        tap(() => this.onPlayingEnded()),
-        map(() => true)
+        map((event) => event != null)
       );
     } else {
       return of(false);
@@ -145,16 +129,12 @@ export class AudioPlayer {
 
   private onPlayingEnded() {
     this.clearTimeupdateInterval();
-    this.updateCurrentTime();
     this.isPlaying = false;
-    this.isLoading = false;
 
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
       if (this.currentTime === this.buffer.duration) {
         this.autoplayCounter += 1;
         this.toggle();
-      } else {
-        this.autoplayCounter = this.autoplayRepeat;
       }
     }
   }
@@ -162,6 +142,10 @@ export class AudioPlayer {
   private startTimeupdateInterval() {
     this.timeupdateIntervalSub = this.timeupdateInterval.subscribe(() => {
       this.updateCurrentTime();
+      const endTime = this.getEndTime();
+      if (this.currentTime === endTime && endTime !== this.buffer.duration) {
+        this.stop();
+      }
       this.cdr.markForCheck();
     });
   }
@@ -173,19 +157,8 @@ export class AudioPlayer {
   }
 
   private updateCurrentTime() {
-    if (this.isPlaying) {
-      this.currentTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime, this.source.playbackRate.value);
-    } else {
-      this.currentTime = this.startOffset;
-    }
-
-    const endTime = this.getEndTime();
-
-    this.currentTime = Math.min(this.currentTime, endTime);
-
-    if (this.currentTime === endTime && endTime !== this.buffer.duration) {
-      this.stop();
-    }
+    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime, this.source.playbackRate.value);
+    this.currentTime = Math.min(playedTime, this.getEndTime());
   }
 
   private getStartTime() {

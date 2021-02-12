@@ -3,7 +3,6 @@ import {Inject, Injectable, NgZone} from '@angular/core';
 import {from, fromEventPattern, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
-import {AudioPlayer} from './audio-player';
 
 @Injectable()
 export class AudioService {
@@ -12,7 +11,7 @@ export class AudioService {
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  private activePlayer: AudioPlayer;
+  private activeSource: AudioBufferSourceNode;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -87,15 +86,14 @@ export class AudioService {
     return emptySegment;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): Observable<AudioBufferSourceNode> {
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): Observable<AudioBufferSourceNode> {
     if (this.audioContext.state !== 'running') {
-      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime, player)));
+      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime)));
     }
 
-    if (this.activePlayer) {
-      this.activePlayer.stop();
+    if (this.activeSource) {
+      this.stopAudio(this.activeSource);
     }
-    this.activePlayer = player;
 
     const source = this.audioContext.createBufferSource();
     source.buffer = buffer;
@@ -110,14 +108,11 @@ export class AudioService {
       source.connect(this.audioContext.destination);
     }
     source.start(0, startTime);
+    this.activeSource = source;
     return of(source);
   }
 
   public stopAudio(source: AudioBufferSourceNode): Observable<Event> {
-    if (this.audioContext.state !== 'running') {
-      return from(this.audioContext.resume()).pipe(switchMap(() => this.stopAudio(source)));
-    }
-
     try {
       source.stop(0);
       return fromEventPattern((handler => {
@@ -127,7 +122,9 @@ export class AudioService {
           });
         };
       }));
-    } catch (e) {}
+    } catch (e) {
+      return of(undefined);
+    }
   }
 
   public getTime() {
