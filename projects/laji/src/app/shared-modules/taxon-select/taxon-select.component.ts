@@ -13,7 +13,7 @@ import { BrowserService } from 'projects/laji/src/app/shared/service/browser.ser
   template: `<input
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
-    type="text/html"
+    type="text"
     container="{{containerTypeAhead}}"
     [class]="class"
     [name]="name"
@@ -131,12 +131,9 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(event) {
-    if (!event.item?.autocompleteSelectedName) {
-      return;
-    }
     this.enteredValue = undefined;
-    this._taxonName = event.item.autocompleteSelectedName;
-    if (event.item && event.item.key) {
+    this._taxonName = event.item?.autocompleteSelectedName;
+    if (event.item?.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
     } else if (this._taxonName === '') {
