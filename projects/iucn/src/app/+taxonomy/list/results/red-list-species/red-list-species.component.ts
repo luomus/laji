@@ -27,4 +27,8 @@ export class RedListSpeciesComponent {
     return this._checklist;
   }
 
+  trackBySpeciesId(index, species) {
+    return species.id || index;
+  }
+
 }

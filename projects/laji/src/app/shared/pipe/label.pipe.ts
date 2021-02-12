@@ -1,8 +1,8 @@
-import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { concatMap, map, toArray } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
 
@@ -18,100 +18,75 @@ type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
   name: 'label',
   pure: false
 })
-export class LabelPipe implements PipeTransform, OnDestroy {
-  value = '';
+export class LabelPipe implements PipeTransform {
+  value: string|string[] = '';
   lastKey: string;
-  onLangChange: Subscription;
 
   constructor(private translate: TranslateService,
               private warehouseService: WarehouseValueMappingService,
               private triplestoreLabelService: TriplestoreLabelService,
-              private _ref: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef) {
   }
 
-  updateValue(key: string, type?: labelType): void {
-    if (type === 'warehouse') {
-      this.warehouseService.getOriginalKey(key).subscribe(
-          (res: string) => {
-            if (res) {
-              this._updateValue(res);
-            } else {
-              this.value = key;
-              this._ref.markForCheck();
-            }
-          },
-          () => this._updateValue(key)
-        );
-    } else {
-      this._updateValue(key, type);
-    }
-  }
-
-  transform(value: any, type?: labelType, key?: string): any {
-    if (Array.isArray(value)) {
-      return value.map(v => this.transform(v, type, key));
-    }
-    if (value && key) {
-      value = value[key];
-    }
-    if (!value || typeof value !== 'string' || value.length === 0 ||
-       (type === 'fullUri' && value.indexOf('http') !== 0)) {
+  transform(value: string, type?: labelType): string;
+  transform(value: string[], type?: labelType): string[];
+  transform(value: string|string[], type?: labelType): string|string[] {
+    if (!value || (typeof value !== 'string' && !Array.isArray(value)) || value.length === 0) {
       return value;
     }
+    const key = Array.isArray(value) ? value.join(',') : value;
+
     // if we ask another time for the same key, return the last value
-    if (value === this.lastKey) {
+    if (key === this.lastKey) {
       return this.value;
     }
-    // store the query, in case it changes
-    this.lastKey = value;
+    this.lastKey = key;
 
-    // set the value
-    this.updateValue(value, type);
-
-    // if there is a subscription to onLangChange, clean it
-    this._dispose();
-
-    // subscribe to onLangChange event, in case the language changes
-    if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe(() => {
-        this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
-        this.updateValue(value, type);
+    if (Array.isArray(value)) {
+      from(value).pipe(
+        concatMap(v => this.fetchValue(v, type)),
+        toArray()
+      ).subscribe(v => {
+        this.updateValue(v);
       });
+    } else {
+      this.fetchValue(value, type).subscribe(v => this.updateValue(v));
     }
+
     return this.value;
   }
 
-  ngOnDestroy(): void {
-    this._dispose();
+  private updateValue(value: string|string[]) {
+    this.value = value;
+    this.cdr.markForCheck();
   }
 
-  /**
-   * Clean any existing subscription to onLangChange events
-   */
-  protected _dispose(): void {
-    if (this.onLangChange) {
-      this.onLangChange.unsubscribe();
-      this.onLangChange = undefined;
-    }
-  }
-
-  private _updateValue(key: string, type?: labelType): void {
+  private fetchValue(key: string, type?: labelType): Observable<string> {
     let obs;
     switch (type) {
+      case 'warehouse':
+        obs = this.warehouseService.getOriginalKey(key).pipe(
+          concatMap(res => this.fetchValue(res))
+        );
+        break;
       case 'fullUri':
-        obs = this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang);
+        obs = key.indexOf('http') === 0 ?
+          this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang) :
+          of(key);
         break;
       case 'withKey':
         obs = this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
           map(value => value !== key ? (value || '') + ' (' + key + ')' : value));
         break;
+      case 'emptyWhenMissing':
+        obs = this.fetchValue(key).pipe(
+          map(res => res === key ? '' : key)
+        );
+        break;
       default:
         obs = this.triplestoreLabelService.get(key, this.translate.currentLang);
         break;
     }
-    obs.subscribe((res: string) => {
-        this.value = res && res !== key ? res : (type === 'emptyWhenMissing' ? '' : key);
-        this._ref.markForCheck();
-      });
+    return obs;
   }
 }
