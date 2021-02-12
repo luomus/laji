@@ -2,7 +2,7 @@ import {IAudioViewerArea} from '../models';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {AudioService} from './audio.service';
 import {interval, Subscription, Observable, of} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 
 export class AudioPlayer {
   isPlaying = false;
@@ -22,6 +22,8 @@ export class AudioPlayer {
 
   private timeupdateInterval = interval(20);
   private timeupdateIntervalSub: Subscription;
+
+  private resumingContext = false;
 
   constructor(
     private audioService: AudioService,
@@ -84,36 +86,37 @@ export class AudioPlayer {
   }
 
   private startPlaying(): Observable<boolean> {
-    if (!this.isPlaying) {
-      this.isPlaying = true;
-      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
-        this.currentTime = this.getStartTime();
-      }
-      this.startOffset = this.currentTime;
+    if (!this.isPlaying && !this.resumingContext) {
+      this.resumingContext = true;
+      return this.audioService.resumeAudioContextIfSuspended().pipe(map(() => {
+        this.resumingContext = false;
 
-      return this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime).pipe(
-        tap(source => {
-          this.startAudioContextTime = this.audioService.getTime();
+        this.isPlaying = true;
+        if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
+          this.currentTime = this.getStartTime();
+        }
+        this.startOffset = this.currentTime;
 
-          this.source = source;
-          this.source.onended = () => {
-            this.ngZone.run(() => {
-              this.onPlayingEnded();
-              this.cdr.markForCheck();
-            });
-          };
+        this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime);
+        this.startAudioContextTime = this.audioService.getTime();
 
-          this.startTimeupdateInterval();
-        }),
-        map(() => true)
-      );
+        this.source.onended = () => {
+          this.ngZone.run(() => {
+            this.onPlayingEnded();
+            this.cdr.markForCheck();
+          });
+        };
+
+        this.startTimeupdateInterval();
+        return true;
+      }));
     } else {
       return of(false);
     }
   }
 
   private stopPlaying(): Observable<boolean> {
-    if (this.isPlaying) {
+    if (this.isPlaying && !this.resumingContext) {
       this.clearTimeupdateInterval();
       this.updateCurrentTime();
       this.isPlaying = false;

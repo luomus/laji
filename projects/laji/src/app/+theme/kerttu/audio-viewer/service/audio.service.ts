@@ -86,11 +86,15 @@ export class AudioService {
     return emptySegment;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): Observable<AudioBufferSourceNode> {
+  public resumeAudioContextIfSuspended(): Observable<void> {
     if (this.audioContext.state !== 'running') {
-      return from(this.audioContext.resume()).pipe(switchMap(() => this.playAudio(buffer, frequencyRange, startTime)));
+      return from(this.audioContext.resume());
+    } else {
+      return of(undefined);
     }
+  }
 
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
     if (this.activeSource) {
       this.stopAudio(this.activeSource);
     }
@@ -109,7 +113,7 @@ export class AudioService {
     }
     source.start(0, startTime);
     this.activeSource = source;
-    return of(source);
+    return source;
   }
 
   public stopAudio(source: AudioBufferSourceNode): Observable<Event> {
