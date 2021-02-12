@@ -16,9 +16,9 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   routeId: string;
 
   rows: any[];
-  selected = ['gathering.eventDate.begin', 'count', 'individualCountSum'];
+  selected = ['unit.linkings.taxon.scientificName', 'individualCountSum', 'gathering.conversions.year'];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
-    {prop: 'gathering.eventDate.begin', dir: 'desc'},
+    {prop: 'individualCountSum', dir: 'desc'},
   ];
 
   activeIndex = 0;
@@ -52,7 +52,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.routeId = queryParams['route'];
       this.season = queryParams['season'];
       this.year = queryParams['year'];
-      this.cd.markForCheck();
 
       if ((!this.season && !this.year && !this.rows && !this.loadingCensusList) ||
          (!this.season && !this.year && this.rows)) {
@@ -109,7 +108,15 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     this.loadingCensusList = true;
     this.resultService.getCensusListForRoute(routeId)
       .subscribe(censuses => {
-        this.rows = censuses;
+        const filtered = censuses.filter(
+            (s => o =>
+                (k => !s.has(k) && s.add(k))
+                (this.selected.map(k => o[k]).join('|'))
+            )
+            (new Set)
+        );
+
+        this.rows = filtered;
         this.loadingCensusList = false;
         this.cd.markForCheck();
       });

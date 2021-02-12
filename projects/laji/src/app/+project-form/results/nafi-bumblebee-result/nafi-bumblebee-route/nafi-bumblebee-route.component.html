@@ -1,12 +1,12 @@
 <h3>{{ routeId }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
 
 <div style="max-width: 400px">
-  <laji-wbc-result-filters
+  <laji-nafi-bumblebee-result-filters
     (yearChange)="activeYear = $event; onFilterChange()"
     (seasonChange)="activeSeason = $event; onFilterChange()"
     [yearRequired]="false"
     [showAreaFilter]="false"
-  ></laji-wbc-result-filters>
+  ></laji-nafi-bumblebee-result-filters>
 </div>
 
 <ng-container *ngIf="!season">

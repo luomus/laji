@@ -32,7 +32,12 @@ export class NafiBumblebeeRoutesListComponent implements OnChanges {
     },
     {
       name: 'document.namedPlace.municipalityDisplayName',
-      label: 'wbc.stats.routes.municipalityDisplayName'
+      label: 'wbc.stats.routes.municipalityDisplayName',
+      width: 300
+    },
+    {
+      name: 'unit.linkings.taxon.scientificName',
+      label: 'taxonomy.scientific.name'
     },
     {
       name: 'gathering.eventDate.begin',
@@ -53,7 +58,11 @@ export class NafiBumblebeeRoutesListComponent implements OnChanges {
     {
       name: 'individualCountSum',
       label: 'wbc.stats.route.individualCountSum'
-    }
+    },
+    {
+      name: 'gathering.conversions.year',
+      label: 'quality.mostActive.year'
+    },
   ];
   columns = [];
 

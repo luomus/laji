@@ -279,7 +279,7 @@ export class NafiBumblebeeResultService {
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
         query,
-        ['document.documentId'],
+        ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'],
         undefined,
         10000,
         1,
@@ -300,6 +300,8 @@ export class NafiBumblebeeResultService {
             const stats = statsByDocumentId[r['document.documentId']];
             r.count = stats.count;
             r.individualCountSum = stats.individualCountSum;
+            r['unit.linkings.taxon.scientificName'] = stats['unit.linkings.taxon.scientificName'];
+            r['gathering.conversions.year'] = stats['gathering.conversions.year'];
           } else {
             r.count = 0;
             r.individualCountSum = 0;
