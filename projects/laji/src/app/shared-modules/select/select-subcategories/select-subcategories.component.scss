@@ -8,7 +8,6 @@
   overflow: auto;
   margin: 0 -20px;
   padding: 10px 20px;
-  border-bottom: 1px solid $neutral-4;
   position: relative;
 }
 .lj-item {
@@ -70,26 +69,28 @@
   display: block;
 }
 
-.subCategoriesOptions {
+.subCategoryItem {
   margin-left: 10px;
 }
 
-.subCategoriesContainer {
-  padding-top: 0px;
-  border-bottom: 0px;
-  padding-bottom: 5px;
+.subCategoryBox {
+  padding-bottom: 0;
+  overflow: unset;
+  max-height: 65vh;
+}
+
+.no-overflow {
+  overflow: unset;
+}
+
+.subMenu {
+  margin-left: 10px;
 }
 
 ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
   position: absolute;
   right: -10px;
   top: 0px;
-}
-
-::ng-deep laji-info.relative {
-  position: relative;
-  left: 10px;
-  top: -1px;
 }
 
 @media only screen and (min-width : 768px) and (max-width: 1024px) {
@@ -106,6 +107,11 @@
 
   .lj-item {
     padding-right: 20px;
+  }
+
+  ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
+    right: -27px;
+    top: -8px;
   }
 
 }
