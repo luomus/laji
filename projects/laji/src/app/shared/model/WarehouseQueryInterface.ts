@@ -229,6 +229,7 @@ export interface WarehouseQueryInterface {
   effectiveTag?: Array<string>;
   formId?: string;
   reliability?: Array<string>;
+  collectionAndRecordQuality?: Array<string>;
 }
 
 

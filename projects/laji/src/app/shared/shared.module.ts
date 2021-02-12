@@ -76,6 +76,7 @@ import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
 import { ConfirmModalComponent } from './service/confirm-modal.component';
+import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 
 
 @NgModule({
@@ -112,7 +113,8 @@ import { ConfirmModalComponent } from './service/confirm-modal.component';
     IncludesPipe,
     SsrDisableDirective,
     QualityUrlPipe,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    CheckboxValuePipe,
   ],
   imports: [
     FormsModule,
@@ -148,7 +150,8 @@ import { ConfirmModalComponent } from './service/confirm-modal.component';
     SsrDisableDirective,
     NotFoundComponent,
     QualityUrlPipe,
-    InfoModule
+    InfoModule,
+    CheckboxValuePipe
   ]
 })
 export class SharedModule {
