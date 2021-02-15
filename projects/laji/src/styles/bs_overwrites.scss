@@ -87,3 +87,22 @@
 .btn-group .btn:not(:last-child) {
   border-right: 1px solid $neutral-4;
 }
+
+
+/*
+  DROPDOWN
+*/
+
+.dropdown-menu > .active > a {
+  background: $primary-5;
+}
+
+/*
+  LIST
+*/
+
+.list-group-item.active {
+  &, &:focus, &:active, &:hover {
+    background: $primary-5;
+  }
+}
