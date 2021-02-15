@@ -1,5 +1,5 @@
 diff --git a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
-index 871fd61..00c5ca5
+index f552253..ef0b2b9 100644
 --- a/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
 +++ b/node_modules/ngx-webstorage/bundles/ngx-webstorage.umd.js
 @@ -150,12 +150,20 @@
@@ -24,7 +24,7 @@ index 871fd61..00c5ca5
      var SessionStorageProvider = { provide: SESSION_STORAGE, useFactory: getSessionStorage };
  
 diff --git a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
-index 0282b84..2ad0eef
+index 0282b84..2ad0eef 100644
 --- a/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
 +++ b/node_modules/ngx-webstorage/fesm2015/ngx-webstorage.js
 @@ -139,12 +139,20 @@ StrategyCacheService.decorators = [

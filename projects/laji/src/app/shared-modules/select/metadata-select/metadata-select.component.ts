@@ -1,4 +1,4 @@
-import { catchError, concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, toArray, tap } from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { from, Observable, of, Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
-import { SelectOptions } from '../select/select.component';
+import { SelectOption } from '../select/select.component';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
@@ -63,10 +63,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   active = [];
   selectedTitle = '';
   _shouldSort = false;
-  _options: SelectOptions[] = null;
+  _options: SelectOption[] = null;
 
-  private subOptions: Subscription;
-  private innerValue = '';
+  protected subOptions: Subscription;
+  protected innerValue = '';
 
   onChange = (_: any) => { };
 
@@ -83,22 +83,22 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   constructor(
     public warehouseMapper: WarehouseValueMappingService,
-    private adminStatusInfoPipe: AdminStatusInfoPipe,
-    private annotationService: AnnotationService,
-    private collectionService: CollectionService,
-    private baseDataService: BaseDataService,
-    private metadataService: MetadataService,
-    private sourceService: SourceService,
-    private translate: TranslateService,
-    private areaService: AreaService,
-    private cd: ChangeDetectorRef,
-    private logger: Logger,
+    protected adminStatusInfoPipe: AdminStatusInfoPipe,
+    protected annotationService: AnnotationService,
+    protected collectionService: CollectionService,
+    protected baseDataService: BaseDataService,
+    protected metadataService: MetadataService,
+    protected sourceService: SourceService,
+    protected translate: TranslateService,
+    protected areaService: AreaService,
+    protected cd: ChangeDetectorRef,
+    protected logger: Logger,
   ) {
   }
 
   onTouched = () => {};
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
     this.lang = this.translate.currentLang;
     this.initOptions();
   }
@@ -133,7 +133,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
       ))
     ).subscribe(options => {
-        this._options = options;
+        this.setOptions(options);
         this.initActive();
         this.cd.markForCheck();
       });
@@ -199,7 +199,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     return item.id ?? idx;
   }
 
-  private optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
+  protected setOptions(options: SelectOption[]): void {
+    this._options = options;
+  }
+
+  protected optionsToWarehouseID(options: SelectOption[]): Observable<SelectOption[]> {
     return from(options).pipe(
       concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(
         filter(warehouseID => warehouseID !== option.id),
@@ -209,7 +213,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     );
   }
 
-  private getDataObservable(): Observable<any> {
+  protected getDataObservable(): Observable<any> {
     if (this.field) {
       this._shouldSort = true;
       switch (this.field) {
@@ -247,7 +251,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     );
   }
 
-  private sortOptionsByAnotherList(options: SelectOptions[]): SelectOptions[] {
+  protected sortOptionsByAnotherList(options: SelectOption[]): SelectOption[] {
     return options.sort((a, b) => {
       const hasA = this.firstOptions.includes(a.id);
       const hasB = this.firstOptions.includes(b.id);
@@ -262,7 +266,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     });
   }
 
-  private pickValue(data) {
+  protected pickValue(data) {
     if (!this.pick) {
       return data.map(value => ({id: value.id, value: value.value, info: value.info}));
     }
@@ -274,7 +278,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }, []);
   }
 
-  private addOptionInfo(option) {
+  protected addOptionInfo(option) {
     if (this.alt === 'MX.adminStatusEnum') {
       return this.adminStatusInfoPipe.transform(option);
     }

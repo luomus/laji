@@ -4,7 +4,7 @@
       <tr>
         <th *ngFor="let field of fields">{{ field.label | translate }}</th>
       </tr>
-      <tr *ngFor="let taxon of species">
+      <tr *ngFor="let taxon of species; trackBy:trackBySpeciesId">
         <ng-container *ngFor="let field of fields">
           <ng-container [ngSwitch]="field.key">
             <th *ngSwitchCase="'species'">
