@@ -1,6 +1,6 @@
-import { concatMap, map, toArray } from 'rxjs/operators';
-import { Observable, from, of } from 'rxjs';
-import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
+import { concatMap, map, switchMap, toArray } from 'rxjs/operators';
+import { Observable, from, of, Subscription } from 'rxjs';
+import { ChangeDetectorRef, Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { WarehouseValueMappingService } from '../service/warehouse-value-mapping.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
@@ -18,15 +18,17 @@ type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
   name: 'label',
   pure: false
 })
-export class LabelPipe implements PipeTransform {
-  value: string|string[] = '';
-  lastKey: string;
+export class LabelPipe implements PipeTransform, OnDestroy {
+  private value: string|string[] = '';
+  private lastKey: string;
+  private fetchSub: Subscription;
 
-  constructor(private translate: TranslateService,
-              private warehouseService: WarehouseValueMappingService,
-              private triplestoreLabelService: TriplestoreLabelService,
-              private cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private translate: TranslateService,
+    private warehouseService: WarehouseValueMappingService,
+    private triplestoreLabelService: TriplestoreLabelService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   transform(value: string, type?: labelType): string;
   transform(value: string[], type?: labelType): string[];
@@ -42,18 +44,30 @@ export class LabelPipe implements PipeTransform {
     }
     this.lastKey = key;
 
+    this.clearSub();
+
     if (Array.isArray(value)) {
-      from(value).pipe(
+      this.fetchSub = from(value).pipe(
         concatMap(v => this.fetchValue(v, type)),
         toArray()
       ).subscribe(v => {
         this.updateValue(v);
       });
     } else {
-      this.fetchValue(value, type).subscribe(v => this.updateValue(v));
+      this.fetchSub = this.fetchValue(value, type).subscribe(v => this.updateValue(v));
     }
 
     return this.value;
+  }
+
+  ngOnDestroy() {
+    this.clearSub();
+  }
+
+  private clearSub() {
+    if (this.fetchSub) {
+      this.fetchSub.unsubscribe();
+    }
   }
 
   private updateValue(value: string|string[]) {
@@ -62,31 +76,25 @@ export class LabelPipe implements PipeTransform {
   }
 
   private fetchValue(key: string, type?: labelType): Observable<string> {
-    let obs;
     switch (type) {
       case 'warehouse':
-        obs = this.warehouseService.getOriginalKey(key).pipe(
-          concatMap(res => this.fetchValue(res))
+        return this.warehouseService.getOriginalKey(key).pipe(
+          switchMap(res => this.fetchValue(res))
         );
-        break;
       case 'fullUri':
-        obs = key.indexOf('http') === 0 ?
+        return key.indexOf('http') === 0 ?
           this.triplestoreLabelService.get(IdService.getId(key), this.translate.currentLang) :
           of(key);
-        break;
       case 'withKey':
-        obs = this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
-          map(value => value !== key ? (value || '') + ' (' + key + ')' : value));
-        break;
+        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+          map(value => value !== key ? `${value} (${key})` : value)
+        );
       case 'emptyWhenMissing':
-        obs = this.fetchValue(key).pipe(
+        return this.fetchValue(key).pipe(
           map(res => res === key ? '' : key)
         );
-        break;
       default:
-        obs = this.triplestoreLabelService.get(key, this.translate.currentLang);
-        break;
+        return this.triplestoreLabelService.get(key, this.translate.currentLang);
     }
-    return obs;
   }
 }
