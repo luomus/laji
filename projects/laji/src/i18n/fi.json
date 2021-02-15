@@ -264,6 +264,8 @@
   "friend.removeConfirm": "Haluatko varmasi poistaa ystävän?",
   "friend.requests": "Kaveripyynnöt",
   "friend.requestSent": "Kaveripyyntö lähetetty",
+  "gathering.section": "Keräämisosio",
+  "gathering.section.outsideSection": "Ulkopuolinen osa",
   "haseka.button": "Siirry Vihkoon",
   "haseka.createPrefilledForm": "Luo esitäytetty lomake",
   "haseka.delete.cancel": "En",

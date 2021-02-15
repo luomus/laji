@@ -205,12 +205,12 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       switchMap(result => {
-        return this.addUnitStatsToResults(result, query);
+        return this.addUnitStatsToResults(result, query, year);
       })
     );
   }
 
-  getCensusListForRoute(routeId: string): Observable<any[]> {
+  getCensusListForRoute(routeId: string, year: number): Observable<any[]> {
     const query = {...this.getFilterParams(), namedPlaceId: [routeId]};
 
     return this.getList(
@@ -225,7 +225,7 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       switchMap(result => {
-        return this.addUnitStatsToResults(result, query);
+        return this.addUnitStatsToResults(result, query, year);
       })
     );
   }
@@ -275,11 +275,13 @@ export class NafiBumblebeeResultService {
     }));
   }
 
-  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface) {
+  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface, year: number|undefined) {
+    const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+    ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     return this.getList(
       this.warehouseApi.warehouseQueryStatisticsGet(
         query,
-        ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'],
+        aggregate,
         undefined,
         10000,
         1,
@@ -301,7 +303,8 @@ export class NafiBumblebeeResultService {
             r.count = stats.count;
             r.individualCountSum = stats.individualCountSum;
             r['unit.linkings.taxon.scientificName'] = stats['unit.linkings.taxon.scientificName'];
-            r['gathering.conversions.year'] = stats['gathering.conversions.year'];
+            year === undefined ? r['gathering.conversions.year'] = stats['gathering.conversions.year'] :
+            r['gathering.gatheringSection'] = stats['gathering.gatheringSection'];
           } else {
             r.count = 0;
             r.individualCountSum = 0;

@@ -63,6 +63,10 @@ export class NafiBumblebeeRoutesListComponent implements OnChanges {
       name: 'gathering.conversions.year',
       label: 'quality.mostActive.year'
     },
+    {
+      name: 'gathering.gatheringSection',
+      label: 'gathering.section'
+    },
   ];
   columns = [];
 

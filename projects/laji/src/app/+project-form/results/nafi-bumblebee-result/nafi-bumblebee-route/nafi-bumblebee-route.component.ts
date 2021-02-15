@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'laji-nafi-bumblebee-route',
@@ -16,9 +18,10 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   routeId: string;
 
   rows: any[];
-  selected = ['unit.linkings.taxon.scientificName', 'individualCountSum', 'gathering.conversions.year'];
+  selected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
+  defaultSelected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
-    {prop: 'individualCountSum', dir: 'desc'},
+    {prop: 'individualCountSum', dir: 'desc'}
   ];
 
   activeIndex = 0;
@@ -44,7 +47,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     private resultService: NafiBumblebeeResultService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -92,8 +96,16 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.resultSub = this.resultService.getCensusList(this.activeYear, this.activeSeason)
         .subscribe(list => {
+          const gio = list;
+          gio.map(el => {
+            if (!el['gathering.gatheringSection']) {
+              el['gathering.gatheringSection'] = this.translate.instant('gathering.section.outsideSection');
+            }
+          });
           this.rows = list;
           this.loading = false;
+          this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
+          this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}];
           this.cd.markForCheck();
         });
     }
@@ -106,7 +118,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
-    this.resultService.getCensusListForRoute(routeId)
+    this.resultService.getCensusListForRoute(routeId, this.activeYear)
       .subscribe(censuses => {
         const filtered = censuses.filter(
             (s => o =>
@@ -118,6 +130,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
         this.rows = filtered;
         this.loadingCensusList = false;
+        this.selected = [...this.defaultSelected, 'gathering.conversions.year'];
+        this.sorts = [{prop: 'individualCountSum', dir: 'desc'}];
         this.cd.markForCheck();
       });
   }
