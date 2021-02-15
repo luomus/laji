@@ -101,8 +101,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isfocusedCommentTaxon = false;
   currentLang: string;
   hasEditors: boolean;
-  unitExist: boolean;
-  imgExist: boolean;
+  unitOrImgExists: boolean;
   subscriptDocumentTools: Subscription;
   annotationTags$: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
@@ -283,8 +282,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
-    this.unitExist = false;
-    this.imgExist = false;
+    this.unitOrImgExists = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -332,27 +330,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
         this.hasEditors = true;
       }
 
-      if (this.document.gatherings) {
-        this.document.gatherings.forEach(gathering => {
-          if (gathering.units) {
-            if (!this.identifying) {
-              const i = gathering.units.find(unit => unit.unitId === this.highlight);
-              if (i) {
-                return this.unitExist = true;
-              }
-            } else {
-              gathering.units.forEach(element => {
-                (element.media || []).forEach(image => {
-                  const i = image.fullURL === this.highlight;
-                  if (i) {
-                    return this.imgExist = true;
-                  }
-                });
-              });
-            }
-          }
-        });
-      }
+      this.unitOrImgExists = this.document.gatherings?.some(({units}) =>
+        (units || []).some(unit =>
+          this.identifying
+            ? (unit.media || []).some(image => image.fullURL === this.highlight)
+            : unit.unitId === this.highlight
+        )
+      );
 
       if (this.result) {
         this.indexPagination = this.setIndexPagination();

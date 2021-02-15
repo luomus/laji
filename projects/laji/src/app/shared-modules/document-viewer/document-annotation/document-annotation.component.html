@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasDoc && document && (unitExist === true || imgExist === true)">
+<ng-container *ngIf="hasDoc && document && unitOrImgExists">
     <div class="shortcut-content" *ngIf="showShortcuts" [@shortcutsInOut]>
         <div class="row">
           <div class="col-sm-12">
