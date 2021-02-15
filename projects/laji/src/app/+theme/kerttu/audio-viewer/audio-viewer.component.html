@@ -20,13 +20,16 @@
   </div>
 
   <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}">
-    <button class="btn btn-default" (click)="audioPlayer.toggle()" [disabled]="loading">
+    <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"
         [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
       >
       </span>
-    </button>
+    </lu-button>
+    <lu-button [role]="audioPlayer.loop ? 'other' : undefined" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
+      <span class="fa fa-refresh"></span>
+    </lu-button>
     <ng-container *ngIf="showBrushControl">
       <div class="btn-with-info">
         <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">

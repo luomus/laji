@@ -8,8 +8,7 @@ export class AudioPlayer {
   isPlaying = false;
   currentTime: number;
 
-  autoplay = false;
-  autoplayRepeat = 1;
+  loop = false;
 
   private buffer: AudioBuffer;
   private playArea: IAudioViewerArea;
@@ -18,6 +17,8 @@ export class AudioPlayer {
   private startOffset = 0;
   private startAudioContextTime: number;
 
+  private autoplay = false;
+  private autoplayRepeat = 1;
   private autoplayCounter = 0;
 
   private timeupdateInterval = interval(20);
@@ -66,9 +67,13 @@ export class AudioPlayer {
     });
   }
 
-  startAutoplay() {
-    this.autoplayCounter = 0;
-    this.startPlaying().subscribe(() => {
+  startAutoplay(times: number) {
+    this.stopPlaying().pipe(switchMap(() => {
+      this.autoplay = true;
+      this.autoplayRepeat = times;
+      this.autoplayCounter = 0;
+      return this.startPlaying();
+    })).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
@@ -117,8 +122,9 @@ export class AudioPlayer {
 
   private stopPlaying(): Observable<boolean> {
     if (this.isPlaying && !this.resumingContext) {
+      const source = this.source;
       this.onPlayingEnded();
-      return this.audioService.stopAudio(this.source).pipe(
+      return this.audioService.stopAudio(source).pipe(
         map((event) => event != null)
       );
     } else {
@@ -131,13 +137,18 @@ export class AudioPlayer {
     this.updateCurrentTime();
     this.isPlaying = false;
 
+    const playingStoppedAutomatically = this.currentTime === this.getEndTime();
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      if (this.currentTime === this.getEndTime()) {
+      if (playingStoppedAutomatically) {
         this.autoplayCounter += 1;
         this.toggle();
+        return;
       } else {
         this.autoplayCounter = this.autoplayRepeat;
       }
+    }
+    if (this.loop && playingStoppedAutomatically) {
+      this.toggle();
     }
   }
 

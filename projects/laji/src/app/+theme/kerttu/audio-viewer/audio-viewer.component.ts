@@ -69,9 +69,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    this.audioPlayer.autoplay = this.autoplay;
-    this.audioPlayer.autoplayRepeat = this.autoplayRepeat;
-
     if (changes.recording) {
       this.clear();
       this.setAudioLoading(true);
@@ -86,7 +83,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
           this.setBuffer(buffer);
 
           if (this.autoplay) {
-            this.audioPlayer.startAutoplay();
+            this.audioPlayer.startAutoplay(this.autoplayRepeat);
           }
 
           this.cdr.markForCheck();
