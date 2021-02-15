@@ -26,4 +26,16 @@
     padding: 2px 4px;
     border-radius: 3px;
   }
+
+  /*
+    PRIMARY COLORS
+  */
+
+  .bootstrap-switch-handle-on {
+    background: $primary-5 !important;
+  }
+
+  .rw-multiselect-taglist li {
+    background: $primary-5;
+  }
 }
