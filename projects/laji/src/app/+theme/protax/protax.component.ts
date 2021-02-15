@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
-import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
 import {HttpEventType} from '@angular/common/http';
+import {DialogService} from '../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-protax',
@@ -20,7 +20,7 @@ export class ProtaxComponent implements OnDestroy {
   constructor(
     private protaxApi: ProtaxApi,
     private exportService: ExportService,
-    private translate: TranslateService,
+    private dialogService: DialogService,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -51,11 +51,11 @@ export class ProtaxComponent implements OnDestroy {
       this.cd.markForCheck();
 
       if (err.status === 400) {
-        alert(this.translate.instant('theme.protax.invalidSequence'));
+        this.dialogService.alert('theme.protax.invalidSequence');
       } else if (err.status === 413) {
-        alert(this.translate.instant('theme.protax.tooLargeSequence'));
+        this.dialogService.alert('theme.protax.tooLargeSequence');
       } else {
-        alert(this.translate.instant('theme.protax.genericError'));
+        this.dialogService.alert('theme.protax.genericError');
       }
     });
   }

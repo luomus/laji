@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
 import {ProtaxModelEnum} from '../models';
-import { TranslateService } from '@ngx-translate/core';
+import {DialogService} from '../../../shared/service/dialog.service';
 
 enum Tab {
   textArea,
@@ -30,7 +30,7 @@ export class ProtaxFormComponent {
   @Output() submit = new EventEmitter<FormData>();
 
   constructor(
-    private translate: TranslateService
+    private dialogService: DialogService
   ) { }
 
   updateSequenceFile(files: FileList) {
@@ -39,12 +39,12 @@ export class ProtaxFormComponent {
 
   submitForm() {
     if (this.probabilityThreshold == null || this.probabilityThreshold < 0 || this.probabilityThreshold > 1) {
-      alert(this.translate.instant('theme.protax.invalidThreshold'));
+      this.dialogService.alert('theme.protax.invalidThreshold');
       return;
     }
 
     if ((this.activeTab === Tab.textArea && !this.sequenceData) || (this.activeTab === Tab.fileSelect && !this.sequenceFile)) {
-      alert(this.translate.instant('theme.protax.noSequence'));
+      this.dialogService.alert('theme.protax.noSequence');
       return;
     }
 
