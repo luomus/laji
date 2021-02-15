@@ -1542,7 +1542,7 @@
   "theme.kerttu.listSpecies": "Lisää äänitteellä esiintyvä lintulaji:",
   "theme.kerttu.nextRecording": "Tallenna ja siirry seuraavaan",
   "theme.kerttu.nextRecording.validation": "Kirjaa vähintään yksi lintulaji tai valitse ”Äänite on huonolaatuinen (kohinaa, sadetta tmv.)”, ”Äänitteellä ei kuulu linnun ääniä” tai ”Äänitteellä kuuluu linnun ääniä, joita en tunnista”.",
-  "theme.kerttu.notEnoughLetterAnnotations": "Ennen siirtymistä tähän vaiheeseen, tee vähintään 20:lle kirjaimelle tunnistuksia <strong>Tunnista kirjaimia</strong> -osiossa.",
+  "theme.kerttu.notEnoughLetterAnnotations": "Ennen siirtymistä tähän vaiheeseen, tee sata tunnistusta vähintään 20:lle malliäänelle <strong>Tunnista malliääniä</strong> -osiossa.",
   "theme.kerttu.notSupported": "Web Audio API ei ole tuettu tässä selaimessa!",
   "theme.kerttu.notSure": "En tiedä",
   "theme.kerttu.occurs": "Esiintyy varmasti",
