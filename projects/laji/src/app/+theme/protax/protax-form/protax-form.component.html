@@ -34,10 +34,10 @@
 </div>
 
 <lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
-  <ng-container *ngIf="!(loading && downloadProgress)">
+  <ng-container *ngIf="!(loading && downloadProgress) else downloading">
     {{ 'theme.protax.analyse' | translate }}
   </ng-container>
-  <ng-container *ngIf="loading && downloadProgress">
+  <ng-template #downloading>
     {{ 'theme.protax.downloading' | translate }} {{ downloadProgress | percent:'1.0' }}
-  </ng-container>
+  </ng-template>
 </lu-button>
