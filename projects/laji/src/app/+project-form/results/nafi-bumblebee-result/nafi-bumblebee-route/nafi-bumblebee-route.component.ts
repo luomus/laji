@@ -94,7 +94,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getCensusList(this.activeYear, this.activeSeason)
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeSeason, this.routeId)
         .subscribe(list => {
           const gio = list;
           gio.map(el => {
@@ -118,17 +118,9 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
-    this.resultService.getCensusListForRoute(routeId, this.activeYear)
+    this.resultService.getUnitStats(this.activeYear, this.activeSeason, routeId)
       .subscribe(censuses => {
-        const filtered = censuses.filter(
-            (s => o =>
-                (k => !s.has(k) && s.add(k))
-                (this.selected.map(k => o[k]).join('|'))
-            )
-            (new Set)
-        );
-
-        this.rows = filtered;
+        this.rows = censuses;
         this.loadingCensusList = false;
         this.selected = [...this.defaultSelected, 'gathering.conversions.year'];
         this.sorts = [{prop: 'individualCountSum', dir: 'desc'}];

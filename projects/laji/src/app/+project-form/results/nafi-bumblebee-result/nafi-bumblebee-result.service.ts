@@ -189,8 +189,9 @@ export class NafiBumblebeeResultService {
     );
   }
 
-  getCensusList(year?: number, season?: SEASON): Observable<any[]> {
-    const query = this.getFilterParams(year, season);
+  getCensusList(year?: number, season?: SEASON, routeId?: string): Observable<any[]> {
+    const query = {collectionId: [this.collectionId], namedPlaceId: [routeId]};
+    const unitQuery = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
 
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
@@ -205,7 +206,7 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       switchMap(result => {
-        return this.addUnitStatsToResults(result, query, year);
+        return this.addUnitStatsToResults(result, unitQuery, year, routeId);
       })
     );
   }
@@ -225,7 +226,7 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       switchMap(result => {
-        return this.addUnitStatsToResults(result, query, year);
+        return this.addUnitStatsToResults(result, query, year, routeId);
       })
     );
   }
@@ -275,11 +276,12 @@ export class NafiBumblebeeResultService {
     }));
   }
 
-  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface, year: number|undefined) {
+  private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface, year: number|undefined, routeId: string) {
     const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
     ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
+    query = {...query, namedPlaceId: [routeId]};
     return this.getList(
-      this.warehouseApi.warehouseQueryStatisticsGet(
+      this.warehouseApi.warehouseQueryUnitStatisticsGet(
         query,
         aggregate,
         undefined,
@@ -297,6 +299,9 @@ export class NafiBumblebeeResultService {
         return statsByDocumentId;
       }),
       map(statsByDocumentId => {
+        if (Object.entries(statsByDocumentId).length === 0) {
+          return [];
+        }
         for (const r of result) {
           if (statsByDocumentId[r['document.documentId']]) {
             const stats = statsByDocumentId[r['document.documentId']];
@@ -310,8 +315,25 @@ export class NafiBumblebeeResultService {
             r.individualCountSum = 0;
           }
         }
-        return result;
+        return result.filter(el => el['count'] > 0);
       })
+    );
+  }
+
+  getUnitStats(year: number|undefined, season: SEASON, routeId: string) {
+    const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+    ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
+    const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
+    return this.getList(
+      this.warehouseApi.warehouseQueryUnitStatisticsGet(
+        query,
+        aggregate,
+        undefined,
+        10000,
+        1,
+        undefined,
+        false
+      )
     );
   }
 

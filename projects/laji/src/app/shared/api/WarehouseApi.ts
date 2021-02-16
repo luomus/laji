@@ -221,6 +221,13 @@ export class WarehouseApi {
     return this.warehouseQueryGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
+   /**
+   * Same as aggregate query, but performs the query on private data
+   */
+  public warehouseQueryUnitStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    return this.warehouseQueryGet('unit/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
   public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/downloadApprovalRequest';
 
