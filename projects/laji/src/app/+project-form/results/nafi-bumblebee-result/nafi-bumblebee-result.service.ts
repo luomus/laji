@@ -29,7 +29,7 @@ export class NafiBumblebeeResultService {
   private seasonRanges = {
     'spring': [4, 5],
     'summer': [6, 7],
-    'fall': [8, 9]
+    'fall': [8, 9, 10]
   };
 
   private yearCache: number[];
@@ -334,6 +334,11 @@ export class NafiBumblebeeResultService {
         undefined,
         false
       )
+    ).pipe(
+      map(result => {
+        return this.mergeElementsByProperties(result, year === undefined ? ['unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+        ['unit.linkings.taxon.scientificName', 'gathering.gatheringSection']);
+      })
     );
   }
 
@@ -548,9 +553,9 @@ export class NafiBumblebeeResultService {
 
   private getYearMonthParam(year: number, season?: SEASON): string {
     const startMonth = season ? this.seasonRanges[season][0] : this.seasonRanges['spring'][0];
-    const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['fall'][1];
-    const startYear = startMonth > this.seasonRanges['fall'][1] ? year : year + 1;
-    const endYear = endMonth > this.seasonRanges['fall'][1] ? year : year + 1;
+    const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['fall'][2];
+    const startYear = startMonth > this.seasonRanges['fall'][2] ? year - 1 : year;
+    const endYear = endMonth > this.seasonRanges['fall'][2] ? year - 1 : year;
     return startYear + '-' + this.padMonth(startMonth) + '/' + endYear + '-' + this.padMonth(endMonth);
   }
 
@@ -582,4 +587,24 @@ export class NafiBumblebeeResultService {
     const mid = array.length / 2;
     return mid % 1 ? array[mid - 0.5] : (array[mid - 1] + array[mid]) / 2;
   }
+
+  private mergeElementsByProperties(result: any[], filters: string[]) {
+    const arrayMerged = [];
+    result.forEach(item => {
+      const existing = arrayMerged.filter((v) => {
+        return (v[filters[0]] === item[filters[0]] && v[filters[1]] === item[filters[1]]);
+      });
+      if (existing.length) {
+        const existingIndex = arrayMerged.indexOf(existing[0]);
+        arrayMerged[existingIndex]['individualCountSum'] = arrayMerged[existingIndex]['individualCountSum'] += item['individualCountSum'];
+      } else {
+        arrayMerged.push(item);
+      }
+    });
+
+    return arrayMerged;
+  }
+
+
+
 }

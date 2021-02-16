@@ -10,7 +10,7 @@
           style="width: 120px">
           <option *ngIf="!yearRequired" [value]="0" [selected]="!activeYear">{{ 'all' | translate }}</option>
           <option *ngFor="let year of years" [value]="year" [selected]="year === activeYear">
-            {{ year + '/' + (year + 1) }}
+            {{ year }}
           </option>
         </select>
       </div>
