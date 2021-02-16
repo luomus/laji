@@ -3,6 +3,7 @@ import {Inject, Injectable, NgZone} from '@angular/core';
 import {from, fromEventPattern, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioPlayer} from './audio-player';
 
 @Injectable()
 export class AudioService {
@@ -11,7 +12,7 @@ export class AudioService {
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  private activeSource: AudioBufferSourceNode;
+  private activePlayer: AudioPlayer;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -105,7 +106,7 @@ export class AudioService {
       });
 
       const resultChanData = resultBuffer.getChannelData(i);
-      for (let j = 0; j <= chanData.length; j++) {
+      for (let j = 0; j < chanData.length; j++) {
         resultChanData[j] = chanData[j] * (1 / max);
       }
     }
@@ -120,9 +121,9 @@ export class AudioService {
     }
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
-    if (this.activeSource) {
-      this.stopAudio(this.activeSource);
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
+    if (this.activePlayer && this.activePlayer !== player) {
+      this.activePlayer.stop();
     }
 
     const source = this.audioContext.createBufferSource();
@@ -138,7 +139,7 @@ export class AudioService {
       source.connect(this.audioContext.destination);
     }
     source.start(0, startTime);
-    this.activeSource = source;
+    this.activePlayer = player;
     return source;
   }
 

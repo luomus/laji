@@ -2,7 +2,7 @@ import {IAudioViewerArea} from '../models';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {AudioService} from './audio.service';
 import {interval, Subscription, Observable, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 export class AudioPlayer {
   isPlaying = false;
@@ -46,10 +46,7 @@ export class AudioPlayer {
   }
 
   toggle() {
-    const obs: Observable<boolean> = this.isPlaying ? this.stopPlaying() : this.startPlaying();
-    obs.subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.isPlaying ? this.stop() : this.start();
   }
 
   stop() {
@@ -58,31 +55,29 @@ export class AudioPlayer {
     });
   }
 
-  startFrom(time: number) {
-    this.stopPlaying().pipe(switchMap(() => {
-      this.currentTime = time;
-      return this.startPlaying();
-    })).subscribe(() => {
+  start() {
+    this.startPlaying().subscribe(() => {
       this.cdr.markForCheck();
     });
+  }
+
+  startFrom(time: number) {
+    this.stop();
+    this.currentTime = time;
+    this.start();
   }
 
   startAutoplay(times: number) {
-    this.stopPlaying().pipe(switchMap(() => {
-      this.autoplay = true;
-      this.autoplayRepeat = times;
-      this.autoplayCounter = 0;
-      return this.startPlaying();
-    })).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.stop();
+    this.autoplay = true;
+    this.autoplayRepeat = times;
+    this.autoplayCounter = 0;
+    this.start();
   }
 
   clear() {
-    this.clearTimeupdateInterval();
-
-    if (this.source && this.isPlaying) {
-      this.audioService.stopAudio(this.source).subscribe();
+    if (this.source) {
+      this.stop();
     }
 
     this.currentTime = undefined;
@@ -102,7 +97,7 @@ export class AudioPlayer {
         }
         this.startOffset = this.currentTime;
 
-        this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime);
+        this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange, this.currentTime, this);
         this.startAudioContextTime = this.audioService.getAudioContextTime();
 
         this.source.onended = () => {
@@ -123,7 +118,8 @@ export class AudioPlayer {
   private stopPlaying(): Observable<boolean> {
     if (this.isPlaying && !this.resumingContext) {
       const source = this.source;
-      this.onPlayingEnded();
+      this.onPlayingStopped();
+
       return this.audioService.stopAudio(source).pipe(
         map((event) => event != null)
       );
@@ -132,22 +128,24 @@ export class AudioPlayer {
     }
   }
 
+  private onPlayingStopped() {
+    this.clearTimeupdateInterval();
+    this.updateCurrentTime();
+    this.isPlaying = false;
+    this.autoplayCounter = this.autoplayRepeat;
+  }
+
   private onPlayingEnded() {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
     this.isPlaying = false;
 
-    const playingStoppedAutomatically = this.currentTime === this.getEndTime();
     if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      if (playingStoppedAutomatically) {
-        this.autoplayCounter += 1;
-        this.toggle();
-        return;
-      } else {
-        this.autoplayCounter = this.autoplayRepeat;
-      }
+      this.autoplayCounter += 1;
+      this.toggle();
+      return;
     }
-    if (this.loop && playingStoppedAutomatically) {
+    if (this.loop) {
       this.toggle();
     }
   }
@@ -157,7 +155,9 @@ export class AudioPlayer {
       this.updateCurrentTime();
       const endTime = this.getEndTime();
       if (this.currentTime === endTime && endTime !== this.buffer.duration) {
-        this.stop();
+        const source = this.source;
+        this.onPlayingEnded();
+        this.audioService.stopAudio(source).subscribe();
       }
       this.cdr.markForCheck();
     });
