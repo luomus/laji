@@ -86,6 +86,32 @@ export class AudioService {
     return emptySegment;
   }
 
+  public normaliseAudio(buffer: AudioBuffer) {
+    const resultBuffer = this.audioContext.createBuffer(
+      1,
+      buffer.length,
+      buffer.sampleRate
+    );
+
+    for (let i = 0; i < buffer.numberOfChannels; i++) {
+      const chanData = buffer.getChannelData(i);
+
+      let max = 0;
+      chanData.forEach((value) => {
+        const absValue = Math.abs(value);
+        if (absValue > max) {
+          max = absValue;
+        }
+      });
+
+      const resultChanData = resultBuffer.getChannelData(i);
+      for (let j = 0; j <= chanData.length; j++) {
+        resultChanData[j] = chanData[j] * (1 / max);
+      }
+    }
+    return resultBuffer;
+  }
+
   public resumeAudioContextIfSuspended(): Observable<void> {
     if (this.audioContext.state !== 'running') {
       return from(this.audioContext.resume());
@@ -131,7 +157,7 @@ export class AudioService {
     }
   }
 
-  public getTime() {
+  public getAudioContextTime() {
     return this.audioContext.currentTime;
   }
 

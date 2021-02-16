@@ -153,7 +153,9 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       yRange: this.focusArea?.yRange
     };
 
-    this.extractedBuffer = this.audioService.extractSegment(buffer, xRange[0], xRange[1]);
+    this.extractedBuffer = this.audioService.normaliseAudio(
+      this.audioService.extractSegment(buffer, xRange[0], xRange[1])
+    );
 
     this.audioPlayer.setBuffer(this.extractedBuffer, this.getPlayArea());
   }

@@ -82,7 +82,7 @@ export class AudioPlayer {
     this.clearTimeupdateInterval();
 
     if (this.source && this.isPlaying) {
-      this.audioService.stopAudio(this.source);
+      this.audioService.stopAudio(this.source).subscribe();
     }
 
     this.currentTime = undefined;
@@ -103,7 +103,7 @@ export class AudioPlayer {
         this.startOffset = this.currentTime;
 
         this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime);
-        this.startAudioContextTime = this.audioService.getTime();
+        this.startAudioContextTime = this.audioService.getAudioContextTime();
 
         this.source.onended = () => {
           this.ngZone.run(() => {
