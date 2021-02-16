@@ -27,9 +27,9 @@ export class NafiBumblebeeResultService {
   private butterflyId = 'MX.53695';
   private insectsId = 'MX.37613';
   private seasonRanges = {
-    'fall': [10, 11],
-    'winter': [12, 1],
-    'spring': [2, 3]
+    'spring': [4, 5],
+    'summer': [6, 7],
+    'fall': [8, 9]
   };
 
   private yearCache: number[];
@@ -547,10 +547,10 @@ export class NafiBumblebeeResultService {
   }
 
   private getYearMonthParam(year: number, season?: SEASON): string {
-    const startMonth = season ? this.seasonRanges[season][0] : this.seasonRanges['fall'][0];
-    const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['spring'][1];
-    const startYear = startMonth > this.seasonRanges['spring'][1] ? year : year + 1;
-    const endYear = endMonth > this.seasonRanges['spring'][1] ? year : year + 1;
+    const startMonth = season ? this.seasonRanges[season][0] : this.seasonRanges['spring'][0];
+    const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['fall'][1];
+    const startYear = startMonth > this.seasonRanges['fall'][1] ? year : year + 1;
+    const endYear = endMonth > this.seasonRanges['fall'][1] ? year : year + 1;
     return startYear + '-' + this.padMonth(startMonth) + '/' + endYear + '-' + this.padMonth(endMonth);
   }
 

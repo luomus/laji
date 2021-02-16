@@ -105,7 +105,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
           this.rows = list;
           this.loading = false;
           this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
-          this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}];
+          this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}, {prop: 'gathering.gatheringSection', dir: 'asc'}];
           this.cd.markForCheck();
         });
     }
