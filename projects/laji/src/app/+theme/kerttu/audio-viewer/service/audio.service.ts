@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {from, fromEventPattern, Observable, of} from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
 import {AudioPlayer} from './audio-player';
@@ -13,6 +13,8 @@ export class AudioService {
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
   private activePlayer: AudioPlayer;
+
+  private resumeContext$: Observable<void>;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -113,12 +115,18 @@ export class AudioService {
     return resultBuffer;
   }
 
-  public resumeAudioContextIfSuspended(): Observable<void> {
-    if (this.audioContext.state !== 'running') {
-      return from(this.audioContext.resume());
-    } else {
-      return of(undefined);
+  public audioContextIsSuspended(): boolean {
+    return this.audioContext.state !== 'running';
+  }
+
+  public resumeAudioContext(): Observable<void> {
+    if (!this.resumeContext$) {
+      this.resumeContext$ = from(this.audioContext.resume()).pipe(
+        tap(() => this.resumeContext$ = null),
+        share()
+      );
     }
+    return this.resumeContext$;
   }
 
   public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
@@ -143,19 +151,10 @@ export class AudioService {
     return source;
   }
 
-  public stopAudio(source: AudioBufferSourceNode): Observable<Event> {
+  public stopAudio(source: AudioBufferSourceNode) {
     try {
       source.stop(0);
-      return fromEventPattern((handler => {
-        source.onended = () => {
-          this.ngZone.run(() => {
-            handler();
-          });
-        };
-      }));
-    } catch (e) {
-      return of(undefined);
-    }
+    } catch (e) {}
   }
 
   public getAudioContextTime() {

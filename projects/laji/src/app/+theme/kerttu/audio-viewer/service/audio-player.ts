@@ -1,8 +1,7 @@
 import {IAudioViewerArea} from '../models';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {AudioService} from './audio.service';
-import {interval, Subscription, Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {interval, Subscription} from 'rxjs';
 
 export class AudioPlayer {
   isPlaying = false;
@@ -25,6 +24,7 @@ export class AudioPlayer {
   private timeupdateIntervalSub: Subscription;
 
   private resumingContext = false;
+  private resumeContextSub: Subscription;
 
   constructor(
     private audioService: AudioService,
@@ -50,15 +50,26 @@ export class AudioPlayer {
   }
 
   stop() {
-    this.stopPlaying().subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.stopPlaying();
+    this.cdr.markForCheck();
   }
 
   start() {
-    this.startPlaying().subscribe(() => {
+    if (this.resumingContext) {
+      return;
+    }
+
+    if (this.audioService.audioContextIsSuspended()) {
+      this.resumingContext = true;
+      this.resumeContextSub = this.audioService.resumeAudioContext().subscribe(() => {
+        this.resumingContext = false;
+        this.startPlaying();
+        this.cdr.markForCheck();
+      });
+    } else {
+      this.startPlaying();
       this.cdr.markForCheck();
-    });
+    }
   }
 
   startFrom(time: number) {
@@ -76,6 +87,9 @@ export class AudioPlayer {
   }
 
   clear() {
+    if (this.resumeContextSub) {
+      this.resumeContextSub.unsubscribe();
+    }
     if (this.source) {
       this.stop();
     }
@@ -85,46 +99,34 @@ export class AudioPlayer {
     this.source = undefined;
   }
 
-  private startPlaying(): Observable<boolean> {
-    if (!this.isPlaying && !this.resumingContext) {
-      this.resumingContext = true;
-      return this.audioService.resumeAudioContextIfSuspended().pipe(map(() => {
-        this.resumingContext = false;
+  private startPlaying() {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
+        this.currentTime = this.getStartTime();
+      }
+      this.startOffset = this.currentTime;
 
-        this.isPlaying = true;
-        if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
-          this.currentTime = this.getStartTime();
-        }
-        this.startOffset = this.currentTime;
+      this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange, this.currentTime, this);
+      this.startAudioContextTime = this.audioService.getAudioContextTime();
 
-        this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange, this.currentTime, this);
-        this.startAudioContextTime = this.audioService.getAudioContextTime();
+      this.source.onended = () => {
+        this.ngZone.run(() => {
+          this.onPlayingEnded();
+          this.cdr.markForCheck();
+        });
+      };
 
-        this.source.onended = () => {
-          this.ngZone.run(() => {
-            this.onPlayingEnded();
-            this.cdr.markForCheck();
-          });
-        };
-
-        this.startTimeupdateInterval();
-        return true;
-      }));
-    } else {
-      return of(false);
+      this.startTimeupdateInterval();
     }
   }
 
-  private stopPlaying(): Observable<boolean> {
-    if (this.isPlaying && !this.resumingContext) {
+  private stopPlaying() {
+    if (this.isPlaying) {
       const source = this.source;
+      source.onended = () => {};
       this.onPlayingStopped();
-
-      return this.audioService.stopAudio(source).pipe(
-        map((event) => event != null)
-      );
-    } else {
-      return of(false);
+      this.audioService.stopAudio(source);
     }
   }
 
@@ -155,9 +157,7 @@ export class AudioPlayer {
       this.updateCurrentTime();
       const endTime = this.getEndTime();
       if (this.currentTime === endTime && endTime !== this.buffer.duration) {
-        const source = this.source;
-        this.onPlayingEnded();
-        this.audioService.stopAudio(source).subscribe();
+        this.audioService.stopAudio(this.source);
       }
       this.cdr.markForCheck();
     });
