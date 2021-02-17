@@ -142,13 +142,17 @@ export class AudioPlayer {
     this.updateCurrentTime();
     this.isPlaying = false;
 
-    if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      this.autoplayCounter += 1;
-      this.toggle();
-      return;
-    }
-    if (this.loop) {
-      this.toggle();
+    if (this.currentTime === this.getEndTime()) {
+      if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
+        this.autoplayCounter += 1;
+        this.toggle();
+        return;
+      }
+      if (this.loop) {
+        this.toggle();
+      }
+    } else {
+      this.autoplayCounter = this.autoplayRepeat;
     }
   }
 
