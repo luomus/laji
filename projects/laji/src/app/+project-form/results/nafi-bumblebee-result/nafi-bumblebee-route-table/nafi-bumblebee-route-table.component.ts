@@ -5,6 +5,7 @@ import { ExportService } from '../../../../shared/service/export.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SEASON } from '../nafi-bumblebee-result.service';
 import { BookType } from 'xlsx';
+import { filter } from 'jszip';
 
 @Component({
   selector: 'laji-nafi-bumblebee-route-table',
@@ -16,6 +17,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() routeId: string;
   @Input() season: SEASON;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() year = '';
 
   rows: any[];
   columns: DatatableColumn[] = [];
@@ -33,8 +35,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Output() documentClick = new EventEmitter<string>();
 
   @Input() set data(data: any) {
-    console.log('ciao');
-    console.log(data);
     if (!data) {
       this.rows = undefined;
       this.columns = [];
@@ -56,8 +56,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     if (this.showWbcRouteTableInfo === null) {
       this.showWbcRouteTableInfo = true;
     }
-    console.log(this.sorts);
-    console.log(this.rows);
   }
 
   toggleInfo() {
@@ -96,35 +94,33 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
     data.forEach(element => {
       for (const key in element) {
-        if (key.startsWith('gathering')) {
-          console.log(key.substring(key.indexOf('_') + 1));
+        if (key.startsWith('gathering') || key.startsWith('year')) {
           gatheringSect.push(key.substring(key.indexOf('_') + 1));
         }
       }
     });
 
-    console.log(gatheringSect);
 
     gatheringSect = gatheringSect.filter((el, index) => {
       return gatheringSect.indexOf(el) === index;
     });
 
-    gatheringSect.sort((a, b) => a - b);
+    if (Math.min(...gatheringSect) > 1950) {
+      gatheringSect.sort((a, b) => b - a);
+    } else {
+      gatheringSect.sort((a, b) => a - b);
+    }
 
-    console.log(gatheringSect);
 
     for (let i = 0; i <= gatheringSect.length - 1; i++) {
       this.columns.push({
-        name: gatheringSect[i] === 0 ? 'gatheringSection_undefined' : 'gatheringSection_' + gatheringSect[i],
+        name: gatheringSect[i] === 0 ? 'gatheringSection_undefined' : (gatheringSect[i] > 1950 ? 'year_' + gatheringSect[i] : 'gatheringSection_' + gatheringSect[i]),
         label: gatheringSect[i] === 0 ? this.translate.instant('gathering.section.outsideSection') : gatheringSect[i] + '',
         width: 40,
         cellTemplate: this.numberOrDocumentIdsTpl,
         cellClass: this._getCellClass
       });
     }
-
-    console.log(this.columns);
-    console.log(this.rows);
 
   }
 
@@ -146,7 +142,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     for (let i = 0; i < this.columns.length; i++) {
       aoa[0].push(this.translate.instant(this.columns[i].label));
     }
-    console.log(this.rows);
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);
       for (let j = 0; j < this.columns.length; j++) {

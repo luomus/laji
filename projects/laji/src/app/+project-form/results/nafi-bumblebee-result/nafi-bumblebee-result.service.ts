@@ -593,8 +593,7 @@ export class NafiBumblebeeResultService {
     const objectFilter = [];
 
 
-
-    for (let i = minMax[0]; i < (minMax[0] === 0 ? minMax[1] + 1 : minMax[1] - minMax[0] ); i++) {
+    for (let i = minMax[0]; i < (minMax[0] === 0 ? minMax[1] + 1 : minMax[1] + 1 ); i++) {
      if (i === 0) {
       objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_undefined');
      } else {
@@ -603,11 +602,7 @@ export class NafiBumblebeeResultService {
 
     }
 
-    console.log(objectFilter);
-
-
     const arrayMerged = [];
-    console.log(result);
     result.forEach(item => {
       const existing = arrayMerged.filter((v) => {
         return (v[filters[0]] === item[filters[0]] && v[filters[1]] === item[filters[1]]);
@@ -634,12 +629,9 @@ export class NafiBumblebeeResultService {
 
 
       }
-      console.log(arrayMerged);
 
     });
 
-
-    console.log(arrayMerged);
     return arrayMerged;
   }
 
@@ -649,7 +641,6 @@ export class NafiBumblebeeResultService {
     array.forEach(element => {
       for (const key in element) {
         if (key.startsWith(filter)) {
-          console.log(element[key]);
           tmpArray.push(element[key]);
         }
       }

@@ -98,8 +98,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
         .subscribe(list => {
           this.observationStats = list;
           this.loading = false;
-          console.log('pizza');
-          console.log(this.observationStats);
           this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
           this.sorts = [{prop: 'total', dir: 'asc'}];
           this.cd.markForCheck();
@@ -129,7 +127,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     this.resultService.getObservationStatsForRoute(routeId)
       .subscribe(data => {
         this.observationStats = data;
-        console.log(data);
         this.loadingObservationStats = false;
         this.cd.markForCheck();
       });
