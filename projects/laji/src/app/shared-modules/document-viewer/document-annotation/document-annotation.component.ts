@@ -282,7 +282,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
-    this.unitOrImgExists = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;

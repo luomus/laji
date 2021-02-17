@@ -156,7 +156,7 @@
     <h2>{{ 'viewer.notFound' | translate }}</h2>
   </div>
 </ng-container>
-<ng-container *ngIf="(unitExist === false && imgExist === false) && hasDoc">
+<ng-container *ngIf="unitOrImgExists === false && hasDoc">
   <div class="page-header">
     <h2>{{ 'observation.notFound' | translate }}</h2>
   </div>
