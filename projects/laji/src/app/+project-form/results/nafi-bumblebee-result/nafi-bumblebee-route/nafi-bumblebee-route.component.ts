@@ -17,11 +17,11 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   routeId: string;
 
-  rows: any[];
+  rows: any;
   selected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
   defaultSelected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
-    {prop: 'individualCountSum', dir: 'desc'}
+    {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}
   ];
 
   activeIndex = 0;
@@ -96,16 +96,12 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeSeason, this.routeId)
         .subscribe(list => {
-          const gio = list;
-          gio.map(el => {
-            if (!el['gathering.gatheringSection']) {
-              el['gathering.gatheringSection'] = this.translate.instant('gathering.section.outsideSection');
-            }
-          });
-          this.rows = list;
+          this.observationStats = list;
           this.loading = false;
+          console.log('pizza');
+          console.log(this.observationStats);
           this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
-          this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}, {prop: 'gathering.gatheringSection', dir: 'asc'}];
+          this.sorts = [{prop: 'total', dir: 'asc'}];
           this.cd.markForCheck();
         });
     }
@@ -120,7 +116,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     this.loadingCensusList = true;
     this.resultService.getUnitStats(this.activeYear, this.activeSeason, routeId)
       .subscribe(censuses => {
-        this.rows = censuses;
+        this.observationStats = censuses;
         this.loadingCensusList = false;
         this.selected = [...this.defaultSelected, 'gathering.conversions.year'];
         this.sorts = [{prop: 'individualCountSum', dir: 'desc'}];
@@ -133,6 +129,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     this.resultService.getObservationStatsForRoute(routeId)
       .subscribe(data => {
         this.observationStats = data;
+        console.log(data);
         this.loadingObservationStats = false;
         this.cd.markForCheck();
       });

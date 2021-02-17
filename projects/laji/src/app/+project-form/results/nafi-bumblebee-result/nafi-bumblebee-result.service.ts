@@ -321,14 +321,14 @@ export class NafiBumblebeeResultService {
   }
 
   getUnitStats(year: number|undefined, season: SEASON, routeId: string) {
-    const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-    ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
+    const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+    ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
     return this.getList(
       this.warehouseApi.warehouseQueryUnitStatisticsGet(
         query,
         aggregate,
-        undefined,
+        aggregate.filter((el, index) => index === 2),
         10000,
         1,
         undefined,
@@ -336,8 +336,8 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       map(result => {
-        return this.mergeElementsByProperties(result, year === undefined ? ['unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-        ['unit.linkings.taxon.scientificName', 'gathering.gatheringSection']);
+        return this.mergeElementsByProperties(result, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+        ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']);
       })
     );
   }
@@ -589,20 +589,73 @@ export class NafiBumblebeeResultService {
   }
 
   private mergeElementsByProperties(result: any[], filters: string[]) {
+    const minMax = this.findMaxMinFilter(result, filters[2]);
+    const objectFilter = [];
+
+
+
+    for (let i = minMax[0]; i < (minMax[0] === 0 ? minMax[1] + 1 : minMax[1] - minMax[0] ); i++) {
+     if (i === 0) {
+      objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_undefined');
+     } else {
+      objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + i);
+     }
+
+    }
+
+    console.log(objectFilter);
+
+
     const arrayMerged = [];
+    console.log(result);
     result.forEach(item => {
       const existing = arrayMerged.filter((v) => {
         return (v[filters[0]] === item[filters[0]] && v[filters[1]] === item[filters[1]]);
       });
       if (existing.length) {
         const existingIndex = arrayMerged.indexOf(existing[0]);
-        arrayMerged[existingIndex]['individualCountSum'] = arrayMerged[existingIndex]['individualCountSum'] += item['individualCountSum'];
+        arrayMerged[existingIndex]['total'] = arrayMerged[existingIndex]['total'] += item['individualCountSum'];
+        if (arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')]) {
+          arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] += item['individualCountSum'];
+        } else {
+          arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] = (item['individualCountSum']);
+        }
       } else {
-        arrayMerged.push(item);
+        arrayMerged.push(
+          {[filters[0]]: item[filters[0]],
+           [filters[1]]: item[filters[1]],
+           'total': item['individualCountSum'],
+           [filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] : item['individualCountSum'],
+           ...objectFilter.filter(
+            el => el !== filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')
+           )
+           .reduce((acc, curr) => (acc[curr] = '', acc) , {})
+          });
+
+
+      }
+      console.log(arrayMerged);
+
+    });
+
+
+    console.log(arrayMerged);
+    return arrayMerged;
+  }
+
+  findMaxMinFilter(array: any[], filter: string) {
+   const tmpArray = [];
+
+    array.forEach(element => {
+      for (const key in element) {
+        if (key.startsWith(filter)) {
+          console.log(element[key]);
+          tmpArray.push(element[key]);
+        }
       }
     });
 
-    return arrayMerged;
+    return [Math.min(...tmpArray), Math.max(...tmpArray)];
   }
 
 

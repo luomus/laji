@@ -15,6 +15,7 @@ import { BookType } from 'xlsx';
 export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() routeId: string;
   @Input() season: SEASON;
+  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
 
   rows: any[];
   columns: DatatableColumn[] = [];
@@ -32,14 +33,16 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Output() documentClick = new EventEmitter<string>();
 
   @Input() set data(data: any) {
+    console.log('ciao');
+    console.log(data);
     if (!data) {
       this.rows = undefined;
       this.columns = [];
-    } else if (data.speciesStats.length === 0) {
+    } else if (data.length === 0) {
       this.rows = [];
       this.columns = [];
     } else {
-      this.rows = data.speciesStats.concat(data.otherStats);
+      this.rows = data;
       this.setColumns(data);
     }
   }
@@ -53,6 +56,8 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     if (this.showWbcRouteTableInfo === null) {
       this.showWbcRouteTableInfo = true;
     }
+    console.log(this.sorts);
+    console.log(this.rows);
   }
 
   toggleInfo() {
@@ -71,37 +76,56 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   }
 
   setColumns(data) {
-    this.columns = [{
-      name: 'name',
+    this.columns = [
+      {
+      name: 'unit.linkings.taxon.scientificName',
       label: 'result.unit.taxonVerbatim',
       cellTemplate: this.textOrTranslationKeyTpl,
-      frozenLeft: true
-    }];
+      width: 150
+      },
+      {
+        name: 'total',
+        label: 'taxonomy.total',
+        cellTemplate: this.textOrTranslationKeyTpl
+      },
 
-    for (let i = data.years[0]; i <= data.years[data.years.length - 1]; i++) {
+    ];
+
+    const tmpCols = [];
+    let gatheringSect = [];
+
+    data.forEach(element => {
+      for (const key in element) {
+        if (key.startsWith('gathering')) {
+          console.log(key.substring(key.indexOf('_') + 1));
+          gatheringSect.push(key.substring(key.indexOf('_') + 1));
+        }
+      }
+    });
+
+    console.log(gatheringSect);
+
+    gatheringSect = gatheringSect.filter((el, index) => {
+      return gatheringSect.indexOf(el) === index;
+    });
+
+    gatheringSect.sort((a, b) => a - b);
+
+    console.log(gatheringSect);
+
+    for (let i = 0; i <= gatheringSect.length - 1; i++) {
       this.columns.push({
-        name: i + '',
-        label: i + '/' + (i + 1),
-        width: 85,
+        name: gatheringSect[i] === 0 ? 'gatheringSection_undefined' : 'gatheringSection_' + gatheringSect[i],
+        label: gatheringSect[i] === 0 ? this.translate.instant('gathering.section.outsideSection') : gatheringSect[i] + '',
+        width: 40,
         cellTemplate: this.numberOrDocumentIdsTpl,
         cellClass: this._getCellClass
       });
     }
 
-    this.columns.push({
-      name: 'mean',
-      label: 'wbc.stats.route.mean',
-      width: 85,
-      cellTemplate: this.numberOrDocumentIdsTpl,
-      cellClass: 'mean'
-    });
-    this.columns.push({
-      name: 'median',
-      label: 'wbc.stats.route.median',
-      width: 85,
-      cellTemplate: this.numberOrDocumentIdsTpl,
-      cellClass: 'median'
-    });
+    console.log(this.columns);
+    console.log(this.rows);
+
   }
 
   download(format: string) {
@@ -122,6 +146,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     for (let i = 0; i < this.columns.length; i++) {
       aoa[0].push(this.translate.instant(this.columns[i].label));
     }
+    console.log(this.rows);
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);
       for (let j = 0; j < this.columns.length; j++) {
@@ -170,7 +195,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   }
 
   private isLastRowName(name: string) {
-    return name.indexOf('SpeciesCount') > -1 || name.indexOf('IndividualCount') > -1 || name === 'documentIds';
+    return 'ciao';
   }
 
   private getSortingComparator(prop: string): (a, b) => number {

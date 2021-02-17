@@ -9,24 +9,11 @@
   ></laji-nafi-bumblebee-result-filters>
 </div>
 
-<ng-container *ngIf="!season">
-  <h4>{{ 'nafi.stats.route.censuses' | translate }}</h4>
-  <laji-nafi-bumblebee-routes-list
-    [showFilter]="false"
-    [rows]="rows"
-    [loading]="!rows"
-    [sorts]="sorts"
-    [columnMode]="'standard'"
-    [height]="'calc(80vh - 40px)'"
-    [selected]="selected"
-    [countLabel]="'wbc.stats.route.count'"
-    (rowSelect)="openViewer($event['document.documentId'])"
-  ></laji-nafi-bumblebee-routes-list>
-</ng-container>
 
-<laji-nafi-bumblebee-route-table *ngIf="season"
+<laji-nafi-bumblebee-route-table
                       (documentClick)="openViewer($event)"
-                      [data]="observationStats ? observationStats[season] : undefined"
+                      [data]="observationStats"
                       [routeId]="routeId"
                       [season]="season"
+                      [sorts]="sorts"
 ></laji-nafi-bumblebee-route-table>

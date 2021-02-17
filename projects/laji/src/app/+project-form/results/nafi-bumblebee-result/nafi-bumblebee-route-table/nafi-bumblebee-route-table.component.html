@@ -26,18 +26,19 @@
     [totalMessage]="'haseka.submissions.total' | translate"
     [emptyMessage]="'wbc.stats.noHits' | translate"
     [columns]="columns"
+    [sorts]="sorts"
     [getRowClass]="_getRowClass"
     [showRowAsLink]="false"
     (sortChange)="onSort($event)">
   </laji-datatable>
   
   <ng-template let-value="value" let-row="row" #textOrTranslationKey>
-    <ng-container *ngIf="row.name.indexOf('SpeciesCount') === -1 && row.name.indexOf('IndividualCount') === -1 && row.name !== 'documentIds'; else translationKey">
+    <ng-container>
       <span *ngIf="value" [title]="value">{{ value }}</span>
     </ng-container>
     <ng-template #translationKey>
-      <span *ngIf="value" [title]="'wbc.stats.route.' + value | translate">
-        {{ 'wbc.stats.route.' + value | translate }}
+      <span *ngIf="value" [title]="value">
+        {{ value}}
       </span>
     </ng-template>
   </ng-template>
