@@ -47,18 +47,18 @@
 */
 
 .btn.btn-lg, .btn-group-lg > .btn {
-  font-size: $fs-4;
-  padding: 10px 20px;
-}
-
-.btn {
   font-size: $fs-3;
   padding: 8px 16px;
 }
 
-.btn.btn-sm, .btn-group-sm > .btn {
+.btn {
   font-size: $fs-2;
   padding: 5px 10px;
+}
+
+.btn.btn-sm, .btn-group-sm > .btn {
+  font-size: $fs-1;
+  padding: 4px 8px;
   border-radius: 4px;
 }
 
