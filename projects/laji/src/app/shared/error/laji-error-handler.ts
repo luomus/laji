@@ -4,8 +4,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Logger } from '../logger/logger.service';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { RESPONSE } from '@nguniversal/express-engine/tokens';
+import { environment } from '../../../environments/environment';
 
 const pauseBeforeResendError = 30000;
+const enabledEnvs = ['dev', 'beta'];
+let errorSent = false;
 
 @Injectable()
 export class LajiErrorHandler extends ErrorHandler {
@@ -43,21 +46,32 @@ export class LajiErrorHandler extends ErrorHandler {
 
     if (this.isScheduled()) {
       this.pauseMessage();
-      // this.getToastsService().showWarning(
-      //   this.getTranslateService().instant('error.scheduled.intro'),
-      //   this.getTranslateService().instant('error.scheduled.title'),
-      // );
+
+      if (enabledEnvs.includes(environment.type)) {
+        this.getToastsService().showWarning(
+          this.getTranslateService().instant('error.scheduled.intro'),
+          this.getTranslateService().instant('error.scheduled.title'),
+        );
+      }
+
       return super.handleError(error);
     }
 
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy ? location.path() : '';
-    this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    if (!errorSent) {
+      errorSent = true;
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy ? location.path() : '';
+      this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+    }
     this.pauseMessage();
-    // this.getToastsService().showError(
-    //   this.getTranslateService().instant('error.500.intro'),
-    //   this.getTranslateService().instant('error.500.title')
-    // );
+
+    if (enabledEnvs.includes(environment.type)) {
+      this.getToastsService().showError(
+        this.getTranslateService().instant('error.500.intro'),
+        this.getTranslateService().instant('error.500.title')
+      );
+    }
+
     return super.handleError(error);
   }
 

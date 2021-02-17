@@ -129,18 +129,6 @@
       [taxonDescriptions]="taxonDescription"
       [groupId]="'MX.SDVG2'"
     ></laji-taxon-description>
-    <!--<div *ngIf="isFromMasterChecklist" [hidden]="!hasMonthDayData"
-         class="panel panel-default"
-         laji-panel
-         [title]="'taxonomy.observations.monthDayChart' | translate"
-         [open]="true"
-         [autoToggle]="true"
-    >
-      <laji-observation-month-day-chart
-        [query]="chartQuery"
-        (hasData)="hasMonthDayData = $event"
-      ></laji-observation-month-day-chart>
-    </div>-->
   </div>
   <div class="col-xs-12">
     <div [hidden]="!hasMonthDayData"
@@ -152,7 +140,7 @@
     >
       <laji-observation-month-day-chart
         [query]="chartQuery"
-        [enableOnlyCount]="true"
+        [enableOnlyCount]="false"
         (hasData)="hasMonthDayData = $event"
       ></laji-observation-month-day-chart>
     </div>
@@ -168,7 +156,7 @@
       </p>
       <laji-observation-year-chart
         [query]="chartQuery"
-        [enableOnlyCount]="true"
+        [enableOnlyCount]="false"
         (hasData)="hasYearData = $event"
       ></laji-observation-year-chart>
     </div>
