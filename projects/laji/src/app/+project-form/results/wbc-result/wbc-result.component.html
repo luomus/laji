@@ -4,15 +4,7 @@
       <h3>
         {{ 'wbc.title' | translate }}
       </h3>
-      <p>Talvilintulaskenta on Luonnontieteellisen keskusmuseon Luomuksen koordinoima valtakunnallinen linnustonseurantatutkimus,
-        joka on käynnistynyt talvella 1956/57. Laskentojen tulokset on siirretty tietokantaan, jonka sisältöä voi selailla näiden
-        verkkosivujen kautta. Tietokannan sisältöön tehdään ajoittain tarkistuksia ja korjauksia, ja siksi verkkosivuilla näytettävät
-        taulukot ja kartat on tarkoitettu ainoastaan henkilökohtaiseen käyttöön eikä niihin saa viitata julkaisuissa. Lähes
-        poikkeuksetta harvinaisimpien lajien havainnot ovat tarkastamattomia.</p>
-      <p>Tarkemmat tiedot laskentojen toteutuksesta sekä laskentaohjeet ja -lomakkeet löytyvät Luomuksen
-        <a href="https://www.luomus.fi/fi/talvilintulaskennat" target="_blank">talvilintulaskentasivuilta</a>.</p>
-      <p>Aineiston esittämisestä tai käyttämisestä tieteellisessä julkaisussa tai kaupallisessa tarkoituksessa on sovittava erikseen
-        Luonnontieteellisen keskusmuseon kanssa.</p>
+      <div [innerHtml]="'wbc.stats.intro' | translate" lajiRouteTransformer></div>
       <div class="row">
         <laji-navigation-thumbnail [name]="'wbc.stats.species'" [icon]="'wb_icon_bird'" [iconType]="'png'" [query]="{tab: Tabs.species}"></laji-navigation-thumbnail>
         <laji-navigation-thumbnail [name]="'wbc.stats.routes'" [icon]="'wb_icon_map_2'" [iconType]="'png'" [query]="{tab: Tabs.routes}"></laji-navigation-thumbnail>
