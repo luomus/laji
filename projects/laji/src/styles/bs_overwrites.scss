@@ -72,11 +72,11 @@
   BUTTON GROUP
 */
 
-.btn-group {
+.btn-group:not(.dropdown) {
   box-shadow: 0 1px 3px 0 rgba($neutral-9, 0.3);
 }
 
-.btn-group .btn {
+.btn-group:not(.dropdown) .btn {
   box-shadow: none;
 }
 
@@ -84,7 +84,7 @@
   margin: 0;
 }
 
-.btn-group .btn:not(:last-child) {
+.btn-group:not(.dropdown) .btn:not(:last-child) {
   border-right: 1px solid $neutral-4;
 }
 
