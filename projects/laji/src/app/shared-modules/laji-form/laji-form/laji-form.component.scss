@@ -2,32 +2,6 @@
 
 :host ::ng-deep {
   /*
-    BUTTON SIZING
-  */
-
-  .btn.btn-lg, .btn-group-lg > .btn {
-    font-size: $fs-3;
-    padding: 8px 16px;
-  }
-
-  .btn {
-    font-size: $fs-2;
-    padding: 5px 10px;
-  }
-
-  .btn.btn-sm, .btn-group-sm > .btn {
-    font-size: $fs-1;
-    padding: 3px 6px;
-    border-radius: 4px;
-  }
-
-  .btn.btn-xs, .btn-group-xs > .btn {
-    font-size: 10px;
-    padding: 2px 4px;
-    border-radius: 3px;
-  }
-
-  /*
     PRIMARY COLORS
   */
 
