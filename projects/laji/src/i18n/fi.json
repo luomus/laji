@@ -1485,6 +1485,7 @@
   "theme.intro": "Tähän sivustoon kootaan tietoa tärkeistä Lajitietokeskuksen toimintaan liittyvistä aiheista ja palveluista.",
   "theme.invasiveSpecies.intro": "Palvelu vieraslajien torjuntaan",
   "theme.kerttu": "Kerttu",
+  "theme.kerttu.iosWarning": "<strong>Huom.</strong> Jos laitteessa on soitto/äänetön-kytkin, sen on oltava soitto-tilassa, jotta sivun äänet kuuluvat.",
   "theme.kerttu.allCandidatesAnnotated": "Kaikki ehdokkaat käyty läpi tämän malliäänen osalta! Vaihdetaan mallia.",
   "theme.kerttu.allLettersAnnotated": "Kaikki malliäänet käyty läpi lajeilta, jotka olet valinnut <em>Kirjaa asiantuntijuutesi</em> -osiossa! Suuri kiitos panoksestasi lintujen äänten automaattisen tunnistuksen kehittämiseen!",
   "theme.kerttu.allRecordingsAnnotated": "Kaikki äänitteet käyty läpi! Suuri kiitos panoksestasi lintujen äänten automaattisen tunnistuksen kehittämiseen!",
