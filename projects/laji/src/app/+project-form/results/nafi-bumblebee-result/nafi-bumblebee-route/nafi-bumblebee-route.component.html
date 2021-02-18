@@ -9,12 +9,12 @@
   ></laji-nafi-bumblebee-result-filters>
 </div>
 
-{{year}}
 <laji-nafi-bumblebee-route-table
                       (documentClick)="openViewer($event)"
                       [data]="observationStats"
                       [routeId]="routeId"
                       [season]="season"
                       [sorts]="sorts"
-                      [year]="year"
+                      [year]="activeYear"
+                      [filter]="(activeYear !== undefined) ? 'gathering.gatheringSection' : 'gathering.conversions.year'"
 ></laji-nafi-bumblebee-route-table>

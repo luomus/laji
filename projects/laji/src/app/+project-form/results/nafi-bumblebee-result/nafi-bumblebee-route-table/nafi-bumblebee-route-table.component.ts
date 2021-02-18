@@ -18,6 +18,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() season: SEASON;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() year = '';
+  @Input() filter = '';
 
   rows: any[];
   columns: DatatableColumn[] = [];
@@ -90,32 +91,33 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     ];
 
     const tmpCols = [];
-    let gatheringSect = [];
+    let otherCols = [];
 
     data.forEach(element => {
       for (const key in element) {
         if (key.startsWith('gathering') || key.startsWith('year')) {
-          gatheringSect.push(key.substring(key.indexOf('_') + 1));
+          otherCols.push(key.substring(key.indexOf('_') + 1));
         }
       }
     });
 
 
-    gatheringSect = gatheringSect.filter((el, index) => {
-      return gatheringSect.indexOf(el) === index;
+    otherCols = otherCols.filter((el, index) => {
+      return otherCols.indexOf(el) === index;
     });
 
-    if (Math.min(...gatheringSect) > 1950) {
-      gatheringSect.sort((a, b) => b - a);
+    if (this.filter === 'gathering.conversions.year') {
+      otherCols.sort((a, b) => b - a);
     } else {
-      gatheringSect.sort((a, b) => a - b);
+      otherCols.sort((a, b) => a - b);
     }
 
 
-    for (let i = 0; i <= gatheringSect.length - 1; i++) {
+    for (let i = 0; i <= otherCols.length - 1; i++) {
       this.columns.push({
-        name: gatheringSect[i] === 0 ? 'gatheringSection_undefined' : (gatheringSect[i] > 1950 ? 'year_' + gatheringSect[i] : 'gatheringSection_' + gatheringSect[i]),
-        label: gatheringSect[i] === 0 ? this.translate.instant('gathering.section.outsideSection') : gatheringSect[i] + '',
+        name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (this.filter === 'gathering.conversions.year' ?
+        'year_' + otherCols[i] : 'gatheringSection_' + otherCols[i]),
+        label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') : otherCols[i] + '',
         width: 40,
         cellTemplate: this.numberOrDocumentIdsTpl,
         cellClass: this._getCellClass
