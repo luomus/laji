@@ -27,9 +27,12 @@
       >
       </span>
     </lu-button>
-    <lu-button [role]="audioPlayer.loop ? 'other' : undefined" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
-      <span class="fa fa-refresh"></span>
-    </lu-button>
+    <div class="btn-with-info">
+      <lu-button [role]="audioPlayer.loop ? 'other' : undefined" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
+        <span class="fa fa-refresh"></span>
+      </lu-button>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.loop' | translate"></laji-info>
+    </div>
     <ng-container *ngIf="showBrushControl">
       <div class="btn-with-info">
         <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">
