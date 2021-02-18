@@ -119,7 +119,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
         name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (this.filter === 'gathering.conversions.year' ?
         'year_' + otherCols[i] : 'gatheringSection_' + otherCols[i]),
         label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') : otherCols[i] + '',
-        width: 40,
+        width: otherCols[i] === 'undefined' ? 120 : 60,
         cellTemplate: this.numberOrDocumentIdsTpl,
         cellClass: this._getCellClass
       });
