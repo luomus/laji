@@ -1,11 +1,10 @@
-<h3>{{ routeId | label }}<span *ngIf="season"> - {{ 'wbc.season.' + season | translate }}</span></h3>
+<h3>{{ routeId | label }}<span *ngIf="date"> - {{ date }}</span></h3>
 
 <div style="max-width: 400px">
   <laji-nafi-bumblebee-result-filters
     (yearChange)="activeYear = $event; onFilterChange()"
-    (seasonChange)="activeSeason = $event; onFilterChange()"
+    (dateChange)="activeDate = $event; onFilterChange()"
     [yearRequired]="false"
-    [showAreaFilter]="false"
   ></laji-nafi-bumblebee-result-filters>
 </div>
 
@@ -13,7 +12,7 @@
                       (documentClick)="openViewer($event)"
                       [data]="observationStats"
                       [routeId]="routeId"
-                      [season]="season"
+                      [season]="date"
                       [sorts]="sorts"
                       [year]="activeYear"
                       [filter]="(activeYear !== undefined) ? 'gathering.gatheringSection' : 'gathering.conversions.year'"

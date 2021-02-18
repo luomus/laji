@@ -40,7 +40,7 @@ export class NafiBumblebeeResultService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getFilterParams(year?: number|number[], season?: SEASON, taxonId?: string|string[])
+  getFilterParams(year?: number|number[], season?: string, taxonId?: string|string[])
   : WarehouseQueryInterface {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
@@ -320,8 +320,9 @@ export class NafiBumblebeeResultService {
     );
   }
 
-  getUnitStats(year: number|undefined, season: SEASON, routeId: string) {
+  getUnitStats(year: number|undefined, season: string, routeId: string) {
     const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+    season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
     return this.getList(
@@ -337,7 +338,7 @@ export class NafiBumblebeeResultService {
     ).pipe(
       map(result => {
         return this.mergeElementsByProperties(result, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-        ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']);
+        (season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'oldestRecord'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
       })
     );
   }
@@ -551,7 +552,7 @@ export class NafiBumblebeeResultService {
     return this.getCensusStartYear(year, month);
   }
 
-  private getYearMonthParam(year: number, season?: SEASON): string {
+  private getYearMonthParam(year: number, season?: string): string {
     const startMonth = season ? this.seasonRanges[season][0] : this.seasonRanges['spring'][0];
     const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['fall'][2];
     const startYear = startMonth > this.seasonRanges['fall'][2] ? year - 1 : year;
@@ -605,7 +606,7 @@ export class NafiBumblebeeResultService {
     const arrayMerged = [];
     result.forEach(item => {
       const existing = arrayMerged.filter((v) => {
-        return (v[filters[0]] === item[filters[0]] && v[filters[1]] === item[filters[1]]);
+        return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
       if (existing.length) {
         const existingIndex = arrayMerged.indexOf(existing[0]);
@@ -617,8 +618,8 @@ export class NafiBumblebeeResultService {
         }
       } else {
         arrayMerged.push(
-          {[filters[0]]: item[filters[0]],
-           [filters[1]]: item[filters[1]],
+          {
+           'unit.linkings.taxon.scientificName': item[filters[1]],
            'total': item['individualCountSum'],
            [filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] : item['individualCountSum'],
            ...objectFilter.filter(
@@ -626,8 +627,6 @@ export class NafiBumblebeeResultService {
            )
            .reduce((acc, curr) => (acc[curr] = '', acc) , {})
           });
-
-
       }
 
     });

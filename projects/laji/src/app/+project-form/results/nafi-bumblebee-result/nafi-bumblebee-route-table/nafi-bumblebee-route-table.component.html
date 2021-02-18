@@ -22,13 +22,14 @@
     [virtualScrolling]="true"
     [rows]="rows"
     [loading]="!rows"
-    [columnMode]="'standard'"
+    [columnMode]="'force'"
     [totalMessage]="'haseka.submissions.total' | translate"
     [emptyMessage]="'wbc.stats.noHits' | translate"
     [columns]="columns"
     [sorts]="sorts"
     [getRowClass]="_getRowClass"
     [showRowAsLink]="false"
+    [clientSideSorting]="true"
     (sortChange)="onSort($event)">
   </laji-datatable>
   

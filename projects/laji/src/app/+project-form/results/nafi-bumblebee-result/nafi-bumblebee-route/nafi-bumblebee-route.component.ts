@@ -30,11 +30,11 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   loadingCensusList = false;
   loadingObservationStats = false;
 
-  season: SEASON;
+  date: string;
   year: number;
   observationStats: any;
   activeYear: number;
-  activeSeason: SEASON;
+  activeDate: string;
 
   loading = false;
   queryKey: string;
@@ -54,15 +54,15 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.queryParams.subscribe(queryParams => {
       this.routeId = queryParams['route'];
-      this.season = queryParams['season'];
+      this.date = queryParams['date'];
       this.year = queryParams['year'];
 
-      if ((!this.season && !this.year && !this.rows && !this.loadingCensusList) ||
-         (!this.season && !this.year && this.rows)) {
+      if ((!this.date && !this.year && !this.rows && !this.loadingCensusList) ||
+         (!this.date && !this.year && this.rows)) {
         this.censusListForRoute(this.routeId);
       }
 
-      if (this.season && !this.observationStats && !this.loadingObservationStats) {
+      if (this.date && !this.observationStats && !this.loadingObservationStats) {
         this.observationStatsForRoute(this.routeId);
       }
     });
@@ -83,7 +83,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     if (this.activeYear) {
-      const queryKey = 'year:' + this.activeYear + ',season:' + this.activeSeason;
+      const queryKey = 'year:' + this.activeYear + ',date:' + this.date;
       if (this.loading && this.queryKey === queryKey) {
         return;
       }
@@ -94,12 +94,12 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeSeason, this.routeId)
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId)
         .subscribe(list => {
           this.observationStats = list;
           this.loading = false;
           this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
-          this.sorts = [{prop: 'total', dir: 'asc'}];
+          this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}, {prop: 'total', dir: 'desc'}];
           this.cd.markForCheck();
         });
     }
@@ -112,12 +112,12 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
-    this.resultService.getUnitStats(this.activeYear, this.activeSeason, routeId)
+    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId)
       .subscribe(censuses => {
         this.observationStats = censuses;
         this.loadingCensusList = false;
         this.selected = [...this.defaultSelected, 'gathering.conversions.year'];
-        this.sorts = [{prop: 'individualCountSum', dir: 'desc'}];
+        this.sorts = [{prop: 'total', dir: 'desc'}, {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}];
         this.cd.markForCheck();
       });
   }

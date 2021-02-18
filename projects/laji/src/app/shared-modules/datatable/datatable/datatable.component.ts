@@ -138,6 +138,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     } else {
       this.scrollTo();
     }
+
   }
 
   @Input() set page(page: number) {
@@ -147,6 +148,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @Input() set columns(columns: DatatableColumn[]) {
     const settings = this.dataTableSettings;
+
     this._columns = columns.map((column) => {
       if (typeof column.headerTemplate === 'string') {
         column.headerTemplate = this.datatableTemplates[column.headerTemplate];
@@ -168,6 +170,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       }
       return column;
     });
+
   }
 
   @Input() set preselectedRowIndex(index: number) {
@@ -215,6 +218,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.updateFilteredRows();
       this.changeDetectorRef.markForCheck();
     });
+
   }
 
   ngAfterViewInit() {

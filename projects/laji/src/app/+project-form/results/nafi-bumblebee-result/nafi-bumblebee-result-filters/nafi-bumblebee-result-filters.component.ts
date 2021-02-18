@@ -13,19 +13,19 @@ import { Area } from '../../../../shared/model/Area';
 export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   @Input() yearRequired = false;
-  @Input() showSeasonFilter = true;
-  @Input() showAreaFilter = true;
+  @Input() showDateFilter = true;
+  @Input() yearDates = [];
 
   years: number[] = [];
-  seasons: SEASON[] = ['fall', 'winter', 'spring'];
+  days: string[] = [];
   areaTypes = Area.AreaType;
 
   activeYear: number;
-  activeSeason: SEASON;
+  activeDate: string;
   activeArea: string;
 
   @Output() yearChange = new EventEmitter<number>();
-  @Output() seasonChange = new EventEmitter<SEASON>();
+  @Output() dateChange = new EventEmitter<string>();
   @Output() areaChange = new EventEmitter<string>();
 
   constructor(
@@ -38,8 +38,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   ngOnInit() {
     const params = this.route.snapshot.queryParams;
     this.onYearChange(params['year']);
-    this.onSeasonChange(params['season']);
-    this.onAreaChange(params['birdAssociationArea']);
+    this.onDateChange(params['date']);
 
     this.resultService.getYears()
       .subscribe(
@@ -63,24 +62,15 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.activeYear = newYear ? parseInt(newYear, 10) : undefined;
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
-      this.onSeasonChange(undefined);
+      this.onDateChange(undefined);
     } else {
       this.onFiltersChange();
     }
   }
 
-  onSeasonChange(newSeason: SEASON) {
-    this.activeSeason = newSeason;
-    this.seasonChange.emit(newSeason);
-    this.onFiltersChange();
-  }
-
-  onAreaChange(newArea: string) {
-    if (newArea === 'all') {
-      newArea = undefined;
-    }
-    this.activeArea = newArea;
-    this.areaChange.emit(newArea);
+  onDateChange(newDate: string) {
+    this.activeDate = newDate;
+    this.dateChange.emit(newDate);
     this.onFiltersChange();
   }
 
@@ -88,7 +78,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.router.navigate(
       [],
       {
-        queryParams: {year: this.activeYear, season: this.activeSeason, birdAssociationArea: this.activeArea},
+        queryParams: {year: this.activeYear, date: this.activeDate},
         queryParamsHandling: 'merge'
       }
     );

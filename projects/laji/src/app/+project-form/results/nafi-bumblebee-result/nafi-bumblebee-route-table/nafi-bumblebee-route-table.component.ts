@@ -85,6 +85,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       {
         name: 'total',
         label: 'taxonomy.total',
+        width: 100,
         cellTemplate: this.textOrTranslationKeyTpl
       },
 

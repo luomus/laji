@@ -14,22 +14,22 @@
           </option>
         </select>
       </div>
-      <div *ngIf="showSeasonFilter">
-        <label for="season">{{ 'nafi.stats.date' | translate }}</label>
+      <div *ngIf="showDateFilter">
+        <label for="date">{{ 'nafi.stats.date' | translate }}</label>
         <select
-          id="season"
-          (change)="onSeasonChange($event.target.value !== '0' ? $event.target.value : undefined)"
+          id="date"
+          (change)="onDateChange($event.target.value !== '0' ? $event.target.value : undefined)"
           [disabled]="!activeYear"
-          name="season"
+          name="date"
           class="form-control"
           style="width: 120px">
-          <option [value]="0" [selected]="!activeSeason">{{ 'all' | translate }}</option>
-          <option *ngFor="let season of seasons" [value]="season" [selected]="season === activeSeason">
-            {{ 'wbc.season.' + season | translate }}
+          <option [value]="0" [selected]="!activeDate">{{ 'all' | translate }}</option>
+          <option *ngFor="let day of days" [value]="day" [selected]="day === activeDate">
+            {{ day }}
           </option>
         </select>
       </div>
-      <div *ngIf="showAreaFilter">
+      <!--<div *ngIf="showAreaFilter">
         <label for="birdAssociationArea">{{ 'MNP.birdAssociationArea' | label }}</label>
         <laji-area-select id="birdAssociationArea"
                           [selectOptionEnabled]="false"
@@ -38,7 +38,7 @@
                           [value]="activeArea || 'all'"
                           (select)="onAreaChange($event)"
         ></laji-area-select>
-      </div>
+      </div>-->
     </div>
   </div>
   
