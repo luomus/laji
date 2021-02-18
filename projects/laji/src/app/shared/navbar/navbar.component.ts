@@ -36,7 +36,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   redTheme = false;
   devRibbon = false;
   showSearch = false;
-  env = environment.type;
+  containerClass: string;
 
   notificationsNotSeen = 0;
   notificationsTotal$: Observable<number>;
@@ -54,6 +54,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.devRibbon = !environment.production || environment.type === Global.type.beta;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
+    this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';
   }
 
   ngOnInit() {

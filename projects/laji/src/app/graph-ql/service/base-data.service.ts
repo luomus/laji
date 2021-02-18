@@ -1,7 +1,7 @@
 import { gql, QueryRef } from 'apollo-angular';
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { GraphQLService } from './graph-ql.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -83,60 +83,33 @@ const BASE_QUERY = gql`
 @Injectable({
   providedIn: 'root'
 })
-export class BaseDataService implements OnDestroy {
+export class BaseDataService {
 
-  ref: QueryRef<IBaseData>;
-
-  private retryFetch = false;
-  private retryCnt = 0;
-  private readonly langSub: Subscription;
-  private readonly langChangingSub = new BehaviorSubject(false);
-  private readonly langChangingObs = this.langChangingSub.asObservable();
+  private readonly query: QueryRef<IBaseData>;
+  private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
 
   constructor(
     private graphQLService: GraphQLService,
     private translationService: TranslateService
   ) {
-    this.ref = this.graphQLService.watchQuery({
+    this.query = this.graphQLService.watchQuery({
       query: BASE_QUERY,
       errorPolicy: 'ignore',
       fetchPolicy: 'cache-first'
     });
-    this.langSub = this.translationService.onLangChange.subscribe(() => {
-      this.retryCnt = 0;
-      this.langChangingSub.next(true);
-      this.ref.refetch().then(() => {
-        this.langChangingSub.next(false);
-      });
-    });
-  }
 
-  ngOnDestroy(): void {
-    if (this.langSub) {
-      this.langSub.unsubscribe();
-    }
+    this.translationService.onLangChange.pipe(
+      map(() => this.baseDataSub.next(null))
+    ).subscribe(() => this.query.refetch().then());
+
+    this.query.valueChanges.pipe(
+      map(({data}) => data)
+    ).subscribe(data => this.baseDataSub.next(data));
   }
 
   getBaseData(): Observable<IBaseData> {
-    return this.ref.valueChanges.pipe(
-      tap(data => data.errors ? this.retry() : null),
-      switchMap(data => this.langChangingObs.pipe(
-        filter(loading => !loading),
-        map(() => data)
-      )),
-      map(({data}) => data)
+    return this.baseDataSub.asObservable().pipe(
+      filter(data => !!data)
     );
-  }
-
-  private retry() {
-    if (this.retryCnt > 2 || this.retryFetch) {
-      return;
-    }
-    this.retryFetch = true;
-    this.retryCnt++;
-    setTimeout(() => {
-      this.retryFetch = false;
-      this.ref.refetch();
-    }, 1000);
   }
 }

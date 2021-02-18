@@ -433,16 +433,20 @@
 
 <!-- Quality -->
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
-  <laji-metadata-select
-    [(ngModel)]="query.recordQuality"
-    [info]="'observation.info.reliability' | translate"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [useFilter]="false"
-    name="recordQuality"
-    [mapToWarehouse]="true"
-    [placeholder]="'reliability' | translate"
-    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+  <laji-metadata-select-with-subcategories
+      [query]="query"
+      [info]="'observation.info.reliability' | translate"
+      (update)="subCategoryChange($event)"
+      [multiple]="true"
+      [useFilter]="false"
+      [mapToWarehouse]="true"
+      [subCategories]="['GLOBAL', 'PROFESSIONAL', 'HOBBYIST', 'AMATEUR']"
+      [placeholder]="'reliability' | translate"
+      [subTitleBase]="'observation.active.recordQuality'"
+      [filtersName]="['recordQuality', 'collectionAndRecordQuality']"
+      [filtersValues]="[query.recordQuality, query.collectionAndRecordQuality]"
+      [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
+
 
   <laji-select
     [selected]="[query.unidentified]"
@@ -468,18 +472,6 @@
         {id: false, value: ('observation.form.needsCheck.false' | translate)}
       ]"></laji-select>
 
-  <ng-container *ngIf="advancedMode || query.collectionQuality">
-    <laji-metadata-select
-      name="collectionQuality"
-      [(ngModel)]="query.collectionQuality"
-      (ngModelChange)="onQueryChange()"
-      [mapToWarehouse]="true"
-      [multiple]="true"
-      [useFilter]="false"
-      [placeholder]="'observation.form.collectionQuality' | translate"
-      [info]="'observation.info.collectionQuality' | translate"
-      [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
-  </ng-container>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
