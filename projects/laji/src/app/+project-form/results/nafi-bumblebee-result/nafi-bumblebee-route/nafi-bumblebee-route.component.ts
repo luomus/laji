@@ -32,7 +32,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   date: string;
   year: number;
-  observationStats: any;
+  observationStats = [{'dataSets': []}];
   activeYear: number;
   activeDate: string;
 
@@ -62,9 +62,9 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
         this.censusListForRoute(this.routeId);
       }
 
-      if (this.date && !this.observationStats && !this.loadingObservationStats) {
+      /*if (this.date && !this.observationStats && !this.loadingObservationStats) {
         this.observationStatsForRoute(this.routeId);
-      }
+      }*/
     });
   }
 
@@ -122,7 +122,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       });
   }
 
-  observationStatsForRoute(routeId) {
+  /*observationStatsForRoute(routeId) {
     this.loadingObservationStats = true;
     this.resultService.getObservationStatsForRoute(routeId)
       .subscribe(data => {
@@ -130,5 +130,5 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
         this.loadingObservationStats = false;
         this.cd.markForCheck();
       });
-  }
+  }*/
 }

@@ -34,6 +34,7 @@ export class NafiBumblebeeResultService {
 
   private yearCache: number[];
   private yearObs: Observable<number[]>;
+  private yearDayObs: Observable<string[]>;
   private speciesListCache: any[];
 
   constructor(
@@ -603,21 +604,21 @@ export class NafiBumblebeeResultService {
 
     }
 
-    const arrayMerged = [];
+    const arrayMerged = [{'dataSets': [], 'yearsDays': []}];
     result.forEach(item => {
-      const existing = arrayMerged.filter((v) => {
+      const existing = arrayMerged[0]['dataSets'].filter((v) => {
         return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
       if (existing.length) {
-        const existingIndex = arrayMerged.indexOf(existing[0]);
-        arrayMerged[existingIndex]['total'] = arrayMerged[existingIndex]['total'] += item['individualCountSum'];
-        if (arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')]) {
-          arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] += item['individualCountSum'];
+        const existingIndex = arrayMerged[0]['dataSets'].indexOf(existing[0]);
+        arrayMerged[0]['dataSets'][existingIndex]['total'] = arrayMerged[0]['dataSets'][existingIndex]['total'] += item['individualCountSum'];
+        if (arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')]) {
+          arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] += item['individualCountSum'];
         } else {
-          arrayMerged[existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] = (item['individualCountSum']);
+          arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] = (item['individualCountSum']);
         }
       } else {
-        arrayMerged.push(
+        arrayMerged[0]['dataSets'].push(
           {
            'unit.linkings.taxon.scientificName': item[filters[1]],
            'total': item['individualCountSum'],
@@ -628,13 +629,15 @@ export class NafiBumblebeeResultService {
            .reduce((acc, curr) => (acc[curr] = '', acc) , {})
           });
       }
-
+      arrayMerged[0]['yearsDays'].push(item['oldestRecord']);
     });
+
+    arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays']);
 
     return arrayMerged;
   }
 
-  findMaxMinFilter(array: any[], filter: string) {
+  private findMaxMinFilter(array: any[], filter: string) {
    const tmpArray = [];
 
     array.forEach(element => {
@@ -646,6 +649,22 @@ export class NafiBumblebeeResultService {
     });
 
     return [Math.min(...tmpArray), Math.max(...tmpArray)];
+  }
+
+
+  private uniqueYearDaysToDate(array) {
+    let tmpArray = [];
+    tmpArray = array.filter((el, index) => {
+      return array.indexOf(el) === index;
+    });
+
+    tmpArray.sort((a, b) => {
+      a = a.split('-').join('');
+      b = b.split('-').join('');
+      return a > b ? 1 : a < b ? -1 : 0;
+    });
+
+    return tmpArray;
   }
 
 

@@ -5,12 +5,13 @@
     (yearChange)="activeYear = $event; onFilterChange()"
     (dateChange)="activeDate = $event; onFilterChange()"
     [yearRequired]="false"
+    [yearDates]="observationStats[0]['yearsDays']"
   ></laji-nafi-bumblebee-result-filters>
 </div>
 
 <laji-nafi-bumblebee-route-table
                       (documentClick)="openViewer($event)"
-                      [data]="observationStats"
+                      [data]="observationStats[0]['dataSets']"
                       [routeId]="routeId"
                       [season]="date"
                       [sorts]="sorts"

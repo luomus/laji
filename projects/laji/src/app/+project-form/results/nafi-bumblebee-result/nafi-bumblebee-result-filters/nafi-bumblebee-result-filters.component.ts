@@ -14,7 +14,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   @Input() yearRequired = false;
   @Input() showDateFilter = true;
-  @Input() yearDates = [];
+  @Input() yearDates: string[] = [];
 
   years: number[] = [];
   days: string[] = [];
@@ -82,5 +82,6 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
         queryParamsHandling: 'merge'
       }
     );
+
   }
 }
