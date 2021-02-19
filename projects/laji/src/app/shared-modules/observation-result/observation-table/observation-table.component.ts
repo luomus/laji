@@ -129,6 +129,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   ) {
     this.allColumns = tableColumnService.getAllColumns();
     this.columnGroups = tableColumnService.getColumnGroups();
+
+    console.log('TABLE', this.allColumns, this.columnGroups);
   }
 
   @Input() set selected(sel: string[]) {

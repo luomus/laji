@@ -3,8 +3,9 @@ import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart, ChartOptions } from 'chart.js';
-import { Color } from 'ng2-charts';
+import { Color, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import * as chartJs from 'chart.js';
 
 @Component({
   selector: 'laji-wbc-species-linecharts',
@@ -40,12 +41,15 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       pointHoverBorderColor: 'rgb(70,130,180)'
     }
   ];
-  public lineChartPlugins = [pluginDataLabels];
+  public lineChartPlugins = [
+    pluginDataLabels as PluginServiceGlobalRegistrationAndOptions
+  ];
   season: string;
   textCount: string;
   textSeasonCount: string;
 
   resultSub: Subscription;
+  LineWithLine = 'LineWithLine' as chartJs.ChartType;
 
   constructor(
     private resultService: WbcResultService,

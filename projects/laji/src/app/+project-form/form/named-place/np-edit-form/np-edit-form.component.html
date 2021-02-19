@@ -5,14 +5,14 @@
                                [description]="data.description"
                                class="no-flex"></laji-document-form-header>
     <laji-form
-      [formData]="data.placeForm"
+      [formData]="$any(data).placeForm"
       (dataChange)="onChange()"
       (dataSubmit)="onSubmit($event)"></laji-form>
     <laji-document-form-footer
-      [form]="data.placeForm"
+      [form]="$any(data).placeForm"
       [status]="status"
       [saving]="saving"
-      [edit]="data.namedPlace"
+      [edit]="!!data.namedPlace"
       (submitPublic)="submitPublic()"
       (submitPrivate)="submitPrivate()"
       (cancel)="discard()"

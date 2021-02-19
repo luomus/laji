@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, O
 import { SEASON, WbcResultService } from '../wbc-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
+import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-wbc-result-filters',
@@ -20,6 +21,7 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
   activeYear: number;
   activeSeason: SEASON;
   activeArea: string;
+  toHtmlSelectElement = toHtmlSelectElement;
 
   @Output() yearChange = new EventEmitter<number>();
   @Output() seasonChange = new EventEmitter<SEASON>();
@@ -66,9 +68,9 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
     }
   }
 
-  onSeasonChange(newSeason: SEASON) {
-    this.activeSeason = newSeason;
-    this.seasonChange.emit(newSeason);
+  onSeasonChange(newSeason: string) {
+    this.activeSeason = newSeason as SEASON;
+    this.seasonChange.emit(newSeason as SEASON);
     this.onFiltersChange();
   }
 
