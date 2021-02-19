@@ -56,7 +56,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.routeId = queryParams['route'];
       this.date = queryParams['date'];
       this.year = queryParams['year'];
-
       this.censusListForRoute(this.routeId);
 
 
@@ -92,7 +91,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId)
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.date, this.routeId)
         .subscribe(list => {
           this.observationStats = list;
           this.loading = false;

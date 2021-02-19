@@ -19,6 +19,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() year = '';
   @Input() filter = '';
+  @Input() loading = false;
 
   rows: any[];
   columns: DatatableColumn[] = [];

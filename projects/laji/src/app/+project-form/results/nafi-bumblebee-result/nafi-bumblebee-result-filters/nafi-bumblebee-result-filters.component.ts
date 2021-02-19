@@ -16,7 +16,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   @Input() showDateFilter = true;
   @Input() routeId;
 
-  years: string[] = [];
+  years: number[] = [];
   days: string[] = [];
   areaTypes = Area.AreaType;
 
@@ -44,7 +44,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years[this.activeYear].length > 0) {
+    if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years) {
       this.onYearChange('' + this.years[0]);
     }
   }
@@ -65,7 +65,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.resultService.getYears(routeId)
       .subscribe(
         years => {
-          this.years = Object.keys(years).sort().reverse();
+          this.years = Object.keys(years).sort().reverse().map(el => { return parseInt(el)});
           this.days = years[this.activeYear];
           if (this.yearRequired && !this.activeYear) {
             this.onYearChange('' + years[0]);
