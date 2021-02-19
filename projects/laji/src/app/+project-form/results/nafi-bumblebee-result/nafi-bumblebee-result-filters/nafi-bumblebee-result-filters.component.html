@@ -24,7 +24,7 @@
           class="form-control"
           style="width: 120px">
           <option [value]="0" [selected]="!activeDate">{{ 'all' | translate }}</option>
-          <option *ngFor="let day of yearDates" [value]="day" [selected]="day === activeDate">
+          <option *ngFor="let day of days" [value]="day" [selected]="day === activeDate">
             {{ day | amDateFormat:'L' }}
           </option>
         </select>

@@ -1,11 +1,19 @@
-<h3>{{ routeId | label }}<span *ngIf="date"> - {{ date }}</span></h3>
+<h3>{{ routeId | label }}
+  <span *ngIf="date else year"> - {{ date | amDateFormat:'L' }}</span>
+  <ng-template #year>
+    <span *ngIf="activeYear else empty"> - {{ activeYear }}</span>
+  </ng-template>
+  <ng-template #empty> 
+    <span>{{ 'kaikki' | translate }}</span>
+  </ng-template>
+</h3>
 
 <div style="max-width: 400px">
   <laji-nafi-bumblebee-result-filters
-    (yearChange)="activeYear = $event; onFilterChange()"
+    (yearChange)="activeYear = $event; activeDate = undefined; onFilterChange()"
     (dateChange)="activeDate = $event; onFilterChange()"
     [yearRequired]="false"
-    [yearDates]="observationStats[0]['yearsDays']"
+    [routeId]="routeId"
   ></laji-nafi-bumblebee-result-filters>
 </div>
 

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, ChangeDetectionStrategy, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
+import { YearDays, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
 
@@ -14,9 +14,9 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   @Input() yearRequired = false;
   @Input() showDateFilter = true;
-  @Input() yearDates: string[] = [];
+  @Input() routeId;
 
-  years: number[] = [];
+  years: string[] = [];
   days: string[] = [];
   areaTypes = Area.AreaType;
 
@@ -40,32 +40,39 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.onYearChange(params['year']);
     this.onDateChange(params['date']);
 
-    this.resultService.getYears()
-      .subscribe(
-        years => {
-          this.years = years;
-          if (this.yearRequired && !this.activeYear) {
-            this.onYearChange('' + years[0]);
-          }
-          this.cd.markForCheck();
-        }
-      );
+    this.getYears(this.routeId);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years.length > 0) {
+    if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years[this.activeYear].length > 0) {
       this.onYearChange('' + this.years[0]);
     }
   }
 
   onYearChange(newYear: string) {
     this.activeYear = newYear ? parseInt(newYear, 10) : undefined;
+    this.activeDate = undefined;
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
       this.onDateChange(undefined);
     } else {
+      this.getYears(this.routeId);
       this.onFiltersChange();
     }
+  }
+
+  getYears(routeId: string) {
+    this.resultService.getYears(routeId)
+      .subscribe(
+        years => {
+          this.years = Object.keys(years).sort().reverse();
+          this.days = years[this.activeYear];
+          if (this.yearRequired && !this.activeYear) {
+            this.onYearChange('' + years[0]);
+          }
+          this.cd.markForCheck();
+        }
+      );
   }
 
   onDateChange(newDate: string) {

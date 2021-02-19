@@ -57,10 +57,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.date = queryParams['date'];
       this.year = queryParams['year'];
 
-      if ((!this.date && !this.year && !this.rows && !this.loadingCensusList) ||
-         (!this.date && !this.year && this.rows)) {
-        this.censusListForRoute(this.routeId);
-      }
+      this.censusListForRoute(this.routeId);
+
 
       /*if (this.date && !this.observationStats && !this.loadingObservationStats) {
         this.observationStatsForRoute(this.routeId);
@@ -83,7 +81,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     if (this.activeYear) {
-      const queryKey = 'year:' + this.activeYear + ',date:' + this.date;
+      const queryKey = 'year:' + this.activeYear + ',date:' + undefined;
       if (this.loading && this.queryKey === queryKey) {
         return;
       }
@@ -122,13 +120,4 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       });
   }
 
-  /*observationStatsForRoute(routeId) {
-    this.loadingObservationStats = true;
-    this.resultService.getObservationStatsForRoute(routeId)
-      .subscribe(data => {
-        this.observationStats = data;
-        this.loadingObservationStats = false;
-        this.cd.markForCheck();
-      });
-  }*/
 }

@@ -17,6 +17,10 @@ interface CountsPerYearForTaxon {
   [season: string]: {[year: string]: {count: string, censusCount: string}};
 }
 
+export interface YearDays {
+  [year: number]: string[];
+}
+
 // comment
 
 @Injectable({
@@ -26,14 +30,11 @@ export class NafiBumblebeeResultService {
   private collectionId = 'HR.3431';
   private butterflyId = 'MX.53695';
   private insectsId = 'MX.37613';
-  private seasonRanges = {
-    'spring': [4, 5],
-    'summer': [6, 7],
-    'fall': [8, 9, 10]
-  };
+  private seasonRanges = [4 , 10];
 
-  private yearCache: number[];
-  private yearObs: Observable<number[]>;
+
+  private yearCache: YearDays;
+  private yearObs: Observable<YearDays>;
   private yearDayObs: Observable<string[]>;
   private speciesListCache: any[];
 
@@ -46,7 +47,8 @@ export class NafiBumblebeeResultService {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
       collectionId: [this.collectionId],
-      yearMonth: yearMonth,
+      yearMonth: !season ? yearMonth : undefined,
+      time: season ? yearMonth : undefined,
       taxonId: taxonId ? (Array.isArray(taxonId) ? taxonId : [taxonId]) : []
     };
   }
@@ -59,31 +61,36 @@ export class NafiBumblebeeResultService {
     return previousTenYears;
   }
 
-  getYears(): Observable<number[]> {
-    if (this.yearCache) {
-      return of(this.yearCache);
-    } else if (this.yearObs) {
-      return this.yearObs;
-    }
-    this.yearObs = this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-      this.getFilterParams(),
-      undefined,
+  getYears(routeId?: string): Observable<YearDays> {
+    this.yearObs = this.warehouseApi.warehouseQueryUnitStatisticsGet(
+      {...this.getFilterParams(), namedPlaceId: [routeId]},
+      ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'],
       undefined,
       10000,
       1,
       undefined,
       false
     ).pipe(
-        map(res => res.results[0]),
+        map(res => res.results),
         map(res => {
-          const startYear = this.getCensusStartYearFromDateString(res.oldestRecord);
-          const endYear = this.getCensusStartYearFromDateString(res.newestRecord);
-          const years = [];
-          for (let i = endYear; i >= startYear; i--) {
-            years.push(i);
+          const yearsDays = {};
+          for (let i = 0; i < res.length; i++) {
+            const year = res[i]['aggregateBy']['gathering.conversions.year'];
+            const date = res[i]['aggregateBy']['gathering.conversions.year'] + '-'
+                       + this.padMonthDay(res[i]['aggregateBy']['gathering.conversions.month']) + '-'
+                       + this.padMonthDay(res[i]['aggregateBy']['gathering.conversions.day']);
+            if (!yearsDays.hasOwnProperty(year)) {
+              yearsDays[year] = [date];
+            } else {
+              if (!yearsDays[year].includes(date)) {
+                yearsDays[year].push(date);
+              }
+            }
+
+            yearsDays[year] = this.sortDate(yearsDays[year]);
           }
-          this.yearCache = years;
-          return years;
+          this.yearCache = yearsDays;
+          return yearsDays;
         }),
         share()
     );
@@ -543,7 +550,7 @@ export class NafiBumblebeeResultService {
   }
 
   private getCensusStartYear(year: number, month: number) {
-    return month <= this.seasonRanges['spring'][1] ? year - 1 : year;
+    return month <= this.seasonRanges[1] ? year - 1 : year;
   }
 
   private getCensusStartYearFromDateString(dateString: string): number {
@@ -553,16 +560,20 @@ export class NafiBumblebeeResultService {
     return this.getCensusStartYear(year, month);
   }
 
-  private getYearMonthParam(year: number, season?: string): string {
-    const startMonth = season ? this.seasonRanges[season][0] : this.seasonRanges['spring'][0];
-    const endMonth = season ? this.seasonRanges[season][1] : this.seasonRanges['fall'][2];
-    const startYear = startMonth > this.seasonRanges['fall'][2] ? year - 1 : year;
-    const endYear = endMonth > this.seasonRanges['fall'][2] ? year - 1 : year;
-    return startYear + '-' + this.padMonth(startMonth) + '/' + endYear + '-' + this.padMonth(endMonth);
+  private getYearMonthParam(year: number, date?: string): string {
+    let startMonth, endMonth, startYear, endYear;
+    if (!date) {
+      startMonth = this.seasonRanges[0];
+      endMonth = this.seasonRanges[1];
+      startYear = startMonth > this.seasonRanges[1] ? year - 1 : year;
+      endYear = endMonth > this.seasonRanges[1] ? year - 1 : year;
+    }
+    return !date ? startYear + '-' + this.padMonthDay(startMonth) + '/' + endYear + '-' + this.padMonthDay(endMonth) :
+    date + '/' + date;
   }
 
-  private padMonth(month: number): string {
-    return month < 10 ? '0' + month : '' + month;
+  private padMonthDay(monthDay: number): string {
+    return monthDay < 10 ? '0' + monthDay : '' + monthDay;
   }
 
   private getSeason(month: number): SEASON {
@@ -632,7 +643,7 @@ export class NafiBumblebeeResultService {
       arrayMerged[0]['yearsDays'].push(item['oldestRecord']);
     });
 
-    arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays']);
+    arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays'], false);
 
     return arrayMerged;
   }
@@ -652,11 +663,14 @@ export class NafiBumblebeeResultService {
   }
 
 
-  private uniqueYearDaysToDate(array) {
+  private uniqueYearDaysToDate(array, onlySort) {
     let tmpArray = [];
-    tmpArray = array.filter((el, index) => {
-      return array.indexOf(el) === index;
-    });
+
+    if (!onlySort) {
+      tmpArray = array.filter((el, index) => {
+        return array.indexOf(el) === index;
+      });
+    }
 
     tmpArray.sort((a, b) => {
       a = a.split('-').join('');
@@ -665,6 +679,18 @@ export class NafiBumblebeeResultService {
     });
 
     return tmpArray;
+  }
+
+
+  private sortDate(array) {
+    array.sort((a, b) => {
+      a = a.split('-').join('');
+      b = b.split('-').join('');
+      return  a < b ? -1 : (a > b ? 1 : 0);
+    });
+
+    return array;
+
   }
 
 
