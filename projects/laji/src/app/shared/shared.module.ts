@@ -77,6 +77,7 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
 import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
+import { PluckPipe } from './pipe/pluck.pipe';
 
 
 @NgModule({
@@ -115,6 +116,7 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
     QualityUrlPipe,
     ConfirmModalComponent,
     CheckboxValuePipe,
+    PluckPipe,
   ],
   imports: [
     FormsModule,
@@ -151,7 +153,8 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
     NotFoundComponent,
     QualityUrlPipe,
     InfoModule,
-    CheckboxValuePipe
+    CheckboxValuePipe,
+    PluckPipe,
   ]
 })
 export class SharedModule {
