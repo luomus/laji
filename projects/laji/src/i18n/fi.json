@@ -698,6 +698,8 @@
   "nafi.stats.year": "Vuosi",
   "nafi.stats.date": "Päivämäärä",
   "nafi.stats.route.censuses": "Lajiluettelo",
+  "nafi.stats.sections": "Osiot",
+  "nafi.stats.noSections": "Ei Osiot",
   "navigation.birdPointCount": "Pistelaskenta",
   "navigation.checklist": "Suomen lajien luettelo",
   "navigation.collection": "Aineistot",

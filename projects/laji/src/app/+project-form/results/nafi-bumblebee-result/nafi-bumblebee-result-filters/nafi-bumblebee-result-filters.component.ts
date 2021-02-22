@@ -15,6 +15,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   @Input() yearRequired = false;
   @Input() showDateFilter = true;
   @Input() routeId;
+  @Input() showSections = true;
 
   years: number[] = [];
   days: string[] = [];
@@ -23,10 +24,12 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   activeYear: number;
   activeDate: string;
   activeArea: string;
+  onlySections: boolean;
 
   @Output() yearChange = new EventEmitter<number>();
   @Output() dateChange = new EventEmitter<string>();
   @Output() areaChange = new EventEmitter<string>();
+  @Output() switchSectionsYears = new EventEmitter<boolean>();
 
   constructor(
     private resultService: NafiBumblebeeResultService,
@@ -39,14 +42,17 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     const params = this.route.snapshot.queryParams;
     this.onYearChange(params['year']);
     this.onDateChange(params['date']);
+    this.onSectionsChange(params['onlySections']);
 
     this.getYears(this.routeId);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes)
     if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years) {
       this.onYearChange('' + this.years[0]);
     }
+
   }
 
   onYearChange(newYear: string) {
@@ -55,6 +61,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
       this.onDateChange(undefined);
+      this.onSectionsChange(this.onlySections);
     } else {
       this.getYears(this.routeId);
       this.onFiltersChange();
@@ -81,11 +88,19 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.onFiltersChange();
   }
 
+  onSectionsChange(onlySections: any) {
+   this.onlySections = onlySections !== undefined ?
+   (typeof onlySections === 'object' ? JSON.parse(onlySections['currentValue']) : onlySections) : true;
+   console.log(this.onlySections)
+   this.switchSectionsYears.emit(this.onlySections);
+   this.onFiltersChange();
+  }
+
   private onFiltersChange() {
     this.router.navigate(
       [],
       {
-        queryParams: {year: this.activeYear, date: this.activeDate},
+        queryParams: {year: this.activeYear, date: this.activeDate, onlySections: this.onlySections},
         queryParamsHandling: 'merge'
       }
     );

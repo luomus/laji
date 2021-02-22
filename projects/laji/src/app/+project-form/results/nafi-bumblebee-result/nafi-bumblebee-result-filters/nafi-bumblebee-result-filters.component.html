@@ -29,16 +29,21 @@
           </option>
         </select>
       </div>
-      <!--<div *ngIf="showAreaFilter">
-        <label for="birdAssociationArea">{{ 'MNP.birdAssociationArea' | label }}</label>
-        <laji-area-select id="birdAssociationArea"
-                          [selectOptionEnabled]="false"
-                          [allOptionEnabled]="true"
-                          [field]="areaTypes.BirdAssociationArea"
-                          [value]="activeArea || 'all'"
-                          (select)="onAreaChange($event)"
-        ></laji-area-select>
-      </div>-->
+      <div *ngIf="activeYear">
+        <label for="onlySections">{{ 'nafi.stats.sections' | translate }} / {{ 'nafi.stats.noSections' | translate }}</label>
+        <bSwitch
+          id="sections"
+          (changeState)="onSectionsChange($event)"
+          style="margin-right: 15px; display: block;"
+          name="sections"
+          [switch-off-text]="'nafi.stats.noSections' | translate"
+          [switch-on-text]="'nafi.stats.sections' | translate"
+          [switch-on-color]="'primary'"
+          [switch-size]="'small'"
+          [(ngModel)]="onlySections"
+          [switch-base-class]="'bootstrap-switch'">
+        </bSwitch>
+      </div>
     </div>
   </div>
   

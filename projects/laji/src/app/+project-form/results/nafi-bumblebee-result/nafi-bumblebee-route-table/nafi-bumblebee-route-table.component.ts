@@ -108,9 +108,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       return otherCols.indexOf(el) === index;
     });
 
-    if (this.filter === 'gathering.conversions.year') {
-      otherCols.sort((a, b) => b - a);
-    } else {
+    if (this.filter !== 'gathering.conversions.year') {
       otherCols.sort((a, b) => a - b);
     }
 

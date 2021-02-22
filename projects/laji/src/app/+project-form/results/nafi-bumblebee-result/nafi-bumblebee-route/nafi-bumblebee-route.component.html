@@ -8,12 +8,14 @@
   </ng-template>
 </h3>
 
-<div style="max-width: 400px">
+<div style="max-width: 450px">
   <laji-nafi-bumblebee-result-filters
     (yearChange)="activeYear = $event; activeDate = undefined; onFilterChange()"
     (dateChange)="activeDate = $event; onFilterChange()"
+    (switchSectionsYears)="onlySections = $event; onFilterChange()"
     [yearRequired]="false"
     [routeId]="routeId"
+    [showSections]="onlySections"
   ></laji-nafi-bumblebee-result-filters>
 </div>
 

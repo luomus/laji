@@ -328,9 +328,9 @@ export class NafiBumblebeeResultService {
     );
   }
 
-  getUnitStats(year: number|undefined, season: string, routeId: string) {
+  getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean) {
     const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-    season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
+    !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
     return this.getList(
