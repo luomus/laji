@@ -258,7 +258,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   createSubArrayChart() {
     this.initializeGraph();
-    this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
+    this.allSubBackground = this.addColorsBackground(this._colors.map(c => c.backgroundColor), this.allSubData.length);
     this.allDataNew[0].data = this.allSubData;
     this.allDataNew[0].backgroundColor = this.allSubBackground;
     this.allBarChartsLabel = this.subBarChartLabels;
