@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, ChangeDetectionStrategy, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, ChangeDetectionStrategy,
+Output, TemplateRef, ViewChild, LOCALE_ID } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { LocalStorage } from 'ngx-webstorage';
 import { ExportService } from '../../../../shared/service/export.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SEASON } from '../nafi-bumblebee-result.service';
 import { BookType } from 'xlsx';
-import { filter } from 'jszip';
+import { DateFormatPipe } from 'ngx-moment';
+
 
 @Component({
   selector: 'laji-nafi-bumblebee-route-table',
@@ -52,7 +54,8 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private dateFormat: DateFormatPipe
   ) { }
 
   ngOnInit() {
@@ -120,7 +123,8 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       this.columns.push({
         name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (this.filter === 'gathering.conversions.year' ?
         (this.onlySections ? 'year_' + otherCols[i] : 'day_' + otherCols[i]) : 'gatheringSection_' + otherCols[i]),
-        label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') : otherCols[i] + '',
+        label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') :
+        (this.onlySections ? otherCols[i] + '' : this.dateFormat.transform(this.reverseDate(otherCols[i]), 'L')),
         width: otherCols[i] === 'undefined' ? 120 : 60,
         cellTemplate: this.numberOrDocumentIdsTpl,
         cellClass: this._getCellClass
