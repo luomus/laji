@@ -464,6 +464,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   updateLabelFilter(key: keyof LabelFilter, value: any) {
     this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(settings => ({...settings, [key]: value})),
+      take(1)
     ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
   }
 
