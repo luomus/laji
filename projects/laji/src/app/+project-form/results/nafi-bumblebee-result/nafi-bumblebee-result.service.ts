@@ -329,7 +329,7 @@ export class NafiBumblebeeResultService {
   }
 
   getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean) {
-    const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
+    const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
@@ -345,8 +345,8 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       map(result => {
-        return this.mergeElementsByProperties(result, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-        (season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'oldestRecord'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
+        return this.mergeElementsByProperties(result, onlySections, year, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
+        (season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
       })
     );
   }
@@ -601,18 +601,29 @@ export class NafiBumblebeeResultService {
     return mid % 1 ? array[mid - 0.5] : (array[mid - 1] + array[mid]) / 2;
   }
 
-  private mergeElementsByProperties(result: any[], filters: string[]) {
-    const minMax = this.findMaxMinFilter(result, filters[2]);
+  private mergeElementsByProperties(result: any[], onlySections: boolean, year: number, filters: string[]) {
     const objectFilter = [];
 
-
-    for (let i = minMax[0]; i < (minMax[0] === 0 ? minMax[1] + 1 : minMax[1] + 1 ); i++) {
-     if (i === 0) {
-      objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_undefined');
-     } else {
-      objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + i);
-     }
-
+    if (onlySections) {
+      const minMax = this.findMaxMinFilter(result, filters[2]);
+      for (let i = minMax[0]; i < (minMax[0] === 0 ? minMax[1] + 1 : minMax[1] + 1 ); i++) {
+        if (i === 0) {
+         objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_undefined');
+        } else {
+         objectFilter.push(filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + i);
+        }
+       }
+    } else {
+      result.forEach(item => {
+        const value = this.padMonthDay(item['gathering.conversions.day']) + '-'
+        + this.padMonthDay(item['gathering.conversions.month']) + '-'
+        + item['gathering.conversions.year'];
+        if (parseInt(item['gathering.conversions.year'], 10) === year) {
+          if (objectFilter.indexOf(value) === -1) {
+            objectFilter.push('day_' + value);
+          }
+        }
+      });
     }
 
     const arrayMerged = [{'dataSets': [], 'yearsDays': []}];
@@ -620,30 +631,31 @@ export class NafiBumblebeeResultService {
       const existing = arrayMerged[0]['dataSets'].filter((v) => {
         return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
+      const property = !onlySections ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day']) + '-' + this.padMonthDay(item['gathering.conversions.month']) + '-' + item['gathering.conversions.year']
+      : filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined');
       if (existing.length) {
         const existingIndex = arrayMerged[0]['dataSets'].indexOf(existing[0]);
         arrayMerged[0]['dataSets'][existingIndex]['total'] = arrayMerged[0]['dataSets'][existingIndex]['total'] += item['individualCountSum'];
-        if (arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')]) {
-          arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] += item['individualCountSum'];
+        if (arrayMerged[0]['dataSets'][existingIndex][property]) {
+          arrayMerged[0]['dataSets'][existingIndex][property] += item['individualCountSum'];
         } else {
-          arrayMerged[0]['dataSets'][existingIndex][filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] = (item['individualCountSum']);
+          arrayMerged[0]['dataSets'][existingIndex][property] = (item['individualCountSum']);
         }
       } else {
         arrayMerged[0]['dataSets'].push(
           {
            'unit.linkings.taxon.scientificName': item[filters[1]],
            'total': item['individualCountSum'],
-           [filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')] : item['individualCountSum'],
+           [property] : item['individualCountSum'],
            ...objectFilter.filter(
-            el => el !== filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')
-           )
-           .reduce((acc, curr) => (acc[curr] = '', acc) , {})
+            el => el !== (property)).reduce((acc, curr) => (acc[curr] = '', acc) , {})
           });
       }
       arrayMerged[0]['yearsDays'].push(item['oldestRecord']);
     });
 
     arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays'], false);
+    console.log(arrayMerged);
 
     return arrayMerged;
   }

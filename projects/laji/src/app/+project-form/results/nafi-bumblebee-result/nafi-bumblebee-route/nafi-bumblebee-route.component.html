@@ -26,6 +26,7 @@
                       [season]="date"
                       [sorts]="sorts"
                       [year]="activeYear"
-                      [filter]="(activeYear !== undefined) ? 'gathering.gatheringSection' : 'gathering.conversions.year'"
+                      [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
                       [loading]="loading"
+                      [onlySections]="onlySections"
 ></laji-nafi-bumblebee-route-table>

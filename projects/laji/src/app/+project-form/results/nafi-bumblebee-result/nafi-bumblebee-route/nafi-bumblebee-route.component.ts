@@ -61,13 +61,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       if (!this.activeYear) {
         this.censusListForRoute(this.routeId);
       }
-
-      console.log(this.onlySections)
-
-
-      /*if (this.date && !this.observationStats && !this.loadingObservationStats) {
-        this.observationStatsForRoute(this.routeId);
-      }*/
     });
   }
 
@@ -85,9 +78,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange() {
-    console.log(this.onlySections)
     if (this.activeYear) {
-      const queryKey = 'year:' + this.activeYear + ',date:' + undefined+ ',onlySections:' + this.onlySections;
+      const queryKey = 'year:' + this.activeYear + ',date:' + undefined + ',onlySections:' + this.onlySections;
       if (this.loading && this.queryKey === queryKey) {
         return;
       }
@@ -102,9 +94,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       ? JSON.parse(this.onlySections) : this.onlySections)
         .subscribe(list => {
           this.observationStats = list;
-          console.log(list)
           this.loading = false;
-          this.selected = [...this.defaultSelected, this.onlySections? 
+          this.selected = [...this.defaultSelected, this.onlySections ?
             'gathering.gatheringSection' : 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'];
           this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}, {prop: 'total', dir: 'desc'}];
           this.cd.markForCheck();
@@ -119,11 +110,13 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
-    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.onlySections)
+    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, typeof this.onlySections === 'string'
+    ? JSON.parse(this.onlySections) : this.onlySections)
       .subscribe(censuses => {
         this.observationStats = censuses;
         this.loadingCensusList = false;
-        this.selected = [...this.defaultSelected, 'gathering.conversions.year'];
+        this.selected = [...this.defaultSelected, this.onlySections ?
+          'gathering.gatheringSection' : 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'];
         this.sorts = [{prop: 'total', dir: 'desc'}, {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}];
         this.cd.markForCheck();
       });

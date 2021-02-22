@@ -48,7 +48,6 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
     if (changes.yearRequired && this.yearRequired && !this.activeYear && this.years) {
       this.onYearChange('' + this.years[0]);
     }
@@ -61,9 +60,10 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
       this.onDateChange(undefined);
-      this.onSectionsChange(this.onlySections);
+      this.onSectionsChange(true);
     } else {
       this.getYears(this.routeId);
+      this.onSectionsChange(this.onlySections);
       this.onFiltersChange();
     }
   }
@@ -72,7 +72,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
     this.resultService.getYears(routeId)
       .subscribe(
         years => {
-          this.years = Object.keys(years).sort().reverse().map(el => { return parseInt(el)});
+          this.years = Object.keys(years).sort().reverse().map(el => parseInt(el, 10));
           this.days = years[this.activeYear];
           if (this.yearRequired && !this.activeYear) {
             this.onYearChange('' + years[0]);
@@ -92,7 +92,6 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
    this.onlySections = onlySections !== undefined ?
    (typeof onlySections === 'object' ? JSON.parse(onlySections['currentValue']) :
    (typeof onlySections === 'string') ? JSON.parse(onlySections) : onlySections) : true;
-   console.log(this.onlySections)
    this.switchSectionsYears.emit(this.onlySections);
    this.onFiltersChange();
   }

@@ -20,6 +20,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() year = '';
   @Input() filter = '';
   @Input() loading = false;
+  @Input() onlySections = true;
 
   rows: any[];
   columns: DatatableColumn[] = [];
@@ -97,12 +98,11 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
     data.forEach(element => {
       for (const key in element) {
-        if (key.startsWith('gathering') || key.startsWith('year')) {
+        if (key.startsWith('gathering') || key.startsWith('year') || (key.startsWith('day') && key.includes(this.year) )) {
           otherCols.push(key.substring(key.indexOf('_') + 1));
         }
       }
     });
-
 
     otherCols = otherCols.filter((el, index) => {
       return otherCols.indexOf(el) === index;
@@ -110,13 +110,16 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
     if (this.filter !== 'gathering.conversions.year') {
       otherCols.sort((a, b) => a - b);
+    } else {
+      if (!this.onlySections) {
+        otherCols = this.sortDate(otherCols);
+      }
     }
-
 
     for (let i = 0; i <= otherCols.length - 1; i++) {
       this.columns.push({
         name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (this.filter === 'gathering.conversions.year' ?
-        'year_' + otherCols[i] : 'gatheringSection_' + otherCols[i]),
+        (this.onlySections ? 'year_' + otherCols[i] : 'day_' + otherCols[i]) : 'gatheringSection_' + otherCols[i]),
         label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') : otherCols[i] + '',
         width: otherCols[i] === 'undefined' ? 120 : 60,
         cellTemplate: this.numberOrDocumentIdsTpl,
@@ -124,6 +127,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       });
     }
 
+    console.log(this.columns);
   }
 
   download(format: string) {
@@ -211,5 +215,18 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
   roundNumber(value: number) {
     return Math.round(value * 10 ) / 10;
+  }
+
+  private sortDate(array) {
+    array = array.map(this.reverseDate)
+    .sort()
+    .map(this.reverseDate);
+
+    return array;
+  }
+
+  reverseDate(date) {
+    const parts = date.split('-');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
 }
