@@ -90,7 +90,8 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   onSectionsChange(onlySections: any) {
    this.onlySections = onlySections !== undefined ?
-   (typeof onlySections === 'object' ? JSON.parse(onlySections['currentValue']) : onlySections) : true;
+   (typeof onlySections === 'object' ? JSON.parse(onlySections['currentValue']) :
+   (typeof onlySections === 'string') ? JSON.parse(onlySections) : onlySections) : true;
    console.log(this.onlySections)
    this.switchSectionsYears.emit(this.onlySections);
    this.onFiltersChange();

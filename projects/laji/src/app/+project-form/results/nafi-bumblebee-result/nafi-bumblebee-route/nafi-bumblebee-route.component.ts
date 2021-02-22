@@ -58,7 +58,11 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.date = queryParams['date'];
       this.year = queryParams['year'];
       this.onlySections = queryParams['onlySections'] ? queryParams['onlySections'] : true;
-      this.censusListForRoute(this.routeId);
+      if (!this.activeYear) {
+        this.censusListForRoute(this.routeId);
+      }
+
+      console.log(this.onlySections)
 
 
       /*if (this.date && !this.observationStats && !this.loadingObservationStats) {
@@ -94,11 +98,14 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.date, this.routeId, this.onlySections)
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.date, this.routeId, typeof this.onlySections === 'string'
+      ? JSON.parse(this.onlySections) : this.onlySections)
         .subscribe(list => {
           this.observationStats = list;
+          console.log(list)
           this.loading = false;
-          this.selected = [...this.defaultSelected, 'gathering.gatheringSection'];
+          this.selected = [...this.defaultSelected, this.onlySections? 
+            'gathering.gatheringSection' : 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'];
           this.sorts = [{prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}, {prop: 'total', dir: 'desc'}];
           this.cd.markForCheck();
         });
