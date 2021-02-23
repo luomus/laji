@@ -409,6 +409,7 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "projects/laji-ui/src/lib/exports.scss",
               "projects/laji/src/styles/laji.scss",
               "projects/iucn/src/styles.css"
             ],
