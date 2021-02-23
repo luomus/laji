@@ -57,7 +57,8 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.routeId = queryParams['route'];
       this.date = queryParams['date'];
       this.year = queryParams['year'];
-      this.onlySections = queryParams['onlySections'] ? queryParams['onlySections'] : true;
+      this.onlySections = queryParams['onlySections'] ? JSON.parse(queryParams['onlySections']) : true;
+
       if (!this.activeYear) {
         this.censusListForRoute(this.routeId);
       }
@@ -79,7 +80,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     if (this.activeYear) {
-      const queryKey = 'year:' + this.activeYear + ',date:' + undefined + ',onlySections:' + this.onlySections;
+      const queryKey = 'year:' + this.activeYear + ',date:' + this.activeDate + ',onlySections:' + this.onlySections;
       if (this.loading && this.queryKey === queryKey) {
         return;
       }
@@ -90,7 +91,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.date, this.routeId, typeof this.onlySections === 'string'
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId, typeof this.onlySections === 'string'
       ? JSON.parse(this.onlySections) : this.onlySections)
         .subscribe(list => {
           this.observationStats = list;

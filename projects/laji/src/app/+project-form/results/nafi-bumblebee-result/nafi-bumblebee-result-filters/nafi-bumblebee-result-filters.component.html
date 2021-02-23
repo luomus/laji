@@ -30,13 +30,13 @@
         </select>
       </div>
       <div *ngIf="activeYear">
-        <label for="onlySections">{{ 'nafi.stats.sections' | translate }} / {{ 'nafi.stats.noSections' | translate }}</label>
+        <label for="onlySections">{{ 'nafi.stats.sections' | translate }} / {{ 'nafi.stats.paivaa' | translate }}</label>
         <bSwitch
           id="sections"
           (changeState)="onSectionsChange($event)"
           style="margin-right: 15px; display: block;"
           name="sections"
-          [switch-off-text]="'nafi.stats.noSections' | translate"
+          [switch-off-text]="'nafi.stats.paivaa' | translate"
           [switch-on-text]="'nafi.stats.sections' | translate"
           [switch-on-color]="'primary'"
           [switch-size]="'small'"

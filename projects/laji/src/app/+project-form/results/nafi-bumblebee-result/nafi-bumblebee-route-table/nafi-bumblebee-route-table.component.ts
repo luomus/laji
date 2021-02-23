@@ -119,10 +119,12 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       }
     }
 
+    console.log(this.onlySections);
+
     for (let i = 0; i <= otherCols.length - 1; i++) {
       this.columns.push({
-        name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (this.filter === 'gathering.conversions.year' ?
-        (this.onlySections ? 'year_' + otherCols[i] : 'day_' + otherCols[i]) : 'gatheringSection_' + otherCols[i]),
+        name: otherCols[i] === 0 ? 'gatheringSection_undefined' : (!this.year ? 'year_' + otherCols[i] :
+        !this.onlySections ? 'day_' + otherCols[i] : 'gatheringSection_' + otherCols[i]),
         label: otherCols[i] === 'undefined' ? this.translate.instant('gathering.section.outsideSection') :
         (this.onlySections ? otherCols[i] + '' : this.dateFormat.transform(this.reverseDate(otherCols[i]), 'L')),
         width: otherCols[i] === 'undefined' ? 120 : 60,

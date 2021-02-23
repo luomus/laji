@@ -346,7 +346,7 @@ export class NafiBumblebeeResultService {
     ).pipe(
       map(result => {
         return this.mergeElementsByProperties(result, onlySections, year, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
-        (season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
+        (!onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
       })
     );
   }
