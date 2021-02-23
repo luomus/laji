@@ -11,15 +11,17 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { interval as ObservableInterval, Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
+import { CheckboxType } from '../checkbox/checkbox.component';
 
 type idType = string|number|boolean;
-export interface SelectOptions {
+export interface SelectOption {
   id: idType;
   value: string;
   info?: string;
+  checkboxValue?: boolean|undefined;
 }
 
 @Component({
@@ -31,22 +33,25 @@ export interface SelectOptions {
 export class SelectComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<null>();
 
-  @Input() options: SelectOptions[];
+  @Input() options: SelectOption[];
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: idType[] = [];
+  @Input() selected: (idType|SelectOption)[] = [];
   @Input() open = false;
   @Input() disabled = false;
   @Input() outputOnlyId = false;
-  @Output() selectedChange = new EventEmitter<idType|idType[]>();
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
+  @Input() checkboxType = CheckboxType.basic;
+  @Input() classes: {options: string, optionContainer: string, menuContainer: string} | {} = {};
+
+  @Output() selectedChange = new EventEmitter<(SelectOption|idType)[]|idType>();
   @ViewChild('filter') filter: ElementRef;
 
-  selectedOptions: SelectOptions[] = [];
-  unselectedOptions: SelectOptions[] = [];
+  selectedOptions: SelectOption[] = [];
+  unselectedOptions: SelectOption[] = [];
   filterInput = new Subject<string>();
   filterBy: string;
   selectedIdx = -1;
@@ -74,6 +79,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       this.open = false;
     }
     this.initOptions(this.selected);
+
   }
 
   ngOnDestroy() {
@@ -81,22 +87,35 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  toggleValue(id: idType) {
-    if (this.selectedOptions.findIndex(option => option.id === id) === -1) {
-      this.add(id);
+
+  toggleValue(id: idType, event) {
+    const selected = this.selectedOptions.find(option => option.id === id);
+    if (!selected || (this.optionsIsSelectOptions(this.selectedOptions) && selected.checkboxValue !== true)) {
+      this.add(id, event);
     } else {
-      this.remove(id);
+      this.remove(id, event);
     }
   }
 
-  add(id: idType) {
+  add(id: idType, event) {
+    const option = this.options.find((item: SelectOption) => item.id === id);
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
-      this.selected = [...this.selected, id];
+      if (this.optionsIsSelectOptions(this.selected)) {
+        const selected = this.selected.find((item: SelectOption) => item.id === option.id);
+        option.checkboxValue = true;
+        if (selected) {
+          selected.checkboxValue = true;
+        } else {
+          this.selected = [...this.selected, option];
+        }
+      } else {
+        this.selected = [...this.selected, id];
+      }
     } else {
-      this.selected = [id];
+      this.selected = this.optionsIsSelectOptions(this.selected) ? [option] : [id];
     }
     this.selectedIdx = -1;
     this.initOptions(this.selected);
@@ -107,8 +126,14 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  remove(id: idType) {
-    this.selected = this.selected.filter(value => value !== id);
+  remove(id: idType, event) {
+    if (this.optionsIsSelectOptions(this.selected)) {
+      const select = this.selected.find(item => item.id === id);
+      if (select.checkboxValue === false) {
+        return this.add(id, true);
+      }
+    }
+    this.selected = this.selected.filter(value => typeof value === 'object' ? value.id !== id : value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);
     if (this.outputOnlyId) {
@@ -124,7 +149,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.open = !this.open;
     if (this.open && this.useFilter) {
-      ObservableInterval(10).pipe(takeUntil(this.unsubscribe$), take(1))
+      timer(10).pipe(takeUntil(this.unsubscribe$), take(1))
         .subscribe(() => {
           try {
             // No IE support
@@ -153,10 +178,10 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         const filterItems = this.filterService.filter(this.unselectedOptions, this.filterBy);
         if (this.selectedIdx === -1) {
           if (filterItems.length > 0) {
-            this.add(filterItems[0].id);
+            this.add(filterItems[0].id, event);
           }
         } else if (filterItems[this.selectedIdx]) {
-          this.add(filterItems[this.selectedIdx].id);
+          this.add(filterItems[this.selectedIdx].id, event);
         }
         return;
       case 'ArrowUp':
@@ -189,17 +214,30 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.selectedOptions = [];
     if (!selected || selected.length === 0) {
+      this.options.forEach(option => {
+        option.checkboxValue = this.checkboxType === 'basic' ? false : undefined;
+      });
       this.unselectedOptions = this.options;
       return;
     }
     this.unselectedOptions = [];
-    this.options.map(option => {
-      if (selected.includes(option.id)) {
-        this.selectedOptions.push(option);
-      } else {
-        this.unselectedOptions.push(option);
-      }
+
+    this.options.forEach(option => {
+      const selectedItem = selected.find(select =>
+        (option.id === select) ||
+        (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
+      );
+      const targetOptions = selectedItem !== undefined ? this.selectedOptions : this.unselectedOptions;
+      const checkboxValue = selectedItem?.checkboxValue ?? selectedItem !== undefined;
+
+      targetOptions.push({
+        ...option,
+        checkboxValue
+      });
     });
   }
 
+  private optionsIsSelectOptions(options: (idType|SelectOption)[]):  options is SelectOption[] {
+    return this.checkboxType !== CheckboxType.basic;
+  }
 }

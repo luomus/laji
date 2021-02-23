@@ -11,7 +11,6 @@ import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
-
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -30,7 +29,6 @@ interface ISections {
   image: Array<keyof WarehouseQueryInterface>;
   secure: Array<keyof WarehouseQueryInterface>;
 }
-
 
 @Component({
   selector: 'laji-observation-form',
@@ -105,7 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
     individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
-    quality: ['recordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
+    quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     keywords: ['documentId', 'keyword'],
@@ -132,6 +130,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
   screenWidthSub: Subscription;
   containerTypeAhead: string;
+  collectionAndRecordQualityString: any;
 
   private _query: WarehouseQueryInterface;
 
@@ -327,13 +326,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   ownItemSelected(field, selectValue: any = true) {
-    /*if (!this.formQuery.asEditor || !this.formQuery.asObserver) {
-      delete this.query.editorOrObserverPersonToken;
-    }
-    if (this.formQuery.asEditor || this.formQuery.asObserver) {
-      this.query.qualityIssues = 'BOTH';
-    }*/
-
     this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
     (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
 
@@ -419,6 +411,30 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   indirectQueryChange(field, value) {
     this.query[field] = value;
     this.onQueryChange();
+  }
+
+  subCategoryChange(event) {
+    this.query.collectionAndRecordQuality = undefined;
+    this.query.recordQuality = undefined;
+
+    const categories = Object.keys(event);
+    this.query.recordQuality = this.checkSubcategoriesExceptGlobalAreEquals(event, categories) ? this.keepGlobalKey(event['GLOBAL']) : undefined;
+    if (this.query.recordQuality !== undefined && this.query.recordQuality.length > 0) {
+      this.onQueryChange();
+      return;
+    }
+
+    this.collectionAndRecordQualityString = '';
+    categories.forEach(element => {
+      if (element !== 'GLOBAL' && event[element].length > 0) {
+        this.collectionAndRecordQualityString += element + ':' + event[element].join() + ';';
+      }
+    });
+
+    this.query.collectionAndRecordQuality = this.collectionAndRecordQualityString !== '' ?
+    this.collectionAndRecordQualityString : undefined;
+
+   this.onQueryChange();
   }
 
   onQueryChange() {
@@ -596,4 +612,33 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       this.onQueryChange();
     }
   }
+
+  private checkSubcategoriesExceptGlobalAreEquals(selected, categories) {
+    const keys = Object.keys(selected);
+    const filteredKeys = keys.filter(item => item !== 'GLOBAL');
+
+    if (filteredKeys.length === 0) {
+      return true;
+    }
+
+    if (filteredKeys.length < categories.length - 1) {
+      return false;
+    }
+
+    for (let i = 0; i < filteredKeys.length - 1; i++) {
+      if (!Util.equalsArray(selected[filteredKeys[i]], selected[filteredKeys[i + 1]])) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private keepGlobalKey(array) {
+    if (array.filter(item => item.checkboxValue === true).length > 0) {
+      return array.filter(item => item.checkboxValue === true).map(a => a.id);
+    } else {
+      return undefined;
+    }
+  }
+
 }

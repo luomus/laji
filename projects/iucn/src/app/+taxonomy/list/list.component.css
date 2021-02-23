@@ -28,3 +28,8 @@ h1 {
   background-color: #f5f5f5;
   border-bottom: none;
 }
+
+:host ::ng-deep typeahead-container.dropdown {
+  margin-left: 0px;
+  min-width: 600px;
+}

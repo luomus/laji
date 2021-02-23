@@ -10,7 +10,7 @@
         {{ 'observation.active.informalTaxonGroupAll' | translate }}
       </laji-iucn-group-select>
     </div>
-    <div class="col-sm-5 col-md-4">
+    <div class="col-xs-11 col-sm-5 col-md-4">
       <label>{{ 'species.form.specimen' | translate }}</label>
       <laji-taxon-select
         [class]="'form-control'"
@@ -19,6 +19,7 @@
         [taxonId]="query.taxon"
         [searchParams]="{species: false}">
       </laji-taxon-select>
+      <laji-info placement="bottom">{{ 'iucn.taxon.disclaimer' | translate }}</laji-info>
     </div>
   </div>
   <div class="form-group">

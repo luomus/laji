@@ -15,7 +15,7 @@ export class Util {
    * @returns boolean
    */
   public static equalsArray(a1, a2) {
-    return a1 && a2 && a1.length === a2.length && a1.sort().every((value, index) => value === a2.sort()[index]);
+    return a1 && a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
   }
 
   /**

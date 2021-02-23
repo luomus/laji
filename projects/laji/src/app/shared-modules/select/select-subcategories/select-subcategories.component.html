@@ -1,0 +1,44 @@
+<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open, 'lj-disabled': disabled}">
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event, filter, typeCheckbox)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
+  <!-- GLOBAL FILTER -->
+  <laji-select
+  [options]="options"
+  [filterPlaceHolder]="'haseka.submissions.filter' | translate"
+  [useFilter]="false"
+  [selected]="selectedOptions['GLOBAL']"
+  [multiple]="true"
+  [info]="info"
+  [open]="open"
+  [disabled]="false"
+  [loading]="options === null"
+  [checkboxType] = "'partial'"
+  (selectedChange)="refreshValue($event, 'GLOBAL')"
+></laji-select>
+
+  <!-- SUBCATEGORIES -->
+  <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | isEmptyArray))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
+  <ng-container *ngFor="let subCategory of subCategories | filter:'GLOBAL':false ">
+    <label *ngIf="open || (!open && !(selectedOptions[subCategory] | isEmptyArray))" class="lj-item selected" (click)="labelClick($event)">
+      <laji-checkbox [checkboxType]="'partial'" [class]="[]" [value]="selectedOptions[subCategory] | subCategoryCheckboxValue : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
+    </label>
+    <laji-select
+      [options]="options"
+      [filterPlaceHolder]="'haseka.submissions.filter' | translate"
+      [useFilter]="false"
+      [selected]="selectedOptions[subCategory]"
+      [multiple]="true"
+      [info]="info"
+      [open]="open"
+      [disabled]="false"
+      [loading]="options === null"
+      [checkboxType] = "'basic'"
+      (selectedChange)="refreshValue($event, subCategory)"
+      [classes]="{options: 'subCategoriesOptions', optionContainer: 'subCategoriesContainer', menuContainer: 'subMenu'}"
+    ></laji-select>
+
+  </ng-container>
+</div>
+
+<ng-template let-option="option" #value>
+  <laji-info *ngIf="option.info" [html]="option.info"></laji-info>
+</ng-template>

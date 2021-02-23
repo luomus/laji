@@ -20,6 +20,7 @@ if (process.env.HEADLESS !== 'false') {
   chrome.chromeOptions.args = [
     '--headless',
     '--disable-gpu',
+    '--no-sandbox',
     ...chrome.chromeOptions.args
   ];
 }
@@ -58,7 +59,7 @@ exports.config = {
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
 
     const junitReporter = new JUnitXmlReporter({
-      savePath: '../test-results/E2E',
+      savePath: 'test-results/E2E',
       consolidateAll: false
     });
     jasmine.getEnv().addReporter(junitReporter);
