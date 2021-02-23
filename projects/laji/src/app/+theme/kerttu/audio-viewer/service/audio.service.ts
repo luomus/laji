@@ -7,7 +7,7 @@ import {AudioPlayer} from './audio-player';
 
 @Injectable()
 export class AudioService {
-  audioContext: AudioContext;
+  private audioContext: AudioContext;
 
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
