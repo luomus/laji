@@ -33,6 +33,7 @@
         <label for="onlySections">{{ 'nafi.stats.sections' | translate }} / {{ 'nafi.stats.paivaa' | translate }}</label>
         <bSwitch
           id="sections"
+          [disabled]="activeDate"
           (changeState)="onSectionsChange($event)"
           style="margin-right: 15px; display: block;"
           name="sections"

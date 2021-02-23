@@ -330,6 +330,7 @@ export class NafiBumblebeeResultService {
 
   getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean) {
     const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
+    season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'] :
     !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
     const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
@@ -345,7 +346,7 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       map(result => {
-        return this.mergeElementsByProperties(result, onlySections, year, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
+        return this.mergeElementsByProperties(result, onlySections, year, season, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
         (!onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
       })
     );
@@ -601,7 +602,7 @@ export class NafiBumblebeeResultService {
     return mid % 1 ? array[mid - 0.5] : (array[mid - 1] + array[mid]) / 2;
   }
 
-  private mergeElementsByProperties(result: any[], onlySections: boolean, year: number, filters: string[]) {
+  private mergeElementsByProperties(result: any[], onlySections: boolean, year: number, season: string, filters: string[]) {
     const objectFilter = [];
 
     if (onlySections) {
@@ -627,12 +628,15 @@ export class NafiBumblebeeResultService {
     }
 
     const arrayMerged = [{'dataSets': [], 'yearsDays': []}];
+
     result.forEach(item => {
       const existing = arrayMerged[0]['dataSets'].filter((v) => {
         return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
-      const property = !onlySections ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day']) + '-' + this.padMonthDay(item['gathering.conversions.month']) + '-' + item['gathering.conversions.year']
+      const property = season ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined') :
+       !onlySections ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day']) + '-' + this.padMonthDay(item['gathering.conversions.month']) + '-' + item['gathering.conversions.year']
       : filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined');
+
       if (existing.length) {
         const existingIndex = arrayMerged[0]['dataSets'].indexOf(existing[0]);
         arrayMerged[0]['dataSets'][existingIndex]['total'] = arrayMerged[0]['dataSets'][existingIndex]['total'] += item['individualCountSum'];
@@ -655,7 +659,6 @@ export class NafiBumblebeeResultService {
     });
 
     arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays'], false);
-    console.log(arrayMerged);
 
     return arrayMerged;
   }

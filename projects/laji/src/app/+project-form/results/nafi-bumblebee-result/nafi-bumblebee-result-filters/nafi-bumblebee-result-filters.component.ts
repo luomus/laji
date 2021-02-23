@@ -84,6 +84,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   onDateChange(newDate: string) {
     this.activeDate = newDate;
+    this.onlySections = true;
     this.dateChange.emit(newDate);
     this.onFiltersChange();
   }

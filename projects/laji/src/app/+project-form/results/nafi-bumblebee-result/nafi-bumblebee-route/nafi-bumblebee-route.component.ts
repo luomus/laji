@@ -57,7 +57,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       this.routeId = queryParams['route'];
       this.date = queryParams['date'];
       this.year = queryParams['year'];
-      this.onlySections = queryParams['onlySections'] ? JSON.parse(queryParams['onlySections']) : true;
+      this.onlySections = this.date ? true : (queryParams['onlySections'] ? JSON.parse(queryParams['onlySections']) : true);
 
       if (!this.activeYear) {
         this.censusListForRoute(this.routeId);
@@ -91,7 +91,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId, typeof this.onlySections === 'string'
+      this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId, this.activeDate ? true : typeof this.onlySections === 'string'
       ? JSON.parse(this.onlySections) : this.onlySections)
         .subscribe(list => {
           this.observationStats = list;
@@ -111,7 +111,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
-    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, typeof this.onlySections === 'string'
+    this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
     ? JSON.parse(this.onlySections) : this.onlySections)
       .subscribe(censuses => {
         this.observationStats = censuses;
