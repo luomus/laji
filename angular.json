@@ -411,7 +411,7 @@
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji-ui/src/lib/exports.scss",
               "projects/laji/src/styles/laji.scss",
-              "projects/iucn/src/styles.css"
+              "projects/iucn/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
