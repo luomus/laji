@@ -179,11 +179,11 @@ export class ImportService {
     return row[level] ? row[level].hash : '';
   }
 
-  private findDocumentData(data: ILevelData[]): IData {
+  private findDocumentData(data: ILevelData[]): IData|null {
     const l = (data || []).length;
-    for (let i = 0; i <= l; i++) {
-      if (data[i].document) {
-        return data[i].document;
+    for (let i = 0; i < l; i++) {
+      if (data[i][LEVEL_DOCUMENT]) {
+        return data[i][LEVEL_DOCUMENT];
       }
     }
     return null;
@@ -215,6 +215,7 @@ export class ImportService {
     });
 
     const documents: {[hash: string]: ILevelData[]} = {};
+    let previousLevelData: ILevelData;
     rows.forEach((row, rowIdx) => {
       const parentData: ILevelData = {};
       allCols.forEach(col => {
@@ -255,6 +256,8 @@ export class ImportService {
           parentData[key].hash = key === LEVEL_UNIT ? '' + rowIdx : Hash(parentData[key].data, {algorithm: 'sha1'});
         });
       }
+      this.fillInMissingLevels(parentData, previousLevelData);
+      previousLevelData = parentData;
       const rootHash = this.getRootHash(parentData);
       if (rootHash === false) {
         return;
@@ -273,9 +276,11 @@ export class ImportService {
     const docs: {[hash: string]: IDocumentData} = {};
     Object.keys(documents).forEach(hash => {
       if (!docs[hash]) {
-        docs[hash] = {document: {'formID': formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
         const docData = this.findDocumentData(documents[hash]);
-        docs[hash].rows[docData.rowIdx] = true;
+        if (!docData) {
+          return;
+        }
+        docs[hash] = {document: {'formID': formID}, ref: {[hash]: {}}, rows: {[docData.rowIdx]: true}, skipped: []};
         if (ignoreRowsWithNoCount && !this.hasCountValue(docData.data) && combineBy === CombineToDocument.none) {
           docs[hash].skipped.push(docData.rowIdx);
           docs[hash].document = null;
@@ -309,6 +314,22 @@ export class ImportService {
     });
 
     return Object.keys(docs).map((hash) => ({document: docs[hash].document, rows: docs[hash].rows, skipped: docs[hash].skipped}));
+  }
+
+  private fillInMissingLevels(levelData: ILevelData, previousLevelData: ILevelData) {
+    if (!previousLevelData) {
+      return;
+    }
+
+    for (const level of [LEVEL_DOCUMENT, LEVEL_GATHERING, LEVEL_TAXON_CENSUS]) {
+      if (levelData[level]) {
+        return;
+      } else if (previousLevelData[level]) {
+        levelData[level] = {
+          ...previousLevelData[level]
+        };
+      }
+    }
   }
 
   private reduceUnitCount(data: {[hash: string]: ILevelData[]}, max: number): void {

@@ -31,9 +31,10 @@ describe('Tools page', () => {
     done();
   });
 
-  describe('Importing', () => {
+  describe('Importing basic excel', () => {
 
     beforeAll(async (done) => {
+      await page.toolsLink.click();
       await page.importLink.click();
       done();
     });
@@ -80,6 +81,65 @@ describe('Tools page', () => {
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be a warning that the row is skipped');
       expect(await spreadsheet.getDocumentCountText()).toBe('3', 'Selecting to skip non count rows should not effect document count');
+      done();
+    });
+
+    it('should be able save document', async (done) => {
+      await spreadsheet.clickSaveWithoutPublishing();
+      expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
+      expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be no warnings when importing file with valid data');
+      done();
+    });
+
+  });
+
+  describe('Importing two dimensional data', () => {
+
+    beforeAll(async (done) => {
+      await page.toolsLink.click();
+      await page.importLink.click();
+      done();
+    });
+
+    it('should show file import', async (done) => {
+      expect(await spreadsheet.isPresentFileInput()).toBe(true, 'File input should be visible on import page');
+      done();
+    });
+
+    it('should upload valid file', async (done) => {
+      await spreadsheet.uploadFile(path.resolve(__dirname, 'ValidAutofillEmpty(JX.519).xlsx'));
+      expect(await spreadsheet.getActiveStep()).toBe(3, 'After uploading valid file we should see taxon linking next');
+      done();
+    });
+
+    it('should be able click next on taxon when taxon linking is done', async (done) => {
+      expect(await spreadsheet.isNextValueMapButtonClickable()).toBe(true, 'Next button was not clickable in time');
+      await spreadsheet.clickNextValueMapButton();
+      done();
+    });
+
+    it('should show errors when combining by gathering', async (done) => {
+      await spreadsheet.selectGatheringToSameDocument();
+      expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be no warnings');
+      expect(await spreadsheet.getErrorCount()).toBe(3, 'There should 3 errors when trying to import incomplete data');
+      done();
+    });
+
+    it('should show errors when not combining at all', async (done) => {
+      await spreadsheet.selectEachRowAsOwnDocument();
+      expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be no warnings');
+      expect(await spreadsheet.getErrorCount()).toBe(6, 'There should 6 errors when trying to import incomplete data');
+      done();
+    });
+
+    it('should show table with empty values filled', async (done) => {
+      await spreadsheet.selectAllRowsInSameDocument();
+      expect(await spreadsheet.getActiveStep()).toBe(4, 'After uploading valid file we should see taxon linking next');
+      expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
+      expect(await spreadsheet.getDocumentCountText()).toBe('1', 'only 1 document should be created');
+      expect(await spreadsheet.countCellWithValue('2020-09-14')).toBe(1, 'There should be 1 element in table with value 2020-09-14');
+      expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
+      expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be no warnings when importing file with valid data');
       done();
     });
 

@@ -7,6 +7,8 @@ export class SpreadsheetPage {
   private warningElem = element.all(by.css('.datatable-body .label.label-warning'));
   private countTrueElement = element(by.css('option[value="true"]'));
   private countFalseElement = element(by.css('option[value="false"]'));
+  private rowAllElement = element(by.css('option[value="all"]'));
+  private rowGatherignElement = element(by.css('option[value="gathering"]'));
   private rowNoneElement = element(by.css('option[value="none"]'));
   private nextValueElement = element(by.css(':not([disabled]).next-value-map'));
   private completedElements = element.all(by.css('.completed.link'));
@@ -29,7 +31,7 @@ export class SpreadsheetPage {
   async isNextValueMapButtonClickable() {
     const EC = protractor.ExpectedConditions;
     const nextElementReady = EC.elementToBeClickable(this.nextValueElement);
-    await browser.wait(nextElementReady, 10000);
+    await browser.wait(nextElementReady, 20000);
     return this.nextValueElement.isDisplayed();
   }
 
@@ -65,6 +67,16 @@ export class SpreadsheetPage {
 
   async selectEachRowAsOwnDocument() {
     await this.rowNoneElement.click();
+    await browser.waitForAngularEnabled(true);
+  }
+
+  async selectGatheringToSameDocument() {
+    await this.rowGatherignElement.click();
+    await browser.waitForAngularEnabled(true);
+  }
+
+  async selectAllRowsInSameDocument() {
+    await this.rowAllElement.click();
     await browser.waitForAngularEnabled(true);
   }
 
