@@ -1,12 +1,17 @@
-@import '../vars';
+$btn-primary-hue-shift: -15deg !default;
+$btn-secondary-hue-shift: 0deg !default;
+$btn-success-hue-shift: -20deg !default;
+$btn-info-hue-shift: -20deg !default;
+$btn-warning-hue-shift: 0deg !default;
+$btn-danger-hue-shift: 20deg !default;
 
-$border-radius: 5px;
+$btn-border-radius: 5px !default;
 
 @mixin btn {
   display: inline-block;
   color: $neutral-8;
   border: none;
-  border-radius: $border-radius;
+  border-radius: $btn-border-radius;
 
   cursor: pointer;
   text-decoration: none;
@@ -28,6 +33,7 @@ $border-radius: 5px;
   box-shadow: 0 1px 3px $shadowSpread rgba($shadowColor, 0.3), inset 0 1px 6px rgba($shadowColor, 0);
   &:hover, &:focus {
     background-color: $activeBgColor;
+    color: $color;
   }
   &:active {
     background-color: $activeBgColor;
@@ -51,6 +57,9 @@ $border-radius: 5px;
     height: 100%;
     opacity: 0;
     background-color: #000;
+  }
+  &:hover {
+    color: $textColor;
   }
   &:hover::before, &:focus::before {
     opacity: .1;
@@ -111,21 +120,21 @@ $border-radius: 5px;
 }
 
 @mixin btnPrimary {
-  @include btnPrimaryTheme($primary-5, -15deg, $primary-1, $primary-8);
+  @include btnPrimaryTheme($primary-5, $btn-primary-hue-shift, $primary-1, $primary-8);
 }
 
 @mixin btnSuccess {
-  @include btnPrimaryTheme($success-5, -20deg, $success-1, $success-8);
+  @include btnPrimaryTheme($success-5, $btn-success-hue-shift, $success-1, $success-8);
 }
 
 @mixin btnInfo {
-  @include btnPrimaryTheme($info-5, -20deg, $info-1, $info-8);
+  @include btnPrimaryTheme($info-5, $btn-info-hue-shift, $info-1, $info-8);
 }
 
 @mixin btnWarning {
-  @include btnPrimaryTheme($warning-5, 0deg, $warning-1, $warning-8);
+  @include btnPrimaryTheme($warning-5, $btn-warning-hue-shift, $warning-1, $warning-8);
 }
 
 @mixin btnDanger {
-  @include btnPrimaryTheme($danger-5, 20deg, $danger-1, $danger-8);
+  @include btnPrimaryTheme($danger-5, $btn-danger-hue-shift, $danger-1, $danger-8);
 }

@@ -1,3 +1,9 @@
+/*
+* OFFSETS
+*/
+$fs-offset: 0px !default;
+$sp-offset: 0px !default;
+
 /**
 * BREAKPOINTS
 */
@@ -31,12 +37,12 @@ $neutral-7: hsl(204, 10, 40);
 $neutral-8: hsl(204, 15, 30);
 $neutral-9: hsl(204, 20, 10);
 
-$success-1: hsl(100, 50, 98);
-$success-2: hsl(100, 50, 95);
-$success-3: hsl(100, 50, 85);
-$success-4: hsl(100, 40, 70);
-$success-5: hsl(100, 40, 50);
-$success-6: hsl(100, 50, 40);
+$success-1: hsl(100, 60, 98);
+$success-2: hsl(100, 60, 95);
+$success-3: hsl(100, 60, 85);
+$success-4: hsl(100, 50, 70);
+$success-5: hsl(100, 50, 50);
+$success-6: hsl(100, 60, 40);
 $success-7: hsl(100, 80, 30);
 $success-8: hsl(100, 90, 20);
 $success-9: hsl(100, 100, 10);
@@ -51,15 +57,15 @@ $info-7: hsl(200, 80, 30);
 $info-8: hsl(200, 90, 20);
 $info-9: hsl(200, 100, 10);
 
-$warning-1: hsl(50, 50, 98);
-$warning-2: hsl(50, 50, 95);
-$warning-3: hsl(50, 50, 85);
-$warning-4: hsl(50, 40, 70);
-$warning-5: hsl(50, 40, 50);
-$warning-6: hsl(50, 50, 40);
-$warning-7: hsl(50, 80, 30);
-$warning-8: hsl(50, 90, 20);
-$warning-9: hsl(50, 100, 10);
+$warning-1: hsl(40, 80, 98);
+$warning-2: hsl(40, 70, 95);
+$warning-3: hsl(40, 60, 85);
+$warning-4: hsl(40, 60, 70);
+$warning-5: hsl(40, 60, 50);
+$warning-6: hsl(40, 70, 40);
+$warning-7: hsl(40, 80, 30);
+$warning-8: hsl(40, 90, 20);
+$warning-9: hsl(40, 100, 10);
 
 $danger-1: hsl(0, 50, 98);
 $danger-2: hsl(0, 50, 95);
@@ -77,27 +83,27 @@ $admin-3: hsl(40, 60, 85);
 
 /* FONT */
 
-$fs-1: 12px;
-$fs-2: 14px;
-$fs-3: 16px;
-$fs-4: 18px;
-$fs-5: 20px;
-$fs-6: 24px;
-$fs-7: 28px;
-$fs-8: 32px;
-$fs-9: 36px;
+$fs-1: 12px + $fs-offset;
+$fs-2: 14px + $fs-offset;
+$fs-3: 16px + $fs-offset;
+$fs-4: 18px + $fs-offset;
+$fs-5: 20px + $fs-offset;
+$fs-6: 22px + $fs-offset;
+$fs-7: 26px + $fs-offset;
+$fs-8: 34px + $fs-offset;
+$fs-9: 38px + $fs-offset;
 
 /* SPACERS */
 
-$sp-1: 2px;
-$sp-2: 4px;
-$sp-3: 8px;
-$sp-4: 12px;
-$sp-5: 16px;
-$sp-6: 24px;
-$sp-7: 32px;
-$sp-8: 48px;
-$sp-9: 64px;
+$sp-1: 2px + $sp-offset;
+$sp-2: 4px + $sp-offset;
+$sp-3: 8px + $sp-offset;
+$sp-4: 12px + $sp-offset;
+$sp-5: 18px + $sp-offset;
+$sp-6: 24px + $sp-offset;
+$sp-7: 32px + $sp-offset;
+$sp-8: 40px + $sp-offset;
+$sp-9: 50px + $sp-offset;
 
 $spacers: (
   "0": 0px,
@@ -111,6 +117,3 @@ $spacers: (
   "8": $sp-8,
   "9": $sp-9
 );
-
-$sp-btn: 0.5em 1em;
-$sm-btn: 0.3em 0.6em;

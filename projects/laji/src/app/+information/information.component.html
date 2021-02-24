@@ -13,7 +13,7 @@
             </ng-container>
             <li class="active">{{ information.title }}</li>
           </ol>
-          <div class="laji-information" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
+          <div class="laji-page" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
         </div>
       </div>
       <div *ngIf="!information.children" class="makeup-width flex-grow flex-shrink"></div>
