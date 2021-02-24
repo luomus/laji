@@ -1,6 +1,6 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
 import {ProtaxModelEnum} from '../models';
-import { TranslateService } from '@ngx-translate/core';
+import {DialogService} from '../../../shared/service/dialog.service';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 
 enum Tab {
@@ -15,6 +15,9 @@ enum Tab {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtaxFormComponent {
+  @Input() loading = false;
+  @Input() downloadProgress: number;
+
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
 
@@ -29,7 +32,7 @@ export class ProtaxFormComponent {
   @Output() submit = new EventEmitter<FormData>();
 
   constructor(
-    private translate: TranslateService
+    private dialogService: DialogService
   ) { }
 
   updateSequenceFile(files: FileList) {
@@ -37,8 +40,13 @@ export class ProtaxFormComponent {
   }
 
   submitForm() {
+    if (this.probabilityThreshold == null || this.probabilityThreshold < 0 || this.probabilityThreshold > 1) {
+      this.dialogService.alert('theme.protax.invalidThreshold');
+      return;
+    }
+
     if ((this.activeTab === Tab.textArea && !this.sequenceData) || (this.activeTab === Tab.fileSelect && !this.sequenceFile)) {
-      alert(this.translate.instant('theme.protax.noSequence'));
+      this.dialogService.alert('theme.protax.noSequence');
       return;
     }
 

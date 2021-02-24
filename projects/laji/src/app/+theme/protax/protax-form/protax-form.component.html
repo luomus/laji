@@ -15,7 +15,7 @@
       type="number"
       min="0"
       max="1"
-      step="0.1"
+      step="0.001"
       id="threshold"
     >
   </div>
@@ -33,4 +33,11 @@
   </lu-tabs>
 </div>
 
-<lu-button [role]="'primary'" (click)="submitForm()">Tunnista</lu-button>
+<lu-button [loading]="loading" [role]="'primary'" (click)="submitForm()">
+  <ng-container *ngIf="!(loading && downloadProgress) else downloading">
+    {{ 'theme.protax.analyse' | translate }}
+  </ng-container>
+  <ng-template #downloading>
+    {{ 'theme.protax.downloading' | translate }} {{ downloadProgress | percent:'1.0' }}
+  </ng-template>
+</lu-button>

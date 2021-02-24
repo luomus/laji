@@ -114,35 +114,33 @@
         <span class="datatable-header-cell-wrapper link"><span></span></span>
       </ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-        <div class="buttons" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
-          <lu-button
-                [role]="'success'"
-                (click)="showViewer(row.id)">
+        <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
+          <button
+            class="btn btn-success btn-xs"
+            (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-open"></i>
             <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
-        </lu-button>
-      </div>
-        <div class="buttons" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
-          <lu-button
-                [role]="'warning'"
-                (click)="showViewer(row.id)">
+          </button>
+        </div>
+        <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
+          <button
+            class="btn btn-warning btn-xs"
+            (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-close"></i>
             <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
-        </lu-button>
-      </div>
-      <div class="buttons">
-        <lu-button *ngIf="(actions | includes:'edit')"
-              class="tableOwnSubmissions"
-              [role]="'edit'"
-              [routerLink]="row._editUrl | localize">
+          </button>
+        </div>
+        <div class="mb-2 mr-2">
+          <button *ngIf="(actions | includes:'edit')"
+            class="btn btn-default btn-xs"
+            [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
             <span class="text-button" *ngIf="onlyTemplates; else noTemplates">{{ 'haseka.submissions.use' | translate }}</span>
             <ng-template #noTemplates>
               <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
             </ng-template>
-
-        </lu-button>
-      </div>
+          </button>
+        </div>
 
         <!--<span *ngIf="showMakeTemplate(row)">
           <lu-button
@@ -182,32 +180,32 @@
       <ng-template ngx-datatable-header-template><span></span></ng-template>
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <div ngPreserveWhitespaces>
-          <div class="buttons">
-            <lu-button *ngIf="(actions | includes:'download') && onlyTemplates === false"
-                       [role]="'other'"
-                       (click)="openChooseFileTypeModal(row.id)">
+          <div class="mb-2 mr-2">
+            <button *ngIf="(actions | includes:'download') && onlyTemplates === false"
+              class="btn btn-default btn-xs"
+              (click)="openChooseFileTypeModal(row.id)">
               <i class="glyphicon glyphicon-download-alt"></i>
               <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
-            </lu-button>
+            </button>
             <ng-container *ngIf="forms$ | async as forms">
-              <lu-button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
-                         [role]="'other'"
-                         [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
+              <button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
+                class="btn btn-default btn-xs"
+                [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
                 <i class="glyphicon glyphicon-stats"></i>
                 <span class="text-button">{{ 'haseka.submissions.statistics' | translate }}</span>
-              </lu-button>
+              </button>
             </ng-container>
           </div>
-        <lu-button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
-                [role]="'danger'"
-                [tooltip]="'friend.remove' | translate"
-                [placement]="'left'"
-                [adaptivePosition]="false"
-                [container]="'body'"
-                (click)="deleteDialog(row)">
+          <button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
+            class="btn btn-danger btn-xs"
+            [tooltip]="'friend.remove' | translate"
+            [placement]="'left'"
+            [adaptivePosition]="false"
+            [container]="'body'"
+            (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
             <span class="text-button">{{ 'np.delete' | translate }}</span>
-        </lu-button>
+          </button>
         </div>
       </ng-template>
     </ngx-datatable-column>
