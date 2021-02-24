@@ -15,7 +15,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
              (keyup.enter)="onConfirm()" />
     </div>
     <div class="modal-footer">
-      <button type="button"
+      <button type="button" *ngIf="showCancel"
               class="btn btn-secondary laji-dialog-cancel"
               (click)="onCancel()">{{ cancelLabel | translate }}</button>
       <button type="button" #confirm
@@ -32,6 +32,7 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
   cancelLabel = 'cancel';
   prompt = false;
   promptValue = '';
+  showCancel = true;
 
   value: boolean | string | null;
 
