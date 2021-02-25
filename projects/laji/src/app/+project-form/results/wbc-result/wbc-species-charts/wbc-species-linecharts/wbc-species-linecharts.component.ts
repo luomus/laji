@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular
 import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart, ChartOptions } from 'chart.js';
+import { Chart, ChartOptions, ChartType } from 'chart.js';
 import { Color, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
@@ -48,7 +48,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   textSeasonCount: string;
 
   resultSub: Subscription;
-  chartType: any = 'LineWithLine';
+  chartType: ChartType = 'LineWithLine';
 
   constructor(
     private resultService: WbcResultService,

@@ -7,7 +7,7 @@ import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
-import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
+import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as chartJs from 'chart.js';
@@ -198,7 +198,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   public lineChartPlugins = [
     pluginDataLabels as PluginServiceGlobalRegistrationAndOptions
   ];
-  chartType = 'LineWithLine' as chartJs.ChartType;
+  chartType: ChartType = 'LineWithLine';
 
   constructor(
     private route: ActivatedRoute,
