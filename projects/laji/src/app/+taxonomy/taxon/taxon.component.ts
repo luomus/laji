@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { DOCUMENT } from '@angular/common';
 import { CacheService } from '../../shared/service/cache.service';
+import { InfoCardTabType } from './info-card/info-card.component';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -23,7 +24,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
   isFromMasterChecklist: boolean;
 
   infoCardContext: string;
-  infoCardTab: string;
+  infoCardTab: InfoCardTabType;
 
   showTree = false;
   canShowTree = true;

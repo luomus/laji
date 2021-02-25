@@ -20,6 +20,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   data: any;
   total = 0;
 
+  chartType: any = 'treemap';
   lineChartData: any[] = [];
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];

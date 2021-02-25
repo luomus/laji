@@ -20,6 +20,7 @@ import { Rights } from '../../../../../shared/service/form-permission.service';
 import { ObservationTableColumn } from '../../../../../shared-modules/observation-result/model/observation-table-column';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { DatatableComponent } from '../../../../../shared-modules/datatable/datatable/datatable.component';
+import { SelectionType, SortType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'laji-np-list',
@@ -34,6 +35,8 @@ export class NpListComponent implements OnDestroy {
   data: any[] = [];
   columns: ObservationTableColumn[];
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  sortType = SortType;
+  selectionType = SelectionType;
   showLegendList = false;
   multisort = false;
   filterBy: string;

@@ -2,6 +2,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SYNONYM_KEYS } from '../../../+taxonomy/species/service/taxon-export.service';
 import { Global } from '../../../../environments/global';
+import { toHtmlSpanElement } from '../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-datatable-templates',
@@ -51,6 +52,7 @@ export class DatatableTemplatesComponent {
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
   annotationTagsObservation = Global.annotationTags;
+  toHtmlSpanElement = toHtmlSpanElement;
 
   roundNumber(value: number) {
     return Math.round(value * 10 ) / 10;

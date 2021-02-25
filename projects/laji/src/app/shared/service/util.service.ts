@@ -19,6 +19,21 @@ export class Util {
   }
 
   /**
+   * Return the elements that are missing from the another array
+   */
+  public static arrayDiff<T>(a1: T[], a2: T[]): T[] {
+    if (!Array.isArray(a1)) {
+      return Array.isArray(a2) ? a2 : [];
+    }
+    if (!Array.isArray(a2)) {
+      return a1;
+    }
+    return a1
+      .filter(x => !a2.includes(x))
+      .concat(a2.filter(x => !a1.includes(x)));
+  }
+
+  /**
    * Checks if the given value is empty object
    *
    * Values that are not objects are considered to be empty objects

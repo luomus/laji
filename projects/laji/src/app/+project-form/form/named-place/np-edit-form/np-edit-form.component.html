@@ -12,7 +12,7 @@
       [form]="data.placeForm"
       [status]="status"
       [saving]="saving"
-      [edit]="data.namedPlace"
+      [edit]="!!data.namedPlace"
       (submitPublic)="submitPublic()"
       (submitPrivate)="submitPrivate()"
       (cancel)="discard()"

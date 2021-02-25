@@ -22,11 +22,11 @@
     [loading]="false"
     [count]="data.length"
     [sorts]="sorts"
-    [sortType]="multisort ? 'multi' : 'single'"
+    [sortType]="multisort ? sortType.multi : sortType.single"
     [page]="1"
     [pageSize]="data.length"
     [columns]="columns"
-    [selectionType]="'single'"
+    [selectionType]="selectionType.single"
     [preselectedRowIndex]="activeNP"
     >
   </laji-datatable>
@@ -59,7 +59,7 @@
       <span *ngSwitchCase="'sent'">
         Ilmoitettu
       </span>
-      <span *ngSwitchDefault="">
+      <span *ngSwitchDefault>
         Varattu
       </span>
     </ng-container>

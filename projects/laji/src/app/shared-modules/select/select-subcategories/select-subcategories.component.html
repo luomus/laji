@@ -11,7 +11,7 @@
   [open]="open"
   [disabled]="false"
   [loading]="options === null"
-  [checkboxType] = "'partial'"
+  [checkboxType] = "checkBoxTypes.partial"
   (selectedChange)="refreshValue($event, 'GLOBAL')"
 ></laji-select>
 
@@ -19,7 +19,7 @@
   <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | isEmptyArray))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
   <ng-container *ngFor="let subCategory of subCategories | filter:'GLOBAL':false ">
     <label *ngIf="open || (!open && !(selectedOptions[subCategory] | isEmptyArray))" class="lj-item selected" (click)="labelClick($event)">
-      <laji-checkbox [checkboxType]="'partial'" [class]="[]" [value]="selectedOptions[subCategory] | subCategoryCheckboxValue : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
+      <laji-checkbox [checkboxType]="checkBoxTypes.partial" [class]="[]" [value]="selectedOptions[subCategory] | subCategoryCheckboxValue : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
     </label>
     <laji-select
       [options]="options"
@@ -31,7 +31,7 @@
       [open]="open"
       [disabled]="false"
       [loading]="options === null"
-      [checkboxType] = "'basic'"
+      [checkboxType] = "checkBoxTypes.basic"
       (selectedChange)="refreshValue($event, subCategory)"
       [classes]="{options: 'subCategoriesOptions', optionContainer: 'subCategoriesContainer', menuContainer: 'subMenu'}"
     ></laji-select>

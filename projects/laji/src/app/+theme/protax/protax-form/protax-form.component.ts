@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
 import {ProtaxModelEnum} from '../models';
 import {DialogService} from '../../../shared/service/dialog.service';
+import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 
 enum Tab {
   textArea,
@@ -26,6 +27,7 @@ export class ProtaxFormComponent {
   activeTab = Tab.textArea;
 
   protaxModels = ProtaxModelEnum;
+  toHtmlInputElement = toHtmlInputElement;
 
   @Output() submit = new EventEmitter<FormData>();
 
