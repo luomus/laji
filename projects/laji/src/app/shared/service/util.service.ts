@@ -28,10 +28,9 @@ export class Util {
     if (!Array.isArray(a2)) {
       return a1;
     }
-    if (a1.length > a2.length) {
-      return a1.filter(value => !a2.includes(value));
-    }
-    return a2.filter(value => !a1.includes(value));
+    return a1
+      .filter(x => !a2.includes(x))
+      .concat(a2.filter(x => !a1.includes(x)));
   }
 
   /**
