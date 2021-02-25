@@ -11,7 +11,7 @@
               [legend]="false"
               [plugins]="lineChartPlugins"
               [colors]="lineChartColors"
-              [chartType]="LineWithLine"
+              [chartType]="chartType"
             ></laji-chart>
         </div>
         <div *ngIf="lineChartData[season][0]['data'][0]['data'].length === 0" style="margin-bottom: 20px">{{ 'wbc.stats.noHits' | translate }}</div>

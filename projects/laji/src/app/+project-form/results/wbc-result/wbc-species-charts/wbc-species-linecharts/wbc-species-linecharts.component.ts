@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Chart, ChartOptions } from 'chart.js';
 import { Color, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import * as chartJs from 'chart.js';
 
 @Component({
   selector: 'laji-wbc-species-linecharts',
@@ -49,7 +48,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   textSeasonCount: string;
 
   resultSub: Subscription;
-  LineWithLine = 'LineWithLine' as chartJs.ChartType;
+  chartType: any = 'LineWithLine';
 
   constructor(
     private resultService: WbcResultService,
