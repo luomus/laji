@@ -8,7 +8,7 @@
   <div class="d-flex species-container" #speciesContainer>
     <div *ngFor="let taxon of taxa; index as i" class="species d-flex flex-col mr-4">
       <h5>
-        <a [routerLink]="['/taxon', taxon.id, 'identification']"><laji-taxon-name [addLink]="false" [taxon]="taxon"></laji-taxon-name></a>
+        <a [routerLink]="['/taxon', taxon.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="taxon"></laji-taxon-name></a>
       </h5>
       <div class="species-img-container flex-grow">
         <ng-container *ngIf="taxon.multimedia?.length > 0">
