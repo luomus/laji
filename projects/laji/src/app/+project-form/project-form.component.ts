@@ -2,7 +2,7 @@ import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
-import { filter, map, mergeMap, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, of, Subscription, from as ObservableFrom, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
@@ -12,8 +12,6 @@ import { FormPermissionService, Rights } from '../shared/service/form-permission
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
-import { RouteDataService } from '../shared/service/route-data.service';
-import { SessionStorage } from 'ngx-webstorage';
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
@@ -59,9 +57,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   redirectionSubscription: Subscription;
   isDesktopScreen: boolean;
   isNavbarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
-  @SessionStorage('projectSidebar')
-  projectSidebar = true;
-  canSave = false;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -139,22 +134,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-
-    this.showNav$ = combineLatest(this.browserService.lgScreen$, this.isNavbarToggledSubject.asObservable()).pipe(
-      mergeMap(([isDesktopScreen, isNavbarToggled]) =>
-      routerEvents$.pipe(
-        switchMap(() => RouteDataService.getDeepest<boolean>(this.router.routerState.snapshot.root, 'hideSidebar', false)),
-        tap(hide => this.canSave = !hide),
-        map(hide => !hide),
-        map(visible => (this.projectSidebar === false || (!isDesktopScreen && !isNavbarToggled)) ? false : visible)
-      )
-      )
-    )
-
-
-
-    /*this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.displaySidebar$, this.isNavbarToggledSubject.asObservable()).pipe(
-      mergeMap(([isDesktopScreen, url, displaySidebar, isNavbarToggled]) =>
+    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.isNavbarToggledSubject.asObservable()).pipe(
+      mergeMap(([isDesktopScreen, url, isNavbarToggled]) =>
       form$.pipe(
         map(form =>
           !(
@@ -166,7 +147,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         )
       )
       )
-    );*/
+    );
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
@@ -270,9 +251,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   navBarToggled(event) {
     this.isNavbarToggledSubject.next(event);
-    if (this.canSave) {
-      this.projectSidebar = event;
-    }
   }
 
   clickedSidebarLink() {
