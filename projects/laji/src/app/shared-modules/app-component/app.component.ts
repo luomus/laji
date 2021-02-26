@@ -24,6 +24,7 @@ export class AppComponent {
   public isEmbedded: boolean;
   public onFrontPage = false;
   public displayFeedback = true;
+  public hideSidebar = false;
   private currentRoute: string;
 
   constructor(
