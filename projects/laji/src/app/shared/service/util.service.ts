@@ -6,7 +6,7 @@ export class Util {
    * Clones the object using JSON stringify
    * @returns any
    */
-  public static clone(object) {
+  public static clone(object: any) {
     return JSON.parse(JSON.stringify(object));
   }
 
@@ -14,8 +14,8 @@ export class Util {
    * Checks the equality of arrays
    * @returns boolean
    */
-  public static equalsArray(a1, a2) {
-    return a1 && a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
+  public static equalsArray(a1: any[]|undefined, a2: any[]|undefined): boolean {
+    return !!a1 && !!a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
   }
 
   /**
@@ -53,16 +53,16 @@ export class Util {
    * @param obj object to remove keys from
    * @param keys array of keys that should be removed
    */
-  public static removeFromObject(obj: object, keys?: string[]) {
+  public static removeFromObject<T extends Object>(obj: T, keys?: Array<keyof T>): Partial<T> {
     if (typeof obj !== 'object') {
       return obj;
     }
-    return Object.keys(obj).reduce((cumulative, current) => {
+    return (Object.keys(obj) as Array<keyof T>).reduce((cumulative, current) => {
       if (typeof obj[current] !== 'undefined' && (!keys || keys.indexOf(current) === -1)) {
         cumulative[current] = obj[current];
       }
       return cumulative;
-    }, {});
+    }, {} as T);
   }
 
   /**
@@ -108,19 +108,19 @@ export class Util {
     }, object);
   }
 
-  public static updateWithJSONPointer(object: any, jsonPointer, value): any {
+  public static updateWithJSONPointer(object: any, jsonPointer: string, value: any): any {
     const splits = jsonPointer.split('/');
     const last = splits.pop();
 
     const lastContainerPointer = splits.join('/');
     const lastContainer = this.parseJSONPointer(object, lastContainerPointer, true);
-    if (lastContainer) {
+    if (last && lastContainer) {
       lastContainer[last] = value;
     }
     return object;
   }
 
-  public static arrayCombineMerge(target, source, options) {
+  public static arrayCombineMerge(target: any[], source: any[], options: any) {
     const destination = target.slice();
 
     source.forEach(function(e, i) {
@@ -148,9 +148,12 @@ export class Util {
     return true;
   }
 
-  private static getDateFromString(dateString) {
+  private static getDateFromString(dateString: string) {
     const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
     const dateArray = reggie.exec(dateString);
+    if (!dateArray) {
+      return new Date();
+    }
     return new Date(
       (+dateArray[1]),
       (+dateArray[2]) - 1, // Careful, month starts at 0!
@@ -161,11 +164,11 @@ export class Util {
     );
   }
 
-  private static mergeClone(value, options) {
+  private static mergeClone(value: any, options: any) {
     return merge(Util.mergeEmptyTarget(value), value, options);
   }
 
-  private static mergeEmptyTarget(value) {
+  private static mergeEmptyTarget(value: any) {
     return Array.isArray(value) ? [] : {};
   }
 }
