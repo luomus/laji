@@ -157,6 +157,24 @@
                 }
               ]
             },
+            "strict": {
+              "tsConfig": "tsconfig.app-strict.json",
+              "sourceMap": true,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local.ts"
+                }
+              ]
+            },
             "dev": {
               "budgets": [
                 {
@@ -195,6 +213,11 @@
             },
             "local": {
               "browserTarget": "laji:build:local",
+              "proxyConfig": "proxy.conf.js",
+              "port": 3000
+            },
+            "strict": {
+              "browserTarget": "laji:build:strict",
               "proxyConfig": "proxy.conf.js",
               "port": 3000
             }
