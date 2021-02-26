@@ -91,7 +91,8 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
         name: 'total',
         label: 'taxonomy.total',
         width: 100,
-        cellTemplate: this.textOrTranslationKeyTpl
+        cellTemplate: this.textOrTranslationKeyTpl,
+        frozenLeft: (this.year === '' || this.year === undefined) ? true : false
       },
 
     ];
@@ -115,6 +116,9 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
     if (this.filter !== 'gathering.conversions.year') {
       otherCols.sort((a, b) => a - b);
+      if (otherCols.indexOf('undefined') > -1) {
+        otherCols.push(otherCols.splice(0, 1)[0]);
+      }
     } else {
       if (!this.onlySections && this.season) {
         otherCols = this.sortDate(otherCols);
