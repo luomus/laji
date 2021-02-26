@@ -69,7 +69,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
-    this.toggled.emit(b);
   }
   get open() {
     return this._open;

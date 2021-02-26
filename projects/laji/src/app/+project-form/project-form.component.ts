@@ -2,7 +2,7 @@ import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
-import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
+import { filter, map, mergeMap, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, of, Subscription, from as ObservableFrom, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
@@ -55,8 +55,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
-  isDesktopScreen: boolean;
-  isNavbarToggledSubject: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -134,18 +133,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(this.browserService.lgScreen$, routerEvents$, this.isNavbarToggledSubject.asObservable()).pipe(
-      mergeMap(([isDesktopScreen, url, isNavbarToggled]) =>
-      form$.pipe(
-        map(form =>
-          !(
-            (!form.options?.useNamedPlaces && url.match(/\/form$/) && !isNavbarToggled)
-            || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
-            || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
-            || (!isDesktopScreen && !isNavbarToggled)
+    this.showNav$ = combineLatest(routerEvents$, this.userToggledSidebar$.asObservable()).pipe(
+      mergeMap(([url, userToggledSidebar]) =>
+        form$.pipe(
+          map(form =>
+            userToggledSidebar !== false
+            && !(
+              (!form.options?.useNamedPlaces && url.match(/\/form$/))
+              || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
+              || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
+            )
           )
         )
-      )
       )
     );
 
@@ -159,7 +158,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
       }
     });
-
   }
 
   ngOnDestroy(): void {
@@ -250,11 +248,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   navBarToggled(event) {
-    this.isNavbarToggledSubject.next(event);
+    this.userToggledSidebar$.next(event);
   }
 
   clickedSidebarLink() {
-    this.isNavbarToggledSubject.next(false);
+    // Close the sidebar on sidebar navigation on mobile.
+    this.browserService.lgScreen$.pipe(take(1)).subscribe(isDesktopScreen =>
+      !isDesktopScreen && this.userToggledSidebar$.next(false)
+    );
   }
 
 
