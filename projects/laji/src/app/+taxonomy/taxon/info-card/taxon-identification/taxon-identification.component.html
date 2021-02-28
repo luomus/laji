@@ -7,7 +7,7 @@
 </laji-spinner>
 
 <ng-template #parent>
-  <div *ngFor="let child of childTree">
+  <div class="mb-7" *ngFor="let child of (childTree$ | async)">
     <h3 class="child-name">
       <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="child"></laji-taxon-name></a>
     </h3>
@@ -15,7 +15,7 @@
       {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} -  {{ child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
     </h4>
     <laji-identification-list
-      [taxa]="child.children"
+      [taxon]="child"
     ></laji-identification-list>
   </div>
 </ng-template>

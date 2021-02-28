@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-taxon-identification',
@@ -11,40 +10,19 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./taxon-identification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonIdentificationComponent implements OnInit, OnChanges, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-
+export class TaxonIdentificationComponent implements OnChanges {
   @Input() taxon: Taxonomy;
   @Input() taxonImages: Array<Image>;
 
-  childTree: Taxonomy[] = [];
-
+  childTree$ = this.facade.childTree$.pipe(tap(() => this.loading = false));
   loading = false;
 
-  constructor(private facade: TaxonIdentificationFacade, private cdr: ChangeDetectorRef) { }
-
-  ngOnInit() {
-    this.facade.childTree$.pipe(takeUntil(this.unsubscribe$)).subscribe(d => {
-      this.childTree = d;
-      this.loading = false;
-      this.cdr.markForCheck();
-    });
-  }
+  constructor(private facade: TaxonIdentificationFacade) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.taxon) {
-      if (this.taxon.taxonRank === 'MX.species') {
-        this.loading = false;
-        this.childTree = [];
-        return;
-      }
       this.loading = true;
       this.facade.loadChildTree(this.taxon);
     }
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

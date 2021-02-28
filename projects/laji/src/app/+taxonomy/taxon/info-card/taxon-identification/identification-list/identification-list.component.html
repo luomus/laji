@@ -1,4 +1,7 @@
-<div class="species-container-container mb-8">
+<div class="parent-img" *ngIf="taxon.children?.length === 0 && taxon.multimedia?.length > 0">
+  <img [src]="taxon.multimedia[0].largeURL">
+</div>
+<div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">
   <div class="species-navigation back" (mousedown)="scrollStart(-1)">
     <div class="glyphicon glyphicon-chevron-left"></div>
   </div>
@@ -6,13 +9,13 @@
     <div class="glyphicon glyphicon-chevron-right"></div>
   </div>
   <div class="d-flex species-container" #speciesContainer>
-    <div *ngFor="let taxon of taxa; index as i" class="species d-flex flex-col mr-4">
+    <div *ngFor="let child of taxon.children; index as i" class="species d-flex flex-col mr-4">
       <h5>
-        <a [routerLink]="['/taxon', taxon.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="taxon"></laji-taxon-name></a>
+        <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="child"></laji-taxon-name></a>
       </h5>
       <div class="species-img-container flex-grow">
-        <ng-container *ngIf="taxon.multimedia?.length > 0">
-          <img (click)="openImage(i)" [src]="taxon.multimedia[0].largeURL">
+        <ng-container *ngIf="child.multimedia?.length > 0">
+          <img (click)="openImage(i)" [src]="child.multimedia[0].largeURL">
         </ng-container>
       </div>
     </div>

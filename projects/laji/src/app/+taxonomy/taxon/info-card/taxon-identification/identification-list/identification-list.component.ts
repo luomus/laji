@@ -14,7 +14,7 @@ const SCROLL_SPEED = 500; // pixels per second
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationListComponent implements OnDestroy {
-  @Input() taxa: Taxonomy[];
+  @Input() taxon: Taxonomy;
 
   @ViewChild('speciesContainer') speciesContainer: ElementRef;
 
@@ -74,7 +74,7 @@ export class IdentificationListComponent implements OnDestroy {
       .show({isAnimated: false});
     this.showOverlay = true;
     this.overlayRef = this.overlayLoader._componentRef;
-    this.overlayRef.instance.modalImages = this.taxa.filter(
+    this.overlayRef.instance.modalImages = this.taxon.children.filter(
       taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
     ).map(taxonomy => {
       return <Image>{
