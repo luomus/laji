@@ -30,6 +30,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
 @Component({
   selector: 'laji-form',
   templateUrl: './laji-form.component.html',
+  styleUrls: ['./laji-form.component.scss'],
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

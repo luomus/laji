@@ -7,7 +7,7 @@
     [legend]="false"
     [colors]="lineChartColors"
     [plugins]=""
-    chartType="treemap"
+    [chartType]="chartType"
     (chartClick)="taxonSelect.emit(lineChartData[0]['data'][0]['tree'][$event['active'][0]['_index']].id)"
   ></laji-chart>
   </div>

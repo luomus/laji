@@ -18,14 +18,16 @@
         (selectedFieldsChange)="newFields($event)"
       ></laji-select-fields-modal-gear>
     </div>
-    <laji-download
-      [downloadLoading]="downloadLoading"
-      (download)="download($event)">
+    <div class="pull-right">
+      <laji-download
+        [downloadLoading]="downloadLoading"
+        (download)="download($event)">
       <span>
-        {{ 'species.download' | translate }}
+        {{ 'species.header.download' | translate }}
         <i class="glyphicon glyphicon-download-alt"></i>
       </span>
-    </laji-download>
+      </laji-download>
+    </div>
     <laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
     <laji-red-list-species [fields]="selectedSpeciesFields" [species]="speciesQuery$ | async" [checklist]="checklist"></laji-red-list-species>
     <laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>

@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { map, switchMap } from 'rxjs/operators';
-import { CollectionService } from '../../shared/service/collection.service';
+import { CollectionService, ICollectionRange, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
+import { Observable } from 'rxjs';
 
 export interface SelectOption {
   id: any;
@@ -28,8 +29,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() open = false;
   @Output() selectedOptionsChange = new EventEmitter<string[]>();
 
-  collectionsTree$ = null;
-  collections$ = null;
+  collectionsTree$: Observable<ICollectionsTreeNode[]> = null;
+  collections$: Observable<ICollectionRange[]> = null;
 
   lang: string;
   modalRef: BsModalRef;
@@ -143,7 +144,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     }
   }
 
-  initCollections() {
+  initCollections(): Observable<ICollectionRange[]> {
     return this.collectionService.getAll(this.lang, false).pipe(
       map(data => data.filter(item => this.selectedOptions.includes(item.id)))
     );

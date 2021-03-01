@@ -1,9 +1,0 @@
-.table th {
-  white-space: nowrap;
-}
-.table td {
-  width: 100%;
-}
-:host {
-  height: 100%;
-}

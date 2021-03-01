@@ -1,9 +1,9 @@
-<div class="link {{ btnClass }}" (click)="fieldsModal.show()">
+<lu-button (click)="fieldsModal.show()">
   <span>
     {{ labelOpen }}
     <i class="glyphicon glyphicon-cog"></i>
   </span>
-</div>
+</lu-button>
 <div bsModal #fieldsModal="bs-modal" (onHide)="selectedFieldsChange.emit(selectedCache)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
