@@ -61,19 +61,21 @@ export class ImageModalOverlayComponent {
     }, 200);
   }
 
-  @HostListener('body:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   modalKeyDown(e: KeyboardEvent)  {
+    e.preventDefault();
     if (e.keyCode === 27) { // esc
-      e.stopImmediatePropagation();
+      e.preventDefault();
       this.closeGallery();
     }
-    if (e.keyCode === 37) { // left
-      e.stopImmediatePropagation();
+    if (e.keyCode === 37 && this.modalImages.length > 0 && this.currentImageIndex > this.modalImages.length - 1) { // left
+      e.preventDefault();
       this.prevImage();
     }
-    if (e.keyCode === 39) { // right
-      e.stopImmediatePropagation();
+    if (e.keyCode === 39 && this.modalImages.length > 0 && this.currentImageIndex > 0) { // right
+      e.preventDefault();
       this.nextImage();
     }
+    e.stopPropagation();
   }
 }
