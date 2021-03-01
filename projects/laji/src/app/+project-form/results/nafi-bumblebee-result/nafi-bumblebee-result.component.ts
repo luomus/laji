@@ -87,25 +87,6 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
     this.subTrans.unsubscribe();
   }
 
-  closeList() {
-    this.query.ykj10kmCenter = undefined;
-    this.navigate(this.query);
-  }
-
-  showGridObservations(query: WarehouseQueryInterface) {
-    this.page = 1;
-    this.navigate(query);
-  }
-
-  navigate(query: WarehouseQueryInterface) {
-    this.router.navigate([], {queryParams: {
-        grid: query.ykj10kmCenter,
-        time: query.yearMonth || 'all',
-        taxonId: query.taxonId,
-        page: this.page
-      }});
-  }
-
   private getCurrentSeason() {
     if (this.currentMonth >= this.startMonth) {
       return this.currentYear;

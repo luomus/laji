@@ -32,8 +32,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
   downloadLoading = false;
 
-  @LocalStorage() showWbcRouteTableInfo;
-
   @ViewChild('textOrTranslationKey', { static: true }) textOrTranslationKeyTpl: TemplateRef<any>;
   @ViewChild('numberOrDocumentIds', { static: true }) numberOrDocumentIdsTpl: TemplateRef<any>;
 
@@ -58,15 +56,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     private dateFormat: DateFormatPipe
   ) { }
 
-  ngOnInit() {
-    if (this.showWbcRouteTableInfo === null) {
-      this.showWbcRouteTableInfo = true;
-    }
-  }
-
-  toggleInfo() {
-    this.showWbcRouteTableInfo = !this.showWbcRouteTableInfo;
-  }
+  ngOnInit() {}
 
   onSort(event) {
     const speciesStats = this.rows.slice(0, -3);

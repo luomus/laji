@@ -104,11 +104,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
     }
   }
 
-  setActive(newActive: number) {
-    this.activeIndex = newActive;
-    this.loadedTabs.load(newActive);
-  }
-
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
     this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
