@@ -98,8 +98,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
       }
     });
 
-    console.group(otherCols);
-
     otherCols = otherCols.filter((el, index) => {
       return otherCols.indexOf(el) === index;
     });
@@ -131,11 +129,12 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
   download(format: string) {
     this.downloadLoading = true;
-
     this.exportService.export(
       this.getAoa(),
       format as BookType,
-      'route_' + this.routeId.split('.')[1] + '_' + this.season
+      'census_' + this.routeId.split('.')[1] +
+      (this.year ? '_' + this.year : '') +
+      (this.season ? '_' + this.season : '')
     ).subscribe(() => {
       this.downloadLoading = false;
     });
@@ -150,10 +149,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);
       for (let j = 0; j < this.columns.length; j++) {
-        let value = this.rows[i][this.columns[j].name];
-        if (j === 0 && this.isLastRowName(value)) {
-          value = this.translate.instant('wbc.stats.route.' + value);
-        }
+        const value = this.rows[i][this.columns[j].name];
         const key = i + 1;
         aoa[key][j] = Array.isArray(value) ? value.join(', ') : value;
       }
