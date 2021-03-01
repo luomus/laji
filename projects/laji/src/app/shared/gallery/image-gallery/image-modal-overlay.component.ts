@@ -22,6 +22,7 @@ export class ImageModalOverlayComponent {
 
   closeGallery() {
     if (this.close) {
+      this.modalImages = [];
       this.close();
     }
     this.cancelEvent.emit(null);
@@ -63,19 +64,18 @@ export class ImageModalOverlayComponent {
 
   @HostListener('document:keydown', ['$event'])
   modalKeyDown(e: KeyboardEvent)  {
-    e.preventDefault();
+    e.stopPropagation();
     if (e.keyCode === 27) { // esc
       e.preventDefault();
       this.closeGallery();
     }
-    if (e.keyCode === 37 && this.modalImages.length > 0 && this.currentImageIndex > this.modalImages.length - 1) { // left
+    if (e.keyCode === 37 && this.modalImages.length > 0 && this.currentImageIndex > 0) { // left
       e.preventDefault();
       this.prevImage();
     }
-    if (e.keyCode === 39 && this.modalImages.length > 0 && this.currentImageIndex > 0) { // right
+    if (e.keyCode === 39 && this.modalImages.length > 0 && this.currentImageIndex < this.modalImages.length - 1) { // right
       e.preventDefault();
       this.nextImage();
     }
-    e.stopPropagation();
   }
 }
