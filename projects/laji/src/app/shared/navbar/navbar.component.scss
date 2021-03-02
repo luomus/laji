@@ -1,6 +1,6 @@
 @import '../../../styles/variables';
 
-#navbar {
+.navbar-collapse {
   flex: none;
 }
 
@@ -100,13 +100,13 @@
   letter-spacing: 2px;
 }
 
-#navbar .active a {
+.navbar-collapse .active a {
   color: #ffffff;
   font-weight: 500;
   background-color: darken($color-main, 10%);
 }
 
-#navbar a {
+.navbar-collapse a {
   color: #ffffff;
   font-weight: 500;
 }
@@ -120,20 +120,20 @@
   .navbar-text .navbar-link {
     color: $neutral-8;
   }
-  
+
   .navbar-brand {
     color: $neutral-8;
   }
-  
-  #navbar .active a {
+
+  .navbar-collapse .active a {
     color: $neutral-7;
     background-color: $neutral-3;
   }
-  
-  #navbar a {
+
+  .navbar-collapse a {
     color: $neutral-8;
   }
-  
+
   .navbar-link, .navbar-profile .language-toggle {
     color: $neutral-8;
   }
@@ -146,7 +146,7 @@
     border-top: 4px solid #d62022;
   }
 }
-.red-theme #navbar .active a,
+.red-theme .navbar-collapse .active a,
 .red-theme.navbar-inverse .navbar-nav > li > a:hover,
 .red-theme.navbar-inverse .navbar-nav > li.open > a,
 .red-theme.navbar-inverse .navbar-brand:hover,
@@ -163,12 +163,14 @@
 .red-theme.navbar-inverse .navbar-toggle:focus,
 .red-theme.navbar-inverse .navbar-toggle:hover,
 .red-theme .navbar-toggle,
-.red-theme #navbar .active a,
+.red-theme .navbar-collapse .active a,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-color: $neutral-3;
+  border-left-color: $neutral-3;
+  border-right-color: $neutral-3;
+  border-bottom-color: $neutral-3;
 }
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
@@ -181,7 +183,7 @@
   }
 }
 
-#navbar .dropdown-menu a {
+.navbar-collapse .dropdown-menu a {
   color: #333;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
@@ -189,7 +191,7 @@
 }
 
 @media only screen and (max-width: 900px) {
-  .red-theme.navbar #navbar {
+  .red-theme.navbar .navbar-collapse {
     .dropdown-menu a {
       color: $neutral-6;
     }
@@ -199,7 +201,7 @@
   }
 }
 
-:host ::ng-deep .red-theme.navbar #navbar laji-notifications header > a {
+:host ::ng-deep .red-theme.navbar .navbar-collapse laji-notifications header > a {
   @media only screen and (max-width: 900px) {
     color: $neutral-6;
   }

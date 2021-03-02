@@ -7,7 +7,7 @@
 .edit {
   padding: 0.1em 0.6em;
   background-color: $info-5;
-  color: adjust-hue($color: $neutral-1, $degrees: -20%);
+  color: adjust-hue($color: $neutral-1, $degrees: -20);
   box-shadow: 0 1px 3px rgba($info-7, 0.3);
   &:hover {
     background-color: $info-7;
@@ -21,13 +21,13 @@
 .other {
   padding: 0.1em 0.6em;
   background-color: $neutral-8;
-  color: adjust-hue($color: $neutral-1, $degrees: -20%);
+  color: adjust-hue($color: $neutral-1, $degrees: -20);
   box-shadow: 0 1px 3px rgba($neutral-9, 0.3);
   &:hover {
     background-color: $neutral-7;
   }
   &.pressed {
     background-color: darken($neutral-9, 3%);
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    box-shadow: 0 0 1px rgba($neutral-8, 0.2);
   }
 }

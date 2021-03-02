@@ -310,6 +310,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private updateMapData() {
     if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
       if (this.unitCount === 0) {
+        this.prev = '';
         this.emptyMap();
       }
       return;
@@ -499,6 +500,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
 
   private getPopup({featureIdx}, cb: Function) {
+    const lang = this.translate.currentLang;
     this.translate.get('more')
       .subscribe((moreInfo) => {
         try {
@@ -515,7 +517,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             }
           });
           if (properties['documentId'] && properties['unitId']) {
-            description += '<a target="_blank" href="/view?uri=' +
+            description += '<a target="_blank" href="' +
+              (lang !== 'fi' ? '/' + lang : '') +
+              '/view?uri=' +
               properties['documentId'] +
               '&highlight=' +
               properties['unitId'].replace('#', '%23') + '">' +

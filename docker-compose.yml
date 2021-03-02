@@ -13,4 +13,4 @@ services:
       - '49153:49153'
     environment:
       - NODE_ENV=dev
-    command: 'npm run start'
+    command: 'npm run start -- --host 0.0.0.0'

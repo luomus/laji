@@ -366,7 +366,9 @@ export class MappingService {
   }
 
   mapKeywords(value) {
-    return value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim());
+    return typeof value === 'string' ?
+      value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim()) :
+      value;
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {

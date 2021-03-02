@@ -16,6 +16,7 @@ import { ReloadObservationViewService } from '../../../shared/service/reload-obs
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
 import { of, forkJoin, Subscription } from 'rxjs';
+import { DocumentViewerFacade } from '../document-viewer.facade';
 
 @Component({
   selector: 'laji-user-document-tools',
@@ -64,7 +65,8 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
     private documentService: DocumentService,
     private toastService: ToastsService,
     private logger: Logger,
-    private reloadObservationView: ReloadObservationViewService
+    private reloadObservationView: ReloadObservationViewService,
+    private documentViewerFacade: DocumentViewerFacade
   ) { }
 
   @Input()
@@ -125,6 +127,10 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
     this.modalIsOpen = true;
+  }
+
+  onLinkNp() {
+    this.documentViewerFacade.close();
   }
 
   closeModal() {

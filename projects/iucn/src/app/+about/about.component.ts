@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'laji-about',
   template: `
     <laji-simple-omni></laji-simple-omni>
-    <div class="container-fluid">
+    <div class="container">
       <div id="wrapper" class="row">
         <div class="col-sm-6 col-md-7 col-lg-8">
           <ol class="breadcrumb">

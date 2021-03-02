@@ -157,6 +157,24 @@
                 }
               ]
             },
+            "strict": {
+              "tsConfig": "tsconfig.app-strict.json",
+              "sourceMap": true,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local.ts"
+                }
+              ]
+            },
             "dev": {
               "budgets": [
                 {
@@ -194,7 +212,14 @@
               "browserTarget": "laji:build:embedded"
             },
             "local": {
-              "browserTarget": "laji:build:local"
+              "browserTarget": "laji:build:local",
+              "proxyConfig": "proxy.conf.js",
+              "port": 3000
+            },
+            "strict": {
+              "browserTarget": "laji:build:strict",
+              "proxyConfig": "proxy.conf.js",
+              "port": 3000
             }
           }
         },
@@ -323,33 +348,17 @@
               "serverTarget": "laji:server:local"
             }
           }
-        }
-      }
-    },
-    "laji-e2e": {
-      "root": "projects/laji/e2e/",
-      "sourceRoot": "projects/laji/e2e",
-      "projectType": "application",
-      "architect": {
+        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "laji:serve"
+            "protractorConfig": "projects/laji/e2e/protractor.conf.js",
+            "devServerTarget": "laji:serve:local"
           },
           "configurations": {
             "production": {
               "devServerTarget": "laji:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "projects/laji/e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -423,8 +432,9 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "projects/laji-ui/src/lib/exports.scss",
               "projects/laji/src/styles/laji.scss",
-              "projects/iucn/src/styles.css"
+              "projects/iucn/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -664,8 +674,7 @@
               {
                 "input": "node_modules/document-register-element/build/document-register-element.js"
               }
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {

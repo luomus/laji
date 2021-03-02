@@ -17,7 +17,6 @@
     "server.ts"
   ],
   "angularCompilerOptions": {
-    "fullTemplateTypeCheck": false,
     "entryModule": "./projects/laji/src/app/app.server.module#AppServerModule"
   }
 }

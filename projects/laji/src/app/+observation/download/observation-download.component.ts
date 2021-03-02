@@ -251,7 +251,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       },
       err => {
         this.requests[type] = RequestStatus.error;
-        this.toastsService.showError(this.translate.instant(err && err.status ?
+        this.toastsService.showError(this.translate.instant(err?.status === 429 ?
           'observation.download.limitExceededException' :
           'observation.download.error'
         ));
