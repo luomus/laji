@@ -19,14 +19,20 @@
   ></laji-nafi-bumblebee-result-filters>
 </div>
 
-<laji-nafi-bumblebee-route-table
-                      (documentClick)="openViewer($event)"
-                      [data]="observationStats[0]['dataSets']"
-                      [routeId]="routeId"
-                      [season]="date"
-                      [sorts]="sorts"
-                      [year]="activeYear"
-                      [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
-                      [loading]="loading"
-                      [onlySections]="onlySections"
-></laji-nafi-bumblebee-route-table>
+<ng-container>
+  <div *ngFor="let taxonSet of observationStats[0]['taxonSets']" class="taxonSet">
+    <laji-nafi-bumblebee-route-table
+    (documentClick)="openViewer($event)"
+    [data]="observationStats[0]['dataSets'][taxonSet]"
+    [routeId]="routeId"
+    [season]="date"
+    [sorts]="sorts"
+    [year]="activeYear"
+    [taxonSet]="taxonSet | toQName | label"
+    [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
+    [loading]="loading"
+    [onlySections]="onlySections"
+  ></laji-nafi-bumblebee-route-table>
+  </div>
+</ng-container>
+

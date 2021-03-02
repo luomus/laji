@@ -21,6 +21,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() year = '';
   @Input() filter = '';
+  @Input() taxonSet;
   @Input() loading = false;
   @Input() onlySections = true;
 
@@ -73,7 +74,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     this.columns = [
       {
       name: 'unit.linkings.taxon.scientificName',
-      label: 'result.unit.taxonVerbatim',
+      label: this.taxonSet,
       cellTemplate: this.textOrTranslationKeyTpl,
       width: 150
       },
@@ -112,6 +113,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
         otherCols = this.sortDate(otherCols);
       }
     }
+
 
     for (let i = 0; i <= otherCols.length - 1; i++) {
       this.columns.push({

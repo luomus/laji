@@ -244,10 +244,15 @@ export class NafiBumblebeeResultService {
       });
     }
 
-    const arrayMerged = [{'dataSets': [], 'yearsDays': []}];
+    const uniqueTaxonSets = [...new Set(result.map(item => item['unit.linkings.taxon.taxonSets']))];
+
+    const arrayMerged = [{'dataSets': [], 'yearsDays': [], 'taxonSets': []}];
+    uniqueTaxonSets.forEach(item => {
+      arrayMerged[0].dataSets[item] = [];
+    });
 
     result.forEach(item => {
-      const existing = arrayMerged[0]['dataSets'].filter((v) => {
+      const existing = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].filter((v) => {
         return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
       const property = season ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined') :
@@ -255,15 +260,17 @@ export class NafiBumblebeeResultService {
       : filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined');
 
       if (existing.length) {
-        const existingIndex = arrayMerged[0]['dataSets'].indexOf(existing[0]);
-        arrayMerged[0]['dataSets'][existingIndex]['total'] = arrayMerged[0]['dataSets'][existingIndex]['total'] += item['individualCountSum'];
-        if (arrayMerged[0]['dataSets'][existingIndex][property]) {
-          arrayMerged[0]['dataSets'][existingIndex][property] += item['individualCountSum'];
+        const existingIndex = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].indexOf(existing[0]);
+        arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']][existingIndex]['total'] =
+        arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']][existingIndex]['total'] += item['individualCountSum'];
+
+        if (arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']][existingIndex][property]) {
+          arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']][existingIndex][property] += item['individualCountSum'];
         } else {
-          arrayMerged[0]['dataSets'][existingIndex][property] = (item['individualCountSum']);
+          arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']][existingIndex][property] = (item['individualCountSum']);
         }
       } else {
-        arrayMerged[0]['dataSets'].push(
+        arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].push(
           {
            'unit.linkings.taxon.scientificName': item[filters[1]],
            'total': item['individualCountSum'],
@@ -276,6 +283,7 @@ export class NafiBumblebeeResultService {
     });
 
     arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays'], false);
+    arrayMerged[0]['taxonSets'] = uniqueTaxonSets;
 
     return arrayMerged;
   }
