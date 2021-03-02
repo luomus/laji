@@ -1636,7 +1636,7 @@
   "user.pleaseLogin": "Kirjaudu ensin sisään nähdäksesi oman profiilisivusi",
   "viewer.document": "Submission",
   "viewer.facts.title": "Extra info",
-  "viewer.field.observer": "Observer(s)/Collector(s)",
+  "viewer.field.observer": "Observer(s)/ Collector(s)",
   "viewer.field.time": "Time",
   "viewer.fixedName": "Revised name",
   "viewer.gathering": "Place",
