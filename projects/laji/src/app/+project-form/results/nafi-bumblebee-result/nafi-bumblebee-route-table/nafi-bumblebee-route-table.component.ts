@@ -108,7 +108,7 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
         otherCols.push(otherCols.splice(0, 1)[0]);
       }
     } else {
-      if (!this.onlySections && this.season) {
+      if (!this.onlySections) {
         otherCols = this.sortDate(otherCols);
       }
     }
