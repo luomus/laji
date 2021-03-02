@@ -1,14 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, forkJoin, from, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map, distinctUntilChanged, switchMap, concatMap, scan, takeUntil } from 'rxjs/operators';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
-import { TaxonomyModule } from '../../../taxonomy.module';
 
 interface IIdentificationState {
-  childTree: Taxonomy[];
+  childTree?: Taxonomy[];
 }
 
 const _state: IIdentificationState = {
@@ -102,7 +101,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
         )
       ),
       takeUntil(this.unsubscribe$),
-      scan((acc, val, idx) => acc.concat(val), [])
+      scan((acc, val) => acc.concat(val), [] as Taxonomy[])
     ).subscribe(this.childTreeReducer.bind(this));
   }
 
