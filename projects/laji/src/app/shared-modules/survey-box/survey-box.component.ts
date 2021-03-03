@@ -8,5 +8,4 @@ import { Form } from '../../shared/model/Form';
 })
 export class SurveyBoxComponent {
   @Input() form: Form.List;
-  @Input() comingSoonForm: {link: string, title: string, logo?: string};
 }
