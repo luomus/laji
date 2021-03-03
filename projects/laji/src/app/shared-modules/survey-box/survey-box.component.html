@@ -1,4 +1,5 @@
-<a *ngIf="form" [routerLink]="(['/project', form.id]) | localize">
+
+<a *ngIf="form" [routerLink]="(['/project', form.id]) | localize" [class.disabled]="form.options?.disabled">
   <div class="survey-box" [ngStyle]="form.logo ? {'background-image': 'url(' + form.logo + ')'} : {}">
     <div class="survey-title">
       {{ form.title }}
