@@ -1161,7 +1161,7 @@
   "result.gathering.biogeographicalProvince": "Biogeographical province",
   "result.gathering.conversions.dayOfYearBegin": "Begin day of year",
   "result.gathering.conversions.dayOfYearEnd": "End day of year",
-  "result.gathering.conversions.euref": "EUREF",
+  "result.gathering.conversions.euref": "ETRS-TM35FIN",
   "result.gathering.conversions.wgs84": "WGS84",
   "result.gathering.conversions.wgs84CenterPoint": "Location",
   "result.gathering.conversions.ykj": "Finnish uniform grid",

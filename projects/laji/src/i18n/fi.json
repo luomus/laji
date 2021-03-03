@@ -1161,7 +1161,7 @@
   "result.gathering.biogeographicalProvince": "Eliömaakunta",
   "result.gathering.conversions.dayOfYearBegin": "Alkupäivän numero",
   "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero",
-  "result.gathering.conversions.euref": "EUREF",
+  "result.gathering.conversions.euref": "ETRS-TM35FIN",
   "result.gathering.conversions.wgs84": "WGS84",
   "result.gathering.conversions.wgs84CenterPoint": "Paikka",
   "result.gathering.conversions.ykj": "Yhtenäiskoordinaatit (YKJ)",
