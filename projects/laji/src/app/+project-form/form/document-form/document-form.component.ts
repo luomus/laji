@@ -38,9 +38,7 @@ export class DocumentFormComponent {
   @ViewChild(_DocumentFormComponent) documentComponent: _DocumentFormComponent;
 
   @Input() set namedPlace(namedPlace: NamedPlace) {
-    if (namedPlace) {
-      this.lajiFormDocumentFacade.useNamedPlace(namedPlace, this.form.id);
-    }
+    this.lajiFormDocumentFacade.useNamedPlace(namedPlace, this.form.id);
     this.npLoaded$.next(true);
     this.np = namedPlace;
   }
