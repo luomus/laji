@@ -1,7 +1,7 @@
 <div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
   <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <ng-container *ngIf="options$ | async; let options">
-    <div [hidden]="open">
+    <div [hidden]="open || (options | filterOptions:'id':falseValue:trueValue).length === 0">
       <laji-switch-row
         *ngFor="let option of options"
         [option]="option"
