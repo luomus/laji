@@ -109,7 +109,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
             ? this.getNavLinks(projectForm, rights, queryParams)
             : undefined,
-        disabled: projectForm.form.options?.disabled && !rights.ictAdmin
+          disabled: projectForm.form.options?.disabled && !rights.ictAdmin
         })
       )
     );

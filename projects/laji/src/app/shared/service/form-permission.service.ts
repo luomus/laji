@@ -14,8 +14,8 @@ import RestrictAccess = Form.RestrictAccess;
 export interface Rights {
   edit: boolean;
   admin: boolean;
-  view?: boolean;
-  ictAdmin?: boolean;
+  view: boolean;
+  ictAdmin: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -91,18 +91,20 @@ export class FormPermissionService {
   }
 
   getRights(form: Form.List): Observable<Rights> {
-    return this.access(
-      form,
-      {edit: false, admin: false, view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict},
-      (formPermission: FormPermission, person: Person) => ({
-        view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
-        edit: this.isEditAllowed(formPermission, person, form),
-        admin: this.isAdmin(formPermission, person),
-        ictAdmin: UserService.isIctAdmin(person)
-      }));
-  }
-
-  private access(form: Form.List, notLoggedIn: any, cb: (formPermission: FormPermission, person: Person) => any) {
+    const notLoggedIn = {
+      edit: false,
+      admin: false,
+      ictAdmin: false,
+      view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
+    };
+    if (!form.collectionID) {
+      return this.userService.user$.pipe(map(user => ({
+        edit: true,
+        view: true,
+        admin: false,
+        ictAdmin: UserService.isIctAdmin(user)
+      })));
+    }
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
@@ -121,7 +123,12 @@ export class FormPermissionService {
               } as FormPermission)),
               map((formPermission: FormPermission) => ({person, formPermission}))
               )),
-          switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
+          switchMap(({person, formPermission}) => ObservableOf({
+            view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
+            edit: this.isEditAllowed(formPermission, person, form),
+            admin: this.isAdmin(formPermission, person),
+            ictAdmin: UserService.isIctAdmin(person)
+          })),
           catchError(() => ObservableOf(notLoggedIn))
         );
       })
