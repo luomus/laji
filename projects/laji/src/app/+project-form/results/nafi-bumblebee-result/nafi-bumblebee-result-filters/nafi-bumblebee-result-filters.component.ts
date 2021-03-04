@@ -16,6 +16,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   @Input() showDateFilter = true;
   @Input() routeId;
   @Input() showSections = true;
+  @Input() collectionId: string;
 
   years: number[] = [];
   days: string[] = [];
@@ -69,7 +70,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   }
 
   getYears(routeId: string) {
-    this.resultService.getYears(routeId)
+    this.resultService.getYears(routeId, this.collectionId)
       .subscribe(
         years => {
           this.years = Object.keys(years).sort().reverse().map(el => parseInt(el, 10));

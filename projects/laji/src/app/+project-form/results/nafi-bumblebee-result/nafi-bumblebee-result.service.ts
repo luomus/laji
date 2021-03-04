@@ -27,12 +27,8 @@ export interface YearDays {
   providedIn: 'root'
 })
 export class NafiBumblebeeResultService {
-  private collectionId = 'HR.3431';
-  private butterflyId = 'MX.53695';
-  private insectsId = 'MX.37613';
+
   private seasonRanges = [4 , 10];
-
-
   private yearCache: YearDays;
   private yearObs: Observable<YearDays>;
   private yearDayObs: Observable<string[]>;
@@ -42,20 +38,20 @@ export class NafiBumblebeeResultService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getFilterParams(year?: number|number[], season?: string, taxonId?: string|string[])
+  getFilterParams(year?: number|number[], season?: string, taxonId?: string|string[], collectionId?: string)
   : WarehouseQueryInterface {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
-      collectionId: [this.collectionId],
+      collectionId: [collectionId],
       yearMonth: !season ? yearMonth : undefined,
       time: season ? yearMonth : undefined,
       taxonId: taxonId ? (Array.isArray(taxonId) ? taxonId : [taxonId]) : []
     };
   }
 
-  getYears(routeId?: string): Observable<YearDays> {
+  getYears(routeId?: string, collectionId?: string): Observable<YearDays> {
     this.yearObs = this.warehouseApi.warehouseQueryUnitStatisticsGet(
-      {...this.getFilterParams(), namedPlaceId: [routeId]},
+      {...this.getFilterParams(undefined, undefined, undefined, collectionId), namedPlaceId: [routeId]},
       ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'],
       undefined,
       10000,
@@ -89,10 +85,10 @@ export class NafiBumblebeeResultService {
     return this.yearObs;
   }
 
-  getRouteList(): Observable<any[]> {
+  getRouteList(collectionId?: string): Observable<any[]> {
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
-        this.getFilterParams(),
+        this.getFilterParams(undefined, undefined, undefined, collectionId),
         ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
           'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName'],
         ['document.namedPlace.name'],
@@ -104,9 +100,9 @@ export class NafiBumblebeeResultService {
     );
   }
 
-  getCensusList(year?: number, season?: SEASON, routeId?: string): Observable<any[]> {
-    const query = {collectionId: [this.collectionId], namedPlaceId: [routeId]};
-    const unitQuery = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
+  getCensusList(year?: number, season?: SEASON, routeId?: string, collectionId?: string): Observable<any[]> {
+    const query = {collectionId: [collectionId], namedPlaceId: [routeId]};
+    const unitQuery = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
 
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
@@ -170,12 +166,12 @@ export class NafiBumblebeeResultService {
     );
   }
 
-  getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean) {
+  getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean, collectionId?: string) {
     const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'] :
     !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
     ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
-    const query = {...this.getFilterParams(year, season), namedPlaceId: [routeId]};
+    const query = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
     return this.getList(
       this.warehouseApi.warehouseQueryUnitStatisticsGet(
         query,

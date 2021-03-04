@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NafiBumblebeeRoutesComponent implements OnInit {
+
+  @Input() collectionId: string;
 
   activeIndex = 0;
   loadedTabs = new LoadedElementsStore(['list', 'map']);
@@ -41,7 +43,7 @@ export class NafiBumblebeeRoutesComponent implements OnInit {
 
   ngOnInit() {
     this.loadedTabs.load(this.activeIndex);
-    this.resultService.getRouteList()
+    this.resultService.getRouteList(this.collectionId)
       .subscribe(routes => {
         this.data = routes;
         this.cd.markForCheck();

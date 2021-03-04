@@ -6,6 +6,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
+import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 
 @Component({
   selector: 'laji-nafi-bumblebee-result',
@@ -32,6 +33,7 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
   fromYear;
   fromMonth;
   allTime = '';
+  collectionId: string;
 
   private subTrans: Subscription;
   private subQuery: Subscription;
@@ -41,7 +43,8 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private resultService: ResultService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private qName: ToQNamePipe
   ) {
     const now = new Date();
     this.currentYear = now.getFullYear();
@@ -50,6 +53,7 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.collectionId = this.qName.transform(this.form.collectionID);
     this.lang = this.translate.currentLang;
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;

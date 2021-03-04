@@ -2,7 +2,10 @@
   <div class="row">
     <div class="col-sm-8">
       <h3>
-        {{ 'nafi.stats.title' | translate }}
+        <span *ngIf="collectionId === 'HR.3911' else butterflies">{{ 'kimalaisseuranta.stats.title' | translate }}</span>
+        <ng-template #butterflies>
+          <span>{{ 'nafi.stats.title' | translate }}</span>
+        </ng-template>
       </h3>
       <p>content</p>
     </div>
@@ -13,5 +16,5 @@
     </div>
   </div>
   <hr style="width: 100%">
-  <laji-nafi-bumblebee-routes></laji-nafi-bumblebee-routes>
+  <laji-nafi-bumblebee-routes [collectionId]="collectionId"></laji-nafi-bumblebee-routes>
 </div>

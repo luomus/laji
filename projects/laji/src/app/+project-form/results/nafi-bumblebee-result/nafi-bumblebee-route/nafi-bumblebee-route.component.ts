@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
@@ -14,6 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
+
+  @Input() collectionId: string;
 
   routeId: string;
 
@@ -92,7 +94,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
 
       this.loading = true;
       this.resultSub = this.resultService.getUnitStats(this.activeYear, this.activeDate, this.routeId, this.activeDate ? true : typeof this.onlySections === 'string'
-      ? JSON.parse(this.onlySections) : this.onlySections)
+      ? JSON.parse(this.onlySections) : this.onlySections, this.collectionId)
         .subscribe(list => {
           this.observationStats = list;
           this.loading = false;
@@ -107,7 +109,7 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   censusListForRoute(routeId) {
     this.loadingCensusList = true;
     this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
-    ? JSON.parse(this.onlySections) : this.onlySections)
+    ? JSON.parse(this.onlySections) : this.onlySections, this.collectionId)
       .subscribe(censuses => {
         this.observationStats = censuses;
         this.loadingCensusList = false;

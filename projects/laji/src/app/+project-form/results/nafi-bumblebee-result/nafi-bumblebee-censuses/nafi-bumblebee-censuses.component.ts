@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
 import { Subscription } from 'rxjs';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
@@ -11,6 +11,8 @@ import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/t
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NafiBumblebeeCensusesComponent implements OnInit {
+
+  @Input() collectionId: string;
 
   activeIndex = 0;
   loadedTabs = new LoadedElementsStore(['list', 'map']);
@@ -61,7 +63,7 @@ export class NafiBumblebeeCensusesComponent implements OnInit {
       }
 
       this.loading = true;
-      this.resultSub = this.resultService.getCensusList(this.activeYear, this.activeSeason)
+      this.resultSub = this.resultService.getCensusList(this.activeYear, this.activeSeason, undefined, this.collectionId)
         .subscribe(list => {
           this.rows = list;
           this.loading = false;
