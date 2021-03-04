@@ -108,6 +108,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
       this.innerValue = value;
       this.setLabel(value);
       this.initGroups();
+      this.cd.markForCheck();
     }
   }
 
