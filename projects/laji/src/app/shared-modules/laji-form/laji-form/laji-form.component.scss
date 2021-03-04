@@ -1,0 +1,11 @@
+@import 'vars';
+
+:host ::ng-deep {
+  /*
+    PRIMARY COLORS
+  */
+
+  .rw-multiselect-taglist li {
+    background: $primary-5;
+  }
+}

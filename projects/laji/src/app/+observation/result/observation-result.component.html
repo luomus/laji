@@ -32,7 +32,7 @@
         <strong>
           <laji-observation-count
             *ngIf="visible.countHits"
-            [overrideInQuery]="{countryId: 'ML.206'}"
+            [overrideInQuery]="{countryId: ['ML.206']}"
             [query]="query"></laji-observation-count>
         </strong>
         {{ 'observation.results.observation' | translate }}
@@ -41,7 +41,7 @@
         <strong>
           <laji-observation-count
             *ngIf="visible.countTaxa"
-            [overrideInQuery]="{countryId: 'ML.206', includeNonValidTaxa: false}"
+            [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
             [query]="query"
             [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
           {{ 'observation.results.species' | translate }}

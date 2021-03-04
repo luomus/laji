@@ -1,0 +1,15 @@
+<laji-select-subcategories
+  [query]="query"
+  [options]="_options"
+  [title]="placeholder | translate"
+  [multiple]="multiple"
+  [info]="info"
+  [open]="open"
+  [disabled]="disabled"
+  [loading]="categoryOptions === null"
+  [subCategories]="subCategories"
+  [subTitleBase]="subTitleBase"
+  [filtersName]="filtersName"
+  [filtersValues]="queryToSelect"
+  (selectedChange)="refreshValue($event)"
+></laji-select-subcategories>

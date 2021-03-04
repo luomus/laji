@@ -1,25 +1,30 @@
 import {IAudioViewerArea} from '../models';
 import {ChangeDetectorRef, NgZone} from '@angular/core';
 import {AudioService} from './audio.service';
+import {interval, Subscription} from 'rxjs';
 
 export class AudioPlayer {
   isPlaying = false;
   currentTime: number;
 
-  autoplay = false;
-  autoplayRepeat = 1;
+  loop = false;
 
   private buffer: AudioBuffer;
   private playArea: IAudioViewerArea;
 
   private source: AudioBufferSourceNode;
   private startOffset = 0;
-  private startTime: number;
+  private startAudioContextTime: number;
 
-  // private startedOutsidePlayArea = false;
+  private autoplay = false;
+  private autoplayRepeat = 1;
   private autoplayCounter = 0;
 
-  private timeupdateInterval;
+  private timeupdateInterval = interval(20);
+  private timeupdateIntervalSub: Subscription;
+
+  private resumingContext = false;
+  private resumeContextSub: Subscription;
 
   constructor(
     private audioService: AudioService,
@@ -28,8 +33,8 @@ export class AudioPlayer {
   ) { }
 
   setBuffer(buffer: AudioBuffer, playArea?: IAudioViewerArea) {
+    this.clear();
     this.buffer = buffer;
-
     this.playArea = playArea;
     this.currentTime = this.getStartTime();
   }
@@ -41,65 +46,52 @@ export class AudioPlayer {
   }
 
   toggle() {
-    if (!this.buffer) {
-      return;
-    }
-
-    if (!this.isPlaying) {
-      this.isPlaying = true;
-
-      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
-        this.currentTime = this.getStartTime();
-      }
-      this.startOffset = this.currentTime;
-
-      this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange ? this.playArea.yRange : undefined, this.currentTime);
-      this.startTime = this.audioService.getTime();
-
-      this.source.onended = () => {
-        this.ngZone.run(() => {
-          this.sourceOnEnded();
-          this.cdr.markForCheck();
-        });
-      };
-      this.startTimeupdateInterval();
-    } else {
-      this.audioService.stopAudio(this.source);
-    }
+    this.isPlaying ? this.stop() : this.start();
   }
 
   stop() {
-    if (this.isPlaying) {
-      this.toggle();
+    this.stopPlaying();
+    this.cdr.markForCheck();
+  }
+
+  start() {
+    if (this.resumingContext) {
+      return;
+    }
+
+    if (this.audioService.audioContextIsSuspended()) {
+      this.resumingContext = true;
+      this.resumeContextSub = this.audioService.resumeAudioContext().subscribe(() => {
+        this.resumingContext = false;
+        this.startPlaying();
+        this.cdr.markForCheck();
+      });
+    } else {
+      this.startPlaying();
+      this.cdr.markForCheck();
     }
   }
 
   startFrom(time: number) {
-    if (this.isPlaying) {
-      this.toggle();
-      this.source.onended = () => {
-        this.ngZone.run(() => {
-          this.sourceOnEnded();
-          this.startFromMiddle(time);
-          this.cdr.markForCheck();
-        });
-      };
-    } else {
-      this.startFromMiddle(time);
-    }
+    this.stop();
+    this.currentTime = time;
+    this.start();
   }
 
-  startAutoplay() {
+  startAutoplay(times: number) {
+    this.stop();
+    this.autoplay = true;
+    this.autoplayRepeat = times;
     this.autoplayCounter = 0;
-    this.toggle();
+    this.start();
   }
 
   clear() {
-    this.clearTimeupdateInterval();
-
-    if (this.source && this.isPlaying) {
-      this.audioService.stopAudio(this.source);
-      this.source.onended = () => {};
+    if (this.resumeContextSub) {
+      this.resumeContextSub.unsubscribe();
+    }
+    if (this.source) {
+      this.stop();
     }
 
     this.currentTime = undefined;
@@ -107,64 +99,87 @@ export class AudioPlayer {
     this.source = undefined;
   }
 
-  private startFromMiddle(time: number) {
-    /*if (time < this.playArea?.xRange[0] || time > this.playArea?.xRange[1]) {
-      this.startedOutsidePlayArea = true;
-    }*/
+  private startPlaying() {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      if (!this.currentTime || this.currentTime >= this.getEndTime() || this.currentTime < this.getStartTime()) {
+        this.currentTime = this.getStartTime();
+      }
+      this.startOffset = this.currentTime;
 
-    this.currentTime = time;
-    this.toggle();
+      this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange, this.currentTime, this);
+      this.startAudioContextTime = this.audioService.getAudioContextTime();
+
+      this.source.onended = () => {
+        this.ngZone.run(() => {
+          this.onPlayingEnded();
+          this.cdr.markForCheck();
+        });
+      };
+
+      this.startTimeupdateInterval();
+    }
   }
 
-  private sourceOnEnded() {
+  private stopPlaying() {
+    if (this.isPlaying) {
+      const source = this.source;
+      source.onended = () => {};
+      this.onPlayingStopped();
+      this.audioService.stopAudio(source);
+    }
+  }
+
+  private onPlayingStopped() {
     this.clearTimeupdateInterval();
     this.updateCurrentTime();
     this.isPlaying = false;
-    // this.startedOutsidePlayArea = false;
+    this.autoplayCounter = this.autoplayRepeat;
+  }
 
-    if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      if (this.currentTime === this.buffer.duration) {
+  private onPlayingEnded() {
+    this.clearTimeupdateInterval();
+    this.updateCurrentTime();
+    this.isPlaying = false;
+
+    if (this.currentTime === this.getEndTime()) {
+      if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
         this.autoplayCounter += 1;
         this.toggle();
-      } else {
-        this.autoplayCounter = this.autoplayRepeat;
+        return;
       }
+      if (this.loop) {
+        this.toggle();
+      }
+    } else {
+      this.autoplayCounter = this.autoplayRepeat;
     }
   }
 
   private startTimeupdateInterval() {
-    this.timeupdateInterval = setInterval(() => {
+    this.timeupdateIntervalSub = this.timeupdateInterval.subscribe(() => {
       this.updateCurrentTime();
+      const endTime = this.getEndTime();
+      if (this.currentTime === endTime && endTime !== this.buffer.duration) {
+        this.audioService.stopAudio(this.source);
+      }
       this.cdr.markForCheck();
-    }, 10);
+    });
   }
 
   private clearTimeupdateInterval() {
-    if (this.timeupdateInterval) {
-      clearInterval(this.timeupdateInterval);
+    if (this.timeupdateIntervalSub) {
+      this.timeupdateIntervalSub.unsubscribe();
     }
   }
 
   private updateCurrentTime() {
-    if (this.isPlaying) {
-      this.currentTime = this.startOffset + this.audioService.getPlayedTime(this.startTime, this.source.playbackRate.value);
-    } else {
-      this.currentTime = this.startOffset;
-    }
-
-    const endTime = this.getEndTime();
-
-    this.currentTime = Math.min(this.currentTime, endTime);
-
-    if (this.currentTime === endTime) {
-      this.audioService.stopAudio(this.source);
-    }
+    const playedTime = this.startOffset + this.audioService.getPlayedTime(this.startAudioContextTime, this.source.playbackRate.value);
+    this.currentTime = Math.min(playedTime, this.getEndTime());
   }
 
   private getStartTime() {
-    if (this.playArea?.xRange
-    //  && !this.startedOutsidePlayArea
-    ) {
+    if (this.playArea?.xRange) {
       return this.playArea.xRange[0];
     } else {
       return 0;
@@ -172,9 +187,7 @@ export class AudioPlayer {
   }
 
   private getEndTime() {
-    if (this.playArea?.xRange
-    // && !this.startedOutsidePlayArea
-    ) {
+    if (this.playArea?.xRange) {
       return this.playArea.xRange[1];
     } else {
       return this.buffer.duration;

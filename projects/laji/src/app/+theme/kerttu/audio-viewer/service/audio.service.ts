@@ -1,17 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {from, Observable, of} from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
 import {WINDOW} from '@ng-toolkit/universal';
+import {AudioPlayer} from './audio-player';
 
 @Injectable()
 export class AudioService {
-  audioContext: AudioContext;
+  private audioContext: AudioContext;
 
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
   private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
 
-  private source: AudioBufferSourceNode;
+  private activePlayer: AudioPlayer;
+
+  private resumeContext$: Observable<void>;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -86,26 +89,66 @@ export class AudioService {
     return emptySegment;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number): AudioBufferSourceNode {
-    if (this.source) {
-      this.stopAudio(this.source);
+  public normaliseAudio(buffer: AudioBuffer) {
+    const resultBuffer = this.audioContext.createBuffer(
+      1,
+      buffer.length,
+      buffer.sampleRate
+    );
+
+    for (let i = 0; i < buffer.numberOfChannels; i++) {
+      const chanData = buffer.getChannelData(i);
+
+      let max = 0;
+      chanData.forEach((value) => {
+        const absValue = Math.abs(value);
+        if (absValue > max) {
+          max = absValue;
+        }
+      });
+
+      const resultChanData = resultBuffer.getChannelData(i);
+      for (let j = 0; j < chanData.length; j++) {
+        resultChanData[j] = chanData[j] * (1 / max);
+      }
+    }
+    return resultBuffer;
+  }
+
+  public audioContextIsSuspended(): boolean {
+    return this.audioContext.state !== 'running';
+  }
+
+  public resumeAudioContext(): Observable<void> {
+    if (!this.resumeContext$) {
+      this.resumeContext$ = from(this.audioContext.resume()).pipe(
+        tap(() => this.resumeContext$ = null),
+        share()
+      );
+    }
+    return this.resumeContext$;
+  }
+
+  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
+    if (this.activePlayer && this.activePlayer !== player) {
+      this.activePlayer.stop();
     }
 
-    this.source = this.audioContext.createBufferSource();
-    this.source.buffer = buffer;
+    const source = this.audioContext.createBufferSource();
+    source.buffer = buffer;
 
     if (frequencyRange) {
       const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
       const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
-      this.source.connect(highpassFilter);
+      source.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(this.audioContext.destination);
     } else {
-      this.source.connect(this.audioContext.destination);
+      source.connect(this.audioContext.destination);
     }
-
-    this.source.start(0, startTime);
-    return this.source;
+    source.start(0, startTime);
+    this.activePlayer = player;
+    return source;
   }
 
   public stopAudio(source: AudioBufferSourceNode) {
@@ -114,7 +157,7 @@ export class AudioService {
     } catch (e) {}
   }
 
-  public getTime() {
+  public getAudioContextTime() {
     return this.audioContext.currentTime;
   }
 
@@ -131,17 +174,15 @@ export class AudioService {
 
   private removeOldBuffersFromCache() {
     const keys = Object.keys(this.buffer);
-    while (keys.length > 2) {
+    while (keys.length > 3) {
       const times = keys.map(key => this.buffer[key].time);
       const removed = times.indexOf(Math.min(...times));
-      keys.splice(removed, 1);
-      delete this.buffer$[removed];
-    }
+      const removedKey = keys[removed];
 
-    const newBuffer = {};
-    for (const key of keys) {
-      newBuffer[key] = this.buffer[key];
+      delete this.buffer$[removedKey];
+      delete this.buffer[removedKey];
+
+      keys.splice(removed, 1);
     }
-    this.buffer = newBuffer;
   }
 }
