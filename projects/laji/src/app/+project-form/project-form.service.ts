@@ -1,7 +1,7 @@
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../shared/model/Form';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -71,6 +71,16 @@ export class ProjectFormService {
 
   private getFormID(route: ActivatedRoute): Observable<string> {
     return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
+  }
+
+  getFormIDFromSnapshot(route: ActivatedRouteSnapshot): string {
+    do {
+      if (route.params?.projectID) {
+        return route.params.projectID;
+        break;
+      }
+      route = route.parent;
+    } while (route);
   }
 
   getExcelFormIDs(projectForm: ProjectForm): string[] {

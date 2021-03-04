@@ -106,6 +106,7 @@ export class UserService {
   }
 
   static isIctAdmin(person: Person): boolean {
+    console.log(person);
     return person && person.role && person.role.includes('MA.admin');
   }
 

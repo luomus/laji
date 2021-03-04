@@ -15,6 +15,7 @@ import ResultServiceType = Form.ResultServiceType;
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
+  disabled: boolean;
 }
 
 interface NavLink {
@@ -107,7 +108,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           form: projectForm.form,
           navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
             ? this.getNavLinks(projectForm, rights, queryParams)
-            : undefined
+            : undefined,
+        disabled: projectForm.form.options?.disabled && !rights.ictAdmin
         })
       )
     );

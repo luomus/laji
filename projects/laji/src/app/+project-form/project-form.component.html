@@ -1,22 +1,30 @@
 <ng-container *ngIf="vm$ | async as vm; else loader">
-  <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
-    <nav>
-      <h5>
-        <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
-        <small *ngIf="vm.form.options?.secondaryCopy"><br>sekundääridataa</small>
-      </h5>
-      <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
-      <laji-haseka-latest [forms]="[vm.form.id]"
-                          [tmpOnly]="false"
-                          (showViewer)="showDocumentViewer($event)"
-                          *ngIf="(userService.isLoggedIn$ | async)">
-      </laji-haseka-latest>
-    </nav>
-    <main>
-      <ng-container *ngTemplateOutlet="content"></ng-container>
-    </main>
-</lu-sidebar>
+  <ng-container *ngIf="!vm.disabled; else disabled">
+    <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent" [open]="(showNav$ | async)" [noPrint]="isPrintPage$ | async">
+      <nav>
+        <h5>
+          <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
+          <small *ngIf="vm.form.options?.secondaryCopy"><br>sekundääridataa</small>
+        </h5>
+        <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
+        <laji-haseka-latest [forms]="[vm.form.id]"
+                            [tmpOnly]="false"
+                            (showViewer)="showDocumentViewer($event)"
+                            *ngIf="(userService.isLoggedIn$ | async)">
+        </laji-haseka-latest>
+      </nav>
+      <main>
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+      </main>
+    </lu-sidebar>
+  </ng-container>
 </ng-container>
+
+<ng-template #disabled>
+  <div class="container-fluid mt-5">
+  <laji-project-form-disabled></laji-project-form-disabled>
+  </div>
+</ng-template>
 
 <ng-template #simpleContent>
   <div class="container-fluid">

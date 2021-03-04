@@ -13,6 +13,7 @@ const FORM_NAMED_PLACES_NO_ACCESS_RESTRICTION = 'MHL.3';
 const FORM_NAMED_PLACES_LOOSE_ACCESS_RESTRICTION = 'MHL.1';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION = 'MHL.45';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.50';
+const FORM_DISABLED = 'MHL.50';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -235,6 +236,15 @@ describe('Project form', () =>  {
     it('/form page redirects to about', async (done) => {
       await projectFormPage.navigateTo(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION, '/form');
       expect(await projectFormPage.hasAboutText()).toBe(true);
+      done();
+    });
+  });
+
+  describe('disabled form', () => {
+    it('is displayed as disabled', async (done) => {
+      await projectFormPage.navigateTo(FORM_DISABLED);
+      expect(await projectFormPage.$disabled.isDisplayed()).toBe(true);
+      expect(await projectFormPage.$sidebar.isPresent()).toBe(false);
       done();
     });
   });

@@ -294,6 +294,7 @@
   "haseka.form.success": "Havainnot tallennettu!",
   "haseka.form.unsaved": "Tallennettu viimeksi {{saveTime}}",
   "haseka.form.unsavedNever": "Muutoksia ei ole vielä tallennettu",
+  "haseka.form.disabled": "Lomakkeen käyttö on väliaikaisesti estetty ylläpidon toimesta. Palaa myöhemmin.",
   "haseka.forms.comingSoon": "Tulossa pian",
   "haseka.forms.title": "Lomakkeet",
   "haseka.home.title": "Tallenna havaintoja",

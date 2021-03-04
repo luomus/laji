@@ -94,7 +94,6 @@ export class FormPermissionService {
     return this.access(
       form,
       {edit: false, admin: false, view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict},
-      {edit: true, admin: false, view: true},
       (formPermission: FormPermission, person: Person) => ({
         view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
         edit: this.isEditAllowed(formPermission, person, form),
@@ -103,29 +102,25 @@ export class FormPermissionService {
       }));
   }
 
-  private access(form: Form.List, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
+  private access(form: Form.List, notLoggedIn: any, cb: (formPermission: FormPermission, person: Person) => any) {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
         if (!login || this.platformService.isServer) {
           return ObservableOf(notLoggedIn);
-        } else if (!form.collectionID || (
-          !form.options?.restrictAccess &&
-          !form.options?.hasAdmins
-        )) {
-          return ObservableOf(notRestricted);
         }
         return this.userService.user$.pipe(
           take(1),
-          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
-            catchError(() => of({
-              id: '',
-              collectionID: form.collectionID,
-              admins: [],
-              editors: []
-            } as FormPermission)),
-            map((formPermission: FormPermission) => ({person, formPermission}))
-          )),
+          switchMap((person: Person) =>
+              this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
+              catchError(() => of({
+                id: '',
+                collectionID: form.collectionID,
+                admins: [],
+                editors: []
+              } as FormPermission)),
+              map((formPermission: FormPermission) => ({person, formPermission}))
+              )),
           switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
           catchError(() => ObservableOf(notLoggedIn))
         );
