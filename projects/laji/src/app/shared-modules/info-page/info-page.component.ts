@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import { map, startWith, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'laji-info-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
 <div *ngIf="content$ | async; else loading; let content" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
 <ng-template #loading>
@@ -19,22 +20,22 @@ import { Observable } from 'rxjs';
 })
 export class InfoPageComponent implements OnChanges {
 
-  content$: Observable<string>;
-  _rootPage: MultiLanguage;
+  content$: Observable<string> = of('');
+  _rootPage?: MultiLanguage;
 
   @Input()
-  child: string;
+  page?: string;
 
   @Output()
   parents = new EventEmitter<InformationItem[]>();
   @Output()
-  children = new EventEmitter<InformationItem[]>();
+  subPages = new EventEmitter<InformationItem[]>();
   @Output()
   title = new EventEmitter<string>();
   @Output()
   hasContent = new EventEmitter<boolean>();
 
-  private currentPage;
+  private currentPage?: string;
 
   constructor(
     private translateService: TranslateService,
@@ -55,35 +56,59 @@ export class InfoPageComponent implements OnChanges {
   }
 
   private updatePage() {
-    const rootPageID = this._rootPage && this._rootPage[this.translateService.currentLang] || this._rootPage?.['fi'];
-    const roots = this._rootPage && Object.keys(this._rootPage).map(key => this._rootPage[key]);
-    const page = this.child || rootPageID;
-    if (!page || this.currentPage === page) {
+    const roots = this.getRootPages();
+    const activePage = this.getActivePage();
+
+    if (!activePage || this.currentPage === activePage) {
       return;
     }
-    this.currentPage = page;
-    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
+
+    this.currentPage = activePage;
+    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(activePage), {}).pipe(
       tap(result => {
-        let afterRoot = false;
         this.title.emit(result.title);
-        this.parents.emit((result.parents || []).filter(item => {
-          if (roots && roots.indexOf(item.id) !== -1) {
-            afterRoot = true;
-          }
-          return afterRoot;
-        }));
-        this.children.emit(result.children || []);
-        this.hasContent.emit(!!result.content.trim());
+        this.parents.emit(this.getParents(roots, result.parents));
+        this.subPages.emit(result.children || []);
       }),
-      map(result => result.content),
-      startWith('')
+      map(result => (result.content || '').trim()),
+      tap(content => this.hasContent.emit(!!content))
     );
   }
 
-  private lastFromPath(url: string) {
+  private lastFromPath(url: string): string {
     const parts = (url || '').split('/');
 
-    return parts.pop();
+    return parts.pop() || '';
+  }
+
+  private getRootPages(): Set<string> {
+    const roots = new Set<string>();
+    if (this._rootPage) {
+      Object.values(this._rootPage).forEach(root => roots.add(root));
+    }
+    return roots;
+  }
+
+  private getActivePage(): string {
+    if (this.page) {
+      return this.page;
+    }
+    const lang = this.translateService.currentLang as keyof MultiLanguage;
+    if (this._rootPage) {
+      return this._rootPage[lang] || this._rootPage['fi'] || '';
+    }
+    return '';
+  }
+
+  private getParents(roots: Set<string>, parents: InformationItem[] = []) {
+    let afterActivePage = false;
+
+    return parents.filter(item => {
+      if (roots.has(item.id)) {
+        afterActivePage = true;
+      }
+      return afterActivePage;
+    });
   }
 
 }
