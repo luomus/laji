@@ -165,7 +165,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((result) => {
           const candidate = result.candidate;
-          return this.audioService.getAudioBuffer(candidate.recording).pipe(map(() => candidate));
+          return this.audioService.getAudioBuffer(candidate.audio.url).pipe(map(() => candidate));
         }),
         share()
       );

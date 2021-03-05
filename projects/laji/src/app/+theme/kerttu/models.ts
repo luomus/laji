@@ -1,8 +1,16 @@
 import {Taxonomy} from '../../shared/model/Taxonomy';
+import {GeoJSON} from 'geojson';
+
+export interface IAudio {
+  url: string;
+  dateTime: string;
+  municipality: string;
+  geometry: GeoJSON.Geometry;
+}
 
 export interface IRecording {
   id: number;
-  recording: string;
+  audio: IAudio;
   xRange: number[];
 }
 

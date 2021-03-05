@@ -18,6 +18,7 @@ import {Subscription} from 'rxjs';
 import {AudioViewerMode, IAudioViewerArea} from './models';
 import {AudioPlayer} from './service/audio-player';
 import {AudioViewerUtils} from './service/audio-viewer-utils';
+import {IAudio} from '../models';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -26,7 +27,7 @@ import {AudioViewerUtils} from './service/audio-viewer-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() recording: string;
+  @Input() audio: IAudio;
 
   @Input() focusArea: IAudioViewerArea; // focus area is drawn with white rectangle to the spectrogram
   @Input() focusAreaTimePadding: number; // how much recording is shown outside the focus area (if undefined the whole recording is shown)
@@ -69,12 +70,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording) {
+    if (changes.audio) {
       this.clear();
       this.setAudioLoading(true);
 
-      if (this.recording) {
-        this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
+      if (this.audio) {
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url).subscribe((buffer) => {
           if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;
