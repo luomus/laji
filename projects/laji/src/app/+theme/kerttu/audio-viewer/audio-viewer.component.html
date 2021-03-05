@@ -44,5 +44,10 @@
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>
+
+    <div class="pull-right" *ngIf="audio?.dateTime || audio?.municipality || audio?.geometry">
+      {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+      {{ audio.municipality }}
+    </div>
   </div>
 </laji-spinner>
