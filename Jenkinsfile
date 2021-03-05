@@ -1,5 +1,5 @@
 node {
-  nvm('v14.15.4') {
+  nvm('v14.16.0') {
     stage('Prepare environment') {
       cleanWs()
       git branch: 'development', url: 'https://github.com/luomus/laji.git'
@@ -11,6 +11,7 @@ node {
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
         sh './node_modules/.bin/ng lint laji --format junit --force > ./test-results/output-tslint.xml'
       }
+      junit allowEmptyResults: true, testResults: '**/test-results/output-tslint.xml'
     }
     stage('Run integration tests') {
       sh './node_modules/.bin/webdriver-manager clean'
@@ -18,7 +19,7 @@ node {
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
         sh 'npm run e2e:ci -- --webdriver-update=false'
       }
-      junit allowEmptyResults: true, testResults: '**/test-results/**/*.xml'
+      junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
     }
     stage('Build') {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
