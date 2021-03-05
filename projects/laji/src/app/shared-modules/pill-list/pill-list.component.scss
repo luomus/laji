@@ -9,7 +9,7 @@
   color: $success-1;
   background-color: $success-5;
 
-  box-shadow: 0 1px 2px 0 rgba(#000, .2);
+  box-shadow: 0 1px 2px 0 rgba($success-9, .25);
 
   .glyphicon-remove {
     margin-left: $sp-2;
@@ -17,7 +17,7 @@
     padding: 3px;
     color: $success-4;
     background-color: $success-6;
-    border-radius: 1000px;
+    border-radius: 100%;
   }
 
   &:hover {
