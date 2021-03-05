@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+import { MultiLanguage } from '../../../shared/model/MultiLanguage';
 
 @Injectable()
 export class MultiLangService {
 
-  static readonly lang = ['en', 'fi', 'sv'];
+  static readonly lang: Array<keyof MultiLanguage> = ['en', 'fi', 'sv'];
 
   /**
    * Return true only if given multiLang object has the language value.
    * @returns boolean
    */
-  static hasValue(multi: object, lang: string): boolean {
+  static hasValue(multi: MultiLanguage, lang: keyof MultiLanguage): boolean {
     return multi && !!multi[lang];
   }
 
@@ -21,8 +22,8 @@ export class MultiLangService {
    *
    * @returns any
    */
-  static getValue(multi: object, lang: string, fallback = ''): string|any {
-    if (typeof multi !== 'object' || lang === 'multi' || multi === null) {
+  static getValue(multi: MultiLanguage|string, lang: keyof MultiLanguage|'multi', fallback = ''): string|any {
+    if (typeof multi === 'string' || typeof multi !== 'object' || lang === 'multi' || multi === null) {
       return multi || '';
     }
     if (multi[lang]) {
@@ -35,7 +36,7 @@ export class MultiLangService {
       if (multi[MultiLangService.lang[i]]) {
         return !fallback ?
           multi[MultiLangService.lang[i]] :
-          fallback.replace('%value%', multi[MultiLangService.lang[i]]).replace('%lang%', MultiLangService.lang[i]);
+          fallback.replace('%value%', multi[MultiLangService.lang[i]] || '').replace('%lang%', MultiLangService.lang[i]);
       }
     }
     return '';

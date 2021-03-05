@@ -22,13 +22,13 @@ import {
   REQUEST_MSG
 } from './laji-api-worker-common';
 import { BrowserService } from './browser.service';
-import { FileService } from '../../shared-modules/spreadsheet/service/file.service';
+import { FileService, IFileLoad } from '../../shared-modules/spreadsheet/service/file.service';
 
 @Injectable()
 export class LajiApiInterceptor implements HttpInterceptor {
   private readonly responses = new Subject<LajiApiWorkerSuccessResponse | LajiApiWorkerErrorResponse>();
-  private readonly worker: Worker;
-  private readonly rnd: string;
+  private readonly worker?: Worker;
+  private readonly rnd?: string;
   private id = 0;
 
   constructor(
@@ -70,7 +70,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     this.browserService.visibility$.pipe(
       skip(1),
       filter(visible => visible)
-    ).subscribe(() => this.worker.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}));
+    ).subscribe(() => (this.worker as Worker).postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}));
   }
 
 
@@ -87,14 +87,16 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
     setTimeout(() => {
       if (request.body instanceof FormData) {
-        const data = [];
+        const data: Observable<IFileLoad>[] = [];
         request.body.forEach(e => data.push(this.fileService.loadFile(e as File, undefined, {type: 'dataUrl'})));
 
         forkJoin(data).subscribe(d => {
-          this.worker.postMessage({id, key, request: {...request.clone({body: ''}), dataUrls: d, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+          (<Worker>this.worker).postMessage({ id, key,
+            request: {...request.clone({body: ''}), dataUrls: d, url: request.urlWithParams, headers: this.getRequestHeaders(request)}
+          });
         });
       } else {
-        this.worker.postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+        (<Worker>this.worker).postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
       }
     }, 0);
 
@@ -121,14 +123,15 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
   private getRequestHeaders(request: HttpRequest<any>) {
     return request.headers.keys().reduce((response, key) => {
-      const lower = key.toLowerCase();
-      if (response[lower]) {
-        delete response[lower];
-      }
-      response[key] = request.headers.getAll(key).join(',');
-      return response;
-    }, ['POST', 'PUT', 'PATCH'].includes(request.method) ?
-      {'content-type': request.detectContentTypeHeader()} :
-      {});
+        const lower = key.toLowerCase();
+        if (response[lower]) {
+          delete response[lower];
+        }
+        response[key] = request.headers?.getAll(key)?.join(',');
+        return response;
+      },
+      (['POST', 'PUT', 'PATCH'].includes(request.method) ?
+        {'content-type': request.detectContentTypeHeader()} :
+        {}) as Record<string, string|undefined>);
   }
 }

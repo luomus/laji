@@ -55,7 +55,9 @@ export class WarehouseApi {
     this.warehouseQueryStatisticsGet = this.warehouseQueryStatisticsGet.bind(this);
   }
 
-  public static prepareCountQuery(query: WarehouseQueryInterface) {
+  public static prepareCountQuery(
+    query: WarehouseQueryInterface & {selected?: string, aggregateBy?: string, orderBy?: string, page?: string, pageSize?: string}
+    ): Partial<WarehouseQueryInterface> {
     return Util.removeFromObject(query, ['selected', 'aggregateBy', 'orderBy', 'page', 'pageSize']);
   }
 
@@ -311,7 +313,7 @@ export class WarehouseApi {
 
     this.addQueryToQueryParams(query, queryParameters);
 
-    return this.http.get<WarehouseCountResultInterface>(path, {params: WarehouseApi.prepareCountQuery(queryParameters)});
+    return this.http.get<WarehouseCountResultInterface>(path, {params: WarehouseApi.prepareCountQuery(queryParameters) as  { [param: string]: string | string[]; }});
   }
 
   /**

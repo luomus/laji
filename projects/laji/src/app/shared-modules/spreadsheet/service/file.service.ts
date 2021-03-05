@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { saveAs } from 'file-saver';
 
-interface IFileLoad {
+export interface IFileLoad {
   filename: string;
   content: any;
   type: string;
@@ -44,7 +44,7 @@ export class FileService {
   load(event: Event, validTypes?: string[]): Observable<IFileLoad> {
     const target = <HTMLInputElement> event.target;
 
-    if (target.files.length !== 1) {
+    if (target.files?.length !== 1) {
       return throwError(FileService.ERROR_NO_FILE);
     }
 

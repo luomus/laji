@@ -4,10 +4,15 @@ import { Injectable } from '@angular/core';
 import { map, shareReplay, take, timeout } from 'rxjs/operators';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
+interface Cache {
+  mapping: Record<string, string>;
+  reverse: Record<string, string>;
+}
+
 @Injectable({providedIn: 'root'})
 export class WarehouseValueMappingService {
 
-  private request: Observable<any>;
+  private request?: Observable<any>;
 
   constructor(
     private baseDataService: BaseDataService
@@ -17,30 +22,14 @@ export class WarehouseValueMappingService {
     return this.get(value, 'mapping');
   }
 
-  public getWarehouseKey(value): Observable<string> {
+  public getWarehouseKey(value: string): Observable<string> {
     return this.get(value, 'reverse');
   }
 
-  public get(value, list): Observable<string> {
+  public get(value: string, list: keyof Cache): Observable<string> {
     return this.fetchLabels().pipe(
       map(data => data && data[list] && data[list][value] || value)
     );
-  }
-
-  private parseResult(data) {
-    const result = {
-      mapping: {},
-      reverse: {}
-    };
-    data.forEach(mapping => {
-      const key = mapping.enumeration || '';
-      const value = mapping.property || '';
-      if (key && value) {
-        result.mapping[key] = value;
-        result.reverse[value] = key;
-      }
-    });
-    return result;
   }
 
   private fetchLabels() {
@@ -54,5 +43,21 @@ export class WarehouseValueMappingService {
       );
     }
     return this.request;
+  }
+
+  private parseResult(data: { enumeration: string; property: string; }[]) {
+    const result: Cache = {
+      mapping: {},
+      reverse: {}
+    };
+    data.forEach(mapping => {
+      const key = mapping.enumeration || '';
+      const value = mapping.property || '';
+      if (key && value) {
+        result.mapping[key] = value;
+        result.reverse[value] = key;
+      }
+    });
+    return result;
   }
 }

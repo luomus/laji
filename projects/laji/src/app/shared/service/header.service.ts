@@ -46,15 +46,12 @@ const TWITTER_CARD = [
 })
 export class HeaderService implements OnDestroy {
 
-  private routeSub: Subscription;
-  private currentRoute: string;
+  private routeSub?: Subscription;
+  private currentRoute?: string;
   private renderer: Renderer2;
 
   public static getDescription(html: string): string {
-    const firstParagraph = html
-      .split('</p>')[0]
-      .split(/<p.*?>/).pop()
-      .replace(/<[^>]*>?/gm, '');
+    const firstParagraph = (html.split('</p>')[0].split(/<p.*?>/).pop() as string).replace(/<[^>]*>?/gm, '');
 
     if (firstParagraph.length <= 180) {
       return firstParagraph;
@@ -73,7 +70,7 @@ export class HeaderService implements OnDestroy {
   }
 
   constructor(
-    @Inject(DOCUMENT) private document,
+    @Inject(DOCUMENT) private document: Document,
     private router: Router,
     private location: Location,
     private platformService: PlatformService,
@@ -111,7 +108,7 @@ export class HeaderService implements OnDestroy {
       // Set page meta tags
       RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
         map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
-      ).subscribe(meta => {
+      ).subscribe((meta: Record<string, string>) => {
         const ArraysMeta = [...ALL_META_KEYS, ...ALL_IMAGE_KEYS, ...TWITTER_CARD];
         ArraysMeta.map((key) => {
           const propertySelector = ((key === 'twitter:card' || key === 'twitter:title' ) ? `name='${key}'` : `property='${key}'`);
@@ -132,7 +129,7 @@ export class HeaderService implements OnDestroy {
     });
   }
 
-  public createTwitterCard(title) {
+  public createTwitterCard(title: string) {
     this.removeMetaTags(TWITTER_CARD);
     this.metaService.addTag({name: 'twitter:card', content: 'summary_large_image'});
     TWITTER_CARD.forEach((key) => {
@@ -142,14 +139,14 @@ export class HeaderService implements OnDestroy {
     });
   }
 
-  public updateMetaDescription(description) {
+  public updateMetaDescription(description: string) {
     this.removeMetaTags(ALL_META_KEYS);
     ALL_META_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: description });
     });
   }
 
-  public updateFeatureImage(image) {
+  public updateFeatureImage(image: string) {
     this.removeMetaTags(ALL_IMAGE_KEYS);
     ALL_IMAGE_KEYS.forEach((key) => {
       this.metaService.addTag({ property: key, content: image });
@@ -157,7 +154,7 @@ export class HeaderService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routeSub.unsubscribe();
+    this.routeSub?.unsubscribe();
   }
 
   private updateCanonicalUrl(path: string) {
@@ -179,11 +176,11 @@ export class HeaderService implements OnDestroy {
     });
   }
 
-  private removeMetaTags(metaTagsDescription) {
+  private removeMetaTags(metaTagsDescription: string[]) {
     this.metaService.removeTag('property="twitter:card"');
     RouteDataService.getDeepest<object>(this.router.routerState.snapshot.root).pipe(
       map(meta => ({description: MAIN_DESCRIPTION, ...meta}))
-    ).subscribe(meta => {
+    ).subscribe((meta: Record<string, string>) => {
       metaTagsDescription.forEach((key) => {
         const propertySelector = `property='${key}'`;
         if (meta?.[key]) {
@@ -211,7 +208,7 @@ export class HeaderService implements OnDestroy {
   }
 
   private getDeepestTitle(routeSnapshot: ActivatedRouteSnapshot): Observable<string[]> {
-    const title = [];
+    const title: string[] = [];
     if (routeSnapshot.data && routeSnapshot.data['title']) {
       title.push(routeSnapshot.data['title'] || '');
     }

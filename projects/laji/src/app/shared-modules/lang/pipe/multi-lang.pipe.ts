@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MultiLangService } from '../service/multi-lang.service';
 import { Subscription } from 'rxjs';
+import { MultiLanguage } from '../../../shared/model/MultiLanguage';
 
 @Pipe({
   name: 'multiLang',
@@ -46,11 +47,11 @@ export class MultiLangPipe implements PipeTransform, OnDestroy {
 
   private pickLang(value, useFallback, lang?: string, fallbackFormat = '%value% (%lang%)') {
     lang = lang || this.translate.currentLang;
-    const hasLang = MultiLangService.hasValue(value, lang);
+    const hasLang = MultiLangService.hasValue(value, lang as keyof MultiLanguage);
     if (!hasLang && !useFallback) {
       return '';
     }
 
-    return MultiLangService.getValue(value, lang, fallbackFormat);
+    return MultiLangService.getValue(value, lang as keyof MultiLanguage, fallbackFormat);
   }
 }

@@ -21,7 +21,7 @@ export class SourceService extends AbstractCachedHttpService<string> {
     ), lang);
   }
 
-  getName(id: string, lang) {
+  getName(id: string, lang: string) {
     return this.getAllAsLookUp(lang).pipe(
       map(data => data[id] || id )
     );

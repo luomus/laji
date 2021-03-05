@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
+import { ActivatedRoute, ActivationEnd, Event, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
@@ -49,7 +49,7 @@ interface IPersistentState {
 
 export interface IUserServiceState extends IPersistentState {
   token: string;
-  user: Person;
+  user?: Person;
   settings: IUserSettings;
   allUsers: {[id: string]: Person|Observable<Person>};
 }
@@ -61,7 +61,6 @@ const _persistentState: IPersistentState = {
 let _state: IUserServiceState = {
   ..._persistentState,
   token: '',
-  user: null,
   settings: {},
   allUsers: {}
 };
@@ -69,15 +68,15 @@ let _state: IUserServiceState = {
 @Injectable({providedIn: 'root'})
 export class UserService {
 
-  private subLogout: Subscription;
+  private subLogout?: Subscription;
   private init = false;
 
   // Do not write to this variable in the server!
-  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
-  @SessionStorage() private returnUrl: string;
-  @SessionStorage('retry', 0) private retry: number;
+  @LocalStorage('userState', _persistentState) private persistentState?: IPersistentState;
+  @SessionStorage() private returnUrl?: string;
+  @SessionStorage('retry', 0) private retry?: number;
 
-  private _persistent: IPersistentState;
+  private _persistent?: IPersistentState;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -106,7 +105,7 @@ export class UserService {
   }
 
   static isIctAdmin(person: Person): boolean {
-    return person && person.role && person.role.includes('MA.admin');
+    return !!(person && person.role && person.role.includes('MA.admin'));
   }
 
   constructor(
@@ -125,7 +124,7 @@ export class UserService {
       this.doServiceSideLoginState();
     }
     this.router.events.pipe(
-      filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0)
+      filter((event: Event): event is ActivationEnd => event instanceof ActivationEnd && event.snapshot.children.length === 0)
     ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
 
     this.isLoggedIn$.pipe(
@@ -152,9 +151,6 @@ export class UserService {
     if (this.subLogout) {
       return;
     }
-    if (!cb) {
-      cb = () => {};
-    }
     if (_state.token) {
       this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
         httpOkError([404, 400], false),
@@ -166,11 +162,15 @@ export class UserService {
       ).subscribe(() => {
         this.subLogout = undefined;
         this.doLogoutState();
-        cb();
+        if (cb) {
+          cb();
+        }
       });
     } else {
       this.doLogoutState();
-      cb();
+      if (cb) {
+        cb();
+      }
     }
   }
 
@@ -189,7 +189,8 @@ export class UserService {
       map(person => info === 'fullNameWithGroup' ?
         (person.fullName || '') + (person.group ? ' (' + person.group + ')' : '') :
         person[info]
-      )
+      ),
+      map(name => name || '')
     );
 
     if (_state.allUsers[id]) {
@@ -243,7 +244,7 @@ export class UserService {
     this.storage.store(this.personsCacheKey(personID), settings);
   }
 
-  private personsCacheKey(personID): string {
+  private personsCacheKey(personID?: string): string {
     return `users-${ personID || 'global' }-settings`;
   }
 
@@ -286,6 +287,9 @@ export class UserService {
   }
 
   private doBackgroundCheck(): Observable<string> {
+    if (!this.retry) {
+      this.retry = 0;
+    }
     if (!this.platformService.canUseWebWorkerLogin || this.retry > 0) {
       this.redirectToLogin();
       return of('');
@@ -309,7 +313,7 @@ export class UserService {
     this.doLoginState({}, '');
   }
 
-  private doLoginState(user: Person, token) {
+  private doLoginState(user: Person, token: string) {
     if (user && user.id && _state.user && _state.user.id === user.id) {
       return;
     }
@@ -330,7 +334,7 @@ export class UserService {
     this.retry = 0;
   }
 
-  private doUserSettingsState(id: string) {
+  private doUserSettingsState(id?: string) {
     this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id)) || {}});
   }
 
@@ -348,9 +352,9 @@ export class UserService {
 
   get persistent() {
     if (this.platformService.isBrowser) {
-      return this.persistentState;
+      return this.persistentState || _persistentState;
     } else {
-      return this._persistent;
+      return this._persistent || _persistentState;
     }
   }
 }

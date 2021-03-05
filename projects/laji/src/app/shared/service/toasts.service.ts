@@ -31,7 +31,12 @@ export class ToastsService {
     this.toast('info', message, title, options);
   }
 
-  private toast(type, message, title?: string, options?: Partial<IndividualConfig>) {
+  private toast(
+    type: keyof Pick<ToastrService, 'info'|'warning'|'error'|'success'>,
+    message: string,
+    title?: string,
+    options?: Partial<IndividualConfig>
+  ) {
     if (!this.platformService.isBrowser) {
       return;
     }

@@ -99,7 +99,7 @@ export class BaseDataService {
     });
 
     this.translationService.onLangChange.pipe(
-      map(() => this.baseDataSub.next(null))
+      map(() => this.baseDataSub.next(undefined))
     ).subscribe(() => this.query.refetch().then());
 
     this.query.valueChanges.pipe(

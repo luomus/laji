@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LajiTitle extends Title {
-  setTitle(newTitle: string) {
+  setTitle(newTitle: string): void {
     super.setTitle(this.decodeHtmlEntity(newTitle));
   }
 
-  private decodeHtmlEntity(str) {
+  private decodeHtmlEntity(str: string): string {
     const translate_re = /&(nbsp|amp|quot|lt|gt|shy);/g;
-    const translate = {
+    const translate: Record<string, string> = {
       'nbsp': ' ',
       'amp' : '&',
       'quot': '\'',

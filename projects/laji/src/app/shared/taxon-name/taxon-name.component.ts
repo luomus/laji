@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MultiLanguage } from '../model/MultiLanguage';
 
 @Component({
   selector: 'laji-taxon-name',
@@ -8,18 +9,18 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class TaxonNameComponent {
 
-  @Input() taxon: {
+  @Input() taxon?: {
     id?: string;
     qname?: string;
     cursiveName?: boolean;
     scientificName?: string;
-    vernacularName?: string | {[lang: string]: string};
+    vernacularName?: string | MultiLanguage;
     scientificNameAuthorship?: string;
-    alternativeVernacularName?;
-    obsoleteVernacularName?;
-    colloquialVernacularName?;
+    alternativeVernacularName?: string;
+    obsoleteVernacularName?: string;
+    colloquialVernacularName?: string;
   };
-  @Input() taxonID: string;
+  @Input() taxonID?: string;
   @Input() addLink = true;
   @Input() addAuthor = false;
   @Input() warningOnMissingTaxonID = false;

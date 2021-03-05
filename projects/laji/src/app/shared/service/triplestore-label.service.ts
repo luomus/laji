@@ -16,16 +16,17 @@ import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
 import { BaseDataService, IBaseData } from '../../graph-ql/service/base-data.service';
+import { MultiLanguage } from '../model/MultiLanguage';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
 
-  static cache = {};
-  static requestCache: any = {};
+  static cache: Record<string, MultiLanguage|string> = {};
+  static requestCache:  Record<string, Observable<string>> = {};
 
   private guidRegEx: RegExp;
   private metaData: any;
-  private currentLang: string;
+  private currentLang?: string;
 
   constructor(private logger: Logger,
               private informalTaxonService: InformalTaxonGroupApi,
@@ -42,14 +43,14 @@ export class TriplestoreLabelService {
     this.guidRegEx = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/gi;
   }
 
-  public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
+  public getAll(keys: string[], lang: string): Observable<{[key: string]: string}> {
     const set = new Set(keys);
-    const subs = [];
+    const subs: Observable<{key: string, value: string}>[] = [];
     set.forEach(val => {
       subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
     });
     return ObservableForkJoin(subs).pipe(
-      map((results: any) => results.reduce((cumulative: {[key: string]: string}, current) => {
+      map((results) => results.reduce((cumulative: {[key: string]: string}, current) => {
         if (!cumulative[current.key]) {
           cumulative[current.key] = current.value;
         }
@@ -64,12 +65,12 @@ export class TriplestoreLabelService {
       of('');
   }
 
-  private _get(key, lang): Observable<string> {
+  private _get(key: string, lang: string): Observable<string> {
     if (typeof TriplestoreLabelService.cache[key] !== 'undefined') {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
-      return of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+      return of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang as keyof MultiLanguage));
     }
     const parts = key.replace(':', '.').split('.');
     if (parts && typeof parts[1] === 'string' && (/^\d+$/.test(parts[1]) || this.guidRegEx.test(parts[1]))) {
@@ -98,8 +99,8 @@ export class TriplestoreLabelService {
             TriplestoreLabelService.requestCache[key] = this.informalTaxonService.informalTaxonGroupFindById(key, 'multi').pipe(
               catchError(() => this.redListTaxonGroupApi.redListTaxonGroupsFindById(key, 'multi')),
               map((group: InformalTaxonGroup) => group.name),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
+              tap(name => TriplestoreLabelService.cache[key] = name || ''),
+              map(name => MultiLangService.getValue((name as any), lang as keyof MultiLanguage)),
               share()
             );
           }
@@ -110,8 +111,8 @@ export class TriplestoreLabelService {
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.publications, key, {lang: 'multi'}).pipe(
               map((publication: Publication) => publication['dc:bibliographicCitation']),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
+              tap(name => TriplestoreLabelService.cache[key] = name || ''),
+              map(name => MultiLangService.getValue((name as any), lang as keyof MultiLanguage)),
               share()
             );
           }
@@ -124,8 +125,8 @@ export class TriplestoreLabelService {
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.annotationService.getTag(key, 'multi').pipe(
               map(tag => tag.name),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
+              tap(name => TriplestoreLabelService.cache[key] = name || ''),
+              map(name => MultiLangService.getValue((name as any), lang as keyof MultiLanguage)),
               share()
             );
           }
@@ -137,8 +138,8 @@ export class TriplestoreLabelService {
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
               map((taxon: Taxonomy) => taxon.vernacularName || taxon.scientificName),
-              tap(name => TriplestoreLabelService.cache[key] = name),
-              map(name => MultiLangService.getValue((name as any), lang)),
+              tap(name => TriplestoreLabelService.cache[key] = name || ''),
+              map(name => MultiLangService.getValue((name as any), lang as keyof MultiLanguage)),
               share()
             );
           }
@@ -163,7 +164,7 @@ export class TriplestoreLabelService {
   }
 
   private dataToLookup(data: IBaseData) {
-    const labelMap = {};
+    const labelMap: Record<string, string> = {};
     (data.classes || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });

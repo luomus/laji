@@ -21,7 +21,7 @@ export class PdfLabelService {
 
   @SessionStorage('pdf-data', [])
   private data: ILabelData[];
-  private memoryData: ILabelData[];
+  private memoryData?: ILabelData[];
 
   skipFields: string[] = [
     '@type',
