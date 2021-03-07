@@ -28,6 +28,6 @@
   }
   &.pressed {
     background-color: darken($neutral-9, 3%);
-    box-shadow: 0 0px 1px rgba($neutral-8, 0.2);
+    box-shadow: 0 0 1px rgba($neutral-8, 0.2);
   }
 }

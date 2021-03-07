@@ -115,7 +115,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           defaultMediaMetadata: {
             capturerVerbatim: user.fullName,
             intellectualOwner: user.fullName,
-            intellectualRights: Profile.IntellectualRights.intellectualRightsCCBY4,
+            intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
             ...(profile.settings?.defaultMediaMetadata || {}),
           }
         }
