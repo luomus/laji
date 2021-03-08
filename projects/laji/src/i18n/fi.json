@@ -541,6 +541,7 @@
   "iucn.threatAny": "Yksi uhista",
   "iucn.threatPrimary": "Ensisijainen uhka",
   "iucn.title": "PUNAINEN KIRJA",
+  "iucn.regional.title": "Alueellinen uhanalaisuus",
   "label.designer": "Suunnittele etiketti",
   "label.domain": "Domain",
   "label.error.generic": "Etikettien luonti epäonnistui. Yritä hetken kuluttua uudelleen, jos ongelma jatkuu ota yhteyttä ylläpitoon.",
