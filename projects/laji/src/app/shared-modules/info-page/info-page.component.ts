@@ -67,7 +67,7 @@ export class InfoPageComponent implements OnChanges {
     this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(activePage), {}).pipe(
       tap(result => {
         this.title.emit(result.title);
-        this.parents.emit(this.getParents(roots, result.parents));
+        this.parents.emit(result.parents);
         this.subPages.emit(result.children || []);
       }),
       map(result => (result.content || '').trim()),
@@ -98,17 +98,6 @@ export class InfoPageComponent implements OnChanges {
       return this._rootPage[lang] || this._rootPage['fi'] || '';
     }
     return '';
-  }
-
-  private getParents(roots: Set<string>, parents: InformationItem[] = []) {
-    let afterActivePage = false;
-
-    return parents.filter(item => {
-      if (roots.has(item.id)) {
-        afterActivePage = true;
-      }
-      return afterActivePage;
-    });
   }
 
 }
