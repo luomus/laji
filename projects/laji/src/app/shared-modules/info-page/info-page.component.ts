@@ -56,7 +56,6 @@ export class InfoPageComponent implements OnChanges {
   }
 
   private updatePage() {
-    const roots = this.getRootPages();
     const activePage = this.getActivePage();
 
     if (!activePage || this.currentPage === activePage) {
@@ -79,14 +78,6 @@ export class InfoPageComponent implements OnChanges {
     const parts = (url || '').split('/');
 
     return parts.pop() || '';
-  }
-
-  private getRootPages(): Set<string> {
-    const roots = new Set<string>();
-    if (this._rootPage) {
-      Object.values(this._rootPage).forEach(root => roots.add(root));
-    }
-    return roots;
   }
 
   private getActivePage(): string {
