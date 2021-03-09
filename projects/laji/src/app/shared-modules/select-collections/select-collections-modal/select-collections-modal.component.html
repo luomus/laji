@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-md-8">
             <h5>{{browseTitle}}</h5>
-            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange($event.target.value)"/>
+            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange(toHtmlInputElement($event.target).value)"/>
             <div class="scrollable-tree">
               <tree-root
                 #tree

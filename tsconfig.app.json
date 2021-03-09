@@ -14,5 +14,8 @@
   "exclude": [
     "projects/laji/src/test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  }
 }

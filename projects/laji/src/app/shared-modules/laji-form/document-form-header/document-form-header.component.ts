@@ -6,7 +6,6 @@ import { Title } from '@angular/platform-browser';
 import { UserService } from '../../../shared/service/user.service';
 import { ILajiFormState } from '../laji-form-document.facade';
 import * as moment from 'moment';
-import { AreaService } from '../../../shared/service/area.service';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
@@ -29,7 +28,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() displayTitle = true;
   @Input() edit: boolean;
 
-  namedPlaceHeader: Observable<string>[];
+  namedPlaceHeader: string[];
   _namedPlace: any;
   @Input('namedPlace')
   get namedPlace(): any {
@@ -53,8 +52,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private formService: FormService,
     private userService: UserService,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef,
-    private areaService: AreaService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -101,30 +99,10 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     return moment(date).format('DD.MM.YYYY');
   }
 
-  getNamedPlaceHeader(): Observable<string>[] {
+  getNamedPlaceHeader(): string[] {
     if (!this.form || !this._namedPlace) {
       return [];
     }
-    const headerFields = this.form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
-    const fields: [string, ((value: string) => Observable<string>)?][] = headerFields.map(field => {
-      if (field === 'municipality') {
-        return [field, val => this.areaService.getName(val, this.translate.currentLang)];
-      }
-      return [field];
-    });
-    return fields.filter(f => {
-      const val = this._namedPlace[f[0]];
-      const hasValue = v => v || v === '0' || v === 0;
-      if ((hasValue(val) && !Array.isArray(val)) || (Array.isArray(val) && val.filter(hasValue).length > 0)) {
-        return true;
-      }
-    }).map(f => {
-      const val = this._namedPlace[f[0]];
-      if ((!f[1])) {
-        return of(val);
-      } else {
-        return f[1](val);
-      }
-    });
+    return this.form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 }

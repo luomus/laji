@@ -30,6 +30,7 @@ const GLOBAL_SETTINGS = '_global_form_settings_';
 @Component({
   selector: 'laji-form',
   templateUrl: './laji-form.component.html',
+  styleUrls: ['./laji-form.component.scss'],
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -48,7 +49,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   static TOP_OFFSET = 50;
-  static BOTTOM_OFFSET = 61;
+  static BOTTOM_OFFSET = 53.5;
   @Input() formData: any = {};
   @Input() settingsKey: keyof IUserSettings = 'formDefault';
   @Input() showShortcutButton = true;

@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="container-fluid">
+  <div class="container">
     <div class="intro">
       <h1>{{ 'iucn.page.title' | translate }}</h1>
       <p [innerHTML]="'iucn.page.intro' | translate">
@@ -8,7 +8,7 @@
   </div>
 </div>
 <laji-simple-omni></laji-simple-omni>
-<div class="container-fluid">
+<div class="container">
   <p style="margin-top: 15px;">
     {{ 'iucn.home.intro' | translate }}
     <a *ngIf="translate.currentLang === 'fi'" [routerLink]="({'fi': '/about/r-27'} | multiLang)">{{ 'iucn.home.evaluation' | translate }}</a>

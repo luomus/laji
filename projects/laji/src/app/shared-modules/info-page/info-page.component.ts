@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { map, startWith, tap } from 'rxjs/operators';
 import { InformationItem } from '../../shared/model/InformationItem';
+import { MultiLanguage } from '../../shared/model/MultiLanguage';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-info-page',
@@ -17,8 +19,8 @@ import { InformationItem } from '../../shared/model/InformationItem';
 })
 export class InfoPageComponent implements OnChanges {
 
-  content$;
-  _rootPage: {fi: string, sv: string, en: string};
+  content$: Observable<string>;
+  _rootPage: MultiLanguage;
 
   @Input()
   child: string;
@@ -40,7 +42,7 @@ export class InfoPageComponent implements OnChanges {
   ) { }
 
   @Input()
-  set rootPage(roots: {fi: string, sv: string, en: string} | string) {
+  set rootPage(roots: MultiLanguage | string) {
     if (typeof roots === 'string') {
       this._rootPage = {fi: roots, en: roots, sv: roots};
     } else {
@@ -53,10 +55,10 @@ export class InfoPageComponent implements OnChanges {
   }
 
   private updatePage() {
-    const rootPageID = this._rootPage && this._rootPage[this.translateService.currentLang];
+    const rootPageID = this._rootPage && this._rootPage[this.translateService.currentLang] || this._rootPage?.['fi'];
     const roots = this._rootPage && Object.keys(this._rootPage).map(key => this._rootPage[key]);
     const page = this.child || rootPageID;
-    if (this.currentPage === page) {
+    if (!page || this.currentPage === page) {
       return;
     }
     this.currentPage = page;

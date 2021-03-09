@@ -15,7 +15,22 @@ export class Util {
    * @returns boolean
    */
   public static equalsArray(a1, a2) {
-    return a1 && a2 && a1.length === a2.length && a1.sort().every((value, index) => value === a2.sort()[index]);
+    return a1 && a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
+  }
+
+  /**
+   * Return the elements that are missing from the another array
+   */
+  public static arrayDiff<T>(a1: T[], a2: T[]): T[] {
+    if (!Array.isArray(a1)) {
+      return Array.isArray(a2) ? a2 : [];
+    }
+    if (!Array.isArray(a2)) {
+      return a1;
+    }
+    return a1
+      .filter(x => !a2.includes(x))
+      .concat(a2.filter(x => !a1.includes(x)));
   }
 
   /**

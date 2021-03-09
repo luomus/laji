@@ -1,4 +1,4 @@
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Logger } from '../logger/logger.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
@@ -59,15 +59,9 @@ export class TriplestoreLabelService {
   }
 
   public get(key: string, lang: string): Observable<string> {
-    if (typeof key !== 'string') {
-      return ObservableOf('');
-    }
-    return this._get(key, lang).pipe(
-      catchError(err => {
-        this.logger.warn('Failed to fetch label for ' + key, err);
-        return ObservableOf(key);
-      })
-    );
+    return typeof key === 'string' ?
+      this._get(key, lang).pipe(catchError(() => of(key))) :
+      of('');
   }
 
   private _get(key, lang): Observable<string> {
@@ -75,7 +69,7 @@ export class TriplestoreLabelService {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
       }
-      return ObservableOf(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
+      return of(MultiLangService.getValue(TriplestoreLabelService.cache[key], lang));
     }
     const parts = key.replace(':', '.').split('.');
     if (parts && typeof parts[1] === 'string' && (/^\d+$/.test(parts[1]) || this.guidRegEx.test(parts[1]))) {
@@ -93,7 +87,7 @@ export class TriplestoreLabelService {
               '1'
               ).pipe(
                 map((np) => np.results[0] && np.results[0].name || ''),
-                catchError(() => ObservableOf('')),
+                catchError(() => of('')),
                 tap(name => TriplestoreLabelService.cache[key] = name),
                 share()
               );

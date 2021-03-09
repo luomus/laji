@@ -16,6 +16,7 @@ export class ExportService {
   private odsMimeType = 'application/vnd.oasis.opendocument.spreadsheet';
   private xlsxMimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   private txtMimeType = 'text/plain;charset=utf-8';
+  private zipMimeType = 'application/zip';
 
   constructor(
     private translateService: TranslateService,
@@ -45,6 +46,8 @@ export class ExportService {
       type = this.tsvMimeType;
     } else if (fileExtension === 'csv') {
       type = this.csvMimeType;
+    } else if (fileExtension === 'zip') {
+      type = this.zipMimeType;
     } else {
       type = this.txtMimeType;
     }
