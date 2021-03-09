@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery } from '../../../iucn-shared/service/result.service';
 import { Observable } from 'rxjs';
-import { SelectOption } from '../select/select.component';
+import { SelectOption } from '../../../iucn-shared/component/select/select.component';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { map } from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';

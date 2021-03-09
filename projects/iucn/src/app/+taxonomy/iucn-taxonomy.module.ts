@@ -10,7 +10,6 @@ import { TaxonImageComponent } from './info-card/taxon-image/taxon-image.compone
 import { TaxonStatusComponent } from './info-card/taxon-status/taxon-status.component';
 import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redlist-year-select.component';
 import { FiltersComponent } from './list/filters/filters.component';
-import { SelectComponent } from './list/select/select.component';
 import { ResultsComponent } from './list/results/results.component';
 import { RedListClassFilterComponent } from './list/filters/red-list-class-filter/red-list-class-filter.component';
 import { RedListStatusComponent } from './list/results/red-list-status/red-list-status.component';
@@ -57,7 +56,6 @@ import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
     TaxonStatusComponent,
     RedlistYearSelectComponent,
     FiltersComponent,
-    SelectComponent,
     ResultsComponent,
     RedListClassFilterComponent,
     RedListStatusComponent,

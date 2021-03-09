@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <h1>{{ 'iucn.regional.title' | translate }}</h1>
+  <div class="year-select">
+    <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+  </div>
+  <p>{{ 'iucn.regional.intro' | translate }}</p>
+
+  <h2>{{ 'iucn.regional.regions' | translate }}</h2>
+  <img src="http://cdn.laji.fi/images/iucn/iucn-region-map-2010-2019.png" alt="Image">
+</div>
