@@ -356,7 +356,7 @@
   "haseka.users.latest.discardConfirm": "Är du säker på att du vill ignorera ändgringar? Nya observationer: {{unitCount}}.",
   "haseka.users.latest.gathered": "observationer",
   "haseka.users.latest.gathered.singular": "observation",
-  "haseka.users.latest.localityMissing": "Plats saknas",
+  "haseka.users.latest.localityMissing": "Ingen platsnamn",
   "haseka.users.latest.other": "andra",
   "haseka.users.unsaved": "Mina osparade observationspartier",
   "haseka.users.unsaved.doc": "Osparad observationsparti",
