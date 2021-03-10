@@ -175,7 +175,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
     const allowExcel = this.projectFormService.getExcelFormIDs(projectForm).length;
     const {form, subForms} = projectForm;
-    form.options.resultServiceType = ResultServiceType.nafiBumblebee;
     return [
       {
         link: ['about'],
