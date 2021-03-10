@@ -543,6 +543,7 @@
   "iucn.title": "PUNAINEN KIRJA",
   "iucn.regional.title": "Alueellinen uhanalaisuus",
   "iucn.regional.intro": "Alueellinen uhanalaisuusarviointi on tehty valtakunnallisessa arvioinnissa elinvoimaisiksi (LC) ja silmälläpidettäviksi (NT) luokitelluille sammal-, putkilokasvi-, sieni-, jäkälä-, perhos- ja lintulajeille. Alueellisesti uhanalaiseksi arvioidut lajit on merkitty luokkaan RT (Regionally Threatened). Alueellisesti uhanalaisten lajien hakupalvelussa ja lajiluettelossa ovat mukana vain ne arvioidut lajit, jotka ovat vähintään yhdellä tai useammalla alueella uhanalaisia (RT).",
+  "iucn.regional.intro.readMore": "Lue lisää alueellisen arvioinnin toteutuksesta.",
   "iucn.regional.regions": "Uhanalaisuusvyöhykkeet",
   "iucn.regional.2020": "2020 Alueellinen uhanalaisuus",
   "label.designer": "Suunnittele etiketti",

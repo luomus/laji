@@ -3,8 +3,13 @@
   <div class="year-select">
     <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
   </div>
-  <p>{{ 'iucn.regional.intro' | translate }}</p>
+  <p>
+    {{ 'iucn.regional.intro' | translate }}
+    <a [routerLink]="({'fi': '/about/r-205', 'en': '/about/r-213', 'sv': '/about/r-215'} | multiLang)" target="_blank">
+      {{ 'iucn.regional.intro.readMore' | translate }}
+    </a>
+  </p>
 
   <h2>{{ 'iucn.regional.regions' | translate }}</h2>
-  <img src="http://cdn.laji.fi/images/iucn/iucn-region-map-2010-2019.png" alt="Image">
+  <img class="region-map" src="http://cdn.laji.fi/images/iucn/iucn-region-map-2010-2019.png" alt="Image">
 </div>
