@@ -103,7 +103,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
         this.selected = [...this.selected, id] as T[];
       }
     } else {
-      this.selected = isBasic ? [option] as T[] : [id] as T[];
+      this.selected = isBasic ? [id] as T[] : [option] as T[];
     }
     this.selectedIdx = -1;
     this.initOptions(this.selected);
