@@ -39,7 +39,7 @@ export class MappingService {
     'string': {}
   };
 
-  private colMapping: IColMap;
+  private colMapping?: IColMap;
 
   private userColMappings: IColMap = {};
   private userValueMappings: IValueMap = {};
@@ -86,7 +86,7 @@ export class MappingService {
   ) { }
 
 
-  rawValueToArray(value, field: IFormField) {
+  rawValueToArray(value: unknown, field: IFormField) {
     if (typeof value === 'string') {
       value = value.trim();
     }
@@ -293,50 +293,30 @@ export class MappingService {
     return null;
   }
 
-  mapInformalTaxonGroupId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MVL\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapInformalTaxonGroupId(value: unknown): string|null {
+    return this.pickValue(value, /(MVL\.[0-9]+)/);
   }
 
-  mapTaxonId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MX\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapTaxonId(value: unknown): string|null {
+    return this.pickValue(value, /(MX\.[0-9]+)/);
   }
 
-  mapNamedPlaceID(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MNP\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapNamedPlaceID(value: unknown): string|null {
+    return this.pickValue(value, /(MNP\.[0-9]+)/);
   }
 
-  mapPerson(value, allowUnMapped = false) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MA\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
+  mapPerson(value: unknown, allowUnMapped = false): string|null {
+    const result = this.pickValue(value, /(MA\.[0-9]+)/);
+    if (result) {
+      return result;
     }
     if (allowUnMapped) {
-      return value;
+      return String(value);
     }
     return null;
   }
 
-  mapDateOptionalTime(value) {
+  mapDateOptionalTime(value: any): string {
     if (typeof value === 'string') {
       const parts = value.split(/[\s,T]+/).filter(v => !!v);
       const dateParts = parts[0].split(/[.\-]/);
@@ -362,7 +342,7 @@ export class MappingService {
       return value.toISOString();
     }
 
-    return value;
+    return String(value);
   }
 
   mapKeywords(value) {
@@ -424,6 +404,16 @@ export class MappingService {
       targetValue = [targetValue];
     }
     return targetValue;
+  }
+
+  private pickValue(value: unknown, pickRegEx: RegExp) {
+    if (typeof value === 'string') {
+      const match = value.match(pickRegEx);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
   }
 
   private analyzeGeometry(value: any) {
