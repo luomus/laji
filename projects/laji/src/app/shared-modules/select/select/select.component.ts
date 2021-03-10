@@ -66,7 +66,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       this.open = false;
     }
     this.initOptions(this.selected);
-
+    this.open = this.selectedOptions?.length > 0 ? true : false;
   }
 
   ngOnDestroy() {
@@ -215,6 +215,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
         checkboxValue
       });
     });
+
   }
 
   private isSelectOptions(option: idType|SelectOption): option is SelectOption {

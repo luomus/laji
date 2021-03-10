@@ -22,7 +22,6 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
   lang: string;
   options$: Observable<any>;
   open = false;
-  hasSelectedOptions = false;
 
   constructor(
     private metadataService: MetadataService,
@@ -30,7 +29,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
   ngOnInit() {
     this.lang = this.translate.currentLang;
-    this.hasSelectedOptions = this.trueValue?.length > 0 || this.falseValue?.length > 0 ? true : false;
+    this.open =  this.trueValue?.length > 0 || this.falseValue?.length > 0 ? true : false;
   }
 
   @Input()
@@ -49,7 +48,6 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
       falseValues.push(event.id);
     }
 
-    this.hasSelectedOptions = trueValues.length > 0 || falseValues.length > 0 ? true : false;
     this.update.emit({true: trueValues, false: falseValues});
   }
 
