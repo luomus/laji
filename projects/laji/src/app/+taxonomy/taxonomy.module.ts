@@ -76,9 +76,8 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TaxonIdentificationComponent } from './taxon/info-card/taxon-identification/taxon-identification.component';
 import {SelectModule} from '../shared-modules/select/select.module';
-import { IdentificationListComponent } from './taxon/info-card/taxon-identification/identification-list/identification-list.component';
+import { IdentificationSpeciesListComponent } from './taxon/info-card/taxon-identification/species-list/species-list.component';
 import { LabelPipe } from '../shared/pipe/label.pipe';
-import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
 /* tslint:enable:max-line-length */
 
 @NgModule({
@@ -96,8 +95,7 @@ import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identificatio
     CheckLangService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
     TaxonAutocompleteService,
-    LabelPipe,
-    TaxonIdentificationFacade
+    LabelPipe
   ],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
@@ -125,7 +123,7 @@ import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identificatio
     AdministrativeStatusComponent,
     TaxonYlestaFieldsComponent,
     TaxonIdentificationComponent,
-    IdentificationListComponent
+    IdentificationSpeciesListComponent
   ],
 })
 export class TaxonomyModule {
