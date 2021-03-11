@@ -9,7 +9,7 @@
   background-color: $info-5;
   color: adjust-hue($color: $neutral-1, $degrees: -20deg);
   box-shadow: 0 1px 3px rgba($info-7, 0.3);
-  &:hover {
+  &:hover, &:focus {
     background-color: $info-7;
   }
   &.pressed {
@@ -23,7 +23,7 @@
   background-color: $neutral-8;
   color: adjust-hue($color: $neutral-1, $degrees: -20deg);
   box-shadow: 0 1px 3px rgba($neutral-9, 0.3);
-  &:hover {
+  &:hover, &:focus {
     background-color: $neutral-7;
   }
   &.pressed {
