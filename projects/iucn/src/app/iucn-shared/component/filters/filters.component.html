@@ -6,6 +6,7 @@
         [ngModel]="query?.redListGroup"
         (select)="change('redListGroup', $event)"
         [position]="'left'"
+        [rootGroups]="groupSelectRootGroups"
         name="informalTaxonGroupId">
         {{ 'observation.active.informalTaxonGroupAll' | translate }}
       </laji-iucn-group-select>

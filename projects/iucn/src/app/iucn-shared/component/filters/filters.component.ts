@@ -20,6 +20,7 @@ export class FiltersComponent implements OnInit {
 
   @Input() type: 'default'|'status'|'regional';
   @Input() query: FilterQuery & RegionalFilterQuery;
+  @Input() groupSelectRootGroups: string[];
   @Output() queryChange = new EventEmitter<FilterQuery | RegionalFilterQuery>();
 
   lang: string;

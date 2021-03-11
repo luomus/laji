@@ -23,6 +23,7 @@ export class RegionalComponent implements OnInit, OnDestroy {
     {label: 'iucn.regional.tab.status', value: 'status'},
     {label: 'iucn.regional.tab.species', value: 'species'}
   ];
+  groupSelectRootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
 
   years$: Observable<{label: string, value: string}[]>;
 

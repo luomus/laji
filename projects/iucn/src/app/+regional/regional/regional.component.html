@@ -23,7 +23,7 @@
     </ul>
   </div>
   <div class="well">
-    <laji-filters [type]="'regional'" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
+    <laji-filters [type]="'regional'" [query]="queryParams" [groupSelectRootGroups]="groupSelectRootGroups" (queryChange)="queryChange($event)"></laji-filters>
   </div>
   <div style="margin-top: 15px;">
     <ng-container *ngFor="let option of types">
