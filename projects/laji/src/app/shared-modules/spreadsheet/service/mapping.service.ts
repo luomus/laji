@@ -316,7 +316,7 @@ export class MappingService {
     return null;
   }
 
-  mapDateOptionalTime(value: any): string {
+  mapDateOptionalTime(value: unknown): string {
     if (typeof value === 'string') {
       const parts = value.split(/[\s,T]+/).filter(v => !!v);
       const dateParts = parts[0].split(/[.\-]/);
