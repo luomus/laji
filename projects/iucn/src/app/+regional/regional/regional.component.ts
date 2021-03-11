@@ -5,8 +5,11 @@ import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RegionalFilterQuery, RegionalService, REGIONAL_DEFAULT_YEAR} from '../../iucn-shared/service/regional.service';
 
+export type RegionalListType = 'status'|'species';
+
 export interface QueryParams extends RegionalFilterQuery {
   year?: string;
+  type?: RegionalListType;
 }
 
 @Component({
@@ -16,6 +19,11 @@ export interface QueryParams extends RegionalFilterQuery {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegionalComponent implements OnInit, OnDestroy {
+  types: {label: string, value: RegionalListType}[] = [
+    {label: 'iucn.regional.tab.status', value: 'status'},
+    {label: 'iucn.regional.tab.species', value: 'species'}
+  ];
+
   years$: Observable<{label: string, value: string}[]>;
 
   queryParams: QueryParams;
@@ -39,11 +47,14 @@ export class RegionalComponent implements OnInit, OnDestroy {
       startWith(this.route.snapshot.queryParams),
       map(params => {
         const result = {...params};
+        if (!params['type']) {
+          result['type'] = this.types[0].value;
+        }
         if (!params['year']) {
           result['year'] = REGIONAL_DEFAULT_YEAR;
         }
-        if (params['status'] && typeof params['status'] === 'string') {
-          result['status'] = result['status'].split(',');
+        if (params['threatenedAtArea'] && typeof params['threatenedAtArea'] === 'string') {
+          result['threatenedAtArea'] = result['threatenedAtArea'].split(',');
         }
         return result;
       })

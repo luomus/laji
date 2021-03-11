@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FilterQuery } from '../../../iucn-shared/service/result.service';
+import { FilterQuery } from '../../service/result.service';
+import {RegionalFilterQuery} from '../../service/regional.service';
 
 @Component({
   selector: 'laji-active-filters',
@@ -9,8 +10,8 @@ import { FilterQuery } from '../../../iucn-shared/service/result.service';
 })
 export class ActiveFiltersComponent {
 
-  _query: FilterQuery;
-  queryItems: {field: string, label: string, value: string}[] = [];
+  _query: FilterQuery & RegionalFilterQuery;
+  queryItems: {field: string, label: string, value: string, separator: string}[] = [];
 
   skip = [
     'type',
@@ -27,11 +28,16 @@ export class ActiveFiltersComponent {
     'threats': 'iucn.hasThreat'
   };
 
+  separator = {
+    'threatenedAtArea': '; '
+  };
+
   order = [
     'redListGroup',
     'taxon',
     'habitat',
     'habitatSpecific',
+    'threatenedAtArea',
     'reasons',
     'threats',
     'status'
@@ -47,7 +53,8 @@ export class ActiveFiltersComponent {
       items.push({
         field: field,
         value: q[field],
-        label: this.useLabel[field] || ''
+        label: this.useLabel[field] || '',
+        separator: this.separator[field] || ','
       });
     });
     items.sort((a, b) => this.order.indexOf(a.field) - this.order.indexOf(b.field));
