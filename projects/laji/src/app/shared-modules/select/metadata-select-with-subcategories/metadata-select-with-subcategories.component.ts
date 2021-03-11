@@ -21,6 +21,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
 
   categoryOptions:  {[key: string]: SelectOption[]} = {};
   queryToSelect = [];
+  open = false;
 
   ngOnChanges(changes) {
     super.ngOnChanges(changes);
