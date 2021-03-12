@@ -1,0 +1,21 @@
+<ng-container *ngIf="audio?.dateTime || audio?.municipality || audio?.geometry">
+  {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+  {{ audio.municipality }}
+  <lu-button *ngIf="audio?.geometry" (click)="openModal()">
+    <i class="fa fa-map-marker"></i>
+  </lu-button>
+</ng-container>
+
+<ng-template #mapModal>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="closeModal()">
+      <i class="glyphicon glyphicon-remove"></i>
+    </button>
+    <h4 class="modal-title">{{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }} {{ audio.municipality }}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="map-wrap">
+      <laji-audio-info-map [geometry]="audio.geometry"></laji-audio-info-map>
+    </div>
+  </div>
+</ng-template>

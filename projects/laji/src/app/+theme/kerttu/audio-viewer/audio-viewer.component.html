@@ -45,9 +45,8 @@
       </lu-button>
     </ng-container>
 
-    <div class="pull-right" *ngIf="audio?.dateTime || audio?.municipality || audio?.geometry">
-      {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-      {{ audio.municipality }}
+    <div class="pull-right">
+      <laji-audio-info [audio]="audio"></laji-audio-info>
     </div>
   </div>
 </laji-spinner>
