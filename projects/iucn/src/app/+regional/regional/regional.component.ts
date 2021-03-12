@@ -23,9 +23,10 @@ export class RegionalComponent implements OnInit, OnDestroy {
     {label: 'iucn.regional.tab.status', value: 'status'},
     {label: 'iucn.regional.tab.species', value: 'species'}
   ];
-  groupSelectRootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
 
   years$: Observable<{label: string, value: string}[]>;
+  checklist: string;
+  groupSelectRootGroups: string[];
 
   queryParams: QueryParams;
   private querySub: Subscription;
@@ -35,7 +36,9 @@ export class RegionalComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private resultService: RegionalService
-  ) { }
+  ) {
+    this.groupSelectRootGroups = this.resultService.rootGroups;
+  }
 
   ngOnInit(): void {
     this.years$ = ObservableOf(this.resultService.years.map(year => ({label: 'iucn.regional.' + year, value: year}))).pipe(
@@ -60,6 +63,7 @@ export class RegionalComponent implements OnInit, OnDestroy {
         return result;
       })
     ).subscribe(params => {
+      this.checklist = this.resultService.getChecklistVersion(params.year);
       this.queryParams = params as QueryParams;
     });
   }
@@ -76,6 +80,11 @@ export class RegionalComponent implements OnInit, OnDestroy {
 
   queryChange(query: QueryParams) {
     const queryParams: any = {...query};
+    for (const i in queryParams) {
+      if (queryParams.hasOwnProperty(i) && Array.isArray(queryParams[i])) {
+        queryParams[i] = queryParams[i].join(',');
+      }
+    }
     this.router.navigate([], {queryParams: queryParams});
   }
 }

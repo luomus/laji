@@ -548,6 +548,7 @@
   "iucn.regional.2020": "2020 Alueellinen uhanalaisuus",
   "iucn.regional.tab.status": "Yhteenveto",
   "iucn.regional.tab.species": "Lajiluettelo",
+  "iucn.regional.regionallyThreatened": "RT-lajien määrä",
   "iucn.filter.threatenedAtArea": "Uhanalaisuusarviointivyöhyke",
   "label.designer": "Suunnittele etiketti",
   "label.domain": "Domain",

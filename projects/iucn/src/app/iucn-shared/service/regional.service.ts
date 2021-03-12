@@ -19,6 +19,35 @@ export class RegionalService {
     '2020'
   ];
 
+  rootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
+
+  areas: string[] = [
+    'ML.690',
+    'ML.691',
+    'ML.692',
+    'ML.693',
+    'ML.694',
+    'ML.695',
+    'ML.696',
+    'ML.697',
+    'ML.698',
+    'ML.699',
+    'ML.700'
+  ];
+  shortLabel = {
+    'ML.690': '1a',
+    'ML.691': '1b',
+    'ML.692': '2a',
+    'ML.693': '2b',
+    'ML.694': '3a',
+    'ML.695': '3b',
+    'ML.696': '3c',
+    'ML.697': '4a',
+    'ML.698': '4b',
+    'ML.699': '4c',
+    'ML.700': '4d'
+  };
+
   private yearToChecklistVersion = {
     '2020': 'MR.484'
   };
@@ -26,4 +55,8 @@ export class RegionalService {
   constructor(
 
   ) { }
+
+  getChecklistVersion(year: string): string {
+    return this.yearToChecklistVersion[year];
+  }
 }

@@ -10,7 +10,6 @@ import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
-import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
@@ -487,10 +486,6 @@ export class ResultsComponent implements OnChanges {
   private initStatusQuery() {
     const cacheKey = 'status';
     const statusField = 'latestRedListEvaluation.redListStatus';
-    const groupField = 'redListEvaluationGroups';
-
-    const scientificNameField = 'parent.family.scientificName';
-    const vernacularNameField = 'parent.family.vernacularName.' + this.lang;
 
     const query: any = {
       ...this.removeKeys(this.baseQuery, [statusField])
@@ -499,64 +494,7 @@ export class ResultsComponent implements OnChanges {
     const currentQuery = JSON.stringify(query);
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonService.getRedListStatusTree(this.lang).pipe(
-        map<RedListTaxonGroup[], {groups: string[], aggregateBy: string[], hasKeys: boolean, isRoot?: boolean}>(tree => {
-          if (!query[groupField]) {
-            return {
-              groups: tree.map(v => v.id),
-              aggregateBy: [statusField, groupField],
-              hasKeys: true,
-              isRoot: true
-            };
-          }
-          const node = this.taxonService.findGroupFromTree(tree, query[groupField]);
-          if (node.hasIucnSubGroup) {
-            return {
-              groups: (node.hasIucnSubGroup as RedListTaxonGroup[]).map(v => v.id),
-              aggregateBy: [statusField, groupField],
-              hasKeys: true
-            };
-          }
-          return {
-            groups: [query[groupField]],
-            aggregateBy: [statusField, scientificNameField, vernacularNameField],
-            hasKeys: false
-          };
-        }),
-        switchMap(red  => this.taxonApi.species(Util.removeFromObject({
-          ...query,
-          [groupField]: red.isRoot ? undefined : red.groups.join(','),
-          aggregateBy: red.aggregateBy.join(',') + '=a',
-          aggregateSize: 100000,
-          page: 1,
-          pageSize: 0
-        })).pipe(
-          map(data => data.aggregations['a'].reduce((cumulative: {}, current) => {
-            const val = current.values;
-            const status = val[statusField];
-            const name = val[groupField] || (
-              val[scientificNameField] && val[vernacularNameField] ?
-                val[vernacularNameField] + ', ' + val[scientificNameField] :
-                val[scientificNameField] || val[vernacularNameField]
-            );
-            if (current.values[groupField] && red.groups.indexOf(name) === -1) {
-              return cumulative;
-            }
-            if (!cumulative[name]) {
-              cumulative[name] = {species: name, count: 0, group: val[groupField]};
-            }
-            if (!cumulative[name][status]) {
-              cumulative[name][status] = 0;
-            }
-            cumulative[name]['count'] += current.count;
-            cumulative[name][status] += current.count;
-            return cumulative;
-          }, {})),
-          map(data => Object.keys(data).map(key => data[key]).sort((a, b) => b.count - a.count)),
-          switchMap(data => red.hasKeys ? this.taxonService.getRedListStatusLabels(this.lang).pipe(
-            map(translations => data.map(a => ({...a, species: translations[a.species]})))
-          ) : ObservableOf(data))
-        )),
+      this.taxonService.getRedListStatusQuery(query, this.lang, statusField).pipe(
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
   }
