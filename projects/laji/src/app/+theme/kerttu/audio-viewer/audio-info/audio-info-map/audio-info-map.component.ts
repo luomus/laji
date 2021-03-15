@@ -1,6 +1,7 @@
-import {Component, OnInit, ChangeDetectionStrategy, ViewChild, Input, SimpleChanges, HostListener, OnChanges} from '@angular/core';
+import {Component, ChangeDetectionStrategy, ViewChild, Input} from '@angular/core';
 import {LajiMapComponent} from '@laji-map/laji-map.component';
 import {LajiMapOptions} from '@laji-map/laji-map.interface';
+import {GeoJSON} from 'geojson';
 
 @Component({
   selector: 'laji-audio-info-map',
@@ -8,80 +9,38 @@ import {LajiMapOptions} from '@laji-map/laji-map.interface';
   styleUrls: ['./audio-info-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioInfoMapComponent implements OnInit, OnChanges {
+export class AudioInfoMapComponent {
   @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
-
-  @Input() geometry: any;
+  @Input() color = '#00aa00';
 
   mapOptions: LajiMapOptions = {
-    controls: { location: false }
+    controls: { location: false },
+    zoomToData: { maxZoom: 3 }
   };
 
-  private _data: any;
-  private resize: any;
+  data: any;
 
-  constructor(
-
-  ) { }
-
-  ngOnInit() {
-    this.initData();
+  @Input() set geometry(geometry: GeoJSON.Geometry) {
+    this.data = this.getData(geometry);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.initData();
-    this.setData();
-  }
+  constructor() { }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    clearTimeout(this.resize);
-    const that = this;
-    this.resize = setTimeout(function() {
-      that.setZoom();
-    }, 500);
-  }
-
-  onMapLoad() {
-    this.setData();
-  }
-
-  setData() {
-    if (this._data && this.lajiMap.map) {
-      try {
-        this.lajiMap.map.setData([this._data]);
-      } catch (e) {}
-      this.setZoom();
-    }
-  }
-
-  setZoom() {
-    try {
-      if (this._data && this.lajiMap.map) {
-        this.lajiMap.map.zoomToData({maxZoom: 3});
-      }
-    } catch (e) {}
-  }
-
-  initData() {
-    if (!this.geometry) {
-      return;
-    }
-
-    this._data = {
+  getData(geometry: GeoJSON.Geometry) {
+    return {
       getFeatureStyle: () => {
         return {
           weight: 2,
           opacity: 1,
           fillOpacity: 0,
-          color: '#00aa00'
+          color: this.color
         };
       },
       featureCollection: {
         type: 'FeatureCollection',
         features: [{
           type: 'Feature',
-          geometry: this.geometry,
+          geometry: geometry,
           properties: {}
         }]
       }
