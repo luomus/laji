@@ -1,14 +1,12 @@
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
-import { ActivatedRoute, ActivatedRouteSnapshot, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../shared/model/Form';
 import { combineLatest, Observable, of } from 'rxjs';
 import { NamedPlacesService } from '../shared/service/named-places.service';
 import { NamedPlace } from '../shared/model/NamedPlace';
-import { Global } from '../../environments/global';
-
 
 export interface ProjectForm {
   form: Form.SchemaForm;
