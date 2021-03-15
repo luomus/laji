@@ -10,7 +10,7 @@ import {
   tap,
   timeout
 } from 'rxjs/operators';
-import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
@@ -26,6 +26,7 @@ import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { PERSON_TOKEN } from './laji-api-worker-common';
+import { Profile } from '../model/Profile';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -352,5 +353,30 @@ export class UserService {
     } else {
       return this._persistent;
     }
+  }
+
+  getProfile(): Observable<Profile> {
+    return combineLatest(
+      this.personApi.personFindProfileByToken(this.getToken()),
+      this.user$
+    ).pipe(map(([profile, user]) => this.prepareProfile(profile, user)));
+  }
+
+  prepareProfile(profile: Profile | null, user: Person): Profile {
+    if (!profile) {
+      profile = {};
+    }
+    return {
+      ...profile,
+      settings: {
+        ...(profile.settings || {}),
+        defaultMediaMetadata: {
+          capturerVerbatim: user.fullName,
+          intellectualOwner: user.fullName,
+          intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
+          ...(profile.settings?.defaultMediaMetadata || {}),
+        }
+      }
+    };
   }
 }
