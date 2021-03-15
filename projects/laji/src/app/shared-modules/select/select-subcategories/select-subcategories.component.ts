@@ -302,7 +302,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       });
     }
 
-    this.open = Object.keys(this.selectedOptions).length > 0 ? true : this.open;
+    this.open = true;
 
     return this.selectedOptions;
 
