@@ -357,7 +357,7 @@
   "haseka.users.latest.discardConfirm": "Haluatko varmasti hylätä muutokset? Uusia havaintoja: {{unitCount}} kpl.",
   "haseka.users.latest.gathered": "havaintoa",
   "haseka.users.latest.gathered.singular": "havainto",
-  "haseka.users.latest.localityMissing": "Paikannimi puuttuu",
+  "haseka.users.latest.localityMissing": "Ei paikannimeä",
   "haseka.users.latest.other": "muuta",
   "haseka.users.unsaved": "Tallentamattomat havaintoeräni",
   "haseka.users.unsaved.doc": "Tätä havaintoerää ei ole vielä tallennettu tietokantaan. Jos haluat poistaa tämän erän, mene muokkaamaan sitä ja valitse 'Poistu tallentamatta'.",

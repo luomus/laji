@@ -80,7 +80,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
           }
         });
       } else if (this.importService.hasInvalidValue(rawValue, this.field)) {
-        invalidValues[rawValue] = true;
+        invalidValues[String(rawValue)] = true;
       }
     });
     this.invalid = Object.keys(invalidValues);
