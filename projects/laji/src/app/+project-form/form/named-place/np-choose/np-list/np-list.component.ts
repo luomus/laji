@@ -234,11 +234,6 @@ export class NpListComponent implements OnDestroy {
       }
       results.push(row);
     }
-    if (this.data.length === 0) {
-      setTimeout(() => {
-        this.datatable?.refreshTable();
-      }, 500);
-    }
     if (municipalities$.length) {
       forkJoin(...municipalities$).subscribe((municipalityTuples) => {
         municipalityTuples.forEach(([row, municipalityLabel]) => {
