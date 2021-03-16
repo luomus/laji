@@ -261,6 +261,10 @@ export class SelectSubcategoriesComponent implements OnChanges {
 
     subCategories = excludeGlobal ? subCategories.filter(category => category !== 'GLOBAL') : subCategories;
 
+    this.selectedOptions['GLOBAL'] = [];
+    this.unselectedOptions['GLOBAL'] = [];
+    this.tmpSelectedOption['GLOBAL'] = [];
+
     for (const category of subCategories) {
       this.selectedOptions[category] = [];
       this.unselectedOptions[category] = [];
@@ -280,9 +284,6 @@ export class SelectSubcategoriesComponent implements OnChanges {
     }
 
     if (excludeGlobal) {
-      this.selectedOptions['GLOBAL'] = [];
-      this.unselectedOptions['GLOBAL'] = [];
-      this.tmpSelectedOption['GLOBAL'] = [];
       options.map(option => {
         let checkMatches = 0;
         subCategories.forEach(element => {
@@ -301,8 +302,6 @@ export class SelectSubcategoriesComponent implements OnChanges {
         }
       });
     }
-
-    this.open = true;
 
     return this.selectedOptions;
 
