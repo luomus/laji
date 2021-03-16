@@ -56,7 +56,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
   _onlyWithCount: boolean;
 
-  @Input() allowedCombineOptions: CombineToDocument[];
+  @Input() allowedCombineOptions: CombineToDocument[] = [CombineToDocument.all, CombineToDocument.gathering];
 
   _forms: Observable<string[]> = this.formService.getGloballyAllowedSpreadsheetForms().pipe(
     map(_forms => _forms.map(form => form.id))
