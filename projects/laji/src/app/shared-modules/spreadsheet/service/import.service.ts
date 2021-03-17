@@ -78,7 +78,7 @@ export class ImportService {
     private translateService: TranslateService
   ) { }
 
-  hasInvalidValue(value: any, field: IFormField) {
+  hasInvalidValue(value: unknown, field: IFormField) {
     const mappedValue = this.mappingService.map(value, field);
     return Array.isArray(mappedValue) ? mappedValue.indexOf(null) > -1 : mappedValue === null;
   }
