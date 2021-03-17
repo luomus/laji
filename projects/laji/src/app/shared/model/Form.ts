@@ -3,7 +3,7 @@
  */
 import { Document } from './Document';
 import { Annotation } from './Annotation';
-import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
+import { MultiLanguage } from './MultiLanguage';
 
 export namespace Form {
   export enum PrintType {

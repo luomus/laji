@@ -1,5 +1,6 @@
 <ng-container *ngIf="missing">
   <h1>{{ 'iucn.taxon.missing' | translate }} {{ year }}</h1>
+  <p>{{ 'iucn.taxon.disclaimer' | translate }}</p>
 </ng-container>
 <ng-container *ngIf="!missing && taxon && !latestStatus">
   <div class="row">

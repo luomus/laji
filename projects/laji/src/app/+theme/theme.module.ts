@@ -49,6 +49,7 @@ import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotati
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
 import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
+import { AudioIosWarningComponent } from './kerttu/directive/audio-ios-warning.component';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { ProtaxComponent } from './protax/protax.component';
 import { ProtaxApi } from './protax/protax-api';
@@ -110,6 +111,7 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     KerttuRecordingAnnotationComponent,
     RequiresAudioSupportDirective,
     AudioNotSupportedErrorComponent,
+    AudioIosWarningComponent,
     ProtaxComponent,
     ProtaxFormComponent,
     NotFoundComponent,

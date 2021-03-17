@@ -8,12 +8,12 @@ import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 
-interface ICollectionRange {
+export interface ICollectionRange {
   id: string;
   value: string;
 }
 
-interface ICollectionsTreeNode {
+export interface ICollectionsTreeNode {
   id: string;
   longName: string;
   hasChildren: boolean;

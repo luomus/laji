@@ -52,7 +52,7 @@ export class FieldListComponent implements OnChanges {
     this.toggle.emit(allVisible);
   }
 
-  trackFields(field: IFormField): string {
+  trackFields(index: number, field: IFormField): string {
     return field.key;
   }
 

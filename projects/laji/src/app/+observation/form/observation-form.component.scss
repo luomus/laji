@@ -84,3 +84,10 @@ fieldset {
   text-transform: capitalize;
 }
 
+:host ::ng-deep typeahead-container.dropdown {
+  right: 80px !important;
+  left: unset !important;
+  margin-left: -272px;
+  min-width: 600px;
+}
+

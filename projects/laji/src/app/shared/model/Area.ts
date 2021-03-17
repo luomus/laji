@@ -47,11 +47,11 @@ export interface Area {
 
 export namespace Area {
   export enum AreaType {
-    Country = <any>'ML.country',
-    Biogeographical = <any>'ML.biogeographicalProvince',
-    Municipality = <any>'ML.municipality',
-    OldMunicipality = <any>'ML.oldMunicipality',
-    BirdAssociationArea = <any>'ML.birdAssociationArea',
-    IucnEvaluationArea = <any>'ML.iucnEvaluationArea',
+    Country = 'ML.country',
+    Biogeographical = 'ML.biogeographicalProvince',
+    Municipality = 'ML.municipality',
+    OldMunicipality = 'ML.oldMunicipality',
+    BirdAssociationArea = 'ML.birdAssociationArea',
+    IucnEvaluationArea = 'ML.iucnEvaluationArea',
   }
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { QueryParamsHandling } from '@angular/router';
 
 @Component({
   selector: 'laji-images',
@@ -17,7 +18,7 @@ export class ImagesComponent implements OnChanges {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
   @Input() shortcut = true;
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';

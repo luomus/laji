@@ -1,13 +1,14 @@
 <div class="searchBar">
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-8 col-xs-11">
         <laji-taxon-select
           [convertIdToName]="false"
           [searchParams]="{onlySpecies: true, onlyFinnish: true}"
           (taxonIdChange)="taxonSelect($event)"
           [placeholder]="'species.search' | translate">
         </laji-taxon-select>
+        <laji-info placement="bottom">{{ 'iucn.taxon.disclaimer' | translate }}</laji-info>
       </div>
     </div>
   </div>

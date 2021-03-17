@@ -310,6 +310,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private updateMapData() {
     if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
       if (this.unitCount === 0) {
+        this.prev = '';
         this.emptyMap();
       }
       return;
