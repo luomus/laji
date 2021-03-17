@@ -1,6 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import {IUserLetterTaxonStatistics} from '../../models';
 import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-letter-result-table',
@@ -16,7 +17,8 @@ export class KerttuLetterResultTableComponent implements OnInit {
       name: 'taxonId',
       label: 'theme.kerttu.result.species',
       cellTemplate: 'label',
-      width: 100
+      width: 100,
+      summaryFunc: () => this.translate.instant('theme.total')
     },
     {
       name: 'userAnnotationCount',
@@ -32,19 +34,29 @@ export class KerttuLetterResultTableComponent implements OnInit {
       name: 'similarity',
       label: 'theme.kerttu.result.similarity',
       cellTemplate: 'percentage',
-      width: 70
+      width: 70,
+      summaryFunc: this.meanPercent
     },
     {
       name: 'identifiability',
       label: 'theme.kerttu.result.identifiability',
       cellTemplate: 'percentage',
-      width: 70
+      width: 70,
+      summaryFunc: this.meanPercent
     }
   ];
 
-  constructor() { }
+  constructor(
+    private translate: TranslateService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  meanPercent(data: number[]) {
+    const filtered = data.filter(d => d !== undefined);
+    const sum = filtered.reduce((result, value) => result + value, 0);
+    const mean = sum / filtered.length;
+    return Math.round(mean * 1000) / 10 + ' %';
+  }
 }
