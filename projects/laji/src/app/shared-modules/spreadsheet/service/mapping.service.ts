@@ -335,7 +335,7 @@ export class MappingService {
       ) {
         return this.getDate(value);
       }
-      return value.toISOString(); // DateTime
+      return value.toISOString();
     }
 
     return String(value);
@@ -402,11 +402,11 @@ export class MappingService {
     return targetValue;
   }
 
-  private matchTime(test: Date, hour: number, minutes: number, seconds) {
+  private matchTime(test: Date, hour: number, minutes: number, seconds): boolean {
     return test.getHours() === hour && test.getMinutes() === minutes && test.getSeconds() === seconds;
   }
 
-  private getDate(value: Date) {
+  private getDate(value: Date): string {
     const tmpDate = new Date(value);
     tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
     return tmpDate.toISOString().substr(0, 10);
