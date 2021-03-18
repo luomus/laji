@@ -53,8 +53,11 @@ export class KerttuLetterResultTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  meanPercent(data: number[]) {
+  meanPercent(data: number[]): string {
     const filtered = data.filter(d => d !== undefined);
+    if (filtered.length === 0) {
+      return '';
+    }
     const sum = filtered.reduce((result, value) => result + value, 0);
     const mean = sum / filtered.length;
     return Math.round(mean * 1000) / 10 + ' %';
