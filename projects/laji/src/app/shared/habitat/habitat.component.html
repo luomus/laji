@@ -1,6 +1,6 @@
 <ng-container *ngIf="isMany; else singleHab">
   <ul>
-    <li *ngFor="let value of _habitat">
+    <li *ngFor="let value of _habitats">
       <ng-container [ngTemplateOutlet]="habitatTpl" [ngTemplateOutletContext]="{habitat: value}"></ng-container>
     </li>
   </ul>

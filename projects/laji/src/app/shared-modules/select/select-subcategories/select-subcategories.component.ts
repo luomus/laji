@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { SelectOption as SelectComponentOptions } from '../select/select.component';
 import { Util } from '../../../shared/service/util.service';
+import { CheckboxType } from '../checkbox/checkbox.component';
 
 export interface SelectOptions extends SelectComponentOptions {
   category: string;
@@ -53,6 +54,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
   status = {};
   tmpSelected = {};
   typeCheckbox = 2;
+  checkBoxTypes = CheckboxType;
 
   ngOnChanges() {
     if (this.disabled) {

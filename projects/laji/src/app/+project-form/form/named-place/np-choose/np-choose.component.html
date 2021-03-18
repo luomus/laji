@@ -9,7 +9,7 @@
                     [height]="height"
                     [activeNP]="findNPIndexById(_activeNP)"
                     [userID]="_userID"
-                    [reservable]="_documentForm.options?.namedPlaceOptions?.reservationUntil"
+                    [reservable]="!!_documentForm.options?.namedPlaceOptions?.reservationUntil"
                     [placeForm]="placeForm"
                     [documentForm]="_documentForm"
                     (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>

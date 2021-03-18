@@ -12,10 +12,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { AdminStatusInfoPipe } from '../admin-status-info.pipe';
 import { Area } from '../../../shared/model/Area';
 import { BaseDataService } from '../../../graph-ql/service/base-data.service';
-import { SelectOption } from '../select/select.component';
 import { AnnotationService } from '../../document-viewer/service/annotation.service';
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
+import { SelectOptions } from '../select-subcategories/select-subcategories.component';
 
 export enum SelectStyle {
   basic,
@@ -63,7 +63,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   active = [];
   selectedTitle = '';
   _shouldSort = false;
-  _options: SelectOption[] = null;
+  _options: SelectOptions[] = null;
 
   protected subOptions: Subscription;
   protected innerValue = '';
@@ -199,11 +199,11 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     return item.id ?? idx;
   }
 
-  protected setOptions(options: SelectOption[]): void {
+  protected setOptions(options: SelectOptions[]): void {
     this._options = options;
   }
 
-  protected optionsToWarehouseID(options: SelectOption[]): Observable<SelectOption[]> {
+  protected optionsToWarehouseID(options: SelectOptions[]): Observable<SelectOptions[]> {
     return from(options).pipe(
       concatMap(option => this.warehouseMapper.getWarehouseKey(option.id).pipe(
         filter(warehouseID => warehouseID !== option.id),
@@ -251,7 +251,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     );
   }
 
-  protected sortOptionsByAnotherList(options: SelectOption[]): SelectOption[] {
+  protected sortOptionsByAnotherList(options: SelectOptions[]): SelectOptions[] {
     return options.sort((a, b) => {
       const hasA = this.firstOptions.includes(a.id);
       const hasB = this.firstOptions.includes(b.id);

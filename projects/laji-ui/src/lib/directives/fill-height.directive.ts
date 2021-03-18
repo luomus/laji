@@ -2,8 +2,8 @@ import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inje
 import { isPlatformBrowser } from '@angular/common';
 
 export interface IFillHeightOptions {
-  disabled: boolean;
-  minHeight: number;
+  disabled?: boolean;
+  minHeight?: number;
 }
 
 @Directive({

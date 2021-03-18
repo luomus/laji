@@ -2,8 +2,10 @@ import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetect
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { SelectOption } from '../select-collections.component';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { toHtmlInputElement } from '../../../shared/service/html-element.service';
+import { ICollectionsTreeNode } from '../../../shared/service/collection.service';
 @Component({
   selector: 'laji-select-collections-modal',
   templateUrl: './select-collections-modal.component.html',
@@ -13,7 +15,7 @@ import { debounceTime } from 'rxjs/operators';
 
 export class SelectCollectionsModalComponent implements OnInit {
   @Input() selected: string[] = [];
-  @Input() collectionsTree$;
+  @Input() collectionsTree$: Observable<ICollectionsTreeNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
@@ -26,6 +28,7 @@ export class SelectCollectionsModalComponent implements OnInit {
   treeModel: TreeModel;
 
   filterDebounce = new Subject<string>();
+  toHtmlInputElement = toHtmlInputElement;
 
   state: ITreeState;
   options: ITreeOptions = {

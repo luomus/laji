@@ -15,6 +15,7 @@ import {
 import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
+import { QueryParamsHandling } from '@angular/router';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -77,7 +78,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
   @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
@@ -165,11 +166,11 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
 
 
-  @HostListener('body:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {
-          e.preventDefault();
+          e.stopImmediatePropagation();
           this.openImage(this.tmpImg['index']);
         }
       }

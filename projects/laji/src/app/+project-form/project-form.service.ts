@@ -73,7 +73,7 @@ export class ProjectFormService {
     return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
-  getExcelFormIDs(projectForm: ProjectForm) {
+  getExcelFormIDs(projectForm: ProjectForm): string[] {
     const allowsExcel = (form: Form.SchemaForm) => form.options?.allowExcel && form.id;
     return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f);
   }

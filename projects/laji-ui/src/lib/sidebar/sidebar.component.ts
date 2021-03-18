@@ -69,7 +69,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
-    this.toggled.emit(b);
   }
   get open() {
     return this._open;
@@ -157,6 +156,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   onSwitchOpen() {
     this.open = !this.open;
+    this.toggled.emit(this.open);
     this.cdr.detectChanges();
   }
 

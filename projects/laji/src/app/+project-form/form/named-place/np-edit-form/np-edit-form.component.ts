@@ -17,12 +17,12 @@ import { NamedPlacesRouteData, ProjectFormService } from '../../../project-form.
 import { AreaService } from '../../../../shared/service/area.service';
 import { BrowserService } from '../../../../shared/service/browser.service';
 
-interface ViewModel extends NamedPlacesRouteData {
-  description: string;
-}
-
 interface NamedPlacesRouteDataWithPlaceForm extends NamedPlacesRouteData {
   placeForm: Form.SchemaForm;
+}
+
+interface ViewModel extends NamedPlacesRouteDataWithPlaceForm {
+  description: string;
 }
 
 @Component({

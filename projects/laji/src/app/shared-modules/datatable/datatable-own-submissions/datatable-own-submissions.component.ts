@@ -4,16 +4,16 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostListener,
   Input,
   NgZone,
   OnDestroy,
   OnInit,
   Output,
-  ViewChild,
-  HostListener
+  ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
+import { DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -43,7 +43,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Input() pageSize: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
-  @Input() sortType = 'multi';
+  @Input() sortType: SortType = SortType.multi;
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() emptyMessage = '';

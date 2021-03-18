@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { Document } from '../../../shared/model/Document';
 import { Form } from '../../../shared/model/Form';
+import { ISuccessEvent } from '../laji-form-document.facade';
 
 @Component({
   selector: 'laji-document-form',
@@ -15,12 +16,12 @@ export class DocumentFormComponent {
   @Input() documentId: string;
   @Input() showHeader = true;
   @Input() showShortcutButton = true;
-  @Output() success = new EventEmitter<{document: Document, form: any}>();
+  @Input() template = false;
+  @Output() success = new EventEmitter<ISuccessEvent>();
   @Output() error = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
-  @Output() tmpLoad = new EventEmitter();
 
   private changeSource = new Subject<any>();
   private changeEvent$ = this.changeSource.asObservable();

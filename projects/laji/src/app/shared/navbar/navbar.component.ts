@@ -37,6 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   devRibbon = false;
   showSearch = false;
   containerClass: string;
+  navId: string;
 
   notificationsNotSeen = 0;
   notificationsTotal$: Observable<number>;
@@ -52,6 +53,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private browserService: BrowserService,
     private ngZone: NgZone
   ) {
+    this.navId = environment.type + '-nav';
     this.devRibbon = !environment.production || environment.type === Global.type.beta;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
     this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';

@@ -5,6 +5,10 @@ import { map } from 'rxjs/operators';
 import { InformalTaxonGroupApi } from '../../../shared/api/InformalTaxonGroupApi';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 
+export interface InformalGroup extends InformalTaxonGroup {
+  results: InformalTaxonGroup[];
+}
+
 @Component({
   selector: 'laji-informal-group-select',
   templateUrl: './informal-group-select.component.html',
@@ -16,7 +20,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
   @Input() showAll = false;
   @Output() informalGroupSelect = new EventEmitter<string>();
 
-  public selectedInformalGroup: InformalTaxonGroup;
+  public selectedInformalGroup: InformalGroup;
   public groups: Array<InformalTaxonGroup> = [];
   private subTrans: Subscription;
 
@@ -72,7 +76,7 @@ export class InformalGroupSelectComponent implements OnInit, OnDestroy, OnChange
     return { results, id, name };
   }
 
-  private setSelectedInformalGroup(data: InformalTaxonGroup) {
+  private setSelectedInformalGroup(data: InformalGroup) {
     this.selectedInformalGroup = data;
   }
 }

@@ -31,6 +31,8 @@ const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxono
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
+
 @Component({
   selector: 'laji-info-card',
   templateUrl: './info-card.component.html',
@@ -44,7 +46,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() set activeTab(tab: 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+  @Input() set activeTab(tab: InfoCardTabType) {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }

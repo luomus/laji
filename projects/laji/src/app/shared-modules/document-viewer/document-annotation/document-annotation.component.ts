@@ -409,22 +409,25 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   annotationKeyDown(e: KeyboardEvent) {
       if (e.keyCode === 37 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // left
         if (this.result && this.indexPagination > 0) {
+          e.preventDefault();
           this.previous();
         }
       }
 
       if (e.keyCode === 39 && !this.childEvent && !this.isfocusedCommentTaxon && !this.documentToolsOpen) { // right
         if (this.result && this.indexPagination < this.result.length - 1) {
+          e.preventDefault();
           this.next();
         }
       }
 
       if (e.keyCode === 187 && e.altKey) { // alt + ? --> open shortcuts div
+        e.preventDefault();
         this.toggleShortcuts();
       }
 
     if (e.keyCode === 27 && !this.childEvent && !this.documentToolsOpen) {
-       e.stopImmediatePropagation();
+       e.preventDefault();
        this.closeDocument();
       }
 

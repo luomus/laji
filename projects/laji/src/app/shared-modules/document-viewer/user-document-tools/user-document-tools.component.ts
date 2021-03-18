@@ -264,7 +264,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown', ['$event'])
   documentToolsKeyDown(e: KeyboardEvent) {
     if (e.keyCode === 27 && this.modalIsOpen) {
-      e.stopImmediatePropagation();
+       e.preventDefault();
        this.closeModal();
       }
   }

@@ -51,7 +51,7 @@ export class QualityService {
     ));
   }
 
-  getMostActiveUsers(maxLength = 50, informalTaxonGroup?, lastDate?): Observable<any> {
+  getMostActiveUsers(maxLength = 50, informalTaxonGroup?: string[], lastDate?): Observable<any> {
     const query: WarehouseQueryInterface = {cache: true};
     query.annotationType = ['USER_EFFECTIVE'];
     if (informalTaxonGroup) {

@@ -18,3 +18,11 @@ declare module 'leaflet' {
     static geodesicArea(latlng: L.LatLng): any;
   }
 }
+
+declare module 'chart.js' {
+  declare namespace Chart {
+    export type ChartType = 'line' | 'bar' | 'horizontalBar' | 'radar' | 'doughnut' | 'polarArea' | 'bubble' | 'pie' | 'scatter' | 'LineWithLine';
+  }
+  export = Chart;
+  export as namespace Chart;
+}

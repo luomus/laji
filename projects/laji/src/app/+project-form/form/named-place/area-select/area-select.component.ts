@@ -16,7 +16,7 @@ export class AreaSelectComponent implements OnInit {
   @Input() field: string;
   @Input() disabled = false;
   @Input() multiselect = false;
-  @Input() value = [];
+  @Input() value: string[] = [];
   @Input() selectOptionEnabled = true;
   @Input() allOptionEnabled = false;
 

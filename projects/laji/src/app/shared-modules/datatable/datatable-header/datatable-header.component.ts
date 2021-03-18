@@ -14,8 +14,8 @@ export class DatatableHeaderComponent {
   @Input() showSettingsMenu = false;
   @Input() showDownloadMenu = false;
   @Input() downloadLoading = false;
-  @Input() maxDownload = false;
-  @Input() count = false;
+  @Input() maxDownload = 0;
+  @Input() count = 0;
   @Input() downloadText = 'Download';
   @Input() showBrowseObservationsButton = false;
   @Input() browseObservationsText = 'Browse observations';

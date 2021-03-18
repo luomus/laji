@@ -1,0 +1,42 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+$theme-color: #d62022;
+
+#iucn-nav {
+  &.navbar {
+    background-color: $theme-color;
+    color: $neutral-1;
+    box-shadow: 0 2px 5px #000;
+    border: 0;
+  }
+  .icon-bar {
+    background-color: $neutral-1;
+  }
+  .navbar-collapse {
+    border: 0;
+  }
+  .navbar-nav > li > a,
+  .navbar-brand,
+  .navbar-toggle:focus,
+  .navbar-toggle:hover,
+  .navbar-toggle {
+    border-color: $theme-color;
+    color: $neutral-1;
+  }
+
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li.open > a,
+  .navbar-brand:hover,
+  .navbar-toggle:focus,
+  .navbar-toggle:hover,
+  .active > a,
+  .active > a:focus,
+  .navbar-nav > .active > a:hover {
+    background-color: darken($theme-color, 5%);
+    color: $neutral-1;
+  }
+
+  .navbar-collapse.in [role="menuitem"] a {
+    color: $neutral-9;
+  }
+}

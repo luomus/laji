@@ -7,9 +7,10 @@ import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
-import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Color, Label, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import * as chartJs from 'chart.js';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -194,7 +195,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       pointHoverBorderColor: 'rgb(70,130,180)'
     }
   ];
-  public lineChartPlugins = [pluginDataLabels];
+  public lineChartPlugins = [
+    pluginDataLabels as PluginServiceGlobalRegistrationAndOptions
+  ];
+  chartType: ChartType = 'LineWithLine';
 
   constructor(
     private route: ActivatedRoute,

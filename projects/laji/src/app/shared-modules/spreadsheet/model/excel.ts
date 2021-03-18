@@ -40,7 +40,7 @@ export interface IValueMerge {
   };
 }
 
-export type TUserValueMap = string|number|boolean|IValueMerge;
+export type TUserValueMap = string|number|boolean|IValueMerge|null;
 
 export interface IValueMap {
   [key: string]: {

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 import { Taxonomy, TaxonomyDescription } from '../../../../shared/model/Taxonomy';
 import { CheckLangService } from '../../service/check-lang.service';
 import { TranslateService } from '@ngx-translate/core';
+import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-taxon-biology',
@@ -23,6 +24,7 @@ export class TaxonBiologyComponent implements OnChanges {
   activeDescription = 0;
   activeDescriptionContent: any;
   currentLang: string;
+  toHtmlSelectElement = toHtmlSelectElement;
   @Output() contextChange = new EventEmitter<string>();
 
   constructor(private checklang: CheckLangService, private translation: TranslateService) { }

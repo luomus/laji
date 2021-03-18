@@ -11,6 +11,6 @@
   </div>
   <laji-importer *ngIf="projectForm.form.options?.secondaryCopy; else allAllowed" [forms]="[projectForm.form.id]" [allowedCombineOptions]="[combineOptions.none]"></laji-importer>
   <ng-template #allAllowed>
-    <laji-importer [forms]="[projectFormService.getExcelFormIDs(projectForm)]"></laji-importer>
+    <laji-importer [forms]="projectFormService.getExcelFormIDs(projectForm)"></laji-importer>
   </ng-template>
 </ng-container>

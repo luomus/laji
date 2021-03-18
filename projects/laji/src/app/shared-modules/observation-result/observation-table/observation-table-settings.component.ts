@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
-import { IColumnGroup } from '../../datatable/service/table-column.service';
+import { IColumnGroup, IGenericColumn } from '../../datatable/service/table-column.service';
 import { DatatableColumn } from '../../datatable/model/datatable-column';
+import { IColumns } from '../../datatable/service/observation-table-column.service';
 
 @Component({
   selector: 'laji-observation-table-settings',
@@ -47,7 +48,7 @@ import { DatatableColumn } from '../../datatable/model/datatable-column';
               <ng-container *ngFor="let group of col">
                 <laji-selected-field-group
                   [header]="group.header"
-                  [fields]="group.fields"
+                  [fields]="$any(group.fields)"
                   [columnsLookup]="columnLookup"
                   [columnSelector]="columnSelector"
                   [required]="columnSelector.required"
@@ -76,8 +77,7 @@ import { DatatableColumn } from '../../datatable/model/datatable-column';
     </ng-template>
   `
 })
-export class ObservationTableSettingsComponent {
-
+export class ObservationTableSettingsComponent<T extends IGenericColumn<DatatableColumn> = IGenericColumn<DatatableColumn>> {
 
   @ViewChild('settingsModal', { static: true }) settingsModal: TemplateRef<any>;
 
@@ -87,7 +87,7 @@ export class ObservationTableSettingsComponent {
   @Input() columnSelector: ColumnSelector;
   @Input() numberColumnSelector: ColumnSelector;
   @Input() allAggregateFields: string[];
-  @Input() columnGroups: IColumnGroup<DatatableColumn>[][];
+  @Input() columnGroups: IColumnGroup<T>[][];
   @Input() columnLookup: any = {};
 
   @Output() pageSizeChange = new EventEmitter<number>();

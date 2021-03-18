@@ -4,7 +4,7 @@
       <label for="year">{{ 'wbc.year' | translate }}</label>
       <select
         id="year"
-        (change)="onYearChange($event.target.value !== '0' ? $event.target.value : undefined)"
+        (change)="onYearChange(toHtmlSelectElement($event.target).value !== '0' ? toHtmlSelectElement($event.target).value : undefined)"
         name="year"
         class="form-control"
         style="width: 120px">
@@ -18,7 +18,7 @@
       <label for="season">{{ 'wbc.season' | translate }}</label>
       <select
         id="season"
-        (change)="onSeasonChange($event.target.value !== '0' ? $event.target.value : undefined)"
+        (change)="onSeasonChange(toHtmlSelectElement($event.target).value !== '0' ? toHtmlSelectElement($event.target).value : undefined)"
         [disabled]="!activeYear"
         name="season"
         class="form-control"
@@ -35,7 +35,7 @@
                         [selectOptionEnabled]="false"
                         [allOptionEnabled]="true"
                         [field]="areaTypes.BirdAssociationArea"
-                        [value]="activeArea || 'all'"
+                        [value]="[activeArea || 'all']"
                         (select)="onAreaChange($event)"
       ></laji-area-select>
     </div>

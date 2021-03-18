@@ -35,7 +35,7 @@
         </div>
       </div>
       <fieldset>
-        <laji-np-info-map [visible]="(isModal && modalIsVisible) || infoBox?.nativeElement?.offsetParent !== null"
+        <laji-np-info-map [visible]="(isModal && modalIsVisible) || $any(infoBox)?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
         <ng-container *ngFor="let i of listItems">
           <laji-np-info-row class="d-block mb-3" [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>

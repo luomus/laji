@@ -137,7 +137,7 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
     }
   }
 
-  getRowHeight(row) {
+  getRowHeight(row): number {
     if (!row) { return 37; }
 
     if (row.unit && row.unit.media && row.unit.media[0]) {

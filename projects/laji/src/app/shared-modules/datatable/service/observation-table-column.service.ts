@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IColumnGroup, TableColumnService } from './table-column.service';
+import { IColumnGroup, IGenericColumn, TableColumnService } from './table-column.service';
 import { ObservationTableColumn } from '../../observation-result/model/observation-table-column';
 import { environment } from '../../../../environments/environment';
 import { Global } from '../../../../environments/global';
 
-export interface IColumns {
+export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'document.documentId': ObservationTableColumn;
   'unit.unitId': ObservationTableColumn;
   'unit.taxon': ObservationTableColumn;

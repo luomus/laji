@@ -6,7 +6,6 @@ import { Title } from '@angular/platform-browser';
 import { UserService } from '../../../shared/service/user.service';
 import { ILajiFormState } from '../laji-form-document.facade';
 import * as moment from 'moment';
-import { AreaService } from '../../../shared/service/area.service';
 import { Form } from '../../../shared/model/Form';
 
 @Component({
@@ -53,8 +52,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
     private formService: FormService,
     private userService: UserService,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef,
-    private areaService: AreaService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {

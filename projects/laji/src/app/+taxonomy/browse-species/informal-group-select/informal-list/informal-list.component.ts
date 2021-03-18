@@ -10,7 +10,7 @@ import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup'
 })
 export class InformalListComponent {
 
-  @Input() tree: PagedResult<InformalTaxonGroup>;
+  @Input() tree: { results: InformalTaxonGroup[]};
   @Input() showAll = false;
   @Output() informalGroupSelect = new EventEmitter<string>();
 

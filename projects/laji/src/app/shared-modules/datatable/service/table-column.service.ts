@@ -7,12 +7,12 @@ export interface IColumnGroup<T> {
   fields: Array<keyof T>;
 }
 
-export interface IGenericColumn {
-  [key: string]: DatatableColumn;
+export interface IGenericColumn<G extends DatatableColumn> {
+  [key: string]: G;
 }
 
 @Injectable()
-export abstract class TableColumnService<T extends DatatableColumn = DatatableColumn, G = IGenericColumn> {
+export abstract class TableColumnService<T extends DatatableColumn = DatatableColumn, G = IGenericColumn<T>> {
 
   protected defaultLabelPrefix = 'result.';
 

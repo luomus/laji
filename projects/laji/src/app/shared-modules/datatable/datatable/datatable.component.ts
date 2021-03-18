@@ -1,19 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
+import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -38,15 +26,15 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() pageSize: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
-  @Input() sortType = 'multi';
+  @Input() sortType: SortType = SortType.multi;
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() emptyMessage = '';
   @Input() clientSideSorting = false;
-  @Input() columnMode = 'force';
+  @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'force';
   @Input() resizable = true;
   @Input() showRowAsLink = true;
-  @Input() rowHeight = 35;
+  @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;

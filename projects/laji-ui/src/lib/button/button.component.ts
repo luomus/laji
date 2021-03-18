@@ -8,7 +8,7 @@ import {
   OnChanges, SimpleChanges, OnInit
 } from '@angular/core';
 
-type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' ;
+export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' | 'edit' ;
 
 @Component({
   selector: 'lu-button',
@@ -17,7 +17,7 @@ type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'dange
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent implements OnChanges, OnInit {
-  @Input() role: Role = 'secondary';
+  @Input() role: ButtonRole = 'secondary';
   @Input() loading: boolean;
   @Input() disabled = false; // note: can't disable anchors
   @Input() small = false;
