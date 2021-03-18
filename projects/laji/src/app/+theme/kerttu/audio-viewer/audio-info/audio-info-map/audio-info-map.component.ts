@@ -2,6 +2,7 @@ import {Component, ChangeDetectionStrategy, ViewChild, Input} from '@angular/cor
 import {LajiMapComponent} from '@laji-map/laji-map.component';
 import {LajiMapOptions} from '@laji-map/laji-map.interface';
 import {GeoJSON} from 'geojson';
+import { TileLayerName } from 'laji-map';
 
 @Component({
   selector: 'laji-audio-info-map',
@@ -14,8 +15,9 @@ export class AudioInfoMapComponent {
   @Input() color = '#00aa00';
 
   mapOptions: LajiMapOptions = {
+    tileLayerName: TileLayerName.laser,
     controls: { location: false },
-    zoomToData: { maxZoom: 3 }
+    zoomToData: { maxZoom: 13 }
   };
 
   data: any;

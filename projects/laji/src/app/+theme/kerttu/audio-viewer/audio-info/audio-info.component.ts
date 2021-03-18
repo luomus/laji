@@ -13,8 +13,6 @@ export class AudioInfoComponent {
 
   @Input() audio: IAudio;
 
-  mapPointerColor = '#00aa00';
-
   private modal: BsModalRef;
 
   constructor(
