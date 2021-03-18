@@ -69,16 +69,16 @@ export interface IUserStatistics {
 }
 
 export interface IUserLetterStatistics {
-  meanSimilarity: number;
+  meanSimilarity?: number;
   taxonStatistics: IUserLetterTaxonStatistics[];
 }
 
 export interface IUserLetterTaxonStatistics {
   taxonId: string;
   userAnnotationCount: number;
-  commonAnnotationCount: number;
-  similarity: number;
-  identifiability: number;
+  commonAnnotationCount?: number;
+  similarity?: number;
+  identifiability?: number;
 }
 
 export enum LetterAnnotation {
