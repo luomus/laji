@@ -39,7 +39,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
   @Input() summaryRow = false;
-  @Input() maxHeight: string;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
