@@ -14,8 +14,6 @@
         <laji-spinner [spinning]="loading"></laji-spinner>
         <div [class.lj-active]="i === selectedIdx" *ngFor="let option of options; let i = index; trackBy: track" style="position: relative;">
           <label class="lj-item" [ngClass]="classes['options']" (click)="labelClick($event)">
-            {{ selectedOptions | json }}
-            {{option}}
             <laji-checkbox [checkboxType]="checkboxType" [value]="(selectedOptions | checkboxValue:option)" (valueChange)="toggleValue(option.id, $event)"></laji-checkbox> {{ option.value}}
           </label>
           <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
