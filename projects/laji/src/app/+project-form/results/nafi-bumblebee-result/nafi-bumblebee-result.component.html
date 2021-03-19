@@ -7,7 +7,14 @@
           <span>{{ 'nafi.stats.title' | translate }}</span>
         </ng-template>
       </h3>
-      <p>content</p>
+      <div *ngIf="collectionId === 'HR.3911' else butterfliesIntro" [innerHtml]="'nafiBumbleee.bumblebee.intro' | translate" lajiRouteTransformer></div>
+      <ng-template #butterfliesIntro>
+        <div [innerHtml]="'nafiBumbleee.butterfly.intro' | translate" lajiRouteTransformer></div>
+      </ng-template>
+      <div class="row">
+        <laji-navigation-thumbnail [name]="'nafiBumblebee.stats.allResults'" [icon]="'wb_icon_bird'" [iconType]="'png'" [query]="{tab: Tabs.species}"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'nafiBumblebee.stats.routes'" [icon]="'wb_icon_map_2'" [iconType]="'png'" [query]="{tab: Tabs.routes}"></laji-navigation-thumbnail>
+      </div>
     </div>
     <div class="col-sm-4">
       <div class="form-logo pull-right">
@@ -16,5 +23,11 @@
     </div>
   </div>
   <hr style="width: 100%">
-  <laji-nafi-bumblebee-routes [collectionId]="collectionId"></laji-nafi-bumblebee-routes>
+  <div [ngSwitch]="tab$ | async">
+    <div *ngSwitchCase="Tabs.species">
+      <laji-nafi-bumblebee-all-results></laji-nafi-bumblebee-all-results>
+    </div>
+    <div *ngSwitchCase="Tabs.routes">
+      <laji-nafi-bumblebee-routes [collectionId]="collectionId"></laji-nafi-bumblebee-routes>
+    </div>
 </div>

@@ -7,6 +7,12 @@ import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { ResultService } from '../common/service/result.service';
 import { Form } from '../../../shared/model/Form';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
+import { map } from 'rxjs/operators';
+
+enum Tabs {
+  species = 'species',
+  routes = 'routes'
+}
 
 @Component({
   selector: 'laji-nafi-bumblebee-result',
@@ -25,6 +31,9 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
   taxon$: Observable<Taxonomy>;
+  Tabs = Tabs;
+  tab$: Observable<keyof typeof Tabs>;
+
 
   year;
   currentMonth;
@@ -55,10 +64,18 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.collectionId = this.qName.transform(this.form.collectionID);
     this.lang = this.translate.currentLang;
+    this.tab$ = this.route.queryParams.pipe(map(paramMap => paramMap['tab']));
     this.subTrans = this.translate.onLangChange.subscribe(res => {
       this.lang = res.lang;
     });
     this.subQuery = this.route.queryParams.subscribe(params => {
+      const tab = params['tab'];
+      if (!Tabs[tab]) {
+        this.router.navigate(
+          [],
+          {queryParams: {tab: Tabs.species}}
+        );
+      }
       const time = (params['time'] && Array.isArray(params['time'])) ?
         params['time'][0] : params['time'];
       const taxonId = (params['taxonId'] && Array.isArray(params['taxonId'])) ?

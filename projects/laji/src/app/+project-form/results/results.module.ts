@@ -46,6 +46,7 @@ import { NafiBumblebeeCensusesComponent } from './nafi-bumblebee-result/nafi-bum
 import { NafiBumblebeeResultFiltersComponent } from './nafi-bumblebee-result/nafi-bumblebee-result-filters/nafi-bumblebee-result-filters.component';
 import { NafiBumblebeeRouteComponent } from './nafi-bumblebee-result/nafi-bumblebee-route/nafi-bumblebee-route.component';
 import { NafiBumblebeeRouteTableComponent } from './nafi-bumblebee-result/nafi-bumblebee-route-table/nafi-bumblebee-route-table.component';
+import { NafiBumblebeeAllResultsComponent } from './nafi-bumblebee-result/nafi-bumblebee-all-results/nafi-bumblebee-all-results.component';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { NafiBumblebeeRouteTableComponent } from './nafi-bumblebee-result/nafi-b
     NafiBumblebeeCensusesComponent,
     NafiBumblebeeResultFiltersComponent,
     NafiBumblebeeRouteComponent,
-    NafiBumblebeeRouteTableComponent
+    NafiBumblebeeRouteTableComponent,
+    NafiBumblebeeAllResultsComponent
   ],
   providers: [
     WbcResultService,
