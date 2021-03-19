@@ -25,7 +25,7 @@
   <hr style="width: 100%">
   <div [ngSwitch]="tab$ | async">
     <div *ngSwitchCase="Tabs.species">
-      <laji-nafi-bumblebee-all-results></laji-nafi-bumblebee-all-results>
+      <laji-nafi-bumblebee-all-results [collectionId]="collectionId"></laji-nafi-bumblebee-all-results>
     </div>
     <div *ngSwitchCase="Tabs.routes">
       <laji-nafi-bumblebee-routes [collectionId]="collectionId"></laji-nafi-bumblebee-routes>
