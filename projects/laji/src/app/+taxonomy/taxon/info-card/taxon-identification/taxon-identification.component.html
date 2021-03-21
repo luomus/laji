@@ -7,7 +7,7 @@
 </laji-spinner>
 
 <ng-template #parent>
-  <div class="mb-7" *ngFor="let child of (childTree$ | async)">
+  <div class="mb-7" *ngFor="let child of children">
     <h3 class="child-name">
       <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="child"></laji-taxon-name></a>
     </h3>
@@ -17,5 +17,11 @@
     <laji-identification-list
       [taxon]="child"
     ></laji-identification-list>
+  </div>
+  <div #loadMore></div>
+  <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
   </div>
 </ng-template>

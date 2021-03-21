@@ -1,17 +1,20 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, from, Subject } from 'rxjs';
-import { map, distinctUntilChanged, switchMap, concatMap, scan, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { map, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
+import { IdentificationChildrenDataSource } from './identification-children-data-source';
 
 interface IIdentificationState {
-  childTree?: Taxonomy[];
+  childDataSource?: IdentificationChildrenDataSource | undefined;
+  totalChildren?: number;
 }
 
 const _state: IIdentificationState = {
-  childTree: undefined
+  childDataSource: undefined,
+  totalChildren: 0
 };
 
 const rankWhiteList: Taxon.TaxonRankEnum[] = [
@@ -52,28 +55,34 @@ const getSubMainRanks = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum[] => {
 export class TaxonIdentificationFacade implements OnDestroy {
   private readonly store = new BehaviorSubject<IIdentificationState>(_state);
   readonly state$ = this.store.asObservable();
-  readonly childTree$ = this.state$.pipe(map((state) => state.childTree), distinctUntilChanged());
+  readonly childDataSource$ = this.state$.pipe(map((state) => state.childDataSource), distinctUntilChanged());
+  readonly totalChildren$ = this.state$.pipe(map((state) => state.totalChildren), distinctUntilChanged());
 
   private unsubscribe$ = new Subject<void>();
 
-  constructor(private taxonomyApi: TaxonomyApi, private translate: TranslateService) {
+  constructor(private taxonApi: TaxonomyApi, private translate: TranslateService) {}
 
-  }
-
-  childTreeReducer(childTree: Taxonomy[]) {
+  reducer(newState: IIdentificationState) {
     this.store.next({
-      childTree
+      ...this.store.getValue(),
+      ...newState
     });
   }
 
-  loadChildTree(root: Taxonomy) {
-    this.unsubscribe$.next();
-    this.childTreeReducer([]);
+  loadChildDataSource(root: Taxonomy) {
+    this.childDataSource$.pipe(takeUntil(this.unsubscribe$)).subscribe(d => {
+      if (d) {
+        d.disconnect();
+      }
+    });
+
     if (root.species || root.taxonRank === 'MX.species') {
       return;
     }
+
     const [rank1, rank2] = getSubMainRanks(<Taxon.TaxonRankEnum>root.taxonRank);
-    this.taxonomyApi.taxonomyList(
+
+    this.taxonApi.taxonomyList(
       this.translate.currentLang,
       {
         parentTaxonId: root.id,
@@ -83,26 +92,10 @@ export class TaxonIdentificationFacade implements OnDestroy {
         includeMedia: true
       }
     ).pipe(
-      switchMap(res => from(res.results)),
-      concatMap(
-        taxon => this.taxonomyApi.taxonomyList(
-          this.translate.currentLang,
-          {
-            parentTaxonId: taxon.id,
-            taxonRanks: rank2,
-            sortOrder: 'observationCountFinland DESC',
-            selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
-            includeMedia: true
-          }
-        ).pipe(
-          map(taxa => (<Taxonomy>{
-            ...taxon, children: taxa.results
-          }))
-        )
-      ),
       takeUntil(this.unsubscribe$),
-      scan((acc, val) => acc.concat(val), [] as Taxonomy[])
-    ).subscribe(this.childTreeReducer.bind(this));
+      tap(res => this.reducer({totalChildren: res.total})),
+      map(res => new IdentificationChildrenDataSource(this.taxonApi, this.translate, res.results, rank2))
+    ).subscribe(d => this.reducer({childDataSource: d}));
   }
 
   ngOnDestroy() {
