@@ -7,6 +7,8 @@ import { DOCUMENT } from '@angular/common';
 import { ListRange, CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
 
+const INFINITE_SCROLL_DISTANCE = 300;
+
 @Component({
   selector: 'laji-taxon-identification',
   templateUrl: './taxon-identification.component.html',
@@ -41,7 +43,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   private collectionViewer: CollectionViewer = {
     viewChange: this.infiniteScrollStatusCheck$.pipe(
-      filter(() => this.isInViewport(this.loadMoreElem.nativeElement)),
+      filter(() => this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
       map(() => {
         return <ListRange>{
           start: 0,
@@ -101,6 +103,14 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
         rect.left >= 0 &&
         rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
         rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
+    );
+  }
+
+  isWithinXPixelsOfViewport(element: Element, px: number) {
+    const rect = element.getBoundingClientRect();
+    return (
+      this.window.innerHeight - rect.y > -1 * px
+      || this.document.documentElement.clientHeight - rect.y > -1 * px
     );
   }
 }
