@@ -10,6 +10,12 @@ import { MultiSelectComponent } from './component/multi-select/multi-select.comp
 import {FiltersComponent} from './component/filters/filters.component';
 import {RedListClassFilterComponent} from './component/filters/red-list-class-filter/red-list-class-filter.component';
 import {LajiUiModule} from '../../../../laji-ui/src/lib/laji-ui.module';
+import { SpeciesTableComponent } from './component/species-table/species-table.component';
+import { SelectFieldsModule } from '../../../../laji/src/app/shared-modules/select-fields/select-fields.module';
+import { DownloadModule } from '../../../../laji/src/app/shared-modules/download/download.module';
+import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
+import { RedListSpeciesComponent } from '../iucn-shared/component/species-table/red-list-species/red-list-species.component';
+import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 
 @NgModule({
   imports: [
@@ -17,7 +23,11 @@ import {LajiUiModule} from '../../../../laji-ui/src/lib/laji-ui.module';
     CommonModule,
     TaxonSelectModule,
     PillListModule,
-    LajiUiModule
+    LajiUiModule,
+    SelectFieldsModule,
+    DownloadModule,
+    DatatableModule,
+    IucnCommonModule
   ],
   declarations: [
     SimpleOmniComponent,
@@ -25,14 +35,17 @@ import {LajiUiModule} from '../../../../laji-ui/src/lib/laji-ui.module';
     ActiveFiltersComponent,
     MultiSelectComponent,
     FiltersComponent,
-    RedListClassFilterComponent
+    RedListClassFilterComponent,
+    SpeciesTableComponent,
+    RedListSpeciesComponent
   ],
   exports: [
     SimpleOmniComponent,
     SelectComponent,
     ActiveFiltersComponent,
     MultiSelectComponent,
-    FiltersComponent
+    FiltersComponent,
+    SpeciesTableComponent
   ]
 })
 export class IucnSharedModule { }

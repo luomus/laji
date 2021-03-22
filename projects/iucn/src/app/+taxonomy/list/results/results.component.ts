@@ -12,13 +12,13 @@ import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/s
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
-import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download/download.component';
+import { Params } from '@angular/router';
 
 @Component({
   selector: 'laji-results',
@@ -57,6 +57,8 @@ export class ResultsComponent implements OnChanges {
   speciesPage = 1;
   speciesCount = 0;
 
+  taxonLinkQueryParams: Params = {};
+
   defaultSpeciesFields = [
     {label: 'iucn.results.column.species', key: 'species'},
     {label: 'iucn.results.column.status', key: 'status'},
@@ -64,7 +66,6 @@ export class ResultsComponent implements OnChanges {
     {label: 'iucn.results.column.reasons', key: 'reasons'},
     {label: 'iucn.results.tab.threats', key: 'threats'},
   ];
-  selectedSpeciesFields;
   speciesAllFields = [
     {label: 'iucn.results.column.species', key: 'species'},
     {label: 'iucn.results.column.status', key: 'status'},
@@ -163,22 +164,23 @@ export class ResultsComponent implements OnChanges {
       hasLatestRedListEvaluation: true,
       includeHidden: true
     });
-    if (this.query.speciesFields) {
-      this.selectedSpeciesFields = this.query.speciesFields.split(',').map(field => {
-        const idx = this.speciesAllFields.findIndex(item => item.key === field);
-        return this.speciesAllFields[idx];
-      }).filter(item => !!item);
+
+    for (const array of [this.defaultSpeciesFields, this.speciesAllFields]) {
+      const statusIdx = array.findIndex(item => item.key === 'status');
+      if (statusIdx !== -1) {
+        array[statusIdx] = {
+          ...array[statusIdx],
+          label: 'iucn.results.column.class' + this.resultService.getYearFromChecklistVersion(this.checklist)
+        };
+      }
     }
-    if (!this.selectedSpeciesFields || this.selectedSpeciesFields.length === 0) {
-      this.selectedSpeciesFields = [...this.defaultSpeciesFields];
-    }
-    const statusIdx = this.selectedSpeciesFields.findIndex(item => item.key === 'status');
-    if (statusIdx !== -1) {
-      this.selectedSpeciesFields[statusIdx] = {
-        ...this.selectedSpeciesFields[statusIdx],
-        label: 'iucn.results.column.class' + this.resultService.getYearFromChecklistVersion(this.checklist)
-      };
-    }
+    this.defaultSpeciesFields = [...this.defaultSpeciesFields];
+    this.speciesAllFields = [...this.speciesAllFields];
+
+    this.taxonLinkQueryParams = {
+      'year': this.resultService.getYearFromChecklistVersion(this.checklist)
+    };
+
     this.initStatusQuery();
     this.initSpeciesListQuery();
     this.initThreads();
@@ -538,25 +540,25 @@ export class ResultsComponent implements OnChanges {
     });
   }
 
-  changeSpeciesPage(event: IPageChange) {
+  changeSpeciesPage(page: number) {
     this.queryChange.emit({
       ...this.query,
-      page: '' + event.page
+      page: '' + page
     });
   }
 
-  newFields(event: ISelectFields[]) {
+  newFields(fields: ISelectFields[]) {
     this.queryChange.emit({
       ...this.query,
-      speciesFields: (event || []).map(e => e.key).join(',')
+      speciesFields: fields.map(e => e.key).join(',')
     });
   }
 
-  download(type: string) {
+  download(event: {type: string, fields: ISelectFields[]}) {
     this.downloadLoading = true;
     const columns: DatatableColumn[] = [this.taxonomyColumns.getColumn('id')];
 
-    this.selectedSpeciesFields.forEach(field => {
+    event.fields.forEach(field => {
       const key = this.exportKeyMap[field.key] || field.key;
       const label = field.label;
 
@@ -570,7 +572,7 @@ export class ResultsComponent implements OnChanges {
     const criteria = document.getElementById('enabled-filters');
     const first = criteria ? [criteria.innerText] : undefined;
     this.getAllSpecies().pipe(
-      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, type, first))
+      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, event.type, first))
     ).subscribe(() => {
       this.downloadLoading = false;
       this.speciesDownload.closeModal();

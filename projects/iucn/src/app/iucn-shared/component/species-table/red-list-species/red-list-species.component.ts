@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Params } from '@angular/router';
 import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { ResultService } from '../../../../iucn-shared/service/result.service';
 
 @Component({
   selector: 'laji-red-list-species',
@@ -10,22 +10,12 @@ import { ResultService } from '../../../../iucn-shared/service/result.service';
 })
 export class RedListSpeciesComponent {
 
-  private _checklist: string;
-
-  year: string;
   @Input() species = [];
   @Input() fields: ISelectFields[] = [];
+  @Input() showTaxonLink = true;
+  @Input() taxonLinkQueryParams: Params = {};
 
-  constructor(private resultService: ResultService) { }
-
-  @Input() set checklist(val) {
-    this._checklist = val;
-    this.year = this.resultService.getYearFromChecklistVersion(val);
-  }
-
-  get checklist() {
-    return this._checklist;
-  }
+  constructor() { }
 
   trackBySpeciesId(index, species) {
     return species.id || index;
