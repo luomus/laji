@@ -76,7 +76,7 @@ export class TaxonService {
       map<RedListTaxonGroup[], {groups: string[], aggregateBy: string[], hasKeys: boolean, isRoot?: boolean}>(tree => {
         if (!query[groupField]) {
           return {
-            groups: rootGroupIds,
+            groups: rootGroupIds ? rootGroupIds : tree.map(v => v.id),
             aggregateBy: [statusField, groupField],
             hasKeys: true,
             isRoot: true
