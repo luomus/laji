@@ -1,7 +1,7 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Observable, of, Subject, forkJoin } from 'rxjs';
-import { switchMap, takeUntil, tap, map, concatMap } from 'rxjs/operators';
+import { takeUntil, tap, map, concatMap } from 'rxjs/operators';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
