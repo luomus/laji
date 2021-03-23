@@ -1,6 +1,6 @@
-import {Component, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter} from '@angular/core';
-import {of as ObservableOf, Observable} from 'rxjs';
-import {tap, map} from 'rxjs/operators';
+import {Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter} from '@angular/core';
+import {of, Observable} from 'rxjs';
+import {tap, map, switchMap} from 'rxjs/operators';
 import {Util} from '../../../../../../laji/src/app/shared/service/util.service';
 import {RegionalFilterQuery, RegionalService} from '../../../iucn-shared/service/regional.service';
 import {RegionalListType} from '../regional.component';
@@ -9,6 +9,9 @@ import {TranslateService} from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
+import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
+import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 
 @Component({
   selector: 'laji-regional-results',
@@ -47,11 +50,31 @@ export class RegionalResultsComponent implements OnChanges {
   ];
   selectedSpeciesFields: string[];
 
+  exportKeyMap = {
+    'species': 'taxonName',
+    'status': 'latestRedListEvaluation.redListStatus',
+    'habitat': 'latestRedListEvaluationHabitats',
+    '2015': 'redListStatus2015',
+    '2010': 'redListStatus2010'
+  };
+  exportTemplates = {
+    'taxonName': 'taxonName',
+    'latestRedListEvaluation.redListStatus': 'label',
+    'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
+    'redListStatus2015': 'redListStatus2015',
+    'redListStatus2010': 'redListStatus2010'
+  };
+
+  downloadLoading = false;
+
   constructor(
     private translate: TranslateService,
     private taxonService: TaxonService,
     private resultService: RegionalService,
-    private taxonApi: TaxonomyApi
+    private taxonApi: TaxonomyApi,
+    private taxonomyColumns: TaxonomyColumns,
+    private taxonExportService: TaxonExportService,
+    private cdr: ChangeDetectorRef
   ) { 
     for (const area of this.resultService.areas) {
       this.defaultSpeciesFields.push({
@@ -88,6 +111,31 @@ export class RegionalResultsComponent implements OnChanges {
     );
   }
 
+  download(event: {type: string, fields: ISelectFields[]}) {
+    this.downloadLoading = true;
+    const columns: DatatableColumn[] = [];
+
+    event.fields.forEach(field => {
+      const key = this.exportKeyMap[field.key] || field.key;
+      const label = field.label;
+
+      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
+        name: key,
+        cellTemplate: this.exportTemplates[key],
+        label: label
+      });
+    });
+
+    const criteria = document.getElementById('enabled-filters');
+    const first = criteria ? [criteria.innerText] : undefined;
+    this.getAllSpecies().pipe(
+      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, event.type, first))
+    ).subscribe(() => {
+      this.downloadLoading = false;
+      this.cdr.markForCheck();
+    });
+  }
+
   private initQueries() {
     this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
@@ -117,7 +165,7 @@ export class RegionalResultsComponent implements OnChanges {
 
     const currentQuery = JSON.stringify(query);
     this.redListStatusQuery$ = this.hasCache(cacheKey, currentQuery) ?
-      ObservableOf(this.cache[cacheKey]) :
+      of(this.cache[cacheKey]) :
       this.taxonService.getRedListStatusQuery(query, lang, statusField, this.resultService.rootGroups).pipe(
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
@@ -153,7 +201,7 @@ export class RegionalResultsComponent implements OnChanges {
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
-      ObservableOf(this.cache[cacheKey]) :
+      of(this.cache[cacheKey]) :
       this.taxonApi.species(query, this.translate.currentLang, this.query.page || '1', '' + this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
@@ -162,6 +210,20 @@ export class RegionalResultsComponent implements OnChanges {
         map(data => data.results),
         tap(data => this.setCache(cacheKey, data, currentQuery))
       );
+  }
+
+  private getAllSpecies(data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<Taxonomy[]> {
+    const query = this.getSpeciesQuery(page);
+    return this.taxonApi.species(query, this.translate.currentLang, page, pageSize).pipe(
+      switchMap(result => {
+        data.push(...result.results);
+        if (result.lastPage > result.currentPage) {
+          return this.getAllSpecies(data, '' + (result.currentPage + 1));
+        } else {
+          return of(data);
+        }
+      })
+    );
   }
 
   private setCache(key: string, data: any, query: string) {

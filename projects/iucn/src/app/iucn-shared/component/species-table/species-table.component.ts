@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IPageChange } from '../../../../../../laji/src/app/shared-modules/datatable/data-table-footer/data-table-footer.component';
 import { Params } from '@angular/router';
+import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download/download.component';
 
 @Component({
   selector: 'laji-species-table',
@@ -11,6 +12,8 @@ import { Params } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTableComponent implements OnChanges {
+  @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
+
   @Input() species: Taxonomy[];
 
   @Input() defaultFields: ISelectFields[] = [];
@@ -33,7 +36,10 @@ export class SpeciesTableComponent implements OnChanges {
 
   constructor() { }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.downloadLoading?.previousValue && !this.downloadLoading) {
+      this.speciesDownload.closeModal();
+    }
     this.updateSelectedFields();
   }
 

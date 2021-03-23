@@ -12,8 +12,10 @@
       [speciesPage]="speciesPage"
       [speciesCount]="speciesCount"
       [showTaxonLink]="false"
+      [downloadLoading]="downloadLoading"
       (pageChange)="changeSpeciesPage($event)"
       (fieldsChange)="newFields($event)"
+      (download)="download($event)"
     ></laji-species-table>
   </ng-container>
 </ng-container>

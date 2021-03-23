@@ -17,7 +17,6 @@ import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/sel
 import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download/download.component';
 import { Params } from '@angular/router';
 
 @Component({
@@ -27,10 +26,6 @@ import { Params } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsComponent implements OnChanges {
-
-
-  @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
-
   @Input() type: ListType;
   @Input() query: FilterQuery;
   @Input() checklist: string;
@@ -577,7 +572,6 @@ export class ResultsComponent implements OnChanges {
       switchMap(data => this.taxonExportService.downloadTaxons(columns, data, event.type, first))
     ).subscribe(() => {
       this.downloadLoading = false;
-      this.speciesDownload.closeModal();
       this.cdr.markForCheck();
     });
   }
