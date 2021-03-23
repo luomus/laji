@@ -40,6 +40,11 @@
                 {{ taxon.id }}
               </ng-template>
             </th>
+            <td *ngSwitchCase="'informalTaxonGroup'">
+              <ng-container *ngIf="taxon.informalTaxonGroups">
+                {{ taxon.informalTaxonGroups[taxon.informalTaxonGroups.length - 1] | label }}
+              </ng-container>
+            </td>
             <td *ngSwitchCase="'status'">
               {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}<laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
             </td>

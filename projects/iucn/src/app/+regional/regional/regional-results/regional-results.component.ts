@@ -41,6 +41,7 @@ export class RegionalResultsComponent implements OnChanges {
     {label: 'iucn.results.column.id', key: 'id'},
     {label: 'result.scientificName', key: 'scientificName'},
     {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
+    {label: 'iucn.results.column.informalTaxonGroup', key: 'informalTaxonGroup'},
     {label: 'iucn.results.column.class2019', key: 'status'},
     {label: 'iucn.results.column.habitat', key: 'habitat'}
   ];
@@ -129,6 +130,7 @@ export class RegionalResultsComponent implements OnChanges {
       'vernacularName.' + this.translate.currentLang,
       'cursiveName',
       'latestRedListEvaluation.threatenedAtArea',
+      'informalTaxonGroups',
       'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.primaryHabitat.habitat',
       'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
