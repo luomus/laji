@@ -317,7 +317,7 @@ export class MappingService {
   }
 
   mapDateOptionalTime(value: unknown): string {
-    if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]?[0-9-.:+Z]*$/)) {
+    if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]*[0-9-.:+Z]*$/)) {
       const parts = value.split(/[\s,T]+/);
       const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
