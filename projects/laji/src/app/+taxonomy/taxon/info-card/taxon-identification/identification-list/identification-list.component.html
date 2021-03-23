@@ -11,7 +11,7 @@
   <div class="d-flex species-container" #speciesContainer>
     <div *ngFor="let child of taxon.children; index as i" class="species d-flex flex-col mr-4">
       <h5>
-        <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
+        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
       </h5>
       <div class="species-img-container flex-grow">
         <ng-container *ngIf="child.multimedia?.length > 0">
