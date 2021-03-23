@@ -32,6 +32,14 @@
                 {{ taxon.vernacularName }}
               </ng-template>
             </th>
+            <th *ngSwitchCase="'id'">
+              <a [routerLink]="[taxon.id]" [queryParams]="taxonLinkQueryParams" *ngIf="showTaxonLink else id">
+                <ng-container *ngTemplateOutlet="id"></ng-container>
+              </a>
+              <ng-template #id>
+                {{ taxon.id }}
+              </ng-template>
+            </th>
             <td *ngSwitchCase="'status'">
               {{ taxon.latestRedListEvaluation?.redListStatus | label | iucnStatus:true }}<laji-status-mark [evaluation]="taxon.latestRedListEvaluation"></laji-status-mark>
             </td>
@@ -69,6 +77,11 @@
                     {{ status.status | label | iucnStatus:true }}
                   </ng-container>
                 </ng-container>
+              </ng-container>
+            </td>
+            <td *ngSwitchCase="field.key.startsWith('ML.') ? field.key : !field.key">
+              <ng-container *ngIf="taxon?.latestRedListEvaluation?.threatenedAtArea.includes(field.key)">
+                RT
               </ng-container>
             </td>
             <td *ngSwitchDefault>

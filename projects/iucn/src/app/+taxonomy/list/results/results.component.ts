@@ -79,6 +79,7 @@ export class ResultsComponent implements OnChanges {
     {label: 'iucn.results.column.class2015', key: '2015'},
     {label: 'iucn.results.column.class2010', key: '2010'}
   ];
+  selectedSpeciesFields: string[];
   labels = {
     'redListStatusesInFinland': 'iucn.results.redListStatusesInFinland',
     'latestRedListEvaluation.redListStatus': 'iucn.results.column.status',
@@ -176,6 +177,7 @@ export class ResultsComponent implements OnChanges {
     }
     this.defaultSpeciesFields = [...this.defaultSpeciesFields];
     this.speciesAllFields = [...this.speciesAllFields];
+    this.selectedSpeciesFields = this.query.speciesFields?.split(',');
 
     this.taxonLinkQueryParams = {
       'year': this.resultService.getYearFromChecklistVersion(this.checklist)
