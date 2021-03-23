@@ -12,6 +12,7 @@
       [speciesPage]="speciesPage"
       [speciesCount]="speciesCount"
       [showTaxonLink]="false"
+      (pageChange)="changeSpeciesPage($event)"
       (fieldsChange)="newFields($event)"
     ></laji-species-table>
   </ng-container>

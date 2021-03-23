@@ -80,6 +80,13 @@ export class RegionalResultsComponent implements OnChanges {
     );
   }
 
+  changeSpeciesPage(page: number) {
+    this.changeQuery(
+      'page',
+      '' + page
+    );
+  }
+
   private initQueries() {
     this.baseQuery = Util.removeFromObject({
       checklistVersion: this.checklist,
