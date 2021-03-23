@@ -331,14 +331,13 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
       this.unitOrImgExists = this.document.gatherings?.some(({units}) =>
         (units || []).some(unit =>
-          this.identifying
-            ? (unit.media || []).some(image => image.fullURL === this.highlight)
-            : unit.unitId === this.highlight
+          unit.unitId === this.highlight || (unit.media || []).some(media => media.fullURL === this.highlight)
         )
       );
 
+
       if (this.result) {
-        this.indexPagination = this.setIndexPagination();
+        this.indexPagination = this.getIndexPagination();
       }
 
       if (this.interval) {
@@ -368,12 +367,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.move();
   }
 
-  setIndexPagination() {
-    if (!this.identifying) {
-      return this.result.findIndex(i => (i.unit.unitId === this.highlight));
-    } else {
-      return this.result.findIndex(i => (i.fullURL === this.highlight));
-    }
+  getIndexPagination() {
+    return this.result.findIndex(i => (i.fullURL === this.highlight || i.unit?.unitId === this.highlight));
   }
 
   closeDocument() {
@@ -435,8 +430,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   private move() {
     this.document = this.result[this.indexPagination].document;
-    this.uri = this.identifying ? this.result[this.indexPagination].documentId : this.result[this.indexPagination].document?.documentId;
-    this.highlight = this.identifying ? this.result[this.indexPagination].fullURL : this.result[this.indexPagination].unit?.unitId;
+    this.result.findIndex(i => (i.fullURL === this.highlight || i.unit?.unitId === this.highlight));
+    this.uri = (this.result[this.indexPagination].documentId || this.result[this.indexPagination].document?.documentId);
+    this.highlight = (this.result[this.indexPagination].fullURL || this.result[this.indexPagination].unit?.unitId);
     this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();

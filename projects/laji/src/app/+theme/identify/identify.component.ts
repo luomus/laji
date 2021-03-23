@@ -53,7 +53,7 @@ export class IdentifyComponent implements OnInit {
     });
   }
 
-  getResultDataIdentify(e) {
+  onImagesInit(e) {
     this.totalItemsIdentify = e;
   }
 
