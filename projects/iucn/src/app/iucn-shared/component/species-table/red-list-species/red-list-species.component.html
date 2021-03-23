@@ -89,6 +89,15 @@
                 RT
               </ng-container>
             </td>
+            <td *ngSwitchCase="field.key.startsWith('occurrence_') ? field.key : !field.key">
+              <ng-container *ngIf="taxon.latestRedListEvaluation?.occurrences">
+                <ng-container *ngFor="let occurrence of taxon.latestRedListEvaluation.occurrences">
+                  <ng-container *ngIf="occurrence.area === field.key.split('_')[1]">
+                    {{ occurrence.status | label }}
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </td>
             <td *ngSwitchDefault>
               No column found for "{{ field.key }}"
             </td>

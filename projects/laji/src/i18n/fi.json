@@ -485,6 +485,7 @@
   "iucn.results.column.vernacularName": "Kansankielinen nimi",
   "iucn.results.column.id": "Tunniste",
   "iucn.results.column.informalTaxonGroup": "Eliöryhmä",
+  "iucn.results.column.occurrence": "Esiintyminen",
   "iucn.results.endangered": "Uhanalaisten lajien osuus arvioiduista",
   "iucn.results.endangeredSpecies": "Uhanalaisia lajeja",
   "iucn.results.evaluated": "Arvioidut",

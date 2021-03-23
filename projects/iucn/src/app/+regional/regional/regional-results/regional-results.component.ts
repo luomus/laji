@@ -84,6 +84,12 @@ export class RegionalResultsComponent implements OnChanges {
         label: this.resultService.shortLabel[area], key: area
       });
     }
+    for (const area of this.resultService.areas) {
+      this.speciesAllFields.push({
+        label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
+        key: 'occurrence_' + area
+      });
+    }
   }
 
   ngOnChanges() {
@@ -183,7 +189,8 @@ export class RegionalResultsComponent implements OnChanges {
       'latestRedListEvaluation.primaryHabitat.habitat',
       'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
       'latestRedListEvaluation.secondaryHabitats.habitat',
-      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes'
+      'latestRedListEvaluation.secondaryHabitats.habitatSpecificTypes',
+      'latestRedListEvaluation.occurrences'
     ];
   }
 
