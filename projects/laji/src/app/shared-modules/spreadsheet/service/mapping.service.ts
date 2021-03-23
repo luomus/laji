@@ -402,7 +402,7 @@ export class MappingService {
     return targetValue;
   }
 
-  private matchTime(test: Date, hour: number, minutes: number, seconds): boolean {
+  private matchTime(test: Date, hour: number, minutes: number, seconds: number): boolean {
     return test.getHours() === hour && test.getMinutes() === minutes && test.getSeconds() === seconds;
   }
 
