@@ -1,27 +1,27 @@
-<laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-  <div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
-    <div *ngFor="let media of taxon.multimedia">
-      <img lajiLazyImage [src]="media.largeURL">
-    </div>
+<div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
+  <div *ngFor="let media of taxon.multimedia">
+    <img lajiLazyImage [src]="media.largeURL">
   </div>
-</laji-spinner>
+</div>
 
 <ng-template #parent>
-  <div class="mb-7" *ngFor="let child of children">
-    <h3 class="child-name">
-      <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="child"></laji-taxon-name></a>
-    </h3>
-    <h4 class="child-info">
-      {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} -  {{ child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
-    </h4>
-    <laji-identification-list
-      [taxon]="child"
-    ></laji-identification-list>
-  </div>
-  <div #loadMore></div>
-  <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
-    <div class="bounce1"></div>
-    <div class="bounce2"></div>
-    <div class="bounce3"></div>
-  </div>
+  <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
+    <div class="mb-7" *ngFor="let child of children">
+      <h3 class="child-name">
+        <a [routerLink]="['/taxon', child.id, 'identification'] | localize"><laji-taxon-name [addLink]="false" [taxon]="child"></laji-taxon-name></a>
+      </h3>
+      <h4 class="child-info">
+        {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} -  {{ child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
+      </h4>
+      <laji-identification-list
+        [taxon]="child"
+      ></laji-identification-list>
+    </div>
+    <div #loadMore></div>
+    <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </laji-spinner>
 </ng-template>
