@@ -60,6 +60,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   private lajiFormWrapper: any;
   private lajiFormWrapperProto: any;
+  private lajiFormBs3Theme: any;
   private _block = false;
   private settings: any;
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
@@ -124,30 +125,31 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   popErrorListIfNeeded() {
-    this.lajiFormWrapper.app.refs.lajiform.popErrorListIfNeeded();
+    this.lajiFormWrapper.lajiform.popErrorListIfNeeded();
   }
 
   private mount() {
     if (!this.formData?.formData) {
       return;
     }
-    import('laji-form').then((formPackage) => {
+    combineLatest(
+      import('laji-form'),
+      import('laji-form/lib/themes/bs3'),
+      this.userService.getUserSetting<any>(this.settingsKey).pipe(
+        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+          map(globalSettings => ({...globalSettings, ...settings}))
+        )),
+        take(1)
+      ),
+      this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
+        map(profile => profile.settings?.defaultMediaMetadata)
+      )
+    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
       this.lajiFormWrapperProto = formPackage.default;
-      combineLatest(
-        this.userService.getUserSetting<any>(this.settingsKey).pipe(
-          concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-            map(globalSettings => ({...globalSettings, ...settings}))
-          )),
-          take(1)
-        ),
-        this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
-          map(profile => profile.settings?.defaultMediaMetadata)
-        )
-      ).subscribe(([settings, defaultMediaMetadata]) => {
-        this.defaultMediaMetadata = defaultMediaMetadata;
-        this.settings = settings;
-        this.mountLajiForm();
-      });
+      this.lajiFormBs3Theme = formBs3ThemePackage.default;
+      this.defaultMediaMetadata = defaultMediaMetadata;
+      this.settings = settings;
+      this.mountLajiForm();
     });
   }
 
@@ -177,6 +179,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         this.lajiFormWrapper = new this.lajiFormWrapperProto({
           staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
+          theme: this.lajiFormBs3Theme,
           schema: this.formData.schema,
           uiSchema: this.formData.uiSchema,
           uiSchemaContext: this.formData.uiSchemaContext,
