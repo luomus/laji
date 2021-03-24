@@ -32,6 +32,7 @@ export class ResultsComponent implements OnChanges {
   @Output() queryChange = new EventEmitter<FilterQuery>();
 
   lang: string;
+  year: string;
   redListStatusQuery$: Observable<RedListStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
   threadQuery$: Observable<ChartData[]>;
@@ -134,6 +135,7 @@ export class ResultsComponent implements OnChanges {
       this.lang = this.translate.currentLang;
       this.init = true;
     }
+    this.year = this.resultService.getYearFromChecklistVersion(this.checklist);
     this.initQueries();
   }
 
@@ -161,21 +163,9 @@ export class ResultsComponent implements OnChanges {
       includeHidden: true
     });
 
-    for (const array of [this.defaultSpeciesFields, this.speciesAllFields]) {
-      const statusIdx = array.findIndex(item => item.key === 'status');
-      if (statusIdx !== -1) {
-        array[statusIdx] = {
-          ...array[statusIdx],
-          label: 'iucn.results.column.class' + this.resultService.getYearFromChecklistVersion(this.checklist)
-        };
-      }
-    }
-    this.defaultSpeciesFields = [...this.defaultSpeciesFields];
-    this.speciesAllFields = [...this.speciesAllFields];
     this.selectedSpeciesFields = this.query.speciesFields?.split(',');
-
     this.taxonLinkQueryParams = {
-      'year': this.resultService.getYearFromChecklistVersion(this.checklist)
+      'year': this.year
     };
 
     this.initStatusQuery();

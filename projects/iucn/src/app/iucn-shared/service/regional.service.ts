@@ -52,11 +52,27 @@ export class RegionalService {
     '2020': 'MR.484'
   };
 
+  private yearToStatusEvaluationYear = {
+    '2020': '2019'
+  };
+
   constructor(
 
   ) { }
 
   getChecklistVersion(year: string): string {
     return this.yearToChecklistVersion[year];
+  }
+
+  getYearFromChecklistVersion(checklistVersion: string): string {
+    if (!checklistVersion) {
+      return REGIONAL_DEFAULT_YEAR;
+    }
+
+    return Object.keys(this.yearToChecklistVersion).find(key => this.yearToChecklistVersion[key] === checklistVersion);
+  }
+
+  getStatusEvaluotionYearFromChecklistVersion(checklistVersion: string): string {
+    return this.yearToStatusEvaluationYear[this.getYearFromChecklistVersion(checklistVersion)];
   }
 }

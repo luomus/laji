@@ -28,6 +28,8 @@ export class SpeciesTableComponent implements OnChanges {
   @Input() speciesPage = 1;
   @Input() speciesCount = 0;
 
+  @Input() year: string;
+
   selectedFields: ISelectFields[];
 
   @Output() pageChange = new EventEmitter<number>();
@@ -40,6 +42,7 @@ export class SpeciesTableComponent implements OnChanges {
     if (changes.downloadLoading?.previousValue && !this.downloadLoading) {
       this.speciesDownload.closeModal();
     }
+    this.setStatusYear();
     this.updateSelectedFields();
   }
 
@@ -54,6 +57,18 @@ export class SpeciesTableComponent implements OnChanges {
 
   onDownload(type: string) {
     this.download.emit({type, fields: this.selectedFields});
+  }
+
+  private setStatusYear() {
+    for (const array of [this.defaultFields, this.allFields]) {
+      const statusIdx = array.findIndex(item => item.key === 'status');
+      if (statusIdx !== -1) {
+        array[statusIdx] = {
+          ...array[statusIdx],
+          label: 'iucn.results.column.class' + this.year
+        };
+      }
+    }
   }
 
   private updateSelectedFields() {

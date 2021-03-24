@@ -26,6 +26,8 @@ export class RegionalResultsComponent implements OnChanges {
 
   @Output() queryChange = new EventEmitter<RegionalFilterQuery>();
 
+  statusEvaluationYear: string;
+
   cache: any = {};
   baseQuery = {};
 
@@ -45,8 +47,10 @@ export class RegionalResultsComponent implements OnChanges {
     {label: 'result.scientificName', key: 'scientificName'},
     {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
     {label: 'iucn.results.column.informalTaxonGroup', key: 'informalTaxonGroup'},
-    {label: 'iucn.results.column.class2019', key: 'status'},
-    {label: 'iucn.results.column.habitat', key: 'habitat'}
+    {label: 'iucn.results.column.habitat', key: 'habitat'},
+    {label: 'iucn.results.column.status', key: 'status'},
+    {label: 'iucn.results.column.class2015', key: '2015'},
+    {label: 'iucn.results.column.class2010', key: '2010'},
   ];
   selectedSpeciesFields: string[];
 
@@ -75,24 +79,28 @@ export class RegionalResultsComponent implements OnChanges {
     private taxonomyColumns: TaxonomyColumns,
     private taxonExportService: TaxonExportService,
     private cdr: ChangeDetectorRef
-  ) { 
+  ) {
+    const areaFields = [];
+    const occurrenceFields = [];
     for (const area of this.resultService.areas) {
-      this.defaultSpeciesFields.push({
-        label: this.resultService.shortLabel[area], key: area
-      });
-      this.speciesAllFields.push({
+      areaFields.push({
         label: this.resultService.shortLabel[area], key: area
       });
     }
     for (const area of this.resultService.areas) {
-      this.speciesAllFields.push({
+      occurrenceFields.push({
         label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
         key: 'occurrence_' + area
       });
     }
+
+    this.defaultSpeciesFields.splice(1, 0, ...areaFields);
+    this.speciesAllFields.splice(1, 0, ...areaFields);
+    this.speciesAllFields = this.speciesAllFields.concat(occurrenceFields);
   }
 
   ngOnChanges() {
+    this.statusEvaluationYear = this.resultService.getStatusEvaluotionYearFromChecklistVersion(this.checklist);
     this.initQueries();
   }
 
@@ -183,6 +191,7 @@ export class RegionalResultsComponent implements OnChanges {
       'scientificName',
       'vernacularName.' + this.translate.currentLang,
       'cursiveName',
+      'redListStatusesInFinland',
       'latestRedListEvaluation.threatenedAtArea',
       'informalTaxonGroups',
       'latestRedListEvaluation.redListStatus',
