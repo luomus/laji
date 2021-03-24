@@ -2,7 +2,7 @@
   {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
   {{ audio.municipality }}
 </span>
-<lu-button (click)="openModal()" [small]="true"><i class="fa fa-map-marker"></i></lu-button>
+<lu-button *ngIf="audio.geometry" (click)="openModal()" [small]="true"><i class="fa fa-map-marker"></i></lu-button>
 <laji-info [html]="'theme.kerttu.info.audioInfo' | translate"></laji-info>
 
 <ng-template #mapModal>
