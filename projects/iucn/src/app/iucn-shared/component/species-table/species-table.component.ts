@@ -51,8 +51,10 @@ export class SpeciesTableComponent implements OnChanges {
     this.pageChange.emit(event.page);
   }
 
-  newFields(event: ISelectFields[]) {
-    this.fieldsChange.emit(event || []);
+  newFields(field: ISelectFields[]) {
+    if (field) {
+      this.fieldsChange.emit(field);
+    }
   }
 
   onDownload(type: string) {
