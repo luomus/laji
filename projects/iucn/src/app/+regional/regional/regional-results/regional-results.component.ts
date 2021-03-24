@@ -7,7 +7,6 @@ import {RegionalListType} from '../regional.component';
 import {TaxonService} from '../../../iucn-shared/service/taxon.service';
 import {TranslateService} from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
-import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
@@ -59,7 +58,6 @@ export class RegionalResultsComponent implements OnChanges {
     private translate: TranslateService,
     private taxonService: TaxonService,
     private resultService: RegionalService,
-    private taxonApi: TaxonomyApi,
     private taxonExportService: IucnTaxonExportService,
     private cdr: ChangeDetectorRef
   ) {
@@ -156,22 +154,22 @@ export class RegionalResultsComponent implements OnChanges {
     ];
   }
 
-  private getSpeciesQuery(page = '1') {
+  private getSpeciesQuery() {
     return {
       ...this.baseQuery,
-      page: page,
+      page: this.query.page || '1',
       selectedFields: this.getSpeciesFields().join(',')
     };
   }
 
   private initSpeciesListQuery(): void  {
     const cacheKey = 'species';
-    const query = this.getSpeciesQuery(this.query.page || '1');
+    const query = this.getSpeciesQuery();
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
       of(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.translate.currentLang, this.query.page || '1', '' + this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(query, this.translate.currentLang, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
@@ -181,18 +179,9 @@ export class RegionalResultsComponent implements OnChanges {
       );
   }
 
-  private getAllSpecies(data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<Taxonomy[]> {
-    const query = this.getSpeciesQuery(page);
-    return this.taxonApi.species(query, this.translate.currentLang, page, pageSize).pipe(
-      switchMap(result => {
-        data.push(...result.results);
-        if (result.lastPage > result.currentPage) {
-          return this.getAllSpecies(data, '' + (result.currentPage + 1));
-        } else {
-          return of(data);
-        }
-      })
-    );
+  private getAllSpecies(): Observable<Taxonomy[]> {
+    const query = this.getSpeciesQuery();
+    return this.taxonService.getAllSpecies(query, this.translate.currentLang);
   }
 
   private setCache(key: string, data: any, query: string) {

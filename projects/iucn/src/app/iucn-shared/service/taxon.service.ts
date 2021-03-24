@@ -6,6 +6,7 @@ import {map, share, switchMap, tap} from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListTaxonGroupApi } from '../../../../../laji/src/app/shared/api/RedListTaxonGroupApi';
 import {Util} from '../../../../../laji/src/app/shared/service/util.service';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +131,23 @@ export class TaxonService {
           map(translations => data.map(a => ({...a, species: translations[a.species]})))
         ) : ObservableOf(data))
       )));
+  }
+
+  getSpeciesList(query: any, lang: string, pageSize = 100): Observable<PagedResult<Taxonomy>> {
+    return this.taxonApi.species(query, lang, query.page || '1', '' + pageSize);
+  }
+
+  getAllSpecies(query: any, lang: string, data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<any> {
+    return this.taxonApi.species(query, lang, page, pageSize).pipe(
+      switchMap(result => {
+        data.push(...result.results);
+        if (result.lastPage > result.currentPage) {
+          return this.getAllSpecies(query, lang, data, '' + (result.currentPage + 1));
+        } else {
+          return ObservableOf(data);
+        }
+      })
+    );
   }
 
   private findGroupFromTree(data: RedListTaxonGroup[], findID: string): RedListTaxonGroup|null {

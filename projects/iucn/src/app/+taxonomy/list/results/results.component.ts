@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
@@ -14,8 +14,6 @@ import { RedListHabitatData } from './red-list-habitat/red-list-habitat.componen
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
-import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
@@ -103,8 +101,7 @@ export class ResultsComponent implements OnChanges {
     private taxonService: TaxonService,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private taxonExportService: IucnTaxonExportService,
-    private taxonomyColumns: TaxonomyColumns,
+    private taxonExportService: IucnTaxonExportService
   ) {
     this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
       result[this.resultService.shortLabel[key]] = key;
@@ -416,22 +413,22 @@ export class ResultsComponent implements OnChanges {
     ];
   }
 
-  private getSpeciesQuery(page = '1') {
+  private getSpeciesQuery() {
     return {
       ...this.baseQuery,
-      page: page,
+      page: this.query.page || '1',
       selectedFields: this.getSpeciesFields().join(',')
     };
   }
 
   private initSpeciesListQuery(): void  {
     const cacheKey = 'species';
-    const query = this.getSpeciesQuery(this.query.page || '1');
+    const query = this.getSpeciesQuery();
 
     const currentQuery = JSON.stringify(query);
     this.speciesQuery$ = this.hasCache(cacheKey, currentQuery) ?
       ObservableOf(this.cache[cacheKey]) :
-      this.taxonApi.species(query, this.lang, this.query.page || '1', '' + this.speciesPageSize).pipe(
+      this.taxonService.getSpeciesList(query, this.lang, this.speciesPageSize).pipe(
         tap(data => {
           this.speciesPage = data.currentPage;
           this.speciesCount = data.total;
@@ -441,18 +438,9 @@ export class ResultsComponent implements OnChanges {
       );
   }
 
-  private getAllSpecies(data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<Taxonomy[]> {
-    const query = this.getSpeciesQuery(page);
-    return this.taxonApi.species(query, this.lang, page, pageSize).pipe(
-      switchMap(result => {
-        data.push(...result.results);
-        if (result.lastPage > result.currentPage) {
-          return this.getAllSpecies(data, '' + (result.currentPage + 1));
-        } else {
-          return of(data);
-        }
-      })
-    );
+  private getAllSpecies(): Observable<Taxonomy[]> {
+    const query = this.getSpeciesQuery();
+    return this.taxonService.getAllSpecies(query, this.lang);
   }
 
   private initStatusQuery() {
