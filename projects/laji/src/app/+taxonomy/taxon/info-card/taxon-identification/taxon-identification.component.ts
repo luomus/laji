@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, filter, startWith, } from 'rxjs/operators';
+import { map, switchMap, distinctUntilChanged, filter, startWith, takeUntil, take, } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { ListRange, CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -77,7 +77,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
         this.children = t;
         this.loading = false;
         this.cdr.markForCheck();
-        this.totalChildren$.subscribe(total => {
+        this.totalChildren$.pipe(take(1)).subscribe(total => {
           if (this.children.length < total) {
             setTimeout(() => this.triggerInfiniteScrollStatusCheck.next(), 0);
           }
