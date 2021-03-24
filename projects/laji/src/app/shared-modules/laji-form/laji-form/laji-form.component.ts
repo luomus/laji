@@ -24,6 +24,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { PersonApi } from '../../../shared/api/PersonApi';
 import { combineLatest } from 'rxjs';
 import { Profile } from '../../../shared/model/Profile';
+import LajiForm from 'laji-form/lib/index';
+import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -58,9 +60,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
 
-  private lajiFormWrapper: any;
+  private lajiFormWrapper: LajiForm;
   private lajiFormWrapperProto: any;
-  private lajiFormBs3Theme: any;
+  private lajiFormBs3Theme: LajiFormTheme;
   private _block = false;
   private settings: any;
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
@@ -125,7 +127,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   popErrorListIfNeeded() {
-    this.lajiFormWrapper.lajiform.popErrorListIfNeeded();
+    this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
   }
 
   private mount() {
