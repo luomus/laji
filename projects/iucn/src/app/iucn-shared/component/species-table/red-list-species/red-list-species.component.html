@@ -40,9 +40,9 @@
                 {{ taxon.id }}
               </ng-template>
             </th>
-            <td *ngSwitchCase="'informalTaxonGroup'">
-              <ng-container *ngIf="taxon.informalTaxonGroups">
-                {{ taxon.informalTaxonGroups[taxon.informalTaxonGroups.length - 1] | label }}
+            <td *ngSwitchCase="'redListGroup'">
+              <ng-container *ngIf="taxon.redListEvaluationGroups">
+                {{ taxon.redListEvaluationGroups[taxon.redListEvaluationGroups.length - 1] | label }}
               </ng-container>
             </td>
             <td *ngSwitchCase="'status'">

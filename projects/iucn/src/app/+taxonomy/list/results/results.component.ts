@@ -68,8 +68,10 @@ export class ResultsComponent implements OnChanges {
     {label: 'iucn.results.column.habitat', key: 'habitat'},
     {label: 'iucn.results.column.reasons', key: 'reasons'},
     {label: 'iucn.results.tab.threats', key: 'threats'},
+    {label: 'iucn.results.column.id', key: 'id'},
     {label: 'result.scientificName', key: 'scientificName'},
     {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
+    {label: 'iucn.results.column.informalTaxonGroup', key: 'redListGroup'},
     {label: 'iucn.results.column.reasonForStatusChange', key: 'reasonForStatusChange'},
     {label: 'iucn.results.column.criteriaForStatus', key: 'criteriaForStatus'},
     {label: 'iucn.results.column.class2015', key: '2015'},
@@ -98,7 +100,8 @@ export class ResultsComponent implements OnChanges {
     'reasonForStatusChange': 'latestRedListEvaluation.reasonForStatusChange',
     'criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus',
     '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010'
+    '2010': 'redListStatus2010',
+    'redListGroup': 'redListEvaluationGroups'
   };
   exportTemplates = {
     'taxonName': 'taxonName',
@@ -108,7 +111,8 @@ export class ResultsComponent implements OnChanges {
     'latestRedListEvaluation.threats': 'label',
     'latestRedListEvaluation.reasonForStatusChange': 'label',
     'redListStatus2015': 'redListStatus2015',
-    'redListStatus2010': 'redListStatus2010'
+    'redListStatus2010': 'redListStatus2010',
+    'redListEvaluationGroups': 'informalTaxonGroup'
   };
   downloadLoading = false;
   init = false;
@@ -419,6 +423,7 @@ export class ResultsComponent implements OnChanges {
       'vernacularName.' + this.lang,
       'cursiveName',
       'redListStatusesInFinland',
+      'redListEvaluationGroups',
       'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.criteriaForStatus',
       'latestRedListEvaluation.endangermentReasons',

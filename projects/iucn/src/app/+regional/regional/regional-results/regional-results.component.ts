@@ -46,7 +46,7 @@ export class RegionalResultsComponent implements OnChanges {
     {label: 'iucn.results.column.id', key: 'id'},
     {label: 'result.scientificName', key: 'scientificName'},
     {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
-    {label: 'iucn.results.column.informalTaxonGroup', key: 'informalTaxonGroup'},
+    {label: 'iucn.results.column.informalTaxonGroup', key: 'redListGroup'},
     {label: 'iucn.results.column.habitat', key: 'habitat'},
     {label: 'iucn.results.column.status', key: 'status'},
     {label: 'iucn.results.column.class2015', key: '2015'},
@@ -60,7 +60,7 @@ export class RegionalResultsComponent implements OnChanges {
     'habitat': 'latestRedListEvaluationHabitats',
     '2015': 'redListStatus2015',
     '2010': 'redListStatus2010',
-    'informalTaxonGroup': 'informalTaxonGroups'
+    'redListGroup': 'redListEvaluationGroups'
   };
   exportTemplates = {
     'species': 'taxonName',
@@ -68,7 +68,7 @@ export class RegionalResultsComponent implements OnChanges {
     'habitat': 'latestRedListEvaluationHabitats',
     '2015': 'redListStatus2015',
     '2010': 'redListStatus2010',
-    'informalTaxonGroup': 'informalTaxonGroup'
+    'redListGroup': 'informalTaxonGroup'
   };
 
   downloadLoading = false;
@@ -179,7 +179,7 @@ export class RegionalResultsComponent implements OnChanges {
       'cursiveName',
       'redListStatusesInFinland',
       'latestRedListEvaluation.threatenedAtArea',
-      'informalTaxonGroups',
+      'redListEvaluationGroups',
       'latestRedListEvaluation.redListStatus',
       'latestRedListEvaluation.primaryHabitat.habitat',
       'latestRedListEvaluation.primaryHabitat.habitatSpecificTypes',
