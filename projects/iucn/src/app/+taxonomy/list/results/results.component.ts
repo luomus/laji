@@ -14,10 +14,10 @@ import { RedListHabitatData } from './red-list-habitat/red-list-habitat.componen
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
 import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { Params } from '@angular/router';
+import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
 @Component({
   selector: 'laji-results',
@@ -91,29 +91,7 @@ export class ResultsComponent implements OnChanges {
     'vernacularName.en': 'iucn.results.column.vernacularName',
     'vernacularName.sv': 'iucn.results.column.vernacularName',
   };
-  exportKeyMap = {
-    'species': 'taxonName',
-    'status': 'latestRedListEvaluation.redListStatus',
-    'habitat': 'latestRedListEvaluationHabitats',
-    'reasons': 'latestRedListEvaluation.endangermentReasons',
-    'threats': 'latestRedListEvaluation.threats',
-    'reasonForStatusChange': 'latestRedListEvaluation.reasonForStatusChange',
-    'criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus',
-    '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010',
-    'redListGroup': 'redListEvaluationGroups'
-  };
-  exportTemplates = {
-    'taxonName': 'taxonName',
-    'latestRedListEvaluation.redListStatus': 'label',
-    'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
-    'latestRedListEvaluation.endangermentReasons': 'label',
-    'latestRedListEvaluation.threats': 'label',
-    'latestRedListEvaluation.reasonForStatusChange': 'label',
-    'redListStatus2015': 'redListStatus2015',
-    'redListStatus2010': 'redListStatus2010',
-    'redListEvaluationGroups': 'informalTaxonGroup'
-  };
+
   downloadLoading = false;
   init = false;
 
@@ -125,8 +103,8 @@ export class ResultsComponent implements OnChanges {
     private taxonService: TaxonService,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private taxonExportService: TaxonExportService,
-    private taxonomyColumns: TaxonomyColumns
+    private taxonExportService: IucnTaxonExportService,
+    private taxonomyColumns: TaxonomyColumns,
   ) {
     this.statusMap = Object.keys(this.resultService.shortLabel).reduce((result, key) => {
       result[this.resultService.shortLabel[key]] = key;
@@ -548,23 +526,9 @@ export class ResultsComponent implements OnChanges {
 
   download(event: {type: string, fields: ISelectFields[]}) {
     this.downloadLoading = true;
-    const columns: DatatableColumn[] = [this.taxonomyColumns.getColumn('id')];
 
-    event.fields.forEach(field => {
-      const key = this.exportKeyMap[field.key] || field.key;
-      const label = field.label;
-
-      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
-        name: key,
-        cellTemplate: this.exportTemplates[key],
-        label: label
-      });
-    });
-
-    const criteria = document.getElementById('enabled-filters');
-    const first = criteria ? [criteria.innerText] : undefined;
     this.getAllSpecies().pipe(
-      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, event.type, first))
+      switchMap(data => this.taxonExportService.download(data, event.fields, event.type))
     ).subscribe(() => {
       this.downloadLoading = false;
       this.cdr.markForCheck();

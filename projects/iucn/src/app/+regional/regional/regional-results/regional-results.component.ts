@@ -9,9 +9,7 @@ import {TranslateService} from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
-import { TaxonomyColumns } from '../../../../../../laji/src/app/+taxonomy/species/service/taxonomy-columns';
-import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { TaxonExportService } from '../../../../../../laji/src/app/+taxonomy/species/service/taxon-export.service';
+import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
 @Component({
   selector: 'laji-regional-results',
@@ -54,22 +52,6 @@ export class RegionalResultsComponent implements OnChanges {
   ];
   selectedSpeciesFields: string[];
 
-  exportKeyMap = {
-    'species': 'taxonName',
-    'status': 'latestRedListEvaluation.redListStatus',
-    'habitat': 'latestRedListEvaluationHabitats',
-    '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010',
-    'redListGroup': 'redListEvaluationGroups'
-  };
-  exportTemplates = {
-    'species': 'taxonName',
-    'status': 'label',
-    'habitat': 'latestRedListEvaluationHabitats',
-    '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010',
-    'redListGroup': 'informalTaxonGroup'
-  };
 
   downloadLoading = false;
 
@@ -78,8 +60,7 @@ export class RegionalResultsComponent implements OnChanges {
     private taxonService: TaxonService,
     private resultService: RegionalService,
     private taxonApi: TaxonomyApi,
-    private taxonomyColumns: TaxonomyColumns,
-    private taxonExportService: TaxonExportService,
+    private taxonExportService: IucnTaxonExportService,
     private cdr: ChangeDetectorRef
   ) {
     this.initAreaColumns();
@@ -113,23 +94,9 @@ export class RegionalResultsComponent implements OnChanges {
 
   download(event: {type: string, fields: ISelectFields[]}) {
     this.downloadLoading = true;
-    const columns: DatatableColumn[] = [];
 
-    event.fields.forEach(field => {
-      const key = this.exportKeyMap[field.key] || field.key;
-      const label = field.label;
-
-      columns.push((!this.exportTemplates[field.key] ? this.taxonomyColumns.getColumn(field.key) : false) || {
-        name: key,
-        cellTemplate: this.exportTemplates[field.key],
-        label: label
-      });
-    });
-
-    const criteria = document.getElementById('enabled-filters');
-    const first = criteria ? [criteria.innerText] : undefined;
     this.getAllSpecies().pipe(
-      switchMap(data => this.taxonExportService.downloadTaxons(columns, data, event.type, first))
+      switchMap(data => this.taxonExportService.download(data, event.fields, event.type))
     ).subscribe(() => {
       this.downloadLoading = false;
       this.cdr.markForCheck();
@@ -246,8 +213,6 @@ export class RegionalResultsComponent implements OnChanges {
       areaFields.push({
         label: this.resultService.shortLabel[area], key: key
       });
-      this.exportKeyMap[key] = 'latestRedListEvaluation.threatenedAtArea';
-      this.exportTemplates[key] = 'latestRedListEvaluation.threatenedAtArea_' + area;
     }
 
     for (const area of this.resultService.areas) {
@@ -256,8 +221,6 @@ export class RegionalResultsComponent implements OnChanges {
         label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
         key: key
       });
-      this.exportKeyMap[key] = 'latestRedListEvaluation.occurrences';
-      this.exportTemplates[key] = 'latestRedListEvaluation.occurrences_' + area;
     }
 
     this.defaultSpeciesFields.splice(1, 0, ...areaFields);
