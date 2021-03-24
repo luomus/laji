@@ -59,14 +59,16 @@ export class RegionalResultsComponent implements OnChanges {
     'status': 'latestRedListEvaluation.redListStatus',
     'habitat': 'latestRedListEvaluationHabitats',
     '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010'
+    '2010': 'redListStatus2010',
+    'informalTaxonGroup': 'informalTaxonGroups'
   };
   exportTemplates = {
-    'taxonName': 'taxonName',
-    'latestRedListEvaluation.redListStatus': 'label',
-    'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
-    'redListStatus2015': 'redListStatus2015',
-    'redListStatus2010': 'redListStatus2010'
+    'species': 'taxonName',
+    'status': 'label',
+    'habitat': 'latestRedListEvaluationHabitats',
+    '2015': 'redListStatus2015',
+    '2010': 'redListStatus2010',
+    'informalTaxonGroup': 'informalTaxonGroup'
   };
 
   downloadLoading = false;
@@ -80,27 +82,11 @@ export class RegionalResultsComponent implements OnChanges {
     private taxonExportService: TaxonExportService,
     private cdr: ChangeDetectorRef
   ) {
-    const areaFields = [];
-    const occurrenceFields = [];
-    for (const area of this.resultService.areas) {
-      areaFields.push({
-        label: this.resultService.shortLabel[area], key: area
-      });
-    }
-    for (const area of this.resultService.areas) {
-      occurrenceFields.push({
-        label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
-        key: 'occurrence_' + area
-      });
-    }
-
-    this.defaultSpeciesFields.splice(1, 0, ...areaFields);
-    this.speciesAllFields.splice(1, 0, ...areaFields);
-    this.speciesAllFields = this.speciesAllFields.concat(occurrenceFields);
+    this.initAreaColumns();
   }
 
   ngOnChanges() {
-    this.statusEvaluationYear = this.resultService.getStatusEvaluotionYearFromChecklistVersion(this.checklist);
+    this.statusEvaluationYear = this.resultService.getStatusEvaluationYearFromChecklistVersion(this.checklist);
     this.initQueries();
   }
 
@@ -133,9 +119,9 @@ export class RegionalResultsComponent implements OnChanges {
       const key = this.exportKeyMap[field.key] || field.key;
       const label = field.label;
 
-      columns.push((!this.exportTemplates[key] ? this.taxonomyColumns.getColumn(key) : false) || {
+      columns.push((!this.exportTemplates[field.key] ? this.taxonomyColumns.getColumn(field.key) : false) || {
         name: key,
-        cellTemplate: this.exportTemplates[key],
+        cellTemplate: this.exportTemplates[field.key],
         label: label
       });
     });
@@ -249,5 +235,33 @@ export class RegionalResultsComponent implements OnChanges {
 
   private hasCache(key: string, query: string) {
     return !!(this.cache[key + '_query'] && this.cache[key + '_query'] === query);
+  }
+
+  private initAreaColumns() {
+    const areaFields = [];
+    const occurrenceFields = [];
+
+    for (const area of this.resultService.areas) {
+      const key = area;
+      areaFields.push({
+        label: this.resultService.shortLabel[area], key: key
+      });
+      this.exportKeyMap[key] = 'latestRedListEvaluation.threatenedAtArea';
+      this.exportTemplates[key] = 'latestRedListEvaluation.threatenedAtArea_' + area;
+    }
+
+    for (const area of this.resultService.areas) {
+      const key = 'occurrence_' + area;
+      occurrenceFields.push({
+        label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
+        key: key
+      });
+      this.exportKeyMap[key] = 'latestRedListEvaluation.occurrences';
+      this.exportTemplates[key] = 'latestRedListEvaluation.occurrences_' + area;
+    }
+
+    this.defaultSpeciesFields.splice(1, 0, ...areaFields);
+    this.speciesAllFields.splice(1, 0, ...areaFields);
+    this.speciesAllFields = this.speciesAllFields.concat(occurrenceFields);
   }
 }

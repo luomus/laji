@@ -72,7 +72,7 @@ export class RegionalService {
     return Object.keys(this.yearToChecklistVersion).find(key => this.yearToChecklistVersion[key] === checklistVersion);
   }
 
-  getStatusEvaluotionYearFromChecklistVersion(checklistVersion: string): string {
+  getStatusEvaluationYearFromChecklistVersion(checklistVersion: string): string {
     return this.yearToStatusEvaluationYear[this.getYearFromChecklistVersion(checklistVersion)];
   }
 }

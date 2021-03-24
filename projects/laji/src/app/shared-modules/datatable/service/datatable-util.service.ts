@@ -30,7 +30,8 @@ export class DatatableUtil {
       }
     }
 
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(template) === -1 &&
+      !template.startsWith('latestRedListEvaluation.threatenedAtArea_') && !template.startsWith('latestRedListEvaluation.occurrences_')) {
       return from(value).pipe(
         concatMap(val => this.getVisibleValue(val, row, template)),
         toArray(),
@@ -98,6 +99,21 @@ export class DatatableUtil {
         observable = ObservableOf(
           (row.scientificName || '') + (row.scientificName && row.vernacularName ? ' – ' : '') + (row.vernacularName || '')
         );
+        break;
+      case template.startsWith('latestRedListEvaluation.threatenedAtArea_') ? template : !template:
+        const area = template.split('_')[1];
+        observable = ObservableOf(value.includes(area) ? 'RT' : '');
+        break;
+      case template.startsWith('latestRedListEvaluation.occurrences_') ? template : !template:
+        const targetArea = template.split('_')[1];
+        value.forEach(val => {
+          if (val.area === targetArea) {
+            observable = this.getLabels(val.status);
+          }
+        });
+        break;
+      case 'informalTaxonGroup':
+        observable = this.getLabels(value[value.length - 1]);
         break;
       default:
         break;
