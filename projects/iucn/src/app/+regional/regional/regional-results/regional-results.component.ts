@@ -62,9 +62,7 @@ export class RegionalResultsComponent implements OnChanges {
     {label: 'iucn.results.column.vernacularName', key: 'vernacularName'},
     {label: 'iucn.results.column.informalTaxonGroup', key: 'redListGroup'},
     {label: 'iucn.results.column.habitat', key: 'habitat'},
-    {label: 'iucn.results.column.status', key: 'status'},
-    {label: 'iucn.results.column.class2015', key: '2015'},
-    {label: 'iucn.results.column.class2010', key: '2010'},
+    {label: 'iucn.results.column.status', key: 'status'}
   ];
   selectedSpeciesFields: string[];
 
