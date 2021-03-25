@@ -140,9 +140,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           )),
           take(1)
         ),
-        this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
-          map(profile => profile.settings?.defaultMediaMetadata)
-        )
+        this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
       ).subscribe(([settings, defaultMediaMetadata]) => {
         this.defaultMediaMetadata = defaultMediaMetadata;
         this.settings = settings;
