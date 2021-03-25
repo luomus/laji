@@ -359,7 +359,10 @@ export class UserService {
     return combineLatest(
       this.personApi.personFindProfileByToken(this.getToken()),
       this.user$
-    ).pipe(map(([profile, user]) => this.prepareProfile(profile, user)));
+    ).pipe(
+      map(([profile, user]) => this.prepareProfile(profile, user)),
+      take(1)
+    );
   }
 
   prepareProfile(profile: Profile | null, user: Person): Profile {
