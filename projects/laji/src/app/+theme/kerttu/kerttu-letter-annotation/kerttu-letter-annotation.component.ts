@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {map, share, switchMap} from 'rxjs/operators';
-import {ILetterCandidate, ILetterStatusInfo, ILetterTemplate, KerttuErrorEnum, LetterAnnotation} from '../models';
-import {Observable, of, Subscription} from 'rxjs';
-import {WINDOW} from '@ng-toolkit/universal';
-import {KerttuApi} from '../service/kerttu-api';
-import {UserService} from '../../../shared/service/user.service';
-import {AudioService} from '../audio-viewer/service/audio.service';
-import {TranslateService} from '@ngx-translate/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { map, share, switchMap } from 'rxjs/operators';
+import { ILetterCandidate, ILetterStatusInfo, ILetterTemplate, KerttuErrorEnum, LetterAnnotation } from '../models';
+import { Observable, of, Subscription } from 'rxjs';
+import { WINDOW } from '@ng-toolkit/universal';
+import { KerttuApi } from '../service/kerttu-api';
+import { UserService } from '../../../shared/service/user.service';
+import { AudioService } from '../audio-viewer/service/audio.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',

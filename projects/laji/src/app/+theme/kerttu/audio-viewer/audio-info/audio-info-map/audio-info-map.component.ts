@@ -1,7 +1,7 @@
-import {Component, ChangeDetectionStrategy, ViewChild, Input} from '@angular/core';
-import {LajiMapComponent} from '@laji-map/laji-map.component';
-import {LajiMapOptions} from '@laji-map/laji-map.interface';
-import {GeoJSON} from 'geojson';
+import { Component, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions } from '@laji-map/laji-map.interface';
+import { Geometry } from 'geojson';
 import { TileLayerName } from 'laji-map';
 
 @Component({
@@ -22,13 +22,13 @@ export class AudioInfoMapComponent {
 
   data: any;
 
-  @Input() set geometry(geometry: GeoJSON.Geometry) {
+  @Input() set geometry(geometry: Geometry) {
     this.data = this.getData(geometry);
   }
 
   constructor() { }
 
-  getData(geometry: GeoJSON.Geometry) {
+  getData(geometry: Geometry) {
     return {
       getFeatureStyle: () => {
         return {

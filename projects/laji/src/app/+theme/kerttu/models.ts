@@ -1,11 +1,11 @@
-import {Taxonomy} from '../../shared/model/Taxonomy';
-import {GeoJSON} from 'geojson';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { Geometry } from 'geojson';
 
 export interface IAudio {
   url: string;
   dateTime: string;
   municipality: string;
-  geometry: GeoJSON.Geometry;
+  geometry: Geometry;
 }
 
 export interface IRecording {

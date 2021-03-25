@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
-import {ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
-import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { ITaxonWithAnnotation, TaxonAnnotationEnum } from '../../models';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-kerttu-occurrence-table',
