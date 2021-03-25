@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import {AreaService} from '../../../../../laji/src/app/shared/service/area.service';
+import {Area} from '../../../../../laji/src/app/shared/model/Area';
+import { Observable } from 'rxjs';
+import { map} from 'rxjs/operators';
 
 export const REGIONAL_DEFAULT_YEAR = '2020';
+
 export interface RegionalFilterQuery {
   taxon?: string;
   redListGroup?: string;
@@ -8,6 +13,12 @@ export interface RegionalFilterQuery {
   threatenedAtArea?: string[];
   page?: string;
   speciesFields?: string;
+}
+
+export interface IucnArea {
+  id: string;
+  label: string;
+  shortLabel: string;
 }
 
 @Injectable({
@@ -21,33 +32,6 @@ export class RegionalService {
 
   rootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
 
-  areas: string[] = [
-    'ML.690',
-    'ML.691',
-    'ML.692',
-    'ML.693',
-    'ML.694',
-    'ML.695',
-    'ML.696',
-    'ML.697',
-    'ML.698',
-    'ML.699',
-    'ML.700'
-  ];
-  shortLabel = {
-    'ML.690': '1a',
-    'ML.691': '1b',
-    'ML.692': '2a',
-    'ML.693': '2b',
-    'ML.694': '3a',
-    'ML.695': '3b',
-    'ML.696': '3c',
-    'ML.697': '4a',
-    'ML.698': '4b',
-    'ML.699': '4c',
-    'ML.700': '4d'
-  };
-
   private yearToChecklistVersion = {
     '2020': 'MR.484'
   };
@@ -57,8 +41,14 @@ export class RegionalService {
   };
 
   constructor(
+    private areaService: AreaService
+  ) {}
 
-  ) { }
+  getAreas(lang: string): Observable<IucnArea[]> {
+    return this.areaService.getAreaType(lang, Area.AreaType.IucnEvaluationArea).pipe(
+      map(areas => areas.map(area => ({id: area.id, label: area.value, shortLabel: area.value.split(' ')[0]})))
+    );
+  }
 
   getChecklistVersion(year: string): string {
     return this.yearToChecklistVersion[year];

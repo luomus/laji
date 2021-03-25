@@ -1,6 +1,7 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
-import {RegionalService} from '../../../../iucn-shared/service/regional.service';
+import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, ChangeDetectorRef} from '@angular/core';
+import {IucnArea, RegionalService} from '../../../../iucn-shared/service/regional.service';
 import {RedListStatusData} from '../../../../+taxonomy/list/results/red-list-status/red-list-status.component';
+import {TranslateService} from '@ngx-translate/core';
 
 export interface RedListRegionalStatusData {
   species: string;
@@ -25,28 +26,52 @@ export interface RedListRegionalStatusData {
   styleUrls: ['./red-list-regional-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RedListRegionalStatusComponent {
+export class RedListRegionalStatusComponent implements OnInit {
 
   _data: RedListStatusData[] = [];
-  areas: string[];
-  areaLabel: any;
+  areas: IucnArea[];
 
   @Output() groupSelect = new EventEmitter<string>();
 
   @Input()
   set data(data: RedListStatusData[]) {
-    if (!data) {
+    this.updateData(data);
+  }
+
+  constructor(
+    private resultService: RegionalService,
+    private translate: TranslateService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnInit() {
+    this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+      this.areas = areas;
+      this.updateData(this.data);
+      this.cdr.markForCheck();
+    });
+  }
+
+  rowClick(group) {
+    if (!group) {
+      return;
+    }
+    this.groupSelect.emit(group);
+  }
+
+  updateData(data: RedListStatusData[]) {
+    if (!data || !this.areas) {
       this._data = [];
       return;
     }
     const total: RedListStatusData = { species: 'Total', count: 0 };
-    this.areas.forEach(status => {
-      total[status] = 0;
+    this.areas.forEach(area => {
+      total[area.id] = 0;
     });
     const results = data.map<RedListRegionalStatusData>(row => {
-      this.areas.forEach(status => {
-        if (row[status]) {
-          total[status] += row[status];
+      this.areas.forEach(area => {
+        if (row[area.id]) {
+          total[area.id] += row[area.id];
         }
       });
       total.count += row.count;
@@ -58,19 +83,4 @@ export class RedListRegionalStatusComponent {
     results.push(total);
     this._data = results;
   }
-
-  constructor(
-    private resultService: RegionalService
-  ) {
-    this.areas = this.resultService.areas;
-    this.areaLabel = this.resultService.shortLabel;
-  }
-
-  rowClick(group) {
-    if (!group) {
-      return;
-    }
-    this.groupSelect.emit(group);
-  }
-
 }

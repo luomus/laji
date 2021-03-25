@@ -194,26 +194,30 @@ export class RegionalResultsComponent implements OnChanges {
   }
 
   private initAreaColumns() {
-    const areaFields = [];
-    const occurrenceFields = [];
+    this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+      const areaFields = [];
+      const occurrenceFields = [];
 
-    for (const area of this.resultService.areas) {
-      const key = area;
-      areaFields.push({
-        label: this.resultService.shortLabel[area], key: key
-      });
-    }
+      for (const area of areas) {
+        const key = area.id;
+        areaFields.push({
+          label: area.shortLabel, key: key
+        });
+      }
 
-    for (const area of this.resultService.areas) {
-      const key = 'occurrence_' + area;
-      occurrenceFields.push({
-        label: this.translate.instant('iucn.results.column.occurrence') + ' ' + this.resultService.shortLabel[area],
-        key: key
-      });
-    }
+      for (const area of areas) {
+        const key = 'occurrence_' + area.id;
+        occurrenceFields.push({
+          label: this.translate.instant('iucn.results.column.occurrence') + ' ' + area.shortLabel,
+          key: key
+        });
+      }
 
-    this.defaultSpeciesFields.splice(1, 0, ...areaFields);
-    this.speciesAllFields.splice(1, 0, ...areaFields);
-    this.speciesAllFields = this.speciesAllFields.concat(occurrenceFields);
+      this.defaultSpeciesFields.splice(1, 0, ...areaFields);
+      this.speciesAllFields.splice(1, 0, ...areaFields);
+      this.speciesAllFields = this.speciesAllFields.concat(occurrenceFields);
+
+      this.cdr.markForCheck();
+    });
   }
 }
