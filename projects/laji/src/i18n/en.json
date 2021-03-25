@@ -273,6 +273,7 @@
   "haseka.delete.title": "Remove",
   "haseka.editingOldDocumentWarning": "Note: You are modifying document created on {{ date }}. You can continue if you really want to edit old observations. But if you want to add new observations, please go back to the project front page.",
   "haseka.form.back": "Leave without saving",
+  "haseka.form.disabled": "Lomakkeen käyttö on väliaikaisesti estetty ylläpidon toimesta. Palaa myöhemmin.",
   "haseka.form.discard": "Discard changes",
   "haseka.form.discardConfirm": "Are you sure that you want to discard changes that are made after last saving?",
   "haseka.form.documentNotFound": "No submission was found with id {{documentId}}.",
