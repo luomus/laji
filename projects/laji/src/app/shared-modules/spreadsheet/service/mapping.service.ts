@@ -317,8 +317,8 @@ export class MappingService {
   }
 
   mapDateOptionalTime(value: unknown): string {
-    if (typeof value === 'string') {
-      const parts = value.split(/[\s,T]+/).filter(v => !!v);
+    if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]*[0-9-.:+Z]*$/)) {
+      const parts = value.split(/[\s,T]+/);
       const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
@@ -327,17 +327,13 @@ export class MappingService {
           parts[0] = dateParts.reverse().map(v => Util.addLeadingZero(v)).join('-');
         }
       }
-      if (parts.length > 2) {
-        const first = parts.shift();
-
-        return `${first}T${parts.join('')}`;
-      }
       return parts.join('T');
     } else if (value instanceof Date) {
-      if (value.getHours() === 23 && value.getMinutes() === 59 && value.getSeconds() === 11) {
-        const tmpDate = new Date(value);
-        tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
-        return tmpDate.toISOString().substr(0, 10);
+      if (
+        this.matchTime(value, 0, 0, 0) || // Excel from Mac
+        this.matchTime(value, 23, 59, 11) // Linux & Windows
+      ) {
+        return this.getDate(value);
       }
       return value.toISOString();
     }
@@ -404,6 +400,16 @@ export class MappingService {
       targetValue = [targetValue];
     }
     return targetValue;
+  }
+
+  private matchTime(test: Date, hour: number, minutes: number, seconds: number): boolean {
+    return test.getHours() === hour && test.getMinutes() === minutes && test.getSeconds() === seconds;
+  }
+
+  private getDate(value: Date): string {
+    const tmpDate = new Date(value);
+    tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
+    return tmpDate.toISOString().substr(0, 10);
   }
 
   private pickValue(value: unknown, pickRegEx: RegExp) {

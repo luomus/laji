@@ -13,6 +13,7 @@ const FORM_NAMED_PLACES_NO_ACCESS_RESTRICTION = 'MHL.3';
 const FORM_NAMED_PLACES_LOOSE_ACCESS_RESTRICTION = 'MHL.1';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION = 'MHL.45';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.50';
+const FORM_DISABLED = 'MHL.90';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -108,6 +109,13 @@ describe('Project form', () =>  {
         done();
       });
     });
+
+    it('disabled form is displayed as disabled', async (done) => {
+      await projectFormPage.navigateTo(FORM_DISABLED);
+      expect(await projectFormPage.$disabled.isDisplayed()).toBe(true);
+      expect(await projectFormPage.$sidebar.isPresent()).toBe(false);
+      done();
+    });
   });
 
   describe('when logged in', () => {
@@ -147,8 +155,6 @@ describe('Project form', () =>  {
         await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         done();
       });
-
-
     });
 
     it('and has simple option and has category, canceling document save redirects to save observations page if no history', async (done) => {
@@ -237,5 +243,12 @@ describe('Project form', () =>  {
       expect(await projectFormPage.hasAboutText()).toBe(true);
       done();
     });
+  });
+
+  it('disabled form is displayed as disabled', async (done) => {
+    await projectFormPage.navigateTo(FORM_DISABLED);
+    expect(await projectFormPage.$disabled.isDisplayed()).toBe(true);
+    expect(await projectFormPage.$sidebar.isPresent()).toBe(false);
+    done();
   });
 });

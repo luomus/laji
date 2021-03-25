@@ -1,4 +1,4 @@
-import { catchError, concatMap, map, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
@@ -84,8 +84,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.isCurrentUser = id === currentUser.id;
           this.userId = id;
           this.isCreate = !userProfile;
-          this.currentProfile = this.prepareProfile(currentProfile, currentUser);
-          this.userProfile = this.prepareProfile(userProfile, currentUser);
+          this.currentProfile = this.userService.prepareProfile(currentProfile, currentUser);
+          this.userProfile = this.userService.prepareProfile(userProfile, currentUser);
           this.loading = false;
           this.editing = false;
           this.cdr.detectChanges();
@@ -102,24 +102,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.subProfile) {
       this.subProfile.unsubscribe();
     }
-  }
-
-  private prepareProfile(profile: Profile | null, user: Person): Profile {
-    if (!profile) {
-      profile = {};
-    }
-    return {
-        ...profile,
-        settings: {
-          ...(profile.settings || {}),
-          defaultMediaMetadata: {
-            capturerVerbatim: user.fullName,
-            intellectualOwner: user.fullName,
-            intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
-            ...(profile.settings?.defaultMediaMetadata || {}),
-          }
-        }
-      };
   }
 
   getCurrentUser() {
