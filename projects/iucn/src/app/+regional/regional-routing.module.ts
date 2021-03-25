@@ -3,7 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegionalComponent } from './regional/regional.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', component: RegionalComponent}
+  {
+    path: '',
+    pathMatch: 'full',
+    component: RegionalComponent,
+    data: { noScrollToTop: true }
+  }
 ];
 
 @NgModule({
