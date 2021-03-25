@@ -311,7 +311,7 @@ export class MappingService {
       return result;
     }
     if (allowUnMapped) {
-      return String(value);
+      return String(value || '');
     }
     return null;
   }
@@ -338,7 +338,7 @@ export class MappingService {
       return value.toISOString();
     }
 
-    return String(value);
+    return String(value || '');
   }
 
   mapKeywords(value) {
