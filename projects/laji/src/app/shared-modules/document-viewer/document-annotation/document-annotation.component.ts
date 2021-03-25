@@ -71,7 +71,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   collectionContestFormId = Global.forms.collectionContest;
 
   externalViewUrl: string;
-  documentOrImage: any;
+  document: any;
   documentID: string;
   editors: string[];
   personID: string;
@@ -253,8 +253,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   setActive(i) {
     this.active = i;
-    if (this.documentOrImage && this.documentOrImage?.gatherings) {
-      this.activeGathering = this.documentOrImage?.gatherings[i] || {};
+    if (this.document && this.document?.gatherings) {
+      this.activeGathering = this.document?.gatherings[i] || {};
     }
     this.useWorldMap = !(
       this.activeGathering.interpretations &&
@@ -284,7 +284,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.hasEditors = false;
     this.unitCnt = 0;
     if (found) {
-      this.documentOrImage = doc;
+      this.document = doc;
       this.hasMapData = false;
       const mapData = [];
       this.externalViewUrl = Global.externalViewers[doc.sourceId] ?
@@ -324,12 +324,12 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
-      if (this.documentOrImage?.linkings && this.documentOrImage?.linkings.editors &&
-        this.documentOrImage?.linkings?.editors.filter(e => e.id !== undefined).length > 0) {
+      if (this.document?.linkings && this.document?.linkings.editors &&
+        this.document?.linkings?.editors.filter(e => e.id !== undefined).length > 0) {
         this.hasEditors = true;
       }
 
-      this.unitOrImgExists = this.documentOrImage.gatherings?.some(({units}) =>
+      this.unitOrImgExists = this.document.gatherings?.some(({units}) =>
         (units || []).some(unit =>
           unit.unitId === this.highlight || (unit.media || []).some(media => media.fullURL === this.highlight)
         )
@@ -429,9 +429,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   private move() {
-    this.documentOrImage = this.result[this.indexPagination];
-    this.uri = (this.documentOrImage.documentId || this.documentOrImage.document?.documentId);
-    this.highlight = (this.documentOrImage.fullURL || this.documentOrImage.unit?.unitId);
+    const documentOrImage = this.result[this.indexPagination];
+    this.uri = documentOrImage.documentId || documentOrImage.document?.documentId;
+    this.highlight = documentOrImage.fullURL || documentOrImage.unit?.unitId;
     this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();
