@@ -1,10 +1,10 @@
-<div class="main-container"> <!-- main container -->
-  <section class="mb-8"> <!-- Tallenna luontohavaintoja lajitietokeskukseen -->
+<div class="main-container">
+  <section class="mb-8">
     <h1>{{ 'saveObservations.h1' | translate }}</h1>
     <p>{{ 'saveObservations.desc' | translate }}</p>
     <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
     <div class="d-flex flex-row my-6 flex-nowrap sm:flex-wrap">
-      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Helppo -->
+      <div class="report-type-container d-flex flex-col justify-between m-2">
         <div>
           <h3>{{ 'saveObservations.easy' | translate }}</h3>
           <ul>
@@ -15,7 +15,7 @@
         </div>
         <lu-button anchor="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
       </div>
-      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2"> <!-- Mobiili -->
+      <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2">
         <div>
           <a class="d-block mb-4 inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
             <img src="/static/images/inat-sufi.png" alt="iNaturalist Suomi">
@@ -35,7 +35,7 @@
           </a>
         </div>
       </div>
-      <div class="report-type-container d-flex flex-col justify-between m-2"> <!-- Monipuolinen -->
+      <div class="report-type-container d-flex flex-col justify-between m-2">
         <div>
           <a [routerLink]="['/vihko'] | localize" class="vihko-logo">{{ 'saveObservations.vihko' | translate }}</a>
           <ul>
@@ -55,7 +55,7 @@
     </div>
   </section>
 
-  <section class="mb-8"> <!-- Kansalaistiede -->
+  <section class="mb-8">
     <h2>{{ 'saveObservations.citizenScience' | translate }}</h2>
     <p>{{ 'saveObservations.citizenScience.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">
@@ -65,23 +65,16 @@
     </div>
   </section>
 
-  <section class="mb-8"> <!-- Bird Monitoring -->
+  <section class="mb-8">
     <h2>{{ 'saveObservations.birdMonitoring' | translate }}</h2>
-<!--     <p>{ 'saveObservations.birdMonitoring.desc' | translate }}</p> -->
     <div class="d-flex flex-row flex-wrap">
       <ng-container *ngFor="let form of birdMonitoringForms$ | async">
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
       </ng-container>
-      <!--laji-survey-box class="d-block mr-3" [comingSoonForm]="{
-        'link': 'https://laji.fi/news/3617',
-        'title': 'navigation.waterbird',
-        'logo': 'https://cdn.laji.fi/images/logos/vesilintulaskenta_1.jpg'
-       }"
-      ></laji-survey-box-->
     </div>
   </section>
 
-  <section class="mb-8"> <!-- Tutkimusprojektit ja viranomaistyökalut -->
+  <section class="mb-8">
     <h2>{{ 'saveObservations.researchProjects' | translate }}</h2>
     <p>{{ 'saveObservations.researchProjects.desc' | translate }}</p>
     <div class="d-flex flex-row flex-wrap">

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 @Component({
   selector: 'laji-pill-list',
   templateUrl: './pill-list.component.html',
-  styleUrls: ['./pill-list.component.css'],
+  styleUrls: ['./pill-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })

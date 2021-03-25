@@ -2,7 +2,7 @@
   <laji-spinner [spinning]="vm.loading" [overlay]="true"></laji-spinner>
   <div style="margin-top: 20px;">
     <div [hidden]="!hasAlertContent">
-      <laji-info-page child="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
+      <laji-info-page page="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
     </div>
     <ng-container [ngSwitch]="vm.error">
       <alert type="danger" *ngSwitchCase="errors.notFoundForm">

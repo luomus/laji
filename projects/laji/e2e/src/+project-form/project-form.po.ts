@@ -9,6 +9,7 @@ export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
   public readonly $sidebar = $('.sidebar');
+  public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
   private modalBody = $('body.modal-open');
@@ -139,4 +140,9 @@ class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
+}
+
+
+class DisabledPage { // tslint:disable-line max-classes-per-file
+  public $container = $('laji-project-form-disabled')
 }
