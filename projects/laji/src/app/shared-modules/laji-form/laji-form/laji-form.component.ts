@@ -21,7 +21,6 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { PersonApi } from '../../../shared/api/PersonApi';
 import { combineLatest } from 'rxjs';
 import { Profile } from '../../../shared/model/Profile';
 import LajiForm from 'laji-form/lib/index';
@@ -44,8 +43,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private translate: TranslateService,
-              private personApi: PersonApi
+              private translate: TranslateService
   ) {
     this._onError = this._onError.bind(this);
   }
