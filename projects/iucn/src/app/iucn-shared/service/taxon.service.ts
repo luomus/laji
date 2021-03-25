@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TaxonomyApi } from '../../../../../laji/src/app/shared/api/TaxonomyApi';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
-import {map, share, switchMap, tap} from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListTaxonGroupApi } from '../../../../../laji/src/app/shared/api/RedListTaxonGroupApi';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
@@ -137,7 +137,7 @@ export class TaxonService {
     return this.taxonApi.species(query, lang, query.page || '1', '' + pageSize);
   }
 
-  getAllSpecies(query: any, lang: string, data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<any> {
+  getAllSpecies(query: any, lang: string, data: Taxonomy[] = [], page = '1', pageSize = '10000'): Observable<Taxonomy[]> {
     return this.taxonApi.species(query, lang, page, pageSize).pipe(
       switchMap(result => {
         data.push(...result.results);

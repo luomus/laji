@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SelectOption } from '../select/select.component';
 
 @Component({

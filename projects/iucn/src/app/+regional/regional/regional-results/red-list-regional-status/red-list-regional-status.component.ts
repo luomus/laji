@@ -1,24 +1,7 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, ChangeDetectorRef} from '@angular/core';
-import {IucnArea, RegionalService} from '../../../../iucn-shared/service/regional.service';
-import { RedListStatusData } from '../../../../+taxonomy/list/results/red-list-status/red-list-status.component';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { IucnArea, RegionalService } from '../../../../iucn-shared/service/regional.service';
+import { RedListRegionalStatusData } from '../regional-results.component';
 import { TranslateService } from '@ngx-translate/core';
-
-export interface RedListRegionalStatusData {
-  species: string;
-  count: number;
-  group?: string;
-  'ML.690'?: number;
-  'ML.691'?: number;
-  'ML.692'?: number;
-  'ML.693'?: number;
-  'ML.694'?: number;
-  'ML.695'?: number;
-  'ML.696'?: number;
-  'ML.697'?: number;
-  'ML.698'?: number;
-  'ML.699'?: number;
-  'ML.700'?: number;
-}
 
 @Component({
   selector: 'laji-red-list-regional-status',
@@ -28,13 +11,13 @@ export interface RedListRegionalStatusData {
 })
 export class RedListRegionalStatusComponent implements OnInit {
 
-  _data: RedListStatusData[] = [];
+  _data: RedListRegionalStatusData[] = [];
   areas: IucnArea[];
 
   @Output() groupSelect = new EventEmitter<string>();
 
   @Input()
-  set data(data: RedListStatusData[]) {
+  set data(data: RedListRegionalStatusData[]) {
     this.updateData(data);
   }
 
@@ -52,23 +35,23 @@ export class RedListRegionalStatusComponent implements OnInit {
     });
   }
 
-  rowClick(group) {
+  rowClick(group: string) {
     if (!group) {
       return;
     }
     this.groupSelect.emit(group);
   }
 
-  updateData(data: RedListStatusData[]) {
+  updateData(data: RedListRegionalStatusData[]) {
     if (!data || !this.areas) {
       this._data = [];
       return;
     }
-    const total: RedListStatusData = { species: 'Total', count: 0 };
+    const total: RedListRegionalStatusData = { species: 'Total', count: 0 };
     this.areas.forEach(area => {
       total[area.id] = 0;
     });
-    const results = data.map<RedListRegionalStatusData>(row => {
+    const results = data.map(row => {
       this.areas.forEach(area => {
         if (row[area.id]) {
           total[area.id] += row[area.id];

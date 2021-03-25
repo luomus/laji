@@ -1,14 +1,31 @@
-import {Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter} from '@angular/core';
-import {of, Observable} from 'rxjs';
-import {tap, map, switchMap} from 'rxjs/operators';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { of, Observable } from 'rxjs';
+import { tap, map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
-import {RegionalFilterQuery, RegionalService} from '../../../iucn-shared/service/regional.service';
+import { RegionalFilterQuery, RegionalService } from '../../../iucn-shared/service/regional.service';
 import { RegionalListType } from '../regional.component';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
+
+export interface RedListRegionalStatusData {
+  species: string;
+  count: number;
+  group?: string;
+  'ML.690'?: number;
+  'ML.691'?: number;
+  'ML.692'?: number;
+  'ML.693'?: number;
+  'ML.694'?: number;
+  'ML.695'?: number;
+  'ML.696'?: number;
+  'ML.697'?: number;
+  'ML.698'?: number;
+  'ML.699'?: number;
+  'ML.700'?: number;
+}
 
 @Component({
   selector: 'laji-regional-results',
@@ -25,10 +42,10 @@ export class RegionalResultsComponent implements OnChanges {
 
   statusEvaluationYear: string;
 
-  cache: any = {};
+  cache: {[key: string]: any} = {};
   baseQuery = {};
 
-  redListStatusQuery$: any;
+  redListStatusQuery$: Observable<RedListRegionalStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
 
   speciesPageSize = 100;
@@ -69,7 +86,7 @@ export class RegionalResultsComponent implements OnChanges {
     this.initQueries();
   }
 
-  changeQuery(field: string, value: any) {
+  changeQuery<K extends keyof RegionalFilterQuery, T extends RegionalFilterQuery[K]>(field: K, value: T) {
     this.queryChange.emit({
       ...this.query,
       [field]: value
@@ -124,7 +141,7 @@ export class RegionalResultsComponent implements OnChanges {
     const cacheKey = 'status';
     const statusField = 'latestRedListEvaluation.threatenedAtArea';
 
-    const query: any = {
+    const query = {
       ...this.baseQuery
     };
 
