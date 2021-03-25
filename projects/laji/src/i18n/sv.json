@@ -273,7 +273,7 @@
   "haseka.delete.title": "Remove",
   "haseka.editingOldDocumentWarning": "Obs! Du ändrar dokument skapat den {{ date }}. Du kan fortsätta om du verkligen vill redigera gamla observationer. Men om du vill lägga till nya observationer, gå tillbaka till projektets framsida.",
   "haseka.form.back": "Avbryt utan att spara",
-  "haseka.form.disabled": "Lomakkeen käyttö on väliaikaisesti estetty ylläpidon toimesta. Palaa myöhemmin.",
+  "haseka.form.disabled": "Tämä lomake tai projekti on väliaikaisesti suljettu ylläpitotoimien takia. Palaa myöhemmin uudelleen!",
   "haseka.form.discard": "Ignorera ändringar",
   "haseka.form.discardConfirm": "Är du säker på att du vill ignorera ändgringar som gjort efter senaste sparande?",
   "haseka.form.documentNotFound": "Det hittades ingen observationsparti med id {{documentId}}.",
