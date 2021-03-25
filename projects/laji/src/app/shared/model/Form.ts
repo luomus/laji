@@ -69,6 +69,7 @@ export namespace Form {
     hasAdmins?: boolean;
     dataset?: boolean;
     viewerType?: ViewerType;
+    disabled?: boolean;
   }
 
   export interface FormOptions extends ListOptions {

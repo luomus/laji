@@ -56,6 +56,7 @@ describe('Tools page', () => {
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getDocumentCountText()).toBe('1', 'With default setting 1 document should be created');
       expect(await spreadsheet.countCellWithValue('2020-03-01')).toBe(3, 'There should be 3 elements in table with value 2020-03-01');
+      expect(await spreadsheet.countCellWithValue('TEST')).toBe(1, 'There should be one element in table with value TEST');
       done();
     });
 

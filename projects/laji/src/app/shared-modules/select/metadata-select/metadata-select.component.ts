@@ -53,7 +53,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() whiteList: string[];
   @Input() skip: string[];
   @Input() skipBefore: string;
-  @Input() open: boolean;
+  @Input() open = false;
   @Input() disabled = false;
   @Input() labelAsValue = false;
   @Input() selectStyle = SelectStyle.advanced;

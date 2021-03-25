@@ -143,9 +143,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         )),
         take(1)
       ),
-      this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(
-        map(profile => profile.settings?.defaultMediaMetadata)
-      )
+      this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
     ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
       this.lajiFormWrapperProto = formPackage.default;
       this.lajiFormBs3Theme = formBs3ThemePackage.default;
