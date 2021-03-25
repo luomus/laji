@@ -7,9 +7,9 @@ import { map } from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { MetadataService } from '../../../../../../laji/src/app/shared/service/metadata.service';
 import { TranslateService } from '@ngx-translate/core';
-import {AreaService} from '../../../../../../laji/src/app/shared/service/area.service';
-import {Area} from '../../../../../../laji/src/app/shared/model/Area';
-import {RegionalFilterQuery} from '../../service/regional.service';
+import { AreaService } from '../../../../../../laji/src/app/shared/service/area.service';
+import { Area } from '../../../../../../laji/src/app/shared/model/Area';
+import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
   selector: 'laji-filters',

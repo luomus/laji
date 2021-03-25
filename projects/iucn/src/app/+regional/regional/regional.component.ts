@@ -1,7 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy, OnDestroy} from '@angular/core';
 import {Observable, of as ObservableOf, Subscription} from 'rxjs';
 import {map, startWith, switchMap} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RegionalFilterQuery, RegionalService, REGIONAL_DEFAULT_YEAR} from '../../iucn-shared/service/regional.service';
 

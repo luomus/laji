@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FilterQuery } from '../../service/result.service';
-import {RegionalFilterQuery} from '../../service/regional.service';
+import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
   selector: 'laji-active-filters',

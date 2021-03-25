@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RegionalRoutingModule } from './regional-routing.module';
 import { RegionalComponent } from './regional/regional.component';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
-import {SharedModule} from '../../../../laji/src/app/shared/shared.module';
+import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { RegionalResultsComponent } from './regional/regional-results/regional-results.component';
 import { RedListRegionalStatusComponent } from './regional/regional-results/red-list-regional-status/red-list-regional-status.component';
 

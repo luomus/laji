@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {AreaService} from '../../../../../laji/src/app/shared/service/area.service';
-import {Area} from '../../../../../laji/src/app/shared/model/Area';
+import { AreaService } from '../../../../../laji/src/app/shared/service/area.service';
+import { Area } from '../../../../../laji/src/app/shared/model/Area';
 import { Observable } from 'rxjs';
 import { map} from 'rxjs/operators';
 

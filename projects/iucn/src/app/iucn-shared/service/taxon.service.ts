@@ -5,7 +5,7 @@ import { Taxonomy } from '../../../../../laji/src/app/shared/model/Taxonomy';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 import { RedListTaxonGroup } from '../../../../../laji/src/app/shared/model/RedListTaxonGroup';
 import { RedListTaxonGroupApi } from '../../../../../laji/src/app/shared/api/RedListTaxonGroupApi';
-import {Util} from '../../../../../laji/src/app/shared/service/util.service';
+import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 @Injectable({

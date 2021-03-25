@@ -1,11 +1,11 @@
 import {Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter} from '@angular/core';
 import {of, Observable} from 'rxjs';
 import {tap, map, switchMap} from 'rxjs/operators';
-import {Util} from '../../../../../../laji/src/app/shared/service/util.service';
+import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import {RegionalFilterQuery, RegionalService} from '../../../iucn-shared/service/regional.service';
-import {RegionalListType} from '../regional.component';
-import {TaxonService} from '../../../iucn-shared/service/taxon.service';
-import {TranslateService} from '@ngx-translate/core';
+import { RegionalListType } from '../regional.component';
+import { TaxonService } from '../../../iucn-shared/service/taxon.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';

@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 import {IucnArea, RegionalService} from '../../../../iucn-shared/service/regional.service';
-import {RedListStatusData} from '../../../../+taxonomy/list/results/red-list-status/red-list-status.component';
-import {TranslateService} from '@ngx-translate/core';
+import { RedListStatusData } from '../../../../+taxonomy/list/results/red-list-status/red-list-status.component';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface RedListRegionalStatusData {
   species: string;
