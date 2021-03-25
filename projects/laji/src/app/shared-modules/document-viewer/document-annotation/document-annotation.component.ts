@@ -101,7 +101,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   isfocusedCommentTaxon = false;
   currentLang: string;
   hasEditors: boolean;
-  unitExist: boolean;
+  unitOrImgExists: boolean;
   subscriptDocumentTools: Subscription;
   annotationTags$: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
@@ -253,8 +253,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   setActive(i) {
     this.active = i;
-    if (this.document && this.document.gatherings) {
-      this.activeGathering = this.document.gatherings[i] || {};
+    if (this.document && this.document?.gatherings) {
+      this.activeGathering = this.document?.gatherings[i] || {};
     }
     this.useWorldMap = !(
       this.activeGathering.interpretations &&
@@ -282,7 +282,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.cd.detectChanges();
     this.hasDoc = found;
     this.hasEditors = false;
-    this.unitExist = false;
     this.unitCnt = 0;
     if (found) {
       this.document = doc;
@@ -325,24 +324,20 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       }
       this.mapData = mapData;
       this.setActive(activeIdx);
-      if (this.document.linkings && this.document.linkings.editors &&
-        this.document.linkings.editors.filter(e => e.id !== undefined).length > 0) {
+      if (this.document?.linkings && this.document?.linkings.editors &&
+        this.document?.linkings?.editors.filter(e => e.id !== undefined).length > 0) {
         this.hasEditors = true;
       }
 
-      if (this.document.gatherings) {
-        this.document.gatherings.forEach(gathering => {
-          if (gathering.units) {
-            const i = gathering.units.find(unit => unit.unitId === this.highlight);
-            if (i) {
-              return this.unitExist = true;
-            }
-          }
-        });
-      }
+      this.unitOrImgExists = this.document.gatherings?.some(({units}) =>
+        (units || []).some(unit =>
+          unit.unitId === this.highlight || (unit.media || []).some(media => media.fullURL === this.highlight)
+        )
+      );
+
 
       if (this.result) {
-        this.indexPagination = this.setIndexPagination();
+        this.indexPagination = this.getIndexPagination();
       }
 
       if (this.interval) {
@@ -372,8 +367,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
       this.move();
   }
 
-  setIndexPagination() {
-    return this.result.findIndex(i => i.unit.unitId === this.highlight);
+  getIndexPagination() {
+    return this.result.findIndex(i => (i.fullURL === this.highlight || i.unit?.unitId === this.highlight));
   }
 
   closeDocument() {
@@ -434,9 +429,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   }
 
   private move() {
-    this.document = this.result[this.indexPagination].document;
-    this.uri = this.result[this.indexPagination].document.documentId;
-    this.highlight = this.result[this.indexPagination].unit.unitId;
+    const documentOrImage = this.result[this.indexPagination];
+    this.uri = documentOrImage.documentId || documentOrImage.document?.documentId;
+    this.highlight = documentOrImage.fullURL || documentOrImage.unit?.unitId;
     this.showShortcuts = false;
     this.cd.markForCheck();
     this.updateDocument();
