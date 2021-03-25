@@ -24,8 +24,6 @@ export class AudioInfoComponent {
   }
 
   closeModal() {
-    if (this.modal) {
-      this.modal.hide();
-    }
+    this.modal?.hide();
   }
 }

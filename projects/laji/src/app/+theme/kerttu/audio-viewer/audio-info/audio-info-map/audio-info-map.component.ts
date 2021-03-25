@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, Input } from '@angular/c
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions } from '@laji-map/laji-map.interface';
 import { Geometry } from 'geojson';
-import { TileLayerName } from 'laji-map';
+import { DataOptions, TileLayerName } from 'laji-map';
 
 @Component({
   selector: 'laji-audio-info-map',
@@ -20,15 +20,13 @@ export class AudioInfoMapComponent {
     zoomToData: { maxZoom: 13 }
   };
 
-  data: any;
+  data: DataOptions;
 
   @Input() set geometry(geometry: Geometry) {
     this.data = this.getData(geometry);
   }
 
-  constructor() { }
-
-  getData(geometry: Geometry) {
+  getData(geometry: Geometry): DataOptions {
     return {
       getFeatureStyle: () => {
         return {
