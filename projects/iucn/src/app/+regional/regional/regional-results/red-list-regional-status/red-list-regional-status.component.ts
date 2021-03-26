@@ -18,7 +18,8 @@ export class RedListRegionalStatusComponent implements OnInit {
 
   @Input()
   set data(data: RedListRegionalStatusData[]) {
-    this.updateData(data);
+    this._data = data || [];
+    this.updateData(this._data);
   }
 
   constructor(
@@ -30,7 +31,7 @@ export class RedListRegionalStatusComponent implements OnInit {
   ngOnInit() {
     this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
       this.areas = areas;
-      this.updateData(this.data);
+      this.updateData(this._data);
       this.cdr.markForCheck();
     });
   }
@@ -43,8 +44,7 @@ export class RedListRegionalStatusComponent implements OnInit {
   }
 
   updateData(data: RedListRegionalStatusData[]) {
-    if (!data || !this.areas) {
-      this._data = [];
+    if (!data || data.length === 0 || !this.areas) {
       return;
     }
     const total: RedListRegionalStatusData = { species: 'Total', count: 0 };
