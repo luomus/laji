@@ -1,9 +1,9 @@
-import {ComponentFactoryResolver, Directive, Inject, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
-import {PlatformService} from '../../../shared/service/platform.service';
-import {AudioNotSupportedErrorComponent} from './audio-not-supported-error.component';
-import {AudioIosWarningComponent} from './audio-ios-warning.component';
-import {WINDOW} from '@ng-toolkit/universal';
-import {DOCUMENT} from '@angular/common';
+import { ComponentFactoryResolver, Directive, Inject, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { PlatformService } from '../../../shared/service/platform.service';
+import { AudioNotSupportedErrorComponent } from './audio-not-supported-error.component';
+import { AudioIosWarningComponent } from './audio-ios-warning.component';
+import { WINDOW } from '@ng-toolkit/universal';
+import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[lajiRequiresAudioSupport]' })
 export class RequiresAudioSupportDirective implements OnInit {

@@ -1,9 +1,9 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy, ChangeDetectorRef} from '@angular/core';
-import {IUserLetterTaxonStatistics} from '../../models';
-import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { IUserLetterTaxonStatistics } from '../../models';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../../../../shared/service/triplestore-label.service';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 interface ILetterResultTableRow extends IUserLetterTaxonStatistics {
   species?: string;
@@ -15,7 +15,7 @@ interface ILetterResultTableRow extends IUserLetterTaxonStatistics {
   styleUrls: ['./kerttu-letter-result-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuLetterResultTableComponent implements OnInit, OnDestroy {
+export class KerttuLetterResultTableComponent implements OnDestroy {
   columns: DatatableColumn[] = [
     {
       name: 'species',
@@ -64,9 +64,6 @@ export class KerttuLetterResultTableComponent implements OnInit, OnDestroy {
     private triplestoreLabelService: TriplestoreLabelService,
     private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit(): void {
-  }
 
   ngOnDestroy() {
     if (this.nameSub) {
