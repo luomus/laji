@@ -58,7 +58,7 @@ export class InfoPageComponent implements OnChanges {
     const rootPageID = this._rootPage && this._rootPage[this.translateService.currentLang] || this._rootPage?.['fi'];
     const roots = this._rootPage && Object.keys(this._rootPage).map(key => this._rootPage[key]);
     const page = this.child || rootPageID;
-    if (!rootPageID || this.currentPage === page) {
+    if (!page || this.currentPage === page) {
       return;
     }
     this.currentPage = page;
