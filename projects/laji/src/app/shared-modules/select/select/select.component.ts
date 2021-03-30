@@ -66,7 +66,6 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       this.open = false;
     }
     this.initOptions(this.selected);
-
   }
 
   ngOnDestroy() {
@@ -103,7 +102,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
         this.selected = [...this.selected, id] as T[];
       }
     } else {
-      this.selected = isBasic ? [option] as T[] : [id] as T[];
+      this.selected = isBasic ? [id] as T[] : [option] as T[];
     }
     this.selectedIdx = -1;
     this.initOptions(this.selected);
@@ -215,6 +214,8 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
         checkboxValue
       });
     });
+
+    this.open = this.open || !!this.selectedOptions.length;
   }
 
   private isSelectOptions(option: idType|SelectOption): option is SelectOption {

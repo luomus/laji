@@ -56,6 +56,7 @@
     </ng-template>
 
     <laji-pill-list
+      class="d-block mt-2"
       [isLabel]="true"
       [list]="query.target || []"
       [isTaxonAutocomplete]="true"
@@ -721,7 +722,7 @@
 </section>
 
 <!-- Concealment level -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']">
   <laji-select
     [selected]="[query.secured]"
     (selectedChange)="indirectQueryChange('secured', $event[0])"

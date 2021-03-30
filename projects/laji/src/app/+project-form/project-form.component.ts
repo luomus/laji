@@ -4,17 +4,18 @@ import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, Observable, of, Subscription } from 'rxjs';
+import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from './project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
+import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
-
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
+  disabled: boolean;
 }
 
 interface NavLink {
@@ -46,7 +47,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private projectFormService: ProjectFormService,
     private formPermissionService: FormPermissionService,
     public userService: UserService,
-    private router: Router
+    private router: Router,
+    private browserService: BrowserService
 ) {}
 
   vm$: Observable<ViewModel>;
@@ -54,6 +56,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
+  userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -107,7 +110,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           form: projectForm.form,
           navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
             ? this.getNavLinks(projectForm, rights, queryParams)
-            : undefined
+            : undefined,
+          disabled: projectForm.form.options?.disabled && !rights.ictAdmin
         })
       )
     );
@@ -131,15 +135,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = routerEvents$.pipe(
-      mergeMap((url: string) =>
+    this.showNav$ = combineLatest(routerEvents$, this.userToggledSidebar$.asObservable()).pipe(
+      mergeMap(([url, userToggledSidebar]) =>
         form$.pipe(
           map(form =>
-            !(
+            userToggledSidebar !== false
+            && !(
               (!form.options?.useNamedPlaces && url.match(/\/form$/))
               || (form.options?.useNamedPlaces && url.match(/\/places\/MNP\.\d+$/))
               || (url.match(/\/form\/(.*\/)?((JX\.)|(T:))\d+$/))
-              || (form.options?.useNamedPlaces && (url.match(/\/form\/places/) || url.match(/\/form\/MHL.*\/places/)))
             )
           )
         )
@@ -156,7 +160,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
       }
     });
-
   }
 
   ngOnDestroy(): void {
@@ -245,4 +248,17 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   trackByLabel(index, link) {
     return link.label;
   }
+
+  navBarToggled(event) {
+    this.userToggledSidebar$.next(event);
+  }
+
+  clickedSidebarLink() {
+    // Close the sidebar on sidebar navigation on mobile.
+    this.browserService.lgScreen$.pipe(take(1)).subscribe(isDesktopScreen =>
+      !isDesktopScreen && this.userToggledSidebar$.next(false)
+    );
+  }
+
+
 }

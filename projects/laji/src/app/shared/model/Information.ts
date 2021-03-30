@@ -30,7 +30,7 @@ import { InformationItem } from './InformationItem';
 export interface Information {
 
 
-  id?: string;
+  id: string;
 
   content?: string;
 

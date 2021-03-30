@@ -8,7 +8,7 @@ const FORM_WITH_NAMED_PLACES = 'MHL.33';
 const FORM_WITH_MUNICIPALITY_FILTER = 'MHL.33';
 const FORM_WITH_BIRD_ASSOCIATION_FILTER = 'MHL.3';
 const FORM_WITH_INCLUDE_UNITS_NP = 'MNP.37866';
-const FORM_WITH_NO_MAP_TAB = 'MHL.65';
+const FORM_WITH_NO_MAP_TAB = 'MHL.3';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();

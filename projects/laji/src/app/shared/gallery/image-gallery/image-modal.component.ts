@@ -130,7 +130,8 @@ export class ImageModalComponent implements OnInit, OnDestroy {
         this.imageSelect.emit({
           taxonId: this.modalImages[index].taxonId,
           documentId: this.modalImages[index].documentId,
-          unitId: this.modalImages[index].unitId
+          unitId: this.modalImages[index].unitId,
+          fullURL: this.modalImages[index].fullURL
         });
       }
       return;

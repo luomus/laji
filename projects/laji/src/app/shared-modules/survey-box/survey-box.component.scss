@@ -20,6 +20,14 @@
   font-weight: bold;
 }
 
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.disabled .survey-box {
+  opacity: 0.5;
+}
+
 .ribbon-wrapper, .ribbon-wrapper a {
   vertical-align: top;
 }
