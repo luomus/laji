@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, filter, startWith, takeUntil, take, } from 'rxjs/operators';
+import { map, switchMap, distinctUntilChanged, filter, startWith, take } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { ListRange, CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -45,7 +45,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     viewChange: this.infiniteScrollStatusCheck$.pipe(
       filter(() => this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
       map(() => {
-        return <ListRange>{
+        return {
           start: 0,
           end: this.children.length
         };
@@ -109,8 +109,8 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   isWithinXPixelsOfViewport(element: Element, px: number) {
     const rect = element.getBoundingClientRect();
     return (
-      this.window.innerHeight - rect.y > -1 * px
-      || this.document.documentElement.clientHeight - rect.y > -1 * px
+      this.window.innerHeight - rect.y > -px
+      || this.document.documentElement.clientHeight - rect.y > -px
     );
   }
 }

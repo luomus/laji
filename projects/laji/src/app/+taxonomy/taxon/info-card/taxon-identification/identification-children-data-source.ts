@@ -6,12 +6,13 @@ import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { TranslateService } from '@ngx-translate/core';
 
-function* rangeToIter(range: ListRange) {
+const rangeToIter = (range: ListRange): number[] => {
+  const arr = [];
   for (let i = range.start; i <= range.end; i++) {
-    yield i;
+    arr.push(i);
   }
-}
-
+  return arr;
+};
 const clamp = (val: number, min: number, max: number): number => Math.min(Math.max(val, min), max);
 const clampRange = (range: ListRange, min: number, max: number): ListRange => ({
   start: clamp(range.start, min, max),
@@ -67,7 +68,7 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
         includeMedia: true
       }
     ).pipe(
-      map(taxa => (<Taxonomy>{...child, children: taxa.results}))
+      map(taxa => ({...child, children: taxa.results}))
     );
   }
 }
