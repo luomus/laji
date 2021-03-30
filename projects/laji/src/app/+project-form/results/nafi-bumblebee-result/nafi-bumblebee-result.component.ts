@@ -34,8 +34,6 @@ export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
   Tabs = Tabs;
   tab$: Observable<keyof typeof Tabs>;
   schemaForm: Form.SchemaForm;
-
-
   year;
   currentMonth;
   currentYear;
