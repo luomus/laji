@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { CollectionService, ICollectionRange, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 
 export interface SelectOption {
   id: any;
@@ -19,6 +19,7 @@ export interface SelectOption {
 export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() title: string;
   @Input() selectedOptions: string[] = [];
+  @Input() query: any;
   @Input() info: string;
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
@@ -81,18 +82,22 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   }
 
   initCollectionsTree() {
-    return this.collectionService.getCollectionsTree().pipe(
-      switchMap((outer) => this.collectionService.getCollectionsAggregate().pipe(
-        map(inner => this.buildCollectionTree(outer, inner))
-      ))
+    const { collectionId, ...query } = this.query;
+
+    return zip(
+      this.collectionService.getCollectionsTree(),
+      this.collectionService.getCollectionsAggregate(),
+      this.collectionService.getCollectionsAggregate(query)
+    ).pipe(
+      map(([ tree, allAgregates, filteredAggragates ]) => this.buildCollectionTree(tree, allAgregates, filteredAggragates))
     );
   }
 
-  buildCollectionTree(trees: any[], aggregates: any[]) {
+  buildCollectionTree(trees: any[], allAggregates: any[], filteredAggragates: any[]) {
     const collectionsWithChildren = [];
 
     trees.forEach(tree => {
-      const prunedTree = this.buildTree(tree, aggregates);
+      const prunedTree = this.buildTree(tree, allAggregates, filteredAggragates);
 
       if (prunedTree) {
         collectionsWithChildren.push(prunedTree);
@@ -104,15 +109,15 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, aggregates) {
-    const aggregate = aggregates.find(elem => elem.id === tree.id);
+  buildTree(tree, allAggregates, filteredAggragates) {
+    const allAggregate = allAggregates.find(elem => elem.id === tree.id);
+    const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 
     if (tree.hasChildren) {
       const children = [];
       let childCount = 0;
-
       tree.children?.forEach(child => {
-        const childTree = this.buildTree(child, aggregates);
+        const childTree = this.buildTree(child, allAggregates, filteredAggragates);
 
         if (childTree) {
           children.push(childTree);
@@ -126,20 +131,20 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
         return {
           ...tree,
           children,
-          count: aggregate ? aggregate.count + childCount : childCount
+          count: filteredAggragate ? filteredAggragate.count + childCount : childCount
         };
-      } else if (aggregate) {
+      } else if (allAggregate) {
         return {
           ...tree,
           hasChildren: false,
           children: [],
-          count: aggregate.count
+          count: filteredAggragate ? filteredAggragate.count : 0
         };
       }
-    } else if (aggregate) {
+    } else if (allAggregate) {
       return {
         ...tree,
-        count: aggregate.count
+        count: filteredAggragate ? filteredAggragate.count : 0
       };
     }
   }
