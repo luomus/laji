@@ -31,7 +31,7 @@
 </div>
 
 <ng-template #annotation>
-  <ng-container *ngIf="view === 'annotation' else fullView">
+  <ng-container *ngIf="view === 'annotation' else shareMedia">
     <div class="image-container annotation">
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
@@ -53,6 +53,34 @@
         alt="Image {{ index + 1 }}"
         (click)="openMainPic(img.fullURL, index)"
         />
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #shareMedia>
+  <ng-container *ngIf="view === 'shareMedia' else fullView">
+    <div *ngFor ="let img of modalImages; let index = index" class="row">
+      <div class="col-xs-12"><h3 ngPreserveWhitespaces>{{ 'search.result.images' | translate }}</h3></div>
+      <div class="col-sm-6 col-xs-12">
+        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+        class="full"
+        alt="Image {{ index + 1 }}" />
+      </div>
+      <div class="col-sm-6 col-xs-12 mobile-separator">
+        <div class="col-xs-4">
+          <strong>{{ 'MZ.intellectualRights' | label }}:</strong>
+        </div>
+        <div class="value" class="col-xs-8">
+          {{img.licenseId | label }}
+        </div>
+        <div class="col-xs-4">
+          <strong>{{ 'MZ.intellectualOwner' | label }}:</strong>
+        </div>
+        <div class="value" class="col-xs-8">
+          {{img.copyrightOwner }}
+        </div>
+      </div>
+      <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
     </div>
   </ng-container>
 </ng-template>

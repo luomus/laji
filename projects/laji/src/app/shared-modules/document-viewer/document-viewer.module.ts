@@ -79,6 +79,6 @@ import { NamedPlaceLinkerButtonModule } from '../../+project-form/form/named-pla
     AudioPlayerComponent,
     QualityRowComponent
   ],
-  exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
+  exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent, RowComponent]
 })
 export class DocumentViewerModule { }

@@ -5,6 +5,7 @@ import { ViewerPrintComponent } from './viewer-print/viewer-print.component';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { routing } from './viewer.routes';
 import { LicenseModule } from '../shared-modules/license/license.module';
+import { ViewerMediaComponent } from './viewer-media/viewer-media.component';
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import { LicenseModule } from '../shared-modules/license/license.module';
     LicenseModule
   ],
   providers: [],
-  declarations: [ViewerComponent, ViewerPrintComponent]
+  declarations: [ViewerComponent, ViewerPrintComponent, ViewerMediaComponent]
 })
 export class ViewerModule { }

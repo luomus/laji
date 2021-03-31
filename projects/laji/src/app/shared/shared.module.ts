@@ -132,7 +132,7 @@ import { PluckPipe } from './pipe/pluck.pipe';
     LajiUiModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
     UtilitiesModule,
-    InfoModule
+    InfoModule,
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -154,7 +154,7 @@ import { PluckPipe } from './pipe/pluck.pipe';
     QualityUrlPipe,
     InfoModule,
     CheckboxValuePipe,
-    PluckPipe,
+    PluckPipe
   ]
 })
 export class SharedModule {

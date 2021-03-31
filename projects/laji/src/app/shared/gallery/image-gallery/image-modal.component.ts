@@ -17,6 +17,7 @@ import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
 
+
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
  *
@@ -67,7 +68,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
-  @Input() view: 'compact'|'annotation'|'full'|'full2'|'full3' = 'compact';
+  @Input() view: 'compact'|'annotation'|'shareMedia'|'full'|'full2'|'full3' = 'compact';
   @Input() views = ['compact', 'full'];
   @Input() showExtraInfo = true;
   @Input() modalImages: Image[];
