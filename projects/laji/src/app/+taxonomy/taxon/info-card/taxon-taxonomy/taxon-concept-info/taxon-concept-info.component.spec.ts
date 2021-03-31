@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaxonConceptInfoComponent } from './taxon-concept-info.component';
 
@@ -6,7 +6,7 @@ describe('TaxonConceptInfoComponent', () => {
   let component: TaxonConceptInfoComponent;
   let fixture: ComponentFixture<TaxonConceptInfoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaxonConceptInfoComponent ]
     })

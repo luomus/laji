@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { Form } from '../shared/model/Form';
 
 @Component({

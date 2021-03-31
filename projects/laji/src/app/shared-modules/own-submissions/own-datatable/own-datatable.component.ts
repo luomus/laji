@@ -26,9 +26,10 @@ import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
-import { Global } from '../../../../environments/global';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { Form } from '../../../shared/model/Form';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 export interface RowDocument {
   creator: string;
@@ -143,7 +144,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   allRows: RowDocument[] = [];
   visibleRows: RowDocument[];
   filterBy: string;
-  selectionType: string;
+  selectionType: SelectionType;
   selectedLabel: string;
   labelLoading = false;
 
@@ -166,6 +167,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
   labelFilter$: Observable<LabelFilter>;
+  forms$: Observable<{[id: string]: Form.List}>;
+
   private readonly labelSettingsKey = 'label-filters';
 
   constructor(
@@ -183,6 +186,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   ) {
     this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(value => value || {})
+    );
+    this.forms$ = this.formService.getAllForms().pipe(
+      map(forms => forms.reduce((fs, f) => ({...fs, [f.id]: f}), {}))
     );
   }
 
@@ -433,7 +439,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   doLabels() {
     if (this.printState === 'none') {
-      this.selectionType = 'checkbox';
+      this.selectionType = SelectionType.checkbox;
       this.printState = 'select';
       this.resortTable();
     } else if (this.printState === 'select' && !this.labelLoading) {
@@ -458,6 +464,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   updateLabelFilter(key: keyof LabelFilter, value: any) {
     this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(settings => ({...settings, [key]: value})),
+      take(1)
     ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
   }
 

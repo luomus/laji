@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UsageDownloadsComponent } from './usage-downloads.component';
 
@@ -6,7 +6,7 @@ describe('UsageByCollectionComponent', () => {
   let component: UsageDownloadsComponent;
   let fixture: ComponentFixture<UsageDownloadsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UsageDownloadsComponent ]
     })

@@ -22,8 +22,6 @@ export class TaxonObservationsComponent implements OnChanges {
   filterBySexTotal: number;
   filterByCollectionIdTotal: number;
 
-  constructor() { }
-
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);

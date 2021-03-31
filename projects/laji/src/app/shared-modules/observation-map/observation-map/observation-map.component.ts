@@ -21,8 +21,8 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
-import { LajiMapOptions, LajiMapTileLayerName } from '../../laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
@@ -91,7 +91,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     'gathering.team',
     'gathering.eventDate',
     'document.documentId',
-    'unit.unitId'
+    'unit.unitId',
+    'unit.interpretations.recordQuality',
+    'document.linkings.collectionQuality'
   ];
   limitResults = false;
 
@@ -177,7 +179,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   clearDrawData() {
-    this.lajiMap.map.clearDrawData();
+    if (this.lajiMap && this.lajiMap.map) {
+      this.lajiMap.map.clearDrawData();
+    }
   }
 
   drawToMap(type) {
@@ -307,6 +311,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private updateMapData() {
     if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
       if (this.unitCount === 0) {
+        this.prev = '';
         this.emptyMap();
       }
       return;
@@ -496,6 +501,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
 
   private getPopup({featureIdx}, cb: Function) {
+    const lang = this.translate.currentLang;
     this.translate.get('more')
       .subscribe((moreInfo) => {
         try {
@@ -512,7 +518,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             }
           });
           if (properties['documentId'] && properties['unitId']) {
-            description += '<a target="_blank" href="/view?uri=' +
+            description += '<a target="_blank" href="' +
+              (lang !== 'fi' ? '/' + lang : '') +
+              '/view?uri=' +
               properties['documentId'] +
               '&highlight=' +
               properties['unitId'].replace('#', '%23') + '">' +

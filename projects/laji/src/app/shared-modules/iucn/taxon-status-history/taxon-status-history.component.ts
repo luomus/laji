@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { LatestRedListStatusFinland } from '../../../shared/model/Taxonomy';
 
 @Component({
@@ -6,14 +6,9 @@ import { LatestRedListStatusFinland } from '../../../shared/model/Taxonomy';
   templateUrl: './taxon-status-history.component.html',
   styleUrls: ['./taxon-status-history.component.css']
 })
-export class TaxonStatusHistoryComponent implements OnInit {
+export class TaxonStatusHistoryComponent {
 
   @Input()
   history: LatestRedListStatusFinland[] = [];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

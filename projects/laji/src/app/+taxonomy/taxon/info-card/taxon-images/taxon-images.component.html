@@ -11,22 +11,9 @@
 </ng-container>
 
 <ng-container *ngIf="isFromMasterChecklist">
-  <ng-container *ngFor="let item of [
-{
-  title: 'taxonomy.typeSpecimens',
-  hasData: 'hasTypeSpecimens',
-  query: typeSpecimenQuery
-}, {
-  title: 'taxonomy.collectionSpecimens',
-  hasData: 'hasCollectionImages',
-  query: collectionSpecimenQuery
-}, {
-  title: 'taxonomy.confirmedObservations',
-  hasData: 'hasObservationImages',
-  query: reliableObservationQuery
-}]">
-    <h3 *ngIf="this[item.hasData]">{{ item.title | translate }}</h3>
-    <div class="gallery-container" [hidden]="this[item.hasData] === false">
+  <ng-container *ngFor="let item of imageSets">
+    <h3 *ngIf="item.hasData">{{ item.title | translate }}</h3>
+    <div class="gallery-container" [hidden]="item.hasData === false">
       <laji-gallery
         [shortPager]="true"
         [query]="item.query"
@@ -38,9 +25,9 @@
         [showPaginatorOnlyWhenNeeded]="true"
         [showLinkToSpeciesCard]="!taxon.species"
         [linkOptions]="{tab: 'images', queryParams: {context: null}, queryParamsHandling: 'merge'}"
-        (hasData)="this[item.hasData] = $event"
+        (hasData)="item.hasData = $event"
       ></laji-gallery>
     </div>
-    <hr *ngIf="this[item.hasData]">
+    <hr *ngIf="item.hasData">
   </ng-container>
 </ng-container>

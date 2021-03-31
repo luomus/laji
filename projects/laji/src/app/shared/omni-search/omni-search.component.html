@@ -1,4 +1,4 @@
-<div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)" (lajiClickOutSide)="onClose()">
+<div class="form-group omni-search" *ngIf="visible" (keyup)="keyEvent($event)" (lajiClickOutSide)="onClose()" [clickOutSideActive]="dropdownVisible">
   <label class="sr-only" for="search-box">{{ placeholder }}</label>
   <input type="text"
          class="form-control input-sm omni"
@@ -22,7 +22,7 @@
       </button>
     </span>-->
   <div style="clear: both"></div>
-  <div class="col-sm-12" *ngIf="taxa.length > 0 && search.length > 0">
+  <div class="col-sm-12" *ngIf="dropdownVisible">
     <div class="omni-search-results" [class.right]="expand === 'right'">
       <div class="row" *ngIf="taxon">
         <div class="col-md-4 matches taxon-list">
@@ -43,7 +43,7 @@
               <div style="margin-bottom: 10px">
                 <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="onClose()">
                   {{ 'omniSearch.taxonCard' | translate }}
-                  <i class="glyphicon glyphicon-tag"></i> 
+                  <i class="glyphicon glyphicon-tag"></i>
                 </a>
                 <br>
                 <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="onClose()">

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FooterService } from 'projects/laji/src/app/shared/service/footer.service';
 import { BaseDataService } from 'projects/laji/src/app/graph-ql/service/base-data.service';
@@ -22,7 +22,11 @@ const informationWhitelist = [
 ];
 
 const augment = {
-  '263': [{id: '4271', title: 'Lokitus'}]
+  '263': [{id: '4271', title: 'Lokitus'}],
+  '261': [
+    {id: '4404', title: 'Usein kysytyt kysymykset'},
+    {id: '4515', title: 'Webinaarit'}
+  ]
 };
 
 @Component({
@@ -46,7 +50,7 @@ export class FooterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.footerService.footerVisible$.subscribe(visible => {
+    this.footerService.footerVisible$.subscribe(() => {
       this.cdr.markForCheck();
     });
     this.tree$ = this.baseDataService.getBaseData().pipe(

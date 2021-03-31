@@ -1,7 +1,7 @@
 <ng-container *ngIf="document">
   <div class="no-print pdf-wrap">
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <button type="button" [disabled]="loading" class="btn btn-default no-print" (click)="pdf(document.id)">PDF <img src="/projects/laji/src/static/images/icons/pdf_16x16.png"></button>
+      <button type="button" [disabled]="loading" class="btn btn-default no-print" (click)="pdf(document.id)">PDF <img src="/static/images/icons/pdf_16x16.png"></button>
     </laji-spinner>
   </div>
   <div class="print-wrap no-print">
@@ -16,7 +16,7 @@
 <ng-container *ngIf="uri">
   <div class="pdf-wrap no-print">
     <laji-spinner [spinning]="loading" [overlay]="true">
-      <button type="button" [disabled]="loading" class="btn btn-default" (click)="pdf(uri)">PDF <img src="/projects/laji/src/static/images/icons/pdf_16x16.png"></button>
+      <button type="button" [disabled]="loading" class="btn btn-default" (click)="pdf(uri)">PDF <img src="/static/images/icons/pdf_16x16.png"></button>
     </laji-spinner>
   </div>
   <div class="print-wrap no-print">

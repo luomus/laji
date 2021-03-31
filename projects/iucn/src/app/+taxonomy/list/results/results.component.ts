@@ -1,16 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output, ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
-import { Observable, of as ObservableOf, forkJoin as ObservableForkJoin, of } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, of } from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';

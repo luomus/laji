@@ -16,6 +16,7 @@ import { Chart, ChartDataSets } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
+import { Color } from 'ng2-charts';
 
 
 @Component({
@@ -24,14 +25,23 @@ import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
   styleUrls: ['./observation-year-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
-
 export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;
-  @Input() colors: string[] =
-  ['#bd869e', '#50abcc', '#98DCF1', '#9FABCD', '#BA7A82', '#ADCDED', '#BBE9F7', '#B598B9', '#95B5EA', '#B9607D'];
+  @Input() enableOnlyCount = true;
   newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
+  _colors: Color[] = [
+    {backgroundColor: '#bd869e'},
+    {backgroundColor: '#50abcc'},
+    {backgroundColor: '#50abcc'},
+    {backgroundColor: '#9FABCD'},
+    {backgroundColor: '#BA7A82'},
+    {backgroundColor: '#ADCDED'},
+    {backgroundColor: '#BBE9F7'},
+    {backgroundColor: '#B598B9'},
+    {backgroundColor: '#95B5EA'},
+    {backgroundColor: '#B9607D'},
+  ];
 
   allSubData: number[];
   allDataNew: any[];
@@ -59,6 +69,10 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     private translate: TranslateService,
     private localSt: LocalStorageService
   ) { }
+
+  @Input() set colors(colors: string[]) {
+    this._colors = colors.map(color => ({backgroundColor: color}));
+  }
 
   ngOnInit() {
       Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
@@ -133,7 +147,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       10000,
       1,
       undefined,
-      false
+      this.enableOnlyCount
     ).pipe(
       map(res => res.results)
     ).subscribe(res => {
@@ -244,7 +258,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   createSubArrayChart() {
     this.initializeGraph();
-    this.allSubBackground = this.addColorsBackground(this.colors, this.allSubData.length);
+    this.allSubBackground = this.addColorsBackground(this._colors.map(c => c.backgroundColor), this.allSubData.length);
     this.allDataNew[0].data = this.allSubData;
     this.allDataNew[0].backgroundColor = this.allSubBackground;
     this.allBarChartsLabel = this.subBarChartLabels;

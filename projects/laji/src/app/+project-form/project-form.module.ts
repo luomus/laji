@@ -9,7 +9,7 @@ import { AboutComponent } from './about/about.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { DatasetAboutComponent } from './about/dataset-about/dataset-about.component';
 import { ProjectFormService } from './project-form.service';
-import { LajiFormModule } from '../shared-modules/laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
 import { ResultsModule } from './results/results.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
@@ -24,6 +24,8 @@ import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
+import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
+import { DisabledComponent } from './disabled/disabled.component';
 
 @NgModule({
   imports: [
@@ -38,7 +40,8 @@ import { HasViewPermission } from './guards/has-view-permission';
     ResultsModule,
     OwnSubmissionsModule,
     SpreadsheetModule,
-    StatisticsModule
+    StatisticsModule,
+    DocumentFormHeaderModule
   ],
   declarations: [
     ProjectFormComponent,
@@ -50,6 +53,7 @@ import { HasViewPermission } from './guards/has-view-permission';
     GenerateSpreadsheetComponent,
     TemplatesComponent,
     TermsComponent,
+    DisabledComponent
   ],
   providers: [
     ProjectFormService,

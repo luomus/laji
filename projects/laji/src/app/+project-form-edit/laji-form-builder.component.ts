@@ -1,23 +1,24 @@
-//import LajiFormBuilder from '../../../../laji-form-builder.js/lib/app';
 import LajiFormBuilder from 'laji-form-builder';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
+
 @Component({
   selector: 'laji-form-builder',
   template: `<div #lajiFormBuilder></div>`,
+  styleUrls: ['./laji-form-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiFormBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @Input() id: string;
 
   @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot: ElementRef;
+
+  private lajiFormBuilder: LajiFormBuilder;
 
   constructor(
     private ngZone: NgZone,
   ) {
   }
-  ngOnInit(): void {
-    console.log('INIT');
-  }
+
   ngAfterViewInit() {
     this.mount();
   }
@@ -29,13 +30,14 @@ export class LajiFormBuilderComponent implements OnInit, AfterViewInit, OnDestro
   private mount() {
     console.log('mount builder', this.id);
     this.ngZone.runOutsideAngular(() => {
-      new LajiFormBuilder({
+      this.lajiFormBuilder = new LajiFormBuilder({
         id: this.id,
         rootElem: this.lajiFormBuilderRoot.nativeElement
       });
     });
   }
+
   private unmount() {
-    //TODO NOOP
+    this.lajiFormBuilder.destroy();
   }
 }

@@ -126,9 +126,8 @@ export class FormPermissionApi {
         if (personToken === null || personToken === undefined) {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionAcceptRequest.');
         }
-        if (personToken !== undefined) {
-            queryParameters['personToken'] = personToken;
-        }
+        queryParameters['personToken'] = personToken;
+
         if (type !== undefined) {
             queryParameters['type'] = type;
         }
@@ -191,9 +190,7 @@ export class FormPermissionApi {
         if (personToken === null || personToken === undefined) {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionRequestAccess.');
         }
-        if (personToken !== undefined) {
-            queryParameters['personToken'] = personToken;
-        }
+        queryParameters['personToken'] = personToken;
 
         return this.http.post<FormPermission>(path, undefined, {params: queryParameters, observe: 'response'});
     }
@@ -221,9 +218,7 @@ export class FormPermissionApi {
         if (personToken === null || personToken === undefined) {
             throw new Error('Required parameter personToken was null or undefined when calling formPermissionRevokeAccess.');
         }
-        if (personToken !== undefined) {
-            queryParameters['personToken'] = personToken;
-        }
+        queryParameters['personToken'] = personToken;
 
         return this.http.delete<FormPermission>(path, {params: queryParameters, observe: 'response'});
     }

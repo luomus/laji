@@ -65,9 +65,7 @@ export class DocumentApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentCreateWithUser.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.post<Document>(path, data, {params: queryParameters, headers: {timeout: '120000'}});
   }
@@ -91,9 +89,7 @@ export class DocumentApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentFindByIdWithUser.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.get<Document>(path, {params: queryParameters});
   }
@@ -163,9 +159,7 @@ export class DocumentApi {
     if (userToken === null || userToken === undefined) {
       throw new Error('Required parameter personToken was null or undefined when calling documentUpdateWithUser.');
     }
-    if (userToken !== undefined) {
-      queryParameters['personToken'] = userToken;
-    }
+    queryParameters['personToken'] = userToken;
 
     return this.http.put<Document>(path, data, {params: queryParameters, headers: {timeout: '120000'}});
   }

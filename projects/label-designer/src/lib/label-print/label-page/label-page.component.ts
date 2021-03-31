@@ -23,8 +23,6 @@ export class LabelPageComponent implements AfterViewInit {
   private _setup: ISetup;
   private _dim: IPageLayout;
 
-  constructor() { }
-
   @Input() set setup(val: ISetup) {
     this._setup = val;
     if (val.twoSided) {

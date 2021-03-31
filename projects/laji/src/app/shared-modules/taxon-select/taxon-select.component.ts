@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component,
-EventEmitter, Input, Output, ViewChild, OnInit, HostListener, OnDestroy } from '@angular/core';
+EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { BrowserService } from 'projects/laji/src/app/shared/service/browser.ser
   template: `<input
     #typeahead
     [ngClass]="{loading: typeaheadLoading}"
-    type="text/html"
+    type="text"
     container="{{containerTypeAhead}}"
     [class]="class"
     [name]="name"
@@ -131,13 +131,15 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(event) {
+    if (event.item?.autocompleteSelectedName) {
+      this._taxonName = event.item.autocompleteSelectedName;
+    }
     this.enteredValue = undefined;
-    this._taxonName = event.item.autocompleteSelectedName;
-    if (event.item && event.item.key) {
+    if (this._taxonName === '') {
+      this.selectValue(undefined, false);
+    } else if (event.item?.key) {
       this.typeaheadMatch = {id: event.item.key, match: event.item.value};
       this.selectValue(event.item.key, true);
-    } else if (this._taxonName === '') {
-      this.selectValue(undefined, false);
     } else if (event.key === 'Enter') {
       if (this.typeaheadMatch && this.typeaheadMatch.match === this._taxonName) {
         this.selectValue(this.typeaheadMatch.id, true);

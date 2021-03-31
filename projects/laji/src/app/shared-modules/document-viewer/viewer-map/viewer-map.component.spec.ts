@@ -1,12 +1,12 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ViewerMapComponent } from './viewer-map.component';
 
 describe('ViewerMapComponent', () => {
   let component: ViewerMapComponent;
   let fixture: ComponentFixture<ViewerMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ViewerMapComponent ]
     })

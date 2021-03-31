@@ -15,7 +15,7 @@ import {
 import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
-import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { QueryParamsHandling } from '@angular/router';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -78,13 +78,12 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
   @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private _isShown = false;
-  mainURL: string;
   index: number;
   tmpImg: any;
 
@@ -92,8 +91,7 @@ export class ImageModalComponent implements OnInit, OnDestroy {
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer2,
               _elementRef: ElementRef,
-              cis: ComponentLoaderFactory,
-              private childComunication: DocumentViewerChildComunicationService) {
+              cis: ComponentLoaderFactory) {
     this._overlay = cis
       .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
   }
@@ -132,7 +130,8 @@ export class ImageModalComponent implements OnInit, OnDestroy {
         this.imageSelect.emit({
           taxonId: this.modalImages[index].taxonId,
           documentId: this.modalImages[index].documentId,
-          unitId: this.modalImages[index].unitId
+          unitId: this.modalImages[index].unitId,
+          fullURL: this.modalImages[index].fullURL
         });
       }
       return;
@@ -168,11 +167,11 @@ export class ImageModalComponent implements OnInit, OnDestroy {
 
 
 
-  @HostListener('body:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   keyEvent(e: KeyboardEvent) {
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {
-          e.preventDefault();
+          e.stopImmediatePropagation();
           this.openImage(this.tmpImg['index']);
         }
       }

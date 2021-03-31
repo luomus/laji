@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Global } from '../../environments/global';
 
 @Component({
@@ -6,13 +6,8 @@ import { Global } from '../../environments/global';
   templateUrl: './theme.component.html',
   styleUrls: ['./theme.component.scss']
 })
-export class ThemeComponent implements OnInit {
+export class ThemeComponent {
 
   Global = Global;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

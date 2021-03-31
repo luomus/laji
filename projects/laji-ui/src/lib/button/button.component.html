@@ -7,7 +7,7 @@
   [class.lu-loading]="loading"
   [disabled]="disabled || loading"
   (click)="onClick($event)"
-  (mousedown)="onMouseDown($event)"
+  (mousedown)="onMouseDown()"
   (mouseup)="onMouseUp($event)">
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </button>
@@ -21,7 +21,7 @@
      [ngClass]="classes"
      [class.pressed]="pressed"
      (click)="onClick($event)"
-     (mousedown)="onMouseDown($event)"
+     (mousedown)="onMouseDown()"
      (mouseup)="onMouseUp($event)">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>
@@ -34,7 +34,7 @@
      [ngClass]="classes"
      [class.pressed]="pressed"
      (click)="onClick($event)"
-     (mousedown)="onMouseDown($event)"
+     (mousedown)="onMouseDown()"
      (mouseup)="onMouseUp($event)">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </a>

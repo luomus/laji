@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WbcCensusesComponent } from './wbc-censuses.component';
 
@@ -6,7 +6,7 @@ describe('WbcCensusesComponent', () => {
   let component: WbcCensusesComponent;
   let fixture: ComponentFixture<WbcCensusesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WbcCensusesComponent ]
     })

@@ -13,10 +13,8 @@ export const SYNONYM_KEYS = [
   'subjectiveSynonyms',
   'homotypicSynonyms',
   'heterotypicSynonyms',
-  'alternativeNames',
   'synonyms',
   'misspelledNames',
-  'misappliedNames',
   'orthographicVariants',
   'uncertainSynonyms'
 ];
@@ -31,14 +29,14 @@ export class TaxonExportService {
   ) {}
 
   public downloadTaxons(columns: DatatableColumn[], data: Taxonomy[], type = 'tsv', firstRow?: string[]): Observable<boolean> {
-    return this.analyzeTaxa(columns, data)
+    return this.analyzeTaxa(data)
       .pipe(
         concatMap(taxa => this.exportService.exportFromData(taxa, columns, type as BookType, 'taxon-export', firstRow)),
         map(() => true)
       );
   }
 
-  private analyzeTaxa(columns: DatatableColumn[], data: Taxonomy[]): Observable<Taxonomy[]> {
+  private analyzeTaxa(data: Taxonomy[]): Observable<Taxonomy[]> {
     return from(data).pipe(
       concatMap(taxon => this.analyzeTaxon(taxon)),
       toArray()
@@ -68,7 +66,9 @@ export class TaxonExportService {
   private pickMisappliedNames(data: Taxonomy): string {
     const misappliedNames: string[] = [];
       if (data['misappliedNames'] && Array.isArray(data['misappliedNames'])) {
-          misappliedNames.push(data.scientificName + (data.scientificNameAuthorship ? ' ' + data.scientificNameAuthorship : ''));
+        data['misappliedNames'].forEach((misappliedName: any) => {
+          misappliedNames.push(misappliedName.scientificName + (misappliedName.scientificNameAuthorship ? ' ' + misappliedName.scientificNameAuthorship : ''));
+        });
       }
     return misappliedNames.join('; ');
   }

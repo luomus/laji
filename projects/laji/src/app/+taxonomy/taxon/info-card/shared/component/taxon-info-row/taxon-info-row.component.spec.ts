@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaxonInfoRowComponent } from './taxon-info-row.component';
 
@@ -6,7 +6,7 @@ describe('TaxonInfoRowComponent', () => {
   let component: TaxonInfoRowComponent;
   let fixture: ComponentFixture<TaxonInfoRowComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaxonInfoRowComponent ]
     })

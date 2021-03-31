@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { CheckboxType } from '../../../../shared-modules/select/checkbox/checkbox.component';
 
 @Component({
   selector: 'laji-switch-row',
@@ -17,8 +18,7 @@ export class SwitchRowComponent implements OnChanges {
   @Output() update = new EventEmitter<{id: string, value: any}>();
 
   state;
-
-  constructor() { }
+  typeCheckbox = CheckboxType.excluded;
 
   ngOnChanges() {
     if (!this.option) {

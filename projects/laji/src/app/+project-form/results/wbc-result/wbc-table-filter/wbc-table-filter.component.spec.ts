@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WbcTableFilterComponent } from './wbc-table-filter.component';
 
@@ -6,7 +6,7 @@ describe('WbcTableFilterComponent', () => {
   let component: WbcTableFilterComponent;
   let fixture: ComponentFixture<WbcTableFilterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WbcTableFilterComponent ]
     })

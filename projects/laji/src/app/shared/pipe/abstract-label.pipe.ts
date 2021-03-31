@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 @Pipe({
@@ -9,22 +9,23 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
   lastKey: string;
   protected key: string;
+  updateSub: Subscription;
   onLangChange: Subscription;
 
-  constructor(protected translate: TranslateService,
-              protected _ref: ChangeDetectorRef,
+  protected constructor(
+    protected translate: TranslateService,
+    protected _ref: ChangeDetectorRef
   ) {
   }
 
   updateValue(key: string): Observable<string> {
-    return Observable.create(observer => {
+    return new Observable(subscriber => {
       this.key = key;
-      this._updateValue(key).subscribe(value => {
-        const _value = this._parseValue(value);
-        this.value = _value;
-        observer.next(this.value);
+      this.updateSub = this._updateValue(key).subscribe(value => {
+        this.value = this._parseValue(value);
+        subscriber.next(this.value);
         this._ref.markForCheck();
-      });
+      }, () => {}, () => subscriber.complete());
     });
   }
 
@@ -50,7 +51,7 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
 
     // subscribe to onLangChange event, in case the language changes
     if (!this.onLangChange) {
-      this.onLangChange = this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.onLangChange = this.translate.onLangChange.subscribe(() => {
         this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
         this.updateValue(value).subscribe();
       });
@@ -60,6 +61,9 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
 
   ngOnDestroy(): void {
     this._dispose();
+    if (this.updateSub) {
+      this.updateSub.unsubscribe();
+    }
   }
 
   /**
@@ -68,7 +72,6 @@ export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   protected _dispose(): void {
     if (this.onLangChange) {
       this.onLangChange.unsubscribe();
-      this.onLangChange = undefined;
     }
   }
 

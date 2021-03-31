@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" [ngClass]="{ 'border-top-1' : hasOtherItemBefore , '' : !hasOtherItemBefore }">
   <div class="col-xs-5 key" luGhostTextContent [disableTextContentGhost]="!keyTextContentGhost">
     {{ label }}
     <ng-container *ngTemplateOutlet="labelTpl"></ng-container>

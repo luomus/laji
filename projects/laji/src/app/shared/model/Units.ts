@@ -10,6 +10,7 @@ import { Identifications } from './Identifications';
 import { TypeSpecimens } from './TypeSpecimens';
 import { UnitFact } from './UnitFact';
 import { UnitGathering } from './UnitGathering';
+import { Gatherings } from './Gatherings';
 
 export interface Units {
 
@@ -178,7 +179,7 @@ export interface Units {
 
     ring?: string;
 
-    samplingMethod?: Units.SamplingMethodEnum;
+    samplingMethod?: Gatherings.SamplingMethodEnum;
 
     sex?: Units.SexEnum;
 
@@ -431,48 +432,6 @@ export namespace Units {
         RecordBasisMachineObservationGeologger = <any> 'MY.recordBasisMachineObservationGeologger',
         RecordBasisMachineObservationSatelliteTransmitter = <any> 'MY.recordBasisMachineObservationSatelliteTransmitter',
         RecordBasisLiterature = <any> 'MY.recordBasisLiterature'
-    }
-    export enum SamplingMethodEnum {
-        SamplingMethodLight = <any> 'MY.samplingMethodLight',
-        SamplingMethodPitfall = <any> 'MY.samplingMethodPitfall',
-        SamplingMethodNet = <any> 'MY.samplingMethodNet',
-        SamplingMethodMalaise = <any> 'MY.samplingMethodMalaise',
-        SamplingMethodSoilsample = <any> 'MY.samplingMethodSoilsample',
-        SamplingMethodSweeping = <any> 'MY.samplingMethodSweeping',
-        SamplingMethodBait = <any> 'MY.samplingMethodBait',
-        SamplingMethodBaittrap = <any> 'MY.samplingMethodBaittrap',
-        SamplingMethodFeromonetrap = <any> 'MY.samplingMethodFeromonetrap',
-        SamplingMethodWindowtrap = <any> 'MY.samplingMethodWindowtrap',
-        SamplingMethodPantrap = <any> 'MY.samplingMethodPantrap',
-        SamplingMethodYellowpan = <any> 'MY.samplingMethodYellowpan',
-        SamplingMethodYellowWindowTrap = <any> 'MY.samplingMethodYellowWindowTrap',
-        SamplingMethodYellowtrap = <any> 'MY.samplingMethodYellowtrap',
-        SamplingMethodTrap = <any> 'MY.samplingMethodTrap',
-        SamplingMethodLightTrap = <any> 'MY.samplingMethodLightTrap',
-        SamplingMethodMistnet = <any> 'MY.samplingMethodMistnet',
-        SamplingMethodHand = <any> 'MY.samplingMethodHand',
-        SamplingMethodCarnet = <any> 'MY.samplingMethodCarnet',
-        SamplingMethodDropping = <any> 'MY.samplingMethodDropping',
-        SamplingMethodExovo = <any> 'MY.samplingMethodExovo',
-        SamplingMethodElarva = <any> 'MY.samplingMethodElarva',
-        SamplingMethodEpupa = <any> 'MY.samplingMethodEpupa',
-        SamplingMethodReared = <any> 'MY.samplingMethodReared',
-        SamplingMethodEclectortrap = <any> 'MY.samplingMethodEclectortrap',
-        SamplingMethodSifting = <any> 'MY.samplingMethodSifting',
-        SamplingMethodBoard = <any> 'MY.samplingMethodBoard',
-        SamplingMethodDrag = <any> 'MY.samplingMethodDrag',
-        SamplingMethodTriangleDrag = <any> 'MY.samplingMethodTriangleDrag',
-        SamplingMethodFishNet = <any> 'MY.samplingMethodFishNet',
-        SamplingMethodElectrofishing = <any> 'MY.samplingMethodElectrofishing',
-        SamplingMethodAngleFishing = <any> 'MY.samplingMethodAngleFishing',
-        SamplingMethodFishTrap = <any> 'MY.samplingMethodFishTrap',
-        SamplingMethodSeine = <any> 'MY.samplingMethodSeine',
-        SamplingMethodTrawling = <any> 'MY.samplingMethodTrawling',
-        SamplingMethodOther = <any> 'MY.samplingMethodOther',
-        SamplingMethodDiving = <any> 'MY.samplingMethodDiving',
-        SamplingMethodBeamTrawl = <any> 'MY.samplingMethodBeamTrawl',
-        SamplingMethodDigging = <any> 'MY.samplingMethodDigging',
-        SamplingMethodWashing = <any> 'MY.samplingMethodWashing'
     }
     export enum SexEnum {
         SexM = <any> 'MY.sexM',

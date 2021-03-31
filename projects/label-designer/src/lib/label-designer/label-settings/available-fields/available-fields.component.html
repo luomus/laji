@@ -1,5 +1,5 @@
 <select (change)="doValueSelect($event)" class="form-control">
-  <option value="" [selected]="value === ''">{{ this.placeholder | translate }}...</option>
+  <option value="" [selected]="value === ''">{{ placeholder | translate }}...</option>
   <ng-container *ngFor="let field of availableFields | sort:'label'">
     <ng-container *ngIf="includePseudoFields || (!includePseudoFields && field.type !== fieldType.text && field.type !== fieldType.domain)">
       <option [value]="field.field" *ngIf="field.type !== fieldType.qrCode" [selected]="field.field === value">{{ field.label }}</option>

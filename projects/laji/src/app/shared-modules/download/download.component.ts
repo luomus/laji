@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
+import { ButtonRole } from '../../../../../laji-ui/src/lib/button/button.component';
 
 type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
 
@@ -95,7 +96,7 @@ export class DownloadComponent implements OnChanges {
   @Input() showBackdrop = true;
   @Input() showReason = false;
   @Input() closeModalOnDownloadStart = false;
-  @Input() role = 'secondary';
+  @Input() role: ButtonRole = 'secondary';
   @Input() reason = '';
   @Input() reasonEnum = '';
 
@@ -121,7 +122,7 @@ export class DownloadComponent implements OnChanges {
     private modalService: BsModalService
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.checkCanDownloadStatus();
   }
 

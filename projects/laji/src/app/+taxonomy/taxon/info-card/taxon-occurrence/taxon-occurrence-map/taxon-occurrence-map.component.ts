@@ -15,6 +15,7 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
   statusList = [];
   colorByStatus = {
     'MX.doesNotOccur': '#ffffff',
+    'MX.typeOfOccurrenceOccursBasedOnOccurrences': '#e3f1fb',
     'MX.typeOfOccurrenceOccurs': '#3498db',
     'MX.typeOfOccurrenceStablePopulation': '#006400',
     'MX.typeOfOccurrenceOccasional': '#008000',
@@ -52,8 +53,6 @@ export class TaxonOccurrenceMapComponent implements OnChanges {
     'MX.typeOfOccurrenceMaxRelict': '#00004d',
     'MX.typeOfOccurrenceNotEvaluated': '#c0c0c0'
   };
-
-  constructor() { }
 
   ngOnChanges() {
     this.fillData = {};

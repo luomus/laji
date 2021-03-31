@@ -76,7 +76,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
 
-    this.subFetch = this.fetchPage(this.searchQuery.imageOptions.page)
+    this.subFetch = this.fetchPage()
       .subscribe(data => {
           this.images = data.results.map(res => {
             const image = res['multimedia'][0];
@@ -97,7 +97,7 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
       );
   }
 
-  private fetchPage(page: number): Observable<PagedResult<Taxonomy>> {
+  private fetchPage(): Observable<PagedResult<Taxonomy>> {
     const query = this.searchQuery.query;
 
     return this.taxonomyService

@@ -1,4 +1,4 @@
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -22,12 +22,16 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { environment } from 'projects/laji/src/environments/environment';
 import { Global } from 'projects/laji/src/environments/global';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 const tabOrderProd = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
+
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
 
 @Component({
   selector: 'laji-info-card',
@@ -42,7 +46,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() set activeTab(tab: 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+  @Input() set activeTab(tab: InfoCardTabType) {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
@@ -71,7 +75,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService,
     private localizeRouterService: LocalizeRouterService,
-    private router: Router
+    private router: Router,
+    private title: Title,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -79,6 +85,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     if (this.hasImageData === undefined) {
       this.hasImageData = this.activeTab === 'images';
     }
+
   }
 
   onSelect(tabIndex) {
@@ -89,6 +96,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       this.localizeRouterService.translateRoute(route),
       { queryParamsHandling: 'preserve' }
     );
+    this.setTitle(tabName);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -98,6 +106,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       } else if (!this.tabOrder.includes(this.activeTab)) {
         this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
+      this.setTitle(this.activeTab);
     }
     if (changes.taxon) {
       this.taxonImages = (this.taxon.multimedia || []).map(img => {
@@ -226,7 +235,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     return [
       {e: this.hasImageData, t: 'images'},
       {e: this.hasBiologyData, t: 'biology'},
-      {e: this.isFromMasterChecklist, t: 'observations'},
       {e: this.isFromMasterChecklist, t: 'specimens'},
       {e: this.isEndangered, t: 'endangerment'},
       {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
@@ -267,4 +275,22 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     return this.loadedTabs.getNameFromIdx(shifted);
   }
+
+  private setTitle(tabName) {
+    let metaTitle = this.taxon.vernacularName && this.taxon.vernacularName[this.translate.currentLang] || '';
+    if (metaTitle) {
+      const alternativeNames: string[] = [];
+      if (this.taxon?.alternativeVernacularName?.[this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.alternativeVernacularName[this.translate.currentLang]);
+      }
+      if (this.taxon?.colloquialVernacularName?.[this.translate.currentLang]) {
+        alternativeNames.push(...this.taxon.colloquialVernacularName[this.translate.currentLang]);
+      }
+      metaTitle += alternativeNames.length ? ' (' + alternativeNames.join(', ') + ')' : '';
+    }
+    metaTitle += metaTitle ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
+    metaTitle += ' | ' + this.translate.instant('taxonomy.' + tabName) + ' | ' + this.translate.instant('footer.title1');
+    this.title.setTitle(metaTitle);
+  }
+
 }

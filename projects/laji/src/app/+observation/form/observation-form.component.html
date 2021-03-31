@@ -56,6 +56,7 @@
     </ng-template>
 
     <laji-pill-list
+      class="d-block mt-2"
       [isLabel]="true"
       [list]="query.target || []"
       [isTaxonAutocomplete]="true"
@@ -274,11 +275,11 @@
         </datalist>
       </div>
       <div>
-        <div class="lu-btn-group">
-          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+        <div class="btn-group btn-group-xs">
+          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>
@@ -433,16 +434,20 @@
 
 <!-- Quality -->
 <section class="laji-panel" laji-panel [title]="'observation.form.qualityTitle' | translate" [autoToggle]="true" [open]="visible['quality']">
-  <laji-metadata-select
-    [(ngModel)]="query.recordQuality"
-    [info]="'observation.info.reliability' | translate"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [useFilter]="false"
-    name="recordQuality"
-    [mapToWarehouse]="true"
-    [placeholder]="'reliability' | translate"
-    [alt]="'MZ.recordQualityEnum'"></laji-metadata-select>
+  <laji-metadata-select-with-subcategories
+      [query]="query"
+      [info]="'observation.info.reliability' | translate"
+      (update)="subCategoryChange($event)"
+      [multiple]="true"
+      [useFilter]="false"
+      [mapToWarehouse]="true"
+      [subCategories]="['GLOBAL', 'PROFESSIONAL', 'HOBBYIST', 'AMATEUR']"
+      [placeholder]="'reliability' | translate"
+      [subTitleBase]="'observation.active.recordQuality'"
+      [filtersName]="['recordQuality', 'collectionAndRecordQuality']"
+      [filtersValues]="[query.recordQuality, query.collectionAndRecordQuality]"
+      [alt]="'MZ.recordQualityEnum'"></laji-metadata-select-with-subcategories>
+
 
   <laji-select
     [selected]="[query.unidentified]"
@@ -468,18 +473,6 @@
         {id: false, value: ('observation.form.needsCheck.false' | translate)}
       ]"></laji-select>
 
-  <ng-container *ngIf="advancedMode || query.collectionQuality">
-    <laji-metadata-select
-      name="collectionQuality"
-      [(ngModel)]="query.collectionQuality"
-      (ngModelChange)="onQueryChange()"
-      [mapToWarehouse]="true"
-      [multiple]="true"
-      [useFilter]="false"
-      [placeholder]="'observation.form.collectionQuality' | translate"
-      [info]="'observation.info.collectionQuality' | translate"
-      [alt]="'MY.collectionQualityEnum'"></laji-metadata-select>
-  </ng-container>
   <ng-container *ngIf="advancedMode || query.annotated">
     <laji-select
       [selected]="[query.annotated]"
@@ -522,16 +515,20 @@
 </section>
 
 <!--Sources -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
-  <laji-metadata-select
-    [(ngModel)]="query.collectionId"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [field]="'MY.collectionID'"
-    [placeholder]="'observation.form.dataset' | translate"
+<section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
+  <laji-select-collections
+    [(selectedOptions)]="query.collectionId"
+    (selectedOptionsChange)="onQueryChange()"
+    [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
-    [mapToWarehouse]="false"
-    name="collectionID"></laji-metadata-select>
+    [modalTitle]="'observation.form.datasetSelect' | translate"
+    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
+    [browseTitle]="'observation.form.datasetBrowse' | translate"
+    [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [okButtonLabel]="'labelDesigner.Ok' | translate"
+    [clearButtonLabel]="'labelDesigner.Clear' | translate"
+    name='collectionID'
+  ></laji-select-collections>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"
@@ -725,16 +722,16 @@
 </section>
 
 <!-- Concealment level -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
-  <laji-metadata-select
-    [info]="'observation.info.secureLevel' | translate"
-    [(ngModel)]="query.secureLevel"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']">
+  <laji-select
+    [selected]="[query.secured]"
+    (selectedChange)="indirectQueryChange('secured', $event[0])"
+    [multiple]="false"
     [useFilter]="false"
-    [mapToWarehouse]="true"
-    [skip]="['MX.secureLevelNoShow']"
-    [placeholder]="'observation.form.secureLevel'"
-    name="secureLevel"
-    [alt]="'MX.secureLevels'"></laji-metadata-select>
+    [title]="'observation.form.secured' | translate"
+    [info]="'observation.info.secured' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.secured.true' | translate)},
+        {id: false, value: ('observation.form.secured.false' | translate)}
+      ]"></laji-select>
 </section>

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { OwnDatatableComponent } from './own-datatable.component';
 
@@ -6,7 +6,7 @@ describe('OwnDatatableComponent', () => {
   let component: OwnDatatableComponent;
   let fixture: ComponentFixture<OwnDatatableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ OwnDatatableComponent ]
     })

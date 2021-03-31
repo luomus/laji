@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LineTransectComponent } from './line-transect.component';
 
@@ -6,7 +6,7 @@ describe('LineTransectComponent', () => {
   let component: LineTransectComponent;
   let fixture: ComponentFixture<LineTransectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LineTransectComponent ]
     })

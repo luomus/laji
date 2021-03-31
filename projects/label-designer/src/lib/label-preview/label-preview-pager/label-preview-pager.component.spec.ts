@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelPreviewPagerComponent } from './label-preview-pager.component';
 
@@ -6,7 +6,7 @@ describe('LabelPreviewPagerComponent', () => {
   let component: LabelPreviewPagerComponent;
   let fixture: ComponentFixture<LabelPreviewPagerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelPreviewPagerComponent ]
     })

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Global } from '../../../environments/global';
 import { Form } from '../../shared/model/Form';
 
 @Component({
@@ -9,5 +8,4 @@ import { Form } from '../../shared/model/Form';
 })
 export class SurveyBoxComponent {
   @Input() form: Form.List;
-  @Input() comingSoonForm: {link: string, title: string, logo?: string};
 }

@@ -6,8 +6,6 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DocumentViewerChildComunicationService {
 
-  constructor() { }
-
   private childGenerateEvent = new BehaviorSubject<boolean>(false);
 
   emitChildEvent(value: boolean) {

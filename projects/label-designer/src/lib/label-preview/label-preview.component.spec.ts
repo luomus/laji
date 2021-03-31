@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelPreviewComponent } from './label-preview.component';
 
@@ -6,7 +6,7 @@ describe('LabelPreviewComponent', () => {
   let component: LabelPreviewComponent;
   let fixture: ComponentFixture<LabelPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelPreviewComponent ]
     })

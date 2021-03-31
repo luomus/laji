@@ -30,11 +30,11 @@ export class HasekaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subRoute = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      map(event => true), ).pipe(
-      startWith(true))
-      .subscribe(() => {
-        this.isFront = this.router.isActive('/vihko/home', true);
-      });
+      map(() => true),
+      startWith(true)
+    ).subscribe(() => {
+      this.isFront = this.router.isActive('/vihko/home', true);
+    });
   }
 
   ngOnDestroy() {

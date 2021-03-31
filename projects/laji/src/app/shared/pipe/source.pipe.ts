@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AbstractLabelPipe } from './abstract-label.pipe';
 import { SourceService } from '../service/source.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Pipe({
   name: 'source',
@@ -17,10 +17,9 @@ export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
     super(translate, _ref);
   }
 
-  protected _updateValue(key: string): Observable<any> {
+  protected _updateValue(): Observable<any> {
     if (this.sources) {
-      this.value = this.sources[key] || key;
-      return;
+      return of(this.sources);
     }
     const value$ = this.sourceService.getAllAsLookUp(this.translate.currentLang);
     value$.subscribe(sources => {

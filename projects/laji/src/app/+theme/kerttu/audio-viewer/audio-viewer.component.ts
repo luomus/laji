@@ -12,10 +12,12 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { AudioService } from '../service/audio.service';
+import { AudioService } from './service/audio.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import {Subscription} from 'rxjs';
-import { KerttuUtils } from '../service/kerttu-utils';
+import {AudioViewerMode, IAudioViewerArea} from './models';
+import {AudioPlayer} from './service/audio-player';
+import {AudioViewerUtils} from './service/audio-viewer-utils';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -26,79 +28,74 @@ import { KerttuUtils } from '../service/kerttu-utils';
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() recording: string;
 
-  @Input() xRangePadding: number;
-  @Input() xRange: number[];
-  @Input() yRange: number[];
+  @Input() focusArea: IAudioViewerArea; // focus area is drawn with white rectangle to the spectrogram
+  @Input() focusAreaTimePadding: number; // how much recording is shown outside the focus area (if undefined the whole recording is shown)
+  @Input() zoomFrequency = false;
 
-  @Input() zoomed = false;
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
+
+  @Input() highlightFocusArea = false; // highlighting darkens the spectrogram background and allows to play the sound only in the focus area
+  @Input() showBrushControl = false; // brush control allows the user to zoom into spectrogram
 
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
 
-  start = 0;
-  stop: number;
+  localFocusArea: IAudioViewerArea; // focus area in extracted audio
+  localBrushArea: IAudioViewerArea; // brush area in extracted audio
 
+  mode: AudioViewerMode = 'default';
   buffer: AudioBuffer;
-  currentTime = 0;
-
-  isPlaying = false;
+  extractedBuffer: AudioBuffer;
+  audioPlayer: AudioPlayer;
 
   loading = false;
-  @Output() audioLoading = new EventEmitter<boolean>();
-
   hasError = false;
 
-  private source: AudioBufferSourceNode;
-  private startOffset = 0;
-  private startTime: number;
-
-  private autoplayCounter = 0;
+  @Output() audioLoading = new EventEmitter<boolean>();
 
   private audioSub: Subscription;
-  private timeupdateInterval;
 
   constructor(
     @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
     private audioService: AudioService,
     private ngZone: NgZone
-  ) { }
+  ) {
+    this.audioPlayer = new AudioPlayer(this.audioService, this.ngZone, this.cdr);
+  }
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.recording || changes.xRangePadding) {
+    if (changes.recording) {
       this.clear();
       this.setAudioLoading(true);
 
       if (this.recording) {
         this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
-          const [minValue, maxValue] = [0, buffer.duration];
-          if (this.xRange && this.rangeIsNotValid(this.xRange, minValue, maxValue)) {
+          if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;
           }
-
-          [this.start, this.stop] = KerttuUtils.getPaddedRange(this.xRange, this.xRangePadding, 0, buffer.duration);
-          buffer = this.audioService.extractSegment(buffer, this.start, this.stop);
           this.buffer = buffer;
+          this.setBuffer(buffer);
 
-          if (this.autoplay && changes.recording) {
-            this.autoplayCounter = 0;
-            this.toggleAudio();
+          if (this.autoplay) {
+            this.audioPlayer.startAutoplay(this.autoplayRepeat);
           }
 
           this.cdr.markForCheck();
-        }, e => {
+        }, () => {
           this.onError();
         });
       }
-    } else if (changes.zoomed) {
-      if (this.isPlaying) {
-        this.toggleAudio();
+    } else if (!this.hasError) {
+      if (changes.focusArea || changes.focusAreaTimePadding) {
+        this.setBuffer(this.buffer);
+      } else if (changes.zoomFrequency || changes.highlightFocusArea) {
+        this.audioPlayer.setPlayArea(this.getPlayArea());
       }
     }
   }
@@ -107,112 +104,28 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.clear();
   }
 
-  toggleAudio() {
-    if (!this.buffer) {
-      return;
-    }
-
-    if (!this.isPlaying) {
-      this.isPlaying = true;
-
-      if (this.currentTime === this.buffer.duration) {
-        this.currentTime = 0;
-      }
-      this.startOffset = this.currentTime;
-
-      this.source = this.audioService.playAudio(this.buffer, this.zoomed ? this.yRange : undefined, this.currentTime);
-      this.startTime = this.audioService.getTime();
-
-      this.source.onended = () => {
-        this.ngZone.run(() => {
-          this.sourceOnEnded();
-          this.cdr.markForCheck();
-        });
-      };
-      this.startTimeupdateInterval();
-    } else {
-      this.source.stop(0);
-    }
-  }
-
   onSpectrogramDragStart() {
-    if (this.isPlaying) {
-      this.toggleAudio();
-    }
+    this.audioPlayer.stop();
   }
 
   onSpectrogramDragEnd(time: number) {
-    if (this.isPlaying) {
-      this.toggleAudio();
-      this.source.onended = (args) => {
-        this.ngZone.run(() => {
-          this.sourceOnEnded();
-          this.currentTime = time;
-          this.toggleAudio();
-          this.cdr.markForCheck();
-        });
-      };
-    } else {
-      this.currentTime = time;
-      this.toggleAudio();
-    }
+    this.audioPlayer.startFrom(time);
   }
 
-  private sourceOnEnded() {
-    this.clearTimeupdateInterval();
-    this.updateCurrentTime();
-    this.isPlaying = false;
-
-    if (this.autoplay && this.autoplayCounter < this.autoplayRepeat - 1) {
-      if (this.currentTime === this.buffer.duration) {
-        this.autoplayCounter += 1;
-        this.toggleAudio();
-      } else {
-        this.autoplayCounter = this.autoplayRepeat;
-      }
-    }
+  onSpectrogramBrushEnd(area: IAudioViewerArea) {
+    this.mode = 'default';
+    this.localBrushArea = area;
+    this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
-  private startTimeupdateInterval() {
-    this.timeupdateInterval = setInterval(() => {
-      this.updateCurrentTime();
-      this.cdr.markForCheck();
-    }, 10);
+  clearBrushArea() {
+    this.localBrushArea = undefined;
+    this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
-  private clearTimeupdateInterval() {
-    if (this.timeupdateInterval) {
-      clearInterval(this.timeupdateInterval);
-    }
-  }
-
-  private updateCurrentTime() {
-    if (this.isPlaying) {
-      this.currentTime = this.startOffset + this.audioService.getPlayedTime(this.startTime, this.source.playbackRate.value);
-    } else {
-      this.currentTime = this.startOffset;
-    }
-
-    this.currentTime = Math.min(this.currentTime, this.buffer.duration);
-  }
-
-  private clear() {
-    if (this.audioSub) {
-      this.audioSub.unsubscribe();
-    }
-
-    this.clearTimeupdateInterval();
-
-    if (this.source && this.isPlaying) {
-      this.source.stop(0);
-      this.source.onended = () => {};
-    }
-
-    this.buffer = undefined;
-    this.currentTime = 0;
-    this.isPlaying = false;
-    this.source = undefined;
-    this.hasError = false;
+  toggleBrushMode() {
+    this.audioPlayer.stop();
+    this.mode = this.mode === 'brush' ? 'default' : 'brush';
   }
 
   setAudioLoading(loading: boolean) {
@@ -220,7 +133,39 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.audioLoading.emit(loading);
   }
 
-  private rangeIsNotValid(range: number[], minValue: number, maxValue: number) {
+  private clear() {
+    if (this.audioSub) {
+      this.audioSub.unsubscribe();
+    }
+
+    this.buffer = undefined;
+    this.extractedBuffer = undefined;
+    this.localBrushArea = undefined;
+    this.hasError = false;
+    this.audioPlayer.clear();
+  }
+
+  private setBuffer(buffer: AudioBuffer) {
+    const xRange = AudioViewerUtils.getPaddedRange(this.focusArea?.xRange, this.focusAreaTimePadding, 0, buffer.duration);
+
+    this.localFocusArea = {
+      xRange: this.focusArea?.xRange ? [this.focusArea.xRange[0] - xRange[0], this.focusArea.xRange[1] - xRange[0]] : undefined,
+      yRange: this.focusArea?.yRange
+    };
+
+    this.extractedBuffer = this.audioService.normaliseAudio(
+      this.audioService.extractSegment(buffer, xRange[0], xRange[1])
+    );
+
+    this.audioPlayer.setBuffer(this.extractedBuffer, this.getPlayArea());
+  }
+
+  private areaIsValid(buffer: AudioBuffer, area: IAudioViewerArea): boolean {
+    const [minValue, maxValue] = [0, buffer.duration];
+    return !(area?.xRange && this.rangeIsNotValid(area.xRange, minValue, maxValue));
+  }
+
+  private rangeIsNotValid(range: number[], minValue: number, maxValue: number): boolean {
     if (range[1] < range[0]) {
       return true;
     }
@@ -231,5 +176,16 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.hasError = true;
     this.setAudioLoading(false);
     this.cdr.markForCheck();
+  }
+
+  private getPlayArea(): IAudioViewerArea {
+    if (this.localBrushArea) {
+      return this.localBrushArea;
+    }
+
+    return {
+      xRange: this.highlightFocusArea ? this.localFocusArea?.xRange : undefined,
+      yRange: (this.highlightFocusArea || this.zoomFrequency) ? this.localFocusArea?.yRange : undefined
+    };
   }
 }

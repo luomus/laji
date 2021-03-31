@@ -1,8 +1,7 @@
 import {
-  Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, Renderer2, OnDestroy
+  Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, OnDestroy
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'lu-checkbox',

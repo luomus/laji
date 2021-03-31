@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PrintMapComponent } from './print-map.component';
 
@@ -6,7 +6,7 @@ describe('PrintMapComponent', () => {
   let component: PrintMapComponent;
   let fixture: ComponentFixture<PrintMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PrintMapComponent ]
     })

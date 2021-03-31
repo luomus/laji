@@ -1,3 +1,7 @@
 .invasive-table td, .invasive-table th {
   border: none;
 }
+
+ul {
+  margin-bottom: 0px;
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Params, Router } from '@angular/router';
+import { NavigationExtras, Params, Router } from '@angular/router';
 import { TaxonomySearchQueryInterface } from '../model/taxonomy-search-query.interface';
 import { SearchQueryInterface } from '../../../shared-modules/search-filters/search-query.interface';
 
@@ -82,7 +82,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   }
 
   public updateUrl(skipParams?: string[]): void {
-    const extra = {skipLocationChange: false};
+    const extra: NavigationExtras = {skipLocationChange: false};
     const queryParams = {};
 
     for (const key in this.query) {
@@ -98,8 +98,6 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
 
     if (Object.keys(this.query).length > 0) {
       extra['queryParams'] = queryParams;
-    } else {
-      extra['preserveQueryParams'] = false;
     }
     this.router.navigate(
       [],

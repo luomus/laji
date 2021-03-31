@@ -105,7 +105,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.visible && this.visible) {
+    if (changes.visible && this.visible && this.datatable) {
       this.datatable.refreshTable();
     }
   }
@@ -277,7 +277,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
             }
           });
           this.loading = false;
-          this.datatable.refreshTable();
+          this.datatable?.refreshTable();
           this.cd.markForCheck();
         },
         err => {

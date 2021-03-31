@@ -69,7 +69,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() set open(b) {
     this._open = b;
     this.checkCloseOnClickListener();
-    this.toggled.emit(b);
   }
   get open() {
     return this._open;
@@ -113,7 +112,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       distinctUntilChanged(),
       takeUntil(this.unsubscribe$)
     ).subscribe(this.checkScreenWidth.bind(this));
-    this.ogWidth = this.sidebarRef.nativeElement.offsetWidth;
+    this.ogWidth = this.sidebarRef?.nativeElement.offsetWidth;
     this.checkCloseOnClickListener();
 
     if (this.sidebarLinks) {
@@ -157,6 +156,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   onSwitchOpen() {
     this.open = !this.open;
+    this.toggled.emit(this.open);
     this.cdr.detectChanges();
   }
 
@@ -172,7 +172,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  onDragStart(mousedown) {
+  onDragStart() {
     this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
     this.dragging = true;
     this.destroyDragListeners();

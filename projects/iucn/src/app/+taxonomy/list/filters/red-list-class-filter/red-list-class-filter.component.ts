@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-redlist-class-filter',
   templateUrl: './red-list-class-filter.component.html',
   styleUrls: ['./red-list-class-filter.component.scss']
 })
-export class RedListClassFilterComponent implements OnInit {
+export class RedListClassFilterComponent {
 
   @Output() valueChange = new EventEmitter<string[]>();
 
@@ -32,11 +32,6 @@ export class RedListClassFilterComponent implements OnInit {
     NA?: boolean,
     NE?: boolean
   } = {};
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   @Input()
   set value(val: string[]) {

@@ -18,6 +18,4 @@ export class NgxChartsAdvancedPieChartComponent {
 
   @Output() select = new EventEmitter();
 
-  constructor() { }
-
 }

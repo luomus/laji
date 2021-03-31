@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { Observable, of } from 'rxjs';
 import { Location } from '@angular/common';
@@ -23,7 +23,7 @@ export class CheckLoginGuard implements CanActivate {
     private platformService: PlatformService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UrlTree|boolean|Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): UrlTree|boolean|Observable<boolean> {
     if (this.platformService.isServer) {
       this.location.replaceState(this.location.path().split('?')[0], '');
       return true;

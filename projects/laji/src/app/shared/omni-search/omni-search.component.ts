@@ -1,4 +1,4 @@
-import { combineLatest, debounceTime, tap, flatMap, take, delay, map ,  switchMap, distinctUntilChanged, takeUntil, share } from 'rxjs/operators';
+import { combineLatest, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,7 +11,7 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { Observable, of as ObservableOf, Subscription, Subject } from 'rxjs';
+import { of as ObservableOf, Subscription } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
@@ -20,7 +20,6 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
-import { SurveyBoxComponent } from 'projects/laji/src/app/shared-modules/survey-box/survey-box.component';
 
 
 @Component({
@@ -48,10 +47,10 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   public taxa = [];
   public taxon: any;
   public loading = false;
+  public dropdownVisible = false;
   private subTaxa: Subscription;
   private subCnt: Subscription;
   private inputChange: Subscription;
-  private dataSearch: Observable<any>;
   private el: Element;
 
   constructor(private lajiApi: LajiApiService,
@@ -70,11 +69,11 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.inputChange = this.searchControl.valueChanges.pipe(
       distinctUntilChanged(),
-      tap(value => this.search = value)).pipe(
+      tap(value => this.search = value),
       debounceTime(this.delay),
-      ).subscribe(value => {
-        this.updateTaxa();
-      });
+    ).subscribe(() => {
+      this.updateTaxa();
+    });
   }
 
 
@@ -89,6 +88,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onClose() {
+    this.dropdownVisible = false;
     this.search = '';
     this.taxa = [];
     this.close.emit();
@@ -179,6 +179,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.taxa = data;
           this.loading = false;
           this.activate(0);
+          this.dropdownVisible = this.taxa.length > 0 && this.search.length > 0;
           this.changeDetector.markForCheck();
         },
         err => {

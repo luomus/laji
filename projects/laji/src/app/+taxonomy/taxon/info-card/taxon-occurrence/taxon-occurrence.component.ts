@@ -28,8 +28,6 @@ export class TaxonOccurrenceComponent implements OnChanges {
   filterByHabitatTotal: number;
   filterHabitats: Array<any> = [];
 
-  constructor() { }
-
   ngOnChanges() {
     this.mapQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id, true);
     this.chartQuery = InfoCardQueryService.getFinnishObservationQuery(this.taxon.id);

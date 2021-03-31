@@ -18,8 +18,6 @@ export class IssueComponent implements OnChanges {
   @Input() hideTooltip = false;
   error: Issue;
 
-  constructor() { }
-
   ngOnChanges() {
     this.prepareIssue();
   }

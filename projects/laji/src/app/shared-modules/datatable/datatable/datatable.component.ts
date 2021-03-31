@@ -1,26 +1,13 @@
 import { debounceTime } from 'rxjs/operators';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
+import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
-import { BrowserService } from '../../../shared/service/browser.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -39,18 +26,19 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() pageSize: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
-  @Input() sortType = 'multi';
+  @Input() sortType: SortType = SortType.multi;
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() emptyMessage = '';
   @Input() clientSideSorting = false;
-  @Input() columnMode = 'force';
+  @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'force';
   @Input() resizable = true;
   @Input() showRowAsLink = true;
-  @Input() rowHeight = 35;
+  @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
+  @Input() summaryRow = false;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
@@ -78,13 +66,36 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   private filterChange$ = new Subject();
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
+  _getRowClass = (row) => {
+    if (this.getRowClass) {
+      const rowClass = this.getRowClass(row);
+      if (rowClass) {
+        return rowClass;
+      }
+    }
+
+    return {
+      'link': this.showRowAsLink,
+      'issues':
+        !!(row.document && row.document.quality && row.document.quality.issue) ||
+        !!(row.gathering && row.gathering.quality && (
+          row.gathering.quality.issue ||
+          row.gathering.quality.locationIssue ||
+          row.gathering.quality.timeIssue
+        )) ||
+        !!(row.unit && row.unit.quality && (
+          row.unit.quality.documentGatheringUnitQualityIssues ||
+          row.unit.quality.issue
+        ))
+    };
+  }
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone,
-    private browserService: BrowserService
+    private zone: NgZone
   ) {}
 
   @Input() set height(height: string) {
@@ -229,37 +240,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   refreshTable() {
-    if (this.platformService.isServer) {
+    if (this.platformService.isServer || !this.datatable) {
       return;
     }
-    if (this._rows) {
-      this._rows = [...this._rows];
-      this.changeDetectorRef.markForCheck();
-    }
-  }
-
-  _getRowClass(row) {
-    if (this.getRowClass) {
-      const rowClass = this.getRowClass(row);
-      if (rowClass) {
-        return rowClass;
-      }
-    }
-
-    return {
-      'link': this.showRowAsLink,
-      'issues':
-        !!(row.document && row.document.quality && row.document.quality.issue) ||
-        !!(row.gathering && row.gathering.quality && (
-          row.gathering.quality.issue ||
-          row.gathering.quality.locationIssue ||
-          row.gathering.quality.timeIssue
-        )) ||
-        !!(row.unit && row.unit.quality && (
-          row.unit.quality.documentGatheringUnitQualityIssues ||
-          row.unit.quality.issue
-        ))
-    };
+    this.datatable.bodyComponent.onBodyScroll({scrollXPos: 0, scrollYPos: 0});
   }
 
   onResize(event) {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LabelFieldsAvailableComponent } from './label-fields-available.component';
 
@@ -6,7 +6,7 @@ describe('LabelFieldsAvailableComponent', () => {
   let component: LabelFieldsAvailableComponent;
   let fixture: ComponentFixture<LabelFieldsAvailableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LabelFieldsAvailableComponent ]
     })

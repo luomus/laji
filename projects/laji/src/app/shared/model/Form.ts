@@ -3,7 +3,7 @@
  */
 import { Document } from './Document';
 import { Annotation } from './Annotation';
-import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
+import { MultiLanguage } from './MultiLanguage';
 
 export namespace Form {
   export enum PrintType {
@@ -65,11 +65,14 @@ export namespace Form {
     secondaryCopy?: boolean;
     sidebarFormLabel?: string;
     useNamedPlaces?: boolean;
+    restrictAccess?: RestrictAccess;
+    hasAdmins?: boolean;
+    dataset?: boolean;
+    viewerType?: ViewerType;
+    disabled?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
-    restrictAccess?: RestrictAccess;
-    hasAdmins?: boolean;
     documentsViewableForAll?: boolean;
     adminLockable?: boolean;
     warnEditingOldDocument?: boolean;
@@ -96,7 +99,6 @@ export namespace Form {
     hideCancelButton?: boolean;
     hideDraftButton?: boolean;
     printType?: PrintType;
-    viewerType?: ViewerType;
     resultServiceType?: ResultServiceType;
     footerDescription?: string;
     footerLogos?: {
@@ -109,6 +111,7 @@ export namespace Form {
     ownSubmissionsAdminTitle?: string;
     shortTitleFromCollectionName?: boolean;
     displayOwnSubmissions?: boolean;
+    simple?: boolean;
     namedPlaceOptions?: {
       copyLatestDocumentToNamedPlace?: boolean;
       filterByMunicipality?: boolean;

@@ -1,6 +1,8 @@
 @import '@swimlane/ngx-datatable/themes/material.scss';
+@import 'laji-form-builder/dist/styles.css';
 
-@import "styles";
+@import 'styles';
+// @import 'bs_overwrites';
 @import 'projects/laji-ui/src/lib/vars';
 
 html {
@@ -295,13 +297,12 @@ treenode:last-child > .tree-node > .tree-children::after {
   z-index: 1070;
 }
 
-.popover-lg {
-  border: none;
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1), 0 4px 16px 0 rgba(0,0,0,0.1);
-  .popover-arrow {
-    border-right-color: rgba(0,0,0,.1) !important;
-    border-left-color: rgba(0,0,0,.1) !important;
-  }
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+.border-top-1 {
+  border-top: 1px solid #ddd !important;
 }
 
 .small-flag {
@@ -672,9 +673,7 @@ body > .ui-select-bootstrap.open {
 
 /** scrollbar **/
 ::-webkit-scrollbar {
-  height: 10px;
   overflow: visible;
-  width: 10px;
 }
 
 ::-webkit-scrollbar-button {
@@ -687,37 +686,37 @@ body > .ui-select-bootstrap.open {
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: rgba(0,0,0,0.5);
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.35);
+  background-color: rgba($neutral-5, 1);
+  box-shadow: inset 0 0 3px rgba(0,0,0,.4);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0,0,0,.4);
-  box-shadow: inset 1px 1px 1px rgba(0,0,0,.25);
+  background-color: rgba($neutral-5, .8);
+  box-shadow: inset 0 0 3px rgba(0,0,0,.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,.2);
+  background-color: rgba($neutral-5, .5);
+
   background-clip: padding-box;
   border: solid transparent;
   border-width: 1px 1px 1px 1px;
-  min-height: 28px;
-  padding: 100px 0 0;
-  box-shadow: inset 1px 1px 0 rgba(0,0,0,.1), inset 0 -1px 0 rgba(0,0,0,.07);
+
+  box-shadow: inset 0 0 3px rgba(0,0,0,.2);
 }
 
 ::-webkit-scrollbar-track:active {
-  background-color: rgba(0,0,0,.05);
+  background-color: $neutral-3;
+  border: 1px solid $neutral-4;
 }
 
 ::-webkit-scrollbar-track:hover {
-  background-color: rgba(0,0,0,.05);
+  background-color: $neutral-3;
 }
 
 ::-webkit-scrollbar-track {
-  background-clip: padding-box;
-  border: 1px rgba(0, 0, 0, .1);
-  background-color: rgba(0,0,0,.05);
+  background-color: $neutral-2;
+  border: 1px solid $neutral-3;
 }
 /** /scrollbar **/
 
@@ -736,14 +735,14 @@ body > .ui-select-bootstrap.open {
 }
 
 @media (min-width: 768px){
-  .modal-annotation {
+  .modal-xl {
       width: 90%;
   }
 }
 
 
 @media (min-width: 1660px){
-  .modal-annotation {
+  .modal-xl {
       width: 1600px;
   }
 }
@@ -931,7 +930,7 @@ body > .ui-select-bootstrap.open {
 
 .margin-top-25 {
   margin-top:25px;
-}
+}¨
 
 .block {
   display: block;
@@ -1441,26 +1440,92 @@ span.simple-option {
 
   /*custom style FinBif publications */
 
-  p.author-name, p.publication-journal, p.publication-doi {
-    margin-bottom: 5px!important;
+  ul.authors, p.publication-journal, p.publication-doi {
+    margin-bottom: 0px!important;
   }
 
-  p.publication-doi {
-    margin-bottom:20px !important;
+  article p {
+    margin-bottom: 0px;
   }
 
-  p.publication-doi:last-child {
+  article p time {
+    font-size: 12px;
+  }
+
+  article p span {
+    font-size: 12px;
+  }
+
+  span.authors span.author:last-child {
+    margin-left: 4px;
+    &::before {
+        content: " & ";
+    }
+  }
+
+  span.authors span.author:nth-of-type(n + 2):not(:last-child) {
+    &::before {
+      content: ", ";
+    }
+  }
+
+  p.publication-doi, span.publication-journal, .publication-page-start, .publication-volume {
+    font-size: 12px;
+  }
+
+  article p {
+    margin-bottom: 2px!important;
+  }
+
+  article p.publication-doi {
+    margin-bottom: 20px!important;
+  }
+
+  article p.authors {
     margin-bottom: 0px !important;
+    line-height: 14px;
   }
 
-  p.publication-doi, p.publication-journal {
-    font-size: 14px !important;
+  h1.publication-title {
+    margin-top: 20px;
+    padding-bottom: 4px;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 20px !important;
+    font-weight: 400;
+    margin: 0;
   }
 
-  h4.publication-title {
-    margin-top: 20px !important;
-    margin-bottom: 10px !important;
-    font-size: 22px !important;
+  article.publication header {
+    margin-bottom: 0px;
+  }
+
+  .finBif-publications h2 {
+    display: inline;
+  }
+
+  .finBif-info {
+    position: relative;
+    top: -3px;
+  }
+
+  article p span time {
+    margin-left: 4px;
+  }
+
+  .publication-page-start {
+    margin-right: 0px;
+  }
+
+  .finBif-publications {
+    max-width: 600px;
+    @include media-query-laptop {
+      max-width: 500px;
+    }
+    @include media-query-tablet {
+      max-width: 1200px;
+      margin-top: 30px;
+    }
   }
 
 

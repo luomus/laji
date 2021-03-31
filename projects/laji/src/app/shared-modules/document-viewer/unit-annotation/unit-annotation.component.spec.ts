@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnitAnnotationComponent } from './unit-annotation.component';
 
@@ -6,7 +6,7 @@ describe('UnitAnnotationComponent', () => {
   let component: UnitAnnotationComponent;
   let fixture: ComponentFixture<UnitAnnotationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnitAnnotationComponent ]
     })

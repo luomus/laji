@@ -1,6 +1,4 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from '../service/platform.service';
 
 @Directive({ selector: '[lajiHideForIe]' })

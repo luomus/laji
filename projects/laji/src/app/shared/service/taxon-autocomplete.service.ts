@@ -64,6 +64,10 @@ export class TaxonAutocompleteService {
         string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
         : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
+      case 'MX.colloquialVernacularName':
+        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + this.matchingName + ') </span>'
+        : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>' );
+        return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       default:
         string = scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>';
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
@@ -91,6 +95,7 @@ export class TaxonAutocompleteService {
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
+      case 'MX.colloquialVernacularName':
         return payload['vernacularName'] !== '' ? payload['vernacularName'] : payload['scientificName'];
       default:
         return payload['scientificName'];
@@ -102,7 +107,10 @@ export class TaxonAutocompleteService {
     words.forEach(el => {
       const newOriginal = original.toLowerCase();
       const newString = el.toLowerCase();
-      original = newOriginal.includes(newString) ? newOriginal.replace(newString, '<b>' + newString + '</b>') : newOriginal;
+      const index = newOriginal.indexOf(newString);
+      original = index > -1 ?
+      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
+      : original;
     });
     return original;
   }
@@ -114,5 +122,6 @@ export class TaxonAutocompleteService {
     return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
+
 
 }

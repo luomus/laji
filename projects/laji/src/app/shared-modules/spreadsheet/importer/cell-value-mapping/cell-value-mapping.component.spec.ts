@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CellValueMappingComponent } from './cell-value-mapping.component';
 
@@ -6,7 +6,7 @@ describe('CellValueMappingComponent', () => {
   let component: CellValueMappingComponent;
   let fixture: ComponentFixture<CellValueMappingComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CellValueMappingComponent ]
     })

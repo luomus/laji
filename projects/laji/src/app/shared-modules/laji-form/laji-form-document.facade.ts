@@ -11,7 +11,7 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { Util } from '../../shared/service/util.service';
-import { DocumentService } from '../own-submissions/service/document.service';
+import { DocumentService, Readonly } from '../own-submissions/service/document.service';
 import { FormService } from '../../shared/service/form.service';
 import { Document } from '../../shared/model/Document';
 import { Annotation } from '../../shared/model/Annotation';
@@ -23,6 +23,8 @@ import { FormPermissionService, Rights } from '../../shared/service/form-permiss
 import { Person } from '../../shared/model/Person';
 import { DocumentStorage } from '../../storage/document.storage';
 import { LajiFormUtil } from './laji-form-util.service';
+import { PersonApi } from '../../shared/api/PersonApi';
+import { Global } from '../../../environments/global';
 
 export enum FormError {
   ok,
@@ -35,17 +37,10 @@ export enum FormError {
   noAccessToDocument
 }
 
-export enum Readonly {
-  noEdit,
-  false,
-  true
-}
-
 export interface ISuccessEvent {
   success: boolean;
   document: Document;
   form: Form.SchemaForm;
-  namedPlace?: NamedPlace;
 }
 
 export interface FormWithData extends Form.SchemaForm {
@@ -121,7 +116,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private formService: FormService,
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
-    private documentStorage: DocumentStorage
+    private documentStorage: DocumentStorage,
+    private personApi: PersonApi
   ) {
     this.dataSub = this.dataChange$.pipe(
       auditTime(3000),
@@ -158,7 +154,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
         mergeMap(person => this.formPermissionService.getRights(form).pipe(
           tap(rights => rights.edit === false ? this.updateState({..._state, error: FormError.noAccess, form: {...form, rights}}) : null),
           mergeMap(rights => {
-              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person, isTemplate)).pipe(
+              return (documentID ? this.fetchExistingDocument(form, documentID) : this.fetchEmptyData(form, person)).pipe(
                 map(data => ({...form, formData: data, rights, readonly: this.getReadOnly(data, rights, person)})),
                 map((res: FormWithData) => res.readonly !== Readonly.false ?
                   {...res, uiSchema: {...res.uiSchema, 'ui:disabled': true}} :
@@ -321,11 +317,12 @@ export class LajiFormDocumentFacade implements OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, isTemplate: boolean): Observable<Document> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
     const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
-      map(data => this.addNamedPlaceData(form, data))
-    );
+      map(data => this.addNamedPlaceData(form, data)),
+      switchMap(data => this.addCollectionID(form, data))
+  );
 
     return getEmpty$;
     /*
@@ -423,14 +420,21 @@ export class LajiFormDocumentFacade implements OnDestroy {
     return merge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
   }
 
-  private getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
-    if (rights.admin) {
-      return Readonly.false;
-    }
-    if (person && person.id && data && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
-      return Readonly.noEdit;
-    }
-    return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
+  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
+    return form.id === Global.forms.privateCollection
+      ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+        typeof profile?.personalCollectionIdentifier === 'string'
+          ? {
+            ...(data || {}),
+            keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
+          }
+          : data
+      ))
+      : of(data);
+  }
+
+  getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
+    return this.documentService.getReadOnly(data, rights, person);
   }
 
   private currentDateTime() {

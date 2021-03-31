@@ -101,7 +101,7 @@ export class NamedPlacesService {
       .delete(
         id,
         userToken
-      ).pipe(tap(r => {
+      ).pipe(tap(() => {
         this.deletedIds[id] = true;
         this.invalidateCache();
       }));

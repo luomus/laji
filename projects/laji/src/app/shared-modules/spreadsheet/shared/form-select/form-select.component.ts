@@ -42,8 +42,8 @@ export class FormSelectComponent {
   ) { }
 
   @Input()
-  set forms(forms: string[]) {
-    this._forms = forms;
+  set forms(forms: string[]|null) {
+    this._forms = Array.isArray(forms) ? forms : [];
     this.initForms();
   }
 
@@ -52,7 +52,7 @@ export class FormSelectComponent {
   }
 
   private initForms() {
-    if (!this.forms) {
+    if (this.forms.length === 0) {
       this.forms$ = of([]);
       return;
     }

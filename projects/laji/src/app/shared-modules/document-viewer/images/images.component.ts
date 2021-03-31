@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { QueryParamsHandling } from '@angular/router';
 
 @Component({
   selector: 'laji-images',
@@ -16,7 +17,7 @@ export class ImagesComponent implements OnChanges {
   @Input() showOverlay = true;
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
   @Input() shortcut = true;
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
@@ -49,14 +50,12 @@ export class ImagesComponent implements OnChanges {
         if (gathering.media) {
           this.gatheringImages = this.gatheringImages.concat(gathering.media);
         }
-        if (gathering.units) {
-          gathering.units.filter(unit => unit.unitId === this.highlight).map(
-              item => {
-                if (item.media) {
-                  this.unitImages = this.unitImages.concat(item.media);
-                }
-              }
-          );
+        if (!gathering.units) {
+          return;
+        }
+        const unit = gathering.units.find(u => u.unitId === this.highlight || (u.media || []).some(media => media.fullURL === this.highlight));
+        if (unit?.media) {
+          this.unitImages = unit.media;
         }
       });
     }

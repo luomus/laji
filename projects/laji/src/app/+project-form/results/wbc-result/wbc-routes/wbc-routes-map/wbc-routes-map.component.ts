@@ -1,13 +1,14 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-wbc-routes-map',
   templateUrl: './wbc-routes-map.component.html',
   styleUrls: ['./wbc-routes-map.component.scss']
 })
-export class WbcRoutesMapComponent implements OnInit {
+export class WbcRoutesMapComponent {
   @Input() loading = true;
   @Input() showNameAsLink = true;
   @Input() countLabel = 'wbc.stats.routeCount';
@@ -19,6 +20,7 @@ export class WbcRoutesMapComponent implements OnInit {
   breaks = [1, 2, 5, 10, 20];
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
+  layers = LajiMapTileLayerName;
 
   @Output() rowSelect = new EventEmitter<string>();
 
@@ -52,9 +54,6 @@ export class WbcRoutesMapComponent implements OnInit {
     private ykjService: YkjService,
     private cdr: ChangeDetectorRef
   ) { }
-
-  ngOnInit() {
-  }
 
   gridClick(grid) {
     this.selectedGrid = grid;

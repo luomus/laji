@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Form } from '../../shared/model/Form';
 import { ActivatedRoute } from '@angular/router';
 import { CombineToDocument, ImportService } from '../../shared-modules/spreadsheet/service/import.service';
 import { ProjectForm, ProjectFormService } from '../project-form.service';

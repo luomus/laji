@@ -40,7 +40,10 @@
 </ng-container>
 <ng-container *ngIf="unit.interpretations && unit.interpretations.recordQuality && (showFacts || unit.interpretations.recordQuality !== 'NEUTRAL')">
   <laji-row [title]="'result.unit.quality.taxon'|translate">
-    {{ unit.interpretations.recordQuality | label: 'warehouse' }}
+    <laji-quality-row
+      [quality]="unit.interpretations.recordQuality | label:'warehouse'" 
+      [qualityIcon]="unit.interpretations.recordQuality | qualityUrl">
+    </laji-quality-row>
   </laji-row>
 </ng-container>
 <laji-issues [data]="unit"></laji-issues>

@@ -11,6 +11,4 @@ export class FactsComponent {
   @Input() show = false;
   @Input() facts: {fact: string, value: string}[];
 
-  constructor() { }
-
 }

@@ -1,4 +1,6 @@
 /* tslint:disable:max-line-length */
+import { Taxon } from './taxon';
+
 /**
  * API documentation
  * Access token is needed to use this API. To get a token, send a POST request with your email address to /api-users endpoint and one will be send to your. Each endpoint bellow has more information on how to use this API. If you have any questions you can contact us at helpdesk@laji.fi.  You can find more documentation [here](https://laji.fi/about/806).  ##Endpoints  Observations and collections * Warehouse - Observation Data Warehouse API * Collection - Collection metadata * Source - Information sources (IT systems) * Annotation - Quality control   Taxonomy * Taxa - Taxonomy API * InformalTaxonGroup - Informal taxon groups are used in taxa and warehouse endpoints * Publication - Scientific publications * Checklist - Mainly you only work with one checklits: the FinBIF master checklist. There are others.   Other master data * Metadata - Variable descriptions * Area - Countries, municipalities and biogeographical provinces of Finland, etc. * Person - Information about people.   Helpers * APIUser - Register as an API user * Autocomplete - For making an autocomplete filed for taxa, collections or persons (friends) * PersonToken - Information about an authorized person   Vihko observation system * Form - Form definition * Document - Document instance of a form * Image - Image of a document   Laji.fi portal * Feedback - Feedback form API * Information - CMS content of information pages * Logger - Error logging from user's browsers to FinBIF * News - News
@@ -98,7 +100,7 @@ export interface Identifications {
   /**
    * Taxonomic level for the identification
    */
-  taxonRank?: Identifications.TaxonRankEnum;
+  taxonRank?: Taxon.TaxonRankEnum;
   taxonSpecifier?: string;
   /**
    * QName for MX.taxon
@@ -156,122 +158,5 @@ export namespace Identifications {
     PublicityRestrictionsPublic: 'MZ.publicityRestrictionsPublic' as PublicityRestrictionsEnum,
     PublicityRestrictionsProtected: 'MZ.publicityRestrictionsProtected' as PublicityRestrictionsEnum,
     PublicityRestrictionsPrivate: 'MZ.publicityRestrictionsPrivate' as PublicityRestrictionsEnum
-  };
-  export type TaxonRankEnum =
-    'MX.superdomain'
-    | 'MX.domain'
-    | 'MX.kingdom'
-    | 'MX.subkingdom'
-    | 'MX.infrakingdom'
-    | 'MX.superphylum'
-    | 'MX.phylum'
-    | 'MX.subphylum'
-    | 'MX.infraphylum'
-    | 'MX.superdivision'
-    | 'MX.division'
-    | 'MX.subdivision'
-    | 'MX.infradivision'
-    | 'MX.superclass'
-    | 'MX.class'
-    | 'MX.subclass'
-    | 'MX.infraclass'
-    | 'MX.parvclass'
-    | 'MX.superorder'
-    | 'MX.order'
-    | 'MX.suborder'
-    | 'MX.infraorder'
-    | 'MX.parvorder'
-    | 'MX.superfamily'
-    | 'MX.family'
-    | 'MX.subfamily'
-    | 'MX.tribe'
-    | 'MX.subtribe'
-    | 'MX.supergenus'
-    | 'MX.genus'
-    | 'MX.nothogenus'
-    | 'MX.subgenus'
-    | 'MX.section'
-    | 'MX.subsection'
-    | 'MX.series'
-    | 'MX.subseries'
-    | 'MX.infragenericTaxon'
-    | 'MX.aggregate'
-    | 'MX.species'
-    | 'MX.nothospecies'
-    | 'MX.infraspecificTaxon'
-    | 'MX.subspecificAggregate'
-    | 'MX.subspecies'
-    | 'MX.nothosubspecies'
-    | 'MX.variety'
-    | 'MX.subvariety'
-    | 'MX.form'
-    | 'MX.subform'
-    | 'MX.hybrid'
-    | 'MX.anamorph'
-    | 'MX.ecotype'
-    | 'MX.populationGroup'
-    | 'MX.intergenericHybrid'
-    | 'MX.infragenericHybrid'
-    | 'MX.cultivar'
-    | 'MX.group'
-    | 'MX.speciesAggregate';
-  export const TaxonRankEnum = {
-    Superdomain: 'MX.superdomain' as TaxonRankEnum,
-    Domain: 'MX.domain' as TaxonRankEnum,
-    Kingdom: 'MX.kingdom' as TaxonRankEnum,
-    Subkingdom: 'MX.subkingdom' as TaxonRankEnum,
-    Infrakingdom: 'MX.infrakingdom' as TaxonRankEnum,
-    Superphylum: 'MX.superphylum' as TaxonRankEnum,
-    Phylum: 'MX.phylum' as TaxonRankEnum,
-    Subphylum: 'MX.subphylum' as TaxonRankEnum,
-    Infraphylum: 'MX.infraphylum' as TaxonRankEnum,
-    Superdivision: 'MX.superdivision' as TaxonRankEnum,
-    Division: 'MX.division' as TaxonRankEnum,
-    Subdivision: 'MX.subdivision' as TaxonRankEnum,
-    Infradivision: 'MX.infradivision' as TaxonRankEnum,
-    Superclass: 'MX.superclass' as TaxonRankEnum,
-    Class: 'MX.class' as TaxonRankEnum,
-    Subclass: 'MX.subclass' as TaxonRankEnum,
-    Infraclass: 'MX.infraclass' as TaxonRankEnum,
-    Parvclass: 'MX.parvclass' as TaxonRankEnum,
-    Superorder: 'MX.superorder' as TaxonRankEnum,
-    Order: 'MX.order' as TaxonRankEnum,
-    Suborder: 'MX.suborder' as TaxonRankEnum,
-    Infraorder: 'MX.infraorder' as TaxonRankEnum,
-    Parvorder: 'MX.parvorder' as TaxonRankEnum,
-    Superfamily: 'MX.superfamily' as TaxonRankEnum,
-    Family: 'MX.family' as TaxonRankEnum,
-    Subfamily: 'MX.subfamily' as TaxonRankEnum,
-    Tribe: 'MX.tribe' as TaxonRankEnum,
-    Subtribe: 'MX.subtribe' as TaxonRankEnum,
-    Supergenus: 'MX.supergenus' as TaxonRankEnum,
-    Genus: 'MX.genus' as TaxonRankEnum,
-    Nothogenus: 'MX.nothogenus' as TaxonRankEnum,
-    Subgenus: 'MX.subgenus' as TaxonRankEnum,
-    Section: 'MX.section' as TaxonRankEnum,
-    Subsection: 'MX.subsection' as TaxonRankEnum,
-    Series: 'MX.series' as TaxonRankEnum,
-    Subseries: 'MX.subseries' as TaxonRankEnum,
-    InfragenericTaxon: 'MX.infragenericTaxon' as TaxonRankEnum,
-    Aggregate: 'MX.aggregate' as TaxonRankEnum,
-    Species: 'MX.species' as TaxonRankEnum,
-    Nothospecies: 'MX.nothospecies' as TaxonRankEnum,
-    InfraspecificTaxon: 'MX.infraspecificTaxon' as TaxonRankEnum,
-    SubspecificAggregate: 'MX.subspecificAggregate' as TaxonRankEnum,
-    Subspecies: 'MX.subspecies' as TaxonRankEnum,
-    Nothosubspecies: 'MX.nothosubspecies' as TaxonRankEnum,
-    Variety: 'MX.variety' as TaxonRankEnum,
-    Subvariety: 'MX.subvariety' as TaxonRankEnum,
-    Form: 'MX.form' as TaxonRankEnum,
-    Subform: 'MX.subform' as TaxonRankEnum,
-    Hybrid: 'MX.hybrid' as TaxonRankEnum,
-    Anamorph: 'MX.anamorph' as TaxonRankEnum,
-    Ecotype: 'MX.ecotype' as TaxonRankEnum,
-    PopulationGroup: 'MX.populationGroup' as TaxonRankEnum,
-    IntergenericHybrid: 'MX.intergenericHybrid' as TaxonRankEnum,
-    InfragenericHybrid: 'MX.infragenericHybrid' as TaxonRankEnum,
-    Cultivar: 'MX.cultivar' as TaxonRankEnum,
-    Group: 'MX.group' as TaxonRankEnum,
-    SpeciesAggregate: 'MX.speciesAggregate' as TaxonRankEnum
   };
 }

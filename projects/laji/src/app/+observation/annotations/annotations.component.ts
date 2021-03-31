@@ -1,24 +1,18 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit,
 ChangeDetectorRef, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Subscription, Observable, forkJoin, of } from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
+import { Subscription, Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
-import { map, switchMap } from 'rxjs/operators';
-import { Annotation } from '../../shared/model/Annotation';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { AnnotationTag } from '../../shared/model/AnnotationTag';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
-import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
-
-
 
 @Component({
   selector: 'laji-annotations',
   templateUrl: './annotations.component.html',
   styleUrls: ['./annotations.component.scss'],
-  providers: [ToQNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
@@ -27,8 +21,8 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() showPaginator = true;
   @Input() limit = 1000;
 
-
   @Output() hasData = new EventEmitter<boolean>();
+
   annotations: any;
   subAnnotation: Subscription;
   gathering: any[];
@@ -58,8 +52,7 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
     private cd: ChangeDetectorRef,
     private annotationService: AnnotationService,
     private translate: TranslateService,
-    private deleteOwnDocument: DeleteOwnDocumentService,
-    private toQname: ToQNamePipe
+    private deleteOwnDocument: DeleteOwnDocumentService
   ) { }
 
   ngOnInit() {
@@ -160,6 +153,5 @@ export class AnnotationsComponent implements OnInit, OnChanges, OnDestroy {
       this.subscriptionDeleteOwnDocument.unsubscribe();
     }
   }
-
 
 }

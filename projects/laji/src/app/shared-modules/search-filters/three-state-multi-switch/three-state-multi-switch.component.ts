@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MetadataService } from '../../../shared/service/metadata.service';
 import { map } from 'rxjs/operators';
-import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -30,6 +29,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
   ngOnInit() {
     this.lang = this.translate.currentLang;
+    this.open =  this.trueValue?.length > 0 || this.falseValue?.length > 0 ? true : false;
   }
 
   @Input()
@@ -47,6 +47,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
     } else if (event.value === false) {
       falseValues.push(event.id);
     }
+
     this.update.emit({true: trueValues, false: falseValues});
   }
 

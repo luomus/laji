@@ -17,14 +17,13 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
 import { DownloadComponent } from '../../shared-modules/download/download.component';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {
   ObservationTableSettingsComponent
 } from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';
@@ -33,7 +32,7 @@ import { ObservationTableColumn } from '../../shared-modules/observation-result/
 import { IColumns } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
-import { DownloadService } from 'projects/laji/src/app/shared/service/download.service';
+import { DownloadService } from '../../shared/service/download.service';
 
 
 enum RequestStatus {
@@ -208,7 +207,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.speciesCsvLoading = true;
     this.cd.markForCheck();
     this.updateQueryParamsDownloadTaxon(e);
-    this.downloadService.download('/api/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
+    this.downloadService.downloadTextFile(environment.apiBase + '/warehouse/query/aggregate?' + this.csvParams, 'species.csv').subscribe(() => {
       this.speciesCsvLoading = false;
       this.cd.markForCheck();
     });
@@ -252,7 +251,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       },
       err => {
         this.requests[type] = RequestStatus.error;
-        this.toastsService.showError(this.translate.instant(err && err.status ?
+        this.toastsService.showError(this.translate.instant(err?.status === 429 ?
           'observation.download.limitExceededException' :
           'observation.download.error'
         ));

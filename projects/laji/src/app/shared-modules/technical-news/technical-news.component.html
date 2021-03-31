@@ -1,6 +1,8 @@
-<div class="news-article mb-3" *ngFor="let news of technicalNews$ | async">
-  <h5 class="technical-news-link" *ngIf="news.id else error" [routerLink]="['/news', news.id]">{{ news.title }}</h5>
-  <ng-template #error>
-    <h5 [innerHTML]="'technicalNews.error' | translate"></h5>
-  </ng-template>
-</div>
+<ng-container *lajiBrowserOnly>
+  <div class="news-article mb-3" *ngFor="let news of technicalNews$ | async">
+    <h5 class="technical-news-link" *ngIf="news.id else error" [routerLink]="['/news', news.id]">{{ news.title }}</h5>
+    <ng-template #error>
+      <h5 [innerHTML]="'technicalNews.error' | translate"></h5>
+    </ng-template>
+  </div>
+</ng-container>

@@ -235,7 +235,7 @@ export class DocumentExportService {
       if (field['@multipleBy']) {
         for (let i = 0; i < field['@multipleBy']; i++) {
           for (const key in field) {
-            if (field[key]['used']) {
+            if (field.hasOwnProperty(key) && field[key]['used']) {
               const lastIdx = field[key].value.lastIndexOf('.');
               arr.push({
                 value: field[key].value.substring(0, lastIdx + 1) + i + field[key].value.substring(lastIdx),

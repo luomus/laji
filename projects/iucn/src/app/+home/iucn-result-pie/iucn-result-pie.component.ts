@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-iucn-result-pie',
   templateUrl: './iucn-result-pie.component.html',
   styleUrls: ['./iucn-result-pie.component.css']
 })
-export class IucnResultPieComponent implements OnInit {
+export class IucnResultPieComponent {
 
   @Input() year;
   _data: {name: string, value: number}[];
@@ -20,11 +20,6 @@ export class IucnResultPieComponent implements OnInit {
     'MX.iucnLC': '#8fcc00'
   };
   colorSchema = [];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   @Input()
   set data(data: {name: string, value: number, key: string}[]) {

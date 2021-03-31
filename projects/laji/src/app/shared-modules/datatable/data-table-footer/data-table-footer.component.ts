@@ -26,8 +26,6 @@ export class DataTableFooterComponent {
   _start: number;
   _end: number;
 
-  constructor() { }
-
   @Input() set pageSize(size: number) {
     this._pageSize = size;
     this.initStartEnd();

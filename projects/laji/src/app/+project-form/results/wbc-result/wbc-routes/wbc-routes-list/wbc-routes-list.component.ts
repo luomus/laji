@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
-import {LocalizeRouterService} from '../../../../../locale/localize-router.service';
 import { IdService } from '../../../../../shared/service/id.service';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'laji-wbc-routes-list',
@@ -12,7 +12,7 @@ import { IdService } from '../../../../../shared/service/id.service';
 export class WbcRoutesListComponent implements OnChanges {
   @Input() rows: any[] = [];
   @Input() height = 'calc(80vh - 100px)';
-  @Input() columnMode = 'standard';
+  @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'standard';
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
   @Input() countLabel: string;

@@ -10,7 +10,7 @@ import {
   tap,
   timeout
 } from 'rxjs/operators';
-import { isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
@@ -26,6 +26,7 @@ import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { PERSON_TOKEN } from './laji-api-worker-common';
+import { Profile } from '../model/Profile';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -76,8 +77,8 @@ export class UserService {
   @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
   @SessionStorage() private returnUrl: string;
   @SessionStorage('retry', 0) private retry: number;
-  private tabId: string;
-  private mRandom: string;
+
+  private _persistent: IPersistentState;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -89,10 +90,20 @@ export class UserService {
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
   static getLoginUrl(next = '', lang = 'fi', base = '') {
-    return ((base || environment.loginUrl)
-    + '?target=' + environment.systemID
-    + '&redirectMethod=GET&locale=%lang%'
-    + '&next=' + next).replace('%lang%', lang);
+    let url = (base || environment.loginUrl);
+    url += url.includes('?') ? '&' : '?';
+
+    const params: string[] = [
+      `target=${environment.systemID}`,
+      'redirectMethod=GET',
+      'locale=%lang%'
+    ];
+
+    if (!url.includes('next=')) {
+      params.push(`next=${next}`);
+    }
+
+    return (url + params.join('&')).replace('%lang%', lang);
   }
 
   static isIctAdmin(person: Person): boolean {
@@ -247,7 +258,7 @@ export class UserService {
       return of(true);
     }
     const token = rawToken || _state.token;
-    if (_state.token && this.persistentState.isLoggedIn === false) {
+    if (_state.token && this.persistent.isLoggedIn === false) {
       this.doLogoutState();
     } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
@@ -260,7 +271,7 @@ export class UserService {
         map(() => true),
         share()
       );
-    } else if (this.persistentState.isLoggedIn) {
+    } else if (this.persistent.isLoggedIn) {
       return this.doBackgroundCheck().pipe(
         switchMap(t => t ? this._checkLogin(t) : of(false)),
         timeout(10000),
@@ -304,8 +315,8 @@ export class UserService {
       return;
     }
     this.init = true;
-    this.updatePersistentState({...this.persistentState, isLoggedIn: !!user} as any);
-    this.updateState({..._state, ...this.persistentState, token: user ? token : '', user: user || {}, settings: {}});
+    this.persistent = {...this.persistent, isLoggedIn: !!user};
+    this.updateState({..._state, ...this.persistent, token: user ? token : '', user: user || {}, settings: {}});
     this.doUserSettingsState(user.id);
   }
 
@@ -314,9 +325,9 @@ export class UserService {
       return;
     }
     this.init = true;
-    // Token can be removed from there afters a while
-    this.updatePersistentState({...this.persistentState, isLoggedIn: false, token: ''} as any);
-    this.updateState({..._state, ...this.persistentState, token: '', user: {}, settings: {}});
+
+    this.persistent = {...this.persistent, isLoggedIn: false};
+    this.updateState({..._state, ...this.persistent, token: '', user: {}, settings: {}});
     this.retry = 0;
   }
 
@@ -328,10 +339,47 @@ export class UserService {
     this.store.next(_state = state);
   }
 
-  private updatePersistentState(state: IPersistentState) {
-    if (!this.platformService.isBrowser) {
-      return;
+  set persistent(state: IPersistentState) {
+    if (this.platformService.isBrowser) {
+      this.persistentState = state;
+    } else {
+      this._persistent = state;
     }
-    this.persistentState = state;
+  }
+
+  get persistent() {
+    if (this.platformService.isBrowser) {
+      return this.persistentState;
+    } else {
+      return this._persistent;
+    }
+  }
+
+  getProfile(): Observable<Profile> {
+    return combineLatest(
+      this.personApi.personFindProfileByToken(this.getToken()),
+      this.user$
+    ).pipe(
+      map(([profile, user]) => this.prepareProfile(profile, user)),
+      take(1)
+    );
+  }
+
+  prepareProfile(profile: Profile | null, user: Person): Profile {
+    if (!profile) {
+      profile = {};
+    }
+    return {
+      ...profile,
+      settings: {
+        ...(profile.settings || {}),
+        defaultMediaMetadata: {
+          capturerVerbatim: user.fullName,
+          intellectualOwner: user.fullName,
+          intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
+          ...(profile.settings?.defaultMediaMetadata || {}),
+        }
+      }
+    };
   }
 }

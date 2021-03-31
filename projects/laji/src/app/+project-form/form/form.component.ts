@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ProjectFormService } from '../project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { BrowserService } from '../../shared/service/browser.service';
 import { NamedPlacesService } from '../../shared/service/named-places.service';
@@ -10,12 +10,14 @@ import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
+import { UserService } from '../../shared/service/user.service';
 
 interface ViewModel {
   form: Form.SchemaForm;
   documentID?: string;
   namedPlace?: NamedPlace;
 }
+
 @Component({
   template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
@@ -44,7 +46,8 @@ export class FormComponent implements OnInit {
               private browserService: BrowserService,
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -53,7 +56,7 @@ export class FormComponent implements OnInit {
         switchMap(routeParams => this.tryRedirectToSubForm(form, routeParams).pipe(
           switchMap(redirected => {
             if (redirected) {
-              return;
+              return EMPTY;
             }
             const paramsStack = [
               routeParams['document'],
@@ -65,8 +68,8 @@ export class FormComponent implements OnInit {
               : form.id;
             const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
             if (hasManyForms && !_usedSubForm) {
-              this.router.navigate([form.id], {relativeTo: this.route});
-              return;
+              this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
+              return EMPTY;
             }
             const documentID = paramsStack.pop();
             return (_usedSubForm === form ?
@@ -80,13 +83,20 @@ export class FormComponent implements OnInit {
                   : of(null);
                 if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
                   this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
-                  return;
+                  return EMPTY;
                 }
-                return namedPlace$.pipe(map(namedPlace => ({
-                  form,
-                  documentID,
-                  namedPlace
-                })));
+
+                return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
+                  if (!isLoggedIn) {
+                    this.userService.redirectToLogin();
+                    return EMPTY;
+                  }
+                  return namedPlace$.pipe(map(namedPlace => ({
+                    form: usedSubForm,
+                    documentID,
+                    namedPlace
+                  })));
+                }));
               })
             );
           }))
@@ -97,8 +107,12 @@ export class FormComponent implements OnInit {
 
   tryRedirectToSubForm(form: Form.SchemaForm, routeParams: Params): Observable<boolean> {
     const navigateToForm = (parentID: string, formID: string) => {
+      const route = [parentID, 'form', formID, routeParams['formOrDocument']];
+      if (this.router.url.match(/\/link$/)) {
+        route.push('link');
+      }
       this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(rootRoute =>
-        this.router.navigate([parentID, 'form', formID, routeParams['formOrDocument']], {relativeTo: rootRoute.parent, replaceUrl: true})
+        this.router.navigate(route, {relativeTo: rootRoute.parent, replaceUrl: true})
       );
       return true;
     };

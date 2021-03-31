@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-image',
@@ -12,14 +12,9 @@ import { Component, Input, OnInit } from '@angular/core';
     }
   `]
 })
-export class TaxonImageComponent implements OnInit {
+export class TaxonImageComponent {
 
   image;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   @Input()
   set images(images: any[]) {

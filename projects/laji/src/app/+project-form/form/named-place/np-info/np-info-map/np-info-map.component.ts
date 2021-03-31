@@ -1,8 +1,8 @@
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import { LajiMapComponent } from '../../../../../shared-modules/laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapOptions, LajiMapTileLayerName } from '../../../../../shared-modules/laji-map/laji-map.interface';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-np-info-map',
@@ -76,7 +76,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     }
 
     this._data = {
-      getFeatureStyle: (o) => {
+      getFeatureStyle: () => {
         return {
           weight: 5,
           opacity: 1,
@@ -96,43 +96,23 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
   }
 
   private getGeometry() {
-    const getGeom = () => {
-      if (this.namedPlace.acceptedDocument && this.namedPlace.acceptedDocument.gatherings) {
-        const geometries = this.namedPlace.acceptedDocument.gatherings.reduce((prev, curr) => {
-          if (curr.geometry) {
-            prev.push(curr.geometry);
-          }
-          return prev;
-        }, []);
-        if (geometries.length === 1) {
-          return geometries[0];
-        } else if (geometries.length > 1) {
-          return {
-            type: 'GeometryCollection',
-            geometries: geometries
-          };
-        }
+    let geom = this.namedPlace.geometry;
+    const gatherings = this.namedPlace.acceptedDocument?.gatherings || this.namedPlace.prepopulatedDocument?.gatherings || [];
+    const geometries = gatherings.reduce((all, curr) => {
+      if (curr.geometry) {
+        all.push(curr.geometry);
       }
-      if (this.namedPlace.prepopulatedDocument && this.namedPlace.prepopulatedDocument.gatherings) {
-        const geometries = this.namedPlace.prepopulatedDocument.gatherings.reduce((prev, curr) => {
-          if (curr.geometry) {
-            prev.push(curr.geometry);
-          }
-          return prev;
-        }, []);
-        if (geometries.length === 1) {
-          return geometries[0];
-        } else if (geometries.length > 1) {
-          return {
-            type: 'GeometryCollection',
-            geometries: geometries
-          };
-        }
-      }
-      return this.namedPlace.geometry;
-    };
+      return all;
+    }, []);
+    if (geometries.length === 1) {
+      geom = geometries[0];
+    } else if (geometries.length > 1) {
+      geom = {
+        type: 'GeometryCollection',
+        geometries: geometries
+      };
+    }
 
-    const geom = getGeom();
     if (geom.type === 'GeometryCollection') {
       const uniqueGeoms = [];
       return {...geom, geometries: geom.geometries.reduce((geoms, g) => {

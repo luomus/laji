@@ -12,12 +12,13 @@ import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
   styleUrls: ['./technical-news.component.scss']
 })
 export class TechnicalNewsComponent implements OnInit {
-  technicalNews$: Observable<News[] | {}[]>;
+  technicalNews$: Observable<News[]>;
 
   constructor(
     private apiService: LajiApiService,
     private homeDataService: HomeDataService
   ) {}
+
   ngOnInit() {
     const news$ = this.apiService.getList(LajiApi.Endpoints.news, { tag: 'technical', pageSize: 5 });
     this.technicalNews$ = this.homeDataService.getHomeData().pipe(
@@ -29,7 +30,7 @@ export class TechnicalNewsComponent implements OnInit {
         const isTechnical = result.tag === 'technical';
         return isTechnical && isNew;
       })),
-      catchError(() => of([{}]))
+      catchError(() => of([{} as News]))
     );
     return;
   }

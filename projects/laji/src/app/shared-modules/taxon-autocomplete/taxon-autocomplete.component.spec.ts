@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TaxonAutocompleteComponent } from './taxon-autocomplete.component';
 
@@ -6,7 +6,7 @@ describe('TaxonAutocompleteComponent', () => {
   let component: TaxonAutocompleteComponent;
   let fixture: ComponentFixture<TaxonAutocompleteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TaxonAutocompleteComponent ]
     })

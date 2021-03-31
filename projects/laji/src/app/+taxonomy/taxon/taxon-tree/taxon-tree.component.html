@@ -11,11 +11,11 @@
         <a [routerLink]="'/taxon/' + value.id + (activeTab === 'overview' ? '' : '/' + activeTab) | localize" [queryParams]="{context: null}" [queryParamsHandling]="'merge'">
           <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
         </a>
-        <img *ngIf="value.finnish" src="/projects/laji/src/static/images/icons/flag_fi_small.png" class="small-flag"/>
+        <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
       </ng-container>
       <strong *ngIf="value.id === activeId">
         <laji-taxon-name [capitalizeName]="true" [taxon]="value" [addLink]="false" [showScientificNameFirst]="true"></laji-taxon-name>
-        <img *ngIf="value.finnish" src="/projects/laji/src/static/images/icons/flag_fi_small.png" class="small-flag"/>
+        <img *ngIf="value.finnish" src="/static/images/icons/flag_fi_small.png" class="small-flag"/>
       </strong>
       <span class="rank">{{ value.taxonRank | label }}</span>
     </ng-template>

@@ -14,13 +14,14 @@ import { GenerateSpreadsheetComponent } from './generate-spreadsheet/generate-sp
 import { TemplatesComponent } from './templates/templates.component';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
+import { DisabledComponent } from './disabled/disabled.component';
 
 export const routes: Routes = [
   {
     path: ':projectID',
     component: ProjectFormComponent,
     children : [
-      {path: '', redirectTo: 'about'},
+      {path: 'disabled', component: DisabledComponent},
       {path: 'about', component: AboutComponent},
       {path: 'instructions', component: InstructionsComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
       {path: 'stats', loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)},

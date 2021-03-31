@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core
 import { Subject } from 'rxjs';
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
-const relativeDateFormat = /^\-?\d+\/\-?\d+$/;
+const relativeDateFormat = /^-?\d+\/-?\d+$/;
 export function isRelativeDate(date: string): boolean {
   if (!date) {
     return false;

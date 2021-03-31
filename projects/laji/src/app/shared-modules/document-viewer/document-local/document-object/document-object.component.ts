@@ -24,8 +24,6 @@ export class DocumentObjectComponent implements OnChanges {
   @ViewChild('default', { static: true }) defaultTpl: TemplateRef<any>;
   @ViewChild('taxonID', { static: true }) taxonIDTpl: TemplateRef<any>;
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.fields || changes.object) {
       this.fields.map(field => {

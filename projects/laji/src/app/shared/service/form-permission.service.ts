@@ -14,8 +14,8 @@ import RestrictAccess = Form.RestrictAccess;
 export interface Rights {
   edit: boolean;
   admin: boolean;
-  view?: boolean;
-  ictAdmin?: boolean;
+  view: boolean;
+  ictAdmin: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -52,7 +52,7 @@ export class FormPermissionService {
     );
   }
 
-  isEditAllowed(formPermission: FormPermission, person: Person, form: Form.SchemaForm): boolean {
+  isEditAllowed(formPermission: FormPermission, person: Person, form: Form.List): boolean {
     return !form.options?.restrictAccess
       || formPermission.editors?.indexOf(person.id) > -1
       || formPermission.admins?.indexOf(person.id) > -1;
@@ -90,43 +90,45 @@ export class FormPermissionService {
       tap(fp => this.changes$.emit(fp)));
   }
 
-  getRights(form: Form.SchemaForm): Observable<Rights> {
-    return this.access(
-      form,
-      {edit: false, admin: false, view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict},
-      {edit: true, admin: false, view: true},
-      (formPermission: FormPermission, person: Person) => ({
-        view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
-        edit: this.isEditAllowed(formPermission, person, form),
-        admin: this.isAdmin(formPermission, person),
-        ictAdmin: UserService.isIctAdmin(person)
-      }));
-  }
-
-  private access(form: Form.SchemaForm, notLoggedIn: any, notRestricted: any, cb: (formPermission: FormPermission, person: Person) => any) {
+  getRights(form: Form.List): Observable<Rights> {
+    const notLoggedIn = {
+      edit: false,
+      admin: false,
+      ictAdmin: false,
+      view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
+    };
+    if (!form.collectionID) {
+      return this.userService.user$.pipe(map(user => ({
+        edit: true,
+        view: true,
+        admin: false,
+        ictAdmin: UserService.isIctAdmin(user)
+      })));
+    }
     return this.userService.isLoggedIn$.pipe(
       take(1),
       switchMap(login => {
         if (!login || this.platformService.isServer) {
           return ObservableOf(notLoggedIn);
-        } else if (!form.collectionID || (
-          !form.options?.restrictAccess &&
-          !form.options?.hasAdmins
-        )) {
-          return ObservableOf(notRestricted);
         }
         return this.userService.user$.pipe(
           take(1),
-          switchMap((person: Person) => this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
-            catchError(() => of({
-              id: '',
-              collectionID: form.collectionID,
-              admins: [],
-              editors: []
-            } as FormPermission)),
-            map((formPermission: FormPermission) => ({person, formPermission}))
-          )),
-          switchMap(data => ObservableOf(cb(data.formPermission, data.person))),
+          switchMap((person: Person) =>
+              this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
+              catchError(() => of({
+                id: '',
+                collectionID: form.collectionID,
+                admins: [],
+                editors: []
+              } as FormPermission)),
+              map((formPermission: FormPermission) => ({person, formPermission}))
+              )),
+          switchMap(({person, formPermission}) => ObservableOf({
+            view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
+            edit: this.isEditAllowed(formPermission, person, form),
+            admin: this.isAdmin(formPermission, person),
+            ictAdmin: UserService.isIctAdmin(person)
+          })),
           catchError(() => ObservableOf(notLoggedIn))
         );
       })

@@ -1,4 +1,4 @@
-import { Observable, of, Subject, throwError as observableThrowError } from 'rxjs';
+import { Observable, Subject, throwError as observableThrowError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UserService } from './user.service';

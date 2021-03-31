@@ -1,6 +1,6 @@
 import {
-  Component, ContentChildren, AfterViewInit, QueryList, ChangeDetectorRef,
-  ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, AfterContentInit, OnDestroy
+  Component, ContentChildren, QueryList, ChangeDetectorRef,
+  ChangeDetectionStrategy, Input, Output, EventEmitter, AfterContentInit, OnDestroy
 } from '@angular/core';
 import { TabComponent } from './tab/tab.component';
 import { trigger, state, style, animate, transition } from '@angular/animations';
@@ -67,11 +67,7 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
 
   updateActiveComponents(newIdx: number) {
     this.tabComponents.toArray().forEach((tab, idx) => {
-      if (idx === newIdx) {
-        tab.active = true;
-      } else {
-        tab.active = false;
-      }
+      tab.active = idx === newIdx;
     });
     this.cdr.markForCheck();
   }

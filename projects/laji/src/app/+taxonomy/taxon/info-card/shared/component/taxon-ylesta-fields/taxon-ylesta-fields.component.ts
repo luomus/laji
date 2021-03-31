@@ -1,17 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-ylesta-fields',
   templateUrl: './taxon-ylesta-fields.component.html',
   styleUrls: ['./taxon-ylesta-fields.component.scss']
 })
-export class TaxonYlestaFieldsComponent implements OnInit {
+export class TaxonYlestaFieldsComponent {
 
   @Input() info: any;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

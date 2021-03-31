@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IFormField } from '../../model/excel';
+import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-field-item',
@@ -14,8 +15,7 @@ export class FieldItemComponent implements OnChanges {
   @Output() selectedChange = new EventEmitter<string[]>();
 
   idx: number;
-
-  constructor() { }
+  toHtmlSelectElement = toHtmlSelectElement;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['field'] || changes['selected']) {

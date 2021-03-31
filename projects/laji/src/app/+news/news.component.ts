@@ -1,63 +1,50 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of as ObservableOf, Subscription } from 'rxjs';
-import { NewsService } from '../shared/service/news.service';
-import { Logger } from '../shared/logger/logger.service';
+import { Observable } from 'rxjs';
 import { News } from '../shared/model/News';
-import { distinctUntilChanged, map, switchMap, tap, filter } from 'rxjs/operators';
-import { NewsStore } from './news.store';
+import { map, switchMap, tap, filter, delay } from 'rxjs/operators';
 import { HeaderService } from '../shared/service/header.service';
 import { Title } from '@angular/platform-browser';
+import { NewsFacade } from './news.facade';
 
 
 @Component({
   selector: 'laji-news',
   templateUrl: './news.component.html',
-  styleUrls: ['./news.component.css'],
+  styleUrls: ['../../styles/information.scss', './news.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NewsComponent implements OnInit, OnDestroy {
+export class NewsComponent implements OnInit {
   public newsItem$: Observable<News>;
-  private subTrans: Subscription;
 
   constructor(private route: ActivatedRoute,
-              private newsService: NewsService,
-              private cd: ChangeDetectorRef,
-              private logger: Logger,
-              private store: NewsStore,
+              private newsFacade: NewsFacade,
               private headerService: HeaderService,
               private title: Title
   ) {}
 
   ngOnInit() {
-    this.newsItem$ = this.store.state$.pipe(
-      map(state => state.current),
-      distinctUntilChanged(),
-      filter(info => !!info),
-      tap(info => {
-        this.title.setTitle(info.title + ' | ' + this.title.getTitle());
-      })
-    );
-    this.subTrans = this.route.params.pipe(
+    this.newsItem$ = this.route.params.pipe(
       map(params => params['id']),
-      switchMap(id => this.store.state.current && this.store.state.current.id === id ?
-        ObservableOf(this.store.state.current) : this.newsService.get(id))
-    ).subscribe(newsItem => {
-      this.store.setCurrent(newsItem);
-      if (newsItem.featuredImage) {
-        this.headerService.updateFeatureImage(newsItem.featuredImage);
-      }
-      setTimeout(() => {
-        const paragraph = (document.getElementById('wrapper')).getElementsByTagName('p').item(0).innerText;
-        this.headerService.updateMetaDescription(paragraph);
-        this.headerService.createTwitterCard(newsItem.title + ' | ' + this.title.getTitle());
-      }, 0);
-    });
+      tap(id => this.newsFacade.activate(id)),
+      switchMap((id) => this.newsFacade.active$.pipe(
+        filter(news => news?.id === id),
+      )),
+      delay(0),
+      tap(news => this.updateHeaders(news))
+    );
   }
 
-  ngOnDestroy() {
-    if (this.subTrans) {
-      this.subTrans.unsubscribe();
+  private updateHeaders(news: News): void {
+    const pageTitle = news.title + ' | ' + this.title.getTitle();
+    const paragraph = HeaderService.getDescription(news.content || '');
+
+    this.title.setTitle(pageTitle);
+    this.headerService.createTwitterCard(pageTitle);
+    this.headerService.updateMetaDescription(paragraph);
+
+    if (news.featuredImage) {
+      this.headerService.updateFeatureImage(news.featuredImage);
     }
   }
 }

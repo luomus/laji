@@ -1,0 +1,26 @@
+@import 'vars';
+
+.label {
+  display: inline-block;
+  margin-top: $sp-1;
+  margin-right: $sp-1;
+
+  font-size: $fs-1;
+  color: $success-1;
+  background-color: $success-5;
+
+  box-shadow: 0 1px 2px 0 rgba($success-9, .25);
+
+  .glyphicon-remove {
+    margin-left: $sp-2;
+    font-size: 10px;
+    padding: 3px;
+    color: $success-4;
+    background-color: $success-6;
+    border-radius: 100%;
+  }
+
+  &:hover {
+    background-color: lighten($success-5, 5%);
+  }
+}

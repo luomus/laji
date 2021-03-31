@@ -50,6 +50,28 @@ export class HeaderService implements OnDestroy {
   private currentRoute: string;
   private renderer: Renderer2;
 
+  public static getDescription(html: string): string {
+    const firstParagraph = html
+      .split('</p>')[0]
+      .split(/<p.*?>/).pop()
+      .replace(/<[^>]*>?/gm, '');
+
+    if (firstParagraph.length <= 180) {
+      return firstParagraph;
+    }
+    const words = firstParagraph.substring(0, 181).split(' ');
+    let description = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      if (description.length + words[i].length + 1 <= 177) {
+        description += ` ${words[i]}`;
+      } else {
+        break;
+      }
+    }
+    return `${description}...`;
+  }
+
   constructor(
     @Inject(DOCUMENT) private document,
     private router: Router,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TeamMemberService } from '../team-member.service';
 
 @Component({
@@ -8,16 +8,13 @@ import { TeamMemberService } from '../team-member.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: true
 })
-export class MemberIdPillListComponent implements OnInit {
+export class MemberIdPillListComponent {
 
   @Output() updateList = new EventEmitter();
 
   _list;
 
   constructor(private teamMemberService: TeamMemberService) { }
-
-  ngOnInit() {
-  }
 
   @Input() set list(data) {
     if (typeof data === 'string') {

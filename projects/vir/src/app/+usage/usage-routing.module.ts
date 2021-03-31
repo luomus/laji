@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { UsageComponent } from './usage.component';
 import { UsageDownloadsComponent } from './pages/usage-downloads/usage-downloads.component';
 import { UsageByOrganizationComponent } from './pages/usage-by-organization/usage-by-organization.component';

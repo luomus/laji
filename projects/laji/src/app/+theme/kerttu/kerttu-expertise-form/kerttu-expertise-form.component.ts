@@ -8,7 +8,8 @@ import {ComponentCanDeactivate} from '../../../shared/guards/document-de-activat
 import { SelectStyle } from '../../../shared-modules/select/metadata-select/metadata-select.component';
 import FinnishBirdSongRecognitionSkillLevelEnum = Profile.FinnishBirdSongRecognitionSkillLevelEnum;
 import BirdwatchingActivityLevelEnum = Profile.BirdwatchingActivityLevelEnum;
-import {TranslateService} from '@ngx-translate/core';
+import {Taxonomy} from '../../../shared/model/Taxonomy';
+import {KerttuTaxonService} from '../service/kerttu-taxon-service';
 
 @Component({
   selector: 'laji-kerttu-expertise-form',
@@ -18,7 +19,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   selectedTaxonIds: string[];
-  private savedSelectedTaxonIds: string[];
+  taxonList$: Observable<Taxonomy[]>;
 
   finnishBirdSongRecognitionSkillLevel: string;
   birdwatchingActivityLevel: string;
@@ -26,6 +27,8 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
   basicSelectStyle = SelectStyle.basic;
 
   saving = false;
+
+  private savedSelectedTaxonIds: string[];
 
   private selectedTaxonIdsSub: Subscription;
   private selectedTaxonIdsChanged: Subject<string[]> = new Subject<string[]>();
@@ -39,10 +42,12 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
     private cdr: ChangeDetectorRef,
     private userService: UserService,
     private personService: PersonApi,
-    private translate: TranslateService
+    private taxonService: KerttuTaxonService
   ) { }
 
   ngOnInit() {
+    this.taxonList$ = this.taxonService.getTaxonList();
+
     this.selectedTaxonIdsSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe((profile) => {
       this.profile = profile;
       this.finnishBirdSongRecognitionSkillLevel = profile.finnishBirdSongRecognitionSkillLevel || '';

@@ -39,6 +39,7 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { SpinnerModule } from '../shared-modules/spinner/spinner.module';
 import { ClickOutSideDirective } from './directive/click-out-side.directive';
 import { PaginatorModule } from '../shared-modules/paginator/paginator.module';
+import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationGroupSelectComponent } from './group-select/observation-group-select.component';
 import { IucnGroupSelectComponent } from './group-select/iucn-group-select.component';
 import { SourcePipe } from './pipe/source.pipe';
@@ -73,6 +74,10 @@ import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
 import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
+import { QualityUrlPipe } from './pipe/quality-url.pipe';
+import { ConfirmModalComponent } from './service/confirm-modal.component';
+import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
+import { PluckPipe } from './pipe/pluck.pipe';
 
 
 @NgModule({
@@ -107,7 +112,11 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     WarehousePipe,
     DateCutoffFuturePipe,
     IncludesPipe,
-    SsrDisableDirective
+    SsrDisableDirective,
+    QualityUrlPipe,
+    ConfirmModalComponent,
+    CheckboxValuePipe,
+    PluckPipe,
   ],
   imports: [
     FormsModule,
@@ -122,7 +131,8 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     ScrollingModule,
     LajiUiModule,
     TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
-    UtilitiesModule
+    UtilitiesModule,
+    InfoModule
   ],
   providers: [ ], // keep this empty!
   exports: [
@@ -140,7 +150,11 @@ import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.c
     FilterPipe, BoolToStringPipe, PublicationPipe, HabitatComponent, LazyImageDirective, HideForIeDirective, SortPipe, IncludesPipe,
     UniquePipe, TruncatePipe, LangModule, AfterIfDirective, FilterValuePipe, WarehousePipe, DateCutoffFuturePipe, UtilitiesModule,
     SsrDisableDirective,
-    NotFoundComponent
+    NotFoundComponent,
+    QualityUrlPipe,
+    InfoModule,
+    CheckboxValuePipe,
+    PluckPipe,
   ]
 })
 export class SharedModule {
@@ -154,6 +168,7 @@ export class SharedModule {
         ToQNamePipe,
         TaxonNamePipe,
         ToQNamePipe,
+        QualityUrlPipe,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthenticatedHttpInterceptor,

@@ -43,7 +43,7 @@ export interface NamedPlace {
     /**
      * Using GeoJSONs geometry object specification. QName for MZ.geometry
      */
-    geometry?: string;
+    geometry?: GeoJSON.Geometry;
 
     /**
      * QName for ML.area

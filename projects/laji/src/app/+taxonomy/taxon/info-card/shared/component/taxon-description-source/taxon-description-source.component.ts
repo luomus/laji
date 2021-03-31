@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TaxonomyDescription } from '../../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -12,8 +12,6 @@ export class TaxonDescriptionSourceComponent implements OnChanges {
   @Input() taxonDescription: TaxonomyDescription;
 
   currentLang: string;
-
-
 
   constructor(private checklang: TranslateService) { }
 

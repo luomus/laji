@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
@@ -7,7 +7,7 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
   styleUrls: ['./image-modal.component.css'],
   templateUrl: './image-modal-overlay.component.html'
 })
-export class ImageModalOverlayComponent implements OnInit {
+export class ImageModalOverlayComponent {
   public img: Image;
   public currentImageIndex: number;
   public close: Function;
@@ -18,16 +18,11 @@ export class ImageModalOverlayComponent implements OnInit {
 
   constructor(
    private childComunication: DocumentViewerChildComunicationService
-  ) {
-
-  }
-
-  ngOnInit() {
-  }
-
+  ) { }
 
   closeGallery() {
     if (this.close) {
+      this.modalImages = [];
       this.close();
     }
     this.cancelEvent.emit(null);
@@ -67,18 +62,19 @@ export class ImageModalOverlayComponent implements OnInit {
     }, 200);
   }
 
-  @HostListener('body:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   modalKeyDown(e: KeyboardEvent)  {
+    e.stopPropagation();
     if (e.keyCode === 27) { // esc
-      e.stopImmediatePropagation();
+      e.preventDefault();
       this.closeGallery();
     }
-    if (e.keyCode === 37) { // left
-      e.stopImmediatePropagation();
+    if (e.keyCode === 37 && this.modalImages.length > 0 && this.currentImageIndex > 0) { // left
+      e.preventDefault();
       this.prevImage();
     }
-    if (e.keyCode === 39) { // right
-      e.stopImmediatePropagation();
+    if (e.keyCode === 39 && this.modalImages.length > 0 && this.currentImageIndex < this.modalImages.length - 1) { // right
+      e.preventDefault();
       this.nextImage();
     }
   }

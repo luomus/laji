@@ -1,28 +1,25 @@
-<div class="container-fluid">
-  <div id="wrapper" class="row">
-    <div class="col-sm-6 col-sm-offset-1 col-md-7 col-md-offset-1 col-lg-8 col-lg-offset-1">
-      <ol class="breadcrumb">
-        <li class="active">{{ 'news.title' | translate }}</li>
-      </ol>
-      <ng-container *ngIf="newsItem$ | async; let newsItem">
-        <div class="page-header">
-          <h3>
+<lu-sidebar position="right" [staticWidth]="280">
+  <main class="d-flex">
+    <div class="d-flex justify-center flex-grow">
+      <div class="mt-4 mb-8 mx-4 d-flex flex-col flex-nowrap width-0 news-container">
+        <ol class="breadcrumb">
+          <li class="active">{{ 'news.title' | translate }}</li>
+        </ol>
+        <div *ngIf="newsItem$ | async; let newsItem" class="laji-information">
+          <h2>
             {{ newsItem.title }}<br>
             <small>
-              {{ newsItem.posted | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }}
-              - {{ newsItem.author }}
-              <span *ngIf="newsItem.modified">
-                ({{ 'news.updated' | translate }}: {{ newsItem.modified  | slice:0:-3 | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})
-              </span>
+              {{ newsItem.posted | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }} - {{ newsItem.author }}
+              <span *ngIf="newsItem.modified">({{ 'news.updated' | translate }}: {{ newsItem.modified | amFromUnix | amDateFormat:'DD.MM.YYYY HH:mm' }})</span>
             </small>
-          </h3>
+          </h2>
+          <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
         </div>
-        <div [innerHtml]="newsItem.content" lajiRouteTransformer></div>
-      </ng-container>
+      </div>
     </div>
-    <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 more-info">
-      <laji-news-list class="d-block mb-3"></laji-news-list>
-    </div>
-  </div>
-</div>
+  </main>
+  <nav>
+    <laji-news-list class="d-block mb-3"></laji-news-list>
+  </nav>
+</lu-sidebar>
 

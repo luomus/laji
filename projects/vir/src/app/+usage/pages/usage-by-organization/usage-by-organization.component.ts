@@ -1,8 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import {
-  IVirUser,
-  VirOrganisationService
-} from '../../../service/vir-organisation.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -20,7 +17,7 @@ export class UsageByOrganizationComponent {
   constructor(
       private virOrganisationService: VirOrganisationService
   ) {
-    this.users$ = this.virOrganisationService.users$
+    this.users$ = this.virOrganisationService.users$;
   }
 
   organizationSelect(org: string) {

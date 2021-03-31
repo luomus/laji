@@ -37,8 +37,6 @@ export class ActiveFiltersComponent {
     'status'
   ];
 
-  constructor() { }
-
   @Input() set query(q: FilterQuery) {
     this._query = q;
     const items = [];

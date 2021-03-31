@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { LajiFormComponent } from '../../laji-form/laji-form/laji-form.component';
-import { FormWithData } from '../../laji-form/laji-form-document.facade';
+import { LajiFormComponent } from '../laji-form/laji-form.component';
+import { FormWithData } from '../laji-form-document.facade';
 
 @Component({
   selector: 'laji-document-form-footer',

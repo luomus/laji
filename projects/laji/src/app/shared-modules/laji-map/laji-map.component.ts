@@ -16,10 +16,10 @@ import {
 import { IUserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { Options, TileLayerName, Lang, TileLayersOptions } from 'laji-map';
+import { Options, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
+import {LocalStorage} from 'ngx-webstorage';
 
 
 @Component({
@@ -145,6 +145,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   ngOnDestroy() {
     try {
       this.map.destroy();
+      this.map = undefined;
     } catch (e) {}
     if (this.subSet) {
       this.subSet.unsubscribe();

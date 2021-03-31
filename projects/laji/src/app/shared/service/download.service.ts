@@ -9,13 +9,13 @@ export class DownloadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  download(url, filename) {
+  downloadTextFile(url, filename) {
     return this.httpClient.get(url, {
-      responseType: 'blob'
+      responseType: 'text'
     }).pipe(
-      tap(blob => {
+      tap(text => {
         const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
+        const objectUrl = URL.createObjectURL(new Blob([text], {type : 'text/plain'}));
         a.href = objectUrl;
         a.download = filename;
         a.click();

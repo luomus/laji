@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ThreeStateSwitchComponent } from './three-state-switch.component';
 
@@ -6,7 +6,7 @@ describe('ThreeStateSwitchComponent', () => {
   let component: ThreeStateSwitchComponent;
   let fixture: ComponentFixture<ThreeStateSwitchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ThreeStateSwitchComponent ]
     })

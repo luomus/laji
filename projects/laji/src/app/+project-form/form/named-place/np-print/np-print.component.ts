@@ -1,13 +1,12 @@
-import { catchError, map, startWith, switchMap, take } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as FileSaver from 'file-saver';
-import { combineLatest as ObservableCombineLatest, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
-import { Person } from '../../../../shared/model/Person';
 import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.service';
 import { PlatformService } from '../../../../shared/service/platform.service';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';

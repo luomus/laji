@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WbcRouteComponent } from './wbc-route.component';
 
@@ -6,7 +6,7 @@ describe('WbcRouteComponent', () => {
   let component: WbcRouteComponent;
   let fixture: ComponentFixture<WbcRouteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WbcRouteComponent ]
     })

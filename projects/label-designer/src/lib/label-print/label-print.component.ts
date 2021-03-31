@@ -141,7 +141,7 @@ export class LabelPrintComponent implements OnChanges {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     if (this.visible) {
       this.renderPages();
     }

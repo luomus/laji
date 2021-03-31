@@ -4,8 +4,6 @@ export class ColumnSelector {
   private requiredFields: string[] = [];
   private changedByEdit = false;
 
-  constructor() { }
-
   get columns() {
     return this.selectedFields;
   }

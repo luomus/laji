@@ -8,7 +8,7 @@ import {
   OnChanges, SimpleChanges, OnInit
 } from '@angular/core';
 
-type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' ;
+export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' | 'edit' ;
 
 @Component({
   selector: 'lu-button',
@@ -17,7 +17,7 @@ type Role = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'dange
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent implements OnChanges, OnInit {
-  @Input() role: Role = 'secondary';
+  @Input() role: ButtonRole = 'secondary';
   @Input() loading: boolean;
   @Input() disabled = false; // note: can't disable anchors
   @Input() small = false;
@@ -37,9 +37,9 @@ export class ButtonComponent implements OnChanges, OnInit {
   pressed = false;
   classes = {};
 
-  @Input() set anchor(url: string) {
+  @Input() set anchor(url: string|string[]) {
     this.routerLink = url;
-    this.useHref = url.startsWith('http') || url.includes('?');
+    this.useHref = typeof url === 'string' && (url.startsWith('http') || url.includes('?'));
   }
 
   @HostListener('click', ['$event'])
@@ -61,7 +61,7 @@ export class ButtonComponent implements OnChanges, OnInit {
     event.stopImmediatePropagation();
   }
 
-  onMouseDown(event: MouseEvent) {
+  onMouseDown() {
     this.pressed = true;
   }
 

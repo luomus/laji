@@ -156,7 +156,7 @@ export class NotificationsFacade {
       variables: {personToken: this.userService.getToken(), pageSize: 1}
     }).pipe(
       map(({data}) => data),
-      catchError(e => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
+      catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
       this.unseenCountReducer(data.unseenCount.total);
       if (

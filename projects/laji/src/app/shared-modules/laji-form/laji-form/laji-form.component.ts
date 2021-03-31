@@ -21,12 +21,17 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
+import { combineLatest } from 'rxjs';
+import { Profile } from '../../../shared/model/Profile';
+import LajiForm from 'laji-form/lib/index';
+import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
 @Component({
   selector: 'laji-form',
   templateUrl: './laji-form.component.html',
+  styleUrls: ['./laji-form.component.scss'],
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -44,7 +49,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   static TOP_OFFSET = 50;
-  static BOTTOM_OFFSET = 61;
+  static BOTTOM_OFFSET = 53.5;
   @Input() formData: any = {};
   @Input() settingsKey: keyof IUserSettings = 'formDefault';
   @Input() showShortcutButton = true;
@@ -53,10 +58,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
 
-  private lajiFormWrapper: any;
+  private lajiFormWrapper: LajiForm;
   private lajiFormWrapperProto: any;
+  private lajiFormBs3Theme: LajiFormTheme;
   private _block = false;
   private settings: any;
+  private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
@@ -118,24 +125,29 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   popErrorListIfNeeded() {
-    this.lajiFormWrapper.app.refs.lajiform.popErrorListIfNeeded();
+    this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
   }
 
   private mount() {
     if (!this.formData?.formData) {
       return;
     }
-    import('laji-form').then((formPackage) => {
-      this.lajiFormWrapperProto = formPackage.default;
+    combineLatest(
+      import('laji-form'),
+      import('laji-form/lib/themes/bs3'),
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
           map(globalSettings => ({...globalSettings, ...settings}))
         )),
         take(1)
-      ).subscribe(settings => {
-        this.settings = settings;
-        this.mountLajiForm();
-      });
+      ),
+      this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
+    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
+      this.lajiFormWrapperProto = formPackage.default;
+      this.lajiFormBs3Theme = formBs3ThemePackage.default;
+      this.defaultMediaMetadata = defaultMediaMetadata;
+      this.settings = settings;
+      this.mountLajiForm();
     });
   }
 
@@ -165,6 +177,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         this.lajiFormWrapper = new this.lajiFormWrapperProto({
           staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
+          theme: this.lajiFormBs3Theme,
           schema: this.formData.schema,
           uiSchema: this.formData.uiSchema,
           uiSchemaContext: this.formData.uiSchemaContext,
@@ -176,6 +189,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           onSettingsChange: this._onSettingsChange.bind(this),
           onValidationError: this._onValidationError.bind(this),
           settings: this.settings,
+          mediaMetadata: this.defaultMediaMetadata,
           apiClient: this.apiClient,
           lang: this.translate.currentLang,
           renderSubmit: false,
@@ -199,7 +213,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  private _onSettingsChange(settings: object, global = false) {
+  private _onSettingsChange(settings: any, global = false) {
     this.ngZone.run(() => {
       this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
     });

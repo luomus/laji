@@ -8,7 +8,7 @@
   <div class="d-flex species-container" #speciesContainer>
     <div *ngFor="let species of speciesList; index as i" class="species d-flex flex-col mr-4">
       <div class="species-name-container">
-        <div><a [routerLink]="['/taxon', species.id, 'identification']" [ngClass]="species.cursiveName ? 'cursive' : null" class="species-scientific-name" preserveQueryParams>
+        <div><a [routerLink]="['/taxon', species.id, 'identification']" [ngClass]="species.cursiveName ? 'cursive' : null" class="species-scientific-name" queryParamsHandling="preserve">
           {{ species.scientificName }}
         </a></div>
         <div class="species-vernacular-name">{{ species.vernacularName }}</div>

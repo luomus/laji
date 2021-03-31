@@ -1,0 +1,28 @@
+@import '../../../../../laji-ui/src/lib/vars';
+
+.lj-title {
+  border-bottom: 1px solid $neutral-4;
+  margin: 0 -15px;
+  padding: 6px 15px;
+  display: block;
+  min-height: 32px;
+  position: relative;
+}
+.lj-title:after {
+  font-family: "Glyphicons Halflings";
+  color: $neutral-4;
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  margin-top: -10px;
+}
+.lj-open .lj-title:after {
+  content:"\e259";
+}
+.lj-close .lj-title:after {
+  content:"\e260";
+}
+.lj-select {
+  position: relative;
+  margin-bottom: 5px;
+}

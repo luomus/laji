@@ -29,7 +29,7 @@ import { GeneratorService } from './service/generator.service';
 import { AugmentService } from './service/augment.service';
 import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
-import { LajiMapModule } from '../laji-map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
 import { SpreadsheetFacade } from './spreadsheet.facade';

@@ -274,6 +274,22 @@ label {
     margin-left: 5px;
   }
 
+  :host ::ng-deep typeahead-container.dropdown {
+    right: 20px !important;
+    left: unset !important;
+    min-width: 600px;
+  }
+
+  :host ::ng-deep typeahead-container.dropdown ul {
+    min-width: 600px;
+  }
+
+  ::ng-deep typeahead-container ul li a span div {
+    display: inline-block;
+    float: right;
+    margin-left: 5px;
+  }
+
   @media only screen and (min-width: 768px) and (max-width: 1200px)  {
    .taxon div:nth-child(2) label, .taxon div:nth-child(3) label {
      height: 20px;

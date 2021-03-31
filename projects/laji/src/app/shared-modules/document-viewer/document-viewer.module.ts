@@ -17,7 +17,7 @@ import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../lang/lang.module';
 import { AnnotationsModule } from '../annotations/annotations.module';
 import { UserDocumentToolsComponent } from './user-document-tools/user-document-tools.component';
-import { LajiMapModule } from '../laji-map/laji-map.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
 import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
@@ -42,7 +42,9 @@ import { SampleComponent } from './sample/sample.component';
 import { InfoModule } from '../info/info.module';
 import { AnnotationDataObservationComponent } from './annotation-data-observation/annotation-data-observation.component';
 import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-tags-taxon/observation-effective-tags-taxon.component';
-import { AudioPlayerComponent } from '../audio-player/audio-player.component';
+import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-player.component';
+import { QualityRowComponent } from './quality-row/quality-row.component';
+import { NamedPlaceLinkerButtonModule } from '../../+project-form/form/named-place-linker/named-place-linker-button/named-place-linker-button.module';
 
 @NgModule({
   imports: [
@@ -52,7 +54,8 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
     AnnotationsModule,
     LajiMapModule,
     LicenseModule,
-    InfoModule
+    InfoModule,
+    NamedPlaceLinkerButtonModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
@@ -74,6 +77,7 @@ import { AudioPlayerComponent } from '../audio-player/audio-player.component';
     AnnotationDataObservationComponent,
     ObservationEffectiveTagsTaxonComponent,
     AudioPlayerComponent,
+    QualityRowComponent
   ],
   exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
 })

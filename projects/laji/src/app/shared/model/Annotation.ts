@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 
 /**
  * API documentation

@@ -30,10 +30,13 @@
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
     (select)="select.emit($event)"
-    [rowClass]="_getRowClass.bind(this)"
+    [rowClass]="_getRowClass"
     (activate)="onRowSelect($event)"
     [selected]="selected"
     [selectionType]="selectionType"
+    [summaryRow]="summaryRow"
+    [summaryPosition]="'bottom'"
+    [summaryHeight]="38"
   >
   </ngx-datatable>
   <laji-data-table-footer

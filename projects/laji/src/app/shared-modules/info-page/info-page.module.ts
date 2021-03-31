@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { InfoPageComponent } from './info-page.component';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { UtilitiesModule } from '../utilities/utilities.module';
-import { SharedModule } from 'projects/laji/src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [InfoPageComponent],

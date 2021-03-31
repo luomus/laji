@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Image } from '../../../shared/model/Image';
 
 @Component({
@@ -6,11 +6,7 @@ import { Image } from '../../../shared/model/Image';
   templateUrl: './print-images.component.html',
   styleUrls: ['./print-images.component.css']
 })
-export class PrintImagesComponent implements OnInit {
+export class PrintImagesComponent {
   @Input() images: Image[];
-
-  constructor() { }
-
-  ngOnInit() { }
 
 }

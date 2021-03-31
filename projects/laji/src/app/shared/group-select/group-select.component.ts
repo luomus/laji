@@ -23,7 +23,6 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   public currentValue: string;
   public label = '';
   public range: number[];
-  private el: Element;
 
   protected subLabel: any;
 
@@ -109,6 +108,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
       this.innerValue = value;
       this.setLabel(value);
       this.initGroups();
+      this.cd.markForCheck();
     }
   }
 

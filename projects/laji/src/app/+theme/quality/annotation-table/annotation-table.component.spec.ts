@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AnnotationTableComponent } from './annotation-table.component';
 
@@ -6,7 +6,7 @@ describe('QualityAnnotationTableComponent', () => {
   let component: AnnotationTableComponent;
   let fixture: ComponentFixture<AnnotationTableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AnnotationTableComponent ]
     })

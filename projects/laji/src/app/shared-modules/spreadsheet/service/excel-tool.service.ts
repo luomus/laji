@@ -31,7 +31,7 @@ export class ExcelToolService {
     }).pipe(map(namedPlaces => namedPlaces.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
     const collection$ = (form: Form.SchemaForm) => {
-      const selected = form.options?.namedPlaceOptions?.listColumns || [];
+      const selected = form.options?.namedPlaceOptions?.listColumns || [];
       return this.namedPlacesService.getAllNamePlaces({
         collectionID: form.collectionID,
         includeUnits: form.options?.namedPlaceOptions?.includeUnits,
@@ -70,6 +70,11 @@ export class ExcelToolService {
         CombineToDocument.none
       ];
     }
+    return [
+      CombineToDocument.gathering,
+      CombineToDocument.all,
+      CombineToDocument.none
+    ];
   }
 
 }

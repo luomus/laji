@@ -22,7 +22,7 @@
       </span>
       <div dropdown style="position: relative">
         <ng-container *ngIf="types.length > 1">
-          <a (click)="false" dropdownToggle href>
+          <a class="link" dropdownToggle style="padding: 0">
             <span>
               {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
             </span>

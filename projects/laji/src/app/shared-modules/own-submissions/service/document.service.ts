@@ -7,8 +7,15 @@ import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { mergeMap, tap } from 'rxjs/operators';
-
+import { Rights } from '../../../shared/service/form-permission.service';
+import { Person } from '../../../shared/model/Person';
 const { JSONPath } = require('jsonpath-plus');
+
+export enum Readonly {
+  noEdit,
+  false,
+  true
+}
 
 @Injectable()
 export class DocumentService {
@@ -118,4 +125,13 @@ export class DocumentService {
     return to;
   }
 
+  getReadOnly(data: Document, rights: Rights, person?: Person): Readonly {
+    if (rights.admin) {
+      return Readonly.false;
+    }
+    if (person && person.id && data && data.id && data.creator !== person.id && (!data.editors || data.editors.indexOf(person.id) === -1)) {
+      return Readonly.noEdit;
+    }
+    return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
+  }
 }

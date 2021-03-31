@@ -1,5 +1,11 @@
 <ng-container *ngIf="taxon">
   <ng-container *ngIf="(taxon.vernacularName | multiLang:false)" [ngTemplateOutlet]="vernacularName"></ng-container>
+  <ng-container *ngIf="(taxon.vernacularName | multiLang:false) && (taxon.colloquialVernacularName | multiLang:false)">
+    (<ul class="separated-list colloquialVernacularName">
+      <li *ngFor="let obj of (taxon.colloquialVernacularName | multiLang:false)">{{obj}}</li>
+    </ul>
+    <laji-info [placement]="'top'">{{ 'taxonomy.vernacular.colloquial.info' | translate }}</laji-info>)
+  </ng-container>
   <ng-container *ngIf="((taxon.vernacularName | multiLang:false) || taxon.alternativeVernacularName | multiLang:false | values) && taxon.scientificName">
     &ndash;
   </ng-container>

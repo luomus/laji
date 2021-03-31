@@ -4,7 +4,7 @@
             (change)="select.emit(areaSelect.value)"
             [disabled]="disabled"
             [value]="value">
-      <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value">
+      <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value[0]">
         {{ option.translate ? (option.value | translate) : option.value }}
       </option>
     </select>
@@ -13,9 +13,9 @@
   <laji-select
     [options]="options || []"
     [filterPlaceHolder]="'haseka.submissions.filter' | translate"
-    [useFilter]="'true'"
+    [useFilter]="true"
     [selected]="value"
-    (selectedChange)="select.emit($event)"
+    (selectedChange)="select.emit($any($event))"
     [open]="true"
   >
   </laji-select>

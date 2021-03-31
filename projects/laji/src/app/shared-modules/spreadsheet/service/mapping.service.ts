@@ -18,6 +18,7 @@ export enum SpecialTypes {
   dateTime = 'dateTime',
   date = 'date',
   time = 'time',
+  keywords = 'keywords'
 }
 
 @Injectable()
@@ -25,6 +26,7 @@ export class MappingService {
 
   public static readonly mergeKey = '_merge_';
   public static readonly valueSplitter = ';';
+  public static readonly keywordSplitters = [';', ','];
 
   // from boolean to translation key
   private readonly booleanMap = {
@@ -37,7 +39,7 @@ export class MappingService {
     'string': {}
   };
 
-  private colMapping: IColMap;
+  private colMapping?: IColMap;
 
   private userColMappings: IColMap = {};
   private userValueMappings: IValueMap = {};
@@ -45,14 +47,17 @@ export class MappingService {
   private specials = {
     'editors[*]': SpecialTypes.person,
     'namedPlaceID': SpecialTypes.namedPlaceID,
+    'keywords[*]': SpecialTypes.keywords,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
     'gatheringEvent.dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].leg': SpecialTypes.person,
     'gatherings[*].geometry': SpecialTypes.geometry,
     'gatherings[*].namedPlaceID': SpecialTypes.namedPlaceID,
+    'gatherings[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].unitGathering.geometry': SpecialTypes.geometry,
     'gatherings[*].taxonCensus[*].censusTaxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].keywords[*]': SpecialTypes.keywords,
     'gatherings[*].units[*].hostID': SpecialTypes.taxonID,
     'gatherings[*].units[*].informalTaxonGroup': SpecialTypes.informalTaxonGroupID,
     'gatherings[*].units[*].informalTaxonGroups[*]': SpecialTypes.informalTaxonGroupID,
@@ -81,7 +86,7 @@ export class MappingService {
   ) { }
 
 
-  rawValueToArray(value, field: IFormField) {
+  rawValueToArray(value: unknown, field: IFormField) {
     if (typeof value === 'string') {
       value = value.trim();
     }
@@ -229,7 +234,7 @@ export class MappingService {
     switch (field.type) {
       case 'string':
         if (!field.enum) {
-          realValue = value;
+          realValue = ['number', 'boolean', 'bigint'].includes(typeof value) ? '' + value : value;
         } else {
           this.initStringMap(field);
           realValue = Array.isArray(upperValue) ?
@@ -288,52 +293,32 @@ export class MappingService {
     return null;
   }
 
-  mapInformalTaxonGroupId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MVL\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapInformalTaxonGroupId(value: unknown): string|null {
+    return this.pickValue(value, /(MVL\.[0-9]+)/);
   }
 
-  mapTaxonId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MX\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapTaxonId(value: unknown): string|null {
+    return this.pickValue(value, /(MX\.[0-9]+)/);
   }
 
-  mapNamedPlaceID(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MNP\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapNamedPlaceID(value: unknown): string|null {
+    return this.pickValue(value, /(MNP\.[0-9]+)/);
   }
 
-  mapPerson(value, allowUnMapped = false) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MA\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
+  mapPerson(value: unknown, allowUnMapped = false): string|null {
+    const result = this.pickValue(value, /(MA\.[0-9]+)/);
+    if (result) {
+      return result;
     }
     if (allowUnMapped) {
-      return value;
+      return String(value);
     }
     return null;
   }
 
-  mapDateOptionalTime(value) {
-    if (typeof value === 'string') {
-      const parts = value.split(/[\s,T]+/).filter(v => !!v);
+  mapDateOptionalTime(value: unknown): string {
+    if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]*[0-9-.:+Z]*$/)) {
+      const parts = value.split(/[\s,T]+/);
       const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
@@ -342,30 +327,44 @@ export class MappingService {
           parts[0] = dateParts.reverse().map(v => Util.addLeadingZero(v)).join('-');
         }
       }
-      if (parts.length > 2) {
-        const first = parts.shift();
-
-        return `${first}T${parts.join('')}`;
-      }
       return parts.join('T');
+    } else if (value instanceof Date) {
+      if (
+        this.matchTime(value, 0, 0, 0) || // Excel from Mac
+        this.matchTime(value, 23, 59, 11) // Linux & Windows
+      ) {
+        return this.getDate(value);
+      }
+      return value.toISOString();
     }
-    return value;
+
+    return String(value);
+  }
+
+  mapKeywords(value) {
+    return typeof value === 'string' ?
+      value.split(new RegExp(MappingService.keywordSplitters.join('|'), 'g')).map(val => val.trim()) :
+      value;
   }
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
+    const fieldType = this.getSpecial(field);
+
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
       if (!field.isArray) {
         value = value.join(MappingService.valueSplitter);
       } else if (value.length === 0) {
         return null;
+      } else if (fieldType === SpecialTypes.keywords) {
+        value = value.reduce((a, b) => a.concat(b), []);
       }
       return value;
     }
     const upperValue = ('' + value).toLowerCase();
     let targetValue: TUserValueMap|TUserValueMap[] = this.getUserMappedValue(upperValue, field);
 
-    switch (this.getSpecial(field)) {
+    switch (fieldType) {
       case SpecialTypes.geometry:
         if (targetValue === null) {
           targetValue = this.analyzeGeometry(value);
@@ -389,6 +388,9 @@ export class MappingService {
       case SpecialTypes.dateOptionalTime:
         targetValue = this.mapDateOptionalTime(targetValue || value);
         break;
+      case SpecialTypes.keywords:
+        targetValue = this.mapKeywords(targetValue || value);
+        break;
       default:
         if (targetValue === null) {
           targetValue = this.mapByFieldType(value, field);
@@ -398,6 +400,26 @@ export class MappingService {
       targetValue = [targetValue];
     }
     return targetValue;
+  }
+
+  private matchTime(test: Date, hour: number, minutes: number, seconds: number): boolean {
+    return test.getHours() === hour && test.getMinutes() === minutes && test.getSeconds() === seconds;
+  }
+
+  private getDate(value: Date): string {
+    const tmpDate = new Date(value);
+    tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
+    return tmpDate.toISOString().substr(0, 10);
+  }
+
+  private pickValue(value: unknown, pickRegEx: RegExp) {
+    if (typeof value === 'string') {
+      const match = value.match(pickRegEx);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
   }
 
   private analyzeGeometry(value: any) {

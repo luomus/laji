@@ -1,0 +1,74 @@
+<h1>{{ 'theme.kerttu.result' | translate }}</h1>
+<div class="lu-section">
+  <div *lajiLoggedIn="true">
+    <div class="checkbox">
+      <label>
+        <input [disabled]="nameVisibility == null" type="checkbox" [ngModel]="nameVisibility" (ngModelChange)="saveNameVisibility($event)"/>{{ 'theme.kerttu.result.allowNameVisible' | translate }}
+      </label>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.allowNameVisible' | translate"></laji-info>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <ng-container *ngIf="stats$ | async as stats else spinner">
+        <div>
+          <h3>
+            {{ 'theme.kerttu.result.generalCounts' | translate }}
+            <laji-info [placement]="'right'" [html]="'theme.kerttu.info.generalCounts' | translate"></laji-info>
+          </h3>
+          <div class="row">
+            <div class="col-sm-6">
+              <laji-kerttu-count
+                [label]="'theme.kerttu.result.letters' | translate"
+                [count]="stats.general.letterAnnotationCount"
+              ></laji-kerttu-count>
+            </div>
+            <div class="col-sm-6">
+              <laji-kerttu-count
+                [label]="'theme.kerttu.result.recordings' | translate"
+                [count]="stats.general.recordingAnnotationCount"
+              ></laji-kerttu-count>
+            </div>
+          </div>
+          <ng-container *lajiLoggedIn="true">
+            <h3>{{ 'theme.kerttu.result.userCounts' | translate }}</h3>
+            <div class="row">
+              <div class="col-sm-6">
+                <laji-kerttu-count
+                  [label]="'theme.kerttu.result.letters' | translate"
+                  [count]="stats.general.userLetterAnnotationCount"
+                  [additionalDescription]="'theme.kerttu.result.shareOfAnnotations' | translate: {
+                    percentage: (stats.general.userLetterAnnotationCount / stats.general.letterAnnotationCount * 100) | number:'1.0-1'
+                  }"
+                ></laji-kerttu-count>
+              </div>
+              <div class="col-sm-6">
+                <laji-kerttu-count
+                  [label]="'theme.kerttu.result.recordings' | translate"
+                  [count]="stats.general.userRecordingAnnotationCount"
+                  [additionalDescription]="'theme.kerttu.result.shareOfAnnotations' | translate: {
+                    percentage: (stats.general.userRecordingAnnotationCount / stats.general.recordingAnnotationCount * 100) | number:'1.0-1'
+                  }"
+                ></laji-kerttu-count>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div>
+          <h3>{{ 'theme.kerttu.result.userTable' | translate }}</h3>
+          <laji-kerttu-user-table
+            [userList]="stats.users"
+            [userId]="userId"
+          ></laji-kerttu-user-table>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-sm-6" *lajiLoggedIn="true">
+      <h3>{{ 'theme.kerttu.result.equality' | translate }}</h3>
+      <p>{{ 'theme.kerttu.result.equality.description' | translate }}</p>
+    </div>
+  </div>
+</div>
+<ng-template #spinner>
+  <laji-spinner></laji-spinner>
+</ng-template>

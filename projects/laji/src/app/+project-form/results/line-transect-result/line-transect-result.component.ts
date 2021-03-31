@@ -1,6 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'laji-line-transect-result',
@@ -12,6 +10,4 @@ export class LineTransectResultComponent {
   informalTaxonGroup = 'MVL.1';
   defaultTaxonId = 'MX.37580';
   collectionId = 'HR.61,HR.2691';
-
-  constructor() {}
 }

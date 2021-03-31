@@ -1,5 +1,5 @@
 <ng-template #en>
-  <laji-info-page [child]="'3061'"></laji-info-page>
+  <laji-info-page page="3061"></laji-info-page>
 </ng-template>
 <div class="container-fluid">
   <div *ngIf="translate.currentLang === 'fi'; else en">
@@ -270,7 +270,7 @@
     <p>
         Eliömaakuntien rajat ladattavissa paikkatietoformaateissa: <a href="https://cdn.laji.fi/files/biogeographical-province/FI_FMNH_BGR_20161118.zip">FI_FMNH_BGR_20161118.zip</a>
     </p>
-    <p>    
+    <p>
       Eliömaakuntia on 21 koostuen 30 polygonista. Useammasta kuin yhdestä polygonista muodostuvat maakunnat:
     </p>
     <ul>
@@ -318,6 +318,9 @@
         <li>MAAKUNTA_F  =  MAAKUNTA_FI</li>
         <li>MAAKUNTA_L  =  MAAKUNTA_LAT</li>
     </ul>
- 
+    <p>
+      Eliömaakuntien rajoja voi käyttää vapaasti (Public Domain / Creative Commons Zero).
+    </p>
+
   </div>
 </div>

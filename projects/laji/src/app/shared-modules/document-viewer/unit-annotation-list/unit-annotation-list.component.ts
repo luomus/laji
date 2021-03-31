@@ -1,14 +1,8 @@
-import {map, switchMap } from 'rxjs/operators';
-import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, OnDestroy,
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy,
 ChangeDetectionStrategy} from '@angular/core';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { IdService } from '../../../shared/service/id.service';
-import { AnnotationService } from '../service/annotation.service';
-import { Observable, Subscription, timer, pipe } from 'rxjs';
 import { Annotation } from '../../../shared/model/Annotation';
-import { PagedResult } from '../../../shared/model/PagedResult';
-import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
-import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 
 @Component({
@@ -43,10 +37,7 @@ export class UnitAnnotationListComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private toQname: ToQNamePipe,
-    private annotationService: AnnotationService,
-    private warehouseApi: WarehouseApi,
-    private cd: ChangeDetectorRef
+    private toQname: ToQNamePipe
   ) { }
 
   ngOnInit() {

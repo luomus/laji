@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CellValueSelectComponent } from './cell-value-select.component';
 
@@ -6,7 +6,7 @@ describe('CellValueSelectComponent', () => {
   let component: CellValueSelectComponent;
   let fixture: ComponentFixture<CellValueSelectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CellValueSelectComponent ]
     })

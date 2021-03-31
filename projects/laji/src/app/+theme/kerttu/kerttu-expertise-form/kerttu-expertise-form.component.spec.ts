@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KerttuExpertiseFormComponent } from './kerttu-expertise-form.component';
 
@@ -6,7 +6,7 @@ describe('KerttuExpertiseFormComponent', () => {
   let component: KerttuExpertiseFormComponent;
   let fixture: ComponentFixture<KerttuExpertiseFormComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ KerttuExpertiseFormComponent ]
     })

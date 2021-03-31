@@ -21,8 +21,6 @@ export class SelectedFieldGroupComponent {
   @Output() moveUp = new EventEmitter<string>();
   @Output() moveDown = new EventEmitter<string>();
 
-  constructor() { }
-
   onToggle(field: string) {
     if (this.required.indexOf(field) === -1) {
       this.toggle.emit(field);

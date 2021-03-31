@@ -13,7 +13,7 @@
   <div class="nav-card-container d-flex flex-col my-7">
     <div routerLink="browse" class="nav-card d-flex mr-3 mb-3" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
       <div class="nav-card-img">
-        <img src="/projects/laji/src/static/images/icons/kotilo_1_sha.png">
+        <img src="/static/images/icons/kotilo_1_sha.png">
       </div>
       <div class="nav-card-content">
         <strong>{{ 'taxonomy.browseSpeciesPage' | translate }}</strong>
@@ -24,7 +24,7 @@
     </div>
     <div routerLink="list" [queryParams]="{ onlyFinnish: true }" class="nav-card d-flex mr-3 mb-3">
       <div class="nav-card-img">
-        <img src="/projects/laji/src/static/images/icons/table.png">
+        <img src="/static/images/icons/table.png">
       </div>
       <div class="nav-card-content">
         <strong>{{ 'taxonomy.speciesPage' | translate }}</strong>
@@ -35,7 +35,7 @@
     </div>
     <div routerLink="MX.37600/taxonomy" [queryParams]="{ showTree: true }" class="nav-card d-flex mr-3 mb-3">
       <div class="nav-card-img">
-        <img src="/projects/laji/src/static/images/icons/tree.png">
+        <img src="/static/images/icons/tree.png">
       </div>
       <div class="nav-card-content">
         <strong>{{ 'taxonomy.taxonPage' | translate }}</strong>

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
-import { LajiMapComponent } from '../../../../../shared-modules/laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
-import { LajiMapOptions, LajiMapTileLayerName } from '../../../../../shared-modules/laji-map/laji-map.interface';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-line-transect-print',

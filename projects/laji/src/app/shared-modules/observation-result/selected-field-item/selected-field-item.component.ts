@@ -18,8 +18,6 @@ export class SelectedFieldItemComponent {
   @Output() moveUp = new EventEmitter<string>();
   @Output() moveDown = new EventEmitter<string>();
 
-  constructor() { }
-
   moveFieldDown(field, event) {
     event.stopPropagation();
     this.moveDown.emit(field);

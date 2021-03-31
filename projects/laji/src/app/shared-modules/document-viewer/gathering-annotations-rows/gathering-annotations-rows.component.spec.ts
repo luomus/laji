@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GatheringAnnotationsRowsComponent } from './gathering-annotations-rows.component';
 
@@ -6,7 +6,7 @@ describe('GatheringAnnotationsRowsComponent', () => {
   let component: GatheringAnnotationsRowsComponent;
   let fixture: ComponentFixture<GatheringAnnotationsRowsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GatheringAnnotationsRowsComponent ]
     })

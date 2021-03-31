@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DataTableFooterComponent } from './data-table-footer.component';
 
@@ -6,7 +6,7 @@ describe('DataTableFooterComponent', () => {
   let component: DataTableFooterComponent;
   let fixture: ComponentFixture<DataTableFooterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DataTableFooterComponent ]
     })

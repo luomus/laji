@@ -15,7 +15,4 @@ export class UnitRowsComponent {
 
   annotationTagsObservation = Global.annotationTags;
 
-  constructor() { }
-
-
 }

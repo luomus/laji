@@ -1,8 +1,10 @@
-import { browser, by, element } from 'protractor';
+import { browser, $ } from 'protractor';
+import { MapPageObject } from 'laji-map/test-export/test-utils';
 
 export class MapPage {
 
-  closeTile = element(by.css('img[src="https://proxy.laji.fi/mml_wmts/maasto/wmts/1.0.0/maastokartta/default/ETRS-TM35FIN/15/24319/13521.png"]'));
+  private readonly $closeTile = $('img[src="https://proxy.laji.fi/mml_wmts/maasto/wmts/1.0.0/maastokartta/default/ETRS-TM35FIN/15/24319/13521.png"]');
+  public readonly map = new MapPageObject();
 
   navigateToMapWithObservationData() {
     // We're no longer zooming to data where there is data?
@@ -11,6 +13,6 @@ export class MapPage {
   }
 
   isZoomedIn() {
-    return this.closeTile.isPresent() as Promise<boolean>;
+    return this.$closeTile.isPresent() as Promise<boolean>;
   }
 }

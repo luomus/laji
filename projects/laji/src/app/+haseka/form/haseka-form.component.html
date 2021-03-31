@@ -3,7 +3,7 @@
       <h1>{{ 'haseka.title' | translate }}</h1>
       <p>{{ 'haseka.pleaseLogin' | translate }}</p>
     </div>
-    <div *lajiLoggedIn>
+    <div *lajiLoggedIn="true">
       <laji-document-form
         (success)="onSuccess($event)"
         (accessDenied)="onAccessDenied($event)"

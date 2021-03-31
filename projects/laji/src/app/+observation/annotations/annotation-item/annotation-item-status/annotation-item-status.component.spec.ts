@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AnnotationItemStatusComponent } from './annotation-item-status.component';
 
@@ -6,7 +6,7 @@ describe('AnnotationItemStatusComponent', () => {
   let component: AnnotationItemStatusComponent;
   let fixture: ComponentFixture<AnnotationItemStatusComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AnnotationItemStatusComponent ]
     })

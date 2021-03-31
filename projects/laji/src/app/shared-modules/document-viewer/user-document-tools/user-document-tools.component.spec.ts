@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserDocumentToolsComponent } from './user-document-tools.component';
 
@@ -6,7 +6,7 @@ describe('UserDocumentToolsComponent', () => {
   let component: UserDocumentToolsComponent;
   let fixture: ComponentFixture<UserDocumentToolsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UserDocumentToolsComponent ]
     })

@@ -17,7 +17,7 @@ import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormUtil } from '../../../../shared-modules/laji-form/laji-form-util.service';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 import { take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Form } from '../../../../shared/model/Form';
@@ -26,6 +26,7 @@ import { Rights } from '../../../../shared/service/form-permission.service';
 import { Util } from '../../../../shared/service/util.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-np-info',
@@ -43,6 +44,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() loading: boolean;
   @Input() accessRequested: boolean;
   @Input() formRights: Rights;
+  @Input() useLabel: string;
+  @Input() useDisabled = false;
+  @Input() reloadSubmissions$: Observable<void>;
 
   editButtonVisible: boolean;
 
@@ -184,7 +188,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deleteClick() {
-    this.deleteButtonClick.emit();
+    this.deleteButtonClick.emit(this.namedPlace);
   }
 
   copyLink() {

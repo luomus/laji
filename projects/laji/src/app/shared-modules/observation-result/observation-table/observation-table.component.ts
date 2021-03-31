@@ -14,8 +14,8 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
-import { Observable, of, Subscription } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,7 @@ import {
   IColumnGroup,
   TableColumnService
 } from '../../datatable/service/table-column.service';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
@@ -112,7 +112,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   private numberFields = ['oldestRecord', 'newestRecord', 'count', 'individualCountMax', 'individualCountSum', 'pairCountSum'];
 
-  private modalSub: Subscription;
   private fetchSub: Subscription;
   private queryKey: string;
   private aggregateBy: string[] = [];
@@ -178,7 +177,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   refreshTable() {
-    this.datatable.refreshTable();
+    this.datatable?.refreshTable();
   }
 
   initColumns() {

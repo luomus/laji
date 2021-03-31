@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
   selector: 'laji-about',
   template: `
     <laji-simple-omni></laji-simple-omni>
-    <div class="container-fluid">
+    <div class="container">
       <div id="wrapper" class="row">
         <div class="col-sm-6 col-md-7 col-lg-8">
           <ol class="breadcrumb">
@@ -20,10 +20,10 @@ import { Title } from '@angular/platform-browser';
           </ol>
           <laji-info-page
             [rootPage]="{'fi': 'r-19', 'en': 'r-21', 'sv': 'r-23'}"
-            [child]="activePage"
+            [page]="activePage"
             (title)="setTitle($event)"
             (parents)="parents = $event"
-            (children)="children = $event"
+            (subPages)="children = $event"
           ></laji-info-page>
         </div>
         <div class="col-sm-6 col-md-5 col-lg-4 more-info" *ngIf="children.length > 0">

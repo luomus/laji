@@ -20,8 +20,6 @@ export class RedListEvaluationInfoRowsetComponent {
 
   @Input() _values: IInternalRow[] = [];
 
-  constructor() { }
-
   @Input() set values(val: IRow[]) {
     this._values = val.map(v => ({
       ...v,

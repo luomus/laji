@@ -10,8 +10,6 @@ export class WbcTableFilterComponent {
   _value = '';
   @Output() valueChange = new EventEmitter<string>();
 
-  constructor() { }
-
   @Input()
   set value(val: string) {
     this._value = val || '';

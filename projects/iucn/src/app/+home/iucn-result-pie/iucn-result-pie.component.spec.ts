@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IucnResultPieComponent } from './iucn-result-pie.component';
 
@@ -6,7 +6,7 @@ describe('IucnResultPieComponent', () => {
   let component: IucnResultPieComponent;
   let fixture: ComponentFixture<IucnResultPieComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IucnResultPieComponent ]
     })

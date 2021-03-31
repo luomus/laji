@@ -1,0 +1,21 @@
+.button-container {
+  float: right;
+
+  div {
+    display: inline-block;
+    margin-left: 0.5em;
+  }
+
+  lu-button {
+    margin-left: 0.25em;
+  }
+}
+
+.checkbox-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.modal-footer lu-button {
+  margin-left: 15px;
+}

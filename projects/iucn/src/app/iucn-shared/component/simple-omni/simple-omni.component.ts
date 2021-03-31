@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DEFAULT_YEAR, ResultService } from '../../service/result.service';
 import { LocalizeRouterService } from '../../../../../../laji/src/app/locale/localize-router.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { TaxonSelectComponent } from '../../../../../../laji/src/app/shared-modu
   templateUrl: './simple-omni.component.html',
   styleUrls: ['./simple-omni.component.scss']
 })
-export class SimpleOmniComponent implements OnInit {
+export class SimpleOmniComponent {
 
   @ViewChild(TaxonSelectComponent, { static: true }) taxonSelectComponent: TaxonSelectComponent;
 
@@ -18,9 +18,6 @@ export class SimpleOmniComponent implements OnInit {
     private router: Router,
     private resultService: ResultService
   ) { }
-
-  ngOnInit() {
-  }
 
   taxonSelect(taxonID: string) {
     if (taxonID) {

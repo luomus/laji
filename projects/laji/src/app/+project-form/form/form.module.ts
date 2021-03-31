@@ -4,13 +4,15 @@ import { FormComponent } from './form.component';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { CommonModule } from '@angular/common';
 import { SpinnerModule } from '../../shared-modules/spinner/spinner.module';
-import { LajiFormModule } from '../../shared-modules/laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 import { NamedPlaceModule } from './named-place/named-place.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../../shared-modules/info/info.module';
 import { SelectModule } from '../../shared-modules/select/select.module';
+import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module';
+import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.module';
 
 @NgModule({
   imports: [
@@ -19,17 +21,20 @@ import { SelectModule } from '../../shared-modules/select/select.module';
     SpinnerModule,
     LajiFormModule,
     NamedPlaceModule,
+    NpEditFormModule,
     TranslateModule,
     LajiUiModule,
     SharedModule,
     InfoModule,
-    SelectModule
+    SelectModule,
+    NamedPlaceLinkerModule
   ],
   declarations: [
     FormComponent,
-    DocumentFormComponent
+    DocumentFormComponent,
   ],
-  providers: []
+  providers: [
+  ]
 })
 export class FormModule {
 }

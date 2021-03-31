@@ -14,10 +14,10 @@ import {
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { LajiMapComponent } from '../../laji-map/laji-map.component';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '../../laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
@@ -81,6 +81,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     tileLayerOpacity: 0.5,
     controls: true
   };
+  private onlyCount = true;
 
   constructor(
     public translate: TranslateService,
@@ -103,6 +104,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       this.cd.markForCheck();
     });
     this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    this.onlyCount = this.types.includes('count') && this.types.length === 1;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -144,10 +146,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
       geoJson$ = of(this.data);
     } else {
       geoJson$ = this.zeroObservationQuery ? forkJoin([
-        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true),
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics)
+        this.ykjService.getGeoJson(this.zeroObservationQuery, undefined, undefined, this.useStatistics, true, this.onlyCount),
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.onlyCount)
       ]).pipe(map(geoJsons => (this.ykjService.combineGeoJsons(geoJsons[1], geoJsons[0])))) :
-        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics);
+        this.ykjService.getGeoJson(this.query, undefined, undefined, this.useStatistics, false, this.onlyCount);
     }
 
     this.subQuery = geoJson$
@@ -310,9 +312,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   private getDataLayer() {
     try {
       const layers = this.mapComponent.map.getData();
-      for (const layer of layers) {
-        return layer.group;
-      }
+      return layers?.[0]?.group;
     } catch (e) {
     }
     return null;

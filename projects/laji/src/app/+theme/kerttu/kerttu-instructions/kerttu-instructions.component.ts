@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'laji-kerttu-instructions',
@@ -6,11 +6,6 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
   styleUrls: ['./kerttu-instructions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuInstructionsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class KerttuInstructionsComponent {
 
 }

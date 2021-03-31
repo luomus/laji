@@ -1,6 +1,6 @@
 <ng-template let-label="label" let-info="info" let-sort="sort" #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
+        (click)="toHtmlSpanElement($event.target).classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
     <span class="datatable-header-cell-label draggable">
       {{ label }}
     </span>
@@ -87,7 +87,7 @@
     >
       {{ value.linkings.taxon.speciesVernacularName | multiLang }}
       <span class="inline" *ngIf="value.linkings.taxon.speciesVernacularName && value.linkings.taxon.speciesScientificName"> &mdash; </span>
-      <span class="inline" [class.cursive]="true || value.linkings.taxon.cursiveName" *ngIf="value.linkings.taxon.speciesScientificName">
+      <span class="inline cursive" *ngIf="value.linkings.taxon.speciesScientificName">
           {{ value.linkings.taxon.speciesScientificName }}
       </span>
       <a
@@ -207,9 +207,7 @@
 </span>
 </ng-template>
 <ng-template let-value="value" #user>
-    <span *ngIf="value" title="{{value | users}}">
-    {{ value | users }}
-  </span>
+  <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | users}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #publication>
   <span *ngIf="value" title="{{value | publication}}">
@@ -220,8 +218,8 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <span *ngIf="value" title="{{value.status.replace('MX.iucn', '')}} ({{value.year}})">
-    {{ value.status.replace('MX.iucn', '') }} ({{ value.year }})
+  <span *ngIf="value" title="{{value.status | toQName | iucnStatus }} ({{value.year}})">
+    {{ value.status | toQName | iucnStatus }} ({{ value.year }})
   </span>
 </ng-template>
 <ng-template let-value="value" #formName>
@@ -290,7 +288,12 @@
   </span>
 </ng-template>
 <ng-template let-row="row" #taxonHabitats>
-  <span class="habitat" *ngIf="row.primaryHabitat || row.secondaryHabitats" title="{{ row.primaryHabitat.habitat | label }}{{ row.secondaryHabitats ? '; ' + (row.secondaryHabitats | label:undefined:'habitat' | values:'; ') : '' }}">
-    {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | label:undefined:'habitat' | values:'; ' }}</ng-container>
+  <span class="habitat" *ngIf="row.primaryHabitat || row.secondaryHabitats" title="{{ row.primaryHabitat.habitat | label }}{{ row.secondaryHabitats ? '; ' + (row.secondaryHabitats | pluck:'habitat' | label | values:'; ') : '' }}">
+    {{ row.primaryHabitat.habitat | label }}<ng-container *ngIf="row.secondaryHabitats">; {{ row.secondaryHabitats | pluck:'habitat' | label | values:'; ' }}</ng-container>
+  </span>
+</ng-template>
+<ng-template let-value="value" #qualityIcon>
+  <span *ngIf="value" [tooltip]="value | label:'warehouse'">
+    <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
   </span>
 </ng-template>

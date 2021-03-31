@@ -1,12 +1,12 @@
-import { browser, by, element, protractor } from 'protractor';
-import { NavPage } from '../shared/nav.page';
+import { browser, protractor, $, $$ } from 'protractor';
+import { NavPage } from '../shared/nav.po';
 
 export class SaveObservationsPage {
 
   /** Forms that don't have namedPlaced feature on them */
-  private simpleForms = element.all(by.css('.survey-box'));
-  private legInput = element(by.id('root_gatheringEvent_0_leg'));
-  private submitButton = element(by.css('.btn.btn-success.btn-sm'));
+  private simpleForms = $$('.survey-box');
+  private legInput = $('root_gatheringEvent_0_leg');
+  private submitButton = $('.btn.btn-success.btn-sm');
 
   async navigateTo() {
     return browser.get('/save-observations') as Promise<void>;
@@ -17,12 +17,20 @@ export class SaveObservationsPage {
     await browser.waitForAngularEnabled(true);
   }
 
+  clickFormById(id: string) {
+    return $(`[href="/project/${id}"`).click() as Promise<void>;
+  }
+
   clickSimpleFormByIdx(idx: number) {
     return this.simpleForms.get(idx).click();
   }
 
   countSimpleForms() {
     return this.simpleForms.count() as Promise<number>;
+  }
+
+  async pageIsDisplayed() {
+    return !!(await this.countSimpleForms());
   }
 
   isPresentSubmitButton() {

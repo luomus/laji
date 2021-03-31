@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-secure-info',
@@ -6,14 +6,9 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
   styleUrls: ['./secure-info.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SecureInfoComponent implements OnInit {
+export class SecureInfoComponent {
 
   @Input() secureLevel: string;
   @Input() secureReasons: string[];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

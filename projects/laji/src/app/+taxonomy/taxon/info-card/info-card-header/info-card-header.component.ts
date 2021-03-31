@@ -11,7 +11,6 @@ import {
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { Subscription } from 'rxjs';
 import { TaxonTaxonomyService } from '../../service/taxon-taxonomy.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'laji-info-card-header',
@@ -27,7 +26,6 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   loadingParent = false;
   subParam: any;
-  showTaxonomy: boolean;
 
   private parentSub: Subscription;
   private siblingSub: Subscription;
@@ -36,8 +34,7 @@ export class InfoCardHeaderComponent implements OnChanges {
 
   constructor(
     private taxonomyService: TaxonTaxonomyService,
-    private cd: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {

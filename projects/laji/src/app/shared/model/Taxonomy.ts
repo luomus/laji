@@ -64,6 +64,8 @@ export interface Taxonomy {
    */
   obsoleteVernacularName?: Array<string>;
 
+  colloquialVernacularName?: Array<string>;
+
   notes?: string;
 
   nestSiteSecureLevel?: string;

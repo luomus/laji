@@ -1,28 +1,48 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
-  <div id="spectrogramContainer" [ngClass]="{'visibility-hidden': loading}">
+  <div class="spectrogram-container" [ngClass]="{'visibility-hidden': loading}">
     <laji-audio-spectrogram
-      [buffer]="buffer"
+      [buffer]="extractedBuffer"
       [sampleRate]="sampleRate"
       [nperseg]="nperseg"
       [noverlap]="noverlap"
-      [currentTime]="currentTime"
-      [xRange]="xRange && xRange.length > 0 && xRangePadding !== 0 ? [xRange[0] - start, xRange[1] - start] : undefined"
-      [yRange]="yRange"
-      [zoomed]="zoomed"
+      [currentTime]="audioPlayer.currentTime"
+      [focusArea]="localFocusArea"
+      [highlightFocusArea]="highlightFocusArea"
+      [brushArea]="localBrushArea"
+      [zoomFrequency]="zoomFrequency"
+      [mode]="mode"
       (spectrogramReady)="setAudioLoading(false)"
-      (startDrag)="onSpectrogramDragStart()"
-      (endDrag)="onSpectrogramDragEnd($event)"
+      (dragStart)="onSpectrogramDragStart()"
+      (dragEnd)="onSpectrogramDragEnd($event)"
+      (brushEnd)="onSpectrogramBrushEnd($event)"
     ></laji-audio-spectrogram>
   </div>
 
-  <div id="audioControls" [ngClass]="{'visibility-hidden': loading}">
-    <button class="btn btn-default" (click)="toggleAudio()" [disabled]="loading">
+  <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}">
+    <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"
-        [ngClass]="{'fa-play': !isPlaying, 'fa-pause': isPlaying}"
+        [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
       >
       </span>
-    </button>
+    </lu-button>
+    <div class="btn-with-info">
+      <lu-button [role]="audioPlayer.loop ? 'other' : undefined" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
+        <span class="fa fa-refresh"></span>
+      </lu-button>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.loop' | translate"></laji-info>
+    </div>
+    <ng-container *ngIf="showBrushControl">
+      <div class="btn-with-info">
+        <lu-button [role]="mode === 'brush' ? 'other' : undefined" (click)="toggleBrushMode()">
+          {{ 'theme.kerttu.audioViewer.changeView' | translate }}
+        </lu-button>
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.changeView' | translate"></laji-info>
+      </div>
+      <lu-button [role]="'primary'" (click)="clearBrushArea()" *ngIf="localBrushArea">
+        {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
+      </lu-button>
+    </ng-container>
   </div>
 </laji-spinner>

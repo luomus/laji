@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {ProtaxApi} from './protax-api';
 import {ExportService} from '../../shared/service/export.service';
-import {TranslateService} from '@ngx-translate/core';
+import {Subscription} from 'rxjs';
+import {HttpEventType} from '@angular/common/http';
+import {DialogService} from '../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-protax',
@@ -9,26 +11,51 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./protax.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxComponent implements OnInit {
+export class ProtaxComponent implements OnDestroy {
+  loading = false;
+  downloadProgress: number;
+
+  private analyseSub: Subscription;
+
   constructor(
     private protaxApi: ProtaxApi,
     private exportService: ExportService,
-    private translate: TranslateService
+    private dialogService: DialogService,
+    private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    if (this.analyseSub) {
+      this.analyseSub.unsubscribe();
+    }
   }
 
   analyseData(formData: FormData) {
-    this.protaxApi.analyse(formData).subscribe(result => {
-      this.exportService.exportArrayBuffer(result, 'protax_output', 'txt');
+    if (this.analyseSub) {
+      this.analyseSub.unsubscribe();
+    }
+
+    this.loading = true;
+    this.downloadProgress = undefined;
+
+    this.analyseSub = this.protaxApi.analyse(formData).subscribe(event => {
+      if (event.type === HttpEventType.DownloadProgress) {
+        this.downloadProgress = event.loaded / event.total;
+      } else if (event.type === HttpEventType.Response) {
+        this.exportService.exportArrayBuffer(event.body, 'protax_output', 'zip');
+        this.loading = false;
+      }
+      this.cd.markForCheck();
     }, err => {
+      this.loading = false;
+      this.cd.markForCheck();
+
       if (err.status === 400) {
-        alert(this.translate.instant('theme.protax.invalidSequence'));
+        this.dialogService.alert('theme.protax.invalidSequence');
       } else if (err.status === 413) {
-        alert(this.translate.instant('theme.protax.tooLargeSequence'));
+        this.dialogService.alert('theme.protax.tooLargeSequence');
       } else {
-        alert(this.translate.instant('theme.protax.genericError'));
+        this.dialogService.alert('theme.protax.genericError');
       }
     });
   }

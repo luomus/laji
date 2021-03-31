@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'vir-save-observations',
@@ -6,11 +6,6 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./save-observations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SaveObservationsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class SaveObservationsComponent {
 
 }

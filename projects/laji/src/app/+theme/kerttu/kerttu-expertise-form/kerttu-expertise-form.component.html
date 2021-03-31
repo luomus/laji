@@ -9,14 +9,14 @@
       class="fa"
       [ngClass]="{'fa-refresh': saving, 'fa-check': !saving}">
     </span>
-  {{ saving ? 'Tallennetaan...' : 'Tallennettu' }}
+  {{ (saving ? 'theme.kerttu.expertise.saving' : 'theme.kerttu.expertise.saved') | translate }}
 </div>
 <div class="lu-section" style="clear: both">
   <div class="row">
     <div class="col-sm-8 col-md-6 col-lg-5">
       <div class="form-group">
         <label for="finnishBirdSongRecognitionSkillLevel">
-          Arvioi kuinka hyvin tunnistat Suomessa tavattujen lintulajien äänet
+          {{ 'theme.kerttu.expertise.finnishBirdSongRecognitionSkillLevel' | translate }}
         </label>
         <laji-metadata-select
           [(ngModel)]="finnishBirdSongRecognitionSkillLevel"
@@ -32,7 +32,7 @@
       </div>
       <div class="form-group">
         <label for="birdwatchingActivityLevel">
-          Arvioi kuinka aktiivinen lintuharrastaja olet
+          {{ 'theme.kerttu.expertise.birdwatchingActivityLevel' | translate }}
         </label>
         <laji-metadata-select
           [(ngModel)]="birdwatchingActivityLevel"
@@ -49,8 +49,9 @@
     </div>
   </div>
 
-  <strong>Valitse taulukosta lajit, jotka osaat tunnistaa äänen perusteella</strong>
+  <strong>{{ 'theme.kerttu.expertise.selectSpecies' | translate }}</strong>
   <laji-expertise-form
+    [taxonList]="taxonList$ | async"
     [selectedTaxonIds]="selectedTaxonIds"
     (taxonIdSelect)="onSelectedTaxonIdsChange($event)"
   ></laji-expertise-form>

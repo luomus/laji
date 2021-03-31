@@ -1,6 +1,6 @@
 import { switchMap, take } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, Input, ViewChild } from '@angular/core';
+import { Component, Inject, Input, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
@@ -29,7 +29,7 @@ export class FeedbackComponent {
   public error = false;
   private displayedModal: BsModalRef;
 
-  @ViewChild('childModal', { static: true }) public modal: HTMLElement;
+  @ViewChild('childModal', { static: true }) public modal: TemplateRef<any>;
 
   constructor(@Inject(WINDOW) private window: Window,
     public userService: UserService,

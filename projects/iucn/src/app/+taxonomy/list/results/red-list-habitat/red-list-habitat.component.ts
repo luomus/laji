@@ -32,8 +32,6 @@ export class RedListHabitatComponent {
 
   _data: RedListHabitatData[];
 
-  constructor() { }
-
   @Input()
   set data(data: RedListHabitatData[]) {
     this._data = data;

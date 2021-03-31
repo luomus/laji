@@ -83,7 +83,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   public viewDate: string = null;
   public date: moment.Moment;
   public days: CalendarDate[] = [];
-  private el: Element;
+  private readonly el: Element;
   private currentValue;
 
   private valueSource = new BehaviorSubject<string>('');
@@ -200,9 +200,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     const selectedDate = moment(this.value, this.viewFormat);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
       const currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-      const today = (moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month'))
-        ? true : false;
-      const selected = (selectedDate.isSame(currentDate, 'day')) ? true : false;
+      const today = moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month');
+      const selected = selectedDate.isSame(currentDate, 'day');
 
       if (i > 0) {
         this.days.push({

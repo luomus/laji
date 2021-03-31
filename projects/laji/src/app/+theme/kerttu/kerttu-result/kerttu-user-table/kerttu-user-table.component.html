@@ -1,0 +1,20 @@
+<laji-datatable
+  [columns]="columns"
+  [rows]="data"
+  [clientSideSorting]="true"
+  [virtualScrolling]="false"
+  [summaryRow]="true"
+  [sorts]="sorts"
+  [loading]="loading"
+  [showRowAsLink]="false"
+></laji-datatable>
+
+<ng-template let-value="value" let-row="row" #userName>
+  <span *ngIf="row.userId" title="{{ value }}">
+    <em *ngIf="row.userId == userId">{{ value }}</em>
+    <ng-container *ngIf="row.userId != userId">{{ value }}</ng-container>
+  </span>
+  <span *ngIf="!row.userId" title="{{ 'theme.kerttu.result.hidden' | translate }}">
+    <em>{{ 'theme.kerttu.result.hidden' | translate }}</em>
+  </span>
+</ng-template>
