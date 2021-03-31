@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { SelectOption } from '../select-collections.component';
+import { SelectedOption } from '../select-collections.component';
 
 @Component({
   selector: 'laji-selected-collections',
@@ -16,7 +16,7 @@ import { SelectOption } from '../select-collections.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedCollectionsComponent {
-  @Input() selectedOptions: SelectOption[];
+  @Input() selectedOptions: SelectedOption[];
   @Output() selectedOptionsChange = new EventEmitter<string>();
 
   track(idx, item) {

@@ -309,6 +309,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
+  onCollectionIdChange(collectionId: any) {
+    this.query.collectionId = collectionId;
+    this.onQueryChange();
+  }
+
   onHabitatChange(habitats: any) {
     this.query.primaryHabitat = habitats.primaryHabitat;
     this.query.anyHabitat = habitats.anyHabitat;

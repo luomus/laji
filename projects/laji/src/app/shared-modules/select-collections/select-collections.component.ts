@@ -6,7 +6,7 @@ import { CollectionService, ICollectionRange, ICollectionsTreeNode } from '../..
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
 import { Observable, zip } from 'rxjs';
 
-export interface SelectOption {
+export interface SelectedOption {
   id: any;
   value: any;
 }
@@ -18,8 +18,7 @@ export interface SelectOption {
 })
 export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() title: string;
-  @Input() selectedOptions: string[] = [];
-  @Input() query: any;
+  @Input() query: Record<string, any>;
   @Input() info: string;
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
@@ -35,6 +34,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
 
   lang: string;
   modalRef: BsModalRef;
+  selectedOptions: string[] = [];
 
   constructor(
     private modalService: BsModalService,
@@ -43,7 +43,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    if (this.selectedOptions?.length !== 0) {
+    if (this.query?.collectionId?.length !== 0) {
       this.open = true;
     }
   }
@@ -52,6 +52,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     this.lang = this.translate.currentLang;
     this.collectionsTree$ = this.initCollectionsTree();
     this.collections$ = this.initCollections();
+    this.selectedOptions = this.query?.collectionId || [];
   }
 
   toggle(event) {

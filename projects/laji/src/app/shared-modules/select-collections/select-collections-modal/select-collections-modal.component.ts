@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { SelectOption } from '../select-collections.component';
+import { SelectedOption } from '../select-collections.component';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
@@ -24,7 +24,7 @@ export class SelectCollectionsModalComponent implements OnInit {
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<string[]>();
 
-  selectedOptions: SelectOption[] = [];
+  selectedOptions: SelectedOption[] = [];
   treeModel: TreeModel;
 
   filterDebounce = new Subject<string>();
