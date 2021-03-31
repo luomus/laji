@@ -54,7 +54,7 @@ describe('Tools page', () => {
       await spreadsheet.clickNextValueMapButton();
       expect(await spreadsheet.getActiveStep()).toBe(4, 'After uploading valid file we should see taxon linking next');
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
-      expect(await spreadsheet.getDocumentCountText()).toBe('1', 'With default setting 1 document should be created');
+      expect(await spreadsheet.getDocumentCountText()).toBe('2', 'With default setting 2 document should be created');
       expect(await spreadsheet.countCellWithValue('2020-03-01')).toBe(3, 'There should be 3 elements in table with value 2020-03-01');
       expect(await spreadsheet.countCellWithValue('TEST')).toBe(1, 'There should be one element in table with value TEST');
       done();
@@ -64,7 +64,7 @@ describe('Tools page', () => {
       await spreadsheet.selectOnlyRowsWithNumber();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(1, 'There should be a warning that the row is skipped');
-      expect(await spreadsheet.getDocumentCountText()).toBe('1', 'Selecting to skip non count rows should not effect document count');
+      expect(await spreadsheet.getDocumentCountText()).toBe('2', 'Selecting to skip non count rows should not effect document count');
       done();
     });
 
@@ -72,7 +72,7 @@ describe('Tools page', () => {
       await spreadsheet.selectEachRowAsOwnDocument();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(1, 'There should be a warning that the row is skipped');
-      expect(await spreadsheet.getDocumentCountText()).toBe('2', 'Selecting to skip non count rows should not effect document count');
+      expect(await spreadsheet.getDocumentCountText()).toBe('3', 'Selecting to skip non count rows should not effect document count');
       done();
     });
 
@@ -80,7 +80,7 @@ describe('Tools page', () => {
       await spreadsheet.selectRowsWithoutNumber();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be a warning that the row is skipped');
-      expect(await spreadsheet.getDocumentCountText()).toBe('3', 'Selecting to skip non count rows should not effect document count');
+      expect(await spreadsheet.getDocumentCountText()).toBe('4', 'Selecting to skip non count rows should not effect document count');
       done();
     });
 
