@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IucnArea, RegionalService } from '../../../../iucn-shared/service/regional.service';
 import { RedListRegionalStatusData } from '../regional-results.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-red-list-regional-status',
@@ -9,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./red-list-regional-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RedListRegionalStatusComponent implements OnInit {
+export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
 
   _data: RedListRegionalStatusData[] = [];
   areas: IucnArea[] = [];
@@ -22,6 +23,8 @@ export class RedListRegionalStatusComponent implements OnInit {
     this.updateData(this._data);
   }
 
+  private areaSub?: Subscription;
+
   constructor(
     private resultService: RegionalService,
     private translate: TranslateService,
@@ -29,11 +32,17 @@ export class RedListRegionalStatusComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
       this.areas = areas;
       this.updateData(this._data);
       this.cdr.markForCheck();
     });
+  }
+
+  ngOnDestroy() {
+    if (this.areaSub) {
+      this.areaSub.unsubscribe();
+    }
   }
 
   rowClick(group: string) {

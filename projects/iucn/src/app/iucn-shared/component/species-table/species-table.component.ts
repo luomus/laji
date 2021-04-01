@@ -36,8 +36,6 @@ export class SpeciesTableComponent implements OnChanges {
   @Output() fieldsChange = new EventEmitter<ISelectFields[]>();
   @Output() download = new EventEmitter<{type: string, fields: ISelectFields[]}>();
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.downloadLoading?.previousValue && !this.downloadLoading) {
       this.speciesDownload.closeModal();

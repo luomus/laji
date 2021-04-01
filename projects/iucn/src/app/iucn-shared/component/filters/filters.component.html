@@ -80,7 +80,7 @@
       </div>
     </ng-container>
   </ng-container>
-  <div class="form-group" *ngIf="type !== 'status' && type !== 'regional'">
+  <div class="form-group" *ngIf="type === 'default'">
     <div class="col-sm-5 col-md-4" style="position: relative;">
       <div class="overlay-dropdown" (click)="toggleStatus()"></div>
       <label>{{ 'iucn.filter.status' | translate }}</label>

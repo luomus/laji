@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { SelectOption } from '../select/select.component';
 
 @Component({
@@ -7,7 +7,7 @@ import { SelectOption } from '../select/select.component';
   styleUrls: ['./multi-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MultiSelectComponent implements OnInit {
+export class MultiSelectComponent {
 
   @Input() value: string[] = [];
   @Input() placeholder = '';
@@ -20,9 +20,6 @@ export class MultiSelectComponent implements OnInit {
   constructor(
     private cd: ChangeDetectorRef
   ) { }
-
-  ngOnInit(): void {
-  }
 
   onSelect(value: string) {
     const values = (this.value || []);

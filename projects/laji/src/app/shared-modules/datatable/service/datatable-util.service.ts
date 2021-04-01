@@ -39,6 +39,15 @@ export class DatatableUtil {
       );
     }
 
+    if (template.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
+      const area = template.split('_')[1];
+      return ObservableOf(value.includes(area) ? 'RT' : '');
+    } else if (template.startsWith('latestRedListEvaluation.occurrences_')) {
+      const targetArea = template.split('_')[1];
+      const match = value.filter(val => val.area === targetArea);
+      return match.length > 0 ? this.getLabels(match[0].status) : ObservableOf(value);
+    }
+
     let observable;
     switch (template) {
       case 'warehouseLabel':
@@ -99,18 +108,6 @@ export class DatatableUtil {
         observable = ObservableOf(
           (row.scientificName || '') + (row.scientificName && row.vernacularName ? ' – ' : '') + (row.vernacularName || '')
         );
-        break;
-      case template.startsWith('latestRedListEvaluation.threatenedAtArea_') ? template : !template:
-        const area = template.split('_')[1];
-        observable = ObservableOf(value.includes(area) ? 'RT' : '');
-        break;
-      case template.startsWith('latestRedListEvaluation.occurrences_') ? template : !template:
-        const targetArea = template.split('_')[1];
-        value.forEach(val => {
-          if (val.area === targetArea) {
-            observable = this.getLabels(val.status);
-          }
-        });
         break;
       case 'informalTaxonGroup':
         observable = this.getLabels(value[value.length - 1]);

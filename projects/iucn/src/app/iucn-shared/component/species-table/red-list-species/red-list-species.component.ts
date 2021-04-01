@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Params } from '@angular/router';
+import { Taxonomy } from '../../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 
 @Component({
@@ -10,14 +11,14 @@ import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/
 })
 export class RedListSpeciesComponent {
 
-  @Input() species = [];
+  @Input() species: Taxonomy[] = [];
   @Input() fields: ISelectFields[] = [];
   @Input() showTaxonLink = true;
   @Input() taxonLinkQueryParams: Params = {};
 
   constructor() { }
 
-  trackBySpeciesId(index, species) {
+  trackBySpeciesId(index: number, species: Taxonomy): string|number {
     return species.id || index;
   }
 

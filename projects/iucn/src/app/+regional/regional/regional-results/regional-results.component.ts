@@ -1,5 +1,5 @@
-import { Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { Component, ChangeDetectorRef, ChangeDetectionStrategy, Input, OnChanges, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { of, Observable, Subscription } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import { RegionalFilterQuery, RegionalService } from '../../../iucn-shared/service/regional.service';
@@ -33,7 +33,7 @@ export interface RedListRegionalStatusData {
   styleUrls: ['./regional-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegionalResultsComponent implements OnChanges {
+export class RegionalResultsComponent implements OnChanges, OnDestroy {
   @Input() type: RegionalListType = 'status';
   @Input() query: RegionalFilterQuery = {};
   @Input() checklist?: string;
@@ -69,6 +69,8 @@ export class RegionalResultsComponent implements OnChanges {
 
   downloadLoading = false;
 
+  private areaSub?: Subscription;
+
   constructor(
     private translate: TranslateService,
     private taxonService: TaxonService,
@@ -85,6 +87,12 @@ export class RegionalResultsComponent implements OnChanges {
     }
 
     this.initQueries();
+  }
+
+  ngOnDestroy() {
+    if (this.areaSub) {
+      this.areaSub.unsubscribe();
+    }
   }
 
   changeQuery<K extends keyof RegionalFilterQuery, T extends RegionalFilterQuery[K]>(field: K, value: T) {
@@ -212,7 +220,7 @@ export class RegionalResultsComponent implements OnChanges {
   }
 
   private initAreaColumns() {
-    this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
+    this.areaSub = this.resultService.getAreas(this.translate.currentLang).subscribe(areas => {
       const areaFields = [];
       const occurrenceFields = [];
 

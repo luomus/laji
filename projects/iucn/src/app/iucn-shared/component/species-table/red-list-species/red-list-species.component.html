@@ -85,7 +85,7 @@
               </ng-container>
             </td>
             <td *ngSwitchCase="field.key.startsWith('ML.') ? field.key : !field.key">
-              <ng-container *ngIf="taxon?.latestRedListEvaluation?.threatenedAtArea.includes(field.key)">
+              <ng-container *ngIf="taxon?.latestRedListEvaluation?.threatenedAtArea?.includes(field.key)">
                 RT
               </ng-container>
             </td>
