@@ -58,14 +58,12 @@ export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
     }
     const total: RedListRegionalStatusData = { species: 'Total', count: 0 };
     this.areas.forEach(area => {
-      this.setRowValue(total, area.id as keyof RedListRegionalStatusData, 0);
+      total[area.id] = 0;
     });
     const results = data.map(row => {
       this.areas.forEach(area => {
-        const id = area.id as keyof RedListRegionalStatusData;
-        const value = row[id];
-        if (value) {
-          this.setRowValue(total, id, value);
+        if (row[area.id]) {
+          (total[area.id] as number) += row[area.id] as number;
         }
       });
       total.count += row.count;
@@ -76,9 +74,5 @@ export class RedListRegionalStatusComponent implements OnInit, OnDestroy {
     }
     results.push(total);
     this._data = results;
-  }
-
-  private setRowValue<K extends keyof RedListRegionalStatusData, T extends RedListRegionalStatusData[K]>(data: RedListRegionalStatusData, field: K, value: T) {
-    data[field] = value;
   }
 }

@@ -10,22 +10,13 @@ import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
-export interface RedListRegionalStatusData {
-  species: string;
-  count: number;
-  group?: string;
-  'ML.690'?: number;
-  'ML.691'?: number;
-  'ML.692'?: number;
-  'ML.693'?: number;
-  'ML.694'?: number;
-  'ML.695'?: number;
-  'ML.696'?: number;
-  'ML.697'?: number;
-  'ML.698'?: number;
-  'ML.699'?: number;
-  'ML.700'?: number;
-}
+export type RedListRegionalStatusData = {
+  [area: string]: number|string;
+ } & {
+   species: string;
+   count: number;
+   group?: string;
+};
 
 @Component({
   selector: 'laji-regional-results',
