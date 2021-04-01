@@ -131,7 +131,6 @@ export namespace Form {
       listLabel?: string;
       listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
-      formNavLabel?: string;
       reservationUntil?: string;
       showLegendList?: boolean;
       infoFields?: string[];
