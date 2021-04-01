@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class RedListRegionalStatusComponent implements OnInit {
 
   _data: RedListRegionalStatusData[] = [];
-  areas: IucnArea[];
+  areas: IucnArea[] = [];
 
   @Output() groupSelect = new EventEmitter<string>();
 
@@ -49,12 +49,14 @@ export class RedListRegionalStatusComponent implements OnInit {
     }
     const total: RedListRegionalStatusData = { species: 'Total', count: 0 };
     this.areas.forEach(area => {
-      total[area.id] = 0;
+      this.setRowValue(total, area.id as keyof RedListRegionalStatusData, 0);
     });
     const results = data.map(row => {
       this.areas.forEach(area => {
-        if (row[area.id]) {
-          total[area.id] += row[area.id];
+        const id = area.id as keyof RedListRegionalStatusData;
+        const value = row[id];
+        if (value) {
+          this.setRowValue(total, id, value);
         }
       });
       total.count += row.count;
@@ -65,5 +67,9 @@ export class RedListRegionalStatusComponent implements OnInit {
     }
     results.push(total);
     this._data = results;
+  }
+
+  private setRowValue<K extends keyof RedListRegionalStatusData, T extends RedListRegionalStatusData[K]>(data: RedListRegionalStatusData, field: K, value: T) {
+    data[field] = value;
   }
 }

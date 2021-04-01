@@ -34,19 +34,19 @@ export interface RedListRegionalStatusData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegionalResultsComponent implements OnChanges {
-  @Input() type: RegionalListType;
-  @Input() query: RegionalFilterQuery;
-  @Input() checklist: string;
+  @Input() type: RegionalListType = 'status';
+  @Input() query: RegionalFilterQuery = {};
+  @Input() checklist?: string;
 
   @Output() queryChange = new EventEmitter<RegionalFilterQuery>();
 
-  statusEvaluationYear: string;
+  statusEvaluationYear?: string;
 
   cache: {[key: string]: any} = {};
   baseQuery = {};
 
-  redListStatusQuery$: Observable<RedListRegionalStatusData[]>;
-  speciesQuery$: Observable<Taxonomy[]>;
+  redListStatusQuery$?: Observable<RedListRegionalStatusData[]>;
+  speciesQuery$?: Observable<Taxonomy[]>;
 
   speciesPageSize = 100;
   speciesPage = 1;
@@ -64,7 +64,7 @@ export class RegionalResultsComponent implements OnChanges {
     {label: 'iucn.results.column.habitat', key: 'habitat'},
     {label: 'iucn.results.column.status', key: 'status'}
   ];
-  selectedSpeciesFields: string[];
+  selectedSpeciesFields: string[] = [];
 
 
   downloadLoading = false;
@@ -80,7 +80,10 @@ export class RegionalResultsComponent implements OnChanges {
   }
 
   ngOnChanges() {
-    this.statusEvaluationYear = this.resultService.getStatusEvaluationYearFromChecklistVersion(this.checklist);
+    if (this.checklist) {
+      this.statusEvaluationYear = this.resultService.getStatusEvaluationYearFromChecklistVersion(this.checklist);
+    }
+
     this.initQueries();
   }
 
@@ -127,7 +130,7 @@ export class RegionalResultsComponent implements OnChanges {
       includeHidden: true
     });
 
-    this.selectedSpeciesFields = this.query.speciesFields?.split(',');
+    this.selectedSpeciesFields = this.query.speciesFields ? this.query.speciesFields.split(',') : [];
 
     this.initStatusQuery();
     this.initSpeciesListQuery();

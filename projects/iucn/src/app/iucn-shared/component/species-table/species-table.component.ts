@@ -12,13 +12,13 @@ import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTableComponent implements OnChanges {
-  @ViewChild(DownloadComponent) speciesDownload: DownloadComponent;
+  @ViewChild(DownloadComponent) speciesDownload!: DownloadComponent;
 
-  @Input() species: Taxonomy[];
+  @Input() species: Taxonomy[] = [];
 
   @Input() defaultFields: ISelectFields[] = [];
   @Input() allFields: ISelectFields[] = [];
-  @Input() selected: string[];
+  @Input() selected: string[] = [];
 
   @Input() downloadLoading = false;
   @Input() showTaxonLink = true;
@@ -28,9 +28,9 @@ export class SpeciesTableComponent implements OnChanges {
   @Input() speciesPage = 1;
   @Input() speciesCount = 0;
 
-  @Input() year: string;
+  @Input() year?: string;
 
-  selectedFields: ISelectFields[];
+  selectedFields: ISelectFields[] = [];
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() fieldsChange = new EventEmitter<ISelectFields[]>();
@@ -62,13 +62,15 @@ export class SpeciesTableComponent implements OnChanges {
   }
 
   private setStatusYear() {
-    for (const array of [this.defaultFields, this.allFields]) {
-      const statusIdx = array.findIndex(item => item.key === 'status');
-      if (statusIdx !== -1) {
-        array[statusIdx] = {
-          ...array[statusIdx],
-          label: 'iucn.results.column.class' + this.year
-        };
+    if (this.year) {
+      for (const array of [this.defaultFields, this.allFields]) {
+        const statusIdx = array.findIndex(item => item.key === 'status');
+        if (statusIdx !== -1) {
+          array[statusIdx] = {
+            ...array[statusIdx],
+            label: 'iucn.results.column.class' + this.year
+          };
+        }
       }
     }
   }

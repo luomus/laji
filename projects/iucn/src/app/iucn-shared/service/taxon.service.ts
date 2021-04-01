@@ -13,8 +13,8 @@ import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 })
 export class TaxonService {
 
-  private treeCache = {};
-  private request = {};
+  private treeCache: {[key: string]: RedListTaxonGroup[]} = {};
+  private treeRequest: {[key: string]: Observable<RedListTaxonGroup[]>} = {};
 
   constructor(
     private taxonApi: TaxonomyApi,
@@ -53,15 +53,15 @@ export class TaxonService {
     if (this.treeCache[lang]) {
       return ObservableOf(this.treeCache[lang]);
     }
-    if (!this.request[lang]) {
-      this.request[lang] = this.redList.redListTaxonGroupsGetTree(lang).pipe(
+    if (!this.treeRequest[lang]) {
+      this.treeRequest[lang] = this.redList.redListTaxonGroupsGetTree(lang).pipe(
         map(data => data.results),
         share(),
         tap(data => this.treeCache[lang] = data),
-        tap(() => delete this.request[lang])
+        tap(() => delete this.treeRequest[lang])
       );
     }
-    return this.request[lang];
+    return this.treeRequest[lang];
   }
 
   getRedListStatusQuery(
@@ -84,7 +84,7 @@ export class TaxonService {
           };
         }
         const node = this.findGroupFromTree(tree, query[groupField]);
-        if (node.hasIucnSubGroup) {
+        if (node?.hasIucnSubGroup) {
           return {
             groups: (node.hasIucnSubGroup as RedListTaxonGroup[]).map(v => v.id),
             aggregateBy: [statusField, groupField],
@@ -105,7 +105,7 @@ export class TaxonService {
         page: 1,
         pageSize: 0
       })).pipe(
-        map(data => data.aggregations['a'].reduce((cumulative: {}, current) => {
+        map(data => data.aggregations ? data.aggregations['a'].reduce((cumulative: {[key: string]: any} = {}, current) => {
           const val = current.values;
           const status = val[statusField];
           const name = val[groupField] || (
@@ -125,8 +125,8 @@ export class TaxonService {
           cumulative[name]['count'] += current.count;
           cumulative[name][status] += current.count;
           return cumulative;
-        }, {})),
-        map(data => Object.keys(data).map(key => data[key]).sort((a, b) => b.count - a.count)),
+        }, {}) : {}),
+        map(data => Object.keys(data || {}).map(key => data[key]).sort((a, b) => b.count - a.count)),
         switchMap(data => red.hasKeys ? this.getRedListStatusLabels(lang).pipe(
           map(translations => data.map(a => ({...a, species: translations[a.species]})))
         ) : ObservableOf(data))
@@ -141,7 +141,7 @@ export class TaxonService {
     return this.taxonApi.species(query, lang, page, pageSize).pipe(
       switchMap(result => {
         data.push(...result.results);
-        if (result.lastPage > result.currentPage) {
+        if (result.lastPage && result.lastPage > result.currentPage) {
           return this.getAllSpecies(query, lang, data, '' + (result.currentPage + 1));
         } else {
           return ObservableOf(data);
@@ -151,7 +151,7 @@ export class TaxonService {
   }
 
   private findGroupFromTree(data: RedListTaxonGroup[], findID: string): RedListTaxonGroup|null {
-    let result = null;
+    let result: RedListTaxonGroup|null = null;
     data.forEach(red => {
       if (result !== null) {
         return;
@@ -175,9 +175,9 @@ export class TaxonService {
     );
   }
 
-  private pickLabels(data: RedListTaxonGroup[], result = {}) {
+  private pickLabels(data: RedListTaxonGroup[], result: {[key: string]: string} = {}) {
     data.forEach(red => {
-      result[red.id] = red.name;
+      result[red.id] = red.name || '';
       if (red.hasIucnSubGroup) {
         this.pickLabels(red.hasIucnSubGroup as RedListTaxonGroup[], result);
       }

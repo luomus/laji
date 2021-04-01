@@ -10,7 +10,7 @@ import { RegionalFilterQuery } from '../../service/regional.service';
 })
 export class ActiveFiltersComponent {
 
-  _query: FilterQuery & RegionalFilterQuery;
+  _query: FilterQuery & RegionalFilterQuery = {};
   queryItems: {field: string, label: string, value: string, separator: string}[] = [];
 
   skip = [
@@ -23,12 +23,12 @@ export class ActiveFiltersComponent {
     'onlyPrimaryHabitat'
   ];
 
-  useLabel = {
+  useLabel: {[key: string]: string} = {
     'reasons': 'iucn.hasEndangermentReason',
     'threats': 'iucn.hasThreat'
   };
 
-  separator = {
+  separator: {[key: string]: string}  = {
     'threatenedAtArea': '; '
   };
 
@@ -45,8 +45,8 @@ export class ActiveFiltersComponent {
 
   @Input() set query(q: FilterQuery) {
     this._query = q;
-    const items = [];
-    Object.keys(q).forEach(field => {
+    const items: {field: keyof typeof q, value: any, label: string, separator: string}[] = [];
+    (Object.keys(q) as Array<keyof typeof q>).forEach(field => {
       if (this.skip.indexOf(field) !== -1 || !q[field]) {
         return;
       }

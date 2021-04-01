@@ -16,11 +16,11 @@ import { RegionalFilterQuery } from '../../service/regional.service';
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss']
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent {
 
-  @Input() type: 'default'|'status'|'regional';
-  @Input() query: FilterQuery & RegionalFilterQuery;
-  @Input() groupSelectRootGroups: string[];
+  @Input() type: 'default'|'status'|'regional' = 'default';
+  @Input() query: FilterQuery & RegionalFilterQuery = {};
+  @Input() groupSelectRootGroups?: string[];
   @Output() queryChange = new EventEmitter<FilterQuery | RegionalFilterQuery>();
 
   lang: string;
@@ -36,9 +36,7 @@ export class FiltersComponent implements OnInit {
     private metadataService: MetadataService,
     private areaService: AreaService,
     private translate: TranslateService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.lang = this.translate.currentLang;
     this.redListStatuses$ = this.taxonService.getRedListStatusTree(this.lang).pipe(
       map(tree => this.mapStatusesToOptions(tree))
@@ -55,9 +53,9 @@ export class FiltersComponent implements OnInit {
     this.evaluationArea$ = this.areaService.getAreaType(this.translate.currentLang, Area.AreaType.IucnEvaluationArea).pipe(
       map(meta => this.mapAreaDataToOptions(meta))
     );
-  }
+   }
 
-  change(param, value) {
+  change(param: string, value: any) {
     const newQuery = {...this.query, [param]: value};
     this.queryChange.emit(newQuery);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,17 +18,17 @@ export interface QueryParams extends RegionalFilterQuery {
   styleUrls: ['./regional.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegionalComponent implements OnInit, OnDestroy {
+export class RegionalComponent implements OnDestroy {
   types: {label: string, value: RegionalListType}[] = [
     {label: 'iucn.regional.tab.status', value: 'status'},
     {label: 'iucn.regional.tab.species', value: 'species'}
   ];
 
   years$: Observable<{label: string, value: string}[]>;
-  checklist: string;
+  checklist?: string;
   groupSelectRootGroups: string[];
 
-  queryParams: QueryParams;
+  queryParams: QueryParams = {};
   private querySub: Subscription;
 
   constructor(
@@ -38,9 +38,7 @@ export class RegionalComponent implements OnInit, OnDestroy {
     private resultService: RegionalService
   ) {
     this.groupSelectRootGroups = this.resultService.rootGroups;
-  }
 
-  ngOnInit(): void {
     this.years$ = ObservableOf(this.resultService.years.map(year => ({label: 'iucn.regional.' + year, value: year}))).pipe(
       switchMap(options => this.translate.get(options.map(option => option.label)).pipe(
         map(translations => options.map(option => ({...option, label: translations[option.label]})))
@@ -74,7 +72,7 @@ export class RegionalComponent implements OnInit, OnDestroy {
     }
   }
 
-  queryParamChange(param, value) {
+  queryParamChange<K extends keyof QueryParams, T extends QueryParams[K]>(param: K, value: T) {
     this.queryChange({...this.queryParams, [param]: value});
   }
 

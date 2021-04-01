@@ -10,8 +10,8 @@ import { SelectOption } from '../select/select.component';
 export class MultiSelectComponent implements OnInit {
 
   @Input() value: string[] = [];
-  @Input() placeholder: string;
-  @Input() options: SelectOption[];
+  @Input() placeholder = '';
+  @Input() options: SelectOption[] = [];
 
   @Output() valueChange = new EventEmitter();
 

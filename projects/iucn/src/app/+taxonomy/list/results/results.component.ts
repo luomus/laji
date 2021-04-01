@@ -142,7 +142,7 @@ export class ResultsComponent implements OnChanges {
       includeHidden: true
     });
 
-    this.selectedSpeciesFields = this.query.speciesFields?.split(',');
+    this.selectedSpeciesFields = this.query.speciesFields ? this.query.speciesFields.split(',') : [];
     this.taxonLinkQueryParams = {
       'year': this.year
     };

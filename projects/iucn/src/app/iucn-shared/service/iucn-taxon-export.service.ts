@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class IucnTaxonExportService {
-  exportKeyMap = {
+  exportKeyMap: {[key: string]: string} = {
     'species': 'taxonName',
     'status': 'latestRedListEvaluation.redListStatus',
     'habitat': 'latestRedListEvaluationHabitats',
@@ -22,7 +22,7 @@ export class IucnTaxonExportService {
     '2010': 'redListStatus2010',
     'redListGroup': 'redListEvaluationGroups'
   };
-  exportTemplates = {
+  exportTemplates: {[key: string]: string} = {
     'taxonName': 'taxonName',
     'latestRedListEvaluation.redListStatus': 'label',
     'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
