@@ -18,7 +18,16 @@
                 (initialized)="treeInit()"
               >
                 <ng-template #treeNodeTemplate let-node>
-                  <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
+                  <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }}) </span>
+                  <a
+                    id="collectionLink"
+                    [tooltip]="'openCollectionPage' | translate"
+                    container="body"
+                    target="_blank" [href]="node.data.id | collectionUrl">
+                    <i 
+                      id="collectionLink"
+                      class="glyphicon glyphicon-eye-open"></i>
+                  </a>
                 </ng-template>
               </tree-root>
             </div>

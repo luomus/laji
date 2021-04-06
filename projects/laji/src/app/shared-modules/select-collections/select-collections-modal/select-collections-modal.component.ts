@@ -112,6 +112,10 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   nodeToggled(tree: TreeModel, node: TreeNode, $event: any) {
+    if ($event.target.id === 'collectionLink') {
+      return;
+    }
+
     if (this.isActiveParent(node)) {
       this.removeNodeFromSelection(node);
       this.nodeDeselected(tree, node, $event);

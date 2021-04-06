@@ -9,6 +9,7 @@ import { SelectModule } from '../select/select.module';
 import { SelectedCollectionsComponent } from './selected-collections/selected-collections.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { CountRoundingPipe } from './pipe/count-rounding.pipe';
+import { CollectionUrlPipe } from './pipe/collection-url.pipe';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { CountRoundingPipe } from './pipe/count-rounding.pipe';
     SelectCollectionsModalComponent,
     SelectedCollectionsComponent,
     CountRoundingPipe,
+    CollectionUrlPipe
    ],
   exports: [
     SelectCollectionsComponent,
