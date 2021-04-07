@@ -42,6 +42,11 @@
   @include btnDisabled();
 }
 
+.btn.active {
+  box-shadow: inset 1px 1px 4px 4px rgb(20 27 31 / 8%);
+  background-color: #e6e6e6;
+}
+
 /*
   BUTTON SIZING
 */
@@ -53,7 +58,6 @@
 
 .btn {
   font-size: $fs-2;
-  padding: 5px 10px;
 }
 
 .btn.btn-sm, .btn-group-sm > .btn {
@@ -76,7 +80,7 @@
   box-shadow: 0 1px 3px 0 rgba($neutral-9, 0.3);
 }
 
-.btn-group:not(.dropdown) .btn {
+.btn-group:not(.dropdown) .btn:not(.active) {
   box-shadow: none;
 }
 
