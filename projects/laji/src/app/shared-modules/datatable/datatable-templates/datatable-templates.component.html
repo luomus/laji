@@ -219,8 +219,8 @@
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
   <div *ngIf="value" class="iucnStatus" tooltip="{{value.status | toQName | iucnStatus }} - {{ value.status | toQName | translatableIucn | translate }} ({{value.year}})">
-    <div class="iucnStatusAll iucnStatus{{ value.status | toQName | iucnStatus }}">
-    {{ value.status | toQName | iucnStatus }}
+    <div class="iucnStatusAll iucnStatus{{ value.status | toQName | iucnStatus }}" >
+      {{ value.status | toQName | iucnStatus }}
     </div>
   </div>
 </ng-template>
