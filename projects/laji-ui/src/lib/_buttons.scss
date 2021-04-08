@@ -1,0 +1,45 @@
+@import 'mixins/buttons';
+
+.lu-btn, button.lu-btn, a.lu-btn {
+  @include btn();
+  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+
+  font-size: $fs-2;
+  padding: 5px 10px;
+
+  &.primary:disabled,
+  &.secondary:disabled,
+  &.success:disabled,
+  &.info:disabled,
+  &.warning:disabled,
+  &.danger:disabled {
+    @include btnDisabled();
+  }
+  &.primary {
+    @include btnPrimary();
+  }
+
+  &.secondary {
+    @include btnSecondary();
+  }
+
+  &.success {
+    @include btnSuccess();
+  }
+
+  &.info {
+    @include btnInfo();
+  }
+
+  .lu-btn.warning {
+    @include btnWarning();
+  }
+
+  &.danger {
+    @include btnDanger();
+  }
+
+  &.lu-loading, &.lu-loading:disabled {
+    @include btnLoading();
+  }
+}

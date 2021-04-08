@@ -5,42 +5,43 @@
   BUTTON STYLING
 */
 
-.btn {
+.btn, button.btn, a.btn {
   @include btn();
+
+  &.btn-default {
+    @include btnSecondary();
+  }
+
+  &.btn-primary {
+    @include btnPrimary();
+  }
+
+  &.btn-success {
+    @include btnSuccess();
+  }
+
+  &.btn-info {
+    @include btnInfo();
+  }
+
+  &.btn-warning {
+    @include btnWarning();
+  }
+
+  &.btn-danger {
+    @include btnDanger();
+  }
+
+  &.btn-primary:disabled,
+  &.btn-default:disabled,
+  &.btn-success:disabled,
+  &.btn-info:disabled,
+  &.btn-warning:disabled,
+  &.btn-danger:disabled {
+    @include btnDisabled();
+  }
 }
 
-.btn.btn-default {
-  @include btnSecondary();
-}
-
-.btn.btn-primary {
-  @include btnPrimary();
-}
-
-.btn.btn-success {
-  @include btnSuccess();
-}
-
-.btn.btn-info {
-  @include btnInfo();
-}
-
-.btn.btn-warning {
-  @include btnWarning();
-}
-
-.btn.btn-danger {
-  @include btnDanger();
-}
-
-.btn.btn-primary:disabled,
-.btn.btn-default:disabled,
-.btn.btn-success:disabled,
-.btn.btn-info:disabled,
-.btn.btn-warning:disabled,
-.btn.btn-danger:disabled {
-  @include btnDisabled();
-}
 
 /*
   BUTTON SIZING

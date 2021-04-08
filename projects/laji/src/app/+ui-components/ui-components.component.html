@@ -1,39 +1,10 @@
-<main>
-  <button type="button" class="btn btn-default d-block mb-2">Button</button>
-  <button type="button" class="btn btn-primary d-block mb-2">Button</button>
-  <button type="button" class="btn btn-success d-block mb-2">Button</button>
-  <button type="button" class="btn btn-info d-block mb-2">Button</button>
-  <button type="button" class="btn btn-warning d-block mb-2">Button</button>
-  <button type="button" class="btn btn-danger d-block mb-2">Button</button>
-
-  <div class="my-3">
-    <button type="button" class="btn btn-default d-block btn-lg mb-2">Large button</button>
-    <button type="button" class="btn btn-default d-block mb-2">Default button</button>
-    <button type="button" class="btn btn-default d-block btn-sm mb-2">Small button</button>
-    <button type="button" class="btn btn-default d-block btn-xs mb-2">Extra small button</button>
-  </div>
-
-  <div class="btn-group mb-2" role="group" aria-label="...">
-    <button type="button" class="btn btn-default">Left</button>
-    <button type="button" class="btn btn-default">Middle</button>
-    <button type="button" class="btn btn-default">Right</button>
-  </div>
-</main>
-
-<main class="lu lu-text-content">
-  <header>
-    <h1>UI Components and styleguide</h1>
-    <p>Here be info about <strong>laji-ui</strong>!</p>
-  </header>
+<main class="laji-page">
   <section>
-    <h1 id="sass">Sass</h1>
-    <h2>How to use?</h2>
-    <p>Classes are imported in <code>angular.json</code> and can be used globally.</p>
-    <p>Variables need to be manually imported to each sass file they are used in as such <code>@import 'vars'</code>. You don't need to type in the full path to the variables file, because it's configured in <code>stylePreprocessorOptions</code> in <code>angular.json</code>.</p>
+    <h2 id="sass">Sass</h2>
     <section>
-      <h1>Variables</h1>
+      <h3>Variables</h3>
       <section>
-        <h1>Colors</h1>
+        <h4>Colors</h4>
         <div class="d-flex flex-row">
           <div>
             <div class="color-rect n1">$neutral-1</div>
@@ -103,9 +74,8 @@
           </div>
         </div>
       </section>
-
       <section>
-        <h1>Font sizes</h1>
+        <h4>Font sizes</h4>
         <div class="fs-1">$fs-1</div>
         <div class="fs-2">$fs-2</div>
         <div class="fs-3">$fs-3</div>
@@ -117,64 +87,44 @@
         <div class="fs-9">$fs-9</div>
       </section>
     </section>
-
     <section>
-      <h1>Classes</h1>
+      <h3>Classes</h3>
       <section>
-        <h1>.lu-text-content</h1>
-        <p>The text content class is used for styling text-heavy sections of a page. It imposes strict rules on how the html should be structured.</p>
-        <p>Following guidelines should be followed when writing text heavy html with <code>.lu-text-content</code> as a class of the parent element</p>
-        <ul>
-          <li>The first element may be a <code>heading</code> with <code>h1</code> title and possible <code>p</code> elements for descriptive text</li>
-          <li>Rest of the page is divided into <code>section</code>s</li>
-          <li>Headings are styled relative to <code>section</code>, in other words every <code>section</code> begins with a <code>h1</code></li>
-          <li>Subsections and subsubsections are allowed</li>
-        </ul>
-        <p>Alternatively to semantic html, classes can also be used for defining sections: <code>.lu-section</code>, <code>.lu-subsection</code>, <code>.lu-subsubsection</code></p>
-      </section>
+        <h4>Buttons</h4>
+        <button type="button" class="btn btn-default d-block mb-2">Button</button>
+        <button type="button" class="btn btn-primary d-block mb-2">Button</button>
+        <button type="button" class="btn btn-success d-block mb-2">Button</button>
+        <button type="button" class="btn btn-info d-block mb-2">Button</button>
+        <button type="button" class="btn btn-warning d-block mb-2">Button</button>
+        <button type="button" class="btn btn-danger d-block mb-2">Button</button>
 
+        <div class="my-3">
+          <button type="button" class="btn btn-default d-block btn-lg mb-2">Large button</button>
+          <button type="button" class="btn btn-default d-block mb-2">Default button</button>
+          <button type="button" class="btn btn-default d-block btn-sm mb-2">Small button</button>
+          <button type="button" class="btn btn-default d-block btn-xs mb-2">Extra small button</button>
+        </div>
+
+        <div class="btn-group mb-2" role="group" aria-label="...">
+          <button type="button" class="btn btn-default">Left</button>
+          <button type="button" class="btn btn-default">Middle</button>
+          <button type="button" class="btn btn-default">Right</button>
+        </div>
+      </section>
       <section>
-        <h1>Table</h1>
-        <p><code>table.lu-table</code></p>
-        <table class="lu-table">
-          <tr>
-            <th>Species</th>
-            <th>Scientific</th>
-            <th>Informal</th>
-            <th>Test...</th>
-          </tr>
-          <tr>
-            <td>Canada Goose</td>
-            <td>Branta canadensis</td>
-            <td>Bird</td>
-            <td>Bird</td>
-          </tr>
-          <tr>
-            <td>Wolf</td>
-            <td>Canis Lupus</td>
-            <td>Mammal</td>
-            <td>Mammal</td>
-          </tr>
-          <tr>
-            <td>Canada Goose</td>
-            <td>Branta canadensis</td>
-            <td>Bird</td>
-            <td>Bird</td>
-          </tr>
-          <tr>
-            <td>Wolf</td>
-            <td>Canis Lupus</td>
-            <td>Mammal</td>
-            <td>Mammal</td>
-          </tr>
-        </table>
+        <h4>Pills</h4>
+        <div class="pill success mb-2 mr-2">Success</div>
+        <div class="pill info mb-2 mr-2">Info</div>
+        <div class="pill warning mb-2 mr-2">Warning</div>
+        <div class="pill danger mb-2 mr-2">Danger</div>
+        <div class="pill disabled mb-2 mr-2">Disabled</div>
       </section>
     </section>
   </section>
   <section>
-    <h1 id="components">Components</h1>
+    <h2 id="components">Components</h2>
     <section>
-      <h1>Buttons</h1>
+      <h3>Buttons</h3>
       <div class="d-flex flex-row">
         <lu-button [disabled]="testDisable" [role]="'primary'">Primary button</lu-button>
         <lu-button [disabled]="testDisable">Secondary button</lu-button>
@@ -190,7 +140,7 @@
       </div>
     </section>
     <section>
-      <h1>Checkboxes</h1>
+      <h3>Checkboxes</h3>
       <lu-checkbox>Checkbox demo</lu-checkbox>
       <lu-combo-checkbox title="Combo Checkbox Demo">
         <lu-combo-checkbox-row>Checkbox Option 1</lu-combo-checkbox-row>
@@ -199,7 +149,7 @@
       </lu-combo-checkbox>
     </section>
     <section>
-      <h1>Tabs</h1>
+      <h3>Tabs</h3>
       <lu-tabs>
         <lu-tab [heading]="'Map'">Map content</lu-tab>
         <lu-tab [heading]="'List'">List content</lu-tab>
@@ -208,26 +158,6 @@
         <lu-tab [heading]="'Statistics'">Statistics content</lu-tab>
         <lu-tab [heading]="'Download as a file'">Download as a file content</lu-tab>
       </lu-tabs>
-    </section>
-    <section>
-      <h1>Pills</h1>
-      <ul class="checkbox-list">
-        <li>
-          <lu-checkbox><div class="pill success">Success</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill info">Info</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill warning">Warning</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill danger">Danger</div></lu-checkbox>
-        </li>
-        <li>
-          <lu-checkbox><div class="pill disabled">Disabled</div></lu-checkbox>
-        </li>
-      </ul>
     </section>
   </section>
   <section>
