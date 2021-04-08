@@ -67,6 +67,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       this.tmpSelectedOption = {};
       this.selectedOptions = {};
     }
+
     this.initOptions(this.selectedOptions !== undefined && Object.keys(this.selectedOptions).length > 0 ? this.selectedOptions : this.buildSelectedOptions());
     this.selectedOptions = Util.isEmptyObj(this.tmpSelectedOption) ? this.selectedOptions : this.tmpSelectedOption;
   }
@@ -260,6 +261,10 @@ export class SelectSubcategoriesComponent implements OnChanges {
 
     subCategories = excludeGlobal ? subCategories.filter(category => category !== 'GLOBAL') : subCategories;
 
+    this.selectedOptions['GLOBAL'] = [];
+    this.unselectedOptions['GLOBAL'] = [];
+    this.tmpSelectedOption['GLOBAL'] = [];
+
     for (const category of subCategories) {
       this.selectedOptions[category] = [];
       this.unselectedOptions[category] = [];
@@ -279,9 +284,6 @@ export class SelectSubcategoriesComponent implements OnChanges {
     }
 
     if (excludeGlobal) {
-      this.selectedOptions['GLOBAL'] = [];
-      this.unselectedOptions['GLOBAL'] = [];
-      this.tmpSelectedOption['GLOBAL'] = [];
       options.map(option => {
         let checkMatches = 0;
         subCategories.forEach(element => {

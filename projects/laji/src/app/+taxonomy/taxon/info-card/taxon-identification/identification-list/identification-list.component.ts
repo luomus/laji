@@ -8,13 +8,13 @@ import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.
 const SCROLL_SPEED = 500; // pixels per second
 
 @Component({
-  selector: 'laji-identification-species-list',
-  templateUrl: './species-list.component.html',
-  styleUrls: ['./species-list.component.scss'],
+  selector: 'laji-identification-list',
+  templateUrl: './identification-list.component.html',
+  styleUrls: ['./identification-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationSpeciesListComponent implements OnDestroy {
-  @Input() speciesList: Taxonomy[];
+export class IdentificationListComponent implements OnDestroy {
+  @Input() taxon: Taxonomy;
 
   @ViewChild('speciesContainer') speciesContainer: ElementRef;
 
@@ -74,7 +74,7 @@ export class IdentificationSpeciesListComponent implements OnDestroy {
       .show({isAnimated: false});
     this.showOverlay = true;
     this.overlayRef = this.overlayLoader._componentRef;
-    this.overlayRef.instance.modalImages = this.speciesList.filter(
+    this.overlayRef.instance.modalImages = this.taxon.children.filter(
       taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
     ).map(taxonomy => {
       return <Image>{

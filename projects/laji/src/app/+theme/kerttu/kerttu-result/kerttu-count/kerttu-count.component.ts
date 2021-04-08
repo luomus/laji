@@ -10,5 +10,7 @@ export class KerttuCountComponent {
   @Input() label: string;
   @Input() count: number;
   @Input() additionalDescription: string;
+  @Input() additionalDescriptionInfo: string;
+  @Input() asPercentage = false;
 
 }

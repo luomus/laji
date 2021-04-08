@@ -85,16 +85,7 @@ lu-checkbox {
 @include color-demo("d8", $danger-8, $danger-1);
 @include color-demo("d9", $danger-9, $danger-1);
 
-.checkbox-list {
-  list-style: none;
-  padding: 0;
-}
-
-.pill {
-  margin-right: 5px;
-}
-
-.lu {
+.laji-page {
   .flex-row, &.flex-row {
     * {
       margin-right: 0.5em;
@@ -136,4 +127,9 @@ lu-checkbox {
   border-left: 1px solid $neutral-4;
   border-bottom: 1px solid $neutral-4;
   background-color: $neutral-2;
+}
+
+section {
+  margin-top: $sp-8;
+  margin-bottom: $sp-8;
 }
