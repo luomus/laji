@@ -76,14 +76,6 @@
   BUTTON GROUP
 */
 
-.btn-group:not(.dropdown) {
-  box-shadow: 0 1px 3px 0 rgba($neutral-9, 0.3);
-}
-
-.btn-group:not(.dropdown) .btn:not(.active) {
-  box-shadow: none;
-}
-
 .btn-group .btn+.btn {
   margin: 0;
 }
