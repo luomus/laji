@@ -69,6 +69,7 @@ export namespace Form {
     hasAdmins?: boolean;
     dataset?: boolean;
     viewerType?: ViewerType;
+    disabled?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
@@ -130,7 +131,6 @@ export namespace Form {
       listLabel?: string;
       listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
-      formNavLabel?: string;
       reservationUntil?: string;
       showLegendList?: boolean;
       infoFields?: string[];

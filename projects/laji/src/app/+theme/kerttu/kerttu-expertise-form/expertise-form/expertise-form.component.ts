@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {Taxonomy} from '../../../../shared/model/Taxonomy';
-import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
-import {SelectionType} from '@swimlane/ngx-datatable';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Taxonomy } from '../../../../shared/model/Taxonomy';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'laji-expertise-form',

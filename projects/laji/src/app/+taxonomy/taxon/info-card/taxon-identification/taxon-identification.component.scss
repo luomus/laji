@@ -1,8 +1,18 @@
 @import 'projects/laji-ui/src/lib/vars';
+@import '../../../../shared-modules/spinner/spinner/spinner.component.css';
+
+:host {
+  display: block;
+  margin-bottom: $sp-9;
+}
 
 .child-name {
   margin-top: $sp-5;
   margin-bottom: $sp-4;
+}
+
+.child-info {
+  color: $neutral-6;
 }
 
 .child-scientific-name-container {

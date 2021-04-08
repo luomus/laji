@@ -44,6 +44,7 @@ export class GalleryComponent implements OnChanges {
   @Input() views = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();
+  @Output() images = new EventEmitter<TaxonomyImage[]>();
 
   page = 1;
   total = 0;
@@ -98,6 +99,7 @@ export class GalleryComponent implements OnChanges {
       tap((images: TaxonomyImage[]) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
+        this.images.emit(images);
         this.cdr.detectChanges();
       })
     );
