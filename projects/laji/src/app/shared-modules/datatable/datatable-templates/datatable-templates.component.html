@@ -282,6 +282,11 @@
     {{ roundNumber(value) }}
   </span>
 </ng-template>
+<ng-template let-value="value" #percentage>
+  <span *ngIf="value || value === 0" title="{{ (value * 100) | number:'1.0-1' }} %">
+    {{ (value * 100) | number:'1.0-1' }} %
+  </span>
+</ng-template>
 <ng-template let-value="value" #biogeographicalProvince>
   <span *ngIf="value" title="{{value | area:'provinceCode'}} &ndash; {{value | area}}">
     {{ value | toQName | area:'provinceCode' }} &ndash; {{ value| toQName | area }}
