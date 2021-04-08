@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { map, share, switchMap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { ILetterCandidate, ILetterStatusInfo, ILetterTemplate, KerttuErrorEnum, LetterAnnotation } from '../models';
 import { Observable, of, Subscription } from 'rxjs';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -31,7 +31,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
 
   private letterTemplateSub: Subscription;
   private letterCandidateSub: Subscription;
-  private nextLetterCandidateSub: Subscription;
+  private nextCandidateToCacheSub: Subscription;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -53,8 +53,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     if (this.letterCandidateSub) {
       this.letterCandidateSub.unsubscribe();
     }
-    if (this.nextLetterCandidateSub) {
-      this.nextLetterCandidateSub.unsubscribe();
+    if (this.nextCandidateToCacheSub) {
+      this.nextCandidateToCacheSub.unsubscribe();
     }
   }
 
@@ -63,8 +63,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   }
 
   goBackToPreviousCandidate() {
-    if (this.nextLetterCandidateSub) {
-      this.nextLetterCandidateSub.unsubscribe();
+    if (this.nextCandidateToCacheSub) {
+      this.nextCandidateToCacheSub.unsubscribe();
     }
 
     const currentCandidate = this.letterCandidate;
@@ -112,8 +112,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
     if (this.letterCandidateSub) {
       this.letterCandidateSub.unsubscribe();
     }
-    if (this.nextLetterCandidateSub) {
-      this.nextLetterCandidateSub.unsubscribe();
+    if (this.nextCandidateToCacheSub) {
+      this.nextCandidateToCacheSub.unsubscribe();
     }
 
     const personToken = this.userService.getToken();
@@ -156,22 +156,27 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   }
 
   private getNextLetterCandidate(templateId: number, candidateId: number) {
-    if (this.nextLetterCandidateSub) {
-      this.nextLetterCandidateSub.unsubscribe();
+    if (this.nextCandidateToCacheSub) {
+      this.nextCandidateToCacheSub.unsubscribe();
     }
 
     this.nextLetterCandidate = undefined;
     this.nextLetterCandidate$ = this.kerttuApi.getNextLetterCandidate(this.userService.getToken(), templateId, candidateId)
       .pipe(
-        switchMap((result) => {
-          const candidate = result.candidate;
-          return this.audioService.getAudioBuffer(candidate.recording).pipe(map(() => candidate));
-        }),
+        map(result => result.candidate),
         share()
       );
-    this.nextLetterCandidateSub = this.nextLetterCandidate$.subscribe((candidate) => {
-      this.nextLetterCandidate = candidate || null;
-    }, error => {
+    this.nextCandidateToCacheSub = this.nextLetterCandidate$.pipe(
+      tap(candidate => {
+        this.nextLetterCandidate = candidate || null;
+      }),
+      switchMap(candidate => {
+        if (!candidate) {
+          return of(null);
+        }
+        return this.audioService.getAudioBuffer(candidate.audio.url); // loads buffer into audio service cache
+      }),
+    ).subscribe(() => {}, error => {
       this.onLetterError(error);
     });
   }
