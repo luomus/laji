@@ -26,14 +26,13 @@
 
 .status {
   padding: $sp-btn;
-  color: #fff;
 
   .success {
-    color: #8cc182;
+    color: $success-7;
   }
 
   .error {
-    color: #fd8d8d;
+    color: $danger-7;
   }
 }
 
