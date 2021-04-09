@@ -18,7 +18,7 @@ $btn-border-radius: 5px !default;
 
   transition: 100ms;
 
-  &:active {
+  &:active, &.active {
     transition: 50ms;
   }
 
@@ -35,7 +35,7 @@ $btn-border-radius: 5px !default;
     background-color: $activeBgColor;
     color: $color;
   }
-  &:active {
+  &:active, &.active {
     background-color: $activeBgColor;
     color: $activeColor;
     box-shadow: 0 0px 0px 0px rgba($shadowColor, 0.3), inset 0 1px 6px rgba($shadowColor, 0.2);
@@ -49,7 +49,7 @@ $btn-border-radius: 5px !default;
   &:hover {
     background: linear-gradient(to bottom right, darken(adjust-hue($bgColor, $bgHueShift), 5%), darken(darken($bgColor, 5%), 5%));
   }
-  &:active {
+  &:active, &.active {
     color: $primary-2;
     transition: color .15s;
     box-shadow: 0 0px 0px rgba($shadowColor, 0), inset 0 1px 6px rgba($shadowColor, .5);
