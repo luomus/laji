@@ -1,6 +1,6 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
-import {ProtaxModelEnum} from '../models';
-import {DialogService} from '../../../shared/service/dialog.service';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { ProtaxModelEnum } from '../models';
+import { DialogService } from '../../../shared/service/dialog.service';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 
 enum Tab {
@@ -14,7 +14,9 @@ enum Tab {
   styleUrls: ['./protax-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxFormComponent {
+export class ProtaxFormComponent implements OnChanges {
+  @ViewChild('fileInput') fileInput: ElementRef;
+
   @Input() loading = false;
   @Input() downloadProgress: number;
 
@@ -34,6 +36,12 @@ export class ProtaxFormComponent {
   constructor(
     private dialogService: DialogService
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.loading && changes.loading.previousValue) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
 
   updateSequenceFile(files: FileList) {
     this.sequenceFile = files.item(0);
