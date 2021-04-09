@@ -1,15 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit} from '@angular/core';
-import {IRecordingResponse, KerttuApi} from '../service/kerttu-api';
-import {IRecording, IRecordingAnnotation, IRecordingStatusInfo, KerttuErrorEnum} from '../models';
-import {UserService} from '../../../shared/service/user.service';
-import {Observable} from 'rxjs';
-import {KerttuTaxonService} from '../service/kerttu-taxon-service';
-import {map, switchMap} from 'rxjs/operators';
-import {PersonApi} from '../../../shared/api/PersonApi';
-import {TranslateService} from '@ngx-translate/core';
-import {Util} from '../../../shared/service/util.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
+import { IRecordingResponse, KerttuApi } from '../service/kerttu-api';
+import { IRecording, IRecordingAnnotation, IRecordingStatusInfo, KerttuErrorEnum } from '../models';
+import { UserService } from '../../../shared/service/user.service';
+import { Observable } from 'rxjs';
+import { KerttuTaxonService } from '../service/kerttu-taxon-service';
+import { map, switchMap } from 'rxjs/operators';
+import { PersonApi } from '../../../shared/api/PersonApi';
+import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../../shared/service/util.service';
 import equals from 'deep-equal';
-import {DialogService} from '../../../shared/service/dialog.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',

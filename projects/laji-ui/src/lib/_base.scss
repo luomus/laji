@@ -1,0 +1,5 @@
+@import 'mixins/base';
+
+body {
+  @include base();
+}

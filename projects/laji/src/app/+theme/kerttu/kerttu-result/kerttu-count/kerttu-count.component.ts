@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-kerttu-count',
@@ -10,5 +10,7 @@ export class KerttuCountComponent {
   @Input() label: string;
   @Input() count: number;
   @Input() additionalDescription: string;
+  @Input() additionalDescriptionInfo: string;
+  @Input() asPercentage = false;
 
 }

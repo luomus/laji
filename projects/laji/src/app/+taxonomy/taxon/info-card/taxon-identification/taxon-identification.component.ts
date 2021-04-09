@@ -1,32 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
-import { Image } from '../../../../shared/gallery/image-gallery/image.interface';
-import { switchMap, map } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
+import { TaxonIdentificationFacade } from './taxon-identification.facade';
+import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
+import { map, switchMap, distinctUntilChanged, filter, startWith, take } from 'rxjs/operators';
+import { DOCUMENT } from '@angular/common';
+import { ListRange, CollectionViewer } from '@angular/cdk/collections';
+import { WINDOW } from '@ng-toolkit/universal';
 
-type TaxonChildren = {
-  taxonomy: Taxonomy,
-  species: PagedResult<Taxonomy>
-}[];
-
-interface TaxonomyWithChildren extends Taxonomy {
-  children: TaxonomyWithChildren[];
-}
-
-const rankWhiteList = [
-  'MX.superdomain',
-  'MX.domain',
-  'MX.kingdom',
-  'MX.phylum',
-  'MX.class',
-  'MX.order',
-  'MX.family',
-  'MX.genus',
-  'MX.species'
-];
+const INFINITE_SCROLL_DISTANCE = 300;
 
 @Component({
   selector: 'laji-taxon-identification',
@@ -34,104 +15,102 @@ const rankWhiteList = [
   styleUrls: ['./taxon-identification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonIdentificationComponent implements OnInit, OnChanges {
+export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, OnDestroy {
+  private subscription: Subscription = new Subscription();
+  private taxonChange$ = new BehaviorSubject<void>(undefined);
+
   @Input() taxon: Taxonomy;
-  @Input() taxonImages: Array<Image>;
 
-  taxonChildren: TaxonChildren = [];
+  @ViewChild('loadMore') loadMoreElem: ElementRef;
 
-  loading = false;
+  children: Taxonomy[] = [];
+  totalChildren$: Observable<number> = this.facade.totalChildren$;
 
-  constructor(private taxonomyApi: TaxonomyApi, private cdr: ChangeDetectorRef, private translate: TranslateService) { }
+  private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
+    filter(d => d !== undefined),
+    switchMap(d => d.connect(this.collectionViewer)),
+    distinctUntilChanged()
+  );
 
-  ngOnInit() {}
+  private triggerInfiniteScrollStatusCheck = new Subject<void>();
+  private infiniteScrollStatusCheck$: Observable<void> = merge(
+    fromEvent(this.document, 'scroll').pipe(
+      map(() => undefined),
+      startWith(undefined),
+    ),
+    this.triggerInfiniteScrollStatusCheck.asObservable()
+  );
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.taxon) {
-      if (this.taxon.taxonRank === 'MX.species') {
-        this.loading = false;
-        this.taxonChildren = [];
-        return;
-      }
-      this.loading = true;
-      // this.getChildTree(this.taxon, 2, 5).subscribe(d => console.log(d));
+  private collectionViewer: CollectionViewer = {
+    viewChange: this.infiniteScrollStatusCheck$.pipe(
+      filter(() => this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
+      map(() => {
+        return {
+          start: 0,
+          end: this.children.length
+        };
+      })
+    )
+  };
 
-      this.taxonomyApi.taxonomyFindChildren(this.taxon.id, this.translate.currentLang).pipe(
-        switchMap(result => {
-          return forkJoin(
-            ...result.map(
-              taxon => this.taxonomyApi.species({
-                id: taxon.id,
-                selectedFields: 'id,vernacularName,scientificName,cursiveName',
-                includeMedia: true,
-                pageSize: 8,
-                sortOrder: 'observationCountFinland DESC'
-              }, this.translate.currentLang).pipe(
-                map(res => {
-                  return {
-                    taxonomy: taxon,
-                    species: res
-                  };
-                })
-              )
-            )
-          );
-        })
-      ).subscribe(res => {
-        this.taxonChildren = res;
+  loading = true;
+
+  constructor(
+    private facade: TaxonIdentificationFacade,
+    private cdr: ChangeDetectorRef,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window
+  ) { }
+
+  ngAfterViewInit() {
+    this.subscription.add(
+      this.taxonChange$.subscribe(() => {
+        this.children = [];
+        this.loading = true;
+        this.cdr.markForCheck();
+        this.facade.loadChildDataSource(this.taxon);
+      })
+    );
+
+    this.subscription.add(
+      this.children$.subscribe((t) => {
+        this.children = t;
         this.loading = false;
         this.cdr.markForCheck();
-      });
-    }
-  }
-
-  getChildTree(taxon: Taxonomy, depth: number, maxDepth: number): Observable<TaxonomyWithChildren[]> {
-    if (!taxon.hasChildren) {
-      return of([<TaxonomyWithChildren>{
-        ...taxon,
-        children: []
-      }]);
-    }
-    if (maxDepth <= 0) {
-      return of([]);
-    }
-    return of(null).pipe(
-      switchMap(() => this.getChildren(taxon.id, depth <= 1)),
-      switchMap(subTaxa => forkJoin(
-        ...subTaxa.map(subTaxon => {
-          if (this.isMainRank(subTaxon.taxonRank)) {
-            if (depth <= 1) {
-              return of(subTaxon).pipe(map(s => ({...s, children: []})));
-            } else {
-              return this.getChildTree(subTaxon, depth - 1, maxDepth - 1).pipe(
-                map(children => ({ ...subTaxon, children }))
-              );
-            }
-          } else {
-            return this.getChildTree(subTaxon, depth, maxDepth - 1);
+        this.totalChildren$.pipe(take(1)).subscribe(total => {
+          if (this.children.length < total) {
+            setTimeout(() => this.triggerInfiniteScrollStatusCheck.next(), 0);
           }
-        }
-      ))),
-      map((arr: any[]) => arr.reduce((acc: any[], curr) => {
-        Array.isArray(curr) ? acc.push(...curr) : acc.push(curr);
-        return acc;
-      }, []))
+        });
+      })
     );
   }
 
-  getChildren(id: string, isLeaf?: boolean): Observable<Taxonomy[]> {
-    const params = isLeaf ? {
-      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
-      includeMedia: true,
-      sortOrder: 'observationCountFinland DESC'
-    } : {
-      selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren',
-      sortOrder: 'observationCountFinland DESC'
-    };
-    return this.taxonomyApi.taxonomyFindChildren(id, this.translate.currentLang, '1', params);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.taxon) {
+      this.taxonChange$.next();
+    }
   }
 
-  isMainRank(s: string): boolean {
-    return rankWhiteList.includes(s);
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  isInViewport(element: Element) {
+    const rect = element.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
+        rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
+    );
+  }
+
+  isWithinXPixelsOfViewport(element: Element, px: number) {
+    const rect = element.getBoundingClientRect();
+    return (
+      this.window.innerHeight - rect.y > -px
+      || this.document.documentElement.clientHeight - rect.y > -px
+    );
   }
 }

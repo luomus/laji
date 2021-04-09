@@ -79,7 +79,7 @@
     <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
       <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
       <laji-audio-viewer
-        [recording]="template?.recording"
+        [audio]="template?.audio"
         [focusArea]="{
         xRange: template?.xRange,
         yRange: template?.yRange
@@ -95,7 +95,7 @@
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
       </h4>
       <laji-audio-viewer
-        [recording]="candidate?.recording"
+        [audio]="candidate?.audio"
         [focusArea]="{
         xRange: candidate?.xRange,
         yRange: candidate?.yRange
@@ -117,7 +117,7 @@
       </lu-button>
       <laji-audio-viewer
         *ngIf="candidateLongerVisible"
-        [recording]="candidate?.recording"
+        [audio]="candidate?.audio"
         [focusArea]="{
         xRange: candidate?.xRange,
         yRange: candidate?.yRange

@@ -1,10 +1,10 @@
-import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChild, TemplateRef} from '@angular/core';
-import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
-import {UserService} from '../../../../shared/service/user.service';
-import {forkJoin, Subscription} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
-import {IUserStatistics} from '../../models';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, Input, ChangeDetectorRef, ViewChild, TemplateRef } from '@angular/core';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
+import { UserService } from '../../../../shared/service/user.service';
+import { forkJoin, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { IUserStatistics } from '../../models';
 
 interface IUserTableRow extends IUserStatistics {
   name?: string;

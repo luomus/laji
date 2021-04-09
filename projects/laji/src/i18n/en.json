@@ -869,7 +869,7 @@
   "observation.active.sampleId": "Preparation/Sample ID",
   "observation.active.sampleQuality": "DNA sample quality",
   "observation.active.sampleStatus": "Preparation/Sample status",
-  "observation.active.SampleType": "Preparation/Sample type",
+  "observation.active.sampleType": "Preparation/Sample type",
   "observation.active.season": "Season",
   "observation.active.secureLevel": "Secure level",
   "observation.active.sex": "Sex",

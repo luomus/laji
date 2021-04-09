@@ -44,5 +44,9 @@
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>
+
+    <div *ngIf="audio?.dateTime || audio?.municipality || audio?.geometry" class="pull-right audio-info">
+      <laji-audio-info [audio]="audio"></laji-audio-info>
+    </div>
   </div>
 </laji-spinner>
