@@ -65,7 +65,23 @@
     </div>
     <div class="col-sm-6" *lajiLoggedIn="true">
       <h3>{{ 'theme.kerttu.result.equality' | translate }}</h3>
-      <p>{{ 'theme.kerttu.result.equality.description' | translate }}</p>
+      <ng-container *ngIf="letterStats$ | async as stats else spinner">
+        <h3>{{ 'theme.kerttu.result.letters' | translate }}</h3>
+        <laji-kerttu-count
+          [count]="stats.meanSimilarity"
+          [additionalDescription]="'theme.kerttu.result.meanSimilarity' | translate"
+          [additionalDescriptionInfo]="'theme.kerttu.info.letterMeanSimilarity' | translate"
+          [asPercentage]="true"
+        ></laji-kerttu-count>
+
+        <h4>
+          {{ 'theme.kerttu.result.letterResultTable' | translate }}
+          <laji-info [html]="'theme.kerttu.info.letterResultTable' | translate"></laji-info>
+        </h4>
+        <laji-kerttu-letter-result-table
+          [data]="stats.taxonStatistics"
+        ></laji-kerttu-letter-result-table>
+      </ng-container>
     </div>
   </div>
 </div>

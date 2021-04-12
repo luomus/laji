@@ -41,6 +41,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('image', { static: true }) image: TemplateRef<any>;
   @ViewChild('link', { static: true }) link: TemplateRef<any>;
   @ViewChild('number', { static: true }) number: TemplateRef<any>;
+  @ViewChild('percentage', { static: true }) percentage: TemplateRef<any>;
   @ViewChild('biogeographicalProvince', { static: true }) biogeographicalProvince: TemplateRef<any>;
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
   @ViewChild('country', { static: true }) country: TemplateRef<any>;

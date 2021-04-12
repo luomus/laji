@@ -61,6 +61,10 @@ import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annota
 import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
 import { KerttuUserTableComponent } from './kerttu/kerttu-result/kerttu-user-table/kerttu-user-table.component';
 import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu-count.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import { AudioInfoComponent } from './kerttu/audio-viewer/audio-info/audio-info.component';
+import { AudioInfoMapComponent } from './kerttu/audio-viewer/audio-info/audio-info-map/audio-info-map.component';
+import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-letter-result-table/kerttu-letter-result-table.component';
 
 /* tslint:enable:max-line-length */
 
@@ -80,7 +84,8 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     InfoModule,
     ThreeStateSwitchModule,
     PillListModule,
-    SelectModule
+    SelectModule,
+    LajiMapModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -120,7 +125,10 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     KerttuOccurrenceTableComponent,
     KerttuResultComponent,
     KerttuUserTableComponent,
-    KerttuCountComponent
+    KerttuCountComponent,
+    AudioInfoComponent,
+    AudioInfoMapComponent,
+    KerttuLetterResultTableComponent
   ],
   providers: [
     QualityService,

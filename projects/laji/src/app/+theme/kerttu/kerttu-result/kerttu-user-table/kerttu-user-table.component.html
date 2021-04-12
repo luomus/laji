@@ -2,11 +2,12 @@
   [columns]="columns"
   [rows]="data"
   [clientSideSorting]="true"
-  [virtualScrolling]="false"
+  [virtualScrolling]="true"
   [summaryRow]="true"
   [sorts]="sorts"
   [loading]="loading"
   [showRowAsLink]="false"
+  [height]="'calc(80vh - 50px)'"
 ></laji-datatable>
 
 <ng-template let-value="value" let-row="row" #userName>

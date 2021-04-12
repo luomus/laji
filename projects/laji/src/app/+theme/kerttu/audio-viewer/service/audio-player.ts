@@ -1,7 +1,7 @@
-import {IAudioViewerArea} from '../models';
-import {ChangeDetectorRef, NgZone} from '@angular/core';
-import {AudioService} from './audio.service';
-import {interval, Subscription} from 'rxjs';
+import { IAudioViewerArea } from '../models';
+import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { AudioService } from './audio.service';
+import { interval, Subscription } from 'rxjs';
 
 export class AudioPlayer {
   isPlaying = false;

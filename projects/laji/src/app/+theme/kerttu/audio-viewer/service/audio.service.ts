@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import {Inject, Injectable, NgZone} from '@angular/core';
-import {from, Observable, of} from 'rxjs';
+import { Inject, Injectable, NgZone } from '@angular/core';
+import { from, Observable, of } from 'rxjs';
 import { share, switchMap, tap } from 'rxjs/operators';
-import {WINDOW} from '@ng-toolkit/universal';
-import {AudioPlayer} from './audio-player';
+import { WINDOW } from '@ng-toolkit/universal';
+import { AudioPlayer } from './audio-player';
 
 @Injectable()
 export class AudioService {
