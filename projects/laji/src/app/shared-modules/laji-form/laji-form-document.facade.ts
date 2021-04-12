@@ -315,37 +315,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
-    const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
+    return of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data)),
       switchMap(data => this.addCollectionID(form, data))
-  );
-
-    return this.findTmpData(form, person).pipe(
-      switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
-    );
-  }
-
-  private findTmpData(form: Form.SchemaForm, person: Person): Observable<undefined|Document> {
-    let key = form.id;
-    let hasNp = false;
-    if (form.options?.useNamedPlaces) {
-      const np: NamedPlace = _state.namedPlace;
-      key += '_' + np.id;
-      hasNp = true;
-    }
-    return this.documentStorage.getAll(person, 'onlyTmp').pipe(
-      map(documents => documents.find(d => {
-        let docKey = d.formID;
-        if (hasNp) {
-          docKey += '_' + d.namedPlaceID;
-        }
-        if (key === docKey) {
-          this.updateState({..._state, hasLocalData: true, hasChanges: true});
-          return true;
-        }
-        return false;
-      }))
     );
   }
 
