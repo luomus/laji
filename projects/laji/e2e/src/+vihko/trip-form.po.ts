@@ -51,12 +51,4 @@ export class TripFormPage {
   hasOverlayPresent() {
     return this.overlayElem.isPresent();
   }
-
-  hasDiscardLocalData() {
-    return isDisplayed(this.documentFormView.$discardLocalDataBtn);
-  }
-
-  discardLocalData() {
-    return this.documentFormView.$discardLocalDataBtn.click();
-  }
 }

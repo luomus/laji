@@ -3,8 +3,7 @@ import { UserPage } from '../+user/user.po';
 import { TripFormPage } from './trip-form.po';
 import { ConfirmPO } from '../shared/dialogs.po';
 import { VihkoHomePage } from './home.po';
-import { isDisplayed, waitForVisibility, waitForInvisibility } from '../../helper';
-import { browser } from 'protractor';
+import { isDisplayed, waitForVisibility } from '../../helper';
 import { NavPage } from '../shared/nav.po';
 
 describe('Trip form page', () => {
@@ -45,11 +44,6 @@ describe('Trip form page', () => {
   });
 
   describe('when no local data', () => {
-    it('discard isn\'t shown', async (done) => {
-      expect(await page.hasDiscardLocalData()).toBe(false, 'discard local data was visible');
-      done();
-    });
-
     it('doesn\'t confirm leave', async (done) => {
       await nav.moveToVihko();
       expect(await isDisplayed(confirm.$message)).toBe(false, 'confirm dialog was displayed');
@@ -81,27 +75,6 @@ describe('Trip form page', () => {
       it('confirm leaves page', async (done) => {
         await confirm.$confirm.click();
         expect(await isDisplayed(vihkoHome.$content)).toBe(true, 'didn\'t land on Vihko home page');
-        done();
-      });
-    });
-
-    describe('discard', () => {
-      it('is shown', async (done) => {
-        await page.navigateTo();
-        expect(await page.hasDiscardLocalData()).toBe(true, 'didn\'t display discard local data button');
-        done();
-      });
-
-      it('click removes local data', async (done) => {
-        await page.discardLocalData();
-        await waitForInvisibility(page.countryElem);
-        expect(await isDisplayed(page.countryElem)).toBe(false, 'Country was shown');
-        done();
-      });
-
-      it('doesn\'t confirm leave after discard', async (done) => {
-        await nav.moveToVihko();
-        expect(await isDisplayed(confirm.$message)).toBe(false, 'confirm dialog was shown');
         done();
       });
     });
