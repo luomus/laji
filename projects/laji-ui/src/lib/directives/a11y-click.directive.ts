@@ -5,7 +5,7 @@ enum KEY_CODE {
 }
 
 @Directive({
-  selector: '[a11yClickDirective]'
+  selector: '[luA11yClick]'
 })
 export class a11yClickDirective {
   constructor(private el: ElementRef) {}
