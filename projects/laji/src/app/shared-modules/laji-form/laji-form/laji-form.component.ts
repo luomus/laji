@@ -140,7 +140,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   reload() {
-    this.mountLajiForm();
+    this.createNewLajiForm();
     this.errorModal.hide();
   }
 
@@ -180,21 +180,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.errorModal.hide();
   }
 
-  mountLajiForm() {
+  private mountLajiForm() {
     if (!this.settings) {
       return;
     }
-
     this.createNewLajiForm(() => {
-      this.ngZone.runOutsideAngular(() => {
-        if (this.lajiFormWrapper) {
-          try {
-            this.lajiFormWrapper.invalidateSize();
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      });
+      if (this.lajiFormWrapper) {
+        this.lajiFormWrapper.invalidateSize();
+      }
     });
   }
 
