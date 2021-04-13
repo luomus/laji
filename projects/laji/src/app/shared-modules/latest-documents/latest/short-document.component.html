@@ -48,6 +48,7 @@
          [placement]="'bottom'"
          (click)="onShowViewer($event)"
          tabindex="0" luA11yClick>
+      {{ 'haseka.submissions.view' | translate }}
       <span class="glyphicon glyphicon-eye-open"></span>
     </button>
     <div class="btn btn-default btn-xs ml-2"
@@ -55,6 +56,7 @@
          [placement]="'bottom'"
          (click)="editDocument(document.formID, document.id)"
          tabindex="0" luA11yClick>
+      {{ 'haseka.submissions.edit' | translate }}
       <span class="glyphicon glyphicon-edit"></span>
     </div>
     <div *ngIf="document._hasChanges"
@@ -63,6 +65,7 @@
          [placement]="'bottom'"
          (click)="removeDocument($event)"
          tabindex="0" luA11yClick>
+      {{ 'haseka.delete.title' | translate }}
       <span class="glyphicon glyphicon-trash"></span>
     </div>
   </section>
