@@ -1,8 +1,10 @@
 <span
-  (click)="show($event)"
+  (click)="toggle($event)"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
   [class]="'link no-propagation'"
+  tabindex="0"
+  luA11yClick
 ><strong
   [popover]="content"
   [adaptivePosition]="false"
