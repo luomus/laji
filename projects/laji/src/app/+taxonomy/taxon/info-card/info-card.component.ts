@@ -31,7 +31,7 @@ const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxono
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
-export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|'endangerment'|'invasive';
 
 @Component({
   selector: 'laji-info-card',
@@ -47,6 +47,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
   @Input() set activeTab(tab: InfoCardTabType) {
+    this.loadedTabs.reset();
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
@@ -101,9 +102,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.activeTab) {
-      if (this.activeTab === 'observations') {
-        this.updateRoute(this.taxon.id, 'occurrence', this.context, true);
-      } else if (!this.tabOrder.includes(this.activeTab)) {
+      if (!this.tabOrder.includes(this.activeTab)) {
         this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
       this.setTitle(this.activeTab);
