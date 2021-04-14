@@ -31,7 +31,7 @@ const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxono
                    'specimens', 'endangerment', 'invasive' ];
 const basePath = '/taxon';
 
-export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|'endangerment'|'invasive';
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|('endangerment'|'invasive');
 
 @Component({
   selector: 'laji-info-card',
@@ -47,7 +47,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
   @Input() set activeTab(tab: InfoCardTabType) {
-    this.loadedTabs.reset();
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
@@ -64,6 +63,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   isEndangered: boolean;
+  isInvasive: boolean;
   images = [];
 
   sub: Subscription;
@@ -126,6 +126,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       // this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
       this.hasBiologyData = this.taxonDescription.length > 0;
       this.isEndangered = this.getIsEndangered(this.taxon);
+      this.isInvasive = this.taxon.invasiveSpecies;
 
       if (
         (!this.hasBiologyData && this.activeTab === 'biology') ||
@@ -147,8 +148,12 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
-    this.selectedTab = tab;
+    if (this.activeTab !== 'endangerment' && this.activeTab !== 'invasive') {
+      this.loadedTabs.reset();
+    } 
+    this.activeTab = tab;
     this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
+    this.cd.markForCheck();
   }
 
   private setImages() {
@@ -214,6 +219,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getIsEndangered(taxon: Taxonomy): boolean {
+    this.cd.detectChanges();
     if (!taxon.latestRedListStatusFinland) {
       return false;
     }
@@ -225,7 +231,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         return true;
       }
     }
-
     return false;
   }
 
@@ -236,7 +241,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       {e: this.hasBiologyData, t: 'biology'},
       {e: this.isFromMasterChecklist, t: 'specimens'},
       {e: this.isEndangered, t: 'endangerment'},
-      {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
+      {e: this.isInvasive, t: 'invasive'},
     ];
   }
 
