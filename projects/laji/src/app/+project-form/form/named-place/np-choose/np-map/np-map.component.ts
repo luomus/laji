@@ -141,13 +141,13 @@ export class NpMapComponent implements OnInit, OnChanges {
 
     this.initLegend();
 
-    const {mapTileLayerName = 'maastokartta', mapOverlayNames} = this.documentForm.options?.namedPlaceOptions || {mapOverlayNames: undefined};
+    const {mapTileLayerName = 'maastokartta', mapOverlayNames, mapCluster = false} = this.documentForm.options?.namedPlaceOptions || {};
     this.tileLayerName = mapTileLayerName;
     this.overlayNames = mapOverlayNames;
 
     try {
       this._data = {
-        getFeatureStyle: ({feature, active}) => {
+        getFeatureStyle: ({feature, active} = {} as any) => {
           const style = {
             weight: 5,
             opacity: 1,
@@ -190,7 +190,8 @@ export class NpMapComponent implements OnInit, OnChanges {
           this._popupCallback = cb;
           this.cdr.markForCheck();
         },
-        activeIdx: this.activeNP
+        activeIdx: this.activeNP,
+        cluster: mapCluster
       };
     } catch (e) { }
   }
@@ -199,8 +200,8 @@ export class NpMapComponent implements OnInit, OnChanges {
     this._popupCallback = undefined;
   }
 
-  private getFeatureColor(feature, active?) {
-    switch (feature.properties.reserved) {
+  private getFeatureColor(feature?, active?) {
+    switch (feature?.properties?.reserved) {
       case 'sent':
         return active ? this.sentActiveColor : this.sentColor;
       case 'reserved':
