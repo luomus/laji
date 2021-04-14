@@ -1,8 +1,14 @@
 .tree-filter {
   padding: 10px;
 }
-.tree-active-child {
+.tree-active-child span {
   opacity: 0.5;
+}
+.tree-active-exclusion {
+  background: #ffbebe;
+}
+.tree-active-focused {
+  filter: brightness(1.1)
 }
 .scrollable-tree {
   height: 50vh;

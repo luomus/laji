@@ -2,13 +2,14 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { map } from 'rxjs/operators';
-import { CollectionService, ICollectionRange, ICollectionsTreeNode } from '../../shared/service/collection.service';
+import { CollectionService, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
 import { Observable, zip } from 'rxjs';
 
 export interface SelectedOption {
   id: any;
   value: any;
+  type: 'included' | 'excluded';
 }
 
 @Component({
@@ -27,14 +28,18 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @Input() open = false;
-  @Output() selectedOptionsChange = new EventEmitter<string[]>();
+  @Output() selectedOptionsChange = new EventEmitter<{
+    collectionId?: string[],
+    collectionIdNot?: string[],
+  }>();
 
   collectionsTree$: Observable<ICollectionsTreeNode[]> = null;
-  collections$: Observable<ICollectionRange[]> = null;
+  collections$: Observable<SelectedOption[]> = null;
 
   lang: string;
   modalRef: BsModalRef;
-  selectedOptions: string[] = [];
+  includedOptions: string[] = [];
+  excludedOptions: string[] = [];
 
   constructor(
     private modalService: BsModalService,
@@ -52,7 +57,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     this.lang = this.translate.currentLang;
     this.collectionsTree$ = this.initCollectionsTree();
     this.collections$ = this.initCollections();
-    this.selectedOptions = this.query?.collectionId || [];
+    this.includedOptions = this.query?.collectionId || [];
+    this.excludedOptions = this.query?.collectionIdNot || [];
   }
 
   toggle(event) {
@@ -64,7 +70,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
 
   openModal() {
     const initialState = {
-      selected: this.selectedOptions,
+      included: this.includedOptions,
+      excluded: this.excludedOptions,
       collectionsTree$: this.collectionsTree$,
       modalTitle: this.modalTitle,
       browseTitle: this.browseTitle,
@@ -79,7 +86,11 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   }
 
   deselect(id: string) {
-    this.selectedOptionsChange.emit(this.selectedOptions.filter(option => option !== id));
+    if (this.includedOptions.includes(id)) {
+      this.selectedOptionsChange.emit({ collectionId: this.includedOptions.filter(option => option !== id) });
+    } else if (this.excludedOptions.includes(id)) {
+      this.selectedOptionsChange.emit({ collectionIdNot: this.excludedOptions.filter(option => option !== id) });
+    }
   }
 
   initCollectionsTree() {
@@ -150,9 +161,25 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     }
   }
 
-  initCollections(): Observable<ICollectionRange[]> {
+  initCollections(): Observable<SelectedOption[]> {
     return this.collectionService.getAll(this.lang, false).pipe(
-      map(data => data.filter(item => this.selectedOptions.includes(item.id)))
+      map(data => {
+        const toReturn: SelectedOption[] = [];
+        data.forEach(item => {
+          if (this.includedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'included'
+            });
+          } else if (this.excludedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'excluded'
+            });
+          }
+        });
+        return toReturn;
+      })
     );
   }
 }

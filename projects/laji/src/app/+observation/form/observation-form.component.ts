@@ -309,8 +309,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  onCollectionIdChange(collectionId: any) {
-    this.query.collectionId = collectionId;
+  onCollectionIdChange(collections: any) {
+    this.query.collectionId = collections.collectionId;
+    this.query.collectionIdNot = collections.collectionIdNot;
     this.onQueryChange();
   }
 

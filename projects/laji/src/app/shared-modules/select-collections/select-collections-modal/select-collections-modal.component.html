@@ -13,21 +13,31 @@
             <div class="scrollable-tree">
               <tree-root
                 #tree
+                [focused]="true"
                 [nodes]="collectionsTree"
                 [options]="options"
                 (initialized)="treeInit()"
               >
-                <ng-template #treeNodeTemplate let-node>
-                  <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }}) </span>
-                  <a
-                    id="collectionLink"
-                    [tooltip]="'openCollectionPage' | translate"
-                    container="body"
-                    target="_blank" [href]="node.data.id | collectionUrl">
-                    <i 
-                      id="collectionLink"
-                      class="glyphicon glyphicon-eye-open"></i>
-                  </a>
+                <ng-template #treeNodeWrapperTemplate let-node>
+                  <div class="node-wrapper">
+                    <tree-node-expander [node]="node"></tree-node-expander>
+                    <div [class]="node.getClass()" [style.padding-left]="node.getNodePadding()"
+                      [class.node-content-wrapper-active]="node.isActive"
+                      [class.node-content-wrapper-focused]="node.isFocused"
+                      (click)="node.mouseAction('click', $event)">
+                      <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
+                      <span>{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
+                      <a
+                        id="collectionLink"
+                        [tooltip]="'openCollectionPage' | translate"
+                        container="body"
+                        target="_blank" [href]="node.data.id | collectionUrl">
+                        <i 
+                          id="collectionLink"
+                          class="glyphicon glyphicon-eye-open"></i>
+                      </a>
+                    </div>
+                  </div>
                 </ng-template>
               </tree-root>
             </div>
@@ -35,7 +45,7 @@
           <div class="col-md-4">
             <h5>{{selectedTitle}}</h5>
             <div class="scrollable-selection-list">
-              <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+              <laji-selected-collections [selectedOptions]="selectedOptions" (selectedOptionsChange)="deselect($event)"></laji-selected-collections>
             </div>
           </div>
         </div>
