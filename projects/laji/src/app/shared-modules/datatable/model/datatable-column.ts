@@ -5,4 +5,5 @@ export interface DatatableColumn extends TableColumn {
   target?: string;
   info?: string;
   required?: boolean;
+  sortTemplate?: string;
 }
