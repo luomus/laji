@@ -37,7 +37,6 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() reservable: boolean;
   @Input() placeForm: any;
   @Input() documentForm: Form.SchemaForm;
-  @Input() mapOptions: Form.SchemaForm;
   @Output() activePlaceChange = new EventEmitter<number>();
 
   legend;
