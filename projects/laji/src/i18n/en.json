@@ -867,6 +867,7 @@
   "observation.active.reliable": "Only verified",
   "observation.active.sampleFact": "DNA measurement",
   "observation.active.sampleId": "Preparation/Sample ID",
+  "observation.active.sampleMaterial": "Sample material",
   "observation.active.sampleQuality": "DNA sample quality",
   "observation.active.sampleStatus": "Preparation/Sample status",
   "observation.active.sampleType": "Preparation/Sample type",
