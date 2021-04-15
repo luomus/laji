@@ -783,6 +783,8 @@ body > .ui-select-bootstrap.open {
 
 .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
   font-size: 85%;
+  display: flex;
+  align-items: center;
 }
 
 .ngx-datatable.material.striped .datatable-row-odd {
