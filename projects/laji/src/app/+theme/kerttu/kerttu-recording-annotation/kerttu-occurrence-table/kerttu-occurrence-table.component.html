@@ -20,12 +20,12 @@
 </ng-template>
 
 <ng-template let-row="row" #buttons>
-  <lu-button [role]="'danger'" (click)="deleteRow(row.preSortIndex)">x</lu-button>
-  <lu-button
+  <button class="btn btn-danger btn-sm" (click)="deleteRow(row.preSortIndex)">x</button>
+  <button
+    class="btn btn-warning btn-sm"
     *ngIf="taxonExpertise && taxonExpertise.indexOf(row.annotation.taxonId) === -1"
     (click)="missingTaxonClick.emit(row)"
-    [role]="'warning'"
     style="float: right">
     <i class="fa fa-exclamation-triangle"></i> {{ 'theme.kerttu.speciesMissing' | translate }}
-  </lu-button>
+  </button>
 </ng-template>
