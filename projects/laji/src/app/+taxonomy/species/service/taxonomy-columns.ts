@@ -117,6 +117,11 @@ export class TaxonomyColumns {
       width: 140
     },
     {
+      name: 'sensitive',
+      cellTemplate: 'sensitiveIcon',
+      width: 140
+    },
+    {
       name: 'informalTaxonGroups',
       cellTemplate: 'labelArray',
       width: 200
