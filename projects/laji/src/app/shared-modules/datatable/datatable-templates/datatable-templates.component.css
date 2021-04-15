@@ -72,8 +72,6 @@ div.annotation-marker {
 div.iucnStatus {
   display: flex;
   justify-content: center;
-  position: relative;
-  top: -4px;
 }
 div.iucnStatusAll {
   width: 50px;
