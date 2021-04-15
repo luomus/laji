@@ -847,6 +847,7 @@
   "observation.active.lifeStage": "Elinvaihe",
   "observation.active.loadedSameOrAfter": "Muokkausaika",
   "observation.active.loadedSameOrBefore": "Muokkausaika",
+  "observation.active.sampleMaterial": "Sample material",
   "observation.active.nativeOccurrence": "Luonnonvaraisuus",
   "observation.active.nativeOccurrence.notWild": "Ei-luonnonvarainen",
   "observation.active.nativeOccurrence.Wild": "Luonnonvarainen",
