@@ -94,14 +94,14 @@ export class TaxonIdentificationFacade implements OnDestroy {
         includeMedia: true
       }
     ).pipe(
-      takeUntil(this.unsubscribe$),
       switchMap(res => {
         if (res.total > 0) {
           return of({...res, rank});
         } else {
           return this.getTaxaObservable$(id, getSubMainRank(rank));
         }
-      })
+      }),
+      takeUntil(this.unsubscribe$),
     );
   }
 
