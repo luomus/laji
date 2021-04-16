@@ -138,6 +138,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
     cellTemplate: 'iucnStatus',
     // sortBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    cellClass: 'cell-centered-content',
     sortable: false,
     width: 140
   },
@@ -185,6 +186,7 @@ export const COLUMNS: IColumns = {
   'unit.linkings.taxon.sensitive': {
     name: 'unit.linkings.taxon.sensitive',
     cellTemplate: 'sensitiveIcon',
+    cellClass: 'cell-centered-content',
     label: 'result.unit.sensitive'
   },
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},

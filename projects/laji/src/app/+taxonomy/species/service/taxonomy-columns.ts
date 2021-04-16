@@ -114,11 +114,13 @@ export class TaxonomyColumns {
     {
       name: 'latestRedListStatusFinland',
       cellTemplate: 'iucnStatus',
+      cellClass: 'cell-centered-content',
       width: 140
     },
     {
       name: 'sensitive',
       cellTemplate: 'sensitiveIcon',
+      cellClass: 'cell-centered-content',
       width: 140
     },
     {

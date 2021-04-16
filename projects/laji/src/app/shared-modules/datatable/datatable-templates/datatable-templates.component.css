@@ -48,7 +48,7 @@ span.sensitive {
 :host ::ng-deep .habitat ul {
   margin:0;
   padding:0;
-  list-style:none
+  list-style:none;
 }
 
 .tag {
@@ -57,15 +57,15 @@ span.sensitive {
 
 div.annotation-marker {
   margin-bottom: 0px;
-  border-radius: 0px; 
-  padding: 0; 
+  border-radius: 0px;
+  padding: 0;
   background-color: transparent;
   border: 0;
   margin-right: 5px;
 }
 
 .title {
-  display: inline; 
+  display: inline;
   vertical-align: super;
 }
 
