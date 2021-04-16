@@ -140,6 +140,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   }
 
   initActive(): any {
+    if (this.active.length > 0) {
+      return;
+    }
+
     if (!this.value || !this._options) {
       this.active = [];
       this.selectedTitle = '';

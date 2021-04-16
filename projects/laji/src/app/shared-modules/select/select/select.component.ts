@@ -215,9 +215,9 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       });
     });
 
-    // this.open = this.open || !!this.selectedOptions.length;
-    this.open = this.useFilter ? this.open : this.open || !!this.selectedOptions.length;
+     this.open = this.open || !!this.selectedOptions.length;
   }
+
 
   private isSelectOptions(option: idType|SelectOption): option is SelectOption {
     return typeof option === 'object';
