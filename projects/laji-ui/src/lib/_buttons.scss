@@ -2,7 +2,7 @@
 
 .lu-btn, button.lu-btn, a.lu-btn {
   @include btn();
-  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+  @include btnSecondary();
 
   font-size: $fs-2;
   padding: 5px 10px;
