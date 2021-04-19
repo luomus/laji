@@ -80,9 +80,7 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   reload() {
     this.unsubscribe$.next();
     const tabs = this.tabComponents.toArray();
-    if (tabs[this.selectedIndex]) {
-      tabs[this.selectedIndex].active = true;
-    }
+    this.updateActiveComponents(this.selectedIndex);
     tabs.forEach((tab) => {
       tab.inputChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.cdr.markForCheck();

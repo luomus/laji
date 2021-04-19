@@ -148,7 +148,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
-    this.loadedTabs.reset();
     this.activeTab = tab;
     this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
     this.cd.markForCheck();
@@ -217,7 +216,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getIsEndangered(taxon: Taxonomy): boolean {
-    this.cd.detectChanges();
     if (!taxon.latestRedListStatusFinland) {
       return false;
     }
