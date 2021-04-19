@@ -65,7 +65,9 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       this.selected = [];
       this.open = false;
     }
-    this.initOptions(this.selected);
+    if (!this.selected || !this.selected.length || (this.selected.length !== this.selectedOptions.length)) {
+      this.initOptions(this.selected);
+    }
   }
 
   ngOnDestroy() {
@@ -191,6 +193,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     if (!this.options) {
       return;
     }
+
     this.selectedOptions = [];
     if (!selected || selected.length === 0) {
       this.options.forEach(option => {
