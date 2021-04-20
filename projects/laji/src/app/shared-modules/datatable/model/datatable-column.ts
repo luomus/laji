@@ -7,3 +7,8 @@ export interface DatatableColumn extends TableColumn {
   required?: boolean;
   sortTemplate?: string;
 }
+
+export interface DatatableSort {
+  prop: string;
+  dir: 'asc'|'desc';
+}

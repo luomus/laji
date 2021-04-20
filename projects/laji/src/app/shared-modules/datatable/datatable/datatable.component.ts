@@ -1,6 +1,7 @@
 import { debounceTime, tap, map } from 'rxjs/operators';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { DatatableColumn } from '../model/datatable-column';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
+  NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DatatableColumn, DatatableSort } from '../model/datatable-column';
 import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@swimlane/ngx-datatable';
 import { Observable, Subject, Subscription, of, forkJoin } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
@@ -37,7 +38,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() resizable = true;
   @Input() showRowAsLink = true;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
-  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() sorts: DatatableSort[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
   @Input() summaryRow = false;
@@ -68,7 +69,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   sortLoading = false;
   private filterChange$ = new Subject();
 
-  private prevSort: any;
+  private prevSort: DatatableSort[] = [];
   private sortValues = {};
   private sortSub: Subscription;
 
@@ -234,7 +235,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes.sorts) {
       this.prevSort = this.sorts;
       this.sortRows(this.sorts);
@@ -304,7 +305,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  private sortRows(sorts = []) {
+  private sortRows(sorts: DatatableSort[] = []) {
     if (this.sortSub) {
       this.sortSub.unsubscribe();
     }
@@ -323,7 +324,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  private sort(sorts, rows: any[]): Observable<any> {
+  private sort(sorts: DatatableSort[], rows: any[]): Observable<any> {
     return this.setSortValues(sorts, rows)
       .pipe(map(() => {
         if (sorts.length > 0) {
@@ -335,7 +336,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     );
   }
 
-  private setSortValues(sorts, rows: any[]): Observable<any[]> {
+  private setSortValues(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
     const obs = sorts.reduce((arr, sort) => {
       const template = this._columns.filter(col => col.prop === sort.prop)[0].sortTemplate;
       rows.forEach((row) => {
@@ -364,7 +365,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     return (obs.length > 0 ? forkJoin(obs) : of([]));
   }
 
-  private customSort(sorts, results: any[]) {
+  private customSort(sorts: DatatableSort[], results: any[]) {
     sorts.forEach((sort) => {
       const dir = sort.dir === 'asc' ? 1 : -1;
       results.sort((a, b) => {
