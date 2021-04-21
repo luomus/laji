@@ -5,7 +5,8 @@ export const Global = {
     prod: 'prod',
     vir: 'vir',
     embedded: 'embedded',
-    iucn: 'iucn'
+    iucn: 'iucn',
+    kerttuGlobal: 'kerttuGlobal'
   },
   forms: {
     datasets: 'MHL.67',
