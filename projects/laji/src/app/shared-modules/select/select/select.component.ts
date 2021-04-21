@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { select } from 'd3-selection';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
@@ -61,11 +62,13 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
   }
 
   ngOnChanges() {
+    console.log('porco')
     if (this.disabled) {
       this.selected = [];
       this.open = false;
     }
-    if (!this.selected || !this.selected.length || (this.selected.length !== this.selectedOptions.length)) {
+    if (!this.selected || !this.selected.length ||
+      ((this.selected.length !== this.selectedOptions.length) && !this.checkSelectOptionsAreSelected(this.selected, this.selectedOptions) )) {
       this.initOptions(this.selected);
     }
   }
@@ -75,6 +78,17 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     this.unsubscribe$.complete();
   }
 
+  checkSelectOptionsAreSelected(selected, selectedOptions) {
+    if (selected.length === 0 || selectedOptions.length === 0) {
+      return false;
+    }
+    for (var i = 0; i < selected.length; i++) {
+      if (selectedOptions.some(o => o.id === selected[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   toggleValue(id: idType, event) {
     const selected = this.selectedOptions.find(option => option.id === id);
