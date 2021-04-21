@@ -70,6 +70,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   private filterChange$ = new Subject();
 
   private prevSort: DatatableSort[] = [];
+  private sortTemplates = {};
   private sortValues = {};
   private sortSub: Subscription;
 
@@ -160,10 +161,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         column.headerTemplate = this.datatableTemplates.dafaultHeader;
       }
       if (typeof column.cellTemplate === 'string') {
-        if (!column.sortTemplate) {
-          column.sortTemplate = column.cellTemplate;
-        }
+        this.sortTemplates[column.prop] = column.cellTemplate;
         column.cellTemplate = this.datatableTemplates[column.cellTemplate];
+      }
+      if (column.sortTemplate) {
+        this.sortTemplates[column.prop] = column.sortTemplate;
       }
       if (settings && settings[column.name] && settings[column.name].width) {
         column.width = settings[column.name].width;
@@ -341,7 +343,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   private setSortValues(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
     const obs = sorts.reduce((arr, sort) => {
-      const template = this._columns.filter(col => col.prop === sort.prop)[0].sortTemplate;
+      const template = this.sortTemplates[sort.prop];
       rows.forEach((row) => {
         if (!this.sortValues[row.preSortIndex]) {
           this.sortValues[row.preSortIndex] = {};
