@@ -246,6 +246,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     if (this.filterByChange) {
       this.filterByChange.unsubscribe();
     }
+    if (this.sortSub) {
+      this.sortSub.unsubscribe();
+    }
   }
 
   onRowSelect(event) {
