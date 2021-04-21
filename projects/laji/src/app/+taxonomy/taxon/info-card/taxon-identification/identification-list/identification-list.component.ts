@@ -41,6 +41,10 @@ export class IdentificationListComponent implements OnDestroy {
     );
   }
 
+  discreteScroll(dir: number) {
+    this.speciesContainer.nativeElement.scrollLeft += dir * .5 * this.speciesContainer.nativeElement.clientWidth;
+  }
+
   scroll(timestamp: DOMHighResTimeStamp) {
     if (!this.scrolling) {
       return;

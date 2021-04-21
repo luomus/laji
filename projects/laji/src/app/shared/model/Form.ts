@@ -153,6 +153,7 @@ export namespace Form {
       birdAssociationAreaHelp?: string;
       documentViewerZoomToData?: boolean;
       listColumnsMultisort?: boolean;
+      mapCluster?: boolean;
     };
   }
 
