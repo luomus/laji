@@ -18,9 +18,9 @@ import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { SpectrogramService } from '../service/spectrogram.service';
-import { AudioViewerUtils } from '../service/audio-viewer-utils';
-import { AudioViewerMode, IAudioViewerArea } from '../models';
+import { SpectrogramService } from '../../service/spectrogram.service';
+import { AudioViewerUtils } from '../../service/audio-viewer-utils';
+import { AudioViewerMode, IAudioViewerArea } from '../../models';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

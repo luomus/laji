@@ -1,12 +1,5 @@
 import { Taxonomy } from '../../shared/model/Taxonomy';
-import { Geometry } from 'geojson';
-
-export interface IAudio {
-  url: string;
-  dateTime: string;
-  municipality: string;
-  geometry: Geometry;
-}
+import { IAudio } from '../../shared-modules/audio-viewer/models';
 
 export interface IRecording {
   id: number;

@@ -12,13 +12,12 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { AudioService } from './service/audio.service';
+import { AudioService } from '../service/audio.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudioViewerArea } from './models';
-import { AudioPlayer } from './service/audio-player';
-import { AudioViewerUtils } from './service/audio-viewer-utils';
-import { IAudio } from '../models';
+import { IAudio, AudioViewerMode, IAudioViewerArea } from '../models';
+import { AudioPlayer } from '../service/audio-player';
+import { AudioViewerUtils } from '../service/audio-viewer-utils';
 
 @Component({
   selector: 'laji-audio-viewer',
