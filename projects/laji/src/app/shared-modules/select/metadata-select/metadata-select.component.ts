@@ -43,6 +43,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() alt: string;
   @Input() name: string;
   @Input() multiple = true;
+  @Input() excludeOptions: string[] = [];
   @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
@@ -134,6 +135,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       ))
     ).subscribe(options => {
         this.setOptions(options);
+        this._options = this.deleteOptionsfromExcludedOptions(this._options, this.excludeOptions);
         this.initActive();
         this.cd.markForCheck();
       });
@@ -163,6 +165,22 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this.selectedTitle = this.active.length > 0 ? ' (' + this.active.length + ')' : '';
     this.cd.markForCheck();
+  }
+
+  deleteOptionsfromExcludedOptions(options, excludeOptions) {
+    if (!excludeOptions.length) {
+      return options;
+    }
+
+    options = options.reduce((filtered, current) => {
+      const id = current['id'].replace('MX.', '');
+      if (excludeOptions.indexOf(id) === -1) {
+        filtered.push(current);
+      }
+      return filtered;
+    }, []);
+
+    return options;
   }
 
   refreshValue(value: any): void {

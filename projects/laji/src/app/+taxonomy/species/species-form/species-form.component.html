@@ -76,6 +76,7 @@
   [(ngModel)]="searchQuery.query.adminStatusFilters"
   (ngModelChange)="onAdministrativeStatusChange()"
   [multiple]="true"
+  [excludeOptions]="invasiveStatuses"
   [placeholder]="'MX.hasAdminStatus' | label"
   name="adminStatusFilters"
   [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
