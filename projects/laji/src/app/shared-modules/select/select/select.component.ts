@@ -62,13 +62,11 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
   }
 
   ngOnChanges() {
-    console.log('porco')
     if (this.disabled) {
       this.selected = [];
       this.open = false;
     }
-    if (!this.selected || !this.selected.length ||
-      ((this.selected.length !== this.selectedOptions.length) && !this.checkSelectOptionsAreSelected(this.selected, this.selectedOptions) )) {
+    if (!this.selected || !this.selected.length || (this.selected.length !== this.selectedOptions.length)) {
       this.initOptions(this.selected);
     }
   }
@@ -78,17 +76,6 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     this.unsubscribe$.complete();
   }
 
-  checkSelectOptionsAreSelected(selected, selectedOptions) {
-    if (selected.length === 0 || selectedOptions.length === 0) {
-      return false;
-    }
-    for (var i = 0; i < selected.length; i++) {
-      if (selectedOptions.some(o => o.id === selected[i])) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   toggleValue(id: idType, event) {
     const selected = this.selectedOptions.find(option => option.id === id);
