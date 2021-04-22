@@ -19,6 +19,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.linkings.species.taxonomicOrder': ObservationTableColumn;
   'unit.reportedTaxonConfidence': ObservationTableColumn;
   'unit.interpretations.recordQuality': ObservationTableColumn;
+  'unit.linkings.taxon.sensitive': ObservationTableColumn;
   'gathering.team': ObservationTableColumn;
   'gathering.interpretations.countryDisplayname': ObservationTableColumn;
   'gathering.interpretations.biogeographicalProvinceDisplayname': ObservationTableColumn;
@@ -137,6 +138,7 @@ export const COLUMNS: IColumns = {
     aggregateBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
     cellTemplate: 'iucnStatus',
     // sortBy: 'unit.linkings.taxon.latestRedListStatusFinland.status',
+    cellClass: 'cell-centered-content',
     sortable: false,
     width: 140
   },
@@ -180,6 +182,12 @@ export const COLUMNS: IColumns = {
     label: 'result.taxonomicOrder',
     aggregateBy: 'unit.linkings.taxon.species,unit.linkings.taxon.speciesTaxonomicOrder',
     width: 70
+  },
+  'unit.linkings.taxon.sensitive': {
+    name: 'unit.linkings.taxon.sensitive',
+    cellTemplate: 'sensitiveIcon',
+    cellClass: 'cell-centered-content',
+    label: 'result.unit.sensitive'
   },
   'unit.reportedTaxonConfidence': {name: 'unit.reportedTaxonConfidence', cellTemplate: 'warehouseLabel'},
   'unit.interpretations.recordQuality': {
@@ -417,6 +425,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.species.vernacularName'],
     COLUMNS['unit.linkings.species.scientificName'],
     COLUMNS['unit.linkings.species.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.sensitive'],
     COLUMNS['unit.reportedTaxonConfidence'],
     COLUMNS['unit.interpretations.recordQuality'],
     COLUMNS['gathering.team'],
@@ -478,7 +487,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
           'unit.linkings.taxon.taxonomicOrder',
-          'unit.linkings.taxon.latestRedListStatusFinland'
+          'unit.linkings.taxon.latestRedListStatusFinland',
+          'unit.linkings.taxon.sensitive'
         ]
       },
       {
