@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -25,9 +25,10 @@ export class SpeciesTableComponent implements OnInit {
     }
   ];
 
+  @Output() taxonSelect = new EventEmitter<string>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

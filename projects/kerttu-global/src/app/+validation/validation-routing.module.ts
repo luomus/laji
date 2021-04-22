@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SpeciesListComponent } from './species-list/species-list.component';
+import { ValidationComponent } from './validation.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', component: SpeciesListComponent}
+  {path: '', pathMatch: 'full', component: ValidationComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class LetterAnnotationRoutingModule { }
+export class ValidationRoutingModule { }

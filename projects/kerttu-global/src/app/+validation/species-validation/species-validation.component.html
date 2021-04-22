@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>{{ taxon | taxon | capitalize }} - <i>{{ taxon | taxon:'scientific' }}</i></h1>
+  <p>
+    Vocalization {{ activeIndex + 1 }} / {{ data.length }}
+  </p>
+  
+
+  <div *ngIf="activeLetter">
+    <h3>Is the target species vocalizing inside the white frame?</h3>
+    <button [disabled]="activeIndex === 0" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
+    <div id="letterAnnotationButtons" class="d-inline">
+      <button
+        *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
+        class="btn"
+        [ngClass]="{'btn-success': a === annotation.yes, 'btn-danger': a === annotation.no, 'btn-default': a === annotation.unsure}"
+        (click)="onAnnotationChange(a)"
+      >
+        {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+      </button>
+    </div>
+    <laji-audio-viewer
+      [audio]="activeLetter.audio"
+      [focusArea]="{ xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
+    ></laji-audio-viewer>
+  </div>
+  <div *ngIf="!activeLetter">
+    <p>All the vocalizations validated for this species. Thank you very much!</p>
+    <button class="btn btn-success" (click)="saveAndGoBack()">Save and go back to species list</button>
+  </div>
+</div>

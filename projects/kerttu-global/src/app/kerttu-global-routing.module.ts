@@ -19,7 +19,7 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+letter-annotation/letter-annotation.module').then(m => m.LetterAnnotationModule), data: {preload: true}}
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule), data: {preload: true}}
 ];
 
 const routesWithLang: Routes = [
