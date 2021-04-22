@@ -148,10 +148,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   private setBuffer(buffer: AudioBuffer) {
     const xRange = AudioViewerUtils.getPaddedRange(this.focusArea?.xRange, this.focusAreaTimePadding, 0, buffer.duration);
 
-    this.localFocusArea = {
-      xRange: this.focusArea?.xRange ? [this.focusArea.xRange[0] - xRange[0], this.focusArea.xRange[1] - xRange[0]] : undefined,
-      yRange: this.focusArea?.yRange
-    };
+    if (this.focusArea) {
+      this.localFocusArea = {
+        xRange: this.focusArea?.xRange ? [this.focusArea.xRange[0] - xRange[0], this.focusArea.xRange[1] - xRange[0]] : undefined,
+        yRange: this.focusArea?.yRange
+      };
+    } else {
+      this.localFocusArea = undefined;
+    }
 
     this.extractedBuffer = this.audioService.normaliseAudio(
       this.audioService.extractSegment(buffer, xRange[0], xRange[1])

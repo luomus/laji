@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ILetterStatusInfo, LetterAnnotation } from '../../models';
 import { ILetterCandidate, ILetterTemplate } from '../../models';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
-import { debounceTime } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { KerttuTaxonService } from '../../service/kerttu-taxon-service';
 
@@ -13,7 +12,7 @@ import { KerttuTaxonService } from '../../service/kerttu-taxon-service';
   styleUrls: ['./letter-annotation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
+export class LetterAnnotationComponent implements OnChanges {
   @Input() template: ILetterTemplate;
   @Input() candidate: ILetterCandidate;
   @Input() statusInfo: ILetterStatusInfo;
@@ -34,30 +33,10 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() skipLetterClick = new EventEmitter();
   @Output() backToPreviousCandidateClick = new EventEmitter();
 
-  private xRangePaddingChanged: Subject<number> = new Subject<number>();
-  private xRangePaddingChangeSub: Subscription;
-  private debounceTime = 500;
-
   constructor(
-    private cdr: ChangeDetectorRef,
     private translate: TranslateService,
     private taxonService: KerttuTaxonService
   ) { }
-
-  ngOnInit() {
-    this.xRangePaddingChangeSub = this.xRangePaddingChanged
-      .pipe(
-        debounceTime(this.debounceTime),
-      )
-      .subscribe((xRangePadding) => {
-        this.xRangePadding = xRangePadding;
-        this.cdr.markForCheck();
-      });
-  }
-
-  ngOnDestroy() {
-    this.xRangePaddingChangeSub.unsubscribe();
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.candidateLongerVisible = false;
@@ -66,11 +45,6 @@ export class LetterAnnotationComponent implements OnInit, OnDestroy, OnChanges {
       this.autoplayCandidate = false;
       this.taxon$ = this.taxonService.getTaxon(this.template.taxonId);
     }
-  }
-
-  onXRangePaddingChange(value: string) {
-    this.xRangePadding = parseFloat(value);
-    this.xRangePaddingChanged.next(this.xRangePadding);
   }
 
   onSkipLetter() {
