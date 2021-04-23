@@ -1,9 +1,16 @@
-:host > div {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 8px;
+@import 'projects/laji-ui/src/lib/vars';
 
-  bswitch {
-    display: block;
+:host {
+  font-size: $fs-2;
+  display: block;
+
+  > div {
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: bottom;
+  
+    bswitch {
+      display: block;
+    }
   }
 }

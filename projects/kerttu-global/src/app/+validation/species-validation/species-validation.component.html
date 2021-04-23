@@ -18,9 +18,13 @@
         {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
       </button>
     </div>
+    <button class="btn btn-default">Korjaa rajaus</button>
+    <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="xRangePadding"></laji-audio-viewer-settings>
     <laji-audio-viewer
       [audio]="activeLetter.audio"
       [focusArea]="{ xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
+      [zoomFrequency]="zoomed"
+      [focusAreaTimePadding]="xRangePadding"
     ></laji-audio-viewer>
   </div>
   <div *ngIf="!activeLetter">

@@ -18,6 +18,9 @@ export class SpeciesValidationComponent implements OnChanges {
   activeIndex = 0;
   activeLetter: any;
 
+  zoomed = true;
+  xRangePadding = 1;
+
   @Output() annotationsReady = new EventEmitter<LetterAnnotation[]>();
 
   constructor() { }
