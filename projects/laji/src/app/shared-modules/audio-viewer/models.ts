@@ -12,4 +12,4 @@ export interface IAudioViewerArea {
   yRange?: number[];
 }
 
-export type AudioViewerMode = 'default' | 'brush';
+export type AudioViewerMode = 'default' | 'zoom' | 'draw';

@@ -42,7 +42,7 @@ export class AudioSpectrogramComponent implements OnChanges {
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
-  @Input() brushArea: IAudioViewerArea;
+  @Input() zoomArea: IAudioViewerArea;
   @Input() zoomFrequency = false;
   @Input() frequencyPaddingOnZoom = 500;
   @Input() mode: AudioViewerMode;
@@ -50,7 +50,8 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Output() spectrogramReady = new EventEmitter();
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
-  @Output() brushEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
   margin: { top: number, bottom: number, left: number, right: number} = { top: 10, bottom: 20, left: 30, right: 10};
 
@@ -224,7 +225,7 @@ export class AudioSpectrogramComponent implements OnChanges {
     // add functions
     if (this.mode === 'default') {
       // make spectrogram clickable by adding a transparent rectangle that catches click events
-      const onlyFocusAreaClickable = this.highlightFocusArea && !this.brushArea;
+      const onlyFocusAreaClickable = this.highlightFocusArea && !this.zoomArea;
 
       svg.attr('pointer-events', 'all');
       svg.insert('rect', '#scrollLine')
@@ -247,7 +248,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         })
         .on('end', () => { this.dragEnd.emit(this.currentTime); });
       this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
-    } else if (this.mode === 'brush') {
+    } else if (this.mode === 'zoom' || this.mode === 'draw') {
       // add brush functionality
       const brushFunc = brush()
         .on('end', () => {
@@ -261,10 +262,15 @@ export class AudioSpectrogramComponent implements OnChanges {
           const yMin = Math.min(y0, y1);
           const yMax = Math.max(y0, y1);
 
-          this.brushEnd.emit({
+          const area = {
             xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
             yRange: [this.yScale.invert(yMax) * 1000, this.yScale.invert(yMin) * 1000]
-          });
+          };
+          if (this.mode === 'zoom') {
+            this.zoomEnd.emit(area);
+          } else {
+            this.drawEnd.emit(area);
+          }
         });
 
       svg.append('g')
@@ -290,9 +296,9 @@ export class AudioSpectrogramComponent implements OnChanges {
     const maxTime = this.buffer.duration;
     const maxFreq = Math.floor(this.sampleRate / 2);
 
-    if (this.brushArea) {
-      [this.startTime, this.endTime] = this.brushArea.xRange;
-      [this.startFreq, this.endFreq] = this.brushArea.yRange;
+    if (this.zoomArea) {
+      [this.startTime, this.endTime] = this.zoomArea.xRange;
+      [this.startFreq, this.endFreq] = this.zoomArea.yRange;
     } else {
       [this.startTime, this.endTime] = [0, maxTime];
       [this.startFreq, this.endFreq] = AudioViewerUtils.getPaddedRange(

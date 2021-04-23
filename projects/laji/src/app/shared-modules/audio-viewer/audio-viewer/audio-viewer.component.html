@@ -9,13 +9,14 @@
       [currentTime]="audioPlayer.currentTime"
       [focusArea]="localFocusArea"
       [highlightFocusArea]="highlightFocusArea"
-      [brushArea]="localBrushArea"
+      [zoomArea]="localZoomArea"
       [zoomFrequency]="zoomFrequency"
       [mode]="mode"
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"
-      (brushEnd)="onSpectrogramBrushEnd($event)"
+      (zoomEnd)="onSpectrogramZoomEnd($event)"
+      (drawEnd)="onSpectrogramDrawEnd($event)"
     ></laji-audio-spectrogram>
   </div>
 
@@ -33,14 +34,14 @@
       </lu-button>
       <laji-info [placement]="'right'" [html]="'theme.kerttu.info.loop' | translate"></laji-info>
     </div>
-    <ng-container *ngIf="showBrushControl">
+    <ng-container *ngIf="showZoomControl">
       <div class="btn-with-info">
-        <lu-button [role]="mode === 'brush' ? 'primary' : 'secondary'" (click)="toggleBrushMode()">
+        <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">
           {{ 'theme.kerttu.audioViewer.changeView' | translate }}
         </lu-button>
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.changeView' | translate"></laji-info>
       </div>
-      <lu-button [role]="'secondary'" (click)="clearBrushArea()" *ngIf="localBrushArea">
+      <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="localZoomArea">
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>

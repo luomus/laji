@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -13,7 +12,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
-import { WINDOW } from '@ng-toolkit/universal';
 import { Subscription } from 'rxjs';
 import { IAudio, AudioViewerMode, IAudioViewerArea } from '../models';
 import { AudioPlayer } from '../service/audio-player';
@@ -36,16 +34,17 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() autoplayRepeat = 1;
 
   @Input() highlightFocusArea = false; // highlighting darkens the spectrogram background and allows to play the sound only in the focus area
-  @Input() showBrushControl = false; // brush control allows the user to zoom into spectrogram
+  @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
 
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
 
-  localFocusArea: IAudioViewerArea; // focus area in extracted audio
-  localBrushArea: IAudioViewerArea; // brush area in extracted audio
+  @Input() mode: AudioViewerMode = 'default';
 
-  mode: AudioViewerMode = 'default';
+  localFocusArea: IAudioViewerArea; // focus area in extracted audio
+  localZoomArea: IAudioViewerArea; // zoom area in extracted audio
+
   buffer: AudioBuffer;
   extractedBuffer: AudioBuffer;
   audioPlayer: AudioPlayer;
@@ -54,11 +53,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   hasError = false;
 
   @Output() audioLoading = new EventEmitter<boolean>();
+  @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
+  private extractedStartX = 0;
   private audioSub: Subscription;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
     private cdr: ChangeDetectorRef,
     private audioService: AudioService,
     private ngZone: NgZone
@@ -96,6 +96,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
         this.setBuffer(this.buffer);
       } else if (changes.zoomFrequency || changes.highlightFocusArea) {
         this.audioPlayer.setPlayArea(this.getPlayArea());
+      } else if (changes.mode) {
+        this.audioPlayer.stop();
       }
     }
   }
@@ -112,20 +114,27 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     this.audioPlayer.startFrom(time);
   }
 
-  onSpectrogramBrushEnd(area: IAudioViewerArea) {
+  onSpectrogramZoomEnd(area: IAudioViewerArea) {
     this.mode = 'default';
-    this.localBrushArea = area;
+    this.localZoomArea = area;
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
-  clearBrushArea() {
-    this.localBrushArea = undefined;
+  onSpectrogramDrawEnd(area: IAudioViewerArea) {
+    this.drawEnd.emit({
+      xRange: [area.xRange[0] + this.extractedStartX, area.xRange[1] + this.extractedStartX],
+      yRange: area.yRange
+    });
+  }
+
+  clearZoomArea() {
+    this.localZoomArea = undefined;
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
-  toggleBrushMode() {
+  toggleZoomMode() {
     this.audioPlayer.stop();
-    this.mode = this.mode === 'brush' ? 'default' : 'brush';
+    this.mode = this.mode === 'zoom' ? 'default' : 'zoom';
   }
 
   setAudioLoading(loading: boolean) {
@@ -140,13 +149,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
     this.buffer = undefined;
     this.extractedBuffer = undefined;
-    this.localBrushArea = undefined;
+    this.localZoomArea = undefined;
     this.hasError = false;
     this.audioPlayer.clear();
   }
 
   private setBuffer(buffer: AudioBuffer) {
     const xRange = AudioViewerUtils.getPaddedRange(this.focusArea?.xRange, this.focusAreaTimePadding, 0, buffer.duration);
+    this.extractedStartX = xRange[0];
 
     if (this.focusArea) {
       this.localFocusArea = {
@@ -183,8 +193,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPlayArea(): IAudioViewerArea {
-    if (this.localBrushArea) {
-      return this.localBrushArea;
+    if (this.localZoomArea) {
+      return this.localZoomArea;
     }
 
     return {

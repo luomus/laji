@@ -18,14 +18,17 @@
         {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
       </button>
     </div>
-    <button class="btn btn-default">Korjaa rajaus</button>
     <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="xRangePadding"></laji-audio-viewer-settings>
     <laji-audio-viewer
       [audio]="activeLetter.audio"
       [focusArea]="{ xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
       [zoomFrequency]="zoomed"
       [focusAreaTimePadding]="xRangePadding"
+      [mode]="audioViewerMode"
+      (drawEnd)="onDrawEnd($event)"
     ></laji-audio-viewer>
+
+    <button class="btn btn-default" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="audioViewerMode = 'draw'">Korjaa rajaus</button>
   </div>
   <div *ngIf="!activeLetter">
     <p>All the vocalizations validated for this species. Thank you very much!</p>

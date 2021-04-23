@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { LetterAnnotation } from 'projects/laji/src/app/+theme/kerttu/models';
+import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -21,6 +22,8 @@ export class SpeciesValidationComponent implements OnChanges {
   zoomed = true;
   xRangePadding = 1;
 
+  audioViewerMode: AudioViewerMode = 'default';
+
   @Output() annotationsReady = new EventEmitter<LetterAnnotation[]>();
 
   constructor() { }
@@ -41,6 +44,12 @@ export class SpeciesValidationComponent implements OnChanges {
     } else {
       this.activeLetter = null;
     }
+  }
+
+  onDrawEnd(area: IAudioViewerArea) {
+    this.activeLetter.xRange = area.xRange;
+    this.activeLetter.yRange = area.yRange;
+    this.audioViewerMode = 'default';
   }
 
   returnToPrevious() {
