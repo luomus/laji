@@ -25,7 +25,7 @@
     [switch-base-class]="'bootstrap-switch'">
   </bSwitch>
 </div>
-<div style="display: block; margin-top: 5px">
+<div [ngClass]="{'d-block': !displayInline}" style="margin-top: 5px;">
   <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
   <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
 </div>
