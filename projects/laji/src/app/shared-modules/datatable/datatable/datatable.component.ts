@@ -39,6 +39,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
   @Input() summaryRow = false;
+  @Input() striped = true;
 
   // Initialize datatable row selection with some index
   _preselectedRowIndex = -1;
@@ -70,6 +71,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.getRowClass) {
       const rowClass = this.getRowClass(row);
       if (rowClass) {
+        console.log(rowClass);
         return rowClass;
       }
     }

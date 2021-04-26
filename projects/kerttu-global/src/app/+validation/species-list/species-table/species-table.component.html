@@ -1,5 +1,7 @@
 <laji-datatable
   [columns]="columns"
   [rows]="data"
+  [getRowClass]="getRowClass"
+  [striped]="false"
   (rowSelect)="taxonSelect.emit($event.row.id)"
 ></laji-datatable>
