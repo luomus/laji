@@ -1,0 +1,7 @@
+<select laji-dropdown [value]="selected" [placeholder]="placeholder" [options]="options" (valueChange)="onSelect($event)"></select>
+<laji-pill-list
+  [separator]="'; '"
+  [isLabel]="true"
+  [list]="value || []"
+  (updateList)="onListUpdate($event)"
+></laji-pill-list>

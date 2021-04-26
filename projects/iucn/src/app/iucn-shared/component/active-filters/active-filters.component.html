@@ -4,6 +4,6 @@
     <ng-container *ngIf="item.label">
       {{ item.label | translate }}:
     </ng-container>
-    {{ item.value | label }}<ng-container *ngIf="!l">; </ng-container>
+    {{ item.value | label | values:item.separator }}<ng-container *ngIf="!l">; </ng-container>
   </ng-container>
 </p>
