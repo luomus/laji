@@ -5,8 +5,8 @@
   <h4 style="max-width: 100%; margin-bottom: 20px; margin-top: 0">
     Vocalization {{ activeIndex + 1 }} / {{ data.length }}
     <div class="pull-right">
-      <button style="margin-right: 0.5em;" [disabled]="activeIndex === 0" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
-      <button class="btn btn-primary" (click)="goToNext()">Go to next</button>
+      <button style="margin-right: 0.5em;" [disabled]="activeIndex === 0 || saving" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
+      <button class="btn btn-primary" (click)="goToNext()" [disabled]="!activeLetter || saving">Go to next</button>
     </div>
   </h4>
 
@@ -19,7 +19,7 @@
     ></laji-audio-viewer-settings>
     <laji-audio-viewer
       [audio]="activeLetter.audio"
-      [focusArea]="{ xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
+      [focusArea]="currentAnnotation.area ? currentAnnotation.area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
       [zoomFrequency]="zoomed"
       [focusAreaTimePadding]="xRangePadding"
       [mode]="audioViewerMode"
@@ -45,13 +45,13 @@
       </div>
       <div class="form-group">
         <label>Muita kommentteja</label>
-        <textarea class="form-control"></textarea>
+        <textarea name="notes" class="form-control" [(ngModel)]="currentAnnotation.notes"></textarea>
       </div>
     </div>
     
   </div>
   <div *ngIf="!activeLetter">
     <p>All the vocalizations validated for this species. Thank you very much!</p>
-    <button class="btn btn-success" (click)="saveAndGoBack()">Save and go back to species list</button>
+    <lu-button (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">Save and go back to species list</lu-button>
   </div>
 </div>

@@ -11,6 +11,7 @@ import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-
 export class SpeciesValidationComponent implements OnChanges {
   @Input() taxon: string;
   @Input() data: any[];
+  @Input() saving = false;
 
   annotation = LetterAnnotation;
 
@@ -57,23 +58,29 @@ export class SpeciesValidationComponent implements OnChanges {
 
   onDrawEnd(area: IAudioViewerArea) {
     this.currentAnnotation.area = area;
-
-    this.activeLetter.xRange = area.xRange;
-    this.activeLetter.yRange = area.yRange;
     this.audioViewerMode = 'default';
   }
 
   returnToPrevious() {
-    this.activeIndex--;
+    if (this.activeLetter) {
+      this.annotations[this.activeIndex] = this.currentAnnotation;
+      this.activeIndex--;
+    }
+
     this.activeLetter = this.data[this.activeIndex];
+    this.currentAnnotation = this.annotations[this.activeIndex];
   }
 
   goToNext() {
+    this.annotations[this.activeIndex] = this.currentAnnotation;
+
     if (this.activeIndex !== this.data.length - 1) {
       this.activeIndex++;
       this.activeLetter = this.data[this.activeIndex];
+      this.currentAnnotation = this.annotations[this.activeIndex] || {};
     } else {
       this.activeLetter = null;
+      this.currentAnnotation = null;
     }
   }
 

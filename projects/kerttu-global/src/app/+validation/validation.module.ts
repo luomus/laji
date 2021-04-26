@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
+import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
 
 import { ValidationRoutingModule } from './validation-routing.module';
 import { ValidationComponent } from './validation.component';
@@ -16,6 +17,7 @@ import { SpeciesValidationComponent } from './species-validation/species-validat
     SharedModule,
     DatatableModule,
     AudioViewerModule,
+    LajiUiModule,
     ValidationRoutingModule
   ],
   declarations: [ValidationComponent, SpeciesListComponent, SpeciesTableComponent, SpeciesValidationComponent]
