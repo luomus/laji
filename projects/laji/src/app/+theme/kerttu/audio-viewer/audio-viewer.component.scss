@@ -20,6 +20,7 @@ alert {
 }
 
 .audio-controls {
+  position: relative;
   display: inline-block;
   width: 100%;
 
@@ -34,11 +35,14 @@ alert {
 
   button, lu-button {
     display: inline-block;
-    margin: 0 2px;
+    margin: 0 2px 2px 2px;
   }
 
   .audio-info {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
     margin-right: 0.5em;
-    line-height: 41px
   }
 }

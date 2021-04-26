@@ -38,6 +38,10 @@ export class IucnGroupSelectComponent extends GroupSelectComponent<RedListTaxonG
     return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId, lang);
   }
 
+  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
+  }
+
   getWithSiblings(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId, lang);
   }

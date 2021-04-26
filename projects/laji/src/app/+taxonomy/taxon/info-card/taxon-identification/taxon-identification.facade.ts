@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { map, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
+import { map, distinctUntilChanged, tap, takeUntil, switchMap } from 'rxjs/operators';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
@@ -41,14 +41,14 @@ const findNearestParentMainRankIdx = (root: Taxon.TaxonRankEnum): number => {
 
 };
 
-const getSubMainRanks = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum[] => {
+const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
   let rootIdx = rankWhiteList.findIndex(r => r === root);
   if (rootIdx < 0) {
     // Root is not a main rank
     // find the closest parent that is mainrank instead
     rootIdx = findNearestParentMainRankIdx(root);
   }
-  return [rankWhiteList[rootIdx + 1], rankWhiteList[rootIdx + 2]];
+  return rankWhiteList[rootIdx + 1];
 };
 
 @Injectable()
@@ -80,22 +80,36 @@ export class TaxonIdentificationFacade implements OnDestroy {
       return;
     }
 
-    const [rank1, rank2] = getSubMainRanks(<Taxon.TaxonRankEnum>root.taxonRank);
+    this.getDataSourceObservable$(root.id, <Taxon.TaxonRankEnum>root.taxonRank).subscribe(d => this.reducer({childDataSource: d}));
+  }
 
-    this.taxonApi.taxonomyList(
+  private getTaxaObservable$(id: string, rank: Taxon.TaxonRankEnum): Observable<any> {
+    return this.taxonApi.taxonomyList(
       this.translate.currentLang,
       {
-        parentTaxonId: root.id,
-        taxonRanks: rank1,
+        parentTaxonId: id,
+        taxonRanks: rank,
         sortOrder: 'observationCountFinland DESC',
         selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland',
         includeMedia: true
       }
     ).pipe(
+      switchMap(res => {
+        if (res.total > 0) {
+          return of({...res, rank});
+        } else {
+          return this.getTaxaObservable$(id, getSubMainRank(rank));
+        }
+      }),
       takeUntil(this.unsubscribe$),
+    );
+  }
+
+  private getDataSourceObservable$(id: string, rootRank: Taxon.TaxonRankEnum) {
+    return this.getTaxaObservable$(id, getSubMainRank(rootRank)).pipe(
       tap(res => this.reducer({totalChildren: res.total})),
-      map(res => new IdentificationChildrenDataSource(this.taxonApi, this.translate, res.results, rank2))
-    ).subscribe(d => this.reducer({childDataSource: d}));
+      map(res => new IdentificationChildrenDataSource(this.taxonApi, this.translate, res.results, getSubMainRank(res.rank)))
+    );
   }
 
   ngOnDestroy() {

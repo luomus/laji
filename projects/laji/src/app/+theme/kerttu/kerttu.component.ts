@@ -34,15 +34,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         flex: 1 0 auto;
         width: 100%;
     }
-
-    :host ::ng-deep lu-button button.success,
-    :host ::ng-deep lu-button button.danger,
-    :host ::ng-deep lu-button button.other {
-      padding: 0.5em 1em;
-    }
-    :host ::ng-deep .ngx-datatable lu-button button {
-      padding: 0.1em 0.6em;
-    }
     :host ::ng-deep .checkbox label {
       display: initial;
       font-weight: 700;

@@ -30,12 +30,22 @@ export class DatatableUtil {
       }
     }
 
-    if (Array.isArray(value)) {
+    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(template) === -1 &&
+      !template.startsWith('latestRedListEvaluation.threatenedAtArea_') && !template.startsWith('latestRedListEvaluation.occurrences_')) {
       return from(value).pipe(
         concatMap(val => this.getVisibleValue(val, row, template)),
         toArray(),
         map(values => values.join(', '))
       );
+    }
+
+    if (template.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
+      const area = template.split('_')[1];
+      return ObservableOf(value.includes(area) ? 'RT' : '');
+    } else if (template.startsWith('latestRedListEvaluation.occurrences_')) {
+      const targetArea = template.split('_')[1];
+      const match = value.filter(val => val.area === targetArea);
+      return match.length > 0 ? this.getLabels(match[0].status) : ObservableOf(value);
     }
 
     let observable;
@@ -98,6 +108,9 @@ export class DatatableUtil {
         observable = ObservableOf(
           (row.scientificName || '') + (row.scientificName && row.vernacularName ? ' – ' : '') + (row.vernacularName || '')
         );
+        break;
+      case 'informalTaxonGroup':
+        observable = this.getLabels(value[value.length - 1]);
         break;
       default:
         break;

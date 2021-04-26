@@ -222,6 +222,8 @@ export interface Taxonomy {
 
   redListStatusesInFinland?: LatestRedListStatusFinland[];
 
+  redListEvaluationGroups?: string[];
+
   multimedia?: TaxonomyImage[];
 
   descriptions?: any[];
@@ -273,6 +275,7 @@ export interface RedListEvaluation {
   threats?: string[];
   occurrences?: Occurrence[];
   lastSightingNotes?: string;
+  threatenedAtArea?: string[];
 }
 
 export interface LatestRedListStatusFinland {
