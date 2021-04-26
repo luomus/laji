@@ -94,7 +94,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   }
 
   initCollectionsTree() {
-    const { collectionId, ...query } = this.query;
+    const { collectionId, collectionIdNot, ...query } = this.query;
 
     return zip(
       this.collectionService.getCollectionsTree(),

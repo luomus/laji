@@ -97,14 +97,14 @@ export class SelectCollectionsModalComponent implements OnInit {
     this.included.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
-      this.initializeNode(this.treeModel, node, null, 'included');
+      this.initializeNode(this.treeModel, node, 'initalizing', 'included');
       this.expandParents(this.treeModel, node, null);
     });
 
     this.excluded.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
-      this.initializeNode(this.treeModel, node, null, 'excluded');
+      this.initializeNode(this.treeModel, node, 'initalizing', 'excluded');
       this.expandParents(this.treeModel, node, null);
     });
   }
@@ -151,10 +151,17 @@ export class SelectCollectionsModalComponent implements OnInit {
 
     const selected = this.selectedOptions.find(option => option.id === node.id);
 
-    if (node.isActive && selected?.type === 'included') {
+    if (node.isActive && node.parent.isActive) {
+      if (selected) {
+        this.removeNodeFromSelection(node);
+      } else if (!node.getClass().includes('tree-active-exclusion')) {
+        this.addNodeToSelection(node, 'excluded');
+        this.clearChildSelections(node);
+      }
+    } else if (node.isActive && selected?.type === 'included') {
       this.switchNodeSelection(node);
+      this.clearChildSelections(node);
     } else if (node.isActive && selected?.type === 'excluded') {
-      this.removeNodeFromSelection(node);
       this.nodeDeselected(tree, node, $event);
     } else if (!node.isActive) {
       this.addNodeToSelection(node);
@@ -162,11 +169,11 @@ export class SelectCollectionsModalComponent implements OnInit {
     }
   }
 
-  addNodeToSelection(node: TreeNode) {
+  addNodeToSelection(node: TreeNode, type: 'included' | 'excluded' = 'included') {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField,
-      type: 'included'
+      type: type
     });
   }
 
@@ -202,7 +209,9 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   nodeSelected(tree: TreeModel, node: TreeNode, $event: any) {
-    TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
+    if ($event !== 'initalizing' || ($event === 'initalizing' && !node.isActive)) {
+      TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
+    }
 
     if (!node.hasChildren) {
       return;
@@ -218,6 +227,8 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   nodeDeselected(tree: TreeModel, node: TreeNode, $event: any) {
+    this.removeNodeFromSelection(node);
+
     TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
 
     if (!node.hasChildren) {
@@ -226,6 +237,13 @@ export class SelectCollectionsModalComponent implements OnInit {
 
     node.children.forEach(child => {
       this.nodeDeselected(tree, child, $event);
+    });
+  }
+
+  clearChildSelections(node: TreeNode) {
+    node.children.forEach(child => {
+      this.removeNodeFromSelection(child);
+      this.clearChildSelections(child);
     });
   }
 

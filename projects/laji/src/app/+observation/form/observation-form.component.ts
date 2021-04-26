@@ -310,8 +310,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onCollectionIdChange(collections: any) {
-    this.query.collectionId = collections.collectionId;
-    this.query.collectionIdNot = collections.collectionIdNot;
+    if (collections.collectionId) {
+      this.query.collectionId = collections.collectionId;
+    }
+
+    if (collections.collectionIdNot) {
+      this.query.collectionIdNot = collections.collectionIdNot;
+    }
+
     this.onQueryChange();
   }
 

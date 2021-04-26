@@ -9,7 +9,6 @@ import { SelectedOption } from '../select-collections.component';
       <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
         <label class="lj-item selected">
           <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
-          {{ getCheckboxValue(option.id) }} {{ checkboxType }}
         </label>
       </span>
     </div>
