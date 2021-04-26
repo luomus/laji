@@ -14,6 +14,11 @@ export class SpeciesValidationComponent implements OnChanges {
 
   annotation = LetterAnnotation;
 
+  currentAnnotation: {
+    annotation?: LetterAnnotation,
+    area?: IAudioViewerArea,
+    notes?: string
+  } = {};
   annotations = [];
 
   activeIndex = 0;
@@ -46,7 +51,13 @@ export class SpeciesValidationComponent implements OnChanges {
     }
   }
 
+  toggleDrawMode() {
+    this.audioViewerMode = this.audioViewerMode === 'draw' ? 'default' : 'draw';
+  }
+
   onDrawEnd(area: IAudioViewerArea) {
+    this.currentAnnotation.area = area;
+
     this.activeLetter.xRange = area.xRange;
     this.activeLetter.yRange = area.yRange;
     this.audioViewerMode = 'default';
@@ -55,6 +66,15 @@ export class SpeciesValidationComponent implements OnChanges {
   returnToPrevious() {
     this.activeIndex--;
     this.activeLetter = this.data[this.activeIndex];
+  }
+
+  goToNext() {
+    if (this.activeIndex !== this.data.length - 1) {
+      this.activeIndex++;
+      this.activeLetter = this.data[this.activeIndex];
+    } else {
+      this.activeLetter = null;
+    }
   }
 
   saveAndGoBack() {

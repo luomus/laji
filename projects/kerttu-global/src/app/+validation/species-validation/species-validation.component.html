@@ -1,24 +1,22 @@
 <div class="container">
-  <h1>{{ taxon | taxon | capitalize }} - <i>{{ taxon | taxon:'scientific' }}</i></h1>
-  <p>
+  <h1 style="max-width: 100%;">
+    {{ taxon | taxon | capitalize }} - <i>{{ taxon | taxon:'scientific' }}</i>
+  </h1>
+  <h4 style="max-width: 100%; margin-bottom: 20px; margin-top: 0">
     Vocalization {{ activeIndex + 1 }} / {{ data.length }}
-  </p>
-  
+    <div class="pull-right">
+      <button style="margin-right: 0.5em;" [disabled]="activeIndex === 0" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
+      <button class="btn btn-primary" (click)="goToNext()">Go to next</button>
+    </div>
+  </h4>
 
   <div *ngIf="activeLetter">
-    <h3>Is the target species vocalizing inside the white frame?</h3>
-    <button [disabled]="activeIndex === 0" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
-    <div id="letterAnnotationButtons" class="d-inline">
-      <button
-        *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
-        class="btn"
-        [ngClass]="{'btn-success': a === annotation.yes, 'btn-danger': a === annotation.no, 'btn-default': a === annotation.unsure}"
-        (click)="onAnnotationChange(a)"
-      >
-        {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-      </button>
-    </div>
-    <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="xRangePadding"></laji-audio-viewer-settings>
+    <laji-audio-viewer-settings
+      style="display: inline-block; margin-bottom: 15px;"
+      [(zoomed)]="zoomed"
+      [(xRangePadding)]="xRangePadding"
+      [displayInline]="true"
+    ></laji-audio-viewer-settings>
     <laji-audio-viewer
       [audio]="activeLetter.audio"
       [focusArea]="{ xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
@@ -28,7 +26,29 @@
       (drawEnd)="onDrawEnd($event)"
     ></laji-audio-viewer>
 
-    <button class="btn btn-default" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="audioViewerMode = 'draw'">Korjaa rajaus</button>
+    <div style="margin-top: 15px">
+      <div class="form-group">
+        <label>Is the target species vocalizing inside the white frame?</label>
+        <div
+          class="radio"
+          *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
+        >
+          <label>
+            <input type="radio" name="annotation" [value]="a" [(ngModel)]="currentAnnotation.annotation">
+            {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Haluatko korjata rajausta?</label>
+        <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()">Korjaa rajaus</button>
+      </div>
+      <div class="form-group">
+        <label>Muita kommentteja</label>
+        <textarea class="form-control"></textarea>
+      </div>
+    </div>
+    
   </div>
   <div *ngIf="!activeLetter">
     <p>All the vocalizations validated for this species. Thank you very much!</p>
