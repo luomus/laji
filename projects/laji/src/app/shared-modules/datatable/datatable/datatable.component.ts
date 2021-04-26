@@ -71,7 +71,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     if (this.getRowClass) {
       const rowClass = this.getRowClass(row);
       if (rowClass) {
-        console.log(rowClass);
         return rowClass;
       }
     }
