@@ -16,6 +16,7 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SelectOptions } from '../select-subcategories/select-subcategories.component';
+import { FilterOptionsPipe } from '../../search-filters/filter-options.pipe';
 
 export enum SelectStyle {
   basic,
@@ -129,13 +130,13 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
+      map(options => this.deleteOptionsfromExcludedOptions(options, this.excludeOptions)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
       ))
     ).subscribe(options => {
         this.setOptions(options);
-        this._options = this.deleteOptionsfromExcludedOptions(this._options, this.excludeOptions);
         this.initActive();
         this.cd.markForCheck();
       });
@@ -172,15 +173,9 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
       return options;
     }
 
-    options = options.reduce((filtered, current) => {
-      const id = current['id'].replace('MX.', '');
-      if (excludeOptions.indexOf(id) === -1) {
-        filtered.push(current);
-      }
-      return filtered;
-    }, []);
 
-    return options;
+    return options.filter(option => !excludeOptions.includes(option.id));
+
   }
 
   refreshValue(value: any): void {

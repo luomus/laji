@@ -45,6 +45,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
+  invasiveStatutesMX: string[] = [];
+
   constructor(
     public translate: TranslateService
   ) {}
@@ -67,6 +69,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
           this.onSubmit();
         }
       });
+
+     this.invasiveStatutesMX = this.invasiveStatuses.map(el => 'MX.' + el);
   }
 
 
