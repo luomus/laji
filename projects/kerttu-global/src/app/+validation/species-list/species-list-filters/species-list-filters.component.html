@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-sm-6" style="margin-bottom: 20px;">
+    <h4>Filter species by region</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Continent</label>
+        <select class="form-control input-sm">
+          <option>Europe</option>
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <label>Country</label>
+        <select class="form-control input-sm">
+          <option>Finland</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6" style="margin-bottom: 20px;">
+    <h4>Filter species by taxonomy</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Order</label>
+        <select class="form-control input-sm">
+          <option></option>
+        </select>
+      </div>
+      <div class="col-sm-6">
+        <label>Family</label>
+        <select class="form-control input-sm">
+          <option></option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-bottom: 2px;">
+  <label>Show only unvalidated species&nbsp;</label>
+  <bSwitch
+    [switch-on-text]="'yes' | translate"
+    [switch-off-text]="'no' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [(ngModel)]="query.onlyUnvalidated"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>

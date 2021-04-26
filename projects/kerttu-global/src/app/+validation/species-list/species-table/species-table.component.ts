@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -7,8 +7,11 @@ import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/
   styleUrls: ['./species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesTableComponent {
+export class SpeciesTableComponent implements OnChanges {
   @Input() data: any[] = [];
+  @Input() showOnlyUnvalidated = false;
+
+  filteredData: any[] = [];
 
   columns: DatatableColumn[] = [
     {
@@ -26,6 +29,14 @@ export class SpeciesTableComponent {
   ];
 
   @Output() taxonSelect = new EventEmitter<string>();
+
+  ngOnChanges() {
+    if (this.showOnlyUnvalidated) {
+      this.filteredData = this.data.filter(d => d.userValidations === 0);
+    } else {
+      this.filteredData = this.data;
+    }
+  }
 
   getRowClass(row: any) {
     let rowClass = 'link ';

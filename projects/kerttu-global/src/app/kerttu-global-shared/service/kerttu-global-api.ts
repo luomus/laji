@@ -31,6 +31,6 @@ export class KerttuGlobalApi {
   }
 
   public saveAnnotations(annotations): Observable<any> {
-    return timer(2000);
+    return timer(1000);
   }
 }

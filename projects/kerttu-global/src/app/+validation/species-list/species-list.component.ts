@@ -9,6 +9,8 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 export class SpeciesListComponent {
   @Input() speciesList: any[];
 
+  showOnlyUnvalidated = false;
+
   @Output() taxonSelect = new EventEmitter<string>();
 
 }

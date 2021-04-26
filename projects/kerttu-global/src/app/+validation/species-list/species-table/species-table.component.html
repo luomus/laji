@@ -1,6 +1,6 @@
 <laji-datatable
   [columns]="columns"
-  [rows]="data"
+  [rows]="filteredData"
   [getRowClass]="getRowClass"
   [striped]="false"
   (rowSelect)="taxonSelect.emit($event.row.id)"
