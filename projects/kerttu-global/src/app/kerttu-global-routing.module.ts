@@ -19,7 +19,10 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule), data: {preload: true, title: 'Kerttu Global'}}
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+about/about.module').then(m => m.AboutModule), data: {preload: true, title: 'Kerttu Global'}},
+  {path: 'validation', pathMatch: 'full', loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule), data: {preload: true, title: 'Kerttu Global'}},
+  {path: 'results', pathMatch: 'full', loadChildren: () => import('./+results/results.module').then(m => m.ResultsModule), data: {preload: true, title: 'Kerttu Global'}},
+  {path: 'user', loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)}
 ];
 
 const routesWithLang: Routes = [
