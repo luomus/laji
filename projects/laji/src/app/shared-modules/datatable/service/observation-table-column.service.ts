@@ -28,6 +28,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'gathering.locality': ObservationTableColumn;
   'gathering.displayDateTime': ObservationTableColumn;
   'gathering.interpretations.coordinateAccuracy': ObservationTableColumn;
+  'unit.abundanceUnit': ObservationTableColumn;
   'unit.abundanceString': ObservationTableColumn;
   'unit.interpretations.individualCount': ObservationTableColumn;
   'unit.lifeStage': ObservationTableColumn;
@@ -36,6 +37,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.media.mediaType': ObservationTableColumn;
   'document.collectionId': ObservationTableColumn;
   'unit.notes': ObservationTableColumn;
+  'gathering.notes': ObservationTableColumn;
   'unit.facts.fact': ObservationTableColumn;
   'unit.facts.value': ObservationTableColumn;
   'document.secureLevel': ObservationTableColumn;
@@ -246,9 +248,11 @@ export const COLUMNS: IColumns = {
     label: 'observation.filterBy.image'
   },
   'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
-  'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
+  'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.unit.notes'},
+  'gathering.notes': {name: 'gathering.notes', sortable: false, label: 'result.gathering.notes'},
   'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
+  'unit.abundanceUnit': {name: 'unit.abundanceUnit', sortable: false, label: 'result.gathering.abundanceUnit'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
@@ -438,6 +442,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
     COLUMNS['gathering.conversions.ykj10kmCenter'],
     COLUMNS['unit.abundanceString'],
+    COLUMNS['unit.abundanceUnit'],
     COLUMNS['unit.interpretations.individualCount'],
     COLUMNS['unit.lifeStage'],
     COLUMNS['unit.sex'],
@@ -445,6 +450,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.media.mediaType'],
     COLUMNS['document.collectionId'],
     COLUMNS['unit.notes'],
+    COLUMNS['gathering.notes'],
     COLUMNS['document.secureLevel'],
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
@@ -507,6 +513,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       {
         header: 'observation.form.unit', fields: [
           'unit.abundanceString',
+          'unit.abundanceUnit',
           'unit.interpretations.individualCount',
           'unit.lifeStage',
           'unit.sex'
@@ -547,6 +554,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       {
         header: 'observation.filters.other', fields: [
           'unit.notes',
+          'gathering.notes',
           'document.collectionId',
           'document.sourceId',
           'document.secureLevel',
