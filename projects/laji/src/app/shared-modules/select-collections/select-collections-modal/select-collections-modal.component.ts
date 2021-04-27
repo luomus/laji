@@ -224,6 +224,8 @@ export class SelectCollectionsModalComponent implements OnInit {
         this.nodeSelected(tree, child, $event);
       }
     });
+
+    node.focus();
   }
 
   nodeDeselected(tree: TreeModel, node: TreeNode, $event: any) {
