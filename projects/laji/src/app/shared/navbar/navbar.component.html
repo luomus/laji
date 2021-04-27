@@ -14,6 +14,7 @@
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
             <span *lajiForTypes="['dev', 'prod', 'beta']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
+            <span *lajiForTypes="['kerttuGlobal']">KERTTU GLOBAL</span>
           </a>
           <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'beta']">
             <laji-omni-search
@@ -76,7 +77,7 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
-              <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
+              <ng-container *lajiForTypes="['dev', 'prod', 'beta', 'kerttuGlobal']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
@@ -110,7 +111,7 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
+            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn', 'beta', 'kerttuGlobal']">
               <a dropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">

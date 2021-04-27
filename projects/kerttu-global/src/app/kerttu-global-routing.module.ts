@@ -19,7 +19,7 @@ export class PreloadSelectedModulesList implements PreloadingStrategy {
 }
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule), data: {preload: true}}
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule), data: {preload: true, title: 'Kerttu Global'}}
 ];
 
 const routesWithLang: Routes = [
