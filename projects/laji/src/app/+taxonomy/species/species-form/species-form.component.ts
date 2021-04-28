@@ -160,7 +160,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   onAdministrativeStatusChange() {
-    const admins = this.searchQuery.query.adminStatusFilters;
+    const admins = [...this.searchQuery.query.adminStatusFilters, ...this.invasiveSelected];
     let cnt = 0;
     this.invasiveStatuses.map(key => {
       this.formQuery[key] = admins && admins.indexOf(key) > -1;
