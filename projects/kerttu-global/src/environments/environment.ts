@@ -7,14 +7,14 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.kerttuGlobal,
-  base: 'https://punainenkirja-dev.laji.fi',
+  base: 'http://localhost:3000',
   production: false,
   forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
-  systemID: 'KE.389',
+  systemID: 'KE.542',
   apiBase: 'https://dev.laji.fi/api',
-  loginCheck: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/loginInfo',
+  loginCheck: '',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',

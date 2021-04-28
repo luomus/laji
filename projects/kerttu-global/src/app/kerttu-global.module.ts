@@ -64,7 +64,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
-    NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
+    NgxWebstorageModule.forRoot({prefix: 'kerttu-', separator: ''}),
     KerttuGlobalRoutingModule,
     TransferHttpCacheModule
   ],
