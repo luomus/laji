@@ -42,10 +42,10 @@
             </ng-container>
             <ng-container *lajiForTypes="['kerttuGlobal']">
               <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/validation'] | localize">{{ 'kerttuGlobal.validation.title' | translate }}</a>
+                <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/results'] | localize">{{ 'kerttuGlobal.results.title' | translate }}</a>
+                <a [routerLink]="['/results'] | localize">{{ 'results.title' | translate }}</a>
               </li>
             </ng-container>
             <li class="d-none xs:d-block" [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">

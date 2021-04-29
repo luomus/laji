@@ -7,7 +7,6 @@ import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-
 import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/logger/index';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
-import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -30,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
+import { LazyTranslateLoader } from './kerttu-global-shared/service/lazy-translate-loader';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -50,7 +50,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: TranslateFileLoader
+        useClass: LazyTranslateLoader
       }
     }),
     CarouselModule.forRoot(),
