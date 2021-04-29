@@ -23,6 +23,7 @@
 .collection-link {
   padding-left: 5px;
 }
-:host(.modal) {
-  z-index: 1050;
+.vertical-align {
+  display: flex;
+  align-items: center;
 }
