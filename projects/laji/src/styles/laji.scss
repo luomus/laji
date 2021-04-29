@@ -292,8 +292,14 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
-.modal-dialog .popover {
+.modal-dialog {
   z-index: 1070;
+}
+.popover-modal {
+  z-index: 1080;
+}
+.popover {
+  z-index: 1080;
 }
 
 .margin-bottom-20 {
