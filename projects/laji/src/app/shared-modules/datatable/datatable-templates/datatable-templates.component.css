@@ -24,7 +24,7 @@ span.sensitive {
 }
 .fa-lock {
   font-size: 15px;
-  color: black;
+  color: red;
   object-fit: contain;
   display: block;
   margin: auto;
