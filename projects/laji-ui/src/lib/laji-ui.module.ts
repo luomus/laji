@@ -18,12 +18,13 @@ import { ComboCheckboxComponent } from './combo-checkbox/combo-checkbox.componen
 import { ComboCheckboxRowComponent } from './combo-checkbox/combo-checkbox-row.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { a11yClickDirective } from './directives/a11y-click.directive';
+import { a11yCloseDirective } from './directives/a11y-close.directive';
 
 @NgModule({
   declarations: [
     ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent,
-    ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective, a11yClickDirective
+    ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective, a11yClickDirective, a11yCloseDirective
   ],
   imports: [
     CommonModule,
@@ -32,7 +33,7 @@ import { a11yClickDirective } from './directives/a11y-click.directive';
   exports: [
     ButtonComponent, ButtonRoundComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent,
-    ComboCheckboxComponent, ComboCheckboxRowComponent, a11yClickDirective
+    ComboCheckboxComponent, ComboCheckboxRowComponent, a11yClickDirective, a11yCloseDirective
   ]
 })
 export class LajiUiModule { }
