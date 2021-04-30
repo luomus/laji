@@ -77,7 +77,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'aggregateBy',
     'selected',
     'orderBy',
-    'collectionAndRecordQuality'
+    'collectionAndRecordQuality',
+    'plantStatusCode'
   ];
 
   // noinspection JSUnusedLocalSymbols

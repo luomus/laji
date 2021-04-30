@@ -997,6 +997,7 @@
   "observation.form.place": "Paikka",
   "observation.form.placeName": "Nimi",
   "observation.form.placeNotFound": "Paikkaa ei löytynyt. Yritä uudelleen.",
+  "observation.form.plantStatusCode": "Kasvin statuskoodi",
   "observation.form.preservedSpecimens": "Kokoelmanäytteitä",
   "observation.form.qualityIssues": "Ongelmalliset",
   "observation.form.qualityIssuesBOTH": "Näytetään",
