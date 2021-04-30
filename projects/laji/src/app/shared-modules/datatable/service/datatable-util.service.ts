@@ -121,7 +121,7 @@ export class DatatableUtil {
 
   private getWarehouseLabels(values): Observable<string> {
     return this.getArray(values, (value) => {
-      return this.warehouseValueMappingService.getOriginalKey(value).pipe(
+      return this.warehouseValueMappingService.getSchemaKey(value).pipe(
         concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
       );
     }, '; ');
