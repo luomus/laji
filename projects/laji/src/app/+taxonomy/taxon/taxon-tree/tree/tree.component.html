@@ -38,6 +38,8 @@
        [ngClass]="{'glyphicon-triangle-right': !node.state.isExpanded, 'glyphicon-triangle-bottom': node.state.isExpanded}"
        [ngStyle]="{visibility: node.value.hasChildren ? 'visible' : 'hidden'}"
        (click)="toggle(node)"
+       tabindex="0"
+       luA11yClick
        *ngIf="node.state.loadingCount === 0"></i>
     <laji-spinner *ngIf="node.state.loadingCount > 0"></laji-spinner>
     <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>
