@@ -9,17 +9,20 @@
       {{ downloadText }}
     </laji-download>
     <ng-template #tooMany>
-      <lu-button [disabled]="true">
+      <button class="btn btn-default" disabled>
         {{ downloadText }} max {{ maxDownload }}
-      </lu-button>
+      </button>
     </ng-template>
   </ng-container>
-  <lu-button class="ml-3" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
-    <i class="glyphicon glyphicon-cog"></i>
-    {{ 'species.header.select' | translate }}
-  </lu-button>
-  <lu-button class="ml-3" *ngIf="showBrowseObservationsButton" (click)="browseObservations.emit()">
-    <i class="glyphicon glyphicon-eye-open"></i>
-    {{ browseObservationsText }}
-  </lu-button>
+  <div>
+    <button class="btn btn-default ml-3" (click)="openSettingsMenu.emit()" *ngIf="showSettingsMenu">
+      <i class="glyphicon glyphicon-cog"></i>
+      {{ 'species.header.select' | translate }}
+    </button>
+  </div>
+  <div>
+    <button class="btn btn-default ml-3" *ngIf="showBrowseObservationsButton" (click)="browseObservations.emit()"> <i class="glyphicon glyphicon-eye-open"></i>
+      {{ browseObservationsText }}
+    </button>
+  </div>
 </div>
