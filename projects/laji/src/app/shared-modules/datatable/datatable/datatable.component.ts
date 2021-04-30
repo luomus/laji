@@ -371,13 +371,19 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   private customSort(sorts: DatatableSort[], results: any[]) {
-    sorts.forEach((sort) => {
-      const dir = sort.dir === 'asc' ? 1 : -1;
-      results.sort((a, b) => {
+    return results.sort((a: any, b: any) => {
+      for (const sort of sorts) {
+        const dir = sort.dir === 'asc' ? 1 : -1;
         const aa = this.sortValues[a.preSortIndex]?.[sort.prop] || a[sort.prop];
         const bb = this.sortValues[b.preSortIndex]?.[sort.prop] || b[sort.prop];
-        return dir * orderByComparator(aa, bb);
-      });
+        const comparison = dir * orderByComparator(aa, bb);
+
+        if (comparison !== 0) {
+          return comparison;
+        }
+      }
+
+      return a.preSortIndex < b.preSortIndex ? -1 : 1;
     });
   }
 
