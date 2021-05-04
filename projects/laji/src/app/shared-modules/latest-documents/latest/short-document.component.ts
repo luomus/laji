@@ -89,10 +89,8 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     return getLocality$(this.translate, this.labelService, gatheringInfo, this.document);
   }
 
-  editDocument(formId, documentId) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)])
-    );
+  getEditDocumentRoute(formId, documentId) {
+    return this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
   removeDocument(event) {
