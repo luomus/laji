@@ -13,6 +13,7 @@ import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
+
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
