@@ -12,10 +12,12 @@ import { FormPermissionService, Rights } from '../shared/service/form-permission
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
+import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
   disabled: boolean;
+  datasetsBreadcrumb?: Breadcrumb[];
 }
 
 interface NavLink {
@@ -111,7 +113,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
             ? this.getNavLinks(projectForm, rights, queryParams)
             : undefined,
-          disabled: projectForm.form.options?.disabled && !rights.ictAdmin
+          disabled: projectForm.form.options?.disabled && !rights.ictAdmin,
+          datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
         })
       )
     );
@@ -239,6 +242,28 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         ]
       }
     ].filter(n => n);
+  }
+
+  private getDatasetsBreadcrumb(form: Form.SchemaForm): Breadcrumb[] {
+    if (!form.options?.dataset) {
+      return [];
+    }
+
+    return [
+      {
+        link: '/theme',
+        label: 'navigation.theme'
+      },
+      {
+        link: '/theme/datasets',
+        label: 'datasets.label'
+      },
+      {
+        link: '.',
+        label: form.collectionID,
+        isLabel: true
+      }
+    ];
   }
 
   showDocumentViewer(document: Document) {

@@ -17,6 +17,7 @@
         </laji-haseka-latest>
       </nav>
       <main>
+        <laji-theme-breadcrumb *ngIf="vm.datasetsBreadcrumb?.length > 0" [breadcrumb]="vm.datasetsBreadcrumb"></laji-theme-breadcrumb>
         <ng-container *ngTemplateOutlet="content"></ng-container>
       </main>
     </lu-sidebar>
