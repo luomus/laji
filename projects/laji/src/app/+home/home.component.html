@@ -121,7 +121,7 @@
     </div>
     <div class="flex-grow mb-4">
       <h3 class="width-0" translate>{{ 'finbif-bib.title' | translate }}
-        <laji-info class="finBif-info">{{ 'finbif-bib.intro' | translate }}</laji-info>
+        <laji-info>{{ 'finbif-bib.intro' | translate }}</laji-info>
       </h3>
       <div class="finBif-publications" innerHTML="{{ (publications$ | async)?.content }}"></div>
       <a class="btn btn-default" [routerLink]="['/theme/publications'] | localize">

@@ -1,5 +1,9 @@
 @import 'projects/laji-ui/src/lib/vars';
 
+:host {
+  display: inline;
+}
+
 .laji-form-help-glyph {
   margin-left: 5px;
   border-radius: 9px;
@@ -11,6 +15,7 @@
 }
 
 .label-info {
+  vertical-align: middle;
   color: $primary-1;
   background-color: $primary-5;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
