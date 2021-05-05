@@ -10,5 +10,5 @@ export interface DatatableColumn extends TableColumn {
 
 export interface DatatableSort {
   prop: string;
-  dir: 'asc'|'desc';
+  dir: 'asc' | 'desc';
 }

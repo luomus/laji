@@ -316,8 +316,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     if (this.clientSideSorting && this._rows) {
       this.sortLoading = true;
       this.sortSub = this.sort(sorts, this._rows)
-      .subscribe(() => {
-          this._rows = [...this._rows];
+      .subscribe(sortedRows => {
+          this._rows = sortedRows;
           this.sortLoading = false;
           this.changeDetectorRef.markForCheck();
         }
@@ -327,20 +327,20 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  private sort(sorts: DatatableSort[], rows: any[]): Observable<any> {
+  private sort(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
     return this.setSortValues(sorts, rows)
       .pipe(map(() => {
         if (sorts.length > 0) {
-          this.customSort(sorts, rows);
+          return this.customSort(sorts, rows);
         } else {
-          this.defaultSort(rows);
+          return this.defaultSort(rows);
         }
       })
     );
   }
 
   private setSortValues(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
-    const obs = sorts.reduce((arr, sort) => {
+    const observables = sorts.reduce((arr, sort) => {
       const template = this.sortTemplates[sort.prop];
       rows.forEach((row) => {
         if (!this.sortValues[row.preSortIndex]) {
@@ -365,11 +365,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       return arr;
     }, []);
 
-    return (obs.length > 0 ? forkJoin(obs) : of([]));
+    return (observables.length > 0 ? forkJoin(observables) : of([]));
   }
 
-  private customSort(sorts: DatatableSort[], results: any[]) {
-    return results.sort((a: any, b: any) => {
+  private customSort(sorts: DatatableSort[], rows: any[]): any[] {
+    return [...rows].sort((a: any, b: any) => {
       for (const sort of sorts) {
         const dir = sort.dir === 'asc' ? 1 : -1;
         const aa = this.sortValues[a.preSortIndex]?.[sort.prop] || a[sort.prop];
@@ -385,11 +385,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     });
   }
 
-  private defaultSort(results: any[]) {
-    const values = [...results];
+  private defaultSort(rows: any[]): any[] {
+    const sortedRows = [...rows];
 
-    values.forEach((val) => {
-      results[val.preSortIndex] = val;
+    rows.forEach((row) => {
+      sortedRows[row.preSortIndex] = row;
     });
+
+    return sortedRows;
   }
 }
