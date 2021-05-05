@@ -430,7 +430,7 @@ export class MappingService {
           try {
             const data = latLngGridToGeoJSON([ykjParts[0], ykjParts[1]]);
             if (data.geometry) {
-              value = data.geometry;
+              return data.geometry;
             }
           } catch (e) {}
         }
