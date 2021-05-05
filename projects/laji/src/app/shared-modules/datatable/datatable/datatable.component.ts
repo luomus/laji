@@ -69,7 +69,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   sortLoading = false;
   private filterChange$ = new Subject();
 
-  private prevSort: DatatableSort[] = [];
   private sortTemplates = {};
   private sortValues = {};
   private sortSub: Subscription;
@@ -139,7 +138,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       this.scrollTo();
     }
 
-    this.sortRows(this.prevSort);
+    this.sortRows(this.sorts);
   }
 
   @Input() set page(page: number) {
@@ -239,7 +238,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.sorts) {
-      this.prevSort = this.sorts;
       this.sortRows(this.sorts);
     }
   }
@@ -282,7 +280,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   onSort(event) {
-    this.prevSort = event.sorts;
+    this.sorts = event.sorts;
     this.sortRows(event.sorts);
     this.sortChange.emit(event);
   }
@@ -292,7 +290,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._count = this._rows.length;
     this._page = 1;
     this.scrollTo();
-    this.sortRows(this.prevSort);
+    this.sortRows(this.sorts);
   }
 
   private scrollTo(offsetY: number = 0) {
