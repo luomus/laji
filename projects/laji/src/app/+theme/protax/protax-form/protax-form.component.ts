@@ -15,7 +15,7 @@ enum Tab {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtaxFormComponent implements OnChanges {
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
 
   @Input() loading = false;
   @Input() downloadProgress: number;
