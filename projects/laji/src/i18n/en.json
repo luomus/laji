@@ -815,7 +815,7 @@
   "observation.active.area": "Locality",
   "observation.active.biogeographicalProvinceId": "Biogeographical province",
   "observation.active.breedingSite": "Breeding site",
-  "observation.active.collectionAndRecordQuality": "Kokoelman ja levyn laatu",
+  "observation.active.collectionAndRecordQuality": "Kokoelman ja havainnon laatu",
   "observation.active.collectionId": "Information source",
   "observation.active.collectionQuality": "Source quality rating",
   "observation.active.coordinateAccuracyMax": "Coordinate accuracy",
