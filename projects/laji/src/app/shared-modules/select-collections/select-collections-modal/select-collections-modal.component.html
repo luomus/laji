@@ -38,7 +38,7 @@
                         id="collectionLink"
                         [tooltip]="'openCollectionPage' | translate"
                         container="body"
-                        target="_blank" [href]="node.data.id | collectionUrl">
+                        target="_blank" [href]="node.data.id | toFullUri">
                         <i 
                           id="collectionLink"
                           class="glyphicon glyphicon-eye-open collection-link"></i>
