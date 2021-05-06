@@ -527,8 +527,8 @@
 <!--Sources -->
 <section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-select-collections
-    [(selectedOptions)]="query.collectionId"
-    (selectedOptionsChange)="onQueryChange()"
+    [query]="query"
+    (selectedOptionsChange)="onCollectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
     [modalTitle]="'observation.form.datasetSelect' | translate"
