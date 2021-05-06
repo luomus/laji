@@ -997,6 +997,7 @@
   "observation.form.place": "Plats",
   "observation.form.placeName": "Namn",
   "observation.form.placeNotFound": "Plats hittades inte. Försök igen.",
+  "observation.form.plantStatusCode": "Växtens statuskod",
   "observation.form.preservedSpecimens": "Prover",
   "observation.form.qualityIssues": "Kvalitetsproblem",
   "observation.form.qualityIssuesBOTH": "Inkluderad",
