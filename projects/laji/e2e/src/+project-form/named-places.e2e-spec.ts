@@ -9,6 +9,7 @@ const FORM_WITH_MUNICIPALITY_FILTER = 'MHL.33';
 const FORM_WITH_BIRD_ASSOCIATION_FILTER = 'MHL.3';
 const FORM_WITH_INCLUDE_UNITS_NP = 'MNP.37866';
 const FORM_WITH_NO_MAP_TAB = 'MHL.3';
+const FORM_WITH_NO_FILTERS_EDITABLE_PLACES = 'MHL.59';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -165,6 +166,18 @@ describe('Project form when logged in', () => {
   it('canceling document save redirects to about named place view no history', async (done) => {
     await projectFormPage.documentFormView.$cancel.click();
     expect(await projectFormPage.namedPlacesView.$container.isDisplayed()).toBe(true);
+    done();
+  });
+
+  it('navigation from named place edit doesn\'t add filters that aren\'t in the UI', async (done) => {
+    await projectFormPage.navigateTo(FORM_WITH_NO_FILTERS_EDITABLE_PLACES, '/form/places');
+    await projectFormPage.namedPlacesView.$$listItems.first().click();
+    await projectFormPage.namedPlacesView.$editButton.click();
+    await projectFormPage.namedPlacesFormPage.$cancel.click();
+    const url = await browser.getCurrentUrl();
+    expect(url.match(/tags=/)).toBe(null);
+    expect(url.match(/municipality=/)).toBe(null);
+    expect(url.match(/birdAssociationArea=/)).toBe(null);
     done();
   });
 });
