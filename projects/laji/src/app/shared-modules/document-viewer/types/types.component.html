@@ -1,0 +1,15 @@
+<ng-container *ngIf="!!types && types.length !== 0">
+  <ng-container *ngIf="showFacts; else rowView">
+    <laji-row [title]="title" value=" "></laji-row>
+    <div class="inset" *ngFor="let type of types">
+      <laji-type [type]="type" [showFacts]="showFacts"></laji-type>
+    </div>
+  </ng-container>
+      <ng-template #rowView>
+      <laji-row [title]="title">
+        <div *ngFor="let type of types">
+          <laji-type [type]="type" [showFacts]="showFacts"></laji-type>
+        </div>
+      </laji-row>
+    </ng-template>
+</ng-container>

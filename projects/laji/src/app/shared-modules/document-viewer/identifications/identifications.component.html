@@ -1,0 +1,15 @@
+<ng-container *ngIf="!!identifications && identifications.length !== 0">
+  <ng-container *ngIf="showFacts; else rowView">
+    <laji-row [title]="title" value=" "></laji-row>
+    <div class="inset" *ngFor="let identification of identifications">
+      <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
+    </div>
+  </ng-container>
+      <ng-template #rowView>
+      <laji-row [title]="title">
+        <div *ngFor="let identification of identifications">
+          <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
+        </div>
+      </laji-row>
+    </ng-template>
+</ng-container>
