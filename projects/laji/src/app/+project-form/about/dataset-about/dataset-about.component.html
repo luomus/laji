@@ -1,15 +1,10 @@
 <h3>{{ form.collectionID | label }}</h3>
-<p>{{ 'datasets.generic.intro' | translate:{collection: (form.collectionID | label)} }}</p>
 
-<p *ngIf="form.options?.secondaryCopy; else primary" [innerHTML]="'datasets.generic.secondary' | translate">
+<laji-info-page
+  *ngIf="(form.options?.about | multiLang)"
+  [page]="form.options?.about | multiLang: true:undefined:'%value%'"
+></laji-info-page>
 
-</p>
-<ng-template #primary>
-  <p [innerHTML]="'datasets.generic.primary' | translate"></p>
-</ng-template>
+<p [innerHTML]="'datasets.generic.instructions' | translate"></p>
 
-<p><strong>{{ 'datasets.observations.title' | translate }}</strong></p>
 <p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'datasets.observations.list' | translate }}</a></p>
-
-<div [innerHTML]="'datasets.generic.instructions' | translate"></div>
-
