@@ -16,6 +16,7 @@ interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
   disabled: boolean;
+  formID: string;
 }
 
 interface NavLink {
@@ -103,15 +104,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
 
-    const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
+    const rights$ = projectForm$.pipe(switchMap(projectForm => projectForm.form ? this.formPermissionService.getRights(projectForm.form) : of(null)));
 
-    this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
-      map(([projectForm, rights, queryParams]) => ({
+    const formID$ = this.projectFormService.getFormID(this.route);
+
+    this.vm$ = combineLatest(projectForm$, rights$, formID$, this.route.queryParams).pipe(
+      map(([projectForm, rights, formID, queryParams]) => ({
           form: projectForm.form,
-          navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
+          navLinks: (projectForm.form && !projectForm.form.options?.simple && !projectForm.form.options?.mobile)
             ? this.getNavLinks(projectForm, rights, queryParams)
             : undefined,
-          disabled: projectForm.form.options?.disabled && !rights.ictAdmin
+          disabled: projectForm.form?.options?.disabled && !rights?.ictAdmin,
+          formID: formID
         })
       )
     );
@@ -154,7 +158,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
       if (!this.route.children.length) {
-        const mainPage = projectForm.form.options?.simple
+        const mainPage = projectForm.form?.options?.simple
           ? 'form'
           : 'about';
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
