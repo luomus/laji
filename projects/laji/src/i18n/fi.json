@@ -72,7 +72,7 @@
   "audio.openSpectrum": "Avaa spektrogrammi",
   "audio.spectrum": "Äänite ja spektrogrammi",
   "bats.navLinks.form": "Kirjaa tietoja",
-  "betapopup.desc": "Tämä on Laji.fi-portaalin kehitysversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Talletetut havainnot eivät näy Laji.fi-portaalissa.",
+  "betapopup.desc": "Tämä on Laji.fi-portaalin testiversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Varsinainen portaali on osoitteessa https://laji.fi",
   "cancel": "Peruuta",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",
