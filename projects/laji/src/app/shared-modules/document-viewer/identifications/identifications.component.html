@@ -1,12 +1,12 @@
 <ng-container *ngIf="!!identifications && identifications.length !== 0">
   <ng-container *ngIf="showFacts; else rowView">
-    <laji-row [title]="title" value=" "></laji-row>
+    <laji-row [title]="'viewer.identifications' | translate" value=" "></laji-row>
     <div class="inset" *ngFor="let identification of identifications">
       <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
     </div>
   </ng-container>
       <ng-template #rowView>
-      <laji-row [title]="title">
+      <laji-row [title]="'viewer.identifications' | translate">
         <div *ngFor="let identification of identifications">
           <laji-identification [identification]="identification" [showFacts]="showFacts"></laji-identification>
         </div>

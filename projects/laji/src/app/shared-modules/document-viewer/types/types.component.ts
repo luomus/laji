@@ -9,5 +9,4 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 export class TypesComponent {
   @Input() types: any;
   @Input() showFacts = false;
-  @Input() title: string;
 }
