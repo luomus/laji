@@ -1094,6 +1094,31 @@
               ],
               "fileReplacements": [
                 {
+                  "replace": "projects/kerttu-global/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                },
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/kerttu-global/src/environments/environment.ts"
                 }
