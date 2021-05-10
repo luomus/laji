@@ -153,9 +153,15 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
       }),
-      switchMap(content => forkJoin(of(content), this.spreadSheetService.findFormIdFromFilename(content.filename)))
-    ).subscribe(([content, formID]) => {
-      if (instanceOfFileLoad(content)) {
+      switchMap(content => forkJoin([
+        of(content),
+        this.spreadSheetService.findFormIdFromFilename(content.filename),
+        this._forms
+      ]))
+    ).subscribe(([content, formID, forms]) => {
+      if (formID && !forms.includes(formID)) {
+        this.spreadsheetFacade.goToStep(Step.invalidFormId);
+      } else if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
         this.formID = formID;
