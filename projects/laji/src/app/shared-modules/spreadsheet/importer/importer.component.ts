@@ -155,7 +155,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       }),
       switchMap(content => forkJoin([
         of(content),
-        this.spreadSheetService.findFormIdFromFilename(content.filename),
+        this.spreadSheetService.findFormIdFromFilename(content?.filename),
         this._forms
       ]))
     ).subscribe(([content, formID, forms]) => {
