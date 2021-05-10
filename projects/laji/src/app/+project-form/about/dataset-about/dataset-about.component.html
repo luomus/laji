@@ -7,4 +7,15 @@
 
 <p [innerHTML]="'datasets.generic.instructions' | translate"></p>
 
+<ng-container *ngIf="stats$">
+  <ng-container *ngIf="stats$ | async as stats; else loader">
+    <p>{{ 'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 } }}</p>
+    <p *ngIf="stats.firstLoadDateMax">{{ 'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY HH:mm' } }}</p>
+  </ng-container>
+</ng-container>
+
 <p><a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'datasets.observations.list' | translate }}</a></p>
+
+<ng-template #loader>
+  <laji-spinner></laji-spinner>
+</ng-template>

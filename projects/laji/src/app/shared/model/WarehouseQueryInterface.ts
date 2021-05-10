@@ -211,6 +211,7 @@ export interface WarehouseQueryInterface {
   namedPlaceId?: Array<string>;
   typeOfOccurrenceId?: Array<string>;
   typeOfOccurrenceIdNot?: Array<string>;
+  taxonCounts?: boolean;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
   collectionQuality?: Array<string>;

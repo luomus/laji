@@ -97,6 +97,8 @@
   "datasets.accessNone": "Sinulla ei ole pääsyä mihinkään aineistoon.",
   "datasets.accessTo": "Aineistot, joihin sinulla on pääsy",
   "datasets.generic.instructions": "<a href='/about/4641'>Aineistopankin ohjeet</a>",
+  "datasets.stats.count": "Aineistossa on {{count}} havaintoa {{speciesCount}} lajista",
+  "datasets.stats.lastLoad": "Viimeisin muokkaus tehty {{maxLastLoadTimestamp}}",
   "datasets.intro": "Vie oma havainto- tai kokoelma-aineistosi Lajitietokeskuksen Aineistopankkiin primääri- tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liität aineistosi</a>)",
   "datasets.label": "Aineistopankki",
   "datasets.new.help": "Voit pyytää pääsyä aineistoihin oman organisaatiosi tai ryhmäsi yhteyshenkilöltä.",

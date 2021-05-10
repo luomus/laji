@@ -1,5 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Form } from '../../../shared/model/Form';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
 @Component({
   selector: 'laji-dataset-about',
@@ -7,6 +11,26 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./dataset-about.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetAboutComponent {
+export class DatasetAboutComponent implements OnChanges {
   @Input() form: Form.SchemaForm;
+
+  stats$?: Observable<any>;
+
+  constructor(
+    private warehouseService: WarehouseApi
+  ) {}
+
+  ngOnChanges() {
+    if (this.form?.collectionID) {
+      const query: WarehouseQueryInterface = {
+        collectionId: [this.form.collectionID],
+        taxonCounts: true
+      };
+      this.stats$ = this.warehouseService.warehouseQueryAggregateGet(query, [], [], 1, 1, false, false).pipe(
+        map(res => res.results[0] || {})
+      );
+    } else {
+      this.stats$ = null;
+    }
+  }
 }
