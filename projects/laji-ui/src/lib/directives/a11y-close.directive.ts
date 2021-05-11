@@ -11,7 +11,7 @@ export class a11yCloseDirective {
   @Output() luA11yClose = new EventEmitter();
   constructor() {}
 
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.ESC) {
       this.luA11yClose.emit();
