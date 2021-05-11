@@ -155,10 +155,10 @@
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
       >
-      <div class="taxon-remove d-flex flex-col justify-center" [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" luA11yClick>
+      <div class="taxon-remove d-flex flex-col justify-center" [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" luClickOnEnter>
         <i class="glyphicon glyphicon-remove d-block"></i>
       </div>
-      <div class="taxon-agree d-flex flex-col justify-center" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()" tabindex="0" luA11yClick>
+      <div class="taxon-agree d-flex flex-col justify-center" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()" tabindex="0" luClickOnEnter>
         <div>
           {{ 'annotation.obsercation.agree' | translate }}
         </div>

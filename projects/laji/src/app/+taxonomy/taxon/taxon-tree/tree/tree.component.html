@@ -39,7 +39,7 @@
        [ngStyle]="{visibility: node.value.hasChildren ? 'visible' : 'hidden'}"
        (click)="toggle(node)"
        tabindex="0"
-       luA11yClick
+       luClickOnEnter
        *ngIf="node.state.loadingCount === 0"></i>
     <laji-spinner *ngIf="node.state.loadingCount > 0"></laji-spinner>
     <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>

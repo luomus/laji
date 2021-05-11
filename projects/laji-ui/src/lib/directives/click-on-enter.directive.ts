@@ -1,18 +1,15 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
-
-enum KEY_CODE {
-  ENTER = 13
-}
+import { ENTER } from '@angular/cdk/keycodes';
 
 @Directive({
-  selector: '[luA11yClick]'
+  selector: '[luClickOnEnter]'
 })
-export class a11yClickDirective {
+export class ClickOnEnterDirective {
   constructor(private el: ElementRef) {}
 
   @HostListener('keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (event.target === this.el.nativeElement && event.keyCode === KEY_CODE.ENTER) {
+    if (event.target === this.el.nativeElement && event.keyCode === ENTER) {
       this.el.nativeElement.click();
     }
   }

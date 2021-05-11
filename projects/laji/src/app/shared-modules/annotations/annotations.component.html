@@ -20,9 +20,9 @@
         <span class="comment-title">{{ 'annotation.addBasicAnnotation' | translate }} </span>
       </ng-template>
       <span *lajiLoggedIn="true">
-        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()" tabindex="0" luA11yClick>{{ 'annotation.switchToBasic' | translate }}</span>
+        <span class="switch-mode" *ngIf="expert; else basicMode" (click)="changeModeForm()" tabindex="0" luClickOnEnter>{{ 'annotation.switchToBasic' | translate }}</span>
         <ng-template #basicMode>
-          <span class="switch-mode expert" (click)="changeModeForm()" tabindex="0" luA11yClick>{{ 'annotation.switchToExpert' | translate }}</span>
+          <span class="switch-mode expert" (click)="changeModeForm()" tabindex="0" luClickOnEnter>{{ 'annotation.switchToExpert' | translate }}</span>
         </ng-template>  
       </span>
   </ng-container>
