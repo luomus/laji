@@ -24,7 +24,7 @@
       <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
     </alert>
     <alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
-      <div [innerHtml]="'excel.import.error.invalidFormId' | translate"></div>
+      <div [innerHtml]="'excel.import.error.invalidFormId' | translate: {formId: formID}"></div>
     </alert>
     <alert [type]="'danger'" *ngIf="vm.step === step.ambiguousColumns">
       <div [innerHtml]="'excel.import.error.ambiguousColumns' | translate: {ambiguousColumns: ambiguousColumns.join(', ')}"></div>

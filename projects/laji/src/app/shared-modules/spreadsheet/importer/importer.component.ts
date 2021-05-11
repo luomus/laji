@@ -159,12 +159,12 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this._forms
       ]))
     ).subscribe(([content, formID, forms]) => {
+      this.formID = formID;
       if (formID && !forms.includes(formID)) {
         this.spreadsheetFacade.goToStep(Step.invalidFormId);
       } else if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
-        this.formID = formID;
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
       }
