@@ -426,14 +426,12 @@ export class MappingService {
     if (typeof value === 'string') {
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
         const ykjParts = value.split(':');
-        if (ykjParts[0].length === ykjParts[1].length) {
-          try {
-            const data = latLngGridToGeoJSON([ykjParts[0], ykjParts[1]]);
-            if (data.geometry) {
-              return data.geometry;
-            }
-          } catch (e) {}
-        }
+        try {
+          const data = latLngGridToGeoJSON([ykjParts[0], ykjParts[1]]);
+          if (data.geometry) {
+            return data.geometry;
+          }
+        } catch (e) {}
       } else if (value.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {
         const wgsParts = value.split(',');
         return {

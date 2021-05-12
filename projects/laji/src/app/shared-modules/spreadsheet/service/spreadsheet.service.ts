@@ -271,7 +271,7 @@ export class SpreadsheetService {
   }
 
   private getCombinedCoordinateValue(values: {[key: string]: string}): string {
-    const {ykj, etrs} = GeneratorService.splitCoordinateSystem;
+    const { wgs84 } = GeneratorService.splitCoordinateSystem;
     const system = values[GeneratorService.splitCoordinate.system] || values[GeneratorService.splitCoordinate.sys];
     const {
       [GeneratorService.splitCoordinate.N]: N = '',
@@ -281,12 +281,10 @@ export class SpreadsheetService {
 
     if (!system) {
       return `${N} ${E}`;
-    } else if (system === ykj) {
-      return `${N}:${E}${suffix}`;
-    } else if (system === etrs) {
-      return `+${N}+${E}/CRSEPSG:3067`;
+    } else if (system === wgs84) {
+      return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
     }
-    return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
+    return `${N}:${E}${suffix}`;
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
