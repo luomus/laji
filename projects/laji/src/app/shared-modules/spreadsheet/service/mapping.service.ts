@@ -424,21 +424,13 @@ export class MappingService {
 
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
-      if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
-        const ykjParts = value.split(':');
-        try {
-          const data = latLngGridToGeoJSON([ykjParts[0], ykjParts[1]]);
-          if (data.geometry) {
-            return data.geometry;
-          }
-        } catch (e) {}
-      } else if (value.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {
-        const wgsParts = value.split(',');
-        return {
-          type: 'Point',
-          coordinates: [+wgsParts[1], +wgsParts[0]]
-        };
-      }
+      const parts = value.split(/[;:,]/);
+      try {
+        const data = latLngGridToGeoJSON([parts[0], parts[1]]);
+        if (data.geometry) {
+          return data.geometry;
+        }
+      } catch (e) {}
       try {
         const data: any = convertAnyToWGS84GeoJSON(value);
         if (data && data.features && data.features[0] && data.features[0].geometry) {
