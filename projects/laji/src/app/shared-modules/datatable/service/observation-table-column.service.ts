@@ -407,6 +407,7 @@ export const COLUMNS: IColumns = {
   },
 };
 
+const lajiGISSectionHeader = 'lajiGIS.fields';
 
 @Injectable()
 export class ObservationTableColumnService extends TableColumnService<ObservationTableColumn, IColumns> {
@@ -567,7 +568,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         ]
       },
       {
-        header: 'lajiGIS.fields', fields: [
+        header: lajiGISSectionHeader, fields: [
           'document.facts.mappingReason',
           'document.facts.speciesTrackingStatus',
           'document.facts.targetState',
@@ -587,7 +588,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.unitId',
         ]
       }
-    ]
+    ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
   ];
 
   getSelectFields(selected: string[], query?: any): string[] {
