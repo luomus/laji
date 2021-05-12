@@ -1144,6 +1144,9 @@
             },
             "dev": {
               "browserTarget": "kerttu-global:build:dev"
+            },
+            "local": {
+              "browserTarget": "kerttu-global:build:local"
             }
           }
         },
@@ -1161,7 +1164,12 @@
             "tsConfig": "projects/kerttu-global/tsconfig.spec.json",
             "karmaConfig": "projects/kerttu-global/karma.conf.js",
             "styles": [
-              "projects/kerttu-global/src/styles.css"
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "projects/laji-ui/src/lib/_exports.scss",
+              "projects/laji/src/styles/laji.scss",
+              "projects/kerttu-global/src/styles.scss"
             ],
             "scripts": [],
             "assets": [

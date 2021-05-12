@@ -1,5 +1,12 @@
 <div class="container">
   <h1>Validate bird sound identifications</h1>
   <laji-species-list-filters></laji-species-list-filters>
-  <laji-species-table [data]="speciesList" [showOnlyUnvalidated]="showOnlyUnvalidated" (taxonSelect)="taxonSelect.emit($event)"></laji-species-table>
+  <laji-species-table
+    class="d-block"
+    [luFillHeight]="{ minHeight: 500 }"
+    [data]="speciesList"
+    [loading]="loading"
+    (taxonSelect)="taxonSelect.emit($event)"
+    (pageChange)="pageChange.emit($event)"
+  ></laji-species-table>
 </div>

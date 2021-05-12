@@ -5,3 +5,9 @@ export interface IKerttuSpeciesQuery {
   order?: string;
   family?: string;
 }
+
+export interface IKerttuTaxon {
+  id: number;
+  scientificName: string;
+  commonName: string;
+}

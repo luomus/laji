@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { IKerttuTaxon } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-table',
@@ -7,16 +9,14 @@ import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/
   styleUrls: ['./species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesTableComponent implements OnChanges {
-  @Input() data: any[] = [];
-  @Input() showOnlyUnvalidated = false;
-
-  filteredData: any[] = [];
+export class SpeciesTableComponent {
+  @Input() data: PagedResult<IKerttuTaxon> = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  @Input() loading = false;
 
   columns: DatatableColumn[] = [
     {
-      name: 'vernacularName',
-      label: 'Vernacular name'
+      name: 'commonName',
+      label: 'Common name'
     },
     {
       name: 'scientificName',
@@ -29,14 +29,7 @@ export class SpeciesTableComponent implements OnChanges {
   ];
 
   @Output() taxonSelect = new EventEmitter<string>();
-
-  ngOnChanges() {
-    if (this.showOnlyUnvalidated) {
-      this.filteredData = this.data.filter(d => d.userValidations === 0);
-    } else {
-      this.filteredData = this.data;
-    }
-  }
+  @Output() pageChange = new EventEmitter<number>();
 
   getRowClass(row: any) {
     let rowClass = 'link ';
