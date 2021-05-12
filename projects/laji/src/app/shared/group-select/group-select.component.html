@@ -1,6 +1,6 @@
 <div (lajiClickOutSide)="close()" [clickOutSideActive]="open" (luCloseOnEsc)="close()">
   <input type="hidden" [(ngModel)]="value">
-  <a class="btn btn-default btn-block informal-group-select" type="button" (click)="openMenu()" tabindex="0" luClickOnEnter #groupBtn>
+  <a class="btn btn-default btn-block informal-group-select" type="button" role="button" (click)="openMenu()" tabindex="0" luClickOnEnter #groupBtn>
     <span *ngIf="!innerValue">
       <ng-content></ng-content>
     </span>
@@ -8,10 +8,10 @@
       {{ label }}
     </span>
     <span *ngIf="open">
-      <span [ngClass]="{hidden: !open}" (click)="empty()" tabindex="0" luClickOnEnter class="label label-danger link">
+      <span [ngClass]="{hidden: !open}" (click)="empty()" role="button" tabindex="0" luClickOnEnter class="label label-danger link">
         <i class="glyphicon glyphicon-remove"></i>
       </span>
-      <span [ngClass]="{hidden: !open}" (click)="toggle()" tabindex="0" luClickOnEnter class="label label-success link">
+      <span [ngClass]="{hidden: !open}" (click)="toggle()" role="button" tabindex="0" luClickOnEnter class="label label-success link">
         <i class="glyphicon glyphicon-ok"></i>
       </span>
     </span>
@@ -25,6 +25,7 @@
         <tr *ngFor="let idx of range">
           <td
             *ngIf="groups[(idx * 2)]"
+            role="button"
             (click)="onClick(groups[(idx * 2)])" tabindex="0" luClickOnEnter
             class="item link informal-group-image {{groups[(idx * 2)].id}}">
           <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === innerValue}">
@@ -36,6 +37,7 @@
           </td>
           <td
             *ngIf="groups[(idx * 2 + 1)]"
+            role="button"
             (click)="onClick(groups[(idx * 2 + 1)])" tabindex="0" luClickOnEnter
             class="item link informal-group-image {{groups[(idx * 2 + 1)].id}}">
           <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === innerValue}">

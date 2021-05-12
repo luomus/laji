@@ -113,8 +113,8 @@
               <div [ngClass]="{'': (annotation.notes.length <= 250 || open[i]), 'closed': (annotation.notes.length > 250 && !open[i]) }">
                 {{ annotation.notes }}
               </div>
-              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)" luClickOnEnter tabindex="0">Read more</span>
-              <span class="read-more" *ngIf="open[i]" (click)="readMore(i)" luClickOnEnter tabindex="0">Hide</span>
+              <span class="read-more" *ngIf="(annotation.notes.length > 250 && !open[i])" (click)="readMore(i)" role="button" luClickOnEnter tabindex="0">Read more</span>
+              <span class="read-more" *ngIf="open[i]" (click)="readMore(i)" role="button" luClickOnEnter tabindex="0">Hide</span>
             </div>
           </div>
         </div>

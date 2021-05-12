@@ -47,7 +47,7 @@
          [tooltip]="'result.showViewer' | translate"
          [placement]="'bottom'"
          (click)="onShowViewer($event)"
-         tabindex="0" luClickOnEnter>
+         role="button" tabindex="0" luClickOnEnter>
       <span class="glyphicon glyphicon-eye-open"></span>
       {{ 'haseka.submissions.view' | translate }}
     </button>
@@ -55,7 +55,7 @@
          [tooltip]="'result.editDocument' | translate"
          [placement]="'bottom'"
          (click)="editDocument(document.formID, document.id)"
-         tabindex="0" luClickOnEnter>
+         role="button" tabindex="0" luClickOnEnter>
       <span class="glyphicon glyphicon-edit"></span>
       {{ 'haseka.submissions.edit' | translate }}
     </div>
@@ -64,7 +64,7 @@
          [tooltip]="'haseka.form.hasChanges' | translate"
          [placement]="'bottom'"
          (click)="removeDocument($event)"
-         tabindex="0" luClickOnEnter>
+         role="button" tabindex="0" luClickOnEnter>
       <span class="glyphicon glyphicon-trash"></span>
       {{ 'haseka.delete.title' | translate }}
     </div>

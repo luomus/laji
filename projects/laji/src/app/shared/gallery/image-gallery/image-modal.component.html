@@ -11,7 +11,7 @@
   </div>
 
   <ng-container *ngIf="view === 'compact' else annotation">
-    <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" luClickOnEnter>
+    <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" role="button" luClickOnEnter>
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              [popover]="info"
