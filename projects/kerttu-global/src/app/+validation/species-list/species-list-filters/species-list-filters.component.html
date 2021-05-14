@@ -4,16 +4,17 @@
     <div class="row">
       <div class="col-sm-6">
         <label>Continent</label>
-        <select class="form-control input-sm">
-          <option>Europe</option>
+        <select class="form-control input-sm" [ngModel]="query.continent" (ngModelChange)="selectChange('continent', $event)">
+          <option [value]=""></option>
+          <option *ngFor="let continent of filters.continent" [value]="continent.id">{{ continent.name }}</option>
         </select>
       </div>
-      <div class="col-sm-6">
+      <!--div class="col-sm-6">
         <label>Country</label>
         <select class="form-control input-sm">
           <option>Finland</option>
         </select>
-      </div>
+      </div-->
     </div>
   </div>
   <div class="col-sm-6" style="margin-bottom: 20px;">
@@ -21,14 +22,20 @@
     <div class="row">
       <div class="col-sm-6">
         <label>Order</label>
-        <select class="form-control input-sm">
-          <option></option>
+        <select class="form-control input-sm" [ngModel]="query.order" (ngModelChange)="selectChange('order', $event)">
+          <option [value]=""></option>
+          <option *ngFor="let order of filters.order" [value]="order.id">{{ order.scientificName }}</option>
         </select>
       </div>
       <div class="col-sm-6">
         <label>Family</label>
-        <select class="form-control input-sm">
-          <option></option>
+        <select class="form-control input-sm" [ngModel]="query.family" (ngModelChange)="selectChange('family', $event)">
+          <option [value]=""></option>
+          <ng-container *ngFor="let family of filters.family">
+            <option *ngIf="!query.order || query.order === family.order" [value]="family.id">
+              {{ family.scientificName }}
+            </option>
+          </ng-container>
         </select>
       </div>
     </div>
@@ -43,6 +50,7 @@
     [switch-on-color]="'primary'"
     [switch-size]="'small'"
     [(ngModel)]="query.onlyUnvalidated"
+    (ngModelChange)="onQueryChange()"
     [switch-base-class]="'bootstrap-switch'">
   </bSwitch>
 </div>

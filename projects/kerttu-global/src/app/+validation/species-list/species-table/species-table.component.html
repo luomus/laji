@@ -4,11 +4,11 @@
   [rows]="data.results"
   [getRowClass]="getRowClass"
   [striped]="false"
-  [clientSideSorting]="true"
   [page]="data.currentPage"
   [pageSize]="data.pageSize"
   [count]="data.total"
   [loading]="loading"
   (rowSelect)="taxonSelect.emit($event.row.id)"
   (pageChange)="pageChange.emit($event.page)"
+  (sortChange)="sortChange.emit($event.sorts)"
 ></laji-datatable>

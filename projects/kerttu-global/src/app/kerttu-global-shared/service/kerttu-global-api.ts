@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuTaxon } from '../models';
+import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters } from '../models';
 import { Observable, of, timer } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -14,11 +14,21 @@ export class KerttuGlobalApi {
   }
   protected basePath = environment.kerttuApi + '/global';
 
-  public getSpeciesList(personToken: string, page = 1, pageSize = 1000): Observable<PagedResult<IKerttuTaxon>> {
+  public getSpeciesList(personToken: string, query: IKerttuSpeciesQuery): Observable<PagedResult<IKerttuSpecies>> {
     const path = this.basePath + '/species';
-    const params = new HttpParams().set('personToken', personToken).set('page', '' + page).set('pageSize', '' + pageSize);
 
-    return this.httpClient.get<PagedResult<IKerttuTaxon>>(path, { params });
+    let params = new HttpParams().set('personToken', personToken);
+    Object.keys(query).forEach(function (key) {
+        params = params.append(key, '' + query[key]);
+    });
+
+    return this.httpClient.get<PagedResult<IKerttuSpecies>>(path, { params });
+  }
+
+  public getSpeciesFilters(): Observable<IKerttuSpeciesFilters> {
+    const path = this.basePath + '/species/filters';
+
+    return this.httpClient.get<IKerttuSpeciesFilters>(path);
   }
 
   public getDataForValidation(taxonId: string): Observable<any[]> {

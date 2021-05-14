@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { IKerttuSpeciesQuery } from '../../../kerttu-global-shared/models';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-list-filters',
@@ -7,14 +7,18 @@ import { IKerttuSpeciesQuery } from '../../../kerttu-global-shared/models';
   styleUrls: ['./species-list-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesListFiltersComponent implements OnInit {
-  query: IKerttuSpeciesQuery = {
-    onlyUnvalidated: false
-  };
+export class SpeciesListFiltersComponent {
+  @Input() filters: IKerttuSpeciesFilters = {continent: [], order: [], family: []};
+  @Input() query: IKerttuSpeciesQuery = {};
 
-  constructor() { }
+  @Output() queryChange = new EventEmitter<IKerttuSpeciesQuery>();
 
-  ngOnInit(): void {
+  selectChange(field: 'continent'|'order'|'family', value: string) {
+    this.query[field] = parseInt(value, 10) || null;
+    this.onQueryChange();
   }
 
+  onQueryChange() {
+    this.queryChange.emit(this.query);
+  }
 }

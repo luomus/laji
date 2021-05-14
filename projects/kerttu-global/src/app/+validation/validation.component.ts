@@ -3,18 +3,20 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuTaxon } from '../kerttu-global-shared/models';
+import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters } from '../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-validation',
   template: `
-    <laji-species-list *ngIf="!taxon" [speciesList]="speciesList" [loading]="loading" (taxonSelect)="onTaxonSelect($event)" (pageChange)="onSpeciesPageChange($event)"></laji-species-list>
+    <laji-species-list *ngIf="!taxon" [(query)]="speciesQuery" [filters]="speciesFilters$ | async" [speciesList]="speciesList" [loading]="loading" (taxonSelect)="onTaxonSelect($event)" (queryChange)="updateSpeciesList()"></laji-species-list>
     <laji-species-validation *ngIf="taxon" [taxon]="taxon" [data]="validationData$ | async" (annotationsReady)="annotationsReady($event)" [saving]="saving"></laji-species-validation>
   `,
   styles: []
 })
 export class ValidationComponent {
-  speciesList: PagedResult<IKerttuTaxon> = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  speciesQuery: IKerttuSpeciesQuery = { page: 1, onlyUnvalidated: false };
+  speciesFilters$: Observable<IKerttuSpeciesFilters>;
+  speciesList: PagedResult<IKerttuSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
   loading = false;
 
   taxon: string;
@@ -28,7 +30,8 @@ export class ValidationComponent {
     private kerttuApi: KerttuGlobalApi,
     private cd: ChangeDetectorRef
   ) {
-    this.onSpeciesPageChange(1);
+    this.speciesFilters$ = this.kerttuApi.getSpeciesFilters();
+    this.updateSpeciesList();
     // this.onTaxonSelect('MX.26282');
   }
 
@@ -37,12 +40,12 @@ export class ValidationComponent {
     this.validationData$ = this.kerttuApi.getDataForValidation(this.taxon);
   }
 
-  onSpeciesPageChange(page: number) {
+  updateSpeciesList() {
     if (this.speciesListSub) {
       this.speciesListSub.unsubscribe();
     }
     this.loading = true;
-    this.speciesListSub = this.kerttuApi.getSpeciesList(this.userService.getToken(), page).subscribe(data => {
+    this.speciesListSub = this.kerttuApi.getSpeciesList(this.userService.getToken(), this.speciesQuery).subscribe(data => {
       this.speciesList = data;
       this.loading = false;
       this.cd.markForCheck();

@@ -1,13 +1,21 @@
 export interface IKerttuSpeciesQuery {
   onlyUnvalidated?: boolean;
-  continent?: string;
-  country?: string;
-  order?: string;
-  family?: string;
+  continent?: number;
+  // country?: string;
+  order?: number;
+  family?: number;
+  page?: number;
+  orderBy?: string[];
 }
 
-export interface IKerttuTaxon {
+export interface IKerttuSpecies {
   id: number;
   scientificName: string;
   commonName: string;
+}
+
+export interface IKerttuSpeciesFilters {
+  continent: {id: number, name: string}[];
+  order: {id: number, scientificName: string}[];
+  family: {id: number, scientificName: string, order: number}[];
 }
