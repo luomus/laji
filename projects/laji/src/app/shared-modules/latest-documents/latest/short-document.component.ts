@@ -29,6 +29,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 
+  public editDocumentRoute: string[];
   public unitList = [];
   public newUnitsLength: number;
   public gatheringDates: {start: string, end: string};
@@ -80,6 +81,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
+    this.editDocumentRoute = this.getEditDocumentRoute(this.document.formID, this.document.id);
 
     this.loading = false;
   }
