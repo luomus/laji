@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import {ProtaxApi} from './protax-api';
-import {ExportService} from '../../shared/service/export.service';
-import {Subscription} from 'rxjs';
-import {HttpEventType} from '@angular/common/http';
-import {DialogService} from '../../shared/service/dialog.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ProtaxApi } from './protax-api';
+import { ExportService } from '../../shared/service/export.service';
+import { Subscription } from 'rxjs';
+import { HttpEventType } from '@angular/common/http';
+import { DialogService } from '../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-protax',

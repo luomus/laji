@@ -28,6 +28,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'gathering.locality': ObservationTableColumn;
   'gathering.displayDateTime': ObservationTableColumn;
   'gathering.interpretations.coordinateAccuracy': ObservationTableColumn;
+  'unit.abundanceUnit': ObservationTableColumn;
   'unit.abundanceString': ObservationTableColumn;
   'unit.interpretations.individualCount': ObservationTableColumn;
   'unit.lifeStage': ObservationTableColumn;
@@ -36,6 +37,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.media.mediaType': ObservationTableColumn;
   'document.collectionId': ObservationTableColumn;
   'unit.notes': ObservationTableColumn;
+  'gathering.notes': ObservationTableColumn;
   'unit.facts.fact': ObservationTableColumn;
   'unit.facts.value': ObservationTableColumn;
   'document.secureLevel': ObservationTableColumn;
@@ -75,6 +77,11 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'sample.notes': ObservationTableColumn;
   'sample.collectionId': ObservationTableColumn;
   'document.facts.legID': ObservationTableColumn;
+  'document.facts.mappingReason': ObservationTableColumn;
+  'document.facts.speciesTrackingStatus': ObservationTableColumn;
+  'document.facts.targetState': ObservationTableColumn;
+  'document.facts.sourceMaterial': ObservationTableColumn;
+  'document.facts.sourceDescription': ObservationTableColumn;
   'sample.facts.preparationMaterials': ObservationTableColumn;
   'sample.facts.elutionMedium': ObservationTableColumn;
   'sample.facts.additionalIDs': ObservationTableColumn;
@@ -246,9 +253,11 @@ export const COLUMNS: IColumns = {
     label: 'observation.filterBy.image'
   },
   'document.collectionId': {name: 'document.collectionId', cellTemplate: 'label', width: 300, sortable: false, required: true},
-  'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.document.notes'},
+  'unit.notes': {name: 'unit.notes', sortable: false, label: 'result.unit.notes'},
+  'gathering.notes': {name: 'gathering.notes', sortable: false, label: 'result.gathering.notes'},
   'document.documentId': {name: 'document.documentId', required: environment.type === Global.type.vir},
   'unit.unitId': {name: 'unit.unitId'},
+  'unit.abundanceUnit': {name: 'unit.abundanceUnit', sortable: false, label: 'result.gathering.abundanceUnit', cellTemplate: 'warehouseLabel'},
   'document.secureLevel': {name: 'document.secureLevel', cellTemplate: 'warehouseLabel'},
   'document.secureReasons': {name: 'document.secureReasons', sortable: false, cellTemplate: 'warehouseLabel'},
   'document.sourceId': {name: 'document.sourceId', cellTemplate: 'label', sortable: false},
@@ -356,40 +365,45 @@ export const COLUMNS: IColumns = {
     sortable: false,
     label: 'result.document.collectionId'
   },
-  'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'MY.legID'},
+  'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'http://tun.fi/MY.legID'},
+  'document.facts.mappingReason': {name: 'document.facts.mappingReason', sortable: false, fact: 'Kartoituksen tarkoitus'},
+  'document.facts.speciesTrackingStatus': {name: 'document.facts.speciesTrackingStatus', sortable: false, fact: 'Lajinseurantakohteen tila'},
+  'document.facts.targetState': {name: 'document.facts.targetState', sortable: false, fact: 'Kohteen taso'},
+  'document.facts.sourceMaterial': {name: 'document.facts.sourceMaterial', sortable: false, fact: 'Aineistolähde'},
+  'document.facts.sourceDescription': {name: 'document.facts.sourceDescription', sortable: false, fact: 'Tietolähteen kuvaus'},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
     transform: 'label',
     sortable: false,
-    fact: 'MF.preparationMaterials'
+    fact: 'http://tun.fi/MF.preparationMaterials'
   },
   'sample.facts.elutionMedium': {
     name: 'sample.facts.elutionMedium',
     transform: 'label',
     sortable: false,
-    fact: 'MF.elutionMedium'
+    fact: 'http://tun.fi/MF.elutionMedium'
   },
-  'sample.facts.additionalIDs': {name: 'sample.facts.additionalIDs', sortable: false, fact: 'MF.additionalIDs'},
+  'sample.facts.additionalIDs': {name: 'sample.facts.additionalIDs', sortable: false, fact: 'http://tun.fi/MF.additionalIDs'},
   'sample.facts.qualityCheckMethod': {
     name: 'sample.facts.qualityCheckMethod',
     transform: 'label',
     sortable: false,
-    fact: 'MF.qualityCheckMethod'
+    fact: 'http://tun.fi/MF.qualityCheckMethod'
   },
   'sample.facts.DNAVolumeMicroliters': {
     name: 'sample.facts.DNAVolumeMicroliters',
     sortable: false,
-    fact: 'MY.DNAVolumeMicroliters'
+    fact: 'http://tun.fi/MY.DNAVolumeMicroliters'
   },
   'sample.facts.DNARatioOfAbsorbance260And280': {
     name: 'sample.facts.DNARatioOfAbsorbance260And280',
     sortable: false,
-    fact: 'MY.DNARatioOfAbsorbance260And280'
+    fact: 'http://tun.fi/MY.DNARatioOfAbsorbance260And280'
   },
   'sample.facts.DNAConcentrationNgPerMicroliter': {
     name: 'sample.facts.DNAConcentrationNgPerMicroliter',
     sortable: false,
-    fact: 'MY.DNAConcentrationNgPerMicroliter'
+    fact: 'http://tun.fi/MY.DNAConcentrationNgPerMicroliter'
   },
 };
 
@@ -438,6 +452,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
     COLUMNS['gathering.conversions.ykj10kmCenter'],
     COLUMNS['unit.abundanceString'],
+    COLUMNS['unit.abundanceUnit'],
     COLUMNS['unit.interpretations.individualCount'],
     COLUMNS['unit.lifeStage'],
     COLUMNS['unit.sex'],
@@ -445,6 +460,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.media.mediaType'],
     COLUMNS['document.collectionId'],
     COLUMNS['unit.notes'],
+    COLUMNS['gathering.notes'],
     COLUMNS['document.secureLevel'],
     COLUMNS['document.secureReasons'],
     COLUMNS['document.sourceId'],
@@ -454,6 +470,11 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.dateEdited'],
     COLUMNS['document.dateObserved'],
     COLUMNS['document.namedPlaceId'],
+    COLUMNS['document.facts.mappingReason'],
+    COLUMNS['document.facts.speciesTrackingStatus'],
+    COLUMNS['document.facts.targetState'],
+    COLUMNS['document.facts.sourceMaterial'],
+    COLUMNS['document.facts.sourceDescription'],
     COLUMNS['document.formId'],
     COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
@@ -507,6 +528,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       {
         header: 'observation.form.unit', fields: [
           'unit.abundanceString',
+          'unit.abundanceUnit',
           'unit.interpretations.individualCount',
           'unit.lifeStage',
           'unit.sex'
@@ -545,8 +567,18 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         ]
       },
       {
+        header: 'lajiGIS.fields', fields: [
+          'document.facts.mappingReason',
+          'document.facts.speciesTrackingStatus',
+          'document.facts.targetState',
+          'document.facts.sourceMaterial',
+          'document.facts.sourceDescription'
+        ]
+      },
+      {
         header: 'observation.filters.other', fields: [
           'unit.notes',
+          'gathering.notes',
           'document.collectionId',
           'document.sourceId',
           'document.secureLevel',

@@ -78,7 +78,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   private fetchValue(key: string, type?: labelType): Observable<string> {
     switch (type) {
       case 'warehouse':
-        return this.warehouseService.getOriginalKey(key).pipe(
+        return this.warehouseService.getSchemaKey(key).pipe(
           switchMap(res => this.fetchValue(res))
         );
       case 'fullUri':

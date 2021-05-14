@@ -1,4 +1,4 @@
-<laji-spinner [spinning]="loading" [overlay]="true" *lajiBrowserOnly>
+<laji-spinner [spinning]="loading || sortLoading" [overlay]="true" *lajiBrowserOnly>
   <ngx-datatable
     #dataTable
     class='material laji-datatable'
@@ -15,7 +15,7 @@
     [messages]="{ emptyMessage: loading ? '' : emptyMessage, totalMessage: '' }"
     [rows]='_rows'
     [externalPaging]="true"
-    [externalSorting]="!clientSideSorting"
+    [externalSorting]="true"
     [sortType]="sortType"
     [count]="_rows.length"
     [offset]="_offset"
@@ -27,7 +27,7 @@
     [headerHeight]="showHeader ? 38 : 0"
     [footerHeight]="0"
     [rowHeight]="(virtualScrolling || _isFixedHeight) ? rowHeight : 'auto'"
-    (sort)="sortChange.emit($event)"
+    (sort)="onSort($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
     (select)="select.emit($event)"
