@@ -49,6 +49,7 @@ import { IdentificationsComponent } from './identifications/identifications.comp
 import { IdentificationComponent } from './identifications/identification/identification.component';
 import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
+import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { TypeComponent } from './types/type/type.component';
     IdentificationsComponent,
     IdentificationComponent,
     TypesComponent,
-    TypeComponent
+    TypeComponent,
+    AbundanceRowComponent
   ],
   exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]
 })
