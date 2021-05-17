@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { select } from 'd3-selection';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
@@ -61,14 +60,12 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.disabled) {
       this.selected = [];
       this.open = false;
     }
-    if (!this.selected || !this.selected.length || (this.selected.length !== this.selectedOptions.length)) {
-      this.initOptions(this.selected);
-    }
+    this.initOptions(this.selected);
   }
 
   ngOnDestroy() {
@@ -194,7 +191,6 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     if (!this.options) {
       return;
     }
-
     this.selectedOptions = [];
     if (!selected || selected.length === 0) {
       this.options.forEach(option => {
@@ -219,9 +215,8 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
       });
     });
 
-     this.open = this.open || !!this.selectedOptions.length;
+    this.open = this.open || !!this.selectedOptions.length;
   }
-
 
   private isSelectOptions(option: idType|SelectOption): option is SelectOption {
     return typeof option === 'object';
