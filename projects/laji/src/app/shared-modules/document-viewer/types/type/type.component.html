@@ -2,8 +2,8 @@
   <span>
      {{type.status | toQName | label}}
     <i>{{type.taxon}}</i> 
-    {{ type.author}}
-    <span *ngIf="!!type.linkings">
+    {{type.author}}
+    <span *ngIf="type.linkings">
       <a
         [tooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
@@ -14,7 +14,7 @@
     </span>
   </span>
   <ng-container *ngIf="showFacts">
-    <div class="inset">
+    <div class="ml-5">
       <laji-row [title]="'MY.typeNotes' | label" [value]="type.notes"></laji-row>
       <ng-container *ngIf="type.taxonSpecifier || type.taxonSpecifierAuthor">
         <laji-row [title]="'MY.taxonSpecifier' | label">{{type.taxonSpecifier}} {{type.taxonSpecifierAuthor}}</laji-row>

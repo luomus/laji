@@ -9,8 +9,4 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 export class IdentificationComponent {
   @Input() identification: any;
   @Input() showFacts = false;
-
-  onTaxonLinkClick(event: MouseEvent) {
-    event.stopPropagation();
-  }
 }

@@ -1,21 +1,21 @@
 <div>
   <span>
     <i>{{identification.taxon}}</i> {{ identification.author }} 
-    <span *ngIf="!!identification.det || !!identification.detDate">
+    <span *ngIf="identification.det || identification.detDate">
       det. {{identification.det || ''}} {{ identification.detDate || '' }}
     </span>
-    <span *ngIf="!!identification.linkings">
+    <span *ngIf="identification.linkings">
       <a
         [tooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
         container="body"
-        target="_blank" [routerLink]="['/taxon', ((identification.linkings.taxon.id || identification.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
+        target="_blank" [routerLink]="['/taxon', ((identification.linkings.taxon.id || identification.linkings.taxon.qname) | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
     </span>
   </span>
   <ng-container *ngIf="showFacts">
-    <div class="inset">
+    <div class="ml-5">
       <laji-row [title]="'MY.notes' | label" [value]="identification.notes"></laji-row>
       <ng-container *ngIf="identification.taxonSpecifier || identification.taxonSpecifierAuthor">
         <laji-row [title]="'MY.taxonSpecifier' | label">{{identification.taxonSpecifier}} {{identification.taxonSpecifierAuthor}}</laji-row>
