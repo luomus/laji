@@ -110,6 +110,8 @@
   "datasets.observations.title": "Aineiston havainnot",
   "datasets.primary": "primääridata",
   "datasets.secondary": "sekundääridata",
+  "datasets.stats.count": "Aineistossa on {{count}} havaintoa {{speciesCount}} lajista",
+  "datasets.stats.lastLoad": "Viimeisin muokkaus tehty {{maxLastLoadTimestamp}}",
   "date.dd": "pp",
   "date.mm": "kk",
   "delete.error": "Poisto epäonnistui. Yritä hetken kuluttua uudelleen.",
