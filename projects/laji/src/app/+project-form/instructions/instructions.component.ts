@@ -7,7 +7,7 @@ import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 
 @Component({
   template: `
-    <laji-info-page [page]="instructions$ | async | multiLang: true:undefined:'%value%'"></laji-info-page>`,
+    <laji-info-page class="laji-page" [page]="instructions$ | async | multiLang: true:undefined:'%value%'"></laji-info-page>`,
   selector: 'laji-instructions'
 })
 export class InstructionsComponent implements OnInit {
