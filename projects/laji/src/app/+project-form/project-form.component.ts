@@ -12,11 +12,23 @@ import { FormPermissionService, Rights } from '../shared/service/form-permission
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import ResultServiceType = Form.ResultServiceType;
+
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
   disabled: boolean;
+}
+
+function isViewModel(vm: ViewModel | NotFoundViewModel): vm is ViewModel {
+  return !!(vm as any).form;
+}
+
+interface NotFoundViewModel {
   formID: string;
+}
+
+function isNotFoundViewModel(vm: ViewModel | NotFoundViewModel): vm is NotFoundViewModel {
+  return !!(vm as any).formID;
 }
 
 interface NavLink {
@@ -52,12 +64,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private browserService: BrowserService
 ) {}
 
-  vm$: Observable<ViewModel>;
+  vm$: Observable<ViewModel | NotFoundViewModel>;
   formPermissions$: Observable<FormPermission>;
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
+
+  isViewModel = isViewModel;
+  isNotFoundViewModel = isNotFoundViewModel;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -102,21 +117,33 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const _projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const notFound$ = _projectForm$.pipe(
+      switchMap( projectForm => projectForm.form
+        ? of(false) as Observable<false>
+        : this.projectFormService.getFormID(this.route))
+    );
 
-    const rights$ = projectForm$.pipe(switchMap(projectForm => projectForm.form ? this.formPermissionService.getRights(projectForm.form) : of(null)));
+    const projectForm$ = _projectForm$.pipe(filter( projectForm => !!projectForm.form));
+
+    const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
     const formID$ = this.projectFormService.getFormID(this.route);
 
-    this.vm$ = combineLatest(projectForm$, rights$, formID$, this.route.queryParams).pipe(
-      map(([projectForm, rights, formID, queryParams]) => ({
-          form: projectForm.form,
-          navLinks: (projectForm.form && !projectForm.form.options?.simple && !projectForm.form.options?.mobile)
-            ? this.getNavLinks(projectForm, rights, queryParams)
-            : undefined,
-          disabled: projectForm.form?.options?.disabled && !rights?.ictAdmin,
-          formID: formID
-        })
+    this.vm$ = notFound$.pipe(
+      switchMap(notFound => notFound
+        ? of({formID: notFound})
+        : combineLatest(projectForm$, rights$, formID$, this.route.queryParams).pipe(
+          map(([projectForm, rights, formID, queryParams]) => ({
+              form: projectForm.form,
+              navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
+                ? this.getNavLinks(projectForm, rights, queryParams)
+                : undefined,
+              disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
+              formID: formID
+            })
+          )
+        )
       )
     );
 
@@ -158,7 +185,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
       if (!this.route.children.length) {
-        const mainPage = projectForm.form?.options?.simple
+        const mainPage = projectForm.form.options?.simple
           ? 'form'
           : 'about';
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});

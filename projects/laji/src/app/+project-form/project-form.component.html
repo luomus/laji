@@ -1,5 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm; else loader">
-  <ng-container *ngIf="vm.form; else formNotFound">
+  <ng-container *ngIf="isViewModel(vm)">
     <ng-container *ngIf="!vm.disabled; else disabled">
       <lu-sidebar *ngIf="!vm.form.options?.simple && !vm.form.options?.mobile; else simpleContent"
                   [open]="(showNav$ | async)"
@@ -23,15 +23,16 @@
       </lu-sidebar>
     </ng-container>
   </ng-container>
-
-  <ng-template #formNotFound>
+  <ng-container *ngIf="isNotFoundViewModel(vm)">
     <div class="container-fluid mt-5">
       <alert type="danger">
         {{ 'haseka.form.formNotFound' | translate:{formId: vm.formID} }}
       </alert>
     </div>
-  </ng-template>
+  </ng-container>
 </ng-container>
+
+
 
 <ng-template #disabled>
   <div class="container-fluid mt-5">
