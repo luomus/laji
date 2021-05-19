@@ -73,10 +73,16 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
   setColumns(data) {
     this.columns = [
       {
-      name: 'unit.linkings.taxon.scientificName',
-      label: this.taxonSet,
-      cellTemplate: this.textOrTranslationKeyTpl,
-      width: 150
+        name: 'vernacularName',
+        label: 'taxonomy.vernacular.name',
+        cellTemplate: 'multiLang',
+        width: 150
+      },
+      {
+        name: 'scientificName',
+        label: 'taxonomy.scientific.name',
+        cellTemplate: 'taxonScientificName',
+        width: 150
       },
       {
         name: 'total',
@@ -105,15 +111,11 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
 
     if (this.filter !== 'gathering.conversions.year') {
       otherCols.sort((a, b) => a - b);
-      if (otherCols.indexOf('undefined') > -1) {
-        otherCols.push(otherCols.splice(0, 1)[0]);
-      }
     } else {
       if (!this.onlySections) {
         otherCols = this.sortDate(otherCols);
       }
     }
-
 
     for (let i = 0; i <= otherCols.length - 1; i++) {
       this.columns.push({

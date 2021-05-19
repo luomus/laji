@@ -52,7 +52,7 @@ export class NafiBumblebeeResultService {
   getYears(routeId?: string, collectionId?: string): Observable<YearDays> {
     this.yearObs = this.warehouseApi.warehouseQueryUnitStatisticsGet(
       {...this.getFilterParams(undefined, undefined, undefined, collectionId), namedPlaceId: [routeId]},
-      ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'],
+      ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'],
       undefined,
       10000,
       1,
@@ -89,8 +89,8 @@ export class NafiBumblebeeResultService {
     return this.getList(
       this.warehouseApi.warehouseQueryGatheringStatisticsGet(
         this.getFilterParams(undefined, undefined, undefined, collectionId),
-        ['document.namedPlace.id', 'document.namedPlace.name', 'document.namedPlace.ykj10km.lat',
-          'document.namedPlace.ykj10km.lon', 'document.namedPlace.municipalityDisplayName'],
+        ['document.namedPlace.id', 'document.namedPlace.name', 'gathering.conversions.ykj10kmCenter.lat',
+          'gathering.conversions.ykj10kmCenter.lon', 'document.namedPlace.municipalityDisplayName'],
         ['document.namedPlace.name'],
         10000,
         1,
@@ -123,8 +123,8 @@ export class NafiBumblebeeResultService {
   }
 
   private addUnitStatsToResults(result: any[], query: WarehouseQueryInterface, year: number|undefined, routeId: string) {
-    const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year'] :
-    ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
+    const aggregate = year === undefined ? ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] :
+    ['document.documentId', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'];
     query = {...query, namedPlaceId: [routeId]};
     return this.getList(
       this.warehouseApi.warehouseQueryUnitStatisticsGet(
@@ -167,10 +167,10 @@ export class NafiBumblebeeResultService {
   }
 
   getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean, collectionId?: string) {
-    const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
-    season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'] :
-    !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
-    ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection'];
+    const aggregate = year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] :
+    season ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] :
+    !onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] :
+    ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'];
     const query = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
     return this.getList(
       this.warehouseApi.warehouseQueryUnitStatisticsGet(
@@ -184,8 +184,8 @@ export class NafiBumblebeeResultService {
       )
     ).pipe(
       map(result => {
-        return this.mergeElementsByProperties(result, onlySections, year, season, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] :
-        (!onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection']));
+        return this.mergeElementsByProperties(result, onlySections, year, season, year === undefined ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] :
+        (!onlySections ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'] : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName']));
       })
     );
   }
@@ -268,7 +268,13 @@ export class NafiBumblebeeResultService {
       } else {
         arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].push(
           {
-           'unit.linkings.taxon.scientificName': item[filters[1]],
+            'scientificName': item['unit.linkings.taxon.scientificName'],
+            'vernacularName': {
+              'fi': item['unit.linkings.taxon.nameFinnish'],
+              'sv': item['unit.linkings.taxon.nameSwedish'],
+              'en': item['unit.linkings.taxon.nameEnglish']
+            },
+            'cursiveName': item['unit.linkings.taxon.cursiveName'],
            'total': item['individualCountSum'],
            [property] : item['individualCountSum'],
            ...objectFilter.filter(

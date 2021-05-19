@@ -97,6 +97,7 @@ export class NafiBumblebeeAllResultsComponent implements OnInit, OnDestroy {
 
   navigate(query: WarehouseQueryInterface) {
     this.router.navigate([], {queryParams: {
+        tab: 'species',
         grid: query.ykj10kmCenter,
         time: query.yearMonth || 'all',
         taxonId: query.taxonId,

@@ -16,8 +16,6 @@ export class NafiBumblebeeRoutesComponent implements OnInit {
 
   @Input() collectionId: string;
 
-  activeIndex = 0;
-  loadedTabs = new LoadedElementsStore(['list', 'map']);
   data: any;
   selected = [
     'document.namedPlace.name',
@@ -42,7 +40,6 @@ export class NafiBumblebeeRoutesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadedTabs.load(this.activeIndex);
     this.resultService.getRouteList(this.collectionId)
       .subscribe(routes => {
         this.data = routes;
@@ -57,10 +54,5 @@ export class NafiBumblebeeRoutesComponent implements OnInit {
       [],
       {queryParams: {route}, queryParamsHandling: 'merge'}
     );
-  }
-
-  setActive(newActive: number) {
-    this.activeIndex = newActive;
-    this.loadedTabs.load(newActive);
   }
 }
