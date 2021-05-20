@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
   template: `
   <div class="laji-beta-popup" *ngIf="open">
     <div class="d-flex justify-between">
-      <p translate>betapopup.desc</p>
+      <p [innerHtml]="'betapopup.desc' | translate"></p>
       <lu-button-round (click)="close()" role="neutral">
         <lu-icon type="close"></lu-icon>
       </lu-button-round>

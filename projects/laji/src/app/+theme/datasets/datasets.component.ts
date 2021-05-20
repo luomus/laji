@@ -9,7 +9,7 @@ import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { UserService } from '../../shared/service/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { Breadcrumb } from '../common/theme-breadcrumb/theme-breadcrumb.component';
+import { Breadcrumb } from '../../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 
 @Component({
   selector: 'laji-generic-collections',

@@ -13,25 +13,23 @@
       </div>
     </ng-container>
     <ng-template #multiWithFilter>
-      <ng-container *ngIf="open">
-        <div class="lj-filter" *ngIf="useFilter">
-          <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
-            <label class="lj-item selected" [ngClass]="classes['menuContainer']" (click)="labelClick($event)">
-              <laji-checkbox [value]="true" (valueChange)="remove(option.id, $event)"></laji-checkbox>{{option.value}}
-            </label>
-            <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
-          </span>
-          <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
+      <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
+        <label class="lj-item selected" [ngClass]="classes['menuContainer']" (click)="labelClick($event)">
+          <laji-checkbox [value]="true" (valueChange)="remove(option.id, $event)"></laji-checkbox>{{option.value}}
+        </label>
+        <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
+      </span>
+      <div class="lj-filter" [hidden]="!useFilter || !open">
+        <input #filter (keyup)="onFilterChange($event, filter.value)" class="form-control" type="search" placeholder="{{filterPlaceHolder}}">
+      </div>
+      <div *ngIf="open" class="lj-item-container">
+        <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (unselectedOptions | filter:filterBy ); let i = index; trackBy: track" style="position: relative;">
+          <label class="lj-item" (click)="labelClick($event)">
+            <laji-checkbox (valueChange)="add(option.id, $event)"></laji-checkbox> {{option.value}}
+          </label>
+          <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
         </div>
-        <div class="lj-item-container">
-          <div [class.lj-active]="i === selectedIdx" *ngFor="let option of (unselectedOptions | filter:filterBy ); let i = index; trackBy: track" style="position: relative;">
-            <label class="lj-item" (click)="labelClick($event)">
-              <laji-checkbox (valueChange)="add(option.id, $event)"></laji-checkbox> {{option.value}}
-            </label>
-            <ng-container [ngTemplateOutlet]="value" [ngTemplateOutletContext]="{option: option}"></ng-container>
-          </div>
-        </div>
-      </ng-container>
+      </div>
     </ng-template>
   </ng-container>
 </div>
