@@ -242,7 +242,7 @@
   "footer.vihko": "Observationstjänst",
   "footer.vocabulary": "Ordförrad",
   "force.login": "Du måste logga in i tjänsten för att använda den här uppdelningen.",
-  "form.administer": "Hantera åtkomst till form",
+  "form.administer": "Hantera åtkomsträttigheter",
   "form.participants.export.docCount": "Dokumeträkning",
   "form.participants.export.emailAddress": "E-postaddress",
   "form.participants.export.fullName": "Namn",

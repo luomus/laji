@@ -242,7 +242,7 @@
   "footer.vihko": "Record observations service",
   "footer.vocabulary": "Vocabulary",
   "force.login": "You'll need to log in to use this section.",
-  "form.administer": "Manage access to form",
+  "form.administer": "Manage access rights",
   "form.participants.export.docCount": "Document count",
   "form.participants.export.emailAddress": "Email address",
   "form.participants.export.fullName": "Name",
