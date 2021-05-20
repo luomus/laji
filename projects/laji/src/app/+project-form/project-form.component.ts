@@ -1,9 +1,7 @@
 import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { FormService } from '../shared/service/form.service';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
@@ -54,8 +52,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   constructor (
     private route: ActivatedRoute,
-    private translate: TranslateService,
-    private formService: FormService,
     private documentViewerFacade: DocumentViewerFacade,
     private projectFormService: ProjectFormService,
     private formPermissionService: FormPermissionService,
@@ -119,9 +115,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const _projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
     const notFound$ = _projectForm$.pipe(
-      switchMap( projectForm => projectForm.form
-        ? of(false) as Observable<false>
-        : this.projectFormService.getFormID(this.route))
+      map(projectForm => !projectForm.form)
     );
 
     const projectForm$ = _projectForm$.pipe(filter( projectForm => !!projectForm.form));
@@ -132,15 +126,14 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.vm$ = notFound$.pipe(
       switchMap(notFound => notFound
-        ? of({formID: notFound})
-        : combineLatest(projectForm$, rights$, formID$, this.route.queryParams).pipe(
-          map(([projectForm, rights, formID, queryParams]) => ({
+        ? formID$.pipe(map(formID => ({formID})))
+        : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
+          map(([projectForm, rights, queryParams]) => ({
               form: projectForm.form,
               navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
                 ? this.getNavLinks(projectForm, rights, queryParams)
                 : undefined,
-              disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
-              formID: formID
+              disabled: projectForm.form.options?.disabled && !rights?.ictAdmin
             })
           )
         )
@@ -166,7 +159,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(routerEvents$, this.userToggledSidebar$.asObservable()).pipe(
+    this.showNav$ = combineLatest([routerEvents$, this.userToggledSidebar$.asObservable()]).pipe(
       mergeMap(([url, userToggledSidebar]) =>
         form$.pipe(
           map(form =>
@@ -183,7 +176,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
-    this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
+    this.redirectionSubscription = combineLatest([routerEvents$, projectForm$]).subscribe(([, projectForm]) => {
       if (!this.route.children.length) {
         const mainPage = projectForm.form.options?.simple
           ? 'form'
