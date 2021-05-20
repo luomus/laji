@@ -4,13 +4,15 @@ import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { FormService } from '../shared/service/form.service';
 import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
+import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from './project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
+import { Title } from '@angular/platform-browser';
+import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
 import ResultServiceType = Form.ResultServiceType;
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 
@@ -51,7 +53,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private formPermissionService: FormPermissionService,
     public userService: UserService,
     private router: Router,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private title: Title,
+    private labelService: TriplestoreLabelService,
 ) {}
 
   vm$: Observable<ViewModel>;
@@ -60,6 +64,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
+
+  private titleSubscription: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -164,10 +170,19 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
       }
     });
+
+    this.titleSubscription = combineLatest(routerEvents$, projectForm$).pipe(
+      switchMap(([, projectForm]) => this.getFormTitle(projectForm.form))
+    ).subscribe((title) => {
+      if (title) {
+        this.title.setTitle(title + ' | ' + this.title.getTitle());
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
+    this.titleSubscription.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -286,5 +301,20 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  private getFormTitle(form: Form.SchemaForm): Observable<string> {
+    let title$ = of(form.title);
 
+    if (form.options?.dataset) {
+      title$ = forkJoin([
+        this.labelService.get(form.collectionID, this.translate.currentLang),
+        this.translate.get('datasets.label')
+      ]).pipe(
+        map((result: string[]) => {
+          return result.filter(res => !!res).join(' | ');
+        })
+      );
+    }
+
+    return title$;
+  }
 }
