@@ -84,17 +84,21 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
         cellTemplate: 'taxonScientificName',
         width: 150
       },
-      {
-        name: 'total',
-        label: 'taxonomy.total',
-        width: 100,
-        cellTemplate: this.textOrTranslationKeyTpl,
-        frozenLeft: (this.year === '' || this.year === undefined) ? true : false
-      },
-
     ];
 
-    const tmpCols = [];
+    const totalColumn = {
+      name: 'total',
+      label: 'taxonomy.total',
+      width: 100,
+      cellTemplate: this.textOrTranslationKeyTpl,
+    };
+
+    if (this.year === '' || this.year === undefined) {
+      this.columns.unshift(totalColumn);
+    } else {
+      this.columns.push(totalColumn);
+    }
+
     let otherCols = [];
 
     data.forEach(element => {
