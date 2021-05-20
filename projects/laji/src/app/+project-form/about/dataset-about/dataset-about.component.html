@@ -10,10 +10,13 @@
 </p>
 
 <ng-container *ngIf="stats$">
-  <ng-container *ngIf="stats$ | async as stats; else loader">
-    <p>{{ 'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 } }}</p>
-    <p *ngIf="stats.firstLoadDateMax">{{ 'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY HH:mm' } }}</p>
-  </ng-container>
+  <div *ngIf="stats$ | async as stats; else loader" class="mt-5 mb-5">
+    <p [innerHtml]="'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 }"></p>
+    <p
+      *ngIf="stats.firstLoadDateMax"
+      [innerHtml]="'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY' }"
+    ></p>
+  </div>
 </ng-container>
 
 <p>
