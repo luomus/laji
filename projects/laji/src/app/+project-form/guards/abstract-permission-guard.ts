@@ -42,6 +42,11 @@ export abstract class AbstractPermissionGuard implements CanActivate {
 
     return this.formService.getForm(formID, this.translate.currentLang).pipe(
       take(1),
+      tap(form => {
+        if (!form) {
+          this.router.navigate(['/', 'project', formID]);
+        }
+      }),
       flatMap(form => this.formPermissionService.getRights(form)),
       map(fp => this.checkPermission(fp)),
       tap((hasPermission) => {
