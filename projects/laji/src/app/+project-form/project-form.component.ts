@@ -1,9 +1,8 @@
 import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { FormService } from '../shared/service/form.service';
-import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
@@ -13,14 +12,26 @@ import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
 import { Title } from '@angular/platform-browser';
 import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
-import ResultServiceType = Form.ResultServiceType;
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
+import ResultServiceType = Form.ResultServiceType;
 
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
   disabled: boolean;
   datasetsBreadcrumb?: Breadcrumb[];
+}
+
+function isViewModel(vm: ViewModel | NotFoundViewModel): vm is ViewModel {
+  return !!(vm as any).form;
+}
+
+interface NotFoundViewModel {
+  formID: string;
+}
+
+function isNotFoundViewModel(vm: ViewModel | NotFoundViewModel): vm is NotFoundViewModel {
+  return !!(vm as any).formID;
 }
 
 interface NavLink {
@@ -47,7 +58,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   constructor (
     private route: ActivatedRoute,
     private translate: TranslateService,
-    private formService: FormService,
     private documentViewerFacade: DocumentViewerFacade,
     private projectFormService: ProjectFormService,
     private formPermissionService: FormPermissionService,
@@ -58,12 +68,15 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private labelService: TriplestoreLabelService,
 ) {}
 
-  vm$: Observable<ViewModel>;
+  vm$: Observable<ViewModel | NotFoundViewModel>;
   formPermissions$: Observable<FormPermission>;
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
+
+  isViewModel = isViewModel;
+  isNotFoundViewModel = isNotFoundViewModel;
 
   private titleSubscription: Subscription;
 
@@ -110,19 +123,31 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const _projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const notFound$ = _projectForm$.pipe(
+      map(projectForm => !projectForm.form)
+    );
+
+    const projectForm$ = _projectForm$.pipe(filter( projectForm => !!projectForm.form));
 
     const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
-    this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
-      map(([projectForm, rights, queryParams]) => ({
-          form: projectForm.form,
-          navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
-            ? this.getNavLinks(projectForm, rights, queryParams)
-            : undefined,
-          disabled: projectForm.form.options?.disabled && !rights.ictAdmin,
-          datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
-        })
+    const formID$ = this.projectFormService.getFormID(this.route);
+
+    this.vm$ = notFound$.pipe(
+      switchMap(notFound => notFound
+        ? formID$.pipe(map(formID => ({formID})))
+        : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
+          map(([projectForm, rights, queryParams]) => ({
+              form: projectForm.form,
+              navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
+                ? this.getNavLinks(projectForm, rights, queryParams)
+                : undefined,
+              disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
+              datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
+            })
+          )
+        )
       )
     );
 
@@ -145,7 +170,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(routerEvents$, this.userToggledSidebar$.asObservable()).pipe(
+    this.showNav$ = combineLatest([routerEvents$, this.userToggledSidebar$.asObservable()]).pipe(
       mergeMap(([url, userToggledSidebar]) =>
         form$.pipe(
           map(form =>
@@ -162,7 +187,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
-    this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
+    this.redirectionSubscription = combineLatest([routerEvents$, projectForm$]).subscribe(([, projectForm]) => {
       if (!this.route.children.length) {
         const mainPage = projectForm.form.options?.simple
           ? 'form'
@@ -171,7 +196,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.titleSubscription = combineLatest(routerEvents$, projectForm$).pipe(
+    this.titleSubscription = combineLatest([routerEvents$, projectForm$]).pipe(
       switchMap(([, projectForm]) => this.getFormTitle(projectForm.form))
     ).subscribe((title) => {
       if (title) {
