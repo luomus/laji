@@ -5,6 +5,12 @@ import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { Form } from '../../../shared/model/Form';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
+interface DatasetStats {
+  count?: number;
+  speciesCount?: number;
+  firstLoadDateMax?: string;
+}
+
 @Component({
   selector: 'laji-dataset-about',
   templateUrl: './dataset-about.component.html',
@@ -14,7 +20,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 export class DatasetAboutComponent implements OnChanges {
   @Input() form: Form.SchemaForm;
 
-  stats$?: Observable<any>;
+  stats$?: Observable<DatasetStats>;
 
   constructor(
     private warehouseService: WarehouseApi
