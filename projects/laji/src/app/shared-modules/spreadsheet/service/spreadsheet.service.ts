@@ -23,24 +23,6 @@ interface IColCombine {
 @Injectable()
 export class SpreadsheetService {
 
-  public static readonly IdField = {
-    parent: 'document',
-    required: true,
-    isArray: false,
-    type: 'string',
-    key: 'id',
-    label: 'ID',
-    fullLabel: 'id'
-  };
-  public static readonly deleteField = {
-    parent: 'document',
-    required: false,
-    isArray: false,
-    type: 'boolean',
-    key: 'delete',
-    label: 'Delete',
-    fullLabel: 'Delete'
-  };
   public static readonly nameSeparator = ' - ';
 
   private static groupId = 1;
@@ -74,12 +56,10 @@ export class SpreadsheetService {
     private translateService: TranslateService,
     private formService: FormService
   ) {
-    this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
       map(() => this.translateService.currentLang),
       startWith(this.translateService.currentLang),
       distinctUntilChanged(),
-      tap(() => this.setCustomFieldLabels()),
       switchMap(lang =>
         ObservableForkJoin([
           this.labelService.get('MY.document', lang),
@@ -181,11 +161,6 @@ export class SpreadsheetService {
       }
       return '';
     }));
-  }
-
-  private setCustomFieldLabels() {
-    SpreadsheetService.deleteField.label = this.translateService.instant('haseka.delete.title');
-    SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
   }
 
   private combineSplittedFields(data: {[col: string]: string}[]) {

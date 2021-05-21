@@ -59,10 +59,7 @@ export class ExcelGeneratorComponent implements OnInit {
         this.isSecondary = form.options?.secondaryCopy;
         this.formTitle = form.title;
         this.parents = [];
-        this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [
-          SpreadsheetService.IdField,
-          SpreadsheetService.deleteField
-        ] : []);
+        this.fields = this.spreadSheetService.formToFlatFields(form, []);
         this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);

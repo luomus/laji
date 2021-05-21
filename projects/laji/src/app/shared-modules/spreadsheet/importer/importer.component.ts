@@ -213,10 +213,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
           this.header = data.shift();
           this.data = data;
         }
-        if (this.form.options?.secondaryCopy) {
-          baseFields.push(SpreadsheetService.IdField);
-          baseFields.push(SpreadsheetService.deleteField);
-        }
 
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
