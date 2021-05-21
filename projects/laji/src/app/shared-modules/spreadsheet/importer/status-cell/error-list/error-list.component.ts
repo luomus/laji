@@ -18,8 +18,8 @@ export class ErrorListComponent {
 
   @Input()
   set errors(data) {
+    const errors = [];
     if (typeof data === 'object' && !Array.isArray(data)) {
-      const errors = [];
       if (data.status || data.status === 0) {
         switch (data.status) {
           case 403:
@@ -43,8 +43,18 @@ export class ErrorListComponent {
           });
         });
       }
-      this._errors = errors;
+    } else if (Array.isArray(data)) {
+      data.forEach(err => {
+        errors.push({
+          field: err.dataPath
+            .substring(err.dataPath.substring(0, 1) === '/' ? 1 : 0)
+            .replace(/\/[0-9]+/g, '[*]')
+            .replace(/\//g, '.'),
+          errors: [this.getMessage(err)]
+        });
+      });
     }
+    this._errors = errors;
   }
 
   private pathToKey(path: string) {
@@ -63,6 +73,21 @@ export class ErrorListComponent {
       return Object.keys(value).reduce((prev, current) => [...prev, ...this.pickErrors(current)], []);
     }
     return [value];
+  }
+
+  private getMessage(err: any): string {
+    let base = err.message;
+    if (err.params) {
+      const info = [];
+      Object.keys(err.params).forEach(key => {
+        info.push(err.params[key]);
+      });
+      if (info.length) {
+        base += ` '${info.join('\', \'')}'`;
+      }
+    }
+
+    return base;
   }
 
 }
