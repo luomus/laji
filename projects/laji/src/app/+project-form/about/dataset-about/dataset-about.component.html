@@ -9,15 +9,13 @@
   <a [routerLink]="'/about/4641' | localize">{{ 'datasets.generic.instructions' | translate }}</a>
 </p>
 
-<ng-container *ngIf="stats$">
-  <div *ngIf="stats$ | async as stats; else loader" class="mt-5 mb-5">
-    <p [innerHtml]="'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 }"></p>
-    <p
-      *ngIf="stats.firstLoadDateMax"
-      [innerHtml]="'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY' }"
-    ></p>
-  </div>
-</ng-container>
+<div *ngIf="(stats$ | async) as stats; else loader" class="mt-5 mb-5">
+  <p [innerHtml]="'datasets.stats.count' | translate: { count: stats.count || 0, speciesCount: stats.speciesCount || 0 }"></p>
+  <p
+    *ngIf="stats.firstLoadDateMax"
+    [innerHtml]="'datasets.stats.lastLoad' | translate: { maxLastLoadTimestamp: stats.firstLoadDateMax | amDateFormat: 'DD.MM.YYYY' }"
+  ></p>
+</div>
 
 <p>
   <a [routerLink]="'/observation/list' | localize" [queryParams]="{collectionId: form.collectionID}">{{ 'datasets.observations.list' | translate }}</a>
