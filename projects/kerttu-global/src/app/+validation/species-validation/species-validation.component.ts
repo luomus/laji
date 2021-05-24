@@ -61,7 +61,9 @@ export class SpeciesValidationComponent implements OnChanges {
     this.audioViewerMode = 'default';
   }
 
-  returnToPrevious() {
+  returnToPrevious(e) {
+    e.preventDefault();
+
     if (this.activeLetter) {
       this.annotations[this.activeIndex] = this.currentAnnotation;
       this.activeIndex--;
@@ -71,7 +73,9 @@ export class SpeciesValidationComponent implements OnChanges {
     this.currentAnnotation = this.annotations[this.activeIndex];
   }
 
-  goToNext() {
+  goToNext(e) {
+    e.preventDefault();
+    
     this.annotations[this.activeIndex] = this.currentAnnotation;
 
     if (this.activeIndex !== this.data.length - 1) {

@@ -2,56 +2,59 @@
   <h1 style="max-width: 100%;">
     {{ taxon | taxon | capitalize }} - <i>{{ taxon | taxon:'scientific' }}</i>
   </h1>
-  <h4 style="max-width: 100%; margin-bottom: 20px; margin-top: 0">
-    Vocalization {{ activeIndex + 1 }} / {{ data.length }}
-    <div class="pull-right">
-      <button style="margin-right: 0.5em;" [disabled]="activeIndex === 0 || saving" (click)="returnToPrevious()" class="btn btn-default">Return to previous</button>
-      <button class="btn btn-primary" (click)="goToNext()" [disabled]="!activeLetter || saving">Go to next</button>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <ul class="pager">
+        <li [ngClass]="{'disabled': activeIndex === 0 || saving}"><a href="#" role="button" [tabindex]="activeIndex === 0 || saving ? -1 : 0" (click)="returnToPrevious($event)"><span aria-hidden="true">&larr;</span> Previous</a></li>
+        <li class="pager-title">Vocalization {{ activeIndex + 1 }} / {{ data.length }}</li>
+        <li [ngClass]="{'disabled': !activeLetter || saving}"><a href="#" role="button" [tabindex]="!activeLetter || saving ? -1 : 0" (click)="goToNext($event)">Next <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
     </div>
-  </h4>
-
-  <div *ngIf="activeLetter">
-    <laji-audio-viewer-settings
-      style="display: inline-block; margin-bottom: 15px;"
-      [(zoomed)]="zoomed"
-      [(xRangePadding)]="xRangePadding"
-      [displayInline]="true"
-    ></laji-audio-viewer-settings>
-    <laji-audio-viewer
-      [audio]="activeLetter.audio"
-      [focusArea]="currentAnnotation.area ? currentAnnotation.area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
-      [zoomFrequency]="zoomed"
-      [focusAreaTimePadding]="xRangePadding"
-      [mode]="audioViewerMode"
-      (drawEnd)="onDrawEnd($event)"
-    ></laji-audio-viewer>
-
-    <div style="margin-top: 15px">
-      <div class="form-group">
-        <label>Is the target species vocalizing inside the white frame?</label>
-        <div
-          class="radio"
-          *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
-        >
-          <label>
-            <input type="radio" name="annotation" [value]="a" [(ngModel)]="currentAnnotation.annotation">
-            {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-          </label>
+    <div class="panel-body">
+      <div *ngIf="activeLetter">
+        <div class="form-group">
+            <h3>Is the target species vocalizing inside the white frame?</h3>
+            <div
+              class="radio"
+              *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
+            >
+              <label style="font-weight: initial;">
+                <input type="radio" name="annotation" [value]="a" [(ngModel)]="currentAnnotation.annotation">
+                {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+              </label>
+            </div>
+        </div>
+        <div class="audio-viewer-wrapper">
+          <laji-audio-viewer-settings
+          style="display: block; padding-bottom: 15px;"
+          [(zoomed)]="zoomed"
+          [(xRangePadding)]="xRangePadding"
+          [displayInline]="true"
+        ></laji-audio-viewer-settings>
+        <laji-audio-viewer
+          [audio]="activeLetter.audio"
+          [focusArea]="currentAnnotation.area ? currentAnnotation.area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
+          [zoomFrequency]="zoomed"
+          [focusAreaTimePadding]="xRangePadding"
+          [mode]="audioViewerMode"
+          (drawEnd)="onDrawEnd($event)"
+        ></laji-audio-viewer>
+        </div>
+        <div style="margin-top: 15px">
+          <div class="form-group">
+            <label>Haluatko korjata rajausta?</label>
+            <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()">Korjaa rajaus</button>
+          </div>
+          <div class="form-group">
+            <label>Muita kommentteja</label>
+            <textarea name="notes" class="form-control" [(ngModel)]="currentAnnotation.notes"></textarea>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Haluatko korjata rajausta?</label>
-        <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()">Korjaa rajaus</button>
-      </div>
-      <div class="form-group">
-        <label>Muita kommentteja</label>
-        <textarea name="notes" class="form-control" [(ngModel)]="currentAnnotation.notes"></textarea>
+      <div *ngIf="!activeLetter">
+        <p>All the vocalizations validated for this species. Thank you very much!</p>
+        <lu-button (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">Save and go back to species list</lu-button>
       </div>
     </div>
-    
-  </div>
-  <div *ngIf="!activeLetter">
-    <p>All the vocalizations validated for this species. Thank you very much!</p>
-    <lu-button (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">Save and go back to species list</lu-button>
   </div>
 </div>

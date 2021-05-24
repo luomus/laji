@@ -1,0 +1,18 @@
+.pager {
+  margin: 0;
+  text-align: left;
+
+  .pager-title {
+    margin: 0 5px;
+  }
+
+  .disabled a {
+    pointer-events: none;
+  }
+}
+
+.audio-viewer-wrapper {
+  background-color: #dde1e3;
+  margin: 0 -15px;
+  padding: 5px 15px;
+}
