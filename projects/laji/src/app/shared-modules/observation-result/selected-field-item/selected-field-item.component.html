@@ -1,6 +1,15 @@
 <div *ngIf="idx > -1">
   <button (click)="moveFieldUp(field, $event)" class="btn btn-xs">&#x25C0;</button>
-  <span>{{ idx + 1 }}.</span>
+  <ng-container *ngIf="!isArray(field); else multiCol">
+    <span>{{ idx + 1 }}.</span>
+  </ng-container>
+  <ng-template #multiCol>
+    <span>
+      <ng-container *ngFor="let col of field; let last = last; let i = index">
+        {{ idx + i + 1 }}.{{ last ? '' : ',' }}
+      </ng-container>
+    </span>
+  </ng-template>
   <button (click)="moveFieldDown(field, $event)" class="btn btn-xs">&#x25B6;</button>
 </div>
 <ng-container>
