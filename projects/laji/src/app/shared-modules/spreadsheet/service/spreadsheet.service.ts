@@ -51,7 +51,13 @@ export class SpreadsheetService {
 
   private translations = {};
 
-  private requiredFields = {};
+  private requiredFields: {[formID: string]: {[field: string]: boolean}} = {
+    '*': {
+      'gatherings[*].taxonCensus[*].censusTaxonID': false,
+      'gatherings[*].taxonCensus[*].taxonCensusType': false,
+      'gatherings[*].units[*].identifications[*].taxon': true
+    }
+  };
 
   private hiddenFields: {[formID: string]: string[]} = {
     '*': [
@@ -109,7 +115,7 @@ export class SpreadsheetService {
     return this.csvMimeTypes;
   }
 
-  setRequiredFields(formID: string, fields: object) {
+  setRequiredFields(formID: string, fields: {[field: string]: boolean}) {
     this.requiredFields[formID] = fields;
   }
 

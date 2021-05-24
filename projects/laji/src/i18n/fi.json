@@ -168,6 +168,7 @@
   "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
   "excel.info.file": "Katso tallennusohjeet osoitteessa https://laji.fi/about/3412",
+  "excel.map.missingRequired": "Pakollinen sarake puuttuu",
   "excel.map.col-intro": "Valitse sarakkeiden merkitys alasvetovalikosta.",
   "excel.map.col-mapped": "Vihkon kenttä",
   "excel.map.col-ok": "Kaikki sarakkeet onnistuttiin tunnistamaan automaattisesti.",
