@@ -1669,6 +1669,8 @@
   "theme.waterbird.intro": "Waterbird Census",
   "theme.wbc.intro": "Winter bird census studies prevalence and abundance of birds in different habitats in different parts of our country and on a long time scale. Examine the results and report census results.",
   "theme.ykj.intro": "Learn about the Uniform Coordinate System (YKJ) and its use in the life sciences.",
+  "theme.geoinfo.title": "Opening the observation data in geographic information systems",
+  "theme.geoinfo.intro": "Instructions for downloading and opening location information of observation data in several geographic information systems.",
   "Thu": "Thu",
   "TimeoutError": "Server didn't respond in time. Please check if it was saved successfully despite of this!",
   "todoTranslation": "The texts for this page are under translation.",

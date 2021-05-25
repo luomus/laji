@@ -1669,6 +1669,8 @@
   "theme.waterbird.intro": "Sjöfågeltaxeringar",
   "theme.wbc.intro": "Vinterfågeltaxeringar förekomst och överflöd av fåglar i olika livsmiljöer i olika delar av vårt land och på lång sikt. Undersök resultaten och rapportera folkräkningsresultat.",
   "theme.ykj.intro": "Lär dig om det enhetliga koordinatsystemet (YKJ) och dess användning inom biovetenskap.",
+  "theme.geoinfo.title": "Öppna observationsdata i geografiska informationssystem",
+  "theme.geoinfo.intro": "Instruktioner för nedladdning och öppning av platsinformation för observationsdata i flera geografiska informationssystem.",
   "Thu": "thu",
   "TimeoutError": "Server didn't respond in time. Please check if it was saved successfully despite of this!",
   "todoTranslation": "Texterna på denna sida är under översättning.",
