@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IFormField } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-error-list',
@@ -75,12 +76,17 @@ export class ErrorListComponent {
     return [value];
   }
 
-  private getMessage(err: any): string {
+  private getMessage(err: unknown): string {
+    if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'message') || typeof err.message !== 'string') {
+      return this.translateService.instant('haseka.form.genericError');
+    }
     let base = err.message;
-    if (err.params) {
+    if (Util.hasOwnProperty(err, 'params') && typeof err.params === 'object') {
       const info = [];
       Object.keys(err.params).forEach(key => {
-        info.push(err.params[key]);
+        if (typeof err.params[key] === 'string') {
+          info.push(err.params[key]);
+        }
       });
       if (info.length) {
         base += ` '${info.join('\', \'')}'`;
