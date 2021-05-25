@@ -131,7 +131,7 @@
           </button>
         </div>
         <div class="mb-2 mr-2">
-          <button *ngIf="(actions | includes:'edit')"
+          <a *ngIf="(actions | includes:'edit')"
             class="btn btn-default btn-xs"
             [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
@@ -139,7 +139,7 @@
             <ng-template #noTemplates>
               <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
             </ng-template>
-          </button>
+          </a>
         </div>
 
         <!--<span *ngIf="showMakeTemplate(row)">
