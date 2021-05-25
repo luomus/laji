@@ -1,9 +1,8 @@
-<span
+<strong
+  class="link"
   (click)="show($event)"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
-  [class]="'link no-propagation'"
-><strong
   [popover]="content"
   [adaptivePosition]="false"
   [outsideClick]="true"
@@ -16,7 +15,7 @@
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
   <ng-container *ngIf="!glyphicon">?</ng-container>
-</strong></span>
+</strong>
 
 <div class="modal popover-modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
   <div class="modal-dialog modal-sm" [ngStyle]="{'top': position}">
