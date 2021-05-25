@@ -86,6 +86,15 @@ export class SelectedFieldGroupComponent {
     }
   }
 
+  getIndexArray(field: string[]) {
+    let last = 0;
+    return field.map(column => {
+      const index = this.selected.indexOf(column, last);
+      last = index;
+      return index;
+    });
+  }
+
   isMultiColumnGisField(field: string) {
     return /gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)?$/.test(field);
   }

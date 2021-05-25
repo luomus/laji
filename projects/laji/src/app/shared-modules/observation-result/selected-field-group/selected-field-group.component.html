@@ -30,7 +30,7 @@
           [field]="fields"
           [required]="required | includes:field"
           [label]="columnsLookup[field].label | translate"
-          [idx]="selected.indexOf(fields[0])"
+          [idxs]="getIndexArray(fields)"
           [len]="selected.length"
           (toggle)="onToggle($event)"
           (moveUp)="onMoveUp($event)"

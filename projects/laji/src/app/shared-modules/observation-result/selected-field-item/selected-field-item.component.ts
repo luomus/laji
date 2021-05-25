@@ -11,6 +11,7 @@ export class SelectedFieldItemComponent {
   @Input() field: string | string[];
   @Input() label: string;
   @Input() idx: number;
+  @Input() idxs: number[];
   @Input() len: number;
   @Input() required: boolean;
 
