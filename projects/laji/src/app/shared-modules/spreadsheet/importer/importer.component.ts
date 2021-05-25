@@ -441,7 +441,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         ticker += add;
         this.current = status.processed === this.total ?
           status.processed :
-          Math.min(this.total - 1, ticker);
+          Math.min(Math.max(this.total - 1, 0), ticker);
         this.cdr.markForCheck();
       })),
       map(({errors, documents}) => rowData.map((data, idx) => {
