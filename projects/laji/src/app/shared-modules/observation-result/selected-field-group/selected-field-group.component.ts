@@ -30,7 +30,7 @@ export class SelectedFieldGroupComponent {
           this.columnSelector.toggleSelectedField(field);
         }
 
-        return
+        return;
       }
 
       this.getGisFields(field).forEach(column => {
@@ -45,14 +45,14 @@ export class SelectedFieldGroupComponent {
     if (Array.isArray(field)) {
       if (this.selected.indexOf(field[0]) > 0) {
         field.forEach(column => {
-          this.moveUp.emit(column)
+          this.moveUp.emit(column);
 
           if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, -1)
+            this.columnSelector.moveFieldByName(column, -1);
           }
         });
       }
-      return
+      return;
     }
 
     this.moveUp.emit(field);
@@ -64,19 +64,19 @@ export class SelectedFieldGroupComponent {
 
   onMoveDown(field: string | string[]) {
     if (Array.isArray(field)) {
-      const lastSelected = this.selected.length - 1
-      const lastField = field.length - 1 
+      const lastSelected = this.selected.length - 1;
+      const lastField = field.length - 1;
 
       if (this.selected.indexOf(field[lastField]) < lastSelected) {
         field.reverse().forEach(column => {
-          this.moveDown.emit(column)
+          this.moveDown.emit(column);
 
           if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, 1)
+            this.columnSelector.moveFieldByName(column, 1);
           }
         });
       }
-      return
+      return;
     }
 
     this.moveDown.emit(field);
@@ -87,7 +87,7 @@ export class SelectedFieldGroupComponent {
   }
 
   isMultiColumnGisField(field: string) {
-    return /gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)?$/.test(field)
+    return /gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)?$/.test(field);
   }
 
   getGisFields(field: string) {
@@ -95,14 +95,14 @@ export class SelectedFieldGroupComponent {
       return [
         field + '.lat',
         field + '.lon'
-      ]      
+      ];
     } else if (/gathering\.conversions\.(wgs84|euref|ykj)$/.test(field)) {
       return [
         field + '.latMin',
         field + '.latMax',
         field + '.lonMin',
         field + '.lonMax',
-      ]
+      ];
     }
   }
 }

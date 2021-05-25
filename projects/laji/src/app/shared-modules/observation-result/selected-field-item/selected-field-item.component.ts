@@ -29,6 +29,6 @@ export class SelectedFieldItemComponent {
   }
 
   isArray(field: string | string[]) {
-    return Array.isArray(field)
+    return Array.isArray(field);
   }
 }
