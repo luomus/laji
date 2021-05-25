@@ -18,10 +18,10 @@ export class ErrorListComponent {
   constructor(private translateService: TranslateService) { }
 
   @Input()
-  set errors(data) {
+  set errors(data: unknown) {
     const errors = [];
     if (typeof data === 'object' && !Array.isArray(data)) {
-      if (data.status || data.status === 0) {
+      if (Util.hasOwnProperty(data, status)) {
         switch (data.status) {
           case 403:
             errors.push({
@@ -46,6 +46,9 @@ export class ErrorListComponent {
       }
     } else if (Array.isArray(data)) {
       data.forEach(err => {
+        if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'dataPath')) {
+          return;
+        }
         errors.push({
           field: err.dataPath
             .substring(err.dataPath.substring(0, 1) === '/' ? 1 : 0)
