@@ -178,7 +178,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    this.selected = [this._rows[this._preselectedRowIndex]] || [];
+    const postSortIndex = (this._rows || []).findIndex((element) => {
+      return element.preSortIndex === this._preselectedRowIndex;
+    });
+    this.selected = [this._rows[postSortIndex]] || [];
     if (!this.selected.length) {
       return;
     }
@@ -191,7 +194,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
       return;
     }
-    const postSortIndex = this.datatable._internalRows.findIndex((element) => {
+    const postSortIndex = (this._rows || []).findIndex((element) => {
       return element.preSortIndex === this._preselectedRowIndex;
     });
     // Calculate relative position of selected row and scroll to it
