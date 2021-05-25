@@ -84,13 +84,8 @@ export class ErrorListComponent {
       return this.translateService.instant('haseka.form.genericError');
     }
     let base = err.message;
-    if (Util.hasOwnProperty(err, 'params') && typeof err.params === 'object') {
-      const info = [];
-      Object.keys(err.params).forEach(key => {
-        if (typeof err.params[key] === 'string') {
-          info.push(err.params[key]);
-        }
-      });
+    if (Util.hasOwnProperty(err, 'params') && typeof err.params === 'object' && err.params && Array.isArray(err.params)) {
+      const info = Object.values(err.params);
       if (info.length) {
         base += ` '${info.join('\', \'')}'`;
       }
