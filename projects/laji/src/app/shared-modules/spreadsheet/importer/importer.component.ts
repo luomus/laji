@@ -33,6 +33,7 @@ import { IUserMappingFile, MappingFileService } from '../service/mapping-file.se
 import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
+import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-importer',
@@ -96,6 +97,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   current = 0;
   step = Step;
   currentUserMappingHash: string;
+  toHtmlSelectElement = toHtmlSelectElement;
 
   combineOptions: CombineToDocument[] = [
     CombineToDocument.gathering,

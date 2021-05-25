@@ -25,7 +25,7 @@
       (sort)="onSort($event)"
     >
 
-    <ngx-datatable-row-detail [rowHeight]="'auto'">
+    <ngx-datatable-row-detail>
       <ng-template let-row="row" ngx-datatable-row-detail-template>
         <div *ngFor="let col of _columns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>

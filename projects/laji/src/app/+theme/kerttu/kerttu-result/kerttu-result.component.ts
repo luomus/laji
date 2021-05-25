@@ -1,10 +1,10 @@
-import {Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {KerttuApi} from '../service/kerttu-api';
-import {UserService} from '../../../shared/service/user.service';
-import {Observable, of, Subscription} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {IKerttuStatistics, IUserStatistics} from '../models';
-import {PersonApi} from '../../../shared/api/PersonApi';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { KerttuApi } from '../service/kerttu-api';
+import { UserService } from '../../../shared/service/user.service';
+import { Observable, of, Subscription } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { IKerttuStatistics, IUserLetterStatistics, IUserStatistics } from '../models';
+import { PersonApi } from '../../../shared/api/PersonApi';
 
 @Component({
   selector: 'laji-kerttu-result',
@@ -14,6 +14,7 @@ import {PersonApi} from '../../../shared/api/PersonApi';
 })
 export class KerttuResultComponent implements OnInit, OnDestroy {
   stats$: Observable<{general: IKerttuStatistics, users: IUserStatistics[]}>;
+  letterStats$: Observable<IUserLetterStatistics>;
 
   userId: string;
   nameVisibility: boolean;
@@ -45,6 +46,8 @@ export class KerttuResultComponent implements OnInit, OnDestroy {
           this.nameVisibility = value;
           this.cd.markForCheck();
         });
+
+        this.letterStats$ = this.kerttuApi.getUserLetterStats(token);
       }
 
       this.userId = userId;

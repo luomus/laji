@@ -1,8 +1,16 @@
-import {Taxonomy} from '../../shared/model/Taxonomy';
+import { Taxonomy } from '../../shared/model/Taxonomy';
+import { Geometry } from 'geojson';
+
+export interface IAudio {
+  url: string;
+  dateTime: string;
+  municipality: string;
+  geometry: Geometry;
+}
 
 export interface IRecording {
   id: number;
-  recording: string;
+  audio: IAudio;
   xRange: number[];
 }
 
@@ -66,6 +74,19 @@ export interface IUserStatistics {
   letterAnnotationCount: number;
   recordingAnnotationCount: number;
   totalAnnotationCount: number;
+}
+
+export interface IUserLetterStatistics {
+  meanSimilarity?: number;
+  taxonStatistics: IUserLetterTaxonStatistics[];
+}
+
+export interface IUserLetterTaxonStatistics {
+  taxonId: string;
+  userAnnotationCount: number;
+  commonAnnotationCount?: number;
+  similarity?: number;
+  identifiability?: number;
 }
 
 export enum LetterAnnotation {

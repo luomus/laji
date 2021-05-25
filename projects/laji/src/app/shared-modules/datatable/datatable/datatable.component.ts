@@ -1,25 +1,16 @@
-import { debounceTime } from 'rxjs/operators';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
-import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent, SelectionType } from '@swimlane/ngx-datatable';
-import { Subject, Subscription } from 'rxjs';
+import { debounceTime, tap, map } from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
+  NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { DatatableColumn, DatatableSort } from '../model/datatable-column';
+import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@swimlane/ngx-datatable';
+import { Observable, Subject, Subscription, of, forkJoin } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
 import { PlatformService } from '../../../shared/service/platform.service';
+import { DatatableUtil } from '../service/datatable-util.service';
+import { Util } from '../../../shared/service/util.service';
 
 interface Settings {[key: string]: DatatableColumn; }
 
@@ -29,7 +20,7 @@ interface Settings {[key: string]: DatatableColumn; }
   styleUrls: ['./datatable.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
+export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
 
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
@@ -38,16 +29,16 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() pageSize: number;
   @Input() showHeader = true;
   @Input() showFooter = true;
-  @Input() sortType = 'multi';
+  @Input() sortType: SortType = SortType.multi;
   @Input() virtualScrolling = true;
   @Input() totalMessage = '';
   @Input() emptyMessage = '';
   @Input() clientSideSorting = false;
-  @Input() columnMode = 'force';
+  @Input() columnMode: ColumnMode | keyof typeof ColumnMode = 'force';
   @Input() resizable = true;
   @Input() showRowAsLink = true;
-  @Input() rowHeight = 35;
-  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
+  @Input() sorts: DatatableSort[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
   @Input() summaryRow = false;
@@ -75,7 +66,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() selected: any[] = [];
 
   initialized = false;
+  sortLoading = false;
   private filterChange$ = new Subject();
+
+  private sortTemplates = {};
+  private sortValues = {};
+  private sortSub: Subscription;
+
   @LocalStorage('data-table-settings', {}) private dataTableSettings: Settings;
 
   _getRowClass = (row) => {
@@ -107,7 +104,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     private platformService: PlatformService,
     private logger: Logger,
     private filterService: FilterService,
-    private zone: NgZone
+    private zone: NgZone,
+    private dtUtil: DatatableUtil
   ) {}
 
   @Input() set height(height: string) {
@@ -127,6 +125,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     this._originalRows.forEach((element, idx) => {
       element.preSortIndex = idx;
     });
+    this.sortValues = {};
 
     if (this._filterBy) {
       this.updateFilteredRows();
@@ -139,6 +138,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
       this.scrollTo();
     }
 
+    this.sortRows(this.sorts);
   }
 
   @Input() set page(page: number) {
@@ -150,6 +150,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     const settings = this.dataTableSettings;
 
     this._columns = columns.map((column) => {
+      if (!column.prop) {
+        column.prop = column.name;
+      }
       if (typeof column.headerTemplate === 'string') {
         column.headerTemplate = this.datatableTemplates[column.headerTemplate];
       }
@@ -157,10 +160,11 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
         column.headerTemplate = this.datatableTemplates.dafaultHeader;
       }
       if (typeof column.cellTemplate === 'string') {
+        this.sortTemplates[column.prop] = column.cellTemplate;
         column.cellTemplate = this.datatableTemplates[column.cellTemplate];
       }
-      if (!column.prop) {
-        column.prop = column.name;
+      if (column.sortTemplate) {
+        this.sortTemplates[column.prop] = column.sortTemplate;
       }
       if (settings && settings[column.name] && settings[column.name].width) {
         column.width = settings[column.name].width;
@@ -234,9 +238,18 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.sorts) {
+      this.sortRows(this.sorts);
+    }
+  }
+
   ngOnDestroy() {
     if (this.filterByChange) {
       this.filterByChange.unsubscribe();
+    }
+    if (this.sortSub) {
+      this.sortSub.unsubscribe();
     }
   }
 
@@ -268,11 +281,18 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
+  onSort(event) {
+    this.sorts = event.sorts;
+    this.sortRows(event.sorts);
+    this.sortChange.emit(event);
+  }
+
   private updateFilteredRows() {
     this._rows = this._filterBy ? this.filterService.filter(this._originalRows, this._filterBy) : this._originalRows;
     this._count = this._rows.length;
     this._page = 1;
     this.scrollTo();
+    this.sortRows(this.sorts);
   }
 
   private scrollTo(offsetY: number = 0) {
@@ -288,5 +308,92 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnDestroy {
     } catch (e) {
       this.logger.info('selected row index failed', e);
     }
+  }
+
+  private sortRows(sorts: DatatableSort[] = []) {
+    if (this.sortSub) {
+      this.sortSub.unsubscribe();
+    }
+
+    if (this.clientSideSorting && this._rows) {
+      this.sortLoading = true;
+      this.sortSub = this.sort(sorts, this._rows)
+      .subscribe(sortedRows => {
+          this._rows = sortedRows;
+          this.sortLoading = false;
+          this.changeDetectorRef.markForCheck();
+        }
+      );
+    } else {
+      this.sortLoading = false;
+    }
+  }
+
+  private sort(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
+    return this.setSortValues(sorts, rows)
+      .pipe(map(() => {
+        if (sorts.length > 0) {
+          return this.customSort(sorts, rows);
+        } else {
+          return this.defaultSort(rows);
+        }
+      })
+    );
+  }
+
+  private setSortValues(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
+    const observables = sorts.reduce((arr, sort) => {
+      const template = this.sortTemplates[sort.prop];
+      rows.forEach((row) => {
+        if (!this.sortValues[row.preSortIndex]) {
+          this.sortValues[row.preSortIndex] = {};
+        }
+
+        if (this.sortValues[row.preSortIndex][sort.prop] == null) {
+          const rowValue = Util.parseJSONPath(row, sort.prop);
+
+          if (!template || rowValue == null) {
+            this.sortValues[row.preSortIndex][sort.prop] = rowValue;
+          } else {
+            arr.push(
+              this.dtUtil.getVisibleValue(rowValue, row, template)
+                .pipe(tap(val => {
+                  this.sortValues[row.preSortIndex][sort.prop] = val;
+                }))
+            );
+          }
+        }
+      });
+      return arr;
+    }, []);
+
+    return (observables.length > 0 ? forkJoin(observables) : of([]));
+  }
+
+  private customSort(sorts: DatatableSort[], rows: any[]): any[] {
+    return [...rows].sort((a: any, b: any) => {
+      for (const sort of sorts) {
+        const dir = sort.dir === 'asc' ? 1 : -1;
+        const aa = this.sortValues[a.preSortIndex]?.[sort.prop] || a[sort.prop];
+        const bb = this.sortValues[b.preSortIndex]?.[sort.prop] || b[sort.prop];
+        const comparison = dir * orderByComparator(aa, bb);
+
+        if (comparison !== 0) {
+          return comparison;
+        }
+      }
+
+      return a.preSortIndex < b.preSortIndex ? -1 : 1;
+    });
+  }
+
+  private defaultSort(rows: any[]): any[] {
+    const sortedRows = [...rows];
+
+    rows.forEach((row) => {
+      sortedRows[row.preSortIndex] = row;
+    });
+
+    return sortedRows;
   }
 }

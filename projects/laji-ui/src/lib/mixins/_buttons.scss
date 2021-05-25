@@ -1,0 +1,120 @@
+$btn-primary-hue-shift: -15deg !default;
+$btn-secondary-hue-shift: 0deg !default;
+$btn-success-hue-shift: -20deg !default;
+$btn-info-hue-shift: -20deg !default;
+$btn-warning-hue-shift: 0deg !default;
+$btn-danger-hue-shift: 20deg !default;
+
+$btn-border-radius: 5px !default;
+
+@mixin btn {
+  display: inline-block;
+  color: $neutral-8;
+  border: none;
+  border-radius: $btn-border-radius;
+
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: 100ms;
+
+  &:active, &.active {
+    transition: 50ms;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@mixin btnPrimaryTheme($bgColor, $bgHueShift, $textColor, $shadowColor) {
+  background: linear-gradient(to bottom right, adjust-hue($bgColor, $bgHueShift), darken($bgColor, 5%));
+  color: $textColor;
+  box-shadow: 0 1px 2px 0px rgba($shadowColor, .4), inset 0 0 0 rgba($shadowColor, 0);
+  &:hover {
+    background: linear-gradient(to bottom right, darken(adjust-hue($bgColor, $bgHueShift), 5%), darken(darken($bgColor, 5%), 5%));
+  }
+  &:active, &.active {
+    color: $primary-2;
+    transition: color .15s;
+    box-shadow: 0 0px 0px rgba($shadowColor, 0), inset 0 1px 6px rgba($shadowColor, .5);
+  }
+}
+
+@mixin btnDisabled {
+  background-color: rgba(0,0,0,0);
+  background: unset;
+  color: $neutral-6;
+  border: 1px solid $neutral-4;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+
+  cursor: unset;
+
+  &:hover {
+    background-color: unset;
+  }
+  &:hover::before, &:focus::before {
+    opacity: 0;
+  }
+}
+
+@keyframes LoadingAnimation {
+  0%{
+    background-position: 0 0;
+  }
+  50%{
+    background-position: 100% 0;
+  }
+  100%{
+    background-position: 0 0;
+  }
+}
+@mixin btnLoading {
+  cursor: unset;
+  border: 1px solid $primary-3;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  color: rgba($primary-7, .8);
+
+  background: linear-gradient(90deg, $neutral-1, $primary-3, $neutral-1);
+  background-size: 200% 200%;
+  animation: LoadingAnimation 2s linear infinite;
+}
+
+/*
+  THEMES
+*/
+
+@mixin btnSecondary {
+  background-color: $neutral-1;
+  color: $neutral-7;
+  box-shadow: 0 1px 2px 0px rgba($neutral-9, .3), inset 0 1px 6px rgba($neutral-9, 0);
+  &:hover, &:focus {
+    background-color: $neutral-3;
+  }
+  &:active, &.active {
+    background-color: $neutral-3;
+    color: $neutral-6;
+    box-shadow: 0 0px 0px 0px rgba($neutral-9, 0), inset 0 1px 4px rgba($neutral-9, 0.2), inset 0 0 2px 0px rgba($neutral-9, .3);
+    transform: translateY(1px);
+  }
+}
+
+@mixin btnPrimary {
+  @include btnPrimaryTheme($primary-5, $btn-primary-hue-shift, $primary-1, $primary-7);
+}
+
+@mixin btnSuccess {
+  @include btnPrimaryTheme($success-5, $btn-success-hue-shift, $success-1, $success-7);
+}
+
+@mixin btnInfo {
+  @include btnPrimaryTheme($info-5, $btn-info-hue-shift, $info-1, $info-7);
+}
+
+@mixin btnWarning {
+  @include btnPrimaryTheme($warning-5, $btn-warning-hue-shift, $warning-1, $warning-7);
+}
+
+@mixin btnDanger {
+  @include btnPrimaryTheme($danger-5, $btn-danger-hue-shift, $danger-1, $danger-7);
+}

@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { map, switchMap } from 'rxjs/operators';
-import { CollectionService } from '../../shared/service/collection.service';
+import { map } from 'rxjs/operators';
+import { CollectionService, ICollectionsTreeNode } from '../../shared/service/collection.service';
 import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
+import { Observable, zip } from 'rxjs';
 
-export interface SelectOption {
+export interface SelectedOption {
   id: any;
   value: any;
+  type: 'included' | 'excluded';
 }
 
 @Component({
@@ -17,7 +19,7 @@ export interface SelectOption {
 })
 export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() title: string;
-  @Input() selectedOptions: string[] = [];
+  @Input() query: Record<string, any>;
   @Input() info: string;
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
@@ -26,13 +28,18 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @Input() open = false;
-  @Output() selectedOptionsChange = new EventEmitter<string[]>();
+  @Output() selectedOptionsChange = new EventEmitter<{
+    collectionId?: string[],
+    collectionIdNot?: string[],
+  }>();
 
-  collectionsTree$ = null;
-  collections$ = null;
+  collectionsTree$: Observable<ICollectionsTreeNode[]> = null;
+  collections$: Observable<SelectedOption[]> = null;
 
   lang: string;
   modalRef: BsModalRef;
+  includedOptions: string[] = [];
+  excludedOptions: string[] = [];
 
   constructor(
     private modalService: BsModalService,
@@ -41,7 +48,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    if (this.selectedOptions?.length !== 0) {
+    if (this.query?.collectionId?.length !== 0) {
       this.open = true;
     }
   }
@@ -50,6 +57,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     this.lang = this.translate.currentLang;
     this.collectionsTree$ = this.initCollectionsTree();
     this.collections$ = this.initCollections();
+    this.includedOptions = this.query?.collectionId || [];
+    this.excludedOptions = this.query?.collectionIdNot || [];
   }
 
   toggle(event) {
@@ -61,7 +70,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
 
   openModal() {
     const initialState = {
-      selected: this.selectedOptions,
+      included: this.includedOptions,
+      excluded: this.excludedOptions,
       collectionsTree$: this.collectionsTree$,
       modalTitle: this.modalTitle,
       browseTitle: this.browseTitle,
@@ -76,22 +86,30 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   }
 
   deselect(id: string) {
-    this.selectedOptionsChange.emit(this.selectedOptions.filter(option => option !== id));
+    if (this.includedOptions.includes(id)) {
+      this.selectedOptionsChange.emit({ collectionId: this.includedOptions.filter(option => option !== id) });
+    } else if (this.excludedOptions.includes(id)) {
+      this.selectedOptionsChange.emit({ collectionIdNot: this.excludedOptions.filter(option => option !== id) });
+    }
   }
 
   initCollectionsTree() {
-    return this.collectionService.getCollectionsTree().pipe(
-      switchMap((outer) => this.collectionService.getCollectionsAggregate().pipe(
-        map(inner => this.buildCollectionTree(outer, inner))
-      ))
+    const { collectionId, collectionIdNot, ...query } = this.query;
+
+    return zip(
+      this.collectionService.getCollectionsTree(),
+      this.collectionService.getCollectionsAggregate(),
+      this.collectionService.getCollectionsAggregate(query)
+    ).pipe(
+      map(([ tree, allAgregates, filteredAggragates ]) => this.buildCollectionTree(tree, allAgregates, filteredAggragates))
     );
   }
 
-  buildCollectionTree(trees: any[], aggregates: any[]) {
+  buildCollectionTree(trees: any[], allAggregates: any[], filteredAggragates: any[]) {
     const collectionsWithChildren = [];
 
     trees.forEach(tree => {
-      const prunedTree = this.buildTree(tree, aggregates);
+      const prunedTree = this.buildTree(tree, allAggregates, filteredAggragates);
 
       if (prunedTree) {
         collectionsWithChildren.push(prunedTree);
@@ -103,15 +121,15 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, aggregates) {
-    const aggregate = aggregates.find(elem => elem.id === tree.id);
+  buildTree(tree, allAggregates, filteredAggragates) {
+    const allAggregate = allAggregates.find(elem => elem.id === tree.id);
+    const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 
     if (tree.hasChildren) {
       const children = [];
       let childCount = 0;
-
       tree.children?.forEach(child => {
-        const childTree = this.buildTree(child, aggregates);
+        const childTree = this.buildTree(child, allAggregates, filteredAggragates);
 
         if (childTree) {
           children.push(childTree);
@@ -125,27 +143,43 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
         return {
           ...tree,
           children,
-          count: aggregate ? aggregate.count + childCount : childCount
+          count: filteredAggragate ? filteredAggragate.count + childCount : childCount
         };
-      } else if (aggregate) {
+      } else if (allAggregate) {
         return {
           ...tree,
           hasChildren: false,
           children: [],
-          count: aggregate.count
+          count: filteredAggragate ? filteredAggragate.count : 0
         };
       }
-    } else if (aggregate) {
+    } else if (allAggregate) {
       return {
         ...tree,
-        count: aggregate.count
+        count: filteredAggragate ? filteredAggragate.count : 0
       };
     }
   }
 
-  initCollections() {
+  initCollections(): Observable<SelectedOption[]> {
     return this.collectionService.getAll(this.lang, false).pipe(
-      map(data => data.filter(item => this.selectedOptions.includes(item.id)))
+      map(data => {
+        const toReturn: SelectedOption[] = [];
+        data.forEach(item => {
+          if (this.includedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'included'
+            });
+          } else if (this.excludedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'excluded'
+            });
+          }
+        });
+        return toReturn;
+      })
     );
   }
 }

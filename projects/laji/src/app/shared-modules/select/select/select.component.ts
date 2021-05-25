@@ -1,16 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
@@ -30,24 +18,23 @@ export interface SelectOption {
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectComponent implements OnInit, OnChanges, OnDestroy {
+export class SelectComponent<T extends idType|SelectOption = string> implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<null>();
 
   @Input() options: SelectOption[];
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
-  @Input() selected: (idType|SelectOption)[] = [];
+  @Input() selected: T[] = [];
   @Input() open = false;
   @Input() disabled = false;
-  @Input() outputOnlyId = false;
   @Input() multiple = true;
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
   @Input() classes: {options: string, optionContainer: string, menuContainer: string} | {} = {};
 
-  @Output() selectedChange = new EventEmitter<(SelectOption|idType)[]|idType>();
+  @Output() selectedChange = new EventEmitter<T[]>();
   @ViewChild('filter') filter: ElementRef;
 
   selectedOptions: SelectOption[] = [];
@@ -79,7 +66,6 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
       this.open = false;
     }
     this.initOptions(this.selected);
-
   }
 
   ngOnDestroy() {
@@ -90,7 +76,7 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleValue(id: idType, event) {
     const selected = this.selectedOptions.find(option => option.id === id);
-    if (!selected || (this.optionsIsSelectOptions(this.selectedOptions) && selected.checkboxValue !== true)) {
+    if (!selected || (this.isSelectOptions(selected) && selected.checkboxValue !== true)) {
       this.add(id, event);
     } else {
       this.remove(id, event);
@@ -99,48 +85,41 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
 
   add(id: idType, event) {
     const option = this.options.find((item: SelectOption) => item.id === id);
+    const isBasic = this.checkboxType === CheckboxType.basic;
     if (this.multiple) {
       if (!Array.isArray(this.selected)) {
         this.selected = [];
       }
-      if (this.optionsIsSelectOptions(this.selected)) {
-        const selected = this.selected.find((item: SelectOption) => item.id === option.id);
+      if (this.checkboxType !== CheckboxType.basic) {
+        const selected = this.selected.find(item => this.isSelectOptions(item) ? item.id === option.id : item === option.id);
         option.checkboxValue = true;
-        if (selected) {
+        if (selected && this.isSelectOptions(selected)) {
           selected.checkboxValue = true;
         } else {
-          this.selected = [...this.selected, option];
+          this.selected = [...this.selected, option] as T[];
         }
       } else {
-        this.selected = [...this.selected, id];
+        this.selected = [...this.selected, id] as T[];
       }
     } else {
-      this.selected = this.optionsIsSelectOptions(this.selected) ? [option] : [id];
+      this.selected = isBasic ? [id] as T[] : [option] as T[];
     }
     this.selectedIdx = -1;
     this.initOptions(this.selected);
-    if (this.outputOnlyId) {
-      this.selectedChange.emit(id);
-    } else {
-      this.selectedChange.emit(this.selected);
-    }
+    this.selectedChange.emit(this.selected);
   }
 
   remove(id: idType, event) {
-    if (this.optionsIsSelectOptions(this.selected)) {
-      const select = this.selected.find(item => item.id === id);
-      if (select.checkboxValue === false) {
+    if (this.checkboxType !== CheckboxType.basic) {
+      const select = this.selected.find(item => this.isSelectOptions(item) && item.id === id);
+      if (this.isSelectOptions(select) && select.checkboxValue === false) {
         return this.add(id, true);
       }
     }
-    this.selected = this.selected.filter(value => typeof value === 'object' ? value.id !== id : value !== id);
+    this.selected = this.selected.filter(value => this.isSelectOptions(value) ? value.id !== id : value !== id);
     this.selectedIdx = -1;
     this.initOptions(this.selected);
-    if (this.outputOnlyId) {
-      this.selectedChange.emit(id);
-    } else {
-      this.selectedChange.emit(this.selected);
-    }
+    this.selectedChange.emit(this.selected);
   }
 
   toggle(event, el) {
@@ -235,9 +214,12 @@ export class SelectComponent implements OnInit, OnChanges, OnDestroy {
         checkboxValue
       });
     });
+
+    this.open = this.open || !!this.selectedOptions.length;
   }
 
-  private optionsIsSelectOptions(options: (idType|SelectOption)[]):  options is SelectOption[] {
-    return this.checkboxType !== CheckboxType.basic;
+  private isSelectOptions(option: idType|SelectOption): option is SelectOption {
+    return typeof option === 'object';
   }
 }
+

@@ -12,9 +12,8 @@
     [mapOptions]="{
         clickBeforeZoomAndPan: false,
         availableTileLayerNamesBlacklist: [
-        'pohjakartta',
-        'openStreetMap',
-        'googleSatellite'
+        layers.openStreetMap,
+        layers.googleSatellite
        ]
       }"
     (gridClick)="gridClick($event.ykj10kmCenter)"
@@ -27,7 +26,7 @@
   </div>
   <laji-wbc-routes-list
     [rows]="selectedGrid ? _data[selectedGrid].data : []"
-    [selected]="'document.namedPlace.name'"
+    [selected]="['document.namedPlace.name']"
     [columnMode]="'flex'"
     [height]="'calc(80vh - 77px)'"
     [showFilter]="false"

@@ -24,11 +24,10 @@
       [individualColorRange]="(showSeasonComparison || idx != 2) ? colorRange : differenceColorRange"
       [mapOptions]="{
         clickBeforeZoomAndPan: true,
-        controls: idx === 0 ? {controls: false} : false,
+        controls: idx === 0,
         availableTileLayerNamesBlacklist: [
-          'pohjakartta',
-          'openStreetMap',
-          'googleSatellite'
+          layers.openStreetMap,
+          layers.googleSatellite
         ]
       }"
       [typeLabels]="(showSeasonComparison || idx != 2) ? {} : {'individualCountSum': 'wbc.stats.difference'}"

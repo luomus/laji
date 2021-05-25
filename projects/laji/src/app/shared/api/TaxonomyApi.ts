@@ -42,6 +42,15 @@ export class TaxonomyApi {
   constructor(protected http: HttpClient) {
   }
 
+  public taxonomyList(lang?: string, extraHttpRequestParams?: any): Observable<PagedResult<Taxonomy>> {
+    const path = this.basePath + '/taxa';
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+    if (lang !== undefined) {
+      queryParameters['lang'] = lang;
+    }
+    return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
+  }
+
   /**
    * return taxon data with the given query
    *

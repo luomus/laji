@@ -1,14 +1,12 @@
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../shared/model/Form';
 import { combineLatest, Observable, of } from 'rxjs';
 import { NamedPlacesService } from '../shared/service/named-places.service';
 import { NamedPlace } from '../shared/model/NamedPlace';
-import { Global } from '../../environments/global';
-
 
 export interface ProjectForm {
   form: Form.SchemaForm;
@@ -73,7 +71,7 @@ export class ProjectFormService {
     return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
-  getExcelFormIDs(projectForm: ProjectForm) {
+  getExcelFormIDs(projectForm: ProjectForm): string[] {
     const allowsExcel = (form: Form.SchemaForm) => form.options?.allowExcel && form.id;
     return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f);
   }
@@ -100,12 +98,10 @@ export class ProjectFormService {
             })
           )
           : this.getFormFromRoute$(route);
-        const query$ = documentForm$.pipe(map(documentForm => this.queryToModelFormat(queryParams)));
-        return combineLatest(documentForm$, namedPlace$, query$).pipe(
+        return combineLatest(documentForm$, namedPlace$).pipe(
           map(([
             documentForm,
-            namedPlace,
-            query]) => ({documentForm, namedPlace, ...query}))
+            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)}))
         );
       })
     );

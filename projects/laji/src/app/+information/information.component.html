@@ -1,5 +1,5 @@
 <ng-container *ngIf="information$ | async; let information">
-  <lu-sidebar position="right" [staticWidth]="280" [displayNav]="information.children">
+  <lu-sidebar position="right" [staticWidth]="280" [displayNav]="!!information.children">
     <main class="d-flex">
       <div class="d-flex justify-center flex-grow">
         <div class="mt-4 mb-8 mx-4 d-flex flex-col flex-nowrap width-0 information-container">
@@ -13,7 +13,7 @@
             </ng-container>
             <li class="active">{{ information.title }}</li>
           </ol>
-          <div class="laji-information" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
+          <div class="laji-page" [innerHtml]="information.content | safe:'html'" lajiRouteTransformer></div>
         </div>
       </div>
       <div *ngIf="!information.children" class="makeup-width flex-grow flex-shrink"></div>

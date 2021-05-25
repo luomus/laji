@@ -15,6 +15,7 @@ import { WarehouseQueryInterface } from '../../model/WarehouseQueryInterface';
 import { Logger } from '../../logger/logger.service';
 import {catchError, delay, map, tap} from 'rxjs/operators';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
+import { QueryParamsHandling } from '@angular/router';
 
 @Component({
   selector: 'laji-gallery',
@@ -37,12 +38,13 @@ export class GalleryComponent implements OnChanges {
   @Input() showExtraInfo = true;
   @Input() showLinkToSpeciesCard = false;
   @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: string};
+  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
   @Input() view: 'compact'|'annotation'|'full'|'full2' = 'compact';
   @Input() views = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();
+  @Output() images = new EventEmitter<TaxonomyImage[]>();
 
   page = 1;
   total = 0;
@@ -97,6 +99,7 @@ export class GalleryComponent implements OnChanges {
       tap((images: TaxonomyImage[]) => {
         this.loading = false;
         this.hasData.emit(images.length > 0);
+        this.images.emit(images);
         this.cdr.detectChanges();
       })
     );

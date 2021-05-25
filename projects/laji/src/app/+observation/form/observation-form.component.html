@@ -56,6 +56,7 @@
     </ng-template>
 
     <laji-pill-list
+      class="d-block mt-2"
       [isLabel]="true"
       [list]="query.target || []"
       [isTaxonAutocomplete]="true"
@@ -274,11 +275,11 @@
         </datalist>
       </div>
       <div>
-        <div class="lu-btn-group">
-          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+        <div class="btn-group btn-group-xs">
+          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="lu-btn lu-btn-small" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>
@@ -406,6 +407,16 @@
       ]"></laji-select>
   </div>
   <div>
+    <laji-metadata-select
+      [(ngModel)]="query.plantStatusCode"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="plantStatusCode"
+      [placeholder]="'observation.form.plantStatusCode' | translate"
+      [alt]="'MY.plantStatusCodeEnum'"></laji-metadata-select>
+  </div>
+  <div>
     <div>
       <label>{{ 'observation.form.count' | translate }}</label>
       <laji-info>{{ 'observation.info.count' | translate }}</laji-info>
@@ -516,8 +527,8 @@
 <!--Sources -->
 <section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-select-collections
-    [(selectedOptions)]="query.collectionId"
-    (selectedOptionsChange)="onQueryChange()"
+    [query]="query"
+    (selectedOptionsChange)="onCollectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
     [modalTitle]="'observation.form.datasetSelect' | translate"
@@ -721,7 +732,7 @@
 </section>
 
 <!-- Concealment level -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secret']">
+<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']">
   <laji-select
     [selected]="[query.secured]"
     (selectedChange)="indirectQueryChange('secured', $event[0])"

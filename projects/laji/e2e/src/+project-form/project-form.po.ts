@@ -9,6 +9,7 @@ export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
   public readonly $sidebar = $('.sidebar');
+  public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
   private modalBody = $('body.modal-open');
@@ -102,7 +103,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $form = $('laji-form .laji-form');
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
   public readonly $save = $('laji-document-form-footer .btn-success');
-  public readonly $savePrivate = $('laji-document-form-footer .btn-warning');
+  public readonly $savePrivate = $('laji-document-form-footer .btn-default');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
   public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
 
@@ -138,4 +139,9 @@ class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
+}
+
+
+class DisabledPage { // tslint:disable-line max-classes-per-file
+  public $container = $('laji-project-form-disabled')
 }

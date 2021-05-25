@@ -20,16 +20,14 @@ import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { LoadedElementsStore } from '../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { environment } from 'projects/laji/src/environments/environment';
-import { Global } from 'projects/laji/src/environments/global';
 import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
-const tabOrderProd = [ 'overview', 'images', 'biology', 'taxonomy', 'occurrence',
+const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
-const tabOrderDev = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
-                   'specimens', 'endangerment', 'invasive' ];
-const basePath = '/taxon';
+const BASE_PATH = '/taxon';
+
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
 
 @Component({
   selector: 'laji-info-card',
@@ -38,13 +36,13 @@ const basePath = '/taxon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
-  private tabOrder = environment.type === Global.type.dev ? tabOrderDev : tabOrderProd;
+  private tabOrder = TAB_ORDER;
   loadedTabs: LoadedElementsStore = new LoadedElementsStore(this.tabOrder);
 
   @Input() taxon: Taxonomy;
   @Input() isFromMasterChecklist: boolean;
   @Input() context: string;
-  @Input() set activeTab(tab: 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive') {
+  @Input() set activeTab(tab: InfoCardTabType) {
     this.selectedTab = tab;
     this.loadedTabs.load(tab);
   }
@@ -88,7 +86,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   onSelect(tabIndex) {
     const tabName = this.getTabNameFromVisibleIndex(tabIndex);
-    const route = [basePath, this.taxon.id];
+    const route = [BASE_PATH, this.taxon.id];
     if (tabName !== 'overview') { route.push(tabName); }
     this.router.navigate(
       this.localizeRouterService.translateRoute(route),

@@ -4,6 +4,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { Global } from '../../../environments/global';
+import { TaxonomyImage } from '../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-identify',
@@ -17,7 +18,7 @@ export class IdentifyComponent implements OnInit {
   group: string;
   documentId: string;
   unitId: string;
-
+  totalItemsIdentify: TaxonomyImage[];
   formId: string;
 
   constructor(
@@ -45,11 +46,15 @@ export class IdentifyComponent implements OnInit {
   onImageSelect(event) {
     this.documentViewerFacade.showDocumentID({
       document: event.documentId,
-      highlight: event.unitId,
+      highlight: event.fullURL,
       identifying: true,
       openAnnotation: true,
-      result: undefined
+      result: this.totalItemsIdentify
     });
+  }
+
+  onImagesInit(e) {
+    this.totalItemsIdentify = e;
   }
 
 }

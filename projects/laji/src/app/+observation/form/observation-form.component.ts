@@ -102,7 +102,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -117,7 +117,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
     time: ['firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'nativeOccurrence', 'breedingSite', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'individualCountMin', 'individualCountMax'],
     quality: [],
     dataset: ['collectionId', 'collectionQuality', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -307,6 +307,18 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
 
     this.delayedQueryChange();
+  }
+
+  onCollectionIdChange(collections: any) {
+    if (collections.collectionId) {
+      this.query.collectionId = collections.collectionId;
+    }
+
+    if (collections.collectionIdNot) {
+      this.query.collectionIdNot = collections.collectionIdNot;
+    }
+
+    this.onQueryChange();
   }
 
   onHabitatChange(habitats: any) {

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{'red-theme': redTheme}">
+<nav class="navbar navbar-inverse navbar-fixed-top" [ngClass]="{'red-theme': redTheme}" [id]="navId">
   <div [ngClass]="containerClass" autofocus>
     <div class="row">
       <div class="col-sm-12">
@@ -28,6 +28,9 @@
             <ng-container *lajiForTypes="['iucn']">
               <li [routerLinkActive]="['active']">
                 <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/regional'] | localize">{{ 'iucn.regional.title' | translate }}</a>
               </li>
               <li [routerLinkActive]="['active']">
                 <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>

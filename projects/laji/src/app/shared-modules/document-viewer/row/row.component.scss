@@ -4,6 +4,9 @@
   text-align: right;
   margin-right: 0;
   padding-right: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .value::-webkit-scrollbar {

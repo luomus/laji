@@ -49,6 +49,7 @@ import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotati
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
 import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
+import { AudioIosWarningComponent } from './kerttu/directive/audio-ios-warning.component';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { ProtaxComponent } from './protax/protax.component';
 import { ProtaxApi } from './protax/protax-api';
@@ -60,6 +61,10 @@ import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annota
 import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
 import { KerttuUserTableComponent } from './kerttu/kerttu-result/kerttu-user-table/kerttu-user-table.component';
 import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu-count.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import { AudioInfoComponent } from './kerttu/audio-viewer/audio-info/audio-info.component';
+import { AudioInfoMapComponent } from './kerttu/audio-viewer/audio-info/audio-info-map/audio-info-map.component';
+import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-letter-result-table/kerttu-letter-result-table.component';
 
 /* tslint:enable:max-line-length */
 
@@ -79,7 +84,8 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     InfoModule,
     ThreeStateSwitchModule,
     PillListModule,
-    SelectModule
+    SelectModule,
+    LajiMapModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -110,6 +116,7 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     KerttuRecordingAnnotationComponent,
     RequiresAudioSupportDirective,
     AudioNotSupportedErrorComponent,
+    AudioIosWarningComponent,
     ProtaxComponent,
     ProtaxFormComponent,
     NotFoundComponent,
@@ -118,7 +125,10 @@ import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu
     KerttuOccurrenceTableComponent,
     KerttuResultComponent,
     KerttuUserTableComponent,
-    KerttuCountComponent
+    KerttuCountComponent,
+    AudioInfoComponent,
+    AudioInfoMapComponent,
+    KerttuLetterResultTableComponent
   ],
   providers: [
     QualityService,

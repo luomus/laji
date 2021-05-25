@@ -1,6 +1,6 @@
 <ng-template let-label="label" let-info="info" let-sort="sort" #headerTpl>
   <span class="datatable-header-cell-wrapper sort-full-width"
-        (click)="$event.target.classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
+        (click)="toHtmlSpanElement($event.target).classList.contains('no-propagation') ? void() : sort()" title="{{ label }}">
     <span class="datatable-header-cell-label draggable">
       {{ label }}
     </span>
@@ -218,9 +218,11 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <span *ngIf="value" title="{{value.status | toQName | iucnStatus }} ({{value.year}})">
-    {{ value.status | toQName | iucnStatus }} ({{ value.year }})
-  </span>
+  <div *ngIf="value" class="iucnStatus" tooltip="{{value.status | toQName | iucnStatus }} - {{ value.status | toQName | translatableIucn | translate }} ({{value.year}})">
+    <div class="iucnStatusAll iucnStatus{{ value.status | toQName | iucnStatus }}" >
+      {{ value.status | toQName | iucnStatus }}
+    </div>
+  </div>
 </ng-template>
 <ng-template let-value="value" #formName>
   <span *ngIf="value" title="value | formName">
@@ -282,6 +284,11 @@
     {{ roundNumber(value) }}
   </span>
 </ng-template>
+<ng-template let-value="value" #percentage>
+  <span *ngIf="value || value === 0" title="{{ (value * 100) | number:'1.0-1' }} %">
+    {{ (value * 100) | number:'1.0-1' }} %
+  </span>
+</ng-template>
 <ng-template let-value="value" #biogeographicalProvince>
   <span *ngIf="value" title="{{value | area:'provinceCode'}} &ndash; {{value | area}}">
     {{ value | toQName | area:'provinceCode' }} &ndash; {{ value| toQName | area }}
@@ -295,5 +302,11 @@
 <ng-template let-value="value" #qualityIcon>
   <span *ngIf="value" [tooltip]="value | label:'warehouse'">
     <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
+  </span>
+</ng-template>
+<ng-template let-value="value" #sensitiveIcon>
+  <span *ngIf="value !== undefined && value !== null" [ngSwitch]="value" class="sensitive">
+    <i *ngSwitchCase="true" class="fa fa-lock" [tooltip]="'result.unit.sensitive.true' | translate"></i>
+    <i *ngSwitchDefault class="fa fa-unlock" [tooltip]="'result.unit.sensitive.false' | translate"></i>
   </span>
 </ng-template>

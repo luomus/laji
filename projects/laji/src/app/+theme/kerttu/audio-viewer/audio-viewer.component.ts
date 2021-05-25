@@ -14,10 +14,11 @@ import {
 } from '@angular/core';
 import { AudioService } from './service/audio.service';
 import { WINDOW } from '@ng-toolkit/universal';
-import {Subscription} from 'rxjs';
-import {AudioViewerMode, IAudioViewerArea} from './models';
-import {AudioPlayer} from './service/audio-player';
-import {AudioViewerUtils} from './service/audio-viewer-utils';
+import { Subscription } from 'rxjs';
+import { AudioViewerMode, IAudioViewerArea } from './models';
+import { AudioPlayer } from './service/audio-player';
+import { AudioViewerUtils } from './service/audio-viewer-utils';
+import { IAudio } from '../models';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -26,27 +27,28 @@ import {AudioViewerUtils} from './service/audio-viewer-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() recording: string;
+  @Input() audio: IAudio;
 
-  @Input() focusArea: IAudioViewerArea;
-  @Input() focusAreaTimePadding: number;
+  @Input() focusArea: IAudioViewerArea; // focus area is drawn with white rectangle to the spectrogram
+  @Input() focusAreaTimePadding: number; // how much recording is shown outside the focus area (if undefined the whole recording is shown)
   @Input() zoomFrequency = false;
 
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
-  @Input() highlightFocusArea = false;
-  @Input() showBrushControl = false;
+  @Input() highlightFocusArea = false; // highlighting darkens the spectrogram background and allows to play the sound only in the focus area
+  @Input() showBrushControl = false; // brush control allows the user to zoom into spectrogram
 
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
 
-  localFocusArea: IAudioViewerArea;
-  brushArea: IAudioViewerArea;
+  localFocusArea: IAudioViewerArea; // focus area in extracted audio
+  localBrushArea: IAudioViewerArea; // brush area in extracted audio
 
   mode: AudioViewerMode = 'default';
   buffer: AudioBuffer;
+  extractedBuffer: AudioBuffer;
   audioPlayer: AudioPlayer;
 
   loading = false;
@@ -68,24 +70,21 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    this.audioPlayer.autoplay = this.autoplay;
-    this.audioPlayer.autoplayRepeat = this.autoplayRepeat;
-
-    if (changes.recording || changes.focusArea || changes.focusAreaTimePadding) {
+    if (changes.audio) {
       this.clear();
       this.setAudioLoading(true);
 
-      if (this.recording) {
-        this.audioSub = this.audioService.getAudioBuffer(this.recording).subscribe((buffer) => {
+      if (this.audio) {
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url).subscribe((buffer) => {
           if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;
           }
-
+          this.buffer = buffer;
           this.setBuffer(buffer);
 
-          if (this.autoplay && changes.recording) {
-            this.audioPlayer.startAutoplay();
+          if (this.autoplay) {
+            this.audioPlayer.startAutoplay(this.autoplayRepeat);
           }
 
           this.cdr.markForCheck();
@@ -93,8 +92,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
           this.onError();
         });
       }
-    } else if (changes.zoomFrequency || changes.highlightFocusArea) {
-      this.audioPlayer.setPlayArea(this.getPlayArea());
+    } else if (!this.hasError) {
+      if (changes.focusArea || changes.focusAreaTimePadding) {
+        this.setBuffer(this.buffer);
+      } else if (changes.zoomFrequency || changes.highlightFocusArea) {
+        this.audioPlayer.setPlayArea(this.getPlayArea());
+      }
     }
   }
 
@@ -112,12 +115,12 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   onSpectrogramBrushEnd(area: IAudioViewerArea) {
     this.mode = 'default';
-    this.brushArea = area;
+    this.localBrushArea = area;
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
   clearBrushArea() {
-    this.brushArea = undefined;
+    this.localBrushArea = undefined;
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
@@ -137,7 +140,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.buffer = undefined;
-    this.brushArea = undefined;
+    this.extractedBuffer = undefined;
+    this.localBrushArea = undefined;
     this.hasError = false;
     this.audioPlayer.clear();
   }
@@ -150,10 +154,11 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       yRange: this.focusArea?.yRange
     };
 
-    buffer = this.audioService.extractSegment(buffer, xRange[0], xRange[1]);
-    this.buffer = buffer;
+    this.extractedBuffer = this.audioService.normaliseAudio(
+      this.audioService.extractSegment(buffer, xRange[0], xRange[1])
+    );
 
-    this.audioPlayer.setBuffer(buffer, this.getPlayArea());
+    this.audioPlayer.setBuffer(this.extractedBuffer, this.getPlayArea());
   }
 
   private areaIsValid(buffer: AudioBuffer, area: IAudioViewerArea): boolean {
@@ -175,8 +180,8 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private getPlayArea(): IAudioViewerArea {
-    if (this.brushArea) {
-      return this.brushArea;
+    if (this.localBrushArea) {
+      return this.localBrushArea;
     }
 
     return {

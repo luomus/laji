@@ -29,6 +29,7 @@ import { Logger } from '../../../shared/logger/logger.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { Form } from '../../../shared/model/Form';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 export interface RowDocument {
   creator: string;
@@ -143,7 +144,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   allRows: RowDocument[] = [];
   visibleRows: RowDocument[];
   filterBy: string;
-  selectionType: string;
+  selectionType: SelectionType;
   selectedLabel: string;
   labelLoading = false;
 
@@ -438,7 +439,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   doLabels() {
     if (this.printState === 'none') {
-      this.selectionType = 'checkbox';
+      this.selectionType = SelectionType.checkbox;
       this.printState = 'select';
       this.resortTable();
     } else if (this.printState === 'select' && !this.labelLoading) {
@@ -463,6 +464,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   updateLabelFilter(key: keyof LabelFilter, value: any) {
     this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(settings => ({...settings, [key]: value})),
+      take(1)
     ).subscribe(settings => this.userService.setUserSetting(this.labelSettingsKey, settings));
   }
 

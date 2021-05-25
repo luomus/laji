@@ -24,7 +24,6 @@ const baseRoutes: Routes = [
   {path: 'taxon', loadChildren: () => import('./+taxonomy/taxonomy.module').then(m => m.TaxonomyModule), data: {
     title: 'navigation.taxonomy'
   }},
-  {path: 'collection', loadChildren: () => import('./+collection/collection.module').then(m => m.CollectionModule), data: {preload: false}},
   {path: 'kartta', loadChildren: () => import('./+map/map.module').then(m => m.MapModule), data: {preload: false, canonical: '/map'}},
   {
     path: 'map', loadChildren: () => import('./+map/map.module').then(m => m.MapModule),
@@ -85,6 +84,7 @@ const routesWithLang: Routes = [
     {path: 'hyonteisopas', redirectTo: '/theme/hyonteisopas', pathMatch: 'full'},
     {path: 'laadunvalvonta', redirectTo: '/about/772', pathMatch: 'full'},
     {path: 'sensitiiviset', redirectTo: '/about/709', pathMatch: 'full'},
+    {path: 'mobiilivihko', redirectTo: '/about/4981', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}

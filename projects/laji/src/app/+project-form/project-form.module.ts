@@ -25,6 +25,7 @@ import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
 import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
+import { DisabledComponent } from './disabled/disabled.component';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-f
     GenerateSpreadsheetComponent,
     TemplatesComponent,
     TermsComponent,
+    DisabledComponent
   ],
   providers: [
     ProjectFormService,

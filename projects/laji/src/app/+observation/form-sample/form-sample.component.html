@@ -27,16 +27,23 @@
     [useFilter]="false"
     [title]="'observation.form.sampleDataset' | translate"
     [options]="[
+        {id: 'http://tun.fi/GX.11257', value: 'Amphibia and Reptilia'},
+        {id: 'http://tun.fi/GX.11756', value: 'Arachnida and Myriapoda'},
         {id: 'http://tun.fi/GX.8216', value: 'Aves'},
         {id: 'http://tun.fi/GX.7575', value: 'Coleoptera'},
-        {id: 'http://tun.fi/GX.8056', value: 'Crustacea'},
         {id: 'http://tun.fi/GX.1910', value: 'Diptera'},
+        {id: 'http://tun.fi/GX.11255', value: 'Ephemeroptera'},
         {id: 'http://tun.fi/GX.6735', value: 'Fungi'},
         {id: 'http://tun.fi/GX.8055', value: 'Hymenoptera'},
         {id: 'http://tun.fi/GX.8215', value: 'Hymenoptera, Apidae'},
+        {id: 'http://tun.fi/GX.8056', value: 'Invertebrata varia'},
+        {id: 'http://tun.fi/GX.11315', value: 'Lepidoptera'},
         {id: 'http://tun.fi/GX.7596', value: 'Lichens'},
+        {id: 'http://tun.fi/GX.11755', value: 'Mammalia'},
         {id: 'http://tun.fi/GX.8057', value: 'Mollusca'},
-        {id: 'http://tun.fi/GX.8515', value: 'Vascular plants'}
+        {id: 'http://tun.fi/GX.11256', value: 'Pisces'},
+        {id: 'http://tun.fi/GX.8515', value: 'Vascular plants'},
+        {id: 'http://tun.fi/GX.11757', value: 'Worms'}
       ]"></laji-select>
 </div>
 
@@ -209,7 +216,7 @@
         [firstOptions]="['ML.206']"
         [placeholder]="'result.gathering.country'"
         name="countryId"
-        [field]="areaType.Country"></laji-metadata-select>
+        [field]="$any(areaType.Country)"></laji-metadata-select>
     </div>
   </div>
   <hr>

@@ -9,10 +9,14 @@
     "projects/laji/src/polyfills.ts"
   ],
   "include": [
-    "projects/laji/src/**/*.d.ts"
+    "projects/laji/src/**/*.d.ts",
+    "node_modules/laji-form/**/*.d.ts"
   ],
   "exclude": [
     "projects/laji/src/test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  }
 }

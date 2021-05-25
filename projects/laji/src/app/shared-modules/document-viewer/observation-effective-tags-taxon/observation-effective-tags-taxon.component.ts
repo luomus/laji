@@ -48,7 +48,7 @@ export class ObservationEffectiveTagsTaxonComponent implements OnInit, OnDestroy
 
   ngOnInit() {
     this.convertEffective$ = from(this.unit?.interpretations?.effectiveTags || []).pipe(
-      concatMap(tag => this.warehouseValueMappingService.getOriginalKey(tag as string)),
+      concatMap(tag => this.warehouseValueMappingService.getSchemaKey(tag as string)),
       toArray(),
       switchMap(keys => this.annotationTags ?
         of(this.annotationTags.filter(item => keys.includes(item.id))) :

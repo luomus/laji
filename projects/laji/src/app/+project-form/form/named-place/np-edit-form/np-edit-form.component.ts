@@ -13,16 +13,16 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { map, mergeMap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlaceComponent } from '../named-place/named-place.component';
-import { NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
+import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
 import { BrowserService } from '../../../../shared/service/browser.service';
 
-interface ViewModel extends NamedPlacesRouteData {
-  description: string;
-}
-
 interface NamedPlacesRouteDataWithPlaceForm extends NamedPlacesRouteData {
   placeForm: Form.SchemaForm;
+}
+
+interface ViewModel extends NamedPlacesRouteDataWithPlaceForm {
+  description: string;
 }
 
 @Component({
@@ -157,19 +157,24 @@ export class NpEditFormComponent implements OnInit {
       if (data.namedPlace) {
         levels++;
       }
+      const queryParams: NamedPlacesQuery = {
+        activeNP: namedPlace?.id || data.namedPlace?.id
+      };
+      if (data.documentForm.options?.namedPlaceOptions?.filterByMunicipality) {
+        queryParams.municipality = namedPlace?.municipality?.join(',') || data.municipality;
+      }
+      if (data.documentForm.options?.namedPlaceOptions?.filterByBirdAssociationArea) {
+        queryParams.birdAssociationArea = namedPlace?.birdAssociationArea?.join(',') || data.birdAssociationArea;
+      }
+      if (data.documentForm.options?.namedPlaceOptions?.filterByTags) {
+        queryParams.tags = (data.tags || []).join(',');
+      }
       this.router.navigate(
         [new Array(levels).fill('..').join('/')],
         {
           relativeTo: this.route,
           replaceUrl: true,
-          queryParams: {
-            municipality: namedPlace?.municipality?.join(',')
-              || data.municipality,
-            birdAssociationArea: namedPlace?.birdAssociationArea?.join(',')
-              || data.birdAssociationArea,
-            tags: (data.tags || []).join(','),
-            activeNP: namedPlace?.id || data.namedPlace?.id
-          }
+          queryParams
         }
       );
     });

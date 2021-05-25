@@ -3,7 +3,7 @@
  */
 import { Document } from './Document';
 import { Annotation } from './Annotation';
-import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
+import { MultiLanguage } from './MultiLanguage';
 
 export namespace Form {
   export enum PrintType {
@@ -70,6 +70,7 @@ export namespace Form {
     hasAdmins?: boolean;
     dataset?: boolean;
     viewerType?: ViewerType;
+    disabled?: boolean;
   }
 
   export interface FormOptions extends ListOptions {
@@ -131,7 +132,6 @@ export namespace Form {
       listLabel?: string;
       listColumnNameMapping?: {[key: string]: string};
       printLabel?: string;
-      formNavLabel?: string;
       reservationUntil?: string;
       showLegendList?: boolean;
       infoFields?: string[];
@@ -154,6 +154,7 @@ export namespace Form {
       birdAssociationAreaHelp?: string;
       documentViewerZoomToData?: boolean;
       listColumnsMultisort?: boolean;
+      mapCluster?: boolean;
     };
   }
 

@@ -1,0 +1,16 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+    <tbody>
+    <tr class="title">
+      <th class="no-border-top"></th>
+      <th class="no-border-top">{{ 'iucn.regional.regionallyThreatened' | translate }}</th>
+      <th class="no-border-top" *ngFor="let area of areas">{{ area.shortLabel }}</th>
+    </tr>
+    <tr [class.link]="data.group" (click)="rowClick(data.group)" *ngFor="let data of _data; let f=first; let l=last" [class.title]="f || l">
+      <th>{{ data.species }}</th>
+      <td>{{ data.count }}</td>
+      <td *ngFor="let area of areas">{{ data[area.id] || 0 }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

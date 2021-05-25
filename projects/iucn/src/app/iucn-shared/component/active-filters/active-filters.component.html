@@ -1,0 +1,9 @@
+<p id="enabled-filters" *ngIf="queryItems && queryItems.length > 0">
+  {{ 'iucn.results.activeFilters' | translate }}:
+  <ng-container *ngFor="let item of queryItems; let l=last">
+    <ng-container *ngIf="item.label">
+      {{ item.label | translate }}:
+    </ng-container>
+    {{ item.value | label | values:item.separator }}<ng-container *ngIf="!l">; </ng-container>
+  </ng-container>
+</p>

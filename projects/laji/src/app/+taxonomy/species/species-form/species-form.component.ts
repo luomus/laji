@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesFormQuery } from './species-form-query.interface';
+import { Util } from '../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-species-form',
@@ -76,11 +77,13 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   onTaxonSelect(key: string) {
+    this.formQuery.taxon = key;
     this.searchQuery.query.target = key;
     this.onQueryChange();
   }
 
-  onInvasiveChange(id) {
+  onInvasiveChange(ids: string[]) {
+    const id = Util.arrayDiff(this.invasiveSelected, ids)[0];
     if (id === 'onlyInvasive') {
       this.onInvasiveToggle();
     } else if (id === 'onlyNonInvasive') {
@@ -171,7 +174,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onQueryChange() {
+  onQueryChange(updateFormQuery?: boolean) {
+    if (updateFormQuery) {
+      this.queryToFormQuery();
+    }
     this.onSubmit();
   }
 

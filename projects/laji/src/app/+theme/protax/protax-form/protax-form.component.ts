@@ -1,6 +1,7 @@
-import {Component, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
-import {ProtaxModelEnum} from '../models';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { ProtaxModelEnum } from '../models';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 
 enum Tab {
   textArea,
@@ -13,7 +14,12 @@ enum Tab {
   styleUrls: ['./protax-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProtaxFormComponent {
+export class ProtaxFormComponent implements OnChanges {
+  @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
+
+  @Input() loading = false;
+  @Input() downloadProgress: number;
+
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
 
@@ -23,20 +29,32 @@ export class ProtaxFormComponent {
   activeTab = Tab.textArea;
 
   protaxModels = ProtaxModelEnum;
+  toHtmlInputElement = toHtmlInputElement;
 
   @Output() submit = new EventEmitter<FormData>();
 
   constructor(
-    private translate: TranslateService
+    private dialogService: DialogService
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.loading && changes.loading.previousValue) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
 
   updateSequenceFile(files: FileList) {
     this.sequenceFile = files.item(0);
   }
 
   submitForm() {
+    if (this.probabilityThreshold == null || this.probabilityThreshold < 0 || this.probabilityThreshold > 1) {
+      this.dialogService.alert('theme.protax.invalidThreshold');
+      return;
+    }
+
     if ((this.activeTab === Tab.textArea && !this.sequenceData) || (this.activeTab === Tab.fileSelect && !this.sequenceFile)) {
-      alert(this.translate.instant('theme.protax.noSequence'));
+      this.dialogService.alert('theme.protax.noSequence');
       return;
     }
 

@@ -12,16 +12,16 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import {Selection, select, event, clientPoint} from 'd3-selection';
-import {ScaleLinear, scaleLinear} from 'd3-scale';
+import { Selection, select, event, clientPoint } from 'd3-selection';
+import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import {Subscription} from 'rxjs';
-import {delay} from 'rxjs/operators';
-import {SpectrogramService} from '../service/spectrogram.service';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { SpectrogramService } from '../service/spectrogram.service';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
-import {AudioViewerMode, IAudioViewerArea} from '../models';
-import {TranslateService} from '@ngx-translate/core';
+import { AudioViewerMode, IAudioViewerArea } from '../models';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -77,12 +77,6 @@ export class AudioSpectrogramComponent implements OnChanges {
     const canvas = this.spectrogramRef.nativeElement;
     if (this.imageData) {
       const elementWidth = this.containerRef.nativeElement.offsetWidth - this.margin.left - 20;
-      if (elementWidth < 0) {
-        setTimeout(() => {
-          this.onResize();
-        }, 10);
-        return;
-      }
       const elementHeight = this.imageData.height;
       canvas.style.width = elementWidth + 'px';
       canvas.style.height = elementHeight + 'px';
@@ -248,7 +242,7 @@ export class AudioSpectrogramComponent implements OnChanges {
       const scrollLineDrag = drag()
         .on('start', () => { this.dragStart.emit(); })
         .on('drag', () => {
-          this.currentTime = this.getTimeFromPosition(event.x - this.margin.left, onlyFocusAreaClickable);
+          this.currentTime = this.getTimeFromPosition(event.x, onlyFocusAreaClickable);
           this.updateScrollLinePosition();
         })
         .on('end', () => { this.dragEnd.emit(this.currentTime); });

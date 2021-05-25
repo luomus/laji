@@ -39,7 +39,7 @@ export class MappingService {
     'string': {}
   };
 
-  private colMapping: IColMap;
+  private colMapping?: IColMap;
 
   private userColMappings: IColMap = {};
   private userValueMappings: IValueMap = {};
@@ -86,7 +86,7 @@ export class MappingService {
   ) { }
 
 
-  rawValueToArray(value, field: IFormField) {
+  rawValueToArray(value: unknown, field: IFormField) {
     if (typeof value === 'string') {
       value = value.trim();
     }
@@ -293,52 +293,32 @@ export class MappingService {
     return null;
   }
 
-  mapInformalTaxonGroupId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MVL\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapInformalTaxonGroupId(value: unknown): string|null {
+    return this.pickValue(value, /(MVL\.[0-9]+)/);
   }
 
-  mapTaxonId(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MX\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapTaxonId(value: unknown): string|null {
+    return this.pickValue(value, /(MX\.[0-9]+)/);
   }
 
-  mapNamedPlaceID(value) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MNP\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
-    }
-    return null;
+  mapNamedPlaceID(value: unknown): string|null {
+    return this.pickValue(value, /(MNP\.[0-9]+)/);
   }
 
-  mapPerson(value, allowUnMapped = false) {
-    if (typeof value === 'string') {
-      const match = value.match(/(MA\.[0-9]+)/);
-      if (match && match[1]) {
-        return match[1];
-      }
+  mapPerson(value: unknown, allowUnMapped = false): string|null {
+    const result = this.pickValue(value, /(MA\.[0-9]+)/);
+    if (result) {
+      return result;
     }
     if (allowUnMapped) {
-      return value;
+      return String(value || '');
     }
     return null;
   }
 
-  mapDateOptionalTime(value) {
-    if (typeof value === 'string') {
-      const parts = value.split(/[\s,T]+/).filter(v => !!v);
+  mapDateOptionalTime(value: unknown): string {
+    if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]*[0-9-.:+Z]*$/)) {
+      const parts = value.split(/[\s,T]+/);
       const dateParts = parts[0].split(/[.\-]/);
       if (dateParts.length === 3) {
         if (dateParts[0].length === 4) {
@@ -347,22 +327,18 @@ export class MappingService {
           parts[0] = dateParts.reverse().map(v => Util.addLeadingZero(v)).join('-');
         }
       }
-      if (parts.length > 2) {
-        const first = parts.shift();
-
-        return `${first}T${parts.join('')}`;
-      }
       return parts.join('T');
     } else if (value instanceof Date) {
-      if (value.getHours() === 23 && value.getMinutes() === 59 && value.getSeconds() === 11) {
-        const tmpDate = new Date(value);
-        tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
-        return tmpDate.toISOString().substr(0, 10);
+      if (
+        this.matchTime(value, 0, 0, 0) || // Excel from Mac
+        this.matchTime(value, 23, 59, 11) // Linux & Windows
+      ) {
+        return this.getDate(value);
       }
       return value.toISOString();
     }
 
-    return value;
+    return String(value || '');
   }
 
   mapKeywords(value) {
@@ -424,6 +400,26 @@ export class MappingService {
       targetValue = [targetValue];
     }
     return targetValue;
+  }
+
+  private matchTime(test: Date, hour: number, minutes: number, seconds: number): boolean {
+    return test.getHours() === hour && test.getMinutes() === minutes && test.getSeconds() === seconds;
+  }
+
+  private getDate(value: Date): string {
+    const tmpDate = new Date(value);
+    tmpDate.setMinutes(value.getMinutes() - (value.getTimezoneOffset() - 1));
+    return tmpDate.toISOString().substr(0, 10);
+  }
+
+  private pickValue(value: unknown, pickRegEx: RegExp) {
+    if (typeof value === 'string') {
+      const match = value.match(pickRegEx);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return null;
   }
 
   private analyzeGeometry(value: any) {

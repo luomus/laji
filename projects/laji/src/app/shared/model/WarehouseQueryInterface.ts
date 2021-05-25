@@ -231,6 +231,7 @@ export interface WarehouseQueryInterface {
   formId?: string;
   reliability?: Array<string>;
   collectionAndRecordQuality?: Array<string>;
+  plantStatusCode?: Array<string>;
 }
 
 

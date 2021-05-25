@@ -1,7 +1,14 @@
 <div ng-template #collectionsModal>
-  <div class="modal-header"> <!--*ngIf="modalTitle">-->
+  <div class="modal-header">
+    <div class="modal-title pull-left">
+      <div class="vertical-align">
+        <h4>{{modalTitle}}</h4>
+        <laji-info class="vertical-align pull-left" [placement]="'bottom'">
+          <span [innerHtml]="'observation.info.collection.modal' | translate" lajiRouteTransformer></span>
+        </laji-info>
+      </div>
+    </div>
     <button type="button" class="close" (click)="confirm()">&times;</button>
-    <h4 class="modal-title pull-left">{{modalTitle}}</h4>
   </div>
   <div class="modal-body">
     <div class="container-flex">
@@ -9,16 +16,35 @@
         <div class="row">
           <div class="col-md-8">
             <h5>{{browseTitle}}</h5>
-            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange($event.target.value)"/>
+            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange(toHtmlInputElement($event.target).value)"/>
             <div class="scrollable-tree">
               <tree-root
                 #tree
+                [focused]="true"
                 [nodes]="collectionsTree"
                 [options]="options"
                 (initialized)="treeInit()"
               >
-                <ng-template #treeNodeTemplate let-node>
-                  <span [class]="node.getClass()">{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
+                <ng-template #treeNodeWrapperTemplate let-node>
+                  <div class="node-wrapper">
+                    <tree-node-expander [node]="node"></tree-node-expander>
+                    <div [class]="node.getClass()" [style.padding-left]="node.getNodePadding()"
+                      [class.node-content-wrapper-active]="node.isActive"
+                      [class.node-content-wrapper-focused]="node.isFocused"
+                      (click)="node.mouseAction('click', $event)">
+                      <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
+                      <span>{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
+                      <a
+                        id="collectionLink"
+                        [tooltip]="'openCollectionPage' | translate"
+                        container="body"
+                        target="_blank" [href]="node.data.id | toFullUri">
+                        <i 
+                          id="collectionLink"
+                          class="glyphicon glyphicon-eye-open collection-link"></i>
+                      </a>
+                    </div>
+                  </div>
                 </ng-template>
               </tree-root>
             </div>
@@ -26,7 +52,7 @@
           <div class="col-md-4">
             <h5>{{selectedTitle}}</h5>
             <div class="scrollable-selection-list">
-              <laji-selected-collections [selectedOptions]='selectedOptions' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
+              <laji-selected-collections [selectedOptions]="selectedOptions" (selectedOptionsChange)="deselect($event)"></laji-selected-collections>
             </div>
           </div>
         </div>
