@@ -21,7 +21,7 @@ export class ErrorListComponent {
   set errors(data: unknown) {
     const errors = [];
     if (typeof data === 'object' && !Array.isArray(data)) {
-      if (Util.hasOwnProperty(data, status)) {
+      if (Util.hasOwnProperty(data, 'status')) {
         switch (data.status) {
           case 403:
             errors.push({
@@ -33,7 +33,7 @@ export class ErrorListComponent {
           default:
             errors.push({
               field: 'id',
-              errors: [data.statusText || this.translateService.instant('haseka.form.genericError')]
+              errors: [Util.hasOwnProperty(data, 'statusText') ? data.statusText : this.translateService.instant('haseka.form.genericError')]
             });
         }
       } else {
