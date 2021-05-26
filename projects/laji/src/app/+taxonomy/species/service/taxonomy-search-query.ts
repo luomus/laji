@@ -8,7 +8,8 @@ import { SearchQueryInterface } from '../../../shared-modules/search-filters/sea
 export class TaxonomySearchQuery implements SearchQueryInterface {
   private static readonly defaultFields: string[] = [
     'vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
-    'latestRedListStatusFinland', 'administrativeStatuses', 'synonymNames'
+    'latestRedListStatusFinland', 'administrativeStatuses',
+    'synonymNames'
   ];
 
   public queryType = 'taxonomy';

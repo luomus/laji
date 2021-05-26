@@ -24,6 +24,7 @@
                     [listColumnNameMapping]="_documentForm.options?.namedPlaceOptions?.listColumnNameMapping"
                     [activeNP]="findNPIndexById(_activeNP)"
                     [formRights]="formRights"
+                    [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
                     (activePlaceChange)="onActivePlaceChange($event)"
       ></laji-np-list>
     </div>

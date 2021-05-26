@@ -87,6 +87,7 @@ export class BaseDataService {
 
   private readonly query: QueryRef<IBaseData>;
   private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
+  private readonly baseData$ = this.baseDataSub.asObservable();
 
   constructor(
     private graphQLService: GraphQLService,
@@ -99,7 +100,7 @@ export class BaseDataService {
     });
 
     this.translationService.onLangChange.pipe(
-      map(() => this.baseDataSub.next(null))
+      map(() => this.baseDataSub.next(undefined))
     ).subscribe(() => this.query.refetch().then());
 
     this.query.valueChanges.pipe(
@@ -108,7 +109,7 @@ export class BaseDataService {
   }
 
   getBaseData(): Observable<IBaseData> {
-    return this.baseDataSub.asObservable().pipe(
+    return this.baseData$.pipe(
       filter(data => !!data)
     );
   }

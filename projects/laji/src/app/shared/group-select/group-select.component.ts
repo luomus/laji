@@ -13,6 +13,7 @@ import { PagedResult } from '../model/PagedResult';
 // tslint:disable-next-line:directive-class-suffix
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
+  @Input() rootGroups: string[];
   @Output() select = new EventEmitter();
 
   lang: string;
@@ -63,7 +64,7 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     this.currentValue = newValue;
     (newValue ?
       this.getChildren(newValue, this.lang) :
-      this.findRoots(this.lang)).pipe(
+      this.getRoot(this.lang)).pipe(
       switchMap(data => {
         return (!data.results || data.results.length === 0) ?
           this.getWithSiblings(newValue, this.lang) :
@@ -155,7 +156,15 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     }
   }
 
+  getRoot(lang): Observable<PagedResult<T>> {
+    if (this.rootGroups) {
+      return this.findByIds(this.rootGroups, lang);
+    }
+    return this.findRoots(lang);
+  }
+
   abstract findById(groupId, lang): Observable<T>;
+  abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
   abstract getWithSiblings(groupId, lang): Observable<PagedResult<T>>;
   abstract getChildren(groupId, lang): Observable<PagedResult<T>>;
   abstract findRoots(lang): Observable<PagedResult<T>>;

@@ -19,6 +19,23 @@ img.quality {
   display: block;
   margin: auto;
 }
+span.sensitive {
+  text-align: center;
+}
+.fa-lock {
+  font-size: 15px;
+  color: red;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
+.fa-unlock {
+  font-size: 15px;
+  color: gray;
+  object-fit: contain;
+  display: block;
+  margin: auto;
+}
 .annotation-positive {
   color: #4cae4c;
 }
@@ -31,7 +48,7 @@ img.quality {
 :host ::ng-deep .habitat ul {
   margin:0;
   padding:0;
-  list-style:none
+  list-style:none;
 }
 
 .tag {
@@ -40,16 +57,59 @@ img.quality {
 
 div.annotation-marker {
   margin-bottom: 0px;
-  border-radius: 0px; 
-  padding: 0; 
+  border-radius: 0px;
+  padding: 0;
   background-color: transparent;
   border: 0;
   margin-right: 5px;
 }
 
 .title {
-  display: inline; 
+  display: inline;
   vertical-align: super;
 }
 
-
+div.iucnStatus {
+  display: flex;
+  justify-content: center;
+}
+div.iucnStatusAll {
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div.iucnStatusRE {
+  background-color: #000;
+  color: white;
+}
+div.iucnStatusCR {
+  background-color: #600;
+  color: white;
+}
+div.iucnStatusEN {
+  background-color: #f00;
+  color: white;
+}
+div.iucnStatusVU {
+  background-color: #e65c00;
+  color: white;
+}
+div.iucnStatusDD {
+  background-color: #bfbfbf;
+}
+div.iucnStatusNT {
+  background-color: #f2da30;
+}
+div.iucnStatusLC {
+  background-color: #8fcc00;
+}
+div.iucnStatusNA {
+  border: 2px solid lightgray;
+}
+div.iucnStatusNE {
+  border: 2px solid lightgray;
+}

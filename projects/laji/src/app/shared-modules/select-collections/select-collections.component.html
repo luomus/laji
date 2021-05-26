@@ -4,7 +4,7 @@
     <lu-button role="secondary" (click)="openModal()">
       {{modalButtonLabel}}
     </lu-button>
-    <ng-container *ngIf="selectedOptions?.length">
+    <ng-container *ngIf="includedOptions?.length !== 0 || excludedOptions?.length !== 0">
       <ng-container *ngIf="collections$ | async; let collections; else loading">
         <laji-selected-collections [selectedOptions]='collections' (selectedOptionsChange)='deselect($event)'></laji-selected-collections>
       </ng-container>

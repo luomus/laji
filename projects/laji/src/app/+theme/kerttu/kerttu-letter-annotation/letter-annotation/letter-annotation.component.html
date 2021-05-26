@@ -33,13 +33,14 @@
         <laji-info [html]="'theme.kerttu.info.areLettersSame' | translate"></laji-info>
       </h3>
       <div *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]" id="letterAnnotationButtons" class="d-inline">
-        <lu-button
+        <button
+          class="btn btn-lg btn-success"
+          [ngClass]="{'btn-success': a === annotation.yes, 'btn-danger': a === annotation.no, 'btn-default': a === annotation.unsure}"
           [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
-          [role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : undefined"
           (click)="onAnnotationChange(a)"
         >
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-        </lu-button>
+        </button>
       </div>
     </div>
 
@@ -70,7 +71,7 @@
           [switch-base-class]="'bootstrap-switch'">
         </bSwitch>
       </div>
-      <div style="vertical-align: bottom; display: block; margin-top: 5px">
+      <div style="display: block; margin-top: 5px">
         <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
       </div>

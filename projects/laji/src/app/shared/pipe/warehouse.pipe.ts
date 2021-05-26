@@ -15,7 +15,7 @@ export class WarehousePipe implements PipeTransform {
   ) {}
 
   transform(value: string): string {
-    this.warehouseService.getOriginalKey(value).subscribe((v) => {
+    this.warehouseService.getSchemaKey(value).subscribe((v) => {
         this.value = v;
         this.cdr.markForCheck();
     });

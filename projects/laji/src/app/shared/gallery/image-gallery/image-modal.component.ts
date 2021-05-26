@@ -10,7 +10,8 @@ import {
   Output,
   Renderer2,
   ViewContainerRef,
-  HostListener
+  HostListener,
+  OnChanges
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
@@ -61,7 +62,7 @@ import { QueryParamsHandling } from '@angular/router';
   templateUrl: './image-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ImageModalComponent implements OnInit, OnDestroy {
+export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public opened = false;
   public img: Image;
   public loading = false;
@@ -104,13 +105,16 @@ export class ImageModalComponent implements OnInit, OnDestroy {
     } else {
       this.showRepeat = true;
     }
+  }
 
+  ngOnChanges() {
     if (this.modalImages && this.modalImages.length > 0) {
       this.tmpImg = {
         mainURL: this.modalImages[0].fullURL,
         index: 0
       };
     }
+
   }
 
   ngOnDestroy() {
