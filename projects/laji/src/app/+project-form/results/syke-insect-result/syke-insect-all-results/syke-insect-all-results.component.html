@@ -1,0 +1,49 @@
+<h3>
+    {{ 'sykeInsect.stats.allResults' | translate }}
+    <span *ngIf="fromYear">
+      {{ fromMonth | translate }}
+      {{ fromYear }}
+    </span>
+  </h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        {{ 'nafiBumblee.stats.times' | translate }}
+        <br>
+        <a [routerLink] [queryParams]="{tab: 'species', time: 'all'}">{{ 'theme.filterAllNoYears' | translate }}</a> |
+        <a [routerLink] [queryParams]="{tab: 'species', time: currentYear}">{{ 'theme.filterCurrentYear' | translate }}</a> |
+        <a [routerLink] [queryParams]="{tab: 'species', time: year}">{{ 'theme.filterLastYear' | translate }}</a>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-5 col-sm-push-7 map-col">
+      <laji-ykj-map
+        (gridClick)="showGridObservations($event)"
+        [useStatistics]="true"
+        [taxon]="taxon$ | async"
+        [height]="'calc(80vh - 50px)'"
+        [individualBreak]="[0, null, 1, 5, 10, 50, 100, 500]"
+        [individualLabel]="['0', '1+', '1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
+        [countBreak]="[1, 5, 10, 50, 100, 500]"
+        [countLabel]="['1-4', '5-9', '10-49', '50-99', '100-499', '500-']"
+        [query]="mapQuery">
+      </laji-ykj-map>
+    </div>
+    <div class="col-sm-7 col-sm-pull-5 table-col">
+      <laji-theme-result
+              *ngIf="query && !query.ykj10kmCenter"
+              (nameClick)="navigate($event)"
+              [useStatistics]="true"
+              [query]="resultQuery"
+              [height]="'calc(80vh - 50px)'"
+      ></laji-theme-result>
+      <laji-theme-observation-list
+              *ngIf="query && query.ykj10kmCenter"
+              (listClose)="closeList()"
+              [query]="query"
+              [height]="'calc(80vh - 50px)'"
+      ></laji-theme-observation-list>
+    </div>
+  </div>
+  

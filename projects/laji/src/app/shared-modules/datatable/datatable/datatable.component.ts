@@ -174,6 +174,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       }
       return column;
     });
+
   }
 
   @Input() set preselectedRowIndex(index: number) {
@@ -224,6 +225,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       this.updateFilteredRows();
       this.changeDetectorRef.markForCheck();
     });
+
   }
 
   ngAfterViewInit() {
