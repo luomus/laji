@@ -69,6 +69,11 @@ describe('Tools page', () => {
     });
 
     it('should be able send each row as document', async (done) => {
+      if (1 === 1) {
+        console.log('Skipped since this option is no longer available for the user');
+        done();
+        return;
+      }
       await spreadsheet.selectEachRowAsOwnDocument();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(1, 'There should be a warning that the row is skipped');
@@ -77,6 +82,11 @@ describe('Tools page', () => {
     });
 
     it('should be able send each row as document even with no count', async (done) => {
+      if (1 === 1) {
+        console.log('Skipped since this option is no longer available for the user');
+        done();
+        return;
+      }
       await spreadsheet.selectRowsWithoutNumber();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be a warning that the row is skipped');

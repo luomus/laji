@@ -27,27 +27,13 @@ $btn-border-radius: 5px !default;
   }
 }
 
-@mixin btnSecondaryTheme($shadowColor, $shadowSpread, $activeBgColor, $color, $activeColor) {
-  background-color: $neutral-1;
-  color: $color;
-  box-shadow: 0 1px 3px $shadowSpread rgba($shadowColor, .4), inset 0 1px 6px rgba($shadowColor, 0);
-  &:hover, &:focus {
-    background-color: $activeBgColor;
-    color: $color;
-  }
-  &:active, &.active {
-    background-color: $activeBgColor;
-    color: $activeColor;
-    box-shadow: 0 0px 0px 0px rgba($shadowColor, 0.3), inset 0 1px 6px rgba($shadowColor, 0.2);
-  }
-}
-
 @mixin btnPrimaryTheme($bgColor, $bgHueShift, $textColor, $shadowColor) {
   background: linear-gradient(to bottom right, adjust-hue($bgColor, $bgHueShift), darken($bgColor, 5%));
   color: $textColor;
-  box-shadow: 0 1px 3px 1px rgba($shadowColor, .4), inset 0 0 0 rgba($shadowColor, 0);
+  box-shadow: 0 1px 2px 0px rgba($shadowColor, .4), inset 0 0 0 rgba($shadowColor, 0);
   &:hover {
     background: linear-gradient(to bottom right, darken(adjust-hue($bgColor, $bgHueShift), 5%), darken(darken($bgColor, 5%), 5%));
+    color: $textColor;
   }
   &:active, &.active {
     color: $primary-2;
@@ -100,7 +86,19 @@ $btn-border-radius: 5px !default;
 */
 
 @mixin btnSecondary {
-  @include btnSecondaryTheme($neutral-9, 0px, $neutral-3, $neutral-7, $neutral-6);
+  background-color: $neutral-1;
+  color: $neutral-7;
+  box-shadow: 0 1px 2px 0px rgba($neutral-9, .3), inset 0 1px 6px rgba($neutral-9, 0);
+  &:hover, &:focus {
+    background-color: $neutral-3;
+    color: $neutral-7;
+  }
+  &:active, &.active {
+    background-color: $neutral-3;
+    color: $neutral-6;
+    box-shadow: 0 0px 0px 0px rgba($neutral-9, 0), inset 0 1px 4px rgba($neutral-9, 0.2), inset 0 0 2px 0px rgba($neutral-9, .3);
+    transform: translateY(1px);
+  }
 }
 
 @mixin btnPrimary {

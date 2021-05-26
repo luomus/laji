@@ -6,10 +6,10 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       collectionId: collectionId ? [collectionId] : undefined,
       superRecordBasis: ['PRESERVED_SPECIMEN'],
-      sourceId: ['KE.3', 'KE.167'],
+      collectionAndRecordQuality: [
+        'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;'],
       typeSpecimen: typeSpecimen,
       includeNonValidTaxa: false,
-      reliability: ['RELIABLE', 'UNDEFINED'],
       cache: true,
       needsCheck: false
     };

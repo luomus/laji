@@ -218,9 +218,11 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <span *ngIf="value" title="{{value.status | toQName | iucnStatus }} ({{value.year}})">
-    {{ value.status | toQName | iucnStatus }} ({{ value.year }})
-  </span>
+  <div *ngIf="value" class="iucnStatus" tooltip="{{value.status | toQName | iucnStatus }} - {{ value.status | toQName | translatableIucn | translate }} ({{value.year}})">
+    <div class="iucnStatusAll iucnStatus{{ value.status | toQName | iucnStatus }}" >
+      {{ value.status | toQName | iucnStatus }}
+    </div>
+  </div>
 </ng-template>
 <ng-template let-value="value" #formName>
   <span *ngIf="value" title="value | formName">
@@ -300,5 +302,11 @@
 <ng-template let-value="value" #qualityIcon>
   <span *ngIf="value" [tooltip]="value | label:'warehouse'">
     <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
+  </span>
+</ng-template>
+<ng-template let-value="value" #sensitiveIcon>
+  <span *ngIf="value !== undefined && value !== null" [ngSwitch]="value" class="sensitive">
+    <i *ngSwitchCase="true" class="fa fa-lock" [tooltip]="'result.unit.sensitive.true' | translate"></i>
+    <i *ngSwitchDefault class="fa fa-unlock" [tooltip]="'result.unit.sensitive.false' | translate"></i>
   </span>
 </ng-template>

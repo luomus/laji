@@ -1,0 +1,22 @@
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="'status'">
+    <laji-red-list-regional-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></laji-red-list-regional-status>
+  </ng-container>
+  <ng-container *ngSwitchCase="'species'">
+    <laji-species-table
+      [species]="speciesQuery$ | async"
+      [defaultFields]="defaultSpeciesFields"
+      [allFields]="speciesAllFields"
+      [selected]="selectedSpeciesFields"
+      [speciesPageSize]="speciesPageSize"
+      [speciesPage]="speciesPage"
+      [speciesCount]="speciesCount"
+      [showTaxonLink]="false"
+      [year]="statusEvaluationYear"
+      [downloadLoading]="downloadLoading"
+      (pageChange)="changeSpeciesPage($event)"
+      (fieldsChange)="newFields($event)"
+      (download)="download($event)"
+    ></laji-species-table>
+  </ng-container>
+</ng-container>

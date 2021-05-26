@@ -32,11 +32,19 @@ import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { routing } from './results.routes';
 import { WbcResultService } from './wbc-result/wbc-result.service';
+import { SykeInsectResultService } from './syke-insect-result/syke-insect-result.service';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ObservationTableColumnService } from '../../shared-modules/datatable/service/observation-table-column.service';
 import { NafiResultComponent } from './nafi-result/nafi-result.component';
 import { ResultService } from './common/service/result.service';
 import { NamedPlaceModule } from '../form/named-place/named-place.module';
+import { SykeInsectResultComponent } from './syke-insect-result/syke-insect-result.component';
+import { SykeInsectRoutesComponent } from './syke-insect-result/syke-insect-routes/syke-insect-routes.component';
+import { SykeInsectRoutesListComponent } from './syke-insect-result/syke-insect-routes/syke-insect-routes-list/syke-insect-routes-list.component';
+import { SykeInsectResultFiltersComponent } from './syke-insect-result/syke-insect-result-filters/syke-insect-result-filters.component';
+import { SykeInsectRouteComponent } from './syke-insect-result/syke-insect-route/syke-insect-route.component';
+import { SykeInsectRouteTableComponent } from './syke-insect-result/syke-insect-route-table/syke-insect-route-table.component';
+import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-all-results/syke-insect-all-results.component';
 
 @NgModule({
   imports: [
@@ -75,10 +83,18 @@ import { NamedPlaceModule } from '../form/named-place/named-place.module';
     WbcRoutesMapComponent,
     ThemeResultComponent,
     ThemeObservationListComponent,
-    NafiResultComponent
+    NafiResultComponent,
+    SykeInsectResultComponent,
+    SykeInsectRoutesComponent,
+    SykeInsectRoutesListComponent,
+    SykeInsectResultFiltersComponent,
+    SykeInsectRouteComponent,
+    SykeInsectRouteTableComponent,
+    SykeInsectAllResultsComponent
   ],
   providers: [
     WbcResultService,
+    SykeInsectResultService,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
     ResultService
   ]

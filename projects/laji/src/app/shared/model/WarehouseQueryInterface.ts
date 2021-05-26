@@ -213,6 +213,7 @@ export interface WarehouseQueryInterface {
   typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
+  butterflyAssociationAreaId?: Array<string>;
   collectionQuality?: Array<string>;
   secureLevel?: Array<string>;
   includeSubCollections?: boolean;
@@ -230,6 +231,7 @@ export interface WarehouseQueryInterface {
   formId?: string;
   reliability?: Array<string>;
   collectionAndRecordQuality?: Array<string>;
+  plantStatusCode?: Array<string>;
 }
 
 

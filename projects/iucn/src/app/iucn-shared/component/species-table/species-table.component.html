@@ -1,0 +1,28 @@
+<div class="pull-right" style="margin-left: 5px">
+  <laji-select-fields-modal-gear
+    [btnClass]="'btn btn-sm btn-default pull-right'"
+    [allSelectableFields]="allFields"
+    [selectedFields]="selectedFields"
+    [defaultFields]="defaultFields"
+    [labelOpen]="'iucn.results.selectColumns' | translate"
+    [labelClose]="'close' | translate"
+    [labelReset]="'reset' | translate"
+    [modalTitle]="'iucn.results.selectListColumns' | translate"
+    [allSelectableFieldsTitle]="'iucn.results.fieldsAll' | translate"
+    [selectedFieldsTitle]="'iucn.results.fieldsSelected' | translate"
+    (selectedFieldsChange)="newFields($event)"
+  ></laji-select-fields-modal-gear>
+</div>
+<div class="pull-right">
+  <laji-download
+    [downloadLoading]="downloadLoading"
+    (download)="onDownload($event)">
+  <span>
+    {{ 'species.header.download' | translate }}
+    <i class="glyphicon glyphicon-download-alt"></i>
+  </span>
+  </laji-download>
+</div>
+<laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
+<laji-red-list-species [fields]="selectedFields" [species]="species" [showTaxonLink]="showTaxonLink" [taxonLinkQueryParams]="taxonLinkQueryParams"></laji-red-list-species>
+<laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
