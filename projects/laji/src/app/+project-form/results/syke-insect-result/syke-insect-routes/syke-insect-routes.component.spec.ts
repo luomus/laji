@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NafiBumblebeeRouteComponent } from './nafi-bumblebee-route.component';
+import { SykeInsectRoutesComponent } from './syke-insect-routes.component';
 
-describe('NafiBumblebeeRouteComponent', () => {
-  let component: NafiBumblebeeRouteComponent;
-  let fixture: ComponentFixture<NafiBumblebeeRouteComponent>;
+describe('SykeInsectRoutesComponent', () => {
+  let component: SykeInsectRoutesComponent;
+  let fixture: ComponentFixture<SykeInsectRoutesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NafiBumblebeeRouteComponent ]
+      declarations: [ SykeInsectRoutesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NafiBumblebeeRouteComponent);
+    fixture = TestBed.createComponent(SykeInsectRoutesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

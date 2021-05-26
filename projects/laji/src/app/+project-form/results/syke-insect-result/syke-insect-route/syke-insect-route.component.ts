@@ -1,19 +1,16 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SEASON, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
+import { SykeInsectResultService } from '../syke-insect-result.service';
 import { DocumentViewerFacade } from '../../../../shared-modules/document-viewer/document-viewer.facade';
-import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
-import { TranslateService } from '@ngx-translate/core';
-
 
 @Component({
-  selector: 'laji-nafi-bumblebee-route',
-  templateUrl: './nafi-bumblebee-route.component.html',
-  styleUrls: ['./nafi-bumblebee-route.component.scss'],
+  selector: 'laji-syke-insect-route',
+  templateUrl: './syke-insect-route.component.html',
+  styleUrls: ['./syke-insect-route.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
+export class SykeInsectRouteComponent implements OnInit, OnDestroy {
 
   @Input() collectionId: string;
 
@@ -25,12 +22,6 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}
   ];
-
-  activeIndex = 0;
-  loadedTabs = new LoadedElementsStore(['list', 'map']);
-
-  loadingCensusList = false;
-  loadingObservationStats = false;
 
   date: string;
   year: number;
@@ -47,11 +38,10 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   private routeSub: Subscription;
 
   constructor(
-    private resultService: NafiBumblebeeResultService,
+    private resultService: SykeInsectResultService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
     private documentViewerFacade: DocumentViewerFacade,
-    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -107,12 +97,10 @@ export class NafiBumblebeeRouteComponent implements OnInit, OnDestroy {
   }
 
   censusListForRoute(routeId) {
-    this.loadingCensusList = true;
     this.resultService.getUnitStats(this.activeYear, this.activeDate, routeId, this.activeDate ? true : typeof this.onlySections === 'string'
     ? JSON.parse(this.onlySections) : this.onlySections, this.collectionId)
       .subscribe(censuses => {
         this.observationStats = censuses;
-        this.loadingCensusList = false;
         this.selected = [...this.defaultSelected, this.onlySections ?
           'gathering.gatheringSection' : 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day'];
         this.sorts = [{prop: 'total', dir: 'desc'}, {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}];

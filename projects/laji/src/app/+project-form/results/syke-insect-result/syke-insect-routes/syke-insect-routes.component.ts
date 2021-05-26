@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
+import { SykeInsectResultService } from '../syke-insect-result.service';
 import { IdService } from '../../../../shared/service/id.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
@@ -7,12 +7,12 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'laji-nafi-bumblebee-routes',
-  templateUrl: './nafi-bumblebee-routes.component.html',
-  styleUrls: ['./nafi-bumblebee-routes.component.scss'],
+  selector: 'laji-syke-insect-routes',
+  templateUrl: './syke-insect-routes.component.html',
+  styleUrls: ['./syke-insect-routes.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeRoutesComponent implements OnInit {
+export class SykeInsectRoutesComponent implements OnInit {
 
   @Input() collectionId: string;
 
@@ -33,7 +33,7 @@ export class NafiBumblebeeRoutesComponent implements OnInit {
   route$: Observable<string>;
 
   constructor(
-    private resultService: NafiBumblebeeResultService,
+    private resultService: SykeInsectResultService,
     private cd: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute

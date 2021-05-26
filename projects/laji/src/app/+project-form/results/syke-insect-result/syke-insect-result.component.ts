@@ -15,12 +15,12 @@ enum Tabs {
 }
 
 @Component({
-  selector: 'laji-nafi-bumblebee-result',
-  templateUrl: './nafi-bumblebee-result.component.html',
-  styleUrls: ['./nafi-bumblebee-result.component.scss'],
+  selector: 'laji-syke-insect-result',
+  templateUrl: './syke-insect-result.component.html',
+  styleUrls: ['./syke-insect-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeResultComponent implements OnInit, OnDestroy {
+export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
   @Input() form: Form.SchemaForm;
 

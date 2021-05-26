@@ -26,7 +26,7 @@ export interface YearDays {
 @Injectable({
   providedIn: 'root'
 })
-export class NafiBumblebeeResultService {
+export class SykeInsectResultService {
 
   private seasonRanges = [4 , 10];
   private yearCache: YearDays;

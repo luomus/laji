@@ -1,23 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, ChangeDetectionStrategy,
-Output, TemplateRef, ViewChild, LOCALE_ID } from '@angular/core';
+import { Component, EventEmitter, Input, ChangeDetectionStrategy,
+Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
-import { LocalStorage } from 'ngx-webstorage';
 import { ExportService } from '../../../../shared/service/export.service';
 import { TranslateService } from '@ngx-translate/core';
-import { SEASON } from '../nafi-bumblebee-result.service';
 import { BookType } from 'xlsx';
 import { DateFormatPipe } from 'ngx-moment';
 
 
 @Component({
-  selector: 'laji-nafi-bumblebee-route-table',
-  templateUrl: './nafi-bumblebee-route-table.component.html',
-  styleUrls: ['./nafi-bumblebee-route-table.component.scss'],
+  selector: 'laji-syke-insect-route-table',
+  templateUrl: './syke-insect-route-table.component.html',
+  styleUrls: ['./syke-insect-route-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeRouteTableComponent implements OnInit {
+export class SykeInsectRouteTableComponent {
   @Input() routeId: string;
-  @Input() season: SEASON;
+  @Input() season: string;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() year = '';
   @Input() filter = '';
@@ -56,8 +54,6 @@ export class NafiBumblebeeRouteTableComponent implements OnInit {
     private exportService: ExportService,
     private dateFormat: DateFormatPipe
   ) { }
-
-  ngOnInit() {}
 
   onSort(event) {
     const speciesStats = this.rows.slice(0, -3);

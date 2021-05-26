@@ -81,17 +81,17 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             active: queryParams['tab'] === 'censuses'
           }
         ];
-        case ResultServiceType.nafiBumblebee:
+      case ResultServiceType.sykeInsect:
         return [
           {
             link: ['stats'],
-            label: 'nafiBumblebee.stats.allResults',
+            label: 'sykeInsect.stats.allResults',
             linkParams: {tab: 'species'},
             active: queryParams['tab'] === 'species'
           },
           {
             link: ['stats'],
-            label: 'nafiBumblebee.stats.routes',
+            label: 'sykeInsect.stats.routes',
             linkParams: {tab: 'routes'},
             active: queryParams['tab'] === 'routes'
           }

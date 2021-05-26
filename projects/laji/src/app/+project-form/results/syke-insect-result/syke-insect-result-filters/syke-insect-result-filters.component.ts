@@ -1,16 +1,17 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, ChangeDetectionStrategy, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { YearDays, NafiBumblebeeResultService } from '../nafi-bumblebee-result.service';
+import { SykeInsectResultService } from '../syke-insect-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
+import { toHtmlInputElement } from '../../../../shared/service/html-element.service';
 
 
 @Component({
-  selector: 'laji-nafi-bumblebee-result-filters',
-  templateUrl: './nafi-bumblebee-result-filters.component.html',
-  styleUrls: ['./nafi-bumblebee-result-filters.component.scss'],
+  selector: 'laji-syke-insect-result-filters',
+  templateUrl: './syke-insect-result-filters.component.html',
+  styleUrls: ['./syke-insect-result-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
+export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
 
   @Input() yearRequired = false;
   @Input() showDateFilter = true;
@@ -20,7 +21,6 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
 
   years: number[] = [];
   days: string[] = [];
-  areaTypes = Area.AreaType;
 
   activeYear: number;
   activeDate: string;
@@ -32,8 +32,10 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   @Output() areaChange = new EventEmitter<string>();
   @Output() switchSectionsYears = new EventEmitter<boolean>();
 
+  toHtmlInputElement = toHtmlInputElement;
+
   constructor(
-    private resultService: NafiBumblebeeResultService,
+    private resultService: SykeInsectResultService,
     private cd: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute
@@ -56,7 +58,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   }
 
   onYearChange(newYear: string) {
-    this.activeYear = newYear ? parseInt(newYear, 10) : undefined;
+    this.activeYear = newYear !== '0' ? parseInt(newYear, 10) : undefined;
     this.activeDate = undefined;
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
@@ -84,7 +86,7 @@ export class NafiBumblebeeResultFiltersComponent implements OnInit, OnChanges {
   }
 
   onDateChange(newDate: string) {
-    this.activeDate = newDate;
+    this.activeDate = newDate !== '0' ? newDate : undefined;
     this.onlySections = true;
     this.dateChange.emit(newDate);
     this.onFiltersChange();

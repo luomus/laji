@@ -18,8 +18,8 @@ import { ActivatedRoute } from '@angular/router';
       <div *ngSwitchCase="ResultServiceType.nafi">
         <laji-nafi-result [form]="(form$ | async)"></laji-nafi-result>
       </div>
-      <div *ngSwitchCase="ResultServiceType.nafiBumblebee">
-        <laji-nafi-bumblebee-result [form]="(form$ | async)"></laji-nafi-bumblebee-result>
+      <div *ngSwitchCase="ResultServiceType.sykeInsect">
+        <laji-syke-insect-result [form]="(form$ | async)"></laji-syke-insect-result>
       </div>
     </div>
   `,

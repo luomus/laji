@@ -1,21 +1,22 @@
-import {Component, EventEmitter, ChangeDetectionStrategy,
-Input, NgZone, OnChanges, Output, TemplateRef, ViewChild} from '@angular/core';
+import { Component, EventEmitter, ChangeDetectionStrategy,
+Input, NgZone, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdService } from '../../../../../shared/service/id.service';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 
 
 @Component({
-  selector: 'laji-nafi-bumblebee-routes-list',
-  templateUrl: './nafi-bumblebee-routes-list.component.html',
-  styleUrls: ['./nafi-bumblebee-routes-list.component.scss'],
+  selector: 'laji-syke-insect-routes-list',
+  templateUrl: './syke-insect-routes-list.component.html',
+  styleUrls: ['./syke-insect-routes-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeRoutesListComponent implements OnChanges {
+export class SykeInsectRoutesListComponent implements OnChanges {
 
   @Input() rows: any[] = [];
   @Input() height = 'calc(80vh - 100px)';
-  @Input() columnMode = 'standard';
+  @Input() columnMode: 'force' | 'standard' | ColumnMode | 'flex'  = 'standard';
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
   @Input() countLabel: string;

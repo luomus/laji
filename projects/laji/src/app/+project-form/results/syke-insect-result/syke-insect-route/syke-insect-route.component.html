@@ -9,7 +9,7 @@
 </h3>
 
 <div style="max-width: 450px">
-  <laji-nafi-bumblebee-result-filters
+  <laji-syke-insect-result-filters
     (yearChange)="activeYear = $event; activeDate = undefined; onFilterChange()"
     (dateChange)="activeDate = $event; onFilterChange()"
     (switchSectionsYears)="onlySections = $event; onFilterChange()"
@@ -17,23 +17,23 @@
     [routeId]="routeId"
     [showSections]="onlySections"
     [collectionId]="collectionId"
-  ></laji-nafi-bumblebee-result-filters>
+  ></laji-syke-insect-result-filters>
 </div>
 
 <ng-container>
   <div *ngFor="let taxonSet of observationStats[0]['taxonSets']" class="taxonSet">
-    <laji-nafi-bumblebee-route-table
+    <laji-syke-insect-route-table
     (documentClick)="openViewer($event)"
     [data]="observationStats[0]['dataSets'][taxonSet]"
     [routeId]="routeId"
     [season]="date"
     [sorts]="sorts"
-    [year]="activeYear"
+    [year]="activeYear ? activeYear.toString() : undefined"
     [taxonSet]="taxonSet | toQName | label"
     [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
     [loading]="loading"
     [onlySections]="onlySections"
-  ></laji-nafi-bumblebee-route-table>
+  ></laji-syke-insect-route-table>
   </div>
 </ng-container>
 

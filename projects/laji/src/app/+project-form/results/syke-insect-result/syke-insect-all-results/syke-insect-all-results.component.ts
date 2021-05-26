@@ -5,20 +5,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { ResultService } from '../../common/service/result.service';
-import { Form } from '../../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-nafi-bumblebee-all-results',
-  templateUrl: './nafi-bumblebee-all-results.component.html',
-  styleUrls: ['./nafi-bumblebee-all-results.component.scss'],
+  selector: 'laji-syke-insect-all-results',
+  templateUrl: './syke-insect-all-results.component.html',
+  styleUrls: ['./syke-insect-all-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NafiBumblebeeAllResultsComponent implements OnInit, OnDestroy {
+export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
 
   @Input() collectionId: string;
 
   page;
-  lang;
   query: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
@@ -49,10 +47,6 @@ export class NafiBumblebeeAllResultsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.lang = this.translate.currentLang;
-    this.subTrans = this.translate.onLangChange.subscribe(res => {
-      this.lang = res.lang;
-    });
     this.subQuery = this.route.queryParams.subscribe(params => {
       const time = (params['time'] && Array.isArray(params['time'])) ?
         params['time'][0] : params['time'];
