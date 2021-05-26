@@ -30,7 +30,6 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
   fromMonth;
   allTime = '';
 
-  private subTrans: Subscription;
   private subQuery: Subscription;
 
   constructor(
@@ -76,7 +75,6 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subQuery.unsubscribe();
-    this.subTrans.unsubscribe();
   }
 
   closeList() {

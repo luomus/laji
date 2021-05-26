@@ -26,7 +26,6 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
   informalTaxonGroup = 'MVL.181';
   page;
-  lang;
   query: WarehouseQueryInterface;
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
@@ -43,7 +42,6 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   allTime = '';
   collectionId: string;
 
-  private subTrans: Subscription;
   private subQuery: Subscription;
 
   constructor(
@@ -62,11 +60,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.collectionId = this.qName.transform(this.form.collectionID);
-    this.lang = this.translate.currentLang;
     this.tab$ = this.route.queryParams.pipe(map(paramMap => paramMap['tab']));
-    this.subTrans = this.translate.onLangChange.subscribe(res => {
-      this.lang = res.lang;
-    });
     this.subQuery = this.route.queryParams.subscribe(params => {
       const tab = params['tab'];
       if (!Tabs[tab]) {
@@ -104,7 +98,6 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subQuery.unsubscribe();
-    this.subTrans.unsubscribe();
   }
 
   private getCurrentSeason() {
