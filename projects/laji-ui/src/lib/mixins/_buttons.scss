@@ -33,6 +33,7 @@ $btn-border-radius: 5px !default;
   box-shadow: 0 1px 2px 0px rgba($shadowColor, .4), inset 0 0 0 rgba($shadowColor, 0);
   &:hover {
     background: linear-gradient(to bottom right, darken(adjust-hue($bgColor, $bgHueShift), 5%), darken(darken($bgColor, 5%), 5%));
+    color: $textColor;
   }
   &:active, &.active {
     color: $primary-2;
@@ -90,6 +91,7 @@ $btn-border-radius: 5px !default;
   box-shadow: 0 1px 2px 0px rgba($neutral-9, .3), inset 0 1px 6px rgba($neutral-9, 0);
   &:hover, &:focus {
     background-color: $neutral-3;
+    color: $neutral-7;
   }
   &:active, &.active {
     background-color: $neutral-3;

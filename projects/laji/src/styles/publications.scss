@@ -1,0 +1,23 @@
+@import 'vars';
+
+.finBif-publications, .laji-page .finBif-publications {
+  h1 {
+    font-size: $fs-3;
+    font-weight: 400;
+    margin-block-start: 0px;
+    margin-block-end: $sp-2;
+  }
+  p {
+    font-size: $fs-1;
+    color: $neutral-7;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+  }
+  article {
+    margin-bottom: $sp-5;
+  }
+  .publication-doi {
+    margin-top: $sp-2;
+    margin-bottom: $sp-2;
+  }
+}
