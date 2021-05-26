@@ -32,7 +32,6 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   taxon$: Observable<Taxonomy>;
   Tabs = Tabs;
   tab$: Observable<keyof typeof Tabs>;
-  schemaForm: Form.SchemaForm;
   year;
   currentMonth;
   currentYear;
