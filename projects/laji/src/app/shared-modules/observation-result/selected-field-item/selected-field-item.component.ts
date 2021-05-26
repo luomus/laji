@@ -8,10 +8,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class SelectedFieldItemComponent {
 
-  @Input() field: string | string[];
+  @Input() field: string[];
   @Input() label: string;
-  @Input() idx: number;
-  @Input() idxs: number[];
+  @Input() idx: number[];
   @Input() len: number;
   @Input() required: boolean;
 
@@ -27,9 +26,5 @@ export class SelectedFieldItemComponent {
   moveFieldUp(field, event) {
     event.stopPropagation();
     this.moveUp.emit(field);
-  }
-
-  isArray(field: string | string[]) {
-    return Array.isArray(field);
   }
 }

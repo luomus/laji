@@ -33,7 +33,7 @@ export class SelectedFieldGroupComponent {
         return;
       }
 
-      this.getGisFields(field).forEach(column => {
+      this.getFieldColumnArray(field).forEach(column => {
         if (this.columnSelector) {
           this.columnSelector.toggleSelectedField(column);
         }
@@ -86,20 +86,11 @@ export class SelectedFieldGroupComponent {
     }
   }
 
-  getIndexArray(field: string[]) {
-    let last = 0;
-    return field.map(column => {
-      const index = this.selected.indexOf(column, last);
-      last = index;
-      return index;
-    });
-  }
-
   isMultiColumnGisField(field: string) {
     return /gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)?$/.test(field);
   }
 
-  getGisFields(field: string) {
+  getFieldColumnArray(field: string) {
     if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)$/.test(field)) {
       return [
         field + '.lat',
@@ -112,6 +103,17 @@ export class SelectedFieldGroupComponent {
         field + '.lonMin',
         field + '.lonMax',
       ];
+    } else {
+      return [ field ];
     }
+  }
+
+  getIndexArray(field: string[]) {
+    let last = 0;
+    return field.map(column => {
+      const index = this.selected.indexOf(column, last);
+      last = index;
+      return index;
+    });
   }
 }
