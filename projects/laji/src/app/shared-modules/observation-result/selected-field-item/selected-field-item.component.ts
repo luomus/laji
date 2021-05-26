@@ -8,15 +8,15 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class SelectedFieldItemComponent {
 
-  @Input() field: string;
+  @Input() field: string[];
   @Input() label: string;
-  @Input() idx: number;
+  @Input() idx: number[];
   @Input() len: number;
   @Input() required: boolean;
 
   @Output() toggle = new EventEmitter<string>();
-  @Output() moveUp = new EventEmitter<string>();
-  @Output() moveDown = new EventEmitter<string>();
+  @Output() moveUp = new EventEmitter<string | string[]>();
+  @Output() moveDown = new EventEmitter<string | string[]>();
 
   moveFieldDown(field, event) {
     event.stopPropagation();
@@ -27,5 +27,4 @@ export class SelectedFieldItemComponent {
     event.stopPropagation();
     this.moveUp.emit(field);
   }
-
 }
