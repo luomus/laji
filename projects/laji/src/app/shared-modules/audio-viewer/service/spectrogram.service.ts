@@ -78,6 +78,8 @@ export class SpectrogramService {
       const data = [];
       const sumByColumn = [];
 
+      const maxRow =  Math.floor(buffer.sampleRate / 2) * nperseg / sampleRate;
+
       let offset = 0;
       while (offset + nperseg < chanData.length) {
         const segment = chanData.slice(
@@ -89,7 +91,12 @@ export class SpectrogramService {
         let columnSum = 0;
 
         for (let j = 0; j < nperseg / 2; j++) {
-          columnData[j] = Math.pow(Math.abs(spectrum[j]), 2);
+          if (j <= maxRow) {
+            columnData[j] = Math.pow(Math.abs(spectrum[j]), 2);
+          } else {
+            columnData[j] = 0;
+          }
+
           columnSum += columnData[j];
         }
 
