@@ -53,7 +53,6 @@ export interface FormWithData extends Form.SchemaForm {
 export interface ILajiFormState {
   form?: FormWithData;
   hasChanges: boolean;
-  hasLocalData: boolean;
   namedPlace?: NamedPlace;
   namedPlaceForFormID?: string;
   error: FormError;
@@ -64,7 +63,6 @@ export interface ILajiFormState {
 
 let _state: ILajiFormState = {
   hasChanges: false,
-  hasLocalData: false,
   saving: false,
   loading: false,
   isTemplate: false,
@@ -83,7 +81,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   form$          = this.state$.pipe(map((state) => state.form), distinctUntilChanged());
   hasChanges$    = this.state$.pipe(map((state) => state.hasChanges), distinctUntilChanged());
-  hasLocalData$  = this.state$.pipe(map((state) => state.hasLocalData), distinctUntilChanged());
   loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
   isTemplate$    = this.state$.pipe(map((state) => state.isTemplate), distinctUntilChanged());
   saving$        = this.state$.pipe(map((state) => state.saving), distinctUntilChanged());
@@ -93,7 +90,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
   vm$: Observable<ILajiFormState> = hotObjectObserver<ILajiFormState>({
     form: this.form$,
     hasChanges: this.hasChanges$,
-    hasLocalData: this.hasLocalData$,
     saving: this.saving$,
     error: this.error$,
     loading: this.loading$,
@@ -272,9 +268,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
-    this.updateState({..._state, hasLocalData: false});
+    this.updateState({..._state});
     if (!documentID || FormService.isTmpId(documentID)) {
-      this.updateState({..._state, hasChanges: true, hasLocalData: true});
+      this.updateState({..._state, hasChanges: true});
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p).pipe(
@@ -298,7 +294,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
             if (Util.isLocalNewestDocument(local, document)) {
-              this.updateState({..._state, hasChanges: true, hasLocalData: true});
+              this.updateState({..._state, hasChanges: true});
               return local;
             }
             return document;
