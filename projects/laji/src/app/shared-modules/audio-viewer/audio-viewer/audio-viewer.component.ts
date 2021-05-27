@@ -93,6 +93,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
       }
     } else if (!this.hasError) {
       if (changes.focusArea || changes.focusAreaTimePadding) {
+        this.setAudioLoading(true);
         this.setBuffer(this.buffer);
       } else if (changes.zoomFrequency || changes.highlightFocusArea) {
         this.audioPlayer.setPlayArea(this.getPlayArea());
