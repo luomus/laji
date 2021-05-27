@@ -38,16 +38,19 @@ export class KerttuOccurrenceTableComponent implements OnInit {
       },
       {
         label: 'theme.kerttu.occurs',
-        cellTemplate: this.occursTpl
+        cellTemplate: this.occursTpl,
+        sortable: false
       },
       {
         label: 'theme.kerttu.possiblyOccurs',
-        cellTemplate: this.possiblyOccursTpl
+        cellTemplate: this.possiblyOccursTpl,
+        sortable: false
       },
       {
         cellTemplate: this.buttonsTpl,
         width: 150,
-        minWidth: 150
+        minWidth: 150,
+        sortable: false
       }
     ];
   }

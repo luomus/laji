@@ -2,7 +2,7 @@
   <laji-observation-active
     [skip]="['onlyFinnish']"
     [(query)]="searchQuery.query"
-    (queryChange)="onQueryChange()"
+    (queryChange)="onQueryChange(true)"
     [queryType]="searchQuery.queryType"></laji-observation-active>
 </div>
 
@@ -76,6 +76,7 @@
   [(ngModel)]="searchQuery.query.adminStatusFilters"
   (ngModelChange)="onAdministrativeStatusChange()"
   [multiple]="true"
+  [excludeOptions]="invasiveStatuses"
   [placeholder]="'MX.hasAdminStatus' | label"
   name="adminStatusFilters"
   [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
@@ -91,13 +92,13 @@
 <laji-select [options]="[
                 {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
                 {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
-                {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
-                {id: 'controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
-                {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
-                {id: 'qualityPlantPest', value: 'MX.qualityPlantPest' | label},
-                {id: 'otherPlantPest', value: 'MX.otherPlantPest' | label},
-                {id: 'nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
-                {id: 'otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
+                {id: 'MX.euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
+                {id: 'MX.controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
+                {id: 'MX.quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
+                {id: 'MX.qualityPlantPest', value: 'MX.qualityPlantPest' | label},
+                {id: 'MX.otherPlantPest', value: 'MX.otherPlantPest' | label},
+                {id: 'MX.nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
+                {id: 'MX.otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
                 {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
               ]"
               [selected]="invasiveSelected"

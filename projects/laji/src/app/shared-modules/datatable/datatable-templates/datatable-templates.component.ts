@@ -48,7 +48,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
   @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
   @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
-
+  @ViewChild('sensitiveIcon', {static: true }) sensitiveIcon: TemplateRef<any>;
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;

@@ -1,4 +1,4 @@
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, Subscription } from 'rxjs';
+import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { TaxonomyApi } from '../../../shared/api/TaxonomyApi';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { PagedResult } from '../../../shared/model/PagedResult';
@@ -21,7 +21,6 @@ import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesListOptionsModalComponent } from '../species-list-options-modal/species-list-options-modal.component';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
 import { TaxonExportService } from '../service/taxon-export.service';
-import { DatatableUtil } from '../../../shared-modules/datatable/service/datatable-util.service';
 import { DatatableComponent } from '../../../shared-modules/datatable/datatable/datatable.component';
 import { Util } from '../../../shared/service/util.service';
 import { UserService } from '../../../shared/service/user.service';
@@ -61,10 +60,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     pageSize: 0
   };
 
-  private defaultSortOrder: string[];
-  private sortValues = {};
-  private prevSorts: any;
-
   private lastQuery: string;
   private subQueryUpdate: Subscription;
   private subFetch: Subscription;
@@ -79,7 +74,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
     private taxonExportService: TaxonExportService,
-    private dtUtil: DatatableUtil,
     private columnService: TaxonomyColumns,
     private fullUri: ToFullUriPipe,
     private toQname: ToQNamePipe
@@ -137,13 +131,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.refreshSpeciesList();
   }
 
-  onSort(event) {
-    this.sort(event.sorts, this.speciesPage)
-      .subscribe(result => {
-        this.speciesPage = result;
-      });
-  }
-
   onReorder(event) {
     if (
       !event.column ||
@@ -157,80 +144,6 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.searchQuery.listOptions.selected.splice(event.newValue, 0, this.searchQuery.listOptions.selected.splice(event.prevValue, 1)[0]);
     this.saveSettings();
     this.refreshSpeciesList();
-  }
-
-  private sort(sorts, page: PagedResult<Taxonomy>): Observable<PagedResult<Taxonomy>> {
-    this.prevSorts = sorts;
-    const rows = [...page.results];
-
-    return this.setSortValues(sorts, rows)
-      .pipe(map(() => {
-        if (sorts.length > 0) {
-          this.customSort(sorts, rows);
-        } else {
-          this.defaultSort(rows);
-        }
-
-        return {
-          currentPage: page.currentPage,
-          lastPage: page.lastPage,
-          results: rows,
-          total: page.total,
-          pageSize: page.pageSize
-        };
-      }));
-  }
-
-  private setSortValues(sorts, results: Taxonomy[]): Observable<any> {
-    const obs = sorts.reduce((arr, sort) => {
-      const template = this.columnService.columnLookup[sort.prop].cellTemplate;
-      results.forEach((row) => {
-        if (!this.sortValues[row.id]) {
-          this.sortValues[row.id] = {};
-        }
-
-        if (this.sortValues[row.id][sort.prop] == null) {
-          const rowValue = Util.parseJSONPath(row, sort.prop);
-
-          if (!template || rowValue == null) {
-            this.sortValues[row.id][sort.prop] = rowValue;
-          } else {
-            arr.push(
-              this.dtUtil.getVisibleValue(rowValue, row, template)
-                .pipe(tap(val => {
-                  this.sortValues[row.id][sort.prop] = val;
-                }))
-            );
-          }
-        }
-      });
-      return arr;
-    }, []);
-
-    return (obs.length > 0 ? ObservableForkJoin(obs) : ObservableOf([]));
-  }
-
-  private customSort(sorts, results: Taxonomy[]) {
-    sorts.forEach((sort) => {
-      const dir = sort.dir === 'asc' ? 1 : -1;
-      results.sort((a, b) => {
-        const aa = this.sortValues[a.id][sort.prop] != null ? this.sortValues[a.id][sort.prop] : (sort.prop === 'observationCount' || sort.prop === 'observationCountFinland' ) ? 0 : '';
-        const bb = this.sortValues[b.id][sort.prop] != null ? this.sortValues[b.id][sort.prop] : (sort.prop === 'observationCount' || sort.prop === 'observationCountFinland' ) ? 0 : '';
-        if (Number.isInteger(aa) && Number.isInteger(bb)) {
-          return dir * (aa >= bb ? -1 : 1);
-        }
-        return dir * ('' + aa).localeCompare('' + bb);
-      });
-    });
-  }
-
-  private defaultSort(results: Taxonomy[]) {
-    const values = [...results];
-
-    values.forEach((val) => {
-      const newIdx = this.defaultSortOrder.indexOf(val.id);
-      results[newIdx] = val;
-    });
   }
 
   refreshSpeciesList() {
@@ -251,21 +164,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.subFetch = this.fetchPage(this.searchQuery.listOptions.page)
       .subscribe(data => {
           this.columns = this.columnService.getColumns(this.searchQuery.listOptions.selected);
-          this.sortValues = {};
 
           if (data.lastPage && data.lastPage === 1) {
             this.columns.map(column => {column.sortable = true; });
-            this.defaultSortOrder = data.results.map(res => res.id);
-
-            if (this.prevSorts) {
-              this.sort(this.prevSorts, data)
-                .subscribe(page => {
-                  this.speciesPage = page;
-                  this.loading = false;
-                  this.cd.markForCheck();
-                });
-              return;
-            }
           } else {
             this.columns.map(column => {column.sortable = false; });
           }

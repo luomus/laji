@@ -17,6 +17,7 @@ export namespace Form {
     lineTransect = 'MHL.resultServiceTypeLineTransect',
     winterbirdCount = 'MHL.resultServiceTypeWinterBirdCount',
     nafi = 'MHL.resultServiceTypeNafi',
+    sykeInsect = 'MHL.resultServiceTypeSykeInsectProjects'
   }
   export enum RestrictAccess {
     restrictAccessStrict = 'MHL.restrictAccessStrict',
@@ -153,6 +154,7 @@ export namespace Form {
       birdAssociationAreaHelp?: string;
       documentViewerZoomToData?: boolean;
       listColumnsMultisort?: boolean;
+      mapCluster?: boolean;
     };
   }
 

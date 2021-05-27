@@ -40,3 +40,7 @@
     cursor: default;
   }
 }
+
+:host ::ng-deep .cell-centered-content > .datatable-body-cell-label {
+  margin: 0 auto !important;
+}

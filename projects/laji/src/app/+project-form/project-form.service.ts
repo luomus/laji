@@ -98,12 +98,10 @@ export class ProjectFormService {
             })
           )
           : this.getFormFromRoute$(route);
-        const query$ = documentForm$.pipe(map(documentForm => this.queryToModelFormat(queryParams)));
-        return combineLatest(documentForm$, namedPlace$, query$).pipe(
+        return combineLatest(documentForm$, namedPlace$).pipe(
           map(([
             documentForm,
-            namedPlace,
-            query]) => ({documentForm, namedPlace, ...query}))
+            namedPlace ]) => ({documentForm, namedPlace, ...this.queryToModelFormat(queryParams)}))
         );
       })
     );
