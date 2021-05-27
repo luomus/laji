@@ -106,7 +106,7 @@ export class AudioSpectrogramComponent implements OnChanges {
           });
       }
     } else {
-      if ((changes.zoomFrequency || changes.brushArea) && this.imageData) {
+      if ((changes.zoomFrequency || changes.zoomArea) && this.imageData) {
         this.drawImage(this.imageData, this.spectrogramRef.nativeElement);
       } else if (changes.mode) {
         this.onResize();
