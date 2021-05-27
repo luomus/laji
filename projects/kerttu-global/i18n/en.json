@@ -1,7 +1,7 @@
 {
-  "validation.title": "Validate species",
   "results.title": "Results",
-  "validation.fixFraming.label": "Do you want to fix the framing of the vocalization?",
   "validation.fixFraming": "Fix framing",
-  "validation.otherComments": "Other comments"
+  "validation.fixFraming.label": "Do you want to fix the framing of the vocalization?",
+  "validation.otherComments": "Other comments",
+  "validation.title": "Validate species"
 }
