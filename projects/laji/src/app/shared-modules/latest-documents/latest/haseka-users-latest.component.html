@@ -6,7 +6,6 @@
         <tr *ngFor="let data of tmpDocuments">
           <td>
             <laji-short-document [document]="data.document"
-                                 [hasChanges]="data.hasLocalChanges"
                                  [form]="data.form"
                                  (discardTempDocument)="discardTempDocument(data.document)"
                                  (showViewer)="showDocumentViewer($event)"
@@ -31,7 +30,6 @@
                 <tr *ngFor="let data of latest">
                   <td>
                     <laji-short-document [document]="data.document"
-                                         [hasChanges]="data.hasLocalChanges"
                                          [form]="data.form"
                                          (discardTempDocument)="discardTempDocument(data.document)"
                                          (showViewer)="showDocumentViewer($event)"

@@ -15,7 +15,6 @@ import { Util } from '../../shared/service/util.service';
 export interface ILatestDocument {
   document: Document;
   form: Form.List;
-  hasLocalChanges: boolean;
 }
 
 interface ILatestDocumentsState {
@@ -98,7 +97,6 @@ export class LatestDocumentsFacade implements OnDestroy {
         mergeMap(tmps => this.getAllForms().pipe(
           map(forms => tmps.map(tmp => ({
             document: tmp,
-            hasLocalChanges: true,
             form: forms[tmp.formID]
           })))
         ))
@@ -143,12 +141,12 @@ export class LatestDocumentsFacade implements OnDestroy {
           mergeMap(person => this.documentStorage.getItem(document.id, person).pipe(
             map(local => {
               if (Util.isLocalNewestDocument(local, document)) {
-                return {document: local, hasLocalChanges: true, form: forms[document.formID]};
+                return {document: local, form: forms[document.formID]};
               }
               if (local) {
                 this.documentStorage.removeItem(local.id, person);
               }
-              return {document: document, hasLocalChanges: false, form: forms[document.formID]};
+              return {document: document, form: forms[document.formID]};
             })
           ))
         )),
