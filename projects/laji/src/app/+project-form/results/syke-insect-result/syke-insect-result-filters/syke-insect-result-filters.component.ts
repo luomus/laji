@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, ChangeDetectionStrat
 import { SykeInsectResultService } from '../syke-insect-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
-import { toHtmlInputElement, toHtmlSelectElement } from '../../../../shared/service/html-element.service';
+import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 
 @Component({
