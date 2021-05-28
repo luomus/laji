@@ -95,6 +95,7 @@ describe('Tools page', () => {
     });
 
     it('should be able save document', async (done) => {
+      await spreadsheet.selectRowsWithoutNumber();
       await spreadsheet.clickSaveWithoutPublishing();
       expect(await spreadsheet.getErrorCount()).toBe(0, 'There should not be errors when importing valid file');
       expect(await spreadsheet.getWarningCount()).toBe(0, 'There should be no warnings when importing file with valid data');
