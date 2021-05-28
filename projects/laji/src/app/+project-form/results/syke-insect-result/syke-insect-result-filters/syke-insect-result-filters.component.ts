@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, ChangeDetectionStrat
 import { SykeInsectResultService } from '../syke-insect-result.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Area } from '../../../../shared/model/Area';
-import { toHtmlInputElement } from '../../../../shared/service/html-element.service';
+import { toHtmlSelectElement } from '../../../../shared/service/html-element.service';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
   @Output() areaChange = new EventEmitter<string>();
   @Output() switchSectionsYears = new EventEmitter<boolean>();
 
-  toHtmlInputElement = toHtmlInputElement;
+  toHtmlSelectElement = toHtmlSelectElement;
 
   constructor(
     private resultService: SykeInsectResultService,

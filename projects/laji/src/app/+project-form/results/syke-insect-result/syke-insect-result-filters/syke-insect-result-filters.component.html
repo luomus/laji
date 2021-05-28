@@ -4,7 +4,7 @@
         <label for="year">{{ 'nafi.stats.year' | translate }}</label>
         <select
           id="year"
-          (change)="onYearChange(toHtmlInputElement($event.target).value)"
+          (change)="onYearChange(toHtmlSelectElement($event.target).value)"
           name="year"
           class="form-control"
           style="width: 120px">
@@ -18,7 +18,7 @@
         <label for="date">{{ 'nafi.stats.date' | translate }}</label>
         <select
           id="date"
-          (change)="onDateChange(toHtmlInputElement($event.target).value)"
+          (change)="onDateChange(toHtmlSelectElement($event.target).value)"
           [disabled]="!activeYear"
           name="date"
           class="form-control"
@@ -47,4 +47,3 @@
       </div>
     </div>
   </div>
-  
