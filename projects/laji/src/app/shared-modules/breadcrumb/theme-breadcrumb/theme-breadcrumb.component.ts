@@ -4,6 +4,7 @@ export interface Breadcrumb {
   link: string;
   label: string;
   active?: boolean;
+  isLabel?: boolean;
 }
 
 @Component({
@@ -20,5 +21,4 @@ export class ThemeBreadcrumbComponent {
   }
 
   active: Breadcrumb;
-
 }

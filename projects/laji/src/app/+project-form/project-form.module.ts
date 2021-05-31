@@ -11,7 +11,6 @@ import { DatasetAboutComponent } from './about/dataset-about/dataset-about.compo
 import { ProjectFormService } from './project-form.service';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
-import { ResultsModule } from './results/results.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { SubmissionsComponent } from './submissions/submissions.component';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
@@ -20,12 +19,12 @@ import { GenerateSpreadsheetComponent } from './generate-spreadsheet/generate-sp
 import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
 import { TemplatesComponent } from './templates/templates.component';
 import { TermsComponent } from './about/terms/terms.component';
-import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
 import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
+import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 
 @NgModule({
   imports: [
@@ -37,11 +36,10 @@ import { DisabledComponent } from './disabled/disabled.component';
     InfoPageModule,
     FormPermissionModule,
     LajiFormModule,
-    ResultsModule,
     OwnSubmissionsModule,
     SpreadsheetModule,
-    StatisticsModule,
-    DocumentFormHeaderModule
+    DocumentFormHeaderModule,
+    BreadcrumbModule
   ],
   declarations: [
     ProjectFormComponent,
