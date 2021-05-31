@@ -9,10 +9,11 @@ import {
   OnDestroy
 } from '@angular/core';
 import { axisBottom, axisLeft } from 'd3-axis';
-import { select } from 'd3-selection';
-import { scaleLinear } from 'd3-scale';
+import { select , Selection } from 'd3-selection';
+import { scaleLinear, ScaleLinear } from 'd3-scale';
 import { line as d3Line } from 'd3-shape';
 import { format } from 'd3-format';
+import 'd3-transition';
 
 interface LineTerms {
   slope: number;
@@ -42,17 +43,17 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() yLabel: string;
   @Input() title: string;
   @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
-  @Input() xTickFormat: any;
+  @Input() xTickFormat: string;
   @Input() yLabelAnchor: string;
 
-  private readonly nativeElement: any;
-  private svg: any;
-  private chart: any;
+  private readonly nativeElement: HTMLDivElement;
+  private svg: Selection<SVGElement, unknown, undefined, undefined>;
+  private chart: Selection<SVGElement, unknown, undefined, undefined>;
   private width: number;
   private height: number;
-  private xScale: any;
-  private yScale: any;
-  private xAxis: any;
+  private xScale: ScaleLinear<number, number>;
+  private yScale: ScaleLinear<number, number>;
+  private xAxis: Selection<SVGElement, unknown, undefined, undefined>;
 
   constructor(
     element: ElementRef,
@@ -88,7 +89,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     const svg = this.svg = select(element).append('svg')
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight);
-    const g = svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+    svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     // chart plot area
     this.chart = svg.append('g')
