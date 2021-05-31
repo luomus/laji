@@ -58,7 +58,7 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
   }
 
   onYearChange(newYear: string) {
-    this.activeYear = newYear !== '0' ? parseInt(newYear, 10) : undefined;
+    this.activeYear = (newYear && newYear !== '0') ? parseInt(newYear, 10) : undefined;
     this.activeDate = undefined;
     this.yearChange.emit(this.activeYear);
     if (!this.activeYear) {
@@ -86,7 +86,7 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
   }
 
   onDateChange(newDate: string) {
-    this.activeDate = newDate !== '0' ? newDate : undefined;
+    this.activeDate = (newDate && newDate !== '0') ? newDate : undefined;
     this.onlySections = true;
     this.dateChange.emit(newDate);
     this.onFiltersChange();
