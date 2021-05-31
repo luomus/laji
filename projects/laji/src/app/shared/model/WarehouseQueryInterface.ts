@@ -214,6 +214,7 @@ export interface WarehouseQueryInterface {
   taxonCounts?: boolean;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
+  butterflyAssociationAreaId?: Array<string>;
   collectionQuality?: Array<string>;
   secureLevel?: Array<string>;
   includeSubCollections?: boolean;

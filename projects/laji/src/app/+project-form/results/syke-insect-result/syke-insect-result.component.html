@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h3>
+        <span *ngIf="collectionId === 'HR.3911' else butterflies">{{ 'kimalaisseuranta.stats.title' | translate }}</span>
+        <ng-template #butterflies>
+          <span>{{ 'nafi.stats.title' | translate }}</span>
+        </ng-template>
+      </h3>
+      <div *ngIf="collectionId === 'HR.3911' else butterfliesIntro" [innerHtml]="'sykeInsect.bumblebee.intro' | translate" lajiRouteTransformer></div>
+      <ng-template #butterfliesIntro>
+        <div [innerHtml]="'sykeInsect.butterfly.intro' | translate" lajiRouteTransformer></div>
+      </ng-template>
+      <div class="row">
+        <laji-navigation-thumbnail [name]="'sykeInsect.stats.allResults'" [icon]="'wb_icon_bird'" [iconType]="'png'" [query]="{tab: Tabs.species}"></laji-navigation-thumbnail>
+        <laji-navigation-thumbnail [name]="'sykeInsect.stats.routes'" [icon]="'wb_icon_map_2'" [iconType]="'png'" [query]="{tab: Tabs.routes}"></laji-navigation-thumbnail>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="form-logo pull-right">
+        <img *ngIf="form.logo" src="{{form.logo}}">
+      </div>
+    </div>
+  </div>
+  <hr style="width: 100%">
+  <div [ngSwitch]="tab$ | async">
+    <div *ngSwitchCase="Tabs.species">
+      <laji-syke-insect-all-results [collectionId]="collectionId"></laji-syke-insect-all-results>
+    </div>
+    <div *ngSwitchCase="Tabs.routes">
+      <laji-syke-insect-routes [collectionId]="collectionId"></laji-syke-insect-routes>
+    </div>
+</div>
