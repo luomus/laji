@@ -40,7 +40,7 @@
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
             <li class="d-block xs:d-none" dropdown #taxonMenu="bs-dropdown" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a dropdownToggle class="link user" tabindex="0" role="button" luClickOnEnter>
+              <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
                 {{ 'navigation.taxonomy' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
               </a>
@@ -75,7 +75,7 @@
             <ng-container *lajiBrowserOnly>
               <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
-                  <a dropdownToggle class="link user" tabindex="0" role="button" luClickOnEnter>
+                  <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
@@ -108,7 +108,7 @@
               </ng-container>
             </ng-container>
             <li dropdown *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
-              <a dropdownToggle class="link language-toggle" tabindex="0" role="button" luClickOnEnter>
+              <a dropdownToggle class="link language-toggle" tabindex="0" role="button" luKeyboardClickable>
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">
                   FI

@@ -40,7 +40,7 @@
        (click)="toggle(node)"
        tabindex="0"
        role="button"
-       luClickOnEnter
+       luKeyboardClickable
        *ngIf="node.state.loadingCount === 0"></i>
     <laji-spinner *ngIf="node.state.loadingCount > 0"></laji-spinner>
     <ng-container *ngTemplateOutlet="labelTpl; context: {'value': node.value}"></ng-container>

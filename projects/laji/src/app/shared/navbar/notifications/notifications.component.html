@@ -2,8 +2,8 @@
   <span class="notifications-title fs-2">
     {{ 'notification.title' | translate }}:
   </span>
-  <a class="fs-1" (click)="removeAll()" tabindex="0" role="button" luClickOnEnter>{{ 'notification.deleteAll' | translate }}</a>
-  <a class="fs-1" (click)="markAllAsSeen()" tabindex="0" role="button" luClickOnEnter>{{ 'notification.markAll' | translate }}</a>
+  <a class="fs-1" (click)="removeAll()" tabindex="0" role="button" luKeyboardClickable>{{ 'notification.deleteAll' | translate }}</a>
+  <a class="fs-1" (click)="markAllAsSeen()" tabindex="0" role="button" luKeyboardClickable>{{ 'notification.markAll' | translate }}</a>
 </header>
 
 <laji-spinner [spinning]="loading" [overlay]="true">

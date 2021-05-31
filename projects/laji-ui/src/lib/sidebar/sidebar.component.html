@@ -35,13 +35,13 @@
          [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
          #navWrapper>
       <div class="close-wrapper">
-        <lu-button-round (click)="onSwitchOpen()" role="neutral" tabindex="0" luClickOnEnter>
+        <lu-button-round (click)="onSwitchOpen()" role="neutral" tabindex="0" luKeyboardClickable>
           <lu-icon type="close"></lu-icon>
         </lu-button-round>
       </div>
       <ng-content select="nav"></ng-content>
     </div>
-    <div tabindex="0" *ngIf="!mobile" [@sidebarOpen_menu]="open ? 'open' : 'closed'" class="open-btn" role="button" (click)="onSwitchOpen()" luClickOnEnter>
+    <div tabindex="0" *ngIf="!mobile" [@sidebarOpen_menu]="open ? 'open' : 'closed'" class="open-btn" role="button" (click)="onSwitchOpen()" luKeyboardClickable>
       <!-- Open menu -->
       <lu-icon type="menu"></lu-icon>
     </div>

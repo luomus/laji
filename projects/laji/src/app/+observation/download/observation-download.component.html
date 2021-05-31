@@ -82,7 +82,7 @@
             *lajiForTypes="['vir']; exclude: true"
             [loading]="requests['download'] === requestStatus.loading"
             [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
-            (click)="makePublicRequest()" luClickOnEnter tabindex="0">
+            (click)="makePublicRequest()" luKeyboardClickable tabindex="0">
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'observation.download.loadPublic' | translate }}
           </lu-button>
@@ -106,7 +106,7 @@
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
             [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
-            (click)="makePrivateRequest()" luClickOnEnter tabindex="0">
+            (click)="makePrivateRequest()" luKeyboardClickable tabindex="0">
             {{ 'observation.download.loadPrivate' | translate }}
           </lu-button>
         </div>
@@ -125,7 +125,7 @@
         <lu-button
           [loading]="speciesCsvLoading"
           (click)="downloadSpecies($event)"
-          luClickOnEnter tabindex="0"
+          luKeyboardClickable tabindex="0"
           target="_self">
           <i class="glyphicon glyphicon-download-alt"></i>
           {{ 'observation.download.loadSpecies' | translate }}

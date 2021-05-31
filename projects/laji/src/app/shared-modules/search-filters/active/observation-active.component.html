@@ -7,13 +7,13 @@
     <li>
       <span>
         {{ 'observation.form.empty' | translate }}
-        <span (click)="removeAll()" class="label label-danger link" tabindex="0" role="button" luClickOnEnter><i class="glyphicon glyphicon-remove"></i></span>
+        <span (click)="removeAll()" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
       </span>
     </li>
     <li *ngFor="let item of active">
       <span>
         {{ queryType + '.active.' + item.field | translate }}
-        <span (click)="remove(item)" class="label label-danger link" tabindex="0" role="button" luClickOnEnter><i class="glyphicon glyphicon-remove"></i></span>
+        <span (click)="remove(item)" class="label label-danger link" tabindex="0" role="button" luKeyboardClickable><i class="glyphicon glyphicon-remove"></i></span>
       </span>
     </li>
   </ul>
