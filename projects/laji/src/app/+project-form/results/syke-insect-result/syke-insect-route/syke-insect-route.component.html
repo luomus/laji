@@ -1,0 +1,39 @@
+<h3>{{ routeId | label }}
+  <span *ngIf="date else year"> - {{ date | amDateFormat:'L' }}</span>
+  <ng-template #year>
+    <span *ngIf="activeYear else empty"> - {{ activeYear }}</span>
+  </ng-template>
+  <ng-template #empty> 
+    <span>{{ 'kaikki' | translate }}</span>
+  </ng-template>
+</h3>
+
+<div style="max-width: 450px">
+  <laji-syke-insect-result-filters
+    (yearChange)="activeYear = $event; activeDate = undefined; onFilterChange()"
+    (dateChange)="activeDate = $event; onFilterChange()"
+    (switchSectionsYears)="onlySections = $event; onFilterChange()"
+    [yearRequired]="false"
+    [routeId]="routeId"
+    [showSections]="onlySections"
+    [collectionId]="collectionId"
+  ></laji-syke-insect-result-filters>
+</div>
+
+<ng-container>
+  <div *ngFor="let taxonSet of observationStats[0]['taxonSets']" class="taxonSet">
+    <laji-syke-insect-route-table
+    (documentClick)="openViewer($event)"
+    [data]="observationStats[0]['dataSets'][taxonSet]"
+    [routeId]="routeId"
+    [season]="date"
+    [sorts]="sorts"
+    [year]="activeYear ? activeYear.toString() : undefined"
+    [taxonSet]="taxonSet | toQName | label"
+    [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
+    [loading]="loading"
+    [onlySections]="onlySections"
+  ></laji-syke-insect-route-table>
+  </div>
+</ng-container>
+

@@ -185,7 +185,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
     if (this.namedPlace) {
       this.documents$ = this.getAllDocuments<Document>({
-        year: !this.namedPlace && !this.onlyTemplates ? this.year : undefined,
+        year: undefined,
         namedPlace: this.namedPlace,
         collectionID: this.collectionID,
         formID: this.formID,
@@ -207,9 +207,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
         collectionID: this.collectionID,
         formID: this.formID
       };
-      if (this.namedPlace) {
-        yearInfoQuery.namedPlace = this.namedPlace;
-      }
       this.yearInfo$ = this.documentApi.countByYear(this.userService.getToken(), yearInfoQuery).pipe(
         map(results => results.reverse()),
         tap((results: any[]) => {
@@ -231,18 +228,21 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
         share()
       );
     }
-    const documentQuery: DocumentQuery = {
-      year: this.onlyTemplates ? undefined : this.year,
-      onlyTemplates: this.onlyTemplates,
-      collectionID: this.collectionID,
-      formID: this.formID,
-      selectedFields: this.getSelectedFields()
-    };
-    if (this.namedPlace) {
-      documentQuery.namedPlace = this.namedPlace;
-    }
+
     this.documents$ = (onlyDocuments ? ObservableOf([]) : this.yearInfo$).pipe(
-      switchMap(() => this.getAllDocuments<Document>(documentQuery)),
+      switchMap(() => {
+        const documentQuery: DocumentQuery = {
+          year: this.onlyTemplates ? undefined : this.year,
+          onlyTemplates: this.onlyTemplates,
+          collectionID: this.collectionID,
+          formID: this.formID,
+          selectedFields: this.getSelectedFields()
+        };
+        if (this.namedPlace) {
+          documentQuery.namedPlace = this.namedPlace;
+        }
+        return this.getAllDocuments<Document>(documentQuery);
+      }),
       switchMap(documents => this.searchDocumentsToRowDocuments(documents)),
       tap((documents) => {
         this.loading = false;

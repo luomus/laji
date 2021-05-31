@@ -19,30 +19,30 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   };
 
   public formQuery: SpeciesFormQuery = {
-    onlyFinnish: true,
-    onlyInvasive: false,
-    onlyNonInvasive: false,
-    euInvasiveSpeciesList: false,
-    controllingRisksOfInvasiveAlienSpecies: false,
-    quarantinePlantPest: false,
-    allInvasiveSpecies: false,
-    nationalInvasiveSpeciesStrategy: false,
-    otherInvasiveSpeciesList: false,
-    otherPlantPest: false,
-    qualityPlantPest: false
+    'onlyFinnish': true,
+    'onlyInvasive': false,
+    'onlyNonInvasive': false,
+    'MX.euInvasiveSpeciesList': false,
+    'MX.controllingRisksOfInvasiveAlienSpecies': false,
+    'MX.quarantinePlantPest': false,
+    'allInvasiveSpecies': false,
+    'MX.nationalInvasiveSpeciesStrategy': false,
+    'MX.otherInvasiveSpeciesList': false,
+    'MX.otherPlantPest': false,
+    'MX.qualityPlantPest': false
   };
 
   public subUpdate: Subscription;
 
   public invasiveSelected: string[] = [];
   public invasiveStatuses: string[] = [
-    'euInvasiveSpeciesList',
-    'controllingRisksOfInvasiveAlienSpecies',
-    'quarantinePlantPest',
-    'qualityPlantPest',
-    'otherPlantPest',
-    'nationalInvasiveSpeciesStrategy',
-    'otherInvasiveSpeciesList',
+    'MX.euInvasiveSpeciesList',
+    'MX.controllingRisksOfInvasiveAlienSpecies',
+    'MX.quarantinePlantPest',
+    'MX.qualityPlantPest',
+    'MX.otherPlantPest',
+    'MX.nationalInvasiveSpeciesStrategy',
+    'MX.otherInvasiveSpeciesList',
   ];
 
   constructor(
@@ -110,13 +110,13 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     const allFields = [
       'onlyInvasive',
       'onlyNonInvasive',
-      'euInvasiveSpeciesList',
-      'controllingRisksOfInvasiveAlienSpecies',
-      'quarantinePlantPest',
-      'qualityPlantPest',
-      'otherPlantPest',
-      'nationalInvasiveSpeciesStrategy',
-      'otherInvasiveSpeciesList',
+      'MX.euInvasiveSpeciesList',
+      'MX.controllingRisksOfInvasiveAlienSpecies',
+      'MX.quarantinePlantPest',
+      'MX.qualityPlantPest',
+      'MX.otherPlantPest',
+      'MX.nationalInvasiveSpeciesStrategy',
+      'MX.otherInvasiveSpeciesList',
       'allInvasiveSpecies',
     ];
     for (const i in allFields) {
@@ -160,11 +160,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   onAdministrativeStatusChange() {
-    const admins = this.searchQuery.query.adminStatusFilters;
+    const admins = [...this.searchQuery.query.adminStatusFilters, ...this.invasiveSelected];
     let cnt = 0;
     this.invasiveStatuses.map(key => {
-      const realKey = 'MX.' + key;
-      this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+      this.formQuery[key] = admins && admins.indexOf(key) > -1;
       if (this.formQuery[key]) {
         cnt++;
       }
@@ -205,10 +204,9 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
     this.invasiveStatuses
       .map((key) => {
-        const value = 'MX.' + key;
         if (!this.formQuery[key]) {
           if (query.adminStatusFilters) {
-            const idx = query.adminStatusFilters.indexOf(value);
+            const idx = query.adminStatusFilters.indexOf(key);
             if (idx > -1) {
               query.adminStatusFilters.splice(idx, 1);
             }
@@ -218,8 +216,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
         if (!query.adminStatusFilters) {
           query.adminStatusFilters = [];
         }
-        if (query.adminStatusFilters.indexOf(value) === -1) {
-          query.adminStatusFilters.push(value);
+        if (query.adminStatusFilters.indexOf(key) === -1) {
+          query.adminStatusFilters.push(key);
         }
       });
   }
@@ -227,18 +225,18 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   private queryToFormQuery() {
     const query = this.searchQuery.query;
     this.formQuery = {
-      onlyFinnish: !!query.onlyFinnish,
-      onlyInvasive: query.invasiveSpeciesFilter === true,
-      onlyNonInvasive: query.invasiveSpeciesFilter === false,
-      taxon: query.target,
-      euInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
-      qualityPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.qualityPlantPest'),
-      otherPlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.otherPlantPest'),
-      quarantinePlantPest: this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
-      nationalInvasiveSpeciesStrategy: this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
-      otherInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
-      controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
-      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
+      'onlyFinnish': !!query.onlyFinnish,
+      'onlyInvasive': query.invasiveSpeciesFilter === true,
+      'onlyNonInvasive': query.invasiveSpeciesFilter === false,
+      'taxon': query.target,
+      'MX.euInvasiveSpeciesList': this.hasInMulti(query.adminStatusFilters, 'MX.euInvasiveSpeciesList'),
+      'MX.qualityPlantPest': this.hasInMulti(query.adminStatusFilters, 'MX.qualityPlantPest'),
+      'MX.otherPlantPest': this.hasInMulti(query.adminStatusFilters, 'MX.otherPlantPest'),
+      'MX.quarantinePlantPest': this.hasInMulti(query.adminStatusFilters, 'MX.quarantinePlantPest'),
+      'MX.nationalInvasiveSpeciesStrategy': this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
+      'MX.otherInvasiveSpeciesList': this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
+      'MX.controllingRisksOfInvasiveAlienSpecies': this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
+      'allInvasiveSpecies': this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses)
     };
 
     this.updateInvasiveSelected();

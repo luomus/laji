@@ -85,6 +85,7 @@ export class SearchQueryService implements SearchQueryInterface {
   private readonly boolean: Array<keyof WarehouseQueryInterface|'geoJSON'|'excludeNulls'|'onlyCount'|'pessimisticDateRangeHandling'> = [
     'pessimisticDateRangeHandling',
     'excludeNulls',
+    'taxonCounts',
     'pairCounts',
     'onlyCount',
     'geoJSON',

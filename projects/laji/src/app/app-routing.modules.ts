@@ -85,6 +85,8 @@ const routesWithLang: Routes = [
     {path: 'laadunvalvonta', redirectTo: '/about/772', pathMatch: 'full'},
     {path: 'sensitiiviset', redirectTo: '/about/709', pathMatch: 'full'},
     {path: 'mobiilivihko', redirectTo: '/about/4981', pathMatch: 'full'},
+    {path: 'ilmoita', redirectTo: '/save-observations', pathMatch: 'full'},
+    {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
