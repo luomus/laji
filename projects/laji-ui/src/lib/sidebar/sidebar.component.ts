@@ -147,6 +147,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   checkCloseOnClickListener() {
     if (this.mobile && this.open && this.contentRef && !this.destroyCloseOnClickListener) {
       setTimeout(() => {
+        this.destroyCloseOnClickListener?.();
         this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', this.onContentClick.bind(this));
       });
     } else if (this.destroyCloseOnClickListener) {

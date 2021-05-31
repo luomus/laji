@@ -254,7 +254,6 @@ export class ObservationResultService {
         return;
       }
       if (column.fact) {
-        column.fact = IdService.getUri(column.fact);
         facts.push(column);
       }
       if (column.transform) {
@@ -263,7 +262,6 @@ export class ObservationResultService {
     });
 
     return from(data.results || []).pipe(
-      // take(1),
       map(document => this.convertCoordinates(document, selected)),
       map(document => this.addFacts(document, facts)),
       concatMap(document => this.transformDocument(document, transform)),

@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { map, tap } from 'rxjs/operators';
 import { InformationItem } from '../../shared/model/InformationItem';
 import { MultiLanguage } from '../../shared/model/MultiLanguage';
-import { Observable, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-info-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
+<div *ngIf="!loadingContent else loading" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
 <ng-template #loading>
   <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
   <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
@@ -18,9 +18,10 @@ import { Observable, of } from 'rxjs';
 </ng-template>
 `
 })
-export class InfoPageComponent implements OnChanges {
+export class InfoPageComponent implements OnChanges, OnDestroy {
 
-  content$: Observable<string> = of('');
+  content = '';
+  loadingContent = false;
   _rootPage?: MultiLanguage;
 
   @Input()
@@ -36,10 +37,12 @@ export class InfoPageComponent implements OnChanges {
   hasContent = new EventEmitter<boolean>();
 
   private currentPage?: string;
+  private contentSub: Subscription;
 
   constructor(
     private translateService: TranslateService,
-    private lajiApiService: LajiApiService
+    private lajiApiService: LajiApiService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   @Input()
@@ -55,15 +58,35 @@ export class InfoPageComponent implements OnChanges {
     this.updatePage();
   }
 
+  ngOnDestroy() {
+    if (this.contentSub) {
+      this.contentSub.unsubscribe();
+    }
+  }
+
   private updatePage() {
     const activePage = this.getActivePage();
 
-    if (!activePage || this.currentPage === activePage) {
+    if (this.currentPage === activePage) {
       return;
     }
 
     this.currentPage = activePage;
-    this.content$ = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(activePage), {}).pipe(
+    this.loadContent(this.currentPage);
+  }
+
+  private loadContent(page: string) {
+    if (this.contentSub) {
+      this.contentSub.unsubscribe();
+    }
+
+    if (!page) {
+      this.loadingContent = false;
+      return;
+    }
+
+    this.loadingContent = true;
+    this.contentSub = this.lajiApiService.get(LajiApi.Endpoints.information, this.lastFromPath(page), {}).pipe(
       tap(result => {
         this.title.emit(result.title);
         this.parents.emit(result.parents);
@@ -71,7 +94,11 @@ export class InfoPageComponent implements OnChanges {
       }),
       map(result => (result.content || '').trim()),
       tap(content => this.hasContent.emit(!!content))
-    );
+    ).subscribe(content =>  {
+      this.content = content;
+      this.loadingContent = false;
+      this.cdr.markForCheck();
+    });
   }
 
   private lastFromPath(url: string): string {

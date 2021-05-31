@@ -15,10 +15,10 @@ export class ObservationActiveComponent {
   active: ActiveList[] = [];
   showList = false;
 
-  private _query: object;
+  private _query: Record<string, any> = {};
 
   @Input()
-  set query(query: object) {
+  set query(query: Record<string, any>) {
     this._query = query;
     this.updateSelectedList();
   }
@@ -60,8 +60,8 @@ export class ObservationActiveComponent {
   updateSelectedList() {
     const query = this.query;
     const keys = Object.keys(query);
-    const doubles = {};
-    const doubleKeys = {
+    const doubles: Record<string, boolean> = {};
+    const doubleKeys: Record<string, string> = {
       teamMember: 'teamMember',
       teamMemberId: 'teamMember',
       firstLoadedSameOrBefore: 'firstLoaded',
@@ -85,7 +85,7 @@ export class ObservationActiveComponent {
         result.push({field: i, value: query[i]});
       }
       return result;
-    }, []);
+    }, [] as ActiveList[]);
   }
 
 }

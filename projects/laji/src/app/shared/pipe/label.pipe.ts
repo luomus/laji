@@ -20,8 +20,8 @@ type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 })
 export class LabelPipe implements PipeTransform, OnDestroy {
   private value: string|string[] = '';
-  private lastKey: string;
-  private fetchSub: Subscription;
+  private lastKey?: string;
+  private fetchSub?: Subscription;
 
   constructor(
     private translate: TranslateService,
@@ -78,7 +78,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
   private fetchValue(key: string, type?: labelType): Observable<string> {
     switch (type) {
       case 'warehouse':
-        return this.warehouseService.getOriginalKey(key).pipe(
+        return this.warehouseService.getSchemaKey(key).pipe(
           switchMap(res => this.fetchValue(res))
         );
       case 'fullUri':
@@ -94,7 +94,9 @@ export class LabelPipe implements PipeTransform, OnDestroy {
           map(res => res === key ? '' : key)
         );
       default:
-        return this.triplestoreLabelService.get(key, this.translate.currentLang);
+        return this.triplestoreLabelService.get(key, this.translate.currentLang).pipe(
+          map(res => res || key)
+        );
     }
   }
 }

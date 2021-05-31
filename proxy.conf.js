@@ -5,6 +5,7 @@ module.exports = {
     target: config.api_base,
     changeOrigin: true,
     xfwd: true,
+    secure: false,
     pathRewrite: {
       '^/api/': 'v0/'
     },

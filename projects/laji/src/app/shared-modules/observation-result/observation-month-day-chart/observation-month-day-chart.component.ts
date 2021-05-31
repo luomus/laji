@@ -278,7 +278,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   }
 
   private getLabel(warehouseKey: string): Observable<string> {
-    return this.warehouseService.getOriginalKey(warehouseKey).pipe(
+    return this.warehouseService.getSchemaKey(warehouseKey).pipe(
       switchMap(key => this.triplestoreLabelService.get(key, this.translate.currentLang)),
       map(label => label ? label.charAt(0).toUpperCase() + label.slice(1) : '')
     );

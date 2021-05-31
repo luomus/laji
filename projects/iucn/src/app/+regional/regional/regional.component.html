@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <h1>{{ 'iucn.regional.title' | translate }}</h1>
+  <div class="year-select">
+    <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+  </div>
+  <p>
+    {{ 'iucn.regional.intro' | translate }}
+    <a [routerLink]="({'fi': '/about/r-205', 'en': '/about/r-213', 'sv': '/about/r-215'} | multiLang)" target="_blank">
+      {{ 'iucn.regional.intro.readMore' | translate }}
+    </a>
+  </p>
+
+  <h2>{{ 'iucn.regional.regions' | translate }}</h2>
+  <img class="region-map" src="http://cdn.laji.fi/images/iucn/iucn-region-map-2010-2019.png" alt="Image">
+
+  <div style="margin-top: 15px;">
+    <ul class="nav nav-tabs">
+      <li *ngFor="let option of types" role="presentation" class="link" [ngClass]="{'active dark-bg': option.value === queryParams.type}">
+        <a (click)="queryParamChange('type', option.value)">
+          {{ option.label | translate }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="well">
+    <laji-filters [type]="'regional'" [query]="queryParams" [groupSelectRootGroups]="groupSelectRootGroups" (queryChange)="queryChange($event)"></laji-filters>
+  </div>
+  <div style="margin-top: 15px;">
+    <ng-container *ngFor="let option of types">
+      <ng-container *ngIf="option.value === queryParams.type">
+        <h3 role="presentation" class="active" >
+          {{ (option.label) | translate }}
+        </h3>
+        <laji-active-filters [query]="queryParams"></laji-active-filters>
+      </ng-container>
+    </ng-container>
+  </div>
+  <laji-regional-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></laji-regional-results>
+</div>

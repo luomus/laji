@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { SelectOption } from '../select-collections.component';
+import { SelectedOption } from '../select-collections.component';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { ICollectionsTreeNode } from '../../../shared/service/collection.service';
+import { CheckboxType } from '../../select/checkbox/checkbox.component';
 @Component({
   selector: 'laji-select-collections-modal',
   templateUrl: './select-collections-modal.component.html',
@@ -14,7 +15,8 @@ import { ICollectionsTreeNode } from '../../../shared/service/collection.service
 })
 
 export class SelectCollectionsModalComponent implements OnInit {
-  @Input() selected: string[] = [];
+  @Input() included: string[] = [];
+  @Input() excluded: string[] = [];
   @Input() collectionsTree$: Observable<ICollectionsTreeNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
@@ -22,10 +24,14 @@ export class SelectCollectionsModalComponent implements OnInit {
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @ViewChild('tree') treeComponent: TreeComponent;
-  @Output() emitConfirm = new EventEmitter<string[]>();
+  @Output() emitConfirm = new EventEmitter<{
+    collectionId: string[],
+    collectionIdNot: string[]
+  }>();
 
-  selectedOptions: SelectOption[] = [];
+  selectedOptions: SelectedOption[] = [];
   treeModel: TreeModel;
+  checkboxType = CheckboxType.excluded;
 
   filterDebounce = new Subject<string>();
   toHtmlInputElement = toHtmlInputElement;
@@ -39,9 +45,24 @@ export class SelectCollectionsModalComponent implements OnInit {
     allowDrag: false,
     scrollOnActivate: false,
     nodeClass: (node: TreeNode) => {
-      if (!this.isActiveParent(node) && node.isActive) {
-        return 'tree-active-child';
+      const selected = this.selectedOptions.find(option => option.id === node.id);
+      let nodeClass;
+
+      if (!!selected && selected.type === 'excluded') {
+        nodeClass = 'tree-active-exclusion';
+      } else if (!selected && node.isActive) {
+        if (node.parent.getClass().includes('tree-active-exclusion')) {
+          nodeClass = 'tree-active-exclusion tree-active-child';
+        } else {
+          nodeClass = 'tree-active-child';
+        }
       }
+
+      if (node.isActive && node.isFocused) {
+        return nodeClass + ' tree-active-focused';
+      }
+
+      return nodeClass;
     },
     actionMapping: {
       mouse: {
@@ -73,10 +94,17 @@ export class SelectCollectionsModalComponent implements OnInit {
   treeInit() {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.selected?.forEach(key => {
+    this.included.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
-      this.nodeToggled(this.treeModel, node, null);
+      this.initializeNode(this.treeModel, node, 'initalizing', 'included');
+      this.expandParents(this.treeModel, node, null);
+    });
+
+    this.excluded.forEach(key => {
+      const node = this.treeModel.getNodeById(key);
+
+      this.initializeNode(this.treeModel, node, 'initalizing', 'excluded');
       this.expandParents(this.treeModel, node, null);
     });
   }
@@ -100,10 +128,6 @@ export class SelectCollectionsModalComponent implements OnInit {
     }
   }
 
-  isActiveParent(node: TreeNode) {
-    return node.isActive && this.selectedOptions.find(option => option.id === node.id);
-  }
-
   expandParents(tree: TreeModel, node: TreeNode, $event: any) {
     if (node.parent) {
       this.expandParents(tree, node.parent, $event);
@@ -111,9 +135,33 @@ export class SelectCollectionsModalComponent implements OnInit {
     }
   }
 
+  initializeNode(tree: TreeModel, node: TreeNode, $event: any, type: 'included' | 'excluded') {
+    this.nodeSelected(tree, node, $event);
+    this.selectedOptions = this.selectedOptions.concat({
+      id: node.id,
+      value: node.displayField,
+      type: type
+    });
+  }
+
   nodeToggled(tree: TreeModel, node: TreeNode, $event: any) {
-    if (this.isActiveParent(node)) {
-      this.removeNodeFromSelection(node);
+    if ($event?.target.id === 'collectionLink') {
+      return;
+    }
+
+    const selected = this.selectedOptions.find(option => option.id === node.id);
+
+    if (node.isActive && node.parent.isActive) {
+      if (selected) {
+        this.removeNodeFromSelection(node);
+      } else if (!node.getClass().includes('tree-active-exclusion')) {
+        this.addNodeToSelection(node, 'excluded');
+        this.clearChildSelections(node);
+      }
+    } else if (node.isActive && selected?.type === 'included') {
+      this.switchNodeSelection(node);
+      this.clearChildSelections(node);
+    } else if (node.isActive && selected?.type === 'excluded') {
       this.nodeDeselected(tree, node, $event);
     } else if (!node.isActive) {
       this.addNodeToSelection(node);
@@ -121,10 +169,24 @@ export class SelectCollectionsModalComponent implements OnInit {
     }
   }
 
-  addNodeToSelection(node: TreeNode) {
+  addNodeToSelection(node: TreeNode, type: 'included' | 'excluded' = 'included') {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
-      value: node.displayField
+      value: node.displayField,
+      type: type
+    });
+  }
+
+  switchNodeSelection(node: TreeNode) {
+    this.selectedOptions = this.selectedOptions.map(option => {
+      if (option.id === node.id) {
+        return {
+          ...option,
+          type: 'excluded'
+        };
+      } else {
+        return option;
+      }
     });
   }
 
@@ -132,8 +194,24 @@ export class SelectCollectionsModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.filter(option => option.id !== node.id);
   }
 
+  getCheckboxValue(id: string) {
+    const selected = this.selectedOptions.find(option => option.id === id);
+
+    if (!selected) {
+      return undefined;
+    }
+
+    if (selected.type === 'included') {
+      return true;
+    } else if (selected.type === 'excluded') {
+      return false;
+    }
+  }
+
   nodeSelected(tree: TreeModel, node: TreeNode, $event: any) {
-    TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
+    if ($event !== 'initalizing' || ($event === 'initalizing' && !node.isActive)) {
+      TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
+    }
 
     if (!node.hasChildren) {
       return;
@@ -146,9 +224,13 @@ export class SelectCollectionsModalComponent implements OnInit {
         this.nodeSelected(tree, child, $event);
       }
     });
+
+    node.focus();
   }
 
   nodeDeselected(tree: TreeModel, node: TreeNode, $event: any) {
+    this.removeNodeFromSelection(node);
+
     TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
 
     if (!node.hasChildren) {
@@ -157,6 +239,13 @@ export class SelectCollectionsModalComponent implements OnInit {
 
     node.children.forEach(child => {
       this.nodeDeselected(tree, child, $event);
+    });
+  }
+
+  clearChildSelections(node: TreeNode) {
+    node.children.forEach(child => {
+      this.removeNodeFromSelection(child);
+      this.clearChildSelections(child);
     });
   }
 
@@ -181,6 +270,21 @@ export class SelectCollectionsModalComponent implements OnInit {
 
   confirm() {
     this.modalRef.hide();
-    this.emitConfirm.emit(this.selectedOptions.map(option => option.id));
+    const includeToReturn = [];
+    const excludeToReturn = [];
+
+    this.selectedOptions.forEach(option => {
+      if (option.type === 'included') {
+        includeToReturn.push(option.id);
+      } else if (option.type === 'excluded') {
+        excludeToReturn.push(option.id);
+      }
+    });
+
+
+    this.emitConfirm.emit({
+      collectionId: includeToReturn,
+      collectionIdNot: excludeToReturn
+    });
   }
 }

@@ -10,7 +10,7 @@
 }
 
 .species-container {
-  padding: $sp-6 100px;
+  padding: $sp-6 75px;
   background-color: $neutral-3;
   overflow-x: scroll;
   box-shadow: inset 1px 1px 3px 0 rgba(#000, .2);
@@ -20,8 +20,8 @@
   position: absolute;
   top: 0;
 
-  height: 100%;
-  width: 100px;
+  height: calc(100% - 10px);
+  width: 75px;
 
   display: flex;
   justify-content: center;

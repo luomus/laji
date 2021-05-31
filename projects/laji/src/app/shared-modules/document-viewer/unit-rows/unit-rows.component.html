@@ -47,7 +47,17 @@
   </laji-row>
 </ng-container>
 <laji-issues [data]="unit"></laji-issues>
-<laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+<ng-container *ngIf="!unit.abundanceUnit; else abundanceUnit">
+  <laji-row [title]="'MY.count' | label" [value]="unit.abundanceString"></laji-row>
+</ng-container>
+<ng-template #abundanceUnit>
+  <laji-row [title]="'MY.count' | label"> 
+    <laji-abundance-row
+      [abundanceString]="unit.abundanceString"
+      [abundanceUnit]="unit.abundanceUnit | label: 'warehouse'">
+    </laji-abundance-row>
+  </laji-row>
+</ng-template>
 <laji-row [title]="'MY.femaleIndividualCount' | label" [value]="unit.individualCountFemale"></laji-row>
 <laji-row [title]="'MY.maleIndividualCount' | label" [value]="unit.individualCountMale"></laji-row>
 <!--

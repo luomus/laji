@@ -16,3 +16,5 @@ export const LajiMapLang = {
 export type LajiMapLang = LajiMap.Lang;
 
 export type LajiMapLineTransectGeometry = LajiMap.LineTransectGeometry;
+
+export type LajiMapDataOptions = LajiMap.DataOptions;

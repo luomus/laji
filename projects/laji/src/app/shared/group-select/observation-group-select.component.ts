@@ -39,6 +39,10 @@ export class ObservationGroupSelectComponent extends GroupSelectComponent<Inform
     return this.informalTaxonService.informalTaxonGroupFindById(groupId, lang);
   }
 
+  findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
+    return this.informalTaxonService.informalTaxonGroupFind(lang, undefined, undefined, {idIn: groupIds});
+  }
+
   getWithSiblings(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
     return this.informalTaxonService.informalTaxonGroupGetWithSiblings(groupId, lang);
   }
