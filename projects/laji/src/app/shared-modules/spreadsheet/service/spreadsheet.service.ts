@@ -12,12 +12,18 @@ import { Util } from '../../../shared/service/util.service';
 import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
 
+enum GroupTypeEnum {
+  date = 'date',
+  coordinate = 'coordinate'
+}
+
 interface IColCombine {
   col: string;
   field: string;
   type: string;
   groupId: number;
   order: number;
+  groupType: GroupTypeEnum;
 }
 
 @Injectable()
@@ -200,9 +206,11 @@ export class SpreadsheetService {
     }
     const first = data[0];
     const combines: IColCombine[] = [];
-    const matches = [];
-    Object.keys(GeneratorService.splitDate).forEach(key => matches.push(GeneratorService.splitDate[key]));
-    Object.keys(GeneratorService.splitCoordinate).forEach(key => matches.push(GeneratorService.splitCoordinate[key]));
+
+    const dateFields = Object.values(GeneratorService.splitDate);
+    const geometryFields = Object.values(GeneratorService.splitCoordinate);
+    const matches = dateFields.concat(geometryFields);
+
     const splitRegExp = new RegExp(`(${matches.join('|')})\\b`);
 
     const getGroup = (field: string): IColCombine => {
@@ -219,20 +227,23 @@ export class SpreadsheetService {
       const newField = first[key].replace(splitRegExp, '');
       const group = getGroup(newField);
       if (match) {
+        const type = match[1];
         combines.push({
           col: key,
           field: newField,
-          type: match[1],
+          type: type,
           groupId: group && group.groupId || SpreadsheetService.groupId++,
-          order: matches.indexOf(match[1])
+          order: matches.indexOf(match[1]),
+          groupType: dateFields.includes(type) ? GroupTypeEnum.date : GroupTypeEnum.coordinate
         });
       }
     });
 
-    if (combines.length === 0) {
+    const groupedCombines = this.getCombinedGroups(combines);
+    if (groupedCombines.length === 0) {
       return data;
     }
-    const groupedCombines = this.getCombinedGroups(combines);
+
     return data.map((row, index) => {
       const newRow = {...row};
       for (const group of groupedCombines) {
@@ -245,20 +256,15 @@ export class SpreadsheetService {
         if (index === 0) {
           newRow[combineTo] = group[0].field;
         } else {
-          newRow[combineTo] = this.getCombinedValue(values);
+          newRow[combineTo] = this.getCombinedValue(values, group[0].groupType);
         }
       }
       return newRow;
     });
   }
 
-  private getCombinedValue(values: {[key: string]: string}): string {
-    if (
-      typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.sys] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
-    ) {
+  private getCombinedValue(values: {[key: string]: string}, groupType: GroupTypeEnum): string {
+    if (groupType === GroupTypeEnum.coordinate) {
       return this.getCombinedCoordinateValue(values);
     }
     return this.getCombinedDateValue(values);
@@ -296,6 +302,24 @@ export class SpreadsheetService {
   }
 
   private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
+    const dateFields = combines.filter(col => col.groupType === GroupTypeEnum.date).map(col => col.type);
+    const coordinateFields = combines.filter(col => col.groupType === GroupTypeEnum.coordinate).map(col => col.type);
+
+    if (
+      !dateFields.includes(GeneratorService.splitDate.dd) ||
+      !dateFields.includes(GeneratorService.splitDate.mm) ||
+      !dateFields.includes(GeneratorService.splitDate.yyyy)
+    ) {
+      combines = combines.filter(col => col.groupType !== GroupTypeEnum.date);
+    }
+    if (
+      !coordinateFields.includes(GeneratorService.splitCoordinate.E) ||
+      !coordinateFields.includes(GeneratorService.splitCoordinate.N) ||
+      !(coordinateFields.includes(GeneratorService.splitCoordinate.system) || coordinateFields.includes(GeneratorService.splitCoordinate.sys))
+    ) {
+      combines = combines.filter(col => col.groupType !== GroupTypeEnum.coordinate);
+    }
+
     const groups: {[key: string]: IColCombine[]} = {};
     combines.forEach(col => {
       if (!groups[col.groupId]) {
