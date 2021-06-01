@@ -144,7 +144,7 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any, errors: string[]} {
     const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
@@ -200,9 +200,9 @@ export class SpreadsheetService {
     SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
   }
 
-  private combineSplittedFields(data: {[col: string]: string}[]) {
+  private combineSplittedFields(data: {[col: string]: string}[]): {data: any, errors: string[]} {
     if (!data || data.length < 2) {
-      return data;
+      return {data, errors: []};
     }
     const first = data[0];
     const combines: IColCombine[] = [];
@@ -239,12 +239,12 @@ export class SpreadsheetService {
       }
     });
 
-    const groupedCombines = this.getCombinedGroups(combines);
+    const {groupedCombines, errors} = this.getCombinedGroups(combines);
     if (groupedCombines.length === 0) {
-      return data;
+      return {data, errors};
     }
 
-    return data.map((row, index) => {
+    data = data.map((row, index) => {
       const newRow = {...row};
       for (const group of groupedCombines) {
         const values = {};
@@ -261,6 +261,8 @@ export class SpreadsheetService {
       }
       return newRow;
     });
+
+    return {data, errors};
   }
 
   private getCombinedValue(values: {[key: string]: string}, groupType: GroupTypeEnum): string {
@@ -301,24 +303,10 @@ export class SpreadsheetService {
     return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
   }
 
-  private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
-    const dateFields = combines.filter(col => col.groupType === GroupTypeEnum.date).map(col => col.type);
-    const coordinateFields = combines.filter(col => col.groupType === GroupTypeEnum.coordinate).map(col => col.type);
-
-    if (
-      !dateFields.includes(GeneratorService.splitDate.dd) ||
-      !dateFields.includes(GeneratorService.splitDate.mm) ||
-      !dateFields.includes(GeneratorService.splitDate.yyyy)
-    ) {
-      combines = combines.filter(col => col.groupType !== GroupTypeEnum.date);
-    }
-    if (
-      !coordinateFields.includes(GeneratorService.splitCoordinate.E) ||
-      !coordinateFields.includes(GeneratorService.splitCoordinate.N) ||
-      !(coordinateFields.includes(GeneratorService.splitCoordinate.system) || coordinateFields.includes(GeneratorService.splitCoordinate.sys))
-    ) {
-      combines = combines.filter(col => col.groupType !== GroupTypeEnum.coordinate);
-    }
+  private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][], errors: string[]} {
+    const errors = [];
+    combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.date, errors);
+    combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.coordinate, errors);
 
     const groups: {[key: string]: IColCombine[]} = {};
     combines.forEach(col => {
@@ -327,10 +315,34 @@ export class SpreadsheetService {
       }
       groups[col.groupId].push(col);
     });
-    return Object.keys(groups).map(group => {
-      groups[group].sort((a, b) => a.order - b.order);
-      return groups[group];
-    });
+    return {
+      groupedCombines: Object.keys(groups).map(group => {
+        groups[group].sort((a, b) => a.order - b.order);
+        return groups[group];
+      }),
+      errors
+    };
+  }
+
+  private checkCombinedHasRequiredColumns(combines: IColCombine[], groupType: GroupTypeEnum, errors: string[]): IColCombine[] {
+    const requiredKeys = (groupType === GroupTypeEnum.date ? [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy] :
+      [GeneratorService.splitCoordinate.E, GeneratorService.splitCoordinate.N, GeneratorService.splitCoordinate.system]
+    );
+
+    const fields = combines.filter(col => col.groupType === groupType);
+    if (fields.length > 0) {
+      const keys = fields.map(col => col.type);
+      let missing = requiredKeys.filter(key => !keys.includes(key));
+      if (missing.includes(GeneratorService.splitCoordinate.system) && keys.includes(GeneratorService.splitCoordinate.sys)) {
+        missing = missing.filter(val => val !== GeneratorService.splitCoordinate.system);
+      }
+      if (missing.length > 0) {
+        errors.push(this.translateService.instant('excel.import.error.missingSplitColumn', {field: fields[0].field, column: missing.join(', ')}));
+        combines = combines.filter(col => col.groupType !== groupType);
+      }
+    }
+
+    return combines;
   }
 
   private normalizeHeader(value: string) {

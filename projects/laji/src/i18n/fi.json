@@ -144,6 +144,7 @@
   "excel.import": "Tallenna tallennuspohjalla",
   "excel.import.alsoEmptyCount": "Kaikki rivit",
   "excel.import.done": "Havaintojen tallennus onnistui",
+  "excel.import.error.missingSplitColumn": "Monisarakkeisen kentän <strong>{{field}}</strong> sarakkeiden yhdistäminen epäonnistui! Puuttuu osa <strong>{{column}}</strong>.",
   "excel.import.error.alreadyUploaded": "<strong>Tiedosto on jo tallennettu.</strong> Varmista että valitsit oikean tiedoston.",
   "excel.import.error.alreadyUploadedPartially": "<strong>Tiedosto on jo osittain ladattu.</strong> Poista tiedostosta rivit jotka on jo onnistuneesti tallennettu ja yritä uudelleen.",
   "excel.import.error.ambiguousColumns": "<strong>Otsikkorivillä on monta saman nimistä saraketta!</strong><br>Korjaa tiedostoa niin että nämä sarakkeet eivät ole siinä useaan kertaan: <em>\"{{ambiguousColumns}}\"</em>.",
