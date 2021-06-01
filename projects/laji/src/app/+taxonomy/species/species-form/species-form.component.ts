@@ -238,7 +238,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
       otherInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
-      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses)
+      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
     };
 
     this.updateInvasiveSelected();
