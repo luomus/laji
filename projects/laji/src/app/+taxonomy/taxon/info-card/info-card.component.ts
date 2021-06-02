@@ -98,6 +98,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       { queryParamsHandling: 'preserve' }
     );
     this.setTitle(tabName);
+    this.cd.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -292,5 +293,4 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     metaTitle += ' | ' + this.translate.instant('taxonomy.' + tabName) + ' | ' + this.translate.instant('footer.title1');
     this.title.setTitle(metaTitle);
   }
-
 }
