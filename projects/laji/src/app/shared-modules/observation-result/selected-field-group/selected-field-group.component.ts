@@ -41,48 +41,32 @@ export class SelectedFieldGroupComponent {
     }
   }
 
-  onMoveUp(field: string | string[]) {
-    if (Array.isArray(field)) {
-      if (this.selected.indexOf(field[0]) > 0) {
-        field.forEach(column => {
-          this.moveUp.emit(column);
+  onMoveUp(field: string[]) {
+    const indexOfField = this.selected.indexOf(field[0]);
 
-          if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, -1);
-          }
-        });
-      }
-      return;
-    }
+    if (indexOfField > 0) {
+      field.forEach(column => {
+        this.moveUp.emit(column);
 
-    this.moveUp.emit(field);
-
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, -1);
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, -1 * this.getFieldColumnArrayLength(this.selected[indexOfField - 1]));
+        }
+      });
     }
   }
 
-  onMoveDown(field: string | string[]) {
-    if (Array.isArray(field)) {
-      const lastSelected = this.selected.length - 1;
-      const lastField = field.length - 1;
+  onMoveDown(field: string[]) {
+    const lastSelected = this.selected.length - 1;
+    const indexOfField = this.selected.indexOf(field[field.length - 1]);
 
-      if (this.selected.indexOf(field[lastField]) < lastSelected) {
-        field.reverse().forEach(column => {
-          this.moveDown.emit(column);
+    if (indexOfField < lastSelected) {
+      field.reverse().forEach(column => {
+        this.moveDown.emit(column);
 
-          if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, 1);
-          }
-        });
-      }
-      return;
-    }
-
-    this.moveDown.emit(field);
-
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, 1);
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, this.getFieldColumnArrayLength(this.selected[indexOfField + 1]));
+        }
+      });
     }
   }
 
@@ -105,6 +89,16 @@ export class SelectedFieldGroupComponent {
       ];
     } else {
       return [ field ];
+    }
+  }
+
+  getFieldColumnArrayLength(field: string) {
+    if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)\./.test(field)) {
+      return 2;
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)\./.test(field)) {
+      return 4;
+    } else {
+      return 1;
     }
   }
 
