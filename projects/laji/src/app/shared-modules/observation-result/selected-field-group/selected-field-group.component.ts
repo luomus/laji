@@ -43,13 +43,13 @@ export class SelectedFieldGroupComponent {
 
   onMoveUp(field: string[]) {
     const indexOfField = this.selected.indexOf(field[0]);
-
+    const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField - 1]);
     if (indexOfField > 0) {
       field.forEach(column => {
         this.moveUp.emit(column);
 
         if (this.columnSelector) {
-          this.columnSelector.moveFieldByName(column, -1 * this.getFieldColumnArrayLength(this.selected[indexOfField - 1]));
+          this.columnSelector.moveFieldByName(column, -1 * widthOfNextGroup);
         }
       });
     }
@@ -58,13 +58,14 @@ export class SelectedFieldGroupComponent {
   onMoveDown(field: string[]) {
     const lastSelected = this.selected.length - 1;
     const indexOfField = this.selected.indexOf(field[field.length - 1]);
+    const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField + 1]);
 
     if (indexOfField < lastSelected) {
       field.reverse().forEach(column => {
         this.moveDown.emit(column);
 
         if (this.columnSelector) {
-          this.columnSelector.moveFieldByName(column, this.getFieldColumnArrayLength(this.selected[indexOfField + 1]));
+          this.columnSelector.moveFieldByName(column, widthOfNextGroup);
         }
       });
     }
