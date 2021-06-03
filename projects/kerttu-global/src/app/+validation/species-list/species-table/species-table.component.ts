@@ -28,7 +28,7 @@ export class SpeciesTableComponent {
     }
   ];
 
-  @Output() taxonSelect = new EventEmitter<string>();
+  @Output() taxonSelect = new EventEmitter<number>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 

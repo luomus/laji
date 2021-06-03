@@ -31,13 +31,16 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IKerttuSpeciesFilters>(path);
   }
 
-  public getDataForValidation(taxonId: string): Observable<{results: IKerttuRecording[]}> {
+  public getDataForValidation(taxonId: number): Observable<{results: IKerttuRecording[]}> {
     const path = this.basePath + '/recording/' + taxonId;
 
     return this.httpClient.get<{results: IKerttuRecording[]}>(path);
   }
 
-  public saveAnnotations(annotations): Observable<any> {
-    return timer(1000);
+  public saveAnnotations(personToken: string, taxonId: number, annotations): Observable<any> {
+    const path = this.basePath + '/annotation/' + taxonId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotations, { params });
   }
 }

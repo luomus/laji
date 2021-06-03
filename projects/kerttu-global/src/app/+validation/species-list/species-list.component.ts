@@ -15,7 +15,7 @@ export class SpeciesListComponent {
   @Input() speciesList: PagedResult<IKerttuSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
   @Input() loading = false;
 
-  @Output() taxonSelect = new EventEmitter<string>();
+  @Output() taxonSelect = new EventEmitter<number>();
   @Output() queryChange = new EventEmitter<IKerttuSpeciesQuery>();
 
   onPageChange(page: number) {

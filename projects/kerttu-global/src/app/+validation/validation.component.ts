@@ -10,7 +10,7 @@ import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuReco
   selector: 'laji-validation',
   template: `
     <laji-species-list *ngIf="!taxon" [(query)]="speciesQuery" [filters]="speciesFilters$ | async" [speciesList]="speciesList" [loading]="loading" (taxonSelect)="onTaxonSelect($event)" (queryChange)="updateSpeciesList()"></laji-species-list>
-    <laji-species-validation *ngIf="taxon" [taxon]="taxon" [data]="validationData$ | async" (annotationsReady)="annotationsReady($event)" [saving]="saving"></laji-species-validation>
+    <laji-species-validation *ngIf="taxon" [data]="validationData$ | async" (annotationsReady)="annotationsReady($event)" [saving]="saving"></laji-species-validation>
   `,
   styles: []
 })
@@ -20,7 +20,7 @@ export class ValidationComponent {
   speciesList: PagedResult<IKerttuSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
   loading = false;
 
-  taxon: string;
+  taxon: number;
   validationData$: Observable<IKerttuRecording[]>;
   saving = false;
 
@@ -36,7 +36,7 @@ export class ValidationComponent {
     // this.onTaxonSelect('MX.26282');
   }
 
-  onTaxonSelect(taxon: string) {
+  onTaxonSelect(taxon: number) {
     this.taxon = taxon;
     this.validationData$ = this.kerttuApi.getDataForValidation(this.taxon).pipe(map(data => data.results));
   }
@@ -55,7 +55,7 @@ export class ValidationComponent {
 
   annotationsReady(annotations) {
     this.saving = true;
-    this.kerttuApi.saveAnnotations(annotations).subscribe(() => {
+    this.kerttuApi.saveAnnotations(this.userService.getToken(), this.taxon, annotations).subscribe(() => {
       this.taxon = undefined;
       this.validationData$ = undefined;
       this.saving = false;
