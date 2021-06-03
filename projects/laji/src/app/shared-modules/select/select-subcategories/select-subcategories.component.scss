@@ -24,7 +24,7 @@
 }
 .lj-item span {
 }
-.lj-info {
+.lj-item.lj-info {
   display: inline-block;
   padding-right: 0px;
 }
@@ -111,10 +111,6 @@
 
   .lj-item {
     padding-right: 20px;
-  }
-
-  .lj-info {
-    padding-right: 0px;
   }
 
   ::ng-deep .lj-item-container div laji-info span.no-propagation, ::ng-deep .item laji-info span.no-propagation, ::ng-deep .lj-container laji-info span.no-propagation{
