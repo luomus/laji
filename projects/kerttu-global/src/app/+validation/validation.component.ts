@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters } from '../kerttu-global-shared/models';
+import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording } from '../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-validation',
@@ -20,7 +21,7 @@ export class ValidationComponent {
   loading = false;
 
   taxon: string;
-  validationData$: Observable<any[]>;
+  validationData$: Observable<IKerttuRecording[]>;
   saving = false;
 
   private speciesListSub: Subscription;
@@ -37,7 +38,7 @@ export class ValidationComponent {
 
   onTaxonSelect(taxon: string) {
     this.taxon = taxon;
-    this.validationData$ = this.kerttuApi.getDataForValidation(this.taxon);
+    this.validationData$ = this.kerttuApi.getDataForValidation(this.taxon).pipe(map(data => data.results));
   }
 
   updateSpeciesList() {

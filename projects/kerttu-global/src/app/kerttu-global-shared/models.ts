@@ -19,3 +19,25 @@ export interface IKerttuSpeciesFilters {
   order: {id: number, scientificName: string}[];
   family: {id: number, scientificName: string, order: number}[];
 }
+
+export interface IKerttuRecording {
+  id: number;
+  audio: IGlobalAudio;
+  xRange: number[];
+  yRange: number[];
+}
+
+export interface IGlobalAudio {
+  url: string;
+  species: IKerttuSpecies;
+  recordist?: string;
+  country?: string;
+  state?: string;
+  year?: number;
+  month?: number;
+  day?: number;
+  assetId: string;
+  specimenUrl: string;
+  checklistId?: string;
+  checklistUrl?: string;
+}

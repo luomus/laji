@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters } from '../models';
+import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording } from '../models';
 import { Observable, of, timer } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -31,14 +31,10 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IKerttuSpeciesFilters>(path);
   }
 
-  public getDataForValidation(taxonId: string): Observable<any[]> {
-    return of([
-      { 'audio': {'url': 'https://image.laji.fi/HLO01/HLO01_20180516_031304_48.mp3'}, 'xRange': [25, 27], 'yRange': [3000, 6000]},
-      { 'audio': {'url': 'https://image.laji.fi/HLO01/HLO01_20180516_031304_48.mp3'}, 'xRange': [2, 4], 'yRange': [1000, 5000]},
-      { 'audio': {'url': 'https://image.laji.fi/HLO01/HLO01_20180516_031304_48.mp3'}, 'xRange': [2, 4], 'yRange': [1000, 5000]},
-      { 'audio': {'url': 'https://image.laji.fi/HLO01/HLO01_20180516_031304_48.mp3'}, 'xRange': [2, 4], 'yRange': [1000, 5000]},
-      { 'audio': {'url': 'https://image.laji.fi/HLO01/HLO01_20180516_031304_48.mp3'}, 'xRange': [2, 4], 'yRange': [1000, 5000]}
-    ]);
+  public getDataForValidation(taxonId: string): Observable<{results: IKerttuRecording[]}> {
+    const path = this.basePath + '/recording/' + taxonId;
+
+    return this.httpClient.get<{results: IKerttuRecording[]}>(path);
   }
 
   public saveAnnotations(annotations): Observable<any> {

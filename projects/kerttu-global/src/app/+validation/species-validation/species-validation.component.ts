@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { LetterAnnotation } from 'projects/laji/src/app/+theme/kerttu/models';
 import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { IKerttuRecording } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -10,7 +11,7 @@ import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-
 })
 export class SpeciesValidationComponent implements OnChanges {
   @Input() taxon: string;
-  @Input() data: any[];
+  @Input() data: IKerttuRecording[];
   @Input() saving = false;
 
   annotation = LetterAnnotation;
@@ -75,7 +76,7 @@ export class SpeciesValidationComponent implements OnChanges {
 
   goToNext(e) {
     e.preventDefault();
-    
+
     this.annotations[this.activeIndex] = this.currentAnnotation;
 
     if (this.activeIndex !== this.data.length - 1) {

@@ -1,6 +1,6 @@
 <div class="container">
-  <h1 style="max-width: 100%;">
-    {{ taxon | taxon | capitalize }} - <i>{{ taxon | taxon:'scientific' }}</i>
+  <h1 *ngIf="activeLetter" style="max-width: 100%;">
+    {{ activeLetter.audio.species.commonName }} - <i>{{ activeLetter.audio.species.scientificName }}</i>
   </h1>
   <div class="panel panel-default">
     <div class="panel-heading">
