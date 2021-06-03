@@ -178,7 +178,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         (e) => {
           this.loading = false;
           this.loadingElements.emitChildEvent(false);
-          console.log(e);
         }
       );
   }
