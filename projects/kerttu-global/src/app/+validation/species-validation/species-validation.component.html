@@ -1,60 +1,65 @@
 <div class="container">
-  <h1 *ngIf="activeLetter" style="max-width: 100%;">
-    {{ activeLetter.audio.species.commonName }} - <i>{{ activeLetter.audio.species.scientificName }}</i>
-  </h1>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <ul class="pager">
-        <li [ngClass]="{'disabled': activeIndex === 0 || saving}"><a href="#" role="button" [tabindex]="activeIndex === 0 || saving ? -1 : 0" (click)="returnToPrevious($event)"><span aria-hidden="true">&larr;</span> Previous</a></li>
-        <li class="pager-title">Vocalization {{ activeIndex + 1 }} / {{ data.length }}</li>
-        <li [ngClass]="{'disabled': !activeLetter || saving}"><a href="#" role="button" [tabindex]="!activeLetter || saving ? -1 : 0" (click)="goToNext($event)">Next <span aria-hidden="true">&rarr;</span></a></li>
-      </ul>
-    </div>
-    <div class="panel-body">
-      <div *ngIf="activeLetter">
-        <div class="form-group">
-            <h3>Is the target species vocalizing inside the white frame?</h3>
-            <div
-              class="radio"
-              *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
-            >
-              <label style="font-weight: initial;">
-                <input type="radio" name="annotation" [value]="a" [(ngModel)]="currentAnnotation.annotation">
-                {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-              </label>
+  <ng-container *ngIf="data else loading">
+    <h1 *ngIf="activeLetter" style="max-width: 100%;">
+      {{ activeLetter.audio.species.commonName }} - <i>{{ activeLetter.audio.species.scientificName }}</i>
+    </h1>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <ul class="pager">
+          <li [ngClass]="{'disabled': activeIndex === 0 || saving}"><a href="#" role="button" [tabindex]="activeIndex === 0 || saving ? -1 : 0" (click)="returnToPrevious($event)"><span aria-hidden="true">&larr;</span> Previous</a></li>
+          <li class="pager-title">Vocalization {{ activeIndex + 1 }} / {{ data.length }}</li>
+          <li [ngClass]="{'disabled': !activeLetter || saving}"><a href="#" role="button" [tabindex]="!activeLetter || saving ? -1 : 0" (click)="goToNext($event)">Next <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </div>
+      <div class="panel-body">
+        <div *ngIf="activeLetter">
+          <div class="form-group">
+              <h3>Is the target species vocalizing inside the white frame?</h3>
+              <div
+                class="radio"
+                *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
+              >
+                <label style="font-weight: initial;">
+                  <input type="radio" name="annotation" [value]="a" [(ngModel)]="currentAnnotation.annotation">
+                  {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
+                </label>
+              </div>
+          </div>
+          <div class="audio-viewer-wrapper">
+            <laji-audio-viewer-settings
+            style="display: block; padding-bottom: 15px;"
+            [(zoomed)]="zoomed"
+            [(xRangePadding)]="xRangePadding"
+            [displayInline]="true"
+          ></laji-audio-viewer-settings>
+          <laji-audio-viewer
+            [audio]="activeLetter.audio"
+            [focusArea]="currentAnnotation.area ? currentAnnotation.area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
+            [zoomFrequency]="zoomed"
+            [focusAreaTimePadding]="xRangePadding"
+            [mode]="audioViewerMode"
+            (drawEnd)="onDrawEnd($event)"
+          ></laji-audio-viewer>
+          </div>
+          <div style="margin-top: 15px">
+            <div class="form-group">
+              <label>{{ 'validation.fixFraming.label' | translate }}</label>
+              <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()">{{ 'validation.fixFraming' | translate }}</button>
             </div>
-        </div>
-        <div class="audio-viewer-wrapper">
-          <laji-audio-viewer-settings
-          style="display: block; padding-bottom: 15px;"
-          [(zoomed)]="zoomed"
-          [(xRangePadding)]="xRangePadding"
-          [displayInline]="true"
-        ></laji-audio-viewer-settings>
-        <laji-audio-viewer
-          [audio]="activeLetter.audio"
-          [focusArea]="currentAnnotation.area ? currentAnnotation.area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
-          [zoomFrequency]="zoomed"
-          [focusAreaTimePadding]="xRangePadding"
-          [mode]="audioViewerMode"
-          (drawEnd)="onDrawEnd($event)"
-        ></laji-audio-viewer>
-        </div>
-        <div style="margin-top: 15px">
-          <div class="form-group">
-            <label>{{ 'validation.fixFraming.label' | translate }}</label>
-            <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()">{{ 'validation.fixFraming' | translate }}</button>
-          </div>
-          <div class="form-group">
-            <label>{{ 'validation.otherComments' | translate }}</label>
-            <textarea name="notes" class="form-control" [(ngModel)]="currentAnnotation.notes"></textarea>
+            <div class="form-group">
+              <label>{{ 'validation.otherComments' | translate }}</label>
+              <textarea name="notes" class="form-control" [(ngModel)]="currentAnnotation.notes"></textarea>
+            </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="!activeLetter">
-        <p>All the vocalizations validated for this species. Thank you very much!</p>
-        <lu-button (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">Save and go back to species list</lu-button>
+        <div *ngIf="!activeLetter">
+          <p>All the vocalizations validated for this species. Thank you very much!</p>
+          <lu-button (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">Save and go back to species list</lu-button>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
+<ng-template #loading>
+  <laji-spinner [overlay]="true"></laji-spinner>
+</ng-template>

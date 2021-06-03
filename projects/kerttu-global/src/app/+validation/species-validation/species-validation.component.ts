@@ -10,8 +10,8 @@ import { IKerttuRecording } from '../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesValidationComponent implements OnChanges {
-  @Input() taxon: string;
-  @Input() data: IKerttuRecording[];
+  @Input() taxon?: string;
+  @Input() data?: IKerttuRecording[];
   @Input() saving = false;
 
   annotation = LetterAnnotation;
