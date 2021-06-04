@@ -98,6 +98,7 @@ export class ValidationComponent {
         this.taxon = undefined;
         this.validationData$ = undefined;
         this.saving = false;
+        this.updateSpeciesList();
         this.cd.markForCheck();
       });
     }
