@@ -81,12 +81,12 @@ export class SelectedFieldGroupComponent {
   getFieldColumnArray(field: string) {
     if (!field) {
       return;
-    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)/.test(field)) {
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)($|.(lat|lon)$)/.test(field)) {
       return [
         field + '.lat',
         field + '.lon'
       ];
-    } else if (/gathering\.conversions\.(wgs84|euref|ykj)/.test(field)) {
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)($|.(lat|lon)(Min|Max)$)/.test(field)) {
       return [
         field + '.latMin',
         field + '.latMax',
