@@ -43,8 +43,10 @@ export class SelectedFieldGroupComponent {
 
   onMoveUp(field: string[]) {
     const indexOfField = this.selected.indexOf(field[0]);
-    const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField - 1]);
+
     if (indexOfField > 0) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField - 1]);
+
       field.forEach(column => {
         this.moveUp.emit(column);
 
@@ -58,9 +60,10 @@ export class SelectedFieldGroupComponent {
   onMoveDown(field: string[]) {
     const lastSelected = this.selected.length - 1;
     const indexOfField = this.selected.indexOf(field[field.length - 1]);
-    const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField + 1]);
 
     if (indexOfField < lastSelected) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField + 1]);
+
       field.reverse().forEach(column => {
         this.moveDown.emit(column);
 
@@ -76,12 +79,14 @@ export class SelectedFieldGroupComponent {
   }
 
   getFieldColumnArray(field: string) {
-    if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)$/.test(field)) {
+    if (!field) {
+      return;
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)/.test(field)) {
       return [
         field + '.lat',
         field + '.lon'
       ];
-    } else if (/gathering\.conversions\.(wgs84|euref|ykj)$/.test(field)) {
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)/.test(field)) {
       return [
         field + '.latMin',
         field + '.latMax',
@@ -94,13 +99,7 @@ export class SelectedFieldGroupComponent {
   }
 
   getFieldColumnArrayLength(field: string) {
-    if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)\./.test(field)) {
-      return 2;
-    } else if (/gathering\.conversions\.(wgs84|euref|ykj)\./.test(field)) {
-      return 4;
-    } else {
-      return 1;
-    }
+    return this.getFieldColumnArray(field)?.length || 0;
   }
 
   getIndexArray(field: string[]) {
