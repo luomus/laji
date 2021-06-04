@@ -220,6 +220,8 @@
   "finbif-bib.intro": "Viimeisimmät lehtiartikkelit, kirjan luvut ja muut julkaisut, joissa käytetään tai viitataan Lajitietokeskuksen kautta jaettuihin tietoihin ja Lajitietokeskuksen työkaluihin tai palveluihin.",
   "finbif-bib.seeAll": "Lisää julkaisuja",
   "finbif-bib.title": "Lajitietokeskus-julkaisut",
+  "finbif-r.intro": "R-kielelle tehty kirjasto Lajitietokeskuksen datan käyttämiseksi.",
+  "finbif-r.title": "Lajitietokeskuksen R-paketti",
   "footer.api": "Rajapinnat / API",
   "footer.citizenScience": "Kansalaistiede lyhyesti",
   "footer.conservation": "Luonnonsuojelu ja vaikuttaminen",
