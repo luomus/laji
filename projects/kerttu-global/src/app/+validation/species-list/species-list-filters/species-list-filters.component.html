@@ -1,37 +1,31 @@
-<div class="row">
-  <div class="col-sm-6" style="margin-bottom: 20px;">
-    <h4>Filter species by region</h4>
+<div class="row mb-2">
+  <div class="col-sm-6 mb-4">
+    <h4>{{ 'speciesList.filters.byRegion' | translate }}</h4>
     <div class="row">
       <div class="col-sm-6">
-        <label>Continent</label>
+        <label>{{ 'speciesList.filters.continent' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.continent" (ngModelChange)="selectChange('continent', $event)">
           <option [value]=""></option>
-          <option *ngFor="let continent of filters.continent" [value]="continent.id">{{ continent.name }}</option>
+          <option *ngFor="let continent of filters?.continent" [value]="continent.id">{{ continent.name }}</option>
         </select>
       </div>
-      <!--div class="col-sm-6">
-        <label>Country</label>
-        <select class="form-control input-sm">
-          <option>Finland</option>
-        </select>
-      </div-->
     </div>
   </div>
-  <div class="col-sm-6" style="margin-bottom: 20px;">
-    <h4>Filter species by taxonomy</h4>
+  <div class="col-sm-6 mb-4">
+    <h4>{{ 'speciesList.filters.byTaxonomy' | translate }}</h4>
     <div class="row">
       <div class="col-sm-6">
-        <label>Order</label>
+        <label>{{ 'speciesList.filters.order' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.order" (ngModelChange)="selectChange('order', $event)">
           <option [value]=""></option>
-          <option *ngFor="let order of filters.order" [value]="order.id">{{ order.scientificName }}</option>
+          <option *ngFor="let order of filters?.order" [value]="order.id">{{ order.scientificName }}</option>
         </select>
       </div>
       <div class="col-sm-6">
-        <label>Family</label>
+        <label>{{ 'speciesList.filters.family' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.family" (ngModelChange)="selectChange('family', $event)">
           <option [value]=""></option>
-          <ng-container *ngFor="let family of filters.family">
+          <ng-container *ngFor="let family of filters?.family">
             <option *ngIf="!query.order || query.order === family.order" [value]="family.id">
               {{ family.scientificName }}
             </option>
@@ -40,17 +34,18 @@
       </div>
     </div>
   </div>
-</div>
-<div style="margin-bottom: 2px;">
-  <label>Show only unvalidated species&nbsp;</label>
-  <bSwitch
-    class="d-block"
-    [switch-on-text]="'yes' | translate"
-    [switch-off-text]="'no' | translate"
-    [switch-on-color]="'primary'"
-    [switch-size]="'small'"
-    [(ngModel)]="query.onlyUnvalidated"
-    (ngModelChange)="onQueryChange()"
-    [switch-base-class]="'bootstrap-switch'">
-  </bSwitch>
+  <div class="col-sm-6">
+    <label>{{ 'speciesList.filters.onlyUnvalidated' | translate }}</label>
+    <div class="bswitch-wrapper">
+      <bSwitch
+      [switch-on-text]="'yes' | translate"
+      [switch-off-text]="'no' | translate"
+      [switch-on-color]="'primary'"
+      [switch-size]="'small'"
+      [(ngModel)]="query.onlyUnvalidated"
+      (ngModelChange)="onQueryChange()"
+      [switch-base-class]="'bootstrap-switch'">
+    </bSwitch>
+    </div>
+  </div>
 </div>

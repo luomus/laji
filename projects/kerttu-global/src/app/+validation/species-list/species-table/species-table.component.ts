@@ -16,15 +16,15 @@ export class SpeciesTableComponent {
   columns: DatatableColumn[] = [
     {
       name: 'commonName',
-      label: 'Common name'
+      label: 'speciesList.column.commonName'
     },
     {
       name: 'scientificName',
-      label: 'Scientific name'
+      label: 'speciesList.column.scientificName'
     },
     {
       name: 'userValidations',
-      label: 'User validations'
+      label: 'speciesList.column.userValidations'
     }
   ];
 
