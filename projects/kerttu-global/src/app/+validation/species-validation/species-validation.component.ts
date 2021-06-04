@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { LetterAnnotation } from 'projects/laji/src/app/+theme/kerttu/models';
 import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IKerttuRecording } from '../../kerttu-global-shared/models';
+import { ILetterAnnotation, IKerttuRecording, LetterAnnotation } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -15,12 +14,7 @@ export class SpeciesValidationComponent implements OnChanges {
 
   annotation = LetterAnnotation;
 
-  currentAnnotation: {
-    annotation?: LetterAnnotation,
-    area?: IAudioViewerArea,
-    notes?: string
-  } = {};
-  annotations = [];
+  annotations: ILetterAnnotation[] = [];
 
   activeIndex = 0;
   activeLetter: any;
@@ -30,25 +24,19 @@ export class SpeciesValidationComponent implements OnChanges {
 
   audioViewerMode: AudioViewerMode = 'default';
 
-  @Output() annotationsReady = new EventEmitter<LetterAnnotation[]>();
+  saveDisabled = true;
+
+  @Output() annotationsReady = new EventEmitter<ILetterAnnotation[]>();
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
-      this.activeIndex = 0;
-      this.activeLetter = this.data?.[this.activeIndex];
-    }
-  }
-
-  onAnnotationChange(annotation: LetterAnnotation)  {
-    this.annotations[this.activeIndex] = annotation;
-
-    if (this.activeIndex !== this.data.length - 1) {
-      this.activeIndex++;
-      this.activeLetter = this.data[this.activeIndex];
-    } else {
-      this.activeLetter = null;
+      if (this.data && this.data.length > 0) {
+        this.activeIndex = 0;
+        this.activeLetter = this.data[this.activeIndex];
+        this.annotations = this.data.map(() => ({}));
+      }
     }
   }
 
@@ -57,38 +45,40 @@ export class SpeciesValidationComponent implements OnChanges {
   }
 
   onDrawEnd(area: IAudioViewerArea) {
-    this.currentAnnotation.area = area;
-    this.audioViewerMode = 'default';
+    this.annotations[this.activeIndex].area = area;
+    this.setDefaultAudioViewerMode();
   }
 
   returnToPrevious(e) {
     e.preventDefault();
 
-    if (this.activeLetter) {
-      this.annotations[this.activeIndex] = this.currentAnnotation;
-      this.activeIndex--;
-    }
-
+    this.activeIndex--;
     this.activeLetter = this.data[this.activeIndex];
-    this.currentAnnotation = this.annotations[this.activeIndex];
   }
 
   goToNext(e) {
     e.preventDefault();
 
-    this.annotations[this.activeIndex] = this.currentAnnotation;
-
-    if (this.activeIndex !== this.data.length - 1) {
-      this.activeIndex++;
-      this.activeLetter = this.data[this.activeIndex];
-      this.currentAnnotation = this.annotations[this.activeIndex] || {};
-    } else {
-      this.activeLetter = null;
-      this.currentAnnotation = null;
-    }
+    this.activeIndex++;
+    this.activeLetter = this.data[this.activeIndex];
   }
 
   saveAndGoBack() {
+    this.setDefaultAudioViewerMode();
     this.annotationsReady.emit(this.annotations);
+  }
+
+  goBack() {
+    this.setDefaultAudioViewerMode();
+    this.annotationsReady.emit(null);
+  }
+
+  updateSaveDisabled() {
+    const missing = this.annotations.filter(ann => ann.annotation == null);
+    this.saveDisabled = missing.length > 0;
+  }
+
+  private setDefaultAudioViewerMode() {
+    this.audioViewerMode = 'default';
   }
 }

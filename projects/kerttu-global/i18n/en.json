@@ -13,5 +13,12 @@
   "speciesList.filters.onlyUnvalidated": "Show only unvalidated species",
   "speciesList.column.commonName": "Common name",
   "speciesList.column.scientificName": "Scientific name",
-  "speciesList.column.userValidations": "User validations"
+  "speciesList.column.userValidations": "User validations",
+  "validation.next": "Next",
+  "validation.previous": "Previous",
+  "validation.vocalization": "Vocalization",
+  "validation.save": "Save and go back to species list",
+  "validation.cancel": "Go back without saving",
+  "validation.isTheSpeciesVocalizing": "Is the target species vocalizing inside the white frame?",
+  "validation.leaveConfirm": "Are you sure you want to leave?"
 }

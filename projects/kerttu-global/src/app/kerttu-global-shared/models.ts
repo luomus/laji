@@ -1,3 +1,5 @@
+import { IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+
 export interface IKerttuSpeciesQuery {
   onlyUnvalidated?: boolean;
   continent?: number;
@@ -40,4 +42,16 @@ export interface IGlobalAudio {
   specimenUrl: string;
   checklistId?: string;
   checklistUrl?: string;
+}
+
+export interface ILetterAnnotation {
+  annotation?: LetterAnnotation;
+  area?: IAudioViewerArea;
+  notes?: string;
+}
+
+export enum LetterAnnotation {
+  yes = 1,
+  no = 0,
+  unsure = -1
 }

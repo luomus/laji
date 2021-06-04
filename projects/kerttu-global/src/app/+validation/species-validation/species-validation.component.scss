@@ -1,3 +1,11 @@
+h1, h3 {
+  max-width: 100%;
+}
+
+h1 {
+  margin-block-start: 20px;
+}
+
 .pager {
   margin: 0;
   text-align: left;
@@ -13,6 +21,11 @@
 
 .audio-viewer-wrapper {
   background-color: #dde1e3;
-  margin: 0 -15px;
+  margin: 0 -15px 15px -15px;
   padding: 5px 15px;
+
+  laji-audio-viewer-settings {
+    display: block;
+    padding-bottom: 15px;
+  }
 }
