@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
-import { IAudio } from '../../models';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { IAudio } from 'projects/laji/src/app/+theme/kerttu/models';
 
 @Component({
   selector: 'laji-audio-info',

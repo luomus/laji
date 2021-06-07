@@ -1,9 +1,11 @@
-<span>
-  {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-  {{ audio.municipality }}
-</span>
-<lu-button *ngIf="audio.geometry" (click)="openModal()" [small]="true"><i class="fa fa-map-marker"></i></lu-button>
-<laji-info [html]="'theme.kerttu.info.audioInfo' | translate"></laji-info>
+<ng-container *ngIf="audio.dateTime || audio.municipality || audio.geometry">
+  <span>
+    {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+    {{ audio.municipality }}
+  </span>
+  <lu-button *ngIf="audio.geometry" (click)="openModal()" [small]="true"><i class="fa fa-map-marker"></i></lu-button>
+  <laji-info [html]="'theme.kerttu.info.audioInfo' | translate"></laji-info>
+</ng-container>
 
 <ng-template #mapModal>
   <div class="modal-header">

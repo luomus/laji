@@ -15,11 +15,17 @@ import { AudioService } from './service/audio.service';
 import { SpectrogramService } from './service/spectrogram.service';
 import { RequiresAudioSupportDirective } from './directive/requires-audio-support.directive';
 import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-viewer-settings.component';
+import { CornellAudioInfoComponent } from './audio-viewer/cornell-audio-info/cornell-audio-info.component';
+import { DatePipe } from '@angular/common';
+import { CornellAudioDatePipe } from './service/cornell-audio-date.pipe';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent, AudioInfoComponent,
-    AudioInfoMapComponent, AudioNotSupportedErrorComponent, AudioIosWarningComponent, RequiresAudioSupportDirective, AudioViewerSettingsComponent],
-  providers: [AudioService, SpectrogramService],
+    AudioInfoMapComponent, AudioNotSupportedErrorComponent, AudioIosWarningComponent,
+    RequiresAudioSupportDirective, AudioViewerSettingsComponent, CornellAudioInfoComponent,
+    CornellAudioDatePipe
+  ],
+  providers: [AudioService, SpectrogramService, DatePipe, CornellAudioDatePipe],
   imports: [
     CommonModule,
     SharedModule,

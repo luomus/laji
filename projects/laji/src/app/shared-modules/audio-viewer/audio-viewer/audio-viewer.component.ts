@@ -13,9 +13,18 @@ import {
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { IAudio, AudioViewerMode, IAudioViewerArea } from '../models';
+import { AudioViewerMode, IAudioViewerArea } from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
+import { IAudio } from '../../../+theme/kerttu/models';
+import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-shared/models';
+
+function isAudio(audio: IAudio|IGlobalAudio): audio is IAudio {
+  return !(audio as any).assetId;
+}
+function isGlobalAudio(audio: IAudio|IGlobalAudio): audio is IGlobalAudio {
+  return !!(audio as any).assetId;
+}
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -24,7 +33,7 @@ import { AudioViewerUtils } from '../service/audio-viewer-utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() audio: IAudio;
+  @Input() audio: IAudio|IGlobalAudio;
 
   @Input() focusArea: IAudioViewerArea; // focus area is drawn with white rectangle to the spectrogram
   @Input() focusAreaTimePadding: number; // how much recording is shown outside the focus area (if undefined the whole recording is shown)
@@ -51,6 +60,9 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   loading = false;
   hasError = false;
+
+  isAudio = isAudio;
+  isGlobalAudio = isGlobalAudio;
 
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
