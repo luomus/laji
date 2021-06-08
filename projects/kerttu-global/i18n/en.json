@@ -14,6 +14,7 @@
   "speciesList.column.commonName": "Common name",
   "speciesList.column.scientificName": "Scientific name",
   "speciesList.column.userValidations": "User validations",
+  "speciesList.column.userHasValidated": "Done",
   "validation.next": "Next",
   "validation.previous": "Previous",
   "validation.vocalization": "Vocalization",

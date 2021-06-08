@@ -190,6 +190,11 @@
     {{ 'no' | translate }}
   </span>
 </ng-template>
+<ng-template let-value="value" #booleanCheck>
+  <span *ngIf="value === true">
+    <i class="fa fa-check"></i>
+  </span>
+</ng-template>
 <ng-template let-value="value" ngx-datatable-cell-template #eventDate>
   <span *ngIf="value && value.end && value.begin">
     <span *ngIf="value.begin === value.end; else dateRange" title="{{value.begin}}">{{ value.begin }}</span>

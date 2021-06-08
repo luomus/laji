@@ -24,7 +24,14 @@ export class SpeciesTableComponent {
     },
     {
       name: 'userValidations',
-      label: 'speciesList.column.userValidations'
+      label: 'speciesList.column.userValidations',
+      width: 30
+    },
+    {
+      name: 'userHasValidated',
+      label: 'speciesList.column.userHasValidated',
+      cellTemplate: 'booleanCheck',
+      width: 30
     }
   ];
 
@@ -32,13 +39,24 @@ export class SpeciesTableComponent {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
-  getRowClass(row: any) {
-    let rowClass = 'link ';
-    if (!row.userValidations) {
-      rowClass += 'red-row';
-    } else if (row.userValidations === 1 || row.userValidations === 2) {
-      rowClass += 'yellow-row';
+  onRowSelect(row: any) {
+    if (!row.userHasValidated) {
+      this.taxonSelect.emit(row.id);
     }
-    return rowClass;
+  }
+
+  getRowClass(row: any): string {
+    const rowClasses = [];
+
+    if (!row.userHasValidated) {
+      rowClasses.push('link');
+    }
+    if (!row.userValidations) {
+      rowClasses.push('red-row');
+    } else if (row.userValidations === 1 || row.userValidations === 2) {
+      rowClasses.push('yellow-row');
+    }
+
+    return rowClasses.join(' ');
   }
 }

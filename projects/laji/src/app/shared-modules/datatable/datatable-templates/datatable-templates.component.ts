@@ -27,6 +27,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('taxonScientificNameLink', { static: true }) taxonScientificNameLink: TemplateRef<any>;
   @ViewChild('cursive', { static: true }) cursive: TemplateRef<any>;
   @ViewChild('boolean', { static: true }) boolean: TemplateRef<any>;
+  @ViewChild('booleanCheck', { static: true }) booleanCheck: TemplateRef<any>;
   @ViewChild('label', { static: true }) label: TemplateRef<any>;
   @ViewChild('labelArray', { static: true }) labelArray: TemplateRef<any>;
   @ViewChild('warehouseLabel', { static: true }) warehouseLabel: TemplateRef<any>;

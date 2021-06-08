@@ -8,7 +8,8 @@
   [pageSize]="data.pageSize"
   [count]="data.total"
   [loading]="loading"
-  (rowSelect)="taxonSelect.emit($event.row.id)"
+  [showRowAsLink]="false"
+  (rowSelect)="onRowSelect($event.row)"
   (pageChange)="pageChange.emit($event.page)"
   (sortChange)="sortChange.emit($event.sorts)"
 ></laji-datatable>

@@ -14,6 +14,8 @@ export interface IKerttuSpecies {
   id: number;
   scientificName: string;
   commonName: string;
+  userValidations: number;
+  userHasValidated: boolean;
 }
 
 export interface IKerttuSpeciesFilters {
