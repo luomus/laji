@@ -18,8 +18,12 @@ export class KerttuGlobalApi {
     const path = this.basePath + '/species';
 
     let params = new HttpParams().set('personToken', personToken);
-    Object.keys(query).forEach(function (key) {
-        params = params.append(key, '' + query[key]);
+    Object.keys(query).forEach(key => {
+        const value = query[key];
+        if (value == null || (Array.isArray(value) && value.length === 0)) {
+          return;
+        }
+        params = params.append(key, '' + value);
     });
 
     return this.httpClient.get<PagedResult<IKerttuSpecies>>(path, { params });
