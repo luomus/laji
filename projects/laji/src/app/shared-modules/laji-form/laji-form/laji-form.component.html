@@ -26,8 +26,8 @@
 </ng-template>
 
 <ng-template #modalButton let-label="label" let-fn="fn">
-  <lu-button (click)="fn()">
+  <button class="btn btn-default" (click)="fn()">
     {{ label | translate }}
-  </lu-button>
+  </button>
 </ng-template>
 
