@@ -58,9 +58,6 @@ export class DialogService {
 
   private createDialog<T extends DialogConfig, R = (boolean | (string | null))>(options: T): Observable<R> {
     const initialState: InitialState = {showCancel: true, prompt: false,  promptValue: '', ...options};
-    if (typeof options.confirmLabel === 'string') {
-      initialState.confirmLabel = options.confirmLabel;
-    }
     const modalRef = this.modalService.show(ConfirmModalComponent, {
         backdrop: 'static',
         class: 'modal-sm',
