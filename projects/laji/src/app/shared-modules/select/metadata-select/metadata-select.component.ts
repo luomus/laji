@@ -16,7 +16,6 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SelectOptions } from '../select-subcategories/select-subcategories.component';
-import { FilterOptionsPipe } from '../../search-filters/filter-options.pipe';
 
 export enum SelectStyle {
   basic,
@@ -44,7 +43,6 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() alt: string;
   @Input() name: string;
   @Input() multiple = true;
-  @Input() excludeOptions: string[] = [];
   @Input() placeholder = 'select';
   @Input() mapToWarehouse = false;
   @Input() pick: MetadataSelectPick;
@@ -130,7 +128,6 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
     this.subOptions = (this.options ? byOptions$ : byField$).pipe(
       switchMap(options => this.mapToWarehouse ? this.optionsToWarehouseID(options) : of(options)),
-      map(options => this.deleteOptionsfromExcludedOptions(options, this.excludeOptions)),
       map(options => this.labelAsValue ? options.map(o => ({...o, id: o.value})) : options),
       map(options => this.firstOptions?.length > 0 ? this.sortOptionsByAnotherList(options) : (
         this._shouldSort ? options.sort((a, b) => a.value.localeCompare(b.value)) : options
@@ -166,16 +163,6 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     }
     this.selectedTitle = this.active.length > 0 ? ' (' + this.active.length + ')' : '';
     this.cd.markForCheck();
-  }
-
-  deleteOptionsfromExcludedOptions(options, excludeOptions) {
-    if (!excludeOptions.length) {
-      return options;
-    }
-
-
-    return options.filter(option => !excludeOptions.includes(option.id));
-
   }
 
   refreshValue(value: any): void {
