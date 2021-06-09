@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IFormField } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
+import { Util } from '../../../../../shared/service/util.service';
 
 @Component({
   selector: 'laji-error-list',
@@ -17,10 +18,10 @@ export class ErrorListComponent {
   constructor(private translateService: TranslateService) { }
 
   @Input()
-  set errors(data) {
+  set errors(data: unknown) {
+    const errors = [];
     if (typeof data === 'object' && !Array.isArray(data)) {
-      const errors = [];
-      if (data.status || data.status === 0) {
+      if (Util.hasOwnProperty(data, 'status')) {
         switch (data.status) {
           case 403:
             errors.push({
@@ -32,7 +33,7 @@ export class ErrorListComponent {
           default:
             errors.push({
               field: 'id',
-              errors: [data.statusText || this.translateService.instant('haseka.form.genericError')]
+              errors: [Util.hasOwnProperty(data, 'statusText') ? data.statusText : this.translateService.instant('haseka.form.genericError')]
             });
         }
       } else {
@@ -43,8 +44,21 @@ export class ErrorListComponent {
           });
         });
       }
-      this._errors = errors;
+    } else if (Array.isArray(data)) {
+      data.forEach(err => {
+        if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'dataPath')) {
+          return;
+        }
+        errors.push({
+          field: err.dataPath
+            .substring(err.dataPath.substring(0, 1) === '/' ? 1 : 0)
+            .replace(/\/[0-9]+/g, '[*]')
+            .replace(/\//g, '.'),
+          errors: [this.getMessage(err)]
+        });
+      });
     }
+    this._errors = errors;
   }
 
   private pathToKey(path: string) {
@@ -63,6 +77,21 @@ export class ErrorListComponent {
       return Object.keys(value).reduce((prev, current) => [...prev, ...this.pickErrors(current)], []);
     }
     return [value];
+  }
+
+  private getMessage(err: unknown): string {
+    if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'message') || typeof err.message !== 'string') {
+      return this.translateService.instant('haseka.form.genericError');
+    }
+    let base = err.message;
+    if (Util.hasOwnProperty(err, 'params') && typeof err.params === 'object' && err.params && !Array.isArray(err.params)) {
+      const info = Object.values(err.params);
+      if (info.length) {
+        base += ` '${info.join('\', \'')}'`;
+      }
+    }
+
+    return base;
   }
 
 }
