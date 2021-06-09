@@ -72,7 +72,7 @@
     </ng-container>
 
     <laji-col-mapper
-      *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.ambiguousColumns].indexOf(vm.step) === -1"
+      *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId, step.ambiguousColumns].indexOf(vm.step) === -1"
       [hidden]="vm.step !== step.colMapping"
       (mappingDone)="colMappingDone($event)"
       [fields]="fields"
