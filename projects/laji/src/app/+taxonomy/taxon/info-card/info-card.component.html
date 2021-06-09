@@ -67,7 +67,7 @@
         [taxon]="taxon"
       ></laji-taxon-endangerment>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.invasive' | translate" *ngIf="taxon.invasiveSpecies">
+    <lu-tab [heading]="'taxonomy.invasive' | translate" *ngIf="isInvasive">
       <laji-taxon-invasive
         *ngIf="loadedTabs.isLoaded('invasive')"
         [taxon]="taxon"
