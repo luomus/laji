@@ -1,0 +1,34 @@
+<div class="filters" *ngIf="showFilter">
+    <laji-wbc-table-filter (valueChange)="filterBy = $event"></laji-wbc-table-filter>
+  </div>
+  <laji-datatable
+    #dataTable
+    (rowSelect)="rowSelect.emit($event.row)"
+    [sorts]="sorts"
+    [clientSideSorting]="true"
+    [showRowAsLink]="true"
+    [showHeader]="true"
+    [filterBy]="filterBy"
+    [height]="height"
+    [virtualScrolling]="true"
+    [rows]="rows"
+    [loading]="loading"
+    [columnMode]="columnMode"
+    [totalMessage]="'haseka.submissions.total' | translate"
+    [columns]="columns"
+    [count]="rows?.length">
+  </laji-datatable>
+  
+  <ng-template let-value="value" let-row="row" #routeLink>
+    <a
+      *ngIf="value"
+      [routerLink]="[]"
+      [queryParams]="{route: (row['document.namedPlace.id'] | toQName)}"
+      queryParamsHandling="merge"
+      (click)="onRouteLinkClick($event, row['document.namedPlace.id'])"
+      title="{{ value }}"
+    >
+      {{ value }}
+    </a>
+  </ng-template>
+  

@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-sm-12 select-container">
+      <div>
+        <label for="year">{{ 'nafi.stats.year' | translate }}</label>
+        <select
+          id="year"
+          (change)="onYearChange(toHtmlSelectElement($event.target).value)"
+          name="year"
+          class="form-control"
+          style="width: 120px">
+          <option *ngIf="!yearRequired" [value]="0" [selected]="!activeYear">{{ 'all' | translate }}</option>
+          <option *ngFor="let year of years" [value]="year" [selected]="year === activeYear">
+            {{ year }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="showDateFilter">
+        <label for="date">{{ 'nafi.stats.date' | translate }}</label>
+        <select
+          id="date"
+          (change)="onDateChange(toHtmlSelectElement($event.target).value)"
+          [disabled]="!activeYear"
+          name="date"
+          class="form-control"
+          style="width: 120px">
+          <option [value]="0" [selected]="!activeDate">{{ 'all' | translate }}</option>
+          <option *ngFor="let day of days" [value]="day" [selected]="day === activeDate">
+            {{ day | amDateFormat:'L' }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="activeYear">
+        <label for="onlySections">{{ 'nafi.stats.sections' | translate }} / {{ 'nafi.stats.days' | translate }}</label>
+        <bSwitch
+          id="sections"
+          [disabled]="activeDate"
+          (changeState)="onSectionsChange($event)"
+          style="margin-right: 15px; display: block;"
+          name="sections"
+          [switch-off-text]="'nafi.stats.days' | translate"
+          [switch-on-text]="'nafi.stats.sections' | translate"
+          [switch-on-color]="'default'"
+          [switch-size]="'small'"
+          [(ngModel)]="onlySections"
+          [switch-base-class]="'bootstrap-switch'">
+        </bSwitch>
+      </div>
+    </div>
+  </div>

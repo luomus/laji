@@ -73,7 +73,6 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     this.unsubscribe$.complete();
   }
 
-
   toggleValue(id: idType, event) {
     const selected = this.selectedOptions.find(option => option.id === id);
     if (!selected || (this.isSelectOptions(selected) && selected.checkboxValue !== true)) {
@@ -191,6 +190,7 @@ export class SelectComponent<T extends idType|SelectOption = string> implements 
     if (!this.options) {
       return;
     }
+
     this.selectedOptions = [];
     if (!selected || selected.length === 0) {
       this.options.forEach(option => {

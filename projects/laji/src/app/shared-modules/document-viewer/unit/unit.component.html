@@ -23,7 +23,7 @@
       <span>
         <span>{{ annotations.length }} </span>
         <span *ngIf="annotations.length === 1; else multiple" style="text-transform: lowercase;">{{ 'annotation.titleSingle' | translate }}</span>
-        <ng-template #multiple><span style="text-transform: lowercase;">{{ 'annotation.title' | translate }}</span></ng-template>
+        <ng-template #multiple><span style="text-transform: lowercase;">{{ 'annotation.titlePlural' | translate }}</span></ng-template>
       </span>
     </a>
     <a type="button" class="btn btn-sm btn-default" (click)="showAnnotations()">{{ 'annotation.button' | translate}}</a>
@@ -37,4 +37,12 @@
       </ng-container>
     </ng-container>
   </div>
+  <laji-identifications
+    [identifications]="unit.identifications"
+    [showFacts]="showFacts"
+  ></laji-identifications>
+  <laji-types
+    [types]="unit.types"
+    [showFacts]="showFacts"
+  ></laji-types>
 </div>
