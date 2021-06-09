@@ -1,27 +1,22 @@
 <ng-container *ngIf="aboutData$ | async as data">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
-    <ng-container *ngIf="!data.form.options?.dataset">
+    <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
       <laji-document-form-header [formID]="data.form.id"
-                                [displayDescription]="false"
-                                [displayInstructions]="false"
+                                 [displayDescription]="false"
+                                 [displayInstructions]="false"
       ></laji-document-form-header>
+      <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
+                      [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+      ></laji-info-page>
     </ng-container>
-    <div class="laji-page">
-      <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
-        <laji-info-page
-          *ngIf="(data.form.options?.about | multiLang)"
-          [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
-        ></laji-info-page>
-      </ng-container>
-      <ng-template #datasetIntro>
-        <laji-dataset-about [form]="data.form"></laji-dataset-about>
-      </ng-template>
-      <ng-container *ngIf="data.loggedIn; else loginButton">
-        <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                      [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
-        </laji-request>
-      </ng-container>
-    </div>
+    <ng-template #datasetIntro>
+      <laji-dataset-about [form]="data.form"></laji-dataset-about>
+    </ng-template>
+    <ng-container *ngIf="data.loggedIn; else loginButton">
+      <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
+      </laji-request>
+    </ng-container>
   </ng-container>
 </ng-container>
 
