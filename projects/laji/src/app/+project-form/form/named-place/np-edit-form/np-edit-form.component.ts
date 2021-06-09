@@ -203,10 +203,10 @@ export class NpEditFormComponent implements OnInit {
   }
 
   private mergePrepopulatedDocument(namedPlace, formData, asyncData: NamedPlacesRouteData) {
-    namedPlace.prepopulatedDocument = asyncData.namedPlace?.prepopulatedDocument || {};
+    namedPlace.prepopulatedDocument = asyncData.namedPlace?.prepopulatedDocument;
     if (formData.prepopulatedDocument) {
       namedPlace.prepopulatedDocument = merge(
-        namedPlace.prepopulatedDocument,
+        namedPlace.prepopulatedDocument || {},
         formData.prepopulatedDocument,
         { arrayMerge: Util.arrayCombineMerge }
       );

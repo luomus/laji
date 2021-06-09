@@ -1,0 +1,56 @@
+  <div>
+    <h3>{{taxonSet}}</h3>
+  </div>
+
+  <div class="download-row">
+    <laji-download
+      [downloadLoading]="downloadLoading"
+      [formats]="['csv', 'tsv', 'ods', 'xlsx']"
+      (download)="download($event)"
+    ><span><i class="glyphicon glyphicon-download-alt"></i> {{ 'wbc.stats.route.table.download' | translate }} </span>
+    </laji-download>
+  </div>
+
+  <laji-datatable
+    #dataTable
+    [showHeader]="true"
+    [showFooter]="false"
+    [height]="'calc(80vh - 40px)'"
+    [virtualScrolling]="true"
+    [rows]="rows"
+    [loading]="loading"
+    [columnMode]="'force'"
+    [totalMessage]="'haseka.submissions.total' | translate"
+    [emptyMessage]="'wbc.stats.noHits' | translate"
+    [columns]="columns"
+    [sorts]="sorts"
+    [getRowClass]="_getRowClass"
+    [showRowAsLink]="false"
+    [clientSideSorting]="true"
+    (sortChange)="onSort($event)">
+  </laji-datatable>
+  
+  <ng-template let-value="value" let-row="row" #textOrTranslationKey>
+    <ng-container>
+      <span *ngIf="value" [title]="value">{{ value }}</span>
+    </ng-container>
+    <ng-template #translationKey>
+      <span *ngIf="value" [title]="value">
+        {{ value}}
+      </span>
+    </ng-template>
+  </ng-template>
+  
+  <ng-template let-value="value" let-row="row" #numberOrDocumentIds>
+    <ng-container *ngIf="row.name !== 'documentIds'; else documentIds">
+      <span *ngIf="value || value === 0" [title]="roundNumber(value)">{{ roundNumber(value) }}</span>
+    </ng-container>
+    <ng-template #documentIds>
+      <span *ngIf="value && value.length > 0" ngPreserveWhitespaces style="display: inline-block">
+        <ng-container *ngFor="let doc of value">
+          <a (click)="documentClick.emit(doc)" title="{{doc}}" class="link">{{ 'wbc.stats.route.table.link' | translate }}</a>
+        </ng-container>
+      </span>
+    </ng-template>
+  </ng-template>
+  

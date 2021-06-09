@@ -1,21 +1,37 @@
 import { Form } from '../shared/model/Form';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { FormService } from '../shared/service/form.service';
-import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
+import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operators';
+import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
 import { ProjectForm, ProjectFormService } from './project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
+import { Title } from '@angular/platform-browser';
+import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
+import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import ResultServiceType = Form.ResultServiceType;
+
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
   disabled: boolean;
+  datasetsBreadcrumb?: Breadcrumb[];
+}
+
+function isViewModel(vm: ViewModel | NotFoundViewModel): vm is ViewModel {
+  return !!(vm as any).form;
+}
+
+interface NotFoundViewModel {
+  formID: string;
+}
+
+function isNotFoundViewModel(vm: ViewModel | NotFoundViewModel): vm is NotFoundViewModel {
+  return !!(vm as any).formID;
 }
 
 interface NavLink {
@@ -42,21 +58,27 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   constructor (
     private route: ActivatedRoute,
     private translate: TranslateService,
-    private formService: FormService,
     private documentViewerFacade: DocumentViewerFacade,
     private projectFormService: ProjectFormService,
     private formPermissionService: FormPermissionService,
     public userService: UserService,
     private router: Router,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private title: Title,
+    private labelService: TriplestoreLabelService,
 ) {}
 
-  vm$: Observable<ViewModel>;
+  vm$: Observable<ViewModel | NotFoundViewModel>;
   formPermissions$: Observable<FormPermission>;
   showNav$: Observable<boolean>;
   isPrintPage$: Observable<boolean>;
   redirectionSubscription: Subscription;
   userToggledSidebar$: Subject<boolean> = new BehaviorSubject<boolean>(undefined);
+
+  isViewModel = isViewModel;
+  isNotFoundViewModel = isNotFoundViewModel;
+
+  private titleSubscription: Subscription;
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
     switch (resultServiceType) {
@@ -81,6 +103,21 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             active: queryParams['tab'] === 'censuses'
           }
         ];
+      case ResultServiceType.sykeInsect:
+        return [
+          {
+            link: ['stats'],
+            label: 'sykeInsect.stats.allResults',
+            linkParams: {tab: 'species'},
+            active: queryParams['tab'] === 'species'
+          },
+          {
+            link: ['stats'],
+            label: 'sykeInsect.stats.routes',
+            linkParams: {tab: 'routes'},
+            active: queryParams['tab'] === 'routes'
+          }
+        ];
       default:
         return [];
     }
@@ -101,18 +138,31 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const _projectForm$ = this.projectFormService.getProjectFormFromRoute$(this.route);
+    const notFound$ = _projectForm$.pipe(
+      map(projectForm => !projectForm.form)
+    );
+
+    const projectForm$ = _projectForm$.pipe(filter( projectForm => !!projectForm.form));
 
     const rights$ = projectForm$.pipe(switchMap(projectForm => this.formPermissionService.getRights(projectForm.form)));
 
-    this.vm$ = combineLatest(projectForm$, rights$, this.route.queryParams).pipe(
-      map(([projectForm, rights, queryParams]) => ({
-          form: projectForm.form,
-          navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
-            ? this.getNavLinks(projectForm, rights, queryParams)
-            : undefined,
-          disabled: projectForm.form.options?.disabled && !rights.ictAdmin
-        })
+    const formID$ = this.projectFormService.getFormID(this.route);
+
+    this.vm$ = notFound$.pipe(
+      switchMap(notFound => notFound
+        ? formID$.pipe(map(formID => ({formID})))
+        : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
+          map(([projectForm, rights, queryParams]) => ({
+              form: projectForm.form,
+              navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
+                ? this.getNavLinks(projectForm, rights, queryParams)
+                : undefined,
+              disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
+              datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form)
+            })
+          )
+        )
       )
     );
 
@@ -135,7 +185,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
 
-    this.showNav$ = combineLatest(routerEvents$, this.userToggledSidebar$.asObservable()).pipe(
+    this.showNav$ = combineLatest([routerEvents$, this.userToggledSidebar$.asObservable()]).pipe(
       mergeMap(([url, userToggledSidebar]) =>
         form$.pipe(
           map(form =>
@@ -152,7 +202,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     this.isPrintPage$ = routerEvents$.pipe(map(url => !!url.match(/\/print$/)));
 
-    this.redirectionSubscription = combineLatest(routerEvents$, projectForm$).subscribe(([, projectForm]) => {
+    this.redirectionSubscription = combineLatest([routerEvents$, projectForm$]).subscribe(([, projectForm]) => {
       if (!this.route.children.length) {
         const mainPage = projectForm.form.options?.simple
           ? 'form'
@@ -160,10 +210,19 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.router.navigate([`./${mainPage}`], {relativeTo: this.route, replaceUrl: true});
       }
     });
+
+    this.titleSubscription = combineLatest([routerEvents$, projectForm$]).pipe(
+      switchMap(([, projectForm]) => this.getFormTitle(projectForm.form))
+    ).subscribe((title) => {
+      if (title) {
+        this.title.setTitle(title + ' | ' + this.title.getTitle());
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.redirectionSubscription.unsubscribe();
+    this.titleSubscription.unsubscribe();
   }
 
   private getNavLinks(projectForm: ProjectForm, rights: Rights, queryParams: Params): NavLink[] {
@@ -241,6 +300,28 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     ].filter(n => n);
   }
 
+  private getDatasetsBreadcrumb(form: Form.SchemaForm): Breadcrumb[] {
+    if (!form.options?.dataset) {
+      return [];
+    }
+
+    return [
+      {
+        link: '/theme',
+        label: 'navigation.theme'
+      },
+      {
+        link: '/theme/datasets',
+        label: 'datasets.label'
+      },
+      {
+        link: '.',
+        label: form.collectionID,
+        isLabel: true
+      }
+    ];
+  }
+
   showDocumentViewer(document: Document) {
     this.documentViewerFacade.showDocument({document, own: true});
   }
@@ -260,5 +341,20 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  private getFormTitle(form: Form.SchemaForm): Observable<string> {
+    let title$ = of(form.title);
 
+    if (form.options?.dataset) {
+      title$ = forkJoin([
+        this.labelService.get(form.collectionID, this.translate.currentLang),
+        this.translate.get('datasets.label')
+      ]).pipe(
+        map((result: string[]) => {
+          return result.filter(res => !!res).join(' | ');
+        })
+      );
+    }
+
+    return title$;
+  }
 }

@@ -1,0 +1,15 @@
+<ng-container *ngIf="route$ | async; else main">
+    <laji-syke-insect-route [collectionId]="collectionId"></laji-syke-insect-route>
+  </ng-container>
+  <ng-template #main>
+    <h3>{{ 'wbc.stats.routes' | translate }}</h3>
+      <laji-syke-insect-routes-list
+        [rows]="data"
+        [loading]="!data"
+        [selected]="selected"
+        [sorts]="sorts"
+        (rowSelect)="rowSelect($event)"
+      ></laji-syke-insect-routes-list>
+  </ng-template>
+  
+  

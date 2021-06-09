@@ -45,6 +45,10 @@ import { ObservationEffectiveTagsTaxonComponent } from './observation-effective-
 import { AudioPlayerComponent } from '../../shared-modules/audio-player/audio-player.component';
 import { QualityRowComponent } from './quality-row/quality-row.component';
 import { NamedPlaceLinkerButtonModule } from '../../+project-form/form/named-place-linker/named-place-linker-button/named-place-linker-button.module';
+import { IdentificationsComponent } from './identifications/identifications.component';
+import { IdentificationComponent } from './identifications/identification/identification.component';
+import { TypesComponent } from './types/types.component';
+import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
 
 @NgModule({
@@ -79,6 +83,10 @@ import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
     ObservationEffectiveTagsTaxonComponent,
     AudioPlayerComponent,
     QualityRowComponent,
+    IdentificationsComponent,
+    IdentificationComponent,
+    TypesComponent,
+    TypeComponent,
     AbundanceRowComponent
   ],
   exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent]

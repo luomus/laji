@@ -56,7 +56,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   @LocalStorage('importIncludeOnlyWithCount', false) onlyWithCount: boolean;
   _onlyWithCount: boolean;
 
-  @Input() allowedCombineOptions: CombineToDocument[];
+  @Input() allowedCombineOptions: CombineToDocument[] = [CombineToDocument.all, CombineToDocument.gathering];
 
   _forms: Observable<string[]> = this.formService.getGloballyAllowedSpreadsheetForms().pipe(
     map(_forms => _forms.map(form => form.id))
@@ -431,8 +431,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
     let success = true;
     let skipped = false;
     let hadSuccess = false;
+    let ticker = 0;
     this.total = this.parsedData.length;
     this.current = 0;
+    const add = Math.min(Math.floor(this.total / 2), 50);
 
     const rowData = this.parsedData.filter(data => data.document !== null);
 
@@ -442,7 +444,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
       publicityRestrictions
     }).pipe(
       switchMap(() => this.importService.waitToComplete('create', this.jobPayload, (status) => {
-        this.current = status.processed;
+        ticker += add;
+        this.current = status.processed === this.total ?
+          status.processed :
+          Math.min(Math.max(this.total - 1, 0), ticker);
         this.cdr.markForCheck();
       })),
       map(({errors, documents}) => rowData.map((data, idx) => {

@@ -148,6 +148,10 @@ export class Util {
     return true;
   }
 
+  public static hasOwnProperty<X extends {}, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
+    return obj.hasOwnProperty(prop);
+  }
+
   private static getDateFromString(dateString) {
     const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
     const dateArray = reggie.exec(dateString);
