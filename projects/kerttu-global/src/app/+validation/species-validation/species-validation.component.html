@@ -1,6 +1,6 @@
 <div class="container">
   <div>
-    <lu-button class="mr-2" (click)="saveAndGoBack()" [loading]="saving" [role]="'success'" [disabled]="saveDisabled">
+    <lu-button class="mr-2" (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">
       {{ 'validation.save' | translate }}
     </lu-button>
     <lu-button (click)="goBack()" [disabled]="saving">
@@ -44,7 +44,6 @@
                     [value]="a"
                     [(ngModel)]="annotations[activeIndex].annotation"
                     [disabled]="saving"
-                    (ngModelChange)="updateSaveDisabled()"
                   >
                   {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
                 </label>

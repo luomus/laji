@@ -83,7 +83,7 @@ export class ValidationComponent {
     });
   }
 
-  annotationsReady(annotations: ILetterAnnotation) {
+  annotationsReady(annotations: ILetterAnnotation[]) {
     if (!annotations) {
       this.dialogService.confirm(this.translate.instant('validation.leaveConfirm')).subscribe(confirm => {
         if (confirm) {
@@ -93,6 +93,12 @@ export class ValidationComponent {
         }
       });
     } else {
+      const missing = annotations.filter(ann => ann.annotation == null);
+      if (missing.length > 0) {
+        this.dialogService.alert(this.translate.instant('validation.missingValidations', { missing: missing.join(', ') }));
+        return;
+      }
+
       this.saving = true;
       this.kerttuApi.saveAnnotations(this.userService.getToken(), this.taxon, annotations).subscribe(() => {
         this.taxon = undefined;

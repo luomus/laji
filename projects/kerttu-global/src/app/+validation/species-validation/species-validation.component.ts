@@ -24,8 +24,6 @@ export class SpeciesValidationComponent implements OnChanges {
 
   audioViewerMode: AudioViewerMode = 'default';
 
-  saveDisabled = true;
-
   @Output() annotationsReady = new EventEmitter<ILetterAnnotation[]>();
 
   constructor() { }
@@ -71,11 +69,6 @@ export class SpeciesValidationComponent implements OnChanges {
   goBack() {
     this.setDefaultAudioViewerMode();
     this.annotationsReady.emit(null);
-  }
-
-  updateSaveDisabled() {
-    const missing = this.annotations.filter(ann => ann.annotation == null);
-    this.saveDisabled = missing.length > 0;
   }
 
   private setDefaultAudioViewerMode() {
