@@ -4,8 +4,9 @@ import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
 import { map, switchMap, distinctUntilChanged, filter, startWith, take } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
-import { ListRange, CollectionViewer } from '@angular/cdk/collections';
+import { CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
+import { PlatformService } from '../../../../shared/service/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
@@ -58,6 +59,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   constructor(
     private facade: TaxonIdentificationFacade,
     private cdr: ChangeDetectorRef,
+    private platformService: PlatformService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window
   ) { }
@@ -96,21 +98,29 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     this.subscription.unsubscribe();
   }
 
-  isInViewport(element: Element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
-        rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
-    );
+  isInViewport(element: Element): boolean {
+    if (this.platformService.isBrowser) {
+      const rect = element.getBoundingClientRect();
+      return (
+          rect.top >= 0 &&
+          rect.left >= 0 &&
+          rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
+          rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
+      );
+    } else {
+      return false;
+    }
   }
 
-  isWithinXPixelsOfViewport(element: Element, px: number) {
-    const rect = element.getBoundingClientRect();
-    return (
-      this.window.innerHeight - rect.y > -px
-      || this.document.documentElement.clientHeight - rect.y > -px
-    );
+  isWithinXPixelsOfViewport(element: Element, px: number): boolean {
+    if (this.platformService.isBrowser) {
+      const rect = element.getBoundingClientRect();
+      return (
+        this.window.innerHeight - rect.y > -px
+        || this.document.documentElement.clientHeight - rect.y > -px
+      );
+    } else {
+      return false;
+    }
   }
 }

@@ -80,11 +80,6 @@
             {{ 'taxonomy.browse' | translate }}
           </a>
         </li>
-        <li>
-          <a [routerLink]="'/observation/load' | localize" [queryParams]="{target: taxon.id}">
-            {{ 'taxonomy.browse.download' | translate }}
-          </a>
-        </li>
         <li [hidden]="!taxon.hasChildren">
           <a [routerLink]="['/taxon/list'] | localize" [queryParams]="{target: (taxon.id)}">
             {{ 'taxonomy.browse.downloadSpecies' | translate }}
