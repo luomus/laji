@@ -6,6 +6,7 @@ import { UserService } from '../../../../shared/service/user.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../project-form.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-accept',
@@ -22,7 +23,8 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     protected localizeRouterService: LocalizeRouterService,
     protected userService: UserService,
     private route: ActivatedRoute,
-    private projectFormService: ProjectFormService
+    private projectFormService: ProjectFormService,
+    private translate: TranslateService
   ) { super(); }
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
   }
 
   selectPerson(event) {
-    if (confirm('Oletko varma että haluat antaa oikeudet lomakkeeseen käyttäjälle:\n' + event.fullName)) {
+    if (confirm(this.translate.instant('form.permission.admin.confirmAccess', { fullName: event.fullName }))) {
       this.accept(event.id);
     }
   }
