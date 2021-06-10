@@ -171,6 +171,7 @@
   "excel.import.step4.userMapping": "Nykyinen datan kuvaus",
   "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
+  "excel.import.status": "status",
   "excel.info.file": "Katso tallennusohjeet osoitteessa https://laji.fi/about/3412",
   "excel.map.col-intro": "Valitse sarakkeiden merkitys alasvetovalikosta.",
   "excel.map.col-mapped": "Vihkon kenttä",
