@@ -1,3 +1,7 @@
+
+<alert [type]="'danger'" *ngIf="duplicateLabels.length > 0">
+  <div>{{ 'excel.map.duplicate' | translate}}: {{ duplicateLabels | values }}</div>
+</alert>
 <div class="cell-col-map-wrap">
   <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
   <p>{{ 'excel.map.col-intro' | translate }}</p>
@@ -27,7 +31,7 @@
   </table>
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-primary pull-right" [disabled]="missingMappings()" (click)="saveMapping()">{{ 'paginator.next' | translate | capitalize }}</button>
+      <button class="btn btn-primary pull-right" [disabled]="missingMappings() || duplicateLabels.length > 0" (click)="saveMapping()">{{ 'paginator.next' | translate | capitalize }}</button>
     </div>
   </div>
 </div>

@@ -182,6 +182,7 @@
   "excel.map.value-mapped": "Vihkoon vietävä arvo",
   "excel.map.value-select": "Valitse arvon merkitys",
   "excel.map.value-user": "Tiedostossa oleva arvo",
+  "excel.map.duplicate": "Vain yksi sarake voi olla linkitetty kenttään",
   "excel.mapping.load.failed": "Kuvauksen lataus epäonnistui",
   "excel.select-form": "Valitse lomake",
   "excel.sheet.base": "Tallennuspohja",
