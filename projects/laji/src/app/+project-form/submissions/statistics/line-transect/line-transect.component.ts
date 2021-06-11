@@ -21,7 +21,6 @@ import { LajiMapLineTransectGeometry } from '@laji-map/laji-map.interface';
 interface LineTransectCount {
   psCouples: number;
   tsCouples: number;
-  onPs: number;
   onPsPros: number;
   routeLength?: number;
   couplesPerKm?: number;
@@ -103,7 +102,6 @@ export class LineTransectComponent implements OnChanges {
     const count: LineTransectCount = {
       psCouples: 0,
       tsCouples: 0,
-      onPs: 0,
       onPsPros: 0,
       species: [],
       couplesPerKm: 0,
@@ -132,9 +130,6 @@ export class LineTransectComponent implements OnChanges {
                 unit.unitFact &&
                 unit.unitFact.lineTransectRouteFieldType === Units.LineTransectRouteFieldTypeEnum.LineTransectRouteFieldTypeOuter ?
                   'tsCouples' : 'psCouples';
-              if (cntKey === 'psCouples') {
-                count.onPs++;
-              }
               count[cntKey] += unit.pairCount || 0;
               species[taxon][cntKey] += unit.pairCount || 0;
             }
