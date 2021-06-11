@@ -13,7 +13,6 @@ import { select , Selection } from 'd3-selection';
 import { scaleLinear, ScaleLinear } from 'd3-scale';
 import { line as d3Line } from 'd3-shape';
 import { format } from 'd3-format';
-import 'd3-transition';
 
 interface LineTerms {
   slope: number;
@@ -185,11 +184,9 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     update.exit().remove();
 
     // update existing bars
-    this.chart.selectAll('.mark').transition()
-      .attr({
-        cx: (d) => this.xScale(d[0]),
-        cy: (d) => this.yScale(d[1])
-      });
+    this.chart.selectAll('.mark')
+      .attr('cx', (d) => this.xScale(d[0]))
+      .attr('cy', (d) => this.yScale(d[1]));
 
     // add new bars
     update
