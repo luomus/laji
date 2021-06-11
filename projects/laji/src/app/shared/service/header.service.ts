@@ -107,7 +107,6 @@ export class HeaderService implements OnDestroy {
     private router: Router,
     private titleService: Title,
     private metaService: Meta,
-    private platformService: PlatformService,
     private translateService: TranslateService,
     private localizeRouterService: LocalizeRouterService,
     private location: Location,
@@ -181,8 +180,6 @@ export class HeaderService implements OnDestroy {
   }
 
   public setHeaders(headers: IHeaders): void {
-    if (!this.platformService.isBrowser) { return; }
-
     Object.entries(headers).forEach(([key, value]) => {
       switch (key) {
         case 'title':
@@ -228,8 +225,6 @@ export class HeaderService implements OnDestroy {
   }
 
   private startRouteListener(): void {
-    if (!this.platformService.isBrowser) { return; }
-
     this.routeSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.location.path() || '/'),
