@@ -23,6 +23,7 @@ switch (environment.type) {
     break;
 }
 const MAIN_DESCRIPTION = 'footer.intro1';
+const MAIN_IMAGE = 'https://cdn.laji.fi/images/logos/LAJI_FI_valk.png';
 
 interface ILinkElement {
   rel: string;
@@ -129,8 +130,8 @@ export class HeaderService implements OnDestroy {
       description: description,
       'og:description': description,
       'twitter:description': description,
-      'og:image': '',
-      'twitter:image': '',
+      'og:image': MAIN_IMAGE,
+      'twitter:image': MAIN_IMAGE,
       'twitter:card': 'summary_large_image',
       'og:url': '',
       canonicalUrl: {
