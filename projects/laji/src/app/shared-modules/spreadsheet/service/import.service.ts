@@ -15,6 +15,7 @@ import {
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
 import { catchError, delay, switchMap } from 'rxjs/operators';
+import { ArrayType } from '@angular/compiler';
 
 interface IData {
   rowIdx: number;
@@ -236,14 +237,17 @@ export class ImportService {
         if (Array.isArray(value)) {
           value = value.filter(val => val !== VALUE_IGNORE && val !== '');
         }
-
         // Check if there is are values that should be merged instead
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
             parentData[parent].data[location] = value[MappingService.mergeKey][location];
           });
         } else {
-          parentData[parent].data[field.key] = value;
+          if (Array.isArray(parentData[parent].data[field.key])) {
+            parentData[parent].data[field.key] = parentData[parent].data[field.key].concat(value);
+          } else {
+            parentData[parent].data[field.key] = value;
+          }
         }
       });
 
