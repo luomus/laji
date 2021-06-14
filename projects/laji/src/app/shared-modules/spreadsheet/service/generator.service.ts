@@ -56,13 +56,14 @@ export class GeneratorService {
 
   private instructionMapping: {[place: string]: string} = {
     'editors[*]': 'excel.info.personID',
-    'keywords[*]': 'excel.info.keywords',
     'gatheringEvent.leg[*]': 'excel.info.personID',
     'gatheringEvent.dateBegin': 'excel.info.date',
     'gatheringEvent.dateEnd': 'excel.info.date',
     'gatherings[*].units[*].unitGathering.dateBegin': 'excel.info.date',
     'gatherings[*].units[*].unitGathering.dateEnd': 'excel.info.date',
     'gatherings[*].units[*].identifications[*].detDate': 'excel.info.date',
+    'gatherings[*].units[*].identifications[*].taxon': 'excel.info.taxon',
+    'gatherings[*].units[*].identifications[*].taxonID': 'excel.info.taxonID',
     'gatherings[*].units[*].hostID': 'excel.info.taxonID',
     'gatherings[*].taxonCensus[*].censusTaxonID': 'excel.info.taxonID',
     'gatherings[*].units[*].unitGathering.geometry': 'excel.info.geometry',
