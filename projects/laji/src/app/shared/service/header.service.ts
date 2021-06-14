@@ -5,23 +5,20 @@ import { filter, map } from 'rxjs/operators';
 import { DOCUMENT, Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
-import { PlatformService } from './platform.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
-let MAIN_TITLE: string;
-switch (environment.type) {
-  case Global.type.iucn:
-    MAIN_TITLE = 'iucn.page.title';
-    break;
-  case Global.type.vir:
-    MAIN_TITLE = 'vir.page.title';
-    break;
-  default:
-    MAIN_TITLE = 'home.main-page.title';
-    break;
-}
+const MAIN_TITLE = (() => {
+  switch (environment.type) {
+    case Global.type.iucn:
+      return 'iucn.page.title';
+    case Global.type.vir:
+      return 'vir.page.title';
+    default:
+      return 'home.main-page.title';
+  }
+})();
 const MAIN_DESCRIPTION = 'footer.intro1';
 const MAIN_IMAGE = 'https://cdn.laji.fi/images/logos/LAJI_FI_valk.png';
 
