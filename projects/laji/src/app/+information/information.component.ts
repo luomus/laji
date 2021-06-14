@@ -43,13 +43,8 @@ export class InformationComponent {
     const paragraph = getDescription(info.content || '');
 
     this.headerService.setHeaders({
-      'title': pageTitle,
-      'og:title': pageTitle,
-      'twitter:title': pageTitle,
-      'description': paragraph,
-      'og:description': paragraph,
-      'twitter:description': paragraph,
-      'twitter:card': 'summary_large_image'
+      title: pageTitle,
+      description: paragraph
     });
   }
 }

@@ -33,13 +33,8 @@ interface ILinkElement {
 
 interface IHeaders {
   title?: string;
-  'twitter:title'?: string;
-  'og:title'?: string;
   description?: string;
-  'og:description'?: string;
-  'twitter:description'?: string;
-  'og:image'?: string;
-  'twitter:image'?: string;
+  image?: string;
   'twitter:card'?: string;
   'og:url'?: string;
   canonicalUrl?: ILinkElement;
@@ -124,13 +119,8 @@ export class HeaderService implements OnDestroy {
 
     this.inferredHeaders = {
       title: title,
-      'og:title': title,
-      'twitter:title': title,
       description: description,
-      'og:description': description,
-      'twitter:description': description,
-      'og:image': MAIN_IMAGE,
-      'twitter:image': MAIN_IMAGE,
+      image: MAIN_IMAGE,
       'twitter:card': 'summary_large_image',
       'og:url': '',
       canonicalUrl: {
@@ -184,17 +174,21 @@ export class HeaderService implements OnDestroy {
       switch (key) {
         case 'title':
           this.titleService.setTitle(value);
+          this.metaService.updateTag({property: 'og:title', content: value});
+          this.metaService.updateTag({name: 'twitter:title', content: value});
           break;
         case 'description':
-        case 'og:title':
-        case 'og:description':
-        case 'og:image':
+          this.metaService.updateTag({property: 'description', content: value});
+          this.metaService.updateTag({property: 'og:description', content: value});
+          this.metaService.updateTag({name: 'twitter:description', content: value});
+          break;
+        case 'image':
+          this.metaService.updateTag({property: 'og:image', content: value});
+          this.metaService.updateTag({name: 'twitter:image', content: value});
+          break;
         case 'og:url':
           this.metaService.updateTag({property: key, content: value});
           break;
-        case 'twitter:description':
-        case 'twitter:image':
-        case 'twitter:title':
         case 'twitter:card':
           this.metaService.updateTag({name: key, content: value});
           break;
@@ -242,6 +236,7 @@ export class HeaderService implements OnDestroy {
       const c = getDeepestChildValue(this.router.routerState.snapshot.root, 'canonical', '');
       const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.currentLang) : newRoute;
       this.inferredHeaders.canonicalUrl = {href: canonicalUrl, rel: 'canonical'};
+      this.inferredHeaders['og:url'] = canonicalUrl;
 
       this.inferredHeaders.alternativeLinks = this.localizeRouterService.locales.map(
         lang => ({

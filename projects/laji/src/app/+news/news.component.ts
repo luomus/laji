@@ -40,19 +40,13 @@ export class NewsComponent implements OnInit {
     const paragraph = getDescription(news.content || '');
 
     this.headerService.setHeaders({
-      'title': pageTitle,
-      'og:title': pageTitle,
-      'twitter:title': pageTitle,
-      'description': paragraph,
-      'og:description': paragraph,
-      'twitter:description': paragraph,
-      'twitter:card': 'summary_large_image'
+      title: pageTitle,
+      description: paragraph
     });
 
     if (news.featuredImage) {
       this.headerService.setHeaders({
-        'og:image': news.featuredImage,
-        'twitter:image': news.featuredImage
+        image: news.featuredImage
       });
     }
   }
