@@ -168,6 +168,7 @@ export class HeaderService implements OnDestroy {
 
   public setHeaders(headers: IHeaders): void {
     Object.entries(headers).forEach(([key, value]) => {
+      if (!value) { return; }
       switch (key) {
         case 'title':
           this.titleService.setTitle(value);
@@ -198,6 +199,10 @@ export class HeaderService implements OnDestroy {
           break;
       }
     });
+  }
+
+  public getInferred() {
+    return this.inferredHeaders;
   }
 
   private updateLink(link: ILinkElement) {
