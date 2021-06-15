@@ -34,6 +34,7 @@ import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
+import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-importer',
@@ -107,6 +108,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
+  activeTabIndex = 0;
+  loadedTabs = new LoadedElementsStore(['list', 'map']);
+
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
@@ -135,6 +139,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.spreadsheetFacade.clear();
+    this.loadedTabs.load(this.activeTabIndex);
   }
 
   ngOnDestroy() {
@@ -591,6 +596,11 @@ export class ImporterComponent implements OnInit, OnDestroy {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
+  }
+
+  setActiveTab(newActive: number) {
+    this.activeTabIndex = newActive;
+    this.loadedTabs.load(newActive);
   }
 
   private getMappedValues(row, mapping, fields) {
