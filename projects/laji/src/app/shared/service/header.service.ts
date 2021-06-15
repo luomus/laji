@@ -111,12 +111,9 @@ export class HeaderService implements OnDestroy {
       data: {}
     });
 
-    const title = this.translateService.instant(MAIN_TITLE);
-    const description = this.translateService.instant(MAIN_DESCRIPTION);
-
     this.inferredHeaders = {
-      title: title,
-      description: description,
+      title: this.translateService.instant(MAIN_TITLE),
+      description: this.translateService.instant(MAIN_DESCRIPTION),
       image: MAIN_IMAGE,
       'twitter:card': 'summary_large_image',
       'og:url': '',
