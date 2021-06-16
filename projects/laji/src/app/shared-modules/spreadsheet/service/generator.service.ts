@@ -47,9 +47,9 @@ export class GeneratorService {
   };
 
   private sheetNames = {
-    'base': 'Tallennuspohja',
-    'vars': 'Muuttujat', // This name cannot have spaces in it
-    'info': 'Ohjeet'
+    'base': 'excel.sheet.base',
+    'vars': 'excel.sheet.variables', // This name cannot have spaces in it
+    'info': 'excel.sheet.info'
   };
 
   private instructionArray = 'excel.info.array';
@@ -104,9 +104,9 @@ export class GeneratorService {
         const validationSheet = this.addMetaDataToSheet(fields, sheet, data, useLabels);
         validationSheet['!protect'] = {password: '¡secret!'};
 
-        XLSX.utils.book_append_sheet(book, sheet, this.sheetNames.base);
-        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(), this.sheetNames.info);
-        XLSX.utils.book_append_sheet(book, validationSheet, this.sheetNames.vars);
+        XLSX.utils.book_append_sheet(book, sheet, this.translateService.instant(this.sheetNames.base));
+        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(), this.translateService.instant(this.sheetNames.info));
+        XLSX.utils.book_append_sheet(book, validationSheet, this.translateService.instant(this.sheetNames.vars));
 
         this.exportService.exportArrayBuffer(XLSX.write(book, {bookType: type, type: 'array'}), filename, type);
         next();
@@ -190,7 +190,7 @@ export class GeneratorService {
               validValues.sort();
             }
             this.addToValidationSheetData(validValues, vColumn, vSheet);
-            cache[cacheKey] = this.sheetNames.vars + '!' + this.makeExactRange(
+            cache[cacheKey] = this.translateService.instant(this.sheetNames.vars) + '!' + this.makeExactRange(
               XLSX.utils.encode_range({r: 0, c: vColumn}, {r: validValues.length - 1, c: vColumn})
             );
             vColumn++;
