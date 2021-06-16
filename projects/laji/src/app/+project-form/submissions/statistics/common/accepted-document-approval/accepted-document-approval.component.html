@@ -22,6 +22,7 @@
             class="btn btn-sm btn-default {{activeDocument === 'document' ? 'active' : ''}}">Näytä tämän laskennan reitti</button>
     <button type="button"
             (click)="setActiveDocument('acceptedDocument')"
+            [disabled]="!namedPlace.acceptedDocument"
             class="btn btn-sm btn-default {{activeDocument !== 'document' ? 'active' : ''}}">Näytä viimeksi hyväksytty reitti</button>
   </div>
   <button type="button"
