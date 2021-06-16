@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, Input, OnChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
 import { LajiMapOptions, LajiMapTileLayerName, LajiMapDataOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
 import * as Hash from 'object-hash';
