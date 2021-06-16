@@ -244,7 +244,7 @@
     <lu-tab [heading]="'np.map' | translate">
       <ng-container *ngIf="loadedTabs.isLoaded('map')">
         <laji-import-map
-          [data]="mappedData"
+          [data]="mappedData | onlyErroneous:showOnlyErroneous"
           [colMap]="colMap"
           [height]="'50vh'"
         ></laji-import-map>
