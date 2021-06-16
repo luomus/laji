@@ -27,7 +27,7 @@
   </div>
   <button type="button"
           (click)="acceptNamedPlaceChanges()"
-          class="btn btn-sm btn-success">Hyväksy muutokset</button>
+          class="btn btn-sm btn-success ml-2">Hyväksy muutokset</button>
 </div>
 <div class="col-xs-12" [style.height.px]="1000" [style.display]="isAdmin && geometriesDiff ? 'block' : 'none'">
   <laji-map [options]="lajiMapOptions" [data]="data" (loaded)="onMapLoad()"></laji-map>
