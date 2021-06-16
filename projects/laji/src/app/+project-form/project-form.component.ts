@@ -265,11 +265,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         children: [
           {
             link: ['admin', 'instructions'],
-            label: 'Ohje',
+            label: 'form.permission.nav.instuctions',
           },
           {
             link: ['admin', 'accept'],
-            label: 'Pääsypyynnöt',
+            label: 'form.permission.nav.requests',
             content: {
               template: 'badge',
               count: 'permissionRequests'
@@ -277,7 +277,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           },
           {
             link: ['admin', 'manage', 'editors'],
-            label: 'Hyväksytyt',
+            label: 'form.permission.nav.accepted',
             content: {
               template: 'badge',
               count: 'editors'
@@ -285,7 +285,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           },
           {
             link: ['admin', 'manage', 'admins'],
-            label: 'Ylläpitäjät',
+            label: 'form.permission.nav.admins',
             content: {
               template: 'badge',
               count: 'admins'
@@ -293,7 +293,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           },
           {
             link: ['admin', 'participants'],
-            label: 'Osallistujaraportti'
+            label: 'form.permission.nav.participants'
           },
         ]
       }

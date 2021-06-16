@@ -171,6 +171,7 @@
   "excel.import.step4.userMapping": "Nykyinen datan kuvaus",
   "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
+  "excel.import.status": "status",
   "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
   "excel.info.date": "Suositeltu muoto päivämäärälle on YYYY-MM-DD, esim. 2018-04-03. Myös päivämäärä-tyyppinen kentän arvo on sallittu.",
   "excel.info.file": "Katso tallennusohjeet osoitteessa https://laji.fi/about/3412",
