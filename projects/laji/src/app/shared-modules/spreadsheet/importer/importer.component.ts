@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
-import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField, VALUE_IGNORE } from '../model/excel';
@@ -34,7 +33,6 @@ import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
-import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
   selector: 'laji-importer',
@@ -46,7 +44,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
-  @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
@@ -108,9 +105,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   vm$: Observable<ISpreadsheetState>;
 
-  activeTabIndex = 0;
-  loadedTabs = new LoadedElementsStore(['list', 'map']);
-
   private externalLabel = [
     'editors[*]',
     'gatheringEvent.leg[*]'
@@ -139,7 +133,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.spreadsheetFacade.clear();
-    this.loadedTabs.load(this.activeTabIndex);
   }
 
   ngOnDestroy() {
@@ -279,9 +272,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           });
         });
         this.dataColumns = columns;
-        setTimeout(() => {
-          this.datatable?.refreshTable();
-        }, 200);
+        this.cdr.markForCheck();
       });
   }
 
@@ -596,11 +587,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
-  }
-
-  setActiveTab(newActive: number) {
-    this.activeTabIndex = newActive;
-    this.loadedTabs.load(newActive);
   }
 
   private getMappedValues(row, mapping, fields) {

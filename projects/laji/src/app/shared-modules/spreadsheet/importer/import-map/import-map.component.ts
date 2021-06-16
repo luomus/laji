@@ -10,7 +10,6 @@ import * as Hash from 'object-hash';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImportMapComponent implements OnChanges {
-  @ViewChild('popup', { static: true }) popupComponent;
   @Input() data: {[key: string]: any}[] = [];
   @Input() colMap: {[key: string]: string} = {};
   @Input() geometryField = 'gatherings[*].geometry';

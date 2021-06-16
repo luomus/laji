@@ -37,6 +37,7 @@ import { FieldItemComponent } from './excel-generator/field-item/field-item.comp
 import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
 import { ImportMapComponent } from './importer/import-map/import-map.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
+import { ImportDataComponent } from './importer/import-data/import-data.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
     UserMappingButtonComponent,
     FieldItemComponent,
     OnlyErroneousPipe,
-    ImportMapComponent
+    ImportMapComponent,
+    ImportDataComponent
   ],
     exports: [ImporterComponent, ExcelGeneratorComponent, StepperComponent],
   imports: [
