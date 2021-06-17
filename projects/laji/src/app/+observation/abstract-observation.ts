@@ -11,8 +11,7 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 export abstract class AbstractObservation {
   public activeTab$: Observable<string>;
 
-  private subParam: Subscription;
-  private subQuery: Subscription;
+  private subscription = new Subscription();
 
   protected observationFacade: ObservationFacade;
   protected route: ActivatedRoute;
@@ -25,25 +24,28 @@ export abstract class AbstractObservation {
 
   init() {
     this.activeTab$ = this.observationFacade.activeTab$;
-    this.subParam = this.route.params.subscribe(value => {
-      this.observationFacade.activeTab(value['tab'] || 'map');
-    });
-    this.subQuery = this.observationFacade.query$.pipe(
-      tap(query => {
-        this.onQueryChange(query);
-        this.updateUrlQueryParamsFromQuery(query);
+    this.subscription.add(
+      this.route.params.subscribe(value => {
+        this.observationFacade.activeTab(value['tab'] || 'map');
       })
-    ).subscribe();
-    this.updateQueryFromQueryParams(this.route.snapshot.queryParams);
+    );
+    this.subscription.add(
+      this.observationFacade.query$.pipe(
+        tap(query => {
+          this.onQueryChange(query);
+          this.updateUrlQueryParamsFromQuery(query);
+        })
+      ).subscribe()
+    );
+    this.subscription.add(
+      this.route.queryParams.subscribe(qparams => {
+        this.updateQueryFromQueryParams(qparams);
+      })
+    );
   }
 
   destroy() {
-    if (this.subParam) {
-      this.subParam.unsubscribe();
-    }
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
+    this.subscription.unsubscribe();
   }
 
   @HostListener('window:popstate')

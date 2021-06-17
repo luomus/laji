@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent extends AbstractObservation implements OnInit, OnDestroy {
-  subscription: Subscription;
+  reloadSubscription: Subscription;
   reloadView = false;
 
   constructor(
@@ -41,22 +41,22 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
     this.observationFacade.hideFooter();
     this.init();
 
-    this.subscription = this.reloadObservationView.childEventListner().subscribe(reload => {
+    this.reloadSubscription = this.reloadObservationView.childEventListner().subscribe(reload => {
       this.reloadView = reload;
       if (this.reloadView) {
         this.observationFacade.hideFooter();
         this.init();
       }
-      if (this.subscription) {
-        this.subscription.unsubscribe();
+      if (this.reloadSubscription) {
+        this.reloadSubscription.unsubscribe();
       }
      });
   }
 
   ngOnDestroy() {
     this.observationFacade.showFooter();
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.reloadSubscription) {
+      this.reloadSubscription.unsubscribe();
     }
     this.destroy();
   }
