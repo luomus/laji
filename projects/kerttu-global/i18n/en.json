@@ -22,5 +22,5 @@
   "validation.cancel": "Go back without saving",
   "validation.isTheSpeciesVocalizing": "Is the target species vocalizing inside the white frame?",
   "validation.leaveConfirm": "Are you sure you want to leave?",
-  "validation.missingValidations": "Please validate all vocalizations before submitting answers. Following vocalizations are missing validations: {{ missing }}"
+  "validation.missingValidations": "Please validate all vocalizations before submitting answers. Following are missing validations:"
 }

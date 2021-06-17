@@ -93,9 +93,17 @@ export class ValidationComponent {
         }
       });
     } else {
-      const missing = annotations.filter(ann => ann.annotation == null);
-      if (missing.length > 0) {
-        this.dialogService.alert(this.translate.instant('validation.missingValidations', { missing: missing.join(', ') }));
+      const missingIndexes = annotations.reduce((res, ann, i) => {
+        if (ann.annotation == null) {
+          res.push(i);
+        }
+        return res;
+      }, []);
+      if (missingIndexes.length > 0) {
+        const missingList = '<ul>' + missingIndexes.map(i => '<li>' + this.translate.instant('validation.vocalization') + ' ' + (i + 1) + '</li>').join('') + '</ul>';
+        this.dialogService.alert(
+          this.translate.instant('validation.missingValidations') + missingList
+        );
         return;
       }
 

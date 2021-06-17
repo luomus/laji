@@ -16,15 +16,15 @@
         <ul class="pager">
           <li [ngClass]="{'disabled': activeIndex === 0 }">
             <a href="#" role="button" [tabindex]="activeIndex === 0 ? -1 : 0" (click)="returnToPrevious($event)">
-              <span aria-hidden="true">&larr;</span> {{ 'validation.previous' | translate}}
+              <span aria-hidden="true">&larr;</span> {{ 'validation.previous' | translate }}
             </a>
           </li>
           <li class="pager-title">
-            {{ 'validation.vocalization' | translate}} {{ activeIndex + 1 }} / {{ data.length }}
+            {{ 'validation.vocalization' | translate }} {{ activeIndex + 1 }} / {{ data.length }}
           </li>
           <li [ngClass]="{'disabled': activeIndex === data.length - 1 }">
             <a href="#" role="button" [tabindex]="activeIndex === data.length - 1 ? -1 : 0" (click)="goToNext($event)">
-              {{  'validation.next' | translate}} <span aria-hidden="true">&rarr;</span>
+              {{ 'validation.next' | translate }} <span aria-hidden="true">&rarr;</span>
             </a>
           </li>
         </ul>
