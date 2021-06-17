@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording } from '../models';
-import { Observable, of, timer } from 'rxjs';
+import { IListResult, IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording, IValidationStat, IUserStat } from '../models';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -35,10 +35,10 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IKerttuSpeciesFilters>(path);
   }
 
-  public getDataForValidation(taxonId: number): Observable<{results: IKerttuRecording[]}> {
+  public getDataForValidation(taxonId: number): Observable<IListResult<IKerttuRecording>> {
     const path = this.basePath + '/recording/' + taxonId;
 
-    return this.httpClient.get<{results: IKerttuRecording[]}>(path);
+    return this.httpClient.get<IListResult<IKerttuRecording>>(path);
   }
 
   public saveAnnotations(personToken: string, taxonId: number, annotations): Observable<any> {
@@ -46,5 +46,17 @@ export class KerttuGlobalApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.post(path, annotations, { params });
+  }
+
+  public getValidationStats(query: IKerttuSpeciesQuery): Observable<IListResult<IValidationStat>> {
+    const path = this.basePath + '/statistics/validations';
+
+    return this.httpClient.get<IListResult<IValidationStat>>(path);
+  }
+
+  public getUserStats(personToken?: string): Observable<IListResult<IUserStat>> {
+    const path = this.basePath + '/statistics/users';
+
+    return this.httpClient.get<IListResult<IUserStat>>(path);
   }
 }

@@ -1,5 +1,9 @@
 import { IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 
+export interface IListResult<T> {
+  results: T[];
+}
+
 export interface IKerttuSpeciesQuery {
   onlyUnvalidated?: boolean;
   continent?: number;
@@ -50,6 +54,16 @@ export interface ILetterAnnotation {
   annotation?: LetterAnnotation;
   area?: IAudioViewerArea;
   notes?: string;
+}
+
+export interface IValidationStat {
+  validationCount: number;
+  count: number;
+}
+
+export interface IUserStat {
+  userId: string;
+  count: number;
 }
 
 export enum LetterAnnotation {

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../../kerttu-global-shared/models';
+import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../models';
 
 @Component({
   selector: 'laji-species-list-filters',
@@ -10,6 +10,7 @@ import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../../kerttu-glob
 export class SpeciesListFiltersComponent {
   @Input() filters: IKerttuSpeciesFilters = {continent: [], order: [], family: []};
   @Input() query: IKerttuSpeciesQuery = {};
+  @Input() showOnlyUnvalidated = true;
 
   @Output() queryChange = new EventEmitter<IKerttuSpeciesQuery>();
 
