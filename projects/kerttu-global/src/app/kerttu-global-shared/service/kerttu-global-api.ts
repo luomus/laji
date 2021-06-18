@@ -18,13 +18,7 @@ export class KerttuGlobalApi {
     const path = this.basePath + '/species';
 
     let params = new HttpParams().set('personToken', personToken);
-    Object.keys(query).forEach(key => {
-        const value = query[key];
-        if (value == null || (Array.isArray(value) && value.length === 0)) {
-          return;
-        }
-        params = params.append(key, '' + value);
-    });
+    params = this.queryToParams(query, params);
 
     return this.httpClient.get<PagedResult<IKerttuSpecies>>(path, { params });
   }
@@ -50,13 +44,26 @@ export class KerttuGlobalApi {
 
   public getValidationStats(query: IKerttuSpeciesQuery): Observable<IListResult<IValidationStat>> {
     const path = this.basePath + '/statistics/validations';
+    const params = this.queryToParams(query, new HttpParams());
 
-    return this.httpClient.get<IListResult<IValidationStat>>(path);
+    return this.httpClient.get<IListResult<IValidationStat>>(path, { params });
   }
 
   public getUserStats(personToken?: string): Observable<IListResult<IUserStat>> {
     const path = this.basePath + '/statistics/users';
 
     return this.httpClient.get<IListResult<IUserStat>>(path);
+  }
+
+  private queryToParams(query: IKerttuSpeciesQuery, params: HttpParams) {
+    Object.keys(query).forEach(key => {
+      const value = query[key];
+      if (value == null || (Array.isArray(value) && value.length === 0)) {
+        return;
+      }
+      params = params.append(key, '' + value);
+    });
+
+    return params;
   }
 }
