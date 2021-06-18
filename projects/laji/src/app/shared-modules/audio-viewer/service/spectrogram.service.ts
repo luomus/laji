@@ -9,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 export class SpectrogramService {
   private maxNbrOfColsForNoiseEstimation = 6000;
   private noiseReductionParam = 2;
-  private nbrOfRowsRemovedFromStart = 2;
   private logRange = 3;
 
   private colormaps = {};
@@ -19,11 +18,11 @@ export class SpectrogramService {
     private httpClient: HttpClient,
   ) {}
 
-  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number)
+  public getSpectrogramImageData(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number, nbrOfRowsRemovedFromStart: number)
     : Observable<ImageData> {
     return forkJoin([
         this.getColormap(),
-        this.computeSpectrogram(buffer, sampleRate, nperseg, noverlap)
+        this.computeSpectrogram(buffer, sampleRate, nperseg, noverlap, nbrOfRowsRemovedFromStart)
       ]).pipe(map(([colormap, {spectrogram, width, heigth}]) => {
         return this.spectrogramToImageData(spectrogram, width, heigth, colormap);
     }));
@@ -49,12 +48,12 @@ export class SpectrogramService {
     return new ImageData(data, width, height);
   }
 
-  private computeSpectrogram(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number): Observable<{
+  private computeSpectrogram(buffer: AudioBuffer, sampleRate: number, nperseg: number, noverlap: number, nbrOfRowsRemovedFromStart: number): Observable<{
     spectrogram: Float32Array, width: number, heigth: number
   }> {
     return this.getData(buffer, sampleRate, nperseg, noverlap).pipe(map(({data, sumByColumn}) => {
       const meanNoise = this.getMeanNoiseColumn(data, sumByColumn);
-      const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise);
+      const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise, nbrOfRowsRemovedFromStart);
 
       this.scaleSpectrogram(data, maxValue);
 
@@ -130,7 +129,7 @@ export class SpectrogramService {
     return meanByRow;
   }
 
-  private filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array): number {
+  private filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, nbrOfRowsRemovedFromStart: number): number {
     let maxValue = 0;
 
     for (let i = 0; i < data.length; i++) {
@@ -139,8 +138,8 @@ export class SpectrogramService {
         if (data[i][j] < 0) {
           data[i][j] = 0;
         }
-        // first two rows are usually very noisy
-        if (j < this.nbrOfRowsRemovedFromStart) {
+        // first rows are usually very noisy
+        if (j < nbrOfRowsRemovedFromStart) {
           data[i][j] = 0;
         }
 

@@ -45,9 +45,14 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() highlightFocusArea = false; // highlighting darkens the spectrogram background and allows to play the sound only in the focus area
   @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
 
+  // actual duration of the audio
+  @Input() duration = 60;
+
+  // spectrogram config
   @Input() sampleRate = 22050;
   @Input() nperseg = 256;
   @Input() noverlap = 256 - 160;
+  @Input() nbrOfRowsRemovedFromStart = 2;
 
   @Input() mode: AudioViewerMode = 'default';
 
@@ -181,7 +186,7 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.extractedBuffer = this.audioService.normaliseAudio(
-      this.audioService.extractSegment(buffer, xRange[0], xRange[1])
+      this.audioService.extractSegment(buffer, xRange[0], xRange[1], this.duration)
     );
 
     this.audioPlayer.setBuffer(this.extractedBuffer, this.getPlayArea());

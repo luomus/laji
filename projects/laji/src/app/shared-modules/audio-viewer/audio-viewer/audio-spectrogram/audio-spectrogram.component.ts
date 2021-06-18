@@ -38,13 +38,17 @@ export class AudioSpectrogramComponent implements OnChanges {
   @Input() sampleRate: number;
   @Input() nperseg: number;
   @Input() noverlap: number;
+  @Input() nbrOfRowsRemovedFromStart = 2;
+
   @Input() currentTime: number;
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
+
   @Input() zoomArea: IAudioViewerArea;
   @Input() zoomFrequency = false;
   @Input() frequencyPaddingOnZoom = 500;
+
   @Input() mode: AudioViewerMode;
 
   @Output() spectrogramReady = new EventEmitter();
@@ -95,7 +99,7 @@ export class AudioSpectrogramComponent implements OnChanges {
         this.drawSub.unsubscribe();
       }
       if (this.buffer) {
-        this.drawSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap)
+        this.drawSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.sampleRate, this.nperseg, this.noverlap, this.nbrOfRowsRemovedFromStart)
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result;
