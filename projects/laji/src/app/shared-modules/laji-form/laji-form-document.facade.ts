@@ -120,7 +120,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private personApi: PersonApi
   ) {
     this.dataSub = this.dataChange$.pipe(
-      auditTime(3000),
       mergeMap(() => this.userService.user$.pipe(take(1))),
       map(person => ({person, formData: _state.form && _state.form.formData})),
       mergeMap(data => data.formData && !_state.isTemplate ?
