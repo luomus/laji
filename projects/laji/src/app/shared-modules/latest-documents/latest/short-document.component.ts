@@ -19,7 +19,6 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./short-document.component.scss']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() hasChanges: boolean;
   @Input() document: Document;
   @Input() form: Form.List;
   @Input() showFormName = true;

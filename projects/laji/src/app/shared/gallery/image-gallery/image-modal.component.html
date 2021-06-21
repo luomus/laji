@@ -3,8 +3,8 @@
     <div class="col-sm-12 view-mode-selector">
       <div class="btn-group" role="group" aria-label="view type">
         <button *ngIf="views | includes:'full'" type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views | includes:'full2'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views | includes:'full3'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full2'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full2'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full3'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full2'"><i class="glyphicon glyphicon-th-large"></i></button>
         <button *ngIf="views | includes:'compact'" type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
       </div>
     </div>

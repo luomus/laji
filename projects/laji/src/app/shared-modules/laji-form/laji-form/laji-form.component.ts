@@ -28,6 +28,14 @@ import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
+interface ErrorModal {
+  description: string;
+  buttons: {
+    label: string;
+    fn: () => void;
+  }[];
+}
+
 @Component({
   selector: 'laji-form',
   templateUrl: './laji-form.component.html',
@@ -57,12 +65,32 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
+  @Output() goBack = new EventEmitter();
+
+  errorModalData: ErrorModal;
+
+  reactCrashModalData: ErrorModal = {
+    description: 'haseka.form.crash.description',
+    buttons: [
+      {label: 'haseka.form.crash.reload', fn: () => this.reload()},
+      {label: 'haseka.form.crash.leave', fn: () => this.leave()}
+    ]
+  };
+
+  saveErrorModalData: ErrorModal = {
+    description: 'haseka.form.saveError.description',
+    buttons: [
+      {label: 'Ok', fn: () => this.dismissErrorModal()},
+      {label: 'haseka.form.crash.leave', fn: () => this.leave()}
+    ]
+  };
 
   private lajiFormWrapper: LajiForm;
   private lajiFormWrapperProto: any;
   private lajiFormBs3Theme: LajiFormTheme;
   private _block = false;
   private settings: any;
+  private _formData: any;
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
@@ -116,6 +144,10 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.errorModal.hide();
   }
 
+  leave() {
+    this.goBack.emit();
+  }
+
   submit() {
     if (this.lajiFormWrapper) {
       this.ngZone.runOutsideAngular(() => {
@@ -124,31 +156,28 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+  submitOnlySchemaValidations() {
+    if (this.lajiFormWrapper) {
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.submitOnlySchemaValidations();
+      });
+    }
+  }
+
   popErrorListIfNeeded() {
     this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
   }
 
-  private mount() {
-    if (!this.formData?.formData) {
-      return;
-    }
-    combineLatest(
-      import('laji-form'),
-      import('laji-form/lib/themes/bs3'),
-      this.userService.getUserSetting<any>(this.settingsKey).pipe(
-        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
-          map(globalSettings => ({...globalSettings, ...settings}))
-        )),
-        take(1)
-      ),
-      this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
-    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
-      this.lajiFormWrapperProto = formPackage.default;
-      this.lajiFormBs3Theme = formBs3ThemePackage.default;
-      this.defaultMediaMetadata = defaultMediaMetadata;
-      this.settings = settings;
-      this.mountLajiForm();
-    });
+  displayErrorModal(type: 'saveError' | 'reactCrash') {
+    this.errorModalData = type === 'reactCrash'
+      ? this.reactCrashModalData
+      : this.saveErrorModalData;
+    this.cd.markForCheck();
+    this.errorModal.show();
+  }
+
+  dismissErrorModal() {
+    this.errorModal.hide();
   }
 
   private mountLajiForm() {
@@ -213,6 +242,29 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
+  private mount() {
+    if (!this.formData?.formData) {
+      return;
+    }
+    combineLatest(
+      import('laji-form'),
+      import('laji-form/lib/themes/bs3'),
+      this.userService.getUserSetting<any>(this.settingsKey).pipe(
+        concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
+          map(globalSettings => ({...globalSettings, ...settings}))
+        )),
+        take(1)
+      ),
+      this.userService.getProfile().pipe(map(profile => profile.settings?.defaultMediaMetadata))
+    ).subscribe(([formPackage, formBs3ThemePackage, settings, defaultMediaMetadata]) => {
+      this.lajiFormWrapperProto = formPackage.default;
+      this.lajiFormBs3Theme = formBs3ThemePackage.default;
+      this.defaultMediaMetadata = defaultMediaMetadata;
+      this.settings = settings;
+      this.mountLajiForm();
+    });
+  }
+
   private _onSettingsChange(settings: any, global = false) {
     this.ngZone.run(() => {
       this.userService.setUserSetting(global ? GLOBAL_SETTINGS : this.settingsKey, settings);
@@ -220,6 +272,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onChange(formData) {
+    this._formData = formData;
     this.ngZone.run(() => {
       this.dataChange.emit(formData);
     });
@@ -236,9 +289,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onError(error, info) {
-    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData && this.formData.formData});
+    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData?.formData});
     console.error(info);
-    this.errorModal.show();
+    this.displayErrorModal('reactCrash');
   }
 
   private _onValidationError(errors) {

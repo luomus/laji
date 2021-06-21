@@ -48,6 +48,10 @@
       <h5>{{ 'navigation.syke-butterfly' | translate }}</h5>
       <p>{{ 'theme.syke-butterfly.intro' | translate }}</p>
     </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting['kimalaiset']] | localize" class="navbox">
+      <h5>{{ 'navigation.syke-bumblebee' | translate }}</h5>
+      <p>{{ 'theme.syke-bumblebee.intro' | translate }}</p>
+    </a>
     <a [routerLink]="['/project/' + Global.oldThemeRouting.pistelaskenta] | localize" class="navbox">
       <h5>{{ 'navigation.birdPointCount' | translate }}</h5>
       <p>{{ 'theme.birdPointCount.intro' | translate }}</p>
@@ -135,6 +139,10 @@
     <a [routerLink]="['/theme/publications'] | localize" class="navbox">
       <h5>{{ 'finbif-bib.title' | translate }}</h5>
       <p>{{ 'finbif-bib.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/about/3123c1'] | localize" class="navbox">
+      <h5>{{ 'finbif-r.title' | translate }}</h5>
+      <p>{{ 'finbif-r.intro' | translate }}</p>
     </a>
   </div>
 
