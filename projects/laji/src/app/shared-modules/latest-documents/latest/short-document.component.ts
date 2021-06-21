@@ -94,23 +94,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     return this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
-  removeDocument(event) {
-    event.stopPropagation();
-    if (this.newUnitsLength > 0) {
-      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).pipe(
-        switchMap(msg => this.dialogService.confirm(msg)),
-      ).subscribe(
-        (confirm) => {
-          if (confirm) {
-            this.discardTempDocument.emit();
-          }
-        }
-      );
-    } else {
-      this.discardTempDocument.emit();
-    }
-  }
-
   onShowViewer(event) {
     event.stopPropagation();
     this.showViewer.emit(this.document);
