@@ -410,7 +410,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
       populate.gatheringEvent.namedPlaceNotes = np.notes;
     }
 
-    let removeList = form.excludeFromCopy || DocumentService.removableGathering;
+    let removeList = [
+      ...(form.excludeFromCopy || DocumentService.removableGathering),
+      '$.gatheringEvent.leg'
+    ];
     if (form.options?.namedPlaceOptions?.includeUnits) {
       removeList = removeList.filter(item => item !== 'units');
     }
