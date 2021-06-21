@@ -5,6 +5,8 @@ import { ObservationFacade } from './observation.facade';
 import { AbstractObservation } from './abstract-observation';
 import { ReloadObservationViewService } from '../shared/service/reload-observation-view.service';
 import { Subscription } from 'rxjs';
+import { getDescription, HeaderService } from '../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -29,7 +31,9 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
     protected observationFacade: ObservationFacade,
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
-    protected reloadObservationView: ReloadObservationViewService
+    protected reloadObservationView: ReloadObservationViewService,
+    private headerService: HeaderService,
+    private translate: TranslateService
   ) {
     super();
   }
@@ -50,6 +54,10 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
       if (this.subscription) {
         this.subscription.unsubscribe();
       }
+     });
+
+     this.headerService.setHeaders({
+      description: getDescription(this.translate.instant('observation.intro'))
      });
   }
 
