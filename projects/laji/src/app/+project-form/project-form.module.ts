@@ -26,6 +26,7 @@ import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
 import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { DisabledComponent } from './disabled/disabled.component';
     OwnSubmissionsModule,
     SpreadsheetModule,
     StatisticsModule,
-    DocumentFormHeaderModule
+    DocumentFormHeaderModule,
+    TechnicalNewsModule
   ],
   declarations: [
     ProjectFormComponent,
