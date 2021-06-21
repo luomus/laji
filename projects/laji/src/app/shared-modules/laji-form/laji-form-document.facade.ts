@@ -51,10 +51,8 @@ export interface FormWithData extends Form.SchemaForm {
 }
 
 export interface ILajiFormState {
-  documentID?: string;
   form?: FormWithData;
   hasChanges: boolean;
-  hasLocalData: boolean;
   namedPlace?: NamedPlace;
   namedPlaceForFormID?: string;
   error: FormError;
@@ -65,7 +63,6 @@ export interface ILajiFormState {
 
 let _state: ILajiFormState = {
   hasChanges: false,
-  hasLocalData: false,
   saving: false,
   loading: false,
   isTemplate: false,
@@ -84,7 +81,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   form$          = this.state$.pipe(map((state) => state.form), distinctUntilChanged());
   hasChanges$    = this.state$.pipe(map((state) => state.hasChanges), distinctUntilChanged());
-  hasLocalData$  = this.state$.pipe(map((state) => state.hasLocalData), distinctUntilChanged());
   loading$       = this.state$.pipe(map((state) => state.loading), distinctUntilChanged());
   isTemplate$    = this.state$.pipe(map((state) => state.isTemplate), distinctUntilChanged());
   saving$        = this.state$.pipe(map((state) => state.saving), distinctUntilChanged());
@@ -94,7 +90,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
   vm$: Observable<ILajiFormState> = hotObjectObserver<ILajiFormState>({
     form: this.form$,
     hasChanges: this.hasChanges$,
-    hasLocalData: this.hasLocalData$,
     saving: this.saving$,
     error: this.error$,
     loading: this.loading$,
@@ -221,10 +216,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
   save(rawDocument: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<ISuccessEvent> {
     this.updateState({..._state, saving: true});
     const document = {...rawDocument};
-    const isTmpId = FormService.isTmpId(document.id);
+    const isTmpId = !document.id || FormService.isTmpId(document.id);
     document.publicityRestrictions = publicityRestriction;
-    delete document._hasChanges;
-    delete document._isTemplate;
     if (isTmpId) { delete document.id; }
 
     return (isTmpId ?
@@ -266,7 +259,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private getNewTmpId(): string {
-    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003) ) {
+    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003)) {
       this.tmpDocId = 0;
     }
     this.tmpDocId = this.tmpDocId + 1;
@@ -274,9 +267,9 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<Document> {
-    this.updateState({..._state, hasLocalData: false});
-    if (FormService.isTmpId(documentID)) {
-      this.updateState({..._state, hasChanges: true, hasLocalData: true});
+    this.updateState({..._state});
+    if (!documentID || FormService.isTmpId(documentID)) {
+      this.updateState({..._state, hasChanges: true});
       return this.userService.user$.pipe(
         take(1),
         mergeMap(p => this.documentStorage.getItem(documentID, p).pipe(
@@ -300,7 +293,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
               return this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
             }
             if (Util.isLocalNewestDocument(local, document)) {
-              this.updateState({..._state, hasChanges: true, hasLocalData: true});
+              this.updateState({..._state, hasChanges: true});
               return local;
             }
             return document;
@@ -317,58 +310,27 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private fetchEmptyData(form: Form.SchemaForm, person: Person): Observable<Document> {
-    const getEmpty$ = of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
+    return of({id: this.getNewTmpId(), formID: form.id, creator: person.id, gatheringEvent: { leg: [person.id] }}).pipe(
       map(base => form.options?.prepopulatedDocument ? merge(form.options?.prepopulatedDocument, base, { arrayMerge: Util.arrayCombineMerge }) : base),
       map(data => this.addNamedPlaceData(form, data)),
       switchMap(data => this.addCollectionID(form, data))
-  );
-
-    return getEmpty$;
-    /*
-    return this.findTmpData(form, person).pipe(
-      switchMap(tmpDoc => tmpDoc && !isTemplate ? of(tmpDoc) : getEmpty$)
-    );
-     */
-  }
-
-  private findTmpData(form: Form.SchemaForm, person: Person): Observable<undefined|Document> {
-    let key = form.id;
-    let hasNp = false;
-    if (form.options?.useNamedPlaces) {
-      const np: NamedPlace = _state.namedPlace;
-      key += '_' + np.id;
-      hasNp = true;
-    }
-    return form.options?.mobile ? of(undefined) : this.documentStorage.getAll(person, 'onlyTmp').pipe(
-      map(documents => documents.find(d => {
-        let docKey = d.formID;
-        if (hasNp) {
-          docKey += d.namedPlaceID;
-        }
-        if (key === docKey) {
-          this.updateState({..._state, hasLocalData: true, hasChanges: true});
-          return true;
-        }
-        return false;
-      }))
     );
   }
 
   private fetchUiSchemaContext(form: FormWithData, documentID?: string): Observable<Form.IUISchemaContext> {
-
     return of({
       ...form.uiSchemaContext,
       annotations: form.annotations,
       formID: form.id,
       creator: form.formData && form.formData.creator || undefined,
       isAdmin: form.rights && form.rights.admin,
-      isEdit: !FormService.isTmpId(documentID),
+      isEdit: documentID && !FormService.isTmpId(documentID),
       placeholderGeometry: _state.namedPlace && _state.namedPlace.geometry || undefined
     });
   }
 
   private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
-    return FormService.isTmpId(documentID) ?
+    return (!documentID || FormService.isTmpId(documentID)) ?
       ObservableOf([]) :
       this.lajiApi.getList(
         LajiApi.Endpoints.annotations,

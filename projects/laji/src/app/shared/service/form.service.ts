@@ -40,7 +40,7 @@ export class FormService {
   ) {}
 
   static isTmpId(id: string): boolean {
-    return !id || (id && id.indexOf(FormService.tmpNs + ':') === 0);
+    return id?.indexOf(FormService.tmpNs + ':') === 0;
   }
 
   getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm> {
