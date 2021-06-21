@@ -7,6 +7,20 @@ import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.
 
 const SCROLL_SPEED = 500; // pixels per second
 
+const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: Function): [number, Array<T>] => {
+  const newArr: T[] = [];
+  let newIdx: number = index;
+
+  arr.forEach((element, i) => {
+    if (fn(element)) {
+      newArr.push(element);
+    } else if (i < index) {
+      newIdx--;
+    }
+  });
+  return [newIdx, newArr];
+};
+
 @Component({
   selector: 'laji-identification-list',
   templateUrl: './identification-list.component.html',
@@ -78,9 +92,11 @@ export class IdentificationListComponent implements OnDestroy {
       .show({isAnimated: false});
     this.showOverlay = true;
     this.overlayRef = this.overlayLoader._componentRef;
-    this.overlayRef.instance.modalImages = this.taxon.children.filter(
+    const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
+      index, this.taxon.children,
       taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
-    ).map(taxonomy => {
+    );
+    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => {
       return <Image>{
         ...taxonomy.multimedia[0],
         taxonId: taxonomy.id,
@@ -88,7 +104,7 @@ export class IdentificationListComponent implements OnDestroy {
         scientificName: taxonomy.scientificName
       };
     });
-    this.overlayRef.instance.showImage(index);
+    this.overlayRef.instance.showImage(filteredIndex);
     this.overlayRef.instance.close = () => {
       this.closeImage();
     };
