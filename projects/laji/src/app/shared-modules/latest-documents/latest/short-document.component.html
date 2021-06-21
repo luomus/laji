@@ -1,4 +1,5 @@
 <div [ngStyle]="{'width': (staticWidth - 50) ? (staticWidth - 50) +'px': undefined}" class="fixedDimension">
+
   <div *ngIf="unsaved" class="unsaved" [tooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
     <div>!</div>
   </div>
@@ -46,15 +47,28 @@
     <button class="btn btn-default btn-sm ml-2"
          [tooltip]="'result.showViewer' | translate"
          [placement]="'bottom'"
-         (click)="onShowViewer($event)">
+         (click)="onShowViewer($event)"
+         role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-eye-open"></span>
+      {{ 'haseka.submissions.view' | translate }}
     </button>
     <a class="btn btn-default btn-sm ml-2"
          [routerLink]="editDocumentRoute"
          [tooltip]="'result.editDocument' | translate"
-         [placement]="'bottom'">
+         [placement]="'bottom'"
+         role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-edit"></span>
+      {{ 'haseka.submissions.edit' | translate }}
     </a>
+    <button *ngIf="document._hasChanges"
+         class="btn btn-default btn-sm ml-2"
+         [tooltip]="'haseka.form.hasChanges' | translate"
+         [placement]="'bottom'"
+         (click)="removeDocument($event)"
+         role="button" tabindex="0" luKeyboardClickable>
+      <span class="glyphicon glyphicon-trash"></span>
+      {{ 'haseka.delete.title' | translate }}
+    </button>
   </section>
 
 </div>
