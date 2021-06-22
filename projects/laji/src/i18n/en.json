@@ -335,7 +335,7 @@
   "haseka.form.genericError": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while. If the error doesn't get repaired, please contact support",
   "haseka.form.hasChanges": "Submission has local changes that are not yet saved",
   "haseka.form.hasOnlyWarnings": "Check the warnings",
-  "haseka.form.leaveConfirm": "Are you sure that you want to leave the form?",
+  "haseka.form.leaveConfirm": "Are you sure that you want to leave the form? If you want to save the data as a draft, press Cancel and then press Save draft.",
   "haseka.form.leaveConfirm.confirm": "Poistu",
   "haseka.form.localData": "There’s an unsaved submission of this form. Click here to return to it.",
   "haseka.form.noAccessToDocument": "You have no permissions to edit this document.",
