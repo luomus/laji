@@ -326,7 +326,7 @@
   "haseka.form.crash.reload": "Lataa lomake uudelleen",
   "haseka.form.disabled": "Tämä lomake tai projekti on väliaikaisesti suljettu ylläpitotoimien takia. Palaa myöhemmin uudelleen!",
   "haseka.form.discard": "Hylkää muutokset",
-  "haseka.form.discardConfirm": "Haluatko varmasti hylätä viimeisen tallennuksen jälkeen tekemäsi muutokset?",
+  "haseka.form.discardConfirm": "Haluatko varmasti poistua ilman että tallennat tekemiäsi muutoksia tai lisäyksiä?",
   "haseka.form.discardConfirm.confirm": "Poistu tallentamatta",
   "haseka.form.documentNotFound": "Havaintoerää ei löytynyt id:llä {{documentId}}.",
   "haseka.form.error": "Tallennus epäonnistui",
