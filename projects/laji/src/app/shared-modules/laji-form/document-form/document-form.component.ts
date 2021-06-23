@@ -1,4 +1,4 @@
-import { mergeMap, switchMap, take, tap } from 'rxjs/operators';
+import { mergeMap, take, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,6 +27,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -85,7 +86,8 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               private documentApi: DocumentApi,
               private documentService: DocumentService,
               private latestFacade: LatestDocumentsFacade,
-              private router: Router) {
+              private router: Router,
+              private localizeRouteService: LocalizeRouterService) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
     this.formSubscription = this.vm$.subscribe(state => {
@@ -205,7 +207,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.toastsService.showSuccess(this.translate.instant('template.success'));
         setTimeout(() => {
           this.templateModal.hide();
-          this.router.navigate(['/vihko/templates']);
+          this.router.navigate(this.localizeRouteService.translateRoute(['/vihko/templates']));
         }, 200);
         this.templateForm = {
           name: '',

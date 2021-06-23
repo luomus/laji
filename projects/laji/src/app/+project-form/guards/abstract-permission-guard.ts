@@ -7,6 +7,7 @@ import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
 import { PlatformService } from '../../shared/service/platform.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Injectable()
 export abstract class AbstractPermissionGuard implements CanActivate {
@@ -18,6 +19,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
               private route: ActivatedRoute,
               private translate: TranslateService,
               private platformService: PlatformService,
+              private localizeRouteService: LocalizeRouterService
 ) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -36,7 +38,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
 
     if (!formID) {
       console.warn('HasFormPermission guard used for non project page');
-      this.router.navigate(['/', 'project', formID]);
+      this.router.navigate(this.localizeRouteService.translateRoute(['/', 'project', formID]));
       return;
     }
 
@@ -48,7 +50,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
         if (!hasPermission) {
           return this.userService.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
             if (isLoggedIn) {
-              return this.router.navigate(['/', 'project', formID]);
+              return this.router.navigate(this.localizeRouteService.translateRoute(['/', 'project', formID]));
             } else {
               return this.userService.redirectToLogin();
             }
