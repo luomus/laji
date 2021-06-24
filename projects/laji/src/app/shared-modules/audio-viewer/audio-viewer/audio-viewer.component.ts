@@ -7,13 +7,12 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudioViewerArea } from '../models';
+import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { IAudio } from '../../../+theme/kerttu/models';
@@ -32,7 +31,7 @@ function isGlobalAudio(audio: IAudio|IGlobalAudio): audio is IGlobalAudio {
   styleUrls: ['./audio-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
+export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() audio: IAudio|IGlobalAudio;
 
   @Input() focusArea: IAudioViewerArea; // focus area is drawn with white rectangle to the spectrogram
@@ -48,11 +47,15 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   // actual duration of the audio
   @Input() duration = 60;
 
-  // spectrogram config
-  @Input() sampleRate = 22050;
-  @Input() nperseg = 256;
-  @Input() noverlap = 256 - 160;
-  @Input() nbrOfRowsRemovedFromStart = 2;
+  @Input() spectrogramConfig: ISpectrogramConfig = {
+    sampleRate: 22050,
+    nperseg: 256,
+    noverlap: 256 - 160,
+    nbrOfRowsRemovedFromStart: 2,
+    maxNbrOfColsForNoiseEstimation: 6000,
+    noiseReductionParam: 2,
+    logRange: 3
+  };
 
   @Input() mode: AudioViewerMode = 'default';
 
@@ -82,8 +85,6 @@ export class AudioViewerComponent implements OnInit, OnChanges, OnDestroy {
   ) {
     this.audioPlayer = new AudioPlayer(this.audioService, this.ngZone, this.cdr);
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.audio) {

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { IAudioViewerArea, AudioViewerMode } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { IAudioViewerArea, AudioViewerMode, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { ILetterAnnotation, IKerttuRecording, LetterAnnotation } from '../../kerttu-global-shared/models';
 
 @Component({
@@ -23,6 +23,12 @@ export class SpeciesValidationComponent implements OnChanges {
   xRangePadding = 1;
 
   audioViewerMode: AudioViewerMode = 'default';
+  spectrogramConfig: ISpectrogramConfig = {
+    sampleRate: 32000,
+    nperseg: 512,
+    noverlap: 192,
+    nbrOfRowsRemovedFromStart: 0
+  };
 
   @Output() annotationsReady = new EventEmitter<ILetterAnnotation[]>();
 

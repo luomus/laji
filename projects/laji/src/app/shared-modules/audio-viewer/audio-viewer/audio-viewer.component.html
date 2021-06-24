@@ -3,11 +3,8 @@
   <div class="spectrogram-container" [ngClass]="{'visibility-hidden': loading}">
     <laji-audio-spectrogram
       [buffer]="extractedBuffer"
-      [sampleRate]="sampleRate"
-      [nperseg]="nperseg"
-      [noverlap]="noverlap"
-      [nbrOfRowsRemovedFromStart]="nbrOfRowsRemovedFromStart"
       [currentTime]="audioPlayer.currentTime"
+      [config]="spectrogramConfig"
       [focusArea]="localFocusArea"
       [highlightFocusArea]="highlightFocusArea"
       [zoomArea]="localZoomArea"

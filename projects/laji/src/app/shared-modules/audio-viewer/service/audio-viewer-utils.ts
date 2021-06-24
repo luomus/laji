@@ -18,4 +18,8 @@ export class AudioViewerUtils {
 
     return [start, stop];
   }
+
+  public static getMaxTimeAndFreq(buffer: AudioBuffer, sampleRate: number) {
+    return [buffer.duration, Math.floor(sampleRate / 2)];
+  }
 }

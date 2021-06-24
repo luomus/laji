@@ -18,12 +18,14 @@ import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-view
 import { CornellAudioInfoComponent } from './audio-viewer/cornell-audio-info/cornell-audio-info.component';
 import { DatePipe } from '@angular/common';
 import { CornellAudioDatePipe } from './service/cornell-audio-date.pipe';
+import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
+import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent, AudioInfoComponent,
     AudioInfoMapComponent, AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective, AudioViewerSettingsComponent, CornellAudioInfoComponent,
-    CornellAudioDatePipe
+    CornellAudioDatePipe, SpectrogramComponent, SpectrogramChartComponent
   ],
   providers: [AudioService, SpectrogramService, DatePipe, CornellAudioDatePipe],
   imports: [
@@ -34,6 +36,6 @@ import { CornellAudioDatePipe } from './service/cornell-audio-date.pipe';
     LajiMapModule,
     JwBootstrapSwitchNg2Module
   ],
-  exports: [AudioViewerComponent, RequiresAudioSupportDirective, AudioViewerSettingsComponent]
+  exports: [AudioViewerComponent, RequiresAudioSupportDirective, AudioViewerSettingsComponent, SpectrogramComponent]
 })
 export class AudioViewerModule { }

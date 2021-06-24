@@ -61,9 +61,8 @@
               [zoomFrequency]="zoomed"
               [focusAreaTimePadding]="xRangePadding"
               [mode]="audioViewerMode"
-              [sampleRate]="30000"
               [duration]="null"
-              [nbrOfRowsRemovedFromStart]="0"
+              [spectrogramConfig]="spectrogramConfig"
               (drawEnd)="onDrawEnd($event)"
             ></laji-audio-viewer>
           </div>

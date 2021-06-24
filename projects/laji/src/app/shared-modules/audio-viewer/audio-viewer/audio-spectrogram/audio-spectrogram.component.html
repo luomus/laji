@@ -1,4 +1,31 @@
 <div #container class="spectrogram-container">
-  <canvas #spectrogram [style.top]="margin.top + 'px'" [style.left]="(margin.left + 1) + 'px'" class="spectrogram-canvas"></canvas>
-  <svg #chart class="spectrogram-chart"></svg>
+  <laji-spectrogram
+    #spectrogram
+    class="spectrogram"
+    [style.top]="margin.top + 'px'"
+    [style.left]="(margin.left + 1) + 'px'"
+    [buffer]="buffer"
+    [config]="config"
+    [width]="width"
+    [height]="height"
+    [visibleArea]="visibleArea"
+    (spectrogramReady)="spectrogramReady.emit()"
+  ></laji-spectrogram>
+  <laji-spectrogram-chart
+    #chart
+    class="spectrogram-chart"
+    [currentTime]="currentTime"
+    [visibleArea]="visibleArea"
+    [focusArea]="focusArea"
+    [highlightFocusArea]="highlightFocusArea"
+    [onlyFocusAreaClickable]="highlightFocusArea && !this.zoomArea"
+    [width]="width"
+    [height]="height"
+    [margin]="margin"
+    [mode]="mode"
+    (dragStart)="dragStart.emit()"
+    (dragEnd)="dragEnd.emit($event)"
+    (zoomEnd)="zoomEnd.emit($event)"
+    (drawEnd)="drawEnd.emit($event)"
+  ></laji-spectrogram-chart>
 </div>
