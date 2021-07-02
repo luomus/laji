@@ -1,2 +1,10 @@
-User-agent: *
-Disallow: /
+# Disallow everything.
+User-agent: *   
+Disallow: /       
+
+# Whitelist certain social media sites
+User-agent: Twitterbot   
+Allow: /
+
+User-agent: facebookexternalhit   
+Allow: /
