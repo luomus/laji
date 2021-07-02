@@ -1887,5 +1887,7 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "taxonomy.bold.disabled": "Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
+  "taxonomy.bold.info": "Julkisten DNA-viivakoodisekvenssien määrä BOLD-tietokannassa. HUOM: Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista."
 }
