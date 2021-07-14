@@ -315,7 +315,7 @@
   "haseka.button": "Gå till Skrivboken",
   "haseka.createPrefilledForm": "Skapa ett förfylld formulär",
   "haseka.delete.cancel": "Nej",
-  "haseka.delete.description": "Är du säker på att du vill ta bort observatiospartiet ({{id}})?",
+  "haseka.delete.description": "Är du säker på att du vill ta bort hela dokumentet och alla observationer det innehåller? ({{id}})",
   "haseka.delete.ok": "Ja",
   "haseka.delete.template": "Är du säker på att du vill ta bort mallen<br>{{name}} ({{id}})?",
   "haseka.delete.title": "Remove",

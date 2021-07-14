@@ -315,7 +315,7 @@
   "haseka.button": "Go to the Notebook",
   "haseka.createPrefilledForm": "Create a prefilled form",
   "haseka.delete.cancel": "No",
-  "haseka.delete.description": "Are you sure that you want to remove the observation ({{id}})?",
+  "haseka.delete.description": "Are you sure that you want to remove the whole document and all observations it contains? ({{id}})",
   "haseka.delete.ok": "Yes",
   "haseka.delete.template": "Are you sure that you want to remove the template<br>{{name}} ({{id}})?",
   "haseka.delete.title": "Remove",

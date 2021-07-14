@@ -315,7 +315,7 @@
   "haseka.button": "Siirry Vihkoon",
   "haseka.createPrefilledForm": "Luo esitäytetty lomake",
   "haseka.delete.cancel": "En",
-  "haseka.delete.description": "Oletko varma, että haluat poistaa havaintoerän ({{id}})?",
+  "haseka.delete.description": "Oletko varma, että haluat poistaa koko havaintoerän ja kaikki siinä olevat havainnot? ({{id}})",
   "haseka.delete.ok": "Kyllä",
   "haseka.delete.template": "Oletko varma, että haluat poistaa esitäytetyn lomakkeen<br> {{name}} ({{id}})?",
   "haseka.delete.title": "Poista",
