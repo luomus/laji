@@ -23,8 +23,6 @@ import { TranslateService } from '@ngx-translate/core';
     <laji-species-validation
       *ngIf="taxon"
       [data]="validationData$ | async"
-      (annotationsReady)="annotationsReady($event)"
-      [saving]="saving"
     ></laji-species-validation>
   `,
   styles: []
@@ -50,6 +48,7 @@ export class ValidationComponent {
   ) {
     this.speciesFilters$ = this.kerttuApi.getSpeciesFilters();
     this.updateSpeciesList();
+    this.onTaxonSelect(10400);
   }
 
   @HostListener('window:beforeunload', ['$event'])

@@ -31,6 +31,10 @@ export interface IKerttuSpeciesFilters {
 export interface IKerttuRecording {
   id: number;
   audio: IGlobalAudio;
+  candidates?: IKerttuLetter[];
+}
+
+export interface IKerttuLetter {
   xRange: number[];
   yRange: number[];
 }

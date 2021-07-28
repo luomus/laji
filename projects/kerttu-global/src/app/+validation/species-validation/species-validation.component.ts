@@ -10,19 +10,7 @@ import { ILetterAnnotation, IKerttuRecording, LetterAnnotation } from '../../ker
 })
 export class SpeciesValidationComponent implements OnChanges {
   @Input() data?: IKerttuRecording[];
-  @Input() saving = false;
 
-  annotation = LetterAnnotation;
-
-  annotations: ILetterAnnotation[] = [];
-
-  activeIndex = 0;
-  activeLetter: any;
-
-  zoomed = true;
-  xRangePadding = 1;
-
-  audioViewerMode: AudioViewerMode = 'default';
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
     nperseg: 512,
@@ -30,54 +18,11 @@ export class SpeciesValidationComponent implements OnChanges {
     nbrOfRowsRemovedFromStart: 0
   };
 
-  @Output() annotationsReady = new EventEmitter<ILetterAnnotation[]>();
-
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
-      if (this.data && this.data.length > 0) {
-        this.activeIndex = 0;
-        this.activeLetter = this.data[this.activeIndex];
-        this.annotations = this.data.map(() => ({}));
-      }
+      console.log(this.data);
     }
-  }
-
-  toggleDrawMode() {
-    this.audioViewerMode = this.audioViewerMode === 'draw' ? 'default' : 'draw';
-  }
-
-  onDrawEnd(area: IAudioViewerArea) {
-    this.annotations[this.activeIndex].area = area;
-    this.setDefaultAudioViewerMode();
-  }
-
-  returnToPrevious(e) {
-    e.preventDefault();
-
-    this.activeIndex--;
-    this.activeLetter = this.data[this.activeIndex];
-  }
-
-  goToNext(e) {
-    e.preventDefault();
-
-    this.activeIndex++;
-    this.activeLetter = this.data[this.activeIndex];
-  }
-
-  saveAndGoBack() {
-    this.setDefaultAudioViewerMode();
-    this.annotationsReady.emit(this.annotations);
-  }
-
-  goBack() {
-    this.setDefaultAudioViewerMode();
-    this.annotationsReady.emit(null);
-  }
-
-  private setDefaultAudioViewerMode() {
-    this.audioViewerMode = 'default';
   }
 }

@@ -1,31 +1,22 @@
-h1, h3 {
-  max-width: 100%;
+.audio-container {
+  margin-right: -15px;
+  margin-left: -15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 10px;
 }
 
-h1 {
-  margin-block-start: 20px;
-}
-
-.pager {
-  margin: 0;
-  text-align: left;
-
-  .pager-title {
-    margin: 0 5px;
-  }
-
-  .disabled a {
-    pointer-events: none;
-  }
-}
-
-.audio-viewer-wrapper {
+.audio-container:nth-child(odd) {
   background-color: #dde1e3;
-  margin: 0 -15px 15px -15px;
-  padding: 5px 15px;
+  
+  laji-audio-viewer {
+    background-color: #dde1e3;
+  }
+}
+.audio-container:nth-child(even) {
+  background-color: #fff;
 
-  laji-audio-viewer-settings {
-    display: block;
-    padding-bottom: 15px;
+  laji-audio-viewer {
+    background-color: #fff;
   }
 }

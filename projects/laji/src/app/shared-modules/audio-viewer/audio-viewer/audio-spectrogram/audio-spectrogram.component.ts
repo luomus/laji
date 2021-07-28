@@ -3,7 +3,6 @@ import {
   Input,
   AfterViewInit,
   OnChanges,
-  SimpleChanges,
   ElementRef,
   ViewChild,
   HostListener,
@@ -31,11 +30,15 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
+  @Input() showAxisLabels = true;
 
   @Input() config: ISpectrogramConfig;
 
   @Input() currentTime: number;
   @Input() mode: AudioViewerMode;
+
+  @Input() width: number;
+  @Input() height: number;
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() dragStart = new EventEmitter();
@@ -43,15 +46,20 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
-  width: number;
-  height: number;
-  margin: { top: number, bottom: number, left: number, right: number } = { top: 10, bottom: 40, left: 50, right: 10}; // space for x axis and y axis
+  _width: number;
+  _height: number;
+  margin: { top: number, bottom: number, left: number, right: number };
 
   visibleArea: IAudioViewerArea;
 
+  private marginWithLabels = { top: 10, bottom: 40, left: 50, right: 10};
+  private marginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10};
+
   constructor(
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.updateMargin();
+  }
 
   @HostListener('window:resize')
   onResize() {
@@ -65,14 +73,21 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
     }, 200);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.config) {
-      this.onResize();
-    }
+  ngOnChanges() {
+    this.updateMargin();
+    this.onResize();
   }
 
   private updateWidthAndHeigth() {
-    this.width = Math.max(this.containerRef.nativeElement.offsetWidth - this.margin.left - this.margin.right, 0);
-    this.height = this.config ? this.config.nperseg / 2 : 0;
+    this._width = this.width ? this.width : Math.max(this.containerRef.nativeElement.offsetWidth - this.margin.left - this.margin.right, 0);
+    this._height = this.height ? this.height : this.config ? this.config.nperseg / 2 : 0;
+  }
+
+  private updateMargin() {
+    if (this.showAxisLabels) {
+      this.margin = this.marginWithLabels;
+    } else {
+      this.margin = this.marginWithoutLabels;
+    }
   }
 }

@@ -9,8 +9,8 @@
     [startTime]="defaultView?.xRange[0]"
     [endTime]="defaultView?.xRange[1]"
     [config]="config"
-    [width]="width"
-    [height]="height"
+    [width]="_width"
+    [height]="_height"
     (spectrogramReady)="spectrogramReady.emit()"
   ></laji-spectrogram>
   <laji-spectrogram-chart
@@ -20,9 +20,10 @@
     [focusArea]="focusArea"
     [highlightFocusArea]="highlightFocusArea"
     [onlyFocusAreaClickable]="onlyFocusAreaClickable"
+    [showAxisLabels]="showAxisLabels"
     [currentTime]="currentTime"
-    [width]="width"
-    [height]="height"
+    [width]="_width"
+    [height]="_height"
     [margin]="margin"
     [mode]="mode"
     (dragStart)="dragStart.emit()"

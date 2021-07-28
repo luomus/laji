@@ -8,9 +8,12 @@
       [focusArea]="focusArea"
       [highlightFocusArea]="highlightFocusArea"
       [onlyFocusAreaClickable]="highlightFocusArea && view === defaultView"
+      [showAxisLabels]="showAxisLabels"
       [currentTime]="audioPlayer.currentTime"
       [config]="spectrogramConfig"
       [mode]="mode"
+      [width]="spectrogramWidth"
+      [height]="spectrogramHeight"
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"
@@ -19,7 +22,7 @@
     ></laji-audio-spectrogram>
   </div>
 
-  <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}">
+  <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}" *ngIf="showControls">
     <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"

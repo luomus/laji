@@ -20,6 +20,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea: boolean;
   @Input() onlyFocusAreaClickable = false;
+  @Input() showAxisLabels = true;
 
   @Input() currentTime = 0;
 
@@ -70,7 +71,9 @@ export class SpectrogramChartComponent implements OnChanges {
     this.yScale = scaleLinear().domain([this.view.yRange[1] / 1000, this.view.yRange[0] / 1000]).range([0, this.height]);
 
     const xAxis = axisBottom(this.xScale);
+    xAxis.ticks(this.width / 100);
     const yAxis = axisLeft(this.yScale);
+    yAxis.ticks(this.height / 10);
 
     // draw axes
     svg.append('g')
@@ -80,20 +83,22 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
       .call(xAxis);
 
-    // x-axis label
-    svg.append('text')
-      .attr('text-anchor', 'middle')
-      .attr('x', this.margin.left + this.width / 2)
-      .attr('y', this.height + this.margin.top + 35)
-      .text(this.translate.instant('theme.kerttu.audioViewer.time') + ' (s)');
+    if (this.showAxisLabels) {
+      // x-axis label
+      svg.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('x', this.margin.left + this.width / 2)
+        .attr('y', this.height + this.margin.top + 35)
+        .text(this.translate.instant('theme.kerttu.audioViewer.time') + ' (s)');
 
-    // y-axis label
-    svg.append('text')
-      .attr('text-anchor', 'middle')
-      .attr('transform', 'rotate(-90)')
-      .attr('y', -this.margin.left + 65)
-      .attr('x', -this.margin.top - this.height / 2)
-      .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
+      // y-axis label
+      svg.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', -this.margin.left + 65)
+        .attr('x', -this.margin.top - this.height / 2)
+        .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
+    }
 
     const innerSvg = svg.append('svg')
       .attr('x', this.margin.left)

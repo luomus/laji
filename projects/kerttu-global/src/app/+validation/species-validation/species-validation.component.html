@@ -1,86 +1,27 @@
-<div class="container">
-  <div>
-    <lu-button class="mr-2" (click)="saveAndGoBack()" [loading]="saving" [role]="'success'">
-      {{ 'validation.save' | translate }}
-    </lu-button>
-    <lu-button (click)="goBack()" [disabled]="saving">
-      {{ 'validation.cancel' | translate }}
-    </lu-button>
+<div class="container-fluid">
+  <div *ngFor="let item of data; let i = index" class="audio-container">
+    <h5>Audio {{ i + 1 }}</h5>
+    <laji-audio-viewer
+      [audio]="item.audio"
+      [spectrogramConfig]="spectrogramConfig"
+      [spectrogramHeight]="80"
+    ></laji-audio-viewer>
+    <h6>Candidates</h6>
+    <ng-container *ngFor="let candidate of item.candidates">
+      <div style="display: inline-block;">
+        <laji-audio-viewer
+          [audio]="item.audio"
+          [focusArea]="candidate"
+          [zoomTime]="true"
+          [timePaddingOnZoom]="0.5"
+          [zoomFrequency]="true"
+          [spectrogramConfig]="spectrogramConfig"
+          [showControls]="false"
+          [showAxisLabels]="false"
+          [spectrogramHeight]="50"
+          [spectrogramWidth]="200"
+      ></laji-audio-viewer>
+      </div>
+    </ng-container>
   </div>
-  <ng-container *ngIf="data && data.length > 0 else loading">
-    <h1 *ngIf="activeLetter">
-      {{ activeLetter.audio.species.commonName }} - <i>{{ activeLetter.audio.species.scientificName }}</i>
-    </h1>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <ul class="pager">
-          <li [ngClass]="{'disabled': activeIndex === 0 }">
-            <a href="#" role="button" [tabindex]="activeIndex === 0 ? -1 : 0" (click)="returnToPrevious($event)">
-              <span aria-hidden="true">&larr;</span> {{ 'validation.previous' | translate }}
-            </a>
-          </li>
-          <li class="pager-title">
-            {{ 'validation.vocalization' | translate }} {{ activeIndex + 1 }} / {{ data.length }}
-          </li>
-          <li [ngClass]="{'disabled': activeIndex === data.length - 1 }">
-            <a href="#" role="button" [tabindex]="activeIndex === data.length - 1 ? -1 : 0" (click)="goToNext($event)">
-              {{ 'validation.next' | translate }} <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="panel-body">
-        <div *ngIf="activeLetter">
-          <div class="form-group">
-              <h3>{{ 'validation.isTheSpeciesVocalizing' | translate }}</h3>
-              <div
-                class="radio"
-                *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]"
-              >
-                <label>
-                  <input
-                    type="radio"
-                    name="annotation"
-                    [value]="a"
-                    [(ngModel)]="annotations[activeIndex].annotation"
-                    [disabled]="saving"
-                  >
-                  {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-                </label>
-              </div>
-          </div>
-          <div class="audio-viewer-wrapper">
-            <laji-audio-viewer-settings
-            [(zoomed)]="zoomed"
-            [(xRangePadding)]="xRangePadding"
-            [displayInline]="true"
-            ></laji-audio-viewer-settings>
-            <laji-audio-viewer
-              [audio]="activeLetter.audio"
-              [focusArea]="annotations[activeIndex].area ? annotations[activeIndex].area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
-              [zoomFrequency]="zoomed"
-              [zoomTime]="true"
-              [timePaddingOnZoom]="xRangePadding"
-              [mode]="audioViewerMode"
-              [spectrogramConfig]="spectrogramConfig"
-              (drawEnd)="onDrawEnd($event)"
-            ></laji-audio-viewer>
-          </div>
-          <div>
-            <div class="form-group">
-              <label>{{ 'validation.fixFraming.label' | translate }}</label>
-              <button class="btn btn-default d-block" [ngClass]="{'btn-primary': audioViewerMode === 'draw'}" (click)="toggleDrawMode()" [disabled]="saving">{{ 'validation.fixFraming' | translate }}</button>
-            </div>
-            <div class="form-group">
-              <label>{{ 'validation.otherComments' | translate }}</label>
-              <textarea name="notes" class="form-control" [(ngModel)]="annotations[activeIndex].notes" [disabled]="saving"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ng-container>
 </div>
-<ng-template #loading>
-  <laji-spinner [overlay]="true"></laji-spinner>
-</ng-template>
