@@ -46,7 +46,7 @@
     </div>
 
     <div class="col-md-12" id="letterAnnotationSettings">
-      <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="xRangePadding"></laji-audio-viewer-settings>
+      <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="timePadding"></laji-audio-viewer-settings>
     </div>
 
     <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
@@ -54,10 +54,11 @@
       <laji-audio-viewer
         [audio]="template?.audio"
         [focusArea]="{
-        xRange: template?.xRange,
-        yRange: template?.yRange
-      }"
-        [focusAreaTimePadding]="xRangePadding"
+          xRange: template?.xRange,
+          yRange: template?.yRange
+        }"
+        [zoomTime]="true"
+        [timePaddingOnZoom]="timePadding"
         [zoomFrequency]="zoomed"
         (audioLoading)="loadingTemplate = $event"
       ></laji-audio-viewer>
@@ -70,10 +71,11 @@
       <laji-audio-viewer
         [audio]="candidate?.audio"
         [focusArea]="{
-        xRange: candidate?.xRange,
-        yRange: candidate?.yRange
-      }"
-        [focusAreaTimePadding]="xRangePadding"
+          xRange: candidate?.xRange,
+          yRange: candidate?.yRange
+        }"
+        [zoomTime]="true"
+        [timePaddingOnZoom]="timePadding"
         [zoomFrequency]="zoomed"
         [autoplay]="autoplayCandidate"
         [autoplayRepeat]="3"
@@ -92,9 +94,9 @@
         *ngIf="candidateLongerVisible"
         [audio]="candidate?.audio"
         [focusArea]="{
-        xRange: candidate?.xRange,
-        yRange: candidate?.yRange
-      }"
+          xRange: candidate?.xRange,
+          yRange: candidate?.yRange
+        }"
         [zoomFrequency]="zoomed"
       ></laji-audio-viewer>
     </div>

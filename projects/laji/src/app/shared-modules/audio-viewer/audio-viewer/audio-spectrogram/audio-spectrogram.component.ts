@@ -9,11 +9,11 @@ import {
   HostListener,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 
-import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from '../../models';
-import { AudioViewerUtils } from '../../service/audio-viewer-utils';
+import { AudioViewerMode, IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../models';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -24,18 +24,17 @@ import { AudioViewerUtils } from '../../service/audio-viewer-utils';
 export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
 
-  @Input() buffer: AudioBuffer;
-  @Input() config: ISpectrogramConfig;
-
-  @Input() currentTime: number;
+  @Input() audio: IAudio;
+  @Input() view: IAudioViewerArea;
+  @Input() defaultView: IAudioViewerArea;
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
+  @Input() onlyFocusAreaClickable = false;
 
-  @Input() zoomArea: IAudioViewerArea;
-  @Input() zoomFrequency = false;
-  @Input() frequencyPaddingOnZoom = 500;
+  @Input() config: ISpectrogramConfig;
 
+  @Input() currentTime: number;
   @Input() mode: AudioViewerMode;
 
   @Output() spectrogramReady = new EventEmitter();
@@ -50,6 +49,10 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
 
   visibleArea: IAudioViewerArea;
 
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) {}
+
   @HostListener('window:resize')
   onResize() {
     this.updateWidthAndHeigth();
@@ -58,37 +61,18 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     setTimeout(() => {
       this.onResize();
-    }, 100);
+      this.cdr.markForCheck();
+    }, 200);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.config) {
-      this.updateWidthAndHeigth();
-    }
-    if (changes.buffer || changes.zoomArea || changes.zoomFrequency || changes.frequencyPaddingOnZoom) {
-      this.updateZoomArea();
+      this.onResize();
     }
   }
 
   private updateWidthAndHeigth() {
     this.width = Math.max(this.containerRef.nativeElement.offsetWidth - this.margin.left - this.margin.right, 0);
     this.height = this.config ? this.config.nperseg / 2 : 0;
-  }
-
-  private updateZoomArea() {
-    if (this.buffer && this.config) {
-      const [maxTime, maxFreq] = AudioViewerUtils.getMaxTimeAndFreq(this.buffer, this.config.sampleRate);
-
-      if (this.zoomArea) {
-        this.visibleArea = this.zoomArea;
-      } else {
-        this.visibleArea = {
-          xRange: [0, maxTime],
-          yRange: AudioViewerUtils.getPaddedRange(
-            this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, 0, maxFreq
-          )
-        };
-      }
-    }
   }
 }

@@ -19,7 +19,7 @@ export class AudioViewerUtils {
     return [start, stop];
   }
 
-  public static getMaxTimeAndFreq(buffer: AudioBuffer, sampleRate: number) {
-    return [buffer.duration, Math.floor(sampleRate / 2)];
+  public static getMaxFreq(sampleRate: number) {
+    return Math.floor(sampleRate / 2);
   }
 }

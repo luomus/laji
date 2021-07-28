@@ -2,13 +2,14 @@
   <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
   <div class="spectrogram-container" [ngClass]="{'visibility-hidden': loading}">
     <laji-audio-spectrogram
-      [buffer]="extractedBuffer"
+      [audio]="audio"
+      [view]="view"
+      [defaultView]="defaultView"
+      [focusArea]="focusArea"
+      [highlightFocusArea]="highlightFocusArea"
+      [onlyFocusAreaClickable]="highlightFocusArea && view === defaultView"
       [currentTime]="audioPlayer.currentTime"
       [config]="spectrogramConfig"
-      [focusArea]="localFocusArea"
-      [highlightFocusArea]="highlightFocusArea"
-      [zoomArea]="localZoomArea"
-      [zoomFrequency]="zoomFrequency"
       [mode]="mode"
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
@@ -39,12 +40,12 @@
         </lu-button>
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.changeView' | translate"></laji-info>
       </div>
-      <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="localZoomArea">
+      <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="view !== defaultView">
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>
     <div class="pull-right audio-info" *ngIf="audio">
-      <laji-audio-info *ngIf="isAudio(audio)" [audio]="audio"></laji-audio-info>
+      <laji-audio-info *ngIf="isKerttuAudio(audio)" [audio]="audio"></laji-audio-info>
       <laji-cornell-audio-info *ngIf="isGlobalAudio(audio)" [audio]="audio"></laji-cornell-audio-info>
     </div>
   </div>

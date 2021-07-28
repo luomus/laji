@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, Input } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { IAudio } from 'projects/laji/src/app/+theme/kerttu/models';
+import { IKerttuAudio } from 'projects/laji/src/app/+theme/kerttu/models';
 
 @Component({
   selector: 'laji-audio-info',
@@ -11,7 +11,7 @@ import { IAudio } from 'projects/laji/src/app/+theme/kerttu/models';
 export class AudioInfoComponent {
   @ViewChild('mapModal', { static: true }) mapModal: TemplateRef<any>;
 
-  @Input() audio: IAudio;
+  @Input() audio: IKerttuAudio;
 
   private modal: BsModalRef;
 

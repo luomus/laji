@@ -1,4 +1,4 @@
-import { IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 
 export interface IListResult<T> {
   results: T[];
@@ -35,8 +35,7 @@ export interface IKerttuRecording {
   yRange: number[];
 }
 
-export interface IGlobalAudio {
-  url: string;
+export interface IGlobalAudio extends IAudio {
   species: IKerttuSpecies;
   recordist?: string;
   country?: string;

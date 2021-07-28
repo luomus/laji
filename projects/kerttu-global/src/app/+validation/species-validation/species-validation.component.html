@@ -59,9 +59,9 @@
               [audio]="activeLetter.audio"
               [focusArea]="annotations[activeIndex].area ? annotations[activeIndex].area : { xRange: activeLetter.xRange, yRange: activeLetter.yRange }"
               [zoomFrequency]="zoomed"
-              [focusAreaTimePadding]="xRangePadding"
+              [zoomTime]="true"
+              [timePaddingOnZoom]="xRangePadding"
               [mode]="audioViewerMode"
-              [duration]="null"
               [spectrogramConfig]="spectrogramConfig"
               (drawEnd)="onDrawEnd($event)"
             ></laji-audio-viewer>

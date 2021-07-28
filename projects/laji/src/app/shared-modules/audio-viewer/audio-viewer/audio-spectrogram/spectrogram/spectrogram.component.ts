@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { IAudioViewerArea, ISpectrogramConfig } from '../../../models';
+import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../../models';
 import { AudioViewerUtils } from '../../../service/audio-viewer-utils';
 import { SpectrogramService } from '../../../service/spectrogram.service';
 
@@ -14,10 +14,12 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
 export class SpectrogramComponent implements OnChanges {
   @ViewChild('canvas', {static: true}) canvasRef: ElementRef<HTMLCanvasElement>;
 
-  @Input() buffer: AudioBuffer;
+  @Input() audio: IAudio;
+  @Input() startTime: number;
+  @Input() endTime: number;
   @Input() config: ISpectrogramConfig;
 
-  @Input() visibleArea?: IAudioViewerArea;
+  @Input() view: IAudioViewerArea;
 
   @Input() width?: number;
   @Input() height?: number;
@@ -34,7 +36,7 @@ export class SpectrogramComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.buffer || changes.config) {
+    if (changes.audio || changes.startTime || changes.endTime || changes.config) {
       this.imageData = null;
       this.clearCanvas();
 
@@ -42,8 +44,8 @@ export class SpectrogramComponent implements OnChanges {
         this.imageDataSub.unsubscribe();
       }
 
-      if (this.buffer) {
-        this.imageDataSub = this.spectrogramService.getSpectrogramImageData(this.buffer, this.config)
+      if (this.audio && this.startTime != null && this.endTime != null) {
+        this.imageDataSub = this.spectrogramService.getSpectrogramImageData(this.audio, this.startTime, this.endTime, this.config)
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result;
@@ -52,7 +54,7 @@ export class SpectrogramComponent implements OnChanges {
             this.cdr.markForCheck();
           });
       }
-    } else if (changes.visibleArea) {
+    } else if (changes.view) {
       if (this.imageData) {
         this.drawImage(this.imageData, this.canvasRef.nativeElement);
       }
@@ -60,12 +62,13 @@ export class SpectrogramComponent implements OnChanges {
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
-    const [maxTime, maxFreq] = AudioViewerUtils.getMaxTimeAndFreq(this.buffer, this.config.sampleRate);
+    const maxTime = this.endTime - this.startTime;
+    const maxFreq = AudioViewerUtils.getMaxFreq(this.config.sampleRate);
 
-    const startTime = this.visibleArea?.xRange[0] || 0;
-    const endTime = this.visibleArea?.xRange[1] || maxTime;
-    const startFreq = this.visibleArea?.yRange[0] || 0;
-    const endFreq = this.visibleArea?.yRange[1] || maxFreq;
+    const startTime = this.view?.xRange[0] ? this.view?.xRange[0] - this.startTime : 0;
+    const endTime = this.view?.xRange[1] ? this.view?.xRange[1] - this.startTime : maxTime;
+    const startFreq = this.view?.yRange[0] || 0;
+    const endFreq = this.view?.yRange[1] || maxFreq;
 
     const ratioX1 = startTime / maxTime;
     const ratioX2 = endTime / maxTime;

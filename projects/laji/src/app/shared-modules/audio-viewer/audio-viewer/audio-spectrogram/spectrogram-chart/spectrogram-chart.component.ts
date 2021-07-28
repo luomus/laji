@@ -5,7 +5,7 @@ import { Selection, select, event, clientPoint } from 'd3-selection';
 import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import { AudioViewerMode, IAudioViewerArea } from '../../../models';
+import { AudioViewerMode, IAudio, IAudioViewerArea } from '../../../models';
 
 @Component({
   selector: 'laji-spectrogram-chart',
@@ -16,12 +16,12 @@ import { AudioViewerMode, IAudioViewerArea } from '../../../models';
 export class SpectrogramChartComponent implements OnChanges {
   @ViewChild('chart', {static: true}) chartRef: ElementRef<SVGElement>;
 
-  @Input() currentTime = 0;
-
-  @Input() visibleArea: IAudioViewerArea;
+  @Input() view: IAudioViewerArea;
   @Input() focusArea: IAudioViewerArea;
-  @Input() highlightFocusArea = false;
+  @Input() highlightFocusArea: boolean;
   @Input() onlyFocusAreaClickable = false;
+
+  @Input() currentTime = 0;
 
   @Input() width: number;
   @Input() height: number;
@@ -62,12 +62,12 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('width', this.width + (this.margin.left + this.margin.right))
       .attr('height', this.height + (this.margin.top + this.margin.bottom));
 
-    if (!this.width || !this.height || !this.visibleArea) {
+    if (!this.width || !this.height || !this.view) {
       return;
     }
 
-    this.xScale = scaleLinear().domain([this.visibleArea.xRange[0], this.visibleArea.xRange[1]]).range([0, this.width]);
-    this.yScale = scaleLinear().domain([this.visibleArea.yRange[1] / 1000, this.visibleArea.yRange[0] / 1000]).range([0, this.height]);
+    this.xScale = scaleLinear().domain([this.view.xRange[0], this.view.xRange[1]]).range([0, this.width]);
+    this.yScale = scaleLinear().domain([this.view.yRange[1] / 1000, this.view.yRange[0] / 1000]).range([0, this.height]);
 
     const xAxis = axisBottom(this.xScale);
     const yAxis = axisLeft(this.yScale);
@@ -106,8 +106,8 @@ export class SpectrogramChartComponent implements OnChanges {
 
   private drawInnerChart(svg: Selection<SVGSVGElement, any, any, any>) {
     const strokeWidth = 2;
-    const [startTime, endTime] = this.visibleArea.xRange;
-    const [startFreq, endFreq] = this.visibleArea.yRange;
+    const [startTime, endTime] = this.view.xRange;
+    const [startFreq, endFreq] = this.view.yRange;
 
     const xRange = this.focusArea?.xRange || [startTime - this.xScale(strokeWidth), endTime + this.xScale(strokeWidth)];
     const yRange = this.focusArea?.yRange || [startFreq - this.yScale(strokeWidth), endFreq + this.yScale(strokeWidth)];
@@ -225,8 +225,8 @@ export class SpectrogramChartComponent implements OnChanges {
 
   private getTimeFromPosition(x: number) {
     const time = this.xScale.invert(x);
-    const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.visibleArea.xRange[0];
-    const maxTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.visibleArea.xRange[1];
+    const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.view.xRange[0];
+    const maxTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.view.xRange[1];
     return Math.min(Math.max(time, minTime), maxTime);
   }
 

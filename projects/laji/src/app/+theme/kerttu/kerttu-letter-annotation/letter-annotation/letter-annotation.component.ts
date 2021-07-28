@@ -25,7 +25,7 @@ export class LetterAnnotationComponent implements OnChanges {
   autoplayCandidate = false;
 
   zoomed = true;
-  xRangePadding = 1;
+  timePadding = 1;
 
   taxon$: Observable<Taxonomy>;
 
@@ -60,6 +60,6 @@ export class LetterAnnotationComponent implements OnChanges {
 
   setDefaultSettings() {
     this.zoomed = true;
-    this.xRangePadding = 1;
+    this.timePadding = 1;
   }
 }

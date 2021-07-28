@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, NgZone } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { share, switchMap, tap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { AudioPlayer } from './audio-player';
+import { environment } from '../../../../environments/environment';
+import { Global } from 'projects/laji/src/environments/global';
 
 @Injectable()
 export class AudioService {
@@ -15,6 +17,8 @@ export class AudioService {
   private activePlayer: AudioPlayer;
 
   private resumeContext$: Observable<void>;
+
+  private actualDurationOfRecordings = 60;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -51,7 +55,9 @@ export class AudioService {
               return this.audioContext.decodeAudioData(response);
             }
           }),
-          tap((buffer: AudioBuffer) => {
+          map((buffer: AudioBuffer) => this.removeEmptySamplesAtStart(buffer)),
+          map(buffer => this.normaliseAudio(buffer)),
+          tap(buffer => {
             this.buffer[url] = {
               'buffer': buffer,
               'time': Date.now()
@@ -65,28 +71,11 @@ export class AudioService {
     return this.buffer$[url];
   }
 
-  public extractSegment(buffer: AudioBuffer, startTime: number, endTime: number, actualDuration?: number): AudioBuffer {
-        // remove empty samples at start which are caused by the mp3 format
-    const emptySamplesAtStart = actualDuration ? buffer.length - actualDuration * buffer.sampleRate : 0;
+  public extractSegment(buffer: AudioBuffer, startTime: number, endTime: number): AudioBuffer {
+    const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate), 0);
+    const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate), buffer.length - 1);
 
-    const startIdx = Math.max(Math.floor(startTime * buffer.sampleRate) + emptySamplesAtStart, emptySamplesAtStart);
-    const endIdx = Math.min(Math.ceil(endTime * buffer.sampleRate) + emptySamplesAtStart, buffer.length - 1);
-
-    const emptySegment = this.audioContext.createBuffer(
-      buffer.numberOfChannels,
-      endIdx - startIdx + 1,
-      buffer.sampleRate
-    );
-    for (let i = 0; i < buffer.numberOfChannels; i++) {
-      const chanData = buffer.getChannelData(i);
-      const segmentChanData = emptySegment.getChannelData(i);
-
-      for (let j = startIdx; j <= endIdx; j++) {
-        segmentChanData[j - startIdx] = chanData[j];
-      }
-    }
-
-    return emptySegment;
+    return this.extract(buffer, startIdx, endIdx);
   }
 
   public normaliseAudio(buffer: AudioBuffer) {
@@ -170,6 +159,34 @@ export class AudioService {
     filter.type = type;
     filter.frequency.value = frequency;
     return filter;
+  }
+
+  // remove empty samples at start which are caused by the mp3 format
+  private removeEmptySamplesAtStart(buffer: AudioBuffer) {
+    if (environment.type === Global.type.kerttuGlobal) {
+      return buffer;
+    }
+
+    const emptySamplesAtStart = buffer.length - this.actualDurationOfRecordings * buffer.sampleRate;
+    return this.extract(buffer, emptySamplesAtStart, buffer.length - 1);
+  }
+
+  private extract(buffer: AudioBuffer, startIdx: number, endIdx: number) {
+    const emptySegment = this.audioContext.createBuffer(
+      buffer.numberOfChannels,
+      endIdx - startIdx + 1,
+      buffer.sampleRate
+    );
+    for (let i = 0; i < buffer.numberOfChannels; i++) {
+      const chanData = buffer.getChannelData(i);
+      const segmentChanData = emptySegment.getChannelData(i);
+
+      for (let j = startIdx; j <= endIdx; j++) {
+        segmentChanData[j - startIdx] = chanData[j];
+      }
+    }
+
+    return emptySegment;
   }
 
   private removeOldBuffersFromCache() {

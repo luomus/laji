@@ -1,6 +1,5 @@
-export interface IAudioViewerArea {
-  xRange?: number[];
-  yRange?: number[];
+export interface IAudio {
+  url: string;
 }
 
 export interface ISpectrogramConfig {
@@ -11,6 +10,11 @@ export interface ISpectrogramConfig {
   maxNbrOfColsForNoiseEstimation?: number;
   noiseReductionParam?: number;
   logRange?: number;
+}
+
+export interface IAudioViewerArea {
+  xRange?: number[];
+  yRange?: number[];
 }
 
 export type AudioViewerMode = 'default' | 'zoom' | 'draw';
