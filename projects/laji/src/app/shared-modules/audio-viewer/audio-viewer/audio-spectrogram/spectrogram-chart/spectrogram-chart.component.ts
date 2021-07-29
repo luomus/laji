@@ -5,7 +5,7 @@ import { Selection, select, event, clientPoint } from 'd3-selection';
 import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import { AudioViewerMode, IAudio, IAudioViewerArea } from '../../../models';
+import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle } from '../../../models';
 
 @Component({
   selector: 'laji-spectrogram-chart',
@@ -21,6 +21,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() highlightFocusArea: boolean;
   @Input() onlyFocusAreaClickable = false;
   @Input() showAxisLabels = true;
+  @Input() rectangles: IAudioViewerRectangle[];
 
   @Input() currentTime = 0;
 
@@ -117,10 +118,7 @@ export class SpectrogramChartComponent implements OnChanges {
     const xRange = this.focusArea?.xRange || [startTime - this.xScale(strokeWidth), endTime + this.xScale(strokeWidth)];
     const yRange = this.focusArea?.yRange || [startFreq - this.yScale(strokeWidth), endFreq + this.yScale(strokeWidth)];
 
-    const rectX = this.xScale(xRange[0]);
-    const rectWidth = this.xScale(xRange[1] - xRange[0] + startTime);
-    const rectY = this.yScale(yRange[1] / 1000);
-    const rectHeight = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
+    const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(xRange, yRange);
 
     if (this.highlightFocusArea) {
       const group = svg.append('g')
@@ -151,6 +149,8 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('width', this.width)
         .attr('height', this.height - (rectY + rectHeight));
     }
+
+    this.drawRectangles(svg, strokeWidth);
 
     // draw focus area with white rectangle
     if (this.focusArea) {
@@ -228,6 +228,33 @@ export class SpectrogramChartComponent implements OnChanges {
     }
   }
 
+  private drawRectangles(svg: Selection<SVGSVGElement, any, any, any>, strokeWidth: number) {
+    if (!this.rectangles) {
+      return;
+    }
+
+    for (const rect of this.rectangles) {
+      const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(rect.area.xRange, rect.area.yRange);
+      svg.append('rect')
+      .attr('x', rectX)
+      .attr('y', rectY)
+      .attr('width', rectWidth)
+      .attr('height', rectHeight)
+      .attr('stroke-width', strokeWidth)
+      .attr('stroke', rect.color)
+      .attr('fill', 'none');
+
+      if (rect.label) {
+        svg.append('text')
+        .attr('x', rectX + (rectWidth / 2))
+        .attr('y', rectY - 5)
+        .attr('text-anchor', 'middle')
+        .attr('fill', rect.color)
+        .text(rect.label);
+      }
+    }
+  }
+
   private getTimeFromPosition(x: number) {
     const time = this.xScale.invert(x);
     const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.view.xRange[0];
@@ -244,5 +271,17 @@ export class SpectrogramChartComponent implements OnChanges {
   private clearChart() {
     const svg = select(this.chartRef.nativeElement);
     svg.selectAll('*').remove();
+  }
+
+  private getRectangleDimensions(xRange: number[], yRange: number[]) {
+    const startTime = this.view.xRange[0];
+    const endFreq = this.view.yRange[1];
+
+    const rectX = this.xScale(xRange[0]);
+    const rectWidth = this.xScale(xRange[1] - xRange[0] + startTime);
+    const rectY = this.yScale(yRange[1] / 1000);
+    const rectHeight = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
+
+    return [rectX, rectWidth, rectY, rectHeight];
   }
 }

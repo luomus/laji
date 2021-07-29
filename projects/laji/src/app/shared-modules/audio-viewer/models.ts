@@ -12,6 +12,12 @@ export interface ISpectrogramConfig {
   logRange?: number;
 }
 
+export interface IAudioViewerRectangle {
+  area: IAudioViewerArea;
+  color?: string;
+  label?: string;
+}
+
 export interface IAudioViewerArea {
   xRange?: number[];
   yRange?: number[];

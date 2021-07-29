@@ -43,7 +43,7 @@ export class SpectrogramService {
 
   private getAudioBuffer(audio: IAudio, startTime?: number, stopTime?: number) {
     return this.audioService.getAudioBuffer(audio.url).pipe(map(buffer => {
-      if (startTime == null || stopTime == null) {
+      if (startTime == null || stopTime == null || (startTime === 0 && stopTime === buffer.duration)) {
         return buffer;
       }
       return this.audioService.extractSegment(buffer, startTime, stopTime);

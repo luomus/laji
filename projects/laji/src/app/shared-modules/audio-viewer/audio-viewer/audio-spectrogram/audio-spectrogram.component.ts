@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
-import { AudioViewerMode, IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../models';
+import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -31,6 +31,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
   @Input() showAxisLabels = true;
+  @Input() rectangles: IAudioViewerRectangle[];
 
   @Input() config: ISpectrogramConfig;
 

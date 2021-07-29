@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from '../models';
+import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { IKerttuAudio } from '../../../+theme/kerttu/models';
@@ -36,6 +36,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
+
+  @Input() rectangles: IAudioViewerRectangle[];
 
   @Input() zoomTime = false;
   @Input() timePaddingOnZoom = 1;

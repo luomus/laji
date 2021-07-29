@@ -48,7 +48,6 @@ export class ValidationComponent {
   ) {
     this.speciesFilters$ = this.kerttuApi.getSpeciesFilters();
     this.updateSpeciesList();
-    this.onTaxonSelect(10400);
   }
 
   @HostListener('window:beforeunload', ['$event'])
