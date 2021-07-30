@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../../models';
@@ -12,8 +12,6 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpectrogramComponent implements OnChanges {
-  @ViewChild('canvas', {static: true}) canvasRef: ElementRef<HTMLCanvasElement>;
-
   @Input() audio: IAudio;
   @Input() startTime: number;
   @Input() endTime: number;
@@ -27,6 +25,14 @@ export class SpectrogramComponent implements OnChanges {
   @Output() spectrogramReady = new EventEmitter();
 
   imageData: ImageData;
+  canvasCoordinates: {
+    startX: number;
+    width: number;
+    startY: number;
+    height: number;
+    cssWidth?: string;
+    cssHeight?: string;
+  }[] = [];
 
   private imageDataSub: Subscription;
 
@@ -38,7 +44,6 @@ export class SpectrogramComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.audio || changes.startTime || changes.endTime || changes.config) {
       this.imageData = null;
-      this.clearCanvas();
 
       if (this.imageDataSub) {
         this.imageDataSub.unsubscribe();
@@ -49,19 +54,21 @@ export class SpectrogramComponent implements OnChanges {
           .pipe(delay(0))
           .subscribe((result) => {
             this.imageData = result;
-            this.drawImage(this.imageData, this.canvasRef.nativeElement);
+            this.updateCanvasCoordinates(this.imageData);
             this.spectrogramReady.emit();
             this.cdr.markForCheck();
           });
       }
     } else if (changes.view) {
       if (this.imageData) {
-        this.drawImage(this.imageData, this.canvasRef.nativeElement);
+        this.updateCanvasCoordinates(this.imageData);
       }
     }
   }
 
-  private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
+  private updateCanvasCoordinates(data: ImageData, maxLength = 10000) {
+    this.canvasCoordinates = [];
+
     const maxTime = this.endTime - this.startTime;
     const maxFreq = AudioViewerUtils.getMaxFreq(this.config.sampleRate);
 
@@ -72,22 +79,33 @@ export class SpectrogramComponent implements OnChanges {
 
     const ratioX1 = startTime / maxTime;
     const ratioX2 = endTime / maxTime;
-    const startX = data.width * ratioX1;
+    const startX = Math.floor(data.width * ratioX1);
 
     const ratioY1 = startFreq / maxFreq;
     const ratioY2 = endFreq / maxFreq;
-    const startY = data.height - (data.height * ratioY2);
+    const startY = Math.floor(data.height - (data.height * ratioY2));
 
-    canvas.width = data.width * (ratioX2 - ratioX1);
-    canvas.height = data.height * (ratioY2 - ratioY1);
+    const width = Math.ceil(data.width * (ratioX2 - ratioX1));
+    const heigth = Math.ceil(data.height * (ratioY2 - ratioY1));
 
-    const ctx = canvas.getContext('2d');
-    ctx.putImageData(data, -startX, -startY, startX, startY, canvas.width, canvas.height);
-  }
+    const lastX = startX + width - 1;
+    let partStartX = startX;
 
-  private clearCanvas() {
-    const canvas = this.canvasRef.nativeElement;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // split image into multiple canvases if it is too big
+    while (partStartX < lastX) {
+      const partEndX = Math.min(partStartX + maxLength - 1, lastX);
+      const partWidth = (partEndX - partStartX + 1);
+
+      this.canvasCoordinates.push({
+        startX: partStartX,
+        width: partWidth,
+        startY: startY,
+        height: heigth,
+        cssWidth: ((partWidth / width) * 100) + '%',
+        cssHeight: '100%'
+      });
+
+      partStartX = partEndX + 1;
+    }
   }
 }

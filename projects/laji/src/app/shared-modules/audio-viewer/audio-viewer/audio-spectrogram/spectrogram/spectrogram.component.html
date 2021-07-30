@@ -1,5 +1,12 @@
-<canvas
-  #canvas
-  [style.width]="(width || imageData?.width) + 'px'"
-  [style.height]="(height || imageData?.height) + 'px'"
-></canvas>
+<div [style.width]="(width || imageData?.width) + 'px'" [style.height]="(height || imageData?.height) + 'px'">
+  <laji-spectrogram-canvas
+    *ngFor="let coord of canvasCoordinates"
+    [imageData]="imageData"
+    [startX]="coord.startX"
+    [width]="coord.width"
+    [startY]="coord.startY"
+    [height]="coord.height"
+    [cssWidth]="coord.cssWidth"
+    [cssHeight]="coord.cssHeight"
+  ></laji-spectrogram-canvas>
+</div>
