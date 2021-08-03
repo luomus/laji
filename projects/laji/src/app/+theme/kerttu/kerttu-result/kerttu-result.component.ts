@@ -3,7 +3,7 @@ import { KerttuApi } from '../service/kerttu-api';
 import { UserService } from '../../../shared/service/user.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { IKerttuStatistics, IUserLetterStatistics, IUserStatistics } from '../models';
+import { IKerttuStatistics, IUserLetterStatistics, IUserRecordingStatistics, IUserStatistics } from '../models';
 import { PersonApi } from '../../../shared/api/PersonApi';
 
 @Component({
@@ -15,6 +15,7 @@ import { PersonApi } from '../../../shared/api/PersonApi';
 export class KerttuResultComponent implements OnInit, OnDestroy {
   stats$: Observable<{general: IKerttuStatistics, users: IUserStatistics[]}>;
   letterStats$: Observable<IUserLetterStatistics>;
+  recordingStats$: Observable<IUserRecordingStatistics>;
 
   userId: string;
   nameVisibility: boolean;
@@ -48,6 +49,7 @@ export class KerttuResultComponent implements OnInit, OnDestroy {
         });
 
         this.letterStats$ = this.kerttuApi.getUserLetterStats(token);
+        this.recordingStats$ = this.kerttuApi.getUserRecordingStats(token);
       }
 
       this.userId = userId;

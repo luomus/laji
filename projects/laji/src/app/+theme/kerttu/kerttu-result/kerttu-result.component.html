@@ -65,8 +65,8 @@
     </div>
     <div class="col-sm-6" *lajiLoggedIn="true">
       <h3>{{ 'theme.kerttu.result.equality' | translate }}</h3>
+      <h3>{{ 'theme.kerttu.result.letters' | translate }}</h3>
       <ng-container *ngIf="letterStats$ | async as stats else spinner">
-        <h3>{{ 'theme.kerttu.result.letters' | translate }}</h3>
         <laji-kerttu-count
           [count]="stats.meanSimilarity"
           [additionalDescription]="'theme.kerttu.result.meanSimilarity' | translate"
@@ -81,6 +81,25 @@
         <laji-kerttu-letter-result-table
           [data]="stats.taxonStatistics"
         ></laji-kerttu-letter-result-table>
+      </ng-container>
+      <h3>{{ 'theme.kerttu.result.recordings' | translate }}</h3>
+      <ng-container *ngIf="recordingStats$ | async as stats else spinner">
+        <laji-kerttu-count
+          [count]="stats.nbrOfRecordings"
+          [label]="'theme.kerttu.result.nbrOfRecordings' | translate"
+          [labelInfo]="'theme.kerttu.result.info.nbrOfRecordings' | translate"
+        ></laji-kerttu-count>
+        <laji-kerttu-count
+          [count]="stats.meanNbrOfSpecies"
+          [label]="'theme.kerttu.result.meanNbrOfSpecies' | translate"
+          [labelInfo]="'theme.kerttu.result.info.meanNbrOfSpecies' | translate"
+        ></laji-kerttu-count>
+        <laji-kerttu-count
+          [count]="stats.consensusWithOthers"
+          [label]="'theme.kerttu.result.consensusWithOthers' | translate"
+          [labelInfo]="'theme.kerttu.result.info.consensusWithOthers' | translate"
+          [asPercentage]="true"
+        ></laji-kerttu-count>
       </ng-container>
     </div>
   </div>

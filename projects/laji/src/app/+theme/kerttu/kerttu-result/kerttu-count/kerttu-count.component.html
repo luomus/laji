@@ -1,9 +1,14 @@
 <ng-container *ngIf="label">
-  <span>{{ label }}:</span>
+  <span>
+    {{ label }}:
+    <laji-info *ngIf="labelInfo" [html]="labelInfo"></laji-info>
+  </span>
   <br>
 </ng-container>
-<strong class="count-value" [innerHtml]="count == null ? '-' : (asPercentage ? (((count * 100) | number:'1.0-1') + ' %') : (count | formattedNumber:'&nbsp;'))">
-</strong>
+<strong
+  class="count-value"
+  [innerHtml]="count == null ? '-' : (asPercentage ? (count  | percent:'1.0-1':lang) : (count | number:'1.0-1':lang))"
+></strong>
 <ng-container *ngIf="additionalDescription">
   <br>
   <span>

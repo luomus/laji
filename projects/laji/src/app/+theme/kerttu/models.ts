@@ -89,6 +89,12 @@ export interface IUserLetterTaxonStatistics {
   identifiability?: number;
 }
 
+export interface IUserRecordingStatistics {
+  nbrOfRecordings?: number;
+  meanNbrOfSpecies?: number;
+  consensusWithOthers?: number;
+}
+
 export enum LetterAnnotation {
   yes = 1,
   no = 0,

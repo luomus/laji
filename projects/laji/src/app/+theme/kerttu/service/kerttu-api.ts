@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
   ILetterCandidate, ILetterTemplate, LetterAnnotation, ILetterStatusInfo, IRecording, IRecordingAnnotation, KerttuErrorEnum, IRecordingStatusInfo,
-  IUserStatistics, IUserLetterStatistics
+  IUserStatistics, IUserLetterStatistics, IUserRecordingStatistics
 } from '../models';
 
 interface ILetterResponse {
@@ -121,5 +121,12 @@ export class KerttuApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.get<IUserLetterStatistics>(path, { params });
+  }
+
+  public getUserRecordingStats(personToken: string): Observable<IUserRecordingStatistics> {
+    const path = this.basePath + '/statistics/user/recording';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IUserRecordingStatistics>(path, { params });
   }
 }
