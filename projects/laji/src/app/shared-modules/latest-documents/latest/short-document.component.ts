@@ -19,7 +19,6 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./short-document.component.scss']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() hasChanges: boolean;
   @Input() document: Document;
   @Input() form: Form.List;
   @Input() showFormName = true;
@@ -29,6 +28,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   @Output() discardTempDocument = new EventEmitter();
   @Output() showViewer = new EventEmitter<Document>();
 
+  public editDocumentRoute: string[];
   public unitList = [];
   public newUnitsLength: number;
   public gatheringDates: {start: string, end: string};
@@ -80,6 +80,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.unitList = gatheringInfo.unitList;
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
+    this.editDocumentRoute = this.getEditDocumentRoute(this.document.formID, this.document.id);
 
     this.loading = false;
   }
@@ -89,27 +90,8 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     return getLocality$(this.translate, this.labelService, gatheringInfo, this.document);
   }
 
-  editDocument(formId, documentId) {
-    this.router.navigate(
-      this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)])
-    );
-  }
-
-  removeDocument(event) {
-    event.stopPropagation();
-    if (this.newUnitsLength > 0) {
-      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).pipe(
-        switchMap(msg => this.dialogService.confirm(msg)),
-      ).subscribe(
-        (confirm) => {
-          if (confirm) {
-            this.discardTempDocument.emit();
-          }
-        }
-      );
-    } else {
-      this.discardTempDocument.emit();
-    }
+  getEditDocumentRoute(formId, documentId) {
+    return this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)]);
   }
 
   onShowViewer(event) {

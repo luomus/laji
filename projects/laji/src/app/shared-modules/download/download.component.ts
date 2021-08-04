@@ -9,16 +9,15 @@ import {
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
-import { ButtonRole } from '../../../../../laji-ui/src/lib/button/button.component';
 
 type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
 
 @Component({
   selector: 'laji-download',
   template: `
-    <lu-button [disabled]="disabled" (click)="openModal(modal)" [role]="role">
+    <button [class]="'btn btn-' + role" [disabled]="disabled" (click)="openModal(modal)">
       <ng-content></ng-content>
-    </lu-button>
+    </button>
     <ng-template #modal>
       <div class="modal-header">
         <button class="close pull-right" type="button" (click)="modalRef.hide()">
@@ -96,7 +95,7 @@ export class DownloadComponent implements OnChanges {
   @Input() showBackdrop = true;
   @Input() showReason = false;
   @Input() closeModalOnDownloadStart = false;
-  @Input() role: ButtonRole = 'secondary';
+  @Input() role = 'default';
   @Input() reason = '';
   @Input() reasonEnum = '';
 

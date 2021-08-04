@@ -1,4 +1,4 @@
-import { browser, ElementFinder } from 'protractor';
+import { browser, ElementFinder, protractor } from 'protractor';
 
 export const scrollIntoView = async ($elem: ElementFinder) => {
   browser.executeScript('arguments[0].scrollIntoView();', $elem);
@@ -9,3 +9,10 @@ export const scrollIntoView = async ($elem: ElementFinder) => {
 }
 
 export const scrollPageVertically = (y: number) => browser.executeScript(`scrollBy(0, ${y})`);
+
+export const isDisplayed = async (elem: ElementFinder) => (await elem.isPresent()) && (await elem.isDisplayed());
+
+export const EC = protractor.ExpectedConditions;
+
+export const waitForVisibility = (elem: ElementFinder) => browser.wait(EC.visibilityOf(elem));
+export const waitForInvisibility = (elem: ElementFinder) => browser.wait(EC.invisibilityOf(elem));

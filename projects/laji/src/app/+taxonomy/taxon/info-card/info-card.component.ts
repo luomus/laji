@@ -20,14 +20,14 @@ import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { LoadedElementsStore } from '../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from '../../../shared/service/header.service';
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
 const BASE_PATH = '/taxon';
 
-export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'observations'|'specimens'|'endangerment'|'invasive';
+export type InfoCardTabType = 'overview'|'identification'|'images'|'biology'|'taxonomy'|'occurrence'|'specimens'|'endangerment'|'invasive';
 
 @Component({
   selector: 'laji-info-card',
@@ -59,6 +59,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   hasImageData: boolean;
   hasBiologyData: boolean;
   isEndangered: boolean;
+  isInvasive: boolean;
   images = [];
 
   sub: Subscription;
@@ -72,7 +73,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private galleryService: GalleryService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
-    private title: Title,
+    private headerService: HeaderService,
     private translate: TranslateService
   ) {}
 
@@ -93,13 +94,12 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       { queryParamsHandling: 'preserve' }
     );
     this.setTitle(tabName);
+    this.cd.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.activeTab) {
-      if (this.activeTab === 'observations') {
-        this.updateRoute(this.taxon.id, 'occurrence', this.context, true);
-      } else if (!this.tabOrder.includes(this.activeTab)) {
+      if (!this.tabOrder.includes(this.activeTab)) {
         this.updateRoute(this.taxon.id, 'overview', this.context, true);
       }
       this.setTitle(this.activeTab);
@@ -123,6 +123,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       // this.hasBiologyData = !!this.taxon.primaryHabitat || !!this.taxon.secondaryHabitats || this.taxonDescription.length > 0;
       this.hasBiologyData = this.taxonDescription.length > 0;
       this.isEndangered = this.getIsEndangered(this.taxon);
+      this.isInvasive = this.taxon.invasiveSpecies;
 
       if (
         (!this.hasBiologyData && this.activeTab === 'biology') ||
@@ -144,8 +145,9 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
-    this.selectedTab = tab;
+    this.activeTab = tab;
     this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
+    this.cd.markForCheck();
   }
 
   private setImages() {
@@ -222,7 +224,6 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
         return true;
       }
     }
-
     return false;
   }
 
@@ -233,7 +234,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
       {e: this.hasBiologyData, t: 'biology'},
       {e: this.isFromMasterChecklist, t: 'specimens'},
       {e: this.isEndangered, t: 'endangerment'},
-      {e: this.taxon && this.taxon.invasiveSpecies, t: 'invasive'},
+      {e: this.isInvasive, t: 'invasive'},
     ];
   }
 
@@ -286,7 +287,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     metaTitle += metaTitle ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     metaTitle += ' | ' + this.translate.instant('taxonomy.' + tabName) + ' | ' + this.translate.instant('footer.title1');
-    this.title.setTitle(metaTitle);
+    this.headerService.setHeaders({
+      title: metaTitle
+    });
   }
-
 }

@@ -1,4 +1,4 @@
 <div class="lj-cb-wrap">
-  <input type="checkbox" #checkbox (change)="changeValue()">
+  <input type="checkbox" #checkbox tabindex="0" role="checkbox" luKeyboardClickable (change)="changeValue()">
   <span class="lj-cb-marker" [ngClass]="stateClass"></span>
 </div>

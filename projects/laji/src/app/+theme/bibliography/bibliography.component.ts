@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
       <h1>{{ 'finbif-bib.title' | translate }}</h1>
       <p>{{ 'finbif-bib.intro' | translate }}</p>
       <hr>
-      <div innerHTML="{{ (publications$ | async )?.content }}"></div>
+      <div class="finBif-publications" innerHTML="{{ (publications$ | async )?.content }}"></div>
     </div>
   `,
 })

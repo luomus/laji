@@ -16,6 +16,7 @@ import { AnnotationService } from '../../document-viewer/service/annotation.serv
 import { MultiLangService } from '../../lang/service/multi-lang.service';
 import { Annotation } from '../../../shared/model/Annotation';
 import { SelectOptions } from '../select-subcategories/select-subcategories.component';
+import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 
 export enum SelectStyle {
   basic,
@@ -57,6 +58,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   @Input() disabled = false;
   @Input() labelAsValue = false;
   @Input() selectStyle = SelectStyle.advanced;
+  @Input() useFilterApi = false;
 
   selectStyles = SelectStyle;
   lang: string;
@@ -83,6 +85,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
 
   constructor(
     public warehouseMapper: WarehouseValueMappingService,
+    private warehouseApi: WarehouseApi,
     protected adminStatusInfoPipe: AdminStatusInfoPipe,
     protected annotationService: AnnotationService,
     protected collectionService: CollectionService,
@@ -214,6 +217,13 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
   }
 
   protected getDataObservable(): Observable<any> {
+    if (this.useFilterApi) {
+      return this.warehouseApi.warehouseQueryFilterGet(this.name).pipe(
+        map(data => data.enumerations),
+        map(options => options.map(o => ({id: o.name, value: MultiLangService.getValue(o.label as any, this.lang)}))),
+      );
+    }
+
     if (this.field) {
       this._shouldSort = true;
       switch (this.field) {

@@ -33,6 +33,7 @@ export const Global = {
     'sieniatlas': 'JX.652',
     'pistelaskenta': 'MHL.75',
     'kiiltomadot': 'MHL.79',
+    'kimalaiset': 'MHL.89',
   },
   oldThemeParents: {
     'MHL.1': 'MHL.1',

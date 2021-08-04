@@ -24,6 +24,10 @@
 }
 .lj-item span {
 }
+.lj-item.lj-info {
+  display: inline-block;
+  padding-right: 0px;
+}
 .lj-active {
   margin: 0 -15px;
   padding: 0 15px;

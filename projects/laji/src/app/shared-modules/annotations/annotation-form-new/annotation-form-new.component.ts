@@ -59,7 +59,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   @ViewChild('taxon') taxonElement: ElementRef;
   @ViewChild('comment') commentElement: ElementRef;
-  @ViewChild('annotationForm') formAnnotation: any;
   taxonAutocomplete: Observable<any>;
   error: any;
   unIdentifyable = false;
@@ -263,7 +262,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
         scientificNameAuthorship: taxon.scientificNameAuthorship,
       };
       this.cd.detectChanges();
-      this.formAnnotation.control.markAsDirty();
       this.inputName = 'opinion';
       this.inputType = 'blur';
     } else {

@@ -12,11 +12,11 @@ export class TabComponent {
   private _heading = '';
   @Input() set heading(h) {
     this._heading = h;
-    this.inputChange.emit();
+    this.headingChange.emit();
   }
   get heading() { return this._heading; }
 
-  @Output() inputChange = new EventEmitter<null>();
+  @Output() headingChange = new EventEmitter<null>();
 
   _active = false;
   set active(a) {

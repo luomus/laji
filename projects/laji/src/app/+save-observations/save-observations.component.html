@@ -1,5 +1,6 @@
 <div class="main-container">
-  <section class="mb-8">
+  <laji-technical-news class="mt-4"></laji-technical-news>
+  <section class="mb-4">
     <h1>{{ 'saveObservations.h1' | translate }}</h1>
     <p>{{ 'saveObservations.desc' | translate }}</p>
     <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
@@ -13,7 +14,7 @@
             <li>{{ 'saveObservations.easy.3' | translate }}</li>
           </ul>
         </div>
-        <lu-button anchor="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" role="primary">{{ 'saveObservations.easy.report' | translate }}</lu-button>
+        <div><a href="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
       </div>
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2">
         <div>
@@ -44,7 +45,7 @@
             <li>{{ 'saveObservations.vihko.3' | translate }}</li>
           </ul>
         </div>
-        <lu-button [anchor]="['/vihko'] | localize">{{ 'saveObservations.vihko.report' | translate }}</lu-button>
+        <div><button [routerLink]="['/vihko'] | localize" class="btn btn-default">{{ 'saveObservations.vihko.report' | translate }}</button></div>
       </div>
     </div>
   </section>

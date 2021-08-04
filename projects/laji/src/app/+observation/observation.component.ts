@@ -5,6 +5,8 @@ import { ObservationFacade } from './observation.facade';
 import { AbstractObservation } from './abstract-observation';
 import { ReloadObservationViewService } from '../shared/service/reload-observation-view.service';
 import { Subscription } from 'rxjs';
+import { getDescription, HeaderService } from '../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -22,14 +24,16 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationComponent extends AbstractObservation implements OnInit, OnDestroy {
-  subscription: Subscription;
+  reloadSubscription: Subscription;
   reloadView = false;
 
   constructor(
     protected observationFacade: ObservationFacade,
     protected route: ActivatedRoute,
     protected searchQuery: SearchQueryService,
-    protected reloadObservationView: ReloadObservationViewService
+    protected reloadObservationView: ReloadObservationViewService,
+    private headerService: HeaderService,
+    private translate: TranslateService
   ) {
     super();
   }
@@ -41,22 +45,26 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
     this.observationFacade.hideFooter();
     this.init();
 
-    this.subscription = this.reloadObservationView.childEventListner().subscribe(reload => {
+    this.reloadSubscription = this.reloadObservationView.childEventListner().subscribe(reload => {
       this.reloadView = reload;
       if (this.reloadView) {
         this.observationFacade.hideFooter();
         this.init();
       }
-      if (this.subscription) {
-        this.subscription.unsubscribe();
+      if (this.reloadSubscription) {
+        this.reloadSubscription.unsubscribe();
       }
+     });
+
+     this.headerService.setHeaders({
+      description: getDescription(this.translate.instant('observation.intro'))
      });
   }
 
   ngOnDestroy() {
     this.observationFacade.showFooter();
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.reloadSubscription) {
+      this.reloadSubscription.unsubscribe();
     }
     this.destroy();
   }

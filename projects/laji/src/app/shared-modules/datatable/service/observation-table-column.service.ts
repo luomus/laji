@@ -62,12 +62,28 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'individualCountSum': ObservationTableColumn;
   'pairCountSum': ObservationTableColumn;
   'gathering.conversions.ykj': ObservationTableColumn;
+  'gathering.conversions.ykj.latMin': ObservationTableColumn;
+  'gathering.conversions.ykj.latMax': ObservationTableColumn;
+  'gathering.conversions.ykj.lonMin': ObservationTableColumn;
+  'gathering.conversions.ykj.lonMax': ObservationTableColumn;
   'gathering.conversions.ykj10km': ObservationTableColumn;
   'gathering.conversions.ykj10kmCenter': ObservationTableColumn;
   'gathering.conversions.ykj1km': ObservationTableColumn;
   'gathering.conversions.ykj1kmCenter': ObservationTableColumn;
   'gathering.conversions.euref': ObservationTableColumn;
+  'gathering.conversions.euref.latMin': ObservationTableColumn;
+  'gathering.conversions.euref.latMax': ObservationTableColumn;
+  'gathering.conversions.euref.lonMin': ObservationTableColumn;
+  'gathering.conversions.euref.lonMax': ObservationTableColumn;
+  'gathering.conversions.eurefCenterPoint.lat': ObservationTableColumn;
+  'gathering.conversions.eurefCenterPoint.lon': ObservationTableColumn;
   'gathering.conversions.wgs84': ObservationTableColumn;
+  'gathering.conversions.wgs84.latMin': ObservationTableColumn;
+  'gathering.conversions.wgs84.latMax': ObservationTableColumn;
+  'gathering.conversions.wgs84.lonMin': ObservationTableColumn;
+  'gathering.conversions.wgs84.lonMax': ObservationTableColumn;
+  'gathering.conversions.wgs84CenterPoint.lat': ObservationTableColumn;
+  'gathering.conversions.wgs84CenterPoint.lon': ObservationTableColumn;
   'gathering.interpretations.country': ObservationTableColumn;
   'sample.sampleId': ObservationTableColumn;
   'sample.type': ObservationTableColumn;
@@ -318,6 +334,22 @@ export const COLUMNS: IColumns = {
     prop: 'gathering.conversions.ykj.verbatim',
     sortable: false
   },
+  'gathering.conversions.ykj.latMin': {
+    name: 'gathering.conversions.ykj.latMin',
+    sortable: false
+  },
+  'gathering.conversions.ykj.latMax': {
+    name: 'gathering.conversions.ykj.latMax',
+    sortable: false
+  },
+  'gathering.conversions.ykj.lonMin': {
+    name: 'gathering.conversions.ykj.lonMin',
+    sortable: false
+  },
+  'gathering.conversions.ykj.lonMax': {
+    name: 'gathering.conversions.ykj.lonMax',
+    sortable: false
+  },
   'gathering.conversions.ykj10km': {
     name: 'gathering.conversions.ykj10km',
     prop: 'gathering.conversions.ykj10km.verbatim',
@@ -344,9 +376,71 @@ export const COLUMNS: IColumns = {
     sortable: false,
     required: environment.type === Global.type.vir
   },
+  'gathering.conversions.euref.latMin': {
+    name: 'gathering.conversions.euref.latMin',
+    sortable: false
+  },
+  'gathering.conversions.euref.latMax': {
+    name: 'gathering.conversions.euref.latMax',
+    sortable: false
+  },
+  'gathering.conversions.euref.lonMin': {
+    name: 'gathering.conversions.euref.lonMin',
+    sortable: false
+  },
+  'gathering.conversions.euref.lonMax': {
+    name: 'gathering.conversions.euref.lonMax',
+    sortable: false
+  },
+  'gathering.conversions.eurefCenterPoint': {
+    name: 'gathering.conversions.eurefCenterPoint',
+    label: 'result.gathering.conversions.euref',
+    sortable: false
+  },
+  'gathering.conversions.eurefCenterPoint.lat': {
+    name: 'gathering.conversions.eurefCenterPoint.lat',
+    sortable: false
+  },
+  'gathering.conversions.eurefCenterPoint.lon': {
+    name: 'gathering.conversions.eurefCenterPoint.lon',
+    sortable: false
+  },
   'gathering.conversions.wgs84': {
     name: 'gathering.conversions.wgs84',
     prop: 'gathering.conversions.wgs84.verbatim',
+    sortable: false,
+  },
+  'gathering.conversions.wgs84.latMin': {
+    name: 'gathering.conversions.wgs84.latMin',
+    sortable: false
+  },
+  'gathering.conversions.wgs84.latMax': {
+    name: 'gathering.conversions.wgs84.latMax',
+    sortable: false
+  },
+  'gathering.conversions.wgs84.lonMin': {
+    name: 'gathering.conversions.wgs84.lonMin',
+    sortable: false
+  },
+  'gathering.conversions.wgs84.lonMax': {
+    name: 'gathering.conversions.wgs84.lonMax',
+    sortable: false
+  },
+  'gathering.conversions.wgs84CenterPoint': {
+    name: 'gathering.conversions.wgs84CenterPoint',
+    label: 'result.gathering.conversions.wgs84',
+    sortable: false
+  },
+  'gathering.conversions.wgs84CenterPoint.lat': {
+    name: 'gathering.conversions.wgs84CenterPoint.lat',
+    sortable: false
+  },
+  'gathering.conversions.wgs84CenterPoint.lon': {
+    name: 'gathering.conversions.wgs84CenterPoint.lon',
+    sortable: false
+  },
+  'gathering.conversions.wgs84WKT': {
+    name: 'gathering.conversions.wgs84WKT',
     sortable: false
   },
   'gathering.interpretations.country': {
@@ -407,6 +501,7 @@ export const COLUMNS: IColumns = {
   },
 };
 
+const lajiGISSectionHeader = 'lajiGIS.fields';
 
 @Injectable()
 export class ObservationTableColumnService extends TableColumnService<ObservationTableColumn, IColumns> {
@@ -490,12 +585,31 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['individualCountSum'],
     COLUMNS['pairCountSum'],
     COLUMNS['gathering.conversions.ykj'],
+    COLUMNS['gathering.conversions.ykj.latMin'],
+    COLUMNS['gathering.conversions.ykj.latMax'],
+    COLUMNS['gathering.conversions.ykj.lonMin'],
+    COLUMNS['gathering.conversions.ykj.lonMax'],
     COLUMNS['gathering.conversions.ykj10km'],
     COLUMNS['gathering.conversions.ykj10kmCenter'],
     COLUMNS['gathering.conversions.ykj1km'],
     COLUMNS['gathering.conversions.ykj1kmCenter'],
     COLUMNS['gathering.conversions.euref'],
+    COLUMNS['gathering.conversions.euref.latMin'],
+    COLUMNS['gathering.conversions.euref.latMax'],
+    COLUMNS['gathering.conversions.euref.lonMin'],
+    COLUMNS['gathering.conversions.euref.lonMax'],
+    COLUMNS['gathering.conversions.eurefCenterPoint'],
+    COLUMNS['gathering.conversions.eurefCenterPoint.lat'],
+    COLUMNS['gathering.conversions.eurefCenterPoint.lon'],
     COLUMNS['gathering.conversions.wgs84'],
+    COLUMNS['gathering.conversions.wgs84.latMin'],
+    COLUMNS['gathering.conversions.wgs84.latMax'],
+    COLUMNS['gathering.conversions.wgs84.lonMin'],
+    COLUMNS['gathering.conversions.wgs84.lonMax'],
+    COLUMNS['gathering.conversions.wgs84CenterPoint'],
+    COLUMNS['gathering.conversions.wgs84CenterPoint.lat'],
+    COLUMNS['gathering.conversions.wgs84CenterPoint.lon'],
+    COLUMNS['gathering.conversions.wgs84WKT'],
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
   ];
 
@@ -545,15 +659,30 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         ]
       },
       {
-        header: 'result.gathering.coordinatesVerbatim', fields: [
-          'gathering.conversions.ykj',
+        header: 'coordinates.center', fields: [
+          'gathering.conversions.wgs84CenterPoint',
+          'gathering.conversions.eurefCenterPoint',
+          'gathering.interpretations.coordinateAccuracy'
+        ]
+      },
+      {
+        header: 'coordinates.boundingBox', fields: [
+          'gathering.conversions.wgs84',
+          'gathering.conversions.euref',
+          'gathering.conversions.ykj'
+        ]
+      },
+      {
+        header: 'coordinates.geometryWKT', fields: [
+          'gathering.conversions.wgs84WKT'
+        ]
+      },
+      {
+        header: 'coordinates.ykjGrids', fields: [
           'gathering.conversions.ykj10kmCenter',
           'gathering.conversions.ykj10km',
           'gathering.conversions.ykj1kmCenter',
           'gathering.conversions.ykj1km',
-          'gathering.conversions.euref',
-          'gathering.conversions.wgs84',
-          'gathering.interpretations.coordinateAccuracy'
         ]
       },
     ],
@@ -567,7 +696,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
         ]
       },
       {
-        header: 'lajiGIS.fields', fields: [
+        header: lajiGISSectionHeader, fields: [
           'document.facts.mappingReason',
           'document.facts.speciesTrackingStatus',
           'document.facts.targetState',
@@ -587,7 +716,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.unitId',
         ]
       }
-    ]
+    ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
   ];
 
   getSelectFields(selected: string[], query?: any): string[] {
