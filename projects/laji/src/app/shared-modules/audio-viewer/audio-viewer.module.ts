@@ -20,13 +20,12 @@ import { DatePipe } from '@angular/common';
 import { CornellAudioDatePipe } from './service/cornell-audio-date.pipe';
 import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
-import { SpectrogramCanvasComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram-canvas/spectrogram-canvas.component';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent, AudioInfoComponent,
     AudioInfoMapComponent, AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective, AudioViewerSettingsComponent, CornellAudioInfoComponent,
-    CornellAudioDatePipe, SpectrogramComponent, SpectrogramChartComponent, SpectrogramCanvasComponent
+    CornellAudioDatePipe, SpectrogramComponent, SpectrogramChartComponent
   ],
   providers: [AudioService, SpectrogramService, DatePipe, CornellAudioDatePipe],
   imports: [
