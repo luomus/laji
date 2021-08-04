@@ -17,6 +17,7 @@ export class ColMapperComponent implements OnChanges {
 
   allFields: string[] = [];
   allCols: string[] = [];
+  duplicates: string[] = [];
   duplicateLabels: string[] = [];
   missingMapping: string[] = [];
   hasInitMapping: {[col: string]: boolean} = {};
@@ -31,7 +32,8 @@ export class ColMapperComponent implements OnChanges {
     }
 
     this.initAllFields();
-    this.duplicateLabels = this.getDuplicateLabels();
+    this.duplicates = this.getDuplicates();
+    this.duplicateLabels = this.duplicates.map(key => this.fields[key].fullLabel);
 
     if (!this.init) {
       this.initCols();
@@ -67,7 +69,7 @@ export class ColMapperComponent implements OnChanges {
     return this.cols && (this.cols.length === 0 || this.cols.length !== Object.keys(this.colMapping).length);
   }
 
-  getDuplicateLabels(): string[] {
+  getDuplicates(): string[] {
     const duplicates = Object.values(this.colMapping).reduce((result, value, i, array) => {
       if (array.indexOf(value) !== i && !result.includes(value)) {
         result.push(value);
@@ -77,7 +79,7 @@ export class ColMapperComponent implements OnChanges {
 
     return this.allFields.filter(
       key => duplicates.includes(key) && !this.fields[key].isArray && key !== VALUE_IGNORE
-    ).map(key => this.fields[key].fullLabel);
+    );
   }
 
   saveMapping() {

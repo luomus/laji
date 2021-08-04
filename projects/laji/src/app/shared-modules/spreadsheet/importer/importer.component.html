@@ -23,11 +23,8 @@
     <alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
       <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
     </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.ambiguousColumns">
-      <div [innerHtml]="'excel.import.error.ambiguousColumns' | translate: {ambiguousColumns: ambiguousColumns.join(', ')}"></div>
-    </alert>
 
-    <ng-container *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.ambiguousColumns].indexOf(vm.step) > -1">
+    <ng-container *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType].indexOf(vm.step) > -1">
        <div class="row data-container spacer">
         <div class="col-sm-9">
           <div><p>{{ 'excel.import.step1.intro' | translate }}</p></div>
@@ -69,7 +66,7 @@
     </ng-container>
 
     <laji-col-mapper
-      *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.ambiguousColumns].indexOf(vm.step) === -1"
+      *ngIf="[step.empty, step.importingFile, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType].indexOf(vm.step) === -1"
       [hidden]="vm.step !== step.colMapping"
       (mappingDone)="colMappingDone($event)"
       [fields]="fields"

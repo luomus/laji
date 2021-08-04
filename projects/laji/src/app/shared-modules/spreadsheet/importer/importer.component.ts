@@ -88,7 +88,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   excludedFromCopy: string[] = [];
   userMappings: any;
-  ambiguousColumns = [];
   separator = MappingService.valueSplitter;
   hash;
   currentTitle: string;
@@ -224,26 +223,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.origColMap = JSON.parse(JSON.stringify(this.colMap));
 
         this.initDataColumns();
-
-        // Check that data has no ambiguous columns
-        const cols = Object.keys(this.header).map(key => this.header[key]);
-        const hasCol = {};
-        const ambiguousCols = new Set();
-        let hasAmbiguousColumns = false;
-        cols.forEach(col => {
-          if (hasCol[col]) {
-            hasAmbiguousColumns = true;
-            ambiguousCols.add(col);
-          } else {
-            hasCol[col] = true;
-          }
-        });
-        if (hasAmbiguousColumns) {
-          this.spreadsheetFacade.goToStep(Step.ambiguousColumns);
-          this.ambiguousColumns = Array.from(ambiguousCols);
-        } else {
-          this.spreadsheetFacade.goToStep(Step.colMapping);
-        }
+        this.spreadsheetFacade.goToStep(Step.colMapping);
         this.cdr.markForCheck();
         setTimeout(() => {
           this.data = [...this.data];

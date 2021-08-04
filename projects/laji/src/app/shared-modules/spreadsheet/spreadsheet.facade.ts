@@ -10,7 +10,6 @@ export enum Step {
   empty,
   fileAlreadyUploadedPartially,
   fileAlreadyUploaded,
-  ambiguousColumns,
   invalidFileType,
   importingFile,
   colMapping,
