@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { IFormField } from '../../model/excel';
+import { IFormField, VALUE_IGNORE } from '../../model/excel';
 
 @Component({
   selector: 'laji-col-mapper',
@@ -76,7 +76,7 @@ export class ColMapperComponent implements OnChanges {
     }, []);
 
     return this.allFields.filter(
-      key => duplicates.includes(key) && !this.fields[key].isArray
+      key => duplicates.includes(key) && !this.fields[key].isArray && key !== VALUE_IGNORE
     ).map(key => this.fields[key].fullLabel);
   }
 
