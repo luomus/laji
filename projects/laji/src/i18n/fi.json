@@ -169,6 +169,8 @@
   "excel.import.step4.importReady": "Alla olevasta taulukosta näet tiedot, jotka ovat valmiita tallennettavaksi Vihkoon. Erä-sarake kertoo mihin havaintoerään kyseisen rivin tiedot tallentuvat.",
   "excel.import.step4.invalidData": "Tiedoston havainnoissa on virheitä, joiden vuoksi tietostoa ei voi tallentaa. Alla olevan taulukon ensimmäisestä sarakkeesta näet miksi. Tee korjaukset tiedostoon ja lataa se uudelleen suoraan tästä:",
   "excel.import.step4.userMapping": "Nykyinen datan kuvaus",
+  "excel.import.step4.showObservationMap": "Näytä havainnot kartalla",
+  "excel.import.observationMap": "Havaintokartta",
   "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
   "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
