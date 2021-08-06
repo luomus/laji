@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { SpeciesListFiltersComponent } from './component/species-list-filters/species-list-filters.component';
+import { SearchInputComponent } from './component/species-list-filters/search-input/search-input.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { SpeciesListFiltersComponent } from './component/species-list-filters/sp
     JwBootstrapSwitchNg2Module
   ],
   declarations: [
-    SpeciesListFiltersComponent
+    SpeciesListFiltersComponent,
+    SearchInputComponent
   ],
   exports: [
     SpeciesListFiltersComponent

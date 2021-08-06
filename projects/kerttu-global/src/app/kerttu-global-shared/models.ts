@@ -7,9 +7,9 @@ export interface IListResult<T> {
 export interface IKerttuSpeciesQuery {
   onlyUnvalidated?: boolean;
   continent?: number;
-  // country?: string;
   order?: number;
   family?: number;
+  searchQuery?: string;
   page?: number;
   orderBy?: string[];
 }

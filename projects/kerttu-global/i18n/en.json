@@ -17,6 +17,7 @@
   "speciesList.filters.order": "Order",
   "speciesList.filters.family": "Family",
   "speciesList.filters.onlyUnvalidated": "Show only unvalidated species",
+  "speciesList.filters.search": "Search for species",
   "speciesList.column.commonName": "Common name",
   "speciesList.column.scientificName": "Scientific name",
   "speciesList.column.userValidations": "User validations",

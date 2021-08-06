@@ -34,18 +34,22 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6" *ngIf="showOnlyUnvalidated">
+  <div class="col-sm-9" *ngIf="showOnlyUnvalidated">
     <label>{{ 'speciesList.filters.onlyUnvalidated' | translate }}</label>
     <div class="bswitch-wrapper">
       <bSwitch
       [switch-on-text]="'yes' | translate"
       [switch-off-text]="'no' | translate"
       [switch-on-color]="'primary'"
-      [switch-size]="'small'"
+      [switch-size]="'medium'"
       [(ngModel)]="query.onlyUnvalidated"
       (ngModelChange)="onQueryChange()"
       [switch-base-class]="'bootstrap-switch'">
     </bSwitch>
     </div>
+  </div>
+  <div class="col-sm-3">
+    <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
+    <laji-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></laji-search-input>
   </div>
 </div>
