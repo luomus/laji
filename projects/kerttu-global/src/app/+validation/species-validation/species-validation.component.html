@@ -1,13 +1,27 @@
 <div class="container-fluid">
-  <h2>{{ 'validation.templates' | translate }}</h2>
-  <p>{{ 'validation.templates.intro' | translate }}</p>
-  <laji-letter-templates
-    [templates]="templates"
-    [spectrogramConfig]="spectrogramConfig"
-  ></laji-letter-templates>
-  <hr>
-  <laji-letter-candidates
-    [data]="data"
-    [spectrogramConfig]="spectrogramConfig"
-  ></laji-letter-candidates>
+  <ng-container *ngIf="!activeTemplate else templateView">
+    <h2>{{ 'validation.templates' | translate }}</h2>
+    <p>{{ 'validation.templates.intro' | translate }}</p>
+    <laji-letter-templates
+      [templates]="templates"
+      [spectrogramConfig]="spectrogramConfig"
+      (templateClick)="onTemplateClick($event)"
+    ></laji-letter-templates>
+    <hr>
+    <laji-letter-candidates
+      [data]="data"
+      [spectrogramConfig]="spectrogramConfig"
+      (audioClick)="onAudioClick($event)"
+    ></laji-letter-candidates>
+  </ng-container>
+
+  <ng-template #templateView>
+    <laji-letter-template
+      [template]="activeTemplate"
+      [templateIdx]="activeTemplateIdx"
+      [isNew]="activeTemplateIsNew"
+      [spectrogramConfig]="spectrogramConfig"
+      (confirm)="onTemplateConfirm($event)"
+    ></laji-letter-template>
+  </ng-template>
 </div>

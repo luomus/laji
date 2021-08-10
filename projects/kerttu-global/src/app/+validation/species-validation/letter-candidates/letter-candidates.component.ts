@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ISpectrogramConfig, IAudioViewerRectangle } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IKerttuRecording } from '../../../kerttu-global-shared/models';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
+import { ISpectrogramConfig, IAudioViewerRectangle, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-letter-candidates',
@@ -12,14 +12,18 @@ export class LetterCandidatesComponent implements OnChanges {
   @Input() data: IKerttuRecording[];
   @Input() spectrogramConfig: ISpectrogramConfig;
 
-  rectanges: IAudioViewerRectangle[][] = [];
+  @Output() audioClick = new EventEmitter<IKerttuLetterTemplate>();
 
-  constructor() { }
+  rectanges: IAudioViewerRectangle[][] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
       this.initRectangles();
     }
+  }
+
+  onAudioClick(audio: IGlobalAudio, area?: IAudioViewerArea) {
+    this.audioClick.emit({audio, area});
   }
 
   private initRectangles() {

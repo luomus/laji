@@ -1,0 +1,32 @@
+<h2>{{ 'validation.templates.audio' | translate }}</h2>
+<laji-audio-viewer
+  [audio]="template.audio"
+  [spectrogramConfig]="spectrogramConfig"
+  [mode]="audioViewerMode"
+  [focusArea]="template.area"
+  (drawEnd)="onDrawEnd($event)"
+></laji-audio-viewer>
+<button
+  class="btn btn-default d-block"
+  [ngClass]="{'btn-primary': audioViewerMode === 'draw'}"
+  (click)="toggleDrawMode()"
+>
+  {{ ('validation.templates.' + (template.area ? 'reframe' : 'frame')) | translate }}
+</button>
+<h2>{{ ('validation.templates.' + (isNew ? 'new' : 'current')) | translate }} T{{ templateIdx + 1 }}</h2>
+<laji-audio-viewer
+  *ngIf="template.area"
+  [audio]="template.audio"
+  [spectrogramConfig]="spectrogramConfig"
+  [focusArea]="template.area"
+  [zoomTime]="true"
+  [timePaddingOnZoom]="0.5"
+  [zoomFrequency]="true"
+></laji-audio-viewer>
+<button
+  [disabled]="!template.area"
+  class="btn btn-success d-block"
+  (click)="confirm.emit(template)"
+>
+  {{ 'validation.templates.confirm' | translate }}
+</button>

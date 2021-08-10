@@ -1,6 +1,6 @@
 export class AudioViewerUtils {
   public static getPaddedRange(range: number[], padding: number, minValue: number, maxValue: number) {
-    if (padding == null) {
+    if (!range || padding == null) {
       return [minValue, maxValue];
     }
 
