@@ -5,7 +5,7 @@ import { Selection, select, event, clientPoint } from 'd3-selection';
 import { ScaleLinear, scaleLinear } from 'd3-scale';
 import { drag } from 'd3-drag';
 import { brush } from 'd3-brush';
-import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle } from '../../../models';
+import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle } from '../../../models';
 
 @Component({
   selector: 'laji-spectrogram-chart',
@@ -21,6 +21,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() highlightFocusArea: boolean;
   @Input() onlyFocusAreaClickable = false;
   @Input() showAxisLabels = true;
+  @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];
 
   @Input() currentTime = 0;
@@ -74,14 +75,16 @@ export class SpectrogramChartComponent implements OnChanges {
     const xAxis = axisBottom(this.xScale);
     xAxis.ticks(this.width / 100);
     const yAxis = axisLeft(this.yScale);
-    yAxis.ticks(this.height / 10);
+    yAxis.ticks(this.height / 20);
 
     // draw axes
     svg.append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
+      .style('font-size', this.axisFontSize + 'px')
       .call(yAxis);
     svg.append('g')
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
+      .style('font-size', this.axisFontSize + 'px')
       .call(xAxis);
 
     if (this.showAxisLabels) {

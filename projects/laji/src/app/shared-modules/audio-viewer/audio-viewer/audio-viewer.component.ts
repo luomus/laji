@@ -50,6 +50,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() showControls = true;
   @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
   @Input() showAxisLabels = true;
+  @Input() axisFontSize = 10;
 
   @Input() spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 22050,
@@ -65,6 +66,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() spectrogramWidth: number;
   @Input() spectrogramHeight: number;
+  @Input() spectrogramMargin: { top: number, bottom: number, left: number, right: number };
 
   audioPlayer: AudioPlayer;
 

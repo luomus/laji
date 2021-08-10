@@ -1,0 +1,26 @@
+<div *ngFor="let item of data; let i = index" class="audio-container">
+  <h5>Audio {{ i + 1 }}</h5>
+  <laji-audio-viewer
+    [audio]="item.audio"
+    [spectrogramConfig]="spectrogramConfig"
+    [spectrogramHeight]="80"
+    [rectangles]="rectanges[i]"
+  ></laji-audio-viewer>
+  <h6>Candidates</h6>
+  <ng-container *ngFor="let candidate of item.candidates">
+    <div style="display: inline-block;">
+      <laji-audio-viewer
+        [audio]="item.audio"
+        [focusArea]="candidate"
+        [zoomTime]="true"
+        [timePaddingOnZoom]="0.5"
+        [zoomFrequency]="true"
+        [spectrogramConfig]="spectrogramConfig"
+        [showControls]="false"
+        [showAxisLabels]="false"
+        [spectrogramHeight]="50"
+        [spectrogramWidth]="200"
+    ></laji-audio-viewer>
+    </div>
+  </ng-container>
+</div>

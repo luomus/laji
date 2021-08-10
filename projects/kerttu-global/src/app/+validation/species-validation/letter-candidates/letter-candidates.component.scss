@@ -1,0 +1,22 @@
+.audio-container {
+  margin-right: -15px;
+  margin-left: -15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 10px;
+}
+
+.audio-container:nth-child(odd) {
+  background-color: #dde1e3;
+  
+  laji-audio-viewer {
+    background-color: #dde1e3;
+  }
+}
+.audio-container:nth-child(even) {
+  background-color: #fff;
+
+  laji-audio-viewer {
+    background-color: #fff;
+  }
+}

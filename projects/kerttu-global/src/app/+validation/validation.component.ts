@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording, ILetterAnnotation } from '../kerttu-global-shared/models';
+import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters, IKerttuRecording, IKerttuLetterTemplate } from '../kerttu-global-shared/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,6 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
     <laji-species-validation
       *ngIf="taxon"
       [data]="validationData$ | async"
+      [templates]="templates$ | async"
     ></laji-species-validation>
   `,
   styles: []
@@ -35,6 +36,7 @@ export class ValidationComponent {
 
   taxon?: number;
   validationData$?: Observable<IKerttuRecording[]>;
+  templates$?: Observable<IKerttuLetterTemplate[]>;
   saving = false;
 
   private speciesListSub: Subscription;
@@ -67,6 +69,15 @@ export class ValidationComponent {
   onTaxonSelect(taxon: number) {
     this.taxon = taxon;
     this.validationData$ = this.kerttuApi.getDataForValidation(this.taxon).pipe(map(data => data.results));
+    this.templates$ = this.kerttuApi.getTemplates(this.taxon).pipe(
+      map(data => data.results),
+      map(data => {
+        while (data.length < 10) {
+          data.push(null);
+        }
+        return data;
+      })
+    );
   }
 
   updateSpeciesList() {
@@ -81,7 +92,7 @@ export class ValidationComponent {
     });
   }
 
-  annotationsReady(annotations: ILetterAnnotation[]) {
+  /* annotationsReady(annotations: ILetterAnnotation[]) {
     if (!annotations) {
       this.dialogService.confirm(this.translate.instant('validation.leaveConfirm')).subscribe(confirm => {
         if (confirm) {
@@ -114,5 +125,5 @@ export class ValidationComponent {
         this.cd.markForCheck();
       });
     }
-  }
+  }*/
 }

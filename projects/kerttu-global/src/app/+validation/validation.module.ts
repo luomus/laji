@@ -10,6 +10,8 @@ import { ValidationComponent } from './validation.component';
 import { SpeciesListComponent } from './species-list/species-list.component';
 import { SpeciesTableComponent } from './species-list/species-table/species-table.component';
 import { SpeciesValidationComponent } from './species-validation/species-validation.component';
+import { LetterCandidatesComponent } from './species-validation/letter-candidates/letter-candidates.component';
+import { LetterTemplatesComponent } from './species-validation/letter-templates/letter-templates.component';
 
 
 @NgModule({
@@ -22,6 +24,6 @@ import { SpeciesValidationComponent } from './species-validation/species-validat
     LajiUiModule,
     ValidationRoutingModule
   ],
-  declarations: [ValidationComponent, SpeciesListComponent, SpeciesTableComponent, SpeciesValidationComponent]
+  declarations: [ValidationComponent, SpeciesListComponent, SpeciesTableComponent, SpeciesValidationComponent, LetterCandidatesComponent, LetterTemplatesComponent]
 })
 export class ValidationModule { }

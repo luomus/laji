@@ -31,6 +31,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
   @Input() showAxisLabels = true;
+  @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];
 
   @Input() config: ISpectrogramConfig;
@@ -40,6 +41,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
 
   @Input() width: number;
   @Input() height: number;
+  @Input() margin: { top: number, bottom: number, left: number, right: number };
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() dragStart = new EventEmitter();
@@ -49,12 +51,12 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
 
   _width: number;
   _height: number;
-  margin: { top: number, bottom: number, left: number, right: number };
+  _margin: { top: number, bottom: number, left: number, right: number };
 
   visibleArea: IAudioViewerArea;
 
-  private marginWithLabels = { top: 10, bottom: 40, left: 50, right: 10};
-  private marginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10};
+  private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
+  private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };
 
   constructor(
     private cdr: ChangeDetectorRef
@@ -80,15 +82,20 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   }
 
   private updateWidthAndHeigth() {
-    this._width = this.width ? this.width : Math.max(this.containerRef.nativeElement.offsetWidth - this.margin.left - this.margin.right, 0);
+    this._width = this.width ? this.width : Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0);
     this._height = this.height ? this.height : this.config ? this.config.nperseg / 2 : 0;
   }
 
   private updateMargin() {
+    if (this.margin) {
+      this._margin = this.margin;
+      return;
+    }
+
     if (this.showAxisLabels) {
-      this.margin = this.marginWithLabels;
+      this._margin = this.defaultMargin;
     } else {
-      this.margin = this.marginWithoutLabels;
+      this._margin = this.defaultMarginWithoutLabels;
     }
   }
 }

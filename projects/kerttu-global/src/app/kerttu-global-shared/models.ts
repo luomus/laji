@@ -31,12 +31,12 @@ export interface IKerttuSpeciesFilters {
 export interface IKerttuRecording {
   id: number;
   audio: IGlobalAudio;
-  candidates?: IKerttuLetter[];
+  candidates?: IAudioViewerArea[];
 }
 
-export interface IKerttuLetter {
-  xRange: number[];
-  yRange: number[];
+export interface IKerttuLetterTemplate {
+  audio: IGlobalAudio;
+  area: IAudioViewerArea;
 }
 
 export interface IGlobalAudio extends IAudio {
@@ -51,12 +51,6 @@ export interface IGlobalAudio extends IAudio {
   specimenUrl: string;
   checklistId?: string;
   checklistUrl?: string;
-}
-
-export interface ILetterAnnotation {
-  annotation?: LetterAnnotation;
-  area?: IAudioViewerArea;
-  notes?: string;
 }
 
 export interface IValidationStat {

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { IAudioViewerArea, AudioViewerMode, ISpectrogramConfig, IAudioViewerRectangle } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { ILetterAnnotation, IKerttuRecording, LetterAnnotation } from '../../kerttu-global-shared/models';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -8,8 +8,9 @@ import { ILetterAnnotation, IKerttuRecording, LetterAnnotation } from '../../ker
   styleUrls: ['./species-validation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesValidationComponent implements OnChanges {
+export class SpeciesValidationComponent {
   @Input() data?: IKerttuRecording[];
+  @Input() templates?: IKerttuLetterTemplate[];
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
@@ -18,30 +19,5 @@ export class SpeciesValidationComponent implements OnChanges {
     nbrOfRowsRemovedFromStart: 0
   };
 
-  rectanges: IAudioViewerRectangle[][] = [];
-
   constructor() { }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.data) {
-      this.initRectangles();
-    }
-  }
-
-  private initRectangles() {
-    if (!this.data) {
-      this.rectanges = [];
-      return;
-    }
-
-    this.rectanges = this.data.map(item => {
-      return (item.candidates || []).map((candidate, i) => {
-        return {
-          area: candidate,
-          color: '#92c8ec',
-          label: 'C' + (i + 1)
-        };
-      });
-    });
-  }
 }
