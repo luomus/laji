@@ -11,13 +11,14 @@ import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../../
 export class LetterCandidatesComponent implements OnChanges {
   @Input() data: IKerttuRecording[];
   @Input() spectrogramConfig: ISpectrogramConfig;
+  @Input() templates: IKerttuLetterTemplate[];
 
   @Output() audioClick = new EventEmitter<IKerttuLetterTemplate>();
 
   rectanges: IAudioViewerRectangle[][] = [];
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.data) {
+    if (changes.data || changes.templates) {
       this.initRectangles();
     }
   }
@@ -33,13 +34,26 @@ export class LetterCandidatesComponent implements OnChanges {
     }
 
     this.rectanges = this.data.map(item => {
-      return (item.candidates || []).map((candidate, i) => {
+      const candidates = (item.candidates || []).map((candidate, i) => {
         return {
           area: candidate,
-          color: '#92c8ec',
+          color: '#26bed9',
           label: 'C' + (i + 1)
         };
       });
+
+      const templates = (this.templates || []).reduce((result, template, i) => {
+        if (template?.audioId === item.audio.id) {
+          result.push({
+            area: template.area,
+            color: '#d98026',
+            label: 'T' + (i + 1)
+          });
+        }
+        return result;
+      }, []);
+
+      return candidates.concat(templates);
     });
   }
 }

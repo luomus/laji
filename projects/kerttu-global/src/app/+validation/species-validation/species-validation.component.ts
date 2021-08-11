@@ -12,6 +12,9 @@ export class SpeciesValidationComponent implements OnChanges {
   @Input() data?: IKerttuRecording[];
   @Input() templates?: IKerttuLetterTemplate[];
 
+  showCandidates = false;
+  candidatesLoaded = false;
+
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
     nperseg: 512,
@@ -36,6 +39,9 @@ export class SpeciesValidationComponent implements OnChanges {
         this.audioIdMap[d.audio.id] = d.audio;
       });
     }
+    if (changes.templates && this.templates) {
+      this.setShowCandidates(this.templates.indexOf(null) !== -1);
+    }
   }
 
   onAudioClick(template: IKerttuLetterTemplate) {
@@ -58,5 +64,12 @@ export class SpeciesValidationComponent implements OnChanges {
   onTemplateConfirm(template: IKerttuLetterTemplate) {
     this.templates[this.activeTemplateIdx] = template;
     this.activeTemplate = null;
+  }
+
+  setShowCandidates(value: boolean) {
+    this.showCandidates = value;
+    if (this.showCandidates) {
+      this.candidatesLoaded = true;
+    }
   }
 }

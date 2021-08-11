@@ -104,6 +104,14 @@ export class SpectrogramChartComponent implements OnChanges {
         .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
     }
 
+    const rectangleSvg = svg.append('svg')
+      .attr('x', this.margin.left)
+      .attr('y', this.margin.top)
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .style('overflow', 'visible');
+    this.drawRectangles(rectangleSvg, 1);
+
     const innerSvg = svg.append('svg')
       .attr('x', this.margin.left)
       .attr('y', this.margin.top)
@@ -152,8 +160,6 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('width', this.width)
         .attr('height', this.height - (rectY + rectHeight));
     }
-
-    this.drawRectangles(svg, strokeWidth);
 
     // draw focus area with white rectangle
     if (this.focusArea) {
