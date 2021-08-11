@@ -1,6 +1,6 @@
 <h2>{{ 'validation.templates.audio' | translate }}</h2>
 <laji-audio-viewer
-  [audio]="template.audio"
+  [audio]="audio"
   [spectrogramConfig]="spectrogramConfig"
   [mode]="audioViewerMode"
   [focusArea]="template.area"
@@ -16,7 +16,7 @@
 <h2>{{ ('validation.templates.' + (isNew ? 'new' : 'current')) | translate }} T{{ templateIdx + 1 }}</h2>
 <laji-audio-viewer
   *ngIf="template.area"
-  [audio]="template.audio"
+  [audio]="audio"
   [spectrogramConfig]="spectrogramConfig"
   [focusArea]="template.area"
   [zoomTime]="true"

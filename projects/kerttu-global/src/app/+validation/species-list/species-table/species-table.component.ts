@@ -40,17 +40,12 @@ export class SpeciesTableComponent {
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
   onRowSelect(row: any) {
-    if (!row.userHasValidated) {
-      this.taxonSelect.emit(row.id);
-    }
+    this.taxonSelect.emit(row.id);
   }
 
   getRowClass(row: any): string {
-    const rowClasses = [];
+    const rowClasses = ['link'];
 
-    if (!row.userHasValidated) {
-      rowClasses.push('link');
-    }
     if (!row.userValidations) {
       rowClasses.push('red-row');
     } else if (row.userValidations === 1 || row.userValidations === 2) {

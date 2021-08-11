@@ -20,6 +20,8 @@
   "validation.templates.frame": "Frame template",
   "validation.templates.reframe": "Reframe template",
   "validation.templates.confirm": "Confirm",
+  "validation.templates.save": "Save and return to species list",
+  "validation.missingTemplates": "Please fill all 10 templates",
   "speciesList.title": "Validate bird sound identifications",
   "speciesList.filters.byRegion": "Filter species by region",
   "speciesList.filters.byTaxonomy": "Filter species by taxonomy",

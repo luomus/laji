@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
+import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -8,7 +8,7 @@ import { IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-sha
   styleUrls: ['./species-validation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesValidationComponent {
+export class SpeciesValidationComponent implements OnChanges {
   @Input() data?: IKerttuRecording[];
   @Input() templates?: IKerttuLetterTemplate[];
 
@@ -23,7 +23,20 @@ export class SpeciesValidationComponent {
   activeTemplateIdx: number;
   activeTemplateIsNew: boolean;
 
+  audioIdMap: {[id: number]: IGlobalAudio } = {};
+
+  @Output() save = new EventEmitter<IKerttuLetterTemplate[]>();
+
   constructor() { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data) {
+      this.audioIdMap = {};
+      (this.data || []).map(d => {
+        this.audioIdMap[d.audio.id] = d.audio;
+      });
+    }
+  }
 
   onAudioClick(template: IKerttuLetterTemplate) {
     const newTemplateIdx = this.templates.indexOf(null);

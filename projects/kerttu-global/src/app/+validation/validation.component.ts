@@ -24,6 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
       *ngIf="taxon"
       [data]="validationData$ | async"
       [templates]="templates$ | async"
+      (save)="saveTemplates($event)"
     ></laji-species-validation>
   `,
   styles: []
@@ -92,38 +93,23 @@ export class ValidationComponent {
     });
   }
 
-  /* annotationsReady(annotations: ILetterAnnotation[]) {
-    if (!annotations) {
-      this.dialogService.confirm(this.translate.instant('validation.leaveConfirm')).subscribe(confirm => {
-        if (confirm) {
-          this.taxon = undefined;
-          this.validationData$ = undefined;
-          this.cd.markForCheck();
-        }
-      });
-    } else {
-      const missingIndexes = annotations.reduce((res, ann, i) => {
-        if (ann.annotation == null) {
-          res.push(i);
-        }
-        return res;
-      }, []);
-      if (missingIndexes.length > 0) {
-        const missingList = '<ul>' + missingIndexes.map(i => '<li>' + this.translate.instant('validation.vocalization') + ' ' + (i + 1) + '</li>').join('') + '</ul>';
-        this.dialogService.alert(
-          this.translate.instant('validation.missingValidations') + missingList
-        );
-        return;
-      }
-
-      this.saving = true;
-      this.kerttuApi.saveAnnotations(this.userService.getToken(), this.taxon, annotations).subscribe(() => {
-        this.taxon = undefined;
-        this.validationData$ = undefined;
-        this.saving = false;
-        this.updateSpeciesList();
-        this.cd.markForCheck();
-      });
+  saveTemplates(templates: IKerttuLetterTemplate[]) {
+    const missingTemplates = templates.indexOf(null) !== -1;
+    if (missingTemplates) {
+      this.dialogService.alert(
+        this.translate.instant('validation.missingTemplates')
+      );
+      return;
     }
-  }*/
+
+    this.saving = true;
+    this.kerttuApi.saveTemplates(this.userService.getToken(), this.taxon, templates).subscribe(() => {
+      this.taxon = undefined;
+      this.validationData$ = undefined;
+      this.templates$ = undefined;
+      this.saving = false;
+      this.updateSpeciesList();
+      this.cd.markForCheck();
+    });
+  }
 }

@@ -5,8 +5,15 @@
     <laji-letter-templates
       [templates]="templates"
       [spectrogramConfig]="spectrogramConfig"
+      [audioIdMap]="audioIdMap"
       (templateClick)="onTemplateClick($event)"
     ></laji-letter-templates>
+    <button
+      class="btn btn-success d-block"
+      (click)="save.emit(templates)"
+    >
+      {{ 'validation.templates.save' | translate }}
+    </button>
     <hr>
     <laji-letter-candidates
       [data]="data"
@@ -17,6 +24,7 @@
 
   <ng-template #templateView>
     <laji-letter-template
+      [audio]="audioIdMap[activeTemplate.audioId]"
       [template]="activeTemplate"
       [templateIdx]="activeTemplateIdx"
       [isNew]="activeTemplateIsNew"

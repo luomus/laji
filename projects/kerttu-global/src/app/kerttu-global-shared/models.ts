@@ -4,6 +4,10 @@ export interface IListResult<T> {
   results: T[];
 }
 
+export interface SuccessResult {
+  success: true;
+}
+
 export interface IKerttuSpeciesQuery {
   onlyUnvalidated?: boolean;
   continent?: number;
@@ -29,17 +33,17 @@ export interface IKerttuSpeciesFilters {
 }
 
 export interface IKerttuRecording {
-  id: number;
   audio: IGlobalAudio;
   candidates?: IAudioViewerArea[];
 }
 
 export interface IKerttuLetterTemplate {
-  audio: IGlobalAudio;
+  audioId: number;
   area?: IAudioViewerArea;
 }
 
 export interface IGlobalAudio extends IAudio {
+  id: number;
   species: IKerttuSpecies;
   recordist?: string;
   country?: string;
@@ -61,10 +65,4 @@ export interface IValidationStat {
 export interface IUserStat {
   userId: string;
   count: number;
-}
-
-export enum LetterAnnotation {
-  yes = 1,
-  no = 0,
-  unsure = -1
 }

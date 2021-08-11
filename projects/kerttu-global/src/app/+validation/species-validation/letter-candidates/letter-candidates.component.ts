@@ -23,7 +23,7 @@ export class LetterCandidatesComponent implements OnChanges {
   }
 
   onAudioClick(audio: IGlobalAudio, area?: IAudioViewerArea) {
-    this.audioClick.emit({audio, area});
+    this.audioClick.emit({'audioId': audio.id, area});
   }
 
   private initRectangles() {

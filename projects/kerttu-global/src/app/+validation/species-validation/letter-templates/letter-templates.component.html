@@ -3,7 +3,7 @@
     <label [style.padding-left]="margin.left + 'px'">T{{ i + 1 }}</label>
     <laji-audio-viewer
       *ngIf="template else noTemplate"
-      [audio]="template.audio"
+      [audio]="audioIdMap[template.audioId]"
       [focusArea]="template.area"
       [zoomTime]="true"
       [timePaddingOnZoom]="0.5"
