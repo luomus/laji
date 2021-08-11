@@ -9,6 +9,7 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
+import { OnlyLoggedIn } from 'projects/laji/src/app/shared/route/only-logged-in';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -23,7 +24,7 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+about/about.module').then(m => m.AboutModule), data: {preload: true, title: 'Kerttu Global'}},
   {
     path: 'validation',
-    pathMatch: 'full',
+    canActivate: [OnlyLoggedIn],
     loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
     data: {preload: true, title: 'Kerttu Global'}
   },

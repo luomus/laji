@@ -1,6 +1,13 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
+import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
+import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
+import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
+import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 
 @Component({
   selector: 'laji-species-validation',
@@ -8,68 +15,72 @@ import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../ker
   styleUrls: ['./species-validation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesValidationComponent implements OnChanges {
-  @Input() data?: IKerttuRecording[];
-  @Input() templates?: IKerttuLetterTemplate[];
+export class SpeciesValidationComponent implements OnInit {
+  species$: Observable<number>;
+  validationData$: Observable<IKerttuRecording[]>;
+  templates$: Observable<IKerttuLetterTemplate[]>;
+  saving = false;
 
-  showCandidates = false;
-  candidatesLoaded = false;
+  private species: number;
 
-  spectrogramConfig: ISpectrogramConfig = {
-    sampleRate: 32000,
-    nperseg: 512,
-    noverlap: 192,
-    nbrOfRowsRemovedFromStart: 0
-  };
+  constructor(
+    private userService: UserService,
+    private translate: TranslateService,
+    private kerttuApi: KerttuGlobalApi,
+    private dialogService: DialogService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService,
+    private cd: ChangeDetectorRef
+  ) { }
 
-  activeTemplate: IKerttuLetterTemplate;
-  activeTemplateIdx: number;
-  activeTemplateIsNew: boolean;
-
-  audioIdMap: {[id: number]: IGlobalAudio } = {};
-
-  @Output() save = new EventEmitter<IKerttuLetterTemplate[]>();
-
-  constructor() { }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.data) {
-      this.audioIdMap = {};
-      (this.data || []).map(d => {
-        this.audioIdMap[d.audio.id] = d.audio;
-      });
-    }
-    if (changes.templates && this.templates) {
-      this.setShowCandidates(this.templates.indexOf(null) !== -1);
-    }
+  ngOnInit() {
+    this.species$ = this.route.params.pipe(
+      map(param => parseInt(param['id'], 10)),
+      tap(species => {
+        this.species = species;
+      })
+    );
+    this.validationData$ = this.species$.pipe(
+      switchMap(species => this.kerttuApi.getDataForValidation(species).pipe(map(data => data.results)))
+    );
+    this.templates$ = this.species$.pipe(
+      switchMap(species => this.kerttuApi.getTemplates(species).pipe(
+        map(data => data.results),
+        map(data => {
+          while (data.length < 10) {
+            data.push(null);
+          }
+          return data;
+        })
+      ))
+    );
   }
 
-  onAudioClick(template: IKerttuLetterTemplate) {
-    const newTemplateIdx = this.templates.indexOf(null);
-    if (this.activeTemplateIdx === -1) {
-      // alert
-    } else {
-      this.activeTemplate = template;
-      this.activeTemplateIdx = newTemplateIdx;
-      this.activeTemplateIsNew = true;
+  @HostListener('window:beforeunload', ['$event'])
+  preventLeave($event: any) {
+    $event.returnValue = false;
+  }
+
+  canDeactivate() {
+    return this.dialogService.confirm(this.translate.instant('validation.leaveConfirm'));
+  }
+
+
+  saveTemplates(templates: IKerttuLetterTemplate[]) {
+    const missingTemplates = templates.indexOf(null) !== -1;
+    if (missingTemplates) {
+      this.dialogService.alert(
+        this.translate.instant('validation.missingTemplates')
+      );
+      return;
     }
-  }
 
-  onTemplateClick(templateIdx: number) {
-    this.activeTemplate = this.templates[templateIdx];
-    this.activeTemplateIdx = templateIdx;
-    this.activeTemplateIsNew = false;
-  }
-
-  onTemplateConfirm(template: IKerttuLetterTemplate) {
-    this.templates[this.activeTemplateIdx] = template;
-    this.activeTemplate = null;
-  }
-
-  setShowCandidates(value: boolean) {
-    this.showCandidates = value;
-    if (this.showCandidates) {
-      this.candidatesLoaded = true;
-    }
+    this.saving = true;
+    this.kerttuApi.saveTemplates(this.userService.getToken(), this.species, templates).subscribe(() => {
+      this.saving = false;
+      this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+      this.cd.markForCheck();
+    });
   }
 }

@@ -1,49 +1,5 @@
-<div class="container-fluid">
-  <ng-container *ngIf="!activeTemplate else templateView">
-    <h2>{{ 'validation.templates' | translate }}</h2>
-    <p>{{ 'validation.templates.description' | translate }}</p>
-    <laji-letter-templates
-      [templates]="templates"
-      [spectrogramConfig]="spectrogramConfig"
-      [audioIdMap]="audioIdMap"
-      (templateClick)="onTemplateClick($event)"
-    ></laji-letter-templates>
-    <div class="clearfix mt-3">
-      <button
-      class="btn btn-success pull-right"
-      (click)="save.emit(templates)"
-      >
-        {{ 'validation.templates.save' | translate }}
-      </button>
-    </div>
-    <hr>
-    <p>{{ 'validation.templates.candidates.description' | translate }}</p>
-    <div class="text-center mb-3">
-      <button
-        class="btn btn-default"
-        (click)="setShowCandidates(!showCandidates)"
-      >
-        {{ 'validation.templates.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
-        <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
-      </button>
-    </div>
-    <laji-letter-candidates
-      *ngIf="candidatesLoaded" [hidden]="!showCandidates"
-      [data]="data"
-      [templates]="templates"
-      [spectrogramConfig]="spectrogramConfig"
-      (audioClick)="onAudioClick($event)"
-    ></laji-letter-candidates>
-  </ng-container>
-
-  <ng-template #templateView>
-    <laji-letter-template
-      [audio]="audioIdMap[activeTemplate.audioId]"
-      [template]="activeTemplate"
-      [templateIdx]="activeTemplateIdx"
-      [isNew]="activeTemplateIsNew"
-      [spectrogramConfig]="spectrogramConfig"
-      (confirm)="onTemplateConfirm($event)"
-    ></laji-letter-template>
-  </ng-template>
-</div>
+<laji-species-template-validation
+  [data]="validationData$ | async"
+  [templates]="templates$ | async"
+  (save)="saveTemplates($event)"
+></laji-species-template-validation>
