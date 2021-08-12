@@ -104,13 +104,15 @@ export class SpectrogramChartComponent implements OnChanges {
         .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
     }
 
-    const rectangleSvg = svg.append('svg')
+    if (this.rectangles) {
+      const rectangleSvg = svg.append('svg')
       .attr('x', this.margin.left)
       .attr('y', this.margin.top)
       .attr('width', this.width)
       .attr('height', this.height)
       .style('overflow', 'visible');
-    this.drawRectangles(rectangleSvg, 1);
+      this.drawRectangles(rectangleSvg, 1);
+    }
 
     const innerSvg = svg.append('svg')
       .attr('x', this.margin.left)
@@ -238,28 +240,31 @@ export class SpectrogramChartComponent implements OnChanges {
   }
 
   private drawRectangles(svg: Selection<SVGSVGElement, any, any, any>, strokeWidth: number) {
-    if (!this.rectangles) {
-      return;
-    }
+    const drawData = this.getRectangleDrawData(this.rectangles);
 
-    for (const rect of this.rectangles) {
-      const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(rect.area.xRange, rect.area.yRange);
+    for (const data of drawData) {
+      const [rectX, rectWidth, rectY, rectHeight] = data.dimensions;
       svg.append('rect')
       .attr('x', rectX)
       .attr('y', rectY)
       .attr('width', rectWidth)
       .attr('height', rectHeight)
       .attr('stroke-width', strokeWidth)
-      .attr('stroke', rect.color)
+      .attr('stroke', data.color[data.color.length - 1])
       .attr('fill', 'none');
 
-      if (rect.label) {
-        svg.append('text')
+      if (data.label.length > 0) {
+        const text = svg.append('text')
         .attr('x', rectX + (rectWidth / 2))
         .attr('y', rectY - 5)
-        .attr('text-anchor', 'middle')
-        .attr('fill', rect.color)
-        .text(rect.label);
+        .attr('text-anchor', 'middle');
+
+        for (let i = 0; i < data.label.length; i++) {
+          const last = i === data.label.length - 1;
+          text.append('tspan')
+            .attr('fill', data.color[i])
+            .text(data.label[i] + (last ? '' : ' '));
+        }
       }
     }
   }
@@ -282,7 +287,7 @@ export class SpectrogramChartComponent implements OnChanges {
     svg.selectAll('*').remove();
   }
 
-  private getRectangleDimensions(xRange: number[], yRange: number[]) {
+  private getRectangleDimensions(xRange: number[], yRange: number[]): number[] {
     const startTime = this.view.xRange[0];
     const endFreq = this.view.yRange[1];
 
@@ -292,5 +297,35 @@ export class SpectrogramChartComponent implements OnChanges {
     const rectHeight = this.yScale((endFreq - (yRange[1] - yRange[0])) / 1000);
 
     return [rectX, rectWidth, rectY, rectHeight];
+  }
+
+  private getRectangleDrawData(rectangles: IAudioViewerRectangle[]): { dimensions: number[], color: string[], label: string[] }[] {
+    return (rectangles || []).reduce((result, current) => {
+      const dim = this.getRectangleDimensions(current.area.xRange, current.area.yRange);
+      const duplicates = result.filter(value => this.rectanglesAreSame(value.dimensions, dim));
+      if (duplicates.length > 0) {
+        const duplicate = duplicates[0];
+        duplicate.color.push(current.color);
+        if (current.label) {
+          duplicate.label.push(current.label);
+        }
+        } else {
+        result.push({
+          dimensions: dim,
+          color: [current.color],
+          label: current.label ? [current.label] : []
+        });
+      }
+      return result;
+    }, []);
+  }
+
+  private rectanglesAreSame(dim1: number[], dim2: number[]) {
+    for (let i = 0; i < dim1.length; i++) {
+      if (dim1[i] !== dim2[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 }
