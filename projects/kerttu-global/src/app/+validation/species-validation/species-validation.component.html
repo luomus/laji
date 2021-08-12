@@ -1,5 +1,10 @@
-<laji-species-template-validation
-  [data]="validationData$ | async"
-  [templates]="templates$ | async"
-  (save)="saveTemplates($event)"
-></laji-species-template-validation>
+<div class="container-fluid">
+  <h1 *ngIf="species$ | async as species">
+    {{ species.commonName }} - <i>{{ species.scientificName }}</i>
+  </h1>
+  <laji-species-template-validation
+    [data]="validationData$ | async"
+    [templates]="templates$ | async"
+    (save)="saveTemplates($event)"
+  ></laji-species-template-validation>
+</div>

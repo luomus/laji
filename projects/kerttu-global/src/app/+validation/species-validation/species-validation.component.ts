@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetecto
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { IKerttuLetterTemplate, IKerttuRecording } from '../../kerttu-global-shared/models';
+import { IKerttuLetterTemplate, IKerttuRecording, IKerttuSpecies } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,12 +16,13 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesValidationComponent implements OnInit {
-  species$: Observable<number>;
+  species$: Observable<IKerttuSpecies>;
   validationData$: Observable<IKerttuRecording[]>;
   templates$: Observable<IKerttuLetterTemplate[]>;
   saving = false;
 
-  private species: number;
+  private speciesId$: Observable<number>;
+  private speciesId: number;
 
   constructor(
     private userService: UserService,
@@ -35,17 +36,20 @@ export class SpeciesValidationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.species$ = this.route.params.pipe(
+    this.speciesId$ = this.route.params.pipe(
       map(param => parseInt(param['id'], 10)),
-      tap(species => {
-        this.species = species;
+      tap(speciesId => {
+        this.speciesId = speciesId;
       })
     );
-    this.validationData$ = this.species$.pipe(
-      switchMap(species => this.kerttuApi.getDataForValidation(species).pipe(map(data => data.results)))
+    this.species$ = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuApi.getSpecies(speciesId))
     );
-    this.templates$ = this.species$.pipe(
-      switchMap(species => this.kerttuApi.getTemplates(species).pipe(
+    this.validationData$ = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuApi.getDataForValidation(speciesId).pipe(map(data => data.results)))
+    );
+    this.templates$ = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuApi.getTemplates(speciesId).pipe(
         map(data => data.results),
         map(data => {
           while (data.length < 10) {
@@ -77,7 +81,7 @@ export class SpeciesValidationComponent implements OnInit {
     }
 
     this.saving = true;
-    this.kerttuApi.saveTemplates(this.userService.getToken(), this.species, templates).subscribe(() => {
+    this.kerttuApi.saveTemplates(this.userService.getToken(), this.speciesId, templates).subscribe(() => {
       this.saving = false;
       this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
       this.cd.markForCheck();

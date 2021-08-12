@@ -24,6 +24,12 @@ export class KerttuGlobalApi {
     return this.httpClient.get<PagedResult<IKerttuSpecies>>(path, { params });
   }
 
+  public getSpecies(taxonId: number): Observable<IKerttuSpecies> {
+    const path = this.basePath + '/species/' + taxonId;
+
+    return this.httpClient.get<IKerttuSpecies>(path);
+  }
+
   public getSpeciesFilters(): Observable<IKerttuSpeciesFilters> {
     const path = this.basePath + '/species/filters';
 
