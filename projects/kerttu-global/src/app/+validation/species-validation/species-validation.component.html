@@ -5,6 +5,8 @@
   <laji-species-template-validation
     [data]="validationData$ | async"
     [templates]="templates$ | async"
+    [saving]="saving"
     (save)="saveTemplates($event)"
+    (cancel)="cancel()"
   ></laji-species-template-validation>
 </div>

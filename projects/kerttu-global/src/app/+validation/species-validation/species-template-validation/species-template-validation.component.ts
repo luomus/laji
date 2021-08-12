@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../../kerttu-global-shared/models';
 
 @Component({
@@ -11,6 +12,7 @@ import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../../
 export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() data?: IKerttuRecording[];
   @Input() templates?: IKerttuLetterTemplate[];
+  @Input() saving = false;
 
   showCandidates = false;
   candidatesLoaded = false;
@@ -29,8 +31,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
   @Output() save = new EventEmitter<IKerttuLetterTemplate[]>();
+  @Output() cancel = new EventEmitter();
 
-  constructor() { }
+  constructor(
+    private dialogService: DialogService
+  ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
@@ -45,9 +50,12 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   onAudioClick(template: IKerttuLetterTemplate) {
+    if (this.saving) {
+      return;
+    }
     const newTemplateIdx = this.templates.indexOf(null);
-    if (this.activeTemplateIdx === -1) {
-      // alert
+    if (newTemplateIdx === -1) {
+      this.dialogService.alert('validation.templates.maxNbrOfTemplates');
     } else {
       this.activeTemplate = template;
       this.activeTemplateIdx = newTemplateIdx;
@@ -56,6 +64,9 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   onTemplateClick(templateIdx: number) {
+    if (this.saving) {
+      return;
+    }
     this.activeTemplate = this.templates[templateIdx];
     this.activeTemplateIdx = templateIdx;
     this.activeTemplateIsNew = false;

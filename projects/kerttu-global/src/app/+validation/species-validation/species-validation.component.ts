@@ -20,6 +20,7 @@ export class SpeciesValidationComponent implements OnInit {
   validationData$: Observable<IKerttuRecording[]>;
   templates$: Observable<IKerttuLetterTemplate[]>;
   saving = false;
+  canLeaveWithoutConfirm = false;
 
   private speciesId$: Observable<number>;
   private speciesId: number;
@@ -63,11 +64,14 @@ export class SpeciesValidationComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
-    $event.returnValue = false;
+    $event.returnValue = this.canLeaveWithoutConfirm;
   }
 
   canDeactivate() {
-    return this.dialogService.confirm(this.translate.instant('validation.leaveConfirm'));
+    if (!this.canLeaveWithoutConfirm) {
+      return this.dialogService.confirm(this.translate.instant('validation.leaveConfirm'));
+    }
+    return true;
   }
 
 
@@ -83,8 +87,13 @@ export class SpeciesValidationComponent implements OnInit {
     this.saving = true;
     this.kerttuApi.saveTemplates(this.userService.getToken(), this.speciesId, templates).subscribe(() => {
       this.saving = false;
+      this.canLeaveWithoutConfirm = true;
       this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
       this.cd.markForCheck();
     });
+  }
+
+  cancel() {
+    this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
   }
 }

@@ -24,6 +24,8 @@
   "validation.templates.reframe": "Reframe template",
   "validation.templates.confirm": "Confirm",
   "validation.templates.save": "Save and return to species list",
+  "validation.templates.cancel": "Cancel",
+  "validation.templates.maxNbrOfTemplates": "There are already 10 templates. Please remove one before creating a new one.",
   "validation.missingTemplates": "Please fill all 10 templates",
   "speciesList.title": "Validate bird sound identifications",
   "speciesList.filters.byRegion": "Filter species by region",
