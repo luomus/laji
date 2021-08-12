@@ -1,5 +1,5 @@
 <div *ngFor="let item of data; let i = index" class="audio-container">
-  <h5>{{ 'validation.templates.audio' | translate }} {{ i + 1 }}</h5>
+  <h4 class="mt-3">{{ 'validation.templates.audio' | translate }} {{ i + 1 }}</h4>
   <laji-audio-viewer
     [audio]="item.audio"
     [spectrogramConfig]="spectrogramConfig"
@@ -7,7 +7,7 @@
     [rectangles]="rectanges[i]"
     (dblclick)="onAudioClick(item.audio)"
   ></laji-audio-viewer>
-  <h6>{{ 'validation.templates.candidates' | translate }}</h6>
+  <h5 class="mt-0">{{ 'validation.templates.candidates' | translate }}</h5>
   <laji-small-audio-viewer
     *ngFor="let candidate of item.candidates; let i = index"
     [area]="candidate"
