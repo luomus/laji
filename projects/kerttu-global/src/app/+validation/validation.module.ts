@@ -14,6 +14,7 @@ import { LetterCandidatesComponent } from './species-validation/letter-candidate
 import { LetterTemplatesComponent } from './species-validation/letter-templates/letter-templates.component';
 import { LetterTemplateComponent } from './species-validation/letter-template/letter-template.component';
 import { SpeciesTemplateValidationComponent } from './species-validation/species-template-validation/species-template-validation.component';
+import { SmallAudioViewerComponent } from './species-validation/small-audio-viewer/small-audio-viewer.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { SpeciesTemplateValidationComponent } from './species-validation/species
     LetterCandidatesComponent,
     LetterTemplatesComponent,
     LetterTemplateComponent,
-    SpeciesTemplateValidationComponent
+    SpeciesTemplateValidationComponent,
+    SmallAudioViewerComponent
   ]
 })
 export class ValidationModule { }

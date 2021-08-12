@@ -1,27 +1,11 @@
 <ng-container *ngIf="templates">
-  <div class="template-container" *ngFor="let template of templates; let i = index">
-    <label [style.padding-left]="margin.left + 'px'">T{{ i + 1 }}</label>
-    <laji-audio-viewer
-      *ngIf="template else noTemplate"
-      [audio]="audioIdMap[template.audioId]"
-      [focusArea]="template.area"
-      [zoomTime]="true"
-      [timePaddingOnZoom]="0.5"
-      [zoomFrequency]="true"
-      [spectrogramConfig]="spectrogramConfig"
-      [showControls]="false"
-      [showAxisLabels]="false"
-      [axisFontSize]="7"
-      [spectrogramHeight]="50"
-      [spectrogramMargin]="margin"
-      (dblclick)="templateClick.emit(i)"
-    ></laji-audio-viewer>
-    <ng-template #noTemplate>
-      <div class="empty-template-container" [style.padding]="margin.top + 'px ' + margin.right + 'px ' + margin.bottom + 'px ' + margin.left + 'px'">
-        <div class="empty-template">
-          {{ 'validation.templates.undefined' | translate }}
-        </div>
-      </div>
-    </ng-template>
-  </div>
+  <laji-small-audio-viewer
+    *ngFor="let template of templates; let i = index"
+    [label]="'T' + (i + 1)"
+    [area]="template?.area"
+    [audio]="audioIdMap[template?.audioId]"
+    [spectrogramConfig]="spectrogramConfig"
+    (templateClick)="templateClick.emit(i)"
+  >
+  </laji-small-audio-viewer>
 </ng-container>

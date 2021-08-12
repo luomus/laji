@@ -8,21 +8,12 @@
     (dblclick)="onAudioClick(item.audio)"
   ></laji-audio-viewer>
   <h6>{{ 'validation.templates.candidates' | translate }}</h6>
-  <ng-container *ngFor="let candidate of item.candidates">
-    <div style="display: inline-block;">
-      <laji-audio-viewer
-        [audio]="item.audio"
-        [focusArea]="candidate"
-        [zoomTime]="true"
-        [timePaddingOnZoom]="0.5"
-        [zoomFrequency]="true"
-        [spectrogramConfig]="spectrogramConfig"
-        [showControls]="false"
-        [showAxisLabels]="false"
-        [spectrogramHeight]="50"
-        [spectrogramWidth]="200"
-        (dblclick)="onAudioClick(item.audio, candidate)"
-      ></laji-audio-viewer>
-    </div>
-  </ng-container>
+  <laji-small-audio-viewer
+    *ngFor="let candidate of item.candidates; let i = index"
+    [area]="candidate"
+    [audio]="item.audio"
+    [spectrogramConfig]="spectrogramConfig"
+    (templateClick)="onAudioClick(item.audio, candidate)"
+  >
+  </laji-small-audio-viewer>
 </div>
