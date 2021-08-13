@@ -20,6 +20,10 @@ export class LetterTemplateComponent {
   @Output() remove = new EventEmitter();
 
   audioViewerMode: AudioViewerMode = 'default';
+  defaultZoomFrequency = true;
+  zoomFrequency = this.defaultZoomFrequency;
+  defaultTimePadding = 30;
+  timePadding = this.defaultTimePadding;
 
   toggleDrawMode() {
     this.audioViewerMode = this.audioViewerMode === 'draw' ? 'default' : 'draw';

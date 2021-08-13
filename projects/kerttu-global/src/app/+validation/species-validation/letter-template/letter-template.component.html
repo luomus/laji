@@ -1,14 +1,26 @@
 <h3>{{ 'validation.templates.audio' | translate }}</h3>
 <p>{{ 'validation.templates.audio.description' | translate }}</p>
-<laji-audio-viewer
-  [audio]="audio"
-  [spectrogramConfig]="spectrogramConfig"
-  [mode]="audioViewerMode"
-  [focusArea]="template.area"
-  [spectrogramHeight]="150"
-  [showZoomControl]="true"
-  (drawEnd)="onDrawEnd($event)"
-></laji-audio-viewer>
+<div class="audio-viewer-with-settings">
+  <laji-audio-viewer-settings
+    [(zoomed)]="zoomFrequency"
+    [(xRangePadding)]="timePadding"
+    [defaultZoomed]="defaultZoomFrequency"
+    [defaultXRangePadding]="defaultTimePadding"
+    [displayInline]="true"
+  ></laji-audio-viewer-settings>
+  <laji-audio-viewer
+    [audio]="audio"
+    [spectrogramConfig]="spectrogramConfig"
+    [mode]="audioViewerMode"
+    [focusArea]="template.area"
+    [spectrogramHeight]="150"
+    [showZoomControl]="true"
+    [zoomFrequency]="zoomFrequency"
+    [zoomTime]="true"
+    [timePaddingOnZoom]="timePadding"
+    (drawEnd)="onDrawEnd($event)"
+  ></laji-audio-viewer>
+</div>
 <div class="mt-3 clearfix">
   <div class="pull-right">
     <button
