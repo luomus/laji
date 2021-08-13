@@ -21,7 +21,7 @@
         [disabled]="saving"
         (click)="save.emit(templates)"
       >
-        {{ 'validation.templates.save' | translate }}
+        {{ 'validation.templates.saveAndReturn' | translate }}
       </button>
     </div>
   </div>
@@ -53,5 +53,7 @@
     [isNew]="activeTemplateIsNew"
     [spectrogramConfig]="spectrogramConfig"
     (confirm)="onTemplateConfirm($event)"
+    (cancel)="onTemplateCancel()"
+    (remove)="onTemplateRemove()"
   ></laji-letter-template>
 </ng-template>

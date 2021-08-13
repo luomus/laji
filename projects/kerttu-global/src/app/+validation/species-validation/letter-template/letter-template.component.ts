@@ -16,6 +16,8 @@ export class LetterTemplateComponent {
   @Input() isNew: boolean;
 
   @Output() confirm = new EventEmitter<IKerttuLetterTemplate>();
+  @Output() cancel = new EventEmitter();
+  @Output() remove = new EventEmitter();
 
   audioViewerMode: AudioViewerMode = 'default';
 
