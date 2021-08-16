@@ -86,8 +86,7 @@
 
   a:not(.btn, .lu-btn) {
     color: $primary-6;
-    text-decoration: none;
-    //text-decoration-color: $primary-4;
+    text-decoration: underline;
 
     &:visited {
       color: $primary-6;
