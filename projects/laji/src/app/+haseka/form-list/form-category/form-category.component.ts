@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Form } from '../../../shared/model/Form';
+import {FormCategory} from "../haseka-form-list.interface";
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Form } from '../../../shared/model/Form';
 export class FormCategoryComponent {
 
   @Input() title: string;
-  @Input() formList: Form.List[] = [];
+  @Input() formList: FormCategory['forms'] = [];
   @Input() tmpDocument: { [formId: string]: string } = {};
 
   trackForm(idx, form) {

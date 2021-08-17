@@ -1,7 +1,7 @@
-import { map, switchMap } from 'rxjs/operators';
+import {map, switchMap, take} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { combineLatest, forkJoin, of, Subscription } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -10,7 +10,7 @@ import { FormPermissionService } from '../../shared/service/form-permission.serv
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
 import { FormCategory } from './haseka-form-list.interface';
-
+import { Observable } from 'rxjs/Observable';
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
 
@@ -88,8 +88,38 @@ export class HaSeKaFormListComponent implements OnInit, OnDestroy {
     ).subscribe(
         forms => {
           this.updateCategories(forms);
+          this.updateAdminRights();
         },
         err => this.logger.log('Failed to fetch all forms', err)
+      );
+  }
+
+  updateAdminRights() {
+    if (!this.categories) {
+      return;
+    }
+    const formsSub = [];
+    this.categories.forEach(category => {
+      category.forms.forEach(form => {
+        formsSub.push(this.hasAdminRight(form).pipe(map(hasAdminRight => ({...form, hasAdminRight: hasAdminRight}))));
+      });
+    });
+    forkJoin(formsSub).subscribe(forms => this.updateCategories(forms));
+  }
+
+  hasAdminRight(form: Form.List): Observable<boolean> {
+    return !form.collectionID || (!form.options?.restrictAccess && form.options?.hasAdmins)
+      ? of(false)
+      : this.userService.isLoggedIn$.pipe(
+        take(1),
+        switchMap(loggedIn =>  loggedIn
+          ? combineLatest(
+            this.userService.user$,
+            this.formPermissionService.getFormPermission(form.collectionID, this.userService.getToken())
+          ).pipe(map(([person, permission]) => this.formPermissionService.isAdmin(permission, person)))
+          : of(false)
+
+        )
       );
   }
 
