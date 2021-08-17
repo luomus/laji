@@ -12,7 +12,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/browser",
             "index": "projects/laji/src/index.html",
             "main": "projects/laji/src/main.ts",
@@ -48,7 +47,13 @@
               "chartjs-plugin-datalabels",
               "file-saver",
               "laji-map"
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -62,7 +67,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -84,7 +88,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -104,9 +107,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -128,7 +129,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -140,8 +140,6 @@
               ]
             },
             "local": {
-              "sourceMap": true,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -158,8 +156,6 @@
             },
             "strict": {
               "tsConfig": "tsconfig.app-strict.json",
-              "sourceMap": true,
-              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -181,16 +177,15 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false
+              "vendorChunk": false
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -271,7 +266,9 @@
               "includePaths": [
                 "projects/laji-ui/src/lib"
               ]
-            }
+            },
+            "sourceMap": true,
+            "optimization": false
           },
           "configurations": {
             "production": {
@@ -333,7 +330,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve-ssr":  {
           "builder": "@nguniversal/builders:ssr-dev-server",
@@ -412,7 +410,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/iucn",
             "index": "projects/iucn/src/index.html",
             "main": "projects/iucn/src/main.ts",
@@ -440,7 +437,13 @@
                 "projects/laji-ui/src/lib"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -454,7 +457,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -482,15 +484,12 @@
                   "with": "projects/iucn/src/environments/environment.ts"
                 }
               ],
-              "optimization": false,
               "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": true,
-              "aot": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -553,7 +552,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/label-designer-electron",
             "index": "projects/label-designer-electron/src/index.html",
             "main": "projects/label-designer-electron/src/main.ts",
@@ -566,7 +564,13 @@
             "styles": [
               "projects/label-designer-electron/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -580,7 +584,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -596,7 +599,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -656,7 +660,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/label-designer-element",
             "index": "projects/label-designer-element/src/index.html",
             "main": "projects/label-designer-element/src/main.ts",
@@ -673,7 +676,13 @@
               {
                 "input": "node_modules/document-register-element/build/document-register-element.js"
               }
-            ]
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -687,7 +696,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -703,7 +711,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -869,7 +878,13 @@
                 "projects/laji-ui/src/lib"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -921,10 +936,7 @@
                   "with": "projects/vir/src/environments/environment.dev.ts"
                 }
               ],
-              "optimization": false,
               "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": true,
               "aot": true,
               "vendorChunk": false,
               "buildOptimizer": true
@@ -942,15 +954,13 @@
                   "with": "projects/vir/src/environments/environment.ts"
                 }
               ],
-              "optimization": false,
               "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": true,
               "aot": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

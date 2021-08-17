@@ -43,7 +43,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
       return;
     }
     this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
-    this.worker = new Worker('./laji-api.worker', {type: 'module'});
+    this.worker = new Worker(new URL('./laji-api.worker', import.meta.url), {type: 'module'});
 
     this.worker.postMessage({
       key: this.rnd,
