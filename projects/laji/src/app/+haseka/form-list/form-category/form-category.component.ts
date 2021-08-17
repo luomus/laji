@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Form } from '../../../shared/model/Form';
-import {FormCategory} from "../haseka-form-list.interface";
+import { FormCategory } from '../haseka-form-list.interface';
 
 
 @Component({

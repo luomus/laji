@@ -1,7 +1,7 @@
 import {map, switchMap, take} from 'rxjs/operators';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, forkJoin, of, Subscription } from 'rxjs';
+import { combineLatest, forkJoin, of, Subscription, Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import { Logger } from '../../shared/logger/logger.service';
 import { FormService } from '../../shared/service/form.service';
@@ -10,7 +10,6 @@ import { FormPermissionService } from '../../shared/service/form-permission.serv
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { LatestDocumentsFacade } from '../../shared-modules/latest-documents/latest-documents.facade';
 import { FormCategory } from './haseka-form-list.interface';
-import { Observable } from 'rxjs/Observable';
 
 const DEFAULT_CATEGORY = 'MHL.categoryGeneric';
 
