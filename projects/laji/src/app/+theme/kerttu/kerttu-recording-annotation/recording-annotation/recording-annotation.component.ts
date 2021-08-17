@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Autocomplete } from '../../../../shared/model/Autocomplete';
 import { KerttuTaxonService } from '../../service/kerttu-taxon-service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'laji-recording-annotation',
