@@ -289,11 +289,7 @@
           "configurations": {
             "production": {
               "outputHashing": "media",
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -306,11 +302,7 @@
             },
             "beta": {
               "outputHashing": "media",
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -323,22 +315,14 @@
             },
             "dev": {
               "outputHashing": "media",
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true
             },
             "embedded": {
               "outputHashing": "media",
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -351,11 +335,7 @@
             },
             "local": {
               "outputHashing": "media",
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
