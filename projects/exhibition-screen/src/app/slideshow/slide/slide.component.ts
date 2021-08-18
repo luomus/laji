@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Rende
 
 export interface ISlideData {
 	bgSrc: string;
+	bgIsVideo: boolean;
 	bgCaption: string;
 	contentPlacement: 'left' | 'right';
 	content: string;

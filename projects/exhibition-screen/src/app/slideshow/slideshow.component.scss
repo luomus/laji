@@ -1,0 +1,59 @@
+@import 'vars';
+
+:host {
+	overflow: hidden;
+}
+
+.slide-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	overflow: hidden;
+}
+
+.langSelect {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 10px;
+	background: rgba($neutral-2, .8);
+	box-shadow: 0 2px 4px 0 rgba($neutral-8, .4);
+	text-align: right;
+}
+
+.currentSlide {
+	position: absolute;
+	bottom: 40px;
+	left: 50%;
+	padding: 20px;
+}
+
+.bug-animation {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100px;
+	width: 100px;
+	background-image: url('../../assets/beetle3.gif');
+	background-repeat: no-repeat;
+	background-size: cover;
+	//animation: linear bug-animation 5s;
+}
+
+@keyframes bug-animation {
+	0% {
+		transform: translate(200px, -100px) rotate(180deg);
+	}
+
+	50% {
+		transform: translate(50px, 100px) rotate(225deg);
+	}
+
+	100% {
+		transform: translate(-100px, 300px) rotate(270deg);
+	}
+}

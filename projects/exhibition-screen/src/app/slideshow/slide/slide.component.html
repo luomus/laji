@@ -1,0 +1,6 @@
+<video *ngIf="data.bgIsVideo" autoplay loop [muted]="'muted'">
+  <source [src]="data.bgSrc" type="video/mp4">
+	Your browser does not support the video tag.
+</video>
+<div [ngClass]="data.contentPlacement" class="panel" [innerHTML]="data.content"></div>
+<div class="caption" *ngIf="data.bgCaption">{{ data.bgCaption }}</div>

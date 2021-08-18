@@ -2,8 +2,9 @@ import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import * as Hammer from 'hammerjs';
-import { GestureGridComponent } from './gesture-grid/gesture-grid.component';
-import { SlideComponent } from './gesture-grid/slide/slide.component';
+import { SlideshowComponent } from './slideshow/slideshow.component';
+import { SlideComponent } from './slideshow/slide/slide.component';
+import { SlideshowFacade } from './slideshow/slideshow.facade';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -24,9 +25,10 @@ export class HammerConfig extends HammerGestureConfig {
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: HammerConfig
-    }
+    },
+    SlideshowFacade
   ],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, GestureGridComponent, SlideComponent]
+  declarations: [AppComponent, SlideshowComponent, SlideComponent]
 })
 export class AppModule { }

@@ -1,35 +1,20 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, Renderer2, ViewChild } from "@angular/core";
-import { ISlideData } from './slide/slide.component';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { ISlideData } from "./slide/slide.component";
 
-@Component({
-	selector: 'es-gesture-grid',
-	template: `
-<div class="slide-container" #slideContainer>
-	<es-slide *ngFor="let d of slides" [data]="d"></es-slide>
-</div>
-<div class="langSelect">
-	valitse kieli
-</div>
-<div class="currentSlide panel">
-	slide: {{currentSlide + 1}}
-</div>
-	`,
-	styleUrls: ['gesture-grid.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class GestureGridComponent implements AfterViewInit {
-	slides: ISlideData[] = [];
-	currentSlide = 0;
-	private panOffset = 0;
+@Injectable()
+export class SlideshowFacade {
+	private store = new BehaviorSubject<ISlideData[]>([]);
 
-	@ViewChild('slideContainer') slideContainer: ElementRef;
+	slides$ = this.store.asObservable();
 
-	constructor(private el: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+	constructor() {}
 
-	ngAfterViewInit() {
-		this.setSlides([
+	loadSlides() {
+		this.store.next([
 			{
 				bgSrc: 'https://images.pexels.com/photos/3109271/pexels-photo-3109271.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+				bgIsVideo: false,
 				bgCaption: 'Image caption 1',
 				content: `
 <h1>Viheralueet hoitavat mielenterveyttä!</h1>
@@ -61,6 +46,7 @@ The Purpose, the People and the Outcomes
 			},
 			{
 				bgSrc: 'https://images.pexels.com/photos/416728/pexels-photo-416728.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+				bgIsVideo: false,
 				bgCaption: 'Image caption 2',
 				content: `
 <h1>Mitä lahopuu on?</h1>
@@ -81,78 +67,28 @@ commodo id elit at, condimentum convallis augue.</p>
 				contentPlacement: 'right'
 			},
 			{
-				bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+				//bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+				bgSrc: 'assets/testvideo.mp4',
+				bgIsVideo: true,
 				bgCaption: 'Image caption 3',
-				content: 'slide 3 content',
+				content: `
+<h1>Mitä lahopuu on?</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Praesent in dui sollicitudin, rhoncus urna eget, sagittis nibh.
+Sed dignissim sem sit amet lectus sollicitudin volutpat.
+Duis quis commodo augue. Ut eu enim nunc. Fusce vel ex
+massa. Proin a risus a sapien vestibulum rhoncus. Ut at sem
+auctor, pellentesque nisi quis, cursus augue. Cras in lorem sed
+turpis semper semper. Donec fermentum nisl nec sem cursus,
+a consequat nisi cursus. Mauris vel dolor mattis, iaculis erat sed,
+condimentum metus. Nullam eget tortor purus. Sed a arcu at
+metus porta posuere sed non sem. Ut vehicula luctus est eget
+posuere. Sed porttitor, ante at eleifend bibendum, felis quam
+porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
+commodo id elit at, condimentum convallis augue.</p>
+				`,
 				contentPlacement: 'left'
 			}
 		]);
 	}
-
-	private setSlides(arr: ISlideData[]) {
-		this.slides = arr;
-		this.renderer.setStyle(this.slideContainer.nativeElement, 'width', arr.length + '00%');
-		this.cdr.detectChanges();
-	}
-
-	private translateX() {
-		const slideOffset = -1 * this.currentSlide * this.slideContainer.nativeElement.offsetWidth / this.slides.length;
-		const offset = slideOffset + this.panOffset;
-		this.renderer.setStyle(this.slideContainer.nativeElement, 'transform', `translateX(${offset}px)`);
-	}
-
-	private setAnimatable(bool: boolean) {
-		if (bool) {
-			this.renderer.setStyle(this.slideContainer.nativeElement, 'transition', 'transform .3s cubic-bezier(0.37, 0, 0.63, 1)')
-		} else {
-			this.renderer.removeStyle(this.slideContainer.nativeElement, 'transition');
-		}
-	}
-
-	@HostListener('window:resize', ['$event'])
-	resize(event) {
-		this.translateX();
-	}
-
-  @HostListener('swiperight', ['$event'])
-  swiperight(event) {
-		if (this.currentSlide > 0) {
-			this.currentSlide--;
-			this.setAnimatable(true);
-			this.translateX();
-		}
-  }
-
-  @HostListener('swipeleft', ['$event'])
-  swipeleft(event) {
-		if (this.currentSlide < this.slides.length - 1) {
-			this.currentSlide++;
-			this.setAnimatable(true);
-			this.translateX();
-		}
-  }
-
-  @HostListener('panstart', ['$event'])
-  panstart(event) {
-		this.setAnimatable(false);
-  }
-
-  @HostListener('panright', ['$event'])
-  panright(event) {
-		this.panOffset = event.deltaX / 4;
-		this.translateX();
-  }
-
-  @HostListener('panleft', ['$event'])
-  panleft(event) {
-		this.panOffset = event.deltaX / 4;
-		this.translateX();
-  }
-
-  @HostListener('panend', ['$event'])
-  panend(event) {
-		this.panOffset = 0;
-		this.setAnimatable(true);
-		this.translateX();
-  }
 }
