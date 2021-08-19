@@ -16,3 +16,7 @@ export const EC = protractor.ExpectedConditions;
 
 export const waitForVisibility = (elem: ElementFinder) => browser.wait(EC.visibilityOf(elem));
 export const waitForInvisibility = (elem: ElementFinder) => browser.wait(EC.invisibilityOf(elem));
+
+export const getAddressWithLang = (page: string, lang?: 'fi' | 'sv' | 'en'): string =>
+  ((lang && lang !== 'fi') ? '/' + lang : '') + page;
+

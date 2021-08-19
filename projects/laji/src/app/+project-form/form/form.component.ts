@@ -47,7 +47,7 @@ export class FormComponent implements OnInit {
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,
-              private userService: UserService,
+              private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -72,8 +72,8 @@ export class FormComponent implements OnInit {
               return EMPTY;
             }
             const documentID = paramsStack.pop();
-            return (_usedSubForm === form ?
-              of(form)
+            return (_usedSubForm === form
+              ? of(form)
               : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
             ).pipe(
               switchMap(usedSubForm => {
