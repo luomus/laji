@@ -90,7 +90,7 @@ export class TransferHttpCacheInterceptor implements HttpInterceptor {
 
     if (this.transferState.hasKey(storeKey)) {
       // Request found in cache. Respond using it.
-      const response = this.transferState.get(storeKey, {} as TransferHttpResponse);
+      const response = this.transferState.get<any>(storeKey, {} as TransferHttpResponse);
 
       return observableOf(new HttpResponse<any>({
         body: response.body,
@@ -106,7 +106,7 @@ export class TransferHttpCacheInterceptor implements HttpInterceptor {
       return httpEvent.pipe(
         tap((event: HttpEvent<unknown>) => {
           if (event instanceof HttpResponse) {
-            this.transferState.set(storeKey, {
+            this.transferState.set<any>(storeKey, {
               body: event.body,
               headers: getHeadersMap(event.headers),
               status: event.status,
