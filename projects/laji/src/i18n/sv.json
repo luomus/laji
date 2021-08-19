@@ -1447,6 +1447,8 @@
   "taxonomy.belongs.to": "Underliggande taxa",
   "taxonomy.biology": "Biologi",
   "taxonomy.bold": "Antal offentliga DNA-streckkoder",
+  "taxonomy.bold.disabled": "Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
+  "taxonomy.bold.info": "Julkisten DNA-viivakoodisekvenssien määrä BOLD-tietokannassa. HUOM: Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
   "taxonomy.browse": "Bläddra observationer",
   "taxonomy.browse.download": "Ladda ner observationer",
   "taxonomy.browse.downloadSpecies": "Hämta artlistan",

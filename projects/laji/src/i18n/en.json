@@ -1447,6 +1447,8 @@
   "taxonomy.belongs.to": "Subordinate taxa",
   "taxonomy.biology": "Biology",
   "taxonomy.bold": "Number of public DNA barcode sequences",
+  "taxonomy.bold.disabled": "Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
+  "taxonomy.bold.info": "Julkisten DNA-viivakoodisekvenssien määrä BOLD-tietokannassa. HUOM: Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
   "taxonomy.browse": "Browse observations",
   "taxonomy.browse.download": "Download observations",
   "taxonomy.browse.downloadSpecies": "Download list of species ",
