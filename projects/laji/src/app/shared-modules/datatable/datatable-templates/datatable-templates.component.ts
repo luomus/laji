@@ -41,13 +41,14 @@ export class DatatableTemplatesComponent {
   @ViewChild('image', { static: true }) image: TemplateRef<any>;
   @ViewChild('link', { static: true }) link: TemplateRef<any>;
   @ViewChild('number', { static: true }) number: TemplateRef<any>;
+  @ViewChild('percentage', { static: true }) percentage: TemplateRef<any>;
   @ViewChild('biogeographicalProvince', { static: true }) biogeographicalProvince: TemplateRef<any>;
   @ViewChild('taxonHabitats', { static: true }) taxonHabitats: TemplateRef<any>;
   @ViewChild('country', { static: true }) country: TemplateRef<any>;
   @ViewChild('formName', { static: true }) formName: TemplateRef<any>;
   @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
   @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
-
+  @ViewChild('sensitiveIcon', {static: true }) sensitiveIcon: TemplateRef<any>;
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;

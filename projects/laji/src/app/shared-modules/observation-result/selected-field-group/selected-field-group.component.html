@@ -2,21 +2,24 @@
   {{ header | translate }}
 </h5>
 <ul class="list-group">
-  <li class="list-group-item link"
-      *ngFor="let field of fields"
-      (click)="onToggle(field)"
-      [ngClass]="{active: (selected | includes:field), disabled: (required | includes:field)}">
-    <laji-selected-field-item
-      [field]="field"
-      [required]="required | includes:field"
-      [label]="columnsLookup[field]?.label | translate"
-      [idx]="selected.indexOf(field)"
-      [len]="selected.length"
-      (toggle)="onToggle($event)"
-      (moveUp)="onMoveUp($event)"
-      (moveDown)="onMoveDown($event)"
-    ></laji-selected-field-item>
-  </li>
+  <ng-container *ngFor="let field of fields">
+    <ng-container *ngIf="getFieldColumnArray(field) as columns">
+      <li class="list-group-item link"
+        (click)="onToggle(field)"
+        [ngClass]="{active: (selected | includes:columns[0]), disabled: (required | includes:columns[0])}">
+        <laji-selected-field-item
+          [field]="columns"
+          [required]="required | includes:field"
+          [label]="columnsLookup[field].label | translate"
+          [idx]="getIndexArray(columns)"
+          [len]="selected.length"
+          (toggle)="onToggle($event)"
+          (moveUp)="onMoveUp($event)"
+          (moveDown)="onMoveDown($event)"
+        ></laji-selected-field-item>
+      </li>
+    </ng-container>
+  </ng-container>
 </ul>
 
 

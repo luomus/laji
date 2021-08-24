@@ -33,13 +33,14 @@
         <laji-info [html]="'theme.kerttu.info.areLettersSame' | translate"></laji-info>
       </h3>
       <div *ngFor="let a of [annotation.yes, annotation.no, annotation.unsure]" id="letterAnnotationButtons" class="d-inline">
-        <lu-button
+        <button
+          class="btn btn-lg btn-success"
+          [ngClass]="{'btn-success': a === annotation.yes, 'btn-danger': a === annotation.no, 'btn-default': a === annotation.unsure}"
           [disabled]="!template || !candidate || loadingTemplate || loadingCandidate"
-          [role]="a === annotation.yes ? 'success' : a === annotation.no ? 'danger' : undefined"
           (click)="onAnnotationChange(a)"
         >
           {{ a === annotation.yes ? ('yes' | translate) : a === annotation.no ? ('no' | translate) : ('theme.kerttu.notSure' | translate) }}
-        </lu-button>
+        </button>
       </div>
     </div>
 
@@ -70,7 +71,7 @@
           [switch-base-class]="'bootstrap-switch'">
         </bSwitch>
       </div>
-      <div style="vertical-align: bottom; display: block; margin-top: 5px">
+      <div style="display: block; margin-top: 5px">
         <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
       </div>
@@ -79,7 +80,7 @@
     <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
       <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
       <laji-audio-viewer
-        [recording]="template?.recording"
+        [audio]="template?.audio"
         [focusArea]="{
         xRange: template?.xRange,
         yRange: template?.yRange
@@ -95,7 +96,7 @@
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
       </h4>
       <laji-audio-viewer
-        [recording]="candidate?.recording"
+        [audio]="candidate?.audio"
         [focusArea]="{
         xRange: candidate?.xRange,
         yRange: candidate?.yRange
@@ -117,7 +118,7 @@
       </lu-button>
       <laji-audio-viewer
         *ngIf="candidateLongerVisible"
-        [recording]="candidate?.recording"
+        [audio]="candidate?.audio"
         [focusArea]="{
         xRange: candidate?.xRange,
         yRange: candidate?.yRange

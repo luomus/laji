@@ -38,7 +38,7 @@ export class AppComponent {
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;
-    headerService.startRouteListener();
+    headerService.initialize();
     historyService.startRouteListener();
 
     router.events.pipe(

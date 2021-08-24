@@ -5,4 +5,10 @@ export interface DatatableColumn extends TableColumn {
   target?: string;
   info?: string;
   required?: boolean;
+  sortTemplate?: string;
+}
+
+export interface DatatableSort {
+  prop: string;
+  dir: 'asc' | 'desc';
 }

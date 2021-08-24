@@ -1,5 +1,9 @@
 <div class="observation-active-container">
-  <laji-observation-active [(query)]="searchQuery.query" (queryChange)="onQueryChange()" [queryType]="searchQuery.queryType"></laji-observation-active>
+  <laji-observation-active
+    [skip]="['onlyFinnish']"
+    [(query)]="searchQuery.query"
+    (queryChange)="onQueryChange(true)"
+    [queryType]="searchQuery.queryType"></laji-observation-active>
 </div>
 
 <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>

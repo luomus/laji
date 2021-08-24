@@ -4,7 +4,7 @@
       [@activeTab]="index === selectedIndex ? 'active' : 'inactive'"
       (click)="onSelect(index)"
       role="tab"
-      tabindex="0">{{tab.heading}}</li>
+      [tabindex]="index === selectedIndex ? -1 : 0" luKeyboardClickable>{{tab.heading}}</li>
 </ul>
 <div class="tab-content">
   <ng-content></ng-content>

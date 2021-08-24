@@ -1,0 +1,29 @@
+<div>
+  <span>
+     {{type.status | toQName | label}}
+    <i>{{type.taxon}}</i> 
+    {{type.author}}
+    <span *ngIf="type.linkings">
+      <a
+        [tooltip]="'showSpeciesCard' | translate"
+        [placement]="'right'"
+        container="body"
+        target="_blank" [routerLink]="['/taxon', ((type.linkings.taxon.id || type.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
+        <i class="glyphicon glyphicon-tag"></i>
+      </a>
+    </span>
+  </span>
+  <ng-container *ngIf="showFacts">
+    <div class="ml-5">
+      <laji-row [title]="'MY.typeNotes' | label" [value]="type.notes"></laji-row>
+      <ng-container *ngIf="type.taxonSpecifier || type.taxonSpecifierAuthor">
+        <laji-row [title]="'MY.taxonSpecifier' | label">{{type.taxonSpecifier}} {{type.taxonSpecifierAuthor}}</laji-row>
+      </ng-container>
+      <laji-row [title]="'MY.typif' | label" [value]="type.typif"></laji-row>
+      <laji-row [title]="'MY.typifDate' | label" [value]="type.typifDate"></laji-row>
+      <laji-row [title]="'MY.typeVerification' | label" [value]="type.verification"></laji-row>
+      <laji-row [title]="'MY.typePubl' | label" [value]="type.publication"></laji-row>
+      <laji-row [title]="'MY.typeBasionymePubl' | label" [value]="type.basionymePublication"></laji-row>
+    </div>
+  </ng-container>
+</div>

@@ -134,6 +134,10 @@
   }
 }
 
+.laji-page .home-card {
+  text-decoration: none;
+}
+
 .home-content-container {
   padding: 20px;
 }
@@ -144,6 +148,7 @@
 
 .section-1 {
   padding: 50px $sp-4;
+  overflow: hidden;
 }
 
 .section-2 {
@@ -237,13 +242,4 @@ hr {
   height: 400px;
   background-color: $neutral-4;
   box-shadow: 0 2px 4px rgba(#000, .2);
-}
-
-.twitter-box {
-  @include media-query-laptop {
-    max-width: 600px;
-  }
-  @include media-query-tablet {
-    max-width: 1200px;
-  }
 }

@@ -23,27 +23,91 @@ export class SelectedFieldGroupComponent {
 
   onToggle(field: string) {
     if (this.required.indexOf(field) === -1) {
-      this.toggle.emit(field);
+      if (!this.isMultiColumnGisField(field)) {
+        this.toggle.emit(field);
 
-      if (this.columnSelector) {
-        this.columnSelector.toggleSelectedField(field);
+        if (this.columnSelector) {
+          this.columnSelector.toggleSelectedField(field);
+        }
+
+        return;
       }
+
+      this.getFieldColumnArray(field).forEach(column => {
+        if (this.columnSelector) {
+          this.columnSelector.toggleSelectedField(column);
+        }
+      });
     }
   }
 
-  onMoveUp(field: string) {
-    this.moveUp.emit(field);
+  onMoveUp(field: string[]) {
+    const indexOfField = this.selected.indexOf(field[0]);
 
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, -1);
+    if (indexOfField > 0) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField - 1]);
+
+      field.forEach(column => {
+        this.moveUp.emit(column);
+
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, -1 * widthOfNextGroup);
+        }
+      });
     }
   }
 
-  onMoveDown(field: string) {
-    this.moveDown.emit(field);
+  onMoveDown(field: string[]) {
+    const lastSelected = this.selected.length - 1;
+    const indexOfField = this.selected.indexOf(field[field.length - 1]);
 
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, 1);
+    if (indexOfField < lastSelected) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField + 1]);
+
+      field.reverse().forEach(column => {
+        this.moveDown.emit(column);
+
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, widthOfNextGroup);
+        }
+      });
     }
+  }
+
+  isMultiColumnGisField(field: string) {
+    return /gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)?$/.test(field);
+  }
+
+  getFieldColumnArray(field: string) {
+    if (!field) {
+      return;
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)(.(lat|lon))?$/.test(field)) {
+      return [
+        field + '.lat',
+        field + '.lon'
+      ];
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(.(lat|lon)(Min|Max))?$/.test(field)) {
+      return [
+        field + '.latMin',
+        field + '.latMax',
+        field + '.lonMin',
+        field + '.lonMax',
+      ];
+    } else {
+      return [ field ];
+    }
+  }
+
+  getFieldColumnArrayLength(field: string) {
+    return this.getFieldColumnArray(field)?.length || 0;
+  }
+
+  getIndexArray(field: string[]) {
+    let last = 0;
+    return field.map(column => {
+      const index = this.selected.indexOf(column, last);
+      last = index;
+      return index;
+    });
   }
 }

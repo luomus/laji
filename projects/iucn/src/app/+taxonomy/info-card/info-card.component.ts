@@ -3,10 +3,10 @@ import { RedListEvaluation, Taxonomy } from '../../../../../laji/src/app/shared/
 import { TranslateService } from '@ngx-translate/core';
 import { TaxonService } from '../../iucn-shared/service/taxon.service';
 import { ResultService } from '../../iucn-shared/service/result.service';
-import { Title } from '@angular/platform-browser';
 import { Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 
 @Component({
   selector: 'laji-info-card',
@@ -34,7 +34,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
     private resultService: ResultService,
     private translateService: TranslateService,
     private router: Router,
-    private title: Title
+    private headerService: HeaderService
   ) { }
 
   ngOnInit(): void {
@@ -104,7 +104,9 @@ export class InfoCardComponent implements OnChanges, OnInit {
     title += ' ' + (this.latestStatus ? this.translateService.instant('iucn.taxon.' + this.latestStatus.redListStatus) : '');
     title = title.toLocaleLowerCase();
     title = title.charAt(0).toLocaleUpperCase() + title.slice(1);
-    this.title.setTitle(title + ' | ' + this.title.getTitle());
+    this.headerService.setHeaders({
+      title: title + ' | ' + this.headerService.getInferred().title
+    });
   }
 
   changeYear($event: any) {

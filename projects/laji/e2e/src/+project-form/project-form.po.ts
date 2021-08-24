@@ -1,5 +1,6 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
+import { getAddressWithLang } from "../../helper";
 
 const EC = ExpectedConditions;
 
@@ -21,8 +22,8 @@ export class ProjectFormPage {
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
 
-  navigateTo(id, subPage = '') {
-    return browser.get(`/project/${id}${subPage}`) as Promise<void>;
+  navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
+    return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
   }
 
   hasFormLink() {
@@ -103,7 +104,7 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $form = $('laji-form .laji-form');
   public readonly $cancel = $('laji-document-form-footer .btn-danger');
   public readonly $save = $('laji-document-form-footer .btn-success');
-  public readonly $savePrivate = $('laji-document-form-footer .btn-warning');
+  public readonly $savePrivate = $('laji-document-form-footer .btn-default');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
   public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
 

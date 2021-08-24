@@ -81,6 +81,21 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             active: queryParams['tab'] === 'censuses'
           }
         ];
+      case ResultServiceType.sykeInsect:
+        return [
+          {
+            link: ['stats'],
+            label: 'sykeInsect.stats.allResults',
+            linkParams: {tab: 'species'},
+            active: queryParams['tab'] === 'species'
+          },
+          {
+            link: ['stats'],
+            label: 'sykeInsect.stats.routes',
+            linkParams: {tab: 'routes'},
+            active: queryParams['tab'] === 'routes'
+          }
+        ];
       default:
         return [];
     }

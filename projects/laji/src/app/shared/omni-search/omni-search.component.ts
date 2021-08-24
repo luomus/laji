@@ -134,6 +134,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.activate(this.active + 1);
       }
     }
+    if (e.keyCode === 27) { // esc
+      this.onClose();
+    }
     if (e.keyCode === 13) {
       if (this.taxa[this.active]) {
         this.router.navigate(

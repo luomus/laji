@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter} from '@angular/core';
-import {ITaxonWithAnnotation, TaxonAnnotationEnum} from '../../models';
-import {DatatableColumn} from '../../../../shared-modules/datatable/model/datatable-column';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { ITaxonWithAnnotation, TaxonAnnotationEnum } from '../../models';
+import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'laji-kerttu-occurrence-table',
@@ -38,16 +38,19 @@ export class KerttuOccurrenceTableComponent implements OnInit {
       },
       {
         label: 'theme.kerttu.occurs',
-        cellTemplate: this.occursTpl
+        cellTemplate: this.occursTpl,
+        sortable: false
       },
       {
         label: 'theme.kerttu.possiblyOccurs',
-        cellTemplate: this.possiblyOccursTpl
+        cellTemplate: this.possiblyOccursTpl,
+        sortable: false
       },
       {
         cellTemplate: this.buttonsTpl,
         width: 150,
-        minWidth: 150
+        minWidth: 150,
+        sortable: false
       }
     ];
   }

@@ -10,6 +10,7 @@ import { GatheringRowsComponent } from './gathering-rows/gathering-rows.componen
 import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotation-item/annotation-item.component';
 import { AnnotationItemStatusComponent } from './annotation-item/annotation-item-status/annotation-item-status.component';
+import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
 
 
@@ -19,7 +20,8 @@ import { AnnotationItemStatusComponent } from './annotation-item/annotation-item
     CommonModule,
     TypeaheadModule,
     LangModule,
-    SharedModule
+    SharedModule,
+    LajiUiModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent,
   GatheringComponent, GatheringRowsComponent,

@@ -55,3 +55,7 @@
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
+
+a:focus {
+  outline-offset: 0px;
+}

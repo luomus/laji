@@ -78,6 +78,7 @@ import { QualityUrlPipe } from './pipe/quality-url.pipe';
 import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 import { PluckPipe } from './pipe/pluck.pipe';
+import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
 
 
 @NgModule({
@@ -117,6 +118,7 @@ import { PluckPipe } from './pipe/pluck.pipe';
     ConfirmModalComponent,
     CheckboxValuePipe,
     PluckPipe,
+    TranslatableIucnPipe
   ],
   imports: [
     FormsModule,
@@ -155,6 +157,7 @@ import { PluckPipe } from './pipe/pluck.pipe';
     InfoModule,
     CheckboxValuePipe,
     PluckPipe,
+    TranslatableIucnPipe,
   ]
 })
 export class SharedModule {
@@ -169,6 +172,7 @@ export class SharedModule {
         TaxonNamePipe,
         ToQNamePipe,
         QualityUrlPipe,
+        TranslatableIucnPipe,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthenticatedHttpInterceptor,

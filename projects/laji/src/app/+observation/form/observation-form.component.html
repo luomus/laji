@@ -186,6 +186,14 @@
     name="countryId"
     [field]="areaType.Country"></laji-metadata-select>
   <laji-metadata-select
+    [info]="'observation.info.province' | translate"
+    [(ngModel)]="query.provinceId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.province'"
+    name="provinceId"
+    [field]="areaType.Province"></laji-metadata-select>
+  <laji-metadata-select
     [info]="'observation.info.biogeographicalProvince' | translate"
     [(ngModel)]="query.biogeographicalProvinceId"
     (ngModelChange)="onQueryChange()"
@@ -193,6 +201,14 @@
     [placeholder]="'result.gathering.biogeographicalProvince'"
     name="biogeographicalProvinceId"
     [field]="areaType.Biogeographical"></laji-metadata-select>
+  <laji-metadata-select
+    [info]="'observation.info.elyCentre' | translate"
+    [(ngModel)]="query.elyCentreId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.elyCentre'"
+    name="elyCentreId"
+    [field]="areaType.ElyCentre"></laji-metadata-select>
   <laji-metadata-select
     [info]="'observation.info.municipality' | translate"
     [(ngModel)]="query.finnishMunicipalityId"
@@ -367,7 +383,7 @@
       [multiple]="true"
       [useFilter]="false"
       [placeholder]="'MY.lifeStage' | label"
-      [mapToWarehouse]="true"
+      [useFilterApi]="true"
       name="lifeStage"></laji-metadata-select>
   </div>
   <div>
@@ -405,6 +421,16 @@
         {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
         {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
       ]"></laji-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.plantStatusCode"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="plantStatusCode"
+      [placeholder]="'observation.form.plantStatusCode' | translate"
+      [alt]="'MY.plantStatusCodeEnum'"></laji-metadata-select>
   </div>
   <div>
     <div>
@@ -517,8 +543,8 @@
 <!--Sources -->
 <section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-select-collections
-    [(selectedOptions)]="query.collectionId"
-    (selectedOptionsChange)="onQueryChange()"
+    [query]="query"
+    (selectedOptionsChange)="onCollectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
     [modalTitle]="'observation.form.datasetSelect' | translate"

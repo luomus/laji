@@ -75,8 +75,7 @@
     [messages]="{emptyMessage: loadError, totalMessage: totalMessage}"
     (sort)="onSort($event)"
   >
-
-    <ngx-datatable-row-detail>
+    <ngx-datatable-row-detail [rowHeight]="undefined">
       <ng-template let-row="row" ngx-datatable-row-detail-template>
         <div *ngFor="let col of useColumns | filterColumns:displayMode:true" style="padding-left: 35px">
           <span><strong>{{ 'haseka.submissions.' + col.prop | translate }}: </strong></span>
@@ -99,10 +98,10 @@
     <ngx-datatable-column [flexGrow]="" [resizeable]="false"
                           [draggable]="false" *ngIf="displayMode !== 'large'" [headerClass]="'empty-header'">
       <ng-template ngx-datatable-header-template><span></span></ng-template>
-      <ng-template let-row="row" ngx-datatable-cell-template>
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
         <span class="link">
           <i class="glyphicon"
-            [ngClass]="{'glyphicon-chevron-right': !row.$$expanded, 'glyphicon-chevron-down': row.$$expanded}"
+            [ngClass]="{'glyphicon-chevron-right': !expanded, 'glyphicon-chevron-down': expanded}"
             (click)="toggleExpandRow(row)"></i>
         </span>
       </ng-template>
@@ -131,7 +130,7 @@
           </button>
         </div>
         <div class="mb-2 mr-2">
-          <button *ngIf="(actions | includes:'edit')"
+          <a *ngIf="(actions | includes:'edit')"
             class="btn btn-default btn-xs"
             [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
@@ -139,7 +138,7 @@
             <ng-template #noTemplates>
               <span class="text-button">{{ 'haseka.submissions.edit' | translate }}</span>
             </ng-template>
-          </button>
+          </a>
         </div>
 
         <!--<span *ngIf="showMakeTemplate(row)">

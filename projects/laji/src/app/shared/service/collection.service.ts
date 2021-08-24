@@ -126,9 +126,15 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     );
   }
 
-  getCollectionsAggregate(page = 1, collections = []): Observable<ICollectionRange[]> {
+  getCollectionsAggregate(query?, page = 1, collections = []): Observable<ICollectionRange[]> {
     let hasMore = false;
-    return this.warehouseApi.warehouseQueryAggregateGet({cache: true}, ['document.collectionId'], undefined, 1000, page).pipe(
+    let cacheQuery = { cache: true };
+
+    if (query) {
+      cacheQuery = { ...cacheQuery, ...query };
+    }
+
+    return this.warehouseApi.warehouseQueryAggregateGet(cacheQuery, ['document.collectionId'], undefined, 1000, page).pipe(
       tap(data => hasMore = data.lastPage && data.lastPage > page),
       map(data => data.results || []),
       map(data => data.map(d => {
@@ -138,6 +144,6 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
         };
       })),
       map(cols => [...collections, ...cols]),
-      switchMap(cols => hasMore ? this.getCollectionsAggregate(page + 1, cols) : of(cols)));
+      switchMap(cols => hasMore ? this.getCollectionsAggregate(query, page + 1, cols) : of(cols)));
   }
 }

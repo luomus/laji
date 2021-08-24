@@ -1,17 +1,17 @@
 <div class="ng-gallery" *ngIf="showRepeat">
   <div class="form-group" *ngIf="showViewSwitch">
-    <div class="col-sm-12">
-      <div class="btn-group view-mode-selector" role="group" aria-label="view type">
+    <div class="col-sm-12 view-mode-selector">
+      <div class="btn-group" role="group" aria-label="view type">
         <button *ngIf="views | includes:'full'" type="button" class="btn btn-default" (click)="setView('full')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views | includes:'full2'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
-        <button *ngIf="views | includes:'full3'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full2'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full2'"><i class="glyphicon glyphicon-th-large"></i></button>
+        <button *ngIf="views | includes:'full3'" type="button" class="btn btn-default" (click)="setView('full2')" [class.active]="view === 'full2'"><i class="glyphicon glyphicon-th-large"></i></button>
         <button *ngIf="views | includes:'compact'" type="button" class="btn btn-default" (click)="setView('compact')" [class.active]="view === 'compact'"><i class="glyphicon glyphicon-th"></i></button>
       </div>
     </div>
   </div>
 
   <ng-container *ngIf="view === 'compact' else annotation">
-    <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+    <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" role="button" luKeyboardClickable>
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              [popover]="info"
@@ -37,14 +37,15 @@
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
              [popover]="info"
              [popoverContext]="{$implicit: img}"
+             tabindex="0" luKeyboardClickable
              placement="bottom"
              triggers="mouseenter:mouseleave"
              class="ng-thumb compact"
              alt="Image {{ index + 1 }}" />
       </ng-container>
       <ng-template #onlyImage>
-        <img class="main-annotation-image" src="{{ tmpImg.mainURL }}" (click)="openImage(tmpImg.index)">
-        <span class="hover-click alert-info" (click)="openImage(tmpImg.index)"></span>
+        <img class="main-annotation-image" src="{{ tmpImg.mainURL }}" (click)="openImage(tmpImg.index)" tabindex="0" luKeyboardClickable>
+        <span class="hover-click alert-info" (click)="openImage(tmpImg.index)" tabindex="0" luKeyboardClickable></span>
       </ng-template>
     </div>
     <div *ngFor ="let img of modalImages; let index = index">
@@ -52,6 +53,7 @@
         class="ng-thumb compact"
         alt="Image {{ index + 1 }}"
         (click)="openMainPic(img.fullURL, index)"
+        tabindex="0" luKeyboardClickable
         />
     </div>
   </ng-container>
@@ -59,7 +61,7 @@
 
 <ng-template #fullView>
   <ng-container *ngIf="view === 'full' else fullView2">
-    <div class="image-container full-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+    <div class="image-container full-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" luKeyboardClickable>
       <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
            class="ng-thumb full"
            alt="Image {{ index + 1 }}" />
@@ -70,7 +72,7 @@
 
 <ng-template #fullView2>
   <ng-container *ngIf="view === 'full2' else fullView3">
-    <div class="image-container full2-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+    <div class="image-container full2-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" luKeyboardClickable>
       <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
            class="ng-thumb"
            alt="Image {{ index + 1 }}" />
@@ -80,7 +82,7 @@
         </a>
       </h4>
       <ng-template #noTaxonLinking>
-        <span class="link" (click)="openImage(index)">
+        <span class="link" (click)="openImage(index)" tabindex="0" luKeyboardClickable>
           <ng-container *ngTemplateOutlet="info; context: {$implicit: img}"></ng-container>
         </span>
       </ng-template>
@@ -89,7 +91,7 @@
 </ng-template>
 
 <ng-template #fullView3>
-  <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)">
+  <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" luKeyboardClickable>
     <img lajiLazyImage src="{{ img.thumbnailURL }}"
          class="ng-thumb"
          alt="Image {{ index + 1 }}" />

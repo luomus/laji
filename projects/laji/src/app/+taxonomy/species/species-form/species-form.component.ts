@@ -174,7 +174,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onQueryChange() {
+  onQueryChange(updateFormQuery?: boolean) {
+    if (updateFormQuery) {
+      this.queryToFormQuery();
+    }
     this.onSubmit();
   }
 

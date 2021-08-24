@@ -1,0 +1,276 @@
+/**
+* DISPLAY
+*/
+
+$displays: flex, block, inline, inline-block, none;
+@each $display in $displays {
+  .d-#{$display} {
+    display: $display !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $display in $displays {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:d-#{$display} {
+        display: $display !important;
+      }
+    }
+  }
+}
+
+/**
+* FLEXBOX
+*/
+
+.flex-row {
+  flex-direction: row !important;
+}
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+.flex-col {
+  flex-direction: column !important;
+}
+.flex-col-reverse {
+  flex-direction: column-reverse !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:flex-row {
+      flex-direction: row !important;
+    }
+    .#{$breakpoint}\:flex-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+    .#{$breakpoint}\:flex-col {
+      flex-direction: column !important;
+    }
+    .#{$breakpoint}\:flex-col-reverse {
+      flex-direction: column-reverse !important;
+    }
+  }
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:flex-wrap {
+      flex-wrap: wrap !important;
+    }
+    .#{$breakpoint}\:flex-nowrap {
+      flex-wrap: nowrap !important;
+    }
+  }
+}
+
+.flex-grow {
+  flex-grow: 1 !important;
+}
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+.flex-grow-2 {
+  flex-grow: 2 !important;
+}
+.flex-shrink {
+  flex-shrink: 1 !important;
+}
+.flex-shrink-1 {
+  flex-shrink: 1 !important;
+}
+.flex-shrink-2 {
+  flex-shrink: 2 !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:flex-grow {
+      flex-grow: 1 !important;
+    }
+    .#{$breakpoint}\:flex-grow-1 {
+      flex-grow: 1 !important;
+    }
+    .#{$breakpoint}\:flex-grow-2 {
+      flex-grow: 2 !important;
+    }
+    .#{$breakpoint}\:flex-shrink {
+      flex-shrink: 1 !important;
+    }
+    .#{$breakpoint}\:flex-shrink-1 {
+      flex-shrink: 1 !important;
+    }
+    .#{$breakpoint}\:flex-shrink-2 {
+      flex-shrink: 2 !important;
+    }
+  }
+}
+
+.justify-between {
+  justify-content: space-between !important;
+}
+.justify-center {
+  justify-content: center !important;
+}
+.justify-end {
+  justify-content: flex-end !important;
+}
+.justify-start {
+  justify-content: flex-start !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:justify-between {
+      justify-content: space-between !important;
+    }
+    .#{$breakpoint}\:justify-center {
+      justify-content: center !important;
+    }
+    .#{$breakpoint}\:justify-end {
+      justify-content: flex-end !important;
+    }
+    .#{$breakpoint}\:justify-start {
+      justify-content: flex-start !important;
+    }
+  }
+}
+
+.items-center {
+  align-items: center !important;
+}
+.items-end {
+  align-items: flex-end !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:items-center {
+      align-items: center !important;
+    }
+    .#{$breakpoint}\:items-end {
+      align-items: flex-end !important;
+    }
+  }
+}
+
+.self-center {
+  align-self: center !important;
+}
+.self-end {
+  align-self: flex-end !important;
+}
+@each $breakpoint, $px in $breakpoints {
+  @media only screen and (max-width: $px) {
+    .#{$breakpoint}\:self-center {
+      align-self: center !important;
+    }
+    .#{$breakpoint}\:self-end {
+      align-self: flex-end !important;
+    }
+  }
+}
+
+$basis: (
+  "0": 100%,
+  "1": 10%,
+  "2": 20%,
+  "3": 30%,
+  "4": 40%,
+  "5": 50%,
+  "6": 60%,
+  "7": 70%,
+  "8": 80%,
+  "9": 90%,
+  "auto": auto,
+);
+
+@each $bKey, $bVal in $basis {
+  .basis-#{$bKey} {
+    flex-basis: $bVal !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $bKey, $bVal in $basis {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:basis-#{$bKey} {
+        flex-basis: $bVal !important;
+      }
+    }
+  }
+}
+
+@each $bKey, $bVal in $basis {
+  .width-#{$bKey} {
+    width: $bVal !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $bKey, $bVal in $basis {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:width-#{$bKey} {
+        width: $bVal !important;
+      }
+    }
+  }
+}
+
+/**
+* SPACING
+*/
+
+@each $spacer, $spacerPx in $spacers {
+  .m-#{$spacer} {
+    margin: $spacerPx !important;
+  }
+  .my-#{$spacer} {
+    margin-top: $spacerPx !important;
+    margin-bottom: $spacerPx !important;
+  }
+  .mt-#{$spacer} {
+    margin-top: $spacerPx !important;
+  }
+  .mb-#{$spacer} {
+    margin-bottom: $spacerPx !important;
+  }
+  .mx-#{$spacer} {
+    margin-left: $spacerPx !important;
+    margin-right: $spacerPx !important;
+  }
+  .ml-#{$spacer} {
+    margin-left: $spacerPx !important;
+  }
+  .mr-#{$spacer} {
+    margin-right: $spacerPx !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:m-#{$spacer} {
+        margin: $spacerPx !important;
+      }
+      .#{$breakpoint}\:my-#{$spacer} {
+        margin-top: $spacerPx !important;
+        margin-bottom: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mt-#{$spacer} {
+        margin-top: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mb-#{$spacer} {
+        margin-bottom: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mx-#{$spacer} {
+        margin-left: $spacerPx !important;
+        margin-right: $spacerPx !important;
+      }
+      .#{$breakpoint}\:ml-#{$spacer} {
+        margin-left: $spacerPx !important;
+      }
+      .#{$breakpoint}\:mr-#{$spacer} {
+        margin-right: $spacerPx !important;
+      }
+    }
+  }
+}

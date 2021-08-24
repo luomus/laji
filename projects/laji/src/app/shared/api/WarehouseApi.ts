@@ -221,6 +221,13 @@ export class WarehouseApi {
     return this.warehouseQueryGet('gathering/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
+   /**
+   * Same as aggregate query, but performs the query on private data
+   */
+  public warehouseQueryUnitStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+    return this.warehouseQueryGet('unit/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+  }
+
   public downloadApprovalRequest(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, description: string): Observable<string> {
     const path = this.basePath + '/warehouse/private-query/downloadApprovalRequest';
 
@@ -338,6 +345,24 @@ export class WarehouseApi {
     this.addQueryToQueryParams(this.queryWithMetaData(query, selected, orderBy, pageSize, page), queryParameters);
 
     return this.http.get<PagedResult<any>>(path, {params: queryParameters});
+  }
+
+  //Get filter to use in selection filters
+  public warehouseQueryFilterGet(filter: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY
+    }
+
+    const path = this.basePath + '/warehouse/filters/' + filter
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
+    // verify required parameter 'filter' is not null or undefined
+    if (filter === null || filter === undefined) {
+      throw new Error('Required parameter filter was null or undefined when calling warehouseQueryFilterGet.');
+    }
+
+    return this.http.get(path, {params: queryParameters});
   }
 
   /**

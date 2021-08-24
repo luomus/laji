@@ -24,7 +24,7 @@
         [isFromMasterChecklist]="isFromMasterChecklist"
       ></laji-taxon-images>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.identification' | translate" *lajiForTypes="['dev']">
+    <lu-tab [heading]="'taxonomy.identification' | translate">
       <laji-taxon-identification
         *ngIf="loadedTabs.isLoaded('identification')"
         [taxon]="taxon"
@@ -67,7 +67,7 @@
         [taxon]="taxon"
       ></laji-taxon-endangerment>
     </lu-tab>
-    <lu-tab [heading]="'taxonomy.invasive' | translate" *ngIf="taxon.invasiveSpecies">
+    <lu-tab [heading]="'taxonomy.invasive' | translate" *ngIf="isInvasive">
       <laji-taxon-invasive
         *ngIf="loadedTabs.isLoaded('invasive')"
         [taxon]="taxon"

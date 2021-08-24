@@ -11,6 +11,7 @@ import { MetadataSelectWithSubcategoriesComponent } from './metadata-select-with
 import { SelectSubcategoriesComponent } from './select-subcategories/select-subcategories.component';
 import { SubCategoryCheckboxValuePipe } from './sub-category-checkbox-value.pipe';
 import { IsEmptyArrayPipe } from './is-empty-array.pipe';
+import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
 /* tslint:enable:max-line-length */
 
@@ -18,7 +19,8 @@ import { IsEmptyArrayPipe } from './is-empty-array.pipe';
   imports: [
     CommonModule,
     SharedModule,
-    InfoModule
+    InfoModule,
+    LajiUiModule
   ],
   providers: [ AdminStatusInfoPipe ] ,
   declarations: [

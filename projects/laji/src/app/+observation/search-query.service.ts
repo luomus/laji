@@ -27,6 +27,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'redListStatusId',
     'countryId',
     'finnishMunicipalityId',
+    'provinceId',
+    'elyCentreId',
     'biogeographicalProvinceId',
     'wgs84CenterPoint',
     'area',
@@ -77,7 +79,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'aggregateBy',
     'selected',
     'orderBy',
-    'collectionAndRecordQuality'
+    'collectionAndRecordQuality',
+    'plantStatusCode'
   ];
 
   // noinspection JSUnusedLocalSymbols

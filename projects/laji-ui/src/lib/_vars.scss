@@ -1,0 +1,119 @@
+/*
+* OFFSETS
+*/
+$fs-offset: 0px !default;
+$sp-offset: 0px !default;
+
+/**
+* BREAKPOINTS
+*/
+
+$breakpoints: (
+  "lg": 1200px,
+  "md": 992px,
+  "sm": 768px,
+  "xs": 576px
+);
+
+/* COLOR */
+
+$primary-1: hsl(204deg, 100%, 98%);
+$primary-2: hsl(204deg, 90%, 95%);
+$primary-3: hsl(204deg, 80%, 85%);
+$primary-4: hsl(204deg, 70%, 70%);
+$primary-5: hsl(204deg, 70%, 50%);
+$primary-6: hsl(204deg, 70%, 40%);
+$primary-7: hsl(204deg, 80%, 30%);
+$primary-8: hsl(204deg, 90%, 20%);
+$primary-9: hsl(204deg, 100%, 10%);
+
+$neutral-1: hsl(204deg, 20%, 99%);
+$neutral-2: hsl(204deg, 15%, 97%);
+$neutral-3: hsl(204deg, 12%, 95%);
+$neutral-4: hsl(204deg, 10%, 88%);
+$neutral-5: hsl(204deg, 10%, 70%);
+$neutral-6: hsl(204deg, 10%, 50%);
+$neutral-7: hsl(204deg, 10%, 40%);
+$neutral-8: hsl(204deg, 15%, 30%);
+$neutral-9: hsl(204deg, 20%, 10%);
+
+$success-1: hsl(100deg, 100%, 98%);
+$success-2: hsl(100deg, 90%, 93%);
+$success-3: hsl(100deg, 80%, 83%);
+$success-4: hsl(100deg, 70%, 66%);
+$success-5: hsl(100deg, 65%, 39%);
+$success-6: hsl(100deg, 70%, 32%);
+$success-7: hsl(100deg, 80%, 24%);
+$success-8: hsl(100deg, 90%, 16%);
+$success-9: hsl(100deg, 100%, 8%);
+
+$info-1: hsl(230deg, 100%, 98%);
+$info-2: hsl(230deg, 90%, 95%);
+$info-3: hsl(230deg, 80%, 85%);
+$info-4: hsl(230deg, 70%, 70%);
+$info-5: hsl(230deg, 50%, 52%);
+$info-6: hsl(230deg, 60%, 41%);
+$info-7: hsl(230deg, 70%, 32%);
+$info-8: hsl(230deg, 80%, 24%);
+$info-9: hsl(230deg, 90%, 14%);
+
+$warning-1: hsl(30deg, 100%, 98%);
+$warning-2: hsl(30deg, 90%, 93%);
+$warning-3: hsl(30deg, 80%, 83%);
+$warning-4: hsl(30deg, 70%, 70%);
+$warning-5: hsl(30deg, 70%, 50%);
+$warning-6: hsl(30deg, 70%, 41%);
+$warning-7: hsl(30deg, 80%, 24%);
+$warning-8: hsl(30deg, 90%, 16%);
+$warning-9: hsl(30deg, 100%, 8%);
+
+$danger-1: hsl(0deg, 100%, 98%);
+$danger-2: hsl(0deg, 90%, 95%);
+$danger-3: hsl(0deg, 80%, 85%);
+$danger-4: hsl(0deg, 70%, 70%);
+$danger-5: hsl(0deg, 65%, 50%);
+$danger-6: hsl(0deg, 70%, 40%);
+$danger-7: hsl(0deg, 80%, 30%);
+$danger-8: hsl(0deg, 90%, 20%);
+$danger-9: hsl(0deg, 100%, 10%);
+
+$admin-1: hsl(40deg, 60%, 30%);
+$admin-2: hsl(40deg, 60%, 98%);
+$admin-3: hsl(40deg, 60%, 85%);
+
+/* FONT */
+
+$fs-1: 12px + $fs-offset;
+$fs-2: 14px + $fs-offset;
+$fs-3: 16px + $fs-offset;
+$fs-4: 18px + $fs-offset;
+$fs-5: 20px + $fs-offset;
+$fs-6: 22px + $fs-offset;
+$fs-7: 26px + $fs-offset;
+$fs-8: 34px + $fs-offset;
+$fs-9: 38px + $fs-offset;
+
+/* SPACERS */
+
+$sp-1: 2px + $sp-offset;
+$sp-2: 4px + $sp-offset;
+$sp-3: 8px + $sp-offset;
+$sp-4: 12px + $sp-offset;
+$sp-5: 18px + $sp-offset;
+$sp-6: 24px + $sp-offset;
+$sp-7: 32px + $sp-offset;
+$sp-8: 40px + $sp-offset;
+$sp-9: 50px + $sp-offset;
+
+$spacers: (
+  "0": 0px,
+  "1": $sp-1,
+  "2": $sp-2,
+  "3": $sp-3,
+  "4": $sp-4,
+  "5": $sp-5,
+  "6": $sp-6,
+  "7": $sp-7,
+  "8": $sp-8,
+  "9": $sp-9
+);

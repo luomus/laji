@@ -126,6 +126,8 @@ export interface WarehouseQueryInterface {
   countryId?: Array<string>;
   finnishMunicipalityId?: Array<string>;
   biogeographicalProvinceId?: Array<string>;
+  elyCentreId?: Array<string>;
+  provinceId?: Array<string>;
   area?: Array<string>;
   season?: string;
   time?: Array<string>;
@@ -213,6 +215,7 @@ export interface WarehouseQueryInterface {
   typeOfOccurrenceIdNot?: Array<string>;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
+  butterflyAssociationAreaId?: Array<string>;
   collectionQuality?: Array<string>;
   secureLevel?: Array<string>;
   includeSubCollections?: boolean;
@@ -230,6 +233,7 @@ export interface WarehouseQueryInterface {
   formId?: string;
   reliability?: Array<string>;
   collectionAndRecordQuality?: Array<string>;
+  plantStatusCode?: Array<string>;
 }
 
 

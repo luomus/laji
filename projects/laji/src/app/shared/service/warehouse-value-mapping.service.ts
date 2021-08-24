@@ -1,34 +1,45 @@
 import { Observable } from 'rxjs';
-import { WarehouseApi } from '../api/WarehouseApi';
 import { Injectable } from '@angular/core';
-import { map, shareReplay, take, timeout } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs/operators';
 import { BaseDataService } from '../../graph-ql/service/base-data.service';
+
+interface LabelData {
+  mapping: Record<string, string>;
+  reverse: Record<string, string>;
+}
 
 @Injectable({providedIn: 'root'})
 export class WarehouseValueMappingService {
 
-  private request: Observable<any>;
+  private labels$: Observable<any>;
 
   constructor(
     private baseDataService: BaseDataService
-  ) {}
-
-  public getOriginalKey(value: string): Observable<string> {
-    return this.get(value, 'mapping');
-  }
-
-  public getWarehouseKey(value): Observable<string> {
-    return this.get(value, 'reverse');
-  }
-
-  public get(value, list): Observable<string> {
-    return this.fetchLabels().pipe(
-      map(data => data && data[list] && data[list][value] || value)
+  ) {
+    this.labels$ = this.baseDataService.getBaseData().pipe(
+      map(data => data.warehouseLabels),
+      map(data => this.parseResult(data)),
+      shareReplay(1)
     );
   }
 
-  private parseResult(data) {
-    const result = {
+  public getSchemaKey(value: string): Observable<string> {
+    return this.get(value, 'mapping');
+  }
+
+  public getWarehouseKey(value: boolean|string|number): Observable<string> {
+    return this.get('' + value, 'reverse');
+  }
+
+  public get(value: string, list: keyof LabelData): Observable<string> {
+    return this.labels$.pipe(
+      map(data => data && data[list] && data[list][value] || value),
+      take(1)
+    );
+  }
+
+  private parseResult(data: {enumeration: string; property: string; }[]) {
+    const result: LabelData = {
       mapping: {},
       reverse: {}
     };
@@ -41,18 +52,5 @@ export class WarehouseValueMappingService {
       }
     });
     return result;
-  }
-
-  private fetchLabels() {
-    if (!this.request) {
-      this.request = this.baseDataService.getBaseData().pipe(
-        take(1),
-        map(data => data.warehouseLabels),
-        timeout(WarehouseApi.longTimeout),
-        map(data => this.parseResult(data)),
-        shareReplay(1)
-      );
-    }
-    return this.request;
   }
 }
