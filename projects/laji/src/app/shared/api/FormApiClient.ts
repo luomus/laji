@@ -53,7 +53,7 @@ export class FormApiClient {
     const queryParameters = {...Util.removeFromObject(query)};
 
     ['lang', 'personToken', 'formID'].forEach(key => {
-      if (this[key] !== undefined) {
+      if (this[key] !== undefined && !queryParameters.hasOwnProperty(key)) {
         queryParameters[key] = this[key];
       }
     });
