@@ -249,7 +249,7 @@ export class SykeInsectResultService {
 
     result.forEach(item => {
       const existing = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].filter((v) => {
-        return (v['unit.linkings.taxon.scientificName'] === item['unit.linkings.taxon.scientificName']);
+        return (v['scientificName'] === item['unit.linkings.taxon.scientificName']);
       });
       const property = season ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined') :
        !onlySections ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day']) + '-' + this.padMonthDay(item['gathering.conversions.month']) + '-' + item['gathering.conversions.year']
