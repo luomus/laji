@@ -1,13 +1,19 @@
 import { ElementRef, Renderer2 } from "@angular/core";
-import { Observable, of, Subject } from "rxjs";
-import { delay, takeUntil } from "rxjs/operators"
+import { interval, Subject } from "rxjs";
+import { delay, switchMap, takeUntil } from "rxjs/operators"
 import { AnimationEngine } from "../../animations/animation-engine";
-import { CurveFollower, EsAnimatable, PathFollower } from "../../animations/es-animatable";
+import { CurveFollower, EsAnimatable } from "../../animations/es-animatable";
 
-const randomDelay = () => (60 + Math.random() * 20) * 1000;
+const INITIAL_DELAY = 20000;
+const INTERVAL_DELAY = 10000;
+
 const roundToTwoDecimals = (n: number) => Math.round(n * 100) / 100;
 
 export class BugAnimation {
+	private unsubscribe$ = new Subject<void>();
+	private destroyClickListener;
+	private destroyTouchListener;
+
 	private input$ = new Subject<void>();
 
 	private bugEl: HTMLElement;
@@ -16,12 +22,7 @@ export class BugAnimation {
 
 	constructor(private baseEl: ElementRef, private renderer: Renderer2) {}
 
-	restartTimer() {
-		this.input$.next();
-		this.init();
-	}
-
-	private init() {
+	init() {
 		this.anim = new AnimationEngine(
 			// init
 			() => {
@@ -37,16 +38,32 @@ export class BugAnimation {
 				return s;
 			},
 			// destroy
-			() => {
-				this.renderer.removeChild(this.baseEl.nativeElement, this.bugEl);
-			}
+			this.destroyAnim.bind(this)
 		);
 
-		of(undefined).pipe(
-			//delay(randomDelay()),
-			takeUntil(this.input$)
-		).subscribe(
-			() => this.anim.play()
-		);
+		this.destroyClickListener = this.renderer.listen(window, 'click', () => this.input$.next());
+		this.destroyTouchListener = this.renderer.listen(window, 'touchstart', () => this.input$.next());
+		
+		this.input$.pipe(
+			takeUntil(this.unsubscribe$),
+			delay(INITIAL_DELAY),
+			switchMap(() => interval(INTERVAL_DELAY).pipe(takeUntil(this.input$)))
+		).subscribe(() => this.anim.play());
+
+		this.input$.next();
+	}
+
+	private destroyAnim() {
+		if (this.baseEl && this.bugEl) { this.renderer.removeChild(this.baseEl.nativeElement, this.bugEl) }
+	}
+
+	destroy() {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
+
+		if (this.destroyClickListener) { this.destroyClickListener() }
+		if (this.destroyTouchListener) { this.destroyTouchListener() }
+
+		this.destroyAnim();
 	}
 }

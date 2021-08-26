@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, Renderer2, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from "@angular/core";
 import { BugAnimation } from "./bug-animation";
 import { ISlideData } from './slide/slide.component';
 import { SlideshowFacade } from "./slideshow.facade";
@@ -19,7 +19,7 @@ import { SlideshowFacade } from "./slideshow.facade";
 	styleUrls: ['slideshow.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SlideshowComponent implements AfterViewInit {
+export class SlideshowComponent implements AfterViewInit, OnDestroy {
 	slides: ISlideData[] = [];
 	currentSlide = 0;
 	private panOffset = 0;
@@ -31,7 +31,7 @@ export class SlideshowComponent implements AfterViewInit {
 
 	ngAfterViewInit() {
 		this.bugAnimation = new BugAnimation(this.el, this.renderer);
-		this.bugAnimation.restartTimer();
+		this.bugAnimation.init();
 		this.facade.loadSlides();
 		this.facade.slides$.subscribe(slides => {
 			this.setSlides(slides)
@@ -104,4 +104,8 @@ export class SlideshowComponent implements AfterViewInit {
 		this.setAnimatable(true);
 		this.translateX();
   }
+
+	ngOnDestroy() {
+		if (this.bugAnimation) { this.bugAnimation.destroy() }
+	}
 }
