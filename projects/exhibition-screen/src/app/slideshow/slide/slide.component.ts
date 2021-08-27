@@ -6,6 +6,7 @@ export interface ISlideData {
 	bgCaption: string;
 	contentPlacement: 'left' | 'right';
 	content: string;
+	animationPlacement: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
 }
 
 @Component({

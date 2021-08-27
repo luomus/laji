@@ -42,7 +42,8 @@ The Purpose, the People and the Outcomes
 <a href="https://helda.helsinki.fi//bitstream/handle/10138/312188/sports_07_00141_v2.pdf?sequence=1">https://helda.helsinki.fi//bitstream/handle/10138/312188/sports_07_00141_v2.pdf?sequence=1</a>
 </p>
 				`,
-				contentPlacement: 'left'
+				contentPlacement: 'left',
+				animationPlacement: 'topright'
 			},
 			{
 				bgSrc: 'https://images.pexels.com/photos/416728/pexels-photo-416728.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
@@ -64,7 +65,8 @@ posuere. Sed porttitor, ante at eleifend bibendum, felis quam
 porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
 				`,
-				contentPlacement: 'right'
+				contentPlacement: 'right',
+				animationPlacement: 'topleft'
 			},
 			{
 				//bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -87,7 +89,8 @@ posuere. Sed porttitor, ante at eleifend bibendum, felis quam
 porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
 				`,
-				contentPlacement: 'left'
+				contentPlacement: 'left',
+				animationPlacement: 'bottomright'
 			}
 		]);
 	}
