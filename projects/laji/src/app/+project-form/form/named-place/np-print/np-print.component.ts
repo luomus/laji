@@ -10,7 +10,7 @@ import { FooterService } from '../../../../shared/service/footer.service';
 import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.service';
 import { PlatformService } from '../../../../shared/service/platform.service';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
-import { ProjectFormService } from '../../../project-form.service';
+import { ProjectFormService } from '../../../../shared/service/project-form.service';
 
 @Component({
   selector: 'laji-np-print',

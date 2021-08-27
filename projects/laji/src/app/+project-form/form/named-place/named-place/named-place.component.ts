@@ -14,7 +14,7 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
-import { ProjectFormService } from '../../../project-form.service';
+import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
 

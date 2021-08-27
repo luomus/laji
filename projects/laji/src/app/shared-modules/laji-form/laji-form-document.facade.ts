@@ -25,6 +25,7 @@ import { DocumentStorage } from '../../storage/document.storage';
 import { LajiFormUtil } from './laji-form-util.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Global } from '../../../environments/global';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 
 export enum FormError {
   ok,
@@ -112,7 +113,8 @@ export class LajiFormDocumentFacade implements OnDestroy {
     private namedPlacesService: NamedPlacesService,
     private formPermissionService: FormPermissionService,
     private documentStorage: DocumentStorage,
-    private personApi: PersonApi
+    private personApi: PersonApi,
+    private projectFormService: ProjectFormService
   ) {
     this.dataSub = this.dataChange$.pipe(
       mergeMap(() => this.userService.user$.pipe(take(1))),
@@ -141,7 +143,7 @@ export class LajiFormDocumentFacade implements OnDestroy {
       this.formSub.unsubscribe();
     }
     this.updateState({..._state, form: undefined, loading: true, hasChanges: false, error: FormError.incomplete, isTemplate});
-    this.formSub = this.formService.getForm(formID, this.translateService.currentLang).pipe(
+    this.formSub = this.projectFormService.getForm(formID).pipe(
       map(data => isTemplate ? this.prepareTemplateForm(data) : data),
       switchMap(form => this.userService.user$.pipe(
         take(1),

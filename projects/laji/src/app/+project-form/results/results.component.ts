@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import ResultServiceType = Form.ResultServiceType;
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

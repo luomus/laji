@@ -8,7 +8,6 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { AboutComponent } from './about/about.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { DatasetAboutComponent } from './about/dataset-about/dataset-about.component';
-import { ProjectFormService } from './project-form.service';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
 import { ResultsModule } from './results/results.module';
@@ -58,7 +57,6 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
     DisabledComponent
   ],
   providers: [
-    ProjectFormService,
     HasAdminPermission,
     HasFormPermission,
     HasViewPermission

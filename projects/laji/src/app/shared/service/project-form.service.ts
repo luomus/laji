@@ -1,12 +1,12 @@
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../shared/service/form.service';
+import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Form } from '../shared/model/Form';
-import { combineLatest, Observable, of } from 'rxjs';
-import { NamedPlacesService } from '../shared/service/named-places.service';
-import { NamedPlace } from '../shared/model/NamedPlace';
+import { Form } from '../model/Form';
+import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
+import { NamedPlacesService } from './named-places.service';
+import { NamedPlace } from '../model/NamedPlace';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
@@ -31,7 +31,7 @@ export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   namedPlace?: NamedPlace;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ProjectFormService {
   constructor (
     private formService: FormService,
@@ -39,8 +39,27 @@ export class ProjectFormService {
     private namedPlacesService: NamedPlacesService
   ) { }
 
-  getFormFromRoute$(route: ActivatedRoute) {
-    return this.getFormID(route).pipe(switchMap(formID => this.formService.getForm(formID, this.translate.currentLang)));
+  currentFormID: string;
+  form$: ReplaySubject<Form.SchemaForm>;
+
+  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
+    return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
+  }
+
+  getForm(id: string): Observable<Form.SchemaForm> {
+    if (this.currentFormID === id) {
+      return this.form$.asObservable();
+    }
+    this.currentFormID = id;
+    this.form$ = new ReplaySubject<Form.SchemaForm>();
+    this.formService.getForm(id).pipe(take(1)).subscribe(form => {
+      this.form$.next(form);
+    });
+    return this.form$.asObservable();
+  }
+
+  updateLocalForm(form: Form.SchemaForm) {
+    this.form$.next(form);
   }
 
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {

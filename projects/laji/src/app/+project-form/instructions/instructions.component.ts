@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 

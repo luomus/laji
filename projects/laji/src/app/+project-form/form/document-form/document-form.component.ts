@@ -9,7 +9,7 @@ import { NamedPlacesService } from '../../../shared/service/named-places.service
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { DocumentFormComponent as _DocumentFormComponent } from '@laji-form/document-form/document-form.component';
-import { ProjectFormService } from '../../project-form.service';
+import { ProjectFormService } from '../../../shared/service/project-form.service';
 
 @Component({
   template: `

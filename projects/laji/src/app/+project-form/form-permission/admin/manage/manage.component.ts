@@ -7,7 +7,7 @@ import { FormPermission } from '../../../../shared/model/FormPermission';
 import { UserService } from '../../../../shared/service/user.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
-import { ProjectFormService } from '../../../project-form.service';
+import { ProjectFormService } from '../../../../shared/service/project-form.service';
 
 @Component({
   selector: 'laji-manage',

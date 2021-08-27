@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
-import { ProjectForm, ProjectFormService } from './project-form.service';
+import { ProjectForm, ProjectFormService } from '../shared/service/project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';

@@ -5,7 +5,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
 import { Document } from '../../shared/model/Document';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';

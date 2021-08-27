@@ -8,7 +8,7 @@ import { ExportService } from '../../../../shared/service/export.service';
 import * as moment from 'moment';
 import { BookType } from 'xlsx';
 import { Form } from '../../../../shared/model/Form';
-import { ProjectFormService } from '../../../project-form.service';
+import { ProjectFormService } from '../../../../shared/service/project-form.service';
 
 @Component({
   selector: 'laji-form-participants',

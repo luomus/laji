@@ -7,6 +7,7 @@ import { UserService } from '../shared/service/user.service';
 import { Form } from '../shared/model/Form';
 import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
+import { ProjectFormService } from '../shared/service/project-form.service';
 
 @Component({
   selector: 'laji-form-builder',
@@ -27,8 +28,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private apiClient: FormApiClient,
     private translate: TranslateService,
     private userService: UserService,
-    private toastsService:  ToastsService
+    private toastsService:  ToastsService,
+    private projectFormService: ProjectFormService
   ) {
+    this.onChange = this.onChange.bind(this);
   }
 
   ngAfterViewInit() {
@@ -64,5 +67,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   onChange(form: SchemaForm) {
+    this.projectFormService.updateLocalForm(form);
   }
 }

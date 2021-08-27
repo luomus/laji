@@ -13,7 +13,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { map, mergeMap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlaceComponent } from '../named-place/named-place.component';
-import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
+import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
 import { BrowserService } from '../../../../shared/service/browser.service';
 

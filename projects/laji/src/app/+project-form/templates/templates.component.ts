@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { map } from 'rxjs/operators';
 
 @Component({
