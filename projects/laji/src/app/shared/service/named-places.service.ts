@@ -7,8 +7,7 @@ import { UserService } from './user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { ToastsService } from './toasts.service';
-
-const { JSONPath } = require('jsonpath-plus');
+import { JSONPath } from 'jsonpath-plus';
 
 @Injectable({providedIn: 'root'})
 export class NamedPlacesService {
