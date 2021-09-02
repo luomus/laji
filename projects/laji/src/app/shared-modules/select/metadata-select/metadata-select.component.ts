@@ -240,6 +240,10 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
           return this.areaService.getMunicipalities(this.lang);
         case <any>Area.AreaType.Country:
           return this.areaService.getCountries(this.lang);
+        case <any>Area.AreaType.ElyCentre:
+          return this.areaService.getElyCentres(this.lang);
+        case <any>Area.AreaType.Province:
+          return this.areaService.getProvinces(this.lang);
         case 'KE.informationSystem':
           return this.sourceService.getAllAsLookUp(this.lang).pipe(
             map(system => Object.keys(system).reduce((total, current) => {

@@ -126,6 +126,8 @@ export interface WarehouseQueryInterface {
   countryId?: Array<string>;
   finnishMunicipalityId?: Array<string>;
   biogeographicalProvinceId?: Array<string>;
+  elyCentreId?: Array<string>;
+  provinceId?: Array<string>;
   area?: Array<string>;
   season?: string;
   time?: Array<string>;

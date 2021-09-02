@@ -27,6 +27,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'redListStatusId',
     'countryId',
     'finnishMunicipalityId',
+    'provinceId',
+    'elyCentreId',
     'biogeographicalProvinceId',
     'wgs84CenterPoint',
     'area',

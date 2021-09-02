@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy, Renderer2, RendererFactory2, ViewEncapsulation } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { DOCUMENT, Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
@@ -221,17 +221,15 @@ export class HeaderService implements OnDestroy {
     this.routeSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => this.location.path() || '/'),
-      filter(newRoute => this.currentRoute !== newRoute)
-    ).subscribe(newRoute => {
+      filter(newRoute => this.currentRoute !== newRoute),
+      switchMap(newRoute => this.translateService.get(removeDuplicates([...getRouteTitles(this.router.routerState.snapshot.root), MAIN_TITLE])).pipe(
+        map(titles => ({newRoute, titles}))
+      ))
+    ).subscribe(({newRoute, titles}) => {
       this.currentRoute = newRoute;
 
-      const titles = removeDuplicates(
-        [...getRouteTitles(this.router.routerState.snapshot.root), MAIN_TITLE]
-      );
-      const titlesTranslated = this.translateService.instant(titles);
-      const titleString = Object.keys(titlesTranslated).map(key => decodeURI(titlesTranslated[key])).join(' | ');
+      const titleString = Object.keys(titles).map(key => decodeURI(titles[key])).join(' | ');
       this.inferredHeaders.title = titleString;
-
       const c = getDeepestChildValue(this.router.routerState.snapshot.root, 'canonical', '');
       const canonicalUrl = c ? this.localizeRouterService.translateRoute(c, this.translateService.currentLang) : newRoute;
       this.inferredHeaders.canonicalUrl = {href: canonicalUrl, rel: 'canonical'};

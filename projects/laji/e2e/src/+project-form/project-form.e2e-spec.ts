@@ -4,6 +4,7 @@ import { VihkoHomePage } from '../+vihko/home.po';
 import { MobileFormPage } from '../+vihko/mobile-form.po';
 import { SaveObservationsPage } from '../+save-observations/save-observations.po';
 import { browser, protractor } from 'protractor';
+import { NavPage } from "../shared/nav.po";
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -20,6 +21,7 @@ const userPage = new UserPage();
 const vihkoHomePage = new VihkoHomePage();
 const mobileFormPage = new MobileFormPage();
 const saveObservationsPage = new SaveObservationsPage();
+const nav = new NavPage();
 
 async function expectLandsOnExternalLogin(form, subPage?) {
   await browser.waitForAngularEnabled(false);
@@ -123,7 +125,7 @@ describe('Project form', () =>  {
     describe('and has simple option,', () => {
 
       beforeAll(async (done) => {
-        await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
+        await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, undefined, 'en');
         await userPage.login();
         done();
       });
@@ -138,36 +140,39 @@ describe('Project form', () =>  {
         done();
       });
 
-      it('and has no category, canceling document save redirects to Vihko home page if no history', async (done) => {
+      it('and has no category, canceling document save redirects to Vihko home page if no history and keeps lang', async (done) => {
         await projectFormPage.documentFormView.$cancel.click();
         expect (await vihkoHomePage.$content.isDisplayed()).toBe(true);
+        expect(await nav.getLang()).toBe('en');
         done();
       });
 
-      it('back navigate works away from form', async (done) => {
-        await vihkoHomePage.navigateTo();
+      it('back navigate works away from form and keeps lang', async (done) => {
+        await vihkoHomePage.navigateTo('en');
         await vihkoHomePage.clickFormById(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         const EC = protractor.ExpectedConditions;
         await browser.wait(EC.visibilityOf(projectFormPage.documentFormView.$form));
         await browser.navigate().back();
         expect(await vihkoHomePage.$content.isDisplayed()).toBe(true, 'user wasn\'t on vihko page after back navigation');
+        expect(await nav.getLang()).toBe('en');
 
         await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         done();
       });
     });
 
-    it('and has simple option and has category, canceling document save redirects to save observations page if no history', async (done) => {
-      await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_CATEGORY);
+    it('and has simple option and has category, canceling document save redirects to save observations page and keeps lang if no history', async (done) => {
+      await projectFormPage.navigateTo(FORM_WITH_SIMPLE_HAS_CATEGORY, undefined, 'en');
       await projectFormPage.documentFormView.$cancel.click();
       expect (await saveObservationsPage.pageIsDisplayed()).toBe(true);
+      expect(await nav.getLang()).toBe('en');
       done();
     });
 
     describe('and has mobile option,', () => {
 
       beforeAll(async (done) => {
-        await projectFormPage.navigateTo(FORM_WITH_MOBILE);
+        await projectFormPage.navigateTo(FORM_WITH_MOBILE, undefined, 'en');
         done();
       });
 
@@ -192,13 +197,14 @@ describe('Project form', () =>  {
         done();
       });
 
-      it('use button goes to document form page', async (done) => {
+      it('use button goes to document form page with correct lang', async (done) => {
         await projectFormPage.mobileAboutPage.$useButton.click();
         expect(await projectFormPage.documentFormView.$container.isDisplayed()).toBe(true);
+        expect(await nav.getLang()).toBe('en');
         done();
       });
 
-      it('canceling document save redirects to about page if no history', async (done) => {
+      it('canceling document save redirects to about page and keeps lang if no history', async (done) => {
         if (process.env.HEADLESS  !== 'false') {
           console.log('Skipped since geocoding doesn\'t work on headless');
           done();
@@ -207,6 +213,7 @@ describe('Project form', () =>  {
         await mobileFormPage.fillAsEmpty();
         await mobileFormPage.documentFormView.$cancel.click();
         expect(await projectFormPage.hasAboutText()).toBe(true);
+        expect(await nav.getLang()).toBe('en');
         done();
       });
     });
@@ -214,7 +221,7 @@ describe('Project form', () =>  {
     describe('and doesn\'t have simple option,', () => {
 
       beforeAll(async (done) => {
-        await projectFormPage.navigateTo(FORM_NO_SIMPLE_NO_NAMED_PLACES);
+        await projectFormPage.navigateTo(FORM_NO_SIMPLE_NO_NAMED_PLACES, undefined, 'en');
         done();
       });
 
@@ -228,19 +235,21 @@ describe('Project form', () =>  {
         done();
       });
 
-      it('canceling document save redirects to about page if no history', async (done) => {
-        await projectFormPage.navigateTo(`${FORM_NO_SIMPLE_NO_NAMED_PLACES}/form`);
+      it('canceling document save redirects to about page and keeps lang if no history', async (done) => {
+        await projectFormPage.navigateTo(`${FORM_NO_SIMPLE_NO_NAMED_PLACES}/form`, undefined, 'en');
         await projectFormPage.documentFormView.$cancel.click();
         expect(await projectFormPage.hasAboutText()).toBe(true);
+        expect(await nav.getLang()).toBe('en');
         done();
       });
     });
   });
 
   describe('and has named places and strict access restriction and no form permission', () => {
-    it('/form page redirects to about', async (done) => {
-      await projectFormPage.navigateTo(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION, '/form');
+    it('/form page redirects to about and keeps lang', async (done) => {
+      await projectFormPage.navigateTo(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION, '/form', 'en');
       expect(await projectFormPage.hasAboutText()).toBe(true);
+      expect(await nav.getLang()).toBe('en');
       done();
     });
   });

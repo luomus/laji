@@ -89,8 +89,6 @@ export class Util {
   }
 
   public static parseJSONPath(object: any, jsonPath: string): any {
-    // Both jsonpath and jsonpath-plus cause problems with the production build,
-    // so we convert the json paths to json pointers.
     return this.parseJSONPointer(object, this.JSONPathToJSONPointer(jsonPath));
   }
 

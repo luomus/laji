@@ -1,6 +1,7 @@
 @import 'projects/laji-ui/src/lib/vars';
 
 .navbox, .laji-page .navbox {
+  text-decoration: none;
   min-width: 250px;
   flex-basis: 30%;
   font-size: $fs-2;
