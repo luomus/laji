@@ -41,7 +41,7 @@
       </div>
       <ng-content select="nav"></ng-content>
     </div>
-    <div tabindex="0" *ngIf="!mobile" [@sidebarOpen_menu]="open ? 'open' : 'closed'" class="open-btn" role="button" (click)="onSwitchOpen()" luKeyboardClickable>
+    <div tabindex="0" *ngIf="!mobile" class="open-btn" [ngClass]="{'hide-sidebar-button': open}" role="button" (click)="onSwitchOpen()" luKeyboardClickable>
       <!-- Open menu -->
       <lu-icon type="menu"></lu-icon>
     </div>
