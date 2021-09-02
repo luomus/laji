@@ -88,7 +88,7 @@ export class SykeInsectResultFiltersComponent implements OnInit, OnChanges {
   onDateChange(newDate: string) {
     this.activeDate = (newDate && newDate !== '0') ? newDate : undefined;
     this.onlySections = true;
-    this.dateChange.emit(newDate);
+    this.dateChange.emit(this.activeDate);
     this.onFiltersChange();
   }
 
