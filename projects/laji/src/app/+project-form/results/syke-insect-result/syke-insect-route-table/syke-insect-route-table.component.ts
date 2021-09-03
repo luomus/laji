@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, ChangeDetectionStrategy,
-Output, TemplateRef, ViewChild, OnInit } from '@angular/core';
+Output, TemplateRef, ViewChild, OnInit, OnChanges } from '@angular/core';
 import { DatatableColumn } from '../../../../shared-modules/datatable/model/datatable-column';
 import { ExportService } from '../../../../shared/service/export.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { DateFormatPipe } from 'ngx-moment';
   styleUrls: ['./syke-insect-route-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SykeInsectRouteTableComponent implements OnInit {
+export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   @Input() routeId: string;
   @Input() season: string;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
@@ -54,9 +54,11 @@ export class SykeInsectRouteTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.rows && this.rows.length > 0) {
-      this.setColumns(this.rows);
-    }
+    this.setColumns(this.rows);
+  }
+
+  ngOnChanges() {
+    this.setColumns(this.rows);
   }
 
   onSort(event) {
@@ -71,6 +73,10 @@ export class SykeInsectRouteTableComponent implements OnInit {
   }
 
   setColumns(data) {
+    if (!this.rows || this.rows.length === 0) {
+      return;
+    }
+
     this.columns = [
       {
         name: 'vernacularName',
