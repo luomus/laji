@@ -1,22 +1,17 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Information } from "projects/laji/src/app/shared/model/Information";
+import { BehaviorSubject, forkJoin } from "rxjs";
+import { map, switchMap, tap } from "rxjs/operators";
+import { InformationService } from "../core/information.service";
 import { ISlideData } from "./slide/slide.component";
 
-@Injectable()
-export class SlideshowFacade {
-	private store = new BehaviorSubject<ISlideData[]>([]);
-
-	slides$ = this.store.asObservable();
-
-	constructor() {}
-
-	loadSlides() {
-		this.store.next([
-			{
-				bgSrc: 'https://images.pexels.com/photos/3109271/pexels-photo-3109271.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-				bgIsVideo: false,
-				bgCaption: 'Image caption 1',
-				content: `
+const BASE_ID = 'i-2';
+const TEST_DATA: ISlideData[] = [
+	{
+		bgSrc: 'https://images.pexels.com/photos/3109271/pexels-photo-3109271.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+		bgIsVideo: false,
+		bgCaption: 'Image caption 1',
+		content: `
 <h1>Viheralueet hoitavat mielenterveyttä!</h1>
 <p>Elämä nyky-yhteiskunnassa ja erityisesti kaupungeissa on
 usein monella tapaa raskasta. Viheralueiden ekologinen merkitys
@@ -41,15 +36,15 @@ Nature-Based Interventions for Improving Health and Wellbeing:
 The Purpose, the People and the Outcomes
 <a href="https://helda.helsinki.fi//bitstream/handle/10138/312188/sports_07_00141_v2.pdf?sequence=1">https://helda.helsinki.fi//bitstream/handle/10138/312188/sports_07_00141_v2.pdf?sequence=1</a>
 </p>
-				`,
-				contentPlacement: 'left',
-				animationPlacement: 'topright'
-			},
-			{
-				bgSrc: 'https://images.pexels.com/photos/416728/pexels-photo-416728.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-				bgIsVideo: false,
-				bgCaption: 'Image caption 2',
-				content: `
+		`,
+		contentPlacement: 'left',
+		animationPlacement: 'topright'
+	},
+	{
+		bgSrc: 'https://images.pexels.com/photos/416728/pexels-photo-416728.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+		bgIsVideo: false,
+		bgCaption: 'Image caption 2',
+		content: `
 <h1>Mitä lahopuu on?</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Praesent in dui sollicitudin, rhoncus urna eget, sagittis nibh.
@@ -64,16 +59,16 @@ metus porta posuere sed non sem. Ut vehicula luctus est eget
 posuere. Sed porttitor, ante at eleifend bibendum, felis quam
 porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
-				`,
-				contentPlacement: 'right',
-				animationPlacement: 'topleft'
-			},
-			{
-				//bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-				bgSrc: 'assets/testvideo.mp4',
-				bgIsVideo: true,
-				bgCaption: 'Image caption 3',
-				content: `
+		`,
+		contentPlacement: 'right',
+		animationPlacement: 'topleft'
+	},
+	{
+		//bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+		bgSrc: 'assets/testvideo.mp4',
+		bgIsVideo: true,
+		bgCaption: 'Image caption 3',
+		content: `
 <h1>Mitä lahopuu on?</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Praesent in dui sollicitudin, rhoncus urna eget, sagittis nibh.
@@ -88,10 +83,31 @@ metus porta posuere sed non sem. Ut vehicula luctus est eget
 posuere. Sed porttitor, ante at eleifend bibendum, felis quam
 porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
-				`,
-				contentPlacement: 'left',
-				animationPlacement: 'bottomright'
-			}
-		]);
+		`,
+		contentPlacement: 'left',
+		animationPlacement: 'bottomright'
+	}
+];
+
+@Injectable()
+export class SlideshowFacade {
+	private store = new BehaviorSubject<ISlideData[]>([]);
+
+	slides$ = this.store.asObservable();
+
+	constructor(private informationService: InformationService) {}
+
+	loadSlides() {
+		this.informationService.getInformation(BASE_ID, {}).pipe(
+			switchMap(information => forkJoin(...information.children.map(child => this.informationService.getInformation(child.id, {})))),
+			tap(console.log),
+			map((informationArr: Information[]) => <ISlideData[]>(
+				informationArr.map(information => ({
+				}))
+			)),
+			map(slideData => TEST_DATA) // temporarily use test data
+		).subscribe(slideData => {
+			this.store.next(slideData);
+		});
 	}
 }

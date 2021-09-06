@@ -5,6 +5,7 @@ import * as Hammer from 'hammerjs';
 import { SlideshowComponent } from './slideshow/slideshow.component';
 import { SlideComponent } from './slideshow/slide/slide.component';
 import { SlideshowFacade } from './slideshow/slideshow.facade';
+import { HttpClientModule } from '@angular/common/http';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -17,7 +18,8 @@ export class HammerConfig extends HammerGestureConfig {
 @NgModule({
   imports: [
     BrowserModule,
-    HammerModule
+    HammerModule,
+    HttpClientModule
   ],
   exports: [
   ],
