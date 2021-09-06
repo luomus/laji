@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { from, Observable, of, forkJoin } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
-import { IAudio, ISpectrogramConfig } from '../models';
+import { ISpectrogramConfig } from '../models';
 import { AudioService } from './audio.service';
 
 @Injectable()
@@ -27,26 +27,14 @@ export class SpectrogramService {
     private audioService: AudioService
   ) {}
 
-  public getSpectrogramImageData(audio: IAudio, startTime?: number, stopTime?: number, config?: ISpectrogramConfig)
+  public getSpectrogramImageData(buffer: AudioBuffer, config?: ISpectrogramConfig)
     : Observable<ImageData> {
     config = config ? {...this.defaultConfig, ...config} : this.defaultConfig;
 
-    return forkJoin([
-        this.getColormap(),
-        this.getAudioBuffer(audio, startTime, stopTime)
-      ]).pipe(switchMap(([colormap, buffer]) => {
+    return this.getColormap().pipe(switchMap(colormap => {
         return this.computeSpectrogram(buffer, config).pipe(map(({spectrogram, width, heigth}) => {
           return this.spectrogramToImageData(spectrogram, width, heigth, colormap);
         }));
-    }));
-  }
-
-  private getAudioBuffer(audio: IAudio, startTime?: number, stopTime?: number) {
-    return this.audioService.getAudioBuffer(audio.url).pipe(map(buffer => {
-      if (startTime == null || stopTime == null || (startTime === 0 && stopTime === buffer.duration)) {
-        return buffer;
-      }
-      return this.audioService.extractSegment(buffer, startTime, stopTime);
     }));
   }
 

@@ -1,5 +1,6 @@
 export interface IAudio {
   url: string;
+  spectrogramUrl?: string;
 }
 
 export interface ISpectrogramConfig {

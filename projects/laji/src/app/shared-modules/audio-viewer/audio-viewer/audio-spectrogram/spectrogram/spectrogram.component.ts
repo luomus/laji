@@ -1,8 +1,9 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Subscription, Observable, of } from 'rxjs';
+import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../../models';
 import { AudioViewerUtils } from '../../../service/audio-viewer-utils';
+import { AudioService } from '../../../service/audio.service';
 import { SpectrogramService } from '../../../service/spectrogram.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpectrogramComponent implements OnChanges {
-  @ViewChild('canvas', {static: true}) canvasRef: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: false }) canvasRef: ElementRef<HTMLCanvasElement>;
 
   @Input() audio: IAudio;
   @Input() startTime: number;
@@ -27,10 +28,12 @@ export class SpectrogramComponent implements OnChanges {
   @Output() spectrogramReady = new EventEmitter();
 
   imageData: ImageData;
+  showPregeneratedSpectrogram = false;
 
   private imageDataSub: Subscription;
 
   constructor(
+    private audioService: AudioService,
     private spectrogramService: SpectrogramService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -38,6 +41,7 @@ export class SpectrogramComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.audio || changes.startTime || changes.endTime || changes.config) {
       this.imageData = null;
+      this.showPregeneratedSpectrogram = false;
       this.clearCanvas();
 
       if (this.imageDataSub) {
@@ -45,20 +49,38 @@ export class SpectrogramComponent implements OnChanges {
       }
 
       if (this.audio && this.startTime != null && this.endTime != null) {
-        this.imageDataSub = this.spectrogramService.getSpectrogramImageData(this.audio, this.startTime, this.endTime, this.config)
-          .pipe(delay(0))
-          .subscribe((result) => {
-            this.imageData = result;
-            this.drawImage(this.imageData, this.canvasRef.nativeElement);
-            this.spectrogramReady.emit();
-            this.cdr.markForCheck();
-          });
+        this.imageDataSub = this.audioService.getAudioBuffer(this.audio.url).pipe(switchMap(buffer => {
+          if (this.startTime === 0 && this.endTime === buffer.duration) {
+            if (this.audio.spectrogramUrl) {
+              this.showPregeneratedSpectrogram = true;
+              return of(null);
+            }
+            return this.createSpectrogram(buffer);
+          }
+
+          buffer = this.audioService.extractSegment(buffer, this.startTime, this.endTime);
+          return this.createSpectrogram(buffer);
+        }), delay(0)).subscribe(() => {
+          this.spectrogramReady.emit();
+          this.cdr.markForCheck();
+        });
       }
     } else if (changes.view) {
       if (this.imageData) {
         this.drawImage(this.imageData, this.canvasRef.nativeElement);
       }
     }
+  }
+
+  private createSpectrogram(buffer: AudioBuffer): Observable<void> {
+    return this.spectrogramService.getSpectrogramImageData(buffer, this.config)
+      .pipe(
+        tap(result => {
+          this.imageData = result;
+          this.drawImage(this.imageData, this.canvasRef.nativeElement);
+        }),
+        map(() => null)
+      );
   }
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
@@ -86,8 +108,10 @@ export class SpectrogramComponent implements OnChanges {
   }
 
   private clearCanvas() {
-    const canvas = this.canvasRef.nativeElement;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (this.canvasRef) {
+      const canvas = this.canvasRef.nativeElement;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
   }
 }

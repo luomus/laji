@@ -1,5 +1,15 @@
 <canvas
+  *ngIf="!showPregeneratedSpectrogram else image"
   #canvas
   [style.width]="(width || imageData?.width) + 'px'"
   [style.height]="(height || imageData?.height) + 'px'"
 ></canvas>
+
+<ng-template #image>
+  <img
+    alt="Spectrogram"
+    [src]="audio.spectrogramUrl"
+    [style.width]="width ? width + 'px' : 'auto'"
+    [style.height]="height ? height + 'px' : 'auto'"
+  >
+</ng-template>
