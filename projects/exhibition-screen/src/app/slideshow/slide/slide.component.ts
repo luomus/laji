@@ -21,6 +21,8 @@ export class SlideComponent implements OnChanges {
 	constructor(private el: ElementRef, private renderer: Renderer2) {}
 
 	ngOnChanges() {
-		this.renderer.setStyle(this.el.nativeElement, 'background-image', `url(${this.data.bgSrc})`);
+		if (!this.data.bgIsVideo) {
+			this.renderer.setStyle(this.el.nativeElement, 'background-image', `url(${this.data.bgSrc})`);
+		}
 	}
 }
