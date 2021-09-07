@@ -93,7 +93,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     time: ['time', 'season', 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     place: [
       'countryId',
+      'provinceId',
       'biogeographicalProvinceId',
+      'elyCentreId',
       'finnishMunicipalityId',
       'area',
       'coordinates',

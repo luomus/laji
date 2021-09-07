@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $rowHeight: 25mm;
 $perPage: 10;
 $baseFontSize: 12pt;
@@ -112,13 +114,13 @@ $baseFontSize: 12pt;
     border-bottom: dashed 1px #000;
   }
   .biotopes-2 td{
-    height: $rowHeight / 2;
+    height: math.div($rowHeight, 2);
   }
   .biotopes-3 td{
-    height: $rowHeight / 3;
+    height: math.div($rowHeight, 3);
   }
   .biotopes-4 td{
-    height: $rowHeight / 4;
+    height: math.div($rowHeight, 4);
   }
   td:last-of-type {
     text-align: right;
