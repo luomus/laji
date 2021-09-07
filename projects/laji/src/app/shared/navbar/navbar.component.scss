@@ -55,6 +55,10 @@
   float: left;
 }
 
+.navbar .navbar-nav > li > a {
+  text-decoration: none;
+}
+
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li.open > a,
 .navbar-inverse .navbar-brand:hover {
@@ -94,10 +98,11 @@
   border-color: darken($color-main, 10%)
 }
 
-.navbar-brand {
+.navbar .navbar-brand {
   color: #ffffff;
   font-weight: 700;
   letter-spacing: 2px;
+  text-decoration: none;
 }
 
 .navbar-collapse .active a {
@@ -250,6 +255,10 @@
 
 .dropdown-menu {
   border: unset;
+}
+
+.dropdown-menu a {
+  text-decoration: none;
 }
 
 .link.user > .glyphicon-triangle-bottom {

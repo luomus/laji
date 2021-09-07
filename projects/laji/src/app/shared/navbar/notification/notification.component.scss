@@ -22,6 +22,10 @@
   flex-grow: 1;
 }
 
+.notification:visited {
+  color: $neutral-8;
+}
+
 .notification:not(.ghost):hover {
   background-color: $neutral-3;
 }
