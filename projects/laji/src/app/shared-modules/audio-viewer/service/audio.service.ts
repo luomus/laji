@@ -19,6 +19,7 @@ export class AudioService {
   private resumeContext$: Observable<void>;
 
   private actualDurationOfRecordings = 60;
+  private cacheSize = 20;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -191,7 +192,7 @@ export class AudioService {
 
   private removeOldBuffersFromCache() {
     const keys = Object.keys(this.buffer);
-    while (keys.length > 3) {
+    while (keys.length > this.cacheSize) {
       const times = keys.map(key => this.buffer[key].time);
       const removed = times.indexOf(Math.min(...times));
       const removedKey = keys[removed];
