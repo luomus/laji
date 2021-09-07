@@ -20,7 +20,13 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
       (queryChange)="updateSpeciesList()"
     ></laji-species-list>
   `,
-  styles: []
+  styles: [`
+    :host {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+  `]
 })
 export class ValidationComponent implements OnInit, OnDestroy {
   speciesQuery: IKerttuSpeciesQuery = { page: 1, onlyUnvalidated: false };
