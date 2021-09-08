@@ -65,10 +65,12 @@ const routesWithLang: Routes = [
   {path: 'en', data: {lang: 'en'}, children: [
     ...redirectsEn,
     ...baseRoutes,
+    {path: 'theme/ekj', redirectTo: '/about/3061', pathMatch: 'full'},
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     ...redirectsFi,
+    {path: 'theme/ekj', redirectTo: '/about/5719', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
@@ -87,6 +89,7 @@ const routesWithLang: Routes = [
     {path: 'mobiilivihko', redirectTo: '/about/4981', pathMatch: 'full'},
     {path: 'ilmoita', redirectTo: '/save-observations', pathMatch: 'full'},
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
+    {path: 'theme/ekj', redirectTo: '/about/5719', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleFiComponent, canActivate: [LocalizeGuard]}
