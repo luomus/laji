@@ -1,6 +1,6 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
   <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
-  <div class="spectrogram-container" [ngClass]="{'visibility-hidden': loading}">
+  <div class="spectrogram-container">
     <laji-audio-spectrogram
       [audio]="audio"
       [view]="view"
@@ -17,6 +17,7 @@
       [width]="spectrogramWidth"
       [height]="spectrogramHeight"
       [margin]="spectrogramMargin"
+      [showPregeneratedSpectrogram]="showPregeneratedSpectrogram"
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"
@@ -25,7 +26,7 @@
     ></laji-audio-spectrogram>
   </div>
 
-  <div class="audio-controls" [ngClass]="{'visibility-hidden': loading}" *ngIf="showControls">
+  <div class="audio-controls" *ngIf="showControls">
     <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
       <span
         class="fa"

@@ -34,6 +34,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];
 
+  @Input() showPregeneratedSpectrogram = false;
   @Input() config: ISpectrogramConfig;
 
   @Input() currentTime: number;

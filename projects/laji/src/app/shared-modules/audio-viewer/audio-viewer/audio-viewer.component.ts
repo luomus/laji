@@ -52,6 +52,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
 
+  @Input() showPregeneratedSpectrogram = false;
+
   @Input() spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 22050,
     nperseg: 256,

@@ -25,11 +25,11 @@ export class SpectrogramComponent implements OnChanges {
   @Input() width?: number;
   @Input() height?: number;
 
+  @Input() showPregeneratedSpectrogram = false;
+
   @Output() spectrogramReady = new EventEmitter();
 
   imageData: ImageData;
-  showPregeneratedSpectrogram = false;
-
   private imageDataSub: Subscription;
 
   constructor(
@@ -41,7 +41,6 @@ export class SpectrogramComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.audio || changes.startTime || changes.endTime || changes.config) {
       this.imageData = null;
-      this.showPregeneratedSpectrogram = false;
       this.clearCanvas();
 
       if (this.imageDataSub) {
@@ -49,18 +48,14 @@ export class SpectrogramComponent implements OnChanges {
       }
 
       if (this.audio && this.startTime != null && this.endTime != null) {
-        this.imageDataSub = this.audioService.getAudioBuffer(this.audio.url).pipe(switchMap(buffer => {
-          if (this.startTime === 0 && this.endTime === buffer.duration) {
-            if (this.audio.spectrogramUrl) {
-              this.showPregeneratedSpectrogram = true;
-              return of(null);
+        this.imageDataSub = (this.showPregeneratedSpectrogram ? of(null) :
+          this.audioService.getAudioBuffer(this.audio.url).pipe(switchMap(buffer => {
+            if (this.startTime !== 0 || this.endTime !== buffer.duration) {
+              buffer = this.audioService.extractSegment(buffer, this.startTime, this.endTime);
             }
             return this.createSpectrogram(buffer);
-          }
-
-          buffer = this.audioService.extractSegment(buffer, this.startTime, this.endTime);
-          return this.createSpectrogram(buffer);
-        }), delay(0)).subscribe(() => {
+          }))
+        ).pipe(delay(0)).subscribe(() => {
           this.spectrogramReady.emit();
           this.cdr.markForCheck();
         });
