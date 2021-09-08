@@ -39,7 +39,7 @@ export interface IKerttuRecording {
 
 export interface IKerttuLetterTemplate {
   audioId: number;
-  area?: IAudioViewerArea;
+  area: IAudioViewerArea;
 }
 
 export interface IGlobalAudio extends IAudio {

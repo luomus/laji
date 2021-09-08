@@ -12,12 +12,12 @@
     [audio]="audio"
     [spectrogramConfig]="spectrogramConfig"
     [mode]="audioViewerMode"
-    [focusArea]="template.area"
+    [focusArea]="template ? template.area : {'xRange': [focusTime, focusTime]}"
     [spectrogramHeight]="150"
     [showZoomControl]="true"
-    [zoomFrequency]="zoomFrequency"
+    [zoomFrequency]="template ? zoomFrequency : false"
     [zoomTime]="true"
-    [timePaddingOnZoom]="timePadding"
+    [timePaddingOnZoom]="template ? timePadding : 60"
     (drawEnd)="onDrawEnd($event)"
   ></laji-audio-viewer>
 </div>
@@ -28,7 +28,7 @@
       [ngClass]="{'active': audioViewerMode === 'draw'}"
       (click)="toggleDrawMode()"
     >
-      {{ ('validation.templates.' + (template.area ? 'reframe' : 'frame')) | translate }}
+      {{ ('validation.templates.' + (template ? 'reframe' : 'frame')) | translate }}
     </button>
   </div>
 </div>
@@ -40,7 +40,7 @@
   </div>
   <div class="col-sm-8">
     <laji-audio-viewer
-      *ngIf="template.area"
+      *ngIf="template"
       [audio]="audio"
       [spectrogramConfig]="spectrogramConfig"
       [focusArea]="template.area"
@@ -58,7 +58,7 @@
 <div class="mt-3 mb-5">
   <div class="pull-right">
     <button
-      [disabled]="!template.area"
+      [disabled]="!template"
       class="btn btn-success mr-3"
       (click)="confirm.emit(template)"
     >
@@ -71,7 +71,7 @@
       {{ 'validation.templates.cancel' | translate }}
     </button>
     <button
-      [disabled]="!template.area || isNew"
+      [disabled]="!template || isNew"
       class="btn btn-danger"
       (click)="remove.emit()"
     >

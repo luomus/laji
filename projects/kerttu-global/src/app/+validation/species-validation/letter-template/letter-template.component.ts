@@ -14,6 +14,7 @@ export class LetterTemplateComponent {
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() templateIdx: number;
   @Input() isNew: boolean;
+  @Input() focusTime: number;
 
   @Output() confirm = new EventEmitter<IKerttuLetterTemplate>();
   @Output() cancel = new EventEmitter();
@@ -30,7 +31,14 @@ export class LetterTemplateComponent {
   }
 
   onDrawEnd(area: IAudioViewerArea) {
-    this.template.area = area;
+    if (!this.template) {
+      this.template = {
+        audioId: this.audio.id,
+        area: area
+      };
+    } else {
+      this.template.area = area;
+    }
     this.audioViewerMode = 'default';
   }
 }

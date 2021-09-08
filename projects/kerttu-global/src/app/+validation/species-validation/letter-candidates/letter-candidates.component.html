@@ -7,7 +7,7 @@
       [spectrogramHeight]="80"
       [rectangles]="rectanges[i]"
       [showPregeneratedSpectrogram]="true"
-      (dblclick)="onAudioClick(item.audio)"
+      (spectrogramDblclick)="onAudioClick(item.audio, $event)"
       (audioLoading)="onAudioLoadingChange($event)"
     ></laji-audio-viewer>
     <h5 class="mt-0">{{ 'validation.templates.candidates' | translate }}</h5>
@@ -16,7 +16,7 @@
       [area]="candidate"
       [audio]="item.audio"
       [spectrogramConfig]="spectrogramConfig"
-      (templateClick)="onAudioClick(item.audio, candidate)"
+      (templateClick)="onCandidateClick(item.audio, candidate)"
     >
     </laji-small-audio-viewer>
   </ng-container>

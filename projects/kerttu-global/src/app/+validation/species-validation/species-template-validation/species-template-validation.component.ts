@@ -24,9 +24,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     nbrOfRowsRemovedFromStart: 0
   };
 
-  activeTemplate: IKerttuLetterTemplate;
   activeTemplateIdx: number;
+  activeTemplate: IKerttuLetterTemplate;
   activeTemplateIsNew: boolean;
+  activeAudio: IGlobalAudio;
+  focusTime: number;
 
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
@@ -50,7 +52,15 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     }
   }
 
-  onAudioClick(template: IKerttuLetterTemplate) {
+  onAudioClick(data: { audioId: number, time: number }) {
+    this.onNewTemplateClick(data.audioId, null, data.time);
+  }
+
+  onCandidateClick(template: IKerttuLetterTemplate) {
+    this.onNewTemplateClick(template.audioId, template);
+  }
+
+  private onNewTemplateClick(audioId: number, template?: IKerttuLetterTemplate, time?: number) {
     if (this.saving) {
       return;
     }
@@ -58,9 +68,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     if (newTemplateIdx === -1) {
       this.dialogService.alert('validation.templates.maxNbrOfTemplates');
     } else {
-      this.activeTemplate = template;
       this.activeTemplateIdx = newTemplateIdx;
+      this.activeTemplate = template;
       this.activeTemplateIsNew = true;
+      this.activeAudio = this.audioIdMap[audioId];
+      this.focusTime = time;
     }
   }
 
@@ -69,24 +81,25 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       return;
     }
     this.activeTemplate = this.templates[templateIdx];
+    this.activeAudio = this.audioIdMap[this.activeTemplate.audioId];
     this.activeTemplateIdx = templateIdx;
     this.activeTemplateIsNew = false;
   }
 
   onTemplateConfirm(template: IKerttuLetterTemplate) {
     this.templates[this.activeTemplateIdx] = template;
-    this.activeTemplate = null;
+    this.activeTemplateIdx = null;
   }
 
   onTemplateCancel() {
-    this.activeTemplate = null;
+    this.activeTemplateIdx = null;
   }
 
   onTemplateRemove() {
     this.dialogService.confirm('validation.templates.remove.confirm').subscribe(confirm => {
       if (confirm) {
         this.templates[this.activeTemplateIdx] = null;
-        this.activeTemplate = null;
+        this.activeTemplateIdx = null;
         this.cdr.markForCheck();
       }
     });

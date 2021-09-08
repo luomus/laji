@@ -21,6 +21,8 @@
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"
+      (spectrogramClick)="onSpectrogramClick($event)"
+      (spectrogramDblclick)="spectrogramDblclick.emit($event)"
       (zoomEnd)="onSpectrogramZoomEnd($event)"
       (drawEnd)="onSpectrogramDrawEnd($event)"
     ></laji-audio-spectrogram>

@@ -34,6 +34,8 @@ export class SpectrogramChartComponent implements OnChanges {
 
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
+  @Output() spectrogramClick = new EventEmitter<number>();
+  @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 
@@ -196,7 +198,11 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('fill', 'none')
         .on('click', () => {
           const x = clientPoint(event.target, event)[0];
-          this.dragEnd.emit(this.getTimeFromPosition(x));
+          this.spectrogramClick.emit(this.getTimeFromPosition(x));
+        })
+        .on('dblclick', () => {
+          const x = clientPoint(event.target, event)[0];
+          this.spectrogramDblclick.emit(this.getTimeFromPosition(x));
         }).style('cursor', 'pointer');
 
       // make scroll line draggable

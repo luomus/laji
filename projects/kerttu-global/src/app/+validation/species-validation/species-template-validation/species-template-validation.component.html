@@ -1,4 +1,4 @@
-<ng-container *ngIf="!activeTemplate else templateView">
+<ng-container *ngIf="activeTemplateIdx == null else templateView">
   <h2>{{ 'validation.templates' | translate }}</h2>
   <p>{{ 'validation.templates.description' | translate }}</p>
   <laji-letter-templates
@@ -42,15 +42,17 @@
     [templates]="templates"
     [spectrogramConfig]="spectrogramConfig"
     (audioClick)="onAudioClick($event)"
+    (candidateClick)="onCandidateClick($event)"
   ></laji-letter-candidates>
 </ng-container>
 
 <ng-template #templateView>
   <laji-letter-template
-    [audio]="audioIdMap[activeTemplate.audioId]"
+    [audio]="activeAudio"
     [template]="activeTemplate"
     [templateIdx]="activeTemplateIdx"
     [isNew]="activeTemplateIsNew"
+    [focusTime]="focusTime"
     [spectrogramConfig]="spectrogramConfig"
     (confirm)="onTemplateConfirm($event)"
     (cancel)="onTemplateCancel()"

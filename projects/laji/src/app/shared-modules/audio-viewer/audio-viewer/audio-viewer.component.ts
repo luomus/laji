@@ -51,6 +51,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
+  @Input() playOnClick = true;
 
   @Input() showPregeneratedSpectrogram = false;
 
@@ -83,6 +84,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
+  @Output() spectrogramDblclick = new EventEmitter<number>();
 
   private buffer: AudioBuffer;
   private audioSub: Subscription;
@@ -139,6 +141,12 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   onSpectrogramDragEnd(time: number) {
     this.audioPlayer.startFrom(time);
+  }
+
+  onSpectrogramClick(time: number) {
+    if (this.playOnClick) {
+      this.audioPlayer.startFrom(time);
+    }
   }
 
   onSpectrogramZoomEnd(area: IAudioViewerArea) {

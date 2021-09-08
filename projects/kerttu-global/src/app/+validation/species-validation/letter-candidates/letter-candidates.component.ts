@@ -13,7 +13,8 @@ export class LetterCandidatesComponent implements OnChanges {
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() templates: IKerttuLetterTemplate[];
 
-  @Output() audioClick = new EventEmitter<IKerttuLetterTemplate>();
+  @Output() audioClick = new EventEmitter<{audioId: number, time: number}>();
+  @Output() candidateClick = new EventEmitter<IKerttuLetterTemplate>();
 
   rectanges: IAudioViewerRectangle[][] = [];
 
@@ -29,8 +30,12 @@ export class LetterCandidatesComponent implements OnChanges {
     }
   }
 
-  onAudioClick(audio: IGlobalAudio, area?: IAudioViewerArea) {
-    this.audioClick.emit({'audioId': audio.id, area});
+  onAudioClick(audio: IGlobalAudio, time: number) {
+    this.audioClick.emit({'audioId': audio.id, time});
+  }
+
+  onCandidateClick(audio: IGlobalAudio, area: IAudioViewerArea) {
+    this.candidateClick.emit({'audioId': audio.id, area});
   }
 
   onAudioLoadingChange(loading: boolean) {

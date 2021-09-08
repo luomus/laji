@@ -13,7 +13,7 @@
     [axisFontSize]="7"
     [spectrogramHeight]="50"
     [spectrogramMargin]="margin"
-    (dblclick)="templateClick.emit()"
+    (spectrogramDblclick)="templateClick.emit()"
     (audioLoading)="audioLoading.emit($event)"
   ></laji-audio-viewer>
   <ng-template #noTemplate>

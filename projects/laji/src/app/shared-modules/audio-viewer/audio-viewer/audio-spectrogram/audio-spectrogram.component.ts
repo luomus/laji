@@ -47,6 +47,8 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Output() spectrogramReady = new EventEmitter();
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
+  @Output() spectrogramClick = new EventEmitter<number>();
+  @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() zoomEnd = new EventEmitter<IAudioViewerArea>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
 

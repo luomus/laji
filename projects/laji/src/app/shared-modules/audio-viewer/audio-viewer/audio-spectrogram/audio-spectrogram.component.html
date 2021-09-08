@@ -31,6 +31,8 @@
     [mode]="mode"
     (dragStart)="dragStart.emit()"
     (dragEnd)="dragEnd.emit($event)"
+    (spectrogramClick)="spectrogramClick.emit($event)"
+    (spectrogramDblclick)="spectrogramDblclick.emit($event)"
     (zoomEnd)="zoomEnd.emit($event)"
     (drawEnd)="drawEnd.emit($event)"
   ></laji-spectrogram-chart>
