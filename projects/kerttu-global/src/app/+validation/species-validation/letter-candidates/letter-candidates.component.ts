@@ -17,14 +17,26 @@ export class LetterCandidatesComponent implements OnChanges {
 
   rectanges: IAudioViewerRectangle[][] = [];
 
+  audioLoadingLimit = 0;
+  private maxLoadingAtTheSameTime = 5;
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data || changes.templates) {
+      if (changes.data) {
+        this.audioLoadingLimit = this.maxLoadingAtTheSameTime;
+      }
       this.initRectangles();
     }
   }
 
   onAudioClick(audio: IGlobalAudio, area?: IAudioViewerArea) {
     this.audioClick.emit({'audioId': audio.id, area});
+  }
+
+  onAudioLoadingChange(loading: boolean) {
+    if (!loading) {
+      this.audioLoadingLimit += 1;
+    }
   }
 
   private initRectangles() {

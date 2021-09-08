@@ -14,6 +14,7 @@
     [spectrogramHeight]="50"
     [spectrogramMargin]="margin"
     (dblclick)="templateClick.emit()"
+    (audioLoading)="audioLoading.emit($event)"
   ></laji-audio-viewer>
   <ng-template #noTemplate>
     <div [style.padding]="margin.top + 'px ' + margin.right + 'px ' + margin.bottom + 'px ' + margin.left + 'px'">

@@ -1,19 +1,22 @@
 <div *ngFor="let item of data; let i = index" class="audio-container">
   <h4 class="mt-3">{{ 'validation.templates.audio' | translate }} {{ i + 1 }}</h4>
-  <laji-audio-viewer
-    [audio]="item.audio"
-    [spectrogramConfig]="spectrogramConfig"
-    [spectrogramHeight]="80"
-    [rectangles]="rectanges[i]"
-    (dblclick)="onAudioClick(item.audio)"
-  ></laji-audio-viewer>
-  <h5 class="mt-0">{{ 'validation.templates.candidates' | translate }}</h5>
-  <laji-small-audio-viewer
-    *ngFor="let candidate of item.candidates; let i = index"
-    [area]="candidate"
-    [audio]="item.audio"
-    [spectrogramConfig]="spectrogramConfig"
-    (templateClick)="onAudioClick(item.audio, candidate)"
-  >
-  </laji-small-audio-viewer>
+  <ng-container *ngIf="i < audioLoadingLimit">
+    <laji-audio-viewer
+      [audio]="item.audio"
+      [spectrogramConfig]="spectrogramConfig"
+      [spectrogramHeight]="80"
+      [rectangles]="rectanges[i]"
+      (dblclick)="onAudioClick(item.audio)"
+      (audioLoading)="onAudioLoadingChange($event)"
+    ></laji-audio-viewer>
+    <h5 class="mt-0">{{ 'validation.templates.candidates' | translate }}</h5>
+    <laji-small-audio-viewer
+      *ngFor="let candidate of item.candidates; let i = index"
+      [area]="candidate"
+      [audio]="item.audio"
+      [spectrogramConfig]="spectrogramConfig"
+      (templateClick)="onAudioClick(item.audio, candidate)"
+    >
+    </laji-small-audio-viewer>
+  </ng-container>
 </div>

@@ -15,6 +15,7 @@ export class SmallAudioViewerComponent {
   @Input() label: string;
 
   @Output() templateClick = new EventEmitter<number>();
+  @Output() audioLoading = new EventEmitter<boolean>();
 
   margin: { top: number, bottom: number, left: number, right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
 }
