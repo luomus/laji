@@ -199,8 +199,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   }
 
   private getPlayArea(): IAudioViewerArea {
-    const xRange = this.highlightFocusArea && this.view === this.defaultView ? this.focusArea.xRange : this.view.xRange;
-    const yRange = this.zoomFrequency ? this.focusArea.yRange : this.view.yRange;
+    const xRange = this.highlightFocusArea && this.view === this.defaultView && this.focusArea ? this.focusArea.xRange : this.view.xRange;
+    const yRange = this.zoomFrequency && this.focusArea ? this.focusArea.yRange : this.view.yRange;
 
     return { xRange, yRange };
   }
