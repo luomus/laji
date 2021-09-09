@@ -10,6 +10,8 @@ import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shar
 })
 export class LetterTemplatesComponent {
   @Input() templates: IKerttuLetterTemplate[];
+  @Input() confirmedTemplates: boolean[];
+
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() audioIdMap: {[id: number]: IGlobalAudio };
 

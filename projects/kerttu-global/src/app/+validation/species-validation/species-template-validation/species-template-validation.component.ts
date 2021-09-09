@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { IGlobalAudio, IKerttuLetterTemplate, IKerttuRecording } from '../../../kerttu-global-shared/models';
@@ -14,8 +15,12 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() templates?: IKerttuLetterTemplate[];
   @Input() saving = false;
 
+  hasInitialTemplates = false;
+
   showCandidates = false;
   candidatesLoaded = false;
+
+  confirmedTemplates = [];
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
@@ -36,6 +41,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Output() cancel = new EventEmitter();
 
   constructor(
+    private translate: TranslateService,
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -48,7 +54,9 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       });
     }
     if (changes.templates && this.templates) {
-      this.setShowCandidates(this.templates.indexOf(null) !== -1);
+      this.confirmedTemplates = this.templates.map(() => false);
+      this.hasInitialTemplates = this.templates.indexOf(null) === -1;
+      this.setShowCandidates(!this.hasInitialTemplates);
     }
   }
 
@@ -58,6 +66,60 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   onCandidateClick(template: IKerttuLetterTemplate) {
     this.onNewTemplateClick(template.audioId, template);
+  }
+
+  onTemplateClick(templateIdx: number) {
+    if (this.saving) {
+      return;
+    }
+    this.activeTemplate = this.templates[templateIdx];
+    this.activeAudio = this.audioIdMap[this.activeTemplate.audioId];
+    this.activeTemplateIdx = templateIdx;
+    this.activeTemplateIsNew = false;
+  }
+
+  onTemplateConfirm(template: IKerttuLetterTemplate) {
+    this.templates[this.activeTemplateIdx] = template;
+    this.confirmedTemplates[this.activeTemplateIdx] = true;
+    this.activeTemplateIdx = null;
+  }
+
+  onTemplateCancel() {
+    this.activeTemplateIdx = null;
+  }
+
+  onTemplateRemove() {
+    this.dialogService.confirm('validation.templates.remove.confirm').subscribe(confirm => {
+      if (confirm) {
+        this.templates[this.activeTemplateIdx] = null;
+        this.confirmedTemplates[this.activeTemplateIdx] = false;
+        this.activeTemplateIdx = null;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  setShowCandidates(value: boolean) {
+    this.showCandidates = value;
+    if (this.showCandidates) {
+      this.candidatesLoaded = true;
+    }
+  }
+
+  confirmAllTemplates() {
+    this.confirmedTemplates = this.templates.map(template => !!template);
+  }
+
+  saveTemplates() {
+    const missingConfirm = this.confirmedTemplates.indexOf(false) !== -1;
+    if (missingConfirm) {
+      this.dialogService.alert(
+        this.translate.instant(this.hasInitialTemplates ? 'validation.missingConfirm' : 'validation.missingTemplates')
+      );
+      return;
+    }
+
+    this.save.emit(this.templates);
   }
 
   private onNewTemplateClick(audioId: number, template?: IKerttuLetterTemplate, time?: number) {
@@ -73,42 +135,6 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       this.activeTemplateIsNew = true;
       this.activeAudio = this.audioIdMap[audioId];
       this.focusTime = time;
-    }
-  }
-
-  onTemplateClick(templateIdx: number) {
-    if (this.saving) {
-      return;
-    }
-    this.activeTemplate = this.templates[templateIdx];
-    this.activeAudio = this.audioIdMap[this.activeTemplate.audioId];
-    this.activeTemplateIdx = templateIdx;
-    this.activeTemplateIsNew = false;
-  }
-
-  onTemplateConfirm(template: IKerttuLetterTemplate) {
-    this.templates[this.activeTemplateIdx] = template;
-    this.activeTemplateIdx = null;
-  }
-
-  onTemplateCancel() {
-    this.activeTemplateIdx = null;
-  }
-
-  onTemplateRemove() {
-    this.dialogService.confirm('validation.templates.remove.confirm').subscribe(confirm => {
-      if (confirm) {
-        this.templates[this.activeTemplateIdx] = null;
-        this.activeTemplateIdx = null;
-        this.cdr.markForCheck();
-      }
-    });
-  }
-
-  setShowCandidates(value: boolean) {
-    this.showCandidates = value;
-    if (this.showCandidates) {
-      this.candidatesLoaded = true;
     }
   }
 }

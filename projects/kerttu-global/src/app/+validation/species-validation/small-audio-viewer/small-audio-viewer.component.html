@@ -1,4 +1,4 @@
-<div class="template-container">
+<div class="template-container" [ngClass]="{'highlight': highlight}">
   <label *ngIf="label" [style.padding-left]="margin.left + 'px'">{{ label }}</label>
   <laji-audio-viewer
     *ngIf="area else noTemplate"

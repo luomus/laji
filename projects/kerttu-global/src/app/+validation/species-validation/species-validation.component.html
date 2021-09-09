@@ -2,11 +2,13 @@
   <h1 *ngIf="species$ | async as species">
     {{ species.commonName }} - <i>{{ species.scientificName }}</i>
   </h1>
-  <laji-species-template-validation
-    [data]="validationData$ | async"
-    [templates]="templates$ | async"
-    [saving]="saving"
-    (save)="saveTemplates($event)"
-    (cancel)="cancel()"
-  ></laji-species-template-validation>
+  <ng-container *ngIf="templates$ | async as templates">
+    <laji-species-template-validation
+      [data]="validationData$ | async"
+      [templates]="templates"
+      [saving]="saving"
+      (save)="saveTemplates($event)"
+      (cancel)="cancel()"
+    ></laji-species-template-validation>
+  </ng-container>
 </div>

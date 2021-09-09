@@ -9,6 +9,10 @@ laji-audio-viewer {
   display: inline-block;
   vertical-align: top;
 
+  &.highlight {
+    background-color: $warning-2;
+  }
+
   label {
     margin-bottom: 0;
     display: block;

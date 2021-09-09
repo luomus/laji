@@ -76,14 +76,6 @@ export class SpeciesValidationComponent implements OnInit {
 
 
   saveTemplates(templates: IKerttuLetterTemplate[]) {
-    const missingTemplates = templates.indexOf(null) !== -1;
-    if (missingTemplates) {
-      this.dialogService.alert(
-        this.translate.instant('validation.missingTemplates')
-      );
-      return;
-    }
-
     this.saving = true;
     this.kerttuApi.saveTemplates(this.userService.getToken(), this.speciesId, templates).subscribe(() => {
       this.saving = false;

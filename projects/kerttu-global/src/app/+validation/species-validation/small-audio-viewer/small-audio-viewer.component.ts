@@ -13,6 +13,7 @@ export class SmallAudioViewerComponent {
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() audio: IGlobalAudio;
   @Input() label: string;
+  @Input() highlight = false;
 
   @Output() templateClick = new EventEmitter<number>();
   @Output() audioLoading = new EventEmitter<boolean>();

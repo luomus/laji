@@ -5,6 +5,7 @@
     [area]="template?.area"
     [audio]="audioIdMap[template?.audioId]"
     [spectrogramConfig]="spectrogramConfig"
+    [highlight]="template && !confirmedTemplates?.[i]"
     (templateClick)="templateClick.emit(i)"
   >
   </laji-small-audio-viewer>
