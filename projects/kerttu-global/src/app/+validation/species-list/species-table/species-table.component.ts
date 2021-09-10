@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { DatatableColumn, DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpecies } from '../../../kerttu-global-shared/models';
+import { IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-table',
@@ -10,7 +10,7 @@ import { IKerttuSpecies } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTableComponent {
-  @Input() data: PagedResult<IKerttuSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  @Input() data: PagedResult<IGlobalSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
   @Input() loading = false;
 
   columns: DatatableColumn[] = [

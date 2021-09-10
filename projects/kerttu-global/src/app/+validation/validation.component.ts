@@ -3,7 +3,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IKerttuSpeciesQuery, IKerttuSpecies, IKerttuSpeciesFilters } from '../kerttu-global-shared/models';
+import { IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters } from '../kerttu-global-shared/models';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
@@ -29,21 +29,21 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
   `]
 })
 export class ValidationComponent implements OnInit, OnDestroy {
-  speciesQuery: IKerttuSpeciesQuery = { page: 1, onlyUnvalidated: false };
-  speciesFilters$: Observable<IKerttuSpeciesFilters>;
-  speciesList: PagedResult<IKerttuSpecies> = { results: [], currentPage: 0, total: 0, pageSize: 0 };
+  speciesQuery: IGlobalSpeciesQuery = { page: 1, onlyUnvalidated: false };
+  speciesFilters$: Observable<IGlobalSpeciesFilters>;
+  speciesList: PagedResult<IGlobalSpecies> = { results: [], currentPage: 0, total: 0, pageSize: 0 };
   loading = false;
 
   private speciesListSub: Subscription;
 
   constructor(
     private userService: UserService,
-    private kerttuApi: KerttuGlobalApi,
+    private kerttuGlobalApi: KerttuGlobalApi,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef
   ) {
-    this.speciesFilters$ = this.kerttuApi.getSpeciesFilters();
+    this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
   }
 
   ngOnInit() {
@@ -66,7 +66,7 @@ export class ValidationComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     this.speciesListSub = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuApi.getSpeciesList(this.userService.getToken(), this.speciesQuery))
+      switchMap(() => this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.speciesQuery))
     ).subscribe(data => {
       this.speciesList = data;
       this.loading = false;

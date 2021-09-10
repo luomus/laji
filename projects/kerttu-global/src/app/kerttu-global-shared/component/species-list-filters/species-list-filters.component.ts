@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../models';
+import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
 
 @Component({
   selector: 'laji-species-list-filters',
@@ -8,11 +8,11 @@ import { IKerttuSpeciesFilters, IKerttuSpeciesQuery } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListFiltersComponent {
-  @Input() filters: IKerttuSpeciesFilters = {continent: [], order: [], family: []};
-  @Input() query: IKerttuSpeciesQuery = {};
+  @Input() filters: IGlobalSpeciesFilters = {continent: [], order: [], family: []};
+  @Input() query: IGlobalSpeciesQuery = {};
   @Input() showOnlyUnvalidated = true;
 
-  @Output() queryChange = new EventEmitter<IKerttuSpeciesQuery>();
+  @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
 
   selectChange(field: 'continent'|'order'|'family', value: string) {
     this.query[field] = parseInt(value, 10) || null;

@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewCh
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-letter-template',
@@ -11,7 +11,7 @@ import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shar
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LetterTemplateComponent {
-  @Input() template: IKerttuLetterTemplate;
+  @Input() template: IGlobalTemplate;
   @Input() audio: IGlobalAudio;
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() templateIdx: number;
@@ -19,7 +19,7 @@ export class LetterTemplateComponent {
   @Input() focusTime: number;
   @Input() requireComment = false;
 
-  @Output() confirm = new EventEmitter<{template: IKerttuLetterTemplate, comment?: string}>();
+  @Output() confirm = new EventEmitter<{template: IGlobalTemplate, comment?: string}>();
   @Output() cancel = new EventEmitter();
   @Output() remove = new EventEmitter<{comment?: string}>();
 
@@ -94,7 +94,7 @@ export class LetterTemplateComponent {
     }
   }
 
-  confirmTemplate(template: IKerttuLetterTemplate, comment?: string) {
+  confirmTemplate(template: IGlobalTemplate, comment?: string) {
     this.confirm.emit({template, comment});
   }
 

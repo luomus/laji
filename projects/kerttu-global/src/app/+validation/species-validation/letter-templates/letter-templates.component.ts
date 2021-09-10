@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-letter-templates',
@@ -9,7 +9,7 @@ import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shar
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LetterTemplatesComponent {
-  @Input() templates: IKerttuLetterTemplate[];
+  @Input() templates: IGlobalTemplate[];
   @Input() confirmedTemplates: boolean[];
 
   @Input() spectrogramConfig: ISpectrogramConfig;

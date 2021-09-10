@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IKerttuSpeciesFilters, IKerttuSpeciesQuery, IUserStat, IValidationStat } from '../kerttu-global-shared/models';
+import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat } from '../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, startWith } from 'rxjs/operators';
@@ -29,22 +29,22 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
   `
 })
 export class ResultsComponent {
-  speciesFilters$: Observable<IKerttuSpeciesFilters>;
+  speciesFilters$: Observable<IGlobalSpeciesFilters>;
   validationStats$: Observable<IValidationStat[]>;
   userStats$: Observable<IUserStat[]>;
   userId$: Observable<string>;
 
-  private speciesQuerySubject = new BehaviorSubject<IKerttuSpeciesQuery>({});
+  private speciesQuerySubject = new BehaviorSubject<IGlobalSpeciesQuery>({});
   speciesQuery$ = this.speciesQuerySubject.asObservable();
 
   constructor(
-    private kerttuApi: KerttuGlobalApi,
+    private kerttuGlobalApi: KerttuGlobalApi,
     private userService: UserService
   ) {
-    this.speciesFilters$ = this.kerttuApi.getSpeciesFilters();
+    this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
     this.validationStats$ = this.speciesQuery$.pipe(
       switchMap(speciesQuery => {
-        return this.kerttuApi.getValidationStats(speciesQuery).pipe(
+        return this.kerttuGlobalApi.getValidationStats(speciesQuery).pipe(
           map(result => result.results),
           startWith(null)
         );
@@ -56,7 +56,7 @@ export class ResultsComponent {
     ]).pipe(
       switchMap(([speciesQuery, loggedIn]) => {
         const token = loggedIn ? this.userService.getToken() : undefined;
-        return this.kerttuApi.getUserStats(speciesQuery, token).pipe(
+        return this.kerttuGlobalApi.getUserStats(speciesQuery, token).pipe(
           map(result => result.results),
           startWith(null)
         );
@@ -65,7 +65,7 @@ export class ResultsComponent {
     this.userId$ = this.userService.user$.pipe(map(user => user?.id));
   }
 
-  onSpeciesQueryChange(query: IKerttuSpeciesQuery) {
+  onSpeciesQueryChange(query: IGlobalSpeciesQuery) {
     this.speciesQuerySubject.next(query);
   }
 }

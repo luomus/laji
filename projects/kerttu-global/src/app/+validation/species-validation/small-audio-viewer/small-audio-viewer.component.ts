@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IKerttuLetterTemplate } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-small-audio-viewer',

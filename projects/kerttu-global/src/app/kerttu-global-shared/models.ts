@@ -8,7 +8,7 @@ export interface SuccessResult {
   success: true;
 }
 
-export interface IKerttuSpeciesQuery {
+export interface IGlobalSpeciesQuery {
   onlyUnvalidated?: boolean;
   continent?: number;
   order?: number;
@@ -18,7 +18,7 @@ export interface IKerttuSpeciesQuery {
   orderBy?: string[];
 }
 
-export interface IKerttuSpecies {
+export interface IGlobalSpecies {
   id: number;
   scientificName: string;
   commonName: string;
@@ -26,25 +26,25 @@ export interface IKerttuSpecies {
   userHasValidated: boolean;
 }
 
-export interface IKerttuSpeciesFilters {
+export interface IGlobalSpeciesFilters {
   continent: {id: number, name: string}[];
   order: {id: number, scientificName: string}[];
   family: {id: number, scientificName: string, order: number}[];
 }
 
-export interface IKerttuRecording {
+export interface IGlobalRecording {
   audio: IGlobalAudio;
   candidates?: IAudioViewerArea[];
 }
 
-export interface IKerttuLetterTemplate {
+export interface IGlobalTemplate {
   audioId: number;
   area: IAudioViewerArea;
 }
 
 export interface IGlobalAudio extends IAudio {
   id: number;
-  species: IKerttuSpecies;
+  species: IGlobalSpecies;
   recordist?: string;
   country?: string;
   state?: string;
