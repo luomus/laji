@@ -2,7 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  SuccessResult } from '../models';
+  SuccessResult, 
+  IGlobalComment} from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -48,11 +49,11 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IGlobalTemplate>>(path);
   }
 
-  public saveTemplates(personToken: string, taxonId: number, templates: IGlobalTemplate[]): Observable<SuccessResult> {
+  public saveTemplates(personToken: string, taxonId: number, data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}): Observable<SuccessResult> {
     const path = this.basePath + '/template/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.post<SuccessResult>(path, templates, { params });
+    return this.httpClient.post<SuccessResult>(path, data, { params });
   }
 
   public getValidationStats(query: IGlobalSpeciesQuery): Observable<IListResult<IValidationStat>> {

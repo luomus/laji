@@ -84,13 +84,13 @@
   <div class="modal-content">
     <div class="modal-body">
       <p>{{ 'validation.templates.confirmAndComment' | translate }}</p>
-      <textarea id="comment" class="form-control" [(ngModel)]="comment" name="comment" rows="7"></textarea>
+      <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="hideCommentModal()">
         <span>{{ 'validation.templates.cancel' | translate }}</span>
       </button>
-      <button type="button" class="btn btn-success" [disabled]="!comment" (click)="this.confirmOrRemoveWithComment()">
+      <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
         <span>{{ 'validation.templates.confirm' | translate }}</span>
       </button>
     </div>

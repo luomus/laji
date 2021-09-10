@@ -38,8 +38,16 @@ export interface IGlobalRecording {
 }
 
 export interface IGlobalTemplate {
+  id?: number;
   audioId: number;
   area: IAudioViewerArea;
+  comment?: string;
+}
+
+export interface IGlobalComment {
+  templateId: number;
+  type: CommentType;
+  comment: string;
 }
 
 export interface IGlobalAudio extends IAudio {
@@ -65,4 +73,9 @@ export interface IValidationStat {
 export interface IUserStat {
   userId: string;
   count: number;
+}
+
+export enum CommentType {
+  replace = 0,
+  reframe = 1
 }

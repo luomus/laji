@@ -63,9 +63,9 @@
     [isNew]="activeTemplateIsNew"
     [focusTime]="focusTime"
     [spectrogramConfig]="spectrogramConfig"
-    [requireComment]="hasInitialTemplates"
     (confirm)="onTemplateConfirm($event)"
     (cancel)="onTemplateCancel()"
-    (remove)="onTemplateRemove($event)"
+    (remove)="onTemplateRemove()"
+    (comment)="onComment($event)"
   ></laji-letter-template>
 </ng-template>

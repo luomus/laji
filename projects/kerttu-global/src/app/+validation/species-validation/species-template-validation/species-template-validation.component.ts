@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChan
 import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-template-validation',
@@ -20,7 +20,9 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   showCandidates = false;
   candidatesLoaded = false;
 
-  confirmedTemplates = [];
+  confirmedTemplates: boolean[] = [];
+
+  comments: IGlobalComment[] = [];
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
@@ -37,7 +39,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
-  @Output() save = new EventEmitter<IGlobalTemplate[]>();
+  @Output() save = new EventEmitter<{templates: IGlobalTemplate[], comments: IGlobalComment[]}>();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -77,8 +79,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIsNew = false;
   }
 
-  onTemplateConfirm(data: {template: IGlobalTemplate, comment?: string}) {
-    this.templates[this.activeTemplateIdx] = data.template;
+  onTemplateConfirm(template: IGlobalTemplate) {
+    this.templates[this.activeTemplateIdx] = template;
     this.confirmedTemplates[this.activeTemplateIdx] = true;
     this.activeTemplateIdx = null;
   }
@@ -87,10 +89,14 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIdx = null;
   }
 
-  onTemplateRemove(data: {comment?: string}) {
+  onTemplateRemove() {
     this.templates[this.activeTemplateIdx] = null;
     this.confirmedTemplates[this.activeTemplateIdx] = false;
     this.activeTemplateIdx = null;
+  }
+
+  onComment(comment: IGlobalComment) {
+    this.comments.push(comment);
   }
 
   setShowCandidates(value: boolean) {
@@ -113,7 +119,10 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       return;
     }
 
-    this.save.emit(this.templates);
+    this.save.emit({
+      templates: this.templates,
+      comments: this.comments
+    });
   }
 
   private onNewTemplateClick(audioId: number, template?: IGlobalTemplate, time?: number) {

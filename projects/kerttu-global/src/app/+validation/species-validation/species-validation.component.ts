@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetecto
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies } from '../../kerttu-global-shared/models';
+import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -75,12 +75,15 @@ export class SpeciesValidationComponent implements OnInit {
   }
 
 
-  saveTemplates(templates: IGlobalTemplate[]) {
+  saveTemplates(data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}) {
     this.saving = true;
-    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, templates).subscribe(() => {
+    this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
       this.saving = false;
       this.canLeaveWithoutConfirm = true;
       this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+      this.cd.markForCheck();
+    }, () => {
+      this.saving = false;
       this.cd.markForCheck();
     });
   }
