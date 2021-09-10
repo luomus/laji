@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2 } from "@angular/core";
+import { BugPath } from "../bug-animation";
 
 export interface ISlideData {
+	title: string;
 	bgSrc: string;
 	bgIsVideo: boolean;
 	bgCaption: string;
 	contentPlacement: 'left' | 'right';
 	content: string;
-	animationPlacement: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
+	animationPlacement: BugPath[];
 }
 
 @Component({

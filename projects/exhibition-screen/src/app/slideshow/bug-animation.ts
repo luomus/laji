@@ -2,12 +2,43 @@ import { ElementRef, Renderer2 } from "@angular/core";
 import { interval, Subject } from "rxjs";
 import { delay, switchMap, takeUntil } from "rxjs/operators"
 import { AnimationEngine } from "../../animations/animation-engine";
-import { CurveFollower, EsAnimatable } from "../../animations/es-animatable";
+import { CurveFollower, EsAnimatable, PathFollower } from "../../animations/es-animatable";
+import { V2 } from "../../animations/math";
 
-const INITIAL_DELAY = 20000;
-const INTERVAL_DELAY = 10000;
+export type BugPath = 'topleft' | 'topright' | 'botright' | 'botleft';
 
+const INITIAL_DELAY = 2000;
+const INTERVAL_DELAY = 1000;
+const START_OFFSET_PX = 200;
+
+const randomChoice = (n: number) => Math.floor(Math.random() * n);
 const roundToTwoDecimals = (n: number) => Math.round(n * 100) / 100;
+const bugPathToV2Arr = (p: BugPath, canvasW: number, canvasH: number): V2[] => {
+	switch (p) {
+		case 'topleft':
+			return (<V2[][]>[
+				[[400, -START_OFFSET_PX], [400, 400], [-START_OFFSET_PX, 400]],
+				[[-START_OFFSET_PX, 400], [400, 400], [400, -START_OFFSET_PX]]
+			])[randomChoice(2)];
+		case 'topright':
+			return (<V2[][]>[
+				[[canvasW - 400, -START_OFFSET_PX], [canvasW - 400, 400], [canvasW + START_OFFSET_PX, 400]],
+				[[canvasW + START_OFFSET_PX, 400], [canvasW - 400, 400], [canvasW - 400, -START_OFFSET_PX]]
+			])[randomChoice(2)];
+		case 'botright':
+			return (<V2[][]>[
+				[[canvasW - 400, canvasH + START_OFFSET_PX], [canvasW - 400, canvasH - 400], [canvasW + START_OFFSET_PX, canvasH - 400]],
+				[[canvasW + START_OFFSET_PX, canvasH - 400], [canvasW - 400, canvasH - 400], [canvasW - 400, canvasH + START_OFFSET_PX]]
+			])[randomChoice(2)];
+		case 'botleft':
+			return (<V2[][]>[
+				[[400, canvasH + START_OFFSET_PX], [400, canvasH - 400], [-START_OFFSET_PX, canvasH - 400]],
+				[[-START_OFFSET_PX, canvasH - 400], [400, canvasH - 400], [400, canvasH + START_OFFSET_PX]]
+			])[randomChoice(2)];
+		default:
+			return [];
+	}
+};
 
 export class BugAnimation {
 	private unsubscribe$ = new Subject<void>();
@@ -16,6 +47,7 @@ export class BugAnimation {
 
 	private input$ = new Subject<void>();
 
+	public bugPaths: BugPath[] = ['topleft', 'topright', 'botright', 'botleft'];
 	private bugEl: HTMLElement;
 	private bug: EsAnimatable;
 	private anim: AnimationEngine;
@@ -29,7 +61,19 @@ export class BugAnimation {
 				this.bugEl = this.renderer.createElement('div');
 				this.renderer.addClass(this.bugEl, 'bug-animation');
 				this.renderer.appendChild(this.baseEl.nativeElement, this.bugEl);
-				this.bug = new CurveFollower([[400, -100], [400, 400], [-100, 400]], 5);
+				
+				const pathIdx = randomChoice(this.bugPaths.length);
+				const w = window.innerWidth;
+				const h = window.innerHeight;
+				const path = bugPathToV2Arr(this.bugPaths[pathIdx], w, h);
+				if (path.length === 3) {
+					this.bug = new CurveFollower(<[V2, V2, V2]>path, 5);
+				} else {
+					const pf = new PathFollower();
+					pf.path = path;
+					this.bug = pf;
+				}
+				this.bug.pos = path[0];
 			},
 			// update
 			(dt) => {

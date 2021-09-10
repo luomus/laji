@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from "@angular/core";
+import { filter } from "rxjs/operators";
 import { BugAnimation } from "./bug-animation";
 import { ISlideData } from './slide/slide.component';
 import { SlideshowFacade } from "./slideshow.facade";
@@ -9,11 +10,11 @@ import { SlideshowFacade } from "./slideshow.facade";
 <div class="slide-container" #slideContainer>
 	<es-slide *ngFor="let d of slides" [data]="d"></es-slide>
 </div>
-<div class="langSelect">
+<div class="lang-select">
 	valitse kieli
 </div>
-<div class="currentSlide panel">
-	slide: {{currentSlide + 1}}
+<div class="current-slide panel">
+	{{ slides[currentSlide]?.title }}
 </div>
 	`,
 	styleUrls: ['slideshow.component.scss'],
@@ -33,7 +34,9 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 		this.bugAnimation = new BugAnimation(this.el, this.renderer);
 		this.bugAnimation.init();
 		this.facade.loadSlides();
-		this.facade.slides$.subscribe(slides => {
+		this.facade.slides$.pipe(filter(s => s && s.length > 0)).subscribe(slides => {
+			this.currentSlide = 0;
+			this.bugAnimation.bugPaths = slides[0].animationPlacement;
 			this.setSlides(slides)
 		});
 	}
@@ -67,6 +70,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
   swiperight(event) {
 		if (this.currentSlide > 0) {
 			this.currentSlide--;
+			this.bugAnimation.bugPaths = this.slides[this.currentSlide].animationPlacement;
 			this.setAnimatable(true);
 			this.translateX();
 		}
@@ -76,6 +80,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
   swipeleft(event) {
 		if (this.currentSlide < this.slides.length - 1) {
 			this.currentSlide++;
+			this.bugAnimation.bugPaths = this.slides[this.currentSlide].animationPlacement;
 			this.setAnimatable(true);
 			this.translateX();
 		}

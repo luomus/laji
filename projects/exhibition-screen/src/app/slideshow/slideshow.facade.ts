@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Information } from "projects/laji/src/app/shared/model/Information";
 import { BehaviorSubject, forkJoin } from "rxjs";
-import { map, switchMap, tap } from "rxjs/operators";
+import { map, switchMap } from "rxjs/operators";
 import { InformationService } from "../core/information.service";
 import { ISlideData } from "./slide/slide.component";
 
-const BASE_ID = 'i-2';
+const BASE_ID = 'ex-12';
 const TEST_DATA: ISlideData[] = [
 	{
+		title: 'title1',
 		bgSrc: 'https://images.pexels.com/photos/3109271/pexels-photo-3109271.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
 		bgIsVideo: false,
 		bgCaption: 'Image caption 1',
@@ -38,9 +39,10 @@ The Purpose, the People and the Outcomes
 </p>
 		`,
 		contentPlacement: 'left',
-		animationPlacement: 'topright'
+		animationPlacement: ['topright']
 	},
 	{
+		title: 'title2',
 		bgSrc: 'https://images.pexels.com/photos/416728/pexels-photo-416728.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
 		bgIsVideo: false,
 		bgCaption: 'Image caption 2',
@@ -61,9 +63,10 @@ porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
 		`,
 		contentPlacement: 'right',
-		animationPlacement: 'topleft'
+		animationPlacement: ['topleft']
 	},
 	{
+		title: 'title3',
 		//bgSrc: 'https://images.pexels.com/photos/4081123/pexels-photo-4081123.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
 		bgSrc: 'assets/testvideo.mp4',
 		bgIsVideo: true,
@@ -85,7 +88,7 @@ porta leo, sit amet varius nisl nisl sed ligula. Nulla diam dolor,
 commodo id elit at, condimentum convallis augue.</p>
 		`,
 		contentPlacement: 'left',
-		animationPlacement: 'bottomright'
+		animationPlacement: ['botright']
 	}
 ];
 
@@ -100,12 +103,35 @@ export class SlideshowFacade {
 	loadSlides() {
 		this.informationService.getInformation(BASE_ID, {}).pipe(
 			switchMap(information => forkJoin(...information.children.map(child => this.informationService.getInformation(child.id, {})))),
-			tap(console.log),
 			map((informationArr: Information[]) => <ISlideData[]>(
-				informationArr.map(information => ({
-				}))
-			)),
-			map(slideData => TEST_DATA) // temporarily use test data
+				informationArr.map(information => {
+					const contentPlacement = information.tags.reduce((prev, curr) => {
+						switch(curr) {
+							case 'align-left':
+								return 'left';
+							case 'align-right':
+								return 'right';
+							default:
+								return prev;
+						}
+					}, undefined);
+					const animationPlacement = [];
+					if (contentPlacement === 'left') {
+						animationPlacement.push('topright', 'botright');
+					} else if (contentPlacement === 'right') {
+						animationPlacement.push('topleft', 'botleft');
+					}
+					return {
+						content: information.content,
+						title: information.title,
+						bgSrc: information.featuredImage.url,
+						bgIsVideo: false,
+						bgCaption: information.featuredImage.caption,
+						animationPlacement,
+						contentPlacement
+					}
+				})
+			))
 		).subscribe(slideData => {
 			this.store.next(slideData);
 		});
