@@ -43,15 +43,6 @@ const mobileBreakpoint = 768;
       })),
       transition('closed<=>open', animate('300ms ease')),
     ]),
-    trigger('sidebarOpen_menu', [
-      state('closed', style({
-        opacity: 1,
-      })),
-      state('open', style({
-        opacity: 0,
-      })),
-      transition('open=>closed', animate('300ms ease')),
-    ])
   ]
 })
 export class SidebarComponent implements OnDestroy, AfterViewInit {
