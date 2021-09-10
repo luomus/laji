@@ -60,7 +60,7 @@
     <button
       [disabled]="!template"
       class="btn btn-success mr-3"
-      (click)="confirm.emit(template)"
+      (click)="onConfirm()"
     >
       {{ 'validation.templates.confirm' | translate }}
     </button>
@@ -73,9 +73,26 @@
     <button
       [disabled]="!template || isNew"
       class="btn btn-danger"
-      (click)="remove.emit()"
+      (click)="onRemove()"
     >
       {{ 'validation.templates.remove' | translate }}
     </button>
   </div>
 </div>
+
+<ng-template #commentModal>
+  <div class="modal-content">
+    <div class="modal-body">
+      <p>{{ 'validation.templates.confirmAndComment' | translate }}</p>
+      <textarea id="comment" class="form-control" [(ngModel)]="comment" name="comment" rows="7"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="hideCommentModal()">
+        <span>{{ 'validation.templates.cancel' | translate }}</span>
+      </button>
+      <button type="button" class="btn btn-success" [disabled]="!comment" (click)="this.confirmOrRemoveWithComment()">
+        <span>{{ 'validation.templates.confirm' | translate }}</span>
+      </button>
+    </div>
+  </div><!-- /.modal-content -->
+</ng-template>

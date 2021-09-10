@@ -31,6 +31,7 @@
   "validation.templates.remove": "Remove",
   "validation.templates.confirmAll": "Confirm all templates",
   "validation.templates.remove.confirm": "Are you sure you want to remove this template?",
+  "validation.templates.confirmAndComment": "Are you sure you want to reframe / remove the template? If so, provide an explanation for this in the comment field below. This will remove all the previous validations of the template. ",
   "validation.templates.maxNbrOfTemplates": "There are already 10 templates. Please remove one before creating a new one.",
   "validation.missingTemplates": "Please fill all 10 templates",
   "validation.missingConfirm": "Please confirm all 10 templates",

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
@@ -42,8 +42,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   constructor(
     private translate: TranslateService,
-    private dialogService: DialogService,
-    private cdr: ChangeDetectorRef
+    private dialogService: DialogService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -78,8 +77,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIsNew = false;
   }
 
-  onTemplateConfirm(template: IKerttuLetterTemplate) {
-    this.templates[this.activeTemplateIdx] = template;
+  onTemplateConfirm(data: {template: IKerttuLetterTemplate, comment?: string}) {
+    this.templates[this.activeTemplateIdx] = data.template;
     this.confirmedTemplates[this.activeTemplateIdx] = true;
     this.activeTemplateIdx = null;
   }
@@ -88,15 +87,10 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     this.activeTemplateIdx = null;
   }
 
-  onTemplateRemove() {
-    this.dialogService.confirm('validation.templates.remove.confirm').subscribe(confirm => {
-      if (confirm) {
-        this.templates[this.activeTemplateIdx] = null;
-        this.confirmedTemplates[this.activeTemplateIdx] = false;
-        this.activeTemplateIdx = null;
-        this.cdr.markForCheck();
-      }
-    });
+  onTemplateRemove(data: {comment?: string}) {
+    this.templates[this.activeTemplateIdx] = null;
+    this.confirmedTemplates[this.activeTemplateIdx] = false;
+    this.activeTemplateIdx = null;
   }
 
   setShowCandidates(value: boolean) {
