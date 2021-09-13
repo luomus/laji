@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'es-app',
@@ -11,4 +12,8 @@ import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
+  constructor(translate: TranslateService) {
+    translate.setDefaultLang('fi');
+    translate.use('fi');
+  }
 }

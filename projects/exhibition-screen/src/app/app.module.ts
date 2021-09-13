@@ -5,6 +5,7 @@ import * as Hammer from 'hammerjs';
 import { SlideshowComponent } from './slideshow/slideshow.component';
 import { SlideComponent } from './slideshow/slide/slide.component';
 import { SlideshowFacade } from './slideshow/slideshow.facade';
+import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
 
 @Injectable()
@@ -19,7 +20,11 @@ export class HammerConfig extends HammerGestureConfig {
   imports: [
     BrowserModule,
     HammerModule,
-    HttpClientModule
+    HttpClientModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'fi',
+      useDefaultLang: true
+    })
   ],
   exports: [
   ],

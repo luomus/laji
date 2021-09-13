@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
 import { Information } from "projects/laji/src/app/shared/model/Information";
 import { BehaviorSubject, forkJoin } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { filter, map, switchMap } from "rxjs/operators";
 import { InformationService } from "../core/information.service";
 import { ISlideData } from "./slide/slide.component";
+import { i18nMap } from "../core/i18n-map";
 
-const BASE_ID = 'ex-12';
 const TEST_DATA: ISlideData[] = [
 	{
 		title: 'title1',
@@ -98,10 +99,15 @@ export class SlideshowFacade {
 
 	slides$ = this.store.asObservable();
 
-	constructor(private informationService: InformationService) {}
+	constructor(private translate: TranslateService, private informationService: InformationService) {}
 
 	loadSlides() {
-		this.informationService.getInformation(BASE_ID, {}).pipe(
+		this.informationService.getInformation(i18nMap.screenOne[this.translate.currentLang], {}).pipe(
+			filter(information => {
+				const a = !information.children;
+				if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`) }
+				return !a;
+			}),
 			switchMap(information => forkJoin(...information.children.map(child => this.informationService.getInformation(child.id, {})))),
 			map((informationArr: Information[]) => <ISlideData[]>(
 				informationArr.map(information => {
@@ -114,7 +120,7 @@ export class SlideshowFacade {
 							default:
 								return prev;
 						}
-					}, undefined);
+					}, 'left');
 					const animationPlacement = [];
 					if (contentPlacement === 'left') {
 						animationPlacement.push('topright', 'botright');
@@ -124,9 +130,9 @@ export class SlideshowFacade {
 					return {
 						content: information.content,
 						title: information.title,
-						bgSrc: information.featuredImage.url,
+						bgSrc: information.featuredImage?.url,
 						bgIsVideo: false,
-						bgCaption: information.featuredImage.caption,
+						bgCaption: information.featuredImage?.caption,
 						animationPlacement,
 						contentPlacement
 					}

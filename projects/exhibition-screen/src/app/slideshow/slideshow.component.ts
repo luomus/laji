@@ -1,5 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from "@angular/core";
-import { filter } from "rxjs/operators";
+import { TranslateService } from "@ngx-translate/core";
+import { filter, startWith } from "rxjs/operators";
+import { Lang } from "../core/i18n-map";
 import { BugAnimation } from "./bug-animation";
 import { ISlideData } from './slide/slide.component';
 import { SlideshowFacade } from "./slideshow.facade";
@@ -11,7 +13,9 @@ import { SlideshowFacade } from "./slideshow.facade";
 	<es-slide *ngFor="let d of slides" [data]="d"></es-slide>
 </div>
 <div class="lang-select">
-	valitse kieli
+	<button (click)="onLangChange('fi')">Suomi</button>
+	<button (click)="onLangChange('sv')">Svenska</button>
+	<button (click)="onLangChange('en')">English</button>
 </div>
 <div class="current-slide panel">
 	{{ slides[currentSlide]?.title }}
@@ -28,17 +32,21 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 
 	@ViewChild('slideContainer') slideContainer: ElementRef;
 
-	constructor(private el: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private facade: SlideshowFacade) {}
+	constructor(private translate: TranslateService, private el: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private facade: SlideshowFacade) {}
 
 	ngAfterViewInit() {
 		this.bugAnimation = new BugAnimation(this.el, this.renderer);
 		this.bugAnimation.init();
-		this.facade.loadSlides();
+		this.translate.onLangChange.pipe(startWith(undefined)).subscribe(() => this.facade.loadSlides());
 		this.facade.slides$.pipe(filter(s => s && s.length > 0)).subscribe(slides => {
 			this.currentSlide = 0;
 			this.bugAnimation.bugPaths = slides[0].animationPlacement;
 			this.setSlides(slides)
 		});
+	}
+
+	onLangChange(lang: Lang) {
+		this.translate.use(lang);
 	}
 
 	private setSlides(arr: ISlideData[]) {

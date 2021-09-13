@@ -3,12 +3,12 @@ import { BugPath } from "../bug-animation";
 
 export interface ISlideData {
 	title: string;
-	bgSrc: string;
-	bgIsVideo: boolean;
-	bgCaption: string;
+	bgSrc?: string;
+	bgIsVideo?: boolean;
+	bgCaption?: string;
 	contentPlacement: 'left' | 'right';
 	content: string;
-	animationPlacement: BugPath[];
+	animationPlacement?: BugPath[];
 }
 
 @Component({
@@ -23,7 +23,7 @@ export class SlideComponent implements OnChanges {
 	constructor(private el: ElementRef, private renderer: Renderer2) {}
 
 	ngOnChanges() {
-		if (!this.data.bgIsVideo) {
+		if (!this.data.bgIsVideo && this.data.bgSrc) {
 			this.renderer.setStyle(this.el.nativeElement, 'background-image', `url(${this.data.bgSrc})`);
 		}
 	}
