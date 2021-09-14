@@ -2,7 +2,9 @@
   <div>{{ 'excel.map.missingRequired' | translate}}: {{ missingRequiredLabels | values }}</div>
 </alert>
 <div class="cell-col-map-wrap">
-  <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+  <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">
+    {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
+  </button><br>
   <p>{{ 'excel.map.col-intro' | translate }}</p>
   <table class="table">
     <thead>

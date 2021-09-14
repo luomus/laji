@@ -206,10 +206,10 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
     ).subscribe(([previousState, newState]) => {
       const {activeNP: prevActiveNP} = previousState || {};
       const {activeNP: newActiveNP} = newState;
-      if (newActiveNP !== prevActiveNP && this.infoView) {
-        this.infoView.npClick();
+      if (newActiveNP !== prevActiveNP) {
+        this.infoView?.npClick();
       } else if (prevActiveNP && !newActiveNP) {
-        this.infoView.hide();
+        this.infoView?.hide();
       }
     });
 
@@ -267,7 +267,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   onActivePlaceChange(activeNP: string) {
     this.vm$.pipe(take(1)).subscribe(({activeNP: _activeNP}) => {
       if (activeNP && activeNP === _activeNP?.id) {
-        this.infoView.npClick();
+        this.infoView?.npClick();
       }
       this.activeIdChange.emit(activeNP);
     });
