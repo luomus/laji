@@ -30,7 +30,9 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       startWith(this.router.url)
     );
     urls$.pipe(takeUntil(this.unsubscribe$)).subscribe((u: string) => {
-      this.active = u.includes(this.link[this.link.length - 1]);
+      let li = this.link.join('/');
+      if (li[0] !== '/') { li = '/' + li }
+      this.active = li === u.replace(/[\?#].*/, '');
     });
   }
 
