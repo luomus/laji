@@ -7,6 +7,7 @@ import { SlideComponent } from './slideshow/slide/slide.component';
 import { SlideshowFacade } from './slideshow/slideshow.facade';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
+import { SlideNavigationComponent } from './slideshow/slide-navigation/slide-navigation.component';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -36,6 +37,6 @@ export class HammerConfig extends HammerGestureConfig {
     SlideshowFacade
   ],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, SlideshowComponent, SlideComponent]
+  declarations: [AppComponent, SlideshowComponent, SlideComponent, SlideNavigationComponent]
 })
 export class AppModule { }

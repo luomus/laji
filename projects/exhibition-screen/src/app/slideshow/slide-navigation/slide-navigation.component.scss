@@ -1,0 +1,23 @@
+@import 'mixins';
+
+:host {
+	@include panel();
+	display: flex;
+	flex-direction: row;
+	padding: 20px;
+}
+
+*:not(:last-child) {
+	border-right: 2px solid $neutral-4;
+}
+
+* {
+	padding: 10px;
+	color: $neutral-6;
+	cursor: pointer;
+}
+
+.active {
+	color: $neutral-9;
+	cursor: default;
+}

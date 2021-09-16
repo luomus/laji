@@ -28,8 +28,9 @@
 .current-slide {
 	position: absolute;
 	bottom: 40px;
-	left: 50%;
-	padding: 20px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
 }
 
 .bug-animation {

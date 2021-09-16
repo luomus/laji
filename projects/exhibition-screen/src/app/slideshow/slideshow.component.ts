@@ -8,25 +8,13 @@ import { SlideshowFacade } from "./slideshow.facade";
 
 @Component({
 	selector: 'es-slideshow',
-	template: `
-<div class="slide-container" #slideContainer>
-	<es-slide *ngFor="let d of slides" [data]="d"></es-slide>
-</div>
-<div class="lang-select">
-	<button (click)="onLangChange('fi')">Suomi</button>
-	<button (click)="onLangChange('sv')">Svenska</button>
-	<button (click)="onLangChange('en')">English</button>
-</div>
-<div class="current-slide panel">
-	{{ slides[currentSlide]?.title }}
-</div>
-	`,
+	templateUrl: 'slideshow.component.html',
 	styleUrls: ['slideshow.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SlideshowComponent implements AfterViewInit, OnDestroy {
 	slides: ISlideData[] = [];
-	currentSlide = 0;
+	currentSlideIdx = 0;
 	private panOffset = 0;
 	private bugAnimation: BugAnimation;
 
@@ -39,7 +27,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 		this.bugAnimation.init();
 		this.translate.onLangChange.pipe(startWith(undefined)).subscribe(() => this.facade.loadSlides());
 		this.facade.slides$.pipe(filter(s => s && s.length > 0)).subscribe(slides => {
-			this.currentSlide = 0;
+			this.currentSlideIdx = 0;
 			this.bugAnimation.bugPaths = slides[0].animationPlacement;
 			this.setSlides(slides)
 		});
@@ -49,6 +37,13 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 		this.translate.use(lang);
 	}
 
+	selectSlide(i: number) {
+		this.currentSlideIdx = i;
+		this.bugAnimation.bugPaths = this.slides[this.currentSlideIdx].animationPlacement;
+		this.setAnimatable(true);
+		this.translateX();
+	}
+
 	private setSlides(arr: ISlideData[]) {
 		this.slides = arr;
 		this.renderer.setStyle(this.slideContainer.nativeElement, 'width', arr.length + '00%');
@@ -56,7 +51,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 	}
 
 	private translateX() {
-		const slideOffset = -1 * this.currentSlide * this.slideContainer.nativeElement.offsetWidth / this.slides.length;
+		const slideOffset = -1 * this.currentSlideIdx * this.slideContainer.nativeElement.offsetWidth / this.slides.length;
 		const offset = slideOffset + this.panOffset;
 		this.renderer.setStyle(this.slideContainer.nativeElement, 'transform', `translateX(${offset}px)`);
 	}
@@ -76,21 +71,15 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('swiperight', ['$event'])
   swiperight(event) {
-		if (this.currentSlide > 0) {
-			this.currentSlide--;
-			this.bugAnimation.bugPaths = this.slides[this.currentSlide].animationPlacement;
-			this.setAnimatable(true);
-			this.translateX();
+		if (this.currentSlideIdx > 0) {
+			this.selectSlide(this.currentSlideIdx - 1);
 		}
   }
 
   @HostListener('swipeleft', ['$event'])
   swipeleft(event) {
-		if (this.currentSlide < this.slides.length - 1) {
-			this.currentSlide++;
-			this.bugAnimation.bugPaths = this.slides[this.currentSlide].animationPlacement;
-			this.setAnimatable(true);
-			this.translateX();
+		if (this.currentSlideIdx < this.slides.length - 1) {
+			this.selectSlide(this.currentSlideIdx + 1);
 		}
   }
 

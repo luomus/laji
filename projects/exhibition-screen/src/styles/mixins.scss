@@ -1,0 +1,7 @@
+@import 'vars';
+
+@mixin panel() {
+	background-color: $neutral-2;
+	border-radius: 5px;
+	box-shadow: 0 4px 12px 0 rgba($neutral-9, .4);
+}

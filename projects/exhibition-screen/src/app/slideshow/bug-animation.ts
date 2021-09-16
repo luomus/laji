@@ -7,8 +7,8 @@ import { V2 } from "../../animations/math";
 
 export type BugPath = 'topleft' | 'topright' | 'botright' | 'botleft';
 
-const INITIAL_DELAY = 2000;
-const INTERVAL_DELAY = 1000;
+const INITIAL_DELAY = 20000;
+const INTERVAL_DELAY = 10000;
 const START_OFFSET_PX = 200;
 
 const randomChoice = (n: number) => Math.floor(Math.random() * n);

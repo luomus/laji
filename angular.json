@@ -1085,7 +1085,8 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/laji-ui/src/lib"
+                "projects/laji-ui/src/lib",
+                "projects/exhibition-screen/src/styles"
               ]
             },
             "scripts": []
