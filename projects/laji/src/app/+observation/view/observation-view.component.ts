@@ -154,10 +154,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.observationFacade.filterVisible(event);
   }
 
-  onAdvanceModeChange(event: boolean) {
-    this.observationFacade.advanced(event);
-  }
-
   onListSettingsChange(settings: ISettingResultList) {
     this.userService.setUserSetting(this.settingsKeyList, settings);
   }

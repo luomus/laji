@@ -20,8 +20,6 @@ export class DateFormComponent implements OnDestroy {
   @Input() query;
   @Input() formQuery: ObservationFormQuery;
   @Input() dateFormat = 'YYYY-MM-DD';
-  @Input() advancedMode = false;
-  @Input() visibleAdvanced;
 
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
