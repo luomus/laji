@@ -8,6 +8,7 @@ import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 
 export enum Step {
   empty,
+  sheetLoadError,
   fileAlreadyUploadedPartially,
   fileAlreadyUploaded,
   ambiguousColumns,

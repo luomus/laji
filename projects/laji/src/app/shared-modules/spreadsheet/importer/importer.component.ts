@@ -112,6 +112,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     'gatheringEvent.leg[*]'
   ];
   showOnlyErroneous = false;
+  sheetLoadErrorMsg = '';
 
   constructor(
     private formService: FormService,
@@ -192,7 +193,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.form = form;
         const combineOptions = this.excelToolService.getCombineOptions(form);
         const isCsv = this.spreadSheetService.csvTypes().includes(this.mimeType);
-        const data = this.spreadSheetService.loadSheet(this.bstr, {
+        const {data, errors} = this.spreadSheetService.loadSheet(this.bstr, {
           cellDates: !isCsv,
           raw: isCsv
         });
@@ -243,6 +244,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
         if (hasAmbiguousColumns) {
           this.spreadsheetFacade.goToStep(Step.ambiguousColumns);
           this.ambiguousColumns = Array.from(ambiguousCols);
+        } else if (errors?.length > 0) {
+          this.spreadsheetFacade.goToStep(Step.sheetLoadError);
+          this.sheetLoadErrorMsg = errors[0];
         } else {
           this.spreadsheetFacade.goToStep(Step.colMapping);
         }
