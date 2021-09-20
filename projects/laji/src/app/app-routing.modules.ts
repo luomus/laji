@@ -64,13 +64,13 @@ const routesWithLang: Routes = [
   ], component: LocaleEnComponent, canActivate: [LocalizeInGuard]},
   {path: 'en', data: {lang: 'en'}, children: [
     ...redirectsEn,
+      {path: 'theme/emk', redirectTo: '/en/about/3061', pathMatch: 'full'},
     ...baseRoutes,
-    {path: 'theme/emk', redirectTo: '/about/3061', pathMatch: 'full'},
     {path: '**', component: NotFoundComponent}
   ], component: LocaleEnComponent, canActivate: [LocalizeGuard]},
   {path: 'sv', data: {lang: 'sv'}, children: [
     ...redirectsFi,
-    {path: 'theme/emk', redirectTo: '/about/5719', pathMatch: 'full'},
+    {path: 'theme/emk', redirectTo: '/sv/about/5719', pathMatch: 'full'},
     ...baseRoutes,
     {path: '**', component: NotFoundComponent}
   ], component: LocaleSvComponent, canActivate: [LocalizeGuard]},
