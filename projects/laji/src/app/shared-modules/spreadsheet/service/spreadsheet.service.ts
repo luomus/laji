@@ -325,8 +325,9 @@ export class SpreadsheetService {
   }
 
   private checkCombinedHasRequiredColumns(combines: IColCombine[], groupType: GroupTypeEnum, errors: string[]): IColCombine[] {
-    const requiredKeys = (groupType === GroupTypeEnum.date ? [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy] :
-      [GeneratorService.splitCoordinate.E, GeneratorService.splitCoordinate.N, GeneratorService.splitCoordinate.system]
+    const requiredKeys = (groupType === GroupTypeEnum.date
+      ? [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy]
+      : [GeneratorService.splitCoordinate.E, GeneratorService.splitCoordinate.N, GeneratorService.splitCoordinate.system]
     );
 
     const fields = combines.filter(col => col.groupType === groupType);
@@ -337,7 +338,15 @@ export class SpreadsheetService {
         missing = missing.filter(val => val !== GeneratorService.splitCoordinate.system);
       }
       if (missing.length > 0) {
-        errors.push(this.translateService.instant('excel.import.error.missingSplitColumn', {field: fields[0].field, column: missing.join(', ')}));
+        errors.push(
+          this.translateService.instant(
+            'excel.import.error.missingSplitColumn',
+            {
+              field: fields[0].field,
+              column: missing.join(', ')
+            }
+          )
+        );
         combines = combines.filter(col => col.groupType !== groupType);
       }
     }
