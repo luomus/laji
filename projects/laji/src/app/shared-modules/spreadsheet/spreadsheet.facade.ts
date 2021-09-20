@@ -13,6 +13,7 @@ export enum Step {
   fileAlreadyUploaded,
   ambiguousColumns,
   invalidFileType,
+  invalidFormId,
   importingFile,
   colMapping,
   dataMapping,

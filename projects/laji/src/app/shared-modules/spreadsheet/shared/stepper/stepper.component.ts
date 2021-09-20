@@ -23,6 +23,7 @@ export class StepperComponent implements OnInit, OnChanges {
     [Step.fileAlreadyUploaded]: 'file',
     [Step.ambiguousColumns]: 'file',
     [Step.invalidFileType]: 'file',
+    [Step.invalidFormId]: 'file',
     [Step.importingFile]: 'file',
     [Step.colMapping]: 'colMapping',
     [Step.dataMapping]: 'valueMapping',

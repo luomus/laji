@@ -154,12 +154,18 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
       }),
-      switchMap(content => forkJoin(of(content), this.spreadSheetService.findFormIdFromFilename(content.filename)))
-    ).subscribe(([content, formID]) => {
-      if (instanceOfFileLoad(content)) {
+      switchMap(content => forkJoin([
+        of(content),
+        this.spreadSheetService.findFormIdFromFilename(content?.filename),
+        this._forms
+      ]))
+    ).subscribe(([content, formID, forms]) => {
+      this.formID = formID;
+      if (formID && !forms.includes(formID)) {
+        this.spreadsheetFacade.goToStep(Step.invalidFormId);
+      } else if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
-        this.formID = formID;
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
       }
@@ -213,10 +219,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
         if (Array.isArray(data) || data[0]) {
           this.header = data.shift();
           this.data = data;
-        }
-        if (this.form.options?.secondaryCopy) {
-          baseFields.push(SpreadsheetService.IdField);
-          baseFields.push(SpreadsheetService.deleteField);
         }
 
         this.excludedFromCopy = form.excludeFromCopy || [];
