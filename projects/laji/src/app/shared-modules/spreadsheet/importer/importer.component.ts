@@ -10,14 +10,13 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
-import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -45,10 +44,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
-  @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
+  @ViewChild('mapModal', { static: true }) mapModal: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
@@ -114,6 +113,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
   showOnlyErroneous = false;
   sheetLoadErrorMsg = '';
 
+  private modal: BsModalRef;
+
   constructor(
     private formService: FormService,
     private spreadSheetService: SpreadsheetService,
@@ -129,7 +130,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
     private latestFacade: LatestDocumentsFacade,
     private spreadsheetFacade: SpreadsheetFacade,
     private fileService: FileService,
-    private logger: Logger
+    private logger: Logger,
+    private modalService: BsModalService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
   }
@@ -280,9 +282,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           });
         });
         this.dataColumns = columns;
-        setTimeout(() => {
-          this.datatable?.refreshTable();
-        }, 200);
+        this.cdr.markForCheck();
       });
   }
 
@@ -597,6 +597,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
+  }
+
+  openMapModal() {
+    this.modal = this.modalService.show(this.mapModal, {class: 'modal-lg'});
+  }
+
+  closeMapModal() {
+    this.modal?.hide();
   }
 
   private getMappedValues(row, mapping, fields) {

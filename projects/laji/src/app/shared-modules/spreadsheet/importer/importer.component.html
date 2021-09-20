@@ -159,20 +159,7 @@
       </div>
 
       <div class="data-container" *ngIf="vm.step !== step.validating">
-        <laji-datatable
-            #dataTable
-            class="import-table"
-            [showRowAsLink]="false"
-            [showFooter]="false"
-            [virtualScrolling]="true"
-            [clientSideSorting]="false"
-            [height]="'50vh'"
-            [rows]='mappedData | onlyErroneous:showOnlyErroneous'
-            [count]="mappedData.length"
-            [page]="1"
-            [pageSize]="mappedData.length"
-            [columns]="dataColumns">
-        </laji-datatable>
+        <ng-container [ngTemplateOutlet]="importData"></ng-container>
       </div>
     </ng-container>
 
@@ -204,20 +191,7 @@
         </div>
       </div>
       <div class="data-container">
-        <laji-datatable
-          #dataTable
-          class="import-table"
-          [showRowAsLink]="false"
-          [showFooter]="false"
-          [virtualScrolling]="true"
-          [clientSideSorting]="false"
-          [height]="'50vh'"
-          [rows]='mappedData | onlyErroneous:showOnlyErroneous'
-          [count]="mappedData.length"
-          [page]="1"
-          [pageSize]="mappedData.length"
-          [columns]="dataColumns">
-        </laji-datatable>
+        <ng-container [ngTemplateOutlet]="importData"></ng-container>
       </div>
     </ng-container>
   </div>
@@ -251,4 +225,41 @@
 
 <ng-template let-value="value" #statusCol>
   <laji-status-cell [value]="value" [fields]="fields"></laji-status-cell>
+</ng-template>
+
+<ng-template #importData>
+  <button type="button" (click)="openMapModal()" class="btn btn-default mb-3"> 
+    {{ 'excel.import.step4.showObservationMap' | translate }}
+  </button>
+  
+  <laji-datatable
+    #dataTable
+    class="import-table"
+    [showRowAsLink]="false"
+    [showFooter]="false"
+    [virtualScrolling]="true"
+    [clientSideSorting]="false"
+    [height]="'50vh'"
+    [rows]='mappedData | onlyErroneous:showOnlyErroneous'
+    [count]="mappedData.length"
+    [page]="1"
+    [pageSize]="mappedData.length"
+    [columns]="dataColumns">
+  </laji-datatable>
+</ng-template>
+
+<ng-template #mapModal>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="closeMapModal()">
+      <i class="glyphicon glyphicon-remove"></i>
+    </button>
+    <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
+  </div>
+  <div class="modal-body">
+    <laji-import-map
+      [data]="mappedData | onlyErroneous:showOnlyErroneous"
+      [colMap]="colMap"
+      [height]="'50vh'"
+    ></laji-import-map>
+  </div>
 </ng-template>
