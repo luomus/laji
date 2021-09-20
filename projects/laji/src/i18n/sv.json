@@ -101,7 +101,7 @@
   "criteria.E": "Baserat på analysen är det en stor sannolikhet att arten kommer att försvinna",
   "datasets.accessNone": "Du har inte tillgång till någon samling.",
   "datasets.accessTo": "Samlingar som du har tillgång till",
-  "datasets.generic.instructions": "<p><strong>Ohjeita</strong></p>\n\n<ul>\n<li><a href='/about/4641'>Aineistopankin ohjeet</a></li>\n</ul>",
+  "datasets.generic.instructions": "Databankinstruktioner (på finska)",
   "datasets.generic.intro": "I det här avsnittet kan du hantera observationerna av samlingen “{{collection}}”.",
   "datasets.generic.primary": "Data är <strong>primära data</strong>, så ändringar bör göras i data här.",
   "datasets.generic.secondary": "Havainnot ovat <strong>sekundääridataa</strong>, joten muutokset tulee tehdä primääridataan ja sitten päivittää tänne tallennuspohjan avulla, esim. määrävälein.",

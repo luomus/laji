@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
 import { ActivatedRoute } from '@angular/router';
@@ -47,7 +47,7 @@ export class ProjectFormService {
     const form$ = this.getFormFromRoute$(route);
     return form$.pipe(
       mergeMap(form =>
-        (form.options?.forms
+        (form?.options?.forms
             ? this.formService.getAllForms(this.translate.currentLang).pipe(map(forms => forms.filter(f => form.options.forms.indexOf(f.id) > -1)))
             : of([])
         ).pipe(
@@ -67,7 +67,7 @@ export class ProjectFormService {
     }));
   }
 
-  private getFormID(route: ActivatedRoute): Observable<string> {
+  getFormID(route: ActivatedRoute): Observable<string> {
     return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 

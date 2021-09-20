@@ -101,7 +101,7 @@
   "criteria.E": "Based on the analysis, there is a significant probability that the species will disappear",
   "datasets.accessNone": "You do not have access to any dataset.",
   "datasets.accessTo": "Datasets that you have access to",
-  "datasets.generic.instructions": "<p><strong>Instructions</strong></p>\n\n<ul>\n  <li><a href='/about/4641'>Generic instructions</a> (in Finnish)</li></ul>",
+  "datasets.generic.instructions": "Generic instructions (in Finnish)",
   "datasets.generic.intro": "Here you can manage the dataset “{{collection}}”.",
   "datasets.generic.primary": "This data is <strong>primary data</strong>, so any changes to it must be done here (and not in any external system).",
   "datasets.generic.secondary": "This data is <strong>secondary data</strong>, so any changes must be done to the primary data (which is stored elsewhere), and then copied here.",

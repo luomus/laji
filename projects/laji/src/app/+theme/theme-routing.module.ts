@@ -61,6 +61,7 @@ const routes: Routes = [
         path: '',
         component: DatasetsComponent,
         data: {
+          title: 'datasets.label',
           breadcrumbs: [
             {
               link: '/theme',

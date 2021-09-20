@@ -18,10 +18,12 @@ export class StepperComponent implements OnInit, OnChanges {
 
   @Input() mapping = {
     [Step.empty]: 'file',
+    [Step.sheetLoadError]: 'file',
     [Step.fileAlreadyUploadedPartially]: 'file',
     [Step.fileAlreadyUploaded]: 'file',
     [Step.ambiguousColumns]: 'file',
     [Step.invalidFileType]: 'file',
+    [Step.invalidFormId]: 'file',
     [Step.importingFile]: 'file',
     [Step.colMapping]: 'colMapping',
     [Step.dataMapping]: 'valueMapping',
