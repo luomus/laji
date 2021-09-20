@@ -22,9 +22,9 @@
         <ul>
           <li *ngFor="let publication of taxon.originalPublications">
             {{ publication | publication }}
-            <ng-container *ngIf="publication | publication:'URI'">
+            <ng-container *ngIf="publication | publication:'URI' as link">
               <br>
-              <a [href]="publication | publication:'URI'" target="_blank">{{ 'taxonomy.link' | translate }}</a>
+              <a [href]="link" target="_blank">{{ 'taxonomy.link' | translate }}</a>
             </ng-container>
           </li>
         </ul>
