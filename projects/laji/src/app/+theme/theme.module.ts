@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ThemeRoutingModule } from './theme-routing.module';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { SharedModule } from '../shared/shared.module';
-import { YkjComponent } from './ykj/ykj.component';
-import { EmkComponent } from './emk/emk.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { IdentifyComponent } from './identify/identify.component';
@@ -93,8 +91,6 @@ import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-
     PinkkaComponent,
     BibliographyComponent,
     InsectGuideComponent,
-    YkjComponent,
-    EmkComponent,
     IdentifyComponent,
     ThemeComponent,
     QualityComponent,
