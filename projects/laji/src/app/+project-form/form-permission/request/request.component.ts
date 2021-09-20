@@ -5,6 +5,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { Logger } from '../../../shared/logger/logger.service';
 import { map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 export enum AccessLevel {
   Allowed,
@@ -38,7 +39,8 @@ export class RequestComponent implements OnInit {
     private formPermissionService: FormPermissionService,
     private userService: UserService,
     private toastsService: ToastsService,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -72,11 +74,11 @@ export class RequestComponent implements OnInit {
       .subscribe(
         () => {
           this.resetVM$.next();
-          this.toastsService.showSuccess('Pyyntösi on lähetetty eteenpäin');
+          this.toastsService.showSuccess(this.translate.instant('form.permission.request.succes'));
         },
         (err) => {
           if (err.status !== 406) {
-            this.toastsService.showError('Pyyntöäsi lähetys epäonnistui');
+            this.toastsService.showError(this.translate.instant('form.permission.request.error'));
             this.logger.error('Failed to send formPermission request', {
               collectionId: this.collectionId
             });
