@@ -1,4 +1,4 @@
-import { mergeMap, switchMap, take, tap } from 'rxjs/operators';
+import { mergeMap, take, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,6 +27,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentService } from '../../own-submissions/service/document.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { LatestDocumentsFacade } from '../../latest-documents/latest-documents.facade';
+import { LocalizeRouterService } from '../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -47,6 +48,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Output() cancel = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
+  @Output() goBack = new EventEmitter();
   event: EventEmitter<any> = new EventEmitter();
 
   errors = FormError;
@@ -57,6 +59,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   saveVisibility = 'hidden';
   isAdmin = false;
   isFromCancel = false;
+  confirmLeave = true;
   validationErrors: any;
   touchedCounter = 0;
   templateForm: TemplateForm = {
@@ -83,7 +86,8 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
               private documentApi: DocumentApi,
               private documentService: DocumentService,
               private latestFacade: LatestDocumentsFacade,
-              private router: Router) {
+              private router: Router,
+              private localizeRouteService: LocalizeRouterService) {
     this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
     this.formSubscription = this.vm$.subscribe(state => {
@@ -109,11 +113,14 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
-    if (!this.lajiFormFacade.hasChanges()) {
+    if (!this.confirmLeave || !this.lajiFormFacade.hasChanges()) {
       return true;
     }
-    return this.translate.get(this.isFromCancel ? cancelKey : leaveKey).pipe(
-      switchMap(txt => this.dialogService.confirm(txt)),
+    const msg = this.isFromCancel ? cancelKey : leaveKey;
+    const confirmLabel = this.isFromCancel
+      ? 'haseka.form.discardConfirm.confirm'
+      : 'haseka.form.leaveConfirm.confirm';
+    return this.dialogService.confirm(msg, confirmLabel).pipe(
       tap(confirmed => {
         if (confirmed && this.isFromCancel) {
           this.lajiFormFacade.discardChanges();
@@ -167,7 +174,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         } else {
           this.saveVisibility = 'shown';
           this.status = 'unsaved';
-          this.toastsService.showError(this.getMessage('error', this.translate.instant('haseka.form.error')));
+          this.lajiForm.displayErrorModal('saveError');
           this.subSaving = undefined;
         }
         this.changeDetector.markForCheck();
@@ -185,7 +192,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
 
   submitPrivate() {
     this.publicityRestrictions = Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate;
-    this.lajiForm.submit();
+    this.lajiForm.submitOnlySchemaValidations();
   }
 
   submitTemplate() {
@@ -200,7 +207,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
         this.toastsService.showSuccess(this.translate.instant('template.success'));
         setTimeout(() => {
           this.templateModal.hide();
-          this.router.navigate(['/vihko/templates']);
+          this.router.navigate(this.localizeRouteService.translateRoute(['/vihko/templates']));
         }, 200);
         this.templateForm = {
           name: '',
@@ -221,6 +228,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     // Shallow clone so that change detection runs even if errors didn't change
     // so that footer updates buttons disabled correctly.
     this.validationErrors = errors && {...errors} || errors;
+  }
+
+  onGoBack() {
+    this.confirmLeave = false;
+    this.goBack.emit();
   }
 
   private errorHandling(vm: ILajiFormState) {

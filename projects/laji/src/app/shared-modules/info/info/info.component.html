@@ -1,8 +1,10 @@
 <strong
   class="link"
-  (click)="show($event)"
+  (click)="toggle($event)"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
+  tabindex="0"
+  luKeyboardClickable
   [popover]="content"
   [adaptivePosition]="false"
   [outsideClick]="true"

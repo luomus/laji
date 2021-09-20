@@ -16,7 +16,7 @@ export class GraphQLService {
   }
 
 
-  watchQuery<TData, TVariables = EmptyObject>(options: WatchQueryOptions<TVariables>): QueryRef<TData, TVariables> {
+  watchQuery<TData, TVariables = EmptyObject>(options: WatchQueryOptions<TVariables, TData>): QueryRef<TData, TVariables> {
     return this.apollo.watchQuery<TData, TVariables>(options);
   }
 

@@ -186,6 +186,14 @@
     name="countryId"
     [field]="areaType.Country"></laji-metadata-select>
   <laji-metadata-select
+    [info]="'observation.info.province' | translate"
+    [(ngModel)]="query.provinceId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.province'"
+    name="provinceId"
+    [field]="areaType.Province"></laji-metadata-select>
+  <laji-metadata-select
     [info]="'observation.info.biogeographicalProvince' | translate"
     [(ngModel)]="query.biogeographicalProvinceId"
     (ngModelChange)="onQueryChange()"
@@ -193,6 +201,14 @@
     [placeholder]="'result.gathering.biogeographicalProvince'"
     name="biogeographicalProvinceId"
     [field]="areaType.Biogeographical"></laji-metadata-select>
+  <laji-metadata-select
+    [info]="'observation.info.elyCentre' | translate"
+    [(ngModel)]="query.elyCentreId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.elyCentre'"
+    name="elyCentreId"
+    [field]="areaType.ElyCentre"></laji-metadata-select>
   <laji-metadata-select
     [info]="'observation.info.municipality' | translate"
     [(ngModel)]="query.finnishMunicipalityId"
@@ -367,7 +383,7 @@
       [multiple]="true"
       [useFilter]="false"
       [placeholder]="'MY.lifeStage' | label"
-      [mapToWarehouse]="true"
+      [useFilterApi]="true"
       name="lifeStage"></laji-metadata-select>
   </div>
   <div>

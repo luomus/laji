@@ -147,7 +147,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   onQueryChange(event: WarehouseQueryInterface) {
-    this.observationFacade.updateQuery(event);
+    this.observationFacade.updateQuery$(event).subscribe();
   }
 
   filterVisible(event: boolean) {

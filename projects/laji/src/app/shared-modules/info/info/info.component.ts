@@ -55,6 +55,10 @@ export class InfoComponent implements OnInit {
     this.container = this.containerInfo;
   }
 
+  toggle(e?: any) {
+    this.isVisible() ? this.hide() : this.show(e);
+  }
+
   show(e?: MouseEvent) {
     e?.stopPropagation();
     if (this.platformService.isServer) {

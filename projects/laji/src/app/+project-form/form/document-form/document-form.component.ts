@@ -22,6 +22,7 @@ import { ProjectFormService } from '../../project-form.service';
       (success)="onSuccess()"
       (error)="goBack()"
       (cancel)="goBack()"
+      (goBack)="goBack()"
     >
     </laji-document-form>
   `,
@@ -55,7 +56,7 @@ export class DocumentFormComponent {
 
   goBack() {
     if (this.form.options?.simple) {
-      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      this.router.navigate(this.localizeRouterService.translateRoute([this.form.category ? '/save-observations' : '/vihko']));
       return;
     }
 
@@ -71,7 +72,7 @@ export class DocumentFormComponent {
 
   onSuccess() {
     if (this.form.options?.simple) {
-      this.router.navigate([this.form.category ? '/save-observations' : '/vihko']);
+      this.router.navigate(this.localizeRouterService.translateRoute([this.form.category ? '/save-observations' : '/vihko']));
       return;
     }
     this.browserService.goBack(() => {
