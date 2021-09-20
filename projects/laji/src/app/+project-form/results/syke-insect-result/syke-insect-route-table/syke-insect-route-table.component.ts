@@ -17,10 +17,8 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   @Input() routeId: string;
   @Input() season: string;
   @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
-  @Input() activeYear;
   @Input() year = '';
   @Input() filter = '';
-  @Input() taxonSet;
   @Input() loading = false;
   @Input() onlySections = true;
 
