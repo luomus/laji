@@ -53,5 +53,7 @@ export namespace Area {
     OldMunicipality = 'ML.oldMunicipality',
     BirdAssociationArea = 'ML.birdAssociationArea',
     IucnEvaluationArea = 'ML.iucnEvaluationArea',
+    ElyCentre = 'ML.elyCentre',
+    Province = 'ML.province'
   }
 }

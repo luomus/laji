@@ -37,6 +37,7 @@
       (dataChange)="onChange($event)"
       (dataSubmit)="onSubmit($event)"
       (validationError)="onValidationError($event)"
+      (goBack)="onGoBack()"
     ></laji-form>
     <laji-document-form-footer
       [form]="vm.form"
@@ -51,7 +52,7 @@
       (submitPublic)="submitPublic()"
       (submitPrivate)="submitPrivate()"
       (submitTemplate)="submitTemplate()"
-      (cancel)="onCancel()"></laji-document-form-footer>
+      (leave)="onLeave()"></laji-document-form-footer>
   </div>
 </ng-container>
 

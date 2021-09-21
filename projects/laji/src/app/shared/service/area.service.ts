@@ -43,6 +43,14 @@ export class AreaService extends AbstractCachedHttpService<Area> {
     return this.getAreaType(lang, this.types.Country);
   }
 
+  getProvinces(lang: string): Observable<{id: string, value: string}[]> {
+    return this.getAreaType(lang, this.types.Province);
+  }
+
+  getElyCentres(lang: string): Observable<{id: string, value: string}[]> {
+    return this.getAreaType(lang, this.types.ElyCentre);
+  }
+
   getName(id: string, lang) {
     return this.getAllAsLookUp(lang).pipe(
       map(data => data[id] && data[id].name || id )

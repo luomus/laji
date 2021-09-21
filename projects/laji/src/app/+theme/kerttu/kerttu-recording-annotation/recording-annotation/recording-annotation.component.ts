@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IRecording, IRecordingAnnotation, IRecordingStatusInfo, ITaxonWithAnnotation, TaxonAnnotationEnum } from '../../models';
-import { forkJoin, of, Subscription } from 'rxjs';
+import { forkJoin, of, Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Autocomplete } from '../../../../shared/model/Autocomplete';

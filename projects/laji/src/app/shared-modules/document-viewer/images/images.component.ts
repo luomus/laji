@@ -46,18 +46,20 @@ export class ImagesComponent implements OnChanges {
       this.documentImages = this.document.media;
     }
     if (this.document.gatherings) {
-      this.document.gatherings.map(gathering => {
+      for (const gathering of this.document.gatherings) {
         if (gathering.media) {
           this.gatheringImages = this.gatheringImages.concat(gathering.media);
-        }
+         }
         if (!gathering.units) {
-          return;
+           continue;
         }
         const unit = gathering.units.find(u => u.unitId === this.highlight || (u.media || []).some(media => media.fullURL === this.highlight));
-        if (unit?.media) {
-          this.unitImages = unit.media;
+        if (unit) {
+          this.gatheringImages = gathering.media || [];
+          this.unitImages = unit.media || [];
+          break;
         }
-      });
+      }
     }
 
     this.loading = false;

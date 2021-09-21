@@ -6,7 +6,7 @@ import { Information } from '../shared/model/Information';
 import { Title } from '@angular/platform-browser';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { catchError, delay, filter, map, switchMap, tap } from 'rxjs/operators';
-import { HeaderService } from '../shared/service/header.service';
+import { getDescription, HeaderService } from '../shared/service/header.service';
 
 @Component({
   selector: 'laji-information',
@@ -40,11 +40,11 @@ export class InformationComponent {
 
   private updateHeaders(info: Information): void {
     const pageTitle = info.title + ' | ' + this.title.getTitle();
-    const paragraph = HeaderService.getDescription(info.content || '');
+    const paragraph = getDescription(info.content || '');
 
-    this.title.setTitle(pageTitle);
-    this.headerService.createTwitterCard(pageTitle);
-    this.headerService.updateMetaDescription(paragraph);
+    this.headerService.setHeaders({
+      title: pageTitle,
+      description: paragraph
+    });
   }
-
 }

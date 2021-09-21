@@ -1,5 +1,6 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
+import { getAddressWithLang } from "../../helper";
 
 const EC = ExpectedConditions;
 
@@ -21,8 +22,8 @@ export class ProjectFormPage {
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
 
-  navigateTo(id, subPage = '') {
-    return browser.get(`/project/${id}${subPage}`) as Promise<void>;
+  navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
+    return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
   }
 
   hasFormLink() {
