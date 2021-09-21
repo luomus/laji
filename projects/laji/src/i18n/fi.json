@@ -175,7 +175,7 @@
   "excel.import.taxonAsIs": "Tunnistamattomat lajinimet sellaisenaan",
   "excel.import.workingOn": "Käsitellään tiedostoa:",
   "excel.import.status": "status",
-  "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan \"{{separator}}\"-merkillä.",
+  "excel.info.array": "Voit antaa usean arvon yhdessä kentässä erottamalla arvot toisistaan merkeillä \"{{separators}}\".",
   "excel.info.file": "Katso tallennusohjeet osoitteessa https://laji.fi/about/3412",
   "excel.map.missingRequired": "Pakollinen sarake puuttuu",
   "excel.map.col-intro": "Valitse sarakkeiden merkitys alasvetovalikosta.",
