@@ -41,48 +41,36 @@ export class SelectedFieldGroupComponent {
     }
   }
 
-  onMoveUp(field: string | string[]) {
-    if (Array.isArray(field)) {
-      if (this.selected.indexOf(field[0]) > 0) {
-        field.forEach(column => {
-          this.moveUp.emit(column);
+  onMoveUp(field: string[]) {
+    const indexOfField = this.selected.indexOf(field[0]);
 
-          if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, -1);
-          }
-        });
-      }
-      return;
-    }
+    if (indexOfField > 0) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField - 1]);
 
-    this.moveUp.emit(field);
+      field.forEach(column => {
+        this.moveUp.emit(column);
 
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, -1);
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, -1 * widthOfNextGroup);
+        }
+      });
     }
   }
 
-  onMoveDown(field: string | string[]) {
-    if (Array.isArray(field)) {
-      const lastSelected = this.selected.length - 1;
-      const lastField = field.length - 1;
+  onMoveDown(field: string[]) {
+    const lastSelected = this.selected.length - 1;
+    const indexOfField = this.selected.indexOf(field[field.length - 1]);
 
-      if (this.selected.indexOf(field[lastField]) < lastSelected) {
-        field.reverse().forEach(column => {
-          this.moveDown.emit(column);
+    if (indexOfField < lastSelected) {
+      const widthOfNextGroup = this.getFieldColumnArrayLength(this.selected[indexOfField + 1]);
 
-          if (this.columnSelector) {
-            this.columnSelector.moveFieldByName(column, 1);
-          }
-        });
-      }
-      return;
-    }
+      field.reverse().forEach(column => {
+        this.moveDown.emit(column);
 
-    this.moveDown.emit(field);
-
-    if (this.columnSelector) {
-      this.columnSelector.moveFieldByName(field, 1);
+        if (this.columnSelector) {
+          this.columnSelector.moveFieldByName(column, widthOfNextGroup);
+        }
+      });
     }
   }
 
@@ -91,12 +79,14 @@ export class SelectedFieldGroupComponent {
   }
 
   getFieldColumnArray(field: string) {
-    if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)$/.test(field)) {
+    if (!field) {
+      return;
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)(.(lat|lon))?$/.test(field)) {
       return [
         field + '.lat',
         field + '.lon'
       ];
-    } else if (/gathering\.conversions\.(wgs84|euref|ykj)$/.test(field)) {
+    } else if (/gathering\.conversions\.(wgs84|euref|ykj)(.(lat|lon)(Min|Max))?$/.test(field)) {
       return [
         field + '.latMin',
         field + '.latMax',
@@ -106,6 +96,10 @@ export class SelectedFieldGroupComponent {
     } else {
       return [ field ];
     }
+  }
+
+  getFieldColumnArrayLength(field: string) {
+    return this.getFieldColumnArray(field)?.length || 0;
   }
 
   getIndexArray(field: string[]) {

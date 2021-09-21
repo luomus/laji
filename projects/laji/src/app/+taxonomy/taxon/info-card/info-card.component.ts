@@ -20,8 +20,8 @@ import { InfoCardQueryService } from './shared/service/info-card-query.service';
 import { LoadedElementsStore } from '../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from '../../../shared/service/header.service';
 
 const TAB_ORDER = [ 'overview', 'images', 'identification', 'biology', 'taxonomy', 'occurrence',
                    'specimens', 'endangerment', 'invasive' ];
@@ -73,7 +73,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     private galleryService: GalleryService,
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
-    private title: Title,
+    private headerService: HeaderService,
     private translate: TranslateService
   ) {}
 
@@ -287,6 +287,8 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     metaTitle += metaTitle ? ' - ' + this.taxon.scientificName : this.taxon.scientificName;
     metaTitle += ' | ' + this.translate.instant('taxonomy.' + tabName) + ' | ' + this.translate.instant('footer.title1');
-    this.title.setTitle(metaTitle);
+    this.headerService.setHeaders({
+      title: metaTitle
+    });
   }
 }

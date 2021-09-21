@@ -8,51 +8,55 @@
 
   <h4><span class="glyphicon glyphicon-leaf"></span> {{ 'theme.census.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.nafi] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.nafi] | localize" class="navbox">
       <h5>{{ 'nafi.stats.title' | translate }}</h5>
       <p>{{ 'theme.nafi.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.talvilintulaskenta] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.talvilintulaskenta] | localize" class="navbox">
       <h5>{{ 'wbc.title' | translate }}</h5>
       <p>{{ 'theme.wbc.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.linjalaskenta] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.linjalaskenta] | localize" class="navbox">
       <h5>{{ 'navigation.linetransect' | translate }}</h5>
       <p>{{ 'theme.linetransect.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.vesilintulaskenta] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vesilintulaskenta] | localize" class="navbox">
       <h5>{{ 'navigation.waterbird' | translate }}</h5>
       <p>{{ 'theme.waterbird.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/herpetology'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/herpetology'] | localize" class="navbox">
       <h5>{{ 'navigation.herpetology' | translate }}</h5>
       <p>{{ 'theme.herpetology.intro' | translate }}</p>
     </a>
-    <a href="https://satelliitti.laji.fi" target="_blank" rel="noopener" tabindex="-1" class="navbox">
+    <a href="https://satelliitti.laji.fi" target="_blank" rel="noopener" class="navbox">
       <h5>{{ 'navigation.satelliitti' | translate }} <i class="glyphicon glyphicon-new-window"></i></h5>
       <p>{{ 'theme.satellite.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.vieraslajit] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.vieraslajit] | localize" class="navbox">
       <h5>{{ 'navigation.invasiveSpecies' | translate }}</h5>
       <p>{{ 'theme.invasiveSpecies.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.kunnat] | localize" tabindex="-1" *lajiForTypes="['dev']" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kunnat] | localize" *lajiForTypes="['dev']" class="navbox">
       <h5>{{ 'navigation.municipalityMonitoring' | translate }}</h5>
       <p>{{ 'theme.municipalityMonitoring.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.lolife] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.lolife] | localize" class="navbox">
       <h5>{{ 'navigation.lolife' | translate }}</h5>
       <p>{{ 'theme.lolife.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting['syke-perhoset']] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting['syke-perhoset']] | localize" class="navbox">
       <h5>{{ 'navigation.syke-butterfly' | translate }}</h5>
       <p>{{ 'theme.syke-butterfly.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.pistelaskenta] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting['kimalaiset']] | localize" class="navbox">
+      <h5>{{ 'navigation.syke-bumblebee' | translate }}</h5>
+      <p>{{ 'theme.syke-bumblebee.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.pistelaskenta] | localize" class="navbox">
       <h5>{{ 'navigation.birdPointCount' | translate }}</h5>
       <p>{{ 'theme.birdPointCount.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/project/' + Global.oldThemeRouting.kiiltomadot] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/project/' + Global.oldThemeRouting.kiiltomadot] | localize" class="navbox">
       <h5>{{ 'navigation.glowWormForm' | translate }}</h5>
       <p>{{ 'theme.glowWormForm.intro' | translate }}</p>
     </a>
@@ -60,15 +64,15 @@
 
   <h4><span class="glyphicon glyphicon-eye-open"></span> {{ 'theme.observation.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/theme/quality'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/quality'] | localize" class="navbox">
       <h5>{{ 'navigation.quality' | translate }}</h5>
       <p>{{ 'theme.quality.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/identify'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/identify'] | localize" class="navbox">
       <h5>{{ 'navigation.identify' | translate }}</h5>
       <p>{{ 'theme.identify.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/datasets'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/datasets'] | localize" class="navbox">
       <h5>{{ 'datasets.label' | translate }}</h5>
       <p [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></p>
     </a>
@@ -76,11 +80,11 @@
 
   <h4><span class="glyphicon glyphicon-picture"></span> {{ 'theme.speciesIdentification.main' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/theme/pinkka'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/pinkka'] | localize" class="navbox">
       <h5>{{ 'navigation.pinkka' | translate }}</h5>
       <p>{{ 'theme.pinkka.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/hyonteisopas'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/hyonteisopas'] | localize" class="navbox">
       <h5>{{ 'navigation.hyonteisopas' | translate }}</h5>
       <p>{{ 'theme.hyonteisopas.intro' | translate }}</p>
     </a>
@@ -88,7 +92,7 @@
 
   <h4><span class="glyphicon glyphicon-list"></span> {{ 'theme.names.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]" tabindex="-1" class="navbox">
+    <a [routerLink]="[({fi: '/lajiluettelo', sv: '/artlistan', en: '/checklist'} | multiLang)]" class="navbox">
       <h5>{{ 'navigation.checklist' | translate }}</h5>
       <p>{{ 'theme.checklist.intro' | translate }}</p>
     </a>
@@ -96,15 +100,15 @@
 
   <h4><span class="glyphicon glyphicon-map-marker"></span> {{ 'theme.place.title' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/map'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/map'] | localize" class="navbox">
       <h5>{{ 'navigation.map' | translate }}</h5>
       <p>{{ 'theme.map.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/ykj'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/about/5310'] | localize" class="navbox">
       <h5>{{ 'navigation.ykj' | translate }}</h5>
       <p>{{ 'theme.ykj.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/emk'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="[({fi: '/about/5719', sv:  '/about/5719', en: '/about/3061'} | multiLang) | localize]" class="navbox">
       <h5>{{ 'navigation.emk' | translate }}</h5>
       <p>{{ 'theme.emk.intro' | translate }}</p>
     </a>
@@ -116,25 +120,29 @@
 
   <h4><span class="glyphicon glyphicon-search"></span> {{ 'theme.research.main' | translate }}</h4>
   <div class="d-flex flex-wrap">
-    <a [routerLink]="['/about/2272'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/about/2272'] | localize" class="navbox">
       <h5>{{ 'navigation.research' | translate }}</h5>
       <p>{{ 'theme.research.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/luomusgrc'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/luomusgrc'] | localize" class="navbox">
       <h5>{{ 'theme.grc.title' | translate }}</h5>
       <p>{{ 'theme.grc.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/kerttu'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/kerttu'] | localize" class="navbox">
       <h5>{{ 'theme.kerttu' | translate }}</h5>
       <p>{{ 'theme.kerttu.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/protax'] | localize" *lajiForTypes="['dev']" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/protax'] | localize" *lajiForTypes="['dev']" class="navbox">
       <h5>{{ 'theme.protax' | translate }}</h5>
       <p>{{ 'theme.protax.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/theme/publications'] | localize" tabindex="-1" class="navbox">
+    <a [routerLink]="['/theme/publications'] | localize" class="navbox">
       <h5>{{ 'finbif-bib.title' | translate }}</h5>
       <p>{{ 'finbif-bib.intro' | translate }}</p>
+    </a>
+    <a [routerLink]="['/about/3123c1'] | localize" class="navbox">
+      <h5>{{ 'finbif-r.title' | translate }}</h5>
+      <p>{{ 'finbif-r.intro' | translate }}</p>
     </a>
   </div>
 

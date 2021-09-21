@@ -39,10 +39,10 @@
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>
-          <lu-button style="margin-left: 15px" (click)="openColumnSelectModal()">
+          <button class="btn btn-default" style="margin-left: 15px" (click)="openColumnSelectModal()">
             <i class="glyphicon glyphicon-cog"></i>
             {{ 'iucn.results.selectColumns' | translate }}
-          </lu-button>
+          </button>
         </div>
       </ng-template>
     </section>
@@ -82,7 +82,7 @@
             *lajiForTypes="['vir']; exclude: true"
             [loading]="requests['download'] === requestStatus.loading"
             [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
-            (click)="makePublicRequest()">
+            (click)="makePublicRequest()" luKeyboardClickable tabindex="0">
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'observation.download.loadPublic' | translate }}
           </lu-button>
@@ -106,7 +106,7 @@
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
             [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
-            (click)="makePrivateRequest()">
+            (click)="makePrivateRequest()" luKeyboardClickable tabindex="0">
             {{ 'observation.download.loadPrivate' | translate }}
           </lu-button>
         </div>
@@ -125,6 +125,7 @@
         <lu-button
           [loading]="speciesCsvLoading"
           (click)="downloadSpecies($event)"
+          luKeyboardClickable tabindex="0"
           target="_self">
           <i class="glyphicon glyphicon-download-alt"></i>
           {{ 'observation.download.loadSpecies' | translate }}

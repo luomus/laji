@@ -11,6 +11,7 @@ import { InfoModule } from '../info/info.module';
 import { FilterOptionsPipe } from './filter-options.pipe';
 import { HabitatSelectComponent } from './habitat-select/habitat-select.component';
 import { SelectModule } from '../select/select.module';
+import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
 /* tslint:enable:max-line-length */
 
@@ -20,7 +21,8 @@ import { SelectModule } from '../select/select.module';
     SharedModule,
     JwBootstrapSwitchNg2Module,
     InfoModule,
-    SelectModule
+    SelectModule,
+    LajiUiModule
   ],
   declarations: [
     ThreeStateMultiSwitchComponent,

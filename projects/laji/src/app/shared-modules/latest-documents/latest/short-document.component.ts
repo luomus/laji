@@ -19,7 +19,6 @@ import { Form } from '../../../shared/model/Form';
   styleUrls: ['./short-document.component.scss']
 })
 export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() hasChanges: boolean;
   @Input() document: Document;
   @Input() form: Form.List;
   @Input() showFormName = true;
@@ -93,23 +92,6 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
 
   getEditDocumentRoute(formId, documentId) {
     return this.localizeRouterService.translateRoute([this.formService.getEditUrlPath(formId, documentId)]);
-  }
-
-  removeDocument(event) {
-    event.stopPropagation();
-    if (this.newUnitsLength > 0) {
-      this.translate.get('haseka.users.latest.discardConfirm', {unitCount: this.newUnitsLength}).pipe(
-        switchMap(msg => this.dialogService.confirm(msg)),
-      ).subscribe(
-        (confirm) => {
-          if (confirm) {
-            this.discardTempDocument.emit();
-          }
-        }
-      );
-    } else {
-      this.discardTempDocument.emit();
-    }
   }
 
   onShowViewer(event) {

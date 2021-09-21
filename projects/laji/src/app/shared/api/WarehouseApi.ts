@@ -347,6 +347,24 @@ export class WarehouseApi {
     return this.http.get<PagedResult<any>>(path, {params: queryParameters});
   }
 
+  //Get filter to use in selection filters
+  public warehouseQueryFilterGet(filter: string, extraHttpRequestParams?: any): Observable<any> {
+    if (this.platformService.isServer) {
+      return EMPTY
+    }
+
+    const path = this.basePath + '/warehouse/filters/' + filter
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
+    // verify required parameter 'filter' is not null or undefined
+    if (filter === null || filter === undefined) {
+      throw new Error('Required parameter filter was null or undefined when calling warehouseQueryFilterGet.');
+    }
+
+    return this.http.get(path, {params: queryParameters});
+  }
+
   /**
    * Get single full document.
    * Get single full document by document URI. Contains the document, gatherings and units, including facts, media etc

@@ -12,35 +12,23 @@ import { Util } from '../../../shared/service/util.service';
 import { Form } from '../../../shared/model/Form';
 import { FormService } from '../../../shared/service/form.service';
 
+enum GroupTypeEnum {
+  date = 'date',
+  coordinate = 'coordinate'
+}
+
 interface IColCombine {
   col: string;
   field: string;
   type: string;
   groupId: number;
   order: number;
+  groupType: GroupTypeEnum;
 }
 
 @Injectable()
 export class SpreadsheetService {
 
-  public static readonly IdField = {
-    parent: 'document',
-    required: true,
-    isArray: false,
-    type: 'string',
-    key: 'id',
-    label: 'ID',
-    fullLabel: 'id'
-  };
-  public static readonly deleteField = {
-    parent: 'document',
-    required: false,
-    isArray: false,
-    type: 'boolean',
-    key: 'delete',
-    label: 'Delete',
-    fullLabel: 'Delete'
-  };
   public static readonly nameSeparator = ' - ';
 
   private static groupId = 1;
@@ -51,7 +39,13 @@ export class SpreadsheetService {
 
   private translations = {};
 
-  private requiredFields = {};
+  private requiredFields: {[formID: string]: {[field: string]: boolean}} = {
+    '*': {
+      'gatherings[*].taxonCensus[*].censusTaxonID': false,
+      'gatherings[*].taxonCensus[*].taxonCensusType': false,
+      'gatherings[*].units[*].identifications[*].taxon': true
+    }
+  };
 
   private hiddenFields: {[formID: string]: string[]} = {
     '*': [
@@ -74,12 +68,10 @@ export class SpreadsheetService {
     private translateService: TranslateService,
     private formService: FormService
   ) {
-    this.setCustomFieldLabels();
     this.translateService.onLangChange.pipe(
       map(() => this.translateService.currentLang),
       startWith(this.translateService.currentLang),
       distinctUntilChanged(),
-      tap(() => this.setCustomFieldLabels()),
       switchMap(lang =>
         ObservableForkJoin([
           this.labelService.get('MY.document', lang),
@@ -109,7 +101,7 @@ export class SpreadsheetService {
     return this.csvMimeTypes;
   }
 
-  setRequiredFields(formID: string, fields: object) {
+  setRequiredFields(formID: string, fields: {[field: string]: boolean}) {
     this.requiredFields[formID] = fields;
   }
 
@@ -132,7 +124,7 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any, options: XLSX.ParsingOptions = {}) {
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any, errors: string[]} {
     const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
@@ -183,20 +175,17 @@ export class SpreadsheetService {
     }));
   }
 
-  private setCustomFieldLabels() {
-    SpreadsheetService.deleteField.label = this.translateService.instant('haseka.delete.title');
-    SpreadsheetService.deleteField.fullLabel = this.translateService.instant('haseka.delete.title');
-  }
-
-  private combineSplittedFields(data: {[col: string]: string}[]) {
+  private combineSplittedFields(data: {[col: string]: string}[]): {data: any, errors: string[]} {
     if (!data || data.length < 2) {
-      return data;
+      return {data, errors: []};
     }
     const first = data[0];
     const combines: IColCombine[] = [];
-    const matches = [];
-    Object.keys(GeneratorService.splitDate).forEach(key => matches.push(GeneratorService.splitDate[key]));
-    Object.keys(GeneratorService.splitCoordinate).forEach(key => matches.push(GeneratorService.splitCoordinate[key]));
+
+    const dateFields = Object.values(GeneratorService.splitDate);
+    const geometryFields = Object.values(GeneratorService.splitCoordinate);
+    const matches = dateFields.concat(geometryFields);
+
     const splitRegExp = new RegExp(`(${matches.join('|')})\\b`);
 
     const getGroup = (field: string): IColCombine => {
@@ -213,21 +202,24 @@ export class SpreadsheetService {
       const newField = first[key].replace(splitRegExp, '');
       const group = getGroup(newField);
       if (match) {
+        const type = match[1];
         combines.push({
           col: key,
           field: newField,
-          type: match[1],
+          type: type,
           groupId: group && group.groupId || SpreadsheetService.groupId++,
-          order: matches.indexOf(match[1])
+          order: matches.indexOf(match[1]),
+          groupType: dateFields.includes(type) ? GroupTypeEnum.date : GroupTypeEnum.coordinate
         });
       }
     });
 
-    if (combines.length === 0) {
-      return data;
+    const {groupedCombines, errors} = this.getCombinedGroups(combines);
+    if (groupedCombines.length === 0) {
+      return {data, errors};
     }
-    const groupedCombines = this.getCombinedGroups(combines);
-    return data.map((row, index) => {
+
+    data = data.map((row, index) => {
       const newRow = {...row};
       for (const group of groupedCombines) {
         const values = {};
@@ -239,20 +231,17 @@ export class SpreadsheetService {
         if (index === 0) {
           newRow[combineTo] = group[0].field;
         } else {
-          newRow[combineTo] = this.getCombinedValue(values);
+          newRow[combineTo] = this.getCombinedValue(values, group[0].groupType);
         }
       }
       return newRow;
     });
+
+    return {data, errors};
   }
 
-  private getCombinedValue(values: {[key: string]: string}): string {
-    if (
-      typeof values[GeneratorService.splitCoordinate.N] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.E] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.sys] !== 'undefined' ||
-      typeof values[GeneratorService.splitCoordinate.system] !== 'undefined'
-    ) {
+  private getCombinedValue(values: {[key: string]: string}, groupType: GroupTypeEnum): string {
+    if (groupType === GroupTypeEnum.coordinate) {
       return this.getCombinedCoordinateValue(values);
     }
     return this.getCombinedDateValue(values);
@@ -289,7 +278,11 @@ export class SpreadsheetService {
     return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
   }
 
-  private getCombinedGroups(combines: IColCombine[]): IColCombine[][] {
+  private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][], errors: string[]} {
+    const errors = [];
+    combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.date, errors);
+    combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.coordinate, errors);
+
     const groups: {[key: string]: IColCombine[]} = {};
     combines.forEach(col => {
       if (!groups[col.groupId]) {
@@ -297,10 +290,43 @@ export class SpreadsheetService {
       }
       groups[col.groupId].push(col);
     });
-    return Object.keys(groups).map(group => {
-      groups[group].sort((a, b) => a.order - b.order);
-      return groups[group];
-    });
+    return {
+      groupedCombines: Object.keys(groups).map(group => {
+        groups[group].sort((a, b) => a.order - b.order);
+        return groups[group];
+      }),
+      errors
+    };
+  }
+
+  private checkCombinedHasRequiredColumns(combines: IColCombine[], groupType: GroupTypeEnum, errors: string[]): IColCombine[] {
+    const requiredKeys = (groupType === GroupTypeEnum.date
+      ? [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy]
+      : [GeneratorService.splitCoordinate.E, GeneratorService.splitCoordinate.N, GeneratorService.splitCoordinate.system]
+    );
+
+    const fields = combines.filter(col => col.groupType === groupType);
+    if (fields.length > 0) {
+      const keys = fields.map(col => col.type);
+      let missing = requiredKeys.filter(key => !keys.includes(key));
+      if (missing.includes(GeneratorService.splitCoordinate.system) && keys.includes(GeneratorService.splitCoordinate.sys)) {
+        missing = missing.filter(val => val !== GeneratorService.splitCoordinate.system);
+      }
+      if (missing.length > 0) {
+        errors.push(
+          this.translateService.instant(
+            'excel.import.error.missingSplitColumn',
+            {
+              field: fields[0].field,
+              column: missing.join(', ')
+            }
+          )
+        );
+        combines = combines.filter(col => col.groupType !== groupType);
+      }
+    }
+
+    return combines;
   }
 
   private normalizeHeader(value: string) {

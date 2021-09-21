@@ -7,7 +7,7 @@
     font-size: $fs-9;
     font-weight: 600;
 
-    margin-block-start: $sp-8;
+    margin-block-start: $sp-9;
     margin-block-end: $sp-5;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
@@ -21,7 +21,7 @@
     font-size: $fs-8;
     font-weight: 400;
 
-    margin-block-start: $sp-7;
+    margin-block-start: $sp-9;
     margin-block-end: $sp-5;
 
     &:first-child {
@@ -33,7 +33,7 @@
     font-size: $fs-7;
     font-weight: 400;
 
-    margin-block-start: $sp-5;
+    margin-block-start: $sp-8;
     margin-block-end: $sp-4;
 
     &:first-child {
@@ -45,7 +45,7 @@
     font-size: $fs-6;
     font-weight: 400;
 
-    margin-block-start: $sp-5;
+    margin-block-start: $sp-7;
     margin-block-end: $sp-4;
 
     &:first-child {
@@ -57,7 +57,7 @@
     font-size: $fs-5;
     font-weight: 400;
 
-    margin-block-start: $sp-4;
+    margin-block-start: $sp-6;
     margin-block-end: $sp-3;
 
     &:first-child {
@@ -69,7 +69,7 @@
     font-size: $fs-4;
     font-weight: 400;
 
-    margin-block-start: $sp-3;
+    margin-block-start: $sp-5;
     margin-block-end: $sp-2;
 
     &:first-child {
@@ -86,8 +86,7 @@
 
   a:not(.btn, .lu-btn) {
     color: $primary-6;
-    text-decoration: none;
-    //text-decoration-color: $primary-4;
+    text-decoration: underline;
 
     &:visited {
       color: $primary-6;
@@ -142,8 +141,8 @@
 
     border-spacing: 0px;
 
-    margin-block-start: $sp-5;
-    margin-block-end: $sp-5;
+    margin-block-start: $sp-6;
+    margin-block-end: $sp-6;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 

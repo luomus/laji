@@ -37,8 +37,6 @@
         [skipActiveFilters]="skipUrlParameters"
         [invasiveStatuses]="invasiveStatuses"
         [dateFormat]="dateFormat"
-        [advancedMode]="vm.advanced"
-        (advancedModeChange)="onAdvanceModeChange($event)"
         (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
       ></laji-form-sample>
@@ -47,8 +45,6 @@
         [query]="vm.query"
         [invasiveStatuses]="invasiveStatuses"
         [dateFormat]="dateFormat"
-        [advancedMode]="vm.advanced"
-        (advancedModeChange)="onAdvanceModeChange($event)"
         (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
       ></laji-observation-form>

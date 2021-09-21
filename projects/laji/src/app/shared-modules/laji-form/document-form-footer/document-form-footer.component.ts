@@ -21,7 +21,7 @@ export class DocumentFormFooterComponent {
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() submitTemplate = new EventEmitter();
-  @Output() cancel = new EventEmitter();
+  @Output() leave = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
   _form: FormWithData;
   _locked: boolean;

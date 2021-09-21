@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SaveObservationsFacade } from './save-observations.facade';
 import { Observable } from 'rxjs';
 import { Form } from '../shared/model/Form';
+import { getDescription, HeaderService } from '../shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: `./save-observations.component.html`,
@@ -14,7 +16,9 @@ export class SaveObservationsComponent implements OnInit {
 
   constructor (
     private facade: SaveObservationsFacade,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private headerService: HeaderService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -24,5 +28,8 @@ export class SaveObservationsComponent implements OnInit {
     // Fixes https://www.pivotaltracker.com/story/show/174379048
     setTimeout(() => this.cdr.markForCheck());
     this.facade.loadAll();
+    this.headerService.setHeaders({
+      description: getDescription(this.translate.instant('saveObservations.desc'))
+    });
   }
 }

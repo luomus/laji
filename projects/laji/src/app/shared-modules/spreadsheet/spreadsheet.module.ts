@@ -35,6 +35,8 @@ import { UserMappingButtonComponent } from './importer/load-file/user-mapping-bu
 import { SpreadsheetFacade } from './spreadsheet.facade';
 import { FieldItemComponent } from './excel-generator/field-item/field-item.component';
 import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
+import { ImportMapComponent } from './importer/import-map/import-map.component';
+import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
     CanSplitToPipe,
     UserMappingButtonComponent,
     FieldItemComponent,
-    OnlyErroneousPipe
+    OnlyErroneousPipe,
+    ImportMapComponent
   ],
     exports: [ImporterComponent, ExcelGeneratorComponent, StepperComponent],
   imports: [
@@ -70,6 +73,7 @@ import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
     LajiMapModule,
     TypeaheadModule,
     TaxonAutocompleteModule,
+    LajiUiModule
   ],
   providers: [SpreadsheetService, MappingService, ImportService, GeneratorService, AugmentService, SpreadsheetFacade],
 })

@@ -9,7 +9,7 @@ import { DocumentStorage } from '../../../storage/document.storage';
 import { mergeMap, tap } from 'rxjs/operators';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { Person } from '../../../shared/model/Person';
-const { JSONPath } = require('jsonpath-plus');
+import { JSONPath } from 'jsonpath-plus';
 
 export enum Readonly {
   noEdit,

@@ -242,9 +242,17 @@ export class ObservationDownloadComponent implements OnDestroy {
       }
     ).subscribe(
       () => {
-        this.toastsService.showSuccess(this.translate.instant(type === 'download' ?
-          'result.load.thanksPublic' : 'result.load.thanksRequest'
-        ));
+        if (type === 'downloadApprovalRequest') {
+          this.toastsService.showSuccess(
+            this.translate.instant('result.load.thanksRequest'),
+            undefined,
+            {timeOut: 0, closeButton: true}
+          );
+        } else {
+          this.toastsService.showSuccess(
+            this.translate.instant('result.load.thanksPublic')
+          );
+        }
         this.requests[type] = RequestStatus.done;
         this.closeModal();
         this.cd.markForCheck();
