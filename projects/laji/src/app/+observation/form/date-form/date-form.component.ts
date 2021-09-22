@@ -20,8 +20,6 @@ export class DateFormComponent implements OnDestroy {
   @Input() query;
   @Input() formQuery: ObservationFormQuery;
   @Input() dateFormat = 'YYYY-MM-DD';
-  @Input() advancedMode = false;
-  @Input() visibleAdvanced;
 
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
@@ -68,7 +66,7 @@ export class DateFormComponent implements OnDestroy {
     if (this.formQuery.timeEnd) {
       this.ignoreEndDatepickerEvent = true;
     }
-    typeof days === 'number' ? this.formQuery.timeStart = (-1) * days + '/0' : this.formQuery.timeStart = undefined;
+    typeof days === 'number' ? this.formQuery.timeStart = (-1) * Math.abs(days) + '/0' : this.formQuery.timeStart = undefined;
     this.formQuery.timeEnd = undefined;
     this.onFormQueryChange();
   }

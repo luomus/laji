@@ -86,7 +86,6 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
         this.cdr.markForCheck();
       });
     });
-    this.selectedChange.next(this.selectedIndex);
     this.cdr.markForCheck();
   }
 }

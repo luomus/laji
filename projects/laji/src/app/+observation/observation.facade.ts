@@ -15,7 +15,6 @@ import { ObservationDataService } from './observation-data.service';
 
 interface IPersistentState {
   showIntro: boolean;
-  advanced: boolean;
 }
 
 interface IObservationState extends IPersistentState {
@@ -38,8 +37,7 @@ export interface IObservationViewModel extends IObservationState {
 }
 
 const _persistentState: IPersistentState = {
-  showIntro: true,
-  advanced: false
+  showIntro: true
 };
 
 let _state: IObservationState = {
@@ -70,7 +68,6 @@ export class ObservationFacade {
   readonly query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
   readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
   readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
-  readonly advanced$      = this.state$.pipe(map((state) => state.advanced));
   readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   readonly showIntro$     = this.state$.pipe(map((state) => state.showIntro));
   readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
@@ -78,14 +75,11 @@ export class ObservationFacade {
   readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
   readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
 
-  private updatingQuery: Subscription;
-
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
     query: this.query$,
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
-    advanced: this.advanced$,
     activeTab: this.activeTab$,
     showIntro: this.showIntro$,
     countUnit: this.countUnit$,
@@ -115,40 +109,32 @@ export class ObservationFacade {
     }
   }
 
-  advanced(advanced: boolean) {
-    if (_state.advanced !== advanced) {
-      this.updatePersistentState({...this.persistentState, advanced});
-    }
-  }
-
   filterVisible(filterVisible: boolean) {
     if (_state.filterVisible !== filterVisible) {
       this.updateState({..._state, filterVisible});
     }
   }
 
-  updateQuery(warehouseQuery: WarehouseQueryInterface) {
-    if (this.updatingQuery) {
-      this.updatingQuery.unsubscribe();
-    }
-    this.updatingQuery = this.userService.isLoggedIn$.pipe(
-      take(1)
-    ).subscribe((loggedIn) => {
-      const query = {...this.emptyQuery, ...warehouseQuery};
+  updateQuery$(warehouseQuery: WarehouseQueryInterface): Observable<any> {
+    return this.userService.isLoggedIn$.pipe(
+      take(1),
+      tap(loggedIn => {
+        const query = {...this.emptyQuery, ...warehouseQuery};
 
-      ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
-        if (query[key] === ObservationFacade.PERSON_TOKEN) {
-          query[key] =  loggedIn ? this.userService.getToken() : undefined;
+        ['editorPersonToken', 'observerPersonToken', 'editorOrObserverPersonToken', 'editorOrObserverIsNotPersonToken'].forEach(key => {
+          if (query[key] === ObservationFacade.PERSON_TOKEN) {
+            query[key] =  loggedIn ? this.userService.getToken() : undefined;
+          }
+        });
+        const hash = JSON.stringify(warehouseQuery);
+        if (this.hashCache['query'] === hash) {
+          return;
         }
-      });
-      const hash = JSON.stringify(warehouseQuery);
-      if (this.hashCache['query'] === hash) {
-        return;
-      }
-      this.hashCache['query'] = hash;
+        this.hashCache['query'] = hash;
 
-      this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
-    });
+        this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
+      })
+    );
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {
@@ -160,7 +146,7 @@ export class ObservationFacade {
   }
 
   clearQuery() {
-    this.updateQuery(this.emptyQuery);
+    this.updateQuery$(this.emptyQuery).subscribe();
   }
 
   toggleIntro() {

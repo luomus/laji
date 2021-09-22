@@ -104,11 +104,11 @@
       <h5>{{ 'navigation.map' | translate }}</h5>
       <p>{{ 'theme.map.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/ykj'] | localize" class="navbox">
+    <a [routerLink]="['/about/5310'] | localize" class="navbox">
       <h5>{{ 'navigation.ykj' | translate }}</h5>
       <p>{{ 'theme.ykj.intro' | translate }}</p>
     </a>
-    <a [routerLink]="['/emk'] | localize" class="navbox">
+    <a [routerLink]="[({fi: '/about/5719', sv:  '/about/5719', en: '/about/3061'} | multiLang) | localize]" class="navbox">
       <h5>{{ 'navigation.emk' | translate }}</h5>
       <p>{{ 'theme.emk.intro' | translate }}</p>
     </a>

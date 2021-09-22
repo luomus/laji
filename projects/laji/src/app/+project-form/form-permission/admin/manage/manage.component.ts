@@ -8,6 +8,7 @@ import { UserService } from '../../../../shared/service/user.service';
 import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 import { AbstractPermission } from '../abstract-permission';
 import { ProjectFormService } from '../../../../shared/service/project-form.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-manage',
@@ -26,7 +27,8 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
     protected localizeRouterService: LocalizeRouterService,
     protected userService: UserService,
     private route: ActivatedRoute,
-    private projectFormService: ProjectFormService
+    private projectFormService: ProjectFormService,
+    private translate: TranslateService
   ) {
     super();
   }
@@ -53,7 +55,7 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
   }
 
   makeAdmin(personId: string) {
-    if (confirm('Oletko varma että haluat tehdä ' + personId + ':stä adminin?')) {
+    if (confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
       this.formPermissionService
         .acceptRequest(this.collectionId, this.userService.getToken(), personId, FormPermission.Type.Admin)
         .subscribe(() => this.initFormPermission());

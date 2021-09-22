@@ -1,9 +1,9 @@
 import { HostListener, Directive } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQueryService } from './search-query.service';
 import { ObservationFacade } from './observation.facade';
-import { tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 
 @Directive()
@@ -12,6 +12,7 @@ export abstract class AbstractObservation {
   public activeTab$: Observable<string>;
 
   private subscription = new Subscription();
+  private qpUpdate = new Subject<void>();
 
   protected observationFacade: ObservationFacade;
   protected route: ActivatedRoute;
@@ -29,22 +30,23 @@ export abstract class AbstractObservation {
         this.observationFacade.activeTab(value['tab'] || 'map');
       })
     );
-    this.subscription.add(
-      this.observationFacade.query$.pipe(
-        tap(query => {
+    this.qpUpdate.pipe(take(1)).subscribe(() => { // avoid query params being overwritten
+      this.subscription.add(
+        this.observationFacade.query$.subscribe(query => {
           this.onQueryChange(query);
           this.updateUrlQueryParamsFromQuery(query);
         })
-      ).subscribe()
-    );
+      );
+    });
     this.subscription.add(
-      this.route.queryParams.subscribe(qparams => {
-        this.updateQueryFromQueryParams(qparams);
+      this.route.queryParams.pipe(switchMap(qparams => this.updateQueryFromQueryParams$(qparams))).subscribe(() => {
+        this.qpUpdate.next();
       })
     );
   }
 
   destroy() {
+    this.qpUpdate.complete();
     this.subscription.unsubscribe();
   }
 
@@ -52,7 +54,7 @@ export abstract class AbstractObservation {
   onPopState() {
     // Route snapshot is not populated with the latest info when this event is triggered. So we need to delay the execution little.
     setTimeout(() => {
-      this.updateQueryFromQueryParams(this.route.snapshot.queryParams);
+      this.updateQueryFromQueryParams$(this.route.snapshot.queryParams).subscribe();
     }, 1);
   }
 
@@ -60,12 +62,12 @@ export abstract class AbstractObservation {
     this.searchQuery.updateUrl(query, this.skipUrlParams);
   }
 
-  private updateQueryFromQueryParams(queryParams) {
+  private updateQueryFromQueryParams$(queryParams): Observable<any> {
     const query = this.searchQuery.getQueryFromUrlQueryParams(queryParams);
     if (queryParams['target']) {
       query.target = [queryParams['target']];
     }
-    this.observationFacade.updateQuery(query);
+    return this.observationFacade.updateQuery$(query);
   }
 
   protected onQueryChange(query: WarehouseQueryInterface) { }

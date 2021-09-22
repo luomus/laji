@@ -1,36 +1,38 @@
 <div class="container mb-8">
   <laji-theme-breadcrumb [breadcrumb]="breadcrumb$ | async"></laji-theme-breadcrumb>
-  <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
-  <ng-container *lajiBrowserOnly>
-    <div class="row" *lajiLoggedIn="false">
-      <div class="col-sm-8">
-        <alert [type]="'warning'">
-          {{ 'haseka.pleaseLogin' | translate }}
-        </alert>
+  <div class="laji-page">
+    <laji-info-page *ngIf="instructions" [rootPage]="instructions"></laji-info-page>
+    <ng-container *lajiBrowserOnly>
+      <div class="row" *lajiLoggedIn="false">
+        <div class="col-sm-8">
+          <alert [type]="'warning'">
+            {{ 'haseka.pleaseLogin' | translate }}
+          </alert>
+        </div>
       </div>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="forms$ | async; let forms">
-    <h3>{{ 'datasets.accessTo' | translate }}</h3>
-    <ul>
-      <li *ngIf="forms.length === 0">
-        {{ 'datasets.accessNone' | translate }}
-      </li>
-      <li *ngFor="let form of forms">
-        <a [routerLink]="['/project/', form.id]">
-          {{ form.collectionID | label }},
-          <ng-container *ngIf="form.options?.secondaryCopy; else primary">
-            {{ 'datasets.secondary' | translate }}
-          </ng-container>
-        </a>
-      </li>
-      <ng-template #primary>
-        {{ 'datasets.primary' | translate }}
-      </ng-template>
-    </ul>
-    <p>{{ 'datasets.new.help' | translate }}</p>
-    <h3>{{ 'datasets.new.title' | translate }}</h3>
-    <p>{{ 'datasets.new.intro' | translate }}</p>
-    <lu-button target="_blank" anchor="https://elomake.helsinki.fi/lomakkeet/106029/lomake.html" role="primary">{{ 'datasets.new.title' | translate }}</lu-button>
-  </ng-container>
+    </ng-container>
+    <ng-container *ngIf="forms$ | async; let forms">
+      <h3>{{ 'datasets.accessTo' | translate }}</h3>
+      <ul>
+        <li *ngIf="forms.length === 0">
+          {{ 'datasets.accessNone' | translate }}
+        </li>
+        <li *ngFor="let form of forms">
+          <a [routerLink]="['/project/', form.id] | localize">
+            {{ form.collectionID | label }},
+            <ng-container *ngIf="form.options?.secondaryCopy; else primary">
+              {{ 'datasets.secondary' | translate }}
+            </ng-container>
+          </a>
+        </li>
+        <ng-template #primary>
+          {{ 'datasets.primary' | translate }}
+        </ng-template>
+      </ul>
+      <p>{{ 'datasets.new.help' | translate }}</p>
+      <h3>{{ 'datasets.new.title' | translate }}</h3>
+      <p>{{ 'datasets.new.intro' | translate }}</p>
+      <lu-button target="_blank" anchor="https://elomake.helsinki.fi/lomakkeet/106029/lomake.html" role="primary">{{ 'datasets.new.title' | translate }}</lu-button>
+    </ng-container>
+  </div>
 </div>

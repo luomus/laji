@@ -89,7 +89,9 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
             this.editingOldWarning = true;
           }
         }
-        this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        if (form.title) {
+          this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+        }
         this.namedPlaceHeader = this.getNamedPlaceHeader();
         this.cd.markForCheck();
       });

@@ -10,7 +10,6 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { DatasetAboutComponent } from './about/dataset-about/dataset-about.component';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
-import { ResultsModule } from './results/results.module';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { SubmissionsComponent } from './submissions/submissions.component';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
@@ -25,6 +24,7 @@ import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
 import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
+import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 
 @NgModule({
@@ -37,11 +37,11 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
     InfoPageModule,
     FormPermissionModule,
     LajiFormModule,
-    ResultsModule,
     OwnSubmissionsModule,
     SpreadsheetModule,
     StatisticsModule,
     DocumentFormHeaderModule,
+    BreadcrumbModule,
     TechnicalNewsModule
   ],
   declarations: [

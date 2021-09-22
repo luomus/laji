@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IFormField } from '../model/excel';
@@ -13,7 +13,7 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./excel-generator.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExcelGeneratorComponent implements OnInit {
+export class ExcelGeneratorComponent {
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -43,14 +43,6 @@ export class ExcelGeneratorComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
-    this.spreadSheetService.setRequiredFields('*', {
-      'gatherings[*].taxonCensus[*].censusTaxonID': false,
-      'gatherings[*].taxonCensus[*].taxonCensusType': false,
-      'gatherings[*].units[*].identifications[*].taxon': true
-    });
-  }
-
   formSelected(event) {
     const selected: string[] = [];
     this.formID = event;
@@ -59,10 +51,7 @@ export class ExcelGeneratorComponent implements OnInit {
         this.isSecondary = form.options?.secondaryCopy;
         this.formTitle = form.title;
         this.parents = [];
-        this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [
-          SpreadsheetService.IdField,
-          SpreadsheetService.deleteField
-        ] : []);
+        this.fields = this.spreadSheetService.formToFlatFields(form, []);
         this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);

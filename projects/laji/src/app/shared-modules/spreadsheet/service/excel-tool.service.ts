@@ -7,8 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
 import { Form } from '../../../shared/model/Form';
-
-const { JSONPath } = require('jsonpath-plus');
+import { JSONPath } from 'jsonpath-plus';
 
 @Injectable({
   providedIn: 'root'

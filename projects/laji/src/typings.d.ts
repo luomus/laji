@@ -1,7 +1,6 @@
 // Typings reference file, you can add your own global typings here
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 declare module 'electron';
-declare module 'jsonpath-plus';
 declare let d3: any;
 
 declare module '*.json' {

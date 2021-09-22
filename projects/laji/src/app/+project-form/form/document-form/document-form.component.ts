@@ -21,7 +21,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
       (missingNamedplace)="goBack()"
       (success)="onSuccess()"
       (error)="goBack()"
-      (cancel)="goBack()"
+      (leave)="goBack()"
       (goBack)="goBack()"
     >
     </laji-document-form>
