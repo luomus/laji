@@ -286,8 +286,8 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   confirmDelete(namedPlace: NamedPlace) {
-    this.translate.get('np.delete.confirm').pipe(
-      switchMap(txt => this.dialogService.confirm(txt)),
+    this.translate.get(['np.delete.confirm', 'np.delete']).pipe(
+      switchMap(res => this.dialogService.confirm(res['np.delete.confirm'], res['np.delete'])),
       take(1),
     ).subscribe(result => {
         if (!result) {

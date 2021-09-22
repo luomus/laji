@@ -141,7 +141,7 @@ export class NpEditFormComponent implements OnInit {
   }
 
   discard() {
-    this.dialogService.confirm(this.translate.instant('haseka.form.discardConfirm')).subscribe(
+    this.dialogService.confirm(this.translate.instant('haseka.form.discardConfirm'), this.translate.instant('haseka.form.leaveConfirm.confirm')).subscribe(
       (confirm) => {
         if (!this.hasChanges || confirm) {
           this.navigateToNPsView();

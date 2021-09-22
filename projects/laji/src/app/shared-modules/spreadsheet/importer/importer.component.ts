@@ -567,7 +567,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   clearUserMapping() {
-    this.dialogService.confirm(this.translateService.instant('excel.map.delete'))
+    this.dialogService.confirm(this.translateService.instant('excel.map.delete'), this.translateService.instant('yes'))
       .subscribe((result) => {
         if (result) {
           this.spreadsheetFacade.setMappingFilename('');
