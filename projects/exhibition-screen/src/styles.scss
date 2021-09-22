@@ -1,3 +1,4 @@
+@import 'vars';
 @import 'projects/laji-ui/src/lib/mixins/base';
 @import 'mixins';
 
@@ -12,6 +13,7 @@ html, body {
 
 body {
 	@include base();
+	background-color: $neutral-9;
 	font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
