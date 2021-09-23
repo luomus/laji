@@ -1353,7 +1353,7 @@
   "saveObservations.easy": "Open observation form",
   "saveObservations.easy.1": "Submit a single observation",
   "saveObservations.easy.2": "No login needed",
-  "saveObservations.easy.3": "You cannot edit the observation afterwards",
+  "saveObservations.easy.3": "The observation is not recorded on your own account",
   "saveObservations.easy.report": "Submit an observation",
   "saveObservations.h1": "Submit your observations to FinBIF",
   "saveObservations.mobile.1": "Take a photo with a mobile app",
