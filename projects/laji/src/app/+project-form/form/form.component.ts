@@ -116,7 +116,7 @@ export class FormComponent implements OnInit {
       );
       return true;
     };
-    if (routeParams['formOrDocument']?.match(/^((JX\.)|(T:))/)) {
+    if (routeParams['formOrDocument']?.match(/^((JX\.)|(T:))/) && !form.options?.dataset) {
       if (form.options?.forms?.length) {
         return of(navigateToForm(form.id, form.id));
       }
