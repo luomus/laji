@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
-import { from, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap, filter, map, switchMap, toArray } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
@@ -40,14 +40,14 @@ export class DatasetsComponent {
     );
 
     this.forms$ = this.formService.getAllForms().pipe(
-      switchMap(forms => from(
-        forms.filter(f => f.options?.dataset && ![Global.forms.datasetPrimary, Global.forms.datasetSecondary].includes(f.id))
-      ).pipe(
-        concatMap(f => this.formPermissionService.getRights(f).pipe(
+      switchMap(fs => forkJoin(
+        fs.filter(f =>
+          f.options?.dataset && ![Global.forms.datasetPrimary, Global.forms.datasetSecondary].includes(f.id)
+        ).map(f => this.formPermissionService.getRights(f).pipe(
           map(rights => (rights.view || rights.ictAdmin) && f),
-          filter(_f => !!_f),
-          toArray()
         ))
+      ).pipe(
+        map(_fs => _fs.filter(f => f)),
       )),
     );
   }
