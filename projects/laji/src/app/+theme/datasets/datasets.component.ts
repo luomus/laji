@@ -42,7 +42,7 @@ export class DatasetsComponent {
     this.forms$ = this.formService.getAllForms().pipe(
       switchMap(fs => forkJoin(
         fs.filter(f =>
-          f.options?.dataset && ![Global.forms.datasetPrimary, Global.forms.datasetSecondary].includes(f.id)
+          f.options?.dataset && ![Global.forms.databankPrimary, Global.forms.databankSecondary].includes(f.id)
         ).map(f => this.formPermissionService.getRights(f).pipe(
           map(rights => (rights.view || rights.ictAdmin) && f),
         ))
