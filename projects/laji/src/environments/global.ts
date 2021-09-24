@@ -8,7 +8,8 @@ export const Global = {
     iucn: 'iucn'
   },
   forms: {
-    datasets: 'MHL.67',
+    databankPrimary: 'MHL.70',
+    databankSecondary: 'MHL.68',
     default: 'JX.519',
     namedPlace: 'MHL.36',
     whichSpecies: 'MHL.9',
