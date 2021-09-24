@@ -8,12 +8,19 @@ export const Global = {
     iucn: 'iucn'
   },
   forms: {
+    datasetPrimary: 'MHL.70',
+    datasetSecondary: 'MHL.68',
     datasets: 'MHL.67',
     default: 'JX.519',
     namedPlace: 'MHL.36',
     whichSpecies: 'MHL.9',
     collectionContest: 'MHL.25',
     privateCollection: 'JX.5190'
+  },
+  databankCMS: {
+    fi: "3513",
+    en: "3517",
+    sv: "3520"
   },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'

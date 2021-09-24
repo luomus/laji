@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormService } from '../../shared/service/form.service';
-import { from, Observable, of } from 'rxjs';
+import { combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { concatMap, filter, map, switchMap, take, tap, toArray } from 'rxjs/operators';
+import {filter, map, switchMap, take, tap, toArray} from 'rxjs/operators';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 import { Form } from '../../shared/model/Form';
 import { FormPermissionService } from '../../shared/service/form-permission.service';
@@ -21,7 +21,7 @@ export class DatasetsComponent {
 
   readonly breadcrumb$: Observable<Breadcrumb[]>;
   readonly forms$: Observable<Form.List[]>;
-  instructions: MultiLanguage;
+  instructions: MultiLanguage = Global.databankCMS;
 
   constructor(
     private formService: FormService,
@@ -34,25 +34,33 @@ export class DatasetsComponent {
     this.breadcrumb$ = this.route.data.pipe(
       map(data => data.breadcrumbs || [])
     );
-    this.forms$ = this.formService.getForm(Global.forms.datasets, this.translateService.currentLang).pipe(
-      tap(form => {
-        this.instructions = form.options?.instructions;
-        this.cdr.detectChanges();
-      }),
-      switchMap(form => this.formService.getAllForms(this.translateService.currentLang).pipe(
-        switchMap((forms) => from(form.options?.forms).pipe(
-          map(id => forms.find(f => f.id === id)),
-          concatMap(f => this.userService.user$.pipe(
-            take(1),
-            concatMap(person => UserService.isIctAdmin(person) ? of(f) : this.formPermissionService.hasAccessToForm(f && f.id || null).pipe(
-              map((access) => access ? f : null)
-            ))
-          )),
+    //Doesn't work!
+    this.forms$ = this.formService.getAllForms().pipe(
+      switchMap(fs => forkJoin(
+        ...fs.filter(f =>
+          f.options?.dataset && ![Global.forms.datasetPrimary, Global.forms.datasetSecondary].includes(f.id)
+        ).map(f => this.formPermissionService.getRights(f).pipe(
+          map(rights => (rights.view || rights.ictAdmin) && f),
           filter(f => !!f),
-          toArray()
         ))
-      )
-    ));
+      ))
+    );
+    //Doesn't also work!
+    // this.forms$ = combineLatest(this.userService.user$, this.formService.getAllForms()).pipe(
+    //  switchMap(([person, fs]) => forkJoin(
+    //    ...fs
+    //      .filter(f =>
+    //        f.options?.dataset && ![Global.forms.datasetPrimary, Global.forms.datasetSecondary].includes(f.id)
+    //      ).map(f => (UserService.isIctAdmin(person)
+    //          ? of(true)
+    //          : this.formPermissionService.hasAccessToForm(f.id)
+    //        ).pipe(
+    //          map(hasAccess => hasAccess && f),
+    //          filter(f => !!f),
+    //        )
+    //      )
+    //  ))
+    // );
   }
 
 }
