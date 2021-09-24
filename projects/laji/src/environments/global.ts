@@ -17,11 +17,6 @@ export const Global = {
     collectionContest: 'MHL.25',
     privateCollection: 'JX.5190'
   },
-  databankCMS: {
-    fi: "3513",
-    en: "3517",
-    sv: "3520"
-  },
   externalViewers: {
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
   },

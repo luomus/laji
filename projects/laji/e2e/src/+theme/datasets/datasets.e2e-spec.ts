@@ -15,13 +15,11 @@ describe('Datasets page', () => {
   });
 
   it('displays cms content', async (done) => {
-    await datasetsPage.waitForCMS();
     expect(await isDisplayed(datasetsPage.$cmsContent)).toBe(true, 'CMS content wasn\'t displayed');
     done();
   });
 
   it('displays links to datasets', async (done) => {
-    await datasetsPage.waitForDatasets();
     expect(await datasetsPage.$datasetLinks.count()).toBeGreaterThan(0, 'No dataset links were displayed');
     done();
   });
