@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment } from '../../kerttu-global-shared/models';
+import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment, IGlobalValidationData } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,9 +18,15 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
 export class SpeciesValidationComponent implements OnInit {
   species$: Observable<IGlobalSpecies>;
   validationData$: Observable<IGlobalRecording[]>;
+  data$: Observable<IGlobalValidationData[]>;
   templates$: Observable<IGlobalTemplate[]>;
+
+  activeIdx: number;
   saving = false;
   canLeaveWithoutConfirm = false;
+
+  private activeIdxSubject = new BehaviorSubject<number>(undefined);
+  activeIdx$ = this.activeIdxSubject.asObservable();
 
   private speciesId$: Observable<number>;
   private speciesId: number;
@@ -49,16 +55,27 @@ export class SpeciesValidationComponent implements OnInit {
     this.validationData$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getDataForValidation(speciesId).pipe(map(data => data.results)))
     );
-    this.templates$ = this.speciesId$.pipe(
+    this.data$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getTemplates(speciesId).pipe(
         map(data => data.results),
-        map(data => {
-          while (data.length < 10) {
-            data.push(null);
+        tap(data => {
+          if (data.length > 0) {
+            this.activeIdxChange(data.length - 1);
           }
-          return data;
         })
       ))
+    );
+    this.templates$ = combineLatest([this.data$, this.activeIdx$]).pipe(
+      map(([data, activeIdx]) => {
+        if (data.length > 0) {
+          return data[activeIdx].templates;
+        }
+        const templates = [];
+        while (templates.length < 10) {
+          templates.push(null);
+        }
+        return templates;
+      })
     );
   }
 
@@ -90,5 +107,9 @@ export class SpeciesValidationComponent implements OnInit {
 
   cancel() {
     this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+  }
+
+  activeIdxChange(activeIdx: number) {
+    this.activeIdxSubject.next(activeIdx);
   }
 }

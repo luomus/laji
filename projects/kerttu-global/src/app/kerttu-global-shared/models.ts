@@ -32,6 +32,12 @@ export interface IGlobalSpeciesFilters {
   family: {id: number, scientificName: string, order: number}[];
 }
 
+export interface IGlobalValidationData {
+  created: string;
+  userId: string;
+  templates: IGlobalTemplate[];
+}
+
 export interface IGlobalRecording {
   audio: IGlobalAudio;
   candidates?: IAudioViewerArea[];
