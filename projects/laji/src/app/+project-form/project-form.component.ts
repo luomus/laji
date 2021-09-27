@@ -133,7 +133,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       || !_form.options?.useNamedPlaces && rights.edit
     ).map(_form => ({
       link:  [`form${(_form === form && !_subForms.length) ? '' : `/${_form.id}`}`],
-      label: _form.options.sidebarFormLabel || 'nafi.form'
+      label: _form.options?.sidebarFormLabel || 'nafi.form'
     }));
   }
 

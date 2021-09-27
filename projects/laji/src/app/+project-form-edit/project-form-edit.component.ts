@@ -1,18 +1,25 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectFormService } from '../shared/service/project-form.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface ViewModel {
+  id: string | null;
+}
+
 @Component({
-  template: `<router-outlet></router-outlet>
-  <ng-container *ngIf="id$ | async as id">
-    <laji-form-builder [id]="id"></laji-form-builder>
+  template: `
+  <ng-container>
+    <router-outlet></router-outlet>
+    <ng-container *ngIf="vm$ | async as vm">
+      <laji-form-builder [id]="vm.id"></laji-form-builder>
+    </ng-container>
   </ng-container>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectFormEditComponent implements OnInit {
-  id$: Observable<string>;
+  vm$: Observable<ViewModel>;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -20,6 +27,8 @@ export class ProjectFormEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.id$ = this.projectFormService.getFormFromRoute$(this.route.firstChild.firstChild).pipe(map(form => form.id));
+    this.vm$ = this.route.firstChild.firstChild
+      ? this.projectFormService.getFormFromRoute$(this.route.firstChild.firstChild).pipe(map(form => ({id: form.id})))
+      : of({id: null});
   }
 }

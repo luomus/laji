@@ -59,6 +59,11 @@ export class ProjectFormService {
   }
 
   updateLocalForm(form: Form.SchemaForm) {
+    const {id} = form;
+    if (this.currentFormID !== id) {
+      this.currentFormID = id;
+      this.form$ = new ReplaySubject<Form.SchemaForm>();
+    }
     this.form$.next(form);
   }
 

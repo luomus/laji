@@ -8,6 +8,10 @@ import { Form } from '../shared/model/Form';
 import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
 import { ProjectFormService } from '../shared/service/project-form.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import { of } from 'rxjs';
+import { Global } from '../../environments/global';
+import { Lang } from 'laji-form-builder/lib/model';
 
 @Component({
   selector: 'laji-form-builder',
@@ -29,7 +33,9 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     private toastsService:  ToastsService,
-    private projectFormService: ProjectFormService
+    private projectFormService: ProjectFormService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.onChange = this.onChange.bind(this);
   }
@@ -51,6 +57,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         rootElem: this.lajiFormBuilderRoot.nativeElement,
         theme: lajiFormBuilderBs3Theme,
         apiClient: this.apiClient,
+        lang: this.translate.currentLang as Lang,
+        onLangChange: this.onLangChange,
+        primaryDataBankFormID: Global.forms.databankPrimary,
+        secondaryDataBankFormID: Global.forms.databankSecondary,
         onChange: this.onChange,
         notifier: {
           success: msg => this.toastsService.showSuccess(msg),
@@ -67,6 +77,17 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   onChange(form: SchemaForm) {
-    this.projectFormService.updateLocalForm(form);
+    const id = form.id ? form.id : 'tmp';
+    if (id !== this.id) {
+      of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
+        this.projectFormService.updateLocalForm({...form, id});
+      });
+    } else {
+      this.projectFormService.updateLocalForm(form);
+    }
+  }
+
+  onLangChange(lang: Lang) {
+    console.warn('TODO lang change');
   }
 }
