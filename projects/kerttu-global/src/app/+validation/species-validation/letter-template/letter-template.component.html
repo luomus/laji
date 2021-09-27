@@ -58,20 +58,21 @@
 <div class="mt-3 mb-5">
   <div class="pull-right">
     <button
-      [disabled]="!template"
+      [disabled]="!template || viewOnly"
       class="btn btn-success mr-3"
       (click)="onConfirm()"
     >
       {{ 'validation.templates.confirm' | translate }}
     </button>
     <button
+      [disabled]="viewOnly"
       class="btn btn-default mr-3"
       (click)="cancel.emit()"
     >
       {{ 'validation.templates.cancel' | translate }}
     </button>
     <button
-      [disabled]="!template || isNew"
+      [disabled]="!template || isNew || viewOnly"
       class="btn btn-danger"
       (click)="onRemove()"
     >

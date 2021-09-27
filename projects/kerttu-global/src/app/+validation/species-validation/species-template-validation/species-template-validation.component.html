@@ -12,7 +12,7 @@
     <button
       *ngIf="hasInitialTemplates"
       class="btn btn-primary"
-      [disabled]="saving"
+      [disabled]="saving || viewOnly"
       (click)="confirmAllTemplates()"
     >
       {{ 'validation.templates.confirmAll' | translate }}
@@ -20,14 +20,14 @@
     <div class="pull-right">
       <button
         class="btn btn-default"
-        [disabled]="saving"
+        [disabled]="saving || viewOnly"
         (click)="cancel.emit()"
       >
         {{ 'validation.templates.cancel' | translate }}
       </button>
       <button
         class="btn btn-success ml-3"
-        [disabled]="saving"
+        [disabled]="saving || viewOnly"
         (click)="saveTemplates()"
       >
         {{ 'validation.templates.saveAndReturn' | translate }}
@@ -63,6 +63,7 @@
     [isNew]="activeTemplateIsNew"
     [focusTime]="focusTime"
     [spectrogramConfig]="spectrogramConfig"
+    [viewOnly]="viewOnly"
     (confirm)="onTemplateConfirm($event)"
     (cancel)="onTemplateCancel()"
     (remove)="onTemplateRemove()"

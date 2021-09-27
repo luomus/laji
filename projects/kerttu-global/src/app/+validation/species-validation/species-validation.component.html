@@ -8,13 +8,12 @@
     [activeIdx]="activeIdx$ | async"
     (activeIdxChange)="activeIdxChange($event)"
   ></laji-version-nav>
-  <ng-container *ngIf="templates$ | async as templates">
-    <laji-species-template-validation
-      [data]="validationData$ | async"
-      [templates]="templates"
-      [saving]="saving"
-      (save)="saveTemplates($event)"
-      (cancel)="cancel()"
-    ></laji-species-template-validation>
-  </ng-container>
+  <laji-species-template-validation
+    [data]="validationData$ | async"
+    [templates]="templates$ | async"
+    [viewOnly]="viewOnly$ | async"
+    [saving]="saving"
+    (save)="saveTemplates($event)"
+    (cancel)="cancel()"
+  ></laji-species-template-validation>
 </div>

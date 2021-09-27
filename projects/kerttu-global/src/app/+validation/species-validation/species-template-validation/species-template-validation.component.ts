@@ -14,6 +14,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() data?: IGlobalRecording[];
   @Input() templates?: IGlobalTemplate[];
   @Input() saving = false;
+  @Input() viewOnly = false;
 
   hasInitialTemplates = false;
 
@@ -57,7 +58,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     if (changes.templates && this.templates) {
       this.confirmedTemplates = this.templates.map(() => false);
       this.hasInitialTemplates = this.templates.indexOf(null) === -1;
-      this.setShowCandidates(!this.hasInitialTemplates);
+      if (changes.templates.previousValue == null) {
+        this.setShowCandidates(!this.hasInitialTemplates);
+      } else if (this.activeTemplate != null) {
+        this.onTemplateClick(this.activeTemplateIdx);
+      }
     }
   }
 

@@ -20,6 +20,7 @@ export class SpeciesValidationComponent implements OnInit {
   validationData$: Observable<IGlobalRecording[]>;
   data$: Observable<IGlobalValidationData[]>;
   templates$: Observable<IGlobalTemplate[]>;
+  viewOnly$: Observable<boolean>;
 
   activeIdx: number;
   saving = false;
@@ -75,6 +76,14 @@ export class SpeciesValidationComponent implements OnInit {
           templates.push(null);
         }
         return templates;
+      })
+    );
+    this.viewOnly$ = combineLatest([this.data$, this.activeIdx$]).pipe(
+      map(([data, activeIdx]) => {
+        if (data.length === 0) {
+          return false;
+        }
+        return activeIdx !== data.length - 1;
       })
     );
   }
