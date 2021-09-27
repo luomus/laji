@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ThemeRoutingModule } from './theme-routing.module';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { SharedModule } from '../shared/shared.module';
-import { YkjComponent } from './ykj/ykj.component';
-import { EmkComponent } from './emk/emk.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { IdentifyComponent } from './identify/identify.component';
@@ -32,7 +30,6 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
-import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
 import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/recording-annotation/recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
@@ -55,7 +52,9 @@ import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.comp
 import { KerttuUserTableComponent } from './kerttu/kerttu-result/kerttu-user-table/kerttu-user-table.component';
 import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu-count.component';
 import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-letter-result-table/kerttu-letter-result-table.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.module';
+import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 
 /* tslint:enable:max-line-length */
 
@@ -76,7 +75,9 @@ import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.m
     ThreeStateSwitchModule,
     PillListModule,
     SelectModule,
-    AudioViewerModule
+    AudioViewerModule,
+    LajiMapModule,
+    BreadcrumbModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -84,8 +85,6 @@ import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.m
     PinkkaComponent,
     BibliographyComponent,
     InsectGuideComponent,
-    YkjComponent,
-    EmkComponent,
     IdentifyComponent,
     ThemeComponent,
     QualityComponent,
@@ -98,7 +97,6 @@ import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.m
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LetterAnnotationComponent,
-    ThemeBreadcrumbComponent,
     RecordingAnnotationComponent,
     KerttuExpertiseFormComponent,
     KerttuLetterAnnotationComponent,

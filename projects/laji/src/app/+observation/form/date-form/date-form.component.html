@@ -27,12 +27,12 @@
       {{ 'observation.form.thisYear' | translate }}
     </button>
   </div>
-  <div *ngIf="advancedMode" class="d-flex flex-row flex-wrap items-end my-3">
+  <div class="d-flex flex-row flex-wrap items-end my-3">
     {{ 'observation.form.since.1' | translate }} <input type="number" [(ngModel)]="xDaysAgo" class="mx-2 form-control input-sm" style="max-width: 80px;"> {{ 'observation.form.since.2' | translate }}
   </div>
 </div>
 
-<div class="mb-4" *ngIf="advancedMode || query.season">
+<div class="mb-4">
   <div>
     <label>{{ 'observation.form.season' | translate }}</label>
     <laji-info>{{ 'observation.info.season' | translate }}</laji-info>
@@ -40,7 +40,7 @@
   <laji-season [season]="query.season" (seasonChange)="updateSearchQuery('season', $event)"></laji-season>
 </div>
 
-<ng-container *ngIf="advancedMode || visibleAdvanced['time']">
+<ng-container>
   <div class="mb-4">
     <div>
       <label>{{ 'observation.form.loaded' | translate }}</label>
