@@ -14,7 +14,8 @@ export class SmallAudioViewerComponent {
   @Input() audio: IGlobalAudio;
   @Input() label: string;
   @Input() highlight = false;
-
+  @Input() highlightType: 'default'|'warning'|'danger';
+ 
   @Output() templateClick = new EventEmitter<number>();
   @Output() audioLoading = new EventEmitter<boolean>();
 

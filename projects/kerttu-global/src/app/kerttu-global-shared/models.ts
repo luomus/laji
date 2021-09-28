@@ -47,10 +47,12 @@ export interface IGlobalTemplate {
   id?: number;
   audioId: number;
   area: IAudioViewerArea;
-  comment?: string;
+  comment?: IGlobalComment;
 }
 
 export interface IGlobalComment {
+  created?: string;
+  userId?: string;
   templateId: number;
   type: CommentType;
   comment: string;

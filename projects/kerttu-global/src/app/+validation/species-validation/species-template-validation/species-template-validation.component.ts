@@ -56,11 +56,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       });
     }
     if (changes.templates && this.templates) {
-      this.confirmedTemplates = this.templates.map(() => false);
       this.hasInitialTemplates = this.templates.indexOf(null) === -1;
       if (changes.templates.previousValue == null) {
+        this.confirmedTemplates = this.templates.map(() => false);
         this.setShowCandidates(!this.hasInitialTemplates);
-      } else if (this.activeTemplate != null) {
+      } else if (this.activeTemplateIdx != null) {
         this.onTemplateClick(this.activeTemplateIdx);
       }
     }

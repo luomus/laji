@@ -31,6 +31,7 @@ export class LetterTemplateComponent {
   timePadding = this.defaultTimePadding;
 
   commentText = '';
+  commentTypeEnum = CommentType;
 
   @ViewChild('commentModal', { static: true }) commentModal: TemplateRef<any>;
 

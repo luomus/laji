@@ -5,8 +5,10 @@
     [area]="template?.area"
     [audio]="audioIdMap[template?.audioId]"
     [spectrogramConfig]="spectrogramConfig"
-    [highlight]="template && !confirmedTemplates?.[i]"
+    [highlight]="(template && !confirmedTemplates?.[i] && !viewOnly) || template.comment"
+    [highlightType]="template.comment?.type === 0 ? 'danger' : (template.comment?.type === 1 ? 'warning' : 'default')"
     (templateClick)="templateClick.emit(i)"
   >
+  {{ template?.comment }}
   </laji-small-audio-viewer>
 </ng-container>

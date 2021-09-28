@@ -25,6 +25,7 @@
   <div class="pull-right">
     <button
       class="btn btn-primary"
+      [disabled]="viewOnly"
       [ngClass]="{'active': audioViewerMode === 'draw'}"
       (click)="toggleDrawMode()"
     >
@@ -65,7 +66,6 @@
       {{ 'validation.templates.confirm' | translate }}
     </button>
     <button
-      [disabled]="viewOnly"
       class="btn btn-default mr-3"
       (click)="cancel.emit()"
     >
@@ -80,6 +80,28 @@
     </button>
   </div>
 </div>
+<ng-container *ngIf="template?.comment">
+  <h3>{{ 'validation.templates.template.comment' | translate }}</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <p>
+        {{ template.comment.created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}
+        <span [ngClass]="{
+          'text-danger': template.comment.type === commentTypeEnum.replace,
+          'text-warning': template.comment.type === commentTypeEnum.reframe
+        }" class="text-danger">
+          {{ 'validation.templates.template.' + (template.comment.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
+        </span>
+      </p>
+      <p>
+        {{ template.comment.userId | users }}:
+        <br>
+        {{ template.comment.comment }}
+      </p>
+    </div>
+  </div>
+</ng-container>
+
 
 <ng-template #commentModal>
   <div class="modal-content">

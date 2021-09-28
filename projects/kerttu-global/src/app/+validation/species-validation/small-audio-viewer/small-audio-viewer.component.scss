@@ -11,6 +11,13 @@ laji-audio-viewer {
 
   &.highlight {
     background-color: $warning-2;
+
+    &.warning {
+      background-color: $warning-3;
+    }
+    &.danger {
+      background-color: $danger-3;
+    }
   }
 
   label {
