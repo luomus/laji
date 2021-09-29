@@ -11,7 +11,7 @@
   <laji-species-template-validation
     [data]="validationData$ | async"
     [templates]="templates$ | async"
-    [viewOnly]="viewOnly$ | async"
+    [historyView]="historyView$ | async"
     [saving]="saving"
     (save)="saveTemplates($event)"
     (cancel)="cancel()"

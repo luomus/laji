@@ -33,8 +33,8 @@ export interface IGlobalSpeciesFilters {
 }
 
 export interface IGlobalValidationData {
-  created: string;
-  userId: string;
+  created?: string;
+  userId?: string;
   templates: IGlobalTemplate[];
 }
 

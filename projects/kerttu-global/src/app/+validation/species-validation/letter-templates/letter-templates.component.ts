@@ -11,7 +11,7 @@ import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/mod
 export class LetterTemplatesComponent {
   @Input() templates: IGlobalTemplate[];
   @Input() confirmedTemplates: boolean[];
-  @Input() viewOnly = false;
+  @Input() historyView = false;
 
   @Input() spectrogramConfig: ISpectrogramConfig;
   @Input() audioIdMap: {[id: number]: IGlobalAudio };

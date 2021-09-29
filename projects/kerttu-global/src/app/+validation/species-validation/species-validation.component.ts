@@ -20,7 +20,7 @@ export class SpeciesValidationComponent implements OnInit {
   validationData$: Observable<IGlobalRecording[]>;
   data$: Observable<IGlobalValidationData[]>;
   templates$: Observable<IGlobalTemplate[]>;
-  viewOnly$: Observable<boolean>;
+  historyView$: Observable<boolean>;
 
   activeIdx: number;
   saving = false;
@@ -78,7 +78,7 @@ export class SpeciesValidationComponent implements OnInit {
         return templates;
       })
     );
-    this.viewOnly$ = combineLatest([this.data$, this.activeIdx$]).pipe(
+    this.historyView$ = combineLatest([this.data$, this.activeIdx$]).pipe(
       map(([data, activeIdx]) => {
         if (data.length === 0) {
           return false;

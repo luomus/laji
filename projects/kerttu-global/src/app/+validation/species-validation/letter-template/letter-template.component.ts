@@ -17,7 +17,7 @@ export class LetterTemplateComponent {
   @Input() templateIdx: number;
   @Input() isNew: boolean;
   @Input() focusTime: number;
-  @Input() viewOnly: boolean;
+  @Input() historyView: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
   @Output() cancel = new EventEmitter();

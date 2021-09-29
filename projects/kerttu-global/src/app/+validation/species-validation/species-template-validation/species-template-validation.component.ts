@@ -11,17 +11,14 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTemplateValidationComponent implements OnChanges {
-  @Input() data?: IGlobalRecording[];
-  @Input() templates?: IGlobalTemplate[];
+  @Input() data: IGlobalRecording[] = [];
+  @Input() templates: IGlobalTemplate[] = [];
+  @Input() confirmedTemplates: boolean[] = [];
   @Input() saving = false;
-  @Input() viewOnly = false;
+  @Input() historyView = false;
 
   hasInitialTemplates = false;
-
   showCandidates = false;
-  candidatesLoaded = false;
-
-  confirmedTemplates: boolean[] = [];
 
   comments: IGlobalComment[] = [];
 
@@ -58,7 +55,6 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     if (changes.templates && this.templates) {
       this.hasInitialTemplates = this.templates.indexOf(null) === -1;
       if (changes.templates.previousValue == null) {
-        this.confirmedTemplates = this.templates.map(() => false);
         this.setShowCandidates(!this.hasInitialTemplates);
       } else if (this.activeTemplateIdx != null) {
         this.onTemplateClick(this.activeTemplateIdx);
@@ -106,9 +102,6 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   setShowCandidates(value: boolean) {
     this.showCandidates = value;
-    if (this.showCandidates) {
-      this.candidatesLoaded = true;
-    }
   }
 
   confirmAllTemplates() {
@@ -116,7 +109,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   saveTemplates() {
-    const missingConfirm = this.confirmedTemplates.indexOf(false) !== -1;
+    const missingConfirm = this.confirmedTemplates.length < this.templates.length || this.confirmedTemplates.indexOf(false) !== -1;
     if (missingConfirm) {
       this.dialogService.alert(
         this.translate.instant(this.hasInitialTemplates ? 'validation.missingConfirm' : 'validation.missingTemplates')
@@ -131,7 +124,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   private onNewTemplateClick(audioId: number, template?: IGlobalTemplate, time?: number) {
-    if (this.saving) {
+    if (this.saving || this.historyView) {
       return;
     }
     const newTemplateIdx = this.templates.indexOf(null);
