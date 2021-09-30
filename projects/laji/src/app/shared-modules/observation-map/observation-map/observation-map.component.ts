@@ -26,6 +26,8 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'laji-observation-map',
@@ -142,7 +144,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     private coordinateService: CoordinateService,
     private logger: Logger,
     private changeDetector: ChangeDetectorRef,
-  ) { }
+    private route: ActivatedRoute
+  ) {
+    if (environment.type === 'vir') {
+      this._mapOptions = {...this._mapOptions, availableOverlayNameBlacklist: []};
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!this.platformService.isBrowser) {
