@@ -1,4 +1,5 @@
 import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 
 export interface IListResult<T> {
   results: T[];
@@ -6,6 +7,10 @@ export interface IListResult<T> {
 
 export interface SuccessResult {
   success: true;
+}
+
+export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
+  hasModifications?: boolean;
 }
 
 export interface IGlobalSpeciesQuery {
@@ -22,8 +27,10 @@ export interface IGlobalSpecies {
   id: number;
   scientificName: string;
   commonName: string;
-  userValidations: number;
-  userHasValidated: boolean;
+  versionCount?: number;
+  validationCount?: number;
+  userHasValidated?: boolean;
+  hasModifications?: boolean;
 }
 
 export interface IGlobalSpeciesFilters {

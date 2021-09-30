@@ -5,6 +5,10 @@
     [filters]="filters"
     (queryChange)="onQueryChange($event)"
   ></laji-species-list-filters>
+  <p class="text-danger" *ngIf="speciesList.hasModifications">
+    <i class="fa fa-exclamation-circle"></i>
+    {{ 'speciesList.hasModifications' | translate }}
+  </p>
   <laji-species-table
     class="d-block"
     [luFillHeight]="{ minHeight: 500 }"

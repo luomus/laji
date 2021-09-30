@@ -21,7 +21,7 @@
     <div class="pull-right">
       <button
         class="btn btn-default"
-        [disabled]="saving || historyView"
+        [disabled]="saving"
         (click)="cancel.emit()"
       >
         {{ 'validation.templates.cancel' | translate }}

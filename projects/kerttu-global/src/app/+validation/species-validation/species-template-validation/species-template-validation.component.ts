@@ -13,13 +13,13 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
 export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() data: IGlobalRecording[] = [];
   @Input() templates: IGlobalTemplate[] = [];
-  @Input() confirmedTemplates: boolean[] = [];
   @Input() saving = false;
   @Input() historyView = false;
 
   hasInitialTemplates = false;
   showCandidates = false;
 
+  confirmedTemplates: boolean[] = [];
   comments: IGlobalComment[] = [];
 
   spectrogramConfig: ISpectrogramConfig = {

@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters } from '../kerttu-global-shared/models';
+import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../kerttu-global-shared/models';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
@@ -31,7 +30,7 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
 export class ValidationComponent implements OnInit, OnDestroy {
   speciesQuery: IGlobalSpeciesQuery = { page: 1, onlyUnvalidated: false };
   speciesFilters$: Observable<IGlobalSpeciesFilters>;
-  speciesList: PagedResult<IGlobalSpecies> = { results: [], currentPage: 0, total: 0, pageSize: 0 };
+  speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
   loading = false;
 
   private speciesListSub: Subscription;

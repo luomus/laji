@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters } from '../../kerttu-global-shared/models';
+import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-list',
@@ -12,7 +11,7 @@ import { IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters } from '../.
 export class SpeciesListComponent {
   @Input() filters: IGlobalSpeciesFilters = {continent: [], order: [], family: []};
   @Input() query: IGlobalSpeciesQuery = {};
-  @Input() speciesList: PagedResult<IGlobalSpecies> = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  @Input() speciesList: IGlobalSpeciesListResult = {results: [], currentPage: 0, total: 0, pageSize: 0};
   @Input() loading = false;
 
   @Output() taxonSelect = new EventEmitter<number>();

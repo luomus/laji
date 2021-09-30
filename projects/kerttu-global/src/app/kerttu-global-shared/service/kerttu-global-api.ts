@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
 import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
   SuccessResult,
   IGlobalComment,
-  IGlobalValidationData} from '../models';
+  IGlobalValidationData,
+  IGlobalSpeciesListResult
+} from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -17,13 +18,13 @@ export class KerttuGlobalApi {
   }
   protected basePath = environment.kerttuApi + '/global';
 
-  public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<PagedResult<IGlobalSpecies>> {
+  public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
     const path = this.basePath + '/species';
 
     let params = new HttpParams().set('personToken', personToken);
     params = this.queryToParams(query, params);
 
-    return this.httpClient.get<PagedResult<IGlobalSpecies>>(path, { params });
+    return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
   public getSpecies(taxonId: number): Observable<IGlobalSpecies> {
