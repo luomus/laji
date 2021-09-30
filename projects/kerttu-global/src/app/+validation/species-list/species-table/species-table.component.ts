@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewChild, TemplateRef } from '@angular/core';
 import { DatatableColumn, DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
 
@@ -8,43 +8,55 @@ import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
   styleUrls: ['./species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesTableComponent implements OnChanges {
+export class SpeciesTableComponent implements OnInit, OnChanges {
   @Input() data: IGlobalSpeciesListResult = {results: [], currentPage: 0, total: 0, pageSize: 0};
   @Input() loading = false;
 
-  private defaultColumns: DatatableColumn[] = [
-    {
-      name: 'commonName',
-      label: 'speciesList.column.commonName'
-    },
-    {
-      name: 'scientificName',
-      label: 'speciesList.column.scientificName'
-    },
-    {
-      name: 'validationCount',
-      label: 'speciesList.column.validationCount',
-      width: 30
-    },
-    {
-      name: 'versionCount',
-      label: 'speciesList.column.versionCount',
-      width: 30
-    },
-    {
-      name: 'userHasValidated',
-      label: 'speciesList.column.userHasValidated',
-      cellTemplate: 'booleanCheck',
-      width: 30
-    }
-  ];
-  columns = this.defaultColumns;
+  private defaultColumns: DatatableColumn[];
+  columns: DatatableColumn[];
 
   @Output() taxonSelect = new EventEmitter<number>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
   @ViewChild('exclamation', { static: true }) exclamationTpl: TemplateRef<any>;
+  @ViewChild('lock', { static: true }) lockTpl: TemplateRef<any>;
+
+  ngOnInit() {
+    this.defaultColumns = [
+      {
+        name: 'commonName',
+        label: 'speciesList.column.commonName'
+      },
+      {
+        name: 'scientificName',
+        label: 'speciesList.column.scientificName'
+      },
+      {
+        name: 'validationCount',
+        label: 'speciesList.column.validationCount',
+        width: 30
+      },
+      {
+        name: 'versionCount',
+        label: 'speciesList.column.versionCount',
+        width: 30
+      },
+      {
+        name: 'userHasValidated',
+        label: 'speciesList.column.userHasValidated',
+        cellTemplate: 'booleanCheck',
+        width: 30
+      },
+      {
+        name: 'isLocked',
+        label: '',
+        cellTemplate: this.lockTpl,
+        width: 30
+      }
+    ];
+    this.columns = this.defaultColumns;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data && changes.data.previousValue?.hasModifications !== this.data?.hasModifications) {
@@ -63,12 +75,17 @@ export class SpeciesTableComponent implements OnChanges {
   }
 
   onRowSelect(row: any) {
-    this.taxonSelect.emit(row.id);
+    if (!row.isLocked) {
+      this.taxonSelect.emit(row.id);
+    }
   }
 
   getRowClass(row: any): string {
-    const rowClasses = ['link'];
+    const rowClasses = [];
 
+    if (!row.isLocked) {
+      rowClasses.push('link');
+    }
     if (!row.validationCount) {
       rowClasses.push('red-row');
     } else if (row.validationCount === 1 || row.validationCount === 2) {

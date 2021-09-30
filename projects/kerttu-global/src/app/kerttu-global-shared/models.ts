@@ -31,6 +31,7 @@ export interface IGlobalSpecies {
   validationCount?: number;
   userHasValidated?: boolean;
   hasModifications?: boolean;
+  isLocked?: boolean;
 }
 
 export interface IGlobalSpeciesFilters {

@@ -101,7 +101,6 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('!');
     if (this.hasLockSub) {
       this.hasLockSub.unsubscribe();
     }
