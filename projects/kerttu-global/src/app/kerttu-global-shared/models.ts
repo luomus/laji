@@ -55,6 +55,7 @@ export interface IGlobalTemplate {
   audioId: number;
   area: IAudioViewerArea;
   comment?: IGlobalComment;
+  validatedBy?: string[];
 }
 
 export interface IGlobalComment {

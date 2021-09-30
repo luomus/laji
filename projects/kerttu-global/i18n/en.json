@@ -24,6 +24,7 @@
   "validation.templates.template.comment": "Comments on template",
   "validation.templates.template.removed": "Template removed",
   "validation.templates.template.reframed": "Template reframed",
+  "validations.templates.template.validatedBy": "Templated validated by users",
   "validation.templates.new": "New template",
   "validation.templates.current": "Current template",
   "validation.templates.history": "Template",

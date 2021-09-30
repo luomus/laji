@@ -38,6 +38,9 @@
   <div class="col-sm-4">
     <h3 class="d-inline-block">{{ ('validation.templates.' + (historyView ? 'history' : (isNew ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
     <p *ngIf="!historyView">{{ 'validation.templates.template.description' | translate }}</p>
+    <p *ngIf="template?.validatedBy">
+      {{ 'validations.templates.template.validatedBy' | translate }}: {{ template.validatedBy | users | values }}
+    </p>
   </div>
   <div class="col-sm-8">
     <laji-audio-viewer
