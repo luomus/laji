@@ -2,18 +2,25 @@
   <h1 *ngIf="species$ | async as species" class="d-inline-block">
     {{ species.commonName }} - <i>{{ species.scientificName }}</i>
   </h1>
-  <laji-version-nav
-    class="pull-right"
-    [data]="data$ | async"
-    [activeIdx]="activeIdx$ | async"
-    (activeIdxChange)="activeIdxChange($event)"
-  ></laji-version-nav>
-  <laji-species-template-validation
-    [data]="validationData$ | async"
-    [templates]="templates$ | async"
-    [historyView]="historyView$ | async"
-    [saving]="saving"
-    (save)="saveTemplates($event)"
-    (cancel)="cancel()"
-  ></laji-species-template-validation>
+  <ng-container *ngIf="hasLock">
+    <laji-version-nav
+      class="pull-right"
+      [data]="data$ | async"
+      [activeIdx]="activeIdx$ | async"
+      (activeIdxChange)="activeIdxChange($event)"
+    ></laji-version-nav>
+    <laji-species-template-validation
+      [data]="validationData$ | async"
+      [templates]="templates$ | async"
+      [historyView]="historyView$ | async"
+      [saving]="saving"
+      (save)="saveTemplates($event)"
+      (cancel)="cancel()"
+    ></laji-species-template-validation>
+    </ng-container>
+    <ng-container *ngIf="hasLock === false">
+      <div class="alert alert-danger">
+        {{ 'validation.templates.noLock' | translate }}
+      </div>
+    </ng-container>
 </div>

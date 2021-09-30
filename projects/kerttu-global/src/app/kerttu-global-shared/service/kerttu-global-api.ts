@@ -33,6 +33,20 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpecies>(path);
   }
 
+  public lockSpecies(personToken: string, taxonId: number): Observable<SuccessResult> {
+    const path = this.basePath + '/species/lock/' + taxonId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post<SuccessResult>(path, {}, { params });
+  }
+
+  public unlockSpecies(personToken: string, taxonId: number): Observable<SuccessResult> {
+    const path = this.basePath + '/species/lock/' + taxonId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.delete<SuccessResult>(path, { params });
+  }
+
   public getSpeciesFilters(): Observable<IGlobalSpeciesFilters> {
     const path = this.basePath + '/species/filters';
 

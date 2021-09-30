@@ -10,6 +10,7 @@
   "validation.fixFraming.label": "Do you want to fix the framing of the vocalization?",
   "validation.otherComments": "Other comments",
   "validation.title": "Validate species",
+  "validation.templates.noLock": "This species is being modified by another user.",
   "validation.templates": "Templates",
   "validation.templates.description": "Use the template candidates or audio files provided below to create new templates. Double-clicking any of them will open a new tab where you can reframe (if needed) and confirm them as templates.",
   "validation.templates.undefined": "Undefined",

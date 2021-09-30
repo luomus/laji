@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, Subscription } from 'rxjs';
 import { map, switchMap, tap, share } from 'rxjs/operators';
 import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment, IGlobalValidationData } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
@@ -15,7 +15,7 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
   styleUrls: ['./species-validation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesValidationComponent implements OnInit {
+export class SpeciesValidationComponent implements OnInit, OnDestroy {
   species$: Observable<IGlobalSpecies>;
   validationData$: Observable<IGlobalRecording[]>;
   data$: Observable<IGlobalValidationData[]>;
@@ -25,12 +25,15 @@ export class SpeciesValidationComponent implements OnInit {
   activeIdx: number;
   saving = false;
   canLeaveWithoutConfirm = false;
+  hasLock: boolean;
 
   private activeIdxSubject = new BehaviorSubject<number>(undefined);
   activeIdx$ = this.activeIdxSubject.asObservable();
 
   private speciesId$: Observable<number>;
   private speciesId: number;
+
+  private hasLockSub: Subscription;
 
   constructor(
     private userService: UserService,
@@ -50,6 +53,14 @@ export class SpeciesValidationComponent implements OnInit {
         this.speciesId = speciesId;
       })
     );
+    this.hasLockSub = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.lockSpecies(
+        this.userService.getToken(), speciesId
+      ))
+    ).subscribe(result => {
+      this.hasLock = result.success;
+      this.cd.markForCheck();
+    });
     this.species$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId))
     );
@@ -89,6 +100,16 @@ export class SpeciesValidationComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    console.log('!');
+    if (this.hasLockSub) {
+      this.hasLockSub.unsubscribe();
+    }
+    if (this.speciesId && this.hasLock !== false) {
+      this.kerttuGlobalApi.unlockSpecies(this.userService.getToken(), this.speciesId).subscribe();
+    }
+  }
+
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
     $event.returnValue = this.canLeaveWithoutConfirm;
@@ -100,7 +121,6 @@ export class SpeciesValidationComponent implements OnInit {
     }
     return true;
   }
-
 
   saveTemplates(data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}) {
     this.saving = true;
