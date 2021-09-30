@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, share } from 'rxjs/operators';
 import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment, IGlobalValidationData } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
@@ -64,7 +64,8 @@ export class SpeciesValidationComponent implements OnInit {
             this.activeIdxChange(data.length - 1);
           }
         })
-      ))
+      )),
+      share()
     );
     this.templates$ = combineLatest([this.data$, this.activeIdx$]).pipe(
       map(([data, activeIdx]) => {
