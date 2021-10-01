@@ -7,6 +7,7 @@
       [spectrogramHeight]="80"
       [rectangles]="rectanges[i]"
       [showPregeneratedSpectrogram]="true"
+      [playOnlyOnSingleClick]="true"
       (spectrogramDblclick)="onAudioClick(item.audio, $event)"
       (audioLoading)="onAudioLoadingChange($event)"
     ></laji-audio-viewer>
