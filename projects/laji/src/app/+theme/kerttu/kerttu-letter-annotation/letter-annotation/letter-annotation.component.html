@@ -51,7 +51,7 @@
 
     <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
       <h4>{{ 'theme.kerttu.letterTemplate' | translate }}</h4>
-      <laji-audio-viewer
+      <laji-kerttu-audio-viewer
         [audio]="template?.audio"
         [focusArea]="{
           xRange: template?.xRange,
@@ -61,14 +61,14 @@
         [timePaddingOnZoom]="timePadding"
         [zoomFrequency]="zoomed"
         (audioLoading)="loadingTemplate = $event"
-      ></laji-audio-viewer>
+      ></laji-kerttu-audio-viewer>
     </div>
     <div id="letterCandidateContainer" class="col-md-6 col-md-pull-6">
       <h4>
         {{ 'theme.kerttu.letterCandidate' | translate }} ({{ 'theme.kerttu.correlation' | translate }} {{ candidate?.crossCorrelation | number : '1.0-2' }})
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.correlation' | translate"></laji-info>
       </h4>
-      <laji-audio-viewer
+      <laji-kerttu-audio-viewer
         [audio]="candidate?.audio"
         [focusArea]="{
           xRange: candidate?.xRange,
@@ -80,7 +80,7 @@
         [autoplay]="autoplayCandidate"
         [autoplayRepeat]="3"
         (audioLoading)="loadingCandidate = $event"
-      ></laji-audio-viewer>
+      ></laji-kerttu-audio-viewer>
     </div>
     <div class="col-md-12">
       <h4>
@@ -90,7 +90,7 @@
       <lu-button (click)="candidateLongerVisible = true" *ngIf="!candidateLongerVisible">
         {{ 'theme.kerttu.show' | translate }}
       </lu-button>
-      <laji-audio-viewer
+      <laji-kerttu-audio-viewer
         *ngIf="candidateLongerVisible"
         [audio]="candidate?.audio"
         [focusArea]="{
@@ -98,7 +98,7 @@
           yRange: candidate?.yRange
         }"
         [zoomFrequency]="zoomed"
-      ></laji-audio-viewer>
+      ></laji-kerttu-audio-viewer>
     </div>
   </div>
 </div>

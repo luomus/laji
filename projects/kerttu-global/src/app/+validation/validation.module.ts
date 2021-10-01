@@ -16,6 +16,8 @@ import { LetterTemplateComponent } from './species-validation/letter-template/le
 import { SpeciesTemplateValidationComponent } from './species-validation/species-template-validation/species-template-validation.component';
 import { SmallAudioViewerComponent } from './species-validation/small-audio-viewer/small-audio-viewer.component';
 import { VersionNavComponent } from './species-validation/version-nav/version-nav.component';
+import { CornellAudioInfoComponent } from './cornell-audio-info/cornell-audio-info.component';
+import { CornellAudioDatePipe } from './cornell-audio-info/cornell-audio-date.pipe';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { VersionNavComponent } from './species-validation/version-nav/version-na
     LetterTemplateComponent,
     SpeciesTemplateValidationComponent,
     SmallAudioViewerComponent,
-    VersionNavComponent
+    VersionNavComponent,
+    CornellAudioInfoComponent,
+    CornellAudioDatePipe
   ]
 })
 export class ValidationModule { }

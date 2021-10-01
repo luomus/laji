@@ -18,6 +18,7 @@
     [zoomFrequency]="template ? zoomFrequency : false"
     [zoomTime]="true"
     [timePaddingOnZoom]="template ? timePadding : 60"
+    [audioInfoTpl]="audioInfoTpl"
     (drawEnd)="onDrawEnd($event)"
   ></laji-audio-viewer>
 </div>
@@ -120,4 +121,8 @@
       </button>
     </div>
   </div><!-- /.modal-content -->
+</ng-template>
+
+<ng-template #audioInfo let-audio="audio">
+  <laji-cornell-audio-info [audio]="audio"></laji-cornell-audio-info>
 </ng-template>

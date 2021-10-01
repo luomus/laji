@@ -34,6 +34,7 @@ export class LetterTemplateComponent {
   commentTypeEnum = CommentType;
 
   @ViewChild('commentModal', { static: true }) commentModal: TemplateRef<any>;
+  @ViewChild('audioInfo', { static: true }) audioInfoTpl: TemplateRef<any>;
 
   private newTemplate: IGlobalTemplate;
   private commentType: CommentType = CommentType.reframe;

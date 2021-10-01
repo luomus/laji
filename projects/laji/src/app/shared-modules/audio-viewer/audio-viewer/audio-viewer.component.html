@@ -53,9 +53,8 @@
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
       </lu-button>
     </ng-container>
-    <div class="pull-right audio-info" *ngIf="audio">
-      <laji-audio-info *ngIf="isKerttuAudio(audio)" [audio]="audio"></laji-audio-info>
-      <laji-cornell-audio-info *ngIf="isGlobalAudio(audio)" [audio]="audio"></laji-cornell-audio-info>
+    <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
+      <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
     </div>
   </div>
 </laji-spinner>

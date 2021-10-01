@@ -55,6 +55,9 @@ import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.module';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
+import { KerttuAudioViewerComponent } from './kerttu/kerttu-audio-viewer/kerttu-audio-viewer.component';
+import { AudioInfoComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info.component';
+import { AudioInfoMapComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info-map/audio-info-map.component';
 
 /* tslint:enable:max-line-length */
 
@@ -110,7 +113,10 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
     KerttuResultComponent,
     KerttuUserTableComponent,
     KerttuCountComponent,
-    KerttuLetterResultTableComponent
+    KerttuLetterResultTableComponent,
+    KerttuAudioViewerComponent,
+    AudioInfoComponent,
+    AudioInfoMapComponent
   ],
   providers: [
     QualityService,

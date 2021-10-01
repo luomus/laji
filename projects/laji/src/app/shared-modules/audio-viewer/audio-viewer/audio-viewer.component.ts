@@ -8,22 +8,14 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges
+  SimpleChanges,
+  TemplateRef
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
-import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
+import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
-import { IKerttuAudio } from '../../../+theme/kerttu/models';
-import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-shared/models';
-
-function isKerttuAudio(audio: IKerttuAudio|IGlobalAudio): audio is IKerttuAudio {
-  return !(audio as any).assetId;
-}
-function isGlobalAudio(audio: IKerttuAudio|IGlobalAudio): audio is IGlobalAudio {
-  return !!(audio as any).assetId;
-}
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -32,7 +24,7 @@ function isGlobalAudio(audio: IKerttuAudio|IGlobalAudio): audio is IGlobalAudio 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerComponent implements OnChanges, OnDestroy {
-  @Input() audio: IKerttuAudio|IGlobalAudio;
+  @Input() audio: IAudio;
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
@@ -71,6 +63,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() spectrogramHeight: number;
   @Input() spectrogramMargin: { top: number, bottom: number, left: number, right: number };
 
+  @Input() audioInfoTpl: TemplateRef<any>;
+
   audioPlayer: AudioPlayer;
 
   loading = false;
@@ -78,9 +72,6 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   view: IAudioViewerArea;
   defaultView: IAudioViewerArea;
-
-  isKerttuAudio = isKerttuAudio;
-  isGlobalAudio = isGlobalAudio;
 
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
