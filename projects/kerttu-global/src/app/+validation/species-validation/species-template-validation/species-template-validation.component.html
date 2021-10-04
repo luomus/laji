@@ -19,19 +19,19 @@
       {{ 'validation.confirmAll' | translate }}
     </button>
     <div class="pull-right">
-      <!--button
-        class="btn btn-default"
-        [disabled]="saving"
-        (click)="cancel.emit()"
-      >
-        {{ 'validation.notPossible' | translate }}
-      </button-->
       <button
         class="btn btn-default"
         [disabled]="saving"
         (click)="cancel.emit()"
       >
         {{ 'validation.cancel' | translate }}
+      </button>
+      <button
+        class="btn btn-default ml-3"
+        [disabled]="saving"
+        (click)="notPossible.emit()"
+      >
+        {{ 'validation.saveAsNotPossible' | translate }}
       </button>
       <button
         class="btn btn-success ml-3"

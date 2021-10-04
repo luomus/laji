@@ -38,6 +38,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
   @Output() save = new EventEmitter<{templates: IGlobalTemplate[], comments: IGlobalComment[]}>();
+  @Output() notPossible = new EventEmitter();
   @Output() cancel = new EventEmitter();
 
   constructor(

@@ -33,7 +33,7 @@
   "validation.description.oldVersion": "This is a previous version of the candidates to which another user has made modifications. You can study the candidates by double-clicking them. You can listen to templates by clicking the them once. Modifications are not possible as this can be done only in the latest version of the species. Latest version can be accessed from the top-right corner. Templates which have been modified after this version are shown in yellow (reframed) or red (removed). Double-clicking these, you will see the explanation for these given by the user who made the modifications.",
   "validation.saveAndReturn": "Save and return to species list",
   "validation.cancel": "Cancel",
-  "validation.notPossible": "Can't create 10 templates",
+  "validation.saveAsNotPossible": "Can't create templates",
   "validation.template.remove": "Remove",
   "validation.confirmAll": "Confirm all templates",
   "validation.template.remove.confirm": "Are you sure you want to remove this template?",

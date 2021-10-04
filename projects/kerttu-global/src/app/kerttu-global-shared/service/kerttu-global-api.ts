@@ -65,7 +65,9 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IGlobalValidationData>>(path);
   }
 
-  public saveTemplates(personToken: string, taxonId: number, data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}): Observable<SuccessResult> {
+  public saveTemplates(personToken: string, taxonId: number, data: {
+    templates: IGlobalTemplate[], comments: IGlobalComment[], notPossible?: boolean
+  }): Observable<SuccessResult> {
     const path = this.basePath + '/template/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
 

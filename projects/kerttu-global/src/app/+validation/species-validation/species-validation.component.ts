@@ -22,7 +22,6 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   templates$: Observable<IGlobalTemplate[]>;
   historyView$: Observable<boolean>;
 
-  activeIdx: number;
   saving = false;
   canLeaveWithoutConfirm = false;
   hasLock: boolean;
@@ -121,7 +120,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}) {
+  saveTemplates(data: {templates: IGlobalTemplate[], comments: IGlobalComment[], notPossible?: boolean}) {
     this.saving = true;
     this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
       this.saving = false;
@@ -132,6 +131,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       this.saving = false;
       this.cd.markForCheck();
     });
+  }
+
+  saveAsNotPossible() {
+    this.saveTemplates({templates: [], comments: [], notPossible: true});
   }
 
   cancel() {
