@@ -28,39 +28,39 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 
 @NgModule({
-  imports: [
-    routing,
-    CommonModule,
-    SharedModule,
-    LajiUiModule,
-    LatestDocumentsModule,
-    InfoPageModule,
-    FormPermissionModule,
-    LajiFormModule,
-    OwnSubmissionsModule,
-    SpreadsheetModule,
-    StatisticsModule,
-    DocumentFormHeaderModule,
-    BreadcrumbModule,
-    TechnicalNewsModule
-  ],
-  declarations: [
-    ProjectFormComponent,
-    AboutComponent,
-    DatasetAboutComponent,
-    InstructionsComponent,
-    SubmissionsComponent,
-    ImportComponent,
-    GenerateSpreadsheetComponent,
-    TemplatesComponent,
-    TermsComponent,
-    DisabledComponent
-  ],
-  providers: [
-    HasAdminPermission,
-    HasFormPermission,
-    HasViewPermission
-  ]
+    imports: [
+        routing,
+        CommonModule,
+        SharedModule,
+        LajiUiModule,
+        LatestDocumentsModule,
+        InfoPageModule,
+        FormPermissionModule,
+        LajiFormModule,
+        OwnSubmissionsModule,
+        SpreadsheetModule,
+        StatisticsModule,
+        DocumentFormHeaderModule,
+        BreadcrumbModule,
+        TechnicalNewsModule
+    ],
+    declarations: [
+        ProjectFormComponent,
+        AboutComponent,
+        DatasetAboutComponent,
+        InstructionsComponent,
+        SubmissionsComponent,
+        ImportComponent,
+        GenerateSpreadsheetComponent,
+        TemplatesComponent,
+        TermsComponent,
+        DisabledComponent,
+    ],
+    providers: [
+        HasAdminPermission,
+        HasFormPermission,
+        HasViewPermission
+    ]
 })
 export class ProjectFormModule {
 }

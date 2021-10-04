@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'laji-result-service',
   template: `
-    <div [ngSwitch]="(form$ | async).options?.resultServiceType">
+    <div [ngSwitch]="(form$ | async).options?.resultServiceType" lajiFormOption="options.resultServiceType">
       <div *ngSwitchCase="ResultServiceType.winterbirdCount">
         <laji-wbc-result [form]="form$ | async"></laji-wbc-result>
       </div>

@@ -23,6 +23,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
       (error)="goBack()"
       (leave)="goBack()"
       (goBack)="goBack()"
+      lajiFormOption="options.mobile"
     >
     </laji-document-form>
   `,

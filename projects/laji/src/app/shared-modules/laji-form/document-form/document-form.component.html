@@ -26,6 +26,7 @@
       [isAdmin]="isAdmin"
       [formData]="vm.form.formData"
       [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
+      lajiFormOption="options.displayOwnSubmissions"
   ></laji-document-form-header>
   <laji-named-place-linker-button [documentID]="documentId"></laji-named-place-linker-button>
   <div class="clear"></div>

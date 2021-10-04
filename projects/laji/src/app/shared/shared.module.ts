@@ -79,6 +79,7 @@ import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 import { PluckPipe } from './pipe/pluck.pipe';
 import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
+import { ProjectFormOptionDirective } from './directive/project-form-option.directive';
 
 
 @NgModule({
@@ -118,7 +119,8 @@ import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
     ConfirmModalComponent,
     CheckboxValuePipe,
     PluckPipe,
-    TranslatableIucnPipe
+    TranslatableIucnPipe,
+    ProjectFormOptionDirective
   ],
   imports: [
     FormsModule,
@@ -157,7 +159,7 @@ import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
     InfoModule,
     CheckboxValuePipe,
     PluckPipe,
-    TranslatableIucnPipe,
+    TranslatableIucnPipe, ProjectFormOptionDirective,
   ]
 })
 export class SharedModule {

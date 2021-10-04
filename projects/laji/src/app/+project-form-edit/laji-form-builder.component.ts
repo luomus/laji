@@ -8,7 +8,7 @@ import { Form } from '../shared/model/Form';
 import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
 import { ProjectFormService } from '../shared/service/project-form.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';

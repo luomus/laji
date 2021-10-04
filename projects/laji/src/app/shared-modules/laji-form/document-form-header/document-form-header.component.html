@@ -1,8 +1,8 @@
-<div class="row form-header" *ngIf="form">
-  <div class="form-logo pull-right" *ngIf="form.logo">
+<div class="row form-header" *ngIf="form" lajiFormOption="logo title description instructions hideTES options.namedPlaceOptions.listColumnNameMapping options.formOwnSubmissionsLabel">
+  <div class="form-logo pull-right" *ngIf="form.logo" lajiFormOption="logo">
     <img src="{{form.logo}}">
   </div>
-  <h3 *ngIf="displayTitle">{{ form.title }}</h3>
+  <h3 *ngIf="displayTitle" lajiFormOption="title">{{ form.title }}</h3>
   <laji-haseka-latest *ngIf="form && displayLatest"
                       [forms]="[form.id]"
                       [showFormNames]="false"
@@ -17,19 +17,20 @@
                         [showDownloadAll]="false"
                         [header]="form.options?.formOwnSubmissionsLabel || namedPlace ? 'np.formOwnSubmissions' : (isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
                         [forceLocalDocument]="useLocalDocumentViewer"
-                        [admin]="isAdmin"></laji-own-submissions>
+                        [admin]="isAdmin"
+                        lajiFormOption="options.namedPlaceOptions.listColumnNameMapping options.formOwnSubmissionsLabel"></laji-own-submissions>
   <ng-container *ngIf="description">
     <div [innerHtml]="description | translate"></div>
     <br>
   </ng-container>
   <ng-container *ngIf="!description && form.description && displayDescription">
-    <div [innerHtml]="form.description"></div><br>
+    <div [innerHtml]="form.description" lajiFormOption="description"></div><br>
   </ng-container>
-  <span *ngIf="displayInstructions && form.options?.instructions && form.options.instructions[translate.currentLang]">
+  <span *ngIf="displayInstructions && form.options?.instructions && form.options.instructions[translate.currentLang]" lajiFormOption="options.instructions">
     <a href="{{form.options.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
     |
   </span>
-  <a *ngIf="!form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+  <a *ngIf="!form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank" lajiFormOption="options.hideTES">{{ 'haseka.termsOfService' | translate }}</a>
 </div>
 <alert *ngIf="editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: formatDate(formData.dateCreated)} }}</alert>
 <div class="row" *ngIf="namedPlace" style="margin-top: 10px">

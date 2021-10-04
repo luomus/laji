@@ -20,6 +20,7 @@ import { take } from 'rxjs/operators';
                          (use)="use($event)"
                          (edit)="edit($event)"
                          (create)="create()"
+                         lajiFormOption="options.useNamedPlaces options.namedPlaceOptions"
       ></laji-named-places>
     </ng-container>
     <ng-template #spinner>
