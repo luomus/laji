@@ -74,7 +74,7 @@ export class LetterTemplateComponent {
       this.commentType = CommentType.replace;
       this.showCommentModal();
     } else {
-      this.dialogService.confirm('validation.templates.remove.confirm').subscribe(confirm => {
+      this.dialogService.confirm('validation.template.remove.confirm').subscribe(confirm => {
         if (confirm) {
           this.remove.emit();
           this.cdr.markForCheck();

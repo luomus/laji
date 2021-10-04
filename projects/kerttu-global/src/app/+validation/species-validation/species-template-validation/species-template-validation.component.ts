@@ -129,7 +129,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     }
     const newTemplateIdx = this.templates.indexOf(null);
     if (newTemplateIdx === -1) {
-      this.dialogService.alert('validation.templates.maxNbrOfTemplates');
+      this.dialogService.alert('validation.maxNbrOfTemplates');
     } else {
       this.activeTemplateIdx = newTemplateIdx;
       this.activeTemplate = template;

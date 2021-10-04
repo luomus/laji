@@ -1,5 +1,5 @@
-<h3>{{ 'validation.templates.audio' | translate }}</h3>
-<p *ngIf="!historyView">{{ 'validation.templates.audio.description' | translate }}</p>
+<h3>{{ 'validation.audio' | translate }}</h3>
+<p *ngIf="!historyView">{{ 'validation.template.audio.description' | translate }}</p>
 <div class="audio-viewer-with-settings">
   <laji-audio-viewer-settings
     [(zoomed)]="zoomFrequency"
@@ -30,17 +30,17 @@
       [ngClass]="{'active': audioViewerMode === 'draw'}"
       (click)="toggleDrawMode()"
     >
-      {{ ('validation.templates.' + (template ? 'reframe' : 'frame')) | translate }}
+      {{ ('validation.template.' + (template ? 'reframe' : 'frame')) | translate }}
     </button>
   </div>
 </div>
 
 <div class="row mt-5">
   <div class="col-sm-4">
-    <h3 class="d-inline-block">{{ ('validation.templates.' + (historyView ? 'history' : (isNew ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
-    <p *ngIf="!historyView">{{ 'validation.templates.template.description' | translate }}</p>
+    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNew ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
+    <p *ngIf="!historyView">{{ 'validation.template.description' | translate }}</p>
     <p *ngIf="template?.validatedBy">
-      {{ 'validations.templates.template.validatedBy' | translate }}: {{ template.validatedBy | users | values }}
+      {{ 'validation.template.validatedBy' | translate }}: {{ template.validatedBy | users | values }}
     </p>
   </div>
   <div class="col-sm-8">
@@ -61,7 +61,7 @@
   </div>
 </div>
 <div class="mt-5" *ngIf="template?.comment">
-  <h3>{{ 'validation.templates.template.comment' | translate }}</h3>
+  <h3>{{ 'validation.template.comment' | translate }}</h3>
   <div class="panel panel-default">
     <div class="panel-body">
       <p>
@@ -70,7 +70,7 @@
           'text-danger': template.comment.type === commentTypeEnum.replace,
           'text-warning': template.comment.type === commentTypeEnum.reframe
         }" class="text-danger">
-          {{ 'validation.templates.template.' + (template.comment.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
+          {{ 'validation.template.' + (template.comment.type === commentTypeEnum.replace ? 'removed' : 'reframed') | translate }}
         </span>
       </p>
       <p>
@@ -88,20 +88,20 @@
       class="btn btn-success mr-3"
       (click)="onConfirm()"
     >
-      {{ 'validation.templates.confirm' | translate }}
+      {{ 'validation.template.confirm' | translate }}
     </button>
     <button
       class="btn btn-default mr-3"
       (click)="cancel.emit()"
     >
-      {{ 'validation.templates.cancel' | translate }}
+      {{ 'validation.cancel' | translate }}
     </button>
     <button
       [disabled]="!template || isNew || historyView"
       class="btn btn-danger"
       (click)="onRemove()"
     >
-      {{ 'validation.templates.remove' | translate }}
+      {{ 'validation.template.remove' | translate }}
     </button>
   </div>
 </div>
@@ -109,15 +109,15 @@
 <ng-template #commentModal>
   <div class="modal-content">
     <div class="modal-body">
-      <p>{{ 'validation.templates.confirmAndComment' | translate }}</p>
+      <p>{{ 'validation.template.confirmAndComment' | translate }}</p>
       <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="hideCommentModal()">
-        <span>{{ 'validation.templates.cancel' | translate }}</span>
+        <span>{{ 'validation.cancel' | translate }}</span>
       </button>
       <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
-        <span>{{ 'validation.templates.confirm' | translate }}</span>
+        <span>{{ 'validation.template.confirm' | translate }}</span>
       </button>
     </div>
   </div><!-- /.modal-content -->

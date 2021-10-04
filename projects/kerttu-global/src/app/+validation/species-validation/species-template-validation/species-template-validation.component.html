@@ -1,6 +1,6 @@
 <ng-container *ngIf="activeTemplateIdx == null else templateView">
   <h2>{{ 'validation.templates' | translate }}</h2>
-  <p>{{ ('validation.templates.description' + (historyView ? '.history' : (hasInitialTemplates ? '.confirm' : ''))) | translate }}</p>
+  <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasInitialTemplates ? '.confirm' : ''))) | translate }}</p>
   <laji-letter-templates
     [templates]="templates"
     [confirmedTemplates]="confirmedTemplates"
@@ -16,33 +16,40 @@
       [disabled]="saving || historyView"
       (click)="confirmAllTemplates()"
     >
-      {{ 'validation.templates.confirmAll' | translate }}
+      {{ 'validation.confirmAll' | translate }}
     </button>
     <div class="pull-right">
+      <!--button
+        class="btn btn-default"
+        [disabled]="saving"
+        (click)="cancel.emit()"
+      >
+        {{ 'validation.notPossible' | translate }}
+      </button-->
       <button
         class="btn btn-default"
         [disabled]="saving"
         (click)="cancel.emit()"
       >
-        {{ 'validation.templates.cancel' | translate }}
+        {{ 'validation.cancel' | translate }}
       </button>
       <button
         class="btn btn-success ml-3"
         [disabled]="saving || historyView"
         (click)="saveTemplates()"
       >
-        {{ 'validation.templates.saveAndReturn' | translate }}
+        {{ 'validation.saveAndReturn' | translate }}
       </button>
     </div>
   </div>
   <hr>
-  <p>{{ ('validation.templates.candidates.description' + (historyView ? '.history' : '')) | translate }}</p>
+  <p>{{ ('validation.candidates.description' + (historyView ? '.oldVersion' : '')) | translate }}</p>
   <div class="text-center mb-3">
     <button
       class="btn btn-default"
       (click)="setShowCandidates(!showCandidates)"
     >
-      {{ 'validation.templates.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
+      {{ 'validation.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
       <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
     </button>
   </div>
