@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { DatatableColumn, DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
 
@@ -8,7 +8,7 @@ import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
   styleUrls: ['./species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesTableComponent implements OnInit, OnChanges {
+export class SpeciesTableComponent implements OnInit {
   @Input() data: IGlobalSpeciesListResult = {results: [], currentPage: 0, total: 0, pageSize: 0};
   @Input() loading = false;
 
@@ -20,10 +20,15 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
   @ViewChild('exclamation', { static: true }) exclamationTpl: TemplateRef<any>;
-  @ViewChild('lock', { static: true }) lockTpl: TemplateRef<any>;
 
   ngOnInit() {
     this.defaultColumns = [
+      {
+        name: 'hasModifications',
+        label: 'speciesList.column.notices',
+        width: 30,
+        cellTemplate: this.exclamationTpl
+      },
       {
         name: 'commonName',
         label: 'speciesList.column.commonName'
@@ -47,31 +52,9 @@ export class SpeciesTableComponent implements OnInit, OnChanges {
         label: 'speciesList.column.userHasValidated',
         cellTemplate: 'booleanCheck',
         width: 30
-      },
-      {
-        name: 'isLocked',
-        label: '',
-        cellTemplate: this.lockTpl,
-        width: 30
       }
     ];
     this.columns = this.defaultColumns;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.data && changes.data.previousValue?.hasModifications !== this.data?.hasModifications) {
-      if (this.data?.hasModifications) {
-        this.columns = [
-        {
-          name: 'hasModifications',
-          label: 'speciesList.column.hasModifications',
-          width: 30,
-          cellTemplate: this.exclamationTpl
-        }, ...this.defaultColumns];
-      } else {
-        this.columns = this.defaultColumns;
-      }
-    }
   }
 
   onRowSelect(row: any) {

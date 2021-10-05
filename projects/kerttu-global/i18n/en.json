@@ -55,7 +55,7 @@
   "speciesList.column.versionCount": "Version count",
   "speciesList.column.validationCount": "Validation count",
   "speciesList.column.userHasValidated": "You have validated",
-  "speciesList.column.hasModifications": "Has modifications",
+  "speciesList.column.notices": "Notices",
   "speciesList.hasModifications": "There are species which have been modified after your validation",
   "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
   "versionNav.previous": "Previous",

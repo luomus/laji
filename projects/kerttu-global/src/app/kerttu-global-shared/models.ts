@@ -32,6 +32,7 @@ export interface IGlobalSpecies {
   userHasValidated?: boolean;
   hasModifications?: boolean;
   isLocked?: boolean;
+  hasNotPossibleValidations?: boolean;
 }
 
 export interface IGlobalSpeciesFilters {

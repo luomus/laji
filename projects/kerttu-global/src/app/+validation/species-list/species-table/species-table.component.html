@@ -14,10 +14,8 @@
   (sortChange)="sortChange.emit($event.sorts)"
 ></laji-datatable>
 
-<ng-template let-value="value" #exclamation>
-  <span class="text text-danger" *ngIf="value"><i class="fa fa-exclamation-circle"></i></span>
-</ng-template>
-
-<ng-template let-value="value" #lock>
-  <span *ngIf="value"><i class="fa fa-lock"></i></span>
+<ng-template let-row="row" #exclamation>
+  <span *ngIf="row.hasModifications" class="text text-danger exclamation"><i class="fa fa-exclamation-circle"></i></span>
+  <span *ngIf="row.hasNotPossibleValidations" class="text text-warning exclamation"><i class="fa fa-exclamation-triangle"></i></span>
+  <span *ngIf="row.isLocked" class="exclamation"><i class="fa fa-lock"></i></span>
 </ng-template>
