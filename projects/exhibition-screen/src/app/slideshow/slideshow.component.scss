@@ -53,22 +53,7 @@
 	left: 0;
 	height: 150px;
 	width: 150px;
-	background-image: url('../../assets/beetle3.gif');
+	background-image: url('https://nayttely-cms.luomus.fi/wp-content/uploads/2021/10/beetle3.gif');
 	background-repeat: no-repeat;
 	background-size: cover;
-	//animation: linear bug-animation 5s;
-}
-
-@keyframes bug-animation {
-	0% {
-		transform: translate(200px, -100px) rotate(180deg);
-	}
-
-	50% {
-		transform: translate(50px, 100px) rotate(225deg);
-	}
-
-	100% {
-		transform: translate(-100px, 300px) rotate(270deg);
-	}
 }
