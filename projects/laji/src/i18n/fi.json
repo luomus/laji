@@ -756,6 +756,8 @@
   "MKV.possiblyRE": "Mahdollisesti hävinnyt laji",
   "Mon": "ma",
   "more": "Näytä lisätiedot",
+  "MX.taxonSetSykeBumblebee": "Lajit",
+  "MX.taxonSetSykeBumblebeeOther": "Lajiryhmät ja ylemmät taksonit",
   "nafi.form": "Ilmoita",
   "nafi.myObservations": "Omat havaintoni",
   "nafi.stats": "Tulokset",
