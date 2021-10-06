@@ -34,7 +34,6 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
   private _tabComponents: QueryList<TabComponent>;
   @ContentChildren(TabComponent) set tabComponents(tabs: QueryList<TabComponent>) {
     this._tabComponents = tabs;
-    console.log(this._tabComponents);
     this.reload();
   }
   get tabComponents(): QueryList<TabComponent> {

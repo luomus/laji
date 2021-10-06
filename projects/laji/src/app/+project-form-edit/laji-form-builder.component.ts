@@ -77,14 +77,16 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   onChange(form: SchemaForm) {
-    const id = form.id ? form.id : 'tmp';
-    if (id !== this.id) {
-      of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
-        this.projectFormService.updateLocalForm({...form, id});
-      });
-    } else {
-      this.projectFormService.updateLocalForm(form);
-    }
+    this.ngZone.run(() => {
+      const id = form.id ? form.id : 'tmp';
+      if (id !== this.id) {
+        of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
+          this.projectFormService.updateLocalForm({...form, id});
+        });
+      } else {
+        this.projectFormService.updateLocalForm(form);
+      }
+    });
   }
 
   onLangChange(lang: Lang) {
