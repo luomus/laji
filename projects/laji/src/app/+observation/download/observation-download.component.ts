@@ -23,7 +23,7 @@ import { ObservationResultService } from '../../shared-modules/observation-resul
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
-import { DownloadComponent } from '../../shared-modules/download/download.component';
+import { DownloadComponent } from '../../shared-modules/download-modal/download.component';
 import {
   ObservationTableSettingsComponent
 } from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';
@@ -44,6 +44,7 @@ enum RequestStatus {
 @Component({
   selector: 'laji-observation-download',
   templateUrl: './observation-download.component.html',
+  styleUrls: ['./observation-download.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationDownloadComponent implements OnDestroy {

@@ -8,9 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { SelectModule } from '../select/select.module';
+import { ApikeyModalComponent } from './apikey-modal/apikey-modal.component';
+import { ReasonComponent } from './reason/reason.component';
 
 @NgModule({
-  declarations: [DownloadComponent],
+  declarations: [DownloadComponent, ApikeyModalComponent, ReasonComponent],
   imports: [
     SpinnerModule,
     ModalModule,
@@ -21,6 +23,6 @@ import { SelectModule } from '../select/select.module';
     SelectModule,
     TooltipModule
   ],
-  exports: [DownloadComponent]
+  exports: [DownloadComponent, ApikeyModalComponent]
 })
-export class DownloadModule { }
+export class DownloadModalModule { }

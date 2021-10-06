@@ -1,0 +1,39 @@
+<button class="btn btn-default" (click)="openModal(modal)" [disabled]="disabled">
+	<i class="glyphicon glyphicon-download-alt"></i>
+	{{ 'observation.download.api' | translate }}
+</button>
+
+<ng-template #modal>
+	<div class="modal-header">
+		<button class="close pull-right" type="button" (click)="onClose()">
+			<i class="glyphicon glyphicon-remove"></i>
+		</button>
+		<h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
+	</div>
+	<div class="modal-body">
+		<laji-download-modal-reason
+			[reason]="reason" [reasonEnum]="reasonEnum"
+			(reasonChange)="reason = $event" (reasonEnumChange)="reasonEnum = $event">
+		</laji-download-modal-reason>
+		<div>
+			<strong>Aineiston hakulupa rajoittuu aikaan:</strong>
+			<div class="radio">
+				<label><input type="radio" name="expiration" checked>3 kuukautta pyynnön tekemisestä*</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" name="expiration">1 vuosi pyynnön tekemisestä</label>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<laji-spinner [spinning]="loading" [overlay]="true">
+			<button type="button"
+							[tooltip]="disableRequestBtn ? ('download.reason-required' | translate) : ''"
+							class="btn btn-primary pull-right"
+							[disabled]="disableRequestBtn"
+							(click)="onRequest()">
+				<span>{{ "haseka.submissions.download" | translate }}</span>
+			</button>
+		</laji-spinner>
+	</div>
+</ng-template><!-- /.modal -->
