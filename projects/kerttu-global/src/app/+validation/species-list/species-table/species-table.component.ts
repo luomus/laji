@@ -19,15 +19,15 @@ export class SpeciesTableComponent implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
-  @ViewChild('exclamation', { static: true }) exclamationTpl: TemplateRef<any>;
+  @ViewChild('notifications', { static: true }) notificationTpl: TemplateRef<any>;
 
   ngOnInit() {
     this.defaultColumns = [
       {
-        name: 'hasModifications',
-        label: 'speciesList.column.notices',
+        name: 'notifications',
+        label: 'speciesList.column.notifications',
         width: 30,
-        cellTemplate: this.exclamationTpl
+        cellTemplate: this.notificationTpl
       },
       {
         name: 'commonName',
