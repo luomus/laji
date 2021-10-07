@@ -103,14 +103,18 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     if (this.hasLockSub) {
       this.hasLockSub.unsubscribe();
     }
-    if (this.speciesId && this.hasLock !== false) {
-      this.kerttuGlobalApi.unlockSpecies(this.userService.getToken(), this.speciesId).subscribe();
-    }
+    this.unlockSpecies();
   }
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
     $event.returnValue = this.canLeaveWithoutConfirm;
+  }
+
+  @HostListener('document:visibilitychange', ['$event'])
+  visibilityChange() {
+    // Unlock species on page close
+    this.unlockSpecies();
   }
 
   canDeactivate() {
@@ -143,5 +147,11 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
 
   activeIdxChange(activeIdx: number) {
     this.activeIdxSubject.next(activeIdx);
+  }
+
+  private unlockSpecies() {
+    if (this.speciesId && this.hasLock !== false) {
+      this.kerttuGlobalApi.unlockSpecies(this.userService.getToken(), this.speciesId);
+    }
   }
 }

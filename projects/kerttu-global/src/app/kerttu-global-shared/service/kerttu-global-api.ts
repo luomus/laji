@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
   SuccessResult,
   IGlobalComment,
@@ -8,14 +8,18 @@ import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { WINDOW } from '@ng-toolkit/universal';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KerttuGlobalApi {
 
-  constructor(protected httpClient: HttpClient) {
-  }
+  constructor(
+    @Inject(WINDOW) private window: Window,
+    protected httpClient: HttpClient
+  ) { }
+
   protected basePath = environment.kerttuApi + '/global';
 
   public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
@@ -40,11 +44,10 @@ export class KerttuGlobalApi {
     return this.httpClient.post<SuccessResult>(path, {}, { params });
   }
 
-  public unlockSpecies(personToken: string, taxonId: number): Observable<SuccessResult> {
-    const path = this.basePath + '/species/lock/' + taxonId;
-    const params = new HttpParams().set('personToken', personToken);
+  public unlockSpecies(personToken: string, taxonId: number): boolean {
+    const path = this.basePath + '/species/unlock/' + taxonId + '?personToken=' + personToken;
 
-    return this.httpClient.delete<SuccessResult>(path, { params });
+    return this.window.navigator.sendBeacon(path);
   }
 
   public getSpeciesFilters(): Observable<IGlobalSpeciesFilters> {
