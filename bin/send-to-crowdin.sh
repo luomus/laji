@@ -21,7 +21,7 @@ docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../projects/vir
 
 echo "Sending kerttu global to crowdin"
 docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../projects/kerttu-global/i18n:/data luomus/laji-cli \
-  crowdin:send:json KERTTU \
+  crowdin:send:json BIRDSOUNDS \
   en-GB:/data/en.json \
   fi:/data/fi.json  \
   sv-FI:/data/sv.json    
