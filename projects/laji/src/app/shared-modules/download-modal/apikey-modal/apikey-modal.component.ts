@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -17,24 +18,37 @@ interface ApiKeyRequest {
 @Component({
   selector: 'laji-apikey-modal',
   templateUrl: './apikey-modal.component.html',
+  styleUrls: ['./apikey-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApikeyModalComponent implements OnChanges {
   @Input() disabled = false;
   @Input() loading = false;
 
-  reason = '';
-  reasonEnum = '';
-  disableRequestBtn = false;
+  private _reason = '';
+  private _reasonEnum = '';
+  set reason(reason: string) {
+    this._reason = reason;
+    this.updateDisableRequestBtn();
+  }
+  get reason() { return this._reason; }
+  set reasonEnum(reasonEnum: string) {
+    this._reasonEnum = reasonEnum;
+    this.updateDisableRequestBtn();
+  }
+  get reasonEnum() { return this._reasonEnum; }
+
+  disableRequestBtn = true;
+  termsAccepted = false;
 
   private modalRef: BsModalRef;
 
   @Output() request = new EventEmitter<ApiKeyRequest>();
 
-  constructor(private modalService: BsModalService) {}
+  constructor(private modalService: BsModalService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges() {
-    this.disableRequestBtn = this.loading || (!this.reason || !this.reasonEnum);
+    this.updateDisableRequestBtn();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -52,5 +66,9 @@ export class ApikeyModalComponent implements OnChanges {
       return;
     }
     this.request.emit({reason: this.reason, reasonEnum: this.reasonEnum});
+  }
+
+  private updateDisableRequestBtn() {
+    this.disableRequestBtn = this.loading || (!this.reason || !this.reasonEnum);
   }
 }

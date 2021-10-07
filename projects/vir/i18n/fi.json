@@ -81,5 +81,11 @@
   "search.result.load": "Lataa aineisto",
   "observation.download.apiTitle": "API-avain",
   "observation.download.api": "Pyydä API-avain",
+  "observation.download.api.expiration": "Aineiston hakulupa rajoittuu aikaan:",
+  "observation.download.api.expiration.1": "3 kuukautta pyynnön tekemisestä <b>*</b>",
+  "observation.download.api.expiration.2": "1 vuosi pyynnön tekemisestä",
+  "observation.download.api.expiration.footnote": "<b>*</b> Suositeltava valinta, jos kyseessä on lyhytaikainen tarve.",
+  "observation.download.api.terms.1": "Olen lukenut ja hyväksyn ",
+  "observation.download.api.terms.2": "käyttöehdot",
   "result.load.api": "Saat käyttöösi avaimen, jota voit käyttää Lajitietokeskuksen API-rajapinnassa hakutulostasi vastaavan tiedon lukemiseksi ja lataamiseksi. Avain on voimassa valitsemasi määräajan ja tieto käytöstäsi välittyy aineistojen omistajille ja muille viranomaisportaalin käyttäjille."
 }

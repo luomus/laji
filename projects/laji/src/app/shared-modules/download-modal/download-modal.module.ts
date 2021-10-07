@@ -10,6 +10,8 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { SelectModule } from '../select/select.module';
 import { ApikeyModalComponent } from './apikey-modal/apikey-modal.component';
 import { ReasonComponent } from './reason/reason.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [DownloadComponent, ApikeyModalComponent, ReasonComponent],
@@ -19,6 +21,8 @@ import { ReasonComponent } from './reason/reason.component';
     TranslateModule,
     FormsModule,
     CommonModule,
+    RouterModule,
+    SharedModule,
     LajiUiModule,
     SelectModule,
     TooltipModule
