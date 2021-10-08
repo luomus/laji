@@ -9,7 +9,7 @@ import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
 import { ProjectFormService } from '../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
 
@@ -26,6 +26,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot: ElementRef;
 
   private lajiFormBuilder: LajiFormBuilder;
+  private docFormVisibleSub: Subscription;
 
   constructor(
     private ngZone: NgZone,
@@ -42,15 +43,23 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.mount();
+    this.docFormVisibleSub = this.projectFormService.documentFormVisible$.subscribe(docFormVisible => {
+      this._mount(docFormVisible);
+    });
   }
 
   ngOnDestroy() {
+    this.docFormVisibleSub.unsubscribe();
     this.unmount();
   }
 
   private mount() {
     this.apiClient.lang = this.translate.currentLang;
     this.apiClient.personToken = this.userService.getToken();
+    this._mount(true);
+  }
+
+  private _mount(documentFormVisible: boolean) {
     this.ngZone.runOutsideAngular(() => {
       this.lajiFormBuilder = new LajiFormBuilder({
         id: this.id,
@@ -68,6 +77,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
           warning: msg => this.toastsService.showWarning(msg),
           error: msg => this.toastsService.showError(msg),
         },
+        documentFormVisible
       });
     });
   }

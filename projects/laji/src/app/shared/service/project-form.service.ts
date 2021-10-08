@@ -41,6 +41,7 @@ export class ProjectFormService {
 
   currentFormID: string;
   form$: ReplaySubject<Form.SchemaForm>;
+  documentFormVisible$ = new ReplaySubject<boolean>();
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
@@ -65,6 +66,10 @@ export class ProjectFormService {
       this.form$ = new ReplaySubject<Form.SchemaForm>();
     }
     this.form$.next(form);
+  }
+
+  setDocumentFormVisible(visible: boolean) {
+    this.documentFormVisible$.next(visible);
   }
 
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {

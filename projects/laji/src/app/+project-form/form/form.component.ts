@@ -4,7 +4,6 @@ import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { BrowserService } from '../../shared/service/browser.service';
 import { NamedPlacesService } from '../../shared/service/named-places.service';
 import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
@@ -43,7 +42,6 @@ export class FormComponent implements OnInit {
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
               private router: Router,
-              private browserService: BrowserService,
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,

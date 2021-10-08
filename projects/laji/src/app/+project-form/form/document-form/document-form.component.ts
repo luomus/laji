@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 import { Form } from '../../../shared/model/Form';
-import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { DocumentFormComponent as _DocumentFormComponent } from '@laji-form/document-form/document-form.component';
@@ -30,7 +29,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
   selector: 'laji-project-form-document-form',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent {
+export class DocumentFormComponent implements OnInit, OnDestroy {
   @Input() form: Form.SchemaForm;
   @Input() documentID: string;
 
@@ -50,10 +49,17 @@ export class DocumentFormComponent {
     private localizeRouterService: LocalizeRouterService,
     private browserService: BrowserService,
     private route: ActivatedRoute,
-    private namedPlacesService: NamedPlacesService,
     private lajiFormDocumentFacade: LajiFormDocumentFacade,
     private projectFormService: ProjectFormService,
   ) {}
+
+  ngOnInit(): void {
+    this.projectFormService.setDocumentFormVisible(true);
+  }
+
+  ngOnDestroy(): void {
+    this.projectFormService.setDocumentFormVisible(false);
+  }
 
   goBack() {
     if (this.form.options?.simple) {
