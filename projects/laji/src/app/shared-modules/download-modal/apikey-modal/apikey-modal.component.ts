@@ -24,6 +24,7 @@ export interface ApiKeyRequest {
 export class ApikeyModalComponent implements OnChanges {
   @Input() disabled = false;
   @Input() loading = false;
+  @Input() apiKey = '';
 
   private _reason = '';
   private _reasonEnum = '';
@@ -66,6 +67,10 @@ export class ApikeyModalComponent implements OnChanges {
       return;
     }
     this.request.emit({reason: this.reason, reasonEnum: this.reasonEnum});
+  }
+
+  onCopyToClipboard() {
+    navigator.clipboard.writeText(this.apiKey);
   }
 
   private updateDisableRequestBtn() {

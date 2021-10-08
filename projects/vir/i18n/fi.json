@@ -87,5 +87,7 @@
   "observation.download.api.expiration.footnote": "<b>*</b> Suositeltava valinta, jos kyseessä on lyhytaikainen tarve.",
   "observation.download.api.terms.1": "Olen lukenut ja hyväksyn ",
   "observation.download.api.terms.2": "käyttöehdot",
+  "observation.download.api.btn": "Lähetä",
+  "observation.download.api.clipboard": "Kopioi avain leikepöydälle:",
   "result.load.api": "Saat käyttöösi avaimen, jota voit käyttää Lajitietokeskuksen API-rajapinnassa hakutulostasi vastaavan tiedon lukemiseksi ja lataamiseksi. Avain on voimassa valitsemasi määräajan ja tieto käytöstäsi välittyy aineistojen omistajille ja muille viranomaisportaalin käyttäjille."
 }

@@ -120,7 +120,7 @@
       <ng-container *lajiLoggedIn="true">
         <div>
           <p [innerHtml]="'result.load.api' | translate"></p>
-          <laji-apikey-modal [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
+          <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
         </div>
       </ng-container>
     </section>

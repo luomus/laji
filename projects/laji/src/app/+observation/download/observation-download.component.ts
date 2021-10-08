@@ -68,6 +68,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   requestStatus = RequestStatus;
   downloadLoading = false;
   apiKeyLoading = false;
+  apiKey = '';
   description = '';
   csvParams = '';
   reason = '';
@@ -305,10 +306,12 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   onApiKeyRequest(req: ApiKeyRequest) {
     this.apiKeyLoading = true;
+    this.apiKey = '';
     of({}).pipe( // simulate api request for testing purposes
       delay(1000)
     ).subscribe(() => {
       this.apiKeyLoading = false;
+      this.apiKey = 'ffffffffffff';
       this.cd.markForCheck();
     });
   }
