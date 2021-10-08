@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
-interface ApiKeyRequest {
+export interface ApiKeyRequest {
   reason: string;
   reasonEnum: string;
 }
@@ -70,5 +70,6 @@ export class ApikeyModalComponent implements OnChanges {
 
   private updateDisableRequestBtn() {
     this.disableRequestBtn = this.loading || (!this.reason || !this.reasonEnum);
+    this.cdr.markForCheck();
   }
 }

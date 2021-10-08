@@ -1,4 +1,4 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, delay, map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,7 +16,7 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
@@ -33,6 +33,7 @@ import { IColumns } from '../../shared-modules/datatable/service/observation-tab
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
+import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 
 
 enum RequestStatus {
@@ -66,6 +67,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
   downloadLoading = false;
+  apiKeyLoading = false;
   description = '';
   csvParams = '';
   reason = '';
@@ -299,6 +301,16 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.downloadLoading = false;
       }
     );
+  }
+
+  onApiKeyRequest(req: ApiKeyRequest) {
+    this.apiKeyLoading = true;
+    of({}).pipe( // simulate api request for testing purposes
+      delay(1000)
+    ).subscribe(() => {
+      this.apiKeyLoading = false;
+      this.cd.markForCheck();
+    });
   }
 
   openColumnSelectModal() {
