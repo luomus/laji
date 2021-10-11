@@ -307,11 +307,20 @@ export class ObservationDownloadComponent implements OnDestroy {
   onApiKeyRequest(req: ApiKeyRequest) {
     this.apiKeyLoading = true;
     this.apiKey = '';
-    of({}).pipe( // simulate api request for testing purposes
-      delay(1000)
-    ).subscribe(() => {
+    this.warehouseService.download(
+      this.userService.getToken(),
+      'TSV_FLAT',
+      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      this.query,
+      this.translate.currentLang,
+      'AUTHORITIES_API_KEY',
+      {
+        dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
+        apiKeyExpires: 30
+      }
+    ).subscribe(res => {
       this.apiKeyLoading = false;
-      this.apiKey = 'ffffffffffff';
+      this.apiKey = res.apiKey;
       this.cd.markForCheck();
     });
   }

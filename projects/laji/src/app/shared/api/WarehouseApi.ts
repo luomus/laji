@@ -262,7 +262,7 @@ export class WarehouseApi {
     return this.http.post<string>(path, undefined, {params: queryParameters, headers: {timeout: '180000'}});
   }
 
-  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, downloadType?: string, extraHttpRequestParams?: any): Observable<string> {
+  public download(userToken: string, downloadFormat: string, includes: string, query: WarehouseQueryInterface, locale: string, downloadType?: string, extraHttpRequestParams?: any): Observable<any> {
     const path = this.basePath + '/warehouse/query/download';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -296,7 +296,7 @@ export class WarehouseApi {
 
     this.addQueryToQueryParams(query, queryParameters);
 
-    return this.http.post<string>(path, undefined, {params: queryParameters});
+    return this.http.post<any>(path, undefined, {params: queryParameters});
   }
 
   /**
