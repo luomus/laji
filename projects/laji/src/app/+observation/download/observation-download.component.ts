@@ -242,7 +242,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.translate.currentLang,
       undefined,
       {
-        dataUsePurpose: this.reason
+        dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
       }
     ).subscribe(
       () => {
