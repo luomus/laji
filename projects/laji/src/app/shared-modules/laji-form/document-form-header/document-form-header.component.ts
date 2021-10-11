@@ -27,6 +27,7 @@ export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy
   @Input() description: string;
   @Input() displayTitle = true;
   @Input() edit: boolean;
+  @Input() lajiFormOption: string;
 
   namedPlaceHeader: string[];
   _namedPlace: any;
