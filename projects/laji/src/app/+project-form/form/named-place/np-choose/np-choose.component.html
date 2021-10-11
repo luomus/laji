@@ -1,6 +1,6 @@
 <div *ngIf="visible">
   <lu-tabs *ngIf="!_documentForm.options?.namedPlaceOptions?.hideMapTab else listTemplate"
-           [class]="formOptionToClassName('options.namedPlaceOptions.hideMapTab')"
+           [class]="formOptionToClassName('options.namedPlaceOptions.hideMapTab options.namedPlaceOptions.startWithMap')"
            [selectedIndex]="activeIndex"
            (selectedChange)="setActive($event)">
     <lu-tab [heading]="_documentForm.options?.namedPlaceOptions?.listLabel || 'np.list' | translate"
