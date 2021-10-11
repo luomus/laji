@@ -57,7 +57,7 @@
                    routerLinkActive [linkParams]="link.linkParams"
                    [active]="link.active"
                    (clicked)="clickedSidebarLink()"
-                   [lajiFormOption]="link.formOption">
+                   [lajiFormOption]="link.lajiFormOption">
     {{ link.label | translate }}
     <ng-container [ngSwitch]="link.content?.template">
       <ng-container *ngSwitchCase="'badge'">
