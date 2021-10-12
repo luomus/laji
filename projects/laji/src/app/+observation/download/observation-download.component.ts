@@ -316,7 +316,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       'AUTHORITIES_API_KEY',
       {
         dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
-        apiKeyExpires: 30
+        apiKeyExpires: req.expiration
       }
     ).subscribe(res => {
       this.apiKeyLoading = false;

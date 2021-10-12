@@ -13,6 +13,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export interface ApiKeyRequest {
   reason: string;
   reasonEnum: string;
+  expiration: number;
 }
 
 @Component({
@@ -41,6 +42,7 @@ export class ApikeyModalComponent implements OnChanges {
 
   disableRequestBtn = true;
   termsAccepted = false;
+  expiration = 30;
 
   private modalRef: BsModalRef;
 
@@ -62,11 +64,18 @@ export class ApikeyModalComponent implements OnChanges {
     }
   }
 
+  onRadioInput(event, value: number) {
+    if (event.target?.checked) {
+      this.expiration = value;
+      this.cdr.markForCheck();
+    }
+  }
+
   onRequest() {
     if (this.disableRequestBtn) {
       return;
     }
-    this.request.emit({reason: this.reason, reasonEnum: this.reasonEnum});
+    this.request.emit({reason: this.reason, reasonEnum: this.reasonEnum, expiration: this.expiration});
   }
 
   onCopyToClipboard() {
