@@ -4,7 +4,7 @@ import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
 
-type TableType = 'downloads'|'people'|'user'|'apiKeys';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
 
 @Component({
   selector: 'vir-data-table',
@@ -160,8 +160,10 @@ export class DataTableComponent implements AfterViewInit {
         return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
       case 'user':
         return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
-      case 'apiKeys':
+      case 'userKeys':
         return this.getCols(['apiKeyExpires', 'dataUsePurpose', 'apiKey']);
+      case 'apiKeys':
+        return this.getCols(['apiKeyExpires', 'dataUsePurpose']);
     }
   }
 
