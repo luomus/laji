@@ -11,8 +11,10 @@ export interface IDownloadRequest {
   source: string;
   person: string;
   dataUsePurpose: string;
-  collectionId: string[];
-  collectionSearch: string[];
+  collectionId?: string[];
+  collections?: {id: string}[]
+  collectionSearch?: string[];
+  rootCollections?: string[];
   apiKeyExpires?: string;
   apiKey?: string;
 }

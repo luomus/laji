@@ -26,7 +26,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys';
                   [showFooter]="false"
                   [virtualScrolling]="true"
                   [clientSideSorting]="true"
-                  [height]="'calc(90vh - 195px)'"
+                  [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
                   [count]="0"
@@ -48,6 +48,7 @@ export class DataTableComponent implements AfterViewInit {
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
+  @Input() height: string = 'calc(90vh - 195px)';
 
   downloadLoading: boolean;
 
@@ -160,7 +161,7 @@ export class DataTableComponent implements AfterViewInit {
       case 'user':
         return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
       case 'userKeys':
-        return this.getCols(['apiKeyExpires', 'collectionId', 'dataUsePurpose', 'apiKey']);
+        return this.getCols(['apiKeyExpires', 'dataUsePurpose', 'apiKey']);
     }
   }
 

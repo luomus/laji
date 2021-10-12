@@ -10,6 +10,7 @@ import { finalize, take } from 'rxjs/operators';
       <laji-spinner [spinning]="requestsTableLoading" [overlay]="true">
         <vir-data-table
           type="user"
+          [height]="'50vh'"
           [data]="downloadRequests$ | async"
           [showDownloadMenu]="false"
           class="d-block my-5"
@@ -18,6 +19,7 @@ import { finalize, take } from 'rxjs/operators';
       <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
         <vir-data-table
           type="userKeys"
+          [height]="'50vh'"
           [data]="apiKeys$ | async"
           [showDownloadMenu]="false"
           class="d-block my-5"
