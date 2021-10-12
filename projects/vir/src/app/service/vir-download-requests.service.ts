@@ -34,6 +34,14 @@ export class VirDownloadRequestsService {
     );
   }
 
+  findApiKeys(): Observable<IDownloadRequest[]> {
+    return this.userService.isLoggedIn$.pipe(
+        filter(loggedIn => loggedIn),
+        switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys')),
+        shareReplay(1)
+    );
+  }
+
   findMyDownloadRequests(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),

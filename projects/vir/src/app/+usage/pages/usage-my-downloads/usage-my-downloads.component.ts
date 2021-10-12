@@ -18,7 +18,7 @@ import { finalize, take } from 'rxjs/operators';
       </laji-spinner>
       <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
         <vir-data-table
-          type="userKeys"
+          type="apiKeys"
           [height]="'50vh'"
           [data]="apiKeys$ | async"
           [showDownloadMenu]="false"

@@ -12,11 +12,13 @@ import { map } from 'rxjs/operators';
 })
 export class UsageDownloadsComponent {
   downloadRequests$: Observable<IDownloadRequest[]>;
+  apiKeys$: Observable<IDownloadRequest[]>;
   constructor(
       private virDownloadRequestsService: VirDownloadRequestsService,
       private platformService: PlatformService
   ) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests();
+    this.apiKeys$ = this.virDownloadRequestsService.findApiKeys();
   }
 
   collectionSelect(col: string) {

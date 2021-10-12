@@ -1,7 +1,15 @@
 <div class="container mt-6">
   <vir-collection-select (select)="collectionSelect($event)"></vir-collection-select>
   <vir-data-table
+          class="d-block my-5"
+          [height]="'max(50vh, 300px)'"
           [data]="downloadRequests$ | async"
           (rowSelect)="onRowClick($event)"
           type="downloads"></vir-data-table>
+  <vir-data-table
+          class="d-block my-5"
+          [height]="'max(50vh, 300px)'"
+          [data]="downloadRequests$ | async"
+          (rowSelect)="onRowClick($event)"
+          type="apiKeys"></vir-data-table>
 </div>
