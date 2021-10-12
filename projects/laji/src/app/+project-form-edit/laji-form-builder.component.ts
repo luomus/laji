@@ -56,7 +56,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   private mount() {
     this.apiClient.lang = this.translate.currentLang;
     this.apiClient.personToken = this.userService.getToken();
-    this._mount(true);
+    this._mount(false);
   }
 
   private _mount(documentFormVisible: boolean) {
