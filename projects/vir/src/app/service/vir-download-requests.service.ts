@@ -46,7 +46,7 @@ export class VirDownloadRequestsService {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
       switchMap(() => this.userService.user$),
-      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys', {params: {token: this.userService.getToken(), person: user.id}})),
+      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys', {params: {personToken: this.userService.getToken(), person: user.id}})),
       shareReplay(1)
     );
   }
