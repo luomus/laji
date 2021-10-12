@@ -44,6 +44,6 @@
 	</div>
 	<div class="modal-footer mt-3" *ngIf="apiKey">
 		<strong>{{ 'observation.download.api.clipboard' | translate }}</strong><br>
-		<span class="copy-to-clipboard" (click)="onCopyToClipboard()" luKeyboardClickable><span class="glyphicon glyphicon-paperclip"></span> {{ apiKey }}</span>
+		<div class="copy-to-clipboard" (click)="onCopyToClipboard()" luKeyboardClickable><span class="glyphicon glyphicon-paperclip"></span> {{ apiKey }}</div>
 	</div>
 </ng-template>
