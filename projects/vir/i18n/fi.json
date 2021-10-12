@@ -42,6 +42,8 @@
   "usage.collectionId": "Kokoelma",
   "usage.dataDownload": "Lataa",
   "usage.dataDownloadLink": "Tiedosto",
+  "usage.apiKey": "API-avain",
+  "usage.apiKeyExpires": "Vanhenee",
   "usage.dataUsePurpose": "Käyttötarkoitus",
   "usage.downloadType": "Tyyppi",
   "usage.email": "Sähköposti",

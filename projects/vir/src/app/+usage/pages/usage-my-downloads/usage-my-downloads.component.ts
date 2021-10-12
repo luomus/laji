@@ -7,11 +7,20 @@ import { finalize, take } from 'rxjs/operators';
   selector: 'vir-usage-my-downloads',
   template: `
     <div class="container mt-6">
-      <laji-spinner [spinning]="loading" [overlay]="true">
+      <laji-spinner [spinning]="requestsTableLoading" [overlay]="true">
         <vir-data-table
           type="user"
           [data]="downloadRequests$ | async"
           [showDownloadMenu]="false"
+          class="d-block my-5"
+        ></vir-data-table>
+      </laji-spinner>
+      <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
+        <vir-data-table
+          type="userKeys"
+          [data]="apiKeys$ | async"
+          [showDownloadMenu]="false"
+          class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
     </div>
@@ -19,18 +28,28 @@ import { finalize, take } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
-  loading = false;
+  requestsTableLoading = false;
+  keysTableLoading = false;
 
   downloadRequests$: Observable<IDownloadRequest[]>;
+  apiKeys$: Observable<any[]>;
   constructor(
     private virDownloadRequestsService: VirDownloadRequestsService,
     private cdr: ChangeDetectorRef
   ) {
-    this.loading = true;
+    this.requestsTableLoading = true;
+    this.keysTableLoading = true;
     this.downloadRequests$ = this.virDownloadRequestsService.findMyDownloadRequests().pipe(
       take(1),
       finalize(() => {
-        this.loading = false;
+        this.requestsTableLoading = false;
+        this.cdr.markForCheck();
+      })
+    );
+    this.apiKeys$ = this.virDownloadRequestsService.findMyApiKeys().pipe(
+      take(1),
+      finalize(() => {
+        this.keysTableLoading = false;
         this.cdr.markForCheck();
       })
     );
