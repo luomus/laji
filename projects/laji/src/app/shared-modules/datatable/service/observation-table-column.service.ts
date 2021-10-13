@@ -61,6 +61,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'individualCountMax': ObservationTableColumn;
   'individualCountSum': ObservationTableColumn;
   'pairCountSum': ObservationTableColumn;
+  'gathering.coordinatesVerbatim': ObservationTableColumn;
   'gathering.conversions.ykj': ObservationTableColumn;
   'gathering.conversions.ykj.latMin': ObservationTableColumn;
   'gathering.conversions.ykj.latMax': ObservationTableColumn;
@@ -329,6 +330,9 @@ export const COLUMNS: IColumns = {
     cellTemplate: 'numeric',
     aggregate: false
   },
+  'gathering.coordinatesVerbatim': {
+    name: 'gathering.coordinatesVerbatim',
+  },
   'gathering.conversions.ykj': {
     name: 'gathering.conversions.ykj',
     prop: 'gathering.conversions.ykj.verbatim',
@@ -509,6 +513,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
   protected defaultFields: Array<keyof IColumns> = [
     'unit.interpretations.recordQuality',
     'document.linkings.collectionQuality',
+    'unit.linkings.taxon.taxonomicOrder',
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
@@ -584,6 +589,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['individualCountMax'],
     COLUMNS['individualCountSum'],
     COLUMNS['pairCountSum'],
+    COLUMNS['gathering.coordinatesVerbatim'],
     COLUMNS['gathering.conversions.ykj'],
     COLUMNS['gathering.conversions.ykj.latMin'],
     COLUMNS['gathering.conversions.ykj.latMax'],
@@ -617,11 +623,11 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     [
       {
         header: 'identification', fields: [
+          'unit.linkings.taxon.taxonomicOrder',
           'unit.taxon',
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
-          'unit.linkings.taxon.taxonomicOrder',
           'unit.linkings.taxon.latestRedListStatusFinland',
           'unit.linkings.taxon.sensitive'
         ]
@@ -674,7 +680,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       },
       {
         header: 'coordinates.geometryWKT', fields: [
-          'gathering.conversions.wgs84WKT'
+          'gathering.conversions.wgs84WKT',
+          'gathering.coordinatesVerbatim'
         ]
       },
       {
