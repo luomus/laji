@@ -21,6 +21,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   confirmedTemplates: boolean[] = [];
   comments: IGlobalComment[] = [];
+  creatingAllIsNotPossible = false;
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
@@ -38,7 +39,6 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
   @Output() save = new EventEmitter<{templates: IGlobalTemplate[], comments: IGlobalComment[]}>();
-  @Output() notPossible = new EventEmitter();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -111,7 +111,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   saveTemplates() {
     const missingConfirm = this.confirmedTemplates.length < this.templates.length || this.confirmedTemplates.indexOf(false) !== -1;
-    if (missingConfirm) {
+    if (missingConfirm && !(!this.hasInitialTemplates && this.creatingAllIsNotPossible)) {
       this.dialogService.alert(
         this.translate.instant(this.hasInitialTemplates ? 'validation.missingConfirm' : 'validation.missingTemplates')
       );
