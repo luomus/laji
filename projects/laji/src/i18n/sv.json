@@ -1868,6 +1868,7 @@
   "wbc.stats.route.count": "Observationsräkning",
   "wbc.stats.route.documentIds": "Laskennan tiedot",
   "wbc.stats.route.individualCountSum": "Individuell räkning",
+  "wbc.stats.route.loxiaIndividualCount": "Käpylintuyksilöitä",
   "wbc.stats.route.mammalIndividualCount": "Nisäkäsyksilöitä",
   "wbc.stats.route.mammalSpeciesCount": "Nisäkäslajeja",
   "wbc.stats.route.mean": "KA",
