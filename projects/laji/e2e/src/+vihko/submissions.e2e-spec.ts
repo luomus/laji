@@ -9,8 +9,7 @@ const submissionsPage = new SubmissionsPage();
 describe('Vihko own submissions page', () => {
 
   beforeAll(async (done) => {
-    await submissionsPage.navigateTo();
-    await userPage.login();
+    await userPage.handleNavigationWithExternalLogin(() => submissionsPage.navigateTo());
     done();
   });
 

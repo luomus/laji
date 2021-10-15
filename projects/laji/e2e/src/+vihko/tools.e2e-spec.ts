@@ -14,8 +14,7 @@ describe('Tools page', () => {
   const formPage = new ProjectFormPage().documentFormView;
 
   beforeAll(async (done) => {
-    await page.navigateTo();
-    await user.login();
+    await user.handleNavigationWithExternalLogin(() => page.navigateTo());
     done();
   });
 

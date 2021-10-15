@@ -2,7 +2,6 @@ import { browser, $ } from 'protractor';
 
 export class SubmissionsPage {
   async navigateTo() {
-    await browser.waitForAngularEnabled(false);
     return browser.get('/vihko/ownSubmissions') as Promise<void>;
   }
 

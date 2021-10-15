@@ -8,7 +8,6 @@ export class ToolsPage {
   public readonly $templateLink = element(by.css('a[href$="/vihko/templates"]'));
 
   async navigateTo() {
-    await browser.waitForAngularEnabled(false);
     return browser.get('/vihko/tools') as Promise<void>;
   }
 
