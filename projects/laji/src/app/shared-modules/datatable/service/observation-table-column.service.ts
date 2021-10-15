@@ -12,6 +12,8 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
   'unit.linkings.taxon.scientificName': ObservationTableColumn;
   'unit.linkings.taxon.taxonomicOrder': ObservationTableColumn;
+  'unit.linkings.taxon.occurrenceCountFinland': ObservationTableColumn;
+  'unit.linkings.taxon.primaryHabitat': ObservationTableColumn;
   'unit.linkings.taxon.latestRedListStatusFinland': ObservationTableColumn;
   'unit.species': ObservationTableColumn;
   'unit.linkings.species.vernacularName': ObservationTableColumn;
@@ -155,6 +157,14 @@ export const COLUMNS: IColumns = {
     label: 'result.taxonomicOrder',
     aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
     width: 70
+  },
+  'unit.linkings.taxon.occurrenceCountFinland': {
+    name: 'unit.linkings.taxon.occurrenceCountFinland',
+    label: 'result.occurrenceCountFinland'
+  },
+  'unit.linkings.taxon.primaryHabitat': {
+    name: 'unit.linkings.taxon.primaryHabitat',
+    label: 'result.primaryHAbitat'
   },
   'unit.linkings.taxon.latestRedListStatusFinland': {
     name: 'unit.linkings.taxon.latestRedListStatusFinland',
@@ -534,6 +544,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
     COLUMNS['unit.linkings.taxon.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.occurrenceCountFinland'],
+    COLUMNS['unit.linkings.taxon.primaryHabitat'],
     COLUMNS['unit.linkings.taxon.latestRedListStatusFinland'],
     COLUMNS['unit.species'],
     COLUMNS['unit.linkings.species.vernacularName'],
@@ -629,7 +641,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
           'unit.linkings.taxon.latestRedListStatusFinland',
-          'unit.linkings.taxon.sensitive'
+          'unit.linkings.taxon.sensitive',
+          'unit.linkings.taxon.primaryHabitat',
         ]
       },
       {
@@ -721,6 +734,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'document.secureReasons',
           'document.documentId',
           'unit.unitId',
+          'unit.linkings.taxon.occurrenceCountFinland',
         ]
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
