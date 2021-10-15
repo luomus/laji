@@ -4,8 +4,7 @@ import { Component } from '@angular/core';
   selector: 'laji-about',
   template: `
     <div class="container">
-      Ohjeita...
-      <!--laji-info-page [page]="{'fi': '4718', 'en': '4827', 'sv': '4831'} | multiLang"></laji-info-page-->
+      <laji-info-page [page]="{'fi': '5802', 'en': '5802', 'sv': '5802'} | multiLang"></laji-info-page>
     </div>
   `
 })
