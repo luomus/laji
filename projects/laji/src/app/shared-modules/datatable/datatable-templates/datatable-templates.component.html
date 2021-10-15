@@ -310,3 +310,6 @@
     <i *ngSwitchDefault class="fa fa-unlock" [tooltip]="'result.unit.sensitive.false' | translate"></i>
   </span>
 </ng-template>
+<ng-template let-value="value" #copyToClipboard>
+  <div class="copy-to-clipboard d-flex" (click)="onCopyToClipboard(value)" luKeyboardClickable><span class="glyphicon glyphicon-paperclip mr-2"></span> {{ value }}</div>
+</ng-template>

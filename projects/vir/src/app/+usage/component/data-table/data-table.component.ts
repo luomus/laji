@@ -110,9 +110,9 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      prop: 'apiKey',
       name: 'apiKey',
       label: 'usage.apiKey',
+      cellTemplate: 'copyToClipboard',
       canAutoResize: true
     }
   ];
