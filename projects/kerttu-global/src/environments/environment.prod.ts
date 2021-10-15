@@ -3,7 +3,7 @@ import { Global } from './global';
 
 export const environment = {
   type: Global.type.kerttuGlobal,
-  base: 'https://punainenkirja.laji.fi',
+  base: 'https://bsg.laji.fi',
   production: true,
   forceLogin: true,
   disableAnalytics: false,
