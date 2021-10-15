@@ -17,13 +17,16 @@ export class UsageDownloadsComponent {
       private virDownloadRequestsService: VirDownloadRequestsService,
       private platformService: PlatformService
   ) {
-    this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests();
-    this.apiKeys$ = this.virDownloadRequestsService.findApiKeys();
+    this.collectionSelect(undefined);
   }
 
   collectionSelect(col: string) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests().pipe(
       map(downloads => col ? downloads.filter(d => d?.rootCollections.includes(col)) : downloads)
+    );
+    this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)})))
     );
   }
 

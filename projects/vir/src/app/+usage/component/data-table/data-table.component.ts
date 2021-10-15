@@ -93,6 +93,12 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
+      name: 'collectionIds',
+      label: 'usage.collectionId',
+      cellTemplate: 'labelArray',
+      canAutoResize: true
+    },
+    {
       name: 'dataUsePurpose',
       label: 'usage.dataUsePurpose',
       canAutoResize: true
@@ -161,9 +167,9 @@ export class DataTableComponent implements AfterViewInit {
       case 'user':
         return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
       case 'userKeys':
-        return this.getCols(['apiKeyExpires', 'dataUsePurpose', 'apiKey']);
+        return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
-        return this.getCols(['apiKeyExpires', 'dataUsePurpose']);
+        return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose']);
     }
   }
 

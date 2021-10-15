@@ -9,7 +9,7 @@
   <vir-data-table
           class="d-block my-5"
           [height]="'max(50vh, 300px)'"
-          [data]="downloadRequests$ | async"
+          [data]="apiKeys$ | async"
           (rowSelect)="onRowClick($event)"
           type="apiKeys"></vir-data-table>
 </div>

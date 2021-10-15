@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { finalize, take } from 'rxjs/operators';
+import { finalize, map, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -34,7 +34,7 @@ export class UsageMyDownloadsComponent {
   keysTableLoading = false;
 
   downloadRequests$: Observable<IDownloadRequest[]>;
-  apiKeys$: Observable<any[]>;
+  apiKeys$: Observable<IDownloadRequest[]>;
   constructor(
     private virDownloadRequestsService: VirDownloadRequestsService,
     private cdr: ChangeDetectorRef
@@ -49,6 +49,7 @@ export class UsageMyDownloadsComponent {
       })
     );
     this.apiKeys$ = this.virDownloadRequestsService.findMyApiKeys().pipe(
+      map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)}))),
       take(1),
       finalize(() => {
         this.keysTableLoading = false;
