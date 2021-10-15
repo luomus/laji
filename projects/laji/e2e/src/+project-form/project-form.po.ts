@@ -1,6 +1,7 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
 import { getAddressWithLang } from "../../helper";
+import { SubmissionsPage } from '../+vihko/submissions.po';
 
 const EC = ExpectedConditions;
 
@@ -9,6 +10,7 @@ const confirmDialog = new ConfirmPO();
 export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
+  public readonly $templateLink = $('[href$="/templates"]');
   public readonly $sidebar = $('.sidebar');
   public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
@@ -21,6 +23,7 @@ export class ProjectFormPage {
   public readonly aboutPage = new AboutPage();
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
+  public readonly templatePage = new TemplatePage();
 
   navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
     return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
@@ -140,6 +143,10 @@ class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
+}
+
+class TemplatePage {
+  public readonly datatable = new SubmissionsPage().datatable;
 }
 
 
