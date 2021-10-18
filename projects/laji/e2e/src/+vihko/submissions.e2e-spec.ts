@@ -2,7 +2,6 @@ import { SubmissionsPage } from './submissions.po'
 import { UserPage } from '../+user/user.po';
 import { isDisplayed } from '../../helper';
 
-
 const userPage = new UserPage();
 const submissionsPage = new SubmissionsPage();
 

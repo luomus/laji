@@ -56,7 +56,7 @@
   </div>
 </ng-container>
 
-<div class="modal" tabindex="-1" role="dialog" bsModal #saveAsTemplate="bs-modal">
+<div class="modal template-form" tabindex="-1" role="dialog" bsModal #saveAsTemplate="bs-modal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -84,7 +84,7 @@
         <span class="required">*</span> = {{ 'required' | translate }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
+        <button type="button" class="btn btn-default template-save" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
           <span>{{ "np.save" | translate }}</span>
         </button>
       </div>

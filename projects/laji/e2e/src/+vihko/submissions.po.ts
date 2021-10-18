@@ -1,11 +1,19 @@
-import { browser, $ } from 'protractor';
+import { browser, $, ElementFinder } from 'protractor';
 
 export class SubmissionsPage {
+  private $container: ElementFinder;
+  private $datatable = $('laji-own-datatable');
+
+  constructor($container?: ElementFinder) {
+    this.$container = $container;
+    const datatableSelector = 'laji-own-datatable';
+    this.$datatable = this.$container ? this.$container.$(datatableSelector) : $(datatableSelector);
+  }
+
   async navigateTo() {
     return browser.get('/vihko/ownSubmissions') as Promise<void>;
   }
 
-  private $datatable = $('laji-own-datatable');
   datatable = {
     $container: this.$datatable,
     $$rows: this.$datatable.$$('datatable-row-wrapper'),
@@ -20,6 +28,11 @@ export class SubmissionsPage {
         $downloadButton: $container.$('.download-button'),
         $deleteButton: $container.$('.delete-button'),
       }
-    }
+    },
+    $deleteModalContainer: $('.datatable-delete-modal'),
+    getDeleteModal: () => ({
+      $container: this.datatable.$deleteModalContainer,
+      $confirm: this.datatable.$deleteModalContainer.$('.btn-danger')
+    })
   }
 }

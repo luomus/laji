@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, $ } from 'protractor';
 import { SubmissionsPage } from './submissions.po';
 
 export class ToolsPage {
@@ -11,5 +11,10 @@ export class ToolsPage {
     return browser.get('/vihko/tools') as Promise<void>;
   }
 
-  templatesDatatable = new SubmissionsPage().datatable;
+  templatesDatatable = new TemplatesView().datatable;
+}
+
+export class TemplatesView {
+  $container = $('laji-templates');
+  datatable = new SubmissionsPage(this.$container).datatable;
 }

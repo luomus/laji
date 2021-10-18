@@ -2,6 +2,9 @@ import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
 import { getAddressWithLang } from "../../helper";
 import { SubmissionsPage } from '../+vihko/submissions.po';
+const fiTranslations = require('../../../src/i18n/fi.json');
+const enTranslations = require('../../../src/i18n/en.json');
+const svTranslations = require('../../../src/i18n/sv.json');
 
 const EC = ExpectedConditions;
 
@@ -126,6 +129,11 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   async savePrivate() {
     await this.$savePrivate.click();
     await browser.wait(EC.invisibilityOf(this.$blockingLoader));
+  }
+
+  async isTemplate() {
+    const label = await this.$save.getText();
+    return [fiTranslations, enTranslations, svTranslations].some(translations => translations['haseka.form.saveTemplate'] === label);
   }
 }
 
