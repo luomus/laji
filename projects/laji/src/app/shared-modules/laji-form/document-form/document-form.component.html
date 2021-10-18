@@ -17,6 +17,9 @@
       <alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
         {{ 'haseka.form.noAccessToDocument' | translate }}
       </alert>
+      <alert type="danger" *ngSwitchCase="errors.templateDisallowed">
+        {{ 'haseka.form.templateDisallowed' | translate }}
+      </alert>
     </ng-container>
   </div>
   <laji-document-form-header *ngIf="showHeader && vm.error === errors.ok"

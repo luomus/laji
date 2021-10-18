@@ -16,6 +16,7 @@ interface ViewModel {
   form: Form.SchemaForm;
   documentID?: string;
   namedPlace?: NamedPlace;
+  template: boolean;
 }
 
 @Component({
@@ -25,6 +26,7 @@ interface ViewModel {
         [form]="vm.form"
         [documentID]="vm.documentID"
         [namedPlace]="vm.namedPlace"
+        [template]="vm.template"
       >
       </laji-project-form-document-form>
     </ng-container>
@@ -43,7 +45,6 @@ export class FormComponent implements OnInit {
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
               private router: Router,
-              private browserService: BrowserService,
               private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,
@@ -53,54 +54,57 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.vm$ = this.projectFormService.getProjectFormFromRoute$(this.route).pipe(
       switchMap(({form, subForms}) => this.route.params.pipe(
-        switchMap(routeParams => this.tryRedirectToSubForm(form, routeParams).pipe(
-          switchMap(redirected => {
-            if (redirected) {
-              return EMPTY;
-            }
-            const paramsStack = [
-              routeParams['document'],
-              routeParams['formOrDocument'],
-            ];
-            const hasManyForms = subForms.length;
-            const formID = hasManyForms
-              ? paramsStack.pop()
-              : form.id;
-            const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
-            if (hasManyForms && !_usedSubForm) {
-              this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
-              return EMPTY;
-            }
-            const documentID = paramsStack.pop();
-            return (_usedSubForm === form
-              ? of(form)
-              : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
-            ).pipe(
-              switchMap(usedSubForm => {
-                const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
-                const namedPlace$ = namedPlaceID
-                  ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, usedSubForm.options?.namedPlaceOptions?.includeUnits)
-                  : of(null);
-                if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
-                  this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
-                  return EMPTY;
-                }
-
-                return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
-                  if (!isLoggedIn) {
-                    this.userService.redirectToLogin();
+        switchMap((routeParams) => this.route.data.pipe(
+          switchMap(({template}) => this.tryRedirectToSubForm(form, routeParams).pipe(
+            switchMap(redirected => {
+              if (redirected) {
+                return EMPTY;
+              }
+              const paramsStack = [
+                routeParams['document'],
+                routeParams['formOrDocument'],
+              ];
+              const hasManyForms = subForms.length;
+              const formID = hasManyForms
+                ? paramsStack.pop()
+                : form.id;
+              const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
+              if (hasManyForms && !_usedSubForm) {
+                this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
+                return EMPTY;
+              }
+              const documentID = paramsStack.pop();
+              return (_usedSubForm === form
+                ? of(form)
+                : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
+              ).pipe(
+                switchMap(usedSubForm => {
+                  const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
+                  const namedPlace$ = namedPlaceID
+                    ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, usedSubForm.options?.namedPlaceOptions?.includeUnits)
+                    : of(null);
+                  if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
+                    this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                     return EMPTY;
                   }
-                  return namedPlace$.pipe(map(namedPlace => ({
-                    form: usedSubForm,
-                    documentID,
-                    namedPlace
-                  })));
-                }));
-              })
-            );
-          }))
-        )
+
+                  return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
+                    if (!isLoggedIn) {
+                      this.userService.redirectToLogin();
+                      return EMPTY;
+                    }
+                    return namedPlace$.pipe(map(namedPlace => ({
+                      form: usedSubForm,
+                      documentID,
+                      namedPlace,
+                      template
+                    })));
+                  }));
+                })
+              );
+            }))
+          )
+        ))
       ))
     );
   }

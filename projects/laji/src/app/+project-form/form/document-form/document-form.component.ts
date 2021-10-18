@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
 import { Form } from '../../../shared/model/Form';
-import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { LajiFormDocumentFacade } from '@laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { DocumentFormComponent as _DocumentFormComponent } from '@laji-form/document-form/document-form.component';
@@ -18,6 +17,7 @@ import { ProjectFormService } from '../../project-form.service';
       [documentId]="documentID"
       [showHeader]="!form.options?.mobile"
       [showShortcutButton]="!form.options?.mobile"
+      [template]="template"
       (missingNamedplace)="goBack()"
       (success)="onSuccess()"
       (error)="goBack()"
@@ -32,6 +32,7 @@ import { ProjectFormService } from '../../project-form.service';
 export class DocumentFormComponent {
   @Input() form: Form.SchemaForm;
   @Input() documentID: string;
+  @Input() template: boolean;
 
   npLoaded$ = new BehaviorSubject<boolean>(false);
   np: NamedPlace;
@@ -49,7 +50,6 @@ export class DocumentFormComponent {
     private localizeRouterService: LocalizeRouterService,
     private browserService: BrowserService,
     private route: ActivatedRoute,
-    private namedPlacesService: NamedPlacesService,
     private lajiFormDocumentFacade: LajiFormDocumentFacade,
     private projectFormService: ProjectFormService,
   ) {}

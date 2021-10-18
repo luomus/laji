@@ -1,11 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, of, of as ObservableOf, ReplaySubject, Subscription } from 'rxjs';
-import { auditTime, catchError, delay, distinctUntilChanged, map, mergeMap, switchMap, take, tap, } from 'rxjs/operators';
+import { catchError, delay, distinctUntilChanged, map, mergeMap, switchMap, take, tap, } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import * as merge from 'deepmerge';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
-import { BrowserService } from '../../shared/service/browser.service';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import { UserService } from '../../shared/service/user.service';
@@ -34,7 +33,8 @@ export enum FormError {
   loadFailed,
   missingNamedPlace,
   noAccess,
-  noAccessToDocument
+  noAccessToDocument,
+  templateDisallowed,
 }
 
 export interface ISuccessEvent {
@@ -102,7 +102,6 @@ export class LajiFormDocumentFacade implements OnDestroy {
 
   constructor(
     private logger: Logger,
-    private browserService: BrowserService,
     private lajiApi: LajiApiService,
     private translateService: TranslateService,
     private userService: UserService,
@@ -423,6 +422,10 @@ export class LajiFormDocumentFacade implements OnDestroy {
   }
 
   private prepareTemplateForm(data: Form.SchemaForm) {
+    if (!data.options?.allowTemplate) {
+      this.updateState({..._state, error: FormError.templateDisallowed});
+      return data;
+    }
     try {
       const templateForm = Util.clone(data);
       templateForm.uiSchema.gatherings.items.units['ui:field'] = 'HiddenField';

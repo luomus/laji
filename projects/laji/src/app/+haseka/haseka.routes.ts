@@ -1,13 +1,10 @@
 import { RouterModule, Routes } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { HasekaComponent } from './haseka.component';
-import { HaSeKaFormComponent } from './form/haseka-form.component';
-import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { OwnSubmissionsComponent } from './own-submissions/own-submissions.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { VihkoHomeComponent } from './vihko-home/vihko-home.component';
-import { TemplateHasekaFormComponent } from './template-haseka-form/template-haseka-form.component';
 
 export const hasekaRoutes: Routes = [
   {
@@ -33,21 +30,7 @@ export const hasekaRoutes: Routes = [
       {
         path: ':formId',
         pathMatch: 'full',
-        canActivate: [OnlyLoggedIn],
-        component: TemplateHasekaFormComponent,
-        data: {
-          displayFeedback: false
-        }
-      },
-      {
-        path: ':formId/:documentId',
-        pathMatch: 'full',
-        canActivate: [OnlyLoggedIn],
-        component: HaSeKaFormComponent,
-        canDeactivate: [DocumentDeActivateGuard],
-        data: {
-          displayFeedback: false
-        }
+        redirectTo: '/project/:formId/form/template'
       }
     ]
   },
