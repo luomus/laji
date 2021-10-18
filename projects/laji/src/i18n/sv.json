@@ -1333,6 +1333,8 @@
   "result.unit.id": "Observations identifierare",
   "result.unit.interpretations.individualCount": "Individsantal (tolkas)",
   "result.unit.lifeStage": "Livsfas",
+  "result.unit.linkings.taxon.occurrenceCountFinland": "Taksonin havaintojen lukumäärä Suomessa",
+  "result.unit.linkings.taxon.primaryHabitat": "Ensisijainen biotooppi",
   "result.unit.nativeOccurrence": "Native förekomst",
   "result.unit.notes": "Havainnon lisätiedot",
   "result.unit.quality.source": "Källa till tillförlitlighet",

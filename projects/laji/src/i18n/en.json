@@ -1333,6 +1333,8 @@
   "result.unit.id": "Observation identifier",
   "result.unit.interpretations.individualCount": "Individual count (interpreted)",
   "result.unit.lifeStage": "Life stage",
+  "result.unit.linkings.taxon.occurrenceCountFinland": "Taksonin havaintojen lukumäärä Suomessa",
+  "result.unit.linkings.taxon.primaryHabitat": "Ensisijainen biotooppi",
   "result.unit.nativeOccurrence": "Native occurrence",
   "result.unit.notes": "Havainnon lisätiedot",
   "result.unit.quality.source": "Reliability Source",
