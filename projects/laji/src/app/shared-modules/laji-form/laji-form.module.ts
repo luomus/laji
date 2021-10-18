@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { LajiFormComponent } from './laji-form/laji-form.component';
-import { DocumentFormComponent } from './document-form/document-form.component';
 import { DocumentFormFooterComponent } from './document-form-footer/document-form-footer.component';
 import { AppComponentModule } from '../app-component/app-component.module';
 import { InfoPageModule } from '../info-page/info-page.module';
@@ -21,8 +20,8 @@ import { NamedPlaceLinkerButtonModule } from '../../+project-form/form/named-pla
     DocumentFormHeaderModule,
     NamedPlaceLinkerButtonModule
   ],
-  declarations: [LajiFormComponent, DocumentFormComponent, DocumentFormFooterComponent],
-  exports: [LajiFormComponent, DocumentFormComponent, DocumentFormFooterComponent],
+  declarations: [LajiFormComponent, DocumentFormFooterComponent],
+  exports: [LajiFormComponent, DocumentFormFooterComponent],
   providers: [LajiFormDocumentFacade]
 })
 export class LajiFormModule { }
