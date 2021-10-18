@@ -71,7 +71,7 @@ export class SpeciesTableComponent implements OnInit {
     }
     if (!row.validationCount) {
       rowClasses.push('red-row');
-    } else if (row.validationCount === 1 || row.validationCount === 2) {
+    } else if (row.validationCount === 1) {
       rowClasses.push('yellow-row');
     }
 

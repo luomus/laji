@@ -25,7 +25,7 @@ export class ValidationPieChartComponent {
 
     this._data = [0, 0, 0];
     data.forEach(d => {
-      const index = d.validationCount >= 3 ? 2 : (d.validationCount >= 1 ? 1 : 0);
+      const index = d.validationCount >= 2 ? 2 : (d.validationCount >= 1 ? 1 : 0);
       this._data[index] += d.count;
     });
   }

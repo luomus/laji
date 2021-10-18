@@ -1,7 +1,7 @@
 {
   "results.pie.group1": "No validations",
-  "results.pie.group2": "1-2 validations",
-  "results.pie.group3": "More than 3 validations",
+  "results.pie.group2": "1 validation",
+  "results.pie.group3": "2 or more validations",
   "results.pie.title": "Number of validations per species",
   "results.title": "Results",
   "results.userTable.count": "Validation count",
