@@ -160,11 +160,13 @@ export const COLUMNS: IColumns = {
   },
   'unit.linkings.taxon.occurrenceCountFinland': {
     name: 'unit.linkings.taxon.occurrenceCountFinland',
-    label: 'result.occurrenceCountFinland'
+    width: 70
   },
   'unit.linkings.taxon.primaryHabitat': {
     name: 'unit.linkings.taxon.primaryHabitat',
-    label: 'result.primaryHAbitat'
+    prop: 'unit.linkings.taxon.primaryHabitat.habitat',
+    sortBy: 'unit.linkings.taxon.primaryHabitat',
+    cellTemplate: 'label',
   },
   'unit.linkings.taxon.latestRedListStatusFinland': {
     name: 'unit.linkings.taxon.latestRedListStatusFinland',
