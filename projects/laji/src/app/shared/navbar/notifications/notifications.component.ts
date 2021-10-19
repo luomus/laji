@@ -68,9 +68,9 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
     this.loading = true;
-    this.translate.get(['notification.deleteAll.confirm', 'yes']).pipe(
+    this.translate.get(['notification.deleteAll.confirm']).pipe(
       takeUntil(this.unsubscribe$),
-      switchMap(translations => this.dialogService.confirm(translations['notification.deleteAll.confirm'], translations['yes'])),
+      switchMap(translations => this.dialogService.confirm(translations['notification.deleteAll.confirm'])),
       map((res) => {
         if (!res) {
           throw new Error('cancelled');
@@ -95,8 +95,8 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeNotification(notification: Notification) {
-    this.translate.get(['notification.delete.confirm', 'yes']).pipe(
-      switchMap(translations => notification.seen ? of(true) : this.dialogService.confirm(translations['notificaiton.delete.confirm'], translations['yes'])),
+    this.translate.get(['notification.delete.confirm']).pipe(
+      switchMap(translations => notification.seen ? of(true) : this.dialogService.confirm(translations['notificaiton.delete.confirm'])),
       filter(result => !!(result && notification.id)),
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))

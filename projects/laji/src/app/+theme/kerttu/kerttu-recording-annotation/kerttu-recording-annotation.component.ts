@@ -72,7 +72,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     if (!this.unsavedChanges) {
       return true;
     }
-    return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'), this.translate.instant('yes'));
+    return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'));
   }
 
   getNextRecording() {
