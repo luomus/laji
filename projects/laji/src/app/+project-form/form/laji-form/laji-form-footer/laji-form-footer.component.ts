@@ -6,12 +6,12 @@ import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 
 @Component({
-  selector: 'laji-document-form-footer',
-  templateUrl: './document-form-footer.component.html',
-  styleUrls: ['./document-form-footer.component.scss'],
+  selector: 'laji-form-footer',
+  templateUrl: './laji-form-footer.component.html',
+  styleUrls: ['./laji-form-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormFooterComponent {
+export class LajiFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
   @Input() readonly: Readonly = Readonly.false;

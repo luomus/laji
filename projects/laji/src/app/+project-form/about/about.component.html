@@ -3,10 +3,10 @@
 <ng-container *ngIf="aboutData$ | async as data">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
     <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
-      <laji-document-form-header [formID]="data.form.id"
-                                 [displayDescription]="false"
-                                 [displayInstructions]="false"
-      ></laji-document-form-header>
+      <laji-form-header [formID]="data.form.id"
+                        [displayDescription]="false"
+                        [displayInstructions]="false"
+      ></laji-form-header>
       <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
                       [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
       ></laji-info-page>
@@ -29,7 +29,7 @@
 <ng-template #mobile>
   <ng-container *ngIf="aboutData$ | async as data">
     <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
-    <laji-document-form-header [formID]="data.form.id"></laji-document-form-header>
+    <laji-form-header [formID]="data.form.id"></laji-form-header>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <button type="button"
               class="btn btn-md btn-primary btn-block use-button"

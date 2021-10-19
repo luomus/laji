@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DocumentFormHeaderComponent } from './document-form-header.component';
+import { LajiFormHeaderComponent } from './laji-form-header.component';
 import { SharedModule } from '../../../../shared/shared.module';
 import { LatestDocumentsModule } from '../../../../shared-modules/latest-documents/latest-documents.module';
 import { OwnSubmissionsModule } from '../../../../shared-modules/own-submissions/own-submissions.module';
@@ -13,7 +13,7 @@ import { OwnSubmissionsModule } from '../../../../shared-modules/own-submissions
     LatestDocumentsModule,
     OwnSubmissionsModule
   ],
-  declarations: [DocumentFormHeaderComponent],
-  exports: [DocumentFormHeaderComponent]
+  declarations: [LajiFormHeaderComponent],
+  exports: [LajiFormHeaderComponent]
 })
-export class DocumentFormHeaderModule {}
+export class LajiFormHeaderModule {}

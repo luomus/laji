@@ -14,7 +14,7 @@ import { SelectModule } from '../../shared-modules/select/select.module';
 import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module';
 import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.module';
 import { InfoPageModule } from '../../shared-modules/info-page/info-page.module';
-import { DocumentFormHeaderModule } from './laji-form/document-form-header/document-form-header.module';
+import { LajiFormHeaderModule } from '@laji-form/laji-form-header/laji-form-header.module';
 import { NamedPlaceLinkerButtonModule } from './named-place-linker/named-place-linker-button/named-place-linker-button.module';
 
 @NgModule({
@@ -32,7 +32,7 @@ import { NamedPlaceLinkerButtonModule } from './named-place-linker/named-place-l
     SelectModule,
     NamedPlaceLinkerModule,
     InfoPageModule,
-    DocumentFormHeaderModule,
+    LajiFormHeaderModule,
     NamedPlaceLinkerButtonModule
   ],
   declarations: [

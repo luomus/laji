@@ -19,14 +19,14 @@
       </alert>
     </ng-container>
   </div>
-  <laji-document-form-header *ngIf="!form.options?.mobile && vm.error === errors.ok"
-      [formID]="vm.form.id"
-      [edit]="!!documentID"
-      [namedPlace]="vm.namedPlace"
-      [isAdmin]="isAdmin"
-      [formData]="vm.form.formData"
-      [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
-  ></laji-document-form-header>
+  <laji-form-header *ngIf="!form.options?.mobile && vm.error === errors.ok"
+                    [formID]="vm.form.id"
+                    [edit]="!!documentID"
+                    [namedPlace]="vm.namedPlace"
+                    [isAdmin]="isAdmin"
+                    [formData]="vm.form.formData"
+                    [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
+  ></laji-form-header>
   <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
   <div class="clear"></div>
   <div class="laji-form" *ngIf="vm.error === errors.ok">
@@ -39,7 +39,7 @@
       (validationError)="onValidationError($event)"
       (goBack)="onGoBack()"
     ></laji-form>
-    <laji-document-form-footer
+    <laji-form-footer
       [form]="vm.form"
       [status]="status"
       [readonly]="vm.form.readonly"
@@ -52,7 +52,7 @@
       (submitPublic)="submitPublic()"
       (submitPrivate)="submitPrivate()"
       (submitTemplate)="submitTemplate()"
-      (leave)="onLeave()"></laji-document-form-footer>
+      (leave)="onLeave()"></laji-form-footer>
   </div>
 </ng-container>
 

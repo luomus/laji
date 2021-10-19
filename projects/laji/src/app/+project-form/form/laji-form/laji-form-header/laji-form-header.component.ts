@@ -9,12 +9,12 @@ import * as moment from 'moment';
 import { Form } from '../../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-document-form-header',
-  templateUrl: './document-form-header.component.html',
-  styleUrls: ['./document-form-header.component.scss'],
+  selector: 'laji-form-header',
+  templateUrl: './laji-form-header.component.html',
+  styleUrls: ['./laji-form-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
+export class LajiFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() formID: string;
   @Input() isAdmin = false;

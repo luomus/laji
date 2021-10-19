@@ -3,11 +3,11 @@ import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { FormWithData } from '../laji-form-document.facade';
 
 @Component({
-  selector: 'laji-document-form-footer',
+  selector: 'laji-form-footer',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormFooterComponent {
+export class LajiFormFooterComponent {
   @Input() form: FormWithData;
   @Input() status = '';
   @Input() saving = false;

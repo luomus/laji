@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Form } from '../../../../shared/model/Form';
 
 @Component({
-  selector: 'laji-document-form-header',
+  selector: 'laji-form-header',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormHeaderComponent {
+export class LajiFormHeaderComponent {
 
   @Input() formID: string;
   @Input() namedPlaceID: string;

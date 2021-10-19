@@ -21,8 +21,8 @@ import { DatatableModule } from '../../../shared-modules/datatable/datatable.mod
 import { SelectModule } from '../../../shared-modules/select/select.module';
 import { InfoModule } from '../../../shared-modules/info/info.module';
 import { FormPermissionModule } from '../../form-permission/form-permission.module';
-import { DocumentFormHeaderModule } from '../laji-form/document-form-header/document-form-header.module';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
+import { LajiFormHeaderModule } from '../laji-form/laji-form-header/laji-form-header.module';
 
 @NgModule({
   providers: [],
@@ -39,7 +39,7 @@ import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wr
     ClipboardModule,
     LajiUiModule,
     InfoModule,
-    DocumentFormHeaderModule
+    LajiFormHeaderModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,

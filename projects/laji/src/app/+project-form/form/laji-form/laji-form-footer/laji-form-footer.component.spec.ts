@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { DocumentFormFooterComponent } from './document-form-footer.component';
+import { LajiFormFooterComponent } from './laji-form-footer.component';
 
 describe('DocumentFormFooterComponent', () => {
-  let component: DocumentFormFooterComponent;
-  let fixture: ComponentFixture<DocumentFormFooterComponent>;
+  let component: LajiFormFooterComponent;
+  let fixture: ComponentFixture<LajiFormFooterComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DocumentFormFooterComponent ]
+      declarations: [ LajiFormFooterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DocumentFormFooterComponent);
+    fixture = TestBed.createComponent(LajiFormFooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
