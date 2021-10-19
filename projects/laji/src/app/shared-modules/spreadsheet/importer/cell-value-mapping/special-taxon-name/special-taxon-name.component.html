@@ -37,7 +37,7 @@
         {{ lajiValue(value) }}
       </td>
       <td class="ok-col">
-        <laji-tool-success [success]="mapping && mapping[value]"></laji-tool-success>
+        <laji-tool-success [success]="mapping?.[value]"></laji-tool-success>
       </td>
     </tr>
   </ng-container>
