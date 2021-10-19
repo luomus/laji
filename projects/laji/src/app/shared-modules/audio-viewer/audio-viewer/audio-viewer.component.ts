@@ -65,6 +65,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() audioInfoTpl: TemplateRef<any>;
 
+  @Input() zoomInfoText: string;
+
   audioPlayer: AudioPlayer;
 
   loading = false;

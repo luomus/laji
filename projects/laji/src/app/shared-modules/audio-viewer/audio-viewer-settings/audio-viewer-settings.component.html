@@ -27,5 +27,5 @@
 </div>
 <div [ngClass]="{'d-block': !displayInline}" style="margin-top: 5px;">
   <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.setDefaultSettings' | translate"></laji-info>
+  <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText"></laji-info>
 </div>

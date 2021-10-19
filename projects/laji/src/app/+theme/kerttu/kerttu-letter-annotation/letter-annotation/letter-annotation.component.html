@@ -46,7 +46,11 @@
     </div>
 
     <div class="col-md-12" id="letterAnnotationSettings">
-      <laji-audio-viewer-settings [(zoomed)]="zoomed" [(xRangePadding)]="timePadding"></laji-audio-viewer-settings>
+      <laji-audio-viewer-settings
+        [(zoomed)]="zoomed"
+        [(xRangePadding)]="timePadding"
+        [setDefaultSettingsInfoText]="'theme.kerttu.info.setDefaultSettings' | translate"
+      ></laji-audio-viewer-settings>
     </div>
 
     <div id="letterTemplateContainer" class="col-md-6 col-md-push-6">
