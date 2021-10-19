@@ -3,8 +3,6 @@ import { Injectable, NgModule } from '@angular/core';
 import { PreloadingStrategy, Route, RouterModule, Routes } from '@angular/router';
 import { Observable, of as ObservableOf, timer as ObservableTimer } from 'rxjs';
 import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.component';
-import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
-import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
 import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
@@ -33,18 +31,10 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {path: 'en', children: [
-      ...routes,
-      {path: '**', component: NotFoundComponent}
-    ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}},
-  {path: 'sv', children: [
-      ...routes,
-      {path: '**', component: NotFoundComponent}
-    ], component: LocaleSvComponent, canActivate: [LocalizeGuard], data: {lang: 'sv'}},
   {path: '', children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleFiComponent, canActivate: [LocalizeGuard], data: {lang: 'fi'}}
+    ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}}
 ];
 
 const allRoutes: Routes = [
