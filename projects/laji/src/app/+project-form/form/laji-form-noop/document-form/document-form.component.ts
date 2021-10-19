@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
-import { Document } from '../../../shared/model/Document';
-import { Form } from '../../../shared/model/Form';
+import { Document } from '../../../../shared/model/Document';
+import { Form } from '../../../../shared/model/Form';
 import { ISuccessEvent } from '../laji-form-document.facade';
 
 @Component({

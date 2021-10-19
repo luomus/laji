@@ -13,16 +13,16 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { FormApiClient } from '../../../shared/api/FormApiClient';
-import { IUserSettings, UserService } from '../../../shared/service/user.service';
-import { Logger } from '../../../shared/logger/logger.service';
-import { ToastsService } from '../../../shared/service/toasts.service';
+import { FormApiClient } from '../../../../shared/api/FormApiClient';
+import { IUserSettings, UserService } from '../../../../shared/service/user.service';
+import { Logger } from '../../../../shared/logger/logger.service';
+import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Global } from '../../../../environments/global';
+import { Global } from '../../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest } from 'rxjs';
-import { Profile } from '../../../shared/model/Profile';
+import { Profile } from '../../../../shared/model/Profile';
 import LajiForm from 'laji-form/lib/index';
 import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 

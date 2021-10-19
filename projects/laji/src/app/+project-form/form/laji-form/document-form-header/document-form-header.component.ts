@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormService } from '../../../shared/service/form.service';
+import { FormService } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from '../../../shared/service/user.service';
+import { UserService } from '../../../../shared/service/user.service';
 import { ILajiFormState } from '../laji-form-document.facade';
 import * as moment from 'moment';
-import { Form } from '../../../shared/model/Form';
+import { Form } from '../../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-header',

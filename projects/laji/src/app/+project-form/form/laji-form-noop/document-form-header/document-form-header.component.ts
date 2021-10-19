@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Form } from '../../../shared/model/Form';
+import { Form } from '../../../../shared/model/Form';
 
 @Component({
   selector: 'laji-document-form-header',

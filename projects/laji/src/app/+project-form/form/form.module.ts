@@ -4,7 +4,7 @@ import { FormComponent } from './form.component';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { CommonModule } from '@angular/common';
 import { SpinnerModule } from '../../shared-modules/spinner/spinner.module';
-import { LajiFormModule } from '@laji-form/laji-form.module';
+import { LajiFormModule } from './laji-form/laji-form.module';
 import { NamedPlaceModule } from './named-place/named-place.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
@@ -14,7 +14,7 @@ import { SelectModule } from '../../shared-modules/select/select.module';
 import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module';
 import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.module';
 import { InfoPageModule } from '../../shared-modules/info-page/info-page.module';
-import { DocumentFormHeaderModule } from '@laji-form/document-form-header/document-form-header.module';
+import { DocumentFormHeaderModule } from './laji-form/document-form-header/document-form-header.module';
 import { NamedPlaceLinkerButtonModule } from './named-place-linker/named-place-linker-button/named-place-linker-button.module';
 
 @NgModule({
