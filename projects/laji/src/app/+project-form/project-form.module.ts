@@ -19,12 +19,14 @@ import { GenerateSpreadsheetComponent } from './generate-spreadsheet/generate-sp
 import { SpreadsheetModule } from '../shared-modules/spreadsheet/spreadsheet.module';
 import { TemplatesComponent } from './templates/templates.component';
 import { TermsComponent } from './about/terms/terms.component';
+import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
 import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
+import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 
 @NgModule({
   imports: [
@@ -38,8 +40,10 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
     LajiFormModule,
     OwnSubmissionsModule,
     SpreadsheetModule,
+    StatisticsModule,
     DocumentFormHeaderModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    TechnicalNewsModule
   ],
   declarations: [
     ProjectFormComponent,

@@ -60,6 +60,10 @@ export class IucnFooterComponent implements OnInit, OnDestroy {
     }
   }
 
+  currentLangIsFinnish() {
+    return this.translate.currentLang === 'fi';
+  }
+
   fetchTreeData(force = true) {
     if (!force && IucnFooterComponent.treeData) {
       return;

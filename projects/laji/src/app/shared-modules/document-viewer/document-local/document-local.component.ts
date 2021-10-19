@@ -11,8 +11,8 @@ import { DocumentInfoService } from '../../../shared/service/document-info.servi
 import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
 import { Form } from '../../../shared/model/Form';
+import { JSONPath } from 'jsonpath-plus';
 
-const { JSONPath } = require('jsonpath-plus');
 
 @Component({
   selector: 'laji-document-local',

@@ -41,9 +41,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @Input() skipActiveFilters: string[] = [];
   @Input() invasiveStatuses: string[] = [];
   @Input() dateFormat = 'YYYY-MM-DD';
-  @Input() advancedMode = false;
 
-  @Output() advancedModeChange = new EventEmitter<boolean>();
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
 
@@ -86,14 +84,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   selectedNameTaxon = [];
 
   visible: {[key in keyof ISections]?: boolean} = {};
-  visibleAdvanced: {[key in keyof ISections]?: boolean} = {};
 
   sections: ISections = {
     own: ['observerPersonToken', 'editorOrObserverPersonToken', 'editorPersonToken', 'editorOrObserverIsNotPersonToken'],
     time: ['time', 'season', 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
     place: [
       'countryId',
+      'provinceId',
       'biogeographicalProvinceId',
+      'elyCentreId',
       'finnishMunicipalityId',
       'area',
       'coordinates',
@@ -111,19 +110,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
     secure: ['secured', 'secureLevel'],
-  };
-
-  advancedSections: ISections = {
-    taxon: ['useIdentificationAnnotations', 'includeSubTaxa'],
-    time: ['firstLoadedSameOrAfter', 'firstLoadedSameOrBefore', 'loadedSameOrAfter', 'loadedSameOrBefore'],
-    coordinate: ['coordinates' , 'coordinateAccuracyMax', 'sourceOfCoordinates'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'individualCountMin', 'individualCountMax'],
-    quality: [],
-    dataset: ['collectionId', 'collectionQuality', 'sourceId'],
-    collection: ['collectionId', 'typeSpecimen'],
-    keywords: ['documentId', 'keyword'],
-    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia'],
-    secure: ['secureLevel', 'secured'],
   };
 
   delayedSearch = new Subject();
@@ -160,7 +146,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateVisibleSections();
-    this.updateVisibleAdvancedSections();
     this.screenWidthSub = this.browserService.lgScreen$.subscribe(data => {
       if (data === true) {
         this.containerTypeAhead = 'body';
@@ -451,7 +436,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onQueryChange() {
     this.queryChange.emit(this.query);
-    this.updateVisibleAdvancedSections();
   }
 
   delayedQueryChange() {
@@ -468,15 +452,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.updateVisible('sections', 'visible');
   }
 
-  private updateVisibleAdvancedSections() {
-    this.updateVisible('advancedSections', 'visibleAdvanced');
-  }
-
-  private updateVisible(sectionKey: 'advancedSections', visibilityKey: 'visibleAdvanced');
   private updateVisible(sectionKey: 'sections', visibilityKey: 'visible');
   private updateVisible(
-    sectionKey: keyof Pick<this, 'sections' | 'advancedSections'>,
-    visibilityKey: keyof Pick<this, 'visible' | 'visibleAdvanced'>
+    sectionKey: keyof Pick<this, 'sections'>,
+    visibilityKey: keyof Pick<this, 'visible'>
   ) {
     Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
@@ -598,11 +577,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return '';
     }
     return (start || '') + '/' + (end || '');
-  }
-
-
-  setAdvancedMode(advanced: boolean) {
-    this.advancedModeChange.emit(advanced);
   }
 
   updateTime(dates, startTarget?: 'time');

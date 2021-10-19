@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { IFormField, VALUE_IGNORE } from '../../model/excel';
 
 @Component({
@@ -19,6 +19,7 @@ export class ColMapperComponent implements OnChanges {
   allCols: string[] = [];
   duplicates: string[] = [];
   duplicateLabels: string[] = [];
+  missingRequiredLabels: string[] = [];
   missingMapping: string[] = [];
   hasInitMapping: {[col: string]: boolean} = {};
   init = false;
@@ -32,12 +33,13 @@ export class ColMapperComponent implements OnChanges {
     }
 
     this.initAllFields();
+    this.missingRequiredLabels = this.getMissingRequiredLabels();
     this.duplicates = this.getDuplicates();
     this.duplicateLabels = this.duplicates.map(key => this.fields[key].fullLabel);
 
     if (!this.init) {
       this.initCols();
-      if (!this.missingMappings() && this.duplicateLabels.length === 0) {
+      if (!this.missingMappings() && this.missingRequiredLabels.length === 0 && this.duplicateLabels.length === 0) {
         this.mappingDone.emit(this.colMapping);
       }
       this.init = true;
@@ -80,6 +82,12 @@ export class ColMapperComponent implements OnChanges {
     return this.allFields.filter(
       key => duplicates.includes(key) && !this.fields[key].isArray && key !== VALUE_IGNORE
     );
+  }
+
+  getMissingRequiredLabels() {
+    const fields = Object.values(this.colMapping);
+    const requiredFields = this.allFields.filter(key => this.fields[key].required);
+    return requiredFields.filter(field => !fields.includes(field)).map(key => this.fields[key].fullLabel);
   }
 
   saveMapping() {

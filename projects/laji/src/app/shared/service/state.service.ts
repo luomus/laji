@@ -29,11 +29,11 @@ export class StateService {
   set(key: string, value: any) {
     this.state[key] = value;
     if (this.platformService.isServer) {
-      this.transferState.set(LAJI_STATE_KEY, this.state);
+      this.transferState.set<any>(LAJI_STATE_KEY, this.state);
     }
   }
 
   private initState() {
-    this.state = this.transferState.get(LAJI_STATE_KEY, {});
+    this.state = this.transferState.get<any>(LAJI_STATE_KEY, {});
   }
 }

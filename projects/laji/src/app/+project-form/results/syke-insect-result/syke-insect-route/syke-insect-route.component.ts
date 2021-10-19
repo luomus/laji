@@ -23,8 +23,6 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
     {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}
   ];
 
-  date: string;
-  year: number;
   observationStats = [{'dataSets': []}];
   activeYear: number;
   activeDate: string;
@@ -47,9 +45,9 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSub = this.route.queryParams.subscribe(queryParams => {
       this.routeId = queryParams['route'];
-      this.date = queryParams['date'];
-      this.year = queryParams['year'];
-      this.onlySections = this.date ? true : (queryParams['onlySections'] ? JSON.parse(queryParams['onlySections']) : true);
+      this.activeDate = queryParams['date'];
+      this.activeYear = queryParams['year'];
+      this.onlySections = this.activeDate ? true : (queryParams['onlySections'] ? JSON.parse(queryParams['onlySections']) : true);
 
       if (!this.activeYear) {
         this.censusListForRoute(this.routeId);

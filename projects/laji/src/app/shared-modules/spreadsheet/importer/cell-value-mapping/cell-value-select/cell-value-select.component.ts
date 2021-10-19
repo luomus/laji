@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 
 @Component({
@@ -16,7 +17,8 @@ export class CellValueSelectComponent {
   _field: IFormField;
   labels: string[] = [];
   ignore = VALUE_IGNORE;
-  booleanValues = [VALUE_IGNORE, 'true', 'false'];
+  booleanValueMap: {[key: string]: typeof VALUE_IGNORE|boolean} = {};
+  booleanValues: string[] = [];
 
   @Input() set field(field: IFormField) {
     this._field = field;
@@ -26,6 +28,17 @@ export class CellValueSelectComponent {
       this.labels = [VALUE_IGNORE, ...field.enumNames];
     }
   }
+
+  constructor(
+    private translate: TranslateService
+  ) {
+    this.booleanValueMap = {
+      [VALUE_IGNORE]: VALUE_IGNORE,
+      [this.translate.instant('yes')]: true,
+      [this.translate.instant('no')]: false
+    };
+    this.booleanValues = Object.keys(this.booleanValueMap);
+   }
 
   valueMapped(value, to) {
     const mapping = {...this.mapping};
@@ -40,7 +53,7 @@ export class CellValueSelectComponent {
     } else if (this._field.type === 'integer') {
       mapping[value] = +to;
     } else if (this._field.type === 'boolean') {
-      mapping[value] = to === 'true';
+      mapping[value] = this.booleanValueMap[to];
     } else if (typeof to !== 'undefined') {
       mapping[value] = to;
     }

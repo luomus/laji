@@ -1,35 +1,6 @@
 @import '../../../styles/variables';
 @import 'projects/laji-ui/src/lib/vars';
 
-.mode-select {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-
-  border-bottom: 1px solid $neutral-4;
-  > div {
-    display: flex;
-    flex-flow: row nowrap;
-  }
-  laji-observation-active {
-    align-self: center;
-  }
-}
-
-.mode-switch-btn {
-  background: unset;
-  border: unset;
-  border-bottom: 3px solid rgba(0,0,0,0);
-  color: $neutral-7;
-  &:not(.active):hover {
-    color: $primary-5;
-  }
-  &.active {
-    border-bottom: 3px solid $primary-5;
-    cursor: default;
-  }
-}
-
 :host ::ng-deep laji-observation-active .open-select {
   border-bottom: 3px solid rgba(0,0,0,0)
 }
@@ -61,6 +32,9 @@ hr {
 #logCoordinateAccuracyMax:focus {
   border: none;
   box-shadow: none;
+}
+#logCoordinateAccuracyMax:focus-visible {
+  box-shadow: 0px 1px 3px 0px rgba($primary-5, .5);
 }
 
 label {

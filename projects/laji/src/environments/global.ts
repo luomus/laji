@@ -8,7 +8,8 @@ export const Global = {
     iucn: 'iucn'
   },
   forms: {
-    datasets: 'MHL.67',
+    databankPrimary: 'MHL.70',
+    databankSecondary: 'MHL.68',
     default: 'JX.519',
     namedPlace: 'MHL.36',
     whichSpecies: 'MHL.9',
@@ -32,6 +33,7 @@ export const Global = {
     'sieniatlas': 'JX.652',
     'pistelaskenta': 'MHL.75',
     'kiiltomadot': 'MHL.79',
+    'kimalaiset': 'MHL.89',
   },
   oldThemeParents: {
     'MHL.1': 'MHL.1',

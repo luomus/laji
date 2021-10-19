@@ -1,3 +1,5 @@
+<laji-technical-news></laji-technical-news>
+
 <ng-container *ngIf="aboutData$ | async as data">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
     <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">

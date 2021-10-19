@@ -1,9 +1,10 @@
-import { by, element } from 'protractor';
+import { $ } from 'protractor';
 
 export class NavPage {
 
-  private vihkoLink = element(by.css('a[href$="/vihko"]'));
-  private saveObservationLink = element(by.css('a[href$="/save-observations"]'));
+  private vihkoLink = $('a[href$="/vihko"]');
+  private saveObservationLink = $('a[href$="/save-observations"]');
+  private $lang = $('.language-toggle span');
 
   moveToSaveObservation(): void {
     this.saveObservationLink.click();
@@ -11,5 +12,13 @@ export class NavPage {
 
   moveToVihko(): void {
     this.vihkoLink.click();
+  }
+
+  async getLang(): Promise<('fi' | 'sv' | 'en')> {
+    const text = (await this.$lang.getText()).trim().toLowerCase();
+    if (!['fi', 'sv', 'en'].includes(text)) {
+      throw new Error('Couldn\'t get lang');
+    }
+    return text as ('fi' | 'sv' | 'en');
   }
 }

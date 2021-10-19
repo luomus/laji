@@ -1,14 +1,4 @@
-<div class="mode-select">
-  <div>
-    <button class="mode-switch-btn" [class.active]="!advancedMode" (click)="setAdvancedMode(false)">
-      {{ 'observation.form.modeBasic' | translate }}
-    </button>
-    <button class="mode-switch-btn" [class.active]="advancedMode" (click)="setAdvancedMode(true)">
-      {{ 'observation.form.modeAdvanced' | translate }}
-    </button>
-  </div>
-  <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
-</div>
+<laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 
 <section class="top-section">
   <div>
@@ -65,7 +55,7 @@
     ></laji-pill-list>
   </div>
 
-  <div *ngIf="advancedMode || visibleAdvanced['taxon']">
+  <div>
     <div>
       <label class="small-label">
         <laji-checkbox [(value)]="formQuery.taxonIncludeLower" (valueChange)="onFormQueryChange()"></laji-checkbox>{{ 'observation.keepSsp' | translate }}
@@ -92,7 +82,7 @@
           {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
     ]">
   </laji-select>
-  <div style="margin-top:20px" *ngIf="advancedMode">
+  <div style="margin-top:20px">
     <div>
       <label>{{ 'observation.maxOccurrenceFinland' | translate }}</label>
       <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
@@ -160,8 +150,6 @@
   <laji-date-form [query]="query"
                   [formQuery]="formQuery"
                   [dateFormat]="dateFormat"
-                  [advancedMode]="advancedMode"
-                  [visibleAdvanced]="visibleAdvanced"
                   (formQueryChange)="onFormQueryChange()"
                   (queryChange)="onQueryChange()"
                   (searchQueryChange)="updateSearchQuery($event[0], $event[1])"
@@ -186,6 +174,14 @@
     name="countryId"
     [field]="areaType.Country"></laji-metadata-select>
   <laji-metadata-select
+    [info]="'observation.info.province' | translate"
+    [(ngModel)]="query.provinceId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.province'"
+    name="provinceId"
+    [field]="areaType.Province"></laji-metadata-select>
+  <laji-metadata-select
     [info]="'observation.info.biogeographicalProvince' | translate"
     [(ngModel)]="query.biogeographicalProvinceId"
     (ngModelChange)="onQueryChange()"
@@ -193,6 +189,14 @@
     [placeholder]="'result.gathering.biogeographicalProvince'"
     name="biogeographicalProvinceId"
     [field]="areaType.Biogeographical"></laji-metadata-select>
+  <laji-metadata-select
+    [info]="'observation.info.elyCentre' | translate"
+    [(ngModel)]="query.elyCentreId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.elyCentre'"
+    name="elyCentreId"
+    [field]="areaType.ElyCentre"></laji-metadata-select>
   <laji-metadata-select
     [info]="'observation.info.municipality' | translate"
     [(ngModel)]="query.finnishMunicipalityId"
@@ -235,7 +239,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="advancedMode || visibleAdvanced['coordinate']">
+  <ng-container>
     <div *ngIf="query.coordinates">
       <div>
         <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
@@ -347,7 +351,7 @@
 </section>
 
 <!-- Individual -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['individual']" [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
+<section class="laji-panel" laji-panel [title]="'observation.form.unit' | translate" [autoToggle]="true"  [open]="visible['individual']">
   <div>
     <laji-metadata-select
       [(ngModel)]="query.sex"
@@ -367,7 +371,7 @@
       [multiple]="true"
       [useFilter]="false"
       [placeholder]="'MY.lifeStage' | label"
-      [mapToWarehouse]="true"
+      [useFilterApi]="true"
       name="lifeStage"></laji-metadata-select>
   </div>
   <div>
@@ -483,7 +487,7 @@
         {id: false, value: ('observation.form.needsCheck.false' | translate)}
       ]"></laji-select>
 
-  <ng-container *ngIf="advancedMode || query.annotated">
+  <ng-container>
     <laji-select
       [selected]="[query.annotated]"
       (selectedChange)="indirectQueryChange('annotated', $event[0])"
@@ -496,7 +500,7 @@
         {id: false, value: ('observation.form.annotatedFalse' | translate)}
       ]"></laji-select>
   </ng-container>
-  <ng-container *ngIf="advancedMode || query.effectiveTag">
+  <ng-container>
     <laji-metadata-select
       name="effectiveTag"
       [(ngModel)]="query.effectiveTag"
@@ -508,7 +512,7 @@
       [info]="'observation.info.effectiveTag' | translate"
       [field]="'MMAN.tag'"></laji-metadata-select>
   </ng-container>
-  <ng-container *ngIf="advancedMode || query.qualityIssues">
+  <ng-container>
     <laji-select
       [selected]="[query.qualityIssues]"
       (selectedChange)="indirectQueryChange('qualityIssues', $event[0])"
@@ -525,7 +529,7 @@
 </section>
 
 <!--Sources -->
-<section class="laji-panel bg-success" laji-panel *ngIf="advancedMode || visibleAdvanced['dataset']" [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
+<section class="laji-panel bg-success" laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-select-collections
     [query]="query"
     (selectedOptionsChange)="onCollectionIdChange($event)"
@@ -550,7 +554,7 @@
 </section>
 
 <!-- Scientific collections -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['collection']" [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true"  [open]="visible['collection']">
+<section class="laji-panel" laji-panel [title]="'observation.form.collectionTitle' | translate" [autoToggle]="true"  [open]="visible['collection']">
   <div>
     <label><laji-checkbox [(value)]="formQuery.onlyFromCollectionSystems" (valueChange)="onOnlyFromCollectionCheckBoxToggle()"></laji-checkbox>{{ 'observation.form.collection' | translate }}</label>
     <laji-info>{{ 'observation.info.collection' | translate }}</laji-info>
@@ -570,7 +574,7 @@
 </section>
 
 <!-- IDs, keywords -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['keywords']" [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
+<section class="laji-panel" laji-panel [title]="'observation.form.keywords' | translate" [autoToggle]="true" [open]="visible['keywords']">
   <div>
     <div>
       <label>{{ 'observation.form.documentId' | translate }}</label>
@@ -599,17 +603,15 @@
 
 <!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
-  <ng-container *ngIf="advancedMode || query.administrativeStatusId">
-    <p [innerHTML]="'observation.intro.adminStatus' | translate"></p>
-    <laji-metadata-select
-      [info]="'observation.info.adminStatus' | translate"
-      [(ngModel)]="query.administrativeStatusId"
-      (ngModelChange)="onAdministrativeStatusChange()"
-      [multiple]="true"
-      [placeholder]="'MX.hasAdminStatus' | label"
-      name="administrativeStatusId"
-      [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
-  </ng-container>
+  <p [innerHTML]="'observation.intro.adminStatus' | translate"></p>
+  <laji-metadata-select
+    [info]="'observation.info.adminStatus' | translate"
+    [(ngModel)]="query.administrativeStatusId"
+    (ngModelChange)="onAdministrativeStatusChange()"
+    [multiple]="true"
+    [placeholder]="'MX.hasAdminStatus' | label"
+    name="administrativeStatusId"
+    [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
   <laji-metadata-select
     [info]="'observation.info.redListStatus' | translate"
     [(ngModel)]="query.redListStatusId"
@@ -619,25 +621,21 @@
     name="redListStatusId"
     [placeholder]="'observation.form.redListStatusId'"
     [alt]="'MX.iucnStatuses'"></laji-metadata-select>
-  <ng-container *ngIf="advancedMode || query.primaryHabitat || query.anyHabitat">
-    <laji-habitat-select
-      [query]="query"
-      (select)="onHabitatChange($event)"
-    ></laji-habitat-select>
-  </ng-container>
-  <ng-container *ngIf="advancedMode || query.typeOfOccurrenceId">
-    <p>
-      {{ 'observation.intro.typeOfOccurrenceId' | translate }}
-    </p>
-    <laji-three-state-multi-switch
-      [title]="'observation.form.typeOfOccurrenceId' | translate"
-      [info]="'observation.info.typeOfOccurrenceId' | translate"
-      [trueValue]="query.typeOfOccurrenceId"
-      [falseValue]="query.typeOfOccurrenceIdNot"
-      [alt]="'MX.typeOfOccurrenceEnum'"
-      (update)="updateTypeOfOccurrence($event)"
-    ></laji-three-state-multi-switch>
-  </ng-container>
+  <laji-habitat-select
+    [query]="query"
+    (select)="onHabitatChange($event)"
+  ></laji-habitat-select>
+  <p>
+    {{ 'observation.intro.typeOfOccurrenceId' | translate }}
+  </p>
+  <laji-three-state-multi-switch
+    [title]="'observation.form.typeOfOccurrenceId' | translate"
+    [info]="'observation.info.typeOfOccurrenceId' | translate"
+    [trueValue]="query.typeOfOccurrenceId"
+    [falseValue]="query.typeOfOccurrenceIdNot"
+    [alt]="'MX.typeOfOccurrenceEnum'"
+    (update)="updateTypeOfOccurrence($event)"
+  ></laji-three-state-multi-switch>
   <div>
     <div>
       <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>
@@ -649,7 +647,7 @@
       [(value)]="query.invasive">
     </laji-three-state-switch>
   </div>
-  <div *ngIf="advancedMode || (query.finnish | exists)">
+  <div>
     <div>
       <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
     </div>
@@ -663,7 +661,7 @@
 </section>
 
 <!-- Invasive species  -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode" [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
+<section class="laji-panel" laji-panel [title]="'observation.form.invasiveClassification' | translate" [autoToggle]="true"  [open]="visible['invasive']">
   <div *lajiForTypes="['vir']">
     <laji-metadata-select
       [(ngModel)]="query.invasive"
@@ -702,7 +700,7 @@
 </section>
 
 <!-- Images -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['image']" [title]="'search.result.images' | translate" [autoToggle]="true" [open]="visible['image']">
+<section class="laji-panel" laji-panel [title]="'search.result.images' | translate" [autoToggle]="true" [open]="visible['image']">
   <p>{{ 'observation.intro.images' | translate }}</p>
   <label class="title">{{ 'haseka.users.latest.gathered.singular' | translate }}</label>
   <fieldset>
@@ -732,7 +730,7 @@
 </section>
 
 <!-- Concealment level -->
-<section class="laji-panel" laji-panel *ngIf="advancedMode || visibleAdvanced['secure']" [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']">
+<section class="laji-panel" laji-panel [title]="'observation.form.securedPanel' | translate" [autoToggle]="true" [open]="visible['secure']">
   <laji-select
     [selected]="[query.secured]"
     (selectedChange)="indirectQueryChange('secured', $event[0])"

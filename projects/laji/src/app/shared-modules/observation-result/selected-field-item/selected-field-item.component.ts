@@ -15,8 +15,8 @@ export class SelectedFieldItemComponent {
   @Input() required: boolean;
 
   @Output() toggle = new EventEmitter<string>();
-  @Output() moveUp = new EventEmitter<string | string[]>();
-  @Output() moveDown = new EventEmitter<string | string[]>();
+  @Output() moveUp = new EventEmitter<string[]>();
+  @Output() moveDown = new EventEmitter<string[]>();
 
   moveFieldDown(field, event) {
     event.stopPropagation();

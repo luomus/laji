@@ -32,6 +32,6 @@
         {{ 'haseka.form.readonly' | translate }}
     </span>
   </div>
-  <button *ngIf="show.cancel" class="btn btn-danger pull-right" [disabled]="saving" type="submit" (click)="cancel.emit()">{{ buttonLabel('cancel') | translate }}</button>
+  <button *ngIf="show.cancel" class="btn btn-danger pull-right" [disabled]="saving" type="submit" (click)="leave.emit()">{{ buttonLabel('cancel') | translate }}</button>
   <laji-feedback *ngIf="displayFeedback" [iconOnly]="true" [fixed]="false"></laji-feedback>
 </div>

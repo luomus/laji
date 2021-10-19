@@ -15,13 +15,14 @@
     [checkboxType] = "checkBoxTypes.partial"
     (selectedChange)="refreshValue($event, 'GLOBAL')"
   ></laji-select>
-  
+
     <!-- SUBCATEGORIES -->
     <div *ngIf="open || (!open && !(selectedOptions['GLOBAL'] | isEmptyArray))"><strong>{{ subTitleBase + '.GLOBAL' | translate }}</strong><laji-info placement="left">{{ 'observation.active.recordQuality.GLOBAL.info' | translate }}</laji-info></div>
     <ng-container *ngFor="let subCategory of subCategories | filter:'GLOBAL':false ">
-      <label *ngIf="open || (!open && !(selectedOptions[subCategory] | isEmptyArray))" class="lj-item selected" (click)="labelClick($event)">
+      <label *ngIf="open || (!open && !(selectedOptions[subCategory] | isEmptyArray))" class="lj-item lj-info selected" (click)="labelClick($event)">
         <laji-checkbox [checkboxType]="checkBoxTypes.partial" [class]="[]" [value]="selectedOptions[subCategory] | subCategoryCheckboxValue : options" (valueChange)="toggleSubCategories(subCategory, selectedOptions[subCategory], options)"></laji-checkbox> <strong>{{ 'observation.active.recordQuality.'+ subCategory | translate }}</strong>
       </label>
+      <laji-info placement="left">{{ 'observation.active.recordQuality.' + subCategory + '.info' | translate }}</laji-info>
       <laji-select
         [options]="options"
         [filterPlaceHolder]="'haseka.submissions.filter' | translate"
@@ -36,10 +37,10 @@
         (selectedChange)="refreshValue($event, subCategory)"
         [classes]="{options: 'subCategoriesOptions', optionContainer: 'subCategoriesContainer', menuContainer: 'subMenu'}"
       ></laji-select>
-  
+
     </ng-container>
   </ng-container>
- 
+
 </div>
 
 <ng-template let-option="option" #value>
