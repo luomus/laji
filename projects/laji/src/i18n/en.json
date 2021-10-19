@@ -1280,7 +1280,7 @@
   "result.gathering.conversions.ykj10kmCenter": "YKJ 10km, the center of the observation area",
   "result.gathering.conversions.ykj1km": "YKJ 1km, whole observation area in the grid",
   "result.gathering.conversions.ykj1kmCenter": "YKJ 1km, the center of the observation area",
-  "result.gathering.coordinatesVerbatim": "Coordinates",
+  "result.gathering.coordinatesVerbatim": "Coordinates verbatim",
   "result.gathering.country": "Country",
   "result.gathering.displayDateTime": "Time",
   "result.gathering.elyCentre": "ELY-centre",
