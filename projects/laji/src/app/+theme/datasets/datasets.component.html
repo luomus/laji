@@ -13,7 +13,7 @@
     </ng-container>
     <ng-container *ngIf="forms$ | async; let forms">
       <h3>{{ 'datasets.accessTo' | translate }}</h3>
-      <ul>
+      <ul class="dataset-items">
         <li *ngIf="forms.length === 0">
           {{ 'datasets.accessNone' | translate }}
         </li>
