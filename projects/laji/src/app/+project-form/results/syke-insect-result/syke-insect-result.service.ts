@@ -284,16 +284,14 @@ export class SykeInsectResultService {
       arrayMerged[0]['yearsDays'].push(item['oldestRecord']);
     });
 
-    // meant to reorgainze butterfly census by removing and additional unwanted MVL-collection, and moving taxon set
-    // with other butterflies to be the last shown set
-    if (collectionId === 'HR.3431') {
-      uniqueTaxonSets = uniqueTaxonSets.filter(set => set.includes('MX.'));
+    //Meant to reorgainze butterly and bumblebee taxon sets so unwanted MVL-collection 
+    //gets left out, and the sets get reordered so that the other-taxonset is always last
+    uniqueTaxonSets = uniqueTaxonSets.filter(set => set.includes('MX.'));
 
-      const indexOfOther = uniqueTaxonSets.findIndex(set => set.includes('Other'));
+    const indexOfOther = uniqueTaxonSets.findIndex(set => set.includes('Other'));
 
-      if (indexOfOther !== -1) {
-        uniqueTaxonSets.push(...uniqueTaxonSets.splice(indexOfOther, 1));
-      }
+    if (indexOfOther !== -1) {
+      uniqueTaxonSets.push(...uniqueTaxonSets.splice(indexOfOther, 1));
     }
 
     arrayMerged[0]['yearsDays'] = this.uniqueYearDaysToDate(arrayMerged[0]['yearsDays'], false);
