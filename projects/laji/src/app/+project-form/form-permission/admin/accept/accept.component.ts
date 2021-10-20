@@ -42,29 +42,22 @@ export class AcceptComponent extends AbstractPermission implements OnInit, OnDes
     this.subParam.unsubscribe();
   }
 
-  accept(personId: string) {
+  makePermissionChange(personId: string, action: 'accept' | 'reject') {
     this.disabled[personId] = true;
-    this.formPermissionService.acceptRequest(this.collectionId, this.userService.getToken(), personId).pipe(
-      switchMap(() => this.updateFormPermission$())
-    ).subscribe(() => {
+    const cb = () => {
       this.disabled[personId] = false;
       this.cdr.markForCheck();
-    });
-  }
+    };
 
-  reject(personId: string) {
-    this.disabled[personId] = true;
-    this.formPermissionService.revokeAccess(this.collectionId, this.userService.getToken(), personId).pipe(
+    const method = action === 'accept' ? 'acceptRequest' : 'revokeAccess';
+    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId).pipe(
       switchMap(() => this.updateFormPermission$())
-    ).subscribe(() => {
-      this.disabled[personId] = false;
-      this.cdr.markForCheck();
-    });
+    ).subscribe(cb, cb);
   }
 
   selectPerson(event) {
     if (confirm(this.translate.instant('form.permission.admin.confirmAccess', { fullName: event.fullName }))) {
-      this.accept(event.id);
+      this.makePermissionChange(event.id, 'accept');
     }
   }
 }

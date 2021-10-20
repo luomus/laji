@@ -13,9 +13,9 @@
     <ng-template #list>
       <ul>
         <li *ngFor="let person of formPermission[type]">
-          <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="reject(person)">{{ 'form.permission.admin.removeAccess' | translate}}</button>
-          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makeEditor(person)">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
-          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makeAdmin(person)">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
+          <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
+          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
+          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
           <b class="form-control-static">
               {{ person | users }} ({{ person }})
           </b>

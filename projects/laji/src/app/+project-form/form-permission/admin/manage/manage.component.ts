@@ -52,35 +52,19 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
     this.subParam.unsubscribe();
   }
 
-  makeEditor(personId: string) {
-    this.disabled[personId] = true;
-    this.formPermissionService.acceptRequest(this.collectionId, this.userService.getToken(), personId).pipe(
-      switchMap(() => this.updateFormPermission$())
-    ).subscribe(() => {
-      this.disabled[personId] = false;
-      this.cdr.markForCheck();
-    });
-  }
-
-  makeAdmin(personId: string) {
-    this.disabled[personId] = true;
-    if (confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
-      this.formPermissionService.acceptRequest(this.collectionId, this.userService.getToken(), personId, FormPermission.Type.Admin).pipe(
-        switchMap(() => this.updateFormPermission$())
-      ).subscribe(() => {
-        this.disabled[personId] = false;
-        this.cdr.markForCheck();
-      });
+  makePermissionChange(personId: string, action: 'acceptAdmin' | 'acceptEditor' | 'reject') {
+    if (action === 'acceptAdmin' && !confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
+      return;
     }
-  }
-
-  reject(personId: string) {
     this.disabled[personId] = true;
-    this.formPermissionService.revokeAccess(this.collectionId, this.userService.getToken(), personId).pipe(
-      switchMap(() => this.updateFormPermission$())
-    ).subscribe(() => {
+    const cb = () => {
       this.disabled[personId] = false;
       this.cdr.markForCheck();
-    });
+    };
+
+    const method = (action === 'acceptAdmin' || action === 'acceptEditor') ? 'acceptRequest' : 'revokeAccess';
+    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId, action === 'acceptAdmin' ? FormPermission.Type.Admin : undefined).pipe(
+      switchMap(() => this.updateFormPermission$())
+    ).subscribe(cb, cb);
   }
 }
