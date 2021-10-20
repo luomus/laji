@@ -117,8 +117,11 @@
       <alert *lajiLoggedIn="false">
         {{ 'result.load.error.notLoggedIn' | translate }}
       </alert>
+      <alert *ngIf="!queryHasFilters">
+        {{ 'result.load.error.minQuery' | translate }}
+      </alert>
       <ng-container *lajiLoggedIn="true">
-        <div>
+        <div *ngIf="queryHasFilters">
           <p [innerHtml]="'result.load.api' | translate"></p>
           <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
         </div>

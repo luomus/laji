@@ -34,6 +34,7 @@ import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
+import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 
 
 enum RequestStatus {
@@ -76,6 +77,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
+  queryHasFilters = false;
 
   speciesCsvLoading = false;
 
@@ -159,6 +161,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.requests = {};
     this.updateCount();
     this.updateCsvLink();
+    this.queryHasFilters = createActiveFiltersList(query).length > 0;
   }
 
   get query(): WarehouseQueryInterface {
