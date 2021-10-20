@@ -284,8 +284,8 @@ export class SykeInsectResultService {
       arrayMerged[0]['yearsDays'].push(item['oldestRecord']);
     });
 
-    // meant to reorgainze butterfly census by removing and additional unwanted MVL-collection, and moving taxon set
-    // with other butterflies to be the last shown set
+    //Meant to reorgainze butterly and bumblebee taxon sets so unwanted MVL-collection 
+    //gets left out, and the sets get reordered so that the other-taxonset is always last
     uniqueTaxonSets = uniqueTaxonSets.filter(set => set.includes('MX.'));
 
     const indexOfOther = uniqueTaxonSets.findIndex(set => set.includes('Other'));
