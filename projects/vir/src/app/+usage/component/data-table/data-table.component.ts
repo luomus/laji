@@ -169,7 +169,7 @@ export class DataTableComponent implements AfterViewInit {
       case 'userKeys':
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
-        return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose']);
+        return this.getCols(['apiKeyExpires', 'person', 'collectionIds', 'dataUsePurpose']);
     }
   }
 
