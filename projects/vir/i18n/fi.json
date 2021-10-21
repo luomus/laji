@@ -55,6 +55,8 @@
   "usage.requested": "Ladattu",
   "usage.section": "Osasto, alueorganisaatio",
   "usage.users.intro": "Voit selata Lajitietokeskuksen viranomaisportaalin käyttöön oikeutettuja henkilöitä organisaatioittain.\nKaikki tarvittavat muutokset käyttöoikeuksiin pitää ilmoittaa viipymättä osoitteeseen: viranomaiset@laji.fi",
+  "usage.downloads": "Tehdyt tiedostolataukset",
+  "usage.apikeys": "Haetut API-avaimet",
   "vir.home.agreement": "Palvelun käyttö perustuu organisaatiotason (kunta, valtiohallinnon tutkimuslaitos, ELY-keskus jne.)  käyttöoikeussopimukseen Luomuksen/Lajitietokeskuksen kanssa. Voit tutustua sopimuksen sisältöön mallisopimuksen avulla.",
   "vir.home.agreement.btn": "Mallisopimus",
   "vir.home.links": "Linkkejä",

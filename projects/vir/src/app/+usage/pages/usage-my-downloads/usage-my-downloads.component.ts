@@ -6,8 +6,9 @@ import { finalize, map, take, tap } from 'rxjs/operators';
 @Component({
   selector: 'vir-usage-my-downloads',
   template: `
-    <div class="container mt-6">
+    <div class="container mt-6 laji-page">
       <laji-spinner [spinning]="requestsTableLoading" [overlay]="true">
+        <h3 translate>usage.downloads</h3>
         <vir-data-table
           type="user"
           [height]="'50vh'"
@@ -17,6 +18,7 @@ import { finalize, map, take, tap } from 'rxjs/operators';
         ></vir-data-table>
       </laji-spinner>
       <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
+        <h3 translate>usage.apikeys</h3>
         <vir-data-table
           type="userKeys"
           [height]="'50vh'"
