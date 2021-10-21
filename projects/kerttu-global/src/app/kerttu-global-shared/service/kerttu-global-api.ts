@@ -84,14 +84,9 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IValidationStat>>(path, { params });
   }
 
-  public getUserStats(query: IGlobalSpeciesQuery, personToken?: string): Observable<IListResult<IUserStat>> {
+  public getUserStats(query: IGlobalSpeciesQuery): Observable<IListResult<IUserStat>> {
     const path = this.basePath + '/statistics/users';
-
-    let params = new HttpParams();
-    if (personToken) {
-      params = params.set('personToken', personToken);
-    }
-    params = this.queryToParams(query, params);
+    const params = this.queryToParams(query, new HttpParams());
 
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }

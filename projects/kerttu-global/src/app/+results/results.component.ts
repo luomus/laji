@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat } from '../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, startWith } from 'rxjs/operators';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
@@ -50,13 +50,9 @@ export class ResultsComponent {
         );
       })
     );
-    this.userStats$ = combineLatest([
-      this.speciesQuery$,
-      this.userService.isLoggedIn$
-    ]).pipe(
-      switchMap(([speciesQuery, loggedIn]) => {
-        const token = loggedIn ? this.userService.getToken() : undefined;
-        return this.kerttuGlobalApi.getUserStats(speciesQuery, token).pipe(
+    this.userStats$ = this.speciesQuery$.pipe(
+      switchMap(speciesQuery => {
+        return this.kerttuGlobalApi.getUserStats(speciesQuery).pipe(
           map(result => result.results),
           startWith(null)
         );
