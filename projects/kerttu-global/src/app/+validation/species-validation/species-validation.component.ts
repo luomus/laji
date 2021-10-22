@@ -111,8 +111,8 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     $event.returnValue = this.canLeaveWithoutConfirm;
   }
 
-  @HostListener('document:visibilitychange', ['$event'])
-  visibilityChange() {
+  @HostListener('window:onunload', ['$event'])
+  onUnload() {
     // Unlock species on page close
     this.unlockSpecies();
   }
