@@ -4,7 +4,8 @@ import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters
   SuccessResult,
   IGlobalComment,
   IGlobalValidationData,
-  IGlobalSpeciesListResult
+  IGlobalSpeciesListResult,
+  KerttuGlobalErrorEnum
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -21,6 +22,13 @@ export class KerttuGlobalApi {
   ) { }
 
   protected basePath = environment.kerttuApi + '/global';
+
+  public static getErrorMessage(error): KerttuGlobalErrorEnum {
+    while (error.error) {
+      error = error.error;
+    }
+    return error.message || error.body?.message;
+  }
 
   public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
     const path = this.basePath + '/species';

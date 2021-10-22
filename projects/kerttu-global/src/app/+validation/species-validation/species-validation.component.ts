@@ -1,13 +1,20 @@
-import { Component, ChangeDetectionStrategy, OnInit, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, combineLatest, Subscription } from 'rxjs';
-import { map, switchMap, tap, share } from 'rxjs/operators';
-import { IGlobalTemplate, IGlobalRecording, IGlobalSpecies, IGlobalComment, IGlobalValidationData } from '../../kerttu-global-shared/models';
-import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
-import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
-import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
+import {map, share, switchMap, tap} from 'rxjs/operators';
+import {
+  IGlobalComment,
+  IGlobalRecording,
+  IGlobalSpecies,
+  IGlobalTemplate,
+  IGlobalValidationData,
+  KerttuGlobalErrorEnum
+} from '../../kerttu-global-shared/models';
+import {KerttuGlobalApi} from '../../kerttu-global-shared/service/kerttu-global-api';
+import {DialogService} from 'projects/laji/src/app/shared/service/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {UserService} from 'projects/laji/src/app/shared/service/user.service';
+import {LocalizeRouterService} from 'projects/laji/src/app/locale/localize-router.service';
 
 @Component({
   selector: 'laji-species-validation',
@@ -131,8 +138,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       this.canLeaveWithoutConfirm = true;
       this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
       this.cd.markForCheck();
-    }, () => {
+    }, (e) => {
       this.saving = false;
+      const message = KerttuGlobalApi.getErrorMessage(e);
+      this.showErrorMessage(message);
       this.cd.markForCheck();
     });
   }
@@ -149,5 +158,18 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     if (this.speciesId && this.hasLock !== false) {
       this.kerttuGlobalApi.unlockSpecies(this.userService.getToken(), this.speciesId);
     }
+  }
+
+  private showErrorMessage(message: KerttuGlobalErrorEnum) {
+    let reason: string;
+    if (message === KerttuGlobalErrorEnum.speciesLocked) {
+      reason = this.translate.instant('validation.savingError.speciesLocked');
+    }
+
+    this.dialogService.alert(
+      this.translate.instant('validation.savingError') + (
+        reason ? ' ' + reason : ''
+      )
+    );
   }
 }

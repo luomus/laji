@@ -97,3 +97,7 @@ export enum CommentType {
   replace = 0,
   reframe = 1
 }
+
+export enum KerttuGlobalErrorEnum {
+  speciesLocked = 'SpeciesLockedError',
+}

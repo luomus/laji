@@ -64,5 +64,7 @@
   "validation.title": "Validate species",
   "versionNav.next": "Next",
   "versionNav.previous": "Previous",
-  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}"
+  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
+  "validation.savingError": "Saving failed.",
+  "validation.savingError.speciesLocked": "Species is locked for another user."
 }
