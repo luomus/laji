@@ -42,7 +42,7 @@ export class ApikeyModalComponent implements OnChanges {
 
   disableRequestBtn = true;
   termsAccepted = false;
-  expiration = 30;
+  expiration = 90;
 
   private modalRef: BsModalRef;
 
