@@ -1,6 +1,6 @@
 <h3>{{ 'validation.audio' | translate }}</h3>
 <p *ngIf="!historyView">{{ 'validation.template.audio.description' | translate }}</p>
-<div class="audio-viewer-with-settings">
+<div class="audio-viewer-with-settings" *ngIf="audio">
   <laji-audio-viewer-settings
     [(zoomed)]="zoomFrequency"
     [(xRangePadding)]="timePadding"

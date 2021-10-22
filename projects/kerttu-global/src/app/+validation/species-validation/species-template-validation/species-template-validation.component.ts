@@ -76,7 +76,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       return;
     }
     this.activeTemplate = this.templates[templateIdx];
-    this.activeAudio = this.audioIdMap[this.activeTemplate.audioId];
+    this.activeAudio = this.audioIdMap[this.activeTemplate?.audioId];
     this.activeTemplateIdx = templateIdx;
     this.activeTemplateIsNew = false;
   }
