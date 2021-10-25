@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
 import { PlatformService } from '../../../../../../laji/src/app/shared/service/platform.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -26,6 +27,7 @@ export class UsageDownloadsComponent {
     );
     this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
       map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
+      map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
       map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)})))
     );
   }

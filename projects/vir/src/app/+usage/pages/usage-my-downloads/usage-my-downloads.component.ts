@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { Observable } from 'rxjs';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { finalize, map, take, tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -51,6 +52,7 @@ export class UsageMyDownloadsComponent {
       })
     );
     this.apiKeys$ = this.virDownloadRequestsService.findMyApiKeys().pipe(
+      map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
       map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)}))),
       take(1),
       finalize(() => {
