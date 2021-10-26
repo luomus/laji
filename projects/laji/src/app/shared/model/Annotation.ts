@@ -104,8 +104,8 @@ export namespace Annotation {
     municipalityVerbatim: string;
     taxonId: string;
     taxonVerbatim: string;
-    wgs84centerPointLat: number;
-    wgs84centerPointLon: number;
+    wgs84centerPointLat: number | undefined;
+    wgs84centerPointLon: number | undefined;
   }
 
 
