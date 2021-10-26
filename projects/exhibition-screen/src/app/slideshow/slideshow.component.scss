@@ -12,6 +12,7 @@
 	width: 100%;
 	display: flex;
 	overflow: hidden;
+	will-change: transform;
 }
 
 .lang-select {
@@ -56,4 +57,5 @@
 	background-image: url('https://nayttely-cms.luomus.fi/wp-content/uploads/2021/10/beetle3.gif');
 	background-repeat: no-repeat;
 	background-size: cover;
+	will-change: transform;
 }
