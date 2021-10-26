@@ -79,5 +79,6 @@ export const environment = {
       sv: '4378',
       en: ''
     },
-  }
+  },
+  geoserver: 'https://geoserver-dev.laji.fi'
 };
