@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { IFormField } from '../../model/excel';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { IFormField, VALUE_IGNORE } from '../../model/excel';
 
 @Component({
   selector: 'laji-col-mapper',
@@ -17,6 +17,9 @@ export class ColMapperComponent implements OnChanges {
 
   allFields: string[] = [];
   allCols: string[] = [];
+  duplicates: string[] = [];
+  duplicateLabels: string[] = [];
+  missingRequiredLabels: string[] = [];
   missingMapping: string[] = [];
   hasInitMapping: {[col: string]: boolean} = {};
   init = false;
@@ -28,14 +31,19 @@ export class ColMapperComponent implements OnChanges {
     if (!this.headers) {
       return;
     }
+
+    this.initAllFields();
+    this.missingRequiredLabels = this.getMissingRequiredLabels();
+    this.duplicates = this.getDuplicates();
+    this.duplicateLabels = this.duplicates.map(key => this.fields[key].fullLabel);
+
     if (!this.init) {
       this.initCols();
-      if (!this.missingMappings()) {
+      if (!this.missingMappings() && this.missingRequiredLabels.length === 0 && this.duplicateLabels.length === 0) {
         this.mappingDone.emit(this.colMapping);
       }
       this.init = true;
     }
-    this.initAllFields();
   }
 
   initCols() {
@@ -61,6 +69,25 @@ export class ColMapperComponent implements OnChanges {
 
   missingMappings() {
     return this.cols && (this.cols.length === 0 || this.cols.length !== Object.keys(this.colMapping).length);
+  }
+
+  getDuplicates(): string[] {
+    const duplicates = Object.values(this.colMapping).reduce((result, value, i, array) => {
+      if (array.indexOf(value) !== i && !result.includes(value)) {
+        result.push(value);
+      }
+      return result;
+    }, []);
+
+    return this.allFields.filter(
+      key => duplicates.includes(key) && !this.fields[key].isArray && key !== VALUE_IGNORE
+    );
+  }
+
+  getMissingRequiredLabels() {
+    const fields = Object.values(this.colMapping);
+    const requiredFields = this.allFields.filter(key => this.fields[key].required);
+    return requiredFields.filter(field => !fields.includes(field)).map(key => this.fields[key].fullLabel);
   }
 
   saveMapping() {

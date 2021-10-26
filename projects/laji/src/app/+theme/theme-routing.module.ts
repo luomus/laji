@@ -4,8 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
-import { YkjComponent } from './ykj/ykj.component';
-import { EmkComponent } from './emk/emk.component';
 import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { ThemeComponent } from './theme.component';
@@ -63,6 +61,7 @@ const routes: Routes = [
         path: '',
         component: DatasetsComponent,
         data: {
+          title: 'datasets.label',
           breadcrumbs: [
             {
               link: '/theme',
@@ -96,8 +95,7 @@ const routes: Routes = [
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
   {path: 'quality',  pathMatch: 'full', component: QualityComponent, data: {title: 'navigation.quality'}},
-  {path: 'ykj',  pathMatch: 'full', component: YkjComponent, data: {title: 'navigation.ykj'}},
-  {path: 'emk',  pathMatch: 'full', component: EmkComponent, data: {title: 'Eliömaakunnat'}},
+  {path: 'ykj',  pathMatch: 'full', redirectTo: '/about/5310', data: {title: 'navigation.ykj'}},
   {path: 'checklist',  pathMatch: 'full', component: ChecklistComponent, data: {title: 'navigation.checklist'}},
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
   {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},

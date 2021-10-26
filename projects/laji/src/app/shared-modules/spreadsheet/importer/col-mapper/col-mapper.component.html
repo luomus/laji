@@ -1,5 +1,14 @@
+
+<alert [type]="'danger'" *ngIf="missingRequiredLabels.length > 0">
+  <div>{{ 'excel.map.missingRequired' | translate}}: {{ missingRequiredLabels | values }}</div>
+</alert>
+<alert [type]="'danger'" *ngIf="duplicateLabels.length > 0">
+  <div>{{ 'excel.map.duplicate' | translate}}: {{ duplicateLabels | values }}</div>
+</alert>
 <div class="cell-col-map-wrap">
-  <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+  <button type="button" class="btn btn-default toggle-linked" (click)="linkedVisible = !linkedVisible">
+    {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
+  </button><br>
   <p>{{ 'excel.map.col-intro' | translate }}</p>
   <table class="table">
     <thead>
@@ -13,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let col of allCols" [class.hidden]="hasInitMapping[col] && !linkedVisible">
+      <tr *ngFor="let col of allCols" [class.hidden]="hasInitMapping[col] && duplicates.indexOf(colMapping[col]) === -1 && !linkedVisible">
         <td class="field-col">
           <div class="form-control-static">
             <small>{{ col }}:</small>&nbsp;{{ headers[col] || '' }}
@@ -27,7 +36,7 @@
   </table>
   <div class="row">
     <div class="col-sm-12">
-      <button class="btn btn-primary pull-right" [disabled]="missingMappings()" (click)="saveMapping()">{{ 'paginator.next' | translate | capitalize }}</button>
+      <button class="btn btn-primary pull-right" [disabled]="missingMappings() || missingRequiredLabels.length > 0 || duplicateLabels.length > 0" (click)="saveMapping()">{{ 'paginator.next' | translate | capitalize }}</button>
     </div>
   </div>
 </div>

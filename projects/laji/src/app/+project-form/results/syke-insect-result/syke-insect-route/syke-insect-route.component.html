@@ -1,5 +1,5 @@
 <h3>{{ routeId | label }}
-  <span *ngIf="date else year"> - {{ date | amDateFormat:'L' }}</span>
+  <span *ngIf="activeDate else year"> - {{ activeDate | amDateFormat:'L' }}</span>
   <ng-template #year>
     <span *ngIf="activeYear else empty"> - {{ activeYear }}</span>
   </ng-template>
@@ -26,10 +26,10 @@
     (documentClick)="openViewer($event)"
     [data]="observationStats[0]['dataSets'][taxonSet]"
     [routeId]="routeId"
-    [season]="date"
+    [season]="activeDate"
     [sorts]="sorts"
     [year]="activeYear ? activeYear.toString() : undefined"
-    [taxonSet]="taxonSet | toQName | label"
+    [taxonSet]="taxonSet.includes('Bumblebee') ? (taxonSet | toQName | translate) : (taxonSet | toQName | label)"
     [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
     [loading]="loading"
     [onlySections]="onlySections"

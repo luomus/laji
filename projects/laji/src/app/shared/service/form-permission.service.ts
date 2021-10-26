@@ -44,7 +44,7 @@ export class FormPermissionService {
     );
 
     return this.formService.getAllForms(this.translateService.currentLang).pipe(
-      switchMap(forms => this.formService.getForm(forms.find(f => f.id === formID).id, this.translateService.currentLang)),
+      map(forms => forms.find(f => f.id === formID)),
       switchMap(form => (!form.collectionID || !form.options?.restrictAccess)
         ? of(true)
         : permission$(form.collectionID)

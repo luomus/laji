@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IFormField } from '../model/excel';
@@ -13,7 +13,7 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./excel-generator.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExcelGeneratorComponent implements OnInit {
+export class ExcelGeneratorComponent {
 
   type: 'ods'|'xlsx' = 'xlsx';
   formID = '';
@@ -24,7 +24,17 @@ export class ExcelGeneratorComponent implements OnInit {
   useLabels = true;
   generating = false;
 
-  private isSecondary = false;
+  private parentOrder = [
+    'document',
+    'gatheringEvent',
+    'taxonCensus',
+    'gatherings',
+    'gatheringFact',
+    'unitGathering',
+    'identifications',
+    'units',
+    'unitFact'
+  ];
 
   _forms: Observable<string[]> = this.formService.getGloballyAllowedSpreadsheetForms().pipe(
     map(_forms => _forms.map(form => form.id))
@@ -43,26 +53,17 @@ export class ExcelGeneratorComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
-    this.spreadSheetService.setRequiredFields('*', {
-      'gatherings[*].taxonCensus[*].censusTaxonID': false,
-      'gatherings[*].taxonCensus[*].taxonCensusType': false,
-      'gatherings[*].units[*].identifications[*].taxon': true
-    });
-  }
-
   formSelected(event) {
     const selected: string[] = [];
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form) => {
-        this.isSecondary = form.options?.secondaryCopy;
         this.formTitle = form.title;
         this.parents = [];
-        this.fields = this.spreadSheetService.formToFlatFields(form, this.isSecondary ? [
-          SpreadsheetService.IdField,
-          SpreadsheetService.deleteField
-        ] : []);
+        this.fields = this.spreadSheetService.formToFlatFields(form, []);
+        this.fields = this.fields.sort(
+          (a, b) => this.parentOrder.indexOf(a.parent) - this.parentOrder.indexOf(b.parent)
+        );
         this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
@@ -88,7 +89,9 @@ export class ExcelGeneratorComponent implements OnInit {
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {
-      this.selected = [...this.selected, field.key];
+      this.selected = this.fields.filter(
+        f => this.selected.includes(f.key) || f.key === field.key
+      ).map(f => f.key);
     } else {
       this.selected = this.selected.filter(val => val !== field.key || field.required);
     }

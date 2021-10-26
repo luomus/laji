@@ -15,7 +15,6 @@ import { ObservationDataService } from './observation-data.service';
 
 interface IPersistentState {
   showIntro: boolean;
-  advanced: boolean;
 }
 
 interface IObservationState extends IPersistentState {
@@ -38,8 +37,7 @@ export interface IObservationViewModel extends IObservationState {
 }
 
 const _persistentState: IPersistentState = {
-  showIntro: true,
-  advanced: false
+  showIntro: true
 };
 
 let _state: IObservationState = {
@@ -70,7 +68,6 @@ export class ObservationFacade {
   readonly query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
   readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
   readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
-  readonly advanced$      = this.state$.pipe(map((state) => state.advanced));
   readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
   readonly showIntro$     = this.state$.pipe(map((state) => state.showIntro));
   readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
@@ -83,7 +80,6 @@ export class ObservationFacade {
     query: this.query$,
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
-    advanced: this.advanced$,
     activeTab: this.activeTab$,
     showIntro: this.showIntro$,
     countUnit: this.countUnit$,
@@ -110,12 +106,6 @@ export class ObservationFacade {
   activeTab(tab: string) {
     if (_state.activeTab !== tab) {
       this.updateState({..._state, activeTab: tab});
-    }
-  }
-
-  advanced(advanced: boolean) {
-    if (_state.advanced !== advanced) {
-      this.updatePersistentState({...this.persistentState, advanced});
     }
   }
 

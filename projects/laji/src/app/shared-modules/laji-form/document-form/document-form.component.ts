@@ -45,7 +45,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
   @Input() template = false;
   @Output() success = new EventEmitter<ISuccessEvent>();
   @Output() error = new EventEmitter();
-  @Output() cancel = new EventEmitter();
+  @Output() leave = new EventEmitter();
   @Output() accessDenied = new EventEmitter();
   @Output() missingNamedplace = new EventEmitter();
   @Output() goBack = new EventEmitter();
@@ -137,9 +137,9 @@ export class DocumentFormComponent implements OnChanges, OnDestroy, ComponentCan
     }
   }
 
-  onCancel() {
+  onLeave() {
     this.isFromCancel = true;
-    this.cancel.emit();
+    this.leave.emit();
   }
 
   onChange(formData) {

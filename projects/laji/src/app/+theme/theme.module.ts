@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ThemeRoutingModule } from './theme-routing.module';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
 import { SharedModule } from '../shared/shared.module';
-import { YkjComponent } from './ykj/ykj.component';
-import { EmkComponent } from './emk/emk.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { IdentifyComponent } from './identify/identify.component';
@@ -34,7 +32,6 @@ import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
 import { AudioService } from './kerttu/audio-viewer/service/audio.service';
 import { SpectrogramService } from './kerttu/audio-viewer/service/spectrogram.service';
-import { ThemeBreadcrumbComponent } from './common/theme-breadcrumb/theme-breadcrumb.component';
 import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
 import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
 import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/recording-annotation/recording-annotation.component';
@@ -65,6 +62,7 @@ import { LajiMapModule } from '@laji-map/laji-map.module';
 import { AudioInfoComponent } from './kerttu/audio-viewer/audio-info/audio-info.component';
 import { AudioInfoMapComponent } from './kerttu/audio-viewer/audio-info/audio-info-map/audio-info-map.component';
 import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-letter-result-table/kerttu-letter-result-table.component';
+import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 
 /* tslint:enable:max-line-length */
 
@@ -85,7 +83,8 @@ import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-
     ThreeStateSwitchModule,
     PillListModule,
     SelectModule,
-    LajiMapModule
+    LajiMapModule,
+    BreadcrumbModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -93,8 +92,6 @@ import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-
     PinkkaComponent,
     BibliographyComponent,
     InsectGuideComponent,
-    YkjComponent,
-    EmkComponent,
     IdentifyComponent,
     ThemeComponent,
     QualityComponent,
@@ -108,7 +105,6 @@ import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-
     ExpertiseFormComponent,
     LetterAnnotationComponent,
     AudioViewerComponent,
-    ThemeBreadcrumbComponent,
     RecordingAnnotationComponent,
     AudioSpectrogramComponent,
     KerttuExpertiseFormComponent,

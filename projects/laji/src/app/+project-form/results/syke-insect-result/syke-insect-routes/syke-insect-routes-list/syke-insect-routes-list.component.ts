@@ -54,7 +54,7 @@ export class SykeInsectRoutesListComponent implements OnChanges {
     },
     {
       name: 'count',
-      label: 'wbc.stats.routes.count'
+      label: 'theme.count'
     },
     {
       name: 'individualCountSum',
@@ -92,7 +92,7 @@ export class SykeInsectRoutesListComponent implements OnChanges {
           val.cellTemplate = undefined;
         }
       } else if (val.name === 'count') {
-        val.label = this.countLabel || 'wbc.stats.routes.count';
+        val.label = this.countLabel || 'theme.count';
       }
       return this.selected.indexOf(val.name) !== -1;
     });

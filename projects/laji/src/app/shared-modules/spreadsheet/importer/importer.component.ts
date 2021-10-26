@@ -10,14 +10,13 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, from as ObservableFrom, Observable, of } from 'rxjs';
-import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Document } from '../../../shared/model/Document';
 import { FormService } from '../../../shared/service/form.service';
 import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -45,10 +44,10 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
   @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
-  @ViewChild('dataTable') datatable: DatatableComponent;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
+  @ViewChild('mapModal', { static: true }) mapModal: TemplateRef<any>;
 
   @LocalStorage() uploadedFiles;
   @LocalStorage() partiallyUploadedFiles;
@@ -88,7 +87,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   excludedFromCopy: string[] = [];
   userMappings: any;
-  ambiguousColumns = [];
   separator = MappingService.valueSplitter;
   hash;
   currentTitle: string;
@@ -112,6 +110,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
     'gatheringEvent.leg[*]'
   ];
   showOnlyErroneous = false;
+  sheetLoadErrorMsg = '';
+
+  private modal: BsModalRef;
 
   constructor(
     private formService: FormService,
@@ -128,7 +129,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
     private latestFacade: LatestDocumentsFacade,
     private spreadsheetFacade: SpreadsheetFacade,
     private fileService: FileService,
-    private logger: Logger
+    private logger: Logger,
+    private modalService: BsModalService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
   }
@@ -153,12 +155,18 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.spreadsheetFacade.goToStep(e === FileService.ERROR_INVALID_TYPE ? Step.invalidFileType : Step.empty);
         return of(null);
       }),
-      switchMap(content => forkJoin(of(content), this.spreadSheetService.findFormIdFromFilename(content.filename)))
-    ).subscribe(([content, formID]) => {
-      if (instanceOfFileLoad(content)) {
+      switchMap(content => forkJoin([
+        of(content),
+        this.spreadSheetService.findFormIdFromFilename(content?.filename),
+        this._forms
+      ]))
+    ).subscribe(([content, formID, forms]) => {
+      this.formID = formID;
+      if (formID && !forms.includes(formID)) {
+        this.spreadsheetFacade.goToStep(Step.invalidFormId);
+      } else if (instanceOfFileLoad(content)) {
         this.bstr = content.content;
         this.mimeType = content.type;
-        this.formID = formID;
         this.spreadsheetFacade.setFilename(content.filename);
         this.initForm();
       }
@@ -186,7 +194,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         this.form = form;
         const combineOptions = this.excelToolService.getCombineOptions(form);
         const isCsv = this.spreadSheetService.csvTypes().includes(this.mimeType);
-        const data = this.spreadSheetService.loadSheet(this.bstr, {
+        const {data, errors} = this.spreadSheetService.loadSheet(this.bstr, {
           cellDates: !isCsv,
           raw: isCsv
         });
@@ -213,10 +221,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
           this.header = data.shift();
           this.data = data;
         }
-        if (this.form.options?.secondaryCopy) {
-          baseFields.push(SpreadsheetService.IdField);
-          baseFields.push(SpreadsheetService.deleteField);
-        }
 
         this.excludedFromCopy = form.excludeFromCopy || [];
         this.fields = this.spreadSheetService.formToFlatFieldsLookUp(form, baseFields);
@@ -225,22 +229,9 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
         this.initDataColumns();
 
-        // Check that data has no ambiguous columns
-        const cols = Object.keys(this.header).map(key => this.header[key]);
-        const hasCol = {};
-        const ambiguousCols = new Set();
-        let hasAmbiguousColumns = false;
-        cols.forEach(col => {
-          if (hasCol[col]) {
-            hasAmbiguousColumns = true;
-            ambiguousCols.add(col);
-          } else {
-            hasCol[col] = true;
-          }
-        });
-        if (hasAmbiguousColumns) {
-          this.spreadsheetFacade.goToStep(Step.ambiguousColumns);
-          this.ambiguousColumns = Array.from(ambiguousCols);
+        if (errors?.length > 0) {
+          this.spreadsheetFacade.goToStep(Step.sheetLoadError);
+          this.sheetLoadErrorMsg = errors[0];
         } else {
           this.spreadsheetFacade.goToStep(Step.colMapping);
         }
@@ -260,7 +251,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
       .subscribe(label => {
         const rowLabel = this.translateService.instant('line');
         const columns: ImportTableColumn[] = [
-          {prop: '_status', label: 'status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
+          {prop: '_status', label: 'excel.import.status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
           {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
           {prop: '_row', label: rowLabel, sortable: false, width: 40}
         ];
@@ -274,9 +265,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
           });
         });
         this.dataColumns = columns;
-        setTimeout(() => {
-          this.datatable?.refreshTable();
-        }, 200);
+        this.cdr.markForCheck();
       });
   }
 
@@ -591,6 +580,14 @@ export class ImporterComponent implements OnInit, OnDestroy {
     }
     this.spreadsheetFacade.goToStep(step);
     this.cdr.markForCheck();
+  }
+
+  openMapModal() {
+    this.modal = this.modalService.show(this.mapModal, {class: 'modal-lg'});
+  }
+
+  closeMapModal() {
+    this.modal?.hide();
   }
 
   private getMappedValues(row, mapping, fields) {

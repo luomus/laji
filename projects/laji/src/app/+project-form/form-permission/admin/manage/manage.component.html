@@ -1,24 +1,24 @@
 <div class="row" *ngIf="formPermission">
-  <div class="col-sm-6">
+  <div class="col-12">
     <h3 *ngIf="type === 'admins'; else editorsTitle">
-      Lomakkeen ylläpitäjät<br>
-      <small>Näillä käyttäjillä on oikeus hyväksyä pääsypyyntöjä, sekä nähdä kaikki havaintoerät jotka on tallennettu kyseiseen kokoelmaan.</small>
+      {{ 'form.permission.admin.admins' | translate }}<br>
+      <small>{{ 'form.permission.admin.admins.description' | translate }}</small>
     </h3>
     <ng-template #editorsTitle>
-      <h3>Pääsy lomakkeelle</h3>
+      <h3>{{ 'form.permission.admin.editors' | translate }}</h3>
     </ng-template>
     <p *ngIf="!formPermission[type] || formPermission[type].length === 0; else list">
-      Ei ketään.
+      {{ 'form.permission.admin.noBody' | translate }}
     </p>
     <ng-template #list>
       <ul>
         <li *ngFor="let person of formPermission[type]">
-          <button class="btn btn-warning btn-sm" (click)="reject(person)">Poista pääsy</button>
-          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm" (click)="makeEditor(person)">Poista ylläpitäjän oikeudet</button>
-          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm" (click)="makeAdmin(person)">Myönnä ylläpitäjän oikeudet</button>
-          <span class="form-control-static">
+          <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
+          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
+          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
+          <b class="form-control-static">
               {{ person | users }} ({{ person }})
-          </span>
+          </b>
         </li>
       </ul>
     </ng-template>

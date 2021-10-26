@@ -1,4 +1,6 @@
-<button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">{{ linkedVisible ? 'Piilota' : 'Näytä' }} linkitetyt</button><br>
+<button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">
+  {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
+</button><br>
 <progressbar *ngIf="!allCompleted" [max]="invalidValues?.length" [value]="completedCnt" [striped]="true" [animate]="true">{{ completedCnt }}/{{ invalidValues?.length }}</progressbar>
 <table class="table">
   <thead>
@@ -26,7 +28,7 @@
           [placeholder]="'Etsi haluttu laji'"
           [taxon]="value"
           [index]="i"
-          [useValue]="useAsIs ? mapping[value] : ''"
+          [useValue]="useAsIs && mapping ? mapping[value] : ''"
           (complete)="onSearchComplete()"
           (taxonSelect)="onTaxonSelect(value, $event)"
         ></laji-taxon-autocomplete>
@@ -35,7 +37,7 @@
         {{ lajiValue(value) }}
       </td>
       <td class="ok-col">
-        <laji-tool-success [success]="mapping[value]"></laji-tool-success>
+        <laji-tool-success [success]="mapping?.[value]"></laji-tool-success>
       </td>
     </tr>
   </ng-container>

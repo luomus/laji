@@ -134,7 +134,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
-    }, 100);
+    }, 120);
   }
 
   empty() {
@@ -152,10 +152,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   filterVisible(event: boolean) {
     this.observationFacade.filterVisible(event);
-  }
-
-  onAdvanceModeChange(event: boolean) {
-    this.observationFacade.advanced(event);
   }
 
   onListSettingsChange(settings: ISettingResultList) {

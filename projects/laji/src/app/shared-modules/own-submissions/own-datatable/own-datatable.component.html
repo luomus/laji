@@ -187,7 +187,7 @@
               <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
             </button>
             <ng-container *ngIf="forms$ | async as forms">
-              <button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
+              <button *ngIf="(actions | includes:'stats') && forms[row.formID]?.options?.viewerType"
                 class="btn btn-default btn-xs"
                 [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
                 <i class="glyphicon glyphicon-stats"></i>
