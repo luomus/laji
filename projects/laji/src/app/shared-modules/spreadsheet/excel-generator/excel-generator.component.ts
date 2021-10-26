@@ -24,7 +24,17 @@ export class ExcelGeneratorComponent {
   useLabels = true;
   generating = false;
 
-  private isSecondary = false;
+  private parentOrder = [
+    'document',
+    'gatheringEvent',
+    'taxonCensus',
+    'gatherings',
+    'gatheringFact',
+    'unitGathering',
+    'identifications',
+    'units',
+    'unitFact'
+  ];
 
   _forms: Observable<string[]> = this.formService.getGloballyAllowedSpreadsheetForms().pipe(
     map(_forms => _forms.map(form => form.id))
@@ -48,10 +58,12 @@ export class ExcelGeneratorComponent {
     this.formID = event;
     this.formService.getForm(this.formID, this.translateService.currentLang)
       .subscribe((form) => {
-        this.isSecondary = form.options?.secondaryCopy;
         this.formTitle = form.title;
         this.parents = [];
         this.fields = this.spreadSheetService.formToFlatFields(form, []);
+        this.fields = this.fields.sort(
+          (a, b) => this.parentOrder.indexOf(a.parent) - this.parentOrder.indexOf(b.parent)
+        );
         this.fields.forEach(field => {
           if (this.parents.indexOf(field.parent) === -1) {
             this.parents.push(field.parent);
@@ -77,7 +89,9 @@ export class ExcelGeneratorComponent {
       return;
     }
     if (this.selected.indexOf(field.key) === -1) {
-      this.selected = [...this.selected, field.key];
+      this.selected = this.fields.filter(
+        f => this.selected.includes(f.key) || f.key === field.key
+      ).map(f => f.key);
     } else {
       this.selected = this.selected.filter(val => val !== field.key || field.required);
     }

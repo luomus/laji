@@ -134,7 +134,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
-    }, 100);
+    }, 120);
   }
 
   empty() {

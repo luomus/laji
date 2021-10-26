@@ -13,11 +13,12 @@
         [typeahead]="dataSource"
         [typeaheadOptionsLimit]="limit"
         [typeaheadWaitMs]="200"
-        [typeaheadMinLength]="3"
+        [typeaheadMinLength]="0"
         [typeaheadOptionField]="'autocompleteSelectedName'"
         [typeaheadItemTemplate]="taxonItem"
         (typeaheadOnSelect)="onTaxonSelect($event)"
         [typeaheadSelectFirstItem]="!allowInvalid"
+        [typeaheadIsFirstItemActive]="!allowInvalid"
         autocomplete="off"
         autocorrect="off"
       >

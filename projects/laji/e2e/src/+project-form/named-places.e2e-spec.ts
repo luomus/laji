@@ -2,6 +2,7 @@ import { ProjectFormPage } from './project-form.po';
 import { UserPage } from '../+user/user.po';
 import { InvasiveSpeciesPlaceFormPage } from './invasive-species-place-form.po';
 import { browser } from 'protractor';
+import { isDisplayed } from '../../helper';
 
 const FORM_WITH_INCLUDE_UNITS = 'MHL.33';
 const FORM_WITH_NAMED_PLACES = 'MHL.33';
@@ -21,6 +22,7 @@ describe('Project form when logged in', () => {
     await userPage.login();
     done();
   });
+
   describe('named places', () => {
     it('view can be navigated to and is displayed', async (done) => {
       await projectFormPage.$formLink.click();
@@ -169,15 +171,29 @@ describe('Project form when logged in', () => {
     done();
   });
 
-  it('navigation from named place edit doesn\'t add filters that aren\'t in the UI', async (done) => {
-    await projectFormPage.navigateTo(FORM_WITH_NO_FILTERS_EDITABLE_PLACES, '/form/places');
-    await projectFormPage.namedPlacesView.$$listItems.first().click();
-    await projectFormPage.namedPlacesView.$editButton.click();
-    await projectFormPage.namedPlacesFormPage.$cancel.click();
-    const url = await browser.getCurrentUrl();
-    expect(url.match(/tags=/)).toBe(null);
-    expect(url.match(/municipality=/)).toBe(null);
-    expect(url.match(/birdAssociationArea=/)).toBe(null);
-    done();
+  describe('navigation from named place edit ', () => {
+
+    let url: string;
+    beforeAll(async (done) => {
+      await projectFormPage.navigateTo(FORM_WITH_NO_FILTERS_EDITABLE_PLACES, '/form/places');
+      await projectFormPage.namedPlacesView.$$listItems.first().click();
+      await projectFormPage.namedPlacesView.$editButton.click();
+      await projectFormPage.namedPlacesFormPage.$cancel.click();
+      url = await browser.getCurrentUrl();
+      done();
+    });
+
+    it('navigates to named places view', async (done) => {
+      expect(await isDisplayed(projectFormPage.namedPlacesView.$container)).toBe(true);
+      done();
+    });
+
+    it('doesn\'t add filters that aren\'t in the UI', async (done) => {
+      expect(url.match(/tags=/)).toBe(null);
+      expect(url.match(/municipality=/)).toBe(null);
+      expect(url.match(/birdAssociationArea=/)).toBe(null);
+      done();
+    });
   });
+
 });
