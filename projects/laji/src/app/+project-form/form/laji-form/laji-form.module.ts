@@ -5,7 +5,6 @@ import { LajiFormComponent } from './laji-form/laji-form.component';
 import { LajiFormFooterComponent } from './laji-form-footer/laji-form-footer.component';
 import { AppComponentModule } from '../../../shared-modules/app-component/app-component.module';
 import { InfoPageModule } from '../../../shared-modules/info-page/info-page.module';
-import { LajiFormDocumentFacade } from './laji-form-document.facade';
 import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
 import { LajiFormHeaderModule } from './laji-form-header/laji-form-header.module';
 import { NamedPlaceLinkerButtonModule } from '../named-place-linker/named-place-linker-button/named-place-linker-button.module';
@@ -21,7 +20,6 @@ import { NamedPlaceLinkerButtonModule } from '../named-place-linker/named-place-
     NamedPlaceLinkerButtonModule
   ],
   declarations: [LajiFormComponent, LajiFormFooterComponent],
-  exports: [LajiFormComponent, LajiFormFooterComponent],
-  providers: [LajiFormDocumentFacade]
+  exports: [LajiFormComponent, LajiFormFooterComponent]
 })
 export class LajiFormModule { }

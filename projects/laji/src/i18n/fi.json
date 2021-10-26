@@ -1899,5 +1899,6 @@
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
-  "haseka.form.templateDisallowed": "Lomakkeella ei ole sallittu käyttää esitäytettyjä lomakkeita"
+  "haseka.form.templateDisallowed": "Lomakkeella ei ole sallittu käyttää esitäytettyjä lomakkeita",
+  "haseka.form.missingNamedPlace": "Nimetyn paikan nouto epäonnistui"
 }

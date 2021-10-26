@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { mergeMap, take, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { catchError, map, mergeMap, switchMap, take, tap, delay, filter, distinctUntilChanged, scan, mapTo } from 'rxjs/operators';
+import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
-import { Form } from '../../../shared/model/Form';
-import { FormError, FormWithData, ILajiFormState, LajiFormDocumentFacade } from '../laji-form/laji-form-document.facade';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { ProjectFormService } from '../../project-form.service';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
@@ -18,6 +16,62 @@ import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
+import { Form } from '../../../shared/model/Form';
+import { FormService } from '../../../shared/service/form.service';
+import { Util } from '../../../shared/service/util.service';
+import { UserService } from '../../../shared/service/user.service';
+import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
+import { NamedPlacesService } from '../../../shared/service/named-places.service';
+import { DocumentStorage } from '../../../storage/document.storage';
+import { DocumentApi } from '../../../shared/api/DocumentApi';
+import { LajiFormUtil } from '../laji-form/laji-form-util.service';
+import * as deepmerge from 'deepmerge';
+import * as moment from 'moment';
+import { LocalStorage } from 'ngx-webstorage';
+import { Global } from 'projects/laji/src/environments/global';
+import { PersonApi } from '../../../shared/api/PersonApi';
+import { Person } from '../../../shared/model/Person';
+import { Annotation } from '../../../shared/model/Annotation';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { Logger } from '../../../shared/logger';
+
+enum FormError {
+  notFoundForm = 'notFoundForm',
+  notFoundDocument = 'notFoundDocument',
+  loadFailed = 'loadFailed',
+  noAccess = 'noAccess',
+  noAccessToDocument = 'noAccessToDocument',
+  templateDisallowed = 'templateDisallowed',
+  missingNamedPlace = 'missingNamedPlace'
+}
+
+enum Readonly {
+  noEdit,
+  false,
+  true
+}
+
+function isFormError(any: any): any is FormError {
+  return !!FormError[any];
+}
+
+interface SaneInputModel {
+  form: Form.SchemaForm;
+  formData: any;
+  hasChanges: boolean;
+  template: boolean;
+  namedPlace?: NamedPlace;
+}
+
+type InputModel = SaneInputModel | FormError;
+
+interface SaneViewModel extends SaneInputModel {
+  readonly: Readonly;
+  isAdmin: boolean;
+  locked: boolean | undefined;
+}
+
+type ViewModel = SaneViewModel | FormError;
 
 @Component({
   selector: 'laji-project-form-document-form',
@@ -25,119 +79,211 @@ import { DocumentService } from '../../../shared-modules/own-submissions/service
   styleUrls: ['./document-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentFormComponent implements OnChanges, OnDestroy {
+export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
 
-  @Input() form: Form.SchemaForm;
+  @Input() formID: string;
   @Input() documentID: string;
+  @Input() namedPlaceID: string;
   @Input() template: boolean;
 
-  npLoaded$ = new BehaviorSubject<boolean>(false);
-  np: NamedPlace;
+  @LocalStorage('tmpDocId', 1) private tmpDocId: number;
 
-  errors = FormError;
-  hasAlertContent = false;
-  _form: FormWithData;
-  lang: string;
-  status = '';
-  saveVisibility = 'hidden';
-  isAdmin = false;
-  isFromCancel = false;
-  confirmLeave = true;
+
+  vm$: Observable<ViewModel>;
+  private locked$: Observable<boolean | undefined>;
+  private formData$: Observable<any>;
+  private formDataChange$ = new ReplaySubject<any>();
+  private hasChanges$: Observable<boolean>;
+  private onSaved$ = new ReplaySubject<void>();
+
+  private vm: SaneViewModel;
+  private isFromCancel = false;
+  private confirmLeave = true;
+  private saving = false;
+  private publicityRestrictions: Document.PublicityRestrictionsEnum;
+
   validationErrors: any;
-  touchedCounter = 0;
   templateForm: TemplateForm = {
     name: '',
     description: '',
     type: 'gathering'
   };
-  tmpDocument: any = {};
+  documentForTemplate: any = {};
+  touchedCounter$: Observable<number>;
 
-  private subErrors: Subscription;
-  private subSaving: Subscription;
-  private leaveMsg;
-  private publicityRestrictions;
-  private formSubscription: Subscription;
+  isFormError = isFormError;
+  errors = FormError;
 
-  vm$: Observable<ILajiFormState>;
-
-  @Input() set namedPlace(namedPlace: NamedPlace) {
-    this.lajiFormDocumentFacade.useNamedPlace(namedPlace, this.form.id);
-    this.npLoaded$.next(true);
-    this.np = namedPlace;
-  }
+  private vmSub: Subscription;
+  private saveTmpSub: Subscription;
 
   constructor(
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private browserService: BrowserService,
     private route: ActivatedRoute,
-    private lajiFormDocumentFacade: LajiFormDocumentFacade,
     private projectFormService: ProjectFormService,
-    private lajiFormFacade: LajiFormDocumentFacade,
     private footerService: FooterService,
-    private changeDetector: ChangeDetectorRef,
     private dialogService: DialogService,
     private toastsService: ToastsService,
     private translate: TranslateService,
     private latestFacade: LatestDocumentsFacade,
     private documentService: DocumentService,
+    private formService: FormService,
+    private userService: UserService,
+    private formPermissionService: FormPermissionService,
+    private namedPlacesService: NamedPlacesService,
+    private documentStorage: DocumentStorage,
+    private documentApi: DocumentApi,
+    private personApi: PersonApi,
+    private lajiApi: LajiApiService,
+    private logger: Logger,
   ) {
-    this.vm$ = this.lajiFormFacade.vm$;
     this.footerService.footerVisible = false;
-    this.formSubscription = this.vm$.subscribe(state => {
-     this.form = state.form;
+  }
+
+  ngOnInit() {
+    const formID$ = of(this.formID);
+    const namedPlaceID$ = of(this.namedPlaceID);
+    const template$ = of(this.template);
+    const documentID$ = of(this.documentID);
+    const lang$ = of(this.translate.currentLang);
+
+    const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$, lang$]).pipe(
+      switchMap(([formID, template, lang]) => this.formService.getForm(formID, lang).pipe(
+        map(form =>  template && !form.options?.allowTemplate ? FormError.templateDisallowed : form),
+        catchError((error) => {
+          this.logger.error('Failed to load form', {error});
+          return of(error.status === 404 ? FormError.notFoundForm :  FormError.loadFailed);
+        })
+      ))
+    );
+
+    const inputModel$: Observable<InputModel> = combineLatest([form$, template$]).pipe(switchMap(([form, template]) => {
+      if (isFormError(form)) {
+        return of(form);
+      }
+
+      return this.formPermissionService.getRights(form).pipe(switchMap(rights => {
+        if (rights.edit === false) {
+          return of(FormError.noAccess);
+        }
+
+        const namedPlace$: Observable<NamedPlace | FormError | null> = namedPlaceID$.pipe(switchMap(namedPlaceID => namedPlaceID
+          ? this.namedPlacesService.getNamedPlace(this.namedPlaceID, undefined, form.options?.namedPlaceOptions?.includeUnits).pipe(
+            catchError(() => FormError.missingNamedPlace)
+          )
+          : of(null)
+        ));
+
+        return combineLatest([documentID$, namedPlace$, this.userService.user$]).pipe(
+          switchMap(([documentID, namedPlace, user]) =>
+            isFormError(namedPlace)
+              ? of(namedPlace)
+              : (documentID
+                ? this.fetchExistingDocument(form, documentID)
+                : this.fetchEmptyData(form, user, namedPlace)
+              ).pipe(map(documentModel => {
+                if (isFormError(documentModel)) {
+                  return documentModel;
+                }
+                return {form, namedPlace, formData: documentModel.document, hasChanges: documentModel.hasChanges, template};
+              }))
+          )
+        );
+      }));
+    }));
+
+    const firstSaneInputModel$ = inputModel$.pipe(filter(im => !isFormError(im)), take(1)) as Observable<SaneInputModel>;
+
+    this.formData$ = concat(firstSaneInputModel$.pipe(map(({formData}) => formData)), this.formDataChange$);
+    this.hasChanges$ = concat(
+      firstSaneInputModel$.pipe(map(({hasChanges}) => hasChanges)),
+      merge(
+        this.formDataChange$.pipe(mapTo(true)),
+        this.onSaved$.pipe(mapTo(false))
+      )
+    ).pipe(distinctUntilChanged());
+
+    this.touchedCounter$ = this.formData$.pipe(map(() => 1), scan((acc, curr) => acc + curr));
+
+    this.locked$ = firstSaneInputModel$.pipe(switchMap(({form}) => this.formData$.pipe(
+      map(formData => (form.id?.indexOf('T:') !== 0 && form.options?.adminLockable)
+        ? (formData && !!formData.locked)
+        : undefined
+      ),
+      distinctUntilChanged()
+    )));
+
+    // Derive state from the input model and create view model. Has the premise that the component @Inputs don't change.
+    // View model is the combination of data derived from inputs and local state and other asynchronously fetched data.
+    this.vm$ = inputModel$.pipe(take(1), switchMap(inputModel => {
+      if (isFormError(inputModel)) {
+        this.vm$ = of(inputModel);
+        return;
+      }
+      const {form, formData} = inputModel;
+
+      const rights$ = this.formPermissionService.getRights(form);
+      const readonly$ = combineLatest([rights$, this.userService.user$]).pipe(
+        map(([rights, user]) => this.documentService.getReadOnly(formData, rights, user))
+      );
+
+      const uiSchemaContext$ = combineLatest([this.userService.user$, rights$]).pipe(switchMap(([user, rights]) =>
+        this.getUiSchemaContext(form, inputModel.namedPlace, user, rights, inputModel.formData.id)
+      ));
+
+      const uiSchema$ = combineLatest([this.locked$, readonly$, rights$]).pipe(map(([locked, readonly, rights]) =>
+        this.getUiSchema(inputModel.form, locked, readonly, rights, inputModel.template)
+      ));
+
+      return combineLatest([inputModel$, this.locked$, readonly$, rights$, uiSchema$, uiSchemaContext$, this.hasChanges$, this.formData$]).pipe(
+        map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData]) => {
+          if (isFormError(_inputModel)) {
+            return _inputModel;
+          }
+          return {
+            ..._inputModel,
+            form: {
+              ..._inputModel.form,
+              uiSchema,
+              uiSchemaContext
+            },
+            readonly,
+            isAdmin: rights.admin,
+            locked,
+            hasChanges,
+            formData: _formData
+          };
+        })
+      );
+    }));
+
+    this.vmSub = this.vm$.pipe(filter(vm => !isFormError(vm))).subscribe(vm => {
+        this.vm = (vm as SaneViewModel);
+    });
+    this.saveTmpSub = combineLatest([this.userService.user$.pipe(take(1)), this.formData$, template$]).subscribe(([person, formData, template]) => {
+      if (!template) {
+        this.documentStorage.setItem(formData.id, {...formData, dateEdited: this.currentDateTime()}, person);
+      }
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['form']?.previousValue?.id !== changes['form'].currentValue.id
-      || changes['documentID']
-      || changes['template']
-    ) {
-      this.lajiFormFacade.loadForm(this.form.id, this.documentID, this.template);
-      this.subErrors = this.lajiFormFacade.error$.pipe(
-        mergeMap(() => this.lajiFormFacade.vm$.pipe(take(1)))
-      ).subscribe(vm => this.errorHandling(vm));
-    }
-  }
-
   ngOnDestroy() {
-    this.formSubscription.unsubscribe();
     this.footerService.footerVisible = true;
-    if (this.subErrors) {
-      this.subErrors.unsubscribe();
-    }
-  }
-
-  private errorHandling(vm: ILajiFormState) {
-    switch (vm.error) {
-      case FormError.missingNamedPlace:
-        this.goBack();
-        break;
-      case FormError.noAccess:
-        this.changeDetector.detectChanges();
-        break;
-    }
-  }
-
-  private getMessage(type, defaultValue) {
-    const {options = {}} = this.form || {};
-    return (
-      type === 'success' ? options.saveSuccessMessage :
-      type === 'success-temp' ? options.saveDraftSuccessMessage :
-      type === 'error' ? options.saveErrorMessage : undefined
-    ) ?? defaultValue;
+    this.vmSub.unsubscribe();
+    this.saveTmpSub.unsubscribe();
   }
 
   goBack() {
-    if (this.form.options?.simple) {
-      this.router.navigate(this.localizeRouterService.translateRoute([this.form.category ? '/save-observations' : '/vihko']));
+    if (this.vm.form.options?.simple) {
+      this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
       return;
     }
 
-    const levels = [!!this.documentID, !!this.np].reduce((count, check) => count + (check ? 1 : 0), 1);
+    const levels = [!!this.documentID, !!this.namedPlaceID].reduce((count, check) => count + (check ? 1 : 0), 1);
 
     this.browserService.goBack(() => {
       const urlRelativeFromFull = Array(levels)
@@ -147,16 +293,16 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
     });
   }
 
-  onSuccess() {
-    if (this.form.options?.simple) {
-      this.router.navigate(this.localizeRouterService.translateRoute([this.form.category ? '/save-observations' : '/vihko']));
+  successNavigation() {
+    if (this.vm.form.options?.simple) {
+      this.router.navigate(this.localizeRouterService.translateRoute([this.vm.form.category ? '/save-observations' : '/vihko']));
       return;
     }
     this.browserService.goBack(() => {
       this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
-        const page = this.form.options?.resultServiceType
+        const page = this.vm.form.options?.resultServiceType
           ? 'stats'
-          : this.form.options?.mobile
+          : this.vm.form.options?.mobile
             ? 'about'
             : 'submissions';
         this.router.navigate([`./${page}`], {relativeTo: projectRoute});
@@ -165,7 +311,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
-    if (!this.confirmLeave || !this.lajiFormFacade.hasChanges() || this.template) {
+    if (!this.confirmLeave || !this.vm.hasChanges || this.template) {
       return true;
     }
     const msg = this.isFromCancel ? cancelKey : leaveKey;
@@ -175,7 +321,11 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
     return this.dialogService.confirm(msg, confirmLabel).pipe(
       tap(confirmed => {
         if (confirmed && this.isFromCancel) {
-          this.lajiFormFacade.discardChanges();
+            this.userService.user$.pipe(
+              take(1),
+              delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone thought
+              mergeMap(person => this.documentStorage.removeItem(this.vm.formData.id, person)),
+            ).subscribe();
         }
         this.isFromCancel = false;
       })
@@ -184,55 +334,52 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {
-    if (this.lajiFormFacade.hasChanges()) {
-      $event.returnValue = this.leaveMsg;
+    if (this.vm.hasChanges) {
+      $event.returnValue = undefined;
     }
   }
+
 
   onLeave() {
     this.isFromCancel = true;
     this.goBack();
   }
 
-  onChange(formData) {
-    this.status = 'unsaved';
-    this.saveVisibility = 'shown';
-    this.lajiFormFacade.dataUpdate(formData);
-    this.touchedCounter++;
+  onChange(formData: any) {
+    this.formDataChange$.next(formData);
   }
 
-  lock(lock) {
-    this.lajiFormFacade.lock(lock);
+  lock(lock: boolean) {
+    this.onChange({...this.vm.formData, locked: lock});
   }
 
   onSubmit(event) {
-    if (this.subSaving) {
+    if (this.saving) {
       return;
     }
     const document = event.data.formData;
     if (!this.template) {
       this.lajiForm.block();
-      this.subSaving = this.lajiFormFacade.save(document, this.publicityRestrictions).subscribe((res) => {
+      this.saving = true;
+      this.save(document, this.publicityRestrictions).subscribe(doc => {
         this.lajiForm.unBlock();
-        if (res.success) {
-          this.toastsService.showSuccess(
-            this.getMessage(
+        this.saving = false;
+        if (doc) {
+          this.toastsService.showSuccess(this.getMessage(
               this.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ? 'success-temp' : 'success',
-              this.translate.instant('haseka.form.success')
-            )
-          );
-          this.onSuccess();
+             this.translate.instant('haseka.form.success')
+          ));
+          this.onSaved$.next();
+          this.successNavigation();
           this.latestFacade.update();
         } else {
-          this.saveVisibility = 'shown';
-          this.status = 'unsaved';
           this.lajiForm.displayErrorModal('saveError');
-          this.subSaving = undefined;
         }
-        this.changeDetector.markForCheck();
+      }, () => {
+        this.saving = false;
       });
     } else {
-        this.tmpDocument = document;
+        this.documentForTemplate = document;
         this.templateModal.show();
     }
   }
@@ -253,7 +400,7 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
   }
 
   saveTemplate() {
-    this.documentService.saveTemplate({...this.templateForm, document: this.tmpDocument})
+    this.documentService.saveTemplate({...this.templateForm, document: this.documentForTemplate})
     .subscribe(
       () => {
         this.toastsService.showSuccess(this.translate.instant('template.success'));
@@ -267,12 +414,10 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
           type: 'gathering'
         };
 
-        this.tmpDocument = {};
-        this.changeDetector.markForCheck();
+        this.documentForTemplate = {};
       },
       () => {
         this.toastsService.showError(this.translate.instant('template.error'));
-        this.changeDetector.markForCheck();
       });
   }
 
@@ -286,4 +431,203 @@ export class DocumentFormComponent implements OnChanges, OnDestroy {
     this.confirmLeave = false;
     this.goBack();
   }
+
+  getFormDataForLajiForm(vm: SaneViewModel) {
+    return {...vm.form, formData: vm.formData};
+  }
+
+  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<{document: Document, hasChanges: boolean} | FormError> {
+    if (FormService.isTmpId(documentID)) {
+      return this.userService.user$.pipe(
+        take(1),
+        mergeMap(p => this.documentStorage.getItem(documentID, p).pipe(
+          map(doc => ({document: LajiFormUtil.removeLajiFormIds(doc, form.schema), hasChanges: true}))
+        ))
+      );
+    }
+    return this.userService.user$.pipe(
+      take(1),
+      mergeMap(person => this.documentStorage.getItem(documentID, person).pipe(
+        mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
+          map((document: Document) => {
+            if (document.isTemplate) {
+              const doc = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);
+              return {
+                document: form.options?.prepopulatedDocument
+                  ? deepmerge(form.options?.prepopulatedDocument, doc, { arrayMerge: Util.arrayCombineMerge })
+                  : doc,
+                hasChanges: false
+              };
+            }
+            if (Util.isLocalNewestDocument(local, document)) {
+              return {hasChanges: true, document: local};
+            }
+            return {document, hasChanges: false};
+          }),
+          catchError(err => of(
+            err.status === 404 ? FormError.notFoundDocument :
+            (err.status === 403 ? FormError.noAccessToDocument : FormError.loadFailed)
+          ))
+        ))
+      ))
+    );
+  }
+
+  private fetchEmptyData(form: Form.SchemaForm, person: Person, namedPlace: NamedPlace): Observable<{document: Document, hasChanges: boolean}> {
+    let document: Document = {
+      id: this.getNewTmpId(),
+      formID: form.id,
+      creator: person.id,
+      gatheringEvent: { leg: [person.id] }
+    };
+    if (form.options?.prepopulatedDocument) {
+      document = deepmerge(form.options?.prepopulatedDocument, document, { arrayMerge: Util.arrayCombineMerge });
+    }
+    if (form.options.useNamedPlaces) {
+      document = this.addNamedPlaceData(form, document, namedPlace);
+    }
+    return this.addCollectionID(form, document).pipe(map(doc => ({document: doc, hasChanges: false})));
+  }
+
+  private getNewTmpId(): string {
+    if (this.tmpDocId >= (Number.MAX_SAFE_INTEGER - 1003)) {
+      this.tmpDocId = 0;
+    }
+    this.tmpDocId = this.tmpDocId + 1;
+    return FormService.tmpNs + ':' +  this.tmpDocId;
+  }
+
+  private addNamedPlaceData(form: Form.SchemaForm, data: Document, np: NamedPlace): Document {
+    const populate: any = np.acceptedDocument ?
+      Util.clone(np.acceptedDocument) :
+      (np.prepopulatedDocument ? Util.clone(np.prepopulatedDocument) : {});
+
+    populate.namedPlaceID = np.id;
+
+    if (!populate.gatherings) {
+      populate.gatherings = [{}];
+    } else if (!populate.gatherings[0]) {
+      populate.gatherings[0] = {};
+    }
+
+    if (np.notes) {
+      if (!populate.gatheringEvent) {
+        populate.gatheringEvent = {};
+      }
+      populate.gatheringEvent.namedPlaceNotes = np.notes;
+    }
+
+    let removeList = [
+      ...(form.excludeFromCopy || DocumentService.removableGathering),
+      '$.gatheringEvent.leg'
+    ];
+    if (form.options?.namedPlaceOptions?.includeUnits) {
+      removeList = removeList.filter(item => item !== 'units');
+    }
+
+    return deepmerge(this.documentService.removeMeta(populate, removeList), data, { arrayMerge: Util.arrayCombineMerge });
+  }
+
+  private addCollectionID(form: Form.SchemaForm, data: Document): Observable<Document> {
+    return form.id === Global.forms.privateCollection
+      ? this.personApi.personFindProfileByToken(this.userService.getToken()).pipe(map(profile =>
+        typeof profile?.personalCollectionIdentifier === 'string'
+          ? {
+            ...(data || {}),
+            keywords: [...(data?.keywords || []), profile.personalCollectionIdentifier.trim()]
+          }
+          : data
+      ))
+      : of(data);
+  }
+
+  private getUiSchema(form: Form.SchemaForm, locked: boolean, readonly: Readonly, rights: Rights, template: boolean) {
+    let {uiSchema = {}} = form;
+    if (locked) {
+        uiSchema = {...uiSchema, 'ui:disabled': !rights.admin};
+    }
+    if (readonly !== Readonly.false) {
+        uiSchema = {...uiSchema, 'ui:disabled': true};
+    }
+    if (template) {
+      try {
+        uiSchema = Util.clone(uiSchema);
+        uiSchema.gatherings.items.units['ui:field'] = 'HiddenField';
+        uiSchema.gatherings['ui:options']['belowUiSchemaRoot']['ui:field'] = 'HiddenField';
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return uiSchema;
+  }
+
+  private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person, rights: Rights, documentID: string): Observable<any> {
+    const uiSchemaContext = {
+      formID: form.id,
+      creator: user.id,
+      isAdmin: rights && rights.admin,
+      isEdit: documentID && !FormService.isTmpId(documentID),
+      placeholderGeometry: namedPlace?.geometry || undefined
+    };
+
+    return this.getAnnotations(documentID).pipe(
+      map((annotations) => (annotations || []).reduce<Form.IAnnotationMap>((cumulative, current) => {
+        if ((current.byRole || []).includes('MMAN.formAdmin')) {
+          cumulative[current.targetID] = [current];
+        }
+        return cumulative;
+      }, {})),
+      map((annotations) => ({...uiSchemaContext, annotations}))
+    );
+  }
+
+  private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
+    return (!documentID || FormService.isTmpId(documentID)) ?
+    of([]) :
+    this.lajiApi.getList(
+      LajiApi.Endpoints.annotations,
+      {personToken: this.userService.getToken(), rootID: documentID, pageSize: 100, page: page}
+    ).pipe(
+      mergeMap(result => (result.currentPage < result.lastPage) ?
+        this.getAnnotations(documentID, result.currentPage + 1, [...results, ...result.results]) :
+        of([...results, ...result.results])),
+      catchError(() => of([]))
+    );
+  }
+
+  private save(rawDocument: Document, publicityRestriction: Document.PublicityRestrictionsEnum): Observable<Document> {
+    const document = {...rawDocument};
+    const isTmpId = !document.id || FormService.isTmpId(document.id);
+    document.publicityRestrictions = publicityRestriction;
+    if (isTmpId) { delete document.id; }
+
+    return (isTmpId
+      ? this.documentApi.create(document, this.userService.getToken())
+      : this.documentApi.update(document.id, document, this.userService.getToken())
+    ).pipe(
+      tap(() => this.namedPlacesService.invalidateCache()),
+      tap(() => this.userService.user$.pipe(
+        take(1),
+        mergeMap(p => this.documentStorage.removeItem(rawDocument.id, p))).subscribe()
+      ),
+      catchError(e => {
+        this.logger.error('UNABLE TO SAVE DOCUMENT', { data: JSON.stringify(document), error: JSON.stringify(e._body)});
+        return of(null);
+      })
+    );
+  }
+
+  private currentDateTime() {
+    return moment().format();
+  }
+
+  private getMessage(type, defaultValue) {
+    const {options = {}} = this.vm.form || {};
+    return (
+      type === 'success' ? options.saveSuccessMessage :
+      type === 'success-temp' ? options.saveDraftSuccessMessage :
+      type === 'error' ? options.saveErrorMessage : undefined
+    ) ?? defaultValue;
+  }
+
 }

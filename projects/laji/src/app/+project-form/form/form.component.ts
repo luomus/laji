@@ -4,28 +4,25 @@ import { ProjectFormService } from '../project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { BrowserService } from '../../shared/service/browser.service';
-import { NamedPlacesService } from '../../shared/service/named-places.service';
-import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
 
 interface ViewModel {
-  form: Form.SchemaForm;
+  formID: string;
   documentID?: string;
-  namedPlace?: NamedPlace;
-  template: boolean;
+  namedPlaceID?: string;
+  template?: boolean;
 }
 
 @Component({
   template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
       <laji-project-form-document-form
-        [form]="vm.form"
+        [formID]="vm.formID"
         [documentID]="vm.documentID"
-        [namedPlace]="vm.namedPlace"
+        [namedPlaceID]="vm.namedPlaceID"
         [template]="vm.template"
       >
       </laji-project-form-document-form>
@@ -45,7 +42,6 @@ export class FormComponent implements OnInit {
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
               private router: Router,
-              private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,
               private userService: UserService
@@ -80,9 +76,6 @@ export class FormComponent implements OnInit {
               ).pipe(
                 switchMap(usedSubForm => {
                   const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
-                  const namedPlace$ = namedPlaceID
-                    ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, usedSubForm.options?.namedPlaceOptions?.includeUnits)
-                    : of(null);
                   if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
                     this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                     return EMPTY;
@@ -93,12 +86,12 @@ export class FormComponent implements OnInit {
                       this.userService.redirectToLogin();
                       return EMPTY;
                     }
-                    return namedPlace$.pipe(map(namedPlace => ({
-                      form: usedSubForm,
+                    return of({
+                      formID: usedSubForm.id,
                       documentID,
-                      namedPlace,
-                      template
-                    })));
+                      namedPlaceID: namedPlaceID,
+                      template: !!template
+                    });
                   }));
                 })
               );

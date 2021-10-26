@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormService } from '../../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from '../../../../shared/service/user.service';
-import { ILajiFormState } from '../laji-form-document.facade';
 import * as moment from 'moment';
 import { Form } from '../../../../shared/model/Form';
 
@@ -43,14 +41,11 @@ export class LajiFormHeaderComponent implements OnInit, OnChanges, OnDestroy {
   useLocalDocumentViewer = false;
   editingOldWarning = false;
 
-  vm$: Observable<ILajiFormState>;
-
   private subTrans: Subscription;
 
   constructor(
     private title: Title,
     private formService: FormService,
-    private userService: UserService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef
   ) { }

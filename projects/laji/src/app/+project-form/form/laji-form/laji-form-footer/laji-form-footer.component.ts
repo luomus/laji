@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Form } from '../../../../shared/model/Form';
-import { FormWithData } from '../laji-form-document.facade';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
@@ -14,18 +13,19 @@ import { Readonly } from '../../../../shared-modules/own-submissions/service/doc
 export class LajiFormFooterComponent {
   @Input() status = '';
   @Input() saving = false;
-  @Input() readonly: Readonly = Readonly.false;
+  @Input() readonly: Readonly;
   @Input() edit = false;
   @Input() lajiForm: LajiFormComponent;
   @Input() template = false;
+  @Input() locked: boolean;
+  @Input() isAdmin: boolean;
+  @Input() formData: any;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() submitTemplate = new EventEmitter();
   @Output() leave = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
-  _form: FormWithData;
-  _locked: boolean;
-  _admin = false;
+  _form: Form.SchemaForm;
   show = {
     save: false,
     temp: false,
@@ -38,15 +38,11 @@ export class LajiFormFooterComponent {
   _touchedCounterOnErrors: number;
 
   @Input()
-  set form(form: FormWithData) {
+  set form(form: Form.SchemaForm) {
     if (!form) {
       return;
     }
     this._form = form;
-    this._admin = form && form.uiSchemaContext && form.uiSchemaContext.isAdmin;
-    this._locked = (form.formData.id?.indexOf('T:') !== 0 && form.options?.adminLockable)
-      ? (form.formData && !!form.formData.locked)
-      : undefined;
     const isReadOnly = [Readonly.noEdit, Readonly.true].includes(this.readonly);
     this.show = {
       save: !form.options?.hideSaveButton && !isReadOnly,

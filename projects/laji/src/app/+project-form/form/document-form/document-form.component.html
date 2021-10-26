@@ -1,62 +1,69 @@
-<ng-container *ngIf="vm$ | async; let vm">
-  <laji-spinner [spinning]="vm.loading" [overlay]="true"></laji-spinner>
+<ng-container *ngIf="vm$ | async; let vm; else spinner">
   <div style="margin-top: 20px;">
-    <div [hidden]="!hasAlertContent">
-      <laji-info-page page="2860" (hasContent)="hasAlertContent = $event"></laji-info-page>
-    </div>
-    <ng-container [ngSwitch]="vm.error">
-      <alert type="danger" *ngSwitchCase="errors.notFoundForm">
-        {{ 'haseka.form.formNotFound' | translate:{formId: vm.form.id} }}
-      </alert>
-      <alert type="danger" *ngSwitchCase="errors.notFoundDocument">
-        {{ 'haseka.form.documentNotFound' | translate:{documentId: documentID} }}
-      </alert>
-      <alert type="danger" *ngSwitchCase="errors.loadFailed">
-        {{ 'haseka.form.genericError' | translate }}
-      </alert>
-      <alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
-        {{ 'haseka.form.noAccessToDocument' | translate }}
-      </alert>
+  <ng-container *ngIf="isFormError(vm)" [ngSwitch]="vm">
+    <alert type="danger" *ngSwitchCase="errors.notFoundForm">
+      {{ 'haseka.form.formNotFound' | translate:{formId: formID} }}
+    </alert>
+    <alert type="danger" *ngSwitchCase="errors.notFoundDocument">
+      {{ 'haseka.form.documentNotFound' | translate:{documentId: documentID} }}
+    </alert>
+    <alert type="danger" *ngSwitchCase="errors.loadFailed">
+      {{ 'haseka.form.genericError' | translate }}
+    </alert>
+    <alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
+      {{ 'haseka.form.noAccessToDocument' | translate }}
+    </alert>
+    <alert type="danger" *ngSwitchCase="errors.templateDisallowed">
+      {{ 'haseka.form.templateDisallowed' | translate }}
+    </alert>
+    <alert type="danger" *ngSwitchCase="errors.missingNamedPlace">
+      {{ 'haseka.form.missingNamedPlace' | translate }}
+    </alert>
+  </ng-container>
+  <ng-container *ngIf="!isFormError(vm)">
+    <laji-form-header *ngIf="!vm.form.options?.mobile"
+                      [formID]="vm.form.id"
+                      [edit]="!!documentID"
+                      [namedPlace]="vm.namedPlace"
+                      [isAdmin]="vm.isAdmin"
+                      [formData]="vm.formData"
+                      [displayObservationList]="!vm.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
+    ></laji-form-header>
+    <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
+    <div class="clear"></div>
+    <div class="laji-form">
+      <laji-form
+        [formData]="getFormDataForLajiForm(vm)"
+        [settingsKey]="vm.form.id"
+        [showShortcutButton]="!vm.form.options?.mobile"
+        (dataChange)="onChange($event)"
+        (dataSubmit)="onSubmit($event)"
+        (validationError)="onValidationError($event)"
+        (goBack)="onGoBack()"
+      ></laji-form>
+      <laji-form-footer
+        [form]="vm.form"
+        [formData]="vm.formData"
+        [locked]="vm.locked"
+        [isAdmin]="vm.isAdmin"
+        [status]="vm.hasChanges ? 'unsaved' : ''"
+        [readonly]="vm.readonly"
+        [edit]="!!documentID"
+        [errors]="validationErrors"
+        [touchedCounter]="touchedCounter$ | async"
+        [lajiForm]="lajiForm"
+        [template]="template"
+        (lock)="lock($event)"
+        (submitPublic)="submitPublic()"
+        (submitPrivate)="submitPrivate()"
+        (submitTemplate)="submitTemplate()"
+        (leave)="onLeave()"></laji-form-footer>
+      </div>
     </ng-container>
-  </div>
-  <laji-form-header *ngIf="!form.options?.mobile && vm.error === errors.ok"
-                    [formID]="vm.form.id"
-                    [edit]="!!documentID"
-                    [namedPlace]="vm.namedPlace"
-                    [isAdmin]="isAdmin"
-                    [formData]="vm.form.formData"
-                    [displayObservationList]="!vm.form.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
-  ></laji-form-header>
-  <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
-  <div class="clear"></div>
-  <div class="laji-form" *ngIf="vm.error === errors.ok">
-    <laji-form
-      [formData]="vm.form"
-      [settingsKey]="vm.form.id"
-      [showShortcutButton]="!form.options?.mobile"
-      (dataChange)="onChange($event)"
-      (dataSubmit)="onSubmit($event)"
-      (validationError)="onValidationError($event)"
-      (goBack)="onGoBack()"
-    ></laji-form>
-    <laji-form-footer
-      [form]="vm.form"
-      [status]="status"
-      [readonly]="vm.form.readonly"
-      [edit]="!!documentID"
-      [errors]="validationErrors"
-      [touchedCounter]="touchedCounter"
-      [lajiForm]="lajiForm"
-      [template]="template"
-      (lock)="lock($event)"
-      (submitPublic)="submitPublic()"
-      (submitPrivate)="submitPrivate()"
-      (submitTemplate)="submitTemplate()"
-      (leave)="onLeave()"></laji-form-footer>
   </div>
 </ng-container>
 
-<div class="modal" tabindex="-1" role="dialog" bsModal #saveAsTemplate="bs-modal">
+<div class="modal template-form" tabindex="-1" role="dialog" bsModal #saveAsTemplate="bs-modal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -70,24 +77,17 @@
         <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">
         <label for="templateDescription">{{ 'template.description' | translate }}:</label>
         <textarea id="templateDescription" class="form-control" [(ngModel)]="templateForm.description" name="description"></textarea>
-        <!--
-        <div>
-          <label>{{'template.chooseType' | translate}}</label>
-          <div class="radio">
-            <label><input type="radio" name="templateType" [(ngModel)]="templateForm.type" value="gathering">{{'template.saveGathering' | translate}}</label>
-          </div>
-          <div class="radio">
-            <label><input type="radio" name="templateType" [(ngModel)]="templateForm.type" value="unit">{{'template.saveUnit' | translate}}</label>
-          </div>
-        </div>
-        -->
         <span class="required">*</span> = {{ 'required' | translate }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
+        <button type="button" class="btn btn-default template-save" [class.disabled]="templateForm.name.length === 0" (click)="saveTemplate()">
           <span>{{ "np.save" | translate }}</span>
         </button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<ng-template #spinner>
+  <laji-spinner #spinner [spinning]="true" [overlay]="true"></laji-spinner>
+</ng-template>
