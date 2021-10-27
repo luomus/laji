@@ -6,7 +6,7 @@ import { LajiFormFooterComponent } from './laji-form-footer/laji-form-footer.com
 import { AppComponentModule } from '../../../shared-modules/app-component/app-component.module';
 import { InfoPageModule } from '../../../shared-modules/info-page/info-page.module';
 import { LajiUiModule } from '../../../../../../laji-ui/src/lib/laji-ui.module';
-import { LajiFormHeaderModule } from './laji-form-header/laji-form-header.module';
+import { ProjectFormHeaderModule } from '../../header/project-form-header.module';
 import { NamedPlaceLinkerButtonModule } from '../named-place-linker/named-place-linker-button/named-place-linker-button.module';
 
 @NgModule({
@@ -16,7 +16,7 @@ import { NamedPlaceLinkerButtonModule } from '../named-place-linker/named-place-
     AppComponentModule,
     InfoPageModule,
     LajiUiModule,
-    LajiFormHeaderModule,
+    ProjectFormHeaderModule,
     NamedPlaceLinkerButtonModule
   ],
   declarations: [LajiFormComponent, LajiFormFooterComponent],

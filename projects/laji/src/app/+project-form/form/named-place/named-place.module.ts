@@ -22,7 +22,7 @@ import { SelectModule } from '../../../shared-modules/select/select.module';
 import { InfoModule } from '../../../shared-modules/info/info.module';
 import { FormPermissionModule } from '../../form-permission/form-permission.module';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
-import { LajiFormHeaderModule } from '../laji-form/laji-form-header/laji-form-header.module';
+import { ProjectFormHeaderModule } from '../../header/project-form-header.module';
 
 @NgModule({
   providers: [],
@@ -39,7 +39,7 @@ import { LajiFormHeaderModule } from '../laji-form/laji-form-header/laji-form-he
     ClipboardModule,
     LajiUiModule,
     InfoModule,
-    LajiFormHeaderModule
+    ProjectFormHeaderModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,

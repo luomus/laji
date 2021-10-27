@@ -68,7 +68,9 @@ type InputModel = SaneInputModel | FormError;
 interface SaneViewModel extends SaneInputModel {
   readonly: Readonly;
   isAdmin: boolean;
-  locked: boolean | undefined;
+  namedPlaceHeader: string[];
+  locked?: boolean;
+  editingOldWarning?: string;
 }
 
 function isSaneViewModel(any: ViewModel): any is SaneViewModel {
@@ -257,8 +259,8 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         this.getUiSchema(inputModel.form, locked, readonly, rights, inputModel.template)
       ));
 
-      return combineLatest([inputModel$, this.locked$, readonly$, rights$, uiSchema$, uiSchemaContext$, this.hasChanges$, this.formData$]).pipe(
-        map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData]) => {
+      return combineLatest([inputModel$, this.locked$, readonly$, rights$, uiSchema$, uiSchemaContext$, this.hasChanges$, this.formData$, documentID$]).pipe(
+        map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData, documentID]) => {
           if (isFormError(_inputModel)) {
             return _inputModel;
           }
@@ -273,7 +275,9 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
             isAdmin: rights.admin,
             locked,
             hasChanges,
-            formData: _formData
+            formData: _formData,
+            editingOldWarning: this.getEditingOldWarning(form, formData, documentID),
+            namedPlaceHeader: this.getNamedPlaceHeader(form, _inputModel.namedPlace)
           };
         })
       );
@@ -452,6 +456,25 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   getFormDataForLajiForm(vm: SaneViewModel) {
     return {...vm.form, formData: vm.formData};
+  }
+
+  getEditingOldWarning(form: Form.SchemaForm, formData: any, documentID?: string): string | undefined {
+    if (documentID && form.options?.warnEditingOldDocument) {
+      // ISO 8601 duration
+      const {warnEditingOldDocumentDuration = 'P1W'} = form.options || {};
+      const docCreateDuration = moment.duration(moment().diff(moment(formData.dateCreated)));
+      if (moment.duration(warnEditingOldDocumentDuration).subtract(docCreateDuration).asMilliseconds() < 0) {
+        return moment(formData.dateCreated).format('DD.MM.YYYY');
+      }
+    }
+    return undefined;
+  }
+
+  getNamedPlaceHeader(form: Form.SchemaForm, namedPlace: NamedPlace): string[] {
+    if (!form || !namedPlace) {
+      return [];
+    }
+    return form.options?.namedPlaceOptions?.headerFields || ['alternativeIDs', 'name', 'municipality'];
   }
 
   private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<DocumentAndHasChanges | FormError> {

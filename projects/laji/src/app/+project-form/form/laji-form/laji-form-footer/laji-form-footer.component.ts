@@ -4,6 +4,8 @@ import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
 
+export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
+
 @Component({
   selector: 'laji-form-footer',
   templateUrl: './laji-form-footer.component.html',
@@ -11,7 +13,7 @@ import { Readonly } from '../../../../shared-modules/own-submissions/service/doc
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormFooterComponent {
-  @Input() status = '';
+  @Input() status: LajiFormFooterStatus = '';
   @Input() saving = false;
   @Input() readonly: Readonly;
   @Input() edit = false;
@@ -19,7 +21,7 @@ export class LajiFormFooterComponent {
   @Input() template = false;
   @Input() locked: boolean;
   @Input() isAdmin: boolean;
-  @Input() formData: any;
+  @Input() dateEdited: string;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
   @Output() submitTemplate = new EventEmitter();
@@ -74,7 +76,7 @@ export class LajiFormFooterComponent {
   }
 
   disableIfOnlyWarnings() {
-    return this.hasOnlyWarnings && this._touchedCounterOnErrors === this._touchedCounter;
+    return this.hasOnlyWarnings && typeof this._touchedCounter === 'number' && this._touchedCounterOnErrors === this._touchedCounter;
   }
 
   buttonLabel(prop: 'save'|'temp'|'cancel') {

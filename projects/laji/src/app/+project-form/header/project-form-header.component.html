@@ -1,0 +1,16 @@
+<div class="row form-header" *ngIf="_form">
+  <div class="form-logo pull-right" *ngIf="_form.logo">
+    <img src="{{_form.logo}}">
+  </div>
+  <h3>{{ _form.title }}</h3>
+  <ng-content></ng-content>
+  <ng-container *ngIf="description">
+    <div [innerHtml]="description | translate"></div>
+    <br>
+  </ng-container>
+  <span *ngIf="displayInstructions && _form.options?.instructions && _form.options.instructions[translate.currentLang]">
+    <a href="{{_form.options.instructions[translate.currentLang]}}" target="_blank">{{ 'haseka.instructions' | translate }}</a>
+    |
+  </span>
+  <a *ngIf="!_form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+</div>

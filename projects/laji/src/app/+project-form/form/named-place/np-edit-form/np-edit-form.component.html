@@ -1,9 +1,8 @@
 <div class="laji-form" *lajiLoggedIn="true">
   <ng-container *ngIf="(asyncData$) | async as data; else spinner">
-    <laji-form-header [formID]="data.documentForm.id"
-                      [displayObservationList]="false"
-                      [description]="data.description"
-                      class="no-flex"></laji-form-header>
+    <laji-project-form-header [form]="data.documentForm"
+                              [description]="data.description"
+                              class="no-flex"></laji-project-form-header>
     <laji-form
       [formData]="data.placeForm"
       (dataChange)="onChange()"
@@ -13,6 +12,7 @@
       [status]="status"
       [saving]="saving"
       [edit]="!!data.namedPlace"
+      [lajiForm]="lajiForm"
       (submitPublic)="submitPublic()"
       (submitPrivate)="submitPrivate()"
       (leave)="discard()"

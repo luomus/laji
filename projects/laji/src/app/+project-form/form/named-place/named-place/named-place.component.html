@@ -1,10 +1,9 @@
 <div class="container-fluid" style="width: 100%">
   <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
-    <laji-form-header *ngIf="displayHeader"
-                      [formID]="data.documentForm.id"
-                      [displayObservationList]="false"
-                      [description]="data.description"
-                      class="no-flex"></laji-form-header>
+    <laji-project-form-header *ngIf="displayHeader"
+                              [form]="data.documentForm"
+                              [description]="data.description"
+                              class="no-flex"></laji-project-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 

@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlaceComponent } from '../named-place/named-place.component';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
-import { BrowserService } from '../../../../shared/service/browser.service';
+import { LajiFormFooterStatus } from '@laji-form/laji-form-footer/laji-form-footer.component';
 
 interface NamedPlacesRouteDataWithPlaceForm extends NamedPlacesRouteData {
   placeForm: Form.SchemaForm;
@@ -35,7 +35,7 @@ export class NpEditFormComponent implements OnInit {
 
   lang: string;
   saving = false;
-  status = '';
+  status: LajiFormFooterStatus = '';
   error = '';
 
   private hasChanges = false;
@@ -52,7 +52,6 @@ export class NpEditFormComponent implements OnInit {
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private areaService: AreaService,
-    private browserService: BrowserService,
     private router: Router
   ) { }
 

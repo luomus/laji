@@ -3,7 +3,7 @@ import { NpEditFormComponent } from './np-edit-form.component';
 import { LajiFormModule } from '../../laji-form/laji-form.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../shared/shared.module';
-import { LajiFormHeaderModule } from '@laji-form/laji-form-header/laji-form-header.module';
+import { ProjectFormHeaderModule } from '../../../header/project-form-header.module';
 
 @NgModule({
   providers: [],
@@ -11,7 +11,7 @@ import { LajiFormHeaderModule } from '@laji-form/laji-form-header/laji-form-head
     CommonModule,
     SharedModule,
     LajiFormModule,
-    LajiFormHeaderModule
+    ProjectFormHeaderModule
   ],
   declarations: [NpEditFormComponent],
   exports: []

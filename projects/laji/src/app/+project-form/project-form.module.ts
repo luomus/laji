@@ -23,10 +23,10 @@ import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
-import { LajiFormHeaderModule } from '@laji-form/laji-form-header/laji-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
+import { ProjectFormHeaderModule } from './header/project-form-header.module';
 
 @NgModule({
   imports: [
@@ -41,7 +41,7 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
     OwnSubmissionsModule,
     SpreadsheetModule,
     StatisticsModule,
-    LajiFormHeaderModule,
+    ProjectFormHeaderModule,
     BreadcrumbModule,
     TechnicalNewsModule
   ],

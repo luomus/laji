@@ -18,8 +18,8 @@
       {{ 'haseka.form.error' | translate }}
     </div>
     <div *ngSwitchCase="'unsaved'" class="unsaved hidden-xs hidden-sm">
-      <ng-container *ngIf="formData.dateEdited; else unsaved">
-        {{ 'haseka.form.unsaved' | translate:{saveTime: formData.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
+      <ng-container *ngIf="dateEdited; else unsaved">
+        {{ 'haseka.form.unsaved' | translate:{saveTime: dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'} }}
       </ng-container>
       <ng-template #unsaved>
         {{ 'haseka.form.unsavedNever' | translate }}

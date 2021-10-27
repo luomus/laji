@@ -20,16 +20,36 @@
       {{ 'haseka.form.missingNamedPlace' | translate }}
     </alert>
   </ng-container>
-  <ng-container *ngIf="!isFormError(vm)">
-    <laji-form-header *ngIf="!vm.form.options?.mobile"
-                      [formID]="vm.form.id"
-                      [edit]="!!documentID"
-                      [namedPlace]="vm.namedPlace"
-                      [isAdmin]="vm.isAdmin"
-                      [formData]="vm.formData"
-                      [displayObservationList]="!vm.formData?.id && vm.namedPlace && vm.form.options?.displayOwnSubmissions"
-    ></laji-form-header>
+  <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
+    <laji-project-form-header *ngIf="!vm.form.options?.mobile"
+                              [form]="vm.form"
+                              [description]="vm.form.description">
+    <laji-own-submissions *ngIf="vm.namedPlace && vm.form.options?.displayOwnSubmissions"
+           [actions]="vm.isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
+           [columns]="['dateObserved', 'observer', 'dateEdited']"
+           [columnNameMapping]="vm.form.options?.namedPlaceOptions?.listColumnNameMapping"
+           [collectionID]="vm.form.collectionID"
+           [formID]="vm.form.id"
+           [namedPlace]="vm.namedPlace?.id"
+           [showDownloadAll]="false"
+           [header]="vm.form.options?.formOwnSubmissionsLabel || vm.namedPlace ? 'np.formOwnSubmissions' : (vm.isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
+           [forceLocalDocument]="vm.form.options?.documentsViewableForAll"
+           [admin]="vm.isAdmin"></laji-own-submissions>
+    </laji-project-form-header>
     <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
+    <alert [type]="'danger'" *ngIf="vm.formData?.locked">
+      {{ 'document.locked' | translate }}
+    </alert>
+    <alert *ngIf="vm.editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: vm.editingOldWarning} }}</alert>
+    <div class="row" *ngIf="vm.namedPlaceHeader" style="margin-top: 10px">
+      <div class="col-sm-12">
+        <h3><span *ngFor="let field of vm.namedPlaceHeader; let i = index">
+            <ng-container *ngIf="vm.namedPlace[field] | area | values as val">
+              {{ val }}{{ vm.namedPlace[vm.namedPlaceHeader[i + 1]] ? ', ' : '' }}
+            </ng-container>
+          </span></h3>
+      </div>
+    </div>
     <div class="clear"></div>
     <div class="laji-form">
       <laji-form
@@ -44,7 +64,7 @@
       ></laji-form>
       <laji-form-footer
         [form]="vm.form"
-        [formData]="vm.formData"
+        [dateEdited]="vm.formData.dateEdited"
         [locked]="vm.locked"
         [isAdmin]="vm.isAdmin"
         [status]="vm.hasChanges ? 'unsaved' : ''"
