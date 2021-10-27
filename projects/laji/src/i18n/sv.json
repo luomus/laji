@@ -1745,7 +1745,7 @@
   "theme.protax.downloading": "Laddar",
   "theme.protax.fileInput": "Filväljare",
   "theme.protax.genericError": "Ett fel uppstod när filen laddades.",
-  "theme.protax.intro": "Med denna Protax-applikation kan du identifiera finska insekter med hjälp av COI1 DNA -sekvenser i FASTA-format. Det kan inte identifiera andra artgrupper än insekter.",
+  "theme.protax.intro": "Med detta verktyg kan du bestämma vilken som helst DNA-sekvens från en finsk insekt eller spindel, bara sekvensen härrör från den vanliga DNA-streckkodregionen, COI, och matas in i FASTA-format. Programmet kan inte identifiera andra taxa än insekter och spindlar.",
   "theme.protax.invalidSequence": "Ogiltigt filformat. Endast FASTA-format stöds.",
   "theme.protax.invalidThreshold": "Sannolikhetströskelvärdet måste vara mellan 0–1.",
   "theme.protax.model": "Modell",
