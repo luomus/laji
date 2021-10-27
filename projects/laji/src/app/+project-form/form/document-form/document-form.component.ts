@@ -73,6 +73,11 @@ interface SaneViewModel extends SaneInputModel {
 
 type ViewModel = SaneViewModel | FormError;
 
+interface DocumentAndHasChanges {
+  document: Document;
+  hasChanges: boolean;
+}
+
 @Component({
   selector: 'laji-project-form-document-form',
   templateUrl: './document-form.component.html',
@@ -89,7 +94,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   @Input() template: boolean;
 
   @LocalStorage('tmpDocId', 1) private tmpDocId: number;
-
 
   vm$: Observable<ViewModel>;
   private locked$: Observable<boolean | undefined>;
@@ -146,9 +150,9 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const formID$ = of(this.formID);
+    const documentID$ = of(this.documentID);
     const namedPlaceID$ = of(this.namedPlaceID);
     const template$ = of(this.template);
-    const documentID$ = of(this.documentID);
     const lang$ = of(this.translate.currentLang);
 
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$, lang$]).pipe(
@@ -171,26 +175,35 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           return of(FormError.noAccess);
         }
 
-        const namedPlace$: Observable<NamedPlace | FormError | null> = namedPlaceID$.pipe(switchMap(namedPlaceID => namedPlaceID
-          ? this.namedPlacesService.getNamedPlace(this.namedPlaceID, undefined, form.options?.namedPlaceOptions?.includeUnits).pipe(
-            catchError(() => FormError.missingNamedPlace)
-          )
+        const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = documentID$.pipe(switchMap(documentID => documentID
+          ? this.fetchExistingDocument(form, documentID)
           : of(null)
         ));
 
-        return combineLatest([documentID$, namedPlace$, this.userService.user$]).pipe(
-          switchMap(([documentID, namedPlace, user]) =>
+        const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([existingDocument$, namedPlaceID$]).pipe(
+          map(([existingDocument, namedPlaceID]) =>
+            (!isFormError(existingDocument) && existingDocument?.document?.namedPlaceID || namedPlaceID)
+          ),
+          switchMap(namedPlaceID => namedPlaceID
+            ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, form.options?.namedPlaceOptions?.includeUnits)
+            : of(null)
+          ),
+          catchError(() => FormError.missingNamedPlace)
+        );
+
+        return combineLatest([existingDocument$, namedPlace$, this.userService.user$]).pipe(
+          switchMap(([existingDocument, namedPlace, user]) =>
             isFormError(namedPlace)
               ? of(namedPlace)
-              : (documentID
-                ? this.fetchExistingDocument(form, documentID)
-                : this.fetchEmptyData(form, user, namedPlace)
-              ).pipe(map(documentModel => {
-                if (isFormError(documentModel)) {
-                  return documentModel;
-                }
-                return {form, namedPlace, formData: documentModel.document, hasChanges: documentModel.hasChanges, template};
-              }))
+            : (existingDocument
+              ? of(existingDocument)
+              : this.fetchEmptyData(form, user, namedPlace)
+            ).pipe(map(documentModel => {
+              if (isFormError(documentModel)) {
+                return documentModel;
+              }
+              return {form, namedPlace, formData: documentModel.document, hasChanges: documentModel.hasChanges, template};
+            }))
           )
         );
       }));
@@ -436,7 +449,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     return {...vm.form, formData: vm.formData};
   }
 
-  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<{document: Document, hasChanges: boolean} | FormError> {
+  private fetchExistingDocument(form: Form.SchemaForm, documentID: string): Observable<DocumentAndHasChanges | FormError> {
     if (FormService.isTmpId(documentID)) {
       return this.userService.user$.pipe(
         take(1),
@@ -473,7 +486,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  private fetchEmptyData(form: Form.SchemaForm, person: Person, namedPlace: NamedPlace): Observable<{document: Document, hasChanges: boolean}> {
+  private fetchEmptyData(form: Form.SchemaForm, person: Person, namedPlace: NamedPlace): Observable<DocumentAndHasChanges> {
     let document: Document = {
       id: this.getNewTmpId(),
       formID: form.id,
@@ -629,5 +642,4 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       type === 'error' ? options.saveErrorMessage : undefined
     ) ?? defaultValue;
   }
-
 }
