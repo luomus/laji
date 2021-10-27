@@ -33,7 +33,8 @@
     <div class="clear"></div>
     <div class="laji-form">
       <laji-form
-        [formData]="getFormDataForLajiForm(vm)"
+        [form]="vm.form"
+        [formData]="vm.formData"
         [settingsKey]="vm.form.id"
         [showShortcutButton]="!vm.form.options?.mobile"
         (dataChange)="onChange($event)"

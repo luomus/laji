@@ -25,6 +25,7 @@ import { combineLatest } from 'rxjs';
 import { Profile } from '../../../../shared/model/Profile';
 import LajiForm from 'laji-form/lib/index';
 import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
+import { Form } from 'projects/laji/src/app/shared/model/Form';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -58,6 +59,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   static TOP_OFFSET = 50;
   static BOTTOM_OFFSET = 53.5;
+  @Input() form: Form.SchemaForm;
   @Input() formData: any = {};
   @Input() settingsKey: keyof IUserSettings = 'formDefault';
   @Input() showShortcutButton = true;
@@ -90,7 +92,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private lajiFormBs3Theme: LajiFormTheme;
   private _block = false;
   private settings: any;
-  private _formData: any;
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
@@ -108,14 +109,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.lajiFormWrapper) {
       return;
     }
-    if (changes['formData']) {
+    if (changes['form'] || changes['formData']) {
       this.ngZone.runOutsideAngular(() => {
         this.lajiFormWrapper.setState({
-          schema: this.formData.schema,
-          uiSchema: this.formData.uiSchema,
-          formData: this.formData.formData,
-          validators: this.formData.validators,
-          warnings: this.formData.warnings
+          schema: this.form.schema,
+          uiSchema: this.form.uiSchema,
+          formData: this.formData,
+          validators: this.form.validators,
+          warnings: this.form.warnings
         });
       });
     }
@@ -202,17 +203,17 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         }
         this.apiClient.lang = this.translate.currentLang;
         this.apiClient.personToken = this.userService.getToken();
-        this.apiClient.formID = this.formData.id;
+        this.apiClient.formID = this.form.id;
         this.lajiFormWrapper = new this.lajiFormWrapperProto({
           staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
           theme: this.lajiFormBs3Theme,
-          schema: this.formData.schema,
-          uiSchema: this.formData.uiSchema,
-          uiSchemaContext: this.formData.uiSchemaContext,
-          formData: this.formData.formData,
-          validators: this.formData.validators,
-          warnings: this.formData.warnings,
+          schema: this.form.schema,
+          uiSchema: this.form.uiSchema,
+          uiSchemaContext: this.form.uiSchemaContext,
+          formData: this.formData,
+          validators: this.form.validators,
+          warnings: this.form.warnings,
           onSubmit: this._onSubmit.bind(this),
           onChange: this._onChange.bind(this),
           onSettingsChange: this._onSettingsChange.bind(this),
@@ -243,7 +244,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private mount() {
-    if (!this.formData?.formData) {
+    if (!this.form || !this.formData) {
       return;
     }
     combineLatest(
@@ -272,7 +273,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onChange(formData) {
-    this._formData = formData;
     this.ngZone.run(() => {
       this.dataChange.emit(formData);
     });
@@ -289,7 +289,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private _onError(error, info) {
-    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData?.formData});
+    this.logger.error('LajiForm crashed', {error, userSettings: this.settings, document: this.formData});
     console.error(info);
     this.displayErrorModal('reactCrash');
   }
