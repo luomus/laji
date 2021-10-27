@@ -45,14 +45,14 @@ enum FormError {
   missingNamedPlace = 'missingNamedPlace'
 }
 
+function isFormError(any: any): any is FormError {
+  return typeof any === 'string' && !!FormError[any];
+}
+
 enum Readonly {
   noEdit,
   false,
   true
-}
-
-function isFormError(any: any): any is FormError {
-  return !!FormError[any];
 }
 
 interface SaneInputModel {
@@ -69,6 +69,10 @@ interface SaneViewModel extends SaneInputModel {
   readonly: Readonly;
   isAdmin: boolean;
   locked: boolean | undefined;
+}
+
+function isSaneViewModel(any: ViewModel): any is SaneViewModel {
+  return typeof any !== 'string' && any && !!any?.form;
 }
 
 type ViewModel = SaneViewModel | FormError;
@@ -118,6 +122,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   touchedCounter$: Observable<number>;
 
   isFormError = isFormError;
+  isSaneViewModel = isSaneViewModel;
   errors = FormError;
 
   private vmSub: Subscription;

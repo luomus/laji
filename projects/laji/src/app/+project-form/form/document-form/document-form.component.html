@@ -1,6 +1,6 @@
 <ng-container *ngIf="vm$ | async; let vm; else spinner">
   <div style="margin-top: 20px;">
-  <ng-container *ngIf="isFormError(vm)" [ngSwitch]="vm">
+  <ng-container *ngIf="vm | typeGuard: isFormError as error" [ngSwitch]="error">
     <alert type="danger" *ngSwitchCase="errors.notFoundForm">
       {{ 'haseka.form.formNotFound' | translate:{formId: formID} }}
     </alert>
