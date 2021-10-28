@@ -85,7 +85,7 @@ interface DocumentAndHasChanges {
 }
 
 @Component({
-  selector: 'laji-project-form-document-form',
+  selector: 'laji-document-form',
   templateUrl: './document-form.component.html',
   styleUrls: ['./document-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

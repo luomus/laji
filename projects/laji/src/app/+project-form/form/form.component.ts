@@ -19,13 +19,13 @@ interface ViewModel {
 @Component({
   template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
-      <laji-project-form-document-form
+      <laji-document-form
         [formID]="vm.formID"
         [documentID]="vm.documentID"
         [namedPlaceID]="vm.namedPlaceID"
         [template]="vm.template"
       >
-      </laji-project-form-document-form>
+      </laji-document-form>
     </ng-container>
     <ng-template #loader>
       <laji-spinner></laji-spinner>
