@@ -9,7 +9,6 @@ import { ProjectFormService } from '../../project-form.service';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { LajiFormComponent } from '../laji-form/laji-form/laji-form.component';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Document } from '../../../shared/model/Document';
@@ -24,7 +23,6 @@ import { FormPermissionService, Rights } from '../../../shared/service/form-perm
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { DocumentApi } from '../../../shared/api/DocumentApi';
-import { LajiFormUtil } from '../laji-form/laji-form-util.service';
 import * as deepmerge from 'deepmerge';
 import * as moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
@@ -34,6 +32,8 @@ import { Person } from '../../../shared/model/Person';
 import { Annotation } from '../../../shared/model/Annotation';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Logger } from '../../../shared/logger';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 
 enum FormError {
   notFoundForm = 'notFoundForm',

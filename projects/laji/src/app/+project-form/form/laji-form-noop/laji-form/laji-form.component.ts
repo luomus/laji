@@ -1,32 +1,31 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { IUserSettings } from '../../../../shared/service/user.service';
+import { Form } from 'projects/laji/src/app/shared/model/Form';
 
 @Component({
   selector: 'laji-form',
   template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiFormComponent {
 
-  static TOP_OFFSET = 50;
-  static BOTTOM_OFFSET = 61;
-
+  @Input() form: Form.SchemaForm;
   @Input() formData: any = {};
-  @Input() tick: number;
-  @Input() settingsKey = '';
+  @Input() settingsKey: keyof IUserSettings = 'formDefault';
+  @Input() showShortcutButton = true;
 
   @Output() dataSubmit = new EventEmitter();
   @Output() dataChange = new EventEmitter();
   @Output() validationError = new EventEmitter();
-
-  lang: string;
-  elem: ElementRef;
-  lajiFormWrapper: any;
-  reactElem: any;
-  renderElem: any;
+  @Output() goBack = new EventEmitter();
 
   block() { }
-
   unBlock() { }
-
   submit() { }
+  submitOnlySchemaValidations() { }
+  displayErrorModal(type: 'saveError' | 'reactCrash') { }
 }

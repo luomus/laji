@@ -1,21 +1,31 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
-import { FormWithData } from '../laji-form-document.facade';
+import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
+import { Form } from 'projects/laji/src/app/shared/model/Form';
+
+export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
 
 @Component({
   selector: 'laji-form-footer',
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: ''
 })
 export class LajiFormFooterComponent {
-  @Input() form: FormWithData;
-  @Input() status = '';
+  @Input() status: LajiFormFooterStatus = '';
   @Input() saving = false;
-  @Input() edit: any;
-  @Input() errors: any;
+  @Input() readonly: Readonly;
+  @Input() edit = false;
   @Input() lajiForm: LajiFormComponent;
+  @Input() template = false;
+  @Input() locked: boolean;
+  @Input() isAdmin: boolean;
+  @Input() dateEdited: string;
   @Output() submitPublic = new EventEmitter();
   @Output() submitPrivate = new EventEmitter();
-  @Output() cancel = new EventEmitter();
-  @Output() lock = new EventEmitter();
+  @Output() submitTemplate = new EventEmitter();
+  @Output() leave = new EventEmitter();
+  @Output() lock = new EventEmitter<boolean>();
+  @Input() form: Form.SchemaForm;
+  @Input() errors: any
+
+  @Input() touchedCounter: number
 }
