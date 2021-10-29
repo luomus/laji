@@ -42,9 +42,11 @@
 
 .current-slide {
 	position: absolute;
+	left: 0;
 	bottom: 40px;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
+	padding-left: $sp-7;
 	width: 100%;
 }
 

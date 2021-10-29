@@ -6,6 +6,7 @@ export interface ISlideData {
 	bgSrc?: string;
 	bgIsVideo?: boolean;
 	bgCaption?: string;
+	style: 'front' | 'default',
 	contentPlacement: 'left' | 'right';
 	content: string;
 	animationPlacement?: BugPath[];

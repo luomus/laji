@@ -17,25 +17,33 @@ video {
 	height: 100%;
 }
 
-.left {
-	left: 20px;
+.content-container {
+	height: 100%;
+	& > div {
+		max-width: 800px;
+		padding: $sp-7;
+		padding-top: 75px;
+		background: rgba($neutral-9, .5);
+	}
 }
 
-.right {
-	right: 20px;
-}
-
-.left, .right {
-	position: absolute;
-	top: 80px;
-	max-width: 800px;
-	padding: 20px;
+.panel {
+	padding: $sp-7;
 }
 
 .caption {
+	font-size: $fs-2;
 	position: absolute;
 	bottom: 5px;
-	right: 5px;
+	left: $sp-7;
 	color: $neutral-2;
 	text-shadow: 4px 4px 12px rgba($neutral-8, .8);
+}
+
+.front-title {
+	color: $neutral-1;
+}
+
+.front-content {
+	color: $neutral-2;
 }
