@@ -4,7 +4,8 @@
                               [description]="data.description"
                               class="no-flex"></laji-project-form-header>
     <laji-form
-      [formData]="data.placeForm"
+      [form]="data.placeForm"
+      [formData]="data.formData"
       (dataChange)="onChange()"
       (dataSubmit)="onSubmit($event)"></laji-form>
     <laji-form-footer
