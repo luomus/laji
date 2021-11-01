@@ -25,7 +25,7 @@ export class LetterTemplateComponent {
   @Output() comment = new EventEmitter<IGlobalComment>();
 
   audioViewerMode: AudioViewerMode = 'default';
-  defaultZoomFrequency = true;
+  defaultZoomFrequency = false;
   zoomFrequency = this.defaultZoomFrequency;
   defaultTimePadding = 30;
   timePadding = this.defaultTimePadding;
