@@ -33,6 +33,8 @@ export interface IGlobalSpecies {
   hasModifications?: boolean;
   isLocked?: boolean;
   hasNotPossibleValidations?: boolean;
+  isSpecies?: boolean;
+  taxonOrder?: number;
 }
 
 export interface IGlobalSpeciesFilters {

@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChan
 import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalValidationData } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalValidationData, IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-template-validation',
@@ -11,6 +11,7 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTemplateValidationComponent implements OnChanges {
+  @Input() species: IGlobalSpecies;
   @Input() data: IGlobalRecording[] = [];
   @Input() templates: IGlobalTemplate[] = [];
   @Input() saving = false;
@@ -38,6 +39,8 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   audioIdMap: {[id: number]: IGlobalAudio } = {};
 
+  subSpecies: IGlobalSpecies[] = [];
+
   @Output() save = new EventEmitter<{templates: IGlobalTemplate[], comments: IGlobalComment[]}>();
   @Output() cancel = new EventEmitter();
 
@@ -48,11 +51,25 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
+      const data = this.data || [];
+
       this.audioIdMap = {};
-      (this.data || []).map(d => {
+      data.map(d => {
         this.audioIdMap[d.audio.id] = d.audio;
       });
+
+      const addedSubSpecies = [];
+      this.subSpecies = data.reduce((subSpecies, d) => {
+        const species = d.audio.species;
+        if (!species.isSpecies && !addedSubSpecies.includes(species.id)) {
+          subSpecies.push(species);
+          addedSubSpecies.push(species.id);
+        }
+        return subSpecies;
+      }, []);
+      this.subSpecies = this.subSpecies.sort((a, b) => b.taxonOrder - a.taxonOrder);
     }
+
     if (changes.templates && this.templates) {
       this.hasInitialTemplates = this.templates.indexOf(null) === -1;
       if (changes.templates.previousValue == null) {

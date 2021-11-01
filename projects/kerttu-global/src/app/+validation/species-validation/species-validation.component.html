@@ -1,7 +1,4 @@
 <div class="container-fluid">
-  <h1 *ngIf="species$ | async as species" class="d-inline-block">
-    {{ species.commonName }} - <i>{{ species.scientificName }}</i>
-  </h1>
   <ng-container *ngIf="hasLock">
     <laji-version-nav
       class="pull-right"
@@ -10,6 +7,7 @@
       (activeIdxChange)="activeIdxChange($event)"
     ></laji-version-nav>
     <laji-species-template-validation
+      [species]="species$ | async"
       [data]="validationData$ | async"
       [templates]="templates$ | async"
       [historyView]="historyView$ | async"

@@ -66,5 +66,6 @@
   "validation.title": "Validate species",
   "versionNav.next": "Next",
   "versionNav.previous": "Previous",
-  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}"
+  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
+  "validation.includingSubspecies": "Including"
 }
