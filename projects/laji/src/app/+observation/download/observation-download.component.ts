@@ -325,6 +325,11 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.apiKeyLoading = false;
       this.apiKey = res.apiKey;
       this.cd.markForCheck();
+    }, err => {
+      this.logger.error('Apikey request failed', err);
+      this.apiKeyLoading = false;
+      this.apiKey = '';
+      this.cd.markForCheck();
     });
   }
 
