@@ -16,7 +16,4 @@
     <em *ngIf="value == userId else otherUser">{{ value | label }}</em>
     <ng-template #otherUser>{{ value | label }}</ng-template>
   </span>
-  <span *ngIf="!value" title="{{ 'theme.kerttu.result.hidden' | translate }}">
-    <em>{{ 'theme.kerttu.result.hidden' | translate }}</em>
-  </span>
 </ng-template>

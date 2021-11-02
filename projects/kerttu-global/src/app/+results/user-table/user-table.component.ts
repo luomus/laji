@@ -34,8 +34,13 @@ export class UserTableComponent implements OnInit {
         summaryFunc: () => this.translate.instant('theme.total')
       },
       {
-        name: 'count',
-        label: 'results.userTable.count',
+        name: 'versionCount',
+        label: 'results.userTable.versionCount',
+        width: 70
+      },
+      {
+        name: 'validationCount',
+        label: 'results.userTable.validationCount',
         width: 70
       }
     ];
