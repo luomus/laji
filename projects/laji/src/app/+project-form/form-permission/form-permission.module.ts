@@ -10,7 +10,7 @@ import { ManageComponent } from './admin/manage/manage.component';
 import { FindPersonModule } from '../../shared-modules/find-person/find-person.module';
 import { RequestWrapperComponent } from './request/request-wrapper.component';
 import { ParticipantsComponent } from './admin/participants/participants.component';
-import { DownloadModule } from '../../shared-modules/download/download.module';
+import { DownloadModalModule } from '../../shared-modules/download-modal/download-modal.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 
 @NgModule({
@@ -18,7 +18,7 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
     CommonModule,
     SharedModule,
     FindPersonModule,
-    DownloadModule,
+    DownloadModalModule,
     LajiUiModule
   ],
   declarations: [

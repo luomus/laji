@@ -29,7 +29,7 @@ import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
-import { DownloadModule } from '../shared-modules/download/download.module';
+import { DownloadModalModule } from '../shared-modules/download-modal/download-modal.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
@@ -54,7 +54,7 @@ import { SelectCollectionsModule } from '../shared-modules/select-collections/se
     JwBootstrapSwitchNg2Module,
     AnnotationModule,
     LajiUiModule,
-    DownloadModule,
+    DownloadModalModule,
     ChartModule,
     ThreeStateSwitchModule,
     PillListModule,

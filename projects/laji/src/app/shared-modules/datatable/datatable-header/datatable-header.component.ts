@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { DownloadComponent } from '../../download/download.component';
+import { DownloadComponent } from '../../download-modal/download.component';
 
 @Component({
   selector: 'laji-datatable-header',
