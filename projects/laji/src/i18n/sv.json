@@ -174,7 +174,7 @@
   "excel.import.step4.userMapping": "Current mapping",
   "excel.import.taxonAsIs": "All names as they are",
   "excel.import.workingOn": "Working on file:",
-  "excel.info.array": "Du kan ange flera värden i ett enda fält genom att separera värdena med tecknet \"{{separator}}\".",
+  "excel.info.array": "Du kan ange flera värden i ett enda fält genom att separera värdena med tecknet \"{{separators}}\".",
   "excel.info.date": "Rekommenderat format för datumet är ÅÅÅÅ-MM-DD, t.ex. 2018-04-03. Ett datumvärde-fältvärde är också tillåtet.",
   "excel.info.file": "Se inspelningsanvisningarna på https://laji.fi/about/3412 (på finska)",
   "excel.info.geometry": "I det här fältet kan du ange YKJ-rutan, WGS84-punkten eller det värde du har kopierat med karttjänsten https://laji.fi/map \"Kopiera koordinaterna för de ritade mönstren\". Du kan också skriva vad som helst här om du vill. I det här fallet, om inget exakt mönster hittas under sparfasen, ber broschyren dig att rita mönstret på kartan.",
