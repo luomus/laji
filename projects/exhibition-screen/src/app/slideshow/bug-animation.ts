@@ -2,7 +2,7 @@ import { ElementRef, Renderer2 } from "@angular/core";
 import { interval, Subject } from "rxjs";
 import { delay, switchMap, takeUntil } from "rxjs/operators"
 import { AnimationEngine } from "../../animations/animation-engine";
-import { CurveFollower, EsAnimatable, PathFollower } from "../../animations/es-animatable";
+import { ConfusedCurveFollower, EsAnimatable, PathFollower } from "../../animations/es-animatable";
 import { V2 } from "../../animations/math";
 
 export type BugPath = 'topleft' | 'topright' | 'botright' | 'botleft';
@@ -67,7 +67,7 @@ export class BugAnimation {
 				const h = window.innerHeight;
 				const path = bugPathToV2Arr(this.bugPaths[pathIdx], w, h);
 				if (path.length === 3) {
-					this.bug = new CurveFollower(<[V2, V2, V2]>path, 5);
+					this.bug = new ConfusedCurveFollower(<[V2, V2, V2]>path, 5 + Math.random() * 2);
 				} else {
 					const pf = new PathFollower();
 					pf.path = path;

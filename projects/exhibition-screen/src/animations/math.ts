@@ -27,5 +27,6 @@ export const V2 = {
 		const ab = V2.lerp(a, b, t);
 		const cb = V2.lerp(c, b, 1-t);
 		return V2.lerp(ab, cb, t);
-	}
+	},
+	perp: (v: V2): V2 => ([v[1], -v[0]])
 }
