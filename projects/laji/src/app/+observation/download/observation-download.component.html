@@ -112,21 +112,23 @@
         </div>
       </ng-container>
     </section>
-    <section *lajiForTypes="['vir']">
-      <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
-      <alert *lajiLoggedIn="false">
-        {{ 'result.load.error.notLoggedIn' | translate }}
-      </alert>
-      <alert *ngIf="!queryHasFilters">
-        {{ 'result.load.error.minQuery' | translate }}
-      </alert>
-      <ng-container *lajiLoggedIn="true">
-        <div *ngIf="queryHasFilters">
-          <p [innerHtml]="'result.load.api' | translate"></p>
-          <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
-        </div>
-      </ng-container>
-    </section>
+    <ng-container *ngIf="false">
+      <section *lajiForTypes="['vir']">
+        <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
+        <alert *lajiLoggedIn="false">
+          {{ 'result.load.error.notLoggedIn' | translate }}
+        </alert>
+        <alert *ngIf="!queryHasFilters">
+          {{ 'result.load.error.minQuery' | translate }}
+        </alert>
+        <ng-container *lajiLoggedIn="true">
+          <div *ngIf="queryHasFilters">
+            <p [innerHtml]="'result.load.api' | translate"></p>
+            <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
+          </div>
+        </ng-container>
+      </section>
+    </ng-container>
     <section>
       <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
       <alert *ngIf="taxaLimit < speciesCount">
