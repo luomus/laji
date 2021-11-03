@@ -18,6 +18,8 @@ import { SmallAudioViewerComponent } from './species-validation/small-audio-view
 import { VersionNavComponent } from './species-validation/version-nav/version-nav.component';
 import { CornellAudioInfoComponent } from './cornell-audio-info/cornell-audio-info.component';
 import { CornellAudioDatePipe } from './cornell-audio-info/cornell-audio-date.pipe';
+import { SpeciesListQueryService } from './service/species-list-query.service';
+import { QueryResetterGuard } from './service/query-resetter.guard';
 
 
 @NgModule({
@@ -43,6 +45,10 @@ import { CornellAudioDatePipe } from './cornell-audio-info/cornell-audio-date.pi
     VersionNavComponent,
     CornellAudioInfoComponent,
     CornellAudioDatePipe
+  ],
+  providers: [
+    SpeciesListQueryService,
+    QueryResetterGuard
   ]
 })
 export class ValidationModule { }
