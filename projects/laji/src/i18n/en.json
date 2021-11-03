@@ -395,7 +395,7 @@
   "haseka.submissions.toPrint": "Go to print page",
   "haseka.submissions.toStatistics": "Go to statistics page",
   "haseka.submissions.total": "Total",
-  "haseka.submissions.unitCount": "Matching observations",
+  "haseka.submissions.unitCount": "Observations",
   "haseka.submissions.use": "Use",
   "haseka.submissions.view": "View",
   "haseka.template.loadError": "Pre-filled form loading failed. Please wait for a short period of time and then try again.",
