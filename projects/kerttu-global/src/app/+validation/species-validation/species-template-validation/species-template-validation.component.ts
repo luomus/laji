@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChan
 import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalValidationData, IGlobalSpecies } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalTemplateVersion, IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-template-validation',

@@ -8,7 +8,7 @@ import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListFiltersComponent {
-  @Input() filters: IGlobalSpeciesFilters = {continent: [], order: [], family: []};
+  @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
   @Input() showOnlyUnvalidated = true;
 

@@ -9,12 +9,12 @@ import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesListComponent {
-  @Input() filters: IGlobalSpeciesFilters = {continent: [], order: [], family: []};
+  @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
-  @Input() speciesList: IGlobalSpeciesListResult = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  @Input() speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
   @Input() loading = false;
 
-  @Output() taxonSelect = new EventEmitter<number>();
+  @Output() speciesSelect = new EventEmitter<number>();
   @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
 
   onPageChange(page: number) {
@@ -26,12 +26,12 @@ export class SpeciesListComponent {
     const orderBy = sorts.map(sort => {
       return sort.prop + ' ' + sort.dir.toUpperCase();
     });
-    this.query = {...this.query, page: 1, orderBy: orderBy};
+    this.query = { ...this.query, page: 1, orderBy: orderBy };
     this.changeQuery();
   }
 
   onQueryChange(query: IGlobalSpeciesQuery) {
-    this.query = {...query, page: 1, orderBy: this.query.orderBy};
+    this.query = { ...query, page: 1, orderBy: this.query.orderBy };
     this.changeQuery();
   }
 

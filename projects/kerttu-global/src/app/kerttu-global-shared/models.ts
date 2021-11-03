@@ -5,8 +5,8 @@ export interface IListResult<T> {
   results: T[];
 }
 
-export interface SuccessResult {
-  success: true;
+export interface ISuccessResult {
+  success: boolean;
 }
 
 export interface IGlobalSpeciesListResult extends PagedResult<IGlobalSpecies> {
@@ -38,12 +38,12 @@ export interface IGlobalSpecies {
 }
 
 export interface IGlobalSpeciesFilters {
-  continent: {id: number, name: string}[];
-  order: {id: number, scientificName: string}[];
-  family: {id: number, scientificName: string, order: number}[];
+  continent: { id: number, name: string }[];
+  order: { id: number, scientificName: string }[];
+  family: { id: number, scientificName: string, order: number }[];
 }
 
-export interface IGlobalValidationData {
+export interface IGlobalTemplateVersion {
   created?: string;
   userId?: string;
   templates: IGlobalTemplate[];

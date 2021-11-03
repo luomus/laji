@@ -1,24 +1,29 @@
 <div class="container-fluid">
-  <ng-container *ngIf="hasLock">
+  <ng-container *ngIf="hasLock else noLock">
     <laji-version-nav
       class="pull-right"
-      [data]="data$ | async"
-      [activeIdx]="activeIdx$ | async"
-      (activeIdxChange)="activeIdxChange($event)"
+      [data]="templateVersions$ | async"
+      [activeIdx]="activeVersionIdx$ | async"
+      (activeIdxChange)="activeVersionIdxChange($event)"
     ></laji-version-nav>
     <laji-species-template-validation
       [species]="species$ | async"
-      [data]="validationData$ | async"
-      [templates]="templates$ | async"
+      [data]="recordings$ | async"
+      [templates]="activeTemplates$ | async"
       [historyView]="historyView$ | async"
       [saving]="saving"
       (save)="saveTemplates($event)"
-      (cancel)="cancel()"
+      (cancel)="goToSpeciesList()"
     ></laji-species-template-validation>
-    </ng-container>
-    <ng-container *ngIf="hasLock === false">
+  </ng-container>
+  <ng-template #noLock>
+    <ng-container *ngIf="hasLock === false else loading">
       <div class="alert alert-danger">
         {{ 'validation.noLock' | translate }}
       </div>
     </ng-container>
+  </ng-template>
+  <ng-template #loading>
+    <laji-spinner></laji-spinner>
+  </ng-template>
 </div>

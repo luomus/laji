@@ -4,9 +4,8 @@ import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } f
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
-import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/logger/index';
+import { ConsoleLogger, HttpLogger, Logger, ILogger } from '../../../laji/src/app/shared/logger';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
-import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';

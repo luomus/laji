@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angul
 import { SpeciesListQueryService } from './species-list-query.service';
 
 @Injectable()
-export class QueryResetterGuard implements CanActivate {
+export class QueryResetGuard implements CanActivate {
   constructor(
     private queryService: SpeciesListQueryService
   ) {}

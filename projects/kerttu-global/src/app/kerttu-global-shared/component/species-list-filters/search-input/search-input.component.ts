@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
-  @Input() searchQuery: string;
+  @Input() searchQuery = '';
 
   private searchQueryChanged: Subject<string> = new Subject<string>();
   private searchQueryChangeSub: Subscription;

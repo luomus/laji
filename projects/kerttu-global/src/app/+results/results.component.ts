@@ -6,7 +6,7 @@ import { map, switchMap, startWith } from 'rxjs/operators';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
-  selector: 'laji-about',
+  selector: 'laji-results',
   template: `
     <div class="container">
       <h1>{{ 'results.title' | translate }}</h1>
@@ -46,7 +46,7 @@ export class ResultsComponent {
       switchMap(speciesQuery => {
         return this.kerttuGlobalApi.getValidationStats(speciesQuery).pipe(
           map(result => result.results),
-          startWith(null)
+          startWith(<IValidationStat[]>null)
         );
       })
     );
@@ -54,7 +54,7 @@ export class ResultsComponent {
       switchMap(speciesQuery => {
         return this.kerttuGlobalApi.getUserStats(speciesQuery).pipe(
           map(result => result.results),
-          startWith(null)
+          startWith(<IUserStat[]>null)
         );
       })
     );

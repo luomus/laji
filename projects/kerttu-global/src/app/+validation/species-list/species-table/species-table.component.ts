@@ -9,13 +9,13 @@ import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTableComponent implements OnInit {
-  @Input() data: IGlobalSpeciesListResult = {results: [], currentPage: 0, total: 0, pageSize: 0};
+  @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
   @Input() loading = false;
 
-  private defaultColumns: DatatableColumn[];
-  columns: DatatableColumn[];
+  private defaultColumns: DatatableColumn[] = [];
+  columns: DatatableColumn[] = [];
 
-  @Output() taxonSelect = new EventEmitter<number>();
+  @Output() speciesSelect = new EventEmitter<number>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
 
@@ -59,7 +59,7 @@ export class SpeciesTableComponent implements OnInit {
 
   onRowSelect(row: any) {
     if (!row.isLocked) {
-      this.taxonSelect.emit(row.id);
+      this.speciesSelect.emit(row.id);
     }
   }
 

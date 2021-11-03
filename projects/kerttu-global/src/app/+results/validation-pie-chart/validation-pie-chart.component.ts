@@ -19,7 +19,7 @@ export class ValidationPieChartComponent {
 
   @Input() set data(data: IValidationStat[]) {
     if (!data) {
-      this._data = null;
+      this._data = [];
       return;
     }
 

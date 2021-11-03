@@ -1,11 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  SuccessResult,
-  IGlobalComment,
-  IGlobalValidationData,
-  IGlobalSpeciesListResult,
-  KerttuGlobalErrorEnum
+import {
+  IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
+  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -39,21 +36,21 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
-  public getSpecies(taxonId: number): Observable<IGlobalSpecies> {
-    const path = this.basePath + '/species/' + taxonId;
+  public getSpecies(speciesId: number): Observable<IGlobalSpecies> {
+    const path = this.basePath + '/species/' + speciesId;
 
     return this.httpClient.get<IGlobalSpecies>(path);
   }
 
-  public lockSpecies(personToken: string, taxonId: number): Observable<SuccessResult> {
-    const path = this.basePath + '/species/lock/' + taxonId;
+  public lockSpecies(personToken: string, speciesId: number): Observable<ISuccessResult> {
+    const path = this.basePath + '/species/lock/' + speciesId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.post<SuccessResult>(path, {}, { params });
+    return this.httpClient.post<ISuccessResult>(path, {}, { params });
   }
 
-  public unlockSpecies(personToken: string, taxonId: number): boolean {
-    const path = this.basePath + '/species/unlock/' + taxonId + '?personToken=' + personToken;
+  public unlockSpecies(personToken: string, speciesId: number): boolean {
+    const path = this.basePath + '/species/unlock/' + speciesId + '?personToken=' + personToken;
 
     return this.window.navigator.sendBeacon(path);
   }
@@ -64,25 +61,25 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpeciesFilters>(path);
   }
 
-  public getDataForValidation(taxonId: number): Observable<IListResult<IGlobalRecording>> {
-    const path = this.basePath + '/recording/' + taxonId;
+  public getRecordings(speciesId: number): Observable<IListResult<IGlobalRecording>> {
+    const path = this.basePath + '/recording/' + speciesId;
 
     return this.httpClient.get<IListResult<IGlobalRecording>>(path);
   }
 
-  public getTemplates(taxonId: number): Observable<IListResult<IGlobalValidationData>> {
+  public getTemplateVersions(taxonId: number): Observable<IListResult<IGlobalTemplateVersion>> {
     const path = this.basePath + '/template/' + taxonId;
 
-    return this.httpClient.get<IListResult<IGlobalValidationData>>(path);
+    return this.httpClient.get<IListResult<IGlobalTemplateVersion>>(path);
   }
 
   public saveTemplates(personToken: string, taxonId: number, data: {
     templates: IGlobalTemplate[], comments: IGlobalComment[]
-  }): Observable<SuccessResult> {
+  }): Observable<ISuccessResult> {
     const path = this.basePath + '/template/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.post<SuccessResult>(path, data, { params });
+    return this.httpClient.post<ISuccessResult>(path, data, { params });
   }
 
   public getValidationStats(query: IGlobalSpeciesQuery): Observable<IListResult<IValidationStat>> {

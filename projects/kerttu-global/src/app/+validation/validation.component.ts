@@ -16,7 +16,7 @@ import { SpeciesListQueryService } from './service/species-list-query.service';
       [filters]="speciesFilters$ | async"
       [speciesList]="speciesList"
       [loading]="loading"
-      (taxonSelect)="onTaxonSelect($event)"
+      (speciesSelect)="onSpeciesSelect($event)"
       (queryChange)="updateSpeciesList()"
     ></laji-species-list>
   `,
@@ -36,11 +36,11 @@ export class ValidationComponent implements OnInit, OnDestroy {
   private speciesListSub: Subscription;
 
   constructor(
+    public queryService: SpeciesListQueryService,
     private userService: UserService,
     private kerttuGlobalApi: KerttuGlobalApi,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    public queryService: SpeciesListQueryService,
     private cd: ChangeDetectorRef
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
@@ -56,8 +56,8 @@ export class ValidationComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTaxonSelect(taxon: number) {
-    this.router.navigate(this.localizeRouterService.translateRoute(['validation', taxon]));
+  onSpeciesSelect(speciesId: number) {
+    this.router.navigate(this.localizeRouterService.translateRoute(['validation', speciesId]));
   }
 
   updateSpeciesList() {

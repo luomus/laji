@@ -1,20 +1,20 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BehaviorSubject, combineLatest, Observable, Subscription} from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import {distinctUntilChanged, map, share, switchMap, tap} from 'rxjs/operators';
 import {
   IGlobalComment,
   IGlobalRecording,
   IGlobalSpecies,
   IGlobalTemplate,
-  IGlobalValidationData,
+  IGlobalTemplateVersion,
   KerttuGlobalErrorEnum
 } from '../../kerttu-global-shared/models';
-import {KerttuGlobalApi} from '../../kerttu-global-shared/service/kerttu-global-api';
-import {DialogService} from 'projects/laji/src/app/shared/service/dialog.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserService} from 'projects/laji/src/app/shared/service/user.service';
-import {LocalizeRouterService} from 'projects/laji/src/app/locale/localize-router.service';
+import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
+import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
+import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 
 @Component({
   selector: 'laji-species-validation',
@@ -24,17 +24,17 @@ import {LocalizeRouterService} from 'projects/laji/src/app/locale/localize-route
 })
 export class SpeciesValidationComponent implements OnInit, OnDestroy {
   species$: Observable<IGlobalSpecies>;
-  validationData$: Observable<IGlobalRecording[]>;
-  data$: Observable<IGlobalValidationData[]>;
-  templates$: Observable<IGlobalTemplate[]>;
+  recordings$: Observable<IGlobalRecording[]>;
+  templateVersions$: Observable<IGlobalTemplateVersion[]>;
+  activeTemplates$: Observable<IGlobalTemplate[]>;
   historyView$: Observable<boolean>;
 
   saving = false;
   canLeaveWithoutConfirm = false;
-  hasLock: boolean;
+  hasLock?: boolean;
 
-  private activeIdxSubject = new BehaviorSubject<number>(undefined);
-  activeIdx$ = this.activeIdxSubject.asObservable();
+  private activeVersionIdxSubject = new BehaviorSubject<number>(undefined);
+  activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
 
   private speciesId$: Observable<number>;
   private speciesId: number;
@@ -70,24 +70,24 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     this.species$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId))
     );
-    this.validationData$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getDataForValidation(speciesId).pipe(map(data => data.results)))
+    this.recordings$ = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(speciesId).pipe(map(data => data.results)))
     );
-    this.data$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getTemplates(speciesId).pipe(
+    this.templateVersions$ = this.speciesId$.pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.getTemplateVersions(speciesId).pipe(
         map(data => data.results),
-        tap(data => {
-          if (data.length > 0) {
-            this.activeIdxChange(data.length - 1);
+        tap(versions => {
+          if (versions.length > 0) {
+            this.activeVersionIdxChange(versions.length - 1);
           }
         })
       )),
       share()
     );
-    this.templates$ = combineLatest([this.data$, this.activeIdx$]).pipe(
-      map(([data, activeIdx]) => {
-        if (data.length > 0) {
-          return data[activeIdx].templates;
+    this.activeTemplates$ = combineLatest([this.templateVersions$, this.activeVersionIdx$]).pipe(
+      map(([versions, activeIdx]) => {
+        if (versions.length > 0) {
+          return versions[activeIdx].templates;
         }
         const templates = [];
         while (templates.length < 10) {
@@ -96,12 +96,12 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
         return templates;
       })
     );
-    this.historyView$ = combineLatest([this.data$, this.activeIdx$]).pipe(
-      map(([data, activeIdx]) => {
-        if (data.length === 0) {
+    this.historyView$ = combineLatest([this.templateVersions$, this.activeVersionIdx$]).pipe(
+      map(([versions, activeIdx]) => {
+        if (versions.length === 0) {
           return false;
         }
-        return activeIdx !== data.length - 1;
+        return activeIdx !== versions.length - 1;
       })
     );
   }
@@ -118,9 +118,9 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     $event.returnValue = this.canLeaveWithoutConfirm;
   }
 
+  // Unlock species on page close
   @HostListener('window:onunload', ['$event'])
   onUnload() {
-    // Unlock species on page close
     this.unlockSpecies();
   }
 
@@ -136,7 +136,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
       this.saving = false;
       this.canLeaveWithoutConfirm = true;
-      this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+      this.goToSpeciesList();
       this.cd.markForCheck();
     }, (e) => {
       this.saving = false;
@@ -146,12 +146,12 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     });
   }
 
-  cancel() {
+  goToSpeciesList() {
     this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
   }
 
-  activeIdxChange(activeIdx: number) {
-    this.activeIdxSubject.next(activeIdx);
+  activeVersionIdxChange(activeIdx: number) {
+    this.activeVersionIdxSubject.next(activeIdx);
   }
 
   private unlockSpecies() {

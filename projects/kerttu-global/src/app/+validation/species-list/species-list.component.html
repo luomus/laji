@@ -14,7 +14,7 @@
     [luFillHeight]="{ minHeight: 500 }"
     [data]="speciesList"
     [loading]="loading"
-    (taxonSelect)="taxonSelect.emit($event)"
+    (speciesSelect)="speciesSelect.emit($event)"
     (pageChange)="onPageChange($event)"
     (sortChange)="onSortChange($event)"
   ></laji-species-table>

@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IUserStat } from '../../kerttu-global-shared/models';
 
-
 @Component({
   selector: 'laji-user-table',
   templateUrl: './user-table.component.html',
@@ -16,7 +15,6 @@ export class UserTableComponent implements OnInit {
 
   columns: DatatableColumn[] = [];
   sorts: { prop: string, dir: 'asc'|'desc' }[] = [{ prop: 'count', dir: 'desc' }];
-  loading = false;
 
   @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
 

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { IGlobalValidationData } from '../../../kerttu-global-shared/models';
+import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-version-nav',
@@ -8,7 +8,7 @@ import { IGlobalValidationData } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VersionNavComponent {
-  @Input() data: IGlobalValidationData[];
+  @Input() data: IGlobalTemplateVersion[];
   @Input() activeIdx = 0;
 
   @Output() activeIdxChange = new EventEmitter<number>();
