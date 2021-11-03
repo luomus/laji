@@ -3,7 +3,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
 import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../kerttu-global-shared/models';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 
@@ -40,13 +40,25 @@ export class ValidationComponent implements OnInit, OnDestroy {
     private kerttuGlobalApi: KerttuGlobalApi,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
+    private route: ActivatedRoute,
     private cd: ChangeDetectorRef
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
   }
 
   ngOnInit() {
-    this.updateSpeciesList();
+    this.route.queryParams.subscribe(params => {
+      this.speciesQuery = {
+        onlyUnvalidated: params['onlyUnvalidated'] === 'true',
+        continent: this.toInteger(params['continent']),
+        order: this.toInteger(params['order']),
+        family: this.toInteger(params['family']),
+        searchQuery: params['searchQuery'],
+        page: this.toInteger(params['page']),
+        orderBy: params['orderBy'] ? (Array.isArray(params['orderBy']) ? params['orderBy'] : [params['orderBy']]) : undefined
+      };
+      this.loadSpeciesList();
+    });
   }
 
   ngOnDestroy() {
@@ -60,6 +72,13 @@ export class ValidationComponent implements OnInit, OnDestroy {
   }
 
   updateSpeciesList() {
+    this.router.navigate(
+      [],
+      {queryParams: this.speciesQuery}
+    );
+  }
+
+  private loadSpeciesList() {
     if (this.speciesListSub) {
       this.speciesListSub.unsubscribe();
     }
@@ -71,5 +90,12 @@ export class ValidationComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.cd.markForCheck();
     });
+  }
+
+  private toInteger(value?: string) {
+    const intValue = parseInt(value, 10);
+    if (!isNaN(intValue)) {
+      return intValue;
+    }
   }
 }
