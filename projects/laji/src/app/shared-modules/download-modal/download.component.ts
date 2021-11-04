@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  Output, SimpleChanges,
+  Output,
   TemplateRef
 } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -27,25 +27,10 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
       </div>
       <div class="modal-body">
         <div>
-          <ng-container *ngIf="showReason">
-            <label for="reason">{{ 'download.reason' | translate }}</label>
-            <laji-metadata-select
-              [selectStyle]="basicSelectStyle"
-              [placeholder]="undefined"
-              [alt]="'HBF.dataUsePurposeEnum'"
-              [labelAsValue]="true"
-              [ngModel]="reasonEnum"
-              (ngModelChange)="reasonEnumChange.emit($event)"
-            ></laji-metadata-select>
-            <textarea
-              style="margin-top: 5px"
-              class="form-control"
-              name="reason"
-              [placeholder]="'information.more' | translate"
-              [ngModel]="reason"
-              (ngModelChange)="reasonChange.emit($event)"
-            ></textarea>
-          </ng-container>
+          <laji-download-modal-reason *ngIf="showReason"
+            [reason]="reason" [reasonEnum]="reasonEnum"
+            (reasonChange)="reasonChange.emit($event)" (reasonEnumChange)="reasonEnumChange.emit($event)">
+          </laji-download-modal-reason>
           <ng-container *ngIf="showFileTypes">
             <div class="radio" *ngIf="_formats.indexOf('csv') > -1">
               <label>
@@ -75,7 +60,7 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
               <button type="button"
                       [tooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
                       class="btn btn-default pull-right"
-                      [class.disabled]="disableDownLoad"
+                      [disabled]="disableDownLoad"
                       (click)="onDownload()">
                 <span>{{ "haseka.submissions.download" | translate }}</span>
               </button>

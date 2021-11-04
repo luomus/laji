@@ -4,7 +4,7 @@ import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
 
-type TableType = 'downloads'|'people'|'user';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
 
 @Component({
   selector: 'vir-data-table',
@@ -26,7 +26,7 @@ type TableType = 'downloads'|'people'|'user';
                   [showFooter]="false"
                   [virtualScrolling]="true"
                   [clientSideSorting]="true"
-                  [height]="'calc(90vh - 195px)'"
+                  [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
                   [count]="0"
@@ -48,6 +48,7 @@ export class DataTableComponent implements AfterViewInit {
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
+  @Input() height: string = 'calc(90vh - 195px)';
 
   downloadLoading: boolean;
 
@@ -86,7 +87,19 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
+      name: 'personId',
+      label: 'usage.person',
+      cellTemplate: 'label',
+      canAutoResize: true
+    },
+    {
       name: 'collectionId',
+      label: 'usage.collectionId',
+      cellTemplate: 'labelArray',
+      canAutoResize: true
+    },
+    {
+      name: 'collectionIds',
       label: 'usage.collectionId',
       cellTemplate: 'labelArray',
       canAutoResize: true
@@ -100,6 +113,18 @@ export class DataTableComponent implements AfterViewInit {
       prop: 'id',
       name: 'download',
       label: 'usage.dataDownload',
+      canAutoResize: true
+    },
+    {
+      prop: 'apiKeyExpires',
+      name: 'apiKeyExpires',
+      label: 'usage.apiKeyExpires',
+      canAutoResize: true
+    },
+    {
+      name: 'apiKey',
+      label: 'usage.apiKey',
+      cellTemplate: 'copyToClipboard',
       canAutoResize: true
     }
   ];
@@ -147,6 +172,10 @@ export class DataTableComponent implements AfterViewInit {
         return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
       case 'user':
         return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
+      case 'userKeys':
+        return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
+      case 'apiKeys':
+        return this.getCols(['apiKeyExpires', 'personId', 'collectionIds', 'dataUsePurpose']);
     }
   }
 

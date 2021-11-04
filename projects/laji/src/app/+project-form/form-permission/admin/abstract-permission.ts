@@ -1,9 +1,10 @@
 import { FormPermission } from '../../../shared/model/FormPermission';
-import { combineLatest, take } from 'rxjs/operators';
+import { combineLatest, take, tap } from 'rxjs/operators';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
 import { UserService } from '../../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
+import { Observable, of } from 'rxjs';
 
 export abstract class AbstractPermission {
   formPermission: FormPermission;
@@ -15,17 +16,16 @@ export abstract class AbstractPermission {
   protected router: Router;
   protected localizeRouterService: LocalizeRouterService;
 
-  protected initFormPermission() {
+  protected updateFormPermission$(): Observable<any> {
     if (!this.collectionId) {
-      return;
+      return of(null);
     }
-    this.formPermissionService
-      .getFormPermission(this.collectionId, this.userService.getToken()).pipe(
+    return this.formPermissionService.getFormPermission(this.collectionId, this.userService.getToken()).pipe(
       combineLatest(
         this.userService.user$.pipe(take(1)),
         (permission, person) => ({permission, person})
-      ))
-      .subscribe((data) => {
+      ),
+      tap(data => {
         this.formPermission = data.permission;
         this.isAllowed = this.formPermissionService.isAdmin(data.permission, data.person) || UserService.isIctAdmin(data.person);
         if (!this.isAllowed) {
@@ -33,7 +33,8 @@ export abstract class AbstractPermission {
             this.localizeRouterService.translateRoute(['/vihko'])
           );
         }
-      });
+      })
+    );
   }
 
 }

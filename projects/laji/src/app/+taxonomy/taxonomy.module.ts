@@ -47,7 +47,7 @@ import { TaxonOverviewComponent } from './taxon/info-card/taxon-overview/taxon-o
 import { TaxonImagesComponent } from './taxon/info-card/taxon-images/taxon-images.component';
 import { TaxonBiologyComponent } from './taxon/info-card/taxon-biology/taxon-biology.component';
 import { TaxonTaxonomyComponent } from './taxon/info-card/taxon-taxonomy/taxon-taxonomy.component';
-import { DownloadModule } from '../shared-modules/download/download.module';
+import { DownloadModalModule } from '../shared-modules/download-modal/download-modal.module';
 import { TaxonDescriptionSourceComponent } from './taxon/info-card/shared/component/taxon-description-source/taxon-description-source.component';
 import { TaxonOccurrenceComponent } from './taxon/info-card/taxon-occurrence/taxon-occurrence.component';
 import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
@@ -84,7 +84,7 @@ import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identificatio
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
-    InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModule, GbifMapModule,
+    InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModalModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
     ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule
   ],

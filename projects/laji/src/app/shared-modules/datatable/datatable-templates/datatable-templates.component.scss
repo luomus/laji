@@ -1,3 +1,5 @@
+@import 'vars';
+
 .inline {
   display: inline !important;
 }
@@ -112,4 +114,13 @@ div.iucnStatusNA {
 }
 div.iucnStatusNE {
   border: 2px solid lightgray;
+}
+.copy-to-clipboard {
+	cursor: pointer;
+	color: $primary-5;
+	white-space: nowrap;
+	&:hover {
+		color: $primary-6;
+		text-decoration: underline;
+	}
 }

@@ -91,9 +91,9 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
 
   use(id: string) {
     this.loading = true;
-    this.subscription = this.translate.get('np.linker.confirm').pipe(
+    this.subscription = this.translate.get(['np.linker.confirm', 'np.linker.doLink']).pipe(
       take(1),
-      switchMap(txt => this.dialogService.confirm(txt)),
+      switchMap(translations => this.dialogService.confirm(translations['np.linker.confirm'], translations['np.linker.doLink'])),
       switchMap(confirmed => {
         if (!confirmed) {
           this.loading = false;
