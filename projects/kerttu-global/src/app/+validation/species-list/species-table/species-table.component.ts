@@ -11,6 +11,7 @@ import { IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
 export class SpeciesTableComponent implements OnInit {
   @Input() data: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
   @Input() loading = false;
+  @Input() sorts: DatatableSort[] = [];
 
   private defaultColumns: DatatableColumn[] = [];
   columns: DatatableColumn[] = [];

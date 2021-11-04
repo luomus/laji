@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
 
@@ -8,7 +8,7 @@ import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } 
   styleUrls: ['./species-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesListComponent {
+export class SpeciesListComponent implements OnChanges {
   @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
   @Input() speciesList: IGlobalSpeciesListResult = { results: [], currentPage: 0, total: 0, pageSize: 0 };
@@ -16,6 +16,20 @@ export class SpeciesListComponent {
 
   @Output() speciesSelect = new EventEmitter<number>();
   @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
+
+  sorts: DatatableSort[] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.query) {
+      this.sorts = (this.query.orderBy || []).map(order => {
+        const parts = order.split(' ');
+        return {
+          prop: parts[0],
+          dir: parts[1].toLowerCase() as ('asc'|'desc')
+        };
+      });
+    }
+  }
 
   onPageChange(page: number) {
     this.query = {...this.query, page: page};

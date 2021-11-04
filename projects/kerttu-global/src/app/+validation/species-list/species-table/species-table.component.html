@@ -9,6 +9,7 @@
   [count]="data.total"
   [loading]="loading"
   [showRowAsLink]="false"
+  [sorts]="sorts"
   (rowSelect)="onRowSelect($event.row)"
   (pageChange)="pageChange.emit($event.page)"
   (sortChange)="sortChange.emit($event.sorts)"
