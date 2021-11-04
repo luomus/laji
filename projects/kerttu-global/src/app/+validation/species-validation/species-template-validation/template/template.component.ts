@@ -1,23 +1,23 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../kerttu-global-shared/models';
+import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
+import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-letter-template',
-  templateUrl: './letter-template.component.html',
-  styleUrls: ['./letter-template.component.scss'],
+  selector: 'laji-template',
+  templateUrl: './template.component.html',
+  styleUrls: ['./template.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LetterTemplateComponent {
-  @Input() template: IGlobalTemplate;
-  @Input() audio: IGlobalAudio;
-  @Input() spectrogramConfig: ISpectrogramConfig;
-  @Input() templateIdx: number;
-  @Input() isNew: boolean;
-  @Input() focusTime: number;
-  @Input() historyView: boolean;
+export class TemplateComponent {
+  @Input() template?: IGlobalTemplate;
+  @Input() templateIdx?: number;
+  @Input() isNewTemplate?: boolean;
+  @Input() audio?: IGlobalAudio;
+  @Input() audioFocusTime?: number;
+  @Input() spectrogramConfig?: ISpectrogramConfig;
+  @Input() historyView?: boolean;
 
   @Output() confirm = new EventEmitter<IGlobalTemplate>();
   @Output() cancel = new EventEmitter();
@@ -36,9 +36,9 @@ export class LetterTemplateComponent {
   @ViewChild('commentModal', { static: true }) commentModal: TemplateRef<any>;
   @ViewChild('audioInfo', { static: true }) audioInfoTpl: TemplateRef<any>;
 
-  private newTemplate: IGlobalTemplate;
+  private framedTemplate?: IGlobalTemplate;
   private commentType: CommentType = CommentType.reframe;
-  private modalRef: BsModalRef;
+  private modalRef?: BsModalRef;
 
   constructor(
     private dialogService: DialogService,
@@ -52,7 +52,7 @@ export class LetterTemplateComponent {
 
   onDrawEnd(area: IAudioViewerArea) {
     this.audioViewerMode = 'default';
-    this.newTemplate = {
+    this.framedTemplate = {
       audioId: this.audio.id,
       area: area
     };
@@ -61,7 +61,7 @@ export class LetterTemplateComponent {
       this.commentType = CommentType.reframe;
       this.showCommentModal();
     } else {
-      this.template = this.newTemplate;
+      this.template = this.framedTemplate;
     }
   }
 
@@ -93,14 +93,14 @@ export class LetterTemplateComponent {
     });
 
     if (this.commentType === CommentType.reframe) {
-      this.template = this.newTemplate;
+      this.template = this.framedTemplate;
     } else {
       this.remove.emit();
     }
   }
 
   showCommentModal() {
-    this.modalRef = this.modalService.show(this.commentModal, {class: 'modal-md'});
+    this.modalRef = this.modalService.show(this.commentModal, { class: 'modal-md' });
   }
 
   hideCommentModal() {

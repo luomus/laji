@@ -10,14 +10,14 @@ import { ValidationComponent } from './validation.component';
 import { SpeciesListComponent } from './species-list/species-list.component';
 import { SpeciesTableComponent } from './species-list/species-table/species-table.component';
 import { SpeciesValidationComponent } from './species-validation/species-validation.component';
-import { LetterCandidatesComponent } from './species-validation/letter-candidates/letter-candidates.component';
-import { LetterTemplatesComponent } from './species-validation/letter-templates/letter-templates.component';
-import { LetterTemplateComponent } from './species-validation/letter-template/letter-template.component';
+import { RecordingsComponent } from './species-validation/species-template-validation/recordings/recordings.component';
+import { TemplatesComponent } from './species-validation/species-template-validation/templates/templates.component';
+import { TemplateComponent } from './species-validation/species-template-validation/template/template.component';
 import { SpeciesTemplateValidationComponent } from './species-validation/species-template-validation/species-template-validation.component';
-import { SmallAudioViewerComponent } from './species-validation/small-audio-viewer/small-audio-viewer.component';
+import { SmallAudioViewerComponent } from './species-validation/species-template-validation/small-audio-viewer/small-audio-viewer.component';
 import { VersionNavComponent } from './species-validation/version-nav/version-nav.component';
-import { CornellAudioInfoComponent } from './species-validation/cornell-audio-info/cornell-audio-info.component';
-import { CornellAudioDatePipe } from './species-validation/cornell-audio-info/cornell-audio-date.pipe';
+import { CornellAudioInfoComponent } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-info.component';
+import { CornellAudioDatePipe } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-date.pipe';
 import { SpeciesListQueryService } from './service/species-list-query.service';
 import { QueryResetGuard } from './service/query-reset.guard';
 
@@ -37,9 +37,9 @@ import { QueryResetGuard } from './service/query-reset.guard';
     SpeciesListComponent,
     SpeciesTableComponent,
     SpeciesValidationComponent,
-    LetterCandidatesComponent,
-    LetterTemplatesComponent,
-    LetterTemplateComponent,
+    RecordingsComponent,
+    TemplatesComponent,
+    TemplateComponent,
     SpeciesTemplateValidationComponent,
     SmallAudioViewerComponent,
     VersionNavComponent,

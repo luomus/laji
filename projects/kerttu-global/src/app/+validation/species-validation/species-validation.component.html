@@ -2,13 +2,13 @@
   <ng-container *ngIf="hasLock else noLock">
     <laji-version-nav
       class="pull-right"
-      [data]="templateVersions$ | async"
+      [versions]="templateVersions$ | async"
       [activeIdx]="activeVersionIdx$ | async"
       (activeIdxChange)="activeVersionIdxChange($event)"
     ></laji-version-nav>
     <laji-species-template-validation
       [species]="species$ | async"
-      [data]="recordings$ | async"
+      [recordings]="recordings$ | async"
       [templates]="activeTemplates$ | async"
       [historyView]="historyView$ | async"
       [saving]="saving"

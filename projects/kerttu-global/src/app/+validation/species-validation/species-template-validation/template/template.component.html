@@ -13,7 +13,7 @@
     [audio]="audio"
     [spectrogramConfig]="spectrogramConfig"
     [mode]="audioViewerMode"
-    [focusArea]="template ? template.area : {'xRange': [focusTime, focusTime]}"
+    [focusArea]="template ? template.area : { 'xRange': [audioFocusTime, audioFocusTime] }"
     [spectrogramHeight]="150"
     [showZoomControl]="true"
     [zoomFrequency]="template ? zoomFrequency : false"
@@ -25,21 +25,19 @@
   ></laji-audio-viewer>
 </div>
 <div class="mt-3">
-  <div>
-    <button
-      class="btn btn-primary"
-      [disabled]="historyView"
-      [ngClass]="{'active': audioViewerMode === 'draw'}"
-      (click)="toggleDrawMode()"
-    >
-      {{ ('validation.template.' + (template ? 'reframe' : 'frame')) | translate }}
-    </button>
-  </div>
+  <button
+    class="btn btn-primary"
+    [disabled]="historyView"
+    [ngClass]="{ 'active': audioViewerMode === 'draw' }"
+    (click)="toggleDrawMode()"
+  >
+    {{ ('validation.template.' + (template ? 'reframe' : 'frame')) | translate }}
+  </button>
 </div>
 
 <div class="row mt-5">
   <div class="col-sm-4">
-    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNew ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
+    <h3 class="d-inline-block">{{ ('validation.template.' + (historyView ? 'oldVersion' : (isNewTemplate ? 'new' : 'current'))) | translate }} T{{ templateIdx + 1 }}</h3>
     <p *ngIf="!historyView">{{ 'validation.template.description' | translate }}</p>
     <p *ngIf="template?.validatedBy">
       {{ 'validation.template.validatedBy' | translate }}: {{ template.validatedBy | users | values }}
@@ -84,28 +82,26 @@
   </div>
 </div>
 <div class="mt-3 mb-5">
-  <div>
-    <button
-      [disabled]="!template || historyView"
-      class="btn btn-success mr-3"
-      (click)="onConfirm()"
-    >
-      {{ 'validation.template.confirm' | translate }}
-    </button>
-    <button
-      class="btn btn-default mr-3"
-      (click)="cancel.emit()"
-    >
-      {{ 'validation.cancel' | translate }}
-    </button>
-    <button
-      [disabled]="!template || isNew || historyView"
-      class="btn btn-danger"
-      (click)="onRemove()"
-    >
-      {{ 'validation.template.remove' | translate }}
-    </button>
-  </div>
+  <button
+    class="btn btn-success mr-3"
+    [disabled]="!template || historyView"
+    (click)="onConfirm()"
+  >
+    {{ 'validation.template.confirm' | translate }}
+  </button>
+  <button
+    class="btn btn-default mr-3"
+    (click)="cancel.emit()"
+  >
+    {{ 'validation.cancel' | translate }}
+  </button>
+  <button
+    class="btn btn-danger"
+    [disabled]="!template || isNewTemplate || historyView"
+    (click)="onRemove()"
+  >
+    {{ 'validation.template.remove' | translate }}
+  </button>
 </div>
 
 <ng-template #commentModal>

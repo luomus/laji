@@ -61,7 +61,7 @@
   "validation.template.remove": "Remove",
   "validation.template.remove.confirm": "Are you sure you want to remove this template?",
   "validation.template.removed": "Template removed",
-  "validation.template.undefined": "Undefined",
+  "validation.undefined": "Undefined",
   "validation.template.validatedBy": "Template validated by users",
   "validation.templates": "Templates",
   "validation.title": "Validate species",

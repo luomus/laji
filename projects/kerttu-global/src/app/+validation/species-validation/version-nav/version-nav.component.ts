@@ -8,7 +8,7 @@ import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VersionNavComponent {
-  @Input() data: IGlobalTemplateVersion[];
+  @Input() versions: IGlobalTemplateVersion[] = [];
   @Input() activeIdx = 0;
 
   @Output() activeIdxChange = new EventEmitter<number>();

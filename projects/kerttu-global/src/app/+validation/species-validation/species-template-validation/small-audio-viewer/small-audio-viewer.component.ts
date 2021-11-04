@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
-import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-small-audio-viewer',
@@ -9,15 +9,17 @@ import { IGlobalAudio, IGlobalTemplate } from '../../../kerttu-global-shared/mod
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SmallAudioViewerComponent {
-  @Input() area: IAudioViewerArea;
-  @Input() spectrogramConfig: ISpectrogramConfig;
-  @Input() audio: IGlobalAudio;
-  @Input() label: string;
+  @Input() audio?: IGlobalAudio;
+  @Input() area?: IAudioViewerArea;
+  @Input() spectrogramConfig?: ISpectrogramConfig;
+  @Input() label?: string;
   @Input() highlight = false;
   @Input() highlightType: 'default'|'warning'|'danger';
- 
+
+  @Input() width = '20%';
+  @Input() spectrogramHeight = 50;
+  @Input() margin: { top: number, bottom: number, left: number, right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
+
   @Output() templateClick = new EventEmitter<number>();
   @Output() audioLoading = new EventEmitter<boolean>();
-
-  margin: { top: number, bottom: number, left: number, right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
 }

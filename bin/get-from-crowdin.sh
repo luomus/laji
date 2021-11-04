@@ -22,8 +22,6 @@ docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../projects/vir
 echo "Getting kerttu global translations..."
 docker run --rm --env-file ${SCRIPT_PATH}/.env -v ${SCRIPT_PATH}/../projects/kerttu-global/i18n:/data luomus/laji-cli \
   crowdin:get:json BIRDSOUNDS \
-  en-GB:/data/en.json \
-  fi:/data/fi.json  \
-  sv-FI:/data/sv.json  
+  en-GB:/data/en.json
 
 echo "All done"

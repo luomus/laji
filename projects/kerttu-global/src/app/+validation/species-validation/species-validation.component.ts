@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import {distinctUntilChanged, map, share, switchMap, tap} from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 import {
   IGlobalComment,
   IGlobalRecording,
@@ -33,7 +33,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   canLeaveWithoutConfirm = false;
   hasLock?: boolean;
 
-  private activeVersionIdxSubject = new BehaviorSubject<number>(undefined);
+  private activeVersionIdxSubject = new BehaviorSubject<number>(0);
   activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
 
   private speciesId$: Observable<number>;

@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChan
 import { TranslateService } from '@ngx-translate/core';
 import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
-import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalTemplateVersion, IGlobalSpecies } from '../../../kerttu-global-shared/models';
+import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGlobalSpecies } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'laji-species-template-validation',
@@ -11,18 +11,18 @@ import { IGlobalAudio, IGlobalTemplate, IGlobalRecording, IGlobalComment, IGloba
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesTemplateValidationComponent implements OnChanges {
-  @Input() species: IGlobalSpecies;
-  @Input() data: IGlobalRecording[] = [];
-  @Input() templates: IGlobalTemplate[] = [];
+  @Input() species?: IGlobalSpecies;
+  @Input() recordings?: IGlobalRecording[];
+  @Input() templates?: IGlobalTemplate[];
   @Input() saving = false;
   @Input() historyView = false;
 
-  hasInitialTemplates = false;
+  hasAllTemplatesInitially = false;
   showCandidates = false;
 
   confirmedTemplates: boolean[] = [];
   comments: IGlobalComment[] = [];
-  creatingAllIsNotPossible = false;
+  creatingAllTemplatesIsNotPossible = false;
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
@@ -31,17 +31,16 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     nbrOfRowsRemovedFromStart: 0
   };
 
-  activeTemplateIdx: number;
-  activeTemplate: IGlobalTemplate;
-  activeTemplateIsNew: boolean;
-  activeAudio: IGlobalAudio;
-  focusTime: number;
+  activeTemplateIdx?: number;
+  activeTemplate?: IGlobalTemplate;
+  activeTemplateIsNew?: boolean;
+  activeAudio?: IGlobalAudio;
+  activeAudioFocusTime?: number;
 
   audioIdMap: {[id: number]: IGlobalAudio } = {};
-
   subSpecies: IGlobalSpecies[] = [];
 
-  @Output() save = new EventEmitter<{templates: IGlobalTemplate[], comments: IGlobalComment[]}>();
+  @Output() save = new EventEmitter<{ templates: IGlobalTemplate[], comments: IGlobalComment[] }>();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -50,16 +49,14 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.data) {
-      const data = this.data || [];
-
+    if (changes.recordings) {
       this.audioIdMap = {};
-      data.map(d => {
+      (this.recordings || []).map(d => {
         this.audioIdMap[d.audio.id] = d.audio;
       });
 
       const addedSubSpecies = [];
-      this.subSpecies = data.reduce((subSpecies, d) => {
+      this.subSpecies = (this.recordings || []).reduce((subSpecies, d) => {
         const species = d.audio.species;
         if (!species.isSpecies && !addedSubSpecies.includes(species.id)) {
           subSpecies.push(species);
@@ -71,10 +68,15 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     }
 
     if (changes.templates && this.templates) {
-      this.hasInitialTemplates = this.templates.indexOf(null) === -1;
+      this.hasAllTemplatesInitially = this.templates.indexOf(null) === -1;
+      if (!this.hasAllTemplatesInitially && !this.historyView) {
+        this.confirmAllTemplates();
+      }
+
       if (changes.templates.previousValue == null) {
-        this.setShowCandidates(!this.hasInitialTemplates);
-      } else if (this.activeTemplateIdx != null) {
+        this.setShowCandidates(!this.hasAllTemplatesInitially);
+      }
+      if (this.activeTemplateIdx != null) {
         this.onTemplateClick(this.activeTemplateIdx);
       }
     }
@@ -127,10 +129,11 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   }
 
   saveTemplates() {
-    const missingConfirm = this.confirmedTemplates.length < this.templates.length || this.confirmedTemplates.indexOf(false) !== -1;
-    if (missingConfirm && !(!this.hasInitialTemplates && this.creatingAllIsNotPossible)) {
+    const missingConfirm = this.confirmedTemplates.filter(confirm => !!confirm).length !== this.templates.length;
+
+    if (missingConfirm && !(!this.hasAllTemplatesInitially && this.creatingAllTemplatesIsNotPossible)) {
       this.dialogService.alert(
-        this.translate.instant(this.hasInitialTemplates ? 'validation.missingConfirm' : 'validation.missingTemplates')
+        this.translate.instant(this.hasAllTemplatesInitially ? 'validation.missingConfirm' : 'validation.missingTemplates')
       );
       return;
     }
@@ -153,7 +156,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
       this.activeTemplate = template;
       this.activeTemplateIsNew = true;
       this.activeAudio = this.audioIdMap[audioId];
-      this.focusTime = time;
+      this.activeAudioFocusTime = time;
     }
   }
 }

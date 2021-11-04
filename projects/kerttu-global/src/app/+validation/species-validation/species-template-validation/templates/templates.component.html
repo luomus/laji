@@ -5,7 +5,7 @@
     [area]="template?.area"
     [audio]="audioIdMap[template?.audioId]"
     [spectrogramConfig]="spectrogramConfig"
-    [highlight]="(template && !confirmedTemplates?.[i] && !historyView) || template?.comment"
+    [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || template?.comment"
     [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"
     (templateClick)="templateClick.emit(i)"
   >

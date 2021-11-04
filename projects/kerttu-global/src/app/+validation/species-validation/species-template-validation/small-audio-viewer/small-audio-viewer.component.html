@@ -2,10 +2,10 @@
     'highlight': highlight,
     'warning': highlightType === 'warning',
     'danger': highlightType === 'danger'
-  }">
+  }" [style.width]="width">
   <label *ngIf="label" [style.padding-left]="margin.left + 'px'">{{ label }}</label>
   <laji-audio-viewer
-    *ngIf="area else noTemplate"
+    *ngIf="audio else emptyAudio"
     [audio]="audio"
     [focusArea]="area"
     [zoomTime]="true"
@@ -16,15 +16,15 @@
     [showAxisLabels]="false"
     [axisFontSize]="7"
     [playOnlyOnSingleClick]="true"
-    [spectrogramHeight]="50"
+    [spectrogramHeight]="spectrogramHeight"
     [spectrogramMargin]="margin"
     (spectrogramDblclick)="templateClick.emit()"
     (audioLoading)="audioLoading.emit($event)"
   ></laji-audio-viewer>
-  <ng-template #noTemplate>
+  <ng-template #emptyAudio>
     <div [style.padding]="margin.top + 'px ' + margin.right + 'px ' + margin.bottom + 'px ' + margin.left + 'px'">
-      <div class="empty-template">
-        {{ 'validation.template.undefined' | translate }}
+      <div class="empty-audio" [style.height]="spectrogramHeight + 'px'" [style.line-height]="spectrogramHeight + 'px'">
+        {{ 'validation.undefined' | translate }}
       </div>
     </div>
   </ng-template>
