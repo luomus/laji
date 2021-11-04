@@ -131,7 +131,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: {templates: IGlobalTemplate[], comments: IGlobalComment[]}) {
+  saveTemplates(data: { templates: IGlobalTemplate[], comments: IGlobalComment[] }) {
     this.saving = true;
     this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
       this.saving = false;

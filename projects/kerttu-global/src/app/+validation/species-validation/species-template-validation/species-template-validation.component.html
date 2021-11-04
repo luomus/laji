@@ -13,63 +13,67 @@
   </div>
   <h2 class="mt-0">{{ 'validation.templates' | translate }}</h2>
   <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
-  <laji-templates
-    [templates]="templates"
-    [confirmedTemplates]="confirmedTemplates"
-    [spectrogramConfig]="spectrogramConfig"
-    [audioIdMap]="audioIdMap"
-    [highlightNonConfirmed]="!historyView"
-    (templateClick)="onTemplateClick($event)"
-  ></laji-templates>
-  <div class="clearfix mt-3">
-    <label class="selectable" *ngIf="!hasAllTemplatesInitially && !historyView">
-      <input type="checkbox" [disabled]="saving" [(ngModel)]="creatingAllTemplatesIsNotPossible">
-      {{ 'validation.saveAsNotPossible' | translate }}
-    </label>
-    <button
-      *ngIf="hasAllTemplatesInitially && !historyView"
-      class="btn btn-primary"
-      [disabled]="saving"
-      (click)="confirmAllTemplates()"
-    >
-      {{ 'validation.confirmAll' | translate }}
-    </button>
-    <div class="pull-right">
+  <laji-spinner [spinning]="!templates || !recordings" [overlay]="true">
+    <laji-templates
+      [templates]="templates"
+      [confirmedTemplates]="confirmedTemplates"
+      [spectrogramConfig]="spectrogramConfig"
+      [audioIdMap]="audioIdMap"
+      [highlightNonConfirmed]="!historyView"
+      (templateClick)="onTemplateClick($event)"
+    ></laji-templates>
+    <div class="clearfix mt-3">
+      <label class="selectable" *ngIf="!hasAllTemplatesInitially && !historyView">
+        <input type="checkbox" [disabled]="saving" [(ngModel)]="creatingAllTemplatesIsNotPossible">
+        {{ 'validation.saveAsNotPossible' | translate }}
+      </label>
       <button
-        class="btn btn-default"
+        *ngIf="hasAllTemplatesInitially && !historyView"
+        class="btn btn-primary"
         [disabled]="saving"
-        (click)="cancel.emit()"
+        (click)="confirmAllTemplates()"
       >
-        {{ 'validation.cancel' | translate }}
+        {{ 'validation.confirmAll' | translate }}
       </button>
-      <button
-        class="btn btn-success ml-3"
-        [disabled]="saving || historyView"
-        (click)="saveTemplates()"
-      >
-        {{ 'validation.saveAndReturn' | translate }}
-      </button>
+      <div class="pull-right">
+        <button
+          class="btn btn-default"
+          [disabled]="saving"
+          (click)="cancel.emit()"
+        >
+          {{ 'validation.cancel' | translate }}
+        </button>
+        <button
+          class="btn btn-success ml-3"
+          [disabled]="saving || historyView"
+          (click)="saveTemplates()"
+        >
+          {{ 'validation.saveAndReturn' | translate }}
+        </button>
+      </div>
     </div>
-  </div>
+  </laji-spinner>
   <hr>
   <p>{{ ('validation.candidates.description' + (historyView ? '.oldVersion' : '')) | translate }}</p>
-  <div class="text-center mb-3">
-    <button
-      class="btn btn-default"
-      (click)="setShowCandidates(!showCandidates)"
-    >
-      {{ 'validation.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
-      <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
-    </button>
-  </div>
-  <laji-recordings
-    *ngIf="showCandidates"
-    [recordings]="recordings"
-    [templates]="templates"
-    [spectrogramConfig]="spectrogramConfig"
-    (audioClick)="onAudioClick($event)"
-    (candidateClick)="onCandidateClick($event)"
-  ></laji-recordings>
+  <laji-spinner [spinning]="!recordings" [overlay]="true">
+    <div class="text-center mb-3">
+      <button
+        class="btn btn-default"
+        (click)="setShowCandidates(!showCandidates)"
+      >
+        {{ 'validation.candidates.' + (showCandidates ? 'hide' : 'show') | translate }}
+        <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
+      </button>
+    </div>
+    <laji-recordings
+      *ngIf="showCandidates"
+      [recordings]="recordings"
+      [templates]="templates"
+      [spectrogramConfig]="spectrogramConfig"
+      (audioClick)="onAudioClick($event)"
+      (candidateClick)="onCandidateClick($event)"
+    ></laji-recordings>
+  </laji-spinner>
 </ng-container>
 
 <ng-template #templateView>
