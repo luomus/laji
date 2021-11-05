@@ -13,7 +13,6 @@ header {
   > a {
     margin-left: 15px;
     cursor: pointer;
-    text-decoration: none;
   }
 }
 
@@ -21,9 +20,6 @@ header {
   padding: 0;
   list-style: none;
   width: 100%;
-  li {
-    margin-bottom: 0;
-  }
 }
 
 .notification-pager {

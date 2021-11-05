@@ -2,10 +2,6 @@
   z-index: 1060;
 }
 
-.navbar-nav>li {
-  margin-bottom: 0;
-}
-
 // Collapse the top nav earlier than normally
 @media (max-width: 900px) {
   .navbar-header {

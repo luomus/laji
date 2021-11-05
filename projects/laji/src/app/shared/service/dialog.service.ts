@@ -49,11 +49,7 @@ export class DialogService {
     if (this.platformService.isServer) {
       return ObservableOf(onServer);
     }
-    const config: ConfirmConfig = {message, showCancel: true};
-    if (confirmLabel) {
-      config.confirmLabel = confirmLabel;
-    }
-    return this.createDialog<ConfirmConfig, boolean>(config);
+    return this.createDialog<ConfirmConfig, boolean>({message, showCancel: true, confirmLabel});
   }
 
   prompt(message: string, confirmLabel?: string, _default?: string): Observable<string | null> {

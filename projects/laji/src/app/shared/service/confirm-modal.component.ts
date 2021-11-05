@@ -8,7 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   template: `
     <div class="modal-body">
-      <p class="laji-dialog-message" [innerHtml]="message | translate"></p>
+      <p class="laji-dialog-message">{{ message | translate }}</p>
       <input *ngIf="prompt" #prompt
              class="form-control"
              (keyup)="onPromptChange(prompt.value)"

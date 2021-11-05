@@ -8,7 +8,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 @Component({
   selector: 'laji-results',
   template: `
-    <div class="container">
+    <div class="container laji-page">
       <h1>{{ 'results.title' | translate }}</h1>
       <laji-species-list-filters
         [query]="speciesQuery$ | async"
