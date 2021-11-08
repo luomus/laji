@@ -259,7 +259,6 @@ export class NpEditFormComponent implements OnInit {
   getFormData(data: NamedPlacesRouteData, placeForm: Form.SchemaForm) {
     const {namedPlace, documentForm, municipality, birdAssociationArea} = data;
     if (namedPlace) {
-      console.log(namedPlace);
       const npData = Util.clone(namedPlace);
 
       npData['geometry'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
@@ -274,7 +273,6 @@ export class NpEditFormComponent implements OnInit {
         }
       }
 
-      console.log(npData);
       return npData;
     } else {
       const prepopulatedNamedPlace = {} as any;
