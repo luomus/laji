@@ -3,6 +3,7 @@
 #protaxParams > div {
   display: inline-block;
   margin-right: 8px;
+  vertical-align: top;
 
   @media only screen and (max-width: map-get($map: $breakpoints, $key: "sm")) {
     select.input-sm {
