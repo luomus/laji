@@ -131,7 +131,7 @@
         </div>
         <div class="mb-2 mr-2">
           <a *ngIf="(actions | includes:'edit')"
-            class="btn btn-default btn-xs edit-button"
+            class="btn btn-default btn-xs"
             [ngClass]="{'edit-button': !onlyTemplates, 'template-button': onlyTemplates}"
             [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
