@@ -9,7 +9,7 @@ import { AboutComponent } from './about/about.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { DatasetAboutComponent } from './about/dataset-about/dataset-about.component';
 import { ProjectFormService } from './project-form.service';
-import { LajiFormModule } from './form/laji-form/laji-form.module';
+import { LajiFormModule } from '@laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { SubmissionsComponent } from './submissions/submissions.component';
