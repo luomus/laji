@@ -242,8 +242,13 @@ export class DocumentFormFacade {
     this.vmSub = this.vm$.pipe(filter(vm => !isFormError(vm))).subscribe(vm => {
         this.vm = (vm as SaneViewModel);
     });
-    this.saveTmpSub = combineLatest([this.userService.user$.pipe(take(1)), this.formData$, template$]).subscribe(([person, formData, template]) => {
-      if (!template) {
+    this.saveTmpSub = combineLatest([
+      this.userService.user$.pipe(take(1)),
+      this.formData$,
+      template$,
+      this.formDataChange$
+    ]).subscribe(([person, formData, template, dataChanged]) => {
+      if (dataChanged && !template) {
         this.documentStorage.setItem(formData.id, {...formData, dateEdited: moment().format()}, person);
       }
     });
