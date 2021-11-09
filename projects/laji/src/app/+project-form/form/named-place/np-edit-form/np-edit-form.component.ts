@@ -60,8 +60,8 @@ export class NpEditFormComponent implements OnInit {
             placeForm,
           formData: this.getFormData(data, placeForm),
           description: data.namedPlace
-          ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
-          : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
+            ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
+            : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
         })
         ))
       )
