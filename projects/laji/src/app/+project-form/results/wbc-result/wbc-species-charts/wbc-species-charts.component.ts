@@ -48,6 +48,7 @@ export class WbcSpeciesChartsComponent implements OnInit, OnDestroy {
   }
 
   updateTaxonInfo(id: string) {
+    console.log(id);
     this.activeSpeciesId = id;
     this.loading = true;
 
