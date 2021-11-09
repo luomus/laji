@@ -17,7 +17,9 @@ export class ProjectFormHeaderComponent {
   @Input() description: string;
   @Input() set form(form: Form.SchemaForm) {
     this._form = form;
-    this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+    if (form.title) {
+      this.title.setTitle(form.title + ' | ' + this.title.getTitle());
+    }
   }
 
   constructor(
