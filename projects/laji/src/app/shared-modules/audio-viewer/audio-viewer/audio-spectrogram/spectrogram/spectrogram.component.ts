@@ -13,7 +13,7 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpectrogramComponent implements OnChanges {
-  @ViewChild('canvas', { static: false }) canvasRef: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static: true }) canvasRef: ElementRef<HTMLCanvasElement>;
 
   @Input() buffer: AudioBuffer;
   @Input() startTime: number;
@@ -105,10 +105,8 @@ export class SpectrogramComponent implements OnChanges {
   }
 
   private clearCanvas() {
-    if (this.canvasRef) {
-      const canvas = this.canvasRef.nativeElement;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    const canvas = this.canvasRef.nativeElement;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 }
