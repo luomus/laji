@@ -5,7 +5,6 @@ import { map, share, switchMap, tap } from 'rxjs/operators';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { ISpectrogramConfig } from '../models';
-import { AudioService } from './audio.service';
 
 @Injectable()
 export class SpectrogramService {
@@ -23,8 +22,7 @@ export class SpectrogramService {
   private colormaps$ = {};
 
   constructor(
-    private httpClient: HttpClient,
-    private audioService: AudioService
+    private httpClient: HttpClient
   ) {}
 
   public getSpectrogramImageData(buffer: AudioBuffer, config?: ISpectrogramConfig)

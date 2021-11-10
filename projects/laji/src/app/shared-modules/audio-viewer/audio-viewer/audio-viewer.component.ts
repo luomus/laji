@@ -190,6 +190,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
       this.audioSub.unsubscribe();
     }
 
+    this.buffer = undefined;
     this.view = undefined;
     this.hasError = false;
     this.audioPlayer.clear();
