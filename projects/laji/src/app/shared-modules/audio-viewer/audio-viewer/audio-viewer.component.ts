@@ -97,7 +97,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
       this.setAudioLoading(true);
 
       if (this.audio) {
-        this.audioSub = this.audioService.getAudioBuffer(this.audio.url).subscribe((buffer) => {
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).subscribe((buffer) => {
           if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;

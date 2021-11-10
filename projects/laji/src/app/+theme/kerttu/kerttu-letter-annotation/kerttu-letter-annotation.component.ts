@@ -174,7 +174,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
         if (!candidate) {
           return of(null);
         }
-        return this.audioService.getAudioBuffer(candidate.audio.url); // loads buffer into audio service cache
+        return this.audioService.getAudioBuffer(candidate.audio.url, candidate.audio.duration); // loads buffer into audio service cache
       }),
     ).subscribe(() => {}, error => {
       this.onLetterError(error);

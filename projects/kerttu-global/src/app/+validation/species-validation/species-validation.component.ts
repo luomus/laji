@@ -15,6 +15,7 @@ import { DialogService } from 'projects/laji/src/app/shared/service/dialog.servi
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
+import {AudioService} from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 
 @Component({
   selector: 'laji-species-validation',
@@ -49,6 +50,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
+    private audioService: AudioService,
     private cd: ChangeDetectorRef
   ) { }
 
@@ -71,7 +73,12 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId))
     );
     this.recordings$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(speciesId).pipe(map(data => data.results)))
+      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(speciesId).pipe(
+        map(data => data.results),
+        tap(recordings => {
+          this.audioService.setCacheSize(recordings.length);
+        })
+      ))
     );
     this.templateVersions$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getTemplateVersions(speciesId).pipe(

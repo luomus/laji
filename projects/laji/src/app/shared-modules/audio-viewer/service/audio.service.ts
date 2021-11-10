@@ -4,8 +4,6 @@ import { from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { AudioPlayer } from './audio-player';
-import { environment } from '../../../../environments/environment';
-import { Global } from 'projects/laji/src/environments/global';
 
 @Injectable()
 export class AudioService {
@@ -18,8 +16,7 @@ export class AudioService {
 
   private resumeContext$: Observable<void>;
 
-  private actualDurationOfRecordings = 60;
-  private cacheSize = 20;
+  private cacheSize = 3;
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -32,7 +29,11 @@ export class AudioService {
     }
   }
 
-  public getAudioBuffer(url: string): Observable<AudioBuffer> {
+  public setCacheSize(cacheSize: number) {
+    this.cacheSize = cacheSize;
+  }
+
+  public getAudioBuffer(url: string, actualDuration?: number): Observable<AudioBuffer> {
     if (this.buffer[url]) {
       this.buffer[url]['time'] = Date.now();
       return of(this.buffer[url]['buffer']);
@@ -56,7 +57,7 @@ export class AudioService {
               return this.audioContext.decodeAudioData(response);
             }
           }),
-          map((buffer: AudioBuffer) => this.removeEmptySamplesAtStart(buffer)),
+          map((buffer: AudioBuffer) => this.removeEmptySamplesAtStart(buffer, actualDuration)),
           map(buffer => this.normaliseAudio(buffer)),
           tap(buffer => {
             this.buffer[url] = {
@@ -163,12 +164,11 @@ export class AudioService {
   }
 
   // remove empty samples at start which are caused by the mp3 format
-  private removeEmptySamplesAtStart(buffer: AudioBuffer) {
-    if (environment.type === Global.type.kerttuGlobal) {
+  private removeEmptySamplesAtStart(buffer: AudioBuffer, actualDuration?: number) {
+    if (!actualDuration) {
       return buffer;
     }
-
-    const emptySamplesAtStart = buffer.length - this.actualDurationOfRecordings * buffer.sampleRate;
+    const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate;
     return this.extract(buffer, emptySamplesAtStart, buffer.length - 1);
   }
 
