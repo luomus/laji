@@ -2,12 +2,14 @@ import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule, HammerGestureConfig, HammerModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import * as Hammer from 'hammerjs';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { SlideshowComponent } from './slideshow/slideshow.component';
 import { SlideComponent } from './slideshow/slide/slide.component';
 import { SlideshowFacade } from './slideshow/slideshow.facade';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
 import { SlideNavigationComponent } from './slideshow/slide-navigation/slide-navigation.component';
+import { PdfModalComponent } from './slideshow/slide/pdf-modal.component';
 
 @Injectable()
 export class HammerConfig extends HammerGestureConfig {
@@ -22,6 +24,7 @@ export class HammerConfig extends HammerGestureConfig {
     BrowserModule,
     HammerModule,
     HttpClientModule,
+    ModalModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: 'fi',
       useDefaultLang: true
@@ -37,6 +40,6 @@ export class HammerConfig extends HammerGestureConfig {
     SlideshowFacade
   ],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, SlideshowComponent, SlideComponent, SlideNavigationComponent]
+  declarations: [AppComponent, SlideshowComponent, SlideComponent, SlideNavigationComponent, PdfModalComponent]
 })
 export class AppModule { }
