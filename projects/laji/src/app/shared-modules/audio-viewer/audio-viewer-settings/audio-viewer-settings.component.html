@@ -1,7 +1,7 @@
 <div>
   <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
   <laji-info [placement]="'right'" [html]="'theme.kerttu.info.timeBuffer' | translate"></laji-info>
-  <div class="input-group" style="max-width: 110px">
+  <div class="input-group">
     <select
       class="form-control input-sm"
       [ngModel]="xRangePadding"
@@ -25,7 +25,7 @@
     [switch-base-class]="'bootstrap-switch'">
   </bSwitch>
 </div>
-<div [ngClass]="{'d-block': !displayInline}" style="margin-top: 5px;">
+<div [ngClass]="{'d-block': !displayInline}" class="mt-2">
   <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
   <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText"></laji-info>
 </div>

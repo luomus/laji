@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
-import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
+import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -23,7 +23,7 @@ import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpec
 export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @ViewChild('container', {static: true}) containerRef: ElementRef<HTMLDivElement>;
 
-  @Input() audio: IAudio;
+  @Input() buffer: AudioBuffer;
   @Input() view: IAudioViewerArea;
   @Input() defaultView: IAudioViewerArea;
 
@@ -34,7 +34,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];
 
-  @Input() showPregeneratedSpectrogram = false;
+  @Input() pregeneratedSpectrogramUrl?: string;
   @Input() config: ISpectrogramConfig;
 
   @Input() currentTime: number;
@@ -55,8 +55,6 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   _width: number;
   _height: number;
   _margin: { top: number, bottom: number, left: number, right: number };
-
-  visibleArea: IAudioViewerArea;
 
   private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
   private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };

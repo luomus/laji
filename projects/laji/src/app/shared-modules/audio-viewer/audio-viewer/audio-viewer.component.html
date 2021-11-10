@@ -2,7 +2,7 @@
   <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
   <div class="spectrogram-container">
     <laji-audio-spectrogram
-      [audio]="audio"
+      [buffer]="buffer"
       [view]="view"
       [defaultView]="defaultView"
       [focusArea]="focusArea"
@@ -17,7 +17,7 @@
       [width]="spectrogramWidth"
       [height]="spectrogramHeight"
       [margin]="spectrogramMargin"
-      [showPregeneratedSpectrogram]="showPregeneratedSpectrogram"
+      [pregeneratedSpectrogramUrl]="showPregeneratedSpectrogram ? audio.spectrogramUrl : undefined"
       (spectrogramReady)="setAudioLoading(false)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"

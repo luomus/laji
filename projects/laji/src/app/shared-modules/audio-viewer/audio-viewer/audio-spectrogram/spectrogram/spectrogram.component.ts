@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { delay, map, switchMap, tap } from 'rxjs/operators';
-import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../../../models';
+import { delay, map, tap } from 'rxjs/operators';
+import { IAudioViewerArea, ISpectrogramConfig } from '../../../models';
 import { AudioViewerUtils } from '../../../service/audio-viewer-utils';
 import { AudioService } from '../../../service/audio.service';
 import { SpectrogramService } from '../../../service/spectrogram.service';
@@ -15,7 +15,7 @@ import { SpectrogramService } from '../../../service/spectrogram.service';
 export class SpectrogramComponent implements OnChanges {
   @ViewChild('canvas', { static: false }) canvasRef: ElementRef<HTMLCanvasElement>;
 
-  @Input() audio: IAudio;
+  @Input() buffer: AudioBuffer;
   @Input() startTime: number;
   @Input() endTime: number;
   @Input() config: ISpectrogramConfig;
@@ -25,7 +25,7 @@ export class SpectrogramComponent implements OnChanges {
   @Input() width?: number;
   @Input() height?: number;
 
-  @Input() showPregeneratedSpectrogram = false;
+  @Input() pregeneratedSpectrogramUrl?: string;
 
   @Output() spectrogramReady = new EventEmitter();
 
@@ -39,7 +39,7 @@ export class SpectrogramComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.audio || changes.startTime || changes.endTime || changes.config) {
+    if (changes.buffer || changes.startTime || changes.endTime || changes.config || changes.pregeneratedSpectrogramUrl) {
       this.imageData = null;
       this.clearCanvas();
 
@@ -47,15 +47,17 @@ export class SpectrogramComponent implements OnChanges {
         this.imageDataSub.unsubscribe();
       }
 
-      if (this.audio && this.startTime != null && this.endTime != null) {
-        this.imageDataSub = (this.showPregeneratedSpectrogram ? of(null) :
-          this.audioService.getAudioBuffer(this.audio.url).pipe(switchMap(buffer => {
-            if (this.startTime !== 0 || this.endTime !== buffer.duration) {
-              buffer = this.audioService.extractSegment(buffer, this.startTime, this.endTime);
-            }
-            return this.createSpectrogram(buffer);
-          }))
-        ).pipe(delay(0)).subscribe(() => {
+      if (this.buffer && this.startTime != null && this.endTime != null) {
+        let observable = of(null);
+        if (!this.pregeneratedSpectrogramUrl) {
+          let buffer = this.buffer;
+          if (this.startTime !== 0 || this.endTime !== buffer.duration) {
+            buffer = this.audioService.extractSegment(buffer, this.startTime, this.endTime);
+          }
+          observable = this.createSpectrogram(buffer);
+        }
+
+        this.imageDataSub = observable.pipe(delay(0)).subscribe(() => {
           this.spectrogramReady.emit();
           this.cdr.markForCheck();
         });

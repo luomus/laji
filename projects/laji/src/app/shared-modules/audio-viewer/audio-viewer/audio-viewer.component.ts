@@ -67,6 +67,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() zoomInfoText: string;
 
+  buffer: AudioBuffer;
   audioPlayer: AudioPlayer;
 
   loading = false;
@@ -79,7 +80,6 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
 
-  private buffer: AudioBuffer;
   private audioSub: Subscription;
   private clicks = 0;
 

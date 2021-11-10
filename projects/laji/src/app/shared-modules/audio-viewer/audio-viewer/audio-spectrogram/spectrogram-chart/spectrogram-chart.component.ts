@@ -315,7 +315,7 @@ export class SpectrogramChartComponent implements OnChanges {
         if (current.label) {
           duplicate.label.push(current.label);
         }
-        } else {
+      } else {
         result.push({
           dimensions: dim,
           color: [current.color],
