@@ -10,7 +10,7 @@ import { IdService } from '../service/id.service';
   name: 'toQName'
 })
 export class ToQNamePipe implements PipeTransform {
-  transform(value: string): any {
+  transform(value: string | string[] | undefined): any {
     if (Array.isArray(value)) {
       return value.map(val => this.transform(val));
     }
