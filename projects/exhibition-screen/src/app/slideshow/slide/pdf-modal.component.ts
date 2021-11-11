@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 @Component({
@@ -12,7 +12,8 @@ export class PdfModalComponent {
 	public safeUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl('');
 	@Input() set url(u: string) {
 		this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(u);
+		this.cdr.markForCheck();
 	}
 
-	constructor(private sanitizer: DomSanitizer) {}
+	constructor(private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
 }

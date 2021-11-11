@@ -21,3 +21,17 @@ body {
 .panel {
 	@include panel();
 }
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(#000, .4);
+}
+
+.modal-dialog {
+	margin: 60px auto 30px;
+	max-width: 80vw;
+}
