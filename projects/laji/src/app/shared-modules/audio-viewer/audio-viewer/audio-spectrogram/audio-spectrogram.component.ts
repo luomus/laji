@@ -59,9 +59,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
   private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };
 
-  constructor(
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.updateMargin();
   }
 
@@ -71,10 +69,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.onResize();
-      this.cdr.markForCheck();
-    }, 200);
+    this.onResize();
   }
 
   ngOnChanges() {
