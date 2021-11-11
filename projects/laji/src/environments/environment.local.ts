@@ -21,4 +21,5 @@ export const environment = {
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
   // protaxApi: 'http://localhost:8080',
+  geoserver: 'https://geoserver-dev.laji.fi'
 };
