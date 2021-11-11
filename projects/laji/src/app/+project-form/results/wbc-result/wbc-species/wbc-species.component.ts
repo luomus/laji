@@ -36,8 +36,7 @@ export class WbcSpeciesComponent implements OnInit {
       [],
       {
         queryParams: {species, year: this.activeYear, season: this.activeSeason, birdAssociationArea: this.activeBirdAssociationArea},
-        queryParamsHandling: 'merge',
-        skipLocationChange: true
+        queryParamsHandling: 'merge'
       }
     );
   }
