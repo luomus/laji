@@ -1,4 +1,4 @@
-import { Injectable, Input } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo } from 'rxjs/operators';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
@@ -78,11 +78,6 @@ interface DocumentAndHasChanges {
 
 @Injectable()
 export class DocumentFormFacade {
-  @Input() formID: string;
-  @Input() documentID: string;
-  @Input() namedPlaceID: string;
-  @Input() template: boolean;
-
   @LocalStorage('tmpDocId', 1) private tmpDocId: number;
 
   vm$: Observable<ViewModel>;
