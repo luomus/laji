@@ -1,7 +1,6 @@
-import { browser, by, element, protractor } from 'protractor';
+import { browser, by, element, protractor, $ } from 'protractor';
 import { MapPage } from '../+map/map.po';
 import { DocumentFormView } from '../+project-form/project-form.po';
-import { isDisplayed } from '../../helper';
 
 export class TripFormPage {
 
@@ -11,12 +10,17 @@ export class TripFormPage {
   private readonly toastElement = element(by.id('toast-container'));
   private readonly pageTitleElem = element(by.css('.form-header h3'));
   private readonly overlayElem = element(by.css('.laji-form.blocking-loader'));
-  private readonly documentFormView = new DocumentFormView();
+  public readonly documentFormView = new DocumentFormView();
+  public readonly templateForm = new TemplateFormView();
 
   private readonly mapPage = new MapPage();
 
   async navigateTo() {
     return browser.get('/vihko/JX.519') as Promise<void>;
+  }
+
+  async navigateToTemplate() {
+    return browser.get('/vihko/template/JX.519') as Promise<void>;
   }
 
   async fillInSimpleForm() {
@@ -51,4 +55,11 @@ export class TripFormPage {
   hasOverlayPresent() {
     return this.overlayElem.isPresent();
   }
+}
+
+class TemplateFormView {
+  $container = $('.template-form');
+  $nameInput = $('#templateName');
+  $descriptionInput = $('#templateDescription');
+  $saveButton = this.$container.$('.template-save');
 }

@@ -18,7 +18,7 @@
         "projects/laji/src/app/shared-modules/laji-map/*"
       ],
       "@laji-form/*": [
-        "projects/laji/src/app/shared-modules/laji-form/*"
+        "projects/laji/src/app/+project-form/form/laji-form/*"
       ],
       "laji-ui": [
         "dist/laji-ui"

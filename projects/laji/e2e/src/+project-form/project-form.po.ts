@@ -1,6 +1,10 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
 import { getAddressWithLang } from "../../helper";
+import { SubmissionsPage } from '../+vihko/submissions.po';
+const fiTranslations = require('../../../src/i18n/fi.json');
+const enTranslations = require('../../../src/i18n/en.json');
+const svTranslations = require('../../../src/i18n/sv.json');
 
 const EC = ExpectedConditions;
 
@@ -9,6 +13,7 @@ const confirmDialog = new ConfirmPO();
 export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
+  public readonly $templateLink = $('[href$="/templates"]');
   public readonly $sidebar = $('.sidebar');
   public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
@@ -21,6 +26,7 @@ export class ProjectFormPage {
   public readonly aboutPage = new AboutPage();
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
+  public readonly templatePage = new TemplatePage();
 
   navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
     return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
@@ -102,9 +108,9 @@ class AreaFilter { // tslint:disable-line max-classes-per-file
 export class DocumentFormView { // tslint:disable-line max-classes-per-file
   public readonly $container = $('laji-project-form-form');
   public readonly $form = $('laji-form .laji-form');
-  public readonly $cancel = $('laji-document-form-footer .btn-danger');
-  public readonly $save = $('laji-document-form-footer .btn-success');
-  public readonly $savePrivate = $('laji-document-form-footer .btn-default');
+  public readonly $cancel = $('laji-form-footer .btn-danger');
+  public readonly $save = $('laji-form-footer .btn-success');
+  public readonly $savePrivate = $('laji-form-footer .btn-default');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
   public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
 
@@ -124,6 +130,11 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
     await this.$savePrivate.click();
     await browser.wait(EC.invisibilityOf(this.$blockingLoader));
   }
+
+  async isTemplate() {
+    const label = await this.$save.getText();
+    return [fiTranslations, enTranslations, svTranslations].some(translations => translations['haseka.form.saveTemplate'] === label);
+  }
 }
 
 class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
@@ -140,6 +151,10 @@ class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
+}
+
+class TemplatePage {
+  public readonly datatable = new SubmissionsPage().datatable;
 }
 
 

@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { UserService } from '../../../../shared/service/user.service';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ToastsService } from '../../../../shared/service/toasts.service';
@@ -10,19 +9,17 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { Form } from '../../../../shared/model/Form';
 import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { forkJoin, Observable, of } from 'rxjs';
-import { map, mergeMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NamedPlaceComponent } from '../named-place/named-place.component';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
-import { BrowserService } from '../../../../shared/service/browser.service';
+import { LajiFormFooterStatus } from '@laji-form/laji-form-footer/laji-form-footer.component';
+import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 
-interface NamedPlacesRouteDataWithPlaceForm extends NamedPlacesRouteData {
+interface ViewModel extends NamedPlacesRouteData {
   placeForm: Form.SchemaForm;
-}
-
-interface ViewModel extends NamedPlacesRouteDataWithPlaceForm {
   description: string;
+  formData: any;
 }
 
 @Component({
@@ -35,7 +32,7 @@ export class NpEditFormComponent implements OnInit {
 
   lang: string;
   saving = false;
-  status = '';
+  status: LajiFormFooterStatus = '';
   error = '';
 
   private hasChanges = false;
@@ -52,23 +49,22 @@ export class NpEditFormComponent implements OnInit {
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
     private areaService: AreaService,
-    private browserService: BrowserService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.asyncData$ = this.projectFormService.getNamedPlacesRouteData$(this.route).pipe(
-      mergeMap(data => this.projectFormService.getPlaceForm$(data.documentForm).pipe(
-        mergeMap(_placeForm => this.populateAndDecorateNPForm({...data, placeForm: _placeForm}).pipe(
-          map(placeForm => ({
+      mergeMap(data => this.getPlaceForm(data).pipe(
+        map(placeForm => ({
             ...data,
             placeForm,
-            description: data.namedPlace
-               ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
-               : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
-          })),
+          formData: this.getFormData(data, placeForm),
+          description: data.namedPlace
+            ? data.documentForm.options?.namedPlaceOptions?.editDescription ?? 'np.defaultEditDescription'
+            : data.documentForm.options?.namedPlaceOptions?.createDescription ?? 'np.defaultCreateDescription'
+        })
         ))
-      ))
+      )
     );
   }
 
@@ -231,16 +227,7 @@ export class NpEditFormComponent implements OnInit {
     return detail;
   }
 
-  private populateAndDecorateNPForm(data: NamedPlacesRouteDataWithPlaceForm) {
-    const {placeForm, namedPlace, documentForm, municipality, birdAssociationArea} = data;
-    const mapOptions = NamedPlaceComponent.getMapOptions(data.documentForm);
-    if (mapOptions) {
-      try {
-        placeForm['uiSchema']['geometry']['ui:options']['mapOptions'] = mapOptions;
-      } catch (e) {
-        console.warn('Setting uiSchema map options failed.');
-      }
-    }
+  getPlaceForm(data: NamedPlacesRouteData): Observable<Form.SchemaForm> {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
     ): Observable<Form.IEnum> => (this.areaService[type](this.translate.currentLang)).pipe(
@@ -250,28 +237,27 @@ export class NpEditFormComponent implements OnInit {
         return enums;
       }, { enum: [], enumNames: [] }))
     );
-    const placeFormWithFormData = this.getNamedPlaceFormWithFormData(placeForm, namedPlace, municipality, birdAssociationArea, documentForm.collectionID);
-    const {properties} = placeForm.schema;
-    return forkJoin([
-      properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
-      properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
-      properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
-      ]
-    ).pipe(
+    return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
+      placeForm.schema.properties.municipality ? getAreaEnum('getMunicipalities') : of(null),
+      placeForm.schema.properties.biogeographicalProvince ? getAreaEnum('getBiogeographicalProvinces') : of(null),
+      placeForm.schema.properties.birdAssociationArea ? getAreaEnum('getBirdAssociationAreas') : of(null)
+    ]).pipe(
       map(([municipalityEnum, biogeographicalProvinceEnum, birdAssociationAreaEnum]) => ({
-        ...placeFormWithFormData,
+        ...placeForm,
         uiSchemaContext: {
-          ...(placeFormWithFormData.uiSchemaContext || {}),
+          ...(placeForm.uiSchemaContext || {}),
           municipalityEnum,
           biogeographicalProvinceEnum,
           birdAssociationAreaEnum,
           isEdit: !!data.namedPlace
         }
-      })),
-    );
+      }))
+    )
+    ));
   }
 
-  getNamedPlaceFormWithFormData(placeForm: Form.SchemaForm, namedPlace: NamedPlace, municipality: string, birdAssociationArea: string, collectionID: string) {
+  getFormData(data: NamedPlacesRouteData, placeForm: Form.SchemaForm) {
+    const {namedPlace, documentForm, municipality, birdAssociationArea} = data;
     if (namedPlace) {
       const npData = Util.clone(namedPlace);
 
@@ -287,7 +273,7 @@ export class NpEditFormComponent implements OnInit {
         }
       }
 
-      return {...placeForm, formData: npData};
+      return npData;
     } else {
       const prepopulatedNamedPlace = {} as any;
       const areas = {municipality, birdAssociationArea};
@@ -301,8 +287,8 @@ export class NpEditFormComponent implements OnInit {
           prepopulatedNamedPlace[area] = undefined;
         }
       });
-      prepopulatedNamedPlace.collectionID = collectionID;
-      return {...placeForm, formData: prepopulatedNamedPlace};
+      prepopulatedNamedPlace.collectionID = documentForm.collectionID;
+      return prepopulatedNamedPlace;
     }
   }
 }
