@@ -144,8 +144,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     private logger: Logger,
     private changeDetector: ChangeDetectorRef
   ) {
-    if (environment.type === 'vir') {
-      this._mapOptions = {...this._mapOptions, availableOverlayNameBlacklist: []};
+    if ((environment as any).observationMapOptions) {
+      this._mapOptions = {...this._mapOptions, ...(environment as any).observationMapOptions};
     }
   }
 

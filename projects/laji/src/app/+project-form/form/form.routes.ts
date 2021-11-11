@@ -16,6 +16,11 @@ export const routes: Routes = [
     data: {displayFeedback: false}
   },
   {
+    path: 'template', component: FormComponent,
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false, template: true}
+  },
+  {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
     data: {displayFeedback: false}
@@ -33,6 +38,12 @@ export const routes: Routes = [
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false}
+  },
+  {
+    path: ':formOrDocument/places/:namedPlace/template', component: FormComponent,
+    canActivate: [HasFormPermission],
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false, template: true}
   },
   {
     path: ':formOrDocument/places', component: NamedPlaceWrapperComponent,
@@ -59,6 +70,12 @@ export const routes: Routes = [
     data: {displayFeedback: false}
   },
   {
+    path: 'places/:namedPlace/template', component: FormComponent,
+    canActivate: [HasFormPermission],
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false, template: true}
+  },
+  {
     path: 'places', component: NamedPlaceWrapperComponent,
     canActivate: [HasViewPermission],
     data: { noScrollToTop: true }
@@ -76,6 +93,11 @@ export const routes: Routes = [
     path: ':formOrDocument', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
     data: {displayFeedback: false}
+  },
+  {
+    path: ':formOrDocument/template', component: FormComponent,
+    canDeactivate: [DocumentDeActivateGuard],
+    data: {displayFeedback: false, template: true}
   },
   {
     path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,

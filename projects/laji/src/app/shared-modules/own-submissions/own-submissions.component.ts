@@ -380,7 +380,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               dateCreated: dateObserved,
               namedPlaceName: npName,
               locality: locality,
-              gatheringsCount: document.gatherings.length,
+              gatheringsCount: document.gatherings?.length || 0,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
               taxon,

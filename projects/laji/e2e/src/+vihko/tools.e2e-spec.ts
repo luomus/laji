@@ -1,22 +1,20 @@
 import * as path from 'path';
 import { ErrorPage } from '../+error/error.page';
+import { ProjectFormPage } from '../+project-form/project-form.po';
 import { UserPage } from '../+user/user.po';
+import { isDisplayed, waitForVisibility } from '../../helper';
 import { SpreadsheetPage } from '../shared/spreadsheet.po';
 import { ToolsPage } from './tools.po';
 
 describe('Tools page', () => {
-  let page: ToolsPage;
-  let user: UserPage;
-  let error: ErrorPage;
-  let spreadsheet: SpreadsheetPage;
+  const page = new ToolsPage();
+  const user = new UserPage();
+  const error = new ErrorPage();
+  const spreadsheet = new SpreadsheetPage();
+  const formPage = new ProjectFormPage().documentFormView;
 
   beforeAll(async (done) => {
-    user = new UserPage();
-    page = new ToolsPage();
-    error = new ErrorPage();
-    spreadsheet = new SpreadsheetPage();
-    await page.navigateTo();
-    await user.login();
+    await user.handleNavigationWithExternalLogin(() => page.navigateTo());
     done();
   });
 
@@ -26,15 +24,16 @@ describe('Tools page', () => {
   });
 
   it('should show links on tools page', async (done) => {
-    expect(await page.toolsLink.isDisplayed()).toBe(true, 'Tools link should be visible on tools page');
-    expect(await page.importLink.isDisplayed()).toBe(true, 'Import link should be visible on tools page');
+    expect(await page.$toolsLink.isDisplayed()).toBe(true, 'Tools link should be visible on tools page');
+    expect(await page.$importLink.isDisplayed()).toBe(true, 'Import link should be visible on tools page');
     done();
   });
 
   describe('Importing', () => {
 
     beforeAll(async (done) => {
-      await page.importLink.click();
+      expect(await isDisplayed(page.$templateLink)).toBe(true);
+      await page.$importLink.click();
       done();
     });
 
@@ -102,6 +101,48 @@ describe('Tools page', () => {
       done();
     });
 
+  });
+
+  describe('Templates', () => {
+    beforeAll(async (done) => {
+      await page.navigateTo();
+      await waitForVisibility(page.$templateLink);
+      await page.$templateLink.click();
+      done();
+    });
+
+    it('displays submissions table', async (done) => {
+      expect(await isDisplayed(page.templatesDatatable.$container)).toBe(true);
+      done();
+    });
+
+    it('at least one template shown', async (done) => {
+      await waitForVisibility(page.templatesDatatable.getRow(0).$container);
+      expect(await isDisplayed(page.templatesDatatable.getRow(0).$container)).toBe(true);
+      done();
+    });
+
+    it('displays template button', async (done) => {
+      expect(await isDisplayed(page.templatesDatatable.getRow(0).$templateButton)).toBe(true);
+      done();
+    });
+
+    it('displays delete button', async (done) => {
+      expect(await isDisplayed(page.templatesDatatable.getRow(0).$deleteButton)).toBe(true);
+      done();
+    });
+
+    it('displays only two buttons', async (done) => {
+      expect(await page.templatesDatatable.getRow(0).$$buttons.count()).toBe(2);
+      done();
+    });
+
+    it('template button directs to form page', async (done) => {
+      await page.templatesDatatable.getRow(0).$templateButton.click();
+      await waitForVisibility(formPage.$container);
+      expect(await isDisplayed(formPage.$container)).toBe(true);
+      done();
+    });
   });
 
 });

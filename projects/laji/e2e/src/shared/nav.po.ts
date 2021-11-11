@@ -6,12 +6,12 @@ export class NavPage {
   private saveObservationLink = $('a[href$="/save-observations"]');
   private $lang = $('.language-toggle span');
 
-  moveToSaveObservation(): void {
-    this.saveObservationLink.click();
+  moveToSaveObservation() {
+    return this.saveObservationLink.click();
   }
 
-  moveToVihko(): void {
-    this.vihkoLink.click();
+  moveToVihko() {
+    return this.vihkoLink.click();
   }
 
   async getLang(): Promise<('fi' | 'sv' | 'en')> {
