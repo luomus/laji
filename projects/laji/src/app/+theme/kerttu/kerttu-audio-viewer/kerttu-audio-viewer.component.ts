@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, Input, Output, EventEmitter } from '@angular/core';
-import { IAudioViewerArea, ISpectrogramConfig } from '../../../shared-modules/audio-viewer/models';
+import { IAudioViewerArea } from '../../../shared-modules/audio-viewer/models';
 import { IKerttuAudio } from '../models';
+import { spectrogramConfig } from '../variables';
 
 @Component({
   selector: 'laji-kerttu-audio-viewer',
@@ -24,17 +25,9 @@ export class KerttuAudioViewerComponent {
 
   @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
 
-  @Input() spectrogramConfig: ISpectrogramConfig = {
-    sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
-    nbrOfRowsRemovedFromStart: 2,
-    maxNbrOfColsForNoiseEstimation: 6000,
-    noiseReductionParam: 2,
-    logRange: 3
-  };
-
   @Output() audioLoading = new EventEmitter<boolean>();
+
+  spectrogramConfig = spectrogramConfig;
 
   @ViewChild('audioInfo', { static: true }) audioInfoTpl: TemplateRef<any>;
 }

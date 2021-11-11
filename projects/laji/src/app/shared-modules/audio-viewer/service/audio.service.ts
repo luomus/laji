@@ -16,6 +16,7 @@ export class AudioService {
 
   private resumeContext$: Observable<void>;
 
+  private defaultSampleRate?: number;
   private cacheSize = 3;
 
   constructor(
@@ -23,10 +24,11 @@ export class AudioService {
     private httpClient: HttpClient,
     private ngZone: NgZone
   ) {
-    try {
-      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])();
-    } catch (e) {
-    }
+    this.initAudioContext();
+  }
+
+  public setDefaultSampleRate(sampleRate: number) {
+    this.initAudioContext(sampleRate);
   }
 
   public setCacheSize(cacheSize: number) {
@@ -202,5 +204,17 @@ export class AudioService {
 
       keys.splice(removed, 1);
     }
+  }
+
+  private initAudioContext(sampleRate?: number) {
+    if (this.audioContext && this.defaultSampleRate === sampleRate) {
+      return;
+    }
+
+    try {
+      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({ sampleRate });
+    } catch (e) {}
+
+    this.defaultSampleRate = sampleRate;
   }
 }

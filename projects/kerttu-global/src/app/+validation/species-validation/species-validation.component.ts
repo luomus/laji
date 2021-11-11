@@ -15,7 +15,8 @@ import { DialogService } from 'projects/laji/src/app/shared/service/dialog.servi
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
-import {AudioService} from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
+import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
+import { ISpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'laji-species-validation',
@@ -33,6 +34,13 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   saving = false;
   canLeaveWithoutConfirm = false;
   hasLock?: boolean;
+
+  spectrogramConfig: ISpectrogramConfig = {
+    sampleRate: 32000,
+    nperseg: 512,
+    noverlap: 192,
+    nbrOfRowsRemovedFromStart: 0
+  };
 
   private activeVersionIdxSubject = new BehaviorSubject<number>(0);
   activeVersionIdx$ = this.activeVersionIdxSubject.asObservable();
@@ -52,7 +60,9 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private audioService: AudioService,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {
+    this.audioService.setDefaultSampleRate(this.spectrogramConfig.sampleRate);
+  }
 
   ngOnInit() {
     this.speciesId$ = this.route.params.pipe(

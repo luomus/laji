@@ -16,6 +16,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   @Input() templates?: IGlobalTemplate[];
   @Input() saving = false;
   @Input() historyView = false;
+  @Input() spectrogramConfig: ISpectrogramConfig;
 
   hasAllTemplatesInitially = false;
   showCandidates = false;
@@ -23,13 +24,6 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   confirmedTemplates: boolean[] = [];
   comments: IGlobalComment[] = [];
   creatingAllTemplatesIsNotPossible = false;
-
-  spectrogramConfig: ISpectrogramConfig = {
-    sampleRate: 32000,
-    nperseg: 512,
-    noverlap: 192,
-    nbrOfRowsRemovedFromStart: 0
-  };
 
   activeTemplateIdx?: number;
   activeTemplate?: IGlobalTemplate;
