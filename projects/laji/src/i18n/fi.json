@@ -1754,6 +1754,8 @@
   "theme.protax.sequenceDescription": "Liitä DNA-sekvenssidata (FASTA-formaatissa) alla olevaan tekstikenttään tai valitse tiedosto tiedostovalitsimen avulla.",
   "theme.protax.textArea": "Tekstikenttä",
   "theme.protax.tooLargeSequence": "Tiedosto on liian suuri, suurin sallittu koko on 4 MB.",
+  "theme.protax.minimumOverlap": "Minimi overlap",
+  "theme.protax.invalidMinimumOverlap": "Minimi overlapin on oltava väliltä 1-500",
   "theme.quality.intro": "Selaile havaintoihin lisättyjä kommentteja",
   "theme.research.intro": "Työkaluja ja esimerkkejä Lajitietokeskuksen datan tutkimuskäytöstä",
   "theme.research.main": "Tutkimus",
