@@ -261,8 +261,6 @@ export class NpEditFormComponent implements OnInit {
     if (namedPlace) {
       const npData = Util.clone(namedPlace);
 
-      npData['geometry'] = {type: 'GeometryCollection', geometries: [npData.geometry]};
-
       if (npData.prepopulatedDocument && npData.prepopulatedDocument.gatherings && npData.prepopulatedDocument.gatherings[0]) {
         const gathering = npData.prepopulatedDocument.gatherings[0];
         if (gathering.locality) {
