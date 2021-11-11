@@ -105,7 +105,7 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #label>
-  <span *ngIf="value" title="{{value | label}}">
+  <span *ngIf="value" title="{{value | toQName | label}}">
     {{ value | toQName | label }}
   </span>
 </ng-template>
