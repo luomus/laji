@@ -7,7 +7,7 @@ import { toHtmlSpanElement } from '../../../shared/service/html-element.service'
 @Component({
   selector: 'laji-datatable-templates',
   templateUrl: './datatable-templates.component.html',
-  styleUrls: ['./datatable-templates.component.css']
+  styleUrls: ['./datatable-templates.component.scss']
 })
 export class DatatableTemplatesComponent {
   @ViewChild('defaultHeaderTpl', { static: true }) dafaultHeader: TemplateRef<any>;
@@ -49,6 +49,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
   @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
   @ViewChild('sensitiveIcon', {static: true }) sensitiveIcon: TemplateRef<any>;
+  @ViewChild('copyToClipboard', {static: true }) copyToClipboard: TemplateRef<any>;
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;
@@ -61,6 +62,10 @@ export class DatatableTemplatesComponent {
 
   onTaxonLinkClick(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  onCopyToClipboard(str: string) {
+    navigator.clipboard.writeText(str);
   }
 
   void() {}

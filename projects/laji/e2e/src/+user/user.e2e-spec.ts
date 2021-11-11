@@ -17,6 +17,7 @@ describe('User page', () => {
 
   it('should login user', async (done) => {
     await page.navigateTo();
+    await page.logout(); // Log out first if already logged in, so that the test isn't dependent on previous tests login state.
     await page.login();
     expect(await page.getLoggedInUsersName()).toEqual(TEST_USERS[DEFAULT_TEST_USER].name);
     done();

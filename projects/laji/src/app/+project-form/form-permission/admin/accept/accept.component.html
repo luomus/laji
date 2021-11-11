@@ -1,16 +1,16 @@
 <div class="row" *ngIf="formPermission">
-  <div class="col-sm-6">
+  <div class="col-sm-12">
     <h3>{{ 'form.permission.admin.requests' | translate }}</h3>
     <p *ngIf="formPermission.permissionRequests.length === 0">
       {{ 'form.permission.admin.noRequests' | translate }}
     </p>
     <ul>
       <li *ngFor="let person of formPermission.permissionRequests">
-        <button class="btn btn-success" (click)="accept(person)">{{ 'form.permission.admin.accept' | translate }}</button>
-        <button class="btn btn-danger" (click)="reject(person)">{{ 'form.permission.admin.reject' | translate }}</button>
-        <span class="form-control-static">
-            {{ person | users }} ({{ person }})
-          </span>
+        <button class="btn btn-success mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'accept')">{{ 'form.permission.admin.accept' | translate }}</button>
+        <button class="btn btn-danger mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.reject' | translate }}</button>
+        <b class="form-control-static">
+          {{ person | users }} ({{ person }})
+        </b>
       </li>
     </ul>
   </div>

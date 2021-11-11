@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { NavigationThumbnailModule } from '../../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
 import { ObservationResultModule } from '../../shared-modules/observation-result/observation-result.module';
-import { DownloadModule } from '../../shared-modules/download/download.module';
+import { DownloadModalModule } from '../../shared-modules/download-modal/download-modal.module';
 import { ChartModule } from '../../shared-modules/chart/chart.module';
 import { YkjModule } from '../../shared-modules/ykj/ykj.module';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
@@ -57,7 +57,7 @@ import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-
     NamedPlaceModule,
     TaxonAutocompleteModule,
     ObservationResultModule,
-    DownloadModule,
+    DownloadModalModule,
     TranslateModule,
     CommonModule,
     SharedModule,

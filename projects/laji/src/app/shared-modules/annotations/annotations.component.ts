@@ -128,9 +128,9 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
         taxonId : this.unit && this.unit.linkings && this.unit.linkings.originalTaxon ? this.unit.linkings.originalTaxon.id : '' ,
         taxonVerbatim: this.unit && this.unit.taxonVerbatim ? this.unit.taxonVerbatim : '',
         wgs84centerPointLat: this.gathering && this.gathering.conversions && this.gathering.conversions.wgs84CenterPoint ?
-        this.gathering.conversions.wgs84CenterPoint.lat : '',
+        this.gathering.conversions.wgs84CenterPoint.lat : undefined,
         wgs84centerPointLon: this.gathering && this.gathering.conversions && this.gathering.conversions.wgs84CenterPoint ?
-        this.gathering.conversions.wgs84CenterPoint.lon : ''
+        this.gathering.conversions.wgs84CenterPoint.lon : undefined
       }
     };
   }

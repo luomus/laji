@@ -15,11 +15,11 @@ export class TaxonNameComponent {
     scientificName?: string;
     vernacularName?: string | {[lang: string]: string};
     scientificNameAuthorship?: string;
-    alternativeVernacularName?;
-    obsoleteVernacularName?;
-    colloquialVernacularName?;
-  };
-  @Input() taxonID: string;
+    alternativeVernacularName?: any;
+    obsoleteVernacularName?: any;
+    colloquialVernacularName?: any;
+  } = {};
+  @Input() taxonID?: string;
   @Input() addLink = true;
   @Input() addAuthor = false;
   @Input() warningOnMissingTaxonID = false;

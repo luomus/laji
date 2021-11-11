@@ -78,7 +78,7 @@ export class DocumentLocalComponent implements OnChanges {
             observables.push(this.getImages(doc));
           }
 
-          doc.gatherings.forEach((gathering, i) => {
+          doc.gatherings?.forEach((gathering, i) => {
             try {
               const paths = this.gatheringGeometryJSONPath || '$.geometry';
               const geoData = {type: 'GeometryCollection', geometries:

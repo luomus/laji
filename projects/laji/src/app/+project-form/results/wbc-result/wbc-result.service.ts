@@ -21,6 +21,7 @@ interface CountsPerYearForTaxon {
 export class WbcResultService {
   private collectionId = 'HR.39';
   private birdId = 'MX.37580';
+  private loxiaId = 'MX.36355';
   private mammalId = 'MX.37612';
   private seasonRanges = {
     'fall': [10, 11],
@@ -233,15 +234,17 @@ export class WbcResultService {
     return forkJoin([
       this.getCensusesForRoute(routeId),
       this.getObservationStatsList(routeId, this.birdId),
+      this.getObservationStatsList(routeId, this.loxiaId),
       this.getObservationStatsList(routeId, this.mammalId)
       ]
     ).pipe(
       map(results => {
         const censuses = results[0];
         const birdResultList = results[1].results;
-        const mammalResultList = results[2].results;
+        const loxiaResultList = results[2].results;
+        const mammalResultList = results[3].results;
 
-        const result = this.parseObservationStatsLists(censuses, birdResultList, mammalResultList);
+        const result = this.parseObservationStatsLists(censuses, birdResultList, loxiaResultList, mammalResultList);
         this.addStatisticsToObservationStats(result);
         return result;
       })
@@ -360,7 +363,7 @@ export class WbcResultService {
       false);
   }
 
-  private parseObservationStatsLists(censuses: Censuses, birdResultList: any[], mammalResultList: any[]): ObservationStats {
+  private parseObservationStatsLists(censuses: Censuses, birdResultList: any[], loxiaResultList: any[], mammalResultList: any[]): ObservationStats {
     const result: ObservationStats = {};
 
     for (const season of ['fall', 'winter', 'spring']) {
@@ -369,6 +372,7 @@ export class WbcResultService {
         'otherStats': [
           {'name': 'birdSpeciesCount'},
           {'name': 'birdIndividualCount'},
+          {'name': 'loxiaIndividualCount'},
           {'name': 'mammalSpeciesCount'},
           {'name': 'mammalIndividualCount'},
           {'name': 'documentIds', ...censuses[season].documentIds}
@@ -379,10 +383,11 @@ export class WbcResultService {
 
     this.parseObservationStatsList(birdResultList, result);
     this.parseObservationStatsList(mammalResultList, result, true);
+    this.parseObservationStatsList(loxiaResultList, result, false, true);
     return result;
   }
 
-  private parseObservationStatsList(resultList: any[], result: ObservationStats, isMammal = false) {
+  private parseObservationStatsList(resultList: any[], result: ObservationStats, isMammal = false, isLoxia = false) {
     const currentState = {};
     for (const season of ['fall', 'winter', 'spring']) {
       currentState[season] = {taxonId: '', foundYears: [], row: undefined};
@@ -404,20 +409,22 @@ export class WbcResultService {
       const otherStats = result[season].otherStats;
       const yearString = year + '';
 
-      if (currentState[season].taxonId === taxonId) {
-        this.addCount(currentState[season].row, yearString, individualCount);
-      } else {
-        const row = {'name': taxonName, [yearString]: individualCount};
-        currentState[season] = {taxonId: taxonId, foundYears: [], row: row};
-        speciesStats.push(row);
+      if (!isLoxia) {
+        if (currentState[season].taxonId === taxonId) {
+          this.addCount(currentState[season].row, yearString, individualCount);
+        } else {
+          const row = {'name': taxonName, [yearString]: individualCount};
+          currentState[season] = {taxonId: taxonId, foundYears: [], row: row};
+          speciesStats.push(row);
+        }
+
+        if (currentState[season].foundYears.indexOf(yearString) === -1) {
+          currentState[season].foundYears.push(yearString);
+          this.addCount(otherStats[isMammal ? 3 : 0], yearString, 1);
+        }
       }
 
-      if (currentState[season].foundYears.indexOf(yearString) === -1) {
-        currentState[season].foundYears.push(yearString);
-        this.addCount(otherStats[isMammal ? 2 : 0], yearString, 1);
-      }
-
-      this.addCount(otherStats[isMammal ? 3 : 1], yearString, individualCount);
+      this.addCount(otherStats[isMammal ? 4 : isLoxia ? 2 : 1], yearString, individualCount);
     });
   }
 

@@ -1,4 +1,4 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, delay, map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -16,14 +16,14 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
-import { DownloadComponent } from '../../shared-modules/download/download.component';
+import { DownloadComponent } from '../../shared-modules/download-modal/download.component';
 import {
   ObservationTableSettingsComponent
 } from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';
@@ -33,6 +33,8 @@ import { IColumns } from '../../shared-modules/datatable/service/observation-tab
 import { ObservationDataService } from '../observation-data.service';
 import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
+import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
+import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 
 
 enum RequestStatus {
@@ -44,6 +46,7 @@ enum RequestStatus {
 @Component({
   selector: 'laji-observation-download',
   templateUrl: './observation-download.component.html',
+  styleUrls: ['./observation-download.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationDownloadComponent implements OnDestroy {
@@ -65,6 +68,8 @@ export class ObservationDownloadComponent implements OnDestroy {
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
   downloadLoading = false;
+  apiKeyLoading = false;
+  apiKey = '';
   description = '';
   csvParams = '';
   reason = '';
@@ -72,6 +77,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
+  queryHasFilters = false;
 
   speciesCsvLoading = false;
 
@@ -155,6 +161,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.requests = {};
     this.updateCount();
     this.updateCsvLink();
+    this.queryHasFilters = createActiveFiltersList(query).length > 0;
   }
 
   get query(): WarehouseQueryInterface {
@@ -238,7 +245,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       this.translate.currentLang,
       undefined,
       {
-        dataUsePurpose: this.reason
+        dataUsePurpose: [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
       }
     ).subscribe(
       () => {
@@ -298,6 +305,32 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.downloadLoading = false;
       }
     );
+  }
+
+  onApiKeyRequest(req: ApiKeyRequest) {
+    this.apiKeyLoading = true;
+    this.apiKey = '';
+    this.warehouseService.download(
+      this.userService.getToken(),
+      'TSV_FLAT',
+      'DOCUMENT_FACTS,GATHERING_FACTS,UNIT_FACTS',
+      this.query,
+      this.translate.currentLang,
+      'AUTHORITIES_API_KEY',
+      {
+        dataUsePurpose: [req.reasonEnum, req.reason].filter(r => !!r).join(': '),
+        apiKeyExpires: req.expiration
+      }
+    ).subscribe(res => {
+      this.apiKeyLoading = false;
+      this.apiKey = res.apiKey;
+      this.cd.markForCheck();
+    }, err => {
+      this.logger.error('Apikey request failed', err);
+      this.apiKeyLoading = false;
+      this.apiKey = '';
+      this.cd.markForCheck();
+    });
   }
 
   openColumnSelectModal() {

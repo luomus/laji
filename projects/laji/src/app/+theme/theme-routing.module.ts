@@ -22,7 +22,7 @@ import { ProtaxComponent } from './protax/protax.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
-import {KerttuResultComponent} from './kerttu/kerttu-result/kerttu-result.component';
+import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
 
 /* tslint:enable:max-line-length */
 

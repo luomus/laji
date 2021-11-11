@@ -1,5 +1,5 @@
-import { map, mergeMap } from 'rxjs/operators';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormPermissionService } from '../../../../shared/service/form-permission.service';
@@ -13,10 +13,11 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'laji-manage',
   templateUrl: './manage.component.html',
-  styleUrls: ['./manage.component.css']
+  styleUrls: ['./manage.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageComponent extends AbstractPermission implements OnInit, OnDestroy {
-
+  disabled: {[personId: string]: boolean} = {};
   type: string;
 
   private subParam: Subscription;
@@ -28,43 +29,42 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
     protected userService: UserService,
     private route: ActivatedRoute,
     private projectFormService: ProjectFormService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private cdr: ChangeDetectorRef
   ) {
     super();
   }
 
   ngOnInit() {
-    this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(mergeMap(form =>
-      this.route.params.pipe(map(params =>
+    this.subParam = this.projectFormService.getFormFromRoute$(this.route).pipe(
+      mergeMap(form => this.route.params.pipe(map(params =>
         [form.collectionID, params['type'] || 'editors']
-      ))
-    )).subscribe(([collectionId, type]) => {
-      this.collectionId = collectionId;
-      this.type = type;
-      this.initFormPermission();
-    });
+      ))),
+      tap(([collectionId, type]) => {
+        this.collectionId = collectionId;
+        this.type = type;
+      }),
+      switchMap(() => this.updateFormPermission$())
+    ).subscribe(() => this.cdr.markForCheck());
   }
 
   ngOnDestroy() {
     this.subParam.unsubscribe();
   }
 
-  makeEditor(personId: string) {
-    this.formPermissionService.acceptRequest(this.collectionId, this.userService.getToken(), personId)
-      .subscribe(() => this.initFormPermission());
-  }
-
-  makeAdmin(personId: string) {
-    if (confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
-      this.formPermissionService
-        .acceptRequest(this.collectionId, this.userService.getToken(), personId, FormPermission.Type.Admin)
-        .subscribe(() => this.initFormPermission());
+  makePermissionChange(personId: string, action: 'acceptAdmin' | 'acceptEditor' | 'reject') {
+    if (action === 'acceptAdmin' && !confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
+      return;
     }
+    this.disabled[personId] = true;
+    const cb = () => {
+      this.disabled[personId] = false;
+      this.cdr.markForCheck();
+    };
 
-  }
-
-  reject(personId: string) {
-    this.formPermissionService.revokeAccess(this.collectionId, this.userService.getToken(), personId)
-      .subscribe(() => this.initFormPermission());
+    const method = (action === 'acceptAdmin' || action === 'acceptEditor') ? 'acceptRequest' : 'revokeAccess';
+    this.formPermissionService[method](this.collectionId, this.userService.getToken(), personId, action === 'acceptAdmin' ? FormPermission.Type.Admin : undefined).pipe(
+      switchMap(() => this.updateFormPermission$())
+    ).subscribe(cb, cb);
   }
 }
