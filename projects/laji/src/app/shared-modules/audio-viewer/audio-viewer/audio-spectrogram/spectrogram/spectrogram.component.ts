@@ -22,8 +22,8 @@ export class SpectrogramComponent implements OnChanges {
 
   @Input() view: IAudioViewerArea;
 
-  @Input() width?: number;
-  @Input() height?: number;
+  @Input() width = 0;
+  @Input() height = 0;
 
   @Input() pregeneratedSpectrogramUrl?: string;
 
