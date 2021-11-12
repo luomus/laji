@@ -340,6 +340,7 @@
   "haseka.form.leaveConfirm": "Är du säker på att du vill lämna formuläret?",
   "haseka.form.leaveConfirm.confirm": "Poistu",
   "haseka.form.localData": "Det finns en osparad inlämning av detta formulär. Klicka här för att återvända till det.",
+  "haseka.form.missingNamedPlace": "Nimetyn paikan nouto epäonnistui",
   "haseka.form.noAccessToDocument": "Du har inga behörigheter att redigera det här observationbatch.",
   "haseka.form.private": "Observationspartiet har inte ännu publicerats",
   "haseka.form.readonly": "Du har inte behörighet att redigera",
@@ -349,6 +350,7 @@
   "haseka.form.savePublic": "Spara och publicera",
   "haseka.form.saveTemplate": "Spara som mall.",
   "haseka.form.success": "Observationerna sparat!",
+  "haseka.form.templateDisallowed": "Lomakkeella ei ole sallittu käyttää esitäytettyjä lomakkeita",
   "haseka.form.unsaved": "senast sparade på {{saveTime}}",
   "haseka.form.unsavedNever": "Ändringarna har ännu inte sparats.",
   "haseka.forms.comingSoon": "Kommer snart",
@@ -1746,8 +1748,10 @@
   "theme.protax.fileInput": "Filväljare",
   "theme.protax.genericError": "Ett fel uppstod när filen laddades.",
   "theme.protax.intro": "Med detta verktyg kan du bestämma vilken som helst DNA-sekvens från en finsk insekt eller spindel, bara sekvensen härrör från den vanliga DNA-streckkodregionen, COI, och matas in i FASTA-format. Programmet kan inte identifiera andra taxa än insekter och spindlar.",
+  "theme.protax.invalidMinimumOverlap": "Minimi overlapin on oltava väliltä 1-500",
   "theme.protax.invalidSequence": "Ogiltigt filformat. Endast FASTA-format stöds.",
   "theme.protax.invalidThreshold": "Sannolikhetströskelvärdet måste vara mellan 0–1.",
+  "theme.protax.minimumOverlap": "Minimi overlap",
   "theme.protax.model": "Modell",
   "theme.protax.noSequence": "Klistra först in sekvensdata i textfältet eller välj filen med filväljaren.",
   "theme.protax.probabilityThreshold": "Sannolikhetströskelvärdet",
@@ -1901,6 +1905,5 @@
   "whatsNew.acknowledge": "Tack för informationen",
   "whatsNew.message": "laji.fi är en testportal för Finlands Artdatacenter. Information och egenskaper kommer att förbättras kontinuerligt. Feedback är välkommen - du kan skicka den via feedbackblanketten eller via e-post till adress info@laji.fi. Tack!",
   "wholeYear": "Helt år {{year}}",
-  "yes": "Ja",
-  "haseka.form.templateDisallowed": "Förfyllda formulär är inaktiverade för detta formulär"
+  "yes": "Ja"
 }
