@@ -23,12 +23,12 @@ describe('Trip form page', () => {
     await vihkoHome.latestSaved.waitUntilLoaded();
     await vihkoHome.latestUnsaved.waitUntilLoaded();
     try {
-      latestSavedDocEditLink = await vihkoHome.latestSaved.getShortDoc(await vihkoHome.latestSaved.shortDocs$$.count() - 1).getEditLink();
+      latestSavedDocEditLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
     } catch (e) {
       // There are no saved docs
     }
     try {
-      latestUnsavedDocEditLink = await vihkoHome.latestUnsaved.getShortDoc(0).getEditLink();
+      latestUnsavedDocEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink();
     } catch (e) {
       // There are no unsaved docs
     }
@@ -56,7 +56,17 @@ describe('Trip form page', () => {
 
   it('vihko home page should show saved document', async (done) => {
     await vihkoHome.latestSaved.waitUntilLoaded();
-    expect(await vihkoHome.latestSaved.getShortDoc(await vihkoHome.latestSaved.shortDocs$$.count() - 1).getEditLink()).not.toBe(latestSavedDocEditLink);
+    await vihkoHome.latestUnsaved.waitUntilLoaded();
+    const editLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
+    expect(editLink).not.toBe(undefined);
+    expect(editLink).not.toBe(latestSavedDocEditLink);
+    try {
+      latestUnsavedDocEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink()
+    } catch (e) {
+      // There are no unsaved docs
+    }
+    expect(latestUnsavedDocEditLink).toBe(latestUnsavedDocEditLink, 'Temp docs changed after saving doc');
+    latestSavedDocEditLink = await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink();
     done();
   });
 
@@ -103,9 +113,16 @@ describe('Trip form page', () => {
         });
       });
 
-      it('after leaving unsaved vihko home page unsaved docs displays new unsaved doc', async (done) => {
+      it('after leaving unsaved doc, vihko home page unsaved docs list displays new unsaved doc', async (done) => {
+        await vihkoHome.latestSaved.waitUntilLoaded();
         await vihkoHome.latestUnsaved.waitUntilLoaded();
-        expect(await vihkoHome.latestUnsaved.getShortDoc(0).getEditLink()).not.toBe(latestUnsavedDocEditLink);
+        const tmpEditLink = await (await vihkoHome.latestUnsaved.getLatestShortDoc()).getEditLink();
+        expect(tmpEditLink).not.toBe(undefined);
+        expect(tmpEditLink).not.toBe(latestUnsavedDocEditLink);
+        expect(latestSavedDocEditLink).toBe(
+          await (await vihkoHome.latestSaved.getLatestShortDoc()).getEditLink(),
+          'Saved docs changed after saving as tmp'
+        );
         done();
       });
     });

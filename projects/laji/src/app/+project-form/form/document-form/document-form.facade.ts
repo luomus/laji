@@ -273,10 +273,10 @@ export class DocumentFormFacade {
   }
 
   private saveDocument(document: Document): Observable<Document> {
-    const isTmpId = !document.id || FormService.isTmpId(document.id);
-    if (isTmpId) { delete document.id; }
+    const tmpId = FormService.isTmpId(document.id) && document.id;
+    if (tmpId) { delete document.id; }
 
-    return (isTmpId
+    return (tmpId
       ? this.documentApi.create(document, this.userService.getToken())
       : this.documentApi.update(document.id, document, this.userService.getToken())
     ).pipe(
@@ -286,7 +286,7 @@ export class DocumentFormFacade {
         this.namedPlacesService.invalidateCache();
         this.userService.user$.pipe(
           take(1),
-          mergeMap(p => this.documentStorage.removeItem(document.id, p))
+          mergeMap(p => this.documentStorage.removeItem(tmpId, p))
         ).subscribe();
       }),
       catchError(e => {

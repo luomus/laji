@@ -16,13 +16,18 @@ export class VihkoHomePage {
   }
 
   latestSaved = latestDocumentsView('.vihko-latest-saved');
-  latestUnsaved = latestDocumentsView('.vihko-latest-unsaved');
+  latestUnsaved = latestDocumentsView('.vihko-latest-unsaved', !!'reverse');
 }
 
-const latestDocumentsView = (selector: string) => {
+const latestDocumentsView = (selector: string, orderReverse = false) => {
   const container$ = $(selector);
   const spinner$ = container$.$('laji-spinner');
   const shortDocs$$ = container$.$$('laji-short-document');
+  const getShortDoc = (idx: number) => {
+    return {
+      getEditLink: () => shortDocs$$.get(idx).$('a').getAttribute('href')
+    };
+  };
   return {
     container$,
     spinner$,
@@ -30,10 +35,7 @@ const latestDocumentsView = (selector: string) => {
     waitUntilLoaded() {
       return waitForInvisibility(spinner$);
     },
-    getShortDoc: (idx: number) => {
-      return {
-        getEditLink: () => shortDocs$$.get(idx).$('a').getAttribute('href')
-      }
-    }
+    getShortDoc,
+    getLatestShortDoc: async () => getShortDoc(orderReverse ? 0 : await shortDocs$$.count() - 1)
   };
 };
