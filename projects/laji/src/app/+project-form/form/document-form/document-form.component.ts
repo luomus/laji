@@ -122,7 +122,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   }
 
   canDeactivate(leaveKey = 'haseka.form.leaveConfirm', cancelKey = 'haseka.form.discardConfirm') {
-    if (!this.confirmLeave || !this.vm.hasChanges || this.template) {
+    if (!this.confirmLeave || !this.vm?.hasChanges || this.template) {
       return true;
     }
     const msg = this.isFromCancel ? cancelKey : leaveKey;
@@ -145,7 +145,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event) {
-    if (this.vm.hasChanges) {
+    if (this.vm?.hasChanges) {
       $event.returnValue = undefined;
     }
   }
