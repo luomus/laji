@@ -62,13 +62,13 @@ export class KerttuGlobalApi {
   }
 
   public getRecordings(speciesId: number): Observable<IListResult<IGlobalRecording>> {
-    const path = this.basePath + '/recording/' + speciesId;
+    const path = this.basePath + '/recordings/' + speciesId;
 
     return this.httpClient.get<IListResult<IGlobalRecording>>(path);
   }
 
   public getTemplateVersions(taxonId: number): Observable<IListResult<IGlobalTemplateVersion>> {
-    const path = this.basePath + '/template/' + taxonId;
+    const path = this.basePath + '/templates/' + taxonId;
 
     return this.httpClient.get<IListResult<IGlobalTemplateVersion>>(path);
   }
@@ -76,7 +76,7 @@ export class KerttuGlobalApi {
   public saveTemplates(personToken: string, taxonId: number, data: {
     templates: IGlobalTemplate[], comments: IGlobalComment[]
   }): Observable<ISuccessResult> {
-    const path = this.basePath + '/template/' + taxonId;
+    const path = this.basePath + '/templates/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.post<ISuccessResult>(path, data, { params });
