@@ -13,6 +13,8 @@ import {
 } from '@angular/core';
 
 import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
+import { timer } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -59,7 +61,9 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
   private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };
 
-  constructor() {
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) {
     this.updateMargin();
   }
 
@@ -69,7 +73,11 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.onResize();
+    // update width and height immediately and after some time has passed to ensure that the content has loaded
+    timer(0, 300).pipe(take(2)).subscribe(() => {
+      this.onResize();
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnChanges() {
