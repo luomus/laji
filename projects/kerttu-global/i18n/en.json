@@ -36,6 +36,7 @@
   "validation.description": "Use the template candidates or audio files provided below to create new templates. Double-clicking any of them will open a new tab where you can reframe (if needed) and confirm them as templates.",
   "validation.description.confirm": "Listen through the templates by clicking them once. If modifications are needed you can reframe and remove the existing templates by double clicking them. This will open them into a new tab. You can confirm the templates all at once by clicking the blue button below or one-by-one by double clicking and confirming them separately.",
   "validation.description.oldVersion": "This is a previous version of the candidates to which another user has made modifications. You can study the candidates by double-clicking them. You can listen to templates by clicking the them once. Modifications are not possible as this can be done only in the latest version of the species. Latest version can be accessed from the top-right corner. Templates which have been modified after this version are shown in yellow (reframed) or red (removed). Double-clicking these, you will see the explanation for these given by the user who made the modifications.",
+  "validation.includingSubspecies": "Including",
   "validation.info.setDefaultSettings": "Resets the time buffer to 30s and turns focus frequency off.",
   "validation.info.zoom": "With this tool, by drawing a rectangular with mouse cursor, you can zoom in to the part of spectrogram that you want to view and hear in more detail. If the recording contains low-frequency background noise or other sounds which obstruct identification you can use the crop recording tool to exclude them from playback.",
   "validation.leaveConfirm": "Are you sure you want to leave?",
@@ -61,12 +62,11 @@
   "validation.template.remove": "Remove",
   "validation.template.remove.confirm": "Are you sure you want to remove this template?",
   "validation.template.removed": "Template removed",
-  "validation.undefined": "Undefined",
   "validation.template.validatedBy": "Template validated by users",
   "validation.templates": "Templates",
   "validation.title": "Validate species",
+  "validation.undefined": "Undefined",
   "versionNav.next": "Next",
   "versionNav.previous": "Previous",
-  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
-  "validation.includingSubspecies": "Including"
+  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}"
 }
