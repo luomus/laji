@@ -446,6 +446,7 @@ export class DocumentFormFacade {
 
   private getUiSchemaContext(form: Form.SchemaForm, namedPlace: NamedPlace, user: Person, rights: Rights, documentID: string): Observable<any> {
     const uiSchemaContext = {
+      ...form.uiSchemaContext,
       formID: form.id,
       creator: user.id,
       isAdmin: rights && rights.admin,
