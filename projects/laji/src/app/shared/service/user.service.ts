@@ -74,11 +74,11 @@ export class UserService {
   private init = false;
 
   // Do not write to this variable in the server!
-  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState = _persistentState;
-  @SessionStorage() private returnUrl = '/';
-  @SessionStorage('retry', 0) private retry = 0;
+  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState | undefined;
+  @SessionStorage() private returnUrl: string | undefined;
+  @SessionStorage('retry', 0) private retry: number | undefined;
 
-  private _persistent: IPersistentState = { isLoggedIn: false };
+  private _persistent: IPersistentState | undefined;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -254,7 +254,7 @@ export class UserService {
       return of(true);
     }
     const token = rawToken || _state.token;
-    if (_state.token && this.persistent.isLoggedIn === false) {
+    if (_state.token && (!this.persistent || this.persistent.isLoggedIn === false)) {
       this.doLogoutState();
     } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
@@ -267,7 +267,7 @@ export class UserService {
         map(() => true),
         share()
       );
-    } else if (this.persistent.isLoggedIn) {
+    } else if (this.persistent?.isLoggedIn) {
       return this.doBackgroundCheck().pipe(
         switchMap(t => t ? this._checkLogin(t) : of(false)),
         timeout(10000),
@@ -283,7 +283,7 @@ export class UserService {
   }
 
   private doBackgroundCheck(): Observable<string> {
-    if (!this.platformService.canUseWebWorkerLogin || this.retry > 0) {
+    if (!this.platformService.canUseWebWorkerLogin || (this.retry && this.retry > 0)) {
       this.redirectToLogin();
       return of('');
     }
@@ -337,7 +337,7 @@ export class UserService {
     this.store.next(_state = state);
   }
 
-  set persistent(state: IPersistentState) {
+  set persistent(state: IPersistentState | undefined) {
     if (this.platformService.isBrowser) {
       this.persistentState = state;
     } else {
