@@ -14,7 +14,7 @@ export class UserTableComponent implements OnInit {
   @Input() data: IUserStat[] = [];
 
   columns: DatatableColumn[] = [];
-  sorts: { prop: string, dir: 'asc'|'desc' }[] = [{ prop: 'count', dir: 'desc' }];
+  sorts: { prop: string, dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];
 
   @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
 
@@ -32,13 +32,13 @@ export class UserTableComponent implements OnInit {
         summaryFunc: () => this.translate.instant('theme.total')
       },
       {
-        name: 'versionCount',
-        label: 'results.userTable.versionCount',
+        name: 'speciesCreated',
+        label: 'results.userTable.speciesCreated',
         width: 70
       },
       {
-        name: 'validationCount',
-        label: 'results.userTable.validationCount',
+        name: 'speciesValidated',
+        label: 'results.userTable.speciesValidated',
         width: 70
       }
     ];

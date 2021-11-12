@@ -92,7 +92,8 @@ export interface IValidationStat {
 
 export interface IUserStat {
   userId: string;
-  count: number;
+  speciesCreated: number;
+  speciesValidated: number;
 }
 
 export enum CommentType {
