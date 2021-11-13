@@ -18,6 +18,8 @@ video {
 }
 
 .content-container {
+	position: relative;
+	z-index: 1;
 	height: 100%;
 	& > div {
 		max-width: 800px;

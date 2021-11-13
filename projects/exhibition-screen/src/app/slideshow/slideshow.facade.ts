@@ -27,7 +27,14 @@ export class SlideshowFacade {
 				informationArr.map(information => {
 					let contentPlacement = 'left';
 					let style = 'default';
+					let bgSrc = information.featuredImage?.url;
+					let bgIsVideo = false;
 					information.tags.forEach((curr) => {
+						if(curr.startsWith('video:')) {
+							bgSrc = 'https://nayttely-cms.luomus.fi/wp-content/uploads/' + curr.split(':')[1];
+							bgIsVideo = true;
+						}
+
 						switch(curr) {
 							case 'align-left':
 								contentPlacement = 'left';
@@ -52,8 +59,8 @@ export class SlideshowFacade {
 					return {
 						content: information.content,
 						title: information.title,
-						bgSrc: information.featuredImage?.url,
-						bgIsVideo: false,
+						bgSrc,
+						bgIsVideo,
 						bgCaption: information.featuredImage?.caption,
 						animationPlacement,
 						contentPlacement,
