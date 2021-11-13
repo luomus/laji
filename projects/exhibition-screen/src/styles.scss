@@ -32,6 +32,13 @@ body {
 }
 
 .modal-dialog {
+	width: 100%;
+	height: calc(100% - 120px);
 	margin: 60px auto 30px;
 	max-width: 80vw;
+}
+
+.modal-content, es-pdf-modal, es-pdf-modal .panel, iframe {
+	width: 100%;
+	height: 100%;
 }
