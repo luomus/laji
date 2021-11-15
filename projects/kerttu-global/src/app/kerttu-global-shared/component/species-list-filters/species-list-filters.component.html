@@ -1,5 +1,5 @@
-<div class="row mb-2">
-  <div class="col-sm-6 mb-4">
+<div class="row filters">
+  <div class="col-sm-6">
     <h4>{{ 'speciesList.filters.byRegion' | translate }}</h4>
     <div class="row">
       <div class="col-sm-6">
@@ -11,7 +11,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6 mb-4">
+  <div class="col-sm-6">
     <h4>{{ 'speciesList.filters.byTaxonomy' | translate }}</h4>
     <div class="row">
       <div class="col-sm-6">
@@ -48,7 +48,7 @@
     </bSwitch>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-3" *ngIf="showSearch">
     <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
     <laji-search-input [(searchQuery)]="query.searchQuery" (searchQueryChange)="onQueryChange()" id="search"></laji-search-input>
   </div>

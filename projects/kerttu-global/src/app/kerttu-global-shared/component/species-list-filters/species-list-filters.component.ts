@@ -11,6 +11,7 @@ export class SpeciesListFiltersComponent {
   @Input() filters: IGlobalSpeciesFilters = { continent: [], order: [], family: [] };
   @Input() query: IGlobalSpeciesQuery = {};
   @Input() showOnlyUnvalidated = true;
+  @Input() showSearch = true;
 
   @Output() queryChange = new EventEmitter<IGlobalSpeciesQuery>();
 

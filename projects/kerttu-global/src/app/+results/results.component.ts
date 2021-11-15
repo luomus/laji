@@ -14,6 +14,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
         [query]="speciesQuery$ | async"
         [filters]="speciesFilters$ | async"
         [showOnlyUnvalidated]="false"
+        [showSearch]="false"
         (queryChange)="onSpeciesQueryChange($event)"
       ></laji-species-list-filters>
       <h2>{{ 'results.pie.title' | translate }}</h2>
