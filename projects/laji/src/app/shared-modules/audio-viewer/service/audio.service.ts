@@ -130,14 +130,18 @@ export class AudioService {
     const source = this.audioContext.createBufferSource();
     source.buffer = buffer;
 
-    if (frequencyRange) {
+    const gainNode = this.audioContext.createGain();
+    gainNode.gain.value = 0.5;
+    source.connect(gainNode);
+
+    if (frequencyRange && (frequencyRange[0] > 0 || frequencyRange[1] < buffer.sampleRate / 2)) {
       const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
       const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
-      source.connect(highpassFilter);
+      gainNode.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(this.audioContext.destination);
     } else {
-      source.connect(this.audioContext.destination);
+      gainNode.connect(this.audioContext.destination);
     }
     source.start(0, startTime);
     this.activePlayer = player;
