@@ -292,7 +292,7 @@ export class DocumentFormFacade {
     const tmpId = FormService.isTmpId(document.id) && document.id;
     if (tmpId) { delete document.id; }
 
-    return (tmpId
+    return (tmpId || !document.id
       ? this.documentApi.create(document, this.userService.getToken())
       : this.documentApi.update(document.id, document, this.userService.getToken())
     ).pipe(
