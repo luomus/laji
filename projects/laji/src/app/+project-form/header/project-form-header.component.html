@@ -3,7 +3,6 @@
     <img src="{{_form.logo}}">
   </div>
   <h3>{{ _form.title }}</h3>
-  <ng-content></ng-content>
   <ng-container *ngIf="description">
     <div [innerHtml]="description | translate"></div>
     <br>
@@ -13,4 +12,5 @@
     |
   </span>
   <a *ngIf="!_form.options?.hideTES" [routerLink]="['/vihko/terms-of-service'] | localize" target="_blank">{{ 'haseka.termsOfService' | translate }}</a>
+  <ng-content></ng-content>
 </div>
