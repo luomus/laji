@@ -208,8 +208,7 @@ export class DocumentFormFacade {
     // containing everything that the view needs.
     this.vm$ = inputModel$.pipe(switchMap(inputModel => {
       if (isFormError(inputModel)) {
-        this.vm$ = of(inputModel);
-        return;
+        return of(inputModel);
       }
       const {form, formData} = inputModel;
 
