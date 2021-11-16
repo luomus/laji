@@ -181,6 +181,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         ));
         this.successNavigation();
       }, () => {
+        this.lajiForm.unBlock();
         this.saving = false;
         this.lajiForm.displayErrorModal('saveError');
       });
