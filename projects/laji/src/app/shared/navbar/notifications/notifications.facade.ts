@@ -131,7 +131,7 @@ export class NotificationsFacade {
     notification.seen = true;
     return subscribeWithWrapper(
       this.lajiApi.update(LajiApi.Endpoints.notifications, notification, {personToken: this.userService.getToken()}),
-      this.localUnseenCountReducer.bind(this, [1])
+      this.localUnseenCountReducer.bind(this, 1)
     );
   }
 
