@@ -88,7 +88,8 @@ export class WbcResultFiltersComponent implements OnInit, OnChanges {
       [],
       {
         queryParams: {year: this.activeYear, season: this.activeSeason, birdAssociationArea: this.activeArea},
-        queryParamsHandling: 'merge'
+        queryParamsHandling: 'merge',
+        replaceUrl: true
       }
     );
   }

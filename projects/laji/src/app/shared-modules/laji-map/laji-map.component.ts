@@ -19,7 +19,8 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Options, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import {LocalStorage} from 'ngx-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
+import { environment } from 'projects/laji/src/environments/environment';
 
 
 @Component({
@@ -107,6 +108,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           onChange: e => this.onChange(e)
         }
       };
+    }
+    if (environment.geoserver) {
+      options.lajiGeoServerAddress = environment.geoserver;
     }
     this._options = options;
     this.initMap();

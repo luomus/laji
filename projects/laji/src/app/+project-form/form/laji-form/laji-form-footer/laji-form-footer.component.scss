@@ -1,0 +1,43 @@
+@import '../../../../../styles/variables';
+@import 'vars';
+
+.form-footer {
+  overflow: auto;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding:10px;
+  background-color: $neutral-4;
+  border-top: 1px solid $neutral-5;
+  box-shadow: 0 2px 6px 1px rgb(36 97 5 / 30%);
+  display: flex;
+  flex-flow: row nowrap;
+  > div, > button, > lu-button {
+    margin-right: $sp-default;
+  }
+
+  button, .lock-button {
+    height: 27px;
+    align-self: center;
+  }
+}
+
+.status {
+  padding: $sp-btn;
+
+  .success {
+    color: $success-7;
+  }
+
+  .error {
+    color: $danger-7;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-footer button {
+    padding: 5px;
+  }
+}
