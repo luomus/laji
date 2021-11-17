@@ -109,7 +109,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!this.lajiFormWrapper) {
       return;
     }
-    if (changes['form'] || changes['formData']) {
+    if (changes['form']) {
       this.ngZone.runOutsideAngular(() => {
         this.lajiFormWrapper.setState({
           schema: this.form.schema,
