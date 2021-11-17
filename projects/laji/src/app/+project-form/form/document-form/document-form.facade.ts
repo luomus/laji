@@ -288,7 +288,6 @@ export class DocumentFormFacade {
     if (Object.keys(memoizedForm).every(k => k === 'result' || memoizedForm[k] === this.memoizedForm[k])) {
       return this.memoizedForm.result;
     }
-    memoizedForm.result = result;
     this.memoizedForm = memoizedForm;
     return result;
   }
