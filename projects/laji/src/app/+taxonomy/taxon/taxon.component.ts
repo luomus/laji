@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestro
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { catchError, concat, delay, retryWhen, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, filter, retryWhen, take, tap } from 'rxjs/operators';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger';
@@ -12,6 +12,8 @@ import { DOCUMENT } from '@angular/common';
 import { CacheService } from '../../shared/service/cache.service';
 import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
+
+const notBoolean = <T>(a: T | boolean): a is T => typeof a !== 'boolean';
 
 @Component({
   selector: 'laji-taxonomy',
@@ -110,6 +112,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
 
   private initTaxon(taxonId: string): Observable<any> {
     return this.getTaxon(taxonId).pipe(
+      filter(notBoolean),
       tap(taxon => {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();

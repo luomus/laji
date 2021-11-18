@@ -127,13 +127,13 @@ export class YkjService {
       properties: properties,
       geometry: {
         type: 'Polygon',
-        coordinates: [[
+        coordinates: [([
           [latStart, lonStart],
           [latStart, lonEnd],
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map(this.convertYkjLatLngToWgsLngLat)]
+        ] as [string, string][]).map(this.convertYkjLatLngToWgsLngLat)]
       }
     };
   }

@@ -158,7 +158,9 @@ export class SelectSubcategoriesComponent implements OnChanges {
       }
       let tmpSelectedOptions = [];
       let tmpUnselectedOptions = [];
-      const countObj = this.selectedOptions[i].filter((item: SelectOptions) => item.id !== undefined).length;
+      const countObj = this.selectedOptions[i].filter(
+        (item: SelectOptions | string) => typeof item === 'string' || item.id !== undefined
+      ).length;
       this.options.map(option => {
         if (countObj > 0) {
           selected[i].map(item => {
@@ -361,18 +363,31 @@ export class SelectSubcategoriesComponent implements OnChanges {
         });
         if (count === categoriesExcludeGlobal.length) {
           categoriesExcludeGlobal.forEach(item => {
-            if (this.selectedOptions[item]?.indexOf(option.id) > -1 && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions) => x.id === option.id) === -1) {
+            if (
+              this.selectedOptions[item]?.indexOf(option.id) > -1
+              && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
+              && x.id === option.id) === -1
+            ) {
               this.selectedOptions[item].splice(this.selectedOptions[item].indexOf(option.id), 1);
             }
             if (this.selectedOptions['GLOBAL'] && selectedOptionsDiff?.findIndex(el => el.checkboxValue === option.id) > -1) {
-              this.selectedOptions['GLOBAL'].splice(this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions) => x.id === option.id), 1);
+              this.selectedOptions['GLOBAL']
+                .splice(this.selectedOptions['GLOBAL']
+                .findIndex(
+                  (x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id),
+                  1
+                );
             }
           });
         } else {
           categoriesExcludeGlobal.forEach(item => {
-            if ((this.selectedOptions[item] === undefined || this.selectedOptions[item]?.indexOf(option.id) === -1) &&
-              this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions) => x.id === option.id) > -1 &&
-              this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions) => x.id === option.id)]['checkboxValue'] === true) {
+            if (
+              (this.selectedOptions[item] === undefined || this.selectedOptions[item]?.indexOf(option.id) === -1)
+              && this.selectedOptions['GLOBAL'] !== undefined
+              && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
+              && x.id === option.id) > -1
+              && this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id)]['checkboxValue'] === true
+            ) {
               this.selectedOptions[item] ? this.selectedOptions[item].push(option.id) : this.selectedOptions[item] = [option.id];
             }
           });
@@ -386,7 +401,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions[cat]?.indexOf(option.id) > -1 &&
             this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== [] &&
-            this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions) => x.id === option.id) === -1
+            this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id) === -1
           ) {
             countNoGlobal++;
           }
@@ -422,8 +437,8 @@ export class SelectSubcategoriesComponent implements OnChanges {
 
   buildGlobalOptions(selectedOptions, categories, equals) {
     const oldGlobalOptions = [];
-    this.selectedOptions['GLOBAL']?.forEach((filter: SelectOptions) => {
-      if (filter.checkboxValue === true) {
+    this.selectedOptions['GLOBAL']?.forEach((filter: SelectOptions | string) => {
+      if (!(typeof filter === 'string') && filter.checkboxValue === true) {
         oldGlobalOptions.push(filter.id);
       }
     });
@@ -465,4 +480,3 @@ export class SelectSubcategoriesComponent implements OnChanges {
   }
 
 }
-

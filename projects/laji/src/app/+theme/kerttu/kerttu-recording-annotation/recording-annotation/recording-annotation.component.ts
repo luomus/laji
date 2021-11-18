@@ -114,7 +114,7 @@ export class RecordingAnnotationComponent implements OnChanges {
     const taxonAnnotations = this.annotation?.taxonAnnotations;
 
     if (taxonAnnotations?.main?.length > 0 || taxonAnnotations?.other?.length > 0) {
-      const observables = [];
+      const observables: Observable<ITaxonWithAnnotation[]>[] = [];
       for (const type of ['main', 'other']) {
         if (taxonAnnotations[type]?.length > 0) {
           const obs: Observable<ITaxonWithAnnotation>[] = taxonAnnotations[type].map(
