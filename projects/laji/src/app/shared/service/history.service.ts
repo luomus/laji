@@ -1,9 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 const MAX_HISTORY = 30;
+
+const eventIsNavigationEnd = (event: Event): event is NavigationEnd => event instanceof NavigationEnd;
 
 @Injectable({providedIn: 'root'})
 export class HistoryService implements OnDestroy {
@@ -20,7 +22,7 @@ export class HistoryService implements OnDestroy {
       return;
     }
     this.routeSub = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+      filter(eventIsNavigationEnd)
     ).subscribe(({urlAfterRedirects}: NavigationEnd) => {
       if (urlAfterRedirects.match(/\/user\/(login|logout)/) || this.history[this.history.length - 1] === urlAfterRedirects) {
         return;
