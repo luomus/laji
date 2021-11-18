@@ -188,7 +188,7 @@ export class DocumentFormFacade {
       )
     );
 
-    const firstSaneInputModel$ = inputModel$.pipe(isSane, take(1));
+    const firstSaneInputModel$ = inputModel$.pipe(isSane, take(1), shareReplay());
 
     this.formData$ = concat(firstSaneInputModel$.pipe(map(({formData}) => formData)), this.formDataChange$);
     this.hasChanges$ = concat(
@@ -321,15 +321,18 @@ export class DocumentFormFacade {
       ? this.documentApi.create(document, this.userService.getToken())
       : this.documentApi.update(document.id, document, this.userService.getToken())
     ).pipe(
-      tap(() => {
-        this.onSaved$.next();
-        this.latestFacade.update();
-        this.namedPlacesService.invalidateCache();
+      switchMap(doc =>
         this.userService.user$.pipe(
           take(1),
-          mergeMap(p => this.documentStorage.removeItem(tmpId, p))
-        ).subscribe();
-      }),
+          switchMap(p => this.documentStorage.removeItem(tmpId, p)),
+          tap(() => {
+            this.onSaved$.next();
+            this.latestFacade.update();
+            this.namedPlacesService.invalidateCache();
+          }),
+          map(() => doc)
+        )
+      ),
       catchError(e => {
         this.logger.error('UNABLE TO SAVE DOCUMENT', { data: JSON.stringify(document), error: JSON.stringify(e._body)});
         throw e;
