@@ -40,6 +40,7 @@
       "es2018",
       "dom"
     ],
+    "strictBindCallApply": true,
     "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {

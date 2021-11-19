@@ -8,9 +8,7 @@ import { InformalTaxonGroup } from '../../../../shared/model/InformalTaxonGroup'
 })
 
 export class InformalListBreadcrumbComponent {
-
   @Input() informalGroup: InformalTaxonGroup;
-  @Input() groups: Array<InformalTaxonGroup>;
+  @Input() parentGroups: Array<InformalTaxonGroup>;
   @Output() informalGroupSelect = new EventEmitter<string>();
-
 }
