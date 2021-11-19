@@ -72,7 +72,7 @@ export class ProjectFormService {
   }
 
   getExcelFormIDs(projectForm: ProjectForm): string[] {
-    const allowsExcel = (form: Form.SchemaForm) => form.options?.allowExcel && form.id;
+    const allowsExcel = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel && form.id;
     return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f);
   }
 
