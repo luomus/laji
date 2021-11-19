@@ -159,7 +159,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     const nbrOfImages = this.taxon.species ? 1 : 9;
 
-    const taxonImages = (this.taxonImages || []).slice(0, nbrOfImages);
+    const taxonImages = (this.taxonImages || []).filter(image => !image['keywords']?.includes('skeletal')).slice(0, nbrOfImages);
     if (taxonImages.length > 0) {
       this.hasImageData = true;
     }
