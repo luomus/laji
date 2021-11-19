@@ -10,7 +10,7 @@ export const DEFAULT_DOMAIN = 'http://tun.fi/';
 @Injectable()
 export class IdService {
 
-  static readonly domainMap = {
+  static readonly domainMap: Record<string, string> = {
     'luomus:': 'http://id.luomus.fi/',
     'zmuo:': 'http://id.zmuo.oulu.fi/',
     'herbo:': 'http://id.herb.oulu.fi/',
@@ -18,7 +18,7 @@ export class IdService {
     'gbif-dataset:': 'https://www.gbif.org/dataset/',
   };
 
-  static getId(value) {
+  static getId(value: any) {
     if (typeof value !== 'string' || value === '') {
       return value;
     } else if (value.indexOf(DEFAULT_DOMAIN) === 0) {
@@ -31,14 +31,16 @@ export class IdService {
     return value;
   }
 
-  static getUri(value) {
+  static getUri(value: any) {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
     if (value.indexOf('http') === 0) {
       return value;
     }
-    Object.keys(IdService.domainMap).map(prefix => value = value.replace(prefix, IdService.domainMap[prefix]));
+    Object.keys(IdService.domainMap).map(
+      (prefix) => value = value.replace(prefix, IdService.domainMap[prefix])
+    );
     if (value.indexOf('http') === 0) {
       return value;
     }

@@ -14,7 +14,7 @@ export interface NamedPlace {
     /**
      * Unique ID for the object. This will be automatically generated.
      */
-    id?: string;
+    id: string;
 
     accessibility?: NamedPlace.AccessibilityEnum;
 

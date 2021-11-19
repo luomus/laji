@@ -27,8 +27,8 @@ import { FileService } from '../../shared-modules/spreadsheet/service/file.servi
 @Injectable()
 export class LajiApiInterceptor implements HttpInterceptor {
   private readonly responses = new Subject<LajiApiWorkerSuccessResponse | LajiApiWorkerErrorResponse>();
-  private readonly worker: Worker;
-  private readonly rnd: string;
+  private readonly worker: Worker | undefined;
+  private readonly rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
   private id = 0;
 
   constructor(
@@ -42,7 +42,6 @@ export class LajiApiInterceptor implements HttpInterceptor {
     if (platformService.isServer || !platformService.canUseWebWorkerLogin) {
       return;
     }
-    this.rnd = Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
     this.worker = new Worker(new URL('./laji-api.worker', import.meta.url), {type: 'module'});
 
     this.worker.postMessage({
@@ -70,7 +69,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
     this.browserService.visibility$.pipe(
       skip(1),
       filter(visible => visible)
-    ).subscribe(() => this.worker.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}));
+    ).subscribe(() => this.worker?.postMessage({key: this.rnd, type: CLEAR_TOKEN_MSG}));
   }
 
 
@@ -87,14 +86,14 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
     setTimeout(() => {
       if (request.body instanceof FormData) {
-        const data = [];
+        const data: any[] = [];
         request.body.forEach(e => data.push(this.fileService.loadFile(e as File, undefined, {type: 'dataUrl'})));
 
         forkJoin(data).subscribe(d => {
-          this.worker.postMessage({id, key, request: {...request.clone({body: ''}), dataUrls: d, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+          this.worker?.postMessage({id, key, request: {...request.clone({body: ''}), dataUrls: d, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
         });
       } else {
-        this.worker.postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
+        this.worker?.postMessage({id, key, request: {...request, url: request.urlWithParams, headers: this.getRequestHeaders(request)}});
       }
     }, 0);
 
@@ -125,10 +124,13 @@ export class LajiApiInterceptor implements HttpInterceptor {
       if (response[lower]) {
         delete response[lower];
       }
-      response[key] = request.headers.getAll(key).join(',');
+      const headers = request.headers.getAll(key);
+      if (headers) {
+        response[key] = headers.join(',');
+      }
       return response;
-    }, ['POST', 'PUT', 'PATCH'].includes(request.method) ?
+    }, (['POST', 'PUT', 'PATCH'].includes(request.method) ?
       {'content-type': request.detectContentTypeHeader()} :
-      {});
+      {} as any));
   }
 }

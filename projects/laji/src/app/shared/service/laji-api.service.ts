@@ -241,7 +241,7 @@ export class LajiApiService {
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
   post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
-    const options = { params: {...this.removeUndefinedFromObject(query)} };
+    const options: any = { params: {...this.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
       options['responseType'] = 'blob';
     }
@@ -278,15 +278,15 @@ export class LajiApiService {
     );
   }
 
-  private removeUndefinedFromObject(obj: object) {
+  private removeUndefinedFromObject<T extends object>(obj: T): T {
     if (typeof obj !== 'object') {
       return obj;
     }
-    return Object.keys(obj).reduce((cumulative, current) => {
+    return (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
       if (typeof obj[current] !== 'undefined') {
         cumulative[current] = obj[current];
       }
       return cumulative;
-    }, {});
+    }, {} as T);
   }
 }
