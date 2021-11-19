@@ -52,6 +52,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   loading = false;
   taxonSub: Subscription;
 
+  private tokenMinLength = 3;
+
   constructor(
     private lajiApi: LajiApiService,
     private translateService: TranslateService,
@@ -99,6 +101,9 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   }
 
   getTaxa(token: string, onlyExact = false): Observable<any> {
+    if (!token || token.length < this.tokenMinLength) {
+      return of([]);
+    }
     this.loading = true;
     this.cdr.markForCheck();
     return timer(onlyExact ? this.index * 100 : 0).pipe(

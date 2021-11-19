@@ -31,6 +31,8 @@ export class HasekaComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  lang = this.translate.currentLang;
+
   ngOnInit() {
     this.subRoute = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),

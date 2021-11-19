@@ -105,7 +105,7 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #label>
-  <span *ngIf="value" title="{{value | label}}">
+  <span *ngIf="value" title="{{value | toQName | label}}">
     {{ value | toQName | label }}
   </span>
 </ng-template>
@@ -309,4 +309,7 @@
     <i *ngSwitchCase="true" class="fa fa-lock" [tooltip]="'result.unit.sensitive.true' | translate"></i>
     <i *ngSwitchDefault class="fa fa-unlock" [tooltip]="'result.unit.sensitive.false' | translate"></i>
   </span>
+</ng-template>
+<ng-template let-value="value" #copyToClipboard>
+  <div class="copy-to-clipboard d-flex" (click)="onCopyToClipboard(value)" tabindex="0" luKeyboardClickable><span class="glyphicon glyphicon-paperclip mr-2"></span> {{ value }}</div>
 </ng-template>

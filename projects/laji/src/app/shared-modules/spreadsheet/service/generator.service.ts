@@ -52,24 +52,6 @@ export class GeneratorService {
     'info': 'excel.sheet.info'
   };
 
-  private instructionArray = 'excel.info.array';
-
-  private instructionMapping: {[place: string]: string} = {
-    'editors[*]': 'excel.info.personID',
-    'keywords[*]': 'excel.info.keywords',
-    'gatheringEvent.leg[*]': 'excel.info.personID',
-    'gatheringEvent.dateBegin': 'excel.info.date',
-    'gatheringEvent.dateEnd': 'excel.info.date',
-    'gatherings[*].units[*].unitGathering.dateBegin': 'excel.info.date',
-    'gatherings[*].units[*].unitGathering.dateEnd': 'excel.info.date',
-    'gatherings[*].units[*].identifications[*].detDate': 'excel.info.date',
-    'gatherings[*].units[*].hostID': 'excel.info.taxonID',
-    'gatherings[*].taxonCensus[*].censusTaxonID': 'excel.info.taxonID',
-    'gatherings[*].units[*].unitGathering.geometry': 'excel.info.geometry',
-    'gatherings[*].geometry': 'excel.info.geometry',
-    'gatherings[*].namedPlaceID': 'excel.info.namedPlaceID',
-  };
-
   constructor(
     private mappingService: MappingService,
     private userService: UserService,
@@ -88,12 +70,10 @@ export class GeneratorService {
     type: 'ods' | 'xlsx' = 'xlsx',
     next: () => void = () => {}
   ) {
-    const allTranslations = Object.keys(this.instructionMapping).map(key => this.instructionMapping[key]);
-    allTranslations.push(this.instructionArray);
     ObservableForkJoin(
       this.userService.user$.pipe(take(1)),
       this.excelToolService.getNamedPlacesList(formID),
-      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results)),
+      this.informalTaxonApi.informalTaxonGroupGetTree(this.translateService.currentLang).pipe(map(result => result.results))
     ).pipe(
       map((data) => ({person: data[0], namedPlaces: data[1], informalTaxonGroups: data[2]}))
     )
@@ -105,7 +85,7 @@ export class GeneratorService {
         validationSheet['!protect'] = {password: '¡secret!'};
 
         XLSX.utils.book_append_sheet(book, sheet, this.translateService.instant(this.sheetNames.base));
-        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(), this.translateService.instant(this.sheetNames.info));
+        XLSX.utils.book_append_sheet(book, this.getInstructionSheet(fields), this.translateService.instant(this.sheetNames.info));
         XLSX.utils.book_append_sheet(book, validationSheet, this.translateService.instant(this.sheetNames.vars));
 
         this.exportService.exportArrayBuffer(XLSX.write(book, {bookType: type, type: 'array'}), filename, type);
@@ -136,27 +116,14 @@ export class GeneratorService {
         value = this.mappingService.reverseMap(value, field);
       }
       if (field.splitType) {
-        switch (field.splitType) {
-          case 'date':
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.dd);
-            result[1][idx] = '';
+        const labels = this.getSplitFieldLabels(field.fullLabel, field.label, field.splitType);
+        labels.forEach((label, i) => {
+          result[0][idx] = label;
+          result[1][idx] = '';
+          if (i !== labels.length - 1) {
             idx++;
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.mm);
-            result[1][idx] = '';
-            idx++;
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitDate.yyyy);
-            result[1][idx] = '';
-            break;
-          case 'coordinate':
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.N);
-            result[1][idx] = '';
-            idx++;
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.E);
-            result[1][idx] = '';
-            idx++;
-            result[0][idx] = field.fullLabel.replace(field.label, field.label + GeneratorService.splitCoordinate.system);
-            result[1][idx] = '';
-        }
+          }
+        });
       } else {
         result[0][idx] = field.fullLabel;
         result[1][idx] = value;
@@ -249,10 +216,52 @@ export class GeneratorService {
     return XLSX.utils.aoa_to_sheet(vSheet);
   }
 
-  private getInstructionSheet() {
-    const instructions = this.translateService.instant('excel.info.file');
-    const sheet = XLSX.utils.aoa_to_sheet([[instructions]]);
-    sheet['!cols'] = [{wch: instructions.length}];
+  private getInstructionSheet(fields: IFormField[]) {
+    const vSheet = [];
+    let labelColLen = 10;
+    let instructionColLen = 10;
+
+    fields.forEach(field => {
+      const columns: {label: string, isArray: boolean, separators?: string[]}[] = [];
+      if (field.splitType) {
+        const labels = this.getSplitFieldLabels(field.fullLabel, field.label, field.splitType);
+        labels.forEach(label => {
+          columns.push({label, isArray: false});
+        });
+      } else if (field.isArray) {
+        const separators = this.mappingService.getSpecial(field) === SpecialTypes.keywords ? MappingService.keywordSplitters : [MappingService.valueSplitter];
+        columns.push({label: field.fullLabel, isArray: true, separators});
+      } else {
+        columns.push({label: field.fullLabel, isArray: false});
+      }
+
+      columns.forEach(col => {
+        const label = col.label;
+        let instruction = '';
+        if (col.isArray) {
+          instruction = (instruction ? instruction + ' ' : '') + this.translateService.instant('excel.info.array', {
+            separators: col.separators.join('')
+          });
+        }
+        if (label.length > labelColLen) {
+          labelColLen = label.length;
+        }
+        if (instruction.length > instructionColLen) {
+          instructionColLen = instruction.length;
+        }
+        vSheet.push([label, instruction]);
+      });
+    });
+
+    const generalInstructions = this.translateService.instant('excel.info.file');
+    vSheet.unshift([]);
+    vSheet.unshift([generalInstructions]);
+
+    const sheet = XLSX.utils.aoa_to_sheet(vSheet);
+    sheet['!cols'] = [
+      {wch: Math.max(labelColLen, generalInstructions.length)},
+      {wch: instructionColLen}
+    ];
 
     return sheet;
   }
@@ -270,5 +279,22 @@ export class GeneratorService {
       vSheet[current][vColumn] = validItem;
       current++;
     }
+  }
+
+  private getSplitFieldLabels(fullLabel: string, label: string, type: splitType) {
+    switch (type) {
+      case 'date':
+        return [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy].map(
+          splitKey => this.getSplitFieldLabel(fullLabel, label, splitKey)
+        );
+      case 'coordinate':
+        return [GeneratorService.splitCoordinate.N, GeneratorService.splitCoordinate.E, GeneratorService.splitCoordinate.system].map(
+          splitKey => this.getSplitFieldLabel(fullLabel, label, splitKey)
+        );
+    }
+  }
+
+  private getSplitFieldLabel(fullLabel: string, label: string, splitKey: string) {
+    return fullLabel.replace(label, label + splitKey);
   }
 }

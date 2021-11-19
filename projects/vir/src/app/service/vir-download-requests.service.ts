@@ -11,8 +11,12 @@ export interface IDownloadRequest {
   source: string;
   person: string;
   dataUsePurpose: string;
-  collectionId: string[];
-  rootCollections: string[];
+  collectionId?: string[];
+  collections?: {id: string}[]
+  collectionSearch?: string[];
+  rootCollections?: string[];
+  apiKeyExpires?: string;
+  apiKey?: string;
 }
 
 @Injectable({providedIn: 'root'})
@@ -30,6 +34,14 @@ export class VirDownloadRequestsService {
     );
   }
 
+  findApiKeys(): Observable<IDownloadRequest[]> {
+    return this.userService.isLoggedIn$.pipe(
+        filter(loggedIn => loggedIn),
+        switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys')),
+        shareReplay(1)
+    );
+  }
+
   findMyDownloadRequests(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
@@ -40,4 +52,12 @@ export class VirDownloadRequestsService {
     );
   }
 
+  findMyApiKeys(): Observable<IDownloadRequest[]> {
+    return this.userService.isLoggedIn$.pipe(
+      filter(loggedIn => loggedIn),
+      switchMap(() => this.userService.user$),
+      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys', {params: {personToken: this.userService.getToken(), person: user.id}})),
+      shareReplay(1)
+    );
+  }
 }

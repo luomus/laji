@@ -22,6 +22,7 @@ export class ProtaxFormComponent implements OnChanges {
 
   model: ProtaxModelEnum = ProtaxModelEnum.COIFull;
   probabilityThreshold = 0.1;
+  minimumOverlap = 100;
 
   sequenceData: string;
   sequenceFile: File;
@@ -52,7 +53,10 @@ export class ProtaxFormComponent implements OnChanges {
       this.dialogService.alert('theme.protax.invalidThreshold');
       return;
     }
-
+    if (this.minimumOverlap == null || this.minimumOverlap < 1 || this.minimumOverlap > 500) {
+      this.dialogService.alert('theme.protax.invalidMinimumOverlap');
+      return;
+    }
     if ((this.activeTab === Tab.textArea && !this.sequenceData) || (this.activeTab === Tab.fileSelect && !this.sequenceFile)) {
       this.dialogService.alert('theme.protax.noSequence');
       return;
@@ -75,6 +79,7 @@ export class ProtaxFormComponent implements OnChanges {
     formData.append('data', sequenceData, 'input_data.fa');
     formData.append('model', this.model);
     formData.append('probabilityThreshold', this.probabilityThreshold.toString());
+    formData.append('minimumOverlap', this.minimumOverlap.toString());
     return formData;
   }
 }

@@ -1,0 +1,22 @@
+@import 'vars';
+
+.modal-footer {
+	text-align: initial;
+}
+
+.footnote {
+	font-size: $fs-1;
+}
+
+.copy-to-clipboard {
+	cursor: pointer;
+	color: $primary-5;
+	overflow-x: hidden;
+	padding-left: 1px;
+	padding-right: 1px;
+	white-space: nowrap;
+	&:hover {
+		color: $primary-6;
+		text-decoration: underline;
+	}
+}

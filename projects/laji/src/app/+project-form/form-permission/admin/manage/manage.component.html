@@ -1,5 +1,5 @@
 <div class="row" *ngIf="formPermission">
-  <div class="col-sm-6">
+  <div class="col-12">
     <h3 *ngIf="type === 'admins'; else editorsTitle">
       {{ 'form.permission.admin.admins' | translate }}<br>
       <small>{{ 'form.permission.admin.admins.description' | translate }}</small>
@@ -13,12 +13,12 @@
     <ng-template #list>
       <ul>
         <li *ngFor="let person of formPermission[type]">
-          <button class="btn btn-warning btn-sm" (click)="reject(person)">{{ 'form.permission.admin.removeAccess' | translate}}</button>
-          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm" (click)="makeEditor(person)">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
-          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm" (click)="makeAdmin(person)">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
-          <span class="form-control-static">
+          <button class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'reject')">{{ 'form.permission.admin.removeAccess' | translate}}</button>
+          <button *ngIf="type === 'admins'" class="btn btn-warning btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptEditor')">{{ 'form.permission.admin.removeAdminRights' | translate }}</button>
+          <button *ngIf="type === 'editors'" class="btn btn-danger btn-sm mr-3" [disabled]="disabled[person]" (click)="makePermissionChange(person, 'acceptAdmin')">{{ 'form.permission.admin.grantAdminRights' | translate }}</button>
+          <b class="form-control-static">
               {{ person | users }} ({{ person }})
-          </span>
+          </b>
         </li>
       </ul>
     </ng-template>

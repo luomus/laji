@@ -11,7 +11,6 @@ export enum Step {
   sheetLoadError,
   fileAlreadyUploadedPartially,
   fileAlreadyUploaded,
-  ambiguousColumns,
   invalidFileType,
   invalidFormId,
   importingFile,

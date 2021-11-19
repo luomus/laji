@@ -29,7 +29,7 @@
     [season]="activeDate"
     [sorts]="sorts"
     [year]="activeYear ? activeYear.toString() : undefined"
-    [taxonSet]="taxonSet | toQName | label"
+    [taxonSet]="taxonSet.includes('Bumblebee') ? (taxonSet | toQName | translate) : (taxonSet | toQName | label)"
     [filter]="activeYear !== undefined ? (onlySections ? 'gathering.gatheringSection' : 'gathering.conversions.year') : (onlySections ? 'gathering.conversions.year' : 'gathering.gatheringSection')"
     [loading]="loading"
     [onlySections]="onlySections"

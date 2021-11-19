@@ -12,6 +12,8 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
   'unit.linkings.taxon.scientificName': ObservationTableColumn;
   'unit.linkings.taxon.taxonomicOrder': ObservationTableColumn;
+  'unit.linkings.taxon.occurrenceCountFinland': ObservationTableColumn;
+  'unit.linkings.taxon.primaryHabitat': ObservationTableColumn;
   'unit.linkings.taxon.latestRedListStatusFinland': ObservationTableColumn;
   'unit.species': ObservationTableColumn;
   'unit.linkings.species.vernacularName': ObservationTableColumn;
@@ -61,6 +63,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'individualCountMax': ObservationTableColumn;
   'individualCountSum': ObservationTableColumn;
   'pairCountSum': ObservationTableColumn;
+  'gathering.coordinatesVerbatim': ObservationTableColumn;
   'gathering.conversions.ykj': ObservationTableColumn;
   'gathering.conversions.ykj.latMin': ObservationTableColumn;
   'gathering.conversions.ykj.latMax': ObservationTableColumn;
@@ -154,6 +157,16 @@ export const COLUMNS: IColumns = {
     label: 'result.taxonomicOrder',
     aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
     width: 70
+  },
+  'unit.linkings.taxon.occurrenceCountFinland': {
+    name: 'unit.linkings.taxon.occurrenceCountFinland',
+    width: 70
+  },
+  'unit.linkings.taxon.primaryHabitat': {
+    name: 'unit.linkings.taxon.primaryHabitat',
+    prop: 'unit.linkings.taxon.primaryHabitat.habitat',
+    sortBy: 'unit.linkings.taxon.primaryHabitat',
+    cellTemplate: 'label',
   },
   'unit.linkings.taxon.latestRedListStatusFinland': {
     name: 'unit.linkings.taxon.latestRedListStatusFinland',
@@ -328,6 +341,9 @@ export const COLUMNS: IColumns = {
     width: 75,
     cellTemplate: 'numeric',
     aggregate: false
+  },
+  'gathering.coordinatesVerbatim': {
+    name: 'gathering.coordinatesVerbatim',
   },
   'gathering.conversions.ykj': {
     name: 'gathering.conversions.ykj',
@@ -509,6 +525,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
   protected defaultFields: Array<keyof IColumns> = [
     'unit.interpretations.recordQuality',
     'document.linkings.collectionQuality',
+    'unit.linkings.taxon.taxonomicOrder',
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
@@ -529,6 +546,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
     COLUMNS['unit.linkings.taxon.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.occurrenceCountFinland'],
+    COLUMNS['unit.linkings.taxon.primaryHabitat'],
     COLUMNS['unit.linkings.taxon.latestRedListStatusFinland'],
     COLUMNS['unit.species'],
     COLUMNS['unit.linkings.species.vernacularName'],
@@ -584,6 +603,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['individualCountMax'],
     COLUMNS['individualCountSum'],
     COLUMNS['pairCountSum'],
+    COLUMNS['gathering.coordinatesVerbatim'],
     COLUMNS['gathering.conversions.ykj'],
     COLUMNS['gathering.conversions.ykj.latMin'],
     COLUMNS['gathering.conversions.ykj.latMax'],
@@ -617,13 +637,14 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     [
       {
         header: 'identification', fields: [
+          'unit.linkings.taxon.taxonomicOrder',
           'unit.taxon',
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
-          'unit.linkings.taxon.taxonomicOrder',
           'unit.linkings.taxon.latestRedListStatusFinland',
-          'unit.linkings.taxon.sensitive'
+          'unit.linkings.taxon.sensitive',
+          'unit.linkings.taxon.primaryHabitat',
         ]
       },
       {
@@ -674,7 +695,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       },
       {
         header: 'coordinates.geometryWKT', fields: [
-          'gathering.conversions.wgs84WKT'
+          'gathering.conversions.wgs84WKT',
+          'gathering.coordinatesVerbatim'
         ]
       },
       {
@@ -714,6 +736,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'document.secureReasons',
           'document.documentId',
           'unit.unitId',
+          'unit.linkings.taxon.occurrenceCountFinland',
         ]
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)

@@ -12,7 +12,7 @@ import {
 } from 'rxjs/operators';
 import { combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
+import { ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
@@ -50,7 +50,7 @@ interface IPersistentState {
 
 export interface IUserServiceState extends IPersistentState {
   token: string;
-  user: Person;
+  user: Person | null;
   settings: IUserSettings;
   allUsers: {[id: string]: Person|Observable<Person>};
 }
@@ -70,15 +70,15 @@ let _state: IUserServiceState = {
 @Injectable({providedIn: 'root'})
 export class UserService {
 
-  private subLogout: Subscription;
+  private subLogout: Subscription | undefined;
   private init = false;
 
   // Do not write to this variable in the server!
-  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState;
-  @SessionStorage() private returnUrl: string;
-  @SessionStorage('retry', 0) private retry: number;
+  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState | undefined;
+  @SessionStorage() private returnUrl: string | undefined;
+  @SessionStorage('retry', 0) private retry: number | undefined;
 
-  private _persistent: IPersistentState;
+  private _persistent: IPersistentState | undefined;
   // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
   private store = new ReplaySubject<IUserServiceState>(1);
   private state$ = this.store.asObservable();
@@ -107,13 +107,12 @@ export class UserService {
   }
 
   static isIctAdmin(person: Person): boolean {
-    return person && person.role && person.role.includes('MA.admin');
+    return person?.role?.includes('MA.admin') ?? false;
   }
 
   constructor(
     private personApi: PersonApi,
     private router: Router,
-    private route: ActivatedRoute,
     private location: Location,
     private logger: Logger,
     private translate: TranslateService,
@@ -126,7 +125,7 @@ export class UserService {
       this.doServiceSideLoginState();
     }
     this.router.events.pipe(
-      filter(event => event instanceof ActivationEnd && event.snapshot.children.length === 0)
+      filter((event): event is ActivationEnd => event instanceof ActivationEnd && event.snapshot.children.length === 0)
     ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
 
     this.isLoggedIn$.pipe(
@@ -153,9 +152,6 @@ export class UserService {
     if (this.subLogout) {
       return;
     }
-    if (!cb) {
-      cb = () => {};
-    }
     if (_state.token) {
       this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
         httpOkError([404, 400], false),
@@ -167,11 +163,11 @@ export class UserService {
       ).subscribe(() => {
         this.subLogout = undefined;
         this.doLogoutState();
-        cb();
+        cb?.();
       });
     } else {
       this.doLogoutState();
-      cb();
+      cb?.();
     }
   }
 
@@ -189,7 +185,7 @@ export class UserService {
     const pickValue = (obs: Observable<Person>): Observable<string|string[]> => obs.pipe(
       map(person => info === 'fullNameWithGroup' ?
         (person.fullName || '') + (person.group ? ' (' + person.group + ')' : '') :
-        person[info]
+        person[info] ?? ''
       )
     );
 
@@ -244,7 +240,7 @@ export class UserService {
     this.storage.store(this.personsCacheKey(personID), settings);
   }
 
-  private personsCacheKey(personID): string {
+  private personsCacheKey(personID: string): string {
     return `users-${ personID || 'global' }-settings`;
   }
 
@@ -258,7 +254,7 @@ export class UserService {
       return of(true);
     }
     const token = rawToken || _state.token;
-    if (_state.token && this.persistent.isLoggedIn === false) {
+    if (_state.token && (!this.persistent || this.persistent.isLoggedIn === false)) {
       this.doLogoutState();
     } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
@@ -271,7 +267,7 @@ export class UserService {
         map(() => true),
         share()
       );
-    } else if (this.persistent.isLoggedIn) {
+    } else if (this.persistent?.isLoggedIn) {
       return this.doBackgroundCheck().pipe(
         switchMap(t => t ? this._checkLogin(t) : of(false)),
         timeout(10000),
@@ -287,7 +283,7 @@ export class UserService {
   }
 
   private doBackgroundCheck(): Observable<string> {
-    if (!this.platformService.canUseWebWorkerLogin || this.retry > 0) {
+    if (!this.platformService.canUseWebWorkerLogin || (this.retry && this.retry > 0)) {
       this.redirectToLogin();
       return of('');
     }
@@ -310,14 +306,16 @@ export class UserService {
     this.doLoginState({}, '');
   }
 
-  private doLoginState(user: Person, token) {
+  private doLoginState(user: Person, token: string) {
     if (user && user.id && _state.user && _state.user.id === user.id) {
       return;
     }
     this.init = true;
     this.persistent = {...this.persistent, isLoggedIn: !!user};
     this.updateState({..._state, ...this.persistent, token: user ? token : '', user: user || {}, settings: {}});
-    this.doUserSettingsState(user.id);
+    if (user.id) {
+      this.doUserSettingsState(user.id);
+    }
   }
 
   private doLogoutState() {
@@ -339,7 +337,7 @@ export class UserService {
     this.store.next(_state = state);
   }
 
-  set persistent(state: IPersistentState) {
+  set persistent(state: IPersistentState | undefined) {
     if (this.platformService.isBrowser) {
       this.persistentState = state;
     } else {
@@ -356,26 +354,29 @@ export class UserService {
   }
 
   getProfile(): Observable<Profile> {
-    return combineLatest(
+    return combineLatest([
       this.personApi.personFindProfileByToken(this.getToken()),
       this.user$
-    ).pipe(
+    ]).pipe(
       map(([profile, user]) => this.prepareProfile(profile, user)),
       take(1)
     );
   }
 
-  prepareProfile(profile: Profile | null, user: Person): Profile {
+  prepareProfile(profile: Profile | null, user: Person | null): Profile {
     if (!profile) {
       profile = {};
+    }
+    if (!user) {
+      user = {};
     }
     return {
       ...profile,
       settings: {
         ...(profile.settings || {}),
         defaultMediaMetadata: {
-          capturerVerbatim: user.fullName,
-          intellectualOwner: user.fullName,
+          capturerVerbatim: user?.fullName ?? '',
+          intellectualOwner: user?.fullName ?? '',
           intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
           ...(profile.settings?.defaultMediaMetadata || {}),
         }

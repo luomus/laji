@@ -1,5 +1,34 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
 
+export const createActiveFiltersList = (query: Record<string, any>, skip: string[] = []) => {
+  const keys = Object.keys(query);
+  const doubles: Record<string, boolean> = {};
+  const doubleKeys: Record<string, string> = {
+    teamMember: 'teamMember',
+    teamMemberId: 'teamMember',
+    firstLoadedSameOrBefore: 'firstLoaded',
+    firstLoadedSameOrAfter: 'firstLoaded'
+  };
+  return keys.reduce((result, i) => {
+    if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
+      return result;
+    }
+    const type = typeof query[i];
+    if (type !== 'undefined' && (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0))) {
+      // show only one filter in some cases
+      if (doubleKeys[i]) {
+        if (doubles[doubleKeys[i]]) {
+          return result;
+        }
+        doubles[doubleKeys[i]] = true;
+      }
+
+      result.push({field: i, value: query[i]});
+    }
+    return result;
+  }, [] as ActiveFilter[]);
+};
+
 @Component({
   selector: 'laji-observation-active',
   templateUrl: './observation-active.component.html',
@@ -12,7 +41,7 @@ export class ObservationActiveComponent {
 
   @Output() queryChange = new EventEmitter<any>();
 
-  active: ActiveList[] = [];
+  active: ActiveFilter[] = [];
   showList = false;
 
   private _query: Record<string, any> = {};
@@ -20,7 +49,7 @@ export class ObservationActiveComponent {
   @Input()
   set query(query: Record<string, any>) {
     this._query = query;
-    this.updateSelectedList();
+    this.active = createActiveFiltersList(this.query, this.skip);
   }
 
   get query() {
@@ -34,7 +63,7 @@ export class ObservationActiveComponent {
     this.showList = !this.showList;
   }
 
-  remove(item: ActiveList) {
+  remove(item: ActiveFilter) {
     const query = {...this.query};
 
     delete query[item.field];
@@ -56,41 +85,9 @@ export class ObservationActiveComponent {
     this.showList = false;
     this.queryChange.emit(query);
   }
-
-  updateSelectedList() {
-    const query = this.query;
-    const keys = Object.keys(query);
-    const doubles: Record<string, boolean> = {};
-    const doubleKeys: Record<string, string> = {
-      teamMember: 'teamMember',
-      teamMemberId: 'teamMember',
-      firstLoadedSameOrBefore: 'firstLoaded',
-      firstLoadedSameOrAfter: 'firstLoaded'
-    };
-
-    this.active = keys.reduce((result, i) => {
-      if (this.skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
-        return result;
-      }
-      const type = typeof query[i];
-      if (type !== 'undefined' && (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0))) {
-        // show only one filter in some cases
-        if (doubleKeys[i]) {
-          if (doubles[doubleKeys[i]]) {
-            return result;
-          }
-          doubles[doubleKeys[i]] = true;
-        }
-
-        result.push({field: i, value: query[i]});
-      }
-      return result;
-    }, [] as ActiveList[]);
-  }
-
 }
 
-interface ActiveList {
+interface ActiveFilter {
   field: string;
   value: any;
 }
