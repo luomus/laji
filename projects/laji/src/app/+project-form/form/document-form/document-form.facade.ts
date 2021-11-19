@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, take, tap, filter, distinctUntilChanged, mapTo, shareReplay, distinctUntilKeyChanged } from 'rxjs/operators';
 import { combineLatest, concat, merge, Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
@@ -26,6 +26,7 @@ import { Annotation } from '../../../shared/model/Annotation';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
+import equals from 'deep-equal';
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -90,6 +91,7 @@ export class DocumentFormFacade {
   private vmSub: Subscription;
   private saveTmpSub: Subscription;
   private annotationCache: Record<string, Observable<Annotation[]>> = {};
+  private memoizedForm: {form?: Form.SchemaForm, uiSchema?: any, uiSchemaContext?: any, result?: any} = {};
 
   constructor(
     private footerService: FooterService,
@@ -117,6 +119,8 @@ export class DocumentFormFacade {
     const lang$ = of(this.translate.currentLang);
     const user$ = this.userService.user$.pipe(take(1));
 
+    const isSane = filter(<T>(f: T | FormError): f is T => !isFormError(f));
+
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$, lang$]).pipe(
       switchMap(([formID, template, lang]) => this.formService.getForm(formID, lang).pipe(
         switchMap(form =>  template && !form.options?.allowTemplate
@@ -135,7 +139,7 @@ export class DocumentFormFacade {
     );
 
     const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = form$.pipe(
-      filter(f => !isFormError(f)),
+      isSane,
       switchMap(form => documentID$.pipe(switchMap(documentID => documentID
         ? this.fetchExistingDocument((form as Form.SchemaForm), documentID)
         : of(null)
@@ -184,7 +188,7 @@ export class DocumentFormFacade {
       )
     );
 
-    const firstSaneInputModel$ = (inputModel$ as Observable<SaneInputModel>).pipe(filter(im => !isFormError(im)), take(1));
+    const firstSaneInputModel$ = inputModel$.pipe(isSane, take(1));
 
     this.formData$ = concat(firstSaneInputModel$.pipe(map(({formData}) => formData)), this.formDataChange$);
     this.hasChanges$ = concat(
@@ -203,28 +207,42 @@ export class DocumentFormFacade {
       distinctUntilChanged()
     )));
 
+    const saneForm$ = form$.pipe(isSane);
+
+    const rights$ = saneForm$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
+    const readonly$ = combineLatest([rights$, user$, this.formData$]).pipe(
+      map(([rights, user, formData]) => this.documentService.getReadOnly(formData, rights, user))
+    );
+
+    const uiSchemaContext$ = combineLatest([
+      saneForm$.pipe(distinctUntilKeyChanged('id')),
+      namedPlace$.pipe(isSane, distinctUntilKeyChanged('id')),
+      user$,
+      rights$,
+      this.formData$.pipe(map(data => data.id), distinctUntilChanged())
+    ]).pipe(switchMap(([form, namedPlace, user, rights, id]) =>
+      this.getUiSchemaContext(form, namedPlace, user, rights, id)
+    ), distinctUntilChanged((a, b) => equals(a, b)), shareReplay());
+
+    const uiSchema$ = combineLatest([
+      this.locked$,
+      readonly$,
+      rights$,
+      saneForm$,
+      template$
+    ]).pipe(map(([locked, readonly, rights, form, template]) =>
+      this.getUiSchema(form, locked, readonly, rights, template),
+      shareReplay()
+    ));
+
     // Derive state from the input model and create the view model.
     // View model is the combination of data derived from inputs and local state and other asynchronously fetched data,
     // containing everything that the view needs.
     this.vm$ = inputModel$.pipe(switchMap(inputModel => {
       if (isFormError(inputModel)) {
-        this.vm$ = of(inputModel);
-        return;
+        return of(inputModel);
       }
       const {form, formData} = inputModel;
-
-      const rights$ = this.formPermissionService.getRights(form);
-      const readonly$ = combineLatest([rights$, user$]).pipe(
-        map(([rights, user]) => this.documentService.getReadOnly(formData, rights, user))
-      );
-
-      const uiSchemaContext$ = combineLatest([user$, rights$]).pipe(switchMap(([user, rights]) =>
-        this.getUiSchemaContext(form, inputModel.namedPlace, user, rights, inputModel.formData.id)
-      ));
-
-      const uiSchema$ = combineLatest([this.locked$, readonly$, rights$]).pipe(map(([locked, readonly, rights]) =>
-        this.getUiSchema(inputModel.form, locked, readonly, rights, inputModel.template)
-      ));
 
       return combineLatest([inputModel$, this.locked$, readonly$, rights$, uiSchema$, uiSchemaContext$, this.hasChanges$, this.formData$, documentID$]).pipe(
         map(([_inputModel, locked, readonly, rights, uiSchema, uiSchemaContext, hasChanges, _formData, documentID]) => {
@@ -233,11 +251,7 @@ export class DocumentFormFacade {
           }
           return {
             ..._inputModel,
-            form: {
-              ..._inputModel.form,
-              uiSchema,
-              uiSchemaContext
-            },
+            form: this.getMemoizedForm(_inputModel.form, uiSchema, uiSchemaContext),
             readonly,
             isAdmin: rights.admin,
             locked,
@@ -250,7 +264,7 @@ export class DocumentFormFacade {
       );
     }));
 
-    this.vmSub = this.vm$.pipe(filter(vm => !isFormError(vm))).subscribe(vm => {
+    this.vmSub = this.vm$.pipe(isSane).subscribe(vm => {
         this.vm = (vm as SaneViewModel);
     });
     this.saveTmpSub = combineLatest([
@@ -265,6 +279,17 @@ export class DocumentFormFacade {
     });
 
     return this.vm$;
+  }
+
+  // Memoize the form so that it doesn't trigger change detection if nothing changed.
+  getMemoizedForm(form: Form.SchemaForm, uiSchema: any, uiSchemaContext: any) {
+    const result =  {...form, uiSchema, uiSchemaContext};
+    const memoizedForm = {form, uiSchema, uiSchemaContext, result};
+    if (Object.keys(memoizedForm).every(k => k === 'result' || memoizedForm[k] === this.memoizedForm[k])) {
+      return this.memoizedForm.result;
+    }
+    this.memoizedForm = memoizedForm;
+    return result;
   }
 
   flush() {
@@ -292,7 +317,7 @@ export class DocumentFormFacade {
     const tmpId = FormService.isTmpId(document.id) && document.id;
     if (tmpId) { delete document.id; }
 
-    return (tmpId
+    return (tmpId || !document.id
       ? this.documentApi.create(document, this.userService.getToken())
       : this.documentApi.update(document.id, document, this.userService.getToken())
     ).pipe(
@@ -478,7 +503,7 @@ export class DocumentFormFacade {
         }
         return cumulative;
       }, {})),
-      map((annotations) => ({...uiSchemaContext, annotations}))
+      map((annotations) => ({...uiSchemaContext, annotations})),
     );
   }
 
