@@ -445,7 +445,7 @@ export class DocumentFormFacade {
     }
 
     let removeList = [
-      ...(form.excludeFromCopy || DocumentService.removableGathering),
+      ...(form.excludeFromCopy),
       '$.gatheringEvent.leg'
     ];
     if (form.options?.namedPlaceOptions?.includeUnits) {

@@ -6,10 +6,11 @@ import { Util } from '../../../shared/service/util.service';
 import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { mergeMap, tap } from 'rxjs/operators';
+import { mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
+import { FormService } from '../../../shared/service/form.service';
 
 export enum Readonly {
   noEdit,
@@ -20,28 +21,11 @@ export enum Readonly {
 @Injectable()
 export class DocumentService {
 
-  public static readonly removableGathering = [
-    '$..units',
-    '$..images',
-    '$..dateBegin',
-    '$..dateEnd',
-    '$..timeStart',
-    '$..timeEnd',
-    '$..iceCover',
-    '$..cloudAndRain',
-    '$..meanTemperature',
-    '$..snowAndIceOnTrees',
-    '$..snowCover',
-    '$..typeOfSnowCover',
-    '$..visibility',
-    '$..weather',
-    '$..wind'
-  ];
-
   constructor(
     private documentApi: DocumentApi,
     private userService: UserService,
-    private documentStorage: DocumentStorage
+    private documentStorage: DocumentStorage,
+    private formService: FormService
   ) { }
 
   deleteDocument(id: string) {
@@ -52,12 +36,14 @@ export class DocumentService {
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
-    const template: Document = Util.clone(templateData.document);
-    this.removeMeta(template, DocumentService.removableGathering);
-    template.isTemplate = true;
-    template.templateName = templateData.name;
-    template.templateDescription = templateData.description;
-    return this.documentApi.create(template, this.userService.getToken());
+    return this.formService.getForm(templateData.document.formID).pipe(switchMap(form => {
+      const template: Document = Util.clone(templateData.document);
+      this.removeMeta(template, form.excludeFromCopy);
+      template.isTemplate = true;
+      template.templateName = templateData.name;
+      template.templateDescription = templateData.description;
+      return this.documentApi.create(template, this.userService.getToken());
+    }));
   }
 
   removeMeta(document: any, remove = []): any {
