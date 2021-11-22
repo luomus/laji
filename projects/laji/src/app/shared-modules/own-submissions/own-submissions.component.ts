@@ -98,8 +98,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
   constructor(
@@ -165,8 +164,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
           .subscribe((value) => this.toastService.showSuccess(value));
         this.templateForm = {
           name: '',
-          description: '',
-          type: 'gathering'
+          description: ''
         };
         this.loading = false;
         this.cd.markForCheck();

@@ -144,8 +144,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   private aggregateBy: string[] = [];
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
   @Input() showRowAsLink = true;

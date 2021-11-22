@@ -20,30 +20,6 @@ export enum Readonly {
 @Injectable()
 export class DocumentService {
 
-  public static readonly removableUnit = [
-    '$..images',
-    '$..dateBegin',
-    '$..dateEnd',
-    '$..timeStart',
-    '$..timeEnd',
-    '$..notes',
-    '$..observationDays',
-    '$..observationMinutes',
-    '$..weather',
-    '$..abundanceString',
-    '$..count',
-    '$..maleIndividualcount',
-    '$..femaleIndividualcount',
-    '$..sex',
-    '$..hostID',
-    '$..taste',
-    '$..tasteNotes',
-    '$..smell',
-    '$..smellNotes',
-    '$..plantStatusCode',
-    '$..movingStatus'
-  ];
-
   public static readonly removableGathering = [
     '$..units',
     '$..images',
@@ -77,7 +53,7 @@ export class DocumentService {
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
     const template: Document = Util.clone(templateData.document);
-    this.removeMeta(template, templateData.type === 'unit' ? DocumentService.removableUnit : DocumentService.removableGathering);
+    this.removeMeta(template, DocumentService.removableGathering);
     template.isTemplate = true;
     template.templateName = templateData.name;
     template.templateDescription = templateData.description;
