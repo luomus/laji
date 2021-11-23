@@ -13,7 +13,6 @@ export class SpeciesTableComponent implements OnInit {
   @Input() loading = false;
   @Input() sorts: DatatableSort[] = [];
 
-  private defaultColumns: DatatableColumn[] = [];
   columns: DatatableColumn[] = [];
 
   @Output() speciesSelect = new EventEmitter<number>();
@@ -23,7 +22,7 @@ export class SpeciesTableComponent implements OnInit {
   @ViewChild('notifications', { static: true }) notificationTpl: TemplateRef<any>;
 
   ngOnInit() {
-    this.defaultColumns = [
+    this.columns = [
       {
         name: 'notifications',
         label: 'speciesList.column.notifications',
@@ -55,7 +54,6 @@ export class SpeciesTableComponent implements OnInit {
         width: 30
       }
     ];
-    this.columns = this.defaultColumns;
   }
 
   onRowSelect(row: any) {
