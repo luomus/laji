@@ -5,7 +5,7 @@
   </div>
 
   <header>
-    <h1>{{ locality }}</h1>
+    <h1 *ngIf="locality">{{ locality }}</h1>
     <div class="label label-warning" *ngIf="document.publicityRestrictions === publicity.publicityRestrictionsPrivate">
       {{ 'result.latestObservationsLabel' | translate }}
     </div>

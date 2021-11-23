@@ -398,7 +398,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private getLocality(gatheringInfo: any): string {
-    return getLocality(this.translate, gatheringInfo);
+    return DocumentInfoService.getLocality(gatheringInfo) || this.translate.instant('haseka.users.latest.localityMissing');
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
@@ -447,10 +447,4 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       })
     ).subscribe();
   }
-}
-
-export function getLocality(translate: TranslateService,
-                             gatheringInfo: any): string {
-  return [gatheringInfo.municipality, gatheringInfo.locality].filter(s => !!s).join(', ')
-    || translate.instant('haseka.users.latest.localityMissing');
 }

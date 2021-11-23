@@ -103,4 +103,8 @@ export class DocumentInfoService {
 
     return true;
   }
+
+  public static getLocality(gatheringInfo: any): string {
+    return [gatheringInfo.municipality, gatheringInfo.locality].filter(s => !!s).join(', ');
+  }
 }

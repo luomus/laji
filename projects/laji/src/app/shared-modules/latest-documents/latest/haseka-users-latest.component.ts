@@ -14,7 +14,7 @@ import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.faca
 export class UsersLatestComponent implements OnInit, OnChanges {
   @Input() tmpOnly = false;
   @Input() forms: string[];
-  @Input() showFormNames: boolean;
+  @Input() showFormNames = true;
   @Input() complainLocality: boolean;
   @Input() staticWidth: number = undefined;
 

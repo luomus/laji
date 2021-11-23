@@ -6,9 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DocumentInfoService } from '../../../shared/service/document-info.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { getLocality } from '../../own-submissions/own-submissions.component';
 import { Form } from '../../../shared/model/Form';
-
 
 @Component({
   selector: 'laji-short-document',
@@ -73,7 +71,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
     this.newUnitsLength = gatheringInfo.unsavedUnitCount;
     this.gatheringDates = {start: gatheringInfo.dateBegin, end: gatheringInfo.dateEnd};
     this.editDocumentRoute = this.getEditDocumentRoute(this.document.formID, this.document.id);
-    this.locality = getLocality(this.translate, DocumentInfoService.getGatheringInfo(this.document, this.form));
+    this.locality = DocumentInfoService.getLocality(gatheringInfo);
 
     this.loading = false;
   }
