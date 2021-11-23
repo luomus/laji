@@ -359,12 +359,11 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
-          this.getLocality(gatheringInfo, document),
           this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
           this.getTaxon(gatheringInfo.taxonID, gatheringInfo)
         ).pipe(
-          map<any, RowDocument>(([locality, observers, npName, taxon]) => {
+          map<any, RowDocument>(([observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
             let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
             if (dateObservedEnd && dateObservedEnd !== dateObserved) {
@@ -379,7 +378,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               dateObserved: dateObserved,
               dateCreated: dateObserved,
               namedPlaceName: npName,
-              locality: locality,
+              locality: this.getLocality(gatheringInfo),
               gatheringsCount: document.gatherings?.length || 0,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
@@ -398,8 +397,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private getLocality(gatheringInfo: any, document): Observable<string> {
-    return getLocality$(this.translate, this.labelService, gatheringInfo, document);
+  private getLocality(gatheringInfo: any): string {
+    return getLocality(this.translate, gatheringInfo);
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
@@ -450,32 +449,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   }
 }
 
-export function getLocality$(translate: TranslateService,
-                             labelService: TriplestoreLabelService,
-                             gatheringInfo: any,
-                             document: any): Observable<string> {
-  let locality$ = ObservableOf(gatheringInfo);
-  const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
-
-  if (gatheringInfo.locality && gatheringInfo.municipality) {
-    locality$ = ObservableOf({...gatheringInfo, locality: gatheringInfo.municipality + ', ' + gatheringInfo.locality});
-  }
-
-  if (!gatheringInfo.locality && npID) {
-    locality$ = labelService.get(npID, 'multi').pipe(
-      map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-  }
-  const {gatherings = []} = document;
-  if (!gatheringInfo.locality) {
-    if (document.npID) {
-      locality$ = labelService.get(npID, 'multi').pipe(
-        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-    } else if (gatherings[0] && gatherings[0].municipality) {
-      locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
-    }
-  }
-
-  return locality$.pipe(
-    switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(
-      map(missing => gathering.locality || gathering.municipality || missing))));
+export function getLocality(translate: TranslateService,
+                             gatheringInfo: any): string {
+  return [gatheringInfo.municipality, gatheringInfo.locality].filter(s => !!s).join(', ')
+    || translate.instant('haseka.users.latest.localityMissing');
 }
