@@ -17,6 +17,14 @@ export class SpeciesListFiltersComponent {
 
   selectChange(field: 'continent'|'order'|'family', value: string) {
     this.query[field] = parseInt(value, 10) || null;
+
+    if (field === 'order' && this.query.order != null && this.query.family != null) {
+      const family = this.filters.family.filter(f => f.id === this.query.family)[0];
+      if (family.order !== this.query.order) {
+        this.query.family = null;
+      }
+    }
+
     this.onQueryChange();
   }
 
