@@ -277,7 +277,16 @@ export class SearchQueryService implements SearchQueryInterface {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
-    if (result.editorPersonToken && result.observerPersonToken && result.observerPersonToken === result.editorPersonToken) {
+    if (
+      (result.editorOrObserverPersonToken && (result.editorPersonToken || result.observerPersonToken))
+      || result.editorOrObserverIsNotPersonToken
+    ) {
+      delete result.editorOrObserverPersonToken;
+    } else if (
+      result.editorPersonToken
+      && result.observerPersonToken
+      && result.observerPersonToken === result.editorPersonToken
+    ) {
       result.editorOrObserverPersonToken = result.observerPersonToken;
       delete result.editorPersonToken;
       delete result.observerPersonToken;

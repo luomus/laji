@@ -101,7 +101,13 @@
 
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
-  <fieldset>
+  <laji-own-observations-filter
+    [asObserverOrEditor]="getOwnObservationsFilterState()"
+    [includeQualityIssues]="getOwnQualityIssuesFilterState()"
+    (ownFilterChange)="onOwnObservationsFilterChange($event)"
+    (qualityIssuesFilterChange)="onOwnQualityIssuesFilterChange($event)">
+  </laji-own-observations-filter>
+<!--   <fieldset>
     <div>
       <label>
         <laji-checkbox [(value)]="formQuery.asObserver" (valueChange)="ownItemSelected('asObserver')"></laji-checkbox>
@@ -142,7 +148,7 @@
         {id: 'NO_ISSUES', value: ('observation.form.qualityIssuesNO_ISSUES' | translate)},
         {id: 'ONLY_ISSUES', value: ('observation.form.qualityIssuesONLY_ISSUES' | translate)}
       ]"></laji-select>
-  </ng-container>
+  </ng-container> -->
 </section>
 
 <!-- DATE -->
