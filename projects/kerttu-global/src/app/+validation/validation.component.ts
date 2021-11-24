@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
@@ -26,7 +26,8 @@ import { SpeciesListQueryService } from './service/species-list-query.service';
       display: flex;
       flex-direction: column;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ValidationComponent implements OnInit, OnDestroy {
   speciesFilters$: Observable<IGlobalSpeciesFilters>;
