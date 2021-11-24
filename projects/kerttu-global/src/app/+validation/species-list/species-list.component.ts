@@ -32,24 +32,22 @@ export class SpeciesListComponent implements OnChanges {
   }
 
   onPageChange(page: number) {
-    this.query = {...this.query, page: page};
-    this.changeQuery();
+    this.changeQuery(this.query, page);
   }
 
   onSortChange(sorts: DatatableSort[]) {
     const orderBy = sorts.map(sort => {
       return sort.prop + ' ' + sort.dir.toUpperCase();
     });
-    this.query = { ...this.query, page: 1, orderBy: orderBy };
-    this.changeQuery();
+    this.changeQuery(this.query, 1, orderBy);
   }
 
   onQueryChange(query: IGlobalSpeciesQuery) {
-    this.query = { ...query, page: 1, orderBy: this.query.orderBy };
-    this.changeQuery();
+    this.changeQuery(query, 1);
   }
 
-  private changeQuery() {
+  private changeQuery(query: IGlobalSpeciesQuery, page?: number, orderBy?: string[]) {
+    this.query = { ...query, page: page || this.query.page, orderBy: orderBy || this.query.orderBy };
     this.queryChange.emit(this.query);
   }
 }
