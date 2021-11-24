@@ -22,7 +22,9 @@ export class HistoryService implements OnDestroy {
     this.routeSub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(({urlAfterRedirects}: NavigationEnd) => {
-      if (urlAfterRedirects.match(/\/user\/(login|logout)/) || this.history[this.history.length - 1] === urlAfterRedirects) {
+      if (this.router.getCurrentNavigation().extras.replaceUrl
+        || urlAfterRedirects.match(/\/user\/(login|logout)/)
+        || this.history[this.history.length - 1] === urlAfterRedirects) {
         return;
       }
       if (this.history[this.history.length - 2] === urlAfterRedirects) {

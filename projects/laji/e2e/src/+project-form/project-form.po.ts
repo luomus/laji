@@ -1,7 +1,7 @@
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
 import { getAddressWithLang } from "../../helper";
-import { SubmissionsPage } from '../+vihko/submissions.po';
+import { SubmissionsPage as GenericSubmissionsPage } from '../+vihko/submissions.po';
 const fiTranslations = require('../../../src/i18n/fi.json');
 const enTranslations = require('../../../src/i18n/en.json');
 const svTranslations = require('../../../src/i18n/sv.json');
@@ -27,6 +27,7 @@ export class ProjectFormPage {
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
   public readonly templatePage = new TemplatePage();
+  public readonly submissionsPage = new SubmissionsPage();
 
   navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
     return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
@@ -154,9 +155,12 @@ class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per
 }
 
 class TemplatePage {
-  public readonly datatable = new SubmissionsPage().datatable;
+  public readonly datatable = new GenericSubmissionsPage().datatable;
 }
 
+class SubmissionsPage {
+  $container = $('laji-submissions');
+}
 
 class DisabledPage { // tslint:disable-line max-classes-per-file
   public $container = $('laji-project-form-disabled')

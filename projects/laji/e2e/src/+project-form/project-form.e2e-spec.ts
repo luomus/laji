@@ -17,6 +17,8 @@ const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION = 'MHL.45';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.50';
 const FORM_DISABLED = 'MHL.90';
 const FORM_ALLOW_TEMPLATES = 'MHL.6';
+const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS = 'MHL.45';
+const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC = 'JX.282874';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -149,7 +151,7 @@ describe('Project form', () =>  {
         done();
       });
 
-      it('back navigate works away from form and keeps lang', async (done) => {
+      it('back navigate navigates away from form and keeps lang', async (done) => {
         await vihkoHomePage.navigateTo('en');
         await vihkoHomePage.clickFormById(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         const EC = protractor.ExpectedConditions;
@@ -243,6 +245,22 @@ describe('Project form', () =>  {
         expect(await projectFormPage.hasAboutText()).toBe(true);
         expect(await nav.getLang()).toBe('en');
         done();
+      });
+
+      describe(', and has multiple forms', () => {
+        it('navigating to doc without subform specified redirects to subform', async (done) => {
+          const form = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS;
+          const doc = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC;
+          await projectFormPage.navigateTo(`${form}/form/${doc}`, undefined, 'en');
+          expect(await browser.getCurrentUrl()).toMatch(`/${form}/form/${form}/${doc}`);
+          done();
+        });
+
+        it('saving doc when no history goes to submissions page', async (done) => {
+          await projectFormPage.documentFormView.save();
+          expect(await isDisplayed(projectFormPage.submissionsPage.$container)).toBe(true);
+          done();
+        });
       });
 
       describe('and has allowTemplates option', () => {
