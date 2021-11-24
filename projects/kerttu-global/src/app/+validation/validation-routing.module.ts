@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { ValidationComponent } from './validation.component';
 import { DocumentDeActivateGuard } from 'projects/laji/src/app/shared/guards/document-de-activate.guard';
 import { SpeciesValidationComponent } from './species-validation/species-validation.component';
-import { QueryResetGuard } from './service/query-reset.guard';
+import { SpeciesListQueryResetGuard } from './service/species-list-query-reset.guard';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [QueryResetGuard],
+    canActivate: [SpeciesListQueryResetGuard],
     children: [
       {
         path: '',

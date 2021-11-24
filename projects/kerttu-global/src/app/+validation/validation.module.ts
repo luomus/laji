@@ -19,7 +19,7 @@ import { VersionNavComponent } from './species-validation/version-nav/version-na
 import { CornellAudioInfoComponent } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-info.component';
 import { CornellAudioDatePipe } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-date.pipe';
 import { SpeciesListQueryService } from './service/species-list-query.service';
-import { QueryResetGuard } from './service/query-reset.guard';
+import { SpeciesListQueryResetGuard } from './service/species-list-query-reset.guard';
 
 
 @NgModule({
@@ -48,7 +48,7 @@ import { QueryResetGuard } from './service/query-reset.guard';
   ],
   providers: [
     SpeciesListQueryService,
-    QueryResetGuard
+    SpeciesListQueryResetGuard
   ]
 })
 export class ValidationModule { }
