@@ -13,8 +13,6 @@ import { CacheService } from '../../shared/service/cache.service';
 import { InfoCardTabType } from './info-card/info-card.component';
 import { getDescription, HeaderService } from '../../shared/service/header.service';
 
-const notBoolean = <T>(a: T | boolean): a is T => typeof a !== 'boolean';
-
 @Component({
   selector: 'laji-taxonomy',
   templateUrl: './taxon.component.html',
@@ -110,9 +108,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initTaxon(taxonId: string): Observable<any> {
+  private initTaxon(taxonId: string): Observable<Taxonomy> {
     return this.getTaxon(taxonId).pipe(
-      filter(notBoolean),
+      filter(taxon => taxon !== null),
       tap(taxon => {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
@@ -127,7 +125,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getTaxon(id) {
+  private getTaxon(id: string): Observable<Taxonomy> {
     return this.taxonService.taxonomyFindBySubject(id, 'multi', {
       includeMedia: true,
       includeDescriptions: true,
@@ -136,7 +134,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return of(false);
+        return of(null);
       })
     );
   }
