@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { FooterService } from '../../shared/service/footer.service';
-import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
+import { geoJSONToISO6709 } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-map-front',
@@ -49,7 +49,6 @@ export class FrontComponent implements OnInit, OnDestroy {
 
   hasQuery = false;
   showControls = false;
-  color = undefined;
   query: WarehouseQueryInterface;
 
   constructor(
@@ -65,25 +64,20 @@ export class FrontComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
     const params = this.route.snapshot.queryParams;
-    let len = Object.keys(params).length;
-    if (params['overlayNames']) {
-      options = {...options, overlayNames: params['overlayNames'].split(',')};
-      len--;
-    }
-    if (typeof params['coordinates'] !== 'undefined') {
-      this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(params['coordinates'])};
-      len--;
-    }
-    this.hasQuery = len > 0;
-    if (params['color']) {
-      this.color = '#' + params['color'];
-    }
-    if (params['showControls'] && params['showControls'] !== 'false') {
+    const {layers, overlayNames, showControls} = params;
+    const _tileLayerNames = `${(layers ?? '')},${(overlayNames ?? '')}`;
+    const _layers = (_tileLayerNames
+      .split(',') as string[])
+      .filter(s => s)
+      .reduce<LajiMapTileLayersOptions['layers']>(
+        (lrs, layerName) => ({...lrs, [layerName]: true}),
+        {maastokartta: true} as LajiMapTileLayersOptions['layers']
+      );
+    options = {...options, tileLayers: {layers: _layers}};
+    if (showControls && showControls !== 'false') {
       this.showControls = true;
     }
-    const query = this.searchQuery.getQueryFromUrlQueryParams(params);
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
-    this.query = query;
   }
 
   onMapLoad() {

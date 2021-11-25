@@ -1,12 +1,3 @@
-<div class="map-wrap" *ngIf="hasQuery">
-  <laji-observation-map
-          [settingsKey]="''"
-          [color]="color"
-          [showControls]="showControls"
-          [initWithWorldMap]="true"
-          [draw]="false"
-          [query]="query"></laji-observation-map>
-</div>
 <div class="map-wrap" *ngIf="!hasQuery">
   <div class="info">
     <a [routerLink]="instructions[translate.currentLang] | localize" [tooltip]="'haseka.instructions' | translate" placement="left" target="_blank" rel="noopener noreferrer">
