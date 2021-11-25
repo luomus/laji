@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { IGlobalSpeciesFilters, IGlobalSpeciesQuery } from '../../models';
 
 @Component({
-  selector: 'laji-species-list-filters',
+  selector: 'bsg-species-list-filters',
   templateUrl: './species-list-filters.component.html',
   styleUrls: ['./species-list-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

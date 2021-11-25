@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { IGlobalTemplateVersion } from '../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-version-nav',
+  selector: 'bsg-version-nav',
   templateUrl: './version-nav.component.html',
   styleUrls: ['./version-nav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

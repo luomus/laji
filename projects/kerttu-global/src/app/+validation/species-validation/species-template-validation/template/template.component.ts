@@ -5,7 +5,7 @@ import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/
 import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-template',
+  selector: 'bsg-template',
   templateUrl: './template.component.html',
   styleUrls: ['./template.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

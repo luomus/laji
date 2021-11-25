@@ -3,7 +3,7 @@ import { DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/mo
 import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-species-list',
+  selector: 'bsg-species-list',
   templateUrl: './species-list.component.html',
   styleUrls: ['./species-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

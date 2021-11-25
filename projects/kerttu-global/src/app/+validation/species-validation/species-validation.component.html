@@ -1,12 +1,12 @@
 <div class="container-fluid laji-page">
   <ng-container *ngIf="hasLock else noLock">
-    <laji-version-nav
+    <bsg-version-nav
       class="pull-right"
       [versions]="templateVersions$ | async"
       [activeIdx]="activeVersionIdx$ | async"
       (activeIdxChange)="activeVersionIdxChange($event)"
-    ></laji-version-nav>
-    <laji-species-template-validation
+    ></bsg-version-nav>
+    <bsg-species-template-validation
       [species]="species$ | async"
       [recordings]="recordings$ | async"
       [templates]="activeTemplates$ | async"
@@ -15,7 +15,7 @@
       [spectrogramConfig]="spectrogramConfig"
       (save)="saveTemplates($event)"
       (cancel)="goToSpeciesList()"
-    ></laji-species-template-validation>
+    ></bsg-species-template-validation>
   </ng-container>
   <ng-template #noLock>
     <ng-container *ngIf="hasLock === false else loading">

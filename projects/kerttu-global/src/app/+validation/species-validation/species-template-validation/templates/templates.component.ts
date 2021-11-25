@@ -3,7 +3,7 @@ import { ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-v
 import { IGlobalAudio, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-templates',
+  selector: 'bsg-templates',
   templateUrl: './templates.component.html',
   styleUrls: ['./templates.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

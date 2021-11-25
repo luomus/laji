@@ -9,16 +9,16 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
 import { SpeciesListQueryService } from './service/species-list-query.service';
 
 @Component({
-  selector: 'laji-validation',
+  selector: 'bsg-validation',
   template: `
-    <laji-species-list
+    <bsg-species-list
       [(query)]="queryService.query"
       [filters]="speciesFilters$ | async"
       [speciesList]="speciesList"
       [loading]="loading"
       (speciesSelect)="onSpeciesSelect($event)"
       (queryChange)="updateSpeciesList()"
-    ></laji-species-list>
+    ></bsg-species-list>
   `,
   styles: [`
     :host {

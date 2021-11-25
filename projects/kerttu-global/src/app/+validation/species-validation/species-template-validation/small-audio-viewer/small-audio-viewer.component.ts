@@ -3,7 +3,7 @@ import { IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shar
 import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-small-audio-viewer',
+  selector: 'bsg-small-audio-viewer',
   templateUrl: './small-audio-viewer.component.html',
   styleUrls: ['./small-audio-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

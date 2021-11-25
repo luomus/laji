@@ -3,7 +3,7 @@ import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: 'laji-search-input',
+  selector: 'bsg-search-input',
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

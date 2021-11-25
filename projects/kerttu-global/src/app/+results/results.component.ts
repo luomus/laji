@@ -6,26 +6,26 @@ import { map, switchMap, startWith } from 'rxjs/operators';
 import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
-  selector: 'laji-results',
+  selector: 'bsg-results',
   template: `
     <div class="container laji-page">
       <h1>{{ 'results.title' | translate }}</h1>
-      <laji-species-list-filters
+      <bsg-species-list-filters
         [query]="speciesQuery$ | async"
         [filters]="speciesFilters$ | async"
         [showOnlyUnvalidated]="false"
         [showSearch]="false"
         (queryChange)="onSpeciesQueryChange($event)"
-      ></laji-species-list-filters>
+      ></bsg-species-list-filters>
       <h2>{{ 'results.pie.title' | translate }}</h2>
-      <laji-validation-pie-chart
+      <bsg-validation-pie-chart
         [data]="validationStats$ | async"
-      ></laji-validation-pie-chart>
+      ></bsg-validation-pie-chart>
       <h2>{{ 'results.userTable.title' | translate }}</h2>
-      <laji-user-table
+      <bsg-user-table
         [userId]="userId$ | async"
         [data]="userStats$ | async"
-      ></laji-user-table>
+      ></bsg-user-table>
     </div>
   `
 })

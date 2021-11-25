@@ -19,7 +19,7 @@ import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-v
 import { ISpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
-  selector: 'laji-species-validation',
+  selector: 'bsg-species-validation',
   templateUrl: './species-validation.component.html',
   styleUrls: ['./species-validation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

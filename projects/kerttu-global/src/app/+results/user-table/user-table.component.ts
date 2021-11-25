@@ -4,7 +4,7 @@ import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/
 import { IUserStat } from '../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-user-table',
+  selector: 'bsg-user-table',
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -3,7 +3,7 @@ import { ISpectrogramConfig, IAudioViewerRectangle, IAudioViewerArea } from 'pro
 import { IGlobalAudio, IGlobalTemplate, IGlobalRecording } from '../../../../kerttu-global-shared/models';
 
 @Component({
-  selector: 'laji-recordings',
+  selector: 'bsg-recordings',
   templateUrl: './recordings.component.html',
   styleUrls: ['./recordings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

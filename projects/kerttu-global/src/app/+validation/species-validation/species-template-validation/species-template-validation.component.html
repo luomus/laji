@@ -14,14 +14,14 @@
   <h2 class="mt-0">{{ 'validation.templates' | translate }}</h2>
   <p>{{ ('validation.description' + (historyView ? '.oldVersion' : (hasAllTemplatesInitially ? '.confirm' : ''))) | translate }}</p>
   <laji-spinner [spinning]="!templates || !recordings" [hideContentWhileLoading]="true">
-    <laji-templates
+    <bsg-templates
       [templates]="templates"
       [confirmedTemplates]="confirmedTemplates"
       [spectrogramConfig]="spectrogramConfig"
       [audioIdMap]="audioIdMap"
       [highlightNonConfirmed]="!historyView"
       (templateClick)="onTemplateClick($event)"
-    ></laji-templates>
+    ></bsg-templates>
     <div class="clearfix mt-3">
       <label class="selectable" *ngIf="!hasAllTemplatesInitially && !historyView">
         <input type="checkbox" [disabled]="saving" [(ngModel)]="creatingAllTemplatesIsNotPossible">
@@ -65,14 +65,14 @@
         <span class="fa" [ngClass]="{ 'fa-angle-up': showCandidates, 'fa-angle-down': !showCandidates }"></span>
       </button>
     </div>
-    <laji-recordings
+    <bsg-recordings
       *ngIf="showCandidates"
       [recordings]="recordings"
       [templates]="templates"
       [spectrogramConfig]="spectrogramConfig"
       (audioClick)="onAudioClick($event)"
       (candidateClick)="onCandidateClick($event)"
-    ></laji-recordings>
+    ></bsg-recordings>
   </laji-spinner>
 </ng-container>
 
@@ -80,7 +80,7 @@
   <h1 *ngIf="activeAudio" class="d-inline-block">
     {{ activeAudio.species.commonName }} - <i>{{ activeAudio.species.scientificName }}</i>
   </h1>
-  <laji-template
+  <bsg-template
     [audio]="activeAudio"
     [template]="activeTemplate"
     [templateIdx]="activeTemplateIdx"
@@ -92,5 +92,5 @@
     (cancel)="onTemplateCancel()"
     (remove)="onTemplateRemove()"
     (comment)="onComment($event)"
-  ></laji-template>
+  ></bsg-template>
 </ng-template>

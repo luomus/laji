@@ -4,7 +4,7 @@ import { Color } from 'ng2-charts';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-validation-pie-chart',
+  selector: 'bsg-validation-pie-chart',
   templateUrl: './validation-pie-chart.component.html',
   styleUrls: ['./validation-pie-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1077,7 +1077,7 @@
       "root": "projects/kerttu-global/",
       "sourceRoot": "projects/kerttu-global/src",
       "projectType": "application",
-      "prefix": "laji",
+      "prefix": "bsg",
       "schematics": {},
       "architect": {
         "build": {
