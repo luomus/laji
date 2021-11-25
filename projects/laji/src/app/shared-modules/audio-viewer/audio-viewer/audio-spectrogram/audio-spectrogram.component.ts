@@ -64,11 +64,12 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   constructor(
     private cdr: ChangeDetectorRef
   ) {
-    this.updateMargin();
+    this.onResize();
   }
 
   @HostListener('window:resize')
   onResize() {
+    this.updateMargin();
     this.updateWidthAndHeigth();
   }
 
@@ -81,13 +82,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.updateMargin();
     this.onResize();
-  }
-
-  private updateWidthAndHeigth() {
-    this._width = this.width ? this.width : Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0);
-    this._height = this.height ? this.height : this.config ? this.config.nperseg / 2 : 0;
   }
 
   private updateMargin() {
@@ -101,5 +96,13 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
     } else {
       this._margin = this.defaultMarginWithoutLabels;
     }
+  }
+
+  private updateWidthAndHeigth() {
+    this._width = this.width
+      ? this.width : this.containerRef
+      ? Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0)
+      : 0;
+    this._height = this.height ? this.height : this.config ? this.config.nperseg / 2 : 0;
   }
 }
