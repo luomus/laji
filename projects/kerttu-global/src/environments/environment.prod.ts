@@ -1,5 +1,5 @@
 /* tslint:disable:max-line-length */
-import { Global } from './global';
+import { Global } from 'projects/laji/src/environments/global';
 
 export const environment = {
   type: Global.type.kerttuGlobal,
