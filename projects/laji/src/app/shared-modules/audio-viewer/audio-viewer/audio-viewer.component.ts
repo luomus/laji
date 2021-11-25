@@ -43,7 +43,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() playOnlyOnSingleClick = false;
+  @Input() playOnlyOnSingleClick = false; // play only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
 
@@ -141,6 +141,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     if (!this.playOnlyOnSingleClick) {
       this.audioPlayer.startFrom(time);
     } else {
+      // ensure that the click is not a double-click by waiting a while and checking that the number of clicks have not increased
       this.clicks++;
       if (this.clicks === 1) {
         setTimeout(() => {
