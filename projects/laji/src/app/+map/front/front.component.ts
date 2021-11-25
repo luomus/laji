@@ -48,7 +48,6 @@ export class FrontComponent implements OnInit, OnDestroy {
   };
 
   hasQuery = false;
-  showControls = false;
   query: WarehouseQueryInterface;
 
   constructor(
@@ -63,8 +62,7 @@ export class FrontComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
-    const params = this.route.snapshot.queryParams;
-    const {layers, overlayNames, showControls} = params;
+    const {layers, overlayNames} = this.route.snapshot.queryParams;
     const _tileLayerNames = `${(layers ?? '')},${(overlayNames ?? '')}`;
     const _layers = (_tileLayerNames
       .split(',') as string[])
@@ -74,9 +72,6 @@ export class FrontComponent implements OnInit, OnDestroy {
         {maastokartta: true} as LajiMapTileLayersOptions['layers']
       );
     options = {...options, tileLayers: {layers: _layers}};
-    if (showControls && showControls !== 'false') {
-      this.showControls = true;
-    }
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
   }
 
