@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { News } from '../shared/model/News';
@@ -20,7 +21,8 @@ export class NewsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private newsFacade: NewsFacade,
               private headerService: HeaderService,
-              private title: Title
+              private title: Title,
+              @Inject(PLATFORM_ID) private platformId
   ) {}
 
   ngOnInit() {
@@ -48,6 +50,13 @@ export class NewsComponent implements OnInit {
       this.headerService.setHeaders({
         image: news.featuredImage
       });
+    } else if (isPlatformServer(this.platformId)) {
+      const matches = news.content.match(/<img.+?src="(.*?)"/);
+      if (matches[1]?.length > 0) {
+        this.headerService.setHeaders({
+          image: matches[1]
+        });
+      }
     }
   }
 }
