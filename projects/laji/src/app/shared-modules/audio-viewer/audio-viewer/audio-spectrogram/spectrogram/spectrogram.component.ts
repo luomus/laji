@@ -57,6 +57,7 @@ export class SpectrogramComponent implements OnChanges {
           observable = this.createSpectrogram(buffer);
         }
 
+        // has a delay because otherwise the changes caused by this.spectrogramReady.emit() are not always detected
         this.imageDataSub = observable.pipe(delay(0)).subscribe(() => {
           this.spectrogramReady.emit();
           this.cdr.markForCheck();
