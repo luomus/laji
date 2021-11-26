@@ -279,9 +279,6 @@ export class LajiApiService {
   }
 
   private removeUndefinedFromObject<T extends object>(obj: T): T {
-    if (typeof obj !== 'object') {
-      return obj;
-    }
     return (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
       if (typeof obj[current] !== 'undefined') {
         cumulative[current] = obj[current];

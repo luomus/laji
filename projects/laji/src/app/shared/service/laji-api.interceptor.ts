@@ -22,7 +22,7 @@ import {
   REQUEST_MSG
 } from './laji-api-worker-common';
 import { BrowserService } from './browser.service';
-import { FileService } from '../../shared-modules/spreadsheet/service/file.service';
+import { FileService, IFileLoad } from '../../shared-modules/spreadsheet/service/file.service';
 
 @Injectable()
 export class LajiApiInterceptor implements HttpInterceptor {
@@ -86,7 +86,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
     setTimeout(() => {
       if (request.body instanceof FormData) {
-        const data: any[] = [];
+        const data: Observable<IFileLoad>[] = [];
         request.body.forEach(e => data.push(this.fileService.loadFile(e as File, undefined, {type: 'dataUrl'})));
 
         forkJoin(data).subscribe(d => {

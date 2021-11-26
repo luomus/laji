@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 export const DEFAULT_DOMAIN = 'http://tun.fi/';
 
-
 /**
  * Id service
  * Currently works only in default domain!
@@ -18,20 +17,24 @@ export class IdService {
     'gbif-dataset:': 'https://www.gbif.org/dataset/',
   };
 
-  static getId(value: any) {
+   static getId(value: string): string;
+   static getId<T>(value: T): T;
+   static getId<T>(value: T | string): T | string {
     if (typeof value !== 'string' || value === '') {
       return value;
     } else if (value.indexOf(DEFAULT_DOMAIN) === 0) {
       return value.replace(DEFAULT_DOMAIN, '');
     } else if (value.indexOf('http') === 0) {
       Object.keys(IdService.domainMap).map(prefix => {
-        value = value.replace(IdService.domainMap[prefix], prefix);
+        value = (value as string).replace(IdService.domainMap[prefix], prefix);
       });
     }
     return value;
   }
 
-  static getUri(value: any) {
+  static getUri(value: string): string;
+  static getUri<T>(value: T): T;
+  static getUri<T>(value: T | string): T | string {
     if (typeof value !== 'string' || value === '') {
       return value;
     }
@@ -39,7 +42,7 @@ export class IdService {
       return value;
     }
     Object.keys(IdService.domainMap).map(
-      (prefix) => value = value.replace(prefix, IdService.domainMap[prefix])
+      (prefix) => value = (value as string).replace(prefix, IdService.domainMap[prefix])
     );
     if (value.indexOf('http') === 0) {
       return value;
