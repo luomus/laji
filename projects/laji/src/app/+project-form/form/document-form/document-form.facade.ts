@@ -163,7 +163,7 @@ export class DocumentFormFacade {
         : of(null)
       ),
       take(1),
-      catchError(() => FormError.missingNamedPlace)
+      catchError(() => of(FormError.missingNamedPlace))
     );
 
     const inputModel$: Observable<InputModel> = combineLatest([form$, template$]).pipe(

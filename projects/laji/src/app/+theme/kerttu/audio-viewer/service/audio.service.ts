@@ -34,11 +34,11 @@ export class AudioService {
     }
 
     if (!this.buffer$[url]) {
-      this.buffer$[url] = this.httpClient.get(url, {responseType: 'arraybuffer'})
+      this.buffer$[url] = (this.httpClient.get(url, {responseType: 'arraybuffer'}))
         .pipe(
           switchMap((response: ArrayBuffer) => {
             if (this.audioContext.decodeAudioData.length === 2) { // for Safari
-              return new Observable(observer => {
+              return new Observable<AudioBuffer>(observer => {
                   this.audioContext.decodeAudioData(response, (buffer) =>  {
                     this.ngZone.run(() => {
                       observer.next(buffer);

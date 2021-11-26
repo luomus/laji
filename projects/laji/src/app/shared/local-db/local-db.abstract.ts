@@ -26,9 +26,8 @@ export abstract class LocalDb<T> {
     if (!this.isPlatformBrowser) {
       return ObservableOf(null);
     }
-    return ObservableFrom(this.db.getItem(key)).pipe(
+    return ObservableFrom(this.db.getItem<T>(key)).pipe(
       catchError(() => ObservableOf(null))
     );
   }
-
 }

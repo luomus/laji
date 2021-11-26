@@ -85,13 +85,13 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     const element = this.nativeElement;
     this.width = element.offsetWidth - (this.margin.left + this.margin.right);
     this.height = element.offsetHeight - (this.margin.top + this.margin.bottom);
-    const svg = this.svg = select(element).append('svg')
+    const svg = this.svg = select(element).append<SVGElement>('svg')
       .attr('width', element.offsetWidth)
       .attr('height', element.offsetHeight);
     svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     // chart plot area
-    this.chart = svg.append('g')
+    this.chart = svg.append<SVGElement>('g')
       .attr('class', 'drawing')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
@@ -115,7 +115,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     if (this.terms) {
       svg.append('path')
         .datum([this.getLine(this.terms.upper, this.xRange[0]), this.getLine(this.terms.upper, this.xRange[1])])
-        .attr('d', line)
+        .attr('d', line as any)
         .attr('stroke', 'red')
         .attr('stroke-dasharray', '7,7')
         .attr('stroke-width', 2)
@@ -123,7 +123,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
       svg.append('path')
         .datum([this.getLine(this.terms.lower, this.xRange[0]), this.getLine(this.terms.lower, this.xRange[1])])
-        .attr('d', line)
+        .attr('d', line as any)
         .attr('stroke', 'red')
         .attr('stroke-dasharray', '7,7')
         .attr('stroke-width', 2)
@@ -132,7 +132,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
 
       svg.append('path')
         .datum([this.getLine(this.terms.middle, this.xRange[0]), this.getLine(this.terms.middle, this.xRange[1])])
-        .attr('d', line)
+        .attr('d', line as any)
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .attr('fill', 'none');
@@ -170,10 +170,10 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
     if (this.xTickFormat) {
       svgXAxis.tickFormat(format(this.xTickFormat));
     }
-    this.xAxis = svg.append('g')
+    this.xAxis = svg.append<SVGElement>('g')
       .attr('class', 'axis axis-x')
       .attr('transform', `translate(${this.margin.left},${(this.height + this.margin.top)})`)
-      .call(svgXAxis);
+      .call(svgXAxis as any);
   }
 
   updateChart() {

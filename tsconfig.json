@@ -41,6 +41,7 @@
       "dom"
     ],
     "strictBindCallApply": true,
+    "strictFunctionTypes": true,
     "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
