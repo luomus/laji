@@ -63,8 +63,7 @@ export class FrontComponent implements OnInit, OnDestroy {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
     const {layers, overlayNames, world} = this.route.snapshot.queryParams;
-    const _tileLayerNames = `${(layers ?? '')},${(overlayNames ?? '')}`;
-    const _layers = (_tileLayerNames
+    const _layers = (`${layers ?? ''},${overlayNames ?? ''}`
       .split(',') as string[])
       .filter(s => s)
       .reduce<LajiMapTileLayersOptions['layers']>(
