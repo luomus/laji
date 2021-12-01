@@ -62,7 +62,7 @@ export class FrontComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
-    const {layers, overlayNames} = this.route.snapshot.queryParams;
+    const {layers, overlayNames, world} = this.route.snapshot.queryParams;
     const _tileLayerNames = `${(layers ?? '')},${(overlayNames ?? '')}`;
     const _layers = (_tileLayerNames
       .split(',') as string[])
@@ -71,7 +71,10 @@ export class FrontComponent implements OnInit, OnDestroy {
         (lrs, layerName) => ({...lrs, [layerName]: true}),
         {maastokartta: true} as LajiMapTileLayersOptions['layers']
       );
-    options = {...options, tileLayers: {layers: _layers}};
+    const projection = world === 'true'
+      ? 'world'
+      : 'finnish';
+    options = {...options, tileLayers: {layers: _layers, active: projection}};
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
   }
 
