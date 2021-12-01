@@ -75,7 +75,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   drawing = false;
   drawingShape: string;
   mediaStatutes: string[] = [];
-  ownStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
