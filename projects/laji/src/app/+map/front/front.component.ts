@@ -62,9 +62,8 @@ export class FrontComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
-    const {layers, overlayNames, world} = this.route.snapshot.queryParams;
-    const _layers = (`${layers ?? ''},${overlayNames ?? ''}`
-      .split(',') as string[])
+    const {layers = '', overlayNames = '', world} = this.route.snapshot.queryParams;
+    const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)
       .reduce<LajiMapTileLayersOptions['layers']>(
         (lrs, layerName) => ({...lrs, [layerName]: true}),
