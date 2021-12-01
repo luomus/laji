@@ -380,7 +380,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   getOwnQualityIssuesFilterState(): QualityIssuesFilterState {
-    return <QualityIssuesFilterState>this.query.qualityIssues;
+    return this.query.qualityIssues ? <QualityIssuesFilterState>this.query.qualityIssues : 'BOTH';
   }
 
   onOwnObservationsFilterChange(state: OwnFilterState) {
