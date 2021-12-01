@@ -323,46 +323,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  ownItemSelected(field: string | string[], selectValue = true) {
-    this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
-    (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
-
-    if (Array.isArray(field)) {
-      if (selectValue === true) {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = true;
-        this.ownStatutes = this.ownStatutes.length === 2 ? [] : ['asEditor', 'asObserver'];
-      } else {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = this.formQuery.asNotEditorOrObserver ? undefined : true;
-        this.query.qualityIssues = undefined;
-        this.ownStatutes = selectValue ? this.ownStatutes : [] ;
-      }
-    } else {
-    if (this.ownStatutes.length === 0) {
-      this.formQuery.asEditor = undefined;
-      this.formQuery.asObserver = undefined;
-    }
-    if (this.ownStatutes.indexOf(field) === -1) {
-      this.ownStatutes.push(field);
-      this.formQuery.asNotEditorOrObserver = undefined;
-    } else {
-      const index = this.ownStatutes.indexOf(field);
-      this.ownStatutes.splice(index, 1);
-    }
-    this.ownStatutes.forEach(element => {
-      this.formQuery[element] = true;
-    });
-
-    if (this.ownStatutes.length === 2) {
-      this.query.qualityIssues = 'BOTH';
-    }
-  }
-    this.onFormQueryChange();
-  }
-
   getOwnObservationsFilterState(): OwnFilterState {
     if (this.formQuery.asObserver && this.formQuery.asEditor) {
       return 'asBoth';
