@@ -190,7 +190,7 @@
   "excel.map.delete": "Oletko varma, että haluat poistaa datan kuvauksen?",
   "excel.map.duplicate": "Vain yksi sarake voi olla linkitetty kenttään",
   "excel.map.missingRequired": "Pakollinen sarake puuttuu",
-  "excel.map.value-intro": "Mitä tunnettua arvoa tiedostossa oleva arvo tarkoittaa.",
+  "excel.map.value-intro": "Tässä näet ja voit valita mitä tunnettua arvoa tiedostossa oleva arvo tarkoittaa. Paina piilota linkitetyt -nappia, jotta näet vain arvot, joita ei voitu linkittää automaattisesti.",
   "excel.map.value-mapped": "Vihkoon vietävä arvo",
   "excel.map.value-select": "Valitse arvon merkitys",
   "excel.map.value-user": "Tiedostossa oleva arvo",
