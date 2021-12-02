@@ -10,7 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import { OwnFilterState, QualityIssuesFilterState } from './own-observations-filter/own-observations-filter.component';
+import { OwnFilterModel, QualityIssuesFilterState } from './own-observations-filter/own-observations-filter.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -322,49 +322,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  getOwnObservationsFilterState(): OwnFilterState {
-    if (this.formQuery.asObserver && this.formQuery.asEditor) {
-      return 'asBoth';
-    }
-    if (this.formQuery.asNotEditorOrObserver) {
-      return 'asNone';
-    }
-    if (this.formQuery.asObserver) {
-      return 'asObserver';
-    }
-    if (this.formQuery.asEditor) {
-      return 'asEditor';
-    }
-    return 'unset';
-  }
-
   getOwnQualityIssuesFilterState(): QualityIssuesFilterState {
-    return this.query.qualityIssues ? <QualityIssuesFilterState>this.query.qualityIssues : 'BOTH';
+    return this.query.qualityIssues ? <QualityIssuesFilterState>this.query.qualityIssues : undefined;
   }
 
-  onOwnObservationsFilterChange(state: OwnFilterState) {
-    this.formQuery.asObserver = undefined;
-    this.formQuery.asEditor = undefined;
-    this.formQuery.asNotEditorOrObserver = undefined;
-
-    switch (state) {
-      case 'asBoth':
-        this.formQuery.asObserver = true;
-        this.formQuery.asEditor = true;
-        break;
-      case 'asObserver':
-        this.formQuery.asObserver = true;
-        break;
-      case 'asEditor':
-        this.formQuery.asEditor = true;
-        break;
-      case 'asNone':
-        this.formQuery.asNotEditorOrObserver = true;
-        break;
-      case 'unset':
-        break;
-    }
-
+  onOwnObservationsFilterChange(state: OwnFilterModel) {
+    this.formQuery.asObserver = state.asObserver;
+    this.formQuery.asEditor = state.asEditor;
+    this.formQuery.asNotEditorOrObserver = state.asNotEditorOrObserver;
     this.onFormQueryChange();
   }
 

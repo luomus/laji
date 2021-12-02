@@ -102,7 +102,8 @@
 <!-- OWN OBSERVATIONS -->
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
   <laji-own-observations-filter
-    [asObserverOrEditor]="getOwnObservationsFilterState()"
+    [asObserver]="formQuery.asObserver"
+    [asEditor]="formQuery.asEditor"
     [includeQualityIssues]="getOwnQualityIssuesFilterState()"
     (ownFilterChange)="onOwnObservationsFilterChange($event)"
     (qualityIssuesFilterChange)="onOwnQualityIssuesFilterChange($event)">
