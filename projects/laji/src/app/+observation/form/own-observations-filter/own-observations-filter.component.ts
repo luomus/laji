@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
-export type QualityIssuesFilterState = 'BOTH' | 'NO_ISSUES' | 'ONLY_ISSUES';
-
 export type OwnFilterModel = Pick<ObservationFormQuery, 'asObserver' | 'asEditor' | 'asNotEditorOrObserver'>;
 
-type State = OwnFilterModel & { quality: QualityIssuesFilterState };
+type State = OwnFilterModel & { quality: string };
 
 @Component({
   selector: 'laji-own-observations-filter',
@@ -17,9 +15,9 @@ export class OwnObservationsFilterComponent implements OnInit {
   @Input() asObserver: ObservationFormQuery['asObserver'];
   @Input() asEditor: ObservationFormQuery['asEditor'];
   @Input() asNotEditorOrObserver: ObservationFormQuery['asNotEditorOrObserver'];
-  @Input() includeQualityIssues: QualityIssuesFilterState;
+  @Input() includeQualityIssues: string;
   @Output() ownFilterChange = new EventEmitter<OwnFilterModel>();
-  @Output() qualityIssuesFilterChange = new EventEmitter<QualityIssuesFilterState>();
+  @Output() qualityIssuesFilterChange = new EventEmitter<string>();
 
   state: State;
 
@@ -37,7 +35,6 @@ export class OwnObservationsFilterComponent implements OnInit {
   private updateState(state: Partial<State>) {
     const nextState = {...this.state, ...state};
     const {quality, ...ownFilter} = nextState;
-    console.log(nextState);
     this.ownFilterChange.emit(ownFilter);
     if (quality !== this.state.quality) {
       this.qualityIssuesFilterChange.emit(quality);
@@ -70,8 +67,7 @@ export class OwnObservationsFilterComponent implements OnInit {
     );
   }
 
-  onIncludeQualityIssuesChange(state: QualityIssuesFilterState[]) {
-    console.log(state);
+  onIncludeQualityIssuesChange(state: string[]) {
     this.updateState({quality: state[0]});
   }
 }

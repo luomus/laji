@@ -10,7 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import { OwnFilterModel, QualityIssuesFilterState } from './own-observations-filter/own-observations-filter.component';
+import { OwnFilterModel } from './own-observations-filter/own-observations-filter.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -322,10 +322,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  getOwnQualityIssuesFilterState(): QualityIssuesFilterState {
-    return this.query.qualityIssues ? <QualityIssuesFilterState>this.query.qualityIssues : undefined;
-  }
-
   onOwnObservationsFilterChange(state: OwnFilterModel) {
     this.formQuery.asObserver = state.asObserver;
     this.formQuery.asEditor = state.asEditor;
@@ -333,7 +329,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onFormQueryChange();
   }
 
-  onOwnQualityIssuesFilterChange(state: QualityIssuesFilterState) {
+  onOwnQualityIssuesFilterChange(state: string) {
     this.query.qualityIssues = state;
     this.onQueryChange();
   }

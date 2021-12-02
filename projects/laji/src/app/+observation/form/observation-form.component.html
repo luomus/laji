@@ -104,7 +104,7 @@
   <laji-own-observations-filter
     [asObserver]="formQuery.asObserver"
     [asEditor]="formQuery.asEditor"
-    [includeQualityIssues]="getOwnQualityIssuesFilterState()"
+    [includeQualityIssues]="query.qualityIssues"
     (ownFilterChange)="onOwnObservationsFilterChange($event)"
     (qualityIssuesFilterChange)="onOwnQualityIssuesFilterChange($event)">
   </laji-own-observations-filter>
