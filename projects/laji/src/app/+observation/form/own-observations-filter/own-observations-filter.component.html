@@ -1,8 +1,7 @@
 <div>
   <label>
     <laji-checkbox
-      [value]="state.asObserver"
-      (valueChange)="onAsObserverChange($event)">
+      [value]="asObserver" (valueChange)="onAsObserverChange($event)">
     </laji-checkbox>
     {{ 'observation.form.asObserver' | translate }}
   </label>
@@ -12,8 +11,7 @@
 </div>
 <div>
   <label>
-    <laji-checkbox [value]="state.asEditor"
-      (valueChange)="onAsEditorChange($event)">
+    <laji-checkbox [value]="asEditor" (valueChange)="onAsEditorChange($event)">
     </laji-checkbox>
     {{ 'observation.form.asEditor' | translate }}
   </label>
@@ -23,8 +21,7 @@
 </div>
 <div>
   <label>
-    <laji-checkbox [value]="state.asNotEditorOrObserver"
-      (valueChange)="OnAsNotEditorOrObserver($event)">
+    <laji-checkbox [value]="asNotEditorOrObserver" (valueChange)="onAsNotEditorOrObserverChange($event)">
     </laji-checkbox>
     {{ 'observation.form.excludeOwn' | translate }}
   </label>
@@ -32,10 +29,10 @@
     {{ 'observation.info.asNotEditororObserver' | translate }}
   </laji-info>
 </div>
-<ng-container *ngIf="state.asEditor || state.asObserver || state.quality">
+<ng-container *ngIf="asEditor || asObserver || includeQualityIssues">
   <laji-select
-    [selected]="state.quality ? [state.quality] : []"
-    (selectedChange)="onIncludeQualityIssuesChange($event)"
+    [selected]="includeQualityIssues ? [includeQualityIssues] : []"
+    (selectedChange)="onIncludeQualityIssuesChange($event[0])"
     [multiple]="false"
     [useFilter]="false"
     [title]="'observation.form.qualityIssues' | translate"

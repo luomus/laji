@@ -322,15 +322,23 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onOwnObservationsFilterChange(state: OwnFilterModel) {
-    this.formQuery.asObserver = state.asObserver;
-    this.formQuery.asEditor = state.asEditor;
-    this.formQuery.asNotEditorOrObserver = state.asNotEditorOrObserver;
+  onAsObserverChange(value: boolean) {
+    this.formQuery.asObserver = value;
     this.onFormQueryChange();
   }
 
-  onOwnQualityIssuesFilterChange(state: string) {
-    this.query.qualityIssues = state;
+  onAsEditorChange(value: boolean) {
+    this.formQuery.asEditor = value;
+    this.onFormQueryChange();
+  }
+
+  onAsNotEditorOrObserverChange(value: boolean) {
+    this.formQuery.asNotEditorOrObserver = value;
+    this.onFormQueryChange();
+  }
+
+  onOwnQualityIssuesFilterChange(value: string) {
+    this.query.qualityIssues = value;
     this.onQueryChange();
   }
 

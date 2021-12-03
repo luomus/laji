@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
 export type OwnFilterModel = Pick<ObservationFormQuery, 'asObserver' | 'asEditor' | 'asNotEditorOrObserver'>;
-
-type State = OwnFilterModel & { quality: string };
 
 @Component({
   selector: 'laji-own-observations-filter',
@@ -11,63 +15,52 @@ type State = OwnFilterModel & { quality: string };
   styleUrls: ['./own-observations-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OwnObservationsFilterComponent implements OnInit {
+export class OwnObservationsFilterComponent {
   @Input() asObserver: ObservationFormQuery['asObserver'];
   @Input() asEditor: ObservationFormQuery['asEditor'];
   @Input() asNotEditorOrObserver: ObservationFormQuery['asNotEditorOrObserver'];
   @Input() includeQualityIssues: string;
-  @Output() ownFilterChange = new EventEmitter<OwnFilterModel>();
+  @Output() asObserverChange = new EventEmitter<boolean>();
+  @Output() asEditorChange = new EventEmitter<boolean>();
+  @Output() asNotEditorOrObserverChange = new EventEmitter<boolean>();
   @Output() qualityIssuesFilterChange = new EventEmitter<string>();
 
-  state: State;
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {
-    this.state = {
-      asObserver: this.asObserver,
-      asEditor: this.asEditor,
-      asNotEditorOrObserver: this.asNotEditorOrObserver,
-      quality: this.includeQualityIssues
-    };
-  }
-
-  private updateState(state: Partial<State>) {
-    const nextState = {...this.state, ...state};
-    const {quality, ...ownFilter} = nextState;
-    this.ownFilterChange.emit(ownFilter);
-    if (quality !== this.state.quality) {
-      this.qualityIssuesFilterChange.emit(quality);
+  private observerEditorSideEffects(value) {
+    if (value && !this.includeQualityIssues) {
+      this.includeQualityIssues = 'BOTH';
+      this.qualityIssuesFilterChange.emit(this.includeQualityIssues);
     }
-    this.state = nextState;
-    this.cdr.markForCheck();
-  }
-
-  private obsFormChange(state: Partial<OwnFilterModel>) {
-    const nextState = {...this.state, ...state};
-    const observerAndEditorSelected = (!this.state.asObserver || !this.state.asEditor) && nextState.asObserver && nextState.asEditor;
-    if (observerAndEditorSelected) {
-      nextState.quality = 'BOTH';
+    if (value) {
+      this.asNotEditorOrObserver = false;
+      this.asNotEditorOrObserverChange.emit(false);
     }
-    this.updateState(nextState);
   }
 
   onAsObserverChange(value: boolean) {
-    this.obsFormChange({asObserver: value, asNotEditorOrObserver: false});
+    this.observerEditorSideEffects(value);
+    this.asObserver = value;
+    this.asObserverChange.emit(value);
   }
 
   onAsEditorChange(value: boolean) {
-     this.obsFormChange({asEditor: value, asNotEditorOrObserver: false});
+    this.observerEditorSideEffects(value);
+    this.asEditor = value;
+    this.asEditorChange.emit(value);
   }
 
-  OnAsNotEditorOrObserver(value: boolean) {
-    this.obsFormChange(value
-      ? {asObserver: false, asEditor: false, asNotEditorOrObserver: value}
-      : {asNotEditorOrObserver: value}
-    );
+  onAsNotEditorOrObserverChange(value: boolean) {
+    this.asNotEditorOrObserver = value;
+    if (value) {
+      this.asEditor = false;
+      this.asObserver = false;
+      this.asNotEditorOrObserverChange.emit(value);
+      this.asEditorChange.emit(false);
+      this.asObserverChange.emit(false);
+    }
   }
 
-  onIncludeQualityIssuesChange(state: string[]) {
-    this.updateState({quality: state[0]});
+  onIncludeQualityIssuesChange(value: string) {
+    this.includeQualityIssues = value;
+    this.qualityIssuesFilterChange.emit(value);
   }
 }

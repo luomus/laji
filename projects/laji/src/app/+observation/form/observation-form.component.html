@@ -103,9 +103,12 @@
 <section class="laji-panel" *lajiLoggedIn="true" laji-panel [title]="'observation.form.own' | translate" [autoToggle]="true" [open]="visible['own']">
   <laji-own-observations-filter
     [asObserver]="formQuery.asObserver"
+    (asObserverChange)="onAsObserverChange($event)"
     [asEditor]="formQuery.asEditor"
+    (asEditorChange)="onAsEditorChange($event)"
+    [asNotEditorOrObserver]="formQuery.asNotEditorOrObserver"
+    (asNotEditorOrObserverChange)="onAsNotEditorOrObserverChange($event)"
     [includeQualityIssues]="query.qualityIssues"
-    (ownFilterChange)="onOwnObservationsFilterChange($event)"
     (qualityIssuesFilterChange)="onOwnQualityIssuesFilterChange($event)">
   </laji-own-observations-filter>
 </section>
