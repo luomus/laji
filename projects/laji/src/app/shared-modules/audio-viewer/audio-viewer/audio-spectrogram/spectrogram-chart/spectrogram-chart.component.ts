@@ -206,7 +206,7 @@ export class SpectrogramChartComponent implements OnChanges {
         }).style('cursor', 'pointer');
 
       // make scroll line draggable
-      const scrollLineDrag = drag()
+      const scrollLineDrag = drag<any, unknown>()
         .on('start', () => { this.dragStart.emit(); })
         .on('drag', () => {
           this.currentTime = this.getTimeFromPosition(event.x);
