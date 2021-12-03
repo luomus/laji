@@ -43,8 +43,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
   validationErrors: any;
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
   isFormError = isFormError;
@@ -217,8 +216,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
           }, 200);
           this.templateForm = {
             name: '',
-            description: '',
-            type: 'gathering'
+            description: ''
           };
 
           this.documentForTemplate = {};
