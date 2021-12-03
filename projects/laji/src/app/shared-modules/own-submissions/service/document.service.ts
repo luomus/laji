@@ -6,7 +6,8 @@ import { Util } from '../../../shared/service/util.service';
 import { Observable } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { mergeMap, switchMap, tap } from 'rxjs/operators';
+import { mergeMap, switchMap, shareReplay tap } from 'rxjs/operators';
+import { mergeMap, shareReplay, tap } from 'rxjs/operators';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
@@ -21,6 +22,8 @@ export enum Readonly {
 @Injectable()
 export class DocumentService {
 
+  private cache: Record<string, Observable<Document>> = {};
+
   constructor(
     private documentApi: DocumentApi,
     private userService: UserService,
@@ -28,10 +31,21 @@ export class DocumentService {
     private formService: FormService
   ) { }
 
+  findById(id: string): Observable<Document> {
+    const cacheKey = this.getCacheKey(id);
+    if (!this.cache[cacheKey]) {
+      this.cache[cacheKey] = this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
+    }
+    return this.cache[cacheKey];
+  }
+
   deleteDocument(id: string) {
     return this.documentApi.delete(id, this.userService.getToken()).pipe(
       mergeMap(() => this.userService.user$),
-      tap(person => this.documentStorage.removeItem(id, person))
+      tap(person => {
+        this.documentStorage.removeItem(id, person);
+        delete this.cache[this.getCacheKey(id)];
+      })
     );
   }
 
@@ -96,4 +110,9 @@ export class DocumentService {
     }
     return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
   }
+
+  private getCacheKey(documentID: string) {
+    return `${documentID}:${this.userService.getToken()}`;
+  }
+
 }

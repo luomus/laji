@@ -1,0 +1,22 @@
+<ng-container *ngIf="audio.dateTime || audio.municipality || audio.geometry">
+  <span>
+    {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+    {{ audio.municipality }}
+  </span>
+  <lu-button *ngIf="audio.geometry" (click)="openModal()" [small]="true"><i class="fa fa-map-marker"></i></lu-button>
+  <laji-info [html]="'theme.kerttu.info.audioInfo' | translate"></laji-info>
+</ng-container>
+
+<ng-template #mapModal>
+  <div class="modal-header">
+    <button type="button" class="close" (click)="closeModal()">
+      <i class="glyphicon glyphicon-remove"></i>
+    </button>
+    <h4 class="modal-title">{{ 'theme.kerttu.audioViewer.map' | translate }}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="map-wrap">
+      <laji-audio-info-map [geometry]="audio.geometry"></laji-audio-info-map>
+    </div>
+  </div>
+</ng-template>

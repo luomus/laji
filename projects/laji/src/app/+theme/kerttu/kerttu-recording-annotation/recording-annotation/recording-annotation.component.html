@@ -25,15 +25,16 @@
     </h2>
   </div>
   <div class="col-sm-12">
-    <laji-audio-viewer
+    <laji-kerttu-audio-viewer
       [audio]="recording?.audio"
       [focusArea]="{
         xRange: recording?.xRange
       }"
-      [focusAreaTimePadding]="2"
+      [zoomTime]="true"
+      [timePaddingOnZoom]="2"
       [highlightFocusArea]="true"
-      [showBrushControl]="true"
-    ></laji-audio-viewer>
+      [showZoomControl]="true"
+    ></laji-kerttu-audio-viewer>
   </div>
   <div class="col-sm-12 checkbox-container">
     <div class="row">

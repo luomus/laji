@@ -375,7 +375,7 @@ export class DocumentFormFacade {
     return this.userService.user$.pipe(
       take(1),
       mergeMap(person => this.documentStorage.getItem(documentID, person).pipe(
-        mergeMap(local => this.documentApi.findById(documentID, this.userService.getToken()).pipe(
+        mergeMap(local => this.documentService.findById(documentID).pipe(
           map((document: Document) => {
             if (document.isTemplate) {
               const doc = this.documentService.removeMeta(document, ['isTemplate', 'templateName', 'templateDescription']);

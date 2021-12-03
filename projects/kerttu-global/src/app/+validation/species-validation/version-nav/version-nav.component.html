@@ -1,0 +1,20 @@
+<div *ngIf="versions?.length > 0 && activeIdx != null" class="version-nav-container">
+  <div>
+    {{
+      'versionNav.version' | translate: {
+        version: activeIdx + 1,
+        total: versions.length,
+        user: versions[activeIdx].userId | users
+      }
+    }}
+  </div>
+  <div class="text-center">{{ versions[activeIdx].created | amDateFormat: 'DD.MM.YYYY HH:mm:ss' }}</div>
+  <div class="buttons">
+    <button class="btn btn-sm" [disabled]="activeIdx === 0" (click)="onPreviousClicked()">
+      <span aria-hidden="true">&laquo;</span> {{ 'versionNav.previous' | translate }}
+    </button>
+    <button class="btn btn-sm pull-right" [disabled]="activeIdx === versions.length - 1" (click)="onNextClicked()">
+      {{ 'versionNav.next' | translate }} <span aria-hidden="true">&raquo;</span>
+    </button>
+  </div>
+</div>

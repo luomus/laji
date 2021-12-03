@@ -1,0 +1,13 @@
+<canvas
+  #canvas
+  [hidden]="pregeneratedSpectrogramUrl"
+  [style.width]="width + 'px'"
+  [style.height]="height + 'px'"
+></canvas>
+<img
+  *ngIf="pregeneratedSpectrogramUrl"
+  alt="Spectrogram"
+  [src]="pregeneratedSpectrogramUrl"
+  [style.width]="width + 'px'"
+  [style.height]="height + 'px'"
+>

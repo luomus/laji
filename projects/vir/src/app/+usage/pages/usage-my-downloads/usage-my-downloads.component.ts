@@ -18,7 +18,7 @@ import * as moment from 'moment';
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
-      <ng-container *ngIf="false">
+      <ng-container>
         <laji-spinner [spinning]="keysTableLoading" [overlay]="true">
           <h3 translate>usage.apikeys</h3>
           <vir-data-table

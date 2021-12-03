@@ -5,7 +5,8 @@ export const Global = {
     prod: 'prod',
     vir: 'vir',
     embedded: 'embedded',
-    iucn: 'iucn'
+    iucn: 'iucn',
+    kerttuGlobal: 'kerttuGlobal'
   },
   forms: {
     databankPrimary: 'MHL.70',
@@ -27,6 +28,7 @@ export const Global = {
     'vieraslajit': 'MHL.33',
     'kunnat': 'MHL.35',
     'lolife': 'MHL.45',
+    'liito-orava': 'MHL.45',
     'lepakot': 'MHL.50',
     'valio': 'MHL.57',
     'syke-perhoset': 'MHL.59',

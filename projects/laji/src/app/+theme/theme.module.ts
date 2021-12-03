@@ -30,23 +30,16 @@ import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu
 import { ExpertiseFormComponent } from './kerttu/kerttu-expertise-form/expertise-form/expertise-form.component';
 import { KerttuApi } from './kerttu/service/kerttu-api';
 import { KerttuTaxonService } from './kerttu/service/kerttu-taxon-service';
-import { AudioService } from './kerttu/audio-viewer/service/audio.service';
-import { SpectrogramService } from './kerttu/audio-viewer/service/spectrogram.service';
 import { LetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/letter-annotation/letter-annotation.component';
-import { AudioViewerComponent } from './kerttu/audio-viewer/audio-viewer.component';
 import { RecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/recording-annotation/recording-annotation.component';
 import { ThreeStateSwitchModule } from '../shared-modules/three-state-switch/three-state-switch.module';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { BibliographyComponent } from './bibliography/bibliography.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import { AudioSpectrogramComponent } from './kerttu/audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { KerttuExpertiseFormComponent } from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
 import { KerttuLetterAnnotationComponent } from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
 import { KerttuRecordingAnnotationComponent } from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
-import { RequiresAudioSupportDirective } from './kerttu/directive/requires-audio-support.directive';
-import { AudioNotSupportedErrorComponent } from './kerttu/directive/audio-not-supported-error.component';
-import { AudioIosWarningComponent } from './kerttu/directive/audio-ios-warning.component';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { ProtaxComponent } from './protax/protax.component';
 import { ProtaxApi } from './protax/protax-api';
@@ -58,11 +51,13 @@ import { KerttuOccurrenceTableComponent } from './kerttu/kerttu-recording-annota
 import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
 import { KerttuUserTableComponent } from './kerttu/kerttu-result/kerttu-user-table/kerttu-user-table.component';
 import { KerttuCountComponent } from './kerttu/kerttu-result/kerttu-count/kerttu-count.component';
-import { LajiMapModule } from '@laji-map/laji-map.module';
-import { AudioInfoComponent } from './kerttu/audio-viewer/audio-info/audio-info.component';
-import { AudioInfoMapComponent } from './kerttu/audio-viewer/audio-info/audio-info-map/audio-info-map.component';
 import { KerttuLetterResultTableComponent } from './kerttu/kerttu-result/kerttu-letter-result-table/kerttu-letter-result-table.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import { AudioViewerModule } from '../shared-modules/audio-viewer/audio-viewer.module';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
+import { KerttuAudioViewerComponent } from './kerttu/kerttu-audio-viewer/kerttu-audio-viewer.component';
+import { AudioInfoComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info.component';
+import { AudioInfoMapComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info-map/audio-info-map.component';
 
 /* tslint:enable:max-line-length */
 
@@ -83,6 +78,7 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
     ThreeStateSwitchModule,
     PillListModule,
     SelectModule,
+    AudioViewerModule,
     LajiMapModule,
     BreadcrumbModule
   ],
@@ -104,15 +100,10 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
     KerttuInstructionsComponent,
     ExpertiseFormComponent,
     LetterAnnotationComponent,
-    AudioViewerComponent,
     RecordingAnnotationComponent,
-    AudioSpectrogramComponent,
     KerttuExpertiseFormComponent,
     KerttuLetterAnnotationComponent,
     KerttuRecordingAnnotationComponent,
-    RequiresAudioSupportDirective,
-    AudioNotSupportedErrorComponent,
-    AudioIosWarningComponent,
     ProtaxComponent,
     ProtaxFormComponent,
     NotFoundComponent,
@@ -122,16 +113,15 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
     KerttuResultComponent,
     KerttuUserTableComponent,
     KerttuCountComponent,
+    KerttuLetterResultTableComponent,
+    KerttuAudioViewerComponent,
     AudioInfoComponent,
-    AudioInfoMapComponent,
-    KerttuLetterResultTableComponent
+    AudioInfoMapComponent
   ],
   providers: [
     QualityService,
     KerttuApi,
     KerttuTaxonService,
-    AudioService,
-    SpectrogramService,
     ProtaxApi,
     {provide: TableColumnService, useClass: ObservationTableColumnService},
   ]

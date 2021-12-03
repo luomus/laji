@@ -1,0 +1,12 @@
+<div class="chart-wrap">
+  <laji-spinner [spinning]="!_data" [overlay]="true">
+    <laji-chart
+      class="chart"
+      [data]="_data"
+      [labels]="labels"
+      [colors]="colors"
+      [legend]="true"
+      [chartType]="'pie'"
+   ></laji-chart>
+  </laji-spinner>
+</div>

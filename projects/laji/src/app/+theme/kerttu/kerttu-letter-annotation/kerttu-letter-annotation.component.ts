@@ -5,7 +5,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { WINDOW } from '@ng-toolkit/universal';
 import { KerttuApi } from '../service/kerttu-api';
 import { UserService } from '../../../shared/service/user.service';
-import { AudioService } from '../audio-viewer/service/audio.service';
+import { AudioService } from '../../../shared-modules/audio-viewer/service/audio.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -174,7 +174,7 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
         if (!candidate) {
           return of(null);
         }
-        return this.audioService.getAudioBuffer(candidate.audio.url); // loads buffer into audio service cache
+        return this.audioService.getAudioBuffer(candidate.audio.url, candidate.audio.duration); // loads buffer into audio service cache
       }),
     ).subscribe(() => {}, error => {
       this.onLetterError(error);
