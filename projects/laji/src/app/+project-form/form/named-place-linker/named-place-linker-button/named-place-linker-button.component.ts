@@ -50,7 +50,7 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
   ngOnInit() {
     const document$ = this.userService.isLoggedIn$.pipe(
       switchMap(isLoggedIn => isLoggedIn && this.documentID
-        ? this.documentApi.findById(this.documentID, this.userService.getToken()).pipe(
+        ? this.documentService.findById(this.documentID).pipe(
           catchError(() => EMPTY)
         )
         : EMPTY),
