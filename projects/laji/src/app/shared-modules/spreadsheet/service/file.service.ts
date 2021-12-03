@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { saveAs } from 'file-saver';
 
-interface IFileLoad {
+export interface IFileLoad {
   filename: string;
   content: any;
   type: string;

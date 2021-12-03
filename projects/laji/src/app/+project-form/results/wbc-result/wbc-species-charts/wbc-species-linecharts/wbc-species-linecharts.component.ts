@@ -298,9 +298,9 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     this.lineChartData[season][0]['label'] = 'Yksilöm./laskentoja';
     this.lineChartLabels[season] = [];
 
-    const yearsTotal = Object.keys(data);
+    const yearsTotal = Object.keys(data).map(y => parseInt(y, 10));
     const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
-    const years = range(Math.min.apply(Math, yearsTotal), Math.max.apply(Math, yearsTotal), 1);
+    const years = range(Math.min(...yearsTotal), Math.max(...yearsTotal), 1);
     years.sort();
 
     let prevYear;

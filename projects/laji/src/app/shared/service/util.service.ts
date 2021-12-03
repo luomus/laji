@@ -1,3 +1,4 @@
+import { NavigationEnd, Event } from '@angular/router';
 import * as merge from 'deepmerge';
 import { Document } from '../model/Document';
 
@@ -135,6 +136,9 @@ export class Util {
     return destination;
   }
 
+  public static eventIsNavigationEnd(event: Event): event is NavigationEnd {
+    return event instanceof NavigationEnd;
+  }
 
   public static isLocalNewestDocument(local: Document, remote: Document): boolean {
     if (remote && remote.dateEdited) {

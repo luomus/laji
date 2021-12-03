@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestro
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { catchError, concat, delay, retryWhen, take, tap } from 'rxjs/operators';
+import { catchError, concat, delay, filter, retryWhen, take, tap } from 'rxjs/operators';
 import { Taxonomy } from '../../shared/model/Taxonomy';
 import { TaxonomyApi } from '../../shared/api/TaxonomyApi';
 import { Logger } from '../../shared/logger';
@@ -108,8 +108,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initTaxon(taxonId: string): Observable<any> {
+  private initTaxon(taxonId: string): Observable<Taxonomy> {
     return this.getTaxon(taxonId).pipe(
+      filter(taxon => taxon !== null),
       tap(taxon => {
         this.taxon = taxon;
         this.isFromMasterChecklist = this.getIsFromMasterChecklist();
@@ -124,7 +125,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getTaxon(id) {
+  private getTaxon(id: string): Observable<Taxonomy> {
     return this.taxonService.taxonomyFindBySubject(id, 'multi', {
       includeMedia: true,
       includeDescriptions: true,
@@ -133,7 +134,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(throwError(errors)), )),
       catchError(err => {
         this.logger.warn('Failed to fetch taxon by id', err);
-        return of(false);
+        return of(null);
       })
     );
   }

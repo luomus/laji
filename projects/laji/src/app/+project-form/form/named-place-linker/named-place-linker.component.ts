@@ -107,7 +107,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       catchError(() => {
         this.translate.get('np.linker.fail').pipe(take(1)).subscribe(msg => this.toastsService.showError(msg));
         this.loading = false;
-        return null;
+        return of(null);
       })
     ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
       if (!res) {

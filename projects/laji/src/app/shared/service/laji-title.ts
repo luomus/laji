@@ -7,9 +7,9 @@ export class LajiTitle extends Title {
     super.setTitle(this.decodeHtmlEntity(newTitle));
   }
 
-  private decodeHtmlEntity(str) {
+  private decodeHtmlEntity(str: string) {
     const translate_re = /&(nbsp|amp|quot|lt|gt|shy);/g;
-    const translate = {
+    const translate: Record<string, string> = {
       'nbsp': ' ',
       'amp' : '&',
       'quot': '\'',

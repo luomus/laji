@@ -92,7 +92,7 @@ export class ImportService {
     });
   }
 
-  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void) {
+  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void): Observable<any> {
     const personToken = this.userService.getToken();
     const source$ = type === 'validate' ?
       this.documentApi.validate(jobPayload, {personToken}) :
