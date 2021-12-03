@@ -1,0 +1,15 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.filters {
+  margin-top: -$sp-4;
+  margin-bottom: $sp-2;
+
+  > div {
+    margin-top: $sp-4;
+  }
+}
+
+
+.bswitch-wrapper {
+  height: 30px;
+}

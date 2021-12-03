@@ -15,5 +15,6 @@ export const environment = {
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
-  geoserver: 'https://geoserver-dev.laji.fi'
+  geoserver: 'https://geoserver-dev.laji.fi',
+  defaultLang: 'fi'
 };

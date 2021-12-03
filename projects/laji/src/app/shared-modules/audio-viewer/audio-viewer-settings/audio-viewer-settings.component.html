@@ -1,0 +1,31 @@
+<div>
+  <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
+  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.timeBuffer' | translate"></laji-info>
+  <div class="input-group">
+    <select
+      class="form-control input-sm"
+      [ngModel]="xRangePadding"
+      (ngModelChange)="onXRangePaddingSelect($event)"
+    >
+      <option *ngFor="let value of [0.5, 1, 5, 10, 30]" value="{{ value }}">{{ value }}</option>
+    </select>
+    <span class="input-group-addon">s</span>
+  </div>
+</div>
+<div>
+  <label>{{ 'theme.kerttu.targetFrequency' | translate }}</label>
+  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.targetFrequency' | translate"></laji-info>
+  <bSwitch
+    [switch-on-text]="'yes' | translate"
+    [switch-off-text]="'no' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="zoomed"
+    (ngModelChange)="onZoomedChange($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>
+<div [ngClass]="{'d-block': !displayInline}" class="mt-2">
+  <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
+  <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText"></laji-info>
+</div>

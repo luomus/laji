@@ -1,0 +1,33 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.template-container {
+  display: inline-block;
+  vertical-align: top;
+
+  &.highlight {
+    background-color: $warning-2;
+
+    &.warning {
+      background-color: $warning-3;
+    }
+    &.danger {
+      background-color: $danger-3;
+    }
+  }
+
+  label {
+    margin-bottom: 0;
+    display: block;
+    text-align: center;
+  }
+
+  laji-audio-viewer {
+    background-color: initial;
+  }
+
+  .empty-audio {
+    border: 1px solid $primary-8;
+    text-align: center;
+    vertical-align: middle;
+  }
+}

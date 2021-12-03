@@ -1,0 +1,14 @@
+<ng-container *ngIf="templates">
+  <bsg-small-audio-viewer
+    *ngFor="let template of templates; let i = index"
+    [label]="'T' + (i + 1)"
+    [area]="template?.area"
+    [audio]="audioIdMap[template?.audioId]"
+    [spectrogramConfig]="spectrogramConfig"
+    [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || template?.comment"
+    [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"
+    (templateClick)="templateClick.emit(i)"
+  >
+  {{ template?.comment }}
+  </bsg-small-audio-viewer>
+</ng-container>

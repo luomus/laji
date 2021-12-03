@@ -1,0 +1,18 @@
+<laji-datatable
+  [loading]="!data"
+  [columns]="columns"
+  [rows]="data || []"
+  [clientSideSorting]="true"
+  [virtualScrolling]="true"
+  [summaryRow]="true"
+  [sorts]="sorts"
+  [showRowAsLink]="false"
+  [height]="'calc(80vh - 50px)'"
+></laji-datatable>
+
+<ng-template let-value="value" let-row="row" #userName>
+  <span *ngIf="value" title="{{ value | label }}">
+    <em *ngIf="value == userId else otherUser">{{ value | label }}</em>
+    <ng-template #otherUser>{{ value | label }}</ng-template>
+  </span>
+</ng-template>

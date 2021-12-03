@@ -1,7 +1,8 @@
 <laji-spinner [spinning]="loading || sortLoading" [overlay]="true" *lajiBrowserOnly>
   <ngx-datatable
     #dataTable
-    class='material striped laji-datatable'
+    class='material laji-datatable'
+    [ngClass]="{'striped': striped}"
     [style.height]="_height"
     [cssClasses]="{
           sortAscending: 'glyphicon glyphicon-chevron-down',
