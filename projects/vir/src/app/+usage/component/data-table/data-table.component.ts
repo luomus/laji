@@ -3,6 +3,7 @@ import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/d
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
 
@@ -38,7 +39,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
           </laji-datatable>
       </div>
       <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/warehouse/download/secured/' + value">{{ ('download.' + row.downloadType) | translate }}</a>
+        <a [href]="'/api/warehouse/download/secured/' + value + '?token=' + getPersonToken()">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
@@ -137,8 +138,13 @@ export class DataTableComponent implements AfterViewInit {
   private _type: TableType;
 
   constructor(
-    private exportService: ExportService
+    private exportService: ExportService,
+    private userService: UserService
   ) {
+  }
+
+  getPersonToken() {
+    return this.userService.getToken();
   }
 
   ngAfterViewInit() {
