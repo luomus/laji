@@ -38,7 +38,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
           </laji-datatable>
       </div>
       <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/file-download?id=' + value">{{ ('download.' + row.downloadType) | translate }}</a>
+        <a [href]="'/api/warehouse/download/secured/' + value">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
