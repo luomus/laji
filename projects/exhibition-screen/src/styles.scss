@@ -4,41 +4,41 @@
 @import 'mixins';
 
 html, body {
-	overflow: hidden;
-	-ms-overflow-style: none;  /* IE and Edge */
+  overflow: hidden;
+  -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-	&::-webkit-scrollbar {
-		display: none;
-	}
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 body {
-	@include base();
-	background-color: $neutral-9;
-	font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  @include base();
+  background-color: $neutral-9;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .panel {
-	@include panel();
+  @include panel();
 }
 
 .modal {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(#000, .4);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(#000, .4);
 }
 
 .modal-dialog {
-	width: 100%;
-	height: calc(100% - 120px);
-	margin: 60px auto 30px;
-	max-width: 80vw;
+  width: 100%;
+  height: calc(100% - 120px);
+  margin: 60px auto 30px;
+  max-width: 80vw;
 }
 
 .modal-content, es-pdf-modal, es-pdf-modal .panel, iframe {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }

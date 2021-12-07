@@ -1,5 +1,5 @@
 <div *ngFor="let slide of slides; index as i; trackBy: trackByFn"
-		 [ngClass]="{'active': currentSlideIdx === i}"
-		 (click)="onSelectSlide(i)">
-	{{ slide.title }}
+     [ngClass]="{'active': currentSlideIdx === i}"
+     (click)="onSelectSlide(i)">
+  {{ slide.title }}
 </div>
