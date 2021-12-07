@@ -1,0 +1,17 @@
+<label for="reason">{{ 'download.reason' | translate }}</label>
+<laji-metadata-select
+	[selectStyle]="basicSelectStyle"
+	[placeholder]="undefined"
+	[alt]="'HBF.dataUsePurposeEnum'"
+	[labelAsValue]="true"
+	[ngModel]="reasonEnum"
+	(ngModelChange)="reasonEnumChange.emit($event)"
+></laji-metadata-select>
+<textarea
+	style="margin-top: 5px"
+	class="form-control"
+	name="reason"
+	[placeholder]="'information.more' | translate"
+	[ngModel]="reason"
+	(ngModelChange)="reasonChange.emit($event)"
+></textarea>

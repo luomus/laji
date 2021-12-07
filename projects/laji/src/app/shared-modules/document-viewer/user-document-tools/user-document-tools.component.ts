@@ -29,8 +29,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   @Input() actions: string[]|false = ['edit', 'template', 'delete'];
   @Input() templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
   @Input() onlyTemplates = false;
   @Output() documentDeleted = new EventEmitter<string>();
@@ -153,8 +152,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
           .subscribe((value) => this.toastService.showSuccess(value));
         this.templateForm = {
           name: '',
-          description: '',
-          type: 'gathering'
+          description: ''
         };
         this.loading = false;
         this.closeModal();

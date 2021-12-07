@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { Person } from '../model/Person';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
 import { concatMap, toArray } from 'rxjs/operators';
 
 /**
@@ -25,7 +25,7 @@ export class UsersPipe implements PipeTransform {
               private _ref: ChangeDetectorRef) {
   }
 
-  transform(value: string, format?: keyof Person | 'fullNameWithGroup'): any {
+  transform(value: string|string[], format?: keyof Person | 'fullNameWithGroup'): any {
     if (!value || value.length === 0) {
       return value;
     }
@@ -47,6 +47,7 @@ export class UsersPipe implements PipeTransform {
     const nameObs$ = Array.isArray(id) ?
       from(id).pipe(
         concatMap(userId => this.userService.getPersonInfo(userId, format)),
+        concatMap(str => Array.isArray(str) ? from(str) : of(str)),
         toArray<string>(),
       ) :
       this.userService.getPersonInfo(id, format);

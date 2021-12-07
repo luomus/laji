@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
   selector: 'lu-sidebar-link',
@@ -25,7 +26,7 @@ export class SidebarLinkComponent implements OnInit, OnDestroy {
       return;
     }
     const urls$ = this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
+      filter(Util.eventIsNavigationEnd),
       map((e: NavigationEnd) => e.urlAfterRedirects || e.url),
       startWith(this.router.url)
     );

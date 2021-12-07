@@ -1181,6 +1181,179 @@
           }
         }
       }
+    },
+    "kerttu-global": {
+      "root": "projects/kerttu-global/",
+      "sourceRoot": "projects/kerttu-global/src",
+      "projectType": "application",
+      "prefix": "bsg",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/kerttu-global",
+            "index": "projects/kerttu-global/src/index.html",
+            "main": "projects/kerttu-global/src/main.ts",
+            "polyfills": "projects/kerttu-global/src/polyfills.ts",
+            "tsConfig": "projects/kerttu-global/tsconfig.app.json",
+            "assets": [
+              "projects/kerttu-global/src/favicon.ico",
+              "projects/kerttu-global/src/robots.txt",
+              {
+                "glob": "**/*",
+                "input": "projects/laji/src/static",
+                "output": "/static/"
+              }
+            ],
+            "styles": [
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "projects/laji/src/styles/laji.scss",
+              "projects/kerttu-global/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/laji-ui/src/lib"
+              ]
+            },
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": {
+                "styles": {
+                  "inlineCritical": false
+                }
+              },
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/kerttu-global/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "dev": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/kerttu-global/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                },
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.dev.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/kerttu-global/src/environments/environment.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "kerttu-global:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "kerttu-global:build:production"
+            },
+            "dev": {
+              "browserTarget": "kerttu-global:build:dev"
+            },
+            "local": {
+              "browserTarget": "kerttu-global:build:local"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "kerttu-global:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/kerttu-global/src/test.ts",
+            "polyfills": "projects/kerttu-global/src/polyfills.ts",
+            "tsConfig": "projects/kerttu-global/tsconfig.spec.json",
+            "karmaConfig": "projects/kerttu-global/karma.conf.js",
+            "styles": [
+              "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "projects/laji/src/styles/laji.scss",
+              "projects/kerttu-global/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/kerttu-global/src/favicon.ico",
+              "projects/kerttu-global/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/kerttu-global/tsconfig.app.json",
+              "projects/kerttu-global/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "laji",

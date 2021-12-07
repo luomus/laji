@@ -1,11 +1,11 @@
 <ng-template #downloadModal>
-  <div class="modal-header">
+  <div class="modal-header laji-page">
     <button class="close pull-right" type="button" (click)="closeModal()">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
-    <h3 class="modal-title">{{ 'search.result.load' | translate }}</h3>
+    <h4 class="modal-title">{{ 'search.result.load' | translate }}</h4>
   </div>
-  <div class="modal-body">
+  <div class="modal-body laji-page">
     <p
       *ngIf="!hasPersonalData"
       [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
@@ -112,6 +112,23 @@
         </div>
       </ng-container>
     </section>
+    <ng-container>
+      <section *lajiForTypes="['vir']">
+        <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
+        <alert *lajiLoggedIn="false">
+          {{ 'result.load.error.notLoggedIn' | translate }}
+        </alert>
+        <alert *ngIf="!queryHasFilters">
+          {{ 'result.load.error.minQuery' | translate }}
+        </alert>
+        <ng-container *lajiLoggedIn="true">
+          <div *ngIf="queryHasFilters">
+            <p [innerHtml]="'result.load.api' | translate"></p>
+            <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
+          </div>
+        </ng-container>
+      </section>
+    </ng-container>
     <section>
       <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
       <alert *ngIf="taxaLimit < speciesCount">

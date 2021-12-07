@@ -29,7 +29,7 @@ import { ToSafeQueryPipe } from './pipe/to-safe-query.pipe';
 import { FormSampleComponent } from './form-sample/form-sample.component';
 import { AnnotationModule } from './annotations/annotations.module';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
-import { DownloadModule } from '../shared-modules/download/download.module';
+import { DownloadModalModule } from '../shared-modules/download-modal/download-modal.module';
 import { HorizontalChartComponent } from './horizontal-chart/horizontal-chart.component';
 import { DateFormComponent } from './form/date-form/date-form.component';
 import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
@@ -38,6 +38,7 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import {SelectModule} from '../shared-modules/select/select.module';
 import { SelectCollectionsModule } from '../shared-modules/select-collections/select-collections.module';
+import { OwnObservationsFilterComponent } from './form/own-observations-filter/own-observations-filter.component';
 
 @NgModule({
   imports: [
@@ -54,7 +55,7 @@ import { SelectCollectionsModule } from '../shared-modules/select-collections/se
     JwBootstrapSwitchNg2Module,
     AnnotationModule,
     LajiUiModule,
-    DownloadModule,
+    DownloadModalModule,
     ChartModule,
     ThreeStateSwitchModule,
     PillListModule,
@@ -81,7 +82,8 @@ import { SelectCollectionsModule } from '../shared-modules/select-collections/se
     ToSafeQueryPipe,
     FormSampleComponent,
     HorizontalChartComponent,
-    DateFormComponent
+    DateFormComponent,
+    OwnObservationsFilterComponent
   ],
   exports: [
     ObservationViewComponent

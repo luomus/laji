@@ -12,6 +12,7 @@ import { TriplestoreLabelService } from './triplestore-label.service';
 import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
+import { Gatherings } from '../model/Gatherings';
 
 
 @Injectable({
@@ -20,8 +21,8 @@ import { Global } from '../../../environments/global';
 export class PdfLabelService {
 
   @SessionStorage('pdf-data', [])
-  private data: ILabelData[];
-  private memoryData: ILabelData[];
+  private data: ILabelData[] | undefined;
+  private memoryData: ILabelData[] | undefined;
 
   skipFields: string[] = [
     '@type',
@@ -100,11 +101,11 @@ export class PdfLabelService {
     return from(documents).pipe(
       map(doc => this.filterDocument(doc, filter)),
       toArray(),
-      map(docs => docs.filter(doc => !!doc)),
+      map(docs => docs.filter(doc => !!doc) as Document[]),
     );
   }
 
-  private filterDocument(doc: Document, filter: LabelFilter): Document {
+  private filterDocument(doc: Document, filter: LabelFilter): Document | null {
     if (!doc.gatherings) {
       return null;
     }
@@ -133,14 +134,14 @@ export class PdfLabelService {
           unitPrev.push(unit);
         }
         return unitPrev;
-      }, []);
+      }, [] as Units[]);
 
       // Only add gatherings that have some unit information in them
       if (gathering.units.length > 0) {
         gatheringPrev.push(gathering);
       }
       return gatheringPrev;
-    }, []);
+    }, [] as Gatherings[]);
 
     // Only return documents that have some gathering information in them
     if (doc.gatherings.length === 0) {
@@ -152,7 +153,7 @@ export class PdfLabelService {
   private countIndividuals(unit: Units): number {
     let cnt = 0;
     Global.documentCountUnitProperties.forEach(prop => {
-      const num = Number(unit[prop]);
+      const num = Number((unit as any)[prop]);
       if (!isNaN(num)) {
         cnt += num;
       }
@@ -202,13 +203,13 @@ export class PdfLabelService {
     return keys;
   }
 
-  private documentKeysToLabel(document: Document, keyMap): Document {
+  private documentKeysToLabel(document: Document, keyMap: {[key: string]: string}): Document {
     const result: Document = {...document};
     if (result.gatheringEvent) {
       result.gatheringEvent = this.openGathering({...document.gatheringEvent}, keyMap);
     }
     if (Array.isArray(result.gatherings)) {
-      result.gatherings = [...document.gatherings.map(originalGathering => {
+      result.gatherings = [...(document.gatherings || []).map(originalGathering => {
         const gathering = {...originalGathering};
 
         if (Array.isArray(gathering.units)) {
@@ -239,7 +240,7 @@ export class PdfLabelService {
     return result;
   }
 
-  private openGathering(gathering, keyMap) {
+  private openGathering(gathering: any, keyMap: {[key: string]: string}) {
     if (gathering.leg) {
       gathering.leg = this.keysToLabel(gathering.leg, keyMap);
     }
@@ -259,7 +260,9 @@ export class PdfLabelService {
     return value.replace(/([0-9]+)-([0-9]+)-([0-9]+)/, '$3.$2.$1').replace('T', ' ');
   }
 
-  private keysToLabel(value, keyMap) {
+  private keysToLabel(value: string, keyMap: {[key: string]: string}): string;
+  private keysToLabel(value: string[], keyMap: {[key: string]: string}): string[];
+  private keysToLabel(value: string | string[], keyMap: {[key: string]: string}): string | string[] {
     if (Array.isArray(value)) {
       return value.map(val => this.keysToLabel(val, keyMap));
     }

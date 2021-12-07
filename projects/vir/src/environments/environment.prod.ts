@@ -79,5 +79,7 @@ export const environment = {
       sv: '4378',
       en: ''
     },
-  }
+  },
+  geoserver: 'https://geoserver.laji.fi',
+  observationMapOptions: {availableOverlayNameBlacklist: []}
 };

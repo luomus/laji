@@ -106,8 +106,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   annotationTags$: Observable<AnnotationTag[]>;
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
 

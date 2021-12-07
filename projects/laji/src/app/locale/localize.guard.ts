@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../shared/service/history.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 /**
  * Changes the locale value based on lang found in the data
@@ -22,10 +23,11 @@ export class LocalizeGuard implements CanActivate {
   ) {}
 
   canActivate(next: ActivatedRouteSnapshot): boolean | Observable<boolean> {
-    const lang = next.data['lang'] || 'fi';
+    const defaultLang = environment.defaultLang || 'fi';
+    const lang = next.data['lang'] || defaultLang;
 
-    if (this.translateService.getDefaultLang() !== 'fi' && lang !== 'fi') {
-      this.translateService.setDefaultLang('fi');
+    if (this.translateService.getDefaultLang() !== defaultLang && lang !== defaultLang) {
+      this.translateService.setDefaultLang(defaultLang);
     }
     if (this.translateService.currentLang !== lang) {
       this.historyService.clear();

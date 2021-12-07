@@ -60,7 +60,6 @@ export interface DownloadEvent {
 export interface TemplateEvent {
   name: string;
   description: string;
-  type: 'gathering'|'unit';
   documentID: string;
 }
 
@@ -110,8 +109,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @Input() labels: string[] = [];
   @Input() templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
   @Output() documentClicked = new EventEmitter<string>();
   @Output() download = new EventEmitter<DownloadEvent>();
@@ -131,12 +129,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'small'},
-    {prop: 'dateObserved', mode: 'large'},
+    {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'large'},
     {prop: 'locality', mode: 'medium'},
     {prop: 'taxon', mode: 'medium'},
     {prop: 'gatheringsCount', mode: 'large'},
-    {prop: 'unitCount', mode: 'medium'},
+    {prop: 'unitCount', mode: 'large'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}

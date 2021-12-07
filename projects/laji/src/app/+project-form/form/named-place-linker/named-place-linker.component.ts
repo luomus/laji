@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.document$ = this.documentApi.findById(this.documentID, this.userService.getToken());
+    this.document$ = this.documentService.findById(this.documentID);
 
     const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
@@ -61,9 +61,9 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
-    const isLinked$ = combineLatest(this.document$, form$).pipe(map(([document, form]) =>  !!document?.namedPlaceID));
+    const isLinked$ = this.document$.pipe(map(document => !!document?.namedPlaceID));
 
-    this.vm$ = combineLatest(this.document$, form$, documentReadOnly$, isLinked$).pipe(
+    this.vm$ = combineLatest([this.document$, form$, documentReadOnly$, isLinked$]).pipe(
       map(([document, form, isReadonly, isLinked]) => ({document, form, isLinkable: !isReadonly, isLinked}))
     );
   }
@@ -107,7 +107,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       catchError(() => {
         this.translate.get('np.linker.fail').pipe(take(1)).subscribe(msg => this.toastsService.showError(msg));
         this.loading = false;
-        return null;
+        return of(null);
       })
     ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
       if (!res) {

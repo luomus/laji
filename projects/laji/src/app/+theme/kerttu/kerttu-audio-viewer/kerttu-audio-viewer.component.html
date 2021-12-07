@@ -1,0 +1,20 @@
+<laji-audio-viewer
+  [audio]="audio"
+  [focusArea]="focusArea"
+  [zoomTime]="zoomTime"
+  [timePaddingOnZoom]="timePaddingOnZoom"
+  [zoomFrequency]="zoomFrequency"
+  [frequencyPaddingOnZoom]="frequencyPaddingOnZoom"
+  [highlightFocusArea]="highlightFocusArea"
+  [autoplay]="autoplay"
+  [autoplayRepeat]="autoplayRepeat"
+  [showZoomControl]="showZoomControl"
+  [audioInfoTpl]="audioInfoTpl"
+  [spectrogramConfig]="spectrogramConfig"
+  [zoomInfoText]="'theme.kerttu.info.changeView' | translate"
+  (audioLoading)="audioLoading.emit($event)"
+></laji-audio-viewer>
+
+<ng-template #audioInfo let-audio="audio">
+  <laji-audio-info [audio]="audio"></laji-audio-info>
+</ng-template>

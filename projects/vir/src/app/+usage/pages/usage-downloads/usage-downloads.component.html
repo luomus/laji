@@ -1,7 +1,19 @@
-<div class="container mt-6">
+<div class="container mt-6 laji-page">
   <vir-collection-select (select)="collectionSelect($event)"></vir-collection-select>
+  <h3 translate>usage.downloads</h3>
   <vir-data-table
-          [data]="downloadRequests$ | async"
-          (rowSelect)="onRowClick($event)"
-          type="downloads"></vir-data-table>
+    class="d-block my-5"
+    [height]="'max(50vh, 300px)'"
+    [data]="downloadRequests$ | async"
+    (rowSelect)="onRowClick($event)"
+    type="downloads"></vir-data-table>
+  <ng-container>
+    <h3 translate>usage.apikeys</h3>
+    <vir-data-table
+      class="d-block my-5"
+      [height]="'max(50vh, 300px)'"
+      [data]="apiKeys$ | async"
+      (rowSelect)="onRowClick($event)"
+      type="apiKeys"></vir-data-table>
+  </ng-container>
 </div>

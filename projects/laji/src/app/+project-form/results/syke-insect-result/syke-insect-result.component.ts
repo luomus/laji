@@ -40,6 +40,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   fromMonth;
   allTime = '';
   collectionId: string;
+  bumblebeeCollectionId = 'HR.3911';
 
   private subQuery: Subscription;
 

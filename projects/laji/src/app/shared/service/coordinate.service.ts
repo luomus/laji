@@ -73,13 +73,13 @@ export class CoordinateService {
       properties: properties,
       geometry: {
         type: 'Polygon',
-        coordinates: [[
+        coordinates: [([
           [latStart, lonStart],
           [latStart, lonEnd],
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map((latLng: [string, string]) => this.convertYkjToWgs(latLng).reverse())],
+        ] as [string, string][]).map((latLng: [string, string]) => this.convertYkjToWgs(latLng).reverse())],
         coordinateVerbatim: origLat + ':' + origLng
       }
     };

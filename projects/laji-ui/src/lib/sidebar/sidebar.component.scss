@@ -102,7 +102,6 @@ $mobileBreakpoint: 768px;
   }
   &.active {
     background-color: $neutral-2;
-    cursor: default;
   }
 }
 :host .sidebar.left ::ng-deep lu-sidebar-link a {

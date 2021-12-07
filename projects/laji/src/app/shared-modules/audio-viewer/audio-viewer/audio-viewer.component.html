@@ -1,0 +1,60 @@
+<laji-spinner [spinning]="loading" [overlay]="true">
+  <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "theme.kerttu.audioError" | translate }}</alert>
+  <div class="spectrogram-container">
+    <laji-audio-spectrogram
+      [buffer]="buffer"
+      [view]="view"
+      [defaultView]="defaultView"
+      [focusArea]="focusArea"
+      [highlightFocusArea]="highlightFocusArea"
+      [onlyFocusAreaClickable]="highlightFocusArea && view === defaultView"
+      [showAxisLabels]="showAxisLabels"
+      [axisFontSize]="axisFontSize"
+      [rectangles]="rectangles"
+      [currentTime]="audioPlayer.currentTime"
+      [config]="spectrogramConfig"
+      [mode]="mode"
+      [width]="spectrogramWidth"
+      [height]="spectrogramHeight"
+      [margin]="spectrogramMargin"
+      [pregeneratedSpectrogramUrl]="showPregeneratedSpectrogram ? audio.spectrogramUrl : undefined"
+      (spectrogramReady)="setAudioLoading(false)"
+      (dragStart)="onSpectrogramDragStart()"
+      (dragEnd)="onSpectrogramDragEnd($event)"
+      (spectrogramClick)="onSpectrogramClick($event)"
+      (spectrogramDblclick)="spectrogramDblclick.emit($event)"
+      (zoomEnd)="onSpectrogramZoomEnd($event)"
+      (drawEnd)="onSpectrogramDrawEnd($event)"
+    ></laji-audio-spectrogram>
+  </div>
+
+  <div class="audio-controls" *ngIf="showControls">
+    <lu-button (click)="audioPlayer.toggle()" [disabled]="loading">
+      <span
+        class="fa"
+        [ngClass]="{'fa-play': !audioPlayer.isPlaying, 'fa-pause': audioPlayer.isPlaying}"
+      >
+      </span>
+    </lu-button>
+    <div class="btn-with-info">
+      <lu-button [role]="audioPlayer.loop ? 'primary' : 'secondary'" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
+        <span class="fa fa-refresh"></span>
+      </lu-button>
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.loop' | translate"></laji-info>
+    </div>
+    <ng-container *ngIf="showZoomControl">
+      <div class="btn-with-info">
+        <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">
+          {{ 'theme.kerttu.audioViewer.changeView' | translate }}
+        </lu-button>
+        <laji-info *ngIf="zoomInfoText" [placement]="'right'" [html]="zoomInfoText"></laji-info>
+      </div>
+      <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="view !== defaultView">
+        {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
+      </lu-button>
+    </ng-container>
+    <div class="pull-right audio-info" *ngIf="audio && audioInfoTpl">
+      <ng-template [ngTemplateOutlet]="audioInfoTpl" [ngTemplateOutletContext]="{audio: audio}"></ng-template>
+    </div>
+  </div>
+</laji-spinner>

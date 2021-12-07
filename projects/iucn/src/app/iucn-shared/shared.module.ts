@@ -12,7 +12,7 @@ import { RedListClassFilterComponent } from './component/filters/red-list-class-
 import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
 import { SpeciesTableComponent } from './component/species-table/species-table.component';
 import { SelectFieldsModule } from '../../../../laji/src/app/shared-modules/select-fields/select-fields.module';
-import { DownloadModule } from '../../../../laji/src/app/shared-modules/download/download.module';
+import { DownloadModalModule } from '../../../../laji/src/app/shared-modules/download-modal/download-modal.module';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { RedListSpeciesComponent } from '../iucn-shared/component/species-table/red-list-species/red-list-species.component';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
@@ -25,7 +25,7 @@ import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/i
     PillListModule,
     LajiUiModule,
     SelectFieldsModule,
-    DownloadModule,
+    DownloadModalModule,
     DatatableModule,
     IucnCommonModule
   ],

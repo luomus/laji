@@ -5,6 +5,7 @@ import { MobileFormPage } from '../+vihko/mobile-form.po';
 import { SaveObservationsPage } from '../+save-observations/save-observations.po';
 import { browser, protractor } from 'protractor';
 import { NavPage } from "../shared/nav.po";
+import { isDisplayed, waitForVisibility } from '../../helper';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -15,6 +16,9 @@ const FORM_NAMED_PLACES_LOOSE_ACCESS_RESTRICTION = 'MHL.1';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION = 'MHL.45';
 const FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION = 'MHL.50';
 const FORM_DISABLED = 'MHL.90';
+const FORM_ALLOW_TEMPLATES = 'MHL.6';
+const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS = 'MHL.45';
+const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC = 'JX.282874';
 
 const projectFormPage = new ProjectFormPage();
 const userPage = new UserPage();
@@ -23,7 +27,7 @@ const mobileFormPage = new MobileFormPage();
 const saveObservationsPage = new SaveObservationsPage();
 const nav = new NavPage();
 
-async function expectLandsOnExternalLogin(form, subPage?) {
+async function expectLandsOnExternalLogin(form: string, subPage?: string) {
   await browser.waitForAngularEnabled(false);
   await projectFormPage.navigateTo(form, subPage);
   expect(await userPage.isOnExternalLoginPage()).toBe(true, 'Wasn\'t on external login page');
@@ -147,7 +151,7 @@ describe('Project form', () =>  {
         done();
       });
 
-      it('back navigate works away from form and keeps lang', async (done) => {
+      it('back navigate navigates away from form and keeps lang', async (done) => {
         await vihkoHomePage.navigateTo('en');
         await vihkoHomePage.clickFormById(FORM_WITH_SIMPLE_HAS_NO_CATEGORY);
         const EC = protractor.ExpectedConditions;
@@ -241,6 +245,70 @@ describe('Project form', () =>  {
         expect(await projectFormPage.hasAboutText()).toBe(true);
         expect(await nav.getLang()).toBe('en');
         done();
+      });
+
+      describe(', and has multiple forms', () => {
+        it('navigating to doc without subform specified redirects to subform', async (done) => {
+          const form = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS;
+          const doc = FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC;
+          await projectFormPage.navigateTo(`${form}/form/${doc}`, undefined, 'en');
+          expect(await browser.getCurrentUrl()).toMatch(`/${form}/form/${form}/${doc}`);
+          done();
+        });
+
+        it('saving doc when no history goes to submissions page', async (done) => {
+          await projectFormPage.documentFormView.save();
+          expect(await isDisplayed(projectFormPage.submissionsPage.$container)).toBe(true);
+          done();
+        });
+      });
+
+      describe('and has allowTemplates option', () => {
+        const templatePage = projectFormPage.templatePage;
+
+        beforeAll(async (done) => {
+          await projectFormPage.navigateTo(FORM_ALLOW_TEMPLATES, undefined, 'en');
+          done();
+        });
+
+        it('has clickable template link in sidebar', async (done) => {
+          expect(await isDisplayed(projectFormPage.$templateLink)).toBe(true);
+          await projectFormPage.$templateLink.click();
+          done();
+        })
+
+        it('displays submissions table', async (done) => {
+          expect(await isDisplayed(templatePage.datatable.$container)).toBe(true);
+          done();
+        });
+
+        it('at least one template shown', async (done) => {
+          await waitForVisibility(templatePage.datatable.getRow(0).$container);
+          expect(await isDisplayed(templatePage.datatable.getRow(0).$container)).toBe(true);
+          done();
+        });
+
+        it('displays template button', async (done) => {
+          expect(await isDisplayed(templatePage.datatable.getRow(0).$templateButton)).toBe(true);
+          done();
+        });
+
+        it('displays delete button', async (done) => {
+          expect(await isDisplayed(templatePage.datatable.getRow(0).$deleteButton)).toBe(true);
+          done();
+        });
+
+        it('displays only two buttons', async (done) => {
+          expect(await templatePage.datatable.getRow(0).$$buttons.count()).toBe(2);
+          done();
+        });
+
+        it('template button directs to form page', async (done) => {
+          await templatePage.datatable.getRow(0).$templateButton.click();
+          await waitForVisibility(projectFormPage.documentFormView.$container);
+          expect(await isDisplayed(projectFormPage.documentFormView.$container)).toBe(true);
+          done();
+        });
       });
     });
   });
