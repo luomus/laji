@@ -109,8 +109,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         }
       };
     }
-    if (environment.geoserver) {
-      options.lajiGeoServerAddress = environment.geoserver;
+    if ((environment as any).geoserver) {
+      options.lajiGeoServerAddress = (environment as any).geoserver;
     }
     this._options = options;
     this.initMap();
