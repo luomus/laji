@@ -43,9 +43,15 @@ video {
 }
 
 .front-title {
+	margin-top: 15px;
+	font-size: 54px;
 	color: $neutral-1;
+	text-shadow: 0px 1px 8px $neutral-9;
 }
 
 .front-content {
-	color: $neutral-2;
+	font-size: 32px;
+	font-weight: 500;
+	color: $neutral-5;
+	text-shadow: 0px 1px 8px $neutral-9;
 }
