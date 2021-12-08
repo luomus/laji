@@ -29,7 +29,7 @@ export class VirDownloadRequestsService {
   findDownloadRequests(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
         filter(loggedIn => loggedIn),
-        switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/downloads', {params: {token: this.userService.getToken()}})),
+        switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/downloads')),
         shareReplay(1)
     );
   }
@@ -45,8 +45,7 @@ export class VirDownloadRequestsService {
   findMyDownloadRequests(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(() => this.userService.user$),
-      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/downloads', {params: {token: this.userService.getToken(), person: user.id}})),
+      switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/download-requests', {params: {personToken: this.userService.getToken()}})),
       map(data => data.filter(d => ['AUTHORITIES_FULL', 'AUTHORITIES_LIGHTWEIGHT'].includes(d.downloadType))),
       shareReplay(1)
     );
@@ -55,8 +54,7 @@ export class VirDownloadRequestsService {
   findMyApiKeys(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(() => this.userService.user$),
-      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys', {params: {personToken: this.userService.getToken(), person: user.id}})),
+      switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/api-keys', {params: {personToken: this.userService.getToken()}})),
       shareReplay(1)
     );
   }
