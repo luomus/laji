@@ -71,6 +71,10 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
+  getFormInListFormat(formId: string, lang = this.translate.currentLang): Observable<Form.List> {
+    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId)));
+  }
+
   getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
