@@ -165,7 +165,7 @@ export class DataTableComponent implements AfterViewInit {
       case 'downloads':
         return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
-        return this.getCols(['requested', 'dataUsePurpose', 'download']);
+        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose', 'download']);
       case 'userKeys':
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
