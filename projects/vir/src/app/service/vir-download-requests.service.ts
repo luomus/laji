@@ -45,7 +45,7 @@ export class VirDownloadRequestsService {
   findMyDownloadRequests(): Observable<IDownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/download-requests', {params: {personToken: this.userService.getToken()}})),
+      switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/warehouse/downloads', {params: {personToken: this.userService.getToken()}})),
       map(data => data.filter(d => ['AUTHORITIES_FULL', 'AUTHORITIES_LIGHTWEIGHT'].includes(d.downloadType))),
       shareReplay(1)
     );
