@@ -10,9 +10,9 @@
       <p>
         {{ 'nafi.stats.times' | translate }}
         <br>
-        <a [routerLink] [queryParams]="{tab: 'species', time: 'all'}">{{ 'theme.filterAllNoYears' | translate }}</a> |
-        <a [routerLink] [queryParams]="{tab: 'species', time: currentYear}">{{ 'theme.filterCurrentYear' | translate }}</a> |
-        <a [routerLink] [queryParams]="{tab: 'species', time: year}">{{ 'theme.filterLastYear' | translate }}</a>
+        <a [routerLink]="[]" [queryParams]="{tab: 'species', time: 'all'}">{{ 'theme.filterAllNoYears' | translate }}</a> |
+        <a [routerLink]="[]" [queryParams]="{tab: 'species', time: currentYear}">{{ 'theme.filterCurrentYear' | translate }}</a> |
+        <a [routerLink]="[]" [queryParams]="{tab: 'species', time: year}">{{ 'theme.filterLastYear' | translate }}</a>
       </p>
     </div>
   </div>
