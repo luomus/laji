@@ -3,7 +3,7 @@ import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { mergeMap, switchMap, shareReplay, tap } from 'rxjs/operators';
@@ -31,15 +31,23 @@ export class DocumentService {
   ) { }
 
   findById(id: string): Observable<Document> {
-    return this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
-    
-    /**
     const cacheKey = this.getCacheKey(id);
     if (!this.cache[cacheKey]) {
       this.cache[cacheKey] = this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
     }
     return this.cache[cacheKey];
-    */
+  }
+
+  create(document: Document) {
+    return this.documentApi.create(document, this.userService.getToken()).pipe(tap(d => {
+      this.cache[this.getCacheKey(d.id)] = of(d);
+    }));
+  }
+
+  update(id: string, document: Document) {
+    return this.documentApi.update(id, document, this.userService.getToken()).pipe(tap(d => {
+      this.cache[this.getCacheKey(d.id)] = of(d);
+    }));
   }
 
   deleteDocument(id: string) {
