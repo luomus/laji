@@ -31,11 +31,15 @@ export class DocumentService {
   ) { }
 
   findById(id: string): Observable<Document> {
+    return this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
+    
+    /**
     const cacheKey = this.getCacheKey(id);
     if (!this.cache[cacheKey]) {
       this.cache[cacheKey] = this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
     }
     return this.cache[cacheKey];
+    */
   }
 
   deleteDocument(id: string) {
