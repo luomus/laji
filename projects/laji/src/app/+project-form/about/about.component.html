@@ -42,12 +42,12 @@
                         (showViewer)="showDocumentViewer($event)"
     ></laji-haseka-latest>
     <br />
-    <ng-container *ngIf="data.form.options?.footerDescription || data.form.options?.footerLogos">
-      <ng-container *ngIf="data.form.options?.footerDescription">
-        {{ data.form.options.footerDescription }}
+    <ng-container *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos">
+      <ng-container *ngIf="data.form.options.footer.footerDescription">
+        {{ data.form.options.footer.footerDescription }}
       </ng-container>
       <ul class="form-footer">
-        <ng-container *ngFor="let logo of data.form.options?.footerLogos | keyvalue">
+        <ng-container *ngFor="let logo of data.form.options.footer.footerLogos | keyvalue">
           <li>
             <a [href]="logo.value" target="_blank">
               <img lajiLazyImage [src]="logo.key">
