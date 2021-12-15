@@ -81,12 +81,6 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      name: 'person',
-      label: 'usage.person',
-      cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
       name: 'personId',
       label: 'usage.person',
       cellTemplate: 'label',
@@ -104,14 +98,14 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      prop: 'id',
       name: 'download',
+      prop: 'id',
       label: 'usage.dataDownload',
       canAutoResize: true
     },
     {
-      prop: 'apiKeyExpires',
       name: 'apiKeyExpires',
+      prop: 'apiKeyExpires',
       label: 'usage.apiKeyExpires',
       canAutoResize: true
     },
