@@ -82,21 +82,9 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      name: 'person',
-      label: 'usage.person',
-      cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
       name: 'personId',
       label: 'usage.person',
       cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
-      name: 'collectionId',
-      label: 'usage.collectionId',
-      cellTemplate: 'labelArray',
       canAutoResize: true
     },
     {
@@ -111,14 +99,14 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      prop: 'id',
       name: 'download',
+      prop: 'id',
       label: 'usage.dataDownload',
       canAutoResize: true
     },
     {
-      prop: 'apiKeyExpires',
       name: 'apiKeyExpires',
+      prop: 'apiKeyExpires',
       label: 'usage.apiKeyExpires',
       canAutoResize: true
     },
@@ -175,9 +163,9 @@ export class DataTableComponent implements AfterViewInit {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
       case 'downloads':
-        return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
+        return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
-        return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
+        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose', 'download']);
       case 'userKeys':
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
