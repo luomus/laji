@@ -386,7 +386,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               id: document.id,
               locked: !!document.locked,
               index: idx,
-              formViewerType: form.viewerType,
               _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
             } as RowDocument;
           })
@@ -408,7 +407,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private getForm(formId: string): Observable<any> {
-    return this.formService.getForm(formId, this.translate.currentLang).pipe(
+    return this.formService.getFormInListFormat(formId, this.translate.currentLang).pipe(
       map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);

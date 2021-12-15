@@ -50,10 +50,10 @@ export class OwnObservationsFilterComponent {
 
   onAsNotEditorOrObserverChange(value: boolean) {
     this.asNotEditorOrObserver = value;
+    this.asNotEditorOrObserverChange.emit(value);
     if (value) {
       this.asEditor = false;
       this.asObserver = false;
-      this.asNotEditorOrObserverChange.emit(value);
       this.asEditorChange.emit(false);
       this.asObserverChange.emit(false);
     }

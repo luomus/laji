@@ -28,7 +28,7 @@
 <ng-template #mobile>
   <ng-container *ngIf="aboutData$ | async as data">
     <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
-    <laji-project-form-header [form]="data.form"></laji-project-form-header>
+    <laji-project-form-header [form]="data.form" [description]="data.form.description"></laji-project-form-header>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <button type="button"
               class="btn btn-md btn-primary btn-block use-button"
@@ -42,12 +42,12 @@
                         (showViewer)="showDocumentViewer($event)"
     ></laji-haseka-latest>
     <br />
-    <ng-container *ngIf="data.form.options?.footerDescription || data.form.options?.footerLogos">
-      <ng-container *ngIf="data.form.options?.footerDescription">
-        {{ data.form.options.footerDescription }}
+    <ng-container *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos">
+      <ng-container *ngIf="data.form.options.footer.footerDescription">
+        {{ data.form.options.footer.footerDescription }}
       </ng-container>
       <ul class="form-footer">
-        <ng-container *ngFor="let logo of data.form.options?.footerLogos | keyvalue">
+        <ng-container *ngFor="let logo of data.form.options.footer.footerLogos | keyvalue">
           <li>
             <a [href]="logo.value" target="_blank">
               <img lajiLazyImage [src]="logo.key">
