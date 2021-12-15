@@ -10,6 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
+import { OwnFilterModel } from './own-observations-filter/own-observations-filter.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -74,7 +75,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   drawing = false;
   drawingShape: string;
   mediaStatutes: string[] = [];
-  ownStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -322,44 +322,24 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  ownItemSelected(field, selectValue: any = true) {
-    this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
-    (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
-
-    if (Array.isArray(field)) {
-      if (selectValue === true) {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = true;
-        this.ownStatutes = this.ownStatutes.length === 2 ? [] : ['asEditor', 'asObserver'];
-      } else {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = this.formQuery.asNotEditorOrObserver ? undefined : true;
-        this.query.qualityIssues = undefined;
-        this.ownStatutes = selectValue ? this.ownStatutes : [] ;
-      }
-    } else {
-    if (this.ownStatutes.length === 0) {
-      this.formQuery.asEditor = undefined;
-      this.formQuery.asObserver = undefined;
-    }
-    if (this.ownStatutes.indexOf(field) === -1) {
-      this.ownStatutes.push(field);
-      this.formQuery.asNotEditorOrObserver = undefined;
-    } else {
-      const index = this.ownStatutes.indexOf(field);
-      this.ownStatutes.splice(index, 1);
-    }
-    this.ownStatutes.forEach(element => {
-      this.formQuery[element] = true;
-    });
-
-    if (this.ownStatutes.length === 2) {
-      this.query.qualityIssues = 'BOTH';
-    }
-  }
+  onAsObserverChange(value: boolean) {
+    this.formQuery.asObserver = value;
     this.onFormQueryChange();
+  }
+
+  onAsEditorChange(value: boolean) {
+    this.formQuery.asEditor = value;
+    this.onFormQueryChange();
+  }
+
+  onAsNotEditorOrObserverChange(value: boolean) {
+    this.formQuery.asNotEditorOrObserver = value;
+    this.onFormQueryChange();
+  }
+
+  onOwnQualityIssuesFilterChange(value: string) {
+    this.query.qualityIssues = value;
+    this.onQueryChange();
   }
 
   onFormQueryChange() {

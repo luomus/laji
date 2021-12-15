@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { FooterService } from '../../shared/service/footer.service';
-import { geoJSONToISO6709 } from 'laji-map/lib/utils';
+import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
 
@@ -62,13 +62,16 @@ export class FrontComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
-    const {layers = '', overlayNames = '', world} = this.route.snapshot.queryParams;
+    const {layers = '', overlayNames = '', world, coordinates} = this.route.snapshot.queryParams;
     const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)
       .reduce<LajiMapTileLayersOptions['layers']>(
         (lrs, layerName) => ({...lrs, [layerName]: true}),
         {maastokartta: true} as LajiMapTileLayersOptions['layers']
       );
+    if (typeof coordinates !== 'undefined') {
+      this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(coordinates)};
+    }
     const projection = world === 'true'
       ? 'world'
       : 'finnish';

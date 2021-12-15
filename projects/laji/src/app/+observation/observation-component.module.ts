@@ -38,6 +38,7 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import {SelectModule} from '../shared-modules/select/select.module';
 import { SelectCollectionsModule } from '../shared-modules/select-collections/select-collections.module';
+import { OwnObservationsFilterComponent } from './form/own-observations-filter/own-observations-filter.component';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { SelectCollectionsModule } from '../shared-modules/select-collections/se
     ToSafeQueryPipe,
     FormSampleComponent,
     HorizontalChartComponent,
-    DateFormComponent
+    DateFormComponent,
+    OwnObservationsFilterComponent
   ],
   exports: [
     ObservationViewComponent
