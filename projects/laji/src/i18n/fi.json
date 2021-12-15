@@ -976,7 +976,7 @@
   "observation.export.tooMany": "Liian paljon havaintoja. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
   "observation.export.tooManySpecies": "Liian paljon taksoneita. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
   "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
-  "observation.filterBy.collectionId": "Aineistot",
+  "observation.filterBy.collectionId": "Aineistot ja kokoelmat",
   "observation.filterBy.collectionName": "Aineiston nimi",
   "observation.filterBy.image": "Kuvia",
   "observation.filterBy.recordBasis": "Havaintotapa",
