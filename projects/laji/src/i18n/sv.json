@@ -976,7 +976,7 @@
   "observation.export.tooMany": "För många observationer. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.export.tooManySpecies": "För många arter. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
-  "observation.filterBy.collectionId": "Samlingar",
+  "observation.filterBy.collectionId": "Dataset och samlingar",
   "observation.filterBy.collectionName": "Samlingsnamn",
   "observation.filterBy.image": "Bilder",
   "observation.filterBy.recordBasis": "Metod för observation",

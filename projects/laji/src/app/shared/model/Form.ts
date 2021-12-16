@@ -101,9 +101,11 @@ export namespace Form {
     hideDraftButton?: boolean;
     printType?: PrintType;
     resultServiceType?: ResultServiceType;
-    footerDescription?: string;
-    footerLogos?: {
-      [imageURL: string]: string;
+    footer?: {
+      footerDescription?: string;
+      footerLogos?: {
+        [imageURL: string]: string;
+      };
     };
     formPermissionDescription?: string;
     formOwnSubmissionsLabel?: string;

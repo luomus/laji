@@ -15,7 +15,6 @@ import { UserService } from '../../../shared/service/user.service';
 import { FormPermissionService, Rights } from '../../../shared/service/form-permission.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import * as deepmerge from 'deepmerge';
 import * as moment from 'moment';
 import { LocalStorage } from 'ngx-webstorage';
@@ -103,7 +102,6 @@ export class DocumentFormFacade {
     private formPermissionService: FormPermissionService,
     private namedPlacesService: NamedPlacesService,
     private documentStorage: DocumentStorage,
-    private documentApi: DocumentApi,
     private personApi: PersonApi,
     private lajiApi: LajiApiService,
     private logger: Logger,
@@ -318,8 +316,8 @@ export class DocumentFormFacade {
     if (tmpId) { delete document.id; }
 
     return (tmpId || !document.id
-      ? this.documentApi.create(document, this.userService.getToken())
-      : this.documentApi.update(document.id, document, this.userService.getToken())
+      ? this.documentService.create(document)
+      : this.documentService.update(document.id, document)
     ).pipe(
       switchMap(doc =>
         this.userService.user$.pipe(
