@@ -17,6 +17,7 @@ const informationWhitelist = [
   // Services and instructions
   '803', // tietovarasto
   '806c1', '806', // API / technical
+  '5138',
   // Muuta
   '2814' // punaisen kirjan verkkopalvelu
 ];
