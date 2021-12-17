@@ -22,34 +22,34 @@ export class DatatableUtil {
     private warehouseValueMappingService: WarehouseValueMappingService
   ) { }
 
-  getVisibleValue(value, row, template): Observable<string> {
+  getVisibleValue(value, row, templateName: string): Observable<string> {
     if (value == null || (Array.isArray(value) && value.length === 0)) {
       if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName']
-        .indexOf(template) === -1) {
+        .indexOf(templateName) === -1) {
         return ObservableOf('');
       }
     }
 
-    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(template) === -1 &&
-      !template.startsWith('latestRedListEvaluation.threatenedAtArea_') && !template.startsWith('latestRedListEvaluation.occurrences_')) {
+    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(templateName) === -1 &&
+      !templateName.startsWith('latestRedListEvaluation.threatenedAtArea_') && !templateName.startsWith('latestRedListEvaluation.occurrences_')) {
       return from(value).pipe(
-        concatMap(val => this.getVisibleValue(val, row, template)),
+        concatMap(val => this.getVisibleValue(val, row, templateName)),
         toArray(),
         map(values => values.join(', '))
       );
     }
 
-    if (template.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
-      const area = template.split('_')[1];
+    if (templateName.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
+      const area = templateName.split('_')[1];
       return ObservableOf(value.includes(area) ? 'RT' : '');
-    } else if (template.startsWith('latestRedListEvaluation.occurrences_')) {
-      const targetArea = template.split('_')[1];
+    } else if (templateName.startsWith('latestRedListEvaluation.occurrences_')) {
+      const targetArea = templateName.split('_')[1];
       const match = value.filter(val => val.area === targetArea);
       return match.length > 0 ? this.getLabels(match[0].status) : ObservableOf(value);
     }
 
     let observable;
-    switch (template) {
+    switch (templateName) {
       case 'warehouseLabel':
         observable = this.getWarehouseLabels(value);
         break;
@@ -85,7 +85,7 @@ export class DatatableUtil {
         break;
       case 'redListStatus2010':
       case 'redListStatus2015':
-        const year = template === 'redListStatus2010' ? 2010 : 2015;
+        const year = templateName === 'redListStatus2010' ? 2010 : 2015;
         (row.redListStatusesInFinland || []).forEach(status => {
           if (status.year === year) {
             observable = this.getLabels(status.status);

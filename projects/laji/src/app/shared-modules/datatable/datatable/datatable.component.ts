@@ -150,7 +150,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() set columns(columns: DatatableColumn[]) {
     const settings = this.dataTableSettings;
 
-    this._columns = columns.map((column) => {
+    this._columns = columns.map(c => {
+      const column = {...c};
       if (!column.prop) {
         column.prop = column.name;
       }

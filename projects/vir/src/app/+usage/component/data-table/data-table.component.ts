@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
 
@@ -38,19 +39,23 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
           </laji-datatable>
       </div>
       <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/file-download?id=' + value">{{ ('download.' + row.downloadType) | translate }}</a>
+        <a [href]="'/api/warehouse/download/secured/' + value + '?personToken=' + personToken">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
-export class DataTableComponent implements AfterViewInit {
-
+export class DataTableComponent implements OnInit, AfterViewInit {
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
   @Input() height: string = 'calc(90vh - 195px)';
+  @Input() data: any[];
+  @Input() exportFileName = 'export';
+
+  @Output() rowSelect = new EventEmitter<any>();
 
   downloadLoading: boolean;
+  personToken: string;
 
   cols:  DatatableColumn[] = [];
   private allCols: DatatableColumn[] = [
@@ -81,21 +86,9 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      name: 'person',
-      label: 'usage.person',
-      cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
       name: 'personId',
       label: 'usage.person',
       cellTemplate: 'label',
-      canAutoResize: true
-    },
-    {
-      name: 'collectionId',
-      label: 'usage.collectionId',
-      cellTemplate: 'labelArray',
       canAutoResize: true
     },
     {
@@ -110,14 +103,14 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      prop: 'id',
       name: 'download',
+      prop: 'id',
       label: 'usage.dataDownload',
       canAutoResize: true
     },
     {
-      prop: 'apiKeyExpires',
       name: 'apiKeyExpires',
+      prop: 'apiKeyExpires',
       label: 'usage.apiKeyExpires',
       canAutoResize: true
     },
@@ -129,16 +122,15 @@ export class DataTableComponent implements AfterViewInit {
     }
   ];
 
-  @Input() data: any[];
-  @Input() exportFileName = 'export';
-
-  @Output() rowSelect = new EventEmitter<any>();
-
   private _type: TableType;
 
   constructor(
-    private exportService: ExportService
-  ) {
+    private exportService: ExportService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.personToken = this.userService.getToken();
   }
 
   ngAfterViewInit() {
@@ -169,9 +161,9 @@ export class DataTableComponent implements AfterViewInit {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
       case 'downloads':
-        return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
+        return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
-        return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
+        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose', 'download']);
       case 'userKeys':
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
