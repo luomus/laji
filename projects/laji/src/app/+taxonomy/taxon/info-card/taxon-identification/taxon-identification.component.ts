@@ -98,29 +98,12 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     this.subscription.unsubscribe();
   }
 
-  isInViewport(element: Element): boolean {
-    if (this.platformService.isBrowser) {
-      const rect = element.getBoundingClientRect();
-      return (
-          rect.top >= 0 &&
-          rect.left >= 0 &&
-          rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
-          rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
-      );
-    } else {
-      return false;
-    }
-  }
-
   isWithinXPixelsOfViewport(element: Element, px: number): boolean {
-    if (this.platformService.isBrowser) {
-      const rect = element.getBoundingClientRect();
-      return (
-        this.window.innerHeight - rect.y > -px
-        || this.document.documentElement.clientHeight - rect.y > -px
-      );
-    } else {
-      return false;
-    }
+    if (!this.platformService.isBrowser) { return false; }
+    const rect = element.getBoundingClientRect();
+    return (
+      this.window.innerHeight - rect.y > -px
+      || this.document.documentElement.clientHeight - rect.y > -px
+    );
   }
 }

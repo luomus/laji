@@ -52,7 +52,7 @@ export class NewsComponent implements OnInit {
       });
     } else if (isPlatformServer(this.platformId)) {
       const matches = news.content.match(/<img.+?src="(.*?)"/);
-      if (matches[1]?.length > 0) {
+      if (matches?.[1]?.length > 0) {
         this.headerService.setHeaders({
           image: matches[1]
         });

@@ -76,6 +76,10 @@ export class ExportService {
     return XLSX.write(book, {bookType: fileType, type: 'array'});
   }
 
+  /**
+   * @returns An array of arrays representation of the datatable
+   *          where the values correspond to datatable cells
+   */
   private getAoa<T>(cols: DatatableColumn[], data: T[], firstRow?: string[]): Observable<string[][]> {
     const aoa: any = firstRow ? [firstRow, []] : [[]];
     const labelRow = firstRow ? 1 : 0;

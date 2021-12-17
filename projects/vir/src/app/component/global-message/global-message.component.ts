@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Component({
   selector: 'vir-global-message',
@@ -34,7 +35,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.router.events.pipe(
       takeUntil(this.unsubscribe$),
-      filter(event => event instanceof NavigationEnd),
+      filter(Util.eventIsNavigationEnd),
       switchMap((event: NavigationEnd) => {
         const idx = Object.keys(environment.globalMessageIds).findIndex(
           key => event.url.match(key)

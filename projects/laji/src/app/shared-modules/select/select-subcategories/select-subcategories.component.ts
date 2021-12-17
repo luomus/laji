@@ -159,7 +159,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       let tmpSelectedOptions = [];
       let tmpUnselectedOptions = [];
       const countObj = this.selectedOptions[i].filter(
-        (item: SelectOptions | string) => typeof item === 'string' || item.id !== undefined
+        (item: SelectOptions | string) => typeof item !== 'string' && item.id !== undefined
       ).length;
       this.options.map(option => {
         if (countObj > 0) {

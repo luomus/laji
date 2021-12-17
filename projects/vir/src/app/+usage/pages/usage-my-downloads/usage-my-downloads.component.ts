@@ -48,6 +48,7 @@ export class UsageMyDownloadsComponent {
     this.keysTableLoading = true;
     this.downloadRequests$ = this.virDownloadRequestsService.findMyDownloadRequests().pipe(
       take(1),
+      map(downloads => downloads.map(download => ({...download, collectionIds: download.collections?.map(collection => collection.id)}))),
       finalize(() => {
         this.requestsTableLoading = false;
         this.cdr.markForCheck();

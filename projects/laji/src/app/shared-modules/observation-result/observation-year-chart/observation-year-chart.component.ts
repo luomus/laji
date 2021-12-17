@@ -162,26 +162,37 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
       this.allDataNew = [{data: [], backgroundColor: [], label: this.translate.instant('all') }];
       let prevYear: number;
+
       res.map(r => {
         const year = parseInt(r.aggregateBy['gathering.conversions.year'], 10);
         const count = r.count;
         const individual = r.individualCountSum;
 
-        this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
-        this.subBarChartLabels.push('' + year);
-        this.resultList.push({'count': count, 'individualCountSum': individual, 'year': year});
-        if (year < 1970) {
-          this.splitIdx++;
+        let nextYear = prevYear ? prevYear + 1 : year;
+        while (nextYear < year) {
+          this.addYearToResults(nextYear, 0, 0);
+          nextYear += 1;
         }
+        this.addYearToResults(year, count, individual);
 
         prevYear = year;
       });
+
       this.createSubArrayChart();
       this.hasData.emit(this.allDataNew[0].data.length > 0);
       // check emit
       this.cd.markForCheck();
     });
     this.barChartOptionsYear.animation.duration = 0;
+  }
+
+  private addYearToResults(year: number, count: number, individual: number) {
+    this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
+    this.subBarChartLabels.push('' + year);
+    this.resultList.push({'count': count, 'individualCountSum': individual, 'year': year});
+    if (year < 1970) {
+      this.splitIdx++;
+    }
   }
 
   xAxisTickFormatting(value: number) {

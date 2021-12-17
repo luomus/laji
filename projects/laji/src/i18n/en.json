@@ -976,7 +976,7 @@
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",
   "observation.extra": "Show additional filters <i class=\"glyphicon glyphicon-cog\"></i>",
-  "observation.filterBy.collectionId": "Collection",
+  "observation.filterBy.collectionId": "Datasets and collections",
   "observation.filterBy.collectionName": "Collection Name",
   "observation.filterBy.image": "Image",
   "observation.filterBy.recordBasis": "Record type",
