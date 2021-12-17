@@ -36,7 +36,7 @@
         {{ 'haseka.mobile.newObservation' | translate }}
       </button>
     </ng-container>
-    <laji-haseka-latest [forms]="[data.form.id]"
+    <laji-haseka-latest [formID]="data.form.id"
                         [showFormNames]="false"
                         [complainLocality]="false"
                         (showViewer)="showDocumentViewer($event)"

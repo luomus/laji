@@ -101,7 +101,7 @@ export class DocumentApi {
    * @param page Page number
    * @param pageSize Page size
    */
-  public findAll(userToken: string, page?: string, pageSize?: string, observationYear?: string, extraHttpRequestParams?: any): Observable<PagedResult<Document>> {
+  public findAll(userToken: string, page?: string, pageSize?: string, extraHttpRequestParams?: any): Observable<PagedResult<Document>> {
     const path = this.basePath + '/documents';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -126,10 +126,6 @@ export class DocumentApi {
         results: [],
         total: 0
       });
-    }
-
-    if (observationYear !== undefined) {
-      queryParameters['observationYear'] = observationYear;
     }
 
     return this.http.get<PagedResult<Document>>(path, {params: queryParameters});
