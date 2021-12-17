@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
@@ -39,11 +39,11 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
           </laji-datatable>
       </div>
       <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/warehouse/download/secured/' + value + '?personToken=' + getPersonToken()">{{ ('download.' + row.downloadType) | translate }}</a>
+        <a [href]="'/api/warehouse/download/secured/' + value + '?personToken=' + personToken">{{ ('download.' + row.downloadType) | translate }}</a>
       </ng-template>
   `
 })
-export class DataTableComponent implements AfterViewInit {
+export class DataTableComponent implements OnInit, AfterViewInit {
 
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
@@ -123,6 +123,8 @@ export class DataTableComponent implements AfterViewInit {
 
   @Output() rowSelect = new EventEmitter<any>();
 
+  public personToken: string;
+
   private _type: TableType;
 
   constructor(
@@ -131,8 +133,8 @@ export class DataTableComponent implements AfterViewInit {
   ) {
   }
 
-  getPersonToken() {
-    return this.userService.getToken();
+  ngOnInit() {
+    this.personToken = this.userService.getToken();
   }
 
   ngAfterViewInit() {
