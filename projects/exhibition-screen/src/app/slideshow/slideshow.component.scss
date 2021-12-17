@@ -1,0 +1,63 @@
+@import 'vars';
+
+:host {
+  overflow: hidden;
+}
+
+.slide-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.lang-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba($neutral-2, .8);
+  box-shadow: 0 2px 4px 0 rgba($neutral-8, .4);
+  text-align: right;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lang-select a {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 8px;
+  color: $neutral-8;
+  padding: 10px;
+  &:hover {
+    background: $neutral-2;
+  }
+}
+
+.current-slide {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: $sp-4;
+  width: 100%;
+}
+
+.bug-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 150px;
+  width: 150px;
+  background-image: url('https://nayttely-cms.luomus.fi/wp-content/uploads/2021/12/sittis.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  will-change: transform;
+}
