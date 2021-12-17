@@ -44,14 +44,18 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
   `
 })
 export class DataTableComponent implements OnInit, AfterViewInit {
-
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
   @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
   @Input() height: string = 'calc(90vh - 195px)';
+  @Input() data: any[];
+  @Input() exportFileName = 'export';
+
+  @Output() rowSelect = new EventEmitter<any>();
 
   downloadLoading: boolean;
+  personToken: string;
 
   cols:  DatatableColumn[] = [];
   private allCols: DatatableColumn[] = [
@@ -118,20 +122,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  @Input() data: any[];
-  @Input() exportFileName = 'export';
-
-  @Output() rowSelect = new EventEmitter<any>();
-
-  public personToken: string;
-
   private _type: TableType;
 
   constructor(
     private exportService: ExportService,
     private userService: UserService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.personToken = this.userService.getToken();
