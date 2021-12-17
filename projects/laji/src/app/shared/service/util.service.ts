@@ -69,7 +69,7 @@ export class Util {
   /**
    * Add leading zero so that the length of return string will be 2
    */
-  static addLeadingZero(val: string | number): string {
+  public static addLeadingZero(val: string | number): string {
     val = '' + val;
     if (val.length === 1) {
       return '0' + val;
@@ -152,6 +152,15 @@ export class Util {
 
   public static hasOwnProperty<X extends {}, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
     return obj.hasOwnProperty(prop);
+  }
+
+  public static removeUndefinedFromObject = <T extends object>(obj: T): T => {
+    return (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
+      if (typeof obj[current] !== 'undefined') {
+        cumulative[current] = obj[current];
+      }
+      return cumulative;
+    }, {} as T);
   }
 
   private static getDateFromString(dateString: string) {

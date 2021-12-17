@@ -19,6 +19,7 @@ import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 import { Image } from '../model/Image';
 import { AnnotationTag } from '../model/AnnotationTag';
+import { Util } from './util.service';
 
 export namespace LajiApi {
 
@@ -201,15 +202,6 @@ export namespace LajiApi {
 
 }
 
-export const removeUndefinedFromObject = <T extends object>(obj: T): T => {
-  return (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
-    if (typeof obj[current] !== 'undefined') {
-      cumulative[current] = obj[current];
-    }
-    return cumulative;
-  }, {} as T);
-};
-
 @Injectable({providedIn: 'root'})
 export class LajiApiService {
 
@@ -228,7 +220,7 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
   getList<T>(endpoint: LajiApi.Endpoints, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}`;
-    const options = { params: {...removeUndefinedFromObject(query)} };
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.get<T>(url, options);
   }
 
@@ -241,7 +233,7 @@ export class LajiApiService {
   get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>;
   get<T>(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
-    const options = { params: {...removeUndefinedFromObject(query)} };
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.get<T>(url, options);
   }
 
@@ -250,7 +242,7 @@ export class LajiApiService {
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
   post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
-    const options: any = { params: {...removeUndefinedFromObject(query)} };
+    const options: any = { params: {...Util.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
       options['responseType'] = 'blob';
     }
@@ -267,7 +259,7 @@ export class LajiApiService {
   update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
   update(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${data.id}`;
-    const options = { params: {...removeUndefinedFromObject(query)} };
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.put(
       url,
       data,
@@ -280,7 +272,7 @@ export class LajiApiService {
   remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
   remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
-    const options = { params: {...removeUndefinedFromObject(query)} };
+    const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.delete(
       url,
       options
