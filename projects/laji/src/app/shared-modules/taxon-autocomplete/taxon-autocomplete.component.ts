@@ -7,10 +7,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
-  Output
+  Output,
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,19 +49,23 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Output() complete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
+  @ViewChild('input') inputEl: ElementRef;
+
   dataSource: Observable<any>;
-  value = '';
+  value: string | undefined = '';
   result: Autocomplete;
   loading = false;
   taxonSub: Subscription;
 
   private tokenMinLength = 3;
+  private destroyBlurListener: () => void;
 
   constructor(
     private lajiApi: LajiApiService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private renderer: Renderer2
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
@@ -78,8 +85,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if (!this.renderButton && this.allowInvalid) {
       // emit empty string if input is deselected and value is empty
-      document.getElementById('autocomplete-input').addEventListener('blur', () => {
-        if (this.value.length < 1) {
+      this.destroyBlurListener = this.renderer.listen(this.inputEl.nativeElement, 'blur', () => {
+        if (this.value?.length < 1) {
           this.useCurrentValue();
         }
       });
@@ -97,6 +104,9 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.taxonSub) {
       this.taxonSub.unsubscribe();
+    }
+    if (this.destroyBlurListener) {
+      this.destroyBlurListener();
     }
   }
 
