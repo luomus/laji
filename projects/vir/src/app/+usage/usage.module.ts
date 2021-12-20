@@ -17,6 +17,7 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
 import { CollectionSelectComponent } from './component/collection-select/collection-select.component';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-downloads.component';
+import { FileDownloadComponent } from './component/file-download/file-download.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-d
     UsageDownloadsComponent,
     OrganizationSelectComponent,
     CollectionSelectComponent,
-    DataTableComponent
+    DataTableComponent,
+    FileDownloadComponent
   ],
   imports: [
     FormsModule,

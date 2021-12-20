@@ -1,0 +1,36 @@
+<div class="mb-3">
+  <div>
+    <label class="d-block mb-0">{{ 'usage.fileDownload.type' | translate }}:</label>
+    <div class="row">
+      <div class="col-sm-4" *ngFor="let option of fileTypeEnum | keyvalue: sortNull">
+        <div class="radio">
+          <label>
+            <input type="radio" name="fileType" [value]="option.value" [(ngModel)]="fileType">{{ ('usage.fileDownload.type.' + option.value)  | translate }}
+          </label>
+          <laji-info *ngIf="option.value === fileTypeEnum.gis" [html]="'usage.fileDownload.type.gis.info' | translate"></laji-info>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="fileType === fileTypeEnum.gis" class="row">
+    <div class="col-sm-4">
+      <label for="format">{{ 'usage.fileDownload.format' | translate }}:</label>
+      <select id="format" name="format" class="form-control" [(ngModel)]="format">
+        <option *ngFor="let option of fileFormatEnum | keyvalue: sortNull" [ngValue]="option.value">{{ '.' + option.value }}</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <label for="geometry">{{ 'usage.fileDownload.geometry' | translate }}:</label>
+      <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
+        <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <label for="crs">{{ 'usage.fileDownload.crs' | translate }}:</label>
+      <select id="crs" name="crs" class="form-control" [(ngModel)]="crs">
+        <option *ngFor="let option of fileCrsEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+<lu-button [loading]="loading" [role]="'primary'" (click)="downloadFile()">{{ 'usage.fileDownload.download' | translate }}</lu-button>

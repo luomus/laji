@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
 
@@ -27,6 +26,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
                   [showFooter]="false"
                   [virtualScrolling]="true"
                   [clientSideSorting]="true"
+                  [showRowAsLink]="showRowAsLink"
                   [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
@@ -38,18 +38,15 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
                   [columns]="cols">
           </laji-datatable>
       </div>
-      <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/warehouse/download/secured/' + value + '?personToken=' + getPersonToken()">{{ ('download.' + row.downloadType) | translate }}</a>
-      </ng-template>
   `
 })
 export class DataTableComponent implements AfterViewInit {
 
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
-  @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
-  @Input() height: string = 'calc(90vh - 195px)';
+  @Input() height = 'calc(90vh - 195px)';
+  @Input() showRowAsLink = false;
 
   downloadLoading: boolean;
 
@@ -126,13 +123,8 @@ export class DataTableComponent implements AfterViewInit {
   private _type: TableType;
 
   constructor(
-    private exportService: ExportService,
-    private userService: UserService
+    private exportService: ExportService
   ) {
-  }
-
-  getPersonToken() {
-    return this.userService.getToken();
   }
 
   ngAfterViewInit() {
@@ -153,9 +145,7 @@ export class DataTableComponent implements AfterViewInit {
   @Input()
   set type(type: TableType) {
     this._type = type;
-    if (this.downloadFileTpl) {
-      this.cols = this.getColsFromType(type);
-    }
+    this.cols = this.getColsFromType(type);
   }
 
   getColsFromType(type: TableType) {
@@ -165,7 +155,7 @@ export class DataTableComponent implements AfterViewInit {
       case 'downloads':
         return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
-        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose', 'download']);
+        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose']);
       case 'userKeys':
         return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
       case 'apiKeys':
@@ -175,12 +165,7 @@ export class DataTableComponent implements AfterViewInit {
 
   private getCols(cols: string[]): DatatableColumn[] {
     return cols.map(c => {
-      const column = this.allCols.find(col => c === col.name);
-      if (column.name === 'download') {
-        column.cellTemplate = this.downloadFileTpl;
-      }
-
-      return column;
+      return this.allCols.find(col => c === col.name);
     });
   }
 }
