@@ -1,23 +1,24 @@
 import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { SelectedOption } from '../select-collections.component';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { ICollectionsTreeNode } from '../../../shared/service/collection.service';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
+import { SelectedOption } from '../select-tree.component';
+
 @Component({
-  selector: 'laji-select-collections-modal',
-  templateUrl: './select-collections-modal.component.html',
-  styleUrls: ['./select-collections-modal.component.scss'],
+  selector: 'laji-select-tree-modal',
+  templateUrl: './select-tree-modal.component.html',
+  styleUrls: ['./select-tree-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SelectCollectionsModalComponent implements OnInit {
-  @Input() included: string[] = [];
-  @Input() excluded: string[] = [];
-  @Input() collectionsTree$: Observable<ICollectionsTreeNode[]>;
+export class SelectTreeModalComponent implements OnInit {
+  @Input() includedOptions: string[] = [];
+  @Input() excludedOptions: string[] = [];
+  @Input() optionsTree$: Observable<ICollectionsTreeNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
@@ -25,8 +26,8 @@ export class SelectCollectionsModalComponent implements OnInit {
   @Input() clearButtonLabel: string;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<{
-    collectionId: string[],
-    collectionIdNot: string[]
+    selectedId: string[],
+    selectedIdNot: string[]
   }>();
 
   selectedOptions: SelectedOption[] = [];
@@ -94,14 +95,14 @@ export class SelectCollectionsModalComponent implements OnInit {
   treeInit() {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.included.forEach(key => {
+    this.includedOptions.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
       this.initializeNode(this.treeModel, node, 'initalizing', 'included');
       this.expandParents(this.treeModel, node, null);
     });
 
-    this.excluded.forEach(key => {
+    this.excludedOptions.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
       this.initializeNode(this.treeModel, node, 'initalizing', 'excluded');
@@ -135,7 +136,7 @@ export class SelectCollectionsModalComponent implements OnInit {
     }
   }
 
-  initializeNode(tree: TreeModel, node: TreeNode, $event: any, type: 'included' | 'excluded') {
+  initializeNode(tree: TreeModel, node: TreeNode, $event: any, type: 'included' | 'excluded') {
     this.nodeSelected(tree, node, $event);
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
@@ -145,7 +146,7 @@ export class SelectCollectionsModalComponent implements OnInit {
   }
 
   nodeToggled(tree: TreeModel, node: TreeNode, $event: any) {
-    if ($event?.target.id === 'collectionLink') {
+    if ($event?.target.id === 'nodeLink') {
       return;
     }
 
@@ -283,8 +284,8 @@ export class SelectCollectionsModalComponent implements OnInit {
 
 
     this.emitConfirm.emit({
-      collectionId: includeToReturn,
-      collectionIdNot: excludeToReturn
+      selectedId: includeToReturn,
+      selectedIdNot: excludeToReturn
     });
   }
 }

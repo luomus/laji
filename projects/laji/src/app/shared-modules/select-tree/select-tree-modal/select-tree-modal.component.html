@@ -1,4 +1,4 @@
-<div ng-template #collectionsModal>
+<div ng-template #treeModal>
   <div class="modal-header">
     <div class="modal-title pull-left">
       <div class="vertical-align">
@@ -12,7 +12,7 @@
   </div>
   <div class="modal-body">
     <div class="container-flex">
-      <ng-container *ngIf="collectionsTree$ | async; let collectionsTree; else loading">
+      <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
         <div class="row">
           <div class="col-md-8">
             <h5>{{browseTitle}}</h5>
@@ -21,7 +21,7 @@
               <tree-root
                 #tree
                 [focused]="true"
-                [nodes]="collectionsTree"
+                [nodes]="optionsTree"
                 [options]="options"
                 (initialized)="treeInit()"
               >
@@ -35,13 +35,13 @@
                       <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
                       <span>{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
                       <a
-                        id="collectionLink"
+                        id="selectionLink"
                         [tooltip]="'openCollectionPage' | translate"
                         container="body"
                         target="_blank" [href]="node.data.id | toFullUri">
                         <i 
-                          id="collectionLink"
-                          class="glyphicon glyphicon-eye-open collection-link"></i>
+                          id="selectionLink"
+                          class="glyphicon glyphicon-eye-open selection-link"></i>
                       </a>
                     </div>
                   </div>
@@ -52,7 +52,7 @@
           <div class="col-md-4">
             <h5>{{selectedTitle}}</h5>
             <div class="scrollable-selection-list">
-              <laji-selected-collections [selectedOptions]="selectedOptions" (selectedOptionsChange)="deselect($event)"></laji-selected-collections>
+              <laji-selected-tree-nodes [selectedOptions]="selectedOptions" (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
             </div>
           </div>
         </div>

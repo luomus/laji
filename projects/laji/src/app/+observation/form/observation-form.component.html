@@ -500,15 +500,15 @@
 <section class="laji-panel bg-success" laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
   <laji-select-collections
     [query]="query"
-    (selectedOptionsChange)="onCollectionIdChange($event)"
+    (collectionIdChange)="onCollectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
-    [modalTitle]="'observation.form.datasetSelect' | translate"
-    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
-    [browseTitle]="'observation.form.datasetBrowse' | translate"
-    [selectedTitle]="'observation.form.datasetSelected' | translate"
-    [okButtonLabel]="'labelDesigner.Ok' | translate"
-    [clearButtonLabel]="'labelDesigner.Clear' | translate"
+    [modalTitle]="'observation.form.datasetSelect' | translate"
+    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
+    [browseTitle]="'observation.form.datasetBrowse' | translate"
+    [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [okButtonLabel]="'labelDesigner.Ok' | translate"
+    [clearButtonLabel]="'labelDesigner.Clear' | translate"
     name='collectionID'
   ></laji-select-collections>
   <laji-metadata-select

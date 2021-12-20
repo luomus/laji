@@ -4,11 +4,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../info/info.module';
 import { SelectCollectionsComponent } from './select-collections.component';
 import { TreeModule } from '@circlon/angular-tree-component';
-import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
 import { SelectModule } from '../select/select.module';
-import { SelectedCollectionsComponent } from './selected-collections/selected-collections.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
-import { CountRoundingPipe } from './pipe/count-rounding.pipe';
+import { SelectTreeModule } from '../select-tree/select-tree.module';
 
 @NgModule({
   imports: [
@@ -18,12 +16,10 @@ import { CountRoundingPipe } from './pipe/count-rounding.pipe';
     TreeModule,
     SelectModule,
     LajiUiModule,
+    SelectTreeModule
   ],
   declarations: [
     SelectCollectionsComponent,
-    SelectCollectionsModalComponent,
-    SelectedCollectionsComponent,
-    CountRoundingPipe,
    ],
   exports: [
     SelectCollectionsComponent,
