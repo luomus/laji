@@ -33,4 +33,7 @@
     </div>
   </div>
 </div>
-<lu-button [loading]="loading" [role]="'primary'" (click)="downloadFile()">{{ 'usage.fileDownload.download' | translate }}</lu-button>
+<lu-button [loading]="loading" [role]="'primary'" (click)="downloadFile()">
+  <i class="glyphicon glyphicon-download-alt"></i>
+  {{ 'usage.fileDownload.download' | translate }}
+</lu-button>

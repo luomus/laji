@@ -11,7 +11,7 @@ import { KeyValue } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileDownloadComponent {
-  @Input() request: IDownloadRequest;
+  @Input() downloadRequest: IDownloadRequest;
 
   fileType: FileType = FileType.standard;
   format: FileFormat = FileFormat.shp;
@@ -34,7 +34,7 @@ export class FileDownloadComponent {
   downloadFile() {
     this.loading = true;
 
-    this.downloadService.getDownloadLink(this.request.id, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
+    this.downloadService.getDownloadLink(this.downloadRequest.id, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
       this.window.location.href = res;
       this.loading = false;
       this.cdr.markForCheck();
