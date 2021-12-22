@@ -9,7 +9,7 @@ export interface IDownloadRequest {
   requested: string;
   downloadType: string;
   source: string;
-  person: string;
+  personId: string;
   dataUsePurpose: string;
   approximateMatches: string;
   filters: {[key: string]: any}[];

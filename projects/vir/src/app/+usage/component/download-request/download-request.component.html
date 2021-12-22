@@ -1,15 +1,15 @@
 <ng-container *ngIf="downloadRequest">
   <div class="row" *ngIf="showPerson">
     <div class="col-sm-4">
-      <label>{{ 'usage.downloadRequest.person' | translate }}:</label>
+      <label>{{ 'usage.person' | translate }}:</label>
     </div>
     <div class="col-sm-8">
-      {{ downloadRequest.person }}
+      {{ downloadRequest.personId | users }}
     </div>
   </div>
   <div class="row">
     <div class="col-sm-4">
-      <label>{{ 'usage.downloadRequest.requested' | translate }}:</label>
+      <label>{{ 'usage.requested' | translate }}:</label>
     </div>
     <div class="col-sm-8">
       {{ downloadRequest.requested }}
@@ -17,7 +17,7 @@
   </div>
   <div class="row">
     <div class="col-sm-4">
-      <label>{{ 'usage.downloadRequest.approximateMatches' | translate }}:</label>
+      <label>{{ 'usage.approximateMatches' | translate }}:</label>
     </div>
     <div class="col-sm-8">
       {{ downloadRequest.approximateMatches }}
@@ -25,7 +25,7 @@
   </div>
   <div class="row">
     <div class="col-sm-4">
-      <label>{{ 'usage.downloadRequest.dataUsePurpose' | translate }}:</label>
+      <label>{{ 'usage.dataUsePurpose' | translate }}:</label>
     </div>
     <div class="col-sm-8">
       {{ downloadRequest.dataUsePurpose }}
