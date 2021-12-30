@@ -41,14 +41,17 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
   `
 })
 export class DataTableComponent implements AfterViewInit {
-
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
 
   @Input() showDownloadMenu = true;
-  @Input() height = 'calc(90vh - 195px)';
   @Input() showRowAsLink = false;
+  @Input() height = 'calc(90vh - 195px)';
+  @Input() data: any[];
+  @Input() exportFileName = 'export';
 
-  downloadLoading: boolean;
+  @Output() rowSelect = new EventEmitter<any>();
+
+  downloadLoading = false;
 
   cols:  DatatableColumn[] = [];
   private allCols: DatatableColumn[] = [
@@ -114,11 +117,6 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     }
   ];
-
-  @Input() data: any[];
-  @Input() exportFileName = 'export';
-
-  @Output() rowSelect = new EventEmitter<any>();
 
   private _type: TableType;
 
