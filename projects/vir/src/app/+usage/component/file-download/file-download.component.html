@@ -7,7 +7,7 @@
           <label>
             <input type="radio" name="fileType" [value]="option.value" [(ngModel)]="downloadService.fileType">{{ ('usage.fileDownload.type.' + option.value)  | translate }}
           </label>
-          <laji-info *ngIf="option.value === fileTypeEnum.gis" [html]="'usage.fileDownload.type.gis.info' | translate"></laji-info>
+          <laji-info *ngIf="option.value === fileTypeEnum.gis" [placement]="'right'" [adaptivePosition]="true" [html]="'usage.fileDownload.type.gis.info' | translate"></laji-info>
         </div>
       </div>
     </div>
