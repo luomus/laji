@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FileCrs, FileFormat, FileGeometry, FileType, VirDownloadService } from '../../../service/vir-download.service';
 import { IDownloadRequest } from '../../../service/vir-download-requests.service';
 import { KeyValue } from '@angular/common';
@@ -13,32 +12,22 @@ import { KeyValue } from '@angular/common';
 export class FileDownloadComponent {
   @Input() downloadRequest: IDownloadRequest;
 
-  fileType: FileType = FileType.standard;
-  format: FileFormat = FileFormat.shp;
-  geometry: FileGeometry = FileGeometry.point;
-  crs: FileCrs = FileCrs.euref;
-
-  loading = false;
-
   fileTypeEnum = FileType;
   fileFormatEnum = FileFormat;
   fileGeometryEnum = FileGeometry;
   fileCrsEnum = FileCrs;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    private downloadService: VirDownloadService,
+    public downloadService: VirDownloadService,
     private cdr: ChangeDetectorRef
-  ) { }
-
-  downloadFile() {
-    this.loading = true;
-
-    this.downloadService.getDownloadLink(this.downloadRequest.id, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
-      this.window.location.href = res;
-      this.loading = false;
+  ) {
+    this.downloadService.fileDownloadReady.subscribe(() => {
       this.cdr.markForCheck();
     });
+  }
+
+  downloadFile() {
+    this.downloadService.downloadFile(this.downloadRequest.id);
   }
 
   sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
