@@ -23,6 +23,8 @@
 <ng-template #downloadModal>
   <vir-download-request-modal
     [downloadRequest]="selectedRequest"
+    [showPerson]="true"
+    [showFileDownload]="false"
     (close)="closeDownloadModal()"
   ></vir-download-request-modal>
 </ng-template>

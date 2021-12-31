@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { finalize, map, take, tap } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -29,18 +29,20 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
             [height]="'50vh'"
             [data]="apiKeys$ | async"
             [showDownloadMenu]="false"
+            [showRowAsLink]="true"
+            (rowSelect)="openDownloadModal($event.row)"
             class="d-block my-5"
           ></vir-data-table>
         </laji-spinner>
       </ng-container>
     </div>
     <ng-template #downloadModal>
-      <ng-template #downloadModal>
-        <vir-download-request-modal
-          [downloadRequest]="selectedRequest"
-          (close)="closeDownloadModal()"
-        ></vir-download-request-modal>
-      </ng-template>
+      <vir-download-request-modal
+        [downloadRequest]="selectedRequest"
+        [showPerson]="false"
+        [showFileDownload]="true"
+        (close)="closeDownloadModal()"
+      ></vir-download-request-modal>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

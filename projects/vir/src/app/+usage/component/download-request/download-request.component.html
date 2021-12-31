@@ -50,7 +50,13 @@
   </ng-container>
 
   <ng-container *ngIf="showFileDownload">
-    <h4>{{ 'usage.downloadRequest.download' | translate }}</h4>
-    <vir-file-download [downloadRequest]="downloadRequest"></vir-file-download>
+    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+      <h4>{{ 'usage.downloadRequest.download' | translate }}</h4>
+      <vir-file-download [downloadRequest]="downloadRequest"></vir-file-download>
+    </ng-container>
+    <ng-template #apiKey>
+      <h4>{{ 'usage.downloadRequest.copyApiKey' | translate }}</h4>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
+    </ng-template>
   </ng-container>
 </ng-container>

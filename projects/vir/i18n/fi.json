@@ -85,6 +85,7 @@
   "usage.downloadRequest.collections": "Aineistot",
   "usage.downloadRequest.metadata": "metatiedot",
   "usage.downloadRequest.download": "Lataa tiedosto",
+  "usage.downloadRequest.copyApiKey": "Kopioi API-avain",
   "vir.home.agreement": "Palvelun käyttö perustuu organisaatiotason (kunta, valtiohallinnon tutkimuslaitos, ELY-keskus jne.)  käyttöoikeussopimukseen Luomuksen/Lajitietokeskuksen kanssa. Voit tutustua sopimuksen sisältöön mallisopimuksen avulla.",
   "vir.home.agreement.btn": "Mallisopimus",
   "vir.home.links": "Linkkejä",
