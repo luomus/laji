@@ -19,6 +19,7 @@ import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-downloads.component';
 import { FileDownloadComponent } from './component/file-download/file-download.component';
 import { DownloadRequestComponent } from './component/download-request/download-request.component';
+import { DownloadRequestModalComponent } from './component/download-request-modal/download-request-modal.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { DownloadRequestComponent } from './component/download-request/download-
     CollectionSelectComponent,
     DataTableComponent,
     FileDownloadComponent,
-    DownloadRequestComponent
+    DownloadRequestComponent,
+    DownloadRequestModalComponent
   ],
   imports: [
     FormsModule,

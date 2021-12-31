@@ -35,20 +35,12 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
       </ng-container>
     </div>
     <ng-template #downloadModal>
-      <ng-container *ngIf="selectedRequest">
-        <div class="modal-header">
-          <button type="button" class="close" (click)="closeDownloadModal()">
-            <i class="glyphicon glyphicon-remove"></i>
-          </button>
-          <h4 class="modal-title">{{ 'usage.fileDownload' | translate }} {{ selectedRequest.id | toFullUri }}</h4>
-        </div>
-        <div class="modal-body">
-          <vir-download-request
-            [downloadRequest]="selectedRequest"
-            [showFileDownload]="true"
-          ></vir-download-request>
-        </div>
-      </ng-container>
+      <ng-template #downloadModal>
+        <vir-download-request-modal
+          [downloadRequest]="selectedRequest"
+          (close)="closeDownloadModal()"
+        ></vir-download-request-modal>
+      </ng-template>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
