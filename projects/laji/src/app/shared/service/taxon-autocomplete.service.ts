@@ -99,7 +99,7 @@ export class TaxonAutocompleteService {
   }
 
   private addBold(original: string, substring: string): string {
-    return original.replace(new RegExp(`(${substring})`, 'i'), '<b>$1</b>');
+    return substring.split(' ').reduce((o, word) => o.replace(new RegExp(`(${word})`, 'i'), '<b>$1</b>'), original);
   }
 
   private capitalizeFirstLetter(string: string) {
