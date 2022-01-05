@@ -99,16 +99,7 @@ export class TaxonAutocompleteService {
   }
 
   private addBold(original: string, substring: string): string {
-    const words = substring.split(' ');
-    words.forEach(el => {
-      const newOriginal = original.toLowerCase();
-      const newString = el.toLowerCase();
-      const index = newOriginal.indexOf(newString);
-      original = index > -1 ?
-      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
-      : original;
-    });
-    return original;
+    return original.replace(new RegExp(`(${substring})`, 'i'), '<b>$1</b>');
   }
 
   private capitalizeFirstLetter(string: string) {
