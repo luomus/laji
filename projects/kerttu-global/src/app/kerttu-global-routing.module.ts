@@ -38,6 +38,11 @@ const routes: Routes = [
     data: {preload: true, title: 'Bird Sounds Global'}
   },
   {
+    path: 'identification',
+    loadChildren: () => import('./+identification/identification.module').then(m => m.IdentificationModule),
+    data: {preload: true, title: 'Bird Sounds Global'}
+  },
+  {
     path: 'user',
     loadChildren: () => import('../../../laji/src/app/+user/user.module').then(m => m.UserModule)
   }
@@ -46,7 +51,7 @@ const routes: Routes = [
 const routesWithLang: Routes = [
   {path: '', children: [
       ...routes,
-      {path: '**', component: NotFoundComponent}
+      // {path: '**', component: NotFoundComponent}
     ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}}
 ];
 

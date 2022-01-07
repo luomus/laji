@@ -47,6 +47,9 @@
               <li [routerLinkActive]="['active']">
                 <a [routerLink]="['/results'] | localize">{{ 'results.title' | translate }}</a>
               </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/identification'] | localize">Kerttu global</a>
+              </li>
             </ng-container>
             <li class="d-none xs:d-block" [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
