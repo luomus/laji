@@ -33,12 +33,12 @@ const isMainRank = (r: Taxon.TaxonRankEnum): boolean => {
   return rankWhiteList.includes(r);
 };
 
-const findNearestParentMainRankIdx = (root: Taxon.TaxonRankEnum): number => {
-    const ranks = Object.values(Taxon.TaxonRankEnum);
-    const idx = ranks.indexOf(root);
-    const rank0 = ranks.slice(idx).find(rank => isMainRank(rank));
-    return rankWhiteList.findIndex(r => r === rank0) - 1;
+const taxonEnumReversed = Object.values(Taxon.TaxonRankEnum).reverse();
 
+const findNearestParentMainRankIdx = (root: Taxon.TaxonRankEnum): number => {
+    const idx = taxonEnumReversed.indexOf(root);
+    const parent = taxonEnumReversed.slice(idx + 1).find(rank => isMainRank(rank));
+    return rankWhiteList.findIndex(r => r === parent);
 };
 
 const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
@@ -48,7 +48,7 @@ const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
     // find the closest parent that is mainrank instead
     rootIdx = findNearestParentMainRankIdx(root);
   }
-  return rankWhiteList[rootIdx + 1];
+  return rankWhiteList[rootIdx + 1] || rankWhiteList[rootIdx];
 };
 
 @Injectable()
@@ -95,7 +95,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
       }
     ).pipe(
       switchMap(res => {
-        if (res.total > 0) {
+        if (res.total > 0 || rank === 'MX.species') {
           return of({...res, rank});
         } else {
           return this.getTaxaObservable$(id, getSubMainRank(rank));
