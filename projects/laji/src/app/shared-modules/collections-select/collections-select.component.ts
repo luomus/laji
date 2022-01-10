@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
-import { CollectionService, ICollectionsTreeNode } from '../../shared/service/collection.service';
+import { CollectionService } from '../../shared/service/collection.service';
 import { Observable, zip } from 'rxjs';
-import { SelectedOption } from '../select-tree/select-tree.component';
+import { SelectedOption, OptionsTreeNode } from '../tree-select/tree-select.component';
 
 @Component({
-  selector: 'laji-select-collections',
-  templateUrl: './select-collections.component.html',
-  styleUrls: ['./select-collections.component.scss']
+  selector: 'laji-collections-select',
+  templateUrl: './collections-select.component.html',
+  styleUrls: ['./collections-select.component.scss']
 })
-export class SelectCollectionsComponent implements OnInit, OnChanges {
+export class CollectionsSelectComponent implements OnChanges {
   @Input() title: string;
   @Input() query: Record<string, any>;
   @Input() info: string;
@@ -26,7 +26,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     collectionIdNot?: string[],
   }>();
 
-  collectionsTree$: Observable<ICollectionsTreeNode[]> = null;
+  collectionsTree$: Observable<OptionsTreeNode[]> = null;
   collections$: Observable<SelectedOption[]> = null;
 
   lang: string;
@@ -36,20 +36,20 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   constructor(
     private collectionService: CollectionService,
     private translate: TranslateService
-  ) { }
-
-  ngOnInit() {
-    if (this.query?.collectionId?.length !== 0) {
-      this.open = true;
-    }
+  ) {
+    this.lang = this.translate.currentLang;
   }
 
   ngOnChanges() {
-    this.lang = this.translate.currentLang;
-    this.collectionsTree$ = this.initCollectionsTree();
-    this.collections$ = this.initCollections();
+    if (this.query?.collectionId?.length !== 0) {
+      this.open = true;
+    }
+
     this.includedOptions = this.query?.collectionId || [];
     this.excludedOptions = this.query?.collectionIdNot || [];
+
+    this.collectionsTree$ = this.initCollectionsTree();
+    this.collections$ = this.initCollections();
   }
 
   toggle(event) {
@@ -94,7 +94,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, allAggregates, filteredAggragates) {
+  buildTree(tree, allAggregates, filteredAggragates): OptionsTreeNode {
     const allAggregate = allAggregates.find(elem => elem.id === tree.id);
     const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 
@@ -114,21 +114,22 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
         children.sort((a, b) => b.count - a.count);
 
         return {
-          ...tree,
+          id: tree.id,
+          name: tree.longName,
           children,
           count: filteredAggragate ? filteredAggragate.count + childCount : childCount
         };
       } else if (allAggregate) {
         return {
-          ...tree,
-          hasChildren: false,
-          children: [],
+          id: tree.id,
+          name: tree.longName,
           count: filteredAggragate ? filteredAggragate.count : 0
         };
       }
     } else if (allAggregate) {
       return {
-        ...tree,
+        id: tree.id,
+        name: tree.longName,
         count: filteredAggragate ? filteredAggragate.count : 0
       };
     }

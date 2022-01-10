@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../info/info.module';
-import { SelectCollectionsComponent } from './select-collections.component';
+import { CollectionsSelectComponent } from './collections-select.component';
 import { TreeModule } from '@circlon/angular-tree-component';
 import { SelectModule } from '../select/select.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
-import { SelectTreeModule } from '../select-tree/select-tree.module';
+import { TreeSelectModule } from '../tree-select/tree-select.module';
 
 @NgModule({
   imports: [
@@ -16,13 +16,13 @@ import { SelectTreeModule } from '../select-tree/select-tree.module';
     TreeModule,
     SelectModule,
     LajiUiModule,
-    SelectTreeModule
+    TreeSelectModule
   ],
   declarations: [
-    SelectCollectionsComponent,
+    CollectionsSelectComponent,
    ],
   exports: [
-    SelectCollectionsComponent,
+    CollectionsSelectComponent,
   ],
 })
-export class SelectCollectionsModule { }
+export class CollectionsSelectModule { }

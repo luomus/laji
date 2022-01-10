@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { InfoModule } from '../info/info.module';
 import { TreeModule } from '@circlon/angular-tree-component';
-import { SelectTreeComponent } from './select-tree.component';
-import { SelectTreeModalComponent } from './select-tree-modal/select-tree-modal.component';
+import { TreeSelectComponent } from './tree-select.component';
+import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { SelectModule } from '../select/select.module';
 import { SelectedTreeNodesComponent } from './selected-tree-nodes/selected-tree-nodes.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
@@ -20,16 +20,16 @@ import { CountRoundingPipe } from './pipe/count-rounding.pipe';
     LajiUiModule,
   ],
   declarations: [
-    SelectTreeComponent,
-    SelectTreeModalComponent,
+    TreeSelectComponent,
+    TreeSelectModalComponent,
     SelectedTreeNodesComponent,
     CountRoundingPipe,
    ],
   exports: [
-    SelectTreeComponent,
-    SelectTreeModalComponent,
+    TreeSelectComponent,
+    TreeSelectModalComponent,
     SelectedTreeNodesComponent,
     CountRoundingPipe,
   ],
 })
-export class SelectTreeModule { }
+export class TreeSelectModule { }

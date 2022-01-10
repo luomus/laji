@@ -1,21 +1,21 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { SelectTreeModalComponent } from './select-tree-modal.component';
+import { TreeSelectModalComponent } from './tree-select-modal.component';
 
-describe('SelectTreeModalComponent', () => {
-  let component: SelectTreeModalComponent;
-  let fixture: ComponentFixture<SelectTreeModalComponent>;
+describe('TreeSelectModalComponent', () => {
+  let component: TreeSelectModalComponent;
+  let fixture: ComponentFixture<TreeSelectModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectTreeModalComponent ]
+      declarations: [ TreeSelectModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectTreeModalComponent);
+    fixture = TestBed.createComponent(TreeSelectModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

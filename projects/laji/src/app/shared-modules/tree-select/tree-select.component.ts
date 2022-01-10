@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { ICollectionsTreeNode } from '../../shared/service/collection.service';
-import { SelectTreeModalComponent } from './select-tree-modal/select-tree-modal.component';
+import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 
 
 export interface SelectedOption {
@@ -11,16 +10,23 @@ export interface SelectedOption {
   type: 'included' | 'excluded';
 }
 
+export interface OptionsTreeNode {
+  id: string;
+  name: string;
+  children?: OptionsTreeNode[];
+  count?: number;
+}
+
 @Component({
-  selector: 'laji-select-tree',
-  templateUrl: './select-tree.component.html',
-  styleUrls: ['./select-tree.component.scss'],
+  selector: 'laji-tree-select',
+  templateUrl: './tree-select.component.html',
+  styleUrls: ['./tree-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectTreeComponent {
+export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$: Observable<ICollectionsTreeNode[]>;
+  @Input() optionsTree$: Observable<OptionsTreeNode[]>;
   @Input() options$: Observable<SelectedOption[]>;
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
@@ -28,6 +34,8 @@ export class SelectTreeComponent {
   @Input() selectedTitle: string;
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
+  @Input() includeCount = false;
+  @Input() includeLink = false;
   @Output() selectedOptionsChange = new EventEmitter<{
     selectedId?: string[],
     selectedIdNot?: string[],
@@ -50,8 +58,10 @@ export class SelectTreeComponent {
       selectedTitle: this.selectedTitle,
       okButtonLabel: this.okButtonLabel,
       clearButtonLabel: this.clearButtonLabel,
+      includeCount: this.includeCount,
+      includeLink: this.includeLink,
     };
-    this.modalRef = this.modalService.show(SelectTreeModalComponent, { class: 'modal-lg', initialState });
+    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg', initialState });
     this.modalRef.content.emitConfirm.subscribe(result => {
       this.selectedOptionsChange.emit(result);
     });
@@ -59,9 +69,15 @@ export class SelectTreeComponent {
 
   deselect(id: string) {
     if (this.includedOptions.includes(id)) {
-      this.selectedOptionsChange.emit({ selectedId: this.includedOptions.filter(option => option !== id) });
+      this.selectedOptionsChange.emit({
+        selectedId: this.includedOptions.filter(option => option !== id),
+        selectedIdNot: this.excludedOptions
+      });
     } else if (this.excludedOptions.includes(id)) {
-      this.selectedOptionsChange.emit({ selectedIdNot: this.excludedOptions.filter(option => option !== id) });
+      this.selectedOptionsChange.emit({
+        selectedId: this.includedOptions,
+        selectedIdNot: this.excludedOptions.filter(option => option !== id)
+      });
     }
   }
 }

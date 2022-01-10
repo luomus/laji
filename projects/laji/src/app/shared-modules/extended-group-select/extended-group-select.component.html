@@ -1,0 +1,79 @@
+<div *ngIf="!advanced; else advancedView">
+  <div (lajiClickOutSide)="close()" [clickOutSideActive]="open" (luCloseOnEsc)="close()">
+    <input type="hidden" [(ngModel)]="value">
+    <div class="informal-group-buttons-container">
+      <a class="btn btn-default btn-block informal-group-select" type="button" role="button" (click)="openMenu()" tabindex="0" luKeyboardClickable #groupBtn>
+        <span *ngIf="!includedOptions[0]">
+          <ng-content></ng-content>
+        </span>
+        <span *ngIf="includedOptions[0]">
+          {{ label }}
+        </span>
+        <span *ngIf="open">
+          <span [ngClass]="{hidden: !open}" (click)="empty()" role="button" tabindex="0" luKeyboardClickable class="label label-danger link">
+            <i class="glyphicon glyphicon-remove"></i>
+          </span>
+          <span [ngClass]="{hidden: !open}" (click)="toggle()" role="button" tabindex="0" luKeyboardClickable class="label label-success link">
+            <i class="glyphicon glyphicon-ok"></i>
+          </span>
+        </span>
+      </a>
+      <div *ngIf="useAdvanced">
+        <a class="btn btn-default" type="button" role="button" (click)="toggleAdvancedMode()" tabindex="0" luKeyboardClickable #groupBtn>
+          <i class="glyphicon glyphicon-remove"></i>
+        </a>
+      </div>
+    </div>
+    <div class="informal-group-container" [ngClass]="{
+      'left': position === 'left',
+      'right': position === 'right'
+    }" *ngIf="open">
+      <table>
+        <tbody>
+          <tr *ngFor="let idx of range">
+            <td
+              *ngIf="groups[(idx * 2)]"
+              role="button"
+              (click)="onClick(groups[(idx * 2)])" tabindex="0" luKeyboardClickable
+              class="item link informal-group-image {{groups[(idx * 2)].id}}">
+            <span [ngClass]="{active: groups[(idx * 2)] && groups[(idx * 2)].id && groups[(idx * 2)].id === includedOptions[0]}">
+              {{ groups[(idx * 2)]?.name }}
+            </span>
+              <span *ngIf="groups[(idx * 2)] && groups[(idx * 2)].hasSubGroup && groups[(idx * 2)].hasSubGroup.length > 0">
+              <i class="glyphicon glyphicon-triangle-right"></i>
+            </span>
+            </td>
+            <td
+              *ngIf="groups[(idx * 2 + 1)]"
+              role="button"
+              (click)="onClick(groups[(idx * 2 + 1)])" tabindex="0" luKeyboardClickable
+              class="item link informal-group-image {{groups[(idx * 2 + 1)].id}}">
+            <span [ngClass]="{active: groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].id && groups[(idx * 2 + 1)].id === includedOptions[0]}">
+              {{ groups[(idx * 2 + 1)]?.name }}
+            </span>
+              <span *ngIf="groups[(idx * 2 + 1)] && groups[(idx * 2 + 1)].hasSubGroup && groups[(idx * 2 + 1)].hasSubGroup.length > 0">
+              <i class="glyphicon glyphicon-triangle-right"></i>
+            </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #advancedView>
+  <laji-tree-select
+    [includedOptions]="includedOptions"
+    [excludedOptions]="excludedOptions"
+    [optionsTree$]="groupsTree$"
+    [options$]="groups$"
+    [modalButtonLabel]="modalButtonLabel"
+    [modalTitle]="modalTitle"
+    [browseTitle]="browseTitle"
+    [selectedTitle]="selectedTitle"
+    [okButtonLabel]="okButtonLabel"
+    [clearButtonLabel]="clearButtonLabel"
+    (selectedOptionsChange)="selectedOptionsChange($event)"
+  >
+  </laji-tree-select>
+</ng-template>

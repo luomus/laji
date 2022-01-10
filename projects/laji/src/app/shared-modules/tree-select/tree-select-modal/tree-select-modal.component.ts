@@ -4,26 +4,27 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
-import { ICollectionsTreeNode } from '../../../shared/service/collection.service';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
-import { SelectedOption } from '../select-tree.component';
+import { OptionsTreeNode, SelectedOption } from '../tree-select.component';
 
 @Component({
-  selector: 'laji-select-tree-modal',
-  templateUrl: './select-tree-modal.component.html',
-  styleUrls: ['./select-tree-modal.component.scss'],
+  selector: 'laji-tree-select-modal',
+  templateUrl: './tree-select-modal.component.html',
+  styleUrls: ['./tree-select-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SelectTreeModalComponent implements OnInit {
+export class TreeSelectModalComponent implements OnInit {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$: Observable<ICollectionsTreeNode[]>;
+  @Input() optionsTree$: Observable<OptionsTreeNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
+  @Input() includeCount = false;
+  @Input() includeLink = false;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<{
     selectedId: string[],
@@ -41,7 +42,7 @@ export class SelectTreeModalComponent implements OnInit {
   options: ITreeOptions = {
     useVirtualScroll: true,
     nodeHeight: 25,
-    displayField: 'longName',
+    displayField: 'name',
     idField: 'id',
     allowDrag: false,
     scrollOnActivate: false,
@@ -214,7 +215,7 @@ export class SelectTreeModalComponent implements OnInit {
       TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
     }
 
-    if (!node.hasChildren) {
+    if (!node.children) {
       return;
     }
 
@@ -234,7 +235,7 @@ export class SelectTreeModalComponent implements OnInit {
 
     TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event);
 
-    if (!node.hasChildren) {
+    if (!node.children) {
       return;
     }
 
@@ -244,7 +245,7 @@ export class SelectTreeModalComponent implements OnInit {
   }
 
   clearChildSelections(node: TreeNode) {
-    node.children.forEach(child => {
+    node.children?.forEach(child => {
       this.removeNodeFromSelection(child);
       this.clearChildSelections(child);
     });

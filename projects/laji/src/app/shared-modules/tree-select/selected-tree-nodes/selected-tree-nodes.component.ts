@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
-import { SelectedOption } from '../select-tree.component';
+import { SelectedOption } from '../tree-select.component';
 
 @Component({
   selector: 'laji-selected-tree-nodes',

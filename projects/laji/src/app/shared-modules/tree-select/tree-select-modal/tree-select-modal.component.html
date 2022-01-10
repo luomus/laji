@@ -33,16 +33,24 @@
                       [class.node-content-wrapper-focused]="node.isFocused"
                       (click)="node.mouseAction('click', $event)">
                       <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
-                      <span>{{ node.data.longName }} ({{ node.data.count | countRounding }})</span>
-                      <a
-                        id="selectionLink"
-                        [tooltip]="'openCollectionPage' | translate"
-                        container="body"
-                        target="_blank" [href]="node.data.id | toFullUri">
-                        <i 
+                      <span *ngIf="includeCount then withCount; else withoutCount"></span>
+                      <ng-template #withCount>
+                        <span>{{ node.data.name }} ({{ node.data.count | countRounding }})</span>
+                      </ng-template>
+                      <ng-template #withoutCount>
+                        <span>{{ node.data.name }}</span>
+                      </ng-template>
+                      <span *ngIf="includeLink">                     
+                        <a
                           id="selectionLink"
-                          class="glyphicon glyphicon-eye-open selection-link"></i>
-                      </a>
+                          [tooltip]="'openCollectionPage' | translate"
+                          container="body"
+                          target="_blank" [href]="node.data.id | toFullUri">
+                          <i 
+                            id="selectionLink"
+                            class="glyphicon glyphicon-eye-open selection-link"></i>
+                        </a>
+                      </span>
                     </div>
                   </div>
                 </ng-template>
