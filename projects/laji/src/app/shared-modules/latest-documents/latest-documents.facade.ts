@@ -72,12 +72,12 @@ export class LatestDocumentsFacade implements OnDestroy {
     }
   }
 
-  update(formID?: string): void {
+  setFormID(formID?: string): void {
     this.formID = formID;
-    this._update();
+    this.update();
   }
 
-  private _update(): void {
+  update(): void {
     this.updateLocal();
     this.updateRemote();
     if (this.remoteRefresh) {
@@ -94,7 +94,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     this.userService.user$.pipe(
       take(1),
       mergeMap(person => this.documentStorage.removeItem(id, person)),
-      tap(() => this._update())
+      tap(() => this.update())
     ).subscribe();
   }
 
