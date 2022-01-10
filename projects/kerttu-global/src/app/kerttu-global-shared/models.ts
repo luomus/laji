@@ -20,6 +20,7 @@ export interface IGlobalSpeciesQuery {
   family?: number;
   searchQuery?: string;
   page?: number;
+  pageSize?: number;
   orderBy?: string[];
 }
 

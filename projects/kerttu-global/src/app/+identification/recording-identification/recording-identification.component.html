@@ -1,1 +1,60 @@
-<p>recording-identification works!</p>
+<div class="row lu-section">
+  <div class="col-sm-12">
+    <div class="button-container">
+      <div>
+        <lu-button [disabled]="!hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
+        <laji-info [html]="'theme.kerttu.info.previousRecording' | translate"></laji-info>
+      </div>
+      <div>
+        <lu-button [disabled]="buttonsAreDisabled" (click)="saveClick.emit()">{{ 'theme.kerttu.saveRecording' | translate }}</lu-button>
+        <laji-info [html]="'theme.kerttu.info.saveRecording' | translate"></laji-info>
+      </div>
+      <div>
+        <lu-button
+          [disabled]="buttonsAreDisabled"
+          [role]="'success'"
+          (click)="nextRecordingClick.emit()">
+          {{ 'theme.kerttu.nextRecording' | translate }}
+        </lu-button>
+        <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
+      </div>
+    </div>
+    <h2 style="display: inline-block; margin-top: 0">
+      {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
+      <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+    </h2>
+  </div>
+  <div class="col-sm-12">
+    <laji-audio-viewer
+      [audio]="recording?.audio"
+      [focusArea]="{
+        xRange: recording?.xRange
+      }"
+      [zoomTime]="true"
+      [timePaddingOnZoom]="2"
+      [highlightFocusArea]="true"
+      [showZoomControl]="true"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="species-select">
+        {{ 'theme.kerttu.listSpecies' | translate }}
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+      </label>
+      <bsg-taxon-select
+        id="species-select"
+      ></bsg-taxon-select>
+    </div>
+    <!--laji-kerttu-occurrence-table
+      [(selectedTaxons)]="selectedTaxons.main"
+      [loading]="!taxonList || loadingTaxons || !taxonExpertise"
+      [componentId]="0"
+      [taxonExpertise]="taxonExpertise"
+      (selectedTaxonsChange)="updateAnnotation()"
+      (missingTaxonClick)="showModal($event)"
+    >
+    </laji-kerttu-occurrence-table-->
+  </div>
+</div>
+

@@ -10,6 +10,9 @@ import { RecordingIdentificationComponent } from './recording-identification/rec
 import { ExpertiseComponent } from './expertise/expertise.component';
 import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
+import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
+import { TaxonSelectComponent } from './recording-identification/taxon-select/taxon-select.component';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   imports: [
@@ -18,14 +21,17 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
     KerttuGlobalSharedModule,
     LajiUiModule,
     InfoPageModule,
-    IdentificationRoutingModule
+    IdentificationRoutingModule,
+    AudioViewerModule,
+    TypeaheadModule
   ],
   declarations: [
     IdentificationComponent,
     IdentificationInstructionsComponent,
     RecordingIdentificationComponent,
     ExpertiseComponent,
-    IdentificationResultsComponent
+    IdentificationResultsComponent,
+    TaxonSelectComponent
   ]
 })
 export class IdentificationModule { }
