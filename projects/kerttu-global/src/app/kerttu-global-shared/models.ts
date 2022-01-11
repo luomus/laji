@@ -100,6 +100,7 @@ export interface IUserStat {
 export interface ISpeciesIdentification {
   species: IGlobalSpecies;
   occurrence: SpeciesAnnotationEnum;
+  boxes: IAudioViewerArea[];
 }
 
 export enum CommentType {

@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
-import {IRecordingAnnotation} from '../../../../../laji/src/app/+theme/kerttu/models';
-import {IGlobalRecording, IGlobalSpecies, ISpeciesIdentification, SpeciesAnnotationEnum} from '../../kerttu-global-shared/models';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { IGlobalSpecies, ISpeciesIdentification, SpeciesAnnotationEnum } from '../../kerttu-global-shared/models';
+import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -8,10 +8,10 @@ import {IGlobalRecording, IGlobalSpecies, ISpeciesIdentification, SpeciesAnnotat
   styleUrls: ['./recording-identification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecordingIdentificationComponent implements OnInit {
+export class RecordingIdentificationComponent {
   recording = {
     audio: {
-      url: '\thttps://image.laji.fi/cornell239808151/239808151_00.mp3'
+      url: 'https://image.laji.fi/cornell239808151/239808151_00.mp3'
     },
     xRange: [2, 12]
   };
@@ -20,18 +20,32 @@ export class RecordingIdentificationComponent implements OnInit {
 
   identifications: ISpeciesIdentification[] = [];
 
+  drawMode = false;
+  drawIdx?: number;
+  rectangles: IAudioViewerRectangle[] = [];
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
-  @Output() annotationChange = new EventEmitter<IRecordingAnnotation>();
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  @Output() annotationChange = new EventEmitter<ISpeciesIdentification[]>();
 
   addToIdentifications(species: IGlobalSpecies) {
-    this.identifications = [...this.identifications, {species: species, occurrence: SpeciesAnnotationEnum.occurs}];
+    this.identifications = [
+      ...this.identifications,
+      {species: species, occurrence: SpeciesAnnotationEnum.occurs, boxes: []}
+    ];
+  }
+
+  onDrawClick(data: {drawClicked: boolean, rowIndex: number}) {
+    this.drawMode = data.drawClicked;
+    this.drawIdx = data.rowIndex;
+  }
+
+  drawEnd(area: IAudioViewerArea) {
+    this.rectangles = [...this.rectangles, {area: area, label: this.identifications[this.drawIdx].species.commonName}];
+
+    this.identifications[this.drawIdx].boxes.push(area);
+    this.identifications = [...this.identifications];
+    this.drawMode = false;
   }
 }

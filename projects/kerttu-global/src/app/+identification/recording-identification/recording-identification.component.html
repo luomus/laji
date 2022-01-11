@@ -34,6 +34,9 @@
       [timePaddingOnZoom]="2"
       [highlightFocusArea]="true"
       [showZoomControl]="true"
+      [mode]="drawMode ? 'draw' : 'default'"
+      [rectangles]="rectangles"
+      (drawEnd)="drawEnd($event)"
     ></laji-audio-viewer>
   </div>
   <div class="col-sm-12">
@@ -50,6 +53,7 @@
     <bsg-identification-table
       [(identifications)]="identifications"
       [loading]="false"
+      (drawClick)="onDrawClick($event)"
     ></bsg-identification-table>
   </div>
 </div>

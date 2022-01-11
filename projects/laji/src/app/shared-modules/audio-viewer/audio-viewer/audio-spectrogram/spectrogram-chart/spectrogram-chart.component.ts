@@ -256,7 +256,7 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('width', rectWidth)
       .attr('height', rectHeight)
       .attr('stroke-width', strokeWidth)
-      .attr('stroke', data.color[data.color.length - 1])
+      .attr('stroke', data.color[data.color.length - 1] || '#d98026')
       .attr('fill', 'none');
 
       if (data.label.length > 0) {
@@ -268,7 +268,7 @@ export class SpectrogramChartComponent implements OnChanges {
         for (let i = 0; i < data.label.length; i++) {
           const last = i === data.label.length - 1;
           text.append('tspan')
-            .attr('fill', data.color[i])
+            .attr('fill', data.color[i] || '#d98026')
             .text(data.label[i] + (last ? '' : ' '));
         }
       }
