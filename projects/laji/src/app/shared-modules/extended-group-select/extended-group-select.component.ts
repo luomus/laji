@@ -20,7 +20,7 @@ interface RedlistGroupEvent {
 
 @Directive()
 // tslint:disable-next-line:directive-class-suffix
-export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnInit, OnChanges {
+export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnChanges {
   @Input() query: Record<string, any>;
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups: string[];
@@ -36,6 +36,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   lang: string;
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
+  redList = false;
 
   public groups: InformalTaxonGroup[] = [];
   public activeGroup: InformalTaxonGroup;
@@ -74,10 +75,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     this.lang = this.translate.currentLang;
   }
 
-  ngOnInit() {
-    this.setLabel(this.includedOptions[0]);
-    this.initGroups();
-    this.cd.markForCheck();
+  onSimpleSelectorChange() {
+    this.select.emit(this.prepareEmit([this.value]));
   }
 
   ngOnChanges() {
@@ -89,146 +88,15 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
 
     this.value = this.includedOptions[0];
 
-    if (!this.advanced) {
-      this.initGroups();
-    }
-
     this.groupsTree$ = this.initGroupTree();
     this.groups$ = this.initSelectionGroups();
   }
 
-  initGroups() {
-    let newValue = this.value;
-    newValue = newValue ? newValue : '';
-    if (this.currentValue === newValue) {
-      return;
-    }
-    this.currentValue = newValue;
-    (newValue ?
-      this.getChildren(newValue, this.lang) :
-      this.getRoot(this.lang)).pipe(
-      switchMap(data => {
-        return (!data.results || data.results.length === 0) ?
-          this.getWithSiblings(newValue, this.lang) :
-          ObservableOf(data);
-      })).pipe(
-      map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
-      .subscribe(
-        groups => {
-          this.groups = groups;
-          this.initRange();
-          this.cd.markForCheck();
-        },
-        err => {
-          this.logger.warn('Was unable to fetch informal taxon group data', err);
-          this.cd.markForCheck();
-        }
-      );
-  }
-
-  onClick(group: InformalTaxonGroup) {
-    this.value = group.id;
-    this.setLabel(group.id);
-    this.activeGroup = group;
-    if (!!group.hasSubGroup) {
-      this.initGroups();
-    } else {
-      this.close();
-    }
-  }
-
-  initRange() {
-    this.range = [];
-    let i, len;
-    for (i = 0, len = Math.ceil(this.groups.length / 2); i < len; i++) {
-      this.range.push(i);
-    }
-    return this.range;
-  }
-
-  setLabel(groupId: string) {
-    if (!groupId) {
-      this.label = '';
-      return;
-    }
-    if (this.activeGroup && this.activeGroup.id === groupId) {
-      this.label = this.activeGroup.name;
-      return;
-    }
-    let found = false;
-    this.groups.map((group) => {
-      if (group.id === groupId) {
-        found = true;
-        this.label = group.name;
-      }
-    });
-    if (!found) {
-      if (this.subLabel) {
-        this.subLabel.unsubscribe();
-      }
-      this.subLabel = this.findById(groupId, this.lang).pipe(
-        map(group => group.name))
-        .subscribe(
-          name => {
-            this.label = name;
-            this.cd.markForCheck();
-          },
-          err => {
-            this.logger.warn('Unable to find taxon group by id', err);
-            this.cd.markForCheck();
-          }
-        );
-    }
-  }
-
-  getRoot(lang): Observable<PagedResult<T>> {
-    if (this.rootGroups) {
-      return this.findByIds(this.rootGroups, lang);
-    }
-    return this.findRoots(lang);
-  }
-
-  abstract findById(groupId, lang): Observable<T>;
   abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
-  abstract getWithSiblings(groupId, lang): Observable<PagedResult<T>>;
-  abstract getChildren(groupId, lang): Observable<PagedResult<T>>;
-  abstract findRoots(lang): Observable<PagedResult<T>>;
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
   abstract getTree(lang): Observable<PagedResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
-  abstract prepareEmit(includedOptions: string[], excludedOptions: string[]): InformalTaxonGroupEvent | RedlistGroupEvent;
-
-  empty() {
-    if (this.value === '') {
-      return this.close();
-    }
-    this.value = '';
-    if (!this.open) {
-      this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
-    }
-    this.initGroups();
-  }
-
-  close() {
-    if (!this.open) {
-      return;
-    }
-    this.value = this.includedOptions[0];
-    this.onTouched();
-    this.open = false;
-    this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
-  }
-
-  openMenu() {
-    this.open = true;
-  }
-
-  toggle() {
-    if (this.open) {
-      return this.close();
-    }
-    this.open = true;
-  }
+  abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalTaxonGroupEvent | RedlistGroupEvent;
 
   toggleAdvancedMode() {
     this.advanced = !this.advanced;
@@ -245,7 +113,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     const groupsWithChildren = [];
 
     trees.forEach(tree => {
-      const prunedTree = this.buildTree(tree);
+      const prunedTree = this.buildTree(this.convertToInformalTaxonGroup(tree));
 
       if (prunedTree) {
         groupsWithChildren.push(prunedTree);
@@ -257,15 +125,17 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
 
   buildTree(tree): OptionsTreeNode {
     if (!!tree.hasSubGroup) {
+      const children = tree.hasSubGroup.map(subTree => this.buildTree(this.convertToInformalTaxonGroup(subTree)));
+
       return {
         id: tree.id,
         name: tree.name,
-        children: tree.hasSubGroup,
+        children: children,
         };
     } else {
       return {
         id: tree.id,
-        name: tree.longName,
+        name: tree.name,
       };
     }
   }

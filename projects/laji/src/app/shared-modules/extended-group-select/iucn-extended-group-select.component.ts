@@ -34,28 +34,14 @@ export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectCompone
     super(cd, logger, translate);
   }
 
+  redList = true;
+
   getOptions(): string[][] {
     return [this.query?.redListGroup || [], []];
   }
 
-  findById(groupId, lang): Observable<InformalTaxonGroup> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFindById(groupId, lang);
-  }
-
   findByIds(groupIds, lang): Observable<PagedResult<RedListTaxonGroup>> {
     return this.redListTaxonGroupApi.redListTaxonGroupsFind(lang, undefined, undefined, {idIn: groupIds});
-  }
-
-  getWithSiblings(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetWithSiblings(groupId, lang);
-  }
-
-  getChildren(groupId, lang): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsGetChildren(groupId, lang);
-  }
-
-  findRoots(lang): Observable<PagedResult<RedListTaxonGroup>> {
-    return this.redListTaxonGroupApi.redListTaxonGroupsFindRoots(lang);
   }
 
   convertToInformalTaxonGroup(group: RedListTaxonGroup): InformalTaxonGroup {
@@ -66,7 +52,7 @@ export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectCompone
     return this.redListTaxonGroupApi.redListTaxonGroupsGetTree(lang);
   }
 
-  prepareEmit(includedOptions: string[], excludedOptions: string[]) {
+  prepareEmit(includedOptions: string[], excludedOptions?: string[]) {
     return {
       redListGroup: includedOptions,
     };
