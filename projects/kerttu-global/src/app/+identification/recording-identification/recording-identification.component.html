@@ -24,7 +24,7 @@
       <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
     </h2>
   </div>
-  <div class="col-sm-12">
+  <div class="col-sm-12 mb-4">
     <laji-audio-viewer
       [audio]="recording?.audio"
       [focusArea]="{
@@ -44,17 +44,13 @@
       </label>
       <bsg-taxon-select
         id="species-select"
+        (taxonSelect)="addToIdentifications($event)"
       ></bsg-taxon-select>
     </div>
-    <!--laji-kerttu-occurrence-table
-      [(selectedTaxons)]="selectedTaxons.main"
-      [loading]="!taxonList || loadingTaxons || !taxonExpertise"
-      [componentId]="0"
-      [taxonExpertise]="taxonExpertise"
-      (selectedTaxonsChange)="updateAnnotation()"
-      (missingTaxonClick)="showModal($event)"
-    >
-    </laji-kerttu-occurrence-table-->
+    <bsg-identification-table
+      [(identifications)]="identifications"
+      [loading]="false"
+    ></bsg-identification-table>
   </div>
 </div>
 

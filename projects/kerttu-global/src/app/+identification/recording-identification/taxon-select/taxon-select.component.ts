@@ -27,7 +27,7 @@ export class TaxonSelectComponent {
   @Input() limit = 10;
   @Input() placeholder = '';
 
-  @Output() taxonSelect = new EventEmitter<number>();
+  @Output() taxonSelect = new EventEmitter<IGlobalSpecies>();
 
   dataSource: Observable<any>;
   value: string | undefined = '';
@@ -62,7 +62,7 @@ export class TaxonSelectComponent {
       return;
     }
     this.value = '';
-    this.taxonSelect.emit(result.id);
+    this.taxonSelect.emit(result);
     this.cdr.markForCheck();
   }
 

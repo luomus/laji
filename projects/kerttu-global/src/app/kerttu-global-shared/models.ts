@@ -97,9 +97,19 @@ export interface IUserStat {
   speciesValidated: number;
 }
 
+export interface ISpeciesIdentification {
+  species: IGlobalSpecies;
+  occurrence: SpeciesAnnotationEnum;
+}
+
 export enum CommentType {
   replace = 0,
   reframe = 1
+}
+
+export enum SpeciesAnnotationEnum {
+  occurs = 1,
+  possible_occurs = 2
 }
 
 export enum KerttuGlobalErrorEnum {

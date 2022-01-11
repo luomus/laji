@@ -13,6 +13,8 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
 import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
 import { TaxonSelectComponent } from './recording-identification/taxon-select/taxon-select.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { IdentificationTableComponent } from './recording-identification/identification-table/identification-table.component';
+import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 
 @NgModule({
   imports: [
@@ -23,7 +25,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     InfoPageModule,
     IdentificationRoutingModule,
     AudioViewerModule,
-    TypeaheadModule
+    TypeaheadModule,
+    DatatableModule
   ],
   declarations: [
     IdentificationComponent,
@@ -31,7 +34,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     RecordingIdentificationComponent,
     ExpertiseComponent,
     IdentificationResultsComponent,
-    TaxonSelectComponent
+    TaxonSelectComponent,
+    IdentificationTableComponent
   ]
 })
 export class IdentificationModule { }

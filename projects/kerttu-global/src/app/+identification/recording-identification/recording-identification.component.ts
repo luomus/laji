@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter} from '@angular/core';
 import {IRecordingAnnotation} from '../../../../../laji/src/app/+theme/kerttu/models';
-import {IGlobalRecording} from '../../kerttu-global-shared/models';
+import {IGlobalRecording, IGlobalSpecies, ISpeciesIdentification, SpeciesAnnotationEnum} from '../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -18,6 +18,8 @@ export class RecordingIdentificationComponent implements OnInit {
   hasPreviousRecording = false;
   buttonsAreDisabled = false;
 
+  identifications: ISpeciesIdentification[] = [];
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
@@ -29,4 +31,7 @@ export class RecordingIdentificationComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addToIdentifications(species: IGlobalSpecies) {
+    this.identifications = [...this.identifications, {species: species, occurrence: SpeciesAnnotationEnum.occurs}];
+  }
 }
