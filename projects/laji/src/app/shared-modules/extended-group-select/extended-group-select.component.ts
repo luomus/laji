@@ -50,11 +50,6 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   groupsTree$: Observable<OptionsTreeNode[]> = null;
   groups$: Observable<SelectedOption[]> = null;
 
-  onChange = (_: any) => {
-  }
-  onTouched = () => {
-  }
-
   get value(): any {
     return this.includedOptions[0];
   }
@@ -63,7 +58,6 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     if (v !== this.includedOptions[0]) {
       this.includedOptions[0] = v;
       this.excludedOptions = [];
-      this.onChange(v);
     }
   }
 
