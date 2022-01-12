@@ -79,6 +79,7 @@
   "usage.fileDownload.geometry": "Geometria",
   "usage.fileDownload.crs": "CRS",
   "usage.fileDownload.download": "Lataa",
+  "usage.fileDownload.genericError": "Tiedoston lataaminen epäonnistui!",
   "usage.approximateMatches": "Osumien lkm",
   "usage.downloadRequest.filters": "Rajaukset",
   "usage.downloadRequest.link": "Linkki hakuun",

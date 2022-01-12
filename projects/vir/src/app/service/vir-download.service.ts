@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, mergeMap, first, map } from 'rxjs/operators';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { WINDOW } from '@ng-toolkit/universal';
+import { DialogService } from '../../../../laji/src/app/shared/service/dialog.service';
 
 export enum FileType {
   standard = 'standard',
@@ -42,7 +43,8 @@ export class VirDownloadService {
   constructor(
     @Inject(WINDOW) private window: Window,
     private httpClient: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private dialogService: DialogService
   ) {}
 
   downloadFile(id: string) {
@@ -51,6 +53,9 @@ export class VirDownloadService {
       this.window.location.href = res;
       this.loading = false;
       this.fileDownloadReady.emit();
+    }, () => {
+      this.loading = false;
+      this.dialogService.alert('usage.fileDownload.genericError');
     });
   }
 
