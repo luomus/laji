@@ -37,7 +37,7 @@ export class VirDownloadService {
 
   fileDownloadReady = new EventEmitter();
 
-  private pollInterval = 2000;
+  private pollInterval = 5000;
 
   constructor(
     @Inject(WINDOW) private window: Window,
