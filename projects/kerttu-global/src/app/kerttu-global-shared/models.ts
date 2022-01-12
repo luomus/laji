@@ -1,5 +1,6 @@
 import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import {ITaxonAnnotations} from '../../../../laji/src/app/+theme/kerttu/models';
 
 export interface IListResult<T> {
   results: T[];
@@ -95,6 +96,16 @@ export interface IUserStat {
   userId: string;
   speciesCreated: number;
   speciesValidated: number;
+}
+
+export interface IRecordingAnnotation {
+  isLowQuality?: boolean;
+  containsNoiseCausedByHumanActivity?: boolean;
+  containsHumanSpeech?: boolean;
+  containsUnknownBirds?: boolean;
+  doesNotContainBirds?: boolean;
+
+  identifications?: ISpeciesIdentification[];
 }
 
 export interface ISpeciesIdentification {

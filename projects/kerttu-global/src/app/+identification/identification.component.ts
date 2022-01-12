@@ -24,7 +24,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
         </lu-sidebar-link>
       </nav>
       <main>
-        <div class="container laji-page">
+        <div class="container-fluid laji-page">
           <router-outlet></router-outlet>
         </div>
       </main>

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { IGlobalSpecies, ISpeciesIdentification, SpeciesAnnotationEnum } from '../../kerttu-global-shared/models';
+import {IGlobalSpecies, IRecordingAnnotation, ISpeciesIdentification, SpeciesAnnotationEnum} from '../../kerttu-global-shared/models';
 import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
@@ -18,7 +18,9 @@ export class RecordingIdentificationComponent {
   hasPreviousRecording = false;
   buttonsAreDisabled = false;
 
-  identifications: ISpeciesIdentification[] = [];
+  annotation: IRecordingAnnotation = {
+    identifications: []
+  };
 
   drawMode = false;
   drawIdx?: number;
@@ -30,8 +32,8 @@ export class RecordingIdentificationComponent {
   @Output() annotationChange = new EventEmitter<ISpeciesIdentification[]>();
 
   addToIdentifications(species: IGlobalSpecies) {
-    this.identifications = [
-      ...this.identifications,
+    this.annotation.identifications = [
+      ...this.annotation.identifications,
       {species: species, occurrence: SpeciesAnnotationEnum.occurs, boxes: []}
     ];
   }
@@ -42,10 +44,15 @@ export class RecordingIdentificationComponent {
   }
 
   drawEnd(area: IAudioViewerArea) {
-    this.rectangles = [...this.rectangles, {area: area, label: this.identifications[this.drawIdx].species.commonName}];
+    const identifications = this.annotation.identifications;
+    this.rectangles = [...this.rectangles, {area: area, label: identifications[this.drawIdx].species.commonName}];
 
-    this.identifications[this.drawIdx].boxes.push(area);
-    this.identifications = [...this.identifications];
+    identifications[this.drawIdx].boxes.push(area);
+    this.annotation.identifications = [...identifications];
     this.drawMode = false;
+  }
+
+  updateAnnotation() {
+
   }
 }
