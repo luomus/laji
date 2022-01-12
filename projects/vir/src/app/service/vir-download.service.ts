@@ -54,8 +54,9 @@ export class VirDownloadService {
       this.loading = false;
       this.fileDownloadReady.emit();
     }, () => {
-      this.loading = false;
       this.dialogService.alert('usage.fileDownload.genericError');
+      this.loading = false;
+      this.fileDownloadReady.emit();
     });
   }
 
