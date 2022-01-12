@@ -68,5 +68,9 @@
   "validation.undefined": "Undefined",
   "versionNav.next": "Next",
   "versionNav.previous": "Previous",
-  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}"
+  "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
+  "identification.recordings.drawABox": "Draw a box to the spectrogram",
+  "identification.recordings.draw": "Draw",
+  "identification.recordings.createTemplates": "Create templates",
+  "identification.recordings.seeTemplates": "See templates"
 }

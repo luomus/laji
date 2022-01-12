@@ -29,7 +29,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.columns = [
       {
-        label: 'Draw a box',
+        label: 'identification.recordings.drawABox',
         cellTemplate: this.drawBoxTpl,
         sortable: false
       },

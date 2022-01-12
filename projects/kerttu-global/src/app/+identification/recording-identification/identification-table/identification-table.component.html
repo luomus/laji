@@ -7,7 +7,7 @@
 ></laji-datatable>
 
 <ng-template let-row="row" #drawBox>
-  <button class="btn btn-primary btn-sm" [ngClass]="{ 'active': drawClickedByIdx[row.preSortIndex] }" (click)="toggleDrawButton(row.preSortIndex)">Draw</button>
+  <button class="btn btn-primary btn-sm" [ngClass]="{ 'active': drawClickedByIdx[row.preSortIndex] }" (click)="toggleDrawButton(row.preSortIndex)">{{ 'identification.recordings.draw' | translate }}</button>
 </ng-template>
 
 <ng-template let-row="row" let-rowIndex="rowIndex" #occurs>
@@ -25,4 +25,7 @@
 
 <ng-template let-row="row" #buttons>
   <button class="btn btn-danger btn-sm" (click)="deleteRow(row.preSortIndex)">x</button>
+  <a class="btn btn-sm btn-default ml-2" [routerLink]="['/validation', row.species.id]" target="_blank">
+    <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (row.species.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
+  </a>
 </ng-template>
