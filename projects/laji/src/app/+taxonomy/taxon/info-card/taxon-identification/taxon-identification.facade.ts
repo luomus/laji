@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
-import { map, distinctUntilChanged, tap, takeUntil, switchMap } from 'rxjs/operators';
+import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
@@ -70,7 +70,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
   }
 
   loadChildDataSource(root: Taxonomy) {
-    this.childDataSource$.pipe(takeUntil(this.unsubscribe$)).subscribe(d => {
+    this.childDataSource$.pipe(take(1)).subscribe(d => {
       if (d) {
         d.disconnect();
       }
