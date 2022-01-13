@@ -244,11 +244,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   onSort(event) {
     this.orderBy = event.sorts.map(sort => {
-      const col = this.columns.filter(column => column.prop === sort.prop)[0];
+      const col = this.columns.filter(column => column.prop ? column.prop === sort.prop : column.name === sort.prop)[0];
       if (!col) {
         return '';
       }
-      const sortBy: string =  this.setLangParams(col.sortBy || '' + col.prop);
+      const prop = col.prop || col.name;
+      const sortBy: string =  this.setLangParams(col.sortBy || '' + prop);
       return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
     this.fetchPage(this.page);
