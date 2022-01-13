@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CountRoundingPipe implements PipeTransform {
 
   transform(value: any): any {
-    if (!value) {
+    if (value === undefined) {
       return 'N/A';
     } else if (value >= 10 ** 6) {
       return `${Math.round(value / 10 ** 6)}M`;
