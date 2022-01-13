@@ -62,8 +62,7 @@ export class DocumentService {
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
     return this.formService.getForm(templateData.document.formID).pipe(switchMap(form => {
-      const template: Document = Util.clone(templateData.document);
-      this.removeMeta(template, form.excludeFromCopy);
+      const template: Document = this.removeMeta(templateData.document, form.excludeFromCopy);
       template.isTemplate = true;
       template.templateName = templateData.name;
       template.templateDescription = templateData.description;
@@ -72,6 +71,8 @@ export class DocumentService {
   }
 
   removeMeta(document: any, remove = []): any {
+    document = Util.clone(document);
+
     if (['$.id', '$..id'].every(idField => remove.indexOf(idField) === -1)) {
       remove = [...remove, '$..id', '$..dateEdited', '$..dateCreated', '$..publicityRestrictions', '$..locked'];
     }
