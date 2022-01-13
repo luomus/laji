@@ -65,9 +65,5 @@ export class DatatableTemplatesComponent {
     event.stopPropagation();
   }
 
-  onCopyToClipboard(str: string) {
-    navigator.clipboard.writeText(str);
-  }
-
   void() {}
 }

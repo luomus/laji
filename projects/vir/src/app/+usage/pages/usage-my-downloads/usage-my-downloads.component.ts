@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { finalize, map, take, tap } from 'rxjs/operators';
+import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -15,6 +16,8 @@ import * as moment from 'moment';
           [height]="'50vh'"
           [data]="downloadRequests$ | async"
           [showDownloadMenu]="false"
+          [showRowAsLink]="true"
+          (rowSelect)="openDownloadModal($event.row)"
           class="d-block my-5"
         ></vir-data-table>
       </laji-spinner>
@@ -26,21 +29,39 @@ import * as moment from 'moment';
             [height]="'50vh'"
             [data]="apiKeys$ | async"
             [showDownloadMenu]="false"
+            [showRowAsLink]="true"
+            (rowSelect)="openDownloadModal($event.row)"
             class="d-block my-5"
           ></vir-data-table>
         </laji-spinner>
       </ng-container>
     </div>
+    <ng-template #downloadModal>
+      <vir-download-request-modal
+        [downloadRequest]="selectedRequest"
+        [showPerson]="false"
+        [showFileDownload]="true"
+        (close)="closeDownloadModal()"
+      ></vir-download-request-modal>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageMyDownloadsComponent {
+  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
+
   requestsTableLoading = false;
   keysTableLoading = false;
 
   downloadRequests$: Observable<IDownloadRequest[]>;
   apiKeys$: Observable<IDownloadRequest[]>;
+
+  selectedRequest?: IDownloadRequest;
+
+  private modal: BsModalRef;
+
   constructor(
+    private modalService: BsModalService,
     private virDownloadRequestsService: VirDownloadRequestsService,
     private cdr: ChangeDetectorRef
   ) {
@@ -63,5 +84,15 @@ export class UsageMyDownloadsComponent {
         this.cdr.markForCheck();
       })
     );
+  }
+
+  openDownloadModal(request: IDownloadRequest) {
+    this.selectedRequest = request;
+    this.modal = this.modalService.show(this.downloadModal, {class: 'modal-md'});
+  }
+
+  closeDownloadModal() {
+    this.modal?.hide();
+    this.selectedRequest = null;
   }
 }
