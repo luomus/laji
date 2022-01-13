@@ -30,7 +30,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
     filter(d => d !== undefined),
-    tap(() => this.loading = false),
+    tap(() => { this.loading = false; this.cdr.markForCheck(); }),
     switchMap(d => d.connect(this.collectionViewer)),
     distinctUntilChanged()
   );
