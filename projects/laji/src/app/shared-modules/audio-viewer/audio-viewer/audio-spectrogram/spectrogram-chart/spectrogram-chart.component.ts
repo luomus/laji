@@ -130,8 +130,10 @@ export class SpectrogramChartComponent implements OnChanges {
     const [startTime, endTime] = this.view.xRange;
     const [startFreq, endFreq] = this.view.yRange;
 
-    const xRange = this.focusArea?.xRange || [startTime - this.xScale(strokeWidth), endTime + this.xScale(strokeWidth)];
-    const yRange = this.focusArea?.yRange || [startFreq - this.yScale(strokeWidth), endFreq + this.yScale(strokeWidth)];
+    const xRangeBuffer = this.xScale.invert(strokeWidth);
+    const yRangeBuffer = this.yScale.invert(this.height - strokeWidth) * 1000;
+    const xRange = this.focusArea?.xRange || [startTime - xRangeBuffer, endTime + xRangeBuffer];
+    const yRange = this.focusArea?.yRange || [startFreq - yRangeBuffer, endFreq + yRangeBuffer];
 
     const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(xRange, yRange);
 
