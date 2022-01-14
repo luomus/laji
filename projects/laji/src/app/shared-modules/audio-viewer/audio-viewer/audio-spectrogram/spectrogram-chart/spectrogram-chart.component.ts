@@ -106,14 +106,14 @@ export class SpectrogramChartComponent implements OnChanges {
         .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
     }
 
-    if (this.rectangles) {
-      const rectangleSvg = svg.append('svg')
-      .attr('x', this.margin.left)
-      .attr('y', this.margin.top)
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .style('overflow', 'visible');
-      this.drawRectangles(rectangleSvg, 1);
+    let svgWithOverflow: Selection<SVGSVGElement, any, any, any>;
+    if (this.rectangles?.length > 0) {
+      svgWithOverflow = svg.append('svg')
+        .attr('x', this.margin.left)
+        .attr('y', this.margin.top)
+        .attr('width', this.width)
+        .attr('height', this.height)
+        .style('overflow', 'visible');
     }
 
     const innerSvg = svg.append('svg')
@@ -121,6 +121,10 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('y', this.margin.top)
       .attr('width', this.width)
       .attr('height', this.height);
+
+    if (this.rectangles?.length > 0) {
+      this.drawRectangles(innerSvg, svgWithOverflow, 1);
+    }
 
     this.drawInnerChart(innerSvg);
   }
@@ -247,7 +251,9 @@ export class SpectrogramChartComponent implements OnChanges {
     }
   }
 
-  private drawRectangles(svg: Selection<SVGSVGElement, any, any, any>, strokeWidth: number) {
+  private drawRectangles(
+    svg: Selection<SVGSVGElement, any, any, any>, svgWithOverflow: Selection<SVGSVGElement, any, any, any>, strokeWidth: number
+  ) {
     const drawData = this.getRectangleDrawData(this.rectangles);
 
     for (const data of drawData) {
@@ -261,8 +267,8 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('stroke', data.color[data.color.length - 1] || '#d98026')
       .attr('fill', 'none');
 
-      if (data.label.length > 0) {
-        const text = svg.append('text')
+      if (data.label.length > 0 && rectX >= 0 && rectX + rectWidth <= this.width && rectY >= 0 && rectY + rectHeight <= this.height) {
+        const text = svgWithOverflow.append('text')
         .attr('x', rectX + (rectWidth / 2))
         .attr('y', rectY - 5)
         .attr('text-anchor', 'middle');
