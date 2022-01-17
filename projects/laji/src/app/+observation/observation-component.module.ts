@@ -39,6 +39,7 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import {SelectModule} from '../shared-modules/select/select.module';
 import { SelectCollectionsModule } from '../shared-modules/select-collections/select-collections.module';
 import { OwnObservationsFilterComponent } from './form/own-observations-filter/own-observations-filter.component';
+import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import { OwnObservationsFilterComponent } from './form/own-observations-filter/o
     FormSampleComponent,
     HorizontalChartComponent,
     DateFormComponent,
-    OwnObservationsFilterComponent
+    OwnObservationsFilterComponent,
+    ConservationFilterComponent
   ],
   exports: [
     ObservationViewComponent

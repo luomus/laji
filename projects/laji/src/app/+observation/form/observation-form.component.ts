@@ -24,6 +24,7 @@ interface ISections {
   quality: Array<keyof WarehouseQueryInterface>;
   dataset: Array<keyof WarehouseQueryInterface>;
   collection: Array<keyof WarehouseQueryInterface>;
+  conservation: Array<keyof WarehouseQueryInterface>;
   keywords: Array<keyof WarehouseQueryInterface>;
   features?: Array<keyof WarehouseQueryInterface>;
   invasive?: Array<keyof WarehouseQueryInterface>;
@@ -69,6 +70,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     taxonUseAnnotated: true,
     taxonIncludeLower: true,
     coordinatesInSource: false,
+    taxonAdminFiltersOperator: undefined
   };
 
   showPlace = false;
@@ -105,6 +107,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
+    conservation: ['administrativeStatusId', 'redListStatusId', 'taxonAdminFiltersOperator'],
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
     invasive: [],
@@ -207,10 +210,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     }
     this.formQueryToSearchQuery(this.formQuery);
-    this.onAdministrativeStatusChange();
+    this.administrativeStatusChange();
   }
 
-  onAdministrativeStatusChange() {
+  private administrativeStatusChange() {
     const admins = this.query.administrativeStatusId;
     let cnt = 0;
     this.invasiveStatuses.map(key => {
@@ -221,6 +224,21 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    this.onQueryChange();
+  }
+
+  onAdministrativeStatusChange(administrativeStatusIds: string[]) {
+    this.query.administrativeStatusId = administrativeStatusIds;
+    this.administrativeStatusChange();
+  }
+
+  onRedListStatusChange(redListStatusIds: string[]) {
+    this.query.redListStatusId = redListStatusIds;
+    this.onQueryChange();
+  }
+
+  onConservationOperatorChange(operator: 'AND' | 'OR') {
+    this.query.taxonAdminFiltersOperator = operator;
     this.onQueryChange();
   }
 
@@ -496,7 +514,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
-      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE'
+      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE',
+      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator || 'AND'
     };
   }
 
@@ -523,6 +542,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
+    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator || 'AND';
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
