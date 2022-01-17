@@ -19,7 +19,7 @@ export class ConservationFilterComponent {
   @Input() administrativeStatus: string[];
   @Input() redListStatus: string[];
   @Input() set taxonAdminFiltersOperator(val: 'AND' | 'OR') {
-    this.form.setValue({operator: val}, { emitEvent: false });
+    this.form.setValue({operator: val || 'AND'}, { emitEvent: false });
   }
   @Output() administrativeStatusChange = new EventEmitter<string[]>();
   @Output() redListStatusChange = new EventEmitter<string[]>();

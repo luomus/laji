@@ -238,7 +238,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   onConservationOperatorChange(operator: 'AND' | 'OR') {
-    this.query.taxonAdminFiltersOperator = operator;
+    this.query.taxonAdminFiltersOperator = operator === 'OR' ? 'OR' : undefined;
     this.onQueryChange();
   }
 
