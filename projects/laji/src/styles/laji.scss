@@ -239,11 +239,6 @@ treenode:last-child > .tree-node > .tree-children::after {
   background-size: 100% auto;
 }
 
-.active .informal-group-image {
-  -webkit-filter: brightness(0) invert(1);
-  filter: brightness(0) invert(1);
-}
-
 .informal-group-image.MVL\.1 {
   background-image: url('/static/images/informalGroups/MVL.1.svg');
 }
@@ -1202,6 +1197,11 @@ typeahead-container .dropdown-menu {
 typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
   background-color: $primary-5;
   color: $primary-1;
+}
+
+typeahead-container .active .informal-group-image {
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .alert-info {
