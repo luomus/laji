@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { from, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { ISpectrogramConfig } from '../models';
+import { AudioService } from './audio.service';
 
 @Injectable()
 export class SpectrogramService {
@@ -22,6 +23,7 @@ export class SpectrogramService {
   private colormaps$ = {};
 
   constructor(
+    private audioService: AudioService,
     private httpClient: HttpClient
   ) {}
 
@@ -79,7 +81,7 @@ export class SpectrogramService {
   private getData(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{data: Float32Array[], sumByColumn: number[]}> {
     const {sampleRate, nperseg, noverlap} = config;
 
-    return this.resampleBuffer(buffer, sampleRate).pipe(map((resampled) => {
+    return this.audioService.resampleBuffer(buffer, sampleRate).pipe(map((resampled) => {
       const chanData = resampled.getChannelData(0);
 
       const fft = new FFT(nperseg, sampleRate, 'hann');
@@ -205,19 +207,6 @@ export class SpectrogramService {
     const percent = (inputY - yMin) / (yMax - yMin);
 
     return percent * (xMax - xMin) + xMin;
-  }
-
-  private resampleBuffer(buffer: AudioBuffer, sampleRate: number): Observable<AudioBuffer> {
-    if (buffer.sampleRate === sampleRate) {
-      return of(buffer);
-    }
-
-    const offlineCtx = new OfflineAudioContext(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
-    const offlineSource = offlineCtx.createBufferSource();
-    offlineSource.buffer = buffer;
-    offlineSource.connect(offlineCtx.destination);
-    offlineSource.start();
-    return from(offlineCtx.startRendering());
   }
 
   private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {

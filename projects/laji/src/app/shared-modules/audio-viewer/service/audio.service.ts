@@ -162,6 +162,20 @@ export class AudioService {
     return (this.audioContext.currentTime - startTime) * playbackRate;
   }
 
+  public resampleBuffer(buffer: AudioBuffer, sampleRate: number): Observable<AudioBuffer> {
+    if (buffer.sampleRate === sampleRate) {
+      return of(buffer);
+    }
+
+    const OfflineCtx = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
+    const offlineCtx = new OfflineCtx(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
+    const offlineSource = offlineCtx.createBufferSource();
+    offlineSource.buffer = buffer;
+    offlineSource.connect(offlineCtx.destination);
+    offlineSource.start();
+    return from(offlineCtx.startRendering()) as Observable<AudioBuffer>;
+  }
+
   private createFilter(type: 'highpass'|'lowpass', frequency: number) {
     const filter = this.audioContext.createBiquadFilter();
     filter.type = type;
