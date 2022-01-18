@@ -14,6 +14,7 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { DatatableOwnSubmissionsComponent } from './datatable-own-submissions/datatable-own-submissions.component';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { IucnStatusPipe } from './pipes/iucn-status.pipe';
+import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { IucnStatusPipe } from './pipes/iucn-status.pipe';
     InfoModule,
     DownloadModalModule,
     LajiUiModule,
-    OwnSubmissionsModule
+    OwnSubmissionsModule,
+    CopyToClipboardModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent, IucnStatusPipe],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent,

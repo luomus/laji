@@ -9,6 +9,10 @@ export const LajiMapTileLayerName = {
   ...LajiMap.TileLayerName
 };
 
+export const LajiMapOverlayName = {
+  ...LajiMap.OverlayName
+};
+
 export const LajiMapLang = {
   ...LajiMap.Lang
 };

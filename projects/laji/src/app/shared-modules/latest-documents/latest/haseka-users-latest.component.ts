@@ -31,7 +31,7 @@ export class UsersLatestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.latestFacade.update(this.formID);
+    this.latestFacade.setFormID(this.formID);
   }
 
   discardTempDocument(document) {

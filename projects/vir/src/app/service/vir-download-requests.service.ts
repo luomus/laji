@@ -9,8 +9,13 @@ export interface IDownloadRequest {
   requested: string;
   downloadType: string;
   source: string;
-  person: string;
+  personId: string;
   dataUsePurpose: string;
+  approximateMatches: string;
+  filters: {[key: string]: any}[];
+  filterDescriptions: {[lang: string]: {label: string, value: string}[]};
+  privateLink: {[lang: string]: string}[];
+  publicLink: {[lang: string]: string}[];
   collectionId?: string[];
   collections?: {id: string}[]
   collectionSearch?: string[];

@@ -99,16 +99,27 @@ export class TaxonAutocompleteService {
   }
 
   private addBold(original: string, substring: string): string {
-    const words = substring.split(' ');
-    words.forEach(el => {
-      const newOriginal = original.toLowerCase();
-      const newString = el.toLowerCase();
-      const index = newOriginal.indexOf(newString);
-      original = index > -1 ?
-      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
-      : original;
+    // Pairs of bolded words and whether they've been bolded already (goal is to bold words only once).
+    const boldedWords: [string, boolean][] = original.split(' ').map(w => [w, false]);
+
+    substring.split(' ').forEach(w => {
+      wordLoop: for (const i in boldedWords) { // tslint:disable-line forin
+        const [_w, bolded] = boldedWords[i];
+        if (bolded) {
+          continue;
+        }
+        const startRegexp = new RegExp(`^(${w})`, 'i');
+        const endRegexp = new RegExp(`(${w})$`, 'i');
+        for (const regexp of [startRegexp, endRegexp]) {
+          const match = _w.match(regexp);
+          if (match) {
+            boldedWords[i] = [_w.replace(regexp, '<b>$1</b>'), true];
+            break wordLoop;
+          }
+        }
+      }
     });
-    return original;
+    return boldedWords.reduce((joined, [w]) => joined.concat(' ', w), '');
   }
 
   private capitalizeFirstLetter(string: string) {

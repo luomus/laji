@@ -153,7 +153,7 @@ export class DocumentFormFacade {
     const namedPlace$: Observable<NamedPlace | FormError | null> = combineLatest([includeUnits$, existingDocument$, namedPlaceID$]).pipe(
       map(([includeUnits, existingDocument, namedPlaceID]): [boolean, string] | null =>
         isFormError(includeUnits) || isFormError(existingDocument)
-          ? null
+          ? [false, '']
           : [includeUnits, existingDocument?.document?.namedPlaceID || namedPlaceID]
       ),
       switchMap(([includeUnits, namedPlaceID]) => namedPlaceID

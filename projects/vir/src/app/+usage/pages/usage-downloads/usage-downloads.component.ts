@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
-import { PlatformService } from '../../../../../../laji/src/app/shared/service/platform.service';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -12,11 +12,17 @@ import * as moment from 'moment';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageDownloadsComponent {
+  @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
   downloadRequests$: Observable<IDownloadRequest[]>;
   apiKeys$: Observable<IDownloadRequest[]>;
+
+  selectedRequest?: IDownloadRequest;
+
+  private modal: BsModalRef;
+
   constructor(
-      private virDownloadRequestsService: VirDownloadRequestsService,
-      private platformService: PlatformService
+      private modalService: BsModalService,
+      private virDownloadRequestsService: VirDownloadRequestsService
   ) {
     this.collectionSelect(undefined);
   }
@@ -34,8 +40,16 @@ export class UsageDownloadsComponent {
   }
 
   onRowClick(event: any) {
-    if (this.platformService.isBrowser) {
-      window.open('http://tun.fi/' + (event.row.id.replace('http://tun.fi/', '')), '_blank');
-    }
+    this.openDownloadModal(event.row);
+  }
+
+  openDownloadModal(request: IDownloadRequest) {
+    this.selectedRequest = request;
+    this.modal = this.modalService.show(this.downloadModal, {class: 'modal-md'});
+  }
+
+  closeDownloadModal() {
+    this.modal?.hide();
+    this.selectedRequest = null;
   }
 }
