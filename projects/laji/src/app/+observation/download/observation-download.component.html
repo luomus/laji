@@ -22,8 +22,10 @@
             *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
             role="primary"
             [showBackdrop]="false"
-            (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            (download)="simpleDownload($event.fileType)"
+            [downloadLoading]="downloadLoading"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>
@@ -34,8 +36,10 @@
             [showBackdrop]="false"
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
-            (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            (download)="simpleDownload($event.fileType)"
+            [downloadLoading]="downloadLoading"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>

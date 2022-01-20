@@ -20,13 +20,13 @@
       </select>
     </div>
     <div class="col-sm-4">
-      <label for="geometry">{{ 'usage.fileDownload.geometry' | translate }}:</label>
+      <label for="geometry">{{ 'download.geometry' | translate }}:</label>
       <select id="geometry" name="geometry" class="form-control" [(ngModel)]="downloadService.geometry">
         <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
       </select>
     </div>
     <div class="col-sm-4">
-      <label for="crs">{{ 'usage.fileDownload.crs' | translate }}:</label>
+      <label for="crs">{{ 'download.crs' | translate }}:</label>
       <select id="crs" name="crs" class="form-control" [(ngModel)]="downloadService.crs">
         <option *ngFor="let option of fileCrsEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
       </select>

@@ -122,6 +122,8 @@
   "document.locked": "Tämä havaintoerä on lukittu, eikä sitä voi muokata.",
   "download.reason": "Mihin aineistoa käytetään?",
   "download.reason-required": "Sinun täytyy valita aineiston käytön syy ja kirjoittaa lisätiedot",
+  "download.geometry": "Geometria",
+  "download.crs": "CRS",
   "email": "Sähköpostiosoite",
   "en": "englanti",
   "error": "Virhe",

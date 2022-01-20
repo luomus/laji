@@ -1,16 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  TemplateRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
+import { FileCrs, FileGeometry } from '../../shared/service/geo-convert.service';
+import { KeyValue } from '@angular/common';
 
-type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
+export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
+
+export interface DownloadParams {
+  fileType: FORMAT;
+  geometry?: FileGeometry;
+  crs?: FileCrs;
+}
 
 @Component({
   selector: 'laji-download',
@@ -50,6 +50,26 @@ type FORMAT = 'csv'|'tsv'|'ods'|'xlsx';
             <div class="radio" *ngIf="_formats.indexOf('xlsx') > -1">
               <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="xlsx">Excel (.xlsx)</label>
             </div>
+            <div class="radio" *ngIf="_formats.indexOf('shp') > -1">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="shp">Shapefile (.shp)</label>
+            </div>
+            <div class="radio" *ngIf="_formats.indexOf('gpkg') > -1">
+              <label><input type="radio" name="optradio" [(ngModel)]="fileType" value="gpkg">GeoPackage (.gpkg)</label>
+            </div>
+            <ng-container *ngIf="fileType === 'shp' || fileType === 'gpkg'">
+              <div class="mb-3">
+                <label for="geometry">{{ 'download.geometry' | translate }}:</label>
+                <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
+                  <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+                </select>
+              </div>
+              <div>
+                <label for="crs">{{ 'download.crs' | translate }}:</label>
+                <select id="crs" name="crs" class="form-control" [(ngModel)]="crs">
+                  <option *ngFor="let option of fileCrsEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+                </select>
+              </div>
+            </ng-container>
           </ng-container>
         </div>
       </div>
@@ -86,14 +106,19 @@ export class DownloadComponent implements OnChanges {
 
   _formats: FORMAT[] = ['tsv', 'ods', 'xlsx'];
 
-  fileType = 'tsv';
+  fileType: FORMAT = 'tsv';
+  geometry: FileGeometry = FileGeometry.point;
+  crs: FileCrs = FileCrs.euref;
   modalRef: BsModalRef;
   basicSelectStyle = SelectStyle.basic;
   disableDownLoad = false;
 
+  fileGeometryEnum = FileGeometry;
+  fileCrsEnum = FileCrs;
+
   @Output() reasonChange = new EventEmitter<string>();
   @Output() reasonEnumChange = new EventEmitter<string>();
-  @Output() download = new EventEmitter<string>();
+  @Output() download = new EventEmitter<DownloadParams>();
 
   @Input() set formats(formats: FORMAT[]) {
     if (formats.length > 0) {
@@ -127,7 +152,16 @@ export class DownloadComponent implements OnChanges {
     if (this.closeModalOnDownloadStart) {
       this.closeModal();
     }
-    this.download.emit(this.fileType);
+    const params: DownloadParams = {fileType: this.fileType};
+    if (this.fileType === 'shp' || this.fileType === 'gpkg') {
+      params.geometry = this.geometry;
+      params.crs = this.crs;
+    }
+    this.download.emit(params);
+  }
+
+  sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    return 0;
   }
 
   private checkCanDownloadStatus() {

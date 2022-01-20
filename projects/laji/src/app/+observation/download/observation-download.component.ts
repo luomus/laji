@@ -35,6 +35,7 @@ import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
+import { FORMAT } from '../../shared-modules/download-modal/download.component';
 
 
 enum RequestStatus {
@@ -82,6 +83,8 @@ export class ObservationDownloadComponent implements OnDestroy {
   speciesCsvLoading = false;
 
   linkTimeout: any;
+
+  formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
 
   private _originalSelected: string[];
   private _settings: ISettingResultList;
