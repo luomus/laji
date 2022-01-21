@@ -91,12 +91,19 @@
         },
         {
           "selector": "classProperty",
-          "format": ["camelCase", "UPPER_CASE"]
+          "format": ["camelCase", "UPPER_CASE"],
+          "leadingUnderscore": "allow"
+        },
+        {
+          "selector": "classMethod",
+          "format": ["camelCase", "PascalCase"],
+          "leadingUnderscore": "allow"
         }
         ],
       "jsdoc/newline-after-description": "off",
       "@typescript-eslint/no-namespace": "off",
-      "one-var": "off"
+      "one-var": "off",
+      "@typescript-eslint/consistent-type-assertions": "off"
       }
     },
     {
