@@ -88,50 +88,50 @@ export interface Collection {
   /**
    * Metadata status
    */
-  metadataStatus?: string
+  metadataStatus?: string;
 
   /**
    * Data quality
    */
-  dataQuality?: string
+  dataQuality?: string;
 
   /**
    * Citation
    */
-  citation?: string
+  citation?: string;
 
   /**
    * collectionSize
    */
-  collectionSize?: string
+  collectionSize?: string;
 
   /**
    * digitizedSize
    */
-  digitizedSize?: string
+  digitizedSize?: string;
 
   /**
    * intellectualOwner
    */
-  intellectualOwner?: string
+  intellectualOwner?: string;
   /**
    * intellectualRights
    */
-  intellectualRights?: string
+  intellectualRights?: string;
   /**
    * intellectualDescription
    */
-  intellectualDescription?: string
+  intellectualDescription?: string;
   /**
    * publicationTerms
    */
-  publicationTerms?: string
+  publicationTerms?: string;
   /**
    * publicationDescription
    */
-  publicationDescription?: string
+  publicationDescription?: string;
   /**
    * typesSize
    */
-  typesSize?: string
+  typesSize?: string;
 }

@@ -56,10 +56,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         bodyAlign: 'center',
         displayColors: false,
         callbacks: {
-          title: function(item, data) {
+          title(item, data) {
             return data.datasets[0]['tree'][item[0]['index']].label;
           },
-          label: function(item, data) {
+          label(item, data) {
             const species = (data.datasets[0]['tree'][item['index']].value < 2) ? laji :
             lajia;
             return data.datasets[0]['tree'][item['index']].value + ' ' + species;
@@ -73,7 +73,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       },
       animation: {
         duration: 1,
-        onComplete: function () {
+        onComplete() {
             const chartInstance = this.chart,
             ctx = chartInstance.ctx;
             const chart_width = chartInstance['width'];
@@ -83,9 +83,9 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'bottom';
             if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 200) {
-              this.data.datasets.forEach(function (dataset, i) {
+              this.data.datasets.forEach(function(dataset, i) {
                 const meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function (bar, index) {
+                meta.data.forEach(function(bar, index) {
                     const label = dataset.tree[index].label;
                     const data = dataset.tree[index].value;
                     const width = Math.ceil(ctx.measureText(label).width);
@@ -138,7 +138,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         tmp_array.push({value: count,
         label: (child.vernacularName) ?
         ( typeof child.vernacularName  === 'object' ?
-        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id: id});
+        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id});
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
         this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
       }

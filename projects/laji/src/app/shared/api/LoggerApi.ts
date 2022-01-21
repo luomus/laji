@@ -75,7 +75,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logError(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/error';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -88,7 +88,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logInfo(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/info';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -101,7 +101,7 @@ export class LoggerApi {
    *
    * @param minutesBack How many minutes back to look for items in the log
    */
-  public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
+  public logStatus(minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
     const path = this.basePath + '/logger/status';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -117,7 +117,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logWarn(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/warn';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};

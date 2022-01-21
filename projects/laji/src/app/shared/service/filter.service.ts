@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 type FilterBaseType = number|boolean|string;
 
-interface FilterObjType {by: FilterBaseType; properties: string[]; }
+interface FilterObjType {by: FilterBaseType; properties: string[] }
 
 export type FilterByType = FilterBaseType|FilterObjType;
 

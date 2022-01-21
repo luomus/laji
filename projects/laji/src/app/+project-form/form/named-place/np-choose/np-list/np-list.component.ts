@@ -34,7 +34,7 @@ export class NpListComponent implements OnDestroy {
   _fields: any[];
   data: any[] = [];
   columns: ObservationTableColumn[];
-  sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   sortType = SortType;
   selectionType = SelectionType;
   showLegendList = false;

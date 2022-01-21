@@ -252,7 +252,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         const rowLabel = this.translateService.instant('line');
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'excel.import.status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
-          {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
+          {prop: '_doc', label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
           {prop: '_row', label: rowLabel, sortable: false, width: 40}
         ];
         Object.keys(this.header).map(address => {

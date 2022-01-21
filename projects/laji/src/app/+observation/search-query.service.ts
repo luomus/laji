@@ -13,7 +13,7 @@ export class SearchQueryService implements SearchQueryInterface {
   public query: WarehouseQueryInterface = {};
 
   private readonly separator = {
-    'teamMember': ';'
+    teamMember: ';'
   };
 
   // noinspection JSUnusedLocalSymbols
@@ -167,8 +167,8 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public forEachType(opt: {
-    skip?: string[],
-    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void
+    skip?: string[];
+    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void;
   }) {
     const types: Array<'array'|'boolean'|'numeric'|'string'|'obscure'> = ['array', 'boolean', 'numeric', 'string', 'obscure'];
     types.forEach(type => {

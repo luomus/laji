@@ -87,8 +87,8 @@ export interface Profile {
     defaultMediaMetadata?: {
       capturerVerbatim: string;
       intellectualOwner: string;
-      intellectualRights: Profile.IntellectualRights
-    }
+      intellectualRights: Profile.IntellectualRights;
+    };
   };
 
   finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;

@@ -53,7 +53,7 @@ export class ExportService {
     }
 
     const data: Blob = new Blob([buffer], {
-      type: type
+      type
     });
 
     FileSaver.saveAs(data, fileName + '.' + fileExtension);

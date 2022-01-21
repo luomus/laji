@@ -175,12 +175,9 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       '$.gatherings.*.gatheringFact.lineTransectSegmentMetersEnd'
     ];
 
-    const getGeometry = (_document: any) => {
-      return this.documentService.removeMeta({type: 'GeometryCollection', geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []}, ['$.geometries.*.coordinateVerbatim']);
-    };
+    const getGeometry = (_document: any) => this.documentService.removeMeta({type: 'GeometryCollection', geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []}, ['$.geometries.*.coordinateVerbatim']);
 
-    const getDiff = (_acceptedDocument: any, _document: any) => {
-      return (diff(_acceptedDocument, _document) || []).reduce((_diff, diffObj) => {
+    const getDiff = (_acceptedDocument: any, _document: any) => (diff(_acceptedDocument, _document) || []).reduce((_diff, diffObj) => {
         // Flatten object rhs (right-hand-side, or otherwise speaking the new value) to
         // the path so that we can render the simple value instead of rendering an object as value.
         const addRecursively = (rhs: any, path) => {
@@ -203,7 +200,6 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
         addRecursively((diffObj as DiffNew<any>).rhs, diffObj.path);
         return _diff;
       }, []).sort((a, b) => b.path.join('.').localeCompare(a.path.join('')));
-    };
 
     const document = this.documentService.removeMeta(this.document, diffIgnoredFields);
     const acceptedDocument = this.documentService.removeMeta(this.namedPlace.acceptedDocument || {}, diffIgnoredFields);

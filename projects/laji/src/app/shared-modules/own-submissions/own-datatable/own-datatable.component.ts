@@ -376,9 +376,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     } else if (prop === 'unitCount') {
       return (a, b) => b - a;
     }
-    return (a, b) => {
-      return ('' + a).localeCompare('' + b);
-    };
+    return (a, b) => ('' + a).localeCompare('' + b);
   }
 
   getDefaultSort() {

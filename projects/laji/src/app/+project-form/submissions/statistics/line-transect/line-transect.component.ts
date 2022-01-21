@@ -25,7 +25,7 @@ interface LineTransectCount {
   routeLength?: number;
   couplesPerKm?: number;
   minPerKm: number;
-  species: {id: string, psCouples: number, tsCouples: number, name?: string}[];
+  species: {id: string; psCouples: number; tsCouples: number; name?: string}[];
 }
 
 @Component({
@@ -183,7 +183,7 @@ export class LineTransectComponent implements OnChanges {
     this.warnings = warnings;
   }
 
-  private getErrors(warnings: {location: string, messages: string[]}[], messages = {}) {
+  private getErrors(warnings: {location: string; messages: string[]}[], messages = {}) {
     warnings.forEach(error => {
       error.messages.forEach(msg => {
         messages[msg] = messages[msg] ? messages[msg] + 1 : 1;

@@ -28,9 +28,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   protected subLabel: any;
 
   onChange = (_: any) => {
-  }
+  };
   onTouched = () => {
-  }
+  };
 
   get value(): any {
     return this.innerValue;
@@ -65,11 +65,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     (newValue ?
       this.getChildren(newValue, this.lang) :
       this.getRoot(this.lang)).pipe(
-      switchMap(data => {
-        return (!data.results || data.results.length === 0) ?
+      switchMap(data => (!data.results || data.results.length === 0) ?
           this.getWithSiblings(newValue, this.lang) :
-          ObservableOf(data);
-      })).pipe(
+          ObservableOf(data))).pipe(
       map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
       .subscribe(
         groups => {

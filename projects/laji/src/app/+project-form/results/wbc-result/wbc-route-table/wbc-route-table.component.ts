@@ -174,9 +174,7 @@ export class WbcRouteTableComponent implements OnInit {
 
   private getSortingComparator(prop: string): (a, b) => number {
     if (prop === 'name') {
-      return (a, b) => {
-        return (a).localeCompare(b);
-      };
+      return (a, b) => (a).localeCompare(b);
     }
 
     return (a, b) => {

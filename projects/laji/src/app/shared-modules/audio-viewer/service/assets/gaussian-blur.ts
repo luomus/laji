@@ -46,12 +46,12 @@ function boxesForGauss(sigma, n) {
   const sizes = [];  for (let i = 0; i < n; i++) { sizes.push(i < m ? wl : wu); }
   return sizes;
 }
-function boxBlur_4 (scl, tcl, w, h, r) {
+function boxBlur_4(scl, tcl, w, h, r) {
   for (let i = 0; i < scl.length; i++) { tcl[i] = scl[i]; }
   boxBlurH_4(tcl, scl, w, h, r);
   boxBlurT_4(scl, tcl, w, h, r);
 }
-function boxBlurH_4 (scl, tcl, w, h, r) {
+function boxBlurH_4(scl, tcl, w, h, r) {
   const iarr = 1 / (r + r + 1);
   for (let i = 0; i < h; i++) {
     let ti = i * w, li = ti, ri = ti + r;
@@ -63,7 +63,7 @@ function boxBlurH_4 (scl, tcl, w, h, r) {
     for (let j = w - r; j < w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = val * iarr; }
   }
 }
-function boxBlurT_4 (scl, tcl, w, h, r) {
+function boxBlurT_4(scl, tcl, w, h, r) {
   const iarr = 1 / (r + r + 1);
   for (let i = 0; i < w; i++) {
     let ti = i, li = ti, ri = ti + r * w;

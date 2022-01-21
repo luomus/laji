@@ -96,14 +96,12 @@ export class IdentificationListComponent implements OnDestroy {
       index, this.taxon.children,
       taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
     );
-    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => {
-      return <Image>{
+    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
         ...taxonomy.multimedia[0],
         taxonId: taxonomy.id,
         vernacularName: taxonomy.vernacularName,
         scientificName: taxonomy.scientificName
-      };
-    });
+      });
     this.overlayRef.instance.showImage(filteredIndex);
     this.overlayRef.instance.close = () => {
       this.closeImage();

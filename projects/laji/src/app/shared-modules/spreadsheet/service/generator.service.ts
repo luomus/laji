@@ -47,9 +47,9 @@ export class GeneratorService {
   };
 
   private sheetNames = {
-    'base': 'excel.sheet.base',
-    'vars': 'excel.sheet.variables', // This name cannot have spaces in it
-    'info': 'excel.sheet.info'
+    base: 'excel.sheet.base',
+    vars: 'excel.sheet.variables', // This name cannot have spaces in it
+    info: 'excel.sheet.info'
   };
 
   constructor(
@@ -135,7 +135,7 @@ export class GeneratorService {
   private addMetaDataToSheet(
     fields: IFormField[],
     sheet: XLSX.WorkSheet,
-    extra: {person: Person, namedPlaces: string[], informalTaxonGroups: InformalTaxonGroup[]},
+    extra: {person: Person; namedPlaces: string[]; informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
   ) {
     const validation = [];
@@ -222,7 +222,7 @@ export class GeneratorService {
     let instructionColLen = 10;
 
     fields.forEach(field => {
-      const columns: {label: string, isArray: boolean, separators?: string[]}[] = [];
+      const columns: {label: string; isArray: boolean; separators?: string[]}[] = [];
       if (field.splitType) {
         const labels = this.getSplitFieldLabels(field.fullLabel, field.label, field.splitType);
         labels.forEach(label => {

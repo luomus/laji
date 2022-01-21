@@ -19,12 +19,12 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   public query: TaxonomySearchQueryInterface;
 
   public listOptions: {
-    page: number,
-    sortOrder: string,
-    selected: string[]
+    page: number;
+    sortOrder: string;
+    selected: string[];
   };
   public imageOptions: {
-    page: number
+    page: number;
   };
 
   constructor(

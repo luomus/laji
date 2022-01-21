@@ -17,7 +17,7 @@ export class CheckLangService {
  public checkValue(info: any): any {
   this.checktranslation = [];
     info.forEach((item, index) => {
-      this.checktranslation.push({'id': item.id, 'groups': [], 'totalVisible': undefined});
+      this.checktranslation.push({id: item.id, groups: [], totalVisible: undefined});
       (item.groups || []).forEach(group => {
         this.translationExist(group, group.group, index);
       });
@@ -40,7 +40,7 @@ export class CheckLangService {
       }
     });
 
-    this.checktranslation[index].groups.push({'id': id, 'values': tmp_array, 'checkYlesta': false});
+    this.checktranslation[index].groups.push({id, values: tmp_array, checkYlesta: false});
 
     if (tmp_array.filter(x => x === false).length > 0) {
       return this.checktranslation[index].totalVisible = true;

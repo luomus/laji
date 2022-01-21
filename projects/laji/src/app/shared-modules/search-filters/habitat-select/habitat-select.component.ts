@@ -15,7 +15,7 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
 
   private subUpdate: Subscription;
 
-  @Output() select = new EventEmitter<{primaryHabitat?: string[], anyHabitat?: string[]}>();
+  @Output() select = new EventEmitter<{primaryHabitat?: string[]; anyHabitat?: string[]}>();
 
   ngOnChanges() {
     this.setQuery(this.query);

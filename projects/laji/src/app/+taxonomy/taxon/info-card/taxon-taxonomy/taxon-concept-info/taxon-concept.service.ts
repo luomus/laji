@@ -91,7 +91,7 @@ export class TaxonConceptService {
     path = path.replace(/^http:\/\//i, 'https://');
 
     return this.http.get(path, {
-      headers: new HttpHeaders({'Accept': 'application/skos+rdf+xml'}),
+      headers: new HttpHeaders({Accept: 'application/skos+rdf+xml'}),
       responseType: 'text',
       params: {format: 'skos'}
     })

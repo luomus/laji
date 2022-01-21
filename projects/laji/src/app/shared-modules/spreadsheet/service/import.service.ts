@@ -39,8 +39,8 @@ export interface IDocumentData {
   skipped: number[];
   ref?: {
     [hash: string]: {
-      [parentLevel: string]: number
-    }
+      [parentLevel: string]: number;
+    };
   };
 }
 
@@ -65,11 +65,11 @@ export class ImportService {
   ];
 
   private readonly newToParent = {
-    'identifications': LEVEL_UNIT,
-    'gatheringEvent': LEVEL_DOCUMENT,
-    'gatheringFact': LEVEL_GATHERING,
-    'unitFact': LEVEL_UNIT,
-    'unitGathering': LEVEL_UNIT
+    identifications: LEVEL_UNIT,
+    gatheringEvent: LEVEL_DOCUMENT,
+    gatheringFact: LEVEL_GATHERING,
+    unitFact: LEVEL_UNIT,
+    unitGathering: LEVEL_UNIT
   };
 
   constructor(
@@ -133,7 +133,7 @@ export class ImportService {
     formID: string,
     ignoreRowsWithNoCount = true,
     combineBy: CombineToDocument = CombineToDocument.gathering
-  ): {document: Document, skipped: number[], rows: {[row: number]: boolean}}[] {
+  ): {document: Document; skipped: number[]; rows: {[row: number]: boolean}}[] {
     return this.rowsToDocument(data, mapping, fields, formID, ignoreRowsWithNoCount, combineBy);
   }
 
@@ -227,7 +227,7 @@ export class ImportService {
         const parent = this.getParent(field, combineBy);
         if (!parentData[parent]) {
           parentData[parent] = {
-            rowIdx: rowIdx,
+            rowIdx,
             hash: '' + rowIdx,
             data: {}
           };
@@ -277,7 +277,7 @@ export class ImportService {
     const docs: {[hash: string]: IDocumentData} = {};
     Object.keys(documents).forEach(hash => {
       if (!docs[hash]) {
-        docs[hash] = {document: {'formID': formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
+        docs[hash] = {document: {formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
         const docData = this.findDocumentData(documents[hash]);
         docs[hash].rows[docData.rowIdx] = true;
         if (ignoreRowsWithNoCount && !this.hasCountValue(docData.data) && combineBy === CombineToDocument.none) {
@@ -350,7 +350,7 @@ export class ImportService {
   }
 
   private relativePathToAbsolute(values: {[key: string]: any}, spot?: {[level: string]: number}): {[key: string]: any} {
-    const replaces: {from: string, to: string}[] = [];
+    const replaces: {from: string; to: string}[] = [];
     const result = {};
     if (spot) {
       Object.keys(spot).map(level => {

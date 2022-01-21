@@ -170,7 +170,7 @@ export class ObservationResultService {
       lang,
       'LIGHTWEIGHT',
       {
-        'dataUsePurpose': reason
+        dataUsePurpose: reason
       }
     );
   }
@@ -223,16 +223,16 @@ export class ObservationResultService {
       if (result.aggregateBy) {
         if (result.aggregateBy['unit.linkings.taxon.nameFinnish']) {
           result.aggregateBy['unit.linkings.taxon.vernacularName'] = {
-            'fi': result.aggregateBy['unit.linkings.taxon.nameFinnish'],
-            'en': result.aggregateBy['unit.linkings.taxon.nameEnglish'],
-            'sv': result.aggregateBy['unit.linkings.taxon.nameSwedish']
+            fi: result.aggregateBy['unit.linkings.taxon.nameFinnish'],
+            en: result.aggregateBy['unit.linkings.taxon.nameEnglish'],
+            sv: result.aggregateBy['unit.linkings.taxon.nameSwedish']
           };
         }
         if (result.aggregateBy['unit.linkings.taxon.speciesNameFinnish']) {
           result.aggregateBy['unit.linkings.taxon.speciesVernacularName'] = {
-            'fi': result.aggregateBy['unit.linkings.taxon.speciesNameFinnish'],
-            'en': result.aggregateBy['unit.linkings.taxon.speciesNameEnglish'],
-            'sv': result.aggregateBy['unit.linkings.taxon.speciesNameSwedish']
+            fi: result.aggregateBy['unit.linkings.taxon.speciesNameFinnish'],
+            en: result.aggregateBy['unit.linkings.taxon.speciesNameEnglish'],
+            sv: result.aggregateBy['unit.linkings.taxon.speciesNameSwedish']
           };
         }
         Object.keys(result.aggregateBy).map(key => {

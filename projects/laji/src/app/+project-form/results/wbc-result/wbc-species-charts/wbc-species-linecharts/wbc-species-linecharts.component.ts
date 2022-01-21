@@ -64,7 +64,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     Chart.defaults.LineWithLine = Chart.defaults.line;
     Chart.defaults.line.spanGaps = false;
     Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-      draw: function(ease) {
+      draw(ease) {
         Chart.controllers.line.prototype.draw.call(this, ease);
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const year = 6;
@@ -79,9 +79,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           const gradient = ctx.createLinearGradient(0, 0, 0, 400);
           gradient.addColorStop(0, 'rgba(70,130,180,1)');
           gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
-          const range = (start, end, step) => {
-            return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-          };
+          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
 
           if (range(x - (col_width / 2), x + ((col_width / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
           range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
@@ -133,7 +131,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
     hover: {
       mode: 'index',
       intersect: false,
-      onHover: function (this, e, element) {
+      onHover(this, e, element) {
         let index_chart;
         if (element[0]) {
          index_chart = Number(element[0]['_index']);
@@ -144,10 +142,8 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
 
         const dataset = this['tooltip']._data.datasets[0].data;
         if (element[0]) {
-          element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem, data) {
-            const range = (start, end, step) => {
-              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-            };
+          element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem, data) {
+            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
@@ -182,11 +178,9 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             return data['datasets'][0]['translations'][0] + ': ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
-          element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem, data) {
+          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem, data) {
             const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
-            const range = (start, end, step) => {
-              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-            };
+            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
@@ -235,7 +229,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         },
         ticks: {
             beginAtZero: true,
-            callback: function(value) { if (value as any % 1 === 0) { return value; } },
+            callback(value) { if (value as any % 1 === 0) { return value; } },
             stepSize: 2
         }
       }],
@@ -319,7 +313,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         series2.push(year.toString());
         series = [];
       }
-      series.push({name: year, value: value});
+      series.push({name: year, value});
       series1.push(value);
       series2.push(year.toString());
 

@@ -59,7 +59,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   lang: string;
   map: any;
   _options: Options = {};
-  _legend: {color: string, label: string}[];
+  _legend: {color: string; label: string}[];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -209,7 +209,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.move.emit({
         zoom: this.map.getNormalizedZoom(),
         bounds: this.map.map.getBounds(),
-        type: type
+        type
       });
     });
   }

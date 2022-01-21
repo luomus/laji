@@ -160,7 +160,7 @@ export class LatestDocumentsFacade implements OnDestroy {
               if (local) {
                 this.documentStorage.removeItem(local.id, person);
               }
-              return {document: document, form: forms[document.formID]};
+              return {document, form: forms[document.formID]};
             })
           ))
         )),

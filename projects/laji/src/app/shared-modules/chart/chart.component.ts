@@ -42,16 +42,16 @@ export class ChartComponent {
   @Input() public legend: boolean;
   @Input() public plugins: PluginServiceGlobalRegistrationAndOptions[];
 
-  @Output() public barClick: EventEmitter<{ event?: MouseEvent, active?: {}[], index: number}> = new EventEmitter();
-  @Output() public chartClick: EventEmitter<{ event?: MouseEvent, active?: {}[] }> = new EventEmitter();
-  @Output() public chartHover: EventEmitter<{ event: MouseEvent, active: {}[] }> = new EventEmitter();
+  @Output() public barClick: EventEmitter<{ event?: MouseEvent; active?: {}[]; index: number}> = new EventEmitter();
+  @Output() public chartClick: EventEmitter<{ event?: MouseEvent; active?: {}[] }> = new EventEmitter();
+  @Output() public chartHover: EventEmitter<{ event: MouseEvent; active: {}[] }> = new EventEmitter();
 
   constructor(
     @Inject(WINDOW) private window: Window
   ) {
   }
 
-  onChartClick(event: { event?: MouseEvent, active?: {}[] }) {
+  onChartClick(event: { event?: MouseEvent; active?: {}[] }) {
     this.chartClick.emit(event);
     try {
       this.onBarClick(event);

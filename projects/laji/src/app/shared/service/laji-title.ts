@@ -10,12 +10,12 @@ export class LajiTitle extends Title {
   private decodeHtmlEntity(str: string) {
     const translateRe = /&(nbsp|amp|quot|lt|gt|shy);/g;
     const translate: Record<string, string> = {
-      'nbsp': ' ',
-      'amp' : '&',
-      'quot': '\'',
-      'lt'  : '<',
-      'gt'  : '>',
-      'shy' : ''
+      nbsp: ' ',
+      amp : '&',
+      quot: '\'',
+      lt  : '<',
+      gt  : '>',
+      shy : ''
     };
     return str.replace(translateRe, function(match, entity) {
       return translate[entity];

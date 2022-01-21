@@ -89,7 +89,7 @@ export class FormComponent implements OnInit {
                     return of({
                       formID: usedSubForm.id,
                       documentID,
-                      namedPlaceID: namedPlaceID,
+                      namedPlaceID,
                       template: !!template
                     });
                   }));

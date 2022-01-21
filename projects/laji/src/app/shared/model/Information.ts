@@ -46,7 +46,7 @@ export interface Information {
 
   parents?: Array<InformationItem>;
 
-  featuredImage?: { url: string, caption: string, alt: string };
+  featuredImage?: { url: string; caption: string; alt: string };
 
   tags?: string[];
 }

@@ -47,12 +47,10 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private collectionViewer: CollectionViewer = {
     viewChange: this.infiniteScrollStatusCheck$.pipe(
       filter(() => this.loadMoreElem && this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
-      map(() => {
-        return {
+      map(() => ({
           start: 0,
           end: this.children.length
-        };
-      })
+        }))
     )
   };
 

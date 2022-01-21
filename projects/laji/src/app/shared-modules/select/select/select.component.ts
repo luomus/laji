@@ -32,7 +32,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
-  @Input() classes: {options?: string, optionContainer?: string, menuContainer?: string} = {};
+  @Input() classes: {options?: string; optionContainer?: string; menuContainer?: string} = {};
 
   @Output() selectedChange = new EventEmitter<T[]>();
   @ViewChild('filter') filter: ElementRef;

@@ -11,7 +11,7 @@ export class Tree {
   private getChildren: (id: string) => Observable<any[]>;
   private getParents: (id: string) => Observable<any[]>;
 
-  private skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  private skipParams: {key: string; values: string[]; isWhiteList?: boolean}[];
 
   private activeId: string;
   private rootId: string;

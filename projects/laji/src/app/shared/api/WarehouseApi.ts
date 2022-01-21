@@ -97,7 +97,7 @@ export class WarehouseApi {
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (onlyCount !== undefined) {
-      queryParameters['onlyCount'] = onlyCount
+      queryParameters['onlyCount'] = onlyCount;
     }
     queryParameters['format'] = 'csv';
 
@@ -161,11 +161,11 @@ export class WarehouseApi {
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (geoJSON !== undefined) {
-      queryParameters['geoJSON'] = geoJSON
+      queryParameters['geoJSON'] = geoJSON;
     }
 
     if (onlyCount !== undefined) {
-      queryParameters['onlyCount'] = onlyCount
+      queryParameters['onlyCount'] = onlyCount;
     }
     if (target === 'count') {
       queryParameters = WarehouseApi.prepareCountQuery(queryParameters);
@@ -222,8 +222,8 @@ export class WarehouseApi {
   }
 
    /**
-   * Same as aggregate query, but performs the query on private data
-   */
+    * Same as aggregate query, but performs the query on private data
+    */
   public warehouseQueryUnitStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('unit/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
@@ -350,10 +350,10 @@ export class WarehouseApi {
   //Get filter to use in selection filters
   public warehouseQueryFilterGet(filter: string, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return EMPTY
+      return EMPTY;
     }
 
-    const path = this.basePath + '/warehouse/filters/' + filter
+    const path = this.basePath + '/warehouse/filters/' + filter;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
@@ -471,9 +471,9 @@ export class WarehouseApi {
       ...query,
       aggregateBy: selectedOrAggregatedBy,
       selected: selectedOrAggregatedBy,
-      orderBy: orderBy,
-      pageSize: pageSize,
-      page: page
+      orderBy,
+      pageSize,
+      page
     };
   }
 

@@ -137,9 +137,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       map(data => data.map(item => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-            return prev + ' ' + curr.id;
-          }, groups);
+          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
         }
         item['groups'] = groups;
         return item;
@@ -291,15 +289,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   initAnnotationTags() {
     this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
-      map(data => {
-        return data.map(element => {
+      map(data => data.map(element => {
           if (element['id'] === 'MMAN.3') {
             return { id: element['id'], quality: element['type'], position: 1 };
           } else {
             return { id: element['id'], quality: element['type'], position: 0 };
           }
-        });
-      })
+        }))
     );
 
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(

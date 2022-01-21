@@ -14,8 +14,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   @Input() searchQuery: TaxonomySearchQuery;
 
   public taxonSelectFilters: {
-    informalTaxonGroup: string,
-    onlyFinnish: boolean
+    informalTaxonGroup: string;
+    onlyFinnish: boolean;
   };
 
   public formQuery: SpeciesFormQuery = {

@@ -7,7 +7,7 @@ export class CoordinateService {
   getFeatureFromGeometry(geometry: Record<string, unknown>, properties = {}) {
     return {
       type: 'Feature',
-      properties: properties,
+      properties,
       geometry: geometry || {}
     };
   }
@@ -70,7 +70,7 @@ export class CoordinateService {
     const lonEnd = this.pad(lng + 1);
     return {
       type: 'Feature',
-      properties: properties,
+      properties,
       geometry: {
         type: 'Polygon',
         coordinates: [([

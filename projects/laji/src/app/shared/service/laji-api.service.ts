@@ -116,7 +116,7 @@ export namespace LajiApi {
       namedPlace: string;
     }
 
-    export interface FeedbackQuery extends PersonToken { }
+    export type FeedbackQuery = PersonToken;
 
     export interface FormsQuery extends Lang {
       format: 'json';
@@ -136,11 +136,11 @@ export namespace LajiApi {
       tag?: string;
     }
 
-    export interface NotificationQuery extends PersonToken { }
+    export type NotificationQuery = PersonToken;
 
-    export interface InformationQuery extends Lang { }
+    export type InformationQuery = Lang;
 
-    export interface PublicationQuery extends LangWithFallback { }
+    export type PublicationQuery = LangWithFallback;
 
     export interface SourceQuery extends LangWithFallback, Paged {
       idIn?: string;
@@ -177,27 +177,25 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export interface AnnotationTagListResponse extends Array<AnnotationTag> { }
+    export type AnnotationTagListResponse = Array<AnnotationTag>;
 
-    export interface AnnotationListResponse extends PagedResult<Annotation> { }
+    export type AnnotationListResponse = PagedResult<Annotation>;
 
-    export interface AreaListResponse extends PagedResult<Area> { }
+    export type AreaListResponse = PagedResult<Area>;
 
-    export interface ChecklistListResponse extends PagedResult<Checklist> { }
+    export type ChecklistListResponse = PagedResult<Checklist>;
 
-    export interface NewsListResponse extends PagedResult<News> { }
+    export type NewsListResponse = PagedResult<News>;
 
-    export interface FormsListResponse extends PagedResult<Form.List> { }
+    export type FormsListResponse = PagedResult<Form.List>;
 
-    export interface NotificationListResponse extends PagedResult<Notification> { }
+    export type NotificationListResponse = PagedResult<Notification>;
 
-    export interface SourceListResponse extends PagedResult<Source> { }
+    export type SourceListResponse = PagedResult<Source>;
 
-    export interface TaxonResponse extends Taxonomy {
+    export type TaxonResponse = Taxonomy;
 
-    }
-
-    export interface ImageListResponse extends PagedResult<Image> { }
+    export type ImageListResponse = PagedResult<Image>;
   }
 
 }

@@ -120,7 +120,7 @@ export class NamedPlaceApi {
 
     Object.keys(query).forEach(key => {
       if (typeof query[key] === 'string') {
-        let targetKey = key === 'userToken' ? 'personToken' : key;
+        const targetKey = key === 'userToken' ? 'personToken' : key;
         queryParameters[targetKey] = query[key];
       } else if (typeof query[key] === 'boolean') {
         queryParameters[key] = query[key] ? 'true' : 'false';
@@ -183,7 +183,7 @@ export class NamedPlaceApi {
     return this.http.delete<NamedPlace>(path, {params: queryParameters});
   }
 
-  public reserve(id: string, personToken: string, extraHttpRequestParams?: {until?: string, personID?: string}): Observable<NamedPlace> {
+  public reserve(id: string, personToken: string, extraHttpRequestParams?: {until?: string; personID?: string}): Observable<NamedPlace> {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
@@ -205,7 +205,7 @@ export class NamedPlaceApi {
     const path = this.basePath + '/named-places/{id}/reservation'
       .replace('{' + 'id' + '}', String(id));
 
-    let queryParameters = {};
+    const queryParameters = {};
     // verify required parameter 'id' is not null or undefined
     if (id === null || id === undefined) {
       throw new Error('Required parameter id was null or undefined when calling documentUpdateWithUser.');

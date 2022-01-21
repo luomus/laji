@@ -22,7 +22,7 @@ export class AreaSelectComponent implements OnInit {
 
   @Output() select = new EventEmitter<string>();
 
-  options: {id: string, value: string, translate?: boolean}[] = [];
+  options: {id: string; value: string; translate?: boolean}[] = [];
   lang: string;
 
   constructor(
@@ -50,9 +50,7 @@ export class AreaSelectComponent implements OnInit {
         if (!this.multiselect && this.allOptionEnabled) {
           options.push({id: 'all', value: 'area-select.all', translate: true});
         }
-        this.options = [...options, ...data.sort((a, b) => {
-          return a.value.localeCompare(b.value);
-        })];
+        this.options = [...options, ...data.sort((a, b) => a.value.localeCompare(b.value))];
 
         this.cd.markForCheck();
       });

@@ -56,8 +56,7 @@ export class DocumentExportService {
   private getAoa(docs: Document[]): Observable<any> {
     return this.getJsonForms(docs)
       .pipe(
-        switchMap(jsonForms => {
-          return this.getAllFields(jsonForms)
+        switchMap(jsonForms => this.getAllFields(jsonForms)
             .pipe(
               switchMap(({fields, fieldStructure}) => {
                 const dataObservables = [];
@@ -77,8 +76,7 @@ export class DocumentExportService {
                     })
                   );
               })
-            );
-        })
+            ))
       );
   }
 
@@ -254,20 +252,18 @@ export class DocumentExportService {
     return result;
   }
 
-  private getAllFields(jsonForms: {[formID: string]: Form.JsonForm}): Observable<{fields: DocumentField[], fieldStructure: DocumentField}> {
+  private getAllFields(jsonForms: {[formID: string]: Form.JsonForm}): Observable<{fields: DocumentField[]; fieldStructure: DocumentField}> {
     const fieldStructure: DocumentField = {};
     const fields: DocumentField[] = [];
 
-    const labelObservables = this.extraFields.map(value => {
-      return this.getFieldLabel(value)
+    const labelObservables = this.extraFields.map(value => this.getFieldLabel(value)
         .pipe(
           tap(label => {
-            const field: DocumentField = {value: value, label: label, used: false};
+            const field: DocumentField = {value, label, used: false};
             fieldStructure[value] = field;
             fields.push(field);
           })
-        );
-      });
+        ));
 
     return ObservableForkJoin(labelObservables)
       .pipe(
@@ -333,15 +329,13 @@ export class DocumentExportService {
             }
           }
 
-          return {fields: fields, fieldStructure: fieldStructure};
+          return {fields, fieldStructure};
         })
       );
   }
 
   private sortQueue(queue: any[]) {
-    return queue.sort((a, b) => {
-      return this.getSortIdx(a) - this.getSortIdx(b);
-    });
+    return queue.sort((a, b) => this.getSortIdx(a) - this.getSortIdx(b));
   }
 
   private getSortIdx(queueItem: any) {
@@ -366,9 +360,7 @@ export class DocumentExportService {
           geometry: obj,
         }]} as FeatureCollection).replace(/\n$/, '');
     } else if (Array.isArray(obj)) {
-      return ObservableForkJoin(obj.map((labelKey) => {
-        return this.getDataLabel(labelKey, fieldData);
-      }))
+      return ObservableForkJoin(obj.map((labelKey) => this.getDataLabel(labelKey, fieldData)))
         .pipe(map(array => array.join(', ')));
     } else {
       return this.getDataLabel(obj, fieldData);
@@ -403,9 +395,7 @@ export class DocumentExportService {
       return this.labelService
         .get(this.classPrefixes[fieldName] + '.' + fieldName, this.translate.currentLang)
         .pipe(
-          map((label) => {
-            return label || fieldName;
-          })
+          map((label) => label || fieldName)
         );
     }
 

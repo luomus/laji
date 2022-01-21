@@ -207,10 +207,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
         this.days.push({
           day: i,
           month: month + 1,
-          year: year,
+          year,
           enabled: true,
-          today: today,
-          selected: selected
+          today,
+          selected
         });
       } else {
         this.days.push({
@@ -219,7 +219,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
           year: null,
           enabled: false,
           today: false,
-          selected: selected
+          selected
         });
       }
     }
@@ -298,7 +298,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   private onTouchedCallback: () => void = () => {
-  }
+  };
   private onChangeCallback: (_: any) => void = () => {
-  }
+  };
 }
