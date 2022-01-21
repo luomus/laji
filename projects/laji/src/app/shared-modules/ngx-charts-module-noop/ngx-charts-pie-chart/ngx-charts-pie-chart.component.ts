@@ -15,5 +15,5 @@ export class NgxChartsPieChartComponent {
   @Input() gradient: any;
   @Input() customColors: any;
 
-  @Output() select = new EventEmitter();
+  @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
 }

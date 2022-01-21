@@ -238,8 +238,6 @@ export interface WarehouseQueryInterface {
 }
 
 
-export interface WarehouseTimeQueryInterface extends Pick<WarehouseQueryInterface,
+export type WarehouseTimeQueryInterface = Pick<WarehouseQueryInterface,
   'season' | 'loadedSameOrAfter' | 'loadedSameOrBefore' | 'firstLoadedSameOrAfter' | 'firstLoadedSameOrBefore'
-  > {
-
-}
+  >;

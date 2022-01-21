@@ -300,7 +300,7 @@ export class ObservationResultService {
     return document;
   }
 
-  private addFacts(document: object, cols: ObservationTableColumn[]) {
+  private addFacts(document: any, cols: ObservationTableColumn[]) {
     cols.forEach(col => {
       const paths = ObservationResultService.trueFieldPath(col.name).split('.');
       const targetPaths = (col.name).split('.');
@@ -313,7 +313,7 @@ export class ObservationResultService {
     return document;
   }
 
-  private getValue(document: object, paths: string[]) {
+  private getValue(document: any, paths: string[]) {
     let pointer = document;
     paths.forEach(path => {
       if (pointer) {
@@ -323,7 +323,7 @@ export class ObservationResultService {
     return pointer;
   }
 
-  private setValue(document: object, paths: string[], value: any) {
+  private setValue(document: any, paths: string[], value: any) {
     let pointer = document;
     let key = paths[0];
     for (let i = 0; i < paths.length - 1; i++) {
@@ -336,7 +336,7 @@ export class ObservationResultService {
     pointer[key] = value;
   }
 
-  private pickFacts(document: object, paths: string[], fact: string): string[] {
+  private pickFacts(document: any, paths: string[], fact: string): string[] {
     const facts = this.getValue(document, paths);
     if (!Array.isArray(facts) || fact.length === 0) {
       return [];
@@ -349,7 +349,7 @@ export class ObservationResultService {
     }, []);
   }
 
-  private transformDocument(document: object, transforms: IInternalObservationTableColumn[]): Observable<any> {
+  private transformDocument(document: any, transforms: IInternalObservationTableColumn[]): Observable<any> {
     return from(transforms).pipe(
       concatMap(transform => this.transformField(this.getValue(document, transform._paths), transform).pipe(
         map(value => this.setValue(document, transform._paths, value))
@@ -359,7 +359,7 @@ export class ObservationResultService {
     );
   }
 
-  private transformField(value: object, transforms: IInternalObservationTableColumn): Observable<any> {
+  private transformField(value: any, transforms: IInternalObservationTableColumn): Observable<any> {
     return this.datatableUtil.getVisibleValue(value, null, transforms.transform);
   }
 }

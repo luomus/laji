@@ -77,7 +77,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() toLastOfYear = false;
   @Input() addonText: string;
   @Input() popoverAlign: 'right' | 'left' = 'right';
-  @Output() select = new EventEmitter();
+  @Output() dateSelect = new EventEmitter();
 
   public validDate = true;
   public viewDate: string = null;
@@ -143,7 +143,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   private sendNewValue(value) {
     this.onChangeCallback(value);
-    this.select.emit(value);
+    this.dateSelect.emit(value);
     this.valueSource.next(value || '');
     this.cd.markForCheck();
   }
@@ -294,7 +294,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   clear() {
     this.value = '';
-    this.select.emit(undefined);
+    this.dateSelect.emit(undefined);
   }
 
   private onTouchedCallback: () => void = () => {

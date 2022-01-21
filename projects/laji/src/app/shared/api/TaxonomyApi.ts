@@ -1,3 +1,5 @@
+'use strict';
+
 /* tslint:disable */
 /**
  * API documentation
@@ -33,7 +35,6 @@ import { environment } from '../../../environments/environment';
 
 /* tslint:disable:no-unused-variable member-ordering */
 
-'use strict';
 
 @Injectable({providedIn: 'root'})
 export class TaxonomyApi {

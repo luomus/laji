@@ -51,7 +51,8 @@
         ],
         "brace-style": [
           "error",
-          "1tbs"
+          "1tbs",
+          {"allowSingleLine": true}
         ],
         "id-blacklist": "off",
         "id-match": "off",
@@ -69,7 +70,7 @@
         "rxjs/no-internal": "error",
         "@typescript-eslint/naming-convention": ["error", {
           "selector": "default",
-          "format": ["camelCase", "PascalCase"],
+          "format": ["camelCase"],
           "leadingUnderscore": "allow",
           "trailingUnderscore": "allow"
         },
@@ -85,10 +86,17 @@
         },
         {
           "selector": "objectLiteralProperty",
-          "format": ["camelCase", "PascalCase"]
+          "format": ["camelCase", "PascalCase"],
+          "leadingUnderscore": "allow"
+        },
+        {
+          "selector": "classProperty",
+          "format": ["camelCase", "UPPER_CASE"]
         }
         ],
-        "quote-props": "off"
+      "jsdoc/newline-after-description": "off",
+      "@typescript-eslint/no-namespace": "off",
+      "one-var": "off"
       }
     },
     {

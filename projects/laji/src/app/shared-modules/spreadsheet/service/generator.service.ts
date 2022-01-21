@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { IFormField, splitType } from '../model/excel';
+import { IFormField, SplitType } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
@@ -40,7 +40,7 @@ export class GeneratorService {
     GeneratorService.splitCoordinateSystem.wgs84
   ];
 
-  public static splittableFields: {[key: string]: splitType} = {
+  public static splittableFields: {[key: string]: SplitType} = {
     'gatheringEvent.dateBegin': 'date',
     'gatheringEvent.dateEnd': 'date',
     'gatherings[*].geometry': 'coordinate',
@@ -281,7 +281,7 @@ export class GeneratorService {
     }
   }
 
-  private getSplitFieldLabels(fullLabel: string, label: string, type: splitType) {
+  private getSplitFieldLabels(fullLabel: string, label: string, type: SplitType) {
     switch (type) {
       case 'date':
         return [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy].map(

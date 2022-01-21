@@ -1,4 +1,4 @@
-export const Global = {
+export const Global = { // eslint-disable-line @typescript-eslint/naming-convention
   type: {
     dev: 'dev',
     beta: 'beta',

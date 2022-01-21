@@ -20,7 +20,7 @@ import { ArrayType } from '@angular/compiler';
 interface IData {
   rowIdx: number;
   hash: string;
-  data: object;
+  data: Record<string, string>;
 }
 
 interface ILevelData {

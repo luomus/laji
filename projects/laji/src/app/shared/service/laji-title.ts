@@ -8,7 +8,7 @@ export class LajiTitle extends Title {
   }
 
   private decodeHtmlEntity(str: string) {
-    const translate_re = /&(nbsp|amp|quot|lt|gt|shy);/g;
+    const translateRe = /&(nbsp|amp|quot|lt|gt|shy);/g;
     const translate: Record<string, string> = {
       'nbsp': ' ',
       'amp' : '&',
@@ -17,7 +17,7 @@ export class LajiTitle extends Title {
       'gt'  : '>',
       'shy' : ''
     };
-    return str.replace(translate_re, function(match, entity) {
+    return str.replace(translateRe, function(match, entity) {
       return translate[entity];
     }).replace(/&#(\d+);/gi, function(match, numStr) {
       return String.fromCharCode(parseInt(numStr, 10));

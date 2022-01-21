@@ -11,5 +11,5 @@ export class NgxChartsTreeMapComponent {
   @Input() labelFormatting: any;
   @Input() valueFormatting: any;
 
-  @Output() select = new EventEmitter<any>();
+  @Output() select = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-native
 }

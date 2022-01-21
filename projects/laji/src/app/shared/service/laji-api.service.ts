@@ -78,13 +78,13 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-    export interface AnnotationQuery extends PersonToken { }
+    export type AnnotationQuery = PersonToken;
 
     export interface AnnotationListQuery extends Paged, PersonToken {
       rootID: string;
     }
 
-    export interface AnnotationTagsQuery extends LangWithFallback { }
+    export type AnnotationTagsQuery = LangWithFallback;
 
     export interface AreaQuery extends Lang, Paged {
       type?: LajiApi.AreaType;

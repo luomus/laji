@@ -74,7 +74,7 @@ export class PersonApi {
    * @param token User token
    * @param profileKey profile key
    */
-  public personAddFriendRequest(token: string, profileKey: string, extraHttpRequestParams?: any): Observable<{}> {
+  public personAddFriendRequest(token: string, profileKey: string, extraHttpRequestParams?: any): Observable<unknown> {
     if (this.platformService.isServer) {
       return EMPTY;
     }

@@ -60,7 +60,7 @@ export class FilterService {
     }
   }
 
-  private objectContains(needle: FilterBaseType, obj: object, properties: string[]): boolean {
+  private objectContains(needle: FilterBaseType, obj: Record<string, unknown>, properties: string[]): boolean {
     for (const i of properties) {
       if (typeof obj[i] === 'undefined') {
         continue;

@@ -46,7 +46,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() useValue = '';
   @Input() whiteList: string[];
   @Input() blackList: string[];
-  @Output() complete = new EventEmitter<void>();
+  @Output() finish = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   @ViewChild('input') inputEl: ElementRef;
@@ -159,7 +159,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.complete.emit();
+        this.finish.emit();
       }));
   }
 

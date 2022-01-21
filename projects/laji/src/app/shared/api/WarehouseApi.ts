@@ -92,7 +92,7 @@ export class WarehouseApi {
   public warehouseQueryAggregateGetCsv(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, onlyCount?: boolean): Observable<HttpResponse<any>> {
     const path = this.basePath + this.subPath + 'aggregate';
 
-    let queryParameters = {};
+    const queryParameters = {};
 
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
@@ -477,7 +477,7 @@ export class WarehouseApi {
     };
   }
 
-  private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: object): void {
+  private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: Record<string, unknown>): void {
     this.queryService.getURLSearchParams(query, queryParameters);
   }
 

@@ -1,3 +1,5 @@
+'use strict';
+
 /* tslint:disable */
 /**
  * API documentation
@@ -30,8 +32,6 @@ import { Util } from '../service/util.service';
 import { Metadata } from '../model/Metadata';
 import { Property } from '../model/Property';
 import { environment } from '../../../environments/environment';
-
-'use strict';
 
 @Injectable({providedIn: 'root'})
 export class MetadataApi {

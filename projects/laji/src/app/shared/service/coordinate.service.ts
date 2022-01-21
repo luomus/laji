@@ -4,7 +4,7 @@ import * as MapUtil from 'laji-map/lib/utils';
 @Injectable({providedIn: 'root'})
 export class CoordinateService {
 
-  getFeatureFromGeometry(geometry: Object, properties = {}) {
+  getFeatureFromGeometry(geometry: Record<string, unknown>, properties = {}) {
     return {
       type: 'Feature',
       properties: properties,
@@ -12,7 +12,7 @@ export class CoordinateService {
     };
   }
 
-  getFeatureCollectionFromGeometry(geometry: Object, properties = {}) {
+  getFeatureCollectionFromGeometry(geometry: Record<string, unknown>, properties = {}) {
     return {
       type: 'FeatureCollection',
       features: [this.getFeatureFromGeometry(geometry, properties)]

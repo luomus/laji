@@ -504,7 +504,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
 
-  private getPopup({featureIdx}, cb: Function) {
+  private getPopup({featureIdx}, cb: (description: string) => void) {
     const lang = this.translate.currentLang;
     this.translate.get('more')
       .subscribe((moreInfo) => {
