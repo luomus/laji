@@ -12,7 +12,7 @@ import {
 import { IPageLayout, ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
 import { LabelService } from '../label.service';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 /**
  * @ignore
  */

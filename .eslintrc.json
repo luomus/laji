@@ -98,12 +98,18 @@
           "selector": "classMethod",
           "format": ["camelCase", "PascalCase"],
           "leadingUnderscore": "allow"
+        },
+        {
+          "selector": "enumMember",
+          "format": ["camelCase", "PascalCase"]
         }
         ],
       "jsdoc/newline-after-description": "off",
       "@typescript-eslint/no-namespace": "off",
       "one-var": "off",
-      "@typescript-eslint/consistent-type-assertions": "off"
+      "@typescript-eslint/consistent-type-assertions": "off",
+      "@typescript-eslint/member-ordering": "off",
+      "prefer-arrow/prefer-arrow-functions": "off"
       }
     },
     {

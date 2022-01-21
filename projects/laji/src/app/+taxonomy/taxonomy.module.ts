@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routing } from './taxonomy.routes';
