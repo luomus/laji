@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 export class InformationService {
   private urlMapping: UrlMappingInterface = {
     'citizen-science': {
-      'en': '76',
-      'fi': '76',
-      'sv': '76'
+      en: '76',
+      fi: '76',
+      sv: '76'
     }
   };
 
@@ -41,8 +41,8 @@ export class InformationService {
 
 export interface UrlMappingInterface {
   [url: string]: {
-    'en': string,
-    'fi': string,
-    'sv': string
+    'en': string;
+    'fi': string;
+    'sv': string;
   };
 }

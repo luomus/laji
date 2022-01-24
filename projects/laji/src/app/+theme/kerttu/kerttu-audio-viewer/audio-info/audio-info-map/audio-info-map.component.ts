@@ -27,19 +27,17 @@ export class AudioInfoMapComponent {
 
   getData(geometry: Geometry): LajiMapDataOptions {
     return {
-      getFeatureStyle: () => {
-        return {
+      getFeatureStyle: () => ({
           weight: 2,
           opacity: 1,
           fillOpacity: 0,
           color: this.color
-        };
-      },
+        }),
       featureCollection: {
         type: 'FeatureCollection',
         features: [{
           type: 'Feature',
-          geometry: geometry,
+          geometry,
           properties: {}
         }]
       }

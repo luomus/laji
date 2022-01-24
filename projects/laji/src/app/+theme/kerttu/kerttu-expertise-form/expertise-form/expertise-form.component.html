@@ -1,6 +1,6 @@
 <laji-datatable
   [selectionType]="selectionType.checkbox"
-  (select)='onSelect($event.selected)'
+  (datatableSelect)='onSelect($event.selected)'
   [selected]="selected"
   [columns]="columns"
   [rows]="taxonList"

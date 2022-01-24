@@ -1,4 +1,6 @@
-/* tslint:disable */
+'use strict';
+
+/* eslint-disable */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
@@ -31,9 +33,8 @@ import { Util } from '../service/util.service';
 import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
 import { environment } from '../../../environments/environment';
 
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable no-unused-vars member-ordering */
 
-'use strict';
 
 @Injectable({providedIn: 'root'})
 export class TaxonomyApi {
@@ -211,35 +212,35 @@ export class TaxonomyApi {
     }
 
     if (informalGroupFilters !== undefined) {
-      queryParameters['informalGroupFilters'] = informalGroupFilters
+      queryParameters['informalGroupFilters'] = informalGroupFilters;
     }
 
     if (adminStatusFilters !== undefined) {
-      queryParameters['adminStatusFilters'] = adminStatusFilters
+      queryParameters['adminStatusFilters'] = adminStatusFilters;
     }
 
     if (redListStatusFilters !== undefined) {
-      queryParameters['redListStatusFilters'] = redListStatusFilters
+      queryParameters['redListStatusFilters'] = redListStatusFilters;
     }
 
     if (typesOfOccurrenceFilters !== undefined) {
-      queryParameters['typesOfOccurrenceFilters'] = typesOfOccurrenceFilters
+      queryParameters['typesOfOccurrenceFilters'] = typesOfOccurrenceFilters;
     }
 
     if (invasiveSpeciesFilter !== undefined) {
-      queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter ? 'true' : 'false'
+      queryParameters['invasiveSpeciesFilter'] = invasiveSpeciesFilter ? 'true' : 'false';
     }
 
     if (page !== undefined) {
-      queryParameters['page'] = page
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize
+      queryParameters['pageSize'] = pageSize;
     }
 
     if (sortOrder !== undefined) {
-      queryParameters['sortOrder'] = sortOrder
+      queryParameters['sortOrder'] = sortOrder;
     }
 
     return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
@@ -255,15 +256,15 @@ export class TaxonomyApi {
       queryParameters['lang'] = lang;
     }
     if (page !== undefined) {
-      queryParameters['page'] = page
+      queryParameters['page'] = page;
     }
 
     if (pageSize !== undefined) {
-      queryParameters['pageSize'] = pageSize
+      queryParameters['pageSize'] = pageSize;
     }
 
     if (sortOrder !== undefined) {
-      queryParameters['sortOrder'] = sortOrder
+      queryParameters['sortOrder'] = sortOrder;
     }
 
     return this.http.get<PagedResult<Taxonomy>>(path, {params: queryParameters});
@@ -284,14 +285,14 @@ export class TaxonomyApi {
     if (query === null || query === undefined) {
       throw new Error('Required parameter query was null or undefined when calling taxonomySearch.');
     }
-    queryParameters['query'] = query
+    queryParameters['query'] = query;
 
     if (limit !== undefined) {
-      queryParameters['limit'] = limit
+      queryParameters['limit'] = limit;
     }
 
     if (checklist !== undefined) {
-      queryParameters['checklist'] = checklist
+      queryParameters['checklist'] = checklist;
     }
 
     return this.http.get(path, {params: queryParameters});

@@ -34,7 +34,7 @@ export class StepperComponent implements OnInit, OnChanges {
     [Step.doneOk]: 'done'
   };
 
-  @Input() steps: {name: string, label: string, returnState: number}[] = [
+  @Input() steps: {name: string; label: string; returnState: number}[] = [
     {name: 'file', label: 'excel.step1', returnState: Step.empty},
     {name: 'colMapping', label: 'excel.step2', returnState: Step.colMapping},
     {name: 'valueMapping', label: 'excel.step3', returnState: Step.dataMapping},
@@ -66,9 +66,7 @@ export class StepperComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.state) {
       const mappedState = this.mapping[this.state] || 'file';
-      this.active = this.steps.findIndex((item) => {
-        return item.name === mappedState;
-      });
+      this.active = this.steps.findIndex((item) => item.name === mappedState);
       this.sendActive();
     }
   }

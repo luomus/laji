@@ -24,7 +24,7 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
 
   private childCache = {};
 
-  constructor (
+  constructor(
     private taxonApi: TaxonomyApi,
     private translate: TranslateService,
     private children: Taxonomy[],

@@ -51,7 +51,7 @@ export class PaginatorComponent {
     return Math.max(count || 0, 1);
   }
 
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() pageChange: EventEmitter<any> = new EventEmitter();
 
   _count = 0;
   _page = 1;
@@ -78,7 +78,7 @@ export class PaginatorComponent {
     if (page > 0 && page <= this.totalPages && page !== this.page) {
       this.page = page;
 
-      this.change.emit({
+      this.pageChange.emit({
         page
       });
     }

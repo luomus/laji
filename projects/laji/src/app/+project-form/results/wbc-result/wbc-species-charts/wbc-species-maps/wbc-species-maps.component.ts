@@ -65,9 +65,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   }
 
   mapLoaded() {
-    const maps = this.mapComponents.map(mapComponent => {
-      return mapComponent.mapComponent.map;
-    });
+    const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
     if (this.platformService.isBrowser && maps.every(mapComponents => mapComponents)) {
       this.maps = maps;
       maps.forEach(m => this.initEventListeners(m));

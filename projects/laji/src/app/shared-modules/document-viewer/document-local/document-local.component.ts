@@ -24,7 +24,7 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
-  @Output() close = new EventEmitter<boolean>();
+  @Output() annotationClose = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -82,9 +82,7 @@ export class DocumentLocalComponent implements OnChanges {
             try {
               const paths = this.gatheringGeometryJSONPath || '$.geometry';
               const geoData = {type: 'GeometryCollection', geometries:
-                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => {
-                  return [...geometries, ...JSONPath({json: gathering, path})];
-                }, []).filter(g => g)
+                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => [...geometries, ...JSONPath({json: gathering, path})], []).filter(g => g)
               };
               if (geoData && geoData.geometries[0]) {
                 this.mapData[i] = {geoJSON: geoData};
@@ -187,13 +185,13 @@ export class DocumentLocalComponent implements OnChanges {
     }, []);
 
     return {
-      fields: fields,
-      next: next
+      fields,
+      next
     };
   }
 
   closeDocument() {
-    this.close.emit(true);
+    this.annotationClose.emit(true);
   }
 
 

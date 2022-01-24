@@ -137,12 +137,14 @@ export class NpEditFormComponent implements OnInit {
   }
 
   discard() {
-    this.hasChanges
-      ? this.dialogService.confirm(
+    if (this.hasChanges) {
+      this.dialogService.confirm(
         this.translate.instant('haseka.form.discardConfirm'),
         this.translate.instant('haseka.form.leaveConfirm.confirm')
-      ).subscribe((confirmed) => confirmed && this.navigateToNPsView())
-      : this.navigateToNPsView();
+      ).subscribe((confirmed) => confirmed && this.navigateToNPsView());
+    } else {
+      this.navigateToNPsView();
+    }
   }
 
   navigateToNPsView(_namedPlace?: NamedPlace) {
@@ -183,8 +185,7 @@ export class NpEditFormComponent implements OnInit {
 
     const keys = Object.keys(formData);
 
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    for (const key of keys) {
       if (formData[key] !== undefined && filteredKeys.indexOf(key) === -1) {
         data[key] = formData[key];
       }

@@ -1,6 +1,7 @@
+/* eslint-disable max-classes-per-file */
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
-import { getAddressWithLang } from "../../helper";
+import { getAddressWithLang } from '../../helper';
 import { SubmissionsPage as GenericSubmissionsPage } from '../+vihko/submissions.po';
 const fiTranslations = require('../../../src/i18n/fi.json');
 const enTranslations = require('../../../src/i18n/en.json');
@@ -63,7 +64,7 @@ export class ProjectFormPage {
   }
 }
 
-export class NamedPlacesView { // tslint:disable-line max-classes-per-file
+export class NamedPlacesView {
  public readonly $container = $('laji-named-places');
 
   public readonly $list = this.$container.$('laji-np-list');
@@ -94,7 +95,7 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
   }
 }
 
-class AreaFilter { // tslint:disable-line max-classes-per-file
+class AreaFilter {
   $select: ElementFinder;
   constructor(selector: string) {
     this.$select = $(`laji-area-select[ng-reflect-field="${selector}"]`);
@@ -106,7 +107,7 @@ class AreaFilter { // tslint:disable-line max-classes-per-file
   }
 }
 
-export class DocumentFormView { // tslint:disable-line max-classes-per-file
+export class DocumentFormView {
   public readonly $container = $('laji-project-form-form');
   public readonly $form = $('laji-form .laji-form');
   public readonly $cancel = $('laji-form-footer .btn-danger');
@@ -138,17 +139,17 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
   }
 }
 
-class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
+class NamedPlaceLinker {
   public readonly $container = $('laji-named-place-linker');
   public readonly namedPlacesView = new NamedPlacesView();
 }
 
-class AboutPage { // tslint:disable-line max-classes-per-file
+class AboutPage {
   public readonly $aboutContent = $('laji-about');
   public readonly $loginButton = $('.login-button');
 }
 
-class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per-file
+class MobileAboutPage extends AboutPage {
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
@@ -162,6 +163,6 @@ class SubmissionsPage {
   $container = $('laji-submissions');
 }
 
-class DisabledPage { // tslint:disable-line max-classes-per-file
+class DisabledPage {
   public $container = $('laji-project-form-disabled')
 }

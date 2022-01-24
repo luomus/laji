@@ -13,18 +13,18 @@ import { PlatformService } from '../shared/service/platform.service';
 
 export interface IObservationData {
   units: {
-    total: number
+    total: number;
   };
   species: {
-    total: number
+    total: number;
   };
   private: {
-    total: number
+    total: number;
   };
 }
 
 const overrideType = {
-  'qualityIssues': 'array'
+  qualityIssues: 'array'
 };
 
 @Injectable({

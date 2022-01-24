@@ -23,9 +23,9 @@ export class HerpetologyComponent implements OnInit {
   year;
   currentYear;
 
-  public amphibianTaxa: {taxon: Taxonomy, images: any}[] = [];
-  public reptileTaxa: {taxon: Taxonomy, images: any}[] = [];
-  public occasionalTaxa: {taxon: Taxonomy, images: any}[] = [];
+  public amphibianTaxa: {taxon: Taxonomy; images: any}[] = [];
+  public reptileTaxa: {taxon: Taxonomy; images: any}[] = [];
+  public occasionalTaxa: {taxon: Taxonomy; images: any}[] = [];
 
   public taxonImages: Array<TaxonomyImage>;
   public amphibianImages: Array<TaxonomyImage>;
@@ -62,31 +62,25 @@ export class HerpetologyComponent implements OnInit {
           {selectedFields: 'id,alternativeVernacularName,vernacularName'}
         ).pipe(
         map(species => species.results)).pipe(
-        switchMap(data => {
-          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi').pipe(
-            map(images => ({taxon: taxon, images: images[0] || {} })))
-          ));
-        })),
+            map(images => ({taxon, images: images[0] || {} })))
+          )))),
       this.taxonomyApi
         .taxonomyFindSpecies('MX.37610', 'multi', 'MVL.162',  undefined, undefined, 'MX.typeOfOccurrenceStablePopulation').pipe(
         map(species => species.results)).pipe(
-        switchMap(data => {
-          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi').pipe(
-            map(images => ({taxon: taxon, images: images[0] || {}})))
-          ));
-        })),
+            map(images => ({taxon, images: images[0] || {}})))
+          )))),
       this.taxonomyApi
         .taxonomyFindSpecies('MX.37608', 'multi', 'MVL.26',  undefined, undefined,
           'MX.typeOfOccurrenceAnthropogenic,MX.typeOfOccurrenceRareVagrant,MX.typeOfOccurrenceVagrant').pipe(
         map(species => species.results)).pipe(
-        switchMap(data => {
-          return ObservableForkJoin(data.map(taxon => this.taxonomyApi
+        switchMap(data => ObservableForkJoin(data.map(taxon => this.taxonomyApi
             .taxonomyFindMedia(taxon.id, 'multi').pipe(
-            map(images => ({taxon: taxon, images: images[0] || {}})))
-          ));
-        }))
+            map(images => ({taxon, images: images[0] || {}})))
+          ))))
     );
 
     of(this.herpetology).pipe(

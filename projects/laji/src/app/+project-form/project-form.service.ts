@@ -33,7 +33,7 @@ export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
 
 @Injectable()
 export class ProjectFormService {
-  constructor (
+  constructor(
     private formService: FormService,
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService

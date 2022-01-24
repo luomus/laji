@@ -25,15 +25,14 @@ export class SpectrogramService {
     private httpClient: HttpClient
   ) {}
 
-  public getSpectrogramImageData(buffer: AudioBuffer, config?: ISpectrogramConfig)
-    : Observable<ImageData> {
+  public getSpectrogramImageData(buffer: AudioBuffer, config?: ISpectrogramConfig): Observable<ImageData> {
     config = config ? {...this.defaultConfig, ...config} : this.defaultConfig;
 
-    return this.getColormap().pipe(switchMap(colormap => {
-        return this.computeSpectrogram(buffer, config).pipe(map(({spectrogram, width, heigth}) => {
-          return this.spectrogramToImageData(spectrogram, width, heigth, colormap);
-        }));
-    }));
+    return this.getColormap().pipe(
+      switchMap(colormap => this.computeSpectrogram(buffer, config).pipe(
+        map(({spectrogram, width, heigth}) => this.spectrogramToImageData(spectrogram, width, heigth, colormap))
+      ))
+    );
   }
 
   private spectrogramToImageData(spect: Float32Array, width: number, height: number, colormap: any): ImageData {
@@ -41,8 +40,7 @@ export class SpectrogramService {
     const data = new Uint8ClampedArray(spect.length * 4);
 
     let offset = 0;
-    for (let i = 0; i < spect.length; i++) {
-      let value = spect[i];
+    for (let value of spect) {
       value = this.convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
 
       const color = colormap[Math.round(value)];
@@ -57,7 +55,7 @@ export class SpectrogramService {
   }
 
   private computeSpectrogram(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{
-    spectrogram: Float32Array, width: number, heigth: number
+    spectrogram: Float32Array; width: number; heigth: number;
   }> {
     return this.getData(buffer, config).pipe(map(({data, sumByColumn}) => {
       const meanNoise = this.getMeanNoiseColumn(data, sumByColumn, config);
@@ -76,7 +74,7 @@ export class SpectrogramService {
     }));
   }
 
-  private getData(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{data: Float32Array[], sumByColumn: number[]}> {
+  private getData(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{data: Float32Array[]; sumByColumn: number[]}> {
     const {sampleRate, nperseg, noverlap} = config;
 
     return this.resampleBuffer(buffer, sampleRate).pipe(map((resampled) => {
@@ -114,16 +112,14 @@ export class SpectrogramService {
         offset += nperseg - noverlap;
       }
 
-      return {data: data, sumByColumn: sumByColumn};
+      return {data, sumByColumn};
     }));
   }
 
   private getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config: ISpectrogramConfig): Float32Array {
     const nbrOfColumns = Math.min(sumByColumn.length, config.maxNbrOfColsForNoiseEstimation);
     const indexArray = [...Array(nbrOfColumns).keys()];
-    indexArray.sort((a, b) => {
-      return sumByColumn[a] < sumByColumn[b] ? -1 : sumByColumn[a] > sumByColumn[b] ? 1 : 0;
-    });
+    indexArray.sort((a, b) => sumByColumn[a] < sumByColumn[b] ? -1 : sumByColumn[a] > sumByColumn[b] ? 1 : 0);
 
     /* estimate noise level from 10% of columns with lowest energy */
     const n = Math.round(nbrOfColumns / 10);
@@ -142,19 +138,19 @@ export class SpectrogramService {
   private filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: ISpectrogramConfig): number {
     let maxValue = 0;
 
-    for (let i = 0; i < data.length; i++) {
+    for (const item of data) {
       for (let j = 0; j < data[0].length; j++) {
-        data[i][j] = data[i][j] - config.noiseReductionParam * meanNoise[j];
-        if (data[i][j] < 0) {
-          data[i][j] = 0;
+        item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
+        if (item[j] < 0) {
+          item[j] = 0;
         }
         // first rows are usually very noisy
         if (j < config.nbrOfRowsRemovedFromStart) {
-          data[i][j] = 0;
+          item[j] = 0;
         }
 
-        if (data[i][j] > maxValue) {
-          maxValue = data[i][j];
+        if (item[j] > maxValue) {
+          maxValue = item[j];
         }
       }
     }
@@ -164,9 +160,9 @@ export class SpectrogramService {
   private scaleSpectrogram(data: Float32Array[], maxValue: number, config: ISpectrogramConfig) {
     const logRange = config.logRange;
 
-    for (let i = 0; i < data.length; i++) {
+    for (const item of data) {
       for (let j = 0; j < data[0].length; j++) {
-        data[i][j] = (Math.log10(data[i][j] / maxValue + Math.pow(10, -2 * logRange)) + 2 * logRange) / (2 * logRange);
+        item[j] = (Math.log10(item[j] / maxValue + Math.pow(10, -2 * logRange)) + 2 * logRange) / (2 * logRange);
       }
     }
   }
@@ -183,10 +179,9 @@ export class SpectrogramService {
     return result;
   }
 
-  private findMinAndMaxValue(data: Float32Array): {minValue: number, maxValue: number} {
+  private findMinAndMaxValue(data: Float32Array): {minValue: number; maxValue: number} {
     let minValue: number, maxValue: number;
-    for (let i = 0; i < data.length; i++) {
-      const value = data[i];
+    for (const value of data) {
       if (minValue == null || value < minValue) {
         minValue = value;
       }
