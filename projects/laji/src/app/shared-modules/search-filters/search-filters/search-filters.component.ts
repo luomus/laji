@@ -9,11 +9,11 @@ import { BrowserService } from '../../../shared/service/browser.service';
 export class SearchFiltersComponent {
   @Input() showFilter = true;
   @Input() queryType: string;
-  @Input() query: object;
+  @Input() query: Record<string, unknown>;
   @Input() activeSkip: string[] = [];
 
   @Output() showFilterChange = new EventEmitter<boolean>();
-  @Output() queryChange = new EventEmitter<object>();
+  @Output() queryChange = new EventEmitter<Record<string, unknown>>();
 
   constructor(
     private browserService: BrowserService

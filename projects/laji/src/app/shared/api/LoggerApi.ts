@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars member-ordering */
+/* eslint-disable no-unused-vars */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to
@@ -75,7 +75,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logError(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logError(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
     const path = this.basePath + '/logger/error';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -88,7 +88,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logInfo(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logInfo(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
     const path = this.basePath + '/logger/info';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -117,7 +117,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logWarn(data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
+  public logWarn(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
     const path = this.basePath + '/logger/warn';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};

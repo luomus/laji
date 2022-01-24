@@ -134,10 +134,10 @@ export class DatatableUtil {
       values = [values];
     }
     const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
+    for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
-          map((res: Publication) => res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i]))
+        this.publicationService.getPublication(item, this.translate.currentLang).pipe(
+          map((res: Publication) => res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : item))
       );
     }
     return ObservableForkJoin(labelObservables).pipe(

@@ -66,7 +66,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
-  @Output() select = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
   filterByChange: Subscription;

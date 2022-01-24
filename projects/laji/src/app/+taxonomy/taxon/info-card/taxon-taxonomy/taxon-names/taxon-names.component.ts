@@ -47,8 +47,8 @@ export class TaxonNamesComponent {
   }
 
   taxonHasSynonymKey(taxon) {
-    for (let i = 0; i < this.synonymTypes.length; i++) {
-      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+    for (const synonymType of this.synonymTypes) {
+      if (taxon.hasOwnProperty(synonymType)) {
         return true;
       }
     }
@@ -56,8 +56,8 @@ export class TaxonNamesComponent {
   }
 
   hasOtherNamesBefore(array) {
-    for (let i = 0; i < array.length; i++) {
-      if (this.availableLangs[array[i]].length > 0) {
+    for (const item of array) {
+      if (this.availableLangs[item].length > 0) {
         return true;
       }
     }

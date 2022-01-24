@@ -7,7 +7,7 @@ import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.
 
 const SCROLL_SPEED = 500; // pixels per second
 
-const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: Function): [number, Array<T>] => {
+const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T) => boolean): [number, Array<T>] => {
   const newArr: T[] = [];
   let newIdx: number = index;
 

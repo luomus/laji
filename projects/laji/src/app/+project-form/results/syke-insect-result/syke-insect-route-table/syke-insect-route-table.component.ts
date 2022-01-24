@@ -154,8 +154,8 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   private getAoa(): string[][] {
     const aoa = [[]];
 
-    for (let i = 0; i < this.columns.length; i++) {
-      aoa[0].push(this.translate.instant(this.columns[i].label));
+    for (const col of this.columns) {
+      aoa[0].push(this.translate.instant(col.label));
     }
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);

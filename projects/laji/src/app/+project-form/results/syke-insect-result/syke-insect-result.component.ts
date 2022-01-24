@@ -30,7 +30,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
   taxon$: Observable<Taxonomy>;
-  Tabs = Tabs;
+  Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   tab$: Observable<keyof typeof Tabs>;
   year;
   currentMonth;

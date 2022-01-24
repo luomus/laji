@@ -84,7 +84,7 @@ export class NpListComponent implements OnDestroy {
         label: 'observation.form.placeName',
         width: 100
       },
-      '$._status': {
+      '$._status': { // eslint-disable-line @typescript-eslint/naming-convention
         label: 'Tila',
         width: 20,
         cellTemplate: 'statusTpl'

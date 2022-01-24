@@ -20,7 +20,7 @@ export class AreaSelectComponent implements OnInit {
   @Input() selectOptionEnabled = true;
   @Input() allOptionEnabled = false;
 
-  @Output() select = new EventEmitter<string>();
+  @Output() areaSelect = new EventEmitter<string>();
 
   options: {id: string; value: string; translate?: boolean}[] = [];
   lang: string;

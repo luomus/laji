@@ -102,6 +102,12 @@
         {
           "selector": "enumMember",
           "format": ["camelCase", "PascalCase"]
+        },
+        {
+          "selector": "typeProperty",
+          "format": ["camelCase", "PascalCase"],
+          "leadingUnderscore": "allow",
+          "trailingUnderscore": "allow"
         }
         ],
       "jsdoc/newline-after-description": "off",
@@ -109,7 +115,10 @@
       "one-var": "off",
       "@typescript-eslint/consistent-type-assertions": "off",
       "@typescript-eslint/member-ordering": "off",
-      "prefer-arrow/prefer-arrow-functions": "off"
+      "prefer-arrow/prefer-arrow-functions": "off",
+      "@typescript-eslint/no-unused-expressions": ["error", {
+        "allowTernary": true
+      }]
       }
     },
     {

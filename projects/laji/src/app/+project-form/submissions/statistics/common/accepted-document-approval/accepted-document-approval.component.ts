@@ -175,7 +175,13 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       '$.gatherings.*.gatheringFact.lineTransectSegmentMetersEnd'
     ];
 
-    const getGeometry = (_document: any) => this.documentService.removeMeta({type: 'GeometryCollection', geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []}, ['$.geometries.*.coordinateVerbatim']);
+    const getGeometry = (_document: any) =>
+      this.documentService.removeMeta({
+        type: 'GeometryCollection',
+        geometry: JSON.parse(JSON.stringify(_document)).gatherings?.map(item => item.geometry) || []
+      },
+        ['$.geometries.*.coordinateVerbatim']
+      );
 
     const getDiff = (_acceptedDocument: any, _document: any) => (diff(_acceptedDocument, _document) || []).reduce((_diff, diffObj) => {
         // Flatten object rhs (right-hand-side, or otherwise speaking the new value) to

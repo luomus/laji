@@ -12,7 +12,7 @@ import { PagedResult } from '../model/PagedResult';
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups: string[];
-  @Output() select = new EventEmitter();
+  @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
 
   lang: string;
   public groups: InformalTaxonGroup[] = [];

@@ -202,8 +202,8 @@ export class SelectSubcategoriesComponent implements OnChanges {
     }
 
     let countEmpty = 0;
-    for (let i = 0; i < filteredKeys.length; i++) {
-      if (selected[filteredKeys[i]].length === 0 || selected[filteredKeys[i]] === undefined) {
+    for (const filteredKey of filteredKeys) {
+      if (selected[filteredKey].length === 0 || selected[filteredKey] === undefined) {
         countEmpty++;
       }
     }
@@ -386,9 +386,15 @@ export class SelectSubcategoriesComponent implements OnChanges {
               && this.selectedOptions['GLOBAL'] !== undefined
               && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
               && x.id === option.id) > -1
-              && this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id)]['checkboxValue'] === true
+              && this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(
+                (x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id
+              )]['checkboxValue'] === true
             ) {
-              this.selectedOptions[item] ? this.selectedOptions[item].push(option.id) : this.selectedOptions[item] = [option.id];
+              if (this.selectedOptions[item]) {
+                this.selectedOptions[item].push(option.id);
+              } else {
+                this.selectedOptions[item] = [option.id];
+              }
             }
           });
         }
@@ -446,8 +452,8 @@ export class SelectSubcategoriesComponent implements OnChanges {
     const tmpCat = [];
 
     if (equals === false) {
-      for (let i = 0; i < categories.length; i++) {
-        selectedOptions[categories[i]].map(item => {
+      for (const category of categories) {
+        selectedOptions[category].map(item => {
           const index = tmpCat.findIndex(el => el.id === item);
           if (index > -1) {
             tmpCat[index]['count'] += 1;

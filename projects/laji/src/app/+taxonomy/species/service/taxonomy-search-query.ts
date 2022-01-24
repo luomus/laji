@@ -69,8 +69,7 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks',
       'primaryHabitat', 'anyHabitat'
     ];
-    for (let i = 0; i < arrayKeys.length; i++) {
-      const key = arrayKeys[i];
+    for (const key of arrayKeys) {
       newQuery[key] = this.getArrayParam(params, key);
     }
 

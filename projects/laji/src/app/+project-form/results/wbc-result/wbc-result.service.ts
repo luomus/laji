@@ -97,8 +97,8 @@ export class WbcResultService {
       map(res => res.results),
       map(res => {
         const result = {};
-        for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], 1);
+        for (const r of res) {
+          this.addCount(result, r.aggregateBy['unit.linkings.taxon.speciesId'], 1);
         }
         return result;
       })
@@ -144,8 +144,8 @@ export class WbcResultService {
       map(res => res.results),
       map(res => {
         const result = {};
-        for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], res[i].individualCountSum);
+        for (const r of res) {
+          this.addCount(result, r.aggregateBy['unit.linkings.taxon.speciesId'], r.individualCountSum);
         }
         return result;
       })
@@ -430,8 +430,8 @@ export class WbcResultService {
 
       let sum = 0;
       const counts = [];
-      for (let i = 0; i < years.length; i++) {
-        const key = years[i] + '';
+      for (const year of years) {
+        const key = year + '';
         if (!obj[key]) {
           obj[key] = 0;
         }
@@ -454,13 +454,13 @@ export class WbcResultService {
       const years = result[season].years;
 
       const speciesStats = result[season].speciesStats;
-      for (let j = 0; j < speciesStats.length; j++) {
-        addStatisticsToObj(speciesStats[j], years);
+      for (const speciesStat of speciesStats) {
+        addStatisticsToObj(speciesStats, years);
       }
 
       const otherStats = result[season].otherStats;
-      for (let j = 0; j < otherStats.length - 1; j++) {
-        addStatisticsToObj(otherStats[j], years);
+      for (const otherStat of otherStats) {
+        addStatisticsToObj(otherStat, years);
       }
     }
   }

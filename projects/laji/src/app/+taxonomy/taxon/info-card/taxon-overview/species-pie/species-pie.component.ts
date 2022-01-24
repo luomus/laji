@@ -76,9 +76,9 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         onComplete() {
             const chartInstance = this.chart,
             ctx = chartInstance.ctx;
-            const chart_width = chartInstance['width'];
-            const font_size = Math.round(chart_width / 80) > 10 ? Math.round(chart_width / 80) : 10;
-            ctx.font = Chart.helpers.fontString(font_size, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+            const chartWidth = chartInstance['width'];
+            const fontSize = Math.round(chartWidth / 80) > 10 ? Math.round(chartWidth / 80) : 10;
+            ctx.font = Chart.helpers.fontString(fontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'bottom';
@@ -89,10 +89,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
                     const label = dataset.tree[index].label;
                     const data = dataset.tree[index].value;
                     const width = Math.ceil(ctx.measureText(label).width);
-                    const final_label = width < Math.ceil(dataset['data'][index].w) ? label : '';
-                    const final_data = width < Math.ceil(dataset['data'][index].w) ? data : '';
-                    ctx.fillText(final_label, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
-                    ctx.fillText(final_data, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
+                    const finalLabel = width < Math.ceil(dataset['data'][index].w) ? label : '';
+                    const finalData = width < Math.ceil(dataset['data'][index].w) ? data : '';
+                    ctx.fillText(finalLabel, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
+                    ctx.fillText(finalData, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
                 });
             });
             }
@@ -126,7 +126,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     }
     ];
     this.lineChartLabels = [];
-    const tmp_array = [];
+    const tmpArray = [];
     (this.children || []).forEach((child, index) => {
       const id = child.id;
       const count = child.countOfFinnishSpecies;
@@ -135,7 +135,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
       if (count > 0) {
         this.dataById[id] = child;
-        tmp_array.push({value: count,
+        tmpArray.push({value: count,
         label: (child.vernacularName) ?
         ( typeof child.vernacularName  === 'object' ?
         MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id});
@@ -144,8 +144,8 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       }
     });
 
-    tmp_array.sort((a, b) => (a.value > b.value) ? -1 : 1);
-    this.lineChartData[0]['data'][0]['data'] = tmp_array;
+    tmpArray.sort((a, b) => (a.value > b.value) ? -1 : 1);
+    this.lineChartData[0]['data'][0]['data'] = tmpArray;
 
   }
 

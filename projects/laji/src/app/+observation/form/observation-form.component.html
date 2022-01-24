@@ -591,7 +591,7 @@
     [alt]="'MX.iucnStatuses'"></laji-metadata-select>
   <laji-habitat-select
     [query]="query"
-    (select)="onHabitatChange($event)"
+    (habitatSelect)="onHabitatChange($event)"
   ></laji-habitat-select>
   <p>
     {{ 'observation.intro.typeOfOccurrenceId' | translate }}

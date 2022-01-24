@@ -25,8 +25,8 @@ export class TaxonConceptService {
           const matches = xml.getElementsByTagNameNS(this.SKOS, 'exactMatch');
           const result = [];
 
-          for (let i = 0; i < matches.length; i++) {
-            const match = this.getValueOrResource(matches[i]);
+          for (const _match of matches) {
+            const match = this.getValueOrResource(_match);
             if (match && match !== this.TUN + id) {
               result.push(match);
             }
@@ -47,8 +47,7 @@ export class TaxonConceptService {
             {name: 'inScheme', namespace: this.SKOS}
           ];
 
-          for (let i = 0; i < variables.length; i++) {
-            const variable = variables[i];
+          for (const variable of variables) {
             const match = xml.getElementsByTagNameNS(variable.namespace, variable.name);
             if (match && match.length > 0) {
               const value = this.getValueOrResource(match[0]);
@@ -73,8 +72,7 @@ export class TaxonConceptService {
           const result = {};
           const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
 
-          for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
+          for (const match of matches) {
             const lang = this.getAttribute(match, this.XML, 'lang');
             const value = this.getValueOrResource(match);
             if (lang && value) {

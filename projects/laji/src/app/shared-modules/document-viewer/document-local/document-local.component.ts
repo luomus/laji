@@ -24,7 +24,7 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
-  @Output() close = new EventEmitter<boolean>();
+  @Output() annotationClose = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -191,7 +191,7 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   closeDocument() {
-    this.close.emit(true);
+    this.annotationClose.emit(true);
   }
 
 

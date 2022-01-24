@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * Originally from here: http://blog.ivank.net/fastest-gaussian-blur.html

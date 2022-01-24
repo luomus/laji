@@ -295,7 +295,7 @@ export class SearchQueryService implements SearchQueryInterface {
     return result;
   }
 
-  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: object, skipParams: string[] = []): object {
+  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: Record<string, unknown>, skipParams: string[] = []): Record<string, unknown> {
     if (!queryParameters) {
       queryParameters = {};
     }

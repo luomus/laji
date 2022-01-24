@@ -47,7 +47,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
-  @Output() select = new EventEmitter();
 
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
@@ -98,7 +97,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.userService.setUserSetting(this._settingsKey, this.userSettings);
           }
         }
-        } as object};
+        } as any};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
       options = {
@@ -164,7 +163,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   initMap() {
-    import('laji-map').then(({ LajiMap }) => {
+    import('laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
       this.zone.runOutsideAngular(() => {
         if (this.map) {
           this.map.destroy();

@@ -276,7 +276,11 @@ export class ObservationResultService {
   private stringToObj(path, value, obj) {
     const parts = path.split('.');
     let part;
-    while (part = parts.shift()) {
+    while (true) {
+      part = parts.shift();
+      if (!part) {
+        break;
+      }
       if (typeof obj[part] !== 'object') {
         obj[part] = {};
       }

@@ -38,7 +38,7 @@ export class AudioPlayerComponent implements OnInit {
     mediaType: '',
   };
   public images: Image [] = [];
-  public PopupSpectrum = false;
+  public popupSpectrum = false;
   public audioFile: Audio;
 
   constructor(
@@ -138,7 +138,7 @@ export class AudioPlayerComponent implements OnInit {
     } else {
       this.nowplayingAudioId = index;
     }
-    this.PopupSpectrum = true;
+    this.popupSpectrum = true;
     this.childComunication.emitChildEvent(true);
     this.startPopupPlayer(index);
   }
@@ -147,8 +147,8 @@ export class AudioPlayerComponent implements OnInit {
     this.playingAudio = this.listAudio[index];
   }
 
-  onHidePopupSpectrum() {
-    this.PopupSpectrum = false;
+  onHidepopupSpectrum() {
+    this.popupSpectrum = false;
     this.childComunication.emitChildEvent(false);
     this.cd.detectChanges();
     this.audioPause(this.nowplayingAudioId);

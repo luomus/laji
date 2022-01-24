@@ -76,11 +76,11 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       mode: 'index',
       intersect: false,
       onHover(this, e, element) {
-        let index_chart;
+        let indexChart;
         if (element[0]) {
-         index_chart = Number(element[0]['_index']);
+         indexChart = Number(element[0]['_index']);
         } else {
-          index_chart = -1;
+          indexChart = -1;
         }
 
 
@@ -93,29 +93,29 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
             let empty = 0;
-            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
-              if ( !dataset[Number(index_chart) + 1] || (index_chart === 0 && !dataset[Number(index_chart) + 1])) {
-                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
-                const diff = index - Number(index_chart);
+            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+              if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
+                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const diff = index - Number(indexChart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -3 * diff;
                 }
               }
-              if ( !dataset[Number(index_chart) - 1] || (index_chart === (dataset.length - 1) && !dataset[Number(index_chart) - 1])) {
+              if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
-                  const diff = Number(index_chart) - (Number(index_chart) - index);
+                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const diff = Number(indexChart) - (Number(indexChart) - index);
                     empty = 3 * diff;
                 }
               }
             }
 
 
-            const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - Math.ceil(col_width / 2), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - (Math.ceil(col_width / 2) - offset), y + (Math.ceil(col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
@@ -130,28 +130,28 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
 
             let empty = 0;
-            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
-              if ( !dataset[Number(index_chart) + 1]) {
-                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
-                const diff = index - Number(index_chart);
+            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+              if ( !dataset[Number(indexChart) + 1]) {
+                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const diff = index - Number(indexChart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                     empty = -3 * diff;
                 }
               }
-              if (!dataset[Number(index_chart) - 1]) {
+              if (!dataset[Number(indexChart) - 1]) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
-                  const diff = Number(index_chart) - (Number(index_chart) - index);
+                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const diff = Number(indexChart) - (Number(indexChart) - index);
                     empty = 3 * diff;
                 }
               }
             }
 
 
-            const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - (Math.ceil(col_width / 2)), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
           && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
           } else {
@@ -218,7 +218,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const year = this.chart.tooltip._data.labels[0] === '2006' ? 15 : 6;
           const offset = this.chart.tooltip._data.labels[0] === '2006' ? 6 : 0;
-          const col_width = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
+          const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
           const activePoint = this.chart.tooltip._active[0];
 
           const ctx = this.chart.ctx;
@@ -231,7 +231,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
           const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
 
-          if (range(x - (col_width / 2), x + ((col_width / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
+          if (range(x - (colWidth / 2), x + ((colWidth / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
           range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
             ctx.save();
             ctx.beginPath();
