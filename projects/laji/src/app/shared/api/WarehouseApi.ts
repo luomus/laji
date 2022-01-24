@@ -34,7 +34,7 @@ import { environment } from '../../../environments/environment';
 import { PlatformService } from '../service/platform.service';
 import { EMPTY } from 'rxjs';
 
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable no-unused-vars member-ordering */
 
 'use strict';
 

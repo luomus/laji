@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker

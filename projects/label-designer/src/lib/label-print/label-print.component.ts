@@ -52,7 +52,7 @@ img {
   transform: scale(0.25);
 }
 `;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 export interface IRenderPageOptions {
   skip?: number;

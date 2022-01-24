@@ -22,7 +22,7 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 @NgModule({
   imports: [

@@ -13,7 +13,7 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
 import { SelectModule } from '../select/select.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 @NgModule({
   imports: [

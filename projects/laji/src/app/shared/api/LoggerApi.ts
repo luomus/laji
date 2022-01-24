@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable no-unused-vars member-ordering */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to

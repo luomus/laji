@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
@@ -10,7 +9,6 @@ import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups: string[];

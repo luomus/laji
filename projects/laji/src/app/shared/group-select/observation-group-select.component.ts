@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';

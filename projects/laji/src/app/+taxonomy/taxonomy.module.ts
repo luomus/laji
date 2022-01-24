@@ -79,7 +79,7 @@ import {SelectModule} from '../shared-modules/select/select.module';
 import { IdentificationListComponent } from './taxon/info-card/taxon-identification/identification-list/identification-list.component';
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,

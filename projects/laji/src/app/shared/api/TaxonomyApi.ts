@@ -33,7 +33,7 @@ import { Util } from '../service/util.service';
 import { LajiTaxonSearch } from '../model/LajiTaxonSearch';
 import { environment } from '../../../environments/environment';
 
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable no-unused-vars member-ordering */
 
 
 @Injectable({providedIn: 'root'})
