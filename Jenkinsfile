@@ -9,7 +9,7 @@ node {
     }
     stage('Quality') {
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh './node_modules/.bin/ng lint laji --format junit --force > ./test-results/output-tslint.xml'
+        sh './node_modules/.bin/eslint projects/laji/src/**/*.ts -f checkstyle > ./test-results/output-tslint.xml'
       }
       junit allowEmptyResults: true, testResults: '**/test-results/output-tslint.xml'
     }
