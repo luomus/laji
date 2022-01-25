@@ -3,7 +3,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
 import { FileCrs, FileGeometry } from '../../shared/service/geo-convert.service';
 import { KeyValue } from '@angular/common';
-import { DialogService } from '../../shared/service/dialog.service';
 
 export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
 
@@ -61,7 +60,7 @@ export interface DownloadParams {
             <ng-container *ngIf="fileType === 'shp' || fileType === 'gpkg'">
               <div class="mb-3">
                 <label for="fileNumber">{{ 'download.fileNumber' | translate }}:</label>
-                <input id="fileNumber" name="fileNumber" class="form-control" [(ngModel)]="fileNumber" type="number">
+                <input id="fileNumber" name="fileNumber" class="form-control" type="number" [(ngModel)]="fileNumber" (ngModelChange)="checkCanDownloadStatus()">
               </div>
               <div class="mb-3">
                 <label for="geometry">{{ 'download.geometry' | translate }}:</label>
@@ -135,8 +134,7 @@ export class DownloadComponent implements OnChanges {
   }
 
   constructor(
-    private modalService: BsModalService,
-    private dialogService: DialogService
+    private modalService: BsModalService
   ) { }
 
   ngOnChanges() {
@@ -162,10 +160,6 @@ export class DownloadComponent implements OnChanges {
     }
     const params: DownloadParams = {fileType: this.fileType};
     if (this.fileType === 'shp' || this.fileType === 'gpkg') {
-      if (!this.fileNumber) {
-        this.dialogService.alert('download.missingFileNumber');
-        return;
-      }
       params.fileNumber = this.fileNumber;
       params.geometry = this.geometry;
       params.crs = this.crs;
@@ -177,8 +171,10 @@ export class DownloadComponent implements OnChanges {
     return 0;
   }
 
-  private checkCanDownloadStatus() {
-    this.disableDownLoad = this.downloadLoading || (this.showReason && (!this.reason || !this.reasonEnum));
+  checkCanDownloadStatus() {
+    this.disableDownLoad = this.downloadLoading ||
+      (this.showReason && (!this.reason || !this.reasonEnum)) ||
+      ((this.fileType === 'shp' || this.fileType === 'gpkg') && (this.fileNumber == null || !this.geometry || !this.crs));
   }
 
 }

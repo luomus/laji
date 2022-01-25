@@ -101,6 +101,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
     'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
   };
+  private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
   constructor(@Inject(WINDOW) private window: Window,
               public searchQuery: SearchQueryService,
@@ -290,9 +291,8 @@ export class ObservationDownloadComponent implements OnDestroy {
 
     let selected = this.columnSelector.columns;
     if (params.fileType === 'shp' || params.fileType === 'gpkg') {
-      const geometryColumn = 'gathering.conversions.wgs84WKT';
-      if (selected.indexOf(geometryColumn) === -1) {
-        selected = [...selected, geometryColumn];
+      if (selected.indexOf(this.gisDownloadGeometryField) === -1) {
+        selected = [...selected, this.gisDownloadGeometryField];
       }
     }
     const columns = this.tableColumnService.getColumns(selected);
