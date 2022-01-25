@@ -69,7 +69,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const year = 6;
           const offset = 0;
-          const colWidht = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
+          const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
           const activePoint = this.chart.tooltip._active[0];
           const ctx = this.chart.ctx;
           const x = Number((activePoint.tooltipPosition().x).toFixed(0));
@@ -81,7 +81,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
           const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
 
-          if (range(x - (colWidht / 2), x + ((colWidht / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
+          if (range(x - (colWidth / 2), x + ((colWidth / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
           range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
             ctx.save();
             ctx.beginPath();
@@ -168,11 +168,11 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             }
 
 
-            const colWidht = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - Math.ceil(colWidht / 2), x + (Math.ceil(colWidht / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - (Math.ceil(colWidht / 2) - offset), y + (Math.ceil(colWidht / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return data['datasets'][0]['translations'][0]
@@ -206,14 +206,14 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             }
 
 
-            const colWidht = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
             const title1 =  data['datasets'][0]['translations'][0] + ' · ' + tooltipItem[0].xLabel;
             const title2 = data['datasets'][0]['translations'][1] + ': ' + data['datasets'][0]['count'][tooltipItem[0].index];
             const title3 = data['datasets'][0]['translations'][2] + ': ' + data['datasets'][0]['censusCount'][tooltipItem[0].index];
 
-          if ( range(x - (Math.ceil(colWidht / 2)), x + (Math.ceil(colWidht / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
-          && range(y - (Math.ceil(colWidht / 2) - offset), y + (Math.ceil(colWidht / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          && range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return [title1, title2, title3];
           } else {
             return '';

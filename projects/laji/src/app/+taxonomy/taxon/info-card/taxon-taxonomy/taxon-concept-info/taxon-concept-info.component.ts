@@ -55,7 +55,6 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
           }
 
           for (const match of matches) {
-
             this.subs.push(this.taxonConceptService.getMatchInfo(match).pipe(catchError(() => of(undefined))).subscribe(info => {
               if (info) {
                 this.matches.push(info);

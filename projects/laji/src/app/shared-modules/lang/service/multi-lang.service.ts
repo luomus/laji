@@ -34,7 +34,7 @@ export class MultiLangService {
       }
       if (multi[_lang]) {
         return !fallback ?
-          multi[lang] :
+          multi[_lang] :
           fallback.replace('%value%', multi[_lang]).replace('%lang%', _lang);
       }
     }

@@ -25,7 +25,7 @@ export class UniquePipe implements PipeTransform {
       if (arg.addedTags) {
         for (const tag of arg.addedTags) {
           if (!arg.deleted) {
-            addedTags.push(IdService.getId(arg.addedTags[tag]));
+            addedTags.push(IdService.getId(tag));
           }
         }
       }
@@ -67,7 +67,7 @@ export class UniquePipe implements PipeTransform {
         a[a1Item] = true;
     }
 
-    for (const a2Item of a2.length) {
+    for (const a2Item of a2) {
         if (a[a2Item]) {
             delete a[a2Item];
         } else {

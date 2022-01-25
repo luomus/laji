@@ -455,7 +455,7 @@ export class WbcResultService {
 
       const speciesStats = result[season].speciesStats;
       for (const speciesStat of speciesStats) {
-        addStatisticsToObj(speciesStats, years);
+        addStatisticsToObj(speciesStat, years);
       }
 
       const otherStats = result[season].otherStats;
