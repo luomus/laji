@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length no-empty-interface */
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -78,13 +78,13 @@ export namespace LajiApi {
       langFallback?: boolean;
     }
 
-    export type AnnotationQuery = PersonToken;
+    export interface AnnotationQuery extends PersonToken { }
 
     export interface AnnotationListQuery extends Paged, PersonToken {
       rootID: string;
     }
 
-    export type AnnotationTagsQuery = LangWithFallback;
+    export interface AnnotationTagsQuery extends LangWithFallback { }
 
     export interface AreaQuery extends Lang, Paged {
       type?: LajiApi.AreaType;
@@ -116,7 +116,7 @@ export namespace LajiApi {
       namedPlace: string;
     }
 
-    export type FeedbackQuery = PersonToken;
+    export interface FeedbackQuery extends PersonToken { }
 
     export interface FormsQuery extends Lang {
       format: 'json';
@@ -136,11 +136,11 @@ export namespace LajiApi {
       tag?: string;
     }
 
-    export type NotificationQuery = PersonToken;
+    export interface NotificationQuery extends PersonToken { }
 
-    export type InformationQuery = Lang;
+    export interface InformationQuery extends Lang { }
 
-    export type PublicationQuery = LangWithFallback;
+    export interface PublicationQuery extends LangWithFallback { }
 
     export interface SourceQuery extends LangWithFallback, Paged {
       idIn?: string;
@@ -177,25 +177,27 @@ export namespace LajiApi {
       base64pdf: string;
     }
 
-    export type AnnotationTagListResponse = Array<AnnotationTag>;
+    export interface AnnotationTagListResponse extends Array<AnnotationTag> { }
 
-    export type AnnotationListResponse = PagedResult<Annotation>;
+    export interface AnnotationListResponse extends PagedResult<Annotation> { }
 
-    export type AreaListResponse = PagedResult<Area>;
+    export interface AreaListResponse extends PagedResult<Area> { }
 
-    export type ChecklistListResponse = PagedResult<Checklist>;
+    export interface ChecklistListResponse extends PagedResult<Checklist> { }
 
-    export type NewsListResponse = PagedResult<News>;
+    export interface NewsListResponse extends PagedResult<News> { }
 
-    export type FormsListResponse = PagedResult<Form.List>;
+    export interface FormsListResponse extends PagedResult<Form.List> { }
 
-    export type NotificationListResponse = PagedResult<Notification>;
+    export interface NotificationListResponse extends PagedResult<Notification> { }
 
-    export type SourceListResponse = PagedResult<Source>;
+    export interface SourceListResponse extends PagedResult<Source> { }
 
-    export type TaxonResponse = Taxonomy;
+    export interface TaxonResponse extends Taxonomy {
 
-    export type ImageListResponse = PagedResult<Image>;
+    }
+
+    export interface ImageListResponse extends PagedResult<Image> { }
   }
 
 }
@@ -216,7 +218,7 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.notifications, query: LajiApi.Query.NotificationListQuery): Observable<LajiApi.Response.NotificationListResponse>;
   getList(endpoint: LajiApi.Endpoints.sources, query: LajiApi.Query.SourceQuery): Observable<LajiApi.Response.SourceListResponse>;
   getList(endpoint: LajiApi.Endpoints.images, query: LajiApi.Query.ImageQuery): Observable<LajiApi.Response.ImageListResponse>;
-  getList<T>(endpoint: LajiApi.Endpoints, query: any = {}): Observable<T> {
+  getList<T>(endpoint: LajiApi.Endpoints, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.get<T>(url, options);
@@ -229,7 +231,7 @@ export class LajiApiService {
   get(endpoint: LajiApi.Endpoints.news, id: string): Observable<News>;
   get(endpoint: LajiApi.Endpoints.publications, id: string, query: LajiApi.Query.PublicationQuery): Observable<Publication>;
   get(endpoint: LajiApi.Endpoints.taxon, id: string, query: LajiApi.Query.TaxaQuery): Observable<Taxonomy>;
-  get<T>(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<T> {
+  get<T>(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<T> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.get<T>(url, options);
@@ -238,7 +240,7 @@ export class LajiApiService {
   post(endpoint: LajiApi.Endpoints.annotations, data: Annotation, query: LajiApi.Query.AnnotationQuery): Observable<Annotation>;
   post(endpoint: LajiApi.Endpoints.feedback, data: Feedback, query: LajiApi.Query.FeedbackQuery): Observable<void>;
   post(endpoint: LajiApi.Endpoints.htmlToPdf, data: any): Observable<Blob>;
-  post(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
+  post(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}`;
     const options: any = { params: {...Util.removeUndefinedFromObject(query)} };
     if (endpoint === LajiApi.Endpoints.htmlToPdf) {
@@ -255,7 +257,7 @@ export class LajiApiService {
   }
 
   update(endpoint: LajiApi.Endpoints.notifications, data: Notification, query: LajiApi.Query.NotificationQuery): Observable<Notification>;
-  update(endpoint: LajiApi.Endpoints, data: any, query: any = {}): Observable<any> {
+  update(endpoint: LajiApi.Endpoints, data: any, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${data.id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.put(
@@ -268,7 +270,7 @@ export class LajiApiService {
 
   remove(endpoint: LajiApi.Endpoints.annotations, id: string, query: LajiApi.Query.AnnotationQuery): Observable<void>;
   remove(endpoint: LajiApi.Endpoints.notifications, id: string, query: LajiApi.Query.NotificationQuery): Observable<any>;
-  remove(endpoint: LajiApi.Endpoints, id: string, query: any = {}): Observable<any> {
+  remove(endpoint: LajiApi.Endpoints, id: string, query: object = {}): Observable<any> {
     const url = `${environment.apiBase}/${endpoint}/${id}`;
     const options = { params: {...Util.removeUndefinedFromObject(query)} };
     return this.httpClient.delete(

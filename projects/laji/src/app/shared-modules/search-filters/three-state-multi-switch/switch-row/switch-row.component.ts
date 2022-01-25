@@ -11,11 +11,11 @@ export class SwitchRowComponent implements OnChanges {
 
   value = false;
 
-  @Input() option: {id: string; value: string};
+  @Input() option: {id: string, value: string};
   @Input() trueValue: string[];
   @Input() falseValue: string[];
 
-  @Output() update = new EventEmitter<{id: string; value: any}>();
+  @Output() update = new EventEmitter<{id: string, value: any}>();
 
   state;
   typeCheckbox = CheckboxType.excluded;

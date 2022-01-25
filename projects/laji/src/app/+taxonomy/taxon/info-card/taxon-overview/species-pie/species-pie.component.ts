@@ -56,10 +56,10 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         bodyAlign: 'center',
         displayColors: false,
         callbacks: {
-          title(item, data) {
+          title: function(item, data) {
             return data.datasets[0]['tree'][item[0]['index']].label;
           },
-          label(item, data) {
+          label: function(item, data) {
             const species = (data.datasets[0]['tree'][item['index']].value < 2) ? laji :
             lajia;
             return data.datasets[0]['tree'][item['index']].value + ' ' + species;
@@ -73,26 +73,26 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       },
       animation: {
         duration: 1,
-        onComplete() {
+        onComplete: function () {
             const chartInstance = this.chart,
             ctx = chartInstance.ctx;
-            const chartWidth = chartInstance['width'];
-            const fontSize = Math.round(chartWidth / 80) > 10 ? Math.round(chartWidth / 80) : 10;
-            ctx.font = Chart.helpers.fontString(fontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+            const chart_width = chartInstance['width'];
+            const font_size = Math.round(chart_width / 80) > 10 ? Math.round(chart_width / 80) : 10;
+            ctx.font = Chart.helpers.fontString(font_size, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'bottom';
             if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 200) {
-              this.data.datasets.forEach(function(dataset, i) {
+              this.data.datasets.forEach(function (dataset, i) {
                 const meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function(bar, index) {
+                meta.data.forEach(function (bar, index) {
                     const label = dataset.tree[index].label;
                     const data = dataset.tree[index].value;
                     const width = Math.ceil(ctx.measureText(label).width);
-                    const finalLabel = width < Math.ceil(dataset['data'][index].w) ? label : '';
-                    const finalData = width < Math.ceil(dataset['data'][index].w) ? data : '';
-                    ctx.fillText(finalLabel, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
-                    ctx.fillText(finalData, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
+                    const final_label = width < Math.ceil(dataset['data'][index].w) ? label : '';
+                    const final_data = width < Math.ceil(dataset['data'][index].w) ? data : '';
+                    ctx.fillText(final_label, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
+                    ctx.fillText(final_data, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
                 });
             });
             }
@@ -126,7 +126,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
     }
     ];
     this.lineChartLabels = [];
-    const tmpArray = [];
+    const tmp_array = [];
     (this.children || []).forEach((child, index) => {
       const id = child.id;
       const count = child.countOfFinnishSpecies;
@@ -135,17 +135,17 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
 
       if (count > 0) {
         this.dataById[id] = child;
-        tmpArray.push({value: count,
+        tmp_array.push({value: count,
         label: (child.vernacularName) ?
         ( typeof child.vernacularName  === 'object' ?
-        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id});
+        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id: id});
         this.lineChartLabels.push(child.vernacularName || child.scientificName);
         this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
       }
     });
 
-    tmpArray.sort((a, b) => (a.value > b.value) ? -1 : 1);
-    this.lineChartData[0]['data'][0]['data'] = tmpArray;
+    tmp_array.sort((a, b) => (a.value > b.value) ? -1 : 1);
+    this.lineChartData[0]['data'][0]['data'] = tmp_array;
 
   }
 

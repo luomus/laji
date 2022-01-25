@@ -16,7 +16,7 @@ export class WbcRoutesListComponent implements OnChanges {
   @Input() showFilter = true;
   @Input() showNameAsLink = true;
   @Input() countLabel: string;
-  @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
+  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   @Input() loading = true;
   @Input() selected: string[] = [];
 

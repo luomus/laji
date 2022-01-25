@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 type FilterBaseType = number|boolean|string;
 
-interface FilterObjType {by: FilterBaseType; properties: string[] }
+interface FilterObjType {by: FilterBaseType; properties: string[]; }
 
 export type FilterByType = FilterBaseType|FilterObjType;
 
@@ -60,7 +60,7 @@ export class FilterService {
     }
   }
 
-  private objectContains(needle: FilterBaseType, obj: Record<string, unknown>, properties: string[]): boolean {
+  private objectContains(needle: FilterBaseType, obj: object, properties: string[]): boolean {
     for (const i of properties) {
       if (typeof obj[i] === 'undefined') {
         continue;

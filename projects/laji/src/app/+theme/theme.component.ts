@@ -8,6 +8,6 @@ import { Global } from '../../environments/global';
 })
 export class ThemeComponent {
 
-  Global = Global; // eslint-disable-line @typescript-eslint/naming-convention
+  Global = Global;
 
 }

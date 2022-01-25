@@ -118,8 +118,8 @@ export class WbcRouteTableComponent implements OnInit {
   private getAoa(): string[][] {
     const aoa = [[]];
 
-    for (const col of this.columns) {
-      aoa[0].push(this.translate.instant(col.label));
+    for (let i = 0; i < this.columns.length; i++) {
+      aoa[0].push(this.translate.instant(this.columns[i].label));
     }
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);
@@ -174,7 +174,9 @@ export class WbcRouteTableComponent implements OnInit {
 
   private getSortingComparator(prop: string): (a, b) => number {
     if (prop === 'name') {
-      return (a, b) => (a).localeCompare(b);
+      return (a, b) => {
+        return (a).localeCompare(b);
+      };
     }
 
     return (a, b) => {

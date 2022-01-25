@@ -20,11 +20,9 @@ export class OnlyLoggedIn implements CanActivate {
     }
     return this.userService.isLoggedIn$.pipe(
       take(1),
-      tap(isLoggedIn => {
- if (!isLoggedIn) {
+      tap(isLoggedIn => { if (!isLoggedIn) {
         this.userService.redirectToLogin(state.url, route.data);
-      }
-})
+      }})
     );
   }
 

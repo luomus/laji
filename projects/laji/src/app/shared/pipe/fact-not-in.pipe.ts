@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FactNotInPipe implements PipeTransform {
 
-  transform(value: {fact: string; value: any}[], args?: string[]): any {
+  transform(value: {fact: string, value: any}[], args?: string[]): any {
     if (!args || !Array.isArray(args)) {
       return value;
     }

@@ -23,7 +23,7 @@ export class SaveObservationsFacade {
   birdMonitoringForms$ = this.store$.asObservable().pipe(map(state => state.birdMonitoringForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
-  constructor(private formService: FormService, private translate: TranslateService) {
+  constructor (private formService: FormService, private translate: TranslateService) {
 
   }
 

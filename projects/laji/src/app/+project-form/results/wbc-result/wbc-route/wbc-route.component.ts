@@ -14,7 +14,7 @@ export class WbcRouteComponent implements OnInit, OnDestroy {
 
   rows: any[];
   selected = ['gathering.eventDate.begin', 'count', 'individualCountSum'];
-  sorts: {prop: string; dir: 'asc'|'desc'}[] = [
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];
 

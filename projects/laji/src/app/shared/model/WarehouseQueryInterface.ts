@@ -1,3 +1,4 @@
+/* tslint:disable:no-redundant-jsdoc */
 /**
  * Query interface for warehouse
  *
@@ -237,6 +238,8 @@ export interface WarehouseQueryInterface {
 }
 
 
-export type WarehouseTimeQueryInterface = Pick<WarehouseQueryInterface,
+export interface WarehouseTimeQueryInterface extends Pick<WarehouseQueryInterface,
   'season' | 'loadedSameOrAfter' | 'loadedSameOrBefore' | 'firstLoadedSameOrAfter' | 'firstLoadedSameOrBefore'
-  >;
+  > {
+
+}

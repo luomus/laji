@@ -92,7 +92,7 @@ export class OwnObservationTableSettingsComponent<T extends IGenericColumn<Datat
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() resetColumns = new EventEmitter<void>();
-  @Output() settingsClose = new EventEmitter<boolean>();
+  @Output() close = new EventEmitter<boolean>();
 
   private modal: BsModalRef;
   private response = false;
@@ -106,7 +106,7 @@ export class OwnObservationTableSettingsComponent<T extends IGenericColumn<Datat
     this.response = false;
     this.modal = this.modalService.show(this.settingsModal, {class: 'modal-lg'});
     this.modalService.onHide.pipe(take(1)).subscribe(() => {
-      this.settingsClose.emit(this.response);
+      this.close.emit(this.response);
     });
   }
 

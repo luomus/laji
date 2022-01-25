@@ -106,7 +106,7 @@ export class NamedPlacesService {
       }));
   }
 
-  reserve(id: string, options?: {until?: string; personID?: string}): Observable<NamedPlace> {
+  reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {
     return this.namedPlaceApi
       .reserve(id, this.userService.getToken(), options).pipe(
         tap(() => {
@@ -155,7 +155,7 @@ export class NamedPlacesService {
   }
 
   private openValue(np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
-    const value = JSONPath({json: np, path, wrap: false, flatten: true});
+    const value = JSONPath({json: np, path: path, wrap: false, flatten: true});
     if (typeof value === 'undefined') {
       return of(np);
     }

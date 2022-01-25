@@ -24,7 +24,7 @@ export class MappingFileService {
 
   save(filename: string, mappings: IUserMappings): Observable<boolean> {
     filename = filename + (filename.endsWith('.mapping') ? '' : '.mapping');
-    return this.zipService.save(filename, {mappings, version: 1, filename});
+    return this.zipService.save(filename, {mappings, version: 1, filename: filename});
   }
 
 }

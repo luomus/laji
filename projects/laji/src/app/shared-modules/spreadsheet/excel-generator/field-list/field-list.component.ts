@@ -21,7 +21,7 @@ export class FieldListComponent implements OnChanges {
   idx: number;
   visibleFields: {
     subGroup: string;
-    fields: IFormField[];
+    fields: IFormField[]
   }[];
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,7 +67,7 @@ export class FieldListComponent implements OnChanges {
       const subGroup = current.subGroup || '';
       if (!fields[subGroup]) {
         fields[subGroup] = {
-          subGroup,
+          subGroup: subGroup,
           fields: []
         };
       }

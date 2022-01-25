@@ -37,7 +37,7 @@ export class AnnotationListComponent implements OnInit, OnDestroy, OnChanges {
   open: boolean[] = undefined;
   showItem: boolean[];
   annotationRole = Annotation.AnnotationRoleEnum;
-  tagsConverted: any = {};
+  tagsConverted: Object = {};
 
   ngOnInit() {
     (this.annotationTags || []).forEach(element => {

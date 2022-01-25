@@ -44,7 +44,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
 
   @Input() width: number;
   @Input() height: number;
-  @Input() margin: { top: number; bottom: number; left: number; right: number };
+  @Input() margin: { top: number, bottom: number, left: number, right: number };
 
   @Output() spectrogramReady = new EventEmitter();
   @Output() dragStart = new EventEmitter();
@@ -56,7 +56,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
 
   _width: number;
   _height: number;
-  _margin: { top: number; bottom: number; left: number; right: number };
+  _margin: { top: number, bottom: number, left: number, right: number };
 
   private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
   private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };

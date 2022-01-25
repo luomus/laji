@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routing } from './taxonomy.routes';
@@ -79,7 +79,7 @@ import {SelectModule} from '../shared-modules/select/select.module';
 import { IdentificationListComponent } from './taxon/info-card/taxon-identification/identification-list/identification-list.component';
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
-/* eslint-enable max-len */
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,

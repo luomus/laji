@@ -21,7 +21,7 @@ export class AreaService extends AbstractCachedHttpService<Area> {
       ), lang);
   }
 
-  getBiogeographicalProvinces(lang: string): Observable<{id: string; value: string}[]> {
+  getBiogeographicalProvinces(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.Biogeographical);
   }
 
@@ -31,23 +31,23 @@ export class AreaService extends AbstractCachedHttpService<Area> {
     );
   }
 
-  getMunicipalities(lang: string): Observable<{id: string; value: string}[]> {
+  getMunicipalities(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.Municipality);
   }
 
-  getBirdAssociationAreas(lang: string): Observable<{id: string; value: string}[]> {
+  getBirdAssociationAreas(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.BirdAssociationArea);
   }
 
-  getCountries(lang: string): Observable<{id: string; value: string}[]> {
+  getCountries(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.Country);
   }
 
-  getProvinces(lang: string): Observable<{id: string; value: string}[]> {
+  getProvinces(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.Province);
   }
 
-  getElyCentres(lang: string): Observable<{id: string; value: string}[]> {
+  getElyCentres(lang: string): Observable<{id: string, value: string}[]> {
     return this.getAreaType(lang, this.types.ElyCentre);
   }
 
@@ -57,7 +57,7 @@ export class AreaService extends AbstractCachedHttpService<Area> {
     );
   }
 
-  public getAreaType(lang: string, type: Area.AreaType): Observable<{id: string; value: string}[]> {
+  public getAreaType(lang: string, type: Area.AreaType): Observable<{id: string, value: string}[]> {
     return this.getAllAsLookUp(lang).pipe(
       map(area => {
         if (!area) {

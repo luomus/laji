@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length */
 
 
 import { Annotation } from './annotation';

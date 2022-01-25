@@ -22,7 +22,7 @@ export class BetaPopupComponent implements OnInit {
   open = false;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object // eslint-disable-line @typescript-eslint/ban-types
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {

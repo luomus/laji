@@ -17,7 +17,7 @@ export class MetadataSelectWithSubcategoriesComponent extends MetadataSelectComp
   @Input() filtersName = [];
   @Input() filtersValues = [];
 
-  @Output() update = new EventEmitter<{id: string[] | string; category: string}>();
+  @Output() update = new EventEmitter<{id: string[] | string, category: string}>();
 
   categoryOptions:  {[key: string]: SelectOption[]} = {};
   queryToSelect = [];

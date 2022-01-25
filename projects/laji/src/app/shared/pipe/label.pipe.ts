@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from '../service/triplestore-label.service';
 import { IdService } from '../service/id.service';
 
-type LabelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
+type labelType = 'qname'|'fullUri'|'warehouse'|'withKey'|'emptyWhenMissing';
 
 /**
  * Triplestores label maker
@@ -30,9 +30,9 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
-  transform(value: string, type?: LabelType): string;
-  transform(value: string[], type?: LabelType): string[];
-  transform(value: string|string[], type?: LabelType): string|string[] {
+  transform(value: string, type?: labelType): string;
+  transform(value: string[], type?: labelType): string[];
+  transform(value: string|string[], type?: labelType): string|string[] {
     if (!value || (typeof value !== 'string' && !Array.isArray(value)) || value.length === 0) {
       return value;
     }
@@ -75,7 +75,7 @@ export class LabelPipe implements PipeTransform, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private fetchValue(key: string, type?: LabelType): Observable<string> {
+  private fetchValue(key: string, type?: labelType): Observable<string> {
     switch (type) {
       case 'warehouse':
         return this.warehouseService.getSchemaKey(key).pipe(

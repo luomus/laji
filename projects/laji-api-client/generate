@@ -27,7 +27,7 @@ docker run --rm -v ${PWD}:/local swaggerapi/swagger-codegen-cli:unstable generat
 for file in generated/model/*.ts
 do
     perl -i -p0e "s|    /\*\*\n     \* This field is automatically populated with the objects type and any user given value in here will be ignored!\n     \*/\n    type\?: string;||se" $file
-    sed -i '' '1s/^/\/\* eslint-disable max-len \*\/ /' $file
+    sed -i '' '1s/^/\/\* tslint:disable:max-line-length \*\/ /' $file
 done
 
 # 2. Generate api clients

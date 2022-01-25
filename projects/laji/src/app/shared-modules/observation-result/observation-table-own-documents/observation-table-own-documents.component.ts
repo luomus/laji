@@ -113,8 +113,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     {prop: 'id', mode: 'large'}
   ];
 
-  columnSelector = new ColumnSelector();
-  numberColumnSelector = new ColumnSelector();
+  columnSelector = new ColumnSelector;
+  numberColumnSelector = new ColumnSelector;
   subscriptionDeleteOwnDocument: Subscription;
   childEvent: any;
 
@@ -128,9 +128,9 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   loading: boolean;
 
   private langMap = {
-    fi: 'Finnish',
-    sv: 'Swedish',
-    en: 'English'
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'en': 'English'
   };
 
   columns: ObservationTableColumn[] = [];

@@ -35,10 +35,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-type WindowFunction = 'bartlett'|'bartlettHann'|'blackman'|'cosine'|'gauss'|'hamming'|'hann'|'lanczoz'|'rectangular'|'triangular';
+type windowFunction = 'bartlett'|'bartlettHann'|'blackman'|'cosine'|'gauss'|'hamming'|'hann'|'lanczoz'|'rectangular'|'triangular';
 
-/* eslint-disable no-bitwise */
-export const FFT = function(bufferSize: number, sampleRate: number, windowFunc: WindowFunction, alpha: number = undefined) {
+/* tslint:disable:no-bitwise */
+export const FFT = function(bufferSize: number, sampleRate: number, windowFunc: windowFunction, alpha: number = undefined) {
   this.bufferSize = bufferSize;
   this.sampleRate = sampleRate;
   this.bandwidth = (2 / bufferSize) * (sampleRate / 2);
@@ -251,4 +251,4 @@ export const FFT = function(bufferSize: number, sampleRate: number, windowFunc: 
     return spectrum;
   };
 };
-/* eslint-enable no-bitwise */
+/* tslint:enable:no-bitwise */

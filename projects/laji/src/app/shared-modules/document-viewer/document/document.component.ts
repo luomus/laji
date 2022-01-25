@@ -50,7 +50,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   @Input() hideHeader = false;
   @Input() identifying = false;
 
-  @Output() documentClose = new EventEmitter<boolean>();
+  @Output() close = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -314,7 +314,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   }
 
   closeDocument() {
-    this.documentClose.emit(!this.documentToolsOpen);
+    this.close.emit(!this.documentToolsOpen);
   }
 
   onDocumentDeleted(e) {

@@ -18,7 +18,7 @@ export class DataTableFooterComponent {
 
   @Input() totalMessage = '';
   @Input() top = false;
-  @Output() pageChange = new EventEmitter<IPageChange>();
+  @Output() change = new EventEmitter<IPageChange>();
 
   _count: number;
   _pageSize: number;
@@ -47,7 +47,7 @@ export class DataTableFooterComponent {
   }
 
   onChange(event) {
-    this.pageChange.emit({
+    this.change.emit({
       count: this._count,
       pageSize: this._pageSize,
       limit: this._pageSize,

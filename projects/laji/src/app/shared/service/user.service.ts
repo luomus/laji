@@ -40,7 +40,7 @@ export interface IUserSettings {
   observationMap?: any;
   frontMap?: any;
   formDefault?: any;
-  '_global_form_settings_'?: any; // eslint-disable-line @typescript-eslint/naming-convention
+  '_global_form_settings_'?: any;
   [key: string]: any;
 }
 

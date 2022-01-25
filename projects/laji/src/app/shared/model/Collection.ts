@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* tslint:disable */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
@@ -88,50 +88,50 @@ export interface Collection {
   /**
    * Metadata status
    */
-  metadataStatus?: string;
+  metadataStatus?: string
 
   /**
    * Data quality
    */
-  dataQuality?: string;
+  dataQuality?: string
 
   /**
    * Citation
    */
-  citation?: string;
+  citation?: string
 
   /**
    * collectionSize
    */
-  collectionSize?: string;
+  collectionSize?: string
 
   /**
    * digitizedSize
    */
-  digitizedSize?: string;
+  digitizedSize?: string
 
   /**
    * intellectualOwner
    */
-  intellectualOwner?: string;
+  intellectualOwner?: string
   /**
    * intellectualRights
    */
-  intellectualRights?: string;
+  intellectualRights?: string
   /**
    * intellectualDescription
    */
-  intellectualDescription?: string;
+  intellectualDescription?: string
   /**
    * publicationTerms
    */
-  publicationTerms?: string;
+  publicationTerms?: string
   /**
    * publicationDescription
    */
-  publicationDescription?: string;
+  publicationDescription?: string
   /**
    * typesSize
    */
-  typesSize?: string;
+  typesSize?: string
 }

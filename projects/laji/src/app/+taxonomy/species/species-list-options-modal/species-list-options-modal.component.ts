@@ -17,7 +17,7 @@ export class SpeciesListOptionsModalComponent {
 
   @Output() settingsChange = new EventEmitter();
 
-  columnSelector = new ColumnSelector();
+  columnSelector = new ColumnSelector;
 
   constructor(
     public columnService: TaxonomyColumns

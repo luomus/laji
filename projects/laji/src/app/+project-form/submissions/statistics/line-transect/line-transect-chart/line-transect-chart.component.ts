@@ -41,7 +41,7 @@ export class LineTransectChartComponent implements AfterViewInit, OnChanges, OnD
   @Input() xLabel: string;
   @Input() yLabel: string;
   @Input() title: string;
-  @Input() margin: { top: number; bottom: number; left: number; right: number} = { top: 30, bottom: 40, left: 40, right: 10};
+  @Input() margin: { top: number, bottom: number, left: number, right: number} = { top: 30, bottom: 40, left: 40, right: 10};
   @Input() xTickFormat: string;
   @Input() yLabelAnchor: string;
 

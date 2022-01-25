@@ -25,7 +25,7 @@ export class LajiFormFooterComponent {
   @Output() leave = new EventEmitter();
   @Output() lock = new EventEmitter<boolean>();
   @Input() form: Form.SchemaForm;
-  @Input() errors: any;
+  @Input() errors: any
 
-  @Input() touchedCounter: number;
+  @Input() touchedCounter: number
 }

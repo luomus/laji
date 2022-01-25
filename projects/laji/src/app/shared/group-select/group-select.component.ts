@@ -1,3 +1,4 @@
+/* tslint:disable:no-use-before-declare */
 import { map, switchMap } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
@@ -9,10 +10,11 @@ import { Group } from '../model/Group';
 import { PagedResult } from '../model/PagedResult';
 
 @Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class GroupSelectComponent<T extends Group> implements ControlValueAccessor, OnChanges {
   @Input() position: 'right'|'left' = 'right';
   @Input() rootGroups: string[];
-  @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
+  @Output() select = new EventEmitter();
 
   lang: string;
   public groups: InformalTaxonGroup[] = [];
@@ -26,9 +28,9 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
   protected subLabel: any;
 
   onChange = (_: any) => {
-  };
+  }
   onTouched = () => {
-  };
+  }
 
   get value(): any {
     return this.innerValue;
@@ -63,9 +65,11 @@ export abstract class GroupSelectComponent<T extends Group> implements ControlVa
     (newValue ?
       this.getChildren(newValue, this.lang) :
       this.getRoot(this.lang)).pipe(
-      switchMap(data => (!data.results || data.results.length === 0) ?
+      switchMap(data => {
+        return (!data.results || data.results.length === 0) ?
           this.getWithSiblings(newValue, this.lang) :
-          ObservableOf(data))).pipe(
+          ObservableOf(data);
+      })).pipe(
       map(data => data.results.map(item => this.convertToInformalTaxonGroup(item))))
       .subscribe(
         groups => {

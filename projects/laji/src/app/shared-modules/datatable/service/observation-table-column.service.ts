@@ -320,22 +320,22 @@ export const COLUMNS: IColumns = {
     name: 'unit.facts.value',
     prop: 'unit.facts.value'
   },
-  oldestRecord: {name: 'oldestRecord', width: 85},
-  newestRecord: {name: 'newestRecord', width: 85},
-  count: {name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric'},
-  individualCountMax: {
+  'oldestRecord': {name: 'oldestRecord', width: 85},
+  'newestRecord': {name: 'newestRecord', width: 85},
+  'count': {name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric'},
+  'individualCountMax': {
     name: 'individualCountMax',
     label: 'theme.individualCountMax',
     width: 80,
     cellTemplate: 'numeric'
   },
-  individualCountSum: {
+  'individualCountSum': {
     name: 'individualCountSum',
     label: 'theme.individualCount',
     width: 80,
     cellTemplate: 'numeric'
   },
-  pairCountSum: {
+  'pairCountSum': {
     name: 'pairCountSum',
     label: 'theme.pairCount',
     width: 75,

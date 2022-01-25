@@ -30,7 +30,7 @@
     (sort)="onSort($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
-    (select)="datatableSelect.emit($event)"
+    (select)="select.emit($event)"
     [rowClass]="_getRowClass"
     (activate)="onRowSelect($event)"
     [selected]="selected"
@@ -46,7 +46,7 @@
     [page]="_page"
     [pageSize]="pageSize"
     [count]="_count"
-    (pageChange)="onPage($event)"
+    (change)="onPage($event)"
   ></laji-data-table-footer>
 </laji-spinner>
 

@@ -29,7 +29,7 @@ export class ResultsComponent implements OnInit {
 
   form$: Observable<Form.SchemaForm>;
 
-  ResultServiceType = ResultServiceType; // eslint-disable-line @typescript-eslint/naming-convention
+  ResultServiceType = ResultServiceType;
 
   constructor(
     private projectFormService: ProjectFormService,

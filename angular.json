@@ -262,11 +262,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/laji/src/**/*.ts"
-            ]
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "tsconfig.worker.json"
+            ],
+            "exclude": []
           }
         },
         "server": {
@@ -400,10 +403,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/label-designer/src/**/*.ts"
+            "tsConfig": [
+              "projects/label-designer/tsconfig.lib.json",
+              "projects/label-designer/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -541,10 +548,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/iucn/src/**/*.ts"
+            "tsConfig": [
+              "projects/iucn/tsconfig.app.json",
+              "projects/iucn/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -649,10 +660,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/label-designer-electron/src/**/*.ts"
+            "tsConfig": [
+              "projects/label-designer-electron/tsconfig.app.json",
+              "projects/label-designer-electron/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -761,10 +776,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/label-designer-element/src/**/*.ts"
+            "tsConfig": [
+              "projects/label-designer-element/tsconfig.app.json",
+              "projects/label-designer-element/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -797,10 +816,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/laji-ui/src/**/*.ts"
+            "tsConfig": [
+              "projects/laji-ui/tsconfig.lib.json",
+              "projects/laji-ui/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -833,10 +856,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/laji-api-client/src/**/*.ts"
+            "tsConfig": [
+              "projects/laji-api-client/tsconfig.lib.json",
+              "projects/laji-api-client/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -1032,10 +1059,15 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/vir/src/**/*.ts"
+            "tsConfig": [
+              "projects/vir/tsconfig.app.json",
+              "projects/vir/tsconfig.spec.json",
+              "projects/vir/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -1138,10 +1170,13 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/exhibition-screen/src/**/*.ts"
+            "tsConfig": [
+              "projects/exhibition-screen/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -1307,10 +1342,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "projects/kerttu-global/src/**/*.ts"
+            "tsConfig": [
+              "projects/kerttu-global/tsconfig.app.json",
+              "projects/kerttu-global/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }

@@ -26,7 +26,7 @@ export class ShortDocumentComponent implements OnInit, OnChanges, OnDestroy {
   public editDocumentRoute: string[];
   public unitList = [];
   public newUnitsLength: number;
-  public gatheringDates: {start: string; end: string};
+  public gatheringDates: {start: string, end: string};
   public publicity = Document.PublicityRestrictionsEnum;
   public locality: string;
 

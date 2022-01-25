@@ -1,4 +1,4 @@
-export const Global = { // eslint-disable-line @typescript-eslint/naming-convention
+export const Global = {
   type: {
     dev: 'dev',
     beta: 'beta',
@@ -21,21 +21,21 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
     'http://tun.fi/KE.3': 'https://kotka.luomus.fi/view?uri=%uri%'
   },
   oldThemeRouting: {
-    nafi: 'MHL.6',
-    linjalaskenta: 'MHL.1',
-    talvilintulaskenta: 'MHL.3',
-    vesilintulaskenta: 'MHL.65',
-    vieraslajit: 'MHL.33',
-    kunnat: 'MHL.35',
-    lolife: 'MHL.45',
+    'nafi': 'MHL.6',
+    'linjalaskenta': 'MHL.1',
+    'talvilintulaskenta': 'MHL.3',
+    'vesilintulaskenta': 'MHL.65',
+    'vieraslajit': 'MHL.33',
+    'kunnat': 'MHL.35',
+    'lolife': 'MHL.45',
     'liito-orava': 'MHL.45',
-    lepakot: 'MHL.50',
-    valio: 'MHL.57',
+    'lepakot': 'MHL.50',
+    'valio': 'MHL.57',
     'syke-perhoset': 'MHL.59',
-    sieniatlas: 'JX.652',
-    pistelaskenta: 'MHL.75',
-    kiiltomadot: 'MHL.79',
-    kimalaiset: 'MHL.89',
+    'sieniatlas': 'JX.652',
+    'pistelaskenta': 'MHL.75',
+    'kiiltomadot': 'MHL.79',
+    'kimalaiset': 'MHL.89',
   },
   oldThemeParents: {
     'MHL.1': 'MHL.1',

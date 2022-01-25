@@ -48,12 +48,14 @@ export class ImportMapComponent implements OnChanges {
     this.groupedData = this.groupDataByGeometry(this.data, geometryCol);
 
     return {
-      getFeatureStyle: () => ({
+      getFeatureStyle: () => {
+        return {
           weight: 2,
           opacity: 1,
           fillOpacity: 0,
           color: this.color
-        }),
+        };
+      },
       featureCollection: {
         type: 'FeatureCollection',
         features: this.groupedData.map(items => ({

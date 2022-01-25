@@ -32,7 +32,7 @@ export class TeamMemberService {
     return this.fetcher[id];
   }
 
-  getMembers(search: string): Observable<{name: string; id: string}[]> {
+  getMembers(search: string): Observable<{name: string, id: string}[]> {
     if (!search) {
       return ObservableOf([]);
     }

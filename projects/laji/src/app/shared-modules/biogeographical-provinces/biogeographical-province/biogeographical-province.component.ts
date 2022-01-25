@@ -89,7 +89,7 @@ export class BiogeographicalProvinceComponent {
     );
   }
 
-  private initFillColors(result: {count: number; key: string}[]) {
+  private initFillColors(result: {count: number, key: string}[]) {
     const colors = {};
     result.forEach(res => {
       if (res.count > 1000) {

@@ -74,7 +74,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   csvParams = '';
   reason = '';
   reasonEnum = '';
-  columnSelector = new ColumnSelector();
+  columnSelector = new ColumnSelector;
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
   queryHasFilters = false;
@@ -90,9 +90,9 @@ export class ObservationDownloadComponent implements OnDestroy {
   private _query: WarehouseQueryInterface;
   private _originalQuery: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
-    en: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
-    fi: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
-    sv: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
+    'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
+    'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
+    'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
   };
 
   constructor(public searchQuery: SearchQueryService,

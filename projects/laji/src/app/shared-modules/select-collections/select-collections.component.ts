@@ -29,8 +29,8 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() clearButtonLabel: string;
   @Input() open = false;
   @Output() selectedOptionsChange = new EventEmitter<{
-    collectionId?: string[];
-    collectionIdNot?: string[];
+    collectionId?: string[],
+    collectionIdNot?: string[],
   }>();
 
   collectionsTree$: Observable<ICollectionsTreeNode[]> = null;

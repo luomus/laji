@@ -126,18 +126,22 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
         switchMap(res => {
           const taxaIds = res.map(r => this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ]));
           return this.horizontalDataService.getChartDataLabels(taxaIds).pipe(
-            map(labels => res.map((r, idx) => ({
+            map(labels => {
+              return res.map((r, idx) => ({
                 ...r,
                 label: labels['r' + idx]
-              })))
+              }));
+            })
           );
         }),
-        map(res => res.map(r => {
+        map(res => {
+          return res.map(r => {
             this.resultList.push(r);
             this.subDataBarChart.push(this.onlyCount === null ? r.count : this.onlyCount ? r.count : r.individualCountSum);
             this.subBackgroundColors.push('#3498db');
             this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
-          }))
+          });
+        })
       )
       .subscribe(() => {
         this.createSubArrayChart();
@@ -191,7 +195,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
           {
             ticks: {
               beginAtZero: true,
-              callback(value) { if (value % 1 === 0) { return value; } }
+              callback: function(value) { if (value % 1 === 0) { return value; } }
             }
           }
         ]

@@ -10,7 +10,7 @@ export enum FieldMap {
   ignore = <any>VALUE_IGNORE
 }
 
-export type SplitType = 'date'|'coordinate';
+export type splitType = 'date'|'coordinate';
 
 export interface IFormField {
   label: string;
@@ -20,7 +20,7 @@ export interface IFormField {
   required: boolean;
   isArray: boolean;
   type: string;
-  splitType?: SplitType;
+  splitType?: splitType;
   subGroup?: string;
   enum?: string[];
   enumNames?: string[];

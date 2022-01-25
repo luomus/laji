@@ -116,7 +116,9 @@ export class NpChooseComponent implements OnInit, OnChanges {
     if (!this._namedPlaces) {
       return null;
     }
-    return this._namedPlaces.findIndex((np) => np.id === id);
+    return this._namedPlaces.findIndex((np) => {
+      return np.id === id;
+    });
   }
 
   onActivePlaceChange(idx: number) {

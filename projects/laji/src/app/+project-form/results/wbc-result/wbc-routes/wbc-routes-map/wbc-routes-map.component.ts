@@ -44,7 +44,7 @@ export class WbcRoutesMapComponent {
         this.geoJsons[this._data[grid].idx].properties.count++;
       } else {
         this._data[grid] = {idx: this.geoJsons.length, data: [item]};
-        this.geoJsons.push({type: 'Feature', geometry, properties: {grid, count: 1}});
+        this.geoJsons.push({type: 'Feature', geometry: geometry, properties: {grid: grid, count: 1}});
       }
     });
   }

@@ -23,7 +23,7 @@ export class WbcRoutesComponent implements OnInit {
     'newestRecord',
     'count'
   ];
-  sorts: {prop: string; dir: 'asc'|'desc'}[] = [
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
     {prop: 'document.namedPlace.name', dir: 'asc'}
   ];

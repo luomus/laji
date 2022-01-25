@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { PlatformService } from '../../service/platform.service';
 
-let OpenSeadragon: any; // eslint-disable-line @typescript-eslint/naming-convention
+let OpenSeadragon: any;
 
 @Component({
   selector: 'laji-image',

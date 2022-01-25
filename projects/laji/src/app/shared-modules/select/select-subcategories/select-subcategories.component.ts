@@ -42,7 +42,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
   @Input() filtersValues = [];
   @ViewChild('filter') filter: ElementRef;
 
-  @Output() update = new EventEmitter<{ id: string[] | string; category: string }>();
+  @Output() update = new EventEmitter<{ id: string[] | string, category: string }>();
 
   selectedOptions = <{ [key: string]: (SelectOptions | string)[] }>{};
   unselectedOptions = <{ [key: string]: (SelectOptions | string)[] }>{};
@@ -165,9 +165,9 @@ export class SelectSubcategoriesComponent implements OnChanges {
         if (countObj > 0) {
           selected[i].map(item => {
             if (item.id === option.id) {
-              tmpSelectedOptions.push({ ...option, checkboxValue: item.checkboxValue });
+              tmpSelectedOptions.push({ ...option, 'checkboxValue': item.checkboxValue });
             } else {
-              tmpUnselectedOptions.push({ ...option, checkboxValue: item.checkboxValue });
+              tmpUnselectedOptions.push({ ...option, 'checkboxValue': item.checkboxValue });
             }
           });
         } else {
@@ -202,8 +202,8 @@ export class SelectSubcategoriesComponent implements OnChanges {
     }
 
     let countEmpty = 0;
-    for (const filteredKey of filteredKeys) {
-      if (selected[filteredKey].length === 0 || selected[filteredKey] === undefined) {
+    for (let i = 0; i < filteredKeys.length; i++) {
+      if (selected[filteredKeys[i]].length === 0 || selected[filteredKeys[i]] === undefined) {
         countEmpty++;
       }
     }
@@ -276,10 +276,10 @@ export class SelectSubcategoriesComponent implements OnChanges {
           splitParam[category] && splitParam[category].includes(option.id) ||
           (splitParam && splitParam.includes(option.id))
         ) {
-          this.selectedOptions[category].push(category === 'GLOBAL' ? {...option, checkboxValue: true} : option.id);
-          this.tmpSelectedOption[category].push(category === 'GLOBAL' ? {...option, checkboxValue: true} : option.id);
+          this.selectedOptions[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': true} : option.id);
+          this.tmpSelectedOption[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': true} : option.id);
         } else {
-          this.unselectedOptions[category].push(category === 'GLOBAL' ? {...option, checkboxValue: undefined} : option.id);
+          this.unselectedOptions[category].push(category === 'GLOBAL' ? {...option, 'checkboxValue': undefined} : option.id);
         }
 
       }
@@ -295,12 +295,12 @@ export class SelectSubcategoriesComponent implements OnChanges {
         });
 
         if (checkMatches > 0) {
-          this.selectedOptions['GLOBAL'].push({ ...option, checkboxValue: checkMatches === subCategories.length });
-          this.tmpSelectedOption['GLOBAL'].push({ ...option, checkboxValue: checkMatches === subCategories.length });
+          this.selectedOptions['GLOBAL'].push({ ...option, 'checkboxValue': checkMatches === subCategories.length });
+          this.tmpSelectedOption['GLOBAL'].push({ ...option, 'checkboxValue': checkMatches === subCategories.length });
         }
 
         if (checkMatches === 0) {
-          this.unselectedOptions['GLOBAL'].push({ ...option, checkboxValue: undefined });
+          this.unselectedOptions['GLOBAL'].push({ ...option, 'checkboxValue': undefined });
         }
       });
     }
@@ -386,15 +386,9 @@ export class SelectSubcategoriesComponent implements OnChanges {
               && this.selectedOptions['GLOBAL'] !== undefined
               && this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string')
               && x.id === option.id) > -1
-              && this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex(
-                (x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id
-              )]['checkboxValue'] === true
+              && this.selectedOptions['GLOBAL'][this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id)]['checkboxValue'] === true
             ) {
-              if (this.selectedOptions[item]) {
-                this.selectedOptions[item].push(option.id);
-              } else {
-                this.selectedOptions[item] = [option.id];
-              }
+              this.selectedOptions[item] ? this.selectedOptions[item].push(option.id) : this.selectedOptions[item] = [option.id];
             }
           });
         }
@@ -452,13 +446,13 @@ export class SelectSubcategoriesComponent implements OnChanges {
     const tmpCat = [];
 
     if (equals === false) {
-      for (const category of categories) {
-        selectedOptions[category].map(item => {
+      for (let i = 0; i < categories.length; i++) {
+        selectedOptions[categories[i]].map(item => {
           const index = tmpCat.findIndex(el => el.id === item);
           if (index > -1) {
             tmpCat[index]['count'] += 1;
           } else {
-            tmpCat.push({ id: item, count: 1 });
+            tmpCat.push({ 'id': item, 'count': 1 });
           }
         });
       }
@@ -471,7 +465,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
       });
     } else {
       this.options.map(item => {
-        this.selectedOptions['GLOBAL'].push({ ...item, checkboxValue: equals === true ? true : undefined });
+        this.selectedOptions['GLOBAL'].push({ ...item, 'checkboxValue': equals === true ? true : undefined });
       });
     }
   }

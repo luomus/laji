@@ -1,4 +1,4 @@
-/* eslint-disable max-len no-empty-interface no-unused-interface */
+/* tslint:disable:max-line-length no-empty-interface no-unused-interface */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';

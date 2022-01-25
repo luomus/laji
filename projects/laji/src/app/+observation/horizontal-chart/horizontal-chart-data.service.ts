@@ -14,7 +14,7 @@ export class HorizontalChartDataService {
   ) { }
 
 
-  getChartDataLabels(ids: string[]): Observable<{[key: string]: {vernacularName: string; scientificName: string}}> {
+  getChartDataLabels(ids: string[]): Observable<{[key: string]: {vernacularName: string, scientificName: string}}> {
     if (ids.length === 0) { return of({}); }
     const params: string[] = [];
     const queryParts: string[] = [];
@@ -25,7 +25,7 @@ export class HorizontalChartDataService {
       queryParts.push(`r${i}: taxon(id: $${key}) { vernacularName, scientificName }`);
       variables[key] = ids[i];
     }
-    return this.graphQLService.query<{[key: string]: {vernacularName: string; scientificName: string}}>({
+    return this.graphQLService.query<{[key: string]: {vernacularName: string, scientificName: string}}>({
       query: gql`
       query(${params.join(', ')}) {
         ${queryParts.join('\n')}

@@ -44,7 +44,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   colorScheme = {
     domain: ['steelblue']
   };
-  line: {name: string; series: {name: string; value: number}[]}[] = [];
+  line: {name: string, series: {name: string, value: number}[]}[] = [];
   private afterBothFetched: any;
   private subQuery: Subscription;
   private fetchSub: Subscription;
@@ -75,83 +75,87 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     hover: {
       mode: 'index',
       intersect: false,
-      onHover(this, e, element) {
-        let indexChart;
+      onHover: function (this, e, element) {
+        let index_chart;
         if (element[0]) {
-         indexChart = Number(element[0]['_index']);
+         index_chart = Number(element[0]['_index']);
         } else {
-          indexChart = -1;
+          index_chart = -1;
         }
 
 
         const dataset = this['tooltip']._data.datasets[0].data;
         if (element[0]) {
-          element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem) {
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          element[0]['_chart'].tooltip._options.callbacks.label = function (tooltipItem) {
+            const range = (start, end, step) => {
+              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            };
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
             let empty = 0;
-            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-              if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-                const diff = index - Number(indexChart);
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
+              if ( !dataset[Number(index_chart) + 1] || (index_chart === 0 && !dataset[Number(index_chart) + 1])) {
+                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
+                const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                   empty = -3 * diff;
                 }
               }
-              if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
+              if ( !dataset[Number(index_chart) - 1] || (index_chart === (dataset.length - 1) && !dataset[Number(index_chart) - 1])) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                  const diff = Number(indexChart) - (Number(indexChart) - index);
+                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
+                  const diff = Number(index_chart) - (Number(index_chart) - index);
                     empty = 3 * diff;
                 }
               }
             }
 
 
-            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          if ( range(x - Math.ceil(col_width / 2), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+          range(y - (Math.ceil(col_width / 2) - offset), y + (Math.ceil(col_width / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           } else {
             return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
             }
           };
-          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem) {
+          element[0]['_chart'].tooltip._options.callbacks.title = function (tooltipItem) {
             const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
             const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            const range = (start, end, step) => {
+              return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            };
             const activePoint = element[0]['_chart'].tooltip._active[0];
             const x = Number((activePoint.tooltipPosition().x).toFixed(0));
             const y = Number((activePoint.tooltipPosition().y).toFixed(0));
 
             let empty = 0;
-            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-              if ( !dataset[Number(indexChart) + 1]) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-                const diff = index - Number(indexChart);
+            if (index_chart !== -1 && index_chart + 1 > -1 && index_chart - 1 > -2) {
+              if ( !dataset[Number(index_chart) + 1]) {
+                const index = dataset.slice(index_chart + 1).findIndex(el => el) + index_chart;
+                const diff = index - Number(index_chart);
                 if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
                     empty = -3 * diff;
                 }
               }
-              if (!dataset[Number(indexChart) - 1]) {
+              if (!dataset[Number(index_chart) - 1]) {
                 if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                  const diff = Number(indexChart) - (Number(indexChart) - index);
+                  const index = dataset.slice(0, index_chart).reverse().findIndex(el => el);
+                  const diff = Number(index_chart) - (Number(index_chart) - index);
                     empty = 3 * diff;
                 }
               }
             }
 
 
-            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+            const col_width = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
             / element[0]['_chart'].config.data.labels.length);
 
-          if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+          if ( range(x - (Math.ceil(col_width / 2)), x + (Math.ceil(col_width / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
           && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
             return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
           } else {
@@ -213,12 +217,12 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     Chart.defaults.LineWithLine = Chart.defaults.line;
     Chart.defaults.line.spanGaps = false;
     Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-      draw(ease) {
+      draw: function(ease) {
         Chart.controllers.line.prototype.draw.call(this, ease);
         if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
           const year = this.chart.tooltip._data.labels[0] === '2006' ? 15 : 6;
           const offset = this.chart.tooltip._data.labels[0] === '2006' ? 6 : 0;
-          const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
+          const col_width = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
           const activePoint = this.chart.tooltip._active[0];
 
           const ctx = this.chart.ctx;
@@ -229,9 +233,11 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           const gradient = ctx.createLinearGradient(0, 0, 0, 400);
           gradient.addColorStop(0, 'rgba(70,130,180,1)');
           gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          const range = (start, end, step) => {
+            return Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          };
 
-          if (range(x - (colWidth / 2), x + ((colWidth / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
+          if (range(x - (col_width / 2), x + ((col_width / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
           range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
             ctx.save();
             ctx.beginPath();
@@ -273,7 +279,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
   private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
     this.router.navigate([], {queryParams: {
-      taxonId,
+      taxonId: taxonId,
       birdAssociationAreas: birdAssociationAreas.join(','),
       fromYear: fromYear || ''
     }});

@@ -30,13 +30,13 @@ export class MappingService {
 
   // from boolean to translation key
   private readonly booleanMap = {
-    true: 'yes',
-    false: 'no'
+    'true': 'yes',
+    'false': 'no'
   };
 
   private mapping = {
-    boolean: null,
-    string: {}
+    'boolean': null,
+    'string': {}
   };
 
   private colMapping?: IColMap;
@@ -46,7 +46,7 @@ export class MappingService {
 
   private specials = {
     'editors[*]': SpecialTypes.person,
-    namedPlaceID: SpecialTypes.namedPlaceID,
+    'namedPlaceID': SpecialTypes.namedPlaceID,
     'keywords[*]': SpecialTypes.keywords,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
@@ -142,13 +142,13 @@ export class MappingService {
 
   initColMap(fields: {[key: string]: IFormField}) {
     const lookup = {};
-    const simpleCols: {[label: string]: {cnt: number; key: string}} = {};
+    const simpleCols: {[label: string]: {cnt: number, key: string}} = {};
     Object.keys(fields).forEach((key) => {
       const label = fields[key].label.toLowerCase();
       lookup[key.toLowerCase()] = key;
       lookup[fields[key].fullLabel.toLowerCase()] = key;
       if (!simpleCols[label]) {
-        simpleCols[label] = {cnt: 1, key};
+        simpleCols[label] = {cnt: 1, key: key};
       } else {
         simpleCols[label].cnt++;
       }

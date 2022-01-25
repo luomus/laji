@@ -9,7 +9,7 @@ export class MultiLangService {
    * Return true only if given multiLang object has the language value.
    * @returns boolean
    */
-  static hasValue(multi: any, lang: string): boolean {
+  static hasValue(multi: object, lang: string): boolean {
     return multi && !!multi[lang];
   }
 
@@ -21,34 +21,36 @@ export class MultiLangService {
    *
    * @returns any
    */
-  static getValue(multi: unknown, lang: string, fallback = ''): string|any {
+  static getValue(multi: object, lang: string, fallback = ''): string|any {
     if (typeof multi !== 'object' || lang === 'multi' || multi === null) {
       return multi || '';
     }
     if (multi[lang]) {
       return multi[lang];
     }
-    for (const _lang of MultiLangService.lang) {
-      if (_lang === lang) {
+    for (let i = 0; i < MultiLangService.lang.length; i++) {
+      if (MultiLangService.lang[i] === lang) {
         continue;
       }
-      if (multi[_lang]) {
+      if (multi[MultiLangService.lang[i]]) {
         return !fallback ?
-          multi[lang] :
-          fallback.replace('%value%', multi[_lang]).replace('%lang%', _lang);
+          multi[MultiLangService.lang[i]] :
+          fallback.replace('%value%', multi[MultiLangService.lang[i]]).replace('%lang%', MultiLangService.lang[i]);
       }
     }
     return '';
   }
 
-  static valueToString(multi: Record<string, unknown>): string {
+  static valueToString(multi: object): string {
     const values = [];
-    for (const lang of MultiLangService.lang) {
+    for (let i = 0; i < MultiLangService.lang.length; i++) {
+      const lang = MultiLangService.lang[i];
+
       if (MultiLangService.hasValue(multi, lang)) {
         const val = MultiLangService.getValue(multi, lang);
         if (Array.isArray(val)) {
-          for (const _val of val) {
-            values.push(_val + ' (' + lang + ')');
+          for (let j = 0; j < val.length; j++) {
+            values.push(val[j] + ' (' + lang + ')');
           }
         } else {
           values.push(val + ' (' + lang + ')');

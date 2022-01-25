@@ -3,7 +3,7 @@
 
   <div>
     <h2>{{ 'quality.annotations.title' | translate }}</h2>
-    <laji-quality-filters (filterSelect)="setFilters($event)"></laji-quality-filters>
+    <laji-quality-filters (select)="setFilters($event)"></laji-quality-filters>
     <laji-annotation-table [group]="group"
                            [timeStart]="timeStart"
                            [timeEnd]="timeEnd"></laji-annotation-table>

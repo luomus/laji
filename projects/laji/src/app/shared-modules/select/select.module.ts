@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
@@ -13,7 +13,7 @@ import { SubCategoryCheckboxValuePipe } from './sub-category-checkbox-value.pipe
 import { IsEmptyArrayPipe } from './is-empty-array.pipe';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
-/* eslint-enable max-len */
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [

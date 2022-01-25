@@ -82,9 +82,9 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   private fetchSub: Subscription;
 
   private langMap = {
-    fi: 'Finnish',
-    sv: 'Swedish',
-    en: 'English'
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'en': 'English'
   };
 
   constructor(

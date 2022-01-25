@@ -2,9 +2,9 @@
         <laji-paginator *ngIf="showPaginator && paginatorDisplay && !loading"
         [page]="page" [count]="count"
         [size]="size"
-        (pageChange)="pageChanged($event)">
+        (change)="pageChanged($event)">
         </laji-paginator>
-
+        
         <laji-annotations-list *ngIf="!loading"
         [result]="result"
         [annotationTags]="annotationTags$ | async"
@@ -14,6 +14,6 @@
         <laji-paginator *ngIf="showPaginator && paginatorDisplay && !loading"
         [page]="page" [count]="count"
         [size]="size"
-        (pageChange)="pageChanged($event)">
+        (change)="pageChanged($event)">
         </laji-paginator>
 </laji-spinner>

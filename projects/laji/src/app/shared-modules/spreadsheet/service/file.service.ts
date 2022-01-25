@@ -64,7 +64,9 @@ export class FileService {
         });
         subscriber.complete();
       };
-      reader.onerror = () => subscriber.error(FileService.ERROR_GENERIC);
+      reader.onerror = () => {
+        return subscriber.error(FileService.ERROR_GENERIC);
+      };
       if (validTypes && !validTypes.includes(file.type)) {
         return subscriber.error(FileService.ERROR_INVALID_TYPE);
       } else {

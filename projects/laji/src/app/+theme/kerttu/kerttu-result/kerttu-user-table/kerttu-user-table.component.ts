@@ -14,7 +14,7 @@ export class KerttuUserTableComponent implements OnInit {
   @Input() userList: IUserStatistics[] = [];
 
   columns: DatatableColumn[] = [];
-  sorts: {prop: string; dir: 'asc'|'desc'}[] = [{prop: 'totalAnnotationCount', dir: 'desc'}];
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [{prop: 'totalAnnotationCount', dir: 'desc'}];
   loading = false;
 
   @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;

@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ImageComponent } from './image.component';
 

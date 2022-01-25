@@ -120,13 +120,17 @@ export class DatatableUtil {
   }
 
   private getWarehouseLabels(values): Observable<string> {
-    return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
+    return this.getArray(values, (value) => {
+      return this.warehouseValueMappingService.getSchemaKey(value).pipe(
         concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
-      ), '; ');
+      );
+    }, '; ');
   }
 
   private getLabels(values): Observable<string> {
-    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.currentLang), '; ');
+    return this.getArray(values, (value) => {
+      return this.labelService.get(IdService.getId(value), this.translate.currentLang);
+    }, '; ');
   }
 
   private getPublications(values): Observable<string> {
@@ -134,10 +138,12 @@ export class DatatableUtil {
       values = [values];
     }
     const labelObservables = [];
-    for (const item of values) {
+    for (let i = 0; i < values.length; i++) {
       labelObservables.push(
-        this.publicationService.getPublication(item, this.translate.currentLang).pipe(
-          map((res: Publication) => res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : item))
+        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
+          map((res: Publication) => {
+            return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
+          }))
       );
     }
     return ObservableForkJoin(labelObservables).pipe(

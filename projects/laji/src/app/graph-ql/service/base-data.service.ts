@@ -22,7 +22,7 @@ export interface IBaseData {
       label: string;
       description: string;
       link: string;
-    }[];
+    }[]
   }[];
   warehouseLabels: {
     enumeration: string;
@@ -37,8 +37,8 @@ export interface IBaseData {
       children: {
         id: string;
         title: string;
-      }[];
-    }[];
+      }[]
+    }[]
   };
 }
 

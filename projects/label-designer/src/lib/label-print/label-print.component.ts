@@ -12,7 +12,7 @@ import {
 import { IPageLayout, ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
 import { LabelService } from '../label.service';
 
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length */
 /**
  * @ignore
  */
@@ -52,7 +52,7 @@ img {
   transform: scale(0.25);
 }
 `;
-/* eslint-enable max-len */
+/* tslint:enable:max-line-length */
 
 export interface IRenderPageOptions {
   skip?: number;

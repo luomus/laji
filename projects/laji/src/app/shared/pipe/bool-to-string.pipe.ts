@@ -2,10 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-    name: 'boolToString'
+    'name': 'boolToString'
 })
 export class BoolToStringPipe implements PipeTransform {
-    constructor(private translate: TranslateService) {}
+    constructor (private translate: TranslateService) {}
     transform(value: any) {
       let asBoolean;
       if (typeof value === 'boolean') {
