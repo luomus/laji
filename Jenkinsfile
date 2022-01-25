@@ -13,14 +13,14 @@ node {
     //   }
     //   junit allowEmptyResults: true, testResults: '**/test-results/output-tslint.xml'
     // }
-    stage('Run integration tests') {
-      sh './node_modules/.bin/webdriver-manager clean'
-      sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
-      catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh 'npm run e2e:ci -- --webdriver-update=false'
-      }
-      junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
-    }
+    // stage('Run integration tests') {
+    //   sh './node_modules/.bin/webdriver-manager clean'
+    //   sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
+    //   catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+    //     sh 'npm run e2e:ci -- --webdriver-update=false'
+    //   }
+    //   junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
+    // }
     stage('Build') {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         milestone()
