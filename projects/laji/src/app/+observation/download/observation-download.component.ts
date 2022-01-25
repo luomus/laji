@@ -287,8 +287,16 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   simpleDownload(params: DownloadParams) {
     this.downloadLoading = true;
-    const selected = this.columnSelector.columns;
+
+    let selected = this.columnSelector.columns;
+    if (params.fileType === 'shp' || params.fileType === 'gpkg') {
+      const geometryColumn = 'gathering.conversions.wgs84WKT';
+      if (selected.indexOf(geometryColumn) === -1) {
+        selected = [...selected, geometryColumn];
+      }
+    }
     const columns = this.tableColumnService.getColumns(selected);
+
     this.observationResultService.getAll(
       this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
