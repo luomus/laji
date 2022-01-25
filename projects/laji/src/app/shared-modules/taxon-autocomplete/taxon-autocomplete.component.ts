@@ -46,7 +46,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() useValue = '';
   @Input() whiteList: string[];
   @Input() blackList: string[];
-  @Output() finish = new EventEmitter<void>();
+  @Output() complete = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
   @ViewChild('input') inputEl: ElementRef;
@@ -147,7 +147,9 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
+            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
+              return prev + ' ' + curr.id;
+            }, groups);
           }
           item['groups'] = groups;
           return item;
@@ -157,7 +159,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.finish.emit();
+        this.complete.emit();
       }));
   }
 

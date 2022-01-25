@@ -145,7 +145,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
-      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
     ).subscribe(
       () => {
         this.translate.get('template.success')

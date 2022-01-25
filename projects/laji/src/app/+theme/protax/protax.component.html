@@ -3,7 +3,7 @@
   <p>{{ 'theme.protax.intro' | translate }}</p>
 
   <div class="lu-section">
-    <laji-protax-form (protaxSubmit)="analyseData($event)" [loading]="loading" [downloadProgress]="downloadProgress"></laji-protax-form>
+    <laji-protax-form (submit)="analyseData($event)" [loading]="loading" [downloadProgress]="downloadProgress"></laji-protax-form>
   </div>
 
   <laji-info-page [page]="{'fi': '4718', 'en': '4827', 'sv': '4831'} | multiLang"></laji-info-page>

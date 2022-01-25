@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { IFormField, SplitType } from '../model/excel';
+import { IFormField, splitType } from '../model/excel';
 import { UserService } from '../../../shared/service/user.service';
 import { MappingService, SpecialTypes } from './mapping.service';
 import { Person } from '../../../shared/model/Person';
@@ -40,16 +40,16 @@ export class GeneratorService {
     GeneratorService.splitCoordinateSystem.wgs84
   ];
 
-  public static splittableFields: {[key: string]: SplitType} = {
+  public static splittableFields: {[key: string]: splitType} = {
     'gatheringEvent.dateBegin': 'date',
     'gatheringEvent.dateEnd': 'date',
     'gatherings[*].geometry': 'coordinate',
   };
 
   private sheetNames = {
-    base: 'excel.sheet.base',
-    vars: 'excel.sheet.variables', // This name cannot have spaces in it
-    info: 'excel.sheet.info'
+    'base': 'excel.sheet.base',
+    'vars': 'excel.sheet.variables', // This name cannot have spaces in it
+    'info': 'excel.sheet.info'
   };
 
   constructor(
@@ -135,7 +135,7 @@ export class GeneratorService {
   private addMetaDataToSheet(
     fields: IFormField[],
     sheet: XLSX.WorkSheet,
-    extra: {person: Person; namedPlaces: string[]; informalTaxonGroups: InformalTaxonGroup[]},
+    extra: {person: Person, namedPlaces: string[], informalTaxonGroups: InformalTaxonGroup[]},
     useLabels: boolean
   ) {
     const validation = [];
@@ -222,7 +222,7 @@ export class GeneratorService {
     let instructionColLen = 10;
 
     fields.forEach(field => {
-      const columns: {label: string; isArray: boolean; separators?: string[]}[] = [];
+      const columns: {label: string, isArray: boolean, separators?: string[]}[] = [];
       if (field.splitType) {
         const labels = this.getSplitFieldLabels(field.fullLabel, field.label, field.splitType);
         labels.forEach(label => {
@@ -281,7 +281,7 @@ export class GeneratorService {
     }
   }
 
-  private getSplitFieldLabels(fullLabel: string, label: string, type: SplitType) {
+  private getSplitFieldLabels(fullLabel: string, label: string, type: splitType) {
     switch (type) {
       case 'date':
         return [GeneratorService.splitDate.dd, GeneratorService.splitDate.mm, GeneratorService.splitDate.yyyy].map(

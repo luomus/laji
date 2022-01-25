@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-/* eslint-disable @angular-eslint/component-selector */
+/* tslint:disable:component-selector */
 @Component({
   selector: 'vihko-home',
   templateUrl: './vihko-home.component.html',

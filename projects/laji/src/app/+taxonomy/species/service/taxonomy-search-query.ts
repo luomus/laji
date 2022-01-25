@@ -19,12 +19,12 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
   public query: TaxonomySearchQueryInterface;
 
   public listOptions: {
-    page: number;
-    sortOrder: string;
-    selected: string[];
+    page: number,
+    sortOrder: string,
+    selected: string[]
   };
   public imageOptions: {
-    page: number;
+    page: number
   };
 
   constructor(
@@ -69,7 +69,8 @@ export class TaxonomySearchQuery implements SearchQueryInterface {
       'typesOfOccurrenceFilters', 'typesOfOccurrenceNotFilters', 'taxonRanks',
       'primaryHabitat', 'anyHabitat'
     ];
-    for (const key of arrayKeys) {
+    for (let i = 0; i < arrayKeys.length; i++) {
+      const key = arrayKeys[i];
       newQuery[key] = this.getArrayParam(params, key);
     }
 

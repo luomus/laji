@@ -140,7 +140,7 @@ export namespace Form {
       headerFields?: string[];
       documentListUseLocalDocumentViewer?: string;
       documentViewerGatheringGeometryJSONPath?: string | string[];
-      documentViewerForcedFields?: string[];
+      documentViewerForcedFields?: string[]
       listColumns?: string[];
       prepopulatedDocumentFields?: any;
       lastCensusLabel?: string;

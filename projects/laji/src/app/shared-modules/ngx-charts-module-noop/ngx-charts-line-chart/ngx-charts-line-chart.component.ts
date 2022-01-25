@@ -1,4 +1,4 @@
-/* eslint-disable @angular-eslint/component-selector */
+/* tslint:disable:component-selector */
 import { Component, Input } from '@angular/core';
 
 @Component({

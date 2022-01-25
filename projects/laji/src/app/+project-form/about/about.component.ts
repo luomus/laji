@@ -28,7 +28,7 @@ interface AboutData {
 })
 export class AboutComponent implements OnInit {
 
-  Rights = Rights; // eslint-disable-line @typescript-eslint/naming-convention
+  Rights = Rights;
 
   aboutData$: Observable<AboutData>;
 

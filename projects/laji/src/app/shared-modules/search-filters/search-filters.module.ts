@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* tslint:disable:max-line-length */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ObservationActiveComponent } from './active/observation-active.component';
@@ -13,7 +13,7 @@ import { HabitatSelectComponent } from './habitat-select/habitat-select.componen
 import { SelectModule } from '../select/select.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
-/* eslint-enable max-len */
+/* tslint:enable:max-line-length */
 
 @NgModule({
   imports: [

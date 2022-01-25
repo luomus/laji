@@ -25,8 +25,8 @@ export class SelectCollectionsModalComponent implements OnInit {
   @Input() clearButtonLabel: string;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<{
-    collectionId: string[];
-    collectionIdNot: string[];
+    collectionId: string[],
+    collectionIdNot: string[]
   }>();
 
   selectedOptions: SelectedOption[] = [];
@@ -140,7 +140,7 @@ export class SelectCollectionsModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField,
-      type
+      type: type
     });
   }
 
@@ -173,7 +173,7 @@ export class SelectCollectionsModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField,
-      type
+      type: type
     });
   }
 

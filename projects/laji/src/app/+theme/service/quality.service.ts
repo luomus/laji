@@ -74,10 +74,12 @@ export class QualityService {
         true
     )).pipe(
       map(data => data.results),
-      map(data => data.map(row => {
+      map(data => {
+        return data.map(row => {
           row.userId = row.aggregateBy['unit.annotations.annotationByPersonName'] || '';
           return row;
-        })), );
+        });
+      }), );
   }
 
   private _fetch(type: 'annotations'|'users', cacheKey: string, request: Observable<any>): Observable<any> {

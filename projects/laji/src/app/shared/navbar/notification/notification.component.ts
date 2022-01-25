@@ -1,4 +1,4 @@
-/* eslint-disable @angular-eslint/component-selector */
+/* tslint:disable:component-selector */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Notification } from '../../model/Notification';
 import { IdService } from '../../service/id.service';
@@ -17,7 +17,7 @@ export class NotificationComponent {
   type: 'annotation'|'annotationCommented'|'friendRequest'|'friendRequestAccepted';
 
   private _notification: Notification;
-  @Input() set notification(notification: Notification) {
+  @Input() set notification (notification: Notification) {
     this._notification = notification;
     this.initTargets();
   }

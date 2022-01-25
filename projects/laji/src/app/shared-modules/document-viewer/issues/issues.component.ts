@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-const QUALITY_ERRORS = [
+const QualityErrors = [
   'issue',
   'locationIssue',
   'timeIssue'
@@ -27,7 +27,7 @@ export class IssuesComponent implements OnChanges {
       this.hasIssue = false;
       return;
     }
-    this.hasIssue = Object.keys(this.data.quality).filter(key => QUALITY_ERRORS.indexOf(key) > -1).length > 0;
+    this.hasIssue = Object.keys(this.data.quality).filter(key => QualityErrors.indexOf(key) > -1).length > 0;
   }
 
 }

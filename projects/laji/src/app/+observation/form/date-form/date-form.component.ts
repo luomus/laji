@@ -66,9 +66,7 @@ export class DateFormComponent implements OnDestroy {
     if (this.formQuery.timeEnd) {
       this.ignoreEndDatepickerEvent = true;
     }
-    this.formQuery.timeStart = typeof days === 'number'
-      ? (-1) * Math.abs(days) + '/0'
-      : undefined;
+    typeof days === 'number' ? this.formQuery.timeStart = (-1) * Math.abs(days) + '/0' : this.formQuery.timeStart = undefined;
     this.formQuery.timeEnd = undefined;
     this.onFormQueryChange();
   }

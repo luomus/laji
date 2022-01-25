@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* tslint:disable:no-unused-variable member-ordering */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to
@@ -75,7 +75,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logError(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
+  public logError (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/error';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -88,7 +88,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logInfo(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
+  public logInfo (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/info';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -101,7 +101,7 @@ export class LoggerApi {
    *
    * @param minutesBack How many minutes back to look for items in the log
    */
-  public logStatus(minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
+  public logStatus (minutesBack?: number, extraHttpRequestParams?: any ): Observable<Status> {
     const path = this.basePath + '/logger/status';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
@@ -117,7 +117,7 @@ export class LoggerApi {
    *
    * @param data Model instance data
    */
-  public logWarn(data?: Log, extraHttpRequestParams?: any ): Observable<unknown> {
+  public logWarn (data?: Log, extraHttpRequestParams?: any ): Observable<{}> {
     const path = this.basePath + '/logger/warn';
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};

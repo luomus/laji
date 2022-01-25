@@ -48,7 +48,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.ingress = undefined;
     this.description = undefined;
     this.ylesta = undefined;
-    this.ylesta = [{text: undefined, visible: undefined}];
+    this.ylesta = [{'text': undefined, 'visible': undefined}];
     this.ylestaTitle = undefined;
     this.ylestaSpeciesCardAuthors = undefined;
     this.groupHasTranslation = [];

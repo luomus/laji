@@ -10,7 +10,7 @@ import { Subject, Subscription } from 'rxjs';
   styleUrls: ['./quality-filters.component.css']
 })
 export class QualityFiltersComponent implements OnInit, OnDestroy {
-  @Output() filterSelect = new EventEmitter();
+  @Output() select = new EventEmitter();
 
   filters = {
     group: '',
@@ -31,7 +31,7 @@ export class QualityFiltersComponent implements OnInit, OnDestroy {
     this.subSearch = this.delayedSearch.pipe(
       debounceTime(this.debouchAfterChange))
       .subscribe(() => {
-          this.filterSelect.emit(this.filters);
+          this.select.emit(this.filters);
       });
   }
 

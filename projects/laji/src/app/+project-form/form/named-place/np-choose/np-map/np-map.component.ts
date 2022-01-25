@@ -118,7 +118,7 @@ export class NpMapComponent implements OnInit, OnChanges {
     }
 
     type Counts = {[status in ExtendedNamedPlace['_status'] | 'all']: number};
-    // eslint-disable-next-line @typescript-eslint/no-shadow
+    // tslint:disable-next-line:no-shadowed-variable
     const counts = this.namedPlaces?.reduce<Counts>((counts, np) => ({
         ...counts,
         [np._status]: counts[np._status] + 1,

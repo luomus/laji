@@ -137,10 +137,12 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return this.warehouseApi.warehouseQueryAggregateGet(cacheQuery, ['document.collectionId'], undefined, 1000, page).pipe(
       tap(data => hasMore = data.lastPage && data.lastPage > page),
       map(data => data.results || []),
-      map(data => data.map(d => ({
+      map(data => data.map(d => {
+        return {
           id: IdService.getId(d?.aggregateBy?.['document.collectionId']),
           count: d.count
-        }))),
+        };
+      })),
       map(cols => [...collections, ...cols]),
       switchMap(cols => hasMore ? this.getCollectionsAggregate(query, page + 1, cols) : of(cols)));
   }

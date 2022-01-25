@@ -53,7 +53,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   @Input() visible: boolean;
   @Input() hidden: boolean;
   @Input() unit: any;
-  @Output() save = new EventEmitter<Annotation>();
+  @Output() success = new EventEmitter<Annotation>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() cancel = new EventEmitter<any>();
 
@@ -137,7 +137,9 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       map(data => data.map(item => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
+          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
+            return prev + ' ' + curr.id;
+          }, groups);
         }
         item['groups'] = groups;
         return item;
@@ -236,10 +238,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   // add tags and filter after add a positive or negative tag
   findFirstTagNegativePositive(tags): any {
-    for (const tag of tags.length) {
-      if (Global.annotationTags[tag].quality !== 'MMAN.typeCheck' && Global.annotationTags[tag].quality !== 'MMAN.typeInfo'
-      && Global.annotationTags[tag].quality !== 'MMAN.typeInvasive' && (Global.annotationTags[tag].quality !== 'MMAN.typeAdmin' ||  tag === 'MMAN.3')) {
-        return tag;
+    for (let i = 0; i < tags.length; i++) {
+      if (Global.annotationTags[tags[i]].quality !== 'MMAN.typeCheck' && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInfo'
+      && Global.annotationTags[tags[i]].quality !== 'MMAN.typeInvasive' && (Global.annotationTags[tags[i]].quality !== 'MMAN.typeAdmin' ||  tags[i] === 'MMAN.3')) {
+        return tags[i];
       } else {
       }
     }
@@ -289,13 +291,15 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   initAnnotationTags() {
     this.annotationAddadableTags$ = this.annotationService.getAllAddableTags(this.translate.currentLang).pipe(
-      map(data => data.map(element => {
+      map(data => {
+        return data.map(element => {
           if (element['id'] === 'MMAN.3') {
             return { id: element['id'], quality: element['type'], position: 1 };
           } else {
             return { id: element['id'], quality: element['type'], position: 0 };
           }
-        }))
+        });
+      })
     );
 
     this.annotationRemovableTags$ = this.annotationService.getAllRemovableTags(this.translate.currentLang).pipe(
@@ -352,7 +356,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       .subscribe(
         annotation => {
           this.annotation = annotation;
-          this.save.emit(annotation);
+          this.success.emit(annotation);
           this.sending = false;
         },
         error => {
@@ -371,13 +375,13 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
       const index = this.annotation.addedTags.indexOf(
         this.findFirstTagNegativePositive(this.annotation.addedTags)
       );
-      const indexSame = this.annotation.addedTags.indexOf(value.id);
+      const index_same = this.annotation.addedTags.indexOf(value.id);
       if (index !== -1) {
         this.annotation.addedTags.splice(index, 1);
       }
 
 
-      if (indexSame === -1 ) {
+      if (index_same === -1 ) {
         this.annotation.addedTags.push(value.id);
         if (value === 'MMAN.3') {
           this.removeAllTagsByCategory(this.annotation.addedTags, 'MMAN.typeCheck');

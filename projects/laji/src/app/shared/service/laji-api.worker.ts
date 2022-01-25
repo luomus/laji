@@ -82,7 +82,7 @@ function dataUrlToBlob(dataURL: string): Blob {
     const items = dataURL.split(',');
     const type = items[0].split(':')[1];
 
-    return new Blob([decodeURIComponent(items[1])], {type});
+    return new Blob([decodeURIComponent(items[1])], {type: type});
   }
 
   const parts = dataURL.split(BASE64_MARKER);

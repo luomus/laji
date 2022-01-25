@@ -13,7 +13,7 @@ export class ErrorListComponent {
 
   @Input() fields: {[key: string]: IFormField};
 
-  _errors: {field: string; errors: string[]}[] = [];
+  _errors: {field: string, errors: string[]}[] = [];
 
   constructor(private translateService: TranslateService) { }
 

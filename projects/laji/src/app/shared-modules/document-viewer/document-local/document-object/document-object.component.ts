@@ -44,7 +44,8 @@ export class DocumentObjectComponent implements OnChanges {
       return;
     }
 
-    for (const field of fields) {
+    for (let i = 0; i < fields.length; i++) {
+      const field = fields[i];
       if (facts[field.name] && (field.type !== 'collection' || facts[field.name].length > 0)) {
         this.hasFacts = true;
         return;

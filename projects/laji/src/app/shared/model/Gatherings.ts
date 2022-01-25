@@ -335,23 +335,23 @@ export namespace Gatherings {
         InvasiveControlEffectivenessNotFound = <any> 'MY.invasiveControlEffectivenessNotFound'
     }
     export enum PredominantTreeEnum {
-         MX37819 = <any> 'MX.37819',
-         MX37812 = <any> 'MX.37812',
-         MX37992 = <any> 'MX.37992',
-         MX38004 = <any> 'MX.38004',
-         MX38590 = <any> 'MX.38590',
-         MX38686 = <any> 'MX.38686',
-         MX38563 = <any> 'MX.38563',
-         MX38527 = <any> 'MX.38527',
-         MX41344 = <any> 'MX.41344',
-         MX38016 = <any> 'MX.38016',
-         MX39331 = <any> 'MX.39331',
-         MX37990 = <any> 'MX.37990',
-         MX38008 = <any> 'MX.38008',
-         MX38010 = <any> 'MX.38010',
-         MX37975 = <any> 'MX.37975',
-         MX37976 = <any> 'MX.37976',
-         MX39122 = <any> 'MX.39122'
+        _37819 = <any> 'MX.37819',
+        _37812 = <any> 'MX.37812',
+        _37992 = <any> 'MX.37992',
+        _38004 = <any> 'MX.38004',
+        _38590 = <any> 'MX.38590',
+        _38686 = <any> 'MX.38686',
+        _38563 = <any> 'MX.38563',
+        _38527 = <any> 'MX.38527',
+        _41344 = <any> 'MX.41344',
+        _38016 = <any> 'MX.38016',
+        _39331 = <any> 'MX.39331',
+        _37990 = <any> 'MX.37990',
+        _38008 = <any> 'MX.38008',
+        _38010 = <any> 'MX.38010',
+        _37975 = <any> 'MX.37975',
+        _37976 = <any> 'MX.37976',
+        _39122 = <any> 'MX.39122'
     }
     export enum PublicityRestrictionsEnum {
         PublicityRestrictionsPublic = <any> 'MZ.publicityRestrictionsPublic',

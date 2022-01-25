@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('userMenu') public dropDown: BsDropdownDirective;
   @ViewChild('taxonMenu') private taxonDropdown: BsDropdownDirective;
 
-  openMenu = false;
+  openMenu: Boolean = false;
   redTheme = false;
   devRibbon = false;
   showSearch = false;

@@ -32,7 +32,7 @@ export class ProtaxFormComponent implements OnChanges {
   protaxModels = ProtaxModelEnum;
   toHtmlInputElement = toHtmlInputElement;
 
-  @Output() protaxSubmit = new EventEmitter<FormData>();
+  @Output() submit = new EventEmitter<FormData>();
 
   constructor(
     private dialogService: DialogService
@@ -62,7 +62,7 @@ export class ProtaxFormComponent implements OnChanges {
       return;
     }
 
-    this.protaxSubmit.emit(this.getFormData());
+    this.submit.emit(this.getFormData());
   }
 
   private getFormData(): FormData {

@@ -18,8 +18,8 @@ export interface PagedResult<T> {
 
   aggregations?: {
     [agg: string]: {
-      values: {[field: string]: string};
+      values: {[field: string]: string},
       count: number;
-    }[];
+    }[]
   };
 }

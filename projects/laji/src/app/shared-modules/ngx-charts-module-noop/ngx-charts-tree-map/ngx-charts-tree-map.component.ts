@@ -1,4 +1,4 @@
-/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
+/* tslint:disable:component-selector max-classes-per-file */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
@@ -11,5 +11,5 @@ export class NgxChartsTreeMapComponent {
   @Input() labelFormatting: any;
   @Input() valueFormatting: any;
 
-  @Output() select = new EventEmitter<any>(); // eslint-disable-line @angular-eslint/no-output-native
+  @Output() select = new EventEmitter<any>();
 }

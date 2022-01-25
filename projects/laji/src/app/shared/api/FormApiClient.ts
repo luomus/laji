@@ -46,7 +46,7 @@ export class FormApiClient {
   public fetch(
     resource: string,
     query: any,
-    options?: {method?: string; body?: any; headers?: {[header: string]: string | string[]}}
+    options?: {method?: string, body?: any, headers?: {[header: string]: string | string[]}}
   ): Promise<any> {
     const path = this.basePath + resource;
 

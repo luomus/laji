@@ -1,4 +1,4 @@
-/* eslint-disable @angular-eslint/component-selector */
+/* tslint:disable:component-selector */
 import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 
 export interface SelectOption {

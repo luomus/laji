@@ -16,7 +16,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
   @Input() trueValue: string[];
   @Input() falseValue: string[];
 
-  @Output() update = new EventEmitter<{true: string[]; false: string[]}>();
+  @Output() update = new EventEmitter<{true: string[], false: string[]}>();
 
 
   lang: string;

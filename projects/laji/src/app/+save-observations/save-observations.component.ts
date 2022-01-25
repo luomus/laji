@@ -14,7 +14,7 @@ export class SaveObservationsComponent implements OnInit {
   birdMonitoringForms$: Observable<Form.List[]>;
   researchProjectForms$: Observable<Form.List[]>;
 
-  constructor(
+  constructor (
     private facade: SaveObservationsFacade,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService,

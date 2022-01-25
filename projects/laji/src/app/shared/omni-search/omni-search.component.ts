@@ -39,7 +39,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() expand = '';
   @Input() visible = true;
   @Output() visibleTaxon = new EventEmitter<any>();
-  @Output() searchClose = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
 
   public search = '';
   public searchControl = new FormControl();
@@ -91,7 +91,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.dropdownVisible = false;
     this.search = '';
     this.taxa = [];
-    this.searchClose.emit();
+    this.close.emit();
     this.changeDetector.markForCheck();
   }
 
@@ -106,7 +106,9 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.subCnt =
         ObservableOf(this.taxon.key).pipe(combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
-          (id, cnt) => ({id, cnt: cnt.total})
+          (id, cnt) => {
+            return {id: id, cnt: cnt.total};
+          }
         )).subscribe(data => {
           this.taxa.map(auto => {
             if (auto.key === data.id ) {
@@ -188,7 +190,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
             taxon: this.search,
             lang: this.translate.currentLang,
             limit: this.limit,
-            err
+            err: err
           });
           this.changeDetector.markForCheck();
         }

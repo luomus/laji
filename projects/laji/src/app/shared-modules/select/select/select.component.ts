@@ -4,9 +4,9 @@ import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
 import { CheckboxType } from '../checkbox/checkbox.component';
 
-type IdType = string|number|boolean;
+type idType = string|number|boolean;
 export interface SelectOption {
-  id: IdType;
+  id: idType;
   value: string;
   info?: string;
   checkboxValue?: boolean|undefined;
@@ -18,7 +18,7 @@ export interface SelectOption {
   styleUrls: ['./select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy {
+export class SelectComponent<T extends idType|SelectOption = string> implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<null>();
 
   @Input() options: SelectOption[];
@@ -32,7 +32,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() info: string;
   @Input() loading = false;
   @Input() checkboxType = CheckboxType.basic;
-  @Input() classes: {options?: string; optionContainer?: string; menuContainer?: string} = {};
+  @Input() classes: {options: string, optionContainer: string, menuContainer: string} | {} = {};
 
   @Output() selectedChange = new EventEmitter<T[]>();
   @ViewChild('filter') filter: ElementRef;
@@ -73,7 +73,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.unsubscribe$.complete();
   }
 
-  toggleValue(id: IdType, event) {
+  toggleValue(id: idType, event) {
     const selected = this.selectedOptions.find(option => option.id === id);
     if (!selected || (this.isSelectOptions(selected) && selected.checkboxValue !== true)) {
       this.add(id, event);
@@ -82,7 +82,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     }
   }
 
-  add(id: IdType, event) {
+  add(id: idType, event) {
     const option = this.options.find((item: SelectOption) => item.id === id);
     const isBasic = this.checkboxType === CheckboxType.basic;
     if (this.multiple) {
@@ -108,7 +108,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.selectedChange.emit(this.selected);
   }
 
-  remove(id: IdType, event) {
+  remove(id: idType, event) {
     if (this.checkboxType !== CheckboxType.basic) {
       const select = this.selected.find(item => this.isSelectOptions(item) && item.id === id);
       if (this.isSelectOptions(select) && select.checkboxValue === false) {
@@ -218,7 +218,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.open = this.open || !!this.selectedOptions.length;
   }
 
-  private isSelectOptions(option: IdType|SelectOption): option is SelectOption {
+  private isSelectOptions(option: idType|SelectOption): option is SelectOption {
     return typeof option === 'object';
   }
 }

@@ -12,7 +12,7 @@ import { PlatformService } from '../../../shared/service/platform.service';
 import { DatatableUtil } from '../service/datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
 
-interface Settings {[key: string]: DatatableColumn }
+interface Settings {[key: string]: DatatableColumn; }
 
 @Component({
   selector: 'laji-datatable',
@@ -53,7 +53,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
-  @Output() datatableSelect = new EventEmitter<any>();
+  @Output() select = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
   filterByChange: Subscription;
@@ -85,8 +85,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
 
     return {
-      link: this.showRowAsLink,
-      issues:
+      'link': this.showRowAsLink,
+      'issues':
         !!(row.document && row.document.quality && row.document.quality.issue) ||
         !!(row.gathering && row.gathering.quality && (
           row.gathering.quality.issue ||
@@ -98,7 +98,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
           row.unit.quality.issue
         ))
     };
-  };
+  }
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -181,7 +181,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   @Input() set preselectedRowIndex(index: number) {
     this._preselectedRowIndex = index;
-    const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
+    const postSortIndex = (this._rows || []).findIndex((element) => {
+      return element.preSortIndex === this._preselectedRowIndex;
+    });
     this.selected = [this._rows[postSortIndex]] || [];
     if (!this.selected.length) {
       return;
@@ -195,7 +197,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     if (!this.initialized || this._preselectedRowIndex === -1 || !this.datatable || !this.datatable._internalRows) {
       return;
     }
-    const postSortIndex = (this._rows || []).findIndex((element) => element.preSortIndex === this._preselectedRowIndex);
+    const postSortIndex = (this._rows || []).findIndex((element) => {
+      return element.preSortIndex === this._preselectedRowIndex;
+    });
     // Calculate relative position of selected row and scroll to it
     const rowHeight = this.datatable.bodyComponent.rowHeight as number;
     const scrollTo = rowHeight * postSortIndex;

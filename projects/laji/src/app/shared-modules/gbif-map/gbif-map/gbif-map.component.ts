@@ -90,7 +90,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
       this.loading = true;
 
       this.getTaxonKeySub = this.http.get(this.speciesApiUrl, {
-        headers: new HttpHeaders({Accept: 'application/json'}),
+        headers: new HttpHeaders({'Accept': 'application/json'}),
         responseType: 'text',
         params: this.getTaxonSearchParams()
       })

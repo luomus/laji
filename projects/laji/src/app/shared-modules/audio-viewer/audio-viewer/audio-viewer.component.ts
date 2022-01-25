@@ -61,7 +61,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() spectrogramWidth: number;
   @Input() spectrogramHeight: number;
-  @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
+  @Input() spectrogramMargin: { top: number, bottom: number, left: number, right: number };
 
   @Input() audioInfoTpl: TemplateRef<any>;
 

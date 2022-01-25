@@ -60,7 +60,9 @@ export class KerttuExpertiseFormComponent implements OnInit, OnDestroy, Componen
     this.saveProfileSub = this.selectedTaxonIdsChanged
       .pipe(
         debounceTime(this.debounceTime),
-        switchMap(() => this.updateProfile(this.selectedTaxonIds))
+        switchMap(() => {
+          return this.updateProfile(this.selectedTaxonIds);
+        })
       ).subscribe(() => {
           this.cdr.markForCheck();
         }

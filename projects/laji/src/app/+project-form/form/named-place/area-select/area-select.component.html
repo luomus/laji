@@ -1,7 +1,7 @@
 <ng-container *ngIf="!multiselect">
-    <select class="form-control" #areaSelectElem
+    <select class="form-control" #areaSelect
             *ngIf="options.length > 0"
-            (change)="areaSelect.emit(areaSelectElem.value)"
+            (change)="select.emit(areaSelect.value)"
             [disabled]="disabled"
             [value]="value">
       <option *ngFor="let option of options" [value]="option.id" [selected]="option.id === value[0]">
@@ -15,7 +15,7 @@
     [filterPlaceHolder]="'haseka.submissions.filter' | translate"
     [useFilter]="true"
     [selected]="value"
-    (selectedChange)="areaSelect.emit($any($event))"
+    (selectedChange)="select.emit($any($event))"
     [open]="true"
   >
   </laji-select>

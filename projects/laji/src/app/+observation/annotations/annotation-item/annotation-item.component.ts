@@ -14,7 +14,7 @@ export class AnnotationItemComponent implements OnInit {
 
   limit = 1;
   moreTags: number;
-  tagsConverted: any = {};
+  tagsConverted: Object = {};
 
   ngOnInit() {
     if (this.item.unit.interpretations && this.item.unit.interpretations.effectiveTags && this.item.unit.interpretations.effectiveTags.length > 0) {

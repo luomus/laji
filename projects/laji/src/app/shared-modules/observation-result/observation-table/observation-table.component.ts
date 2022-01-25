@@ -88,8 +88,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
 
-  columnSelector = new ColumnSelector();
-  numberColumnSelector = new ColumnSelector();
+  columnSelector = new ColumnSelector;
+  numberColumnSelector = new ColumnSelector;
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -101,9 +101,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   loading: boolean;
 
   private langMap = {
-    fi: 'Finnish',
-    sv: 'Swedish',
-    en: 'English'
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'en': 'English'
   };
 
   columns: ObservationTableColumn[] = [];

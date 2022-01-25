@@ -1,4 +1,4 @@
-/* eslint-disable @angular-eslint/component-selector */
+/* tslint:disable:component-selector */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
@@ -16,6 +16,6 @@ export class NgxChartsAdvancedPieChartComponent {
   @Input() gradient: any;
   @Input() scheme: any;
 
-  @Output() select = new EventEmitter(); // eslint-disable-line @angular-eslint/no-output-native
+  @Output() select = new EventEmitter();
 
 }

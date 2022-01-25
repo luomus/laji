@@ -124,7 +124,7 @@ export class YkjService {
     const lonEnd = this.pad(lng + 1);
     return {
       type: 'Feature',
-      properties,
+      properties: properties,
       geometry: {
         type: 'Polygon',
         coordinates: [([

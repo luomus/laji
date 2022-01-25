@@ -25,7 +25,7 @@ export class WbcCensusesComponent implements OnInit  {
     'count',
     'individualCountSum'
   ];
-  sorts: {prop: string; dir: 'asc'|'desc'}[] = [
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
     {prop: 'document.namedPlace.birdAssociationAreaDisplayName', dir: 'asc'},
     {prop: 'gathering.eventDate.begin', dir: 'desc'},
   ];

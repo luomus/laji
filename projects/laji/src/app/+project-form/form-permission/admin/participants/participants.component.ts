@@ -84,7 +84,7 @@ export class ParticipantsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private formatData(data: Participant[]) {
+  private formatData (data: Participant[]) {
     return data.map(participant => ({
       ...participant,
       lintuvaaraLoginName: (participant.lintuvaaraLoginName || []).map(i => i.replace('lintuvaara:', '')),

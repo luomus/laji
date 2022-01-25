@@ -25,8 +25,8 @@ export class TaxonConceptService {
           const matches = xml.getElementsByTagNameNS(this.SKOS, 'exactMatch');
           const result = [];
 
-          for (const _match of matches) {
-            const match = this.getValueOrResource(_match);
+          for (let i = 0; i < matches.length; i++) {
+            const match = this.getValueOrResource(matches[i]);
             if (match && match !== this.TUN + id) {
               result.push(match);
             }
@@ -47,7 +47,8 @@ export class TaxonConceptService {
             {name: 'inScheme', namespace: this.SKOS}
           ];
 
-          for (const variable of variables) {
+          for (let i = 0; i < variables.length; i++) {
+            const variable = variables[i];
             const match = xml.getElementsByTagNameNS(variable.namespace, variable.name);
             if (match && match.length > 0) {
               const value = this.getValueOrResource(match[0]);
@@ -72,7 +73,8 @@ export class TaxonConceptService {
           const result = {};
           const matches = xml.getElementsByTagNameNS(this.RDFS, 'label');
 
-          for (const match of matches) {
+          for (let i = 0; i < matches.length; i++) {
+            const match = matches[i];
             const lang = this.getAttribute(match, this.XML, 'lang');
             const value = this.getValueOrResource(match);
             if (lang && value) {
@@ -89,7 +91,7 @@ export class TaxonConceptService {
     path = path.replace(/^http:\/\//i, 'https://');
 
     return this.http.get(path, {
-      headers: new HttpHeaders({Accept: 'application/skos+rdf+xml'}),
+      headers: new HttpHeaders({'Accept': 'application/skos+rdf+xml'}),
       responseType: 'text',
       params: {format: 'skos'}
     })

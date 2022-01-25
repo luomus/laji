@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { browser, $, protractor } from 'protractor';
 import { DocumentFormView } from '../+project-form/project-form.po';
 
@@ -29,12 +28,12 @@ export class MobileFormPage {
   }
 }
 
-class ImageModal {
+class ImageModal { // tslint:disable-line max-classes-per-file
   $container = $('.media-add-modal');
   $cancel = this.$container.$('.cancel');
 }
 
-class MapModal {
+class MapModal { // tslint:disable-line max-classes-per-file
   $buttonsContainer = $('.floating-buttons-container');
   $cancel = this.$buttonsContainer.$$('button').last();
 }

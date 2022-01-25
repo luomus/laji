@@ -38,7 +38,7 @@ export class WarehouseValueMappingService {
     );
   }
 
-  private parseResult(data: { enumeration: string; property: string }[]) {
+  private parseResult(data: {enumeration: string; property: string; }[]) {
     const result: LabelData = {
       mapping: {},
       reverse: {}

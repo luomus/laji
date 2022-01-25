@@ -34,7 +34,7 @@ export class NpListComponent implements OnDestroy {
   _fields: any[];
   data: any[] = [];
   columns: ObservationTableColumn[];
-  sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
+  sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
   sortType = SortType;
   selectionType = SelectionType;
   showLegendList = false;
@@ -84,7 +84,7 @@ export class NpListComponent implements OnDestroy {
         label: 'observation.form.placeName',
         width: 100
       },
-      '$._status': { // eslint-disable-line @typescript-eslint/naming-convention
+      '$._status': {
         label: 'Tila',
         width: 20,
         cellTemplate: 'statusTpl'

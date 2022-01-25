@@ -22,10 +22,7 @@ interface ViewModel {
     <ng-container *ngIf="vm$ | async as vm">
       <alert type="warning" *ngIf="vm.isLinkable">
         {{ 'np.linker.npMissing' | translate }} <br>
-        <lu-button
-          [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
-          id="link-to-np"
-          (click)="this.link.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
+        <lu-button [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize" id="link-to-np" (click)="this.click.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
       </alert>
     </ng-container>
   `,
@@ -35,7 +32,7 @@ export class NamedPlaceLinkerButtonComponent implements OnInit {
 
   @Input() documentID: string;
 
-  @Output() link = new EventEmitter();
+  @Output() click = new EventEmitter();
 
   vm$: Observable<ViewModel>;
 

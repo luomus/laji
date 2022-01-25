@@ -68,10 +68,6 @@ export class HideScrollDirective {
         let element = event.target;
 
         do {
-          element = element.parentNode;
-          if (!element) {
-            break;
-          }
           if (element === this.el) {
             isTargetScrolling = true;
             break;
@@ -80,7 +76,7 @@ export class HideScrollDirective {
             isTargetScrolling = false;
             break;
           }
-        } while (true);
+        } while (element = element.parentNode);
         if (isTargetScrolling) {
           event.stopPropagation();
           event.preventDefault();

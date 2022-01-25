@@ -294,7 +294,7 @@ export interface Document {
 
     voucherSpecimenID?: string;
 
-    acknowledgedWarnings?: {location: string; messages: string[]}[];
+    acknowledgedWarnings?: {location: string, messages: string[]}[];
 
     dataOrigin?: Document.DataOriginEnum[];
 }

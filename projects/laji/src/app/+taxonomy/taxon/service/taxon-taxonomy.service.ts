@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TaxonTaxonomyService {
-  private cacheById: { [key: string]: { taxon?: Taxonomy; parentId?: string; childrenIds?: string[] } } = {};
+  private cacheById: { [key: string]: { taxon?: Taxonomy, parentId?: string, childrenIds?: string[] } } = {};
   private pending: {[key: string]: Observable<Taxonomy>} = {};
   private pendingChildren: {[key: string]: Observable<Taxonomy[]>} = {};
   private pendingParents: {[key: string]: Observable<Taxonomy[]>} = {};
@@ -97,7 +97,9 @@ export class TaxonTaxonomyService {
         return of(cacheParents);
       }
 
-      return this.getParents(cacheParents[0].id).pipe(map(parents => parents.concat(cacheParents)));
+      return this.getParents(cacheParents[0].id).pipe(map(parents => {
+        return parents.concat(cacheParents);
+      }));
     }
 
     if (!this.pendingParents[id]) {

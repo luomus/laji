@@ -56,7 +56,7 @@ export class DialogService {
     return this.createDialog<PromptConfig, string | null>({message, showCancel: true, confirmLabel, prompt: true, promptValue: _default});
   }
 
-  private createDialog<T extends DialogConfig, R = boolean | string | null>(options: T): Observable<R> {
+  private createDialog<T extends DialogConfig, R = (boolean | (string | null))>(options: T): Observable<R> {
     if (options.confirmLabel === undefined) {
       delete options.confirmLabel;
     }
