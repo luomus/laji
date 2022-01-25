@@ -9,9 +9,9 @@ node {
     }
     stage('Quality') {
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh './node_modules/.bin/eslint projects/laji/src/**/*.ts -f checkstyle > ./test-results/output-tslint.xml'
+        sh './node_modules/.bin/eslint projects/laji/src/**/*.ts -f junit > ./test-results/output-eslint.xml'
       }
-      junit allowEmptyResults: true, testResults: '**/test-results/output-tslint.xml'
+      junit allowEmptyResults: true, testResults: '**/test-results/output-eslint.xml'
     }
     stage('Run integration tests') {
       sh './node_modules/.bin/webdriver-manager clean'
