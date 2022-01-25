@@ -3,11 +3,13 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { SelectStyle } from '../select/metadata-select/metadata-select.component';
 import { FileCrs, FileGeometry } from '../../shared/service/geo-convert.service';
 import { KeyValue } from '@angular/common';
+import { DialogService } from '../../shared/service/dialog.service';
 
 export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
 
 export interface DownloadParams {
   fileType: FORMAT;
+  fileNumber?: number;
   geometry?: FileGeometry;
   crs?: FileCrs;
 }
@@ -58,6 +60,10 @@ export interface DownloadParams {
             </div>
             <ng-container *ngIf="fileType === 'shp' || fileType === 'gpkg'">
               <div class="mb-3">
+                <label for="fileNumber">{{ 'download.fileNumber' | translate }}:</label>
+                <input id="fileNumber" name="fileNumber" class="form-control" [(ngModel)]="fileNumber" type="number">
+              </div>
+              <div class="mb-3">
                 <label for="geometry">{{ 'download.geometry' | translate }}:</label>
                 <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
                   <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
@@ -107,6 +113,7 @@ export class DownloadComponent implements OnChanges {
   _formats: FORMAT[] = ['tsv', 'ods', 'xlsx'];
 
   fileType: FORMAT = 'tsv';
+  fileNumber = 1234;
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
   modalRef: BsModalRef;
@@ -128,7 +135,8 @@ export class DownloadComponent implements OnChanges {
   }
 
   constructor(
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private dialogService: DialogService
   ) { }
 
   ngOnChanges() {
@@ -154,6 +162,11 @@ export class DownloadComponent implements OnChanges {
     }
     const params: DownloadParams = {fileType: this.fileType};
     if (this.fileType === 'shp' || this.fileType === 'gpkg') {
+      if (!this.fileNumber) {
+        this.dialogService.alert('download.missingFileNumber');
+        return;
+      }
+      params.fileNumber = this.fileNumber;
       params.geometry = this.geometry;
       params.crs = this.crs;
     }

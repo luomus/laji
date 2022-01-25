@@ -23,7 +23,7 @@ import { Subscription, Observable } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
-import {ExportFileType, ExportService} from '../../shared/service/export.service';
+import { ExportFileType, ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
 import { DownloadComponent, DownloadParams } from '../../shared-modules/download-modal/download.component';
 import {
@@ -372,7 +372,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         switchMap(formData => this.geoConvertService.getGISDownloadLinkFromData(
           formData,
-          1234,
+          params.fileNumber,
           params.fileType as FileFormat,
           params.geometry,
           params.crs
