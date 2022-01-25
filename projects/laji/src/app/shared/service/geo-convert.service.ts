@@ -33,13 +33,15 @@ export class GeoConvertService {
 
   public getGISDownloadLink(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
     return this.startGeoConversion(fileId, format, geometry, crs).pipe(
-      switchMap(conversionId => {
-        return interval(this.pollInterval).pipe(
-          mergeMap(() => this.getGeoConversionStatus(conversionId)),
-          first(result => result.status === 'complete'),
-          map(() => '/api/geo-convert/output/' + conversionId)
-        );
-      })
+      switchMap(conversionId => this.getOutputLink(conversionId))
+    );
+  }
+
+  public getGISDownloadLinkFromData(
+    data: FormData, fileNumber: number, format: FileFormat, geometry: FileGeometry, crs: FileCrs
+  ): Observable<string> {
+    return this.startGeoConversionFromData(data, fileNumber, format, geometry, crs).pipe(
+      switchMap(conversionId => this.getOutputLink(conversionId))
     );
   }
 
@@ -56,6 +58,29 @@ export class GeoConvertService {
 
     return this.httpClient.get<string>('/api/geo-convert/' + fileNumber, {params: params});
   }
+
+  private startGeoConversionFromData(
+    data: FormData, fileNumber: number, format: FileFormat, geometry: FileGeometry, crs: FileCrs
+  ): Observable<string> {
+    const queryParams = {
+      personToken: this.userService.getToken(),
+      outputFormat: format,
+      geometryType: geometry,
+      crs: crs
+    };
+    const params = new HttpParams({fromObject: <any>queryParams});
+
+    return this.httpClient.post<string>('/api/geo-convert/' + fileNumber, data, {params: params});
+  }
+
+  private getOutputLink(conversionId: string) {
+    return interval(this.pollInterval).pipe(
+      mergeMap(() => this.getGeoConversionStatus(conversionId)),
+      first(result => result.status === 'complete'),
+      map(() => '/api/geo-convert/output/' + conversionId)
+    );
+  }
+
 
   private getGeoConversionStatus(conversionId: string): Observable<GeoConversionStatus> {
     return this.httpClient.get<GeoConversionStatus>('/api/geo-convert/status/' + conversionId);

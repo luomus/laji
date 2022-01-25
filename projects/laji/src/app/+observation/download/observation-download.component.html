@@ -22,7 +22,7 @@
             *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
             role="primary"
             [showBackdrop]="false"
-            (download)="simpleDownload($event.fileType)"
+            (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading"
             [formats]="formats"
           >
@@ -36,7 +36,7 @@
             [showBackdrop]="false"
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
-            (download)="simpleDownload($event.fileType)"
+            (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading"
             [formats]="formats"
           >

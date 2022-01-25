@@ -70,7 +70,7 @@ export class DocumentExportService {
 
                 return (dataObservables.length > 0 ? ObservableForkJoin(dataObservables) : ObservableOf([]))
                   .pipe(
-                    map(data => {
+                    map((data: any[]) => {
                       const mergedData = [].concat.apply([], data);
 
                       return this.convertDataToAoA(this.getUsedFields(fields), mergedData);
@@ -155,7 +155,7 @@ export class DocumentExportService {
 
               return (getDataObservables.length > 0 ? ObservableForkJoin(getDataObservables) : ObservableOf([]))
                 .pipe(
-                  map((arrays) => {
+                  map((arrays: any[]) => {
                     obj[unwindKey] = [].concat.apply([], arrays);
                     return this.unwind(unwindKey, obj);
                   })
