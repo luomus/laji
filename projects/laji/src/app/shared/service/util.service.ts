@@ -42,10 +42,6 @@ export class Util {
    * @returns boolean
    */
   public static isEmptyObj(value: any) {
-    const a = [1,2];
-    for (let i = 0; i < a.length; i++) {
-      console.log(a[i]);
-    }
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
       return true;
     }
