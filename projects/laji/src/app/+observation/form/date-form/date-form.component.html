@@ -8,7 +8,7 @@
     [viewFormat]="'DD.MM.YYYY'"
     [otherFormats]="['D.M.YYYY', 'YYYY']"
     [format]="dateFormat"
-    (select)="onFormQueryChange()"
+    (dateSelect)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeStart"></laji-datepicker>
   <laji-datepicker
@@ -17,7 +17,7 @@
     [otherFormats]="['D.M.YYYY', 'YYYY']"
     [toLastOfYear]="true"
     [format]="dateFormat"
-    (select)="onFormQueryChange()"
+    (dateSelect)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeEnd"></laji-datepicker>
   <div class="btn-group btn-group-xs mt-1">
@@ -51,7 +51,7 @@
       [viewFormat]="'DD.MM.YYYY'"
       [otherFormats]="['D.M.YYYY', 'YYYY']"
       [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeStart"></laji-datepicker>
     <laji-datepicker
@@ -60,7 +60,7 @@
       [otherFormats]="['D.M.YYYY', 'YYYY']"
       [toLastOfYear]="true"
       [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeEnd"></laji-datepicker>
     <div class="btn-group btn-group-xs mt-1">
@@ -82,7 +82,7 @@
       [viewFormat]="'DD.MM.YYYY'"
       [otherFormats]="['D.M.YYYY', 'YYYY']"
       [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeStart"></laji-datepicker>
 
@@ -92,7 +92,7 @@
       [otherFormats]="['D.M.YYYY', 'YYYY']"
       [toLastOfYear]="true"
       [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeEnd"></laji-datepicker>
 

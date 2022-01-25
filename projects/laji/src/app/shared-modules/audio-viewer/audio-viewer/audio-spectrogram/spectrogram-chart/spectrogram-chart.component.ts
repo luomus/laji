@@ -28,7 +28,7 @@ export class SpectrogramChartComponent implements OnChanges {
 
   @Input() width: number;
   @Input() height: number;
-  @Input() margin: { top: number, bottom: number, left: number, right: number };
+  @Input() margin: { top: number; bottom: number; left: number; right: number };
 
   @Input() mode: AudioViewerMode = 'default';
 
@@ -305,7 +305,7 @@ export class SpectrogramChartComponent implements OnChanges {
     return [rectX, rectWidth, rectY, rectHeight];
   }
 
-  private getRectangleDrawData(rectangles: IAudioViewerRectangle[]): { dimensions: number[], color: string[], label: string[] }[] {
+  private getRectangleDrawData(rectangles: IAudioViewerRectangle[]): { dimensions: number[]; color: string[]; label: string[] }[] {
     return (rectangles || []).reduce((result, current) => {
       const dim = this.getRectangleDimensions(current.area.xRange, current.area.yRange);
       const duplicates = result.filter(value => this.rectanglesAreSame(value.dimensions, dim));

@@ -120,7 +120,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     const byField$ = this.getDataObservable().pipe(
       map(result => this.pickValue(result)),
       catchError(err => {
-        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err: err });
+        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err });
         return of([]);
       })
     );

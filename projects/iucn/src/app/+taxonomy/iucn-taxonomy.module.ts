@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InfoCardComponent } from './info-card/info-card.component';
@@ -22,7 +22,7 @@ import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 @NgModule({
   imports: [

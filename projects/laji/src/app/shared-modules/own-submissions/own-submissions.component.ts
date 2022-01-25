@@ -157,7 +157,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     }
     this.loading = true;
     this.documentApi.findById(event.documentID, this.userService.getToken()).pipe(
-      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
     ).subscribe(
       () => {
         this.translate.get('template.success')
@@ -375,7 +375,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               templateDescription: document.templateDescription,
               publicity: document.publicityRestrictions as any,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
-              dateObserved: dateObserved,
+              dateObserved,
               dateCreated: dateObserved,
               namedPlaceName: npName,
               locality: this.getLocality(gatheringInfo),

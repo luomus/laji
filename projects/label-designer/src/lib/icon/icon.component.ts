@@ -16,7 +16,7 @@ const ICON_SIZE = 24;
 })
 export class IconComponent {
   _size = ICON_SIZE;
-  /* tslint:disable:max-line-length */
+  /* eslint-disable max-len */
   @Input() type: 'close'|'drag-handle'|'logo'|'check'|'undo'|'redo'|'move'|'left'|'right'|'align-center'|'align-left'|'align-right'|'font-italic'|'font-bold'|'font-underline'|'save'|'load'|'up'|'down'|'edit'|'resize'|'refresh';
 
   @HostBinding('style.height.px') height = ICON_SIZE;

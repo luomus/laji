@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
 })
 export class LevelComponent implements OnChanges {
 
-  @Input() item: Object;
+  @Input() item: Record<string, unknown>;
   @Input() skip: string[] = [];
   @Input() subLevels: string[] = [];
   @Input() level = 'document';

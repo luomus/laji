@@ -65,7 +65,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   @Input() hideHeader = false;
   @Input() identifying = false;
 
-  @Output() close = new EventEmitter<boolean>();
+  @Output() annotationClose = new EventEmitter<boolean>();
   @Output() deleteDoc = new EventEmitter<string>();
 
   collectionContestFormId = Global.forms.collectionContest;
@@ -372,9 +372,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
 
   closeDocument() {
     if (this.documentToolsOpen) {
-      this.close.emit(false);
+      this.annotationClose.emit(false);
     } else {
-    this.close.emit(true);
+    this.annotationClose.emit(true);
     }
   }
 

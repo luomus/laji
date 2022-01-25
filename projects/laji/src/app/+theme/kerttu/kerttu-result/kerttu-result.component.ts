@@ -13,7 +13,7 @@ import { PersonApi } from '../../../shared/api/PersonApi';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KerttuResultComponent implements OnInit, OnDestroy {
-  stats$: Observable<{general: IKerttuStatistics, users: IUserStatistics[]}>;
+  stats$: Observable<{general: IKerttuStatistics; users: IUserStatistics[]}>;
   letterStats$: Observable<IUserLetterStatistics>;
 
   userId: string;
@@ -32,12 +32,10 @@ export class KerttuResultComponent implements OnInit, OnDestroy {
     this.getUserId().subscribe(userId => {
       const token = userId ? this.userService.getToken() : undefined;
 
-      this.stats$ = this.kerttuApi.getUsersStats(token).pipe(map(users => {
-        return {
+      this.stats$ = this.kerttuApi.getUsersStats(token).pipe(map(users => ({
           general: this.generalStatsFromUserStats(users, userId),
-          users: users
-        };
-      }));
+          users
+        })));
 
       if (userId) {
         this.nameVisibilitySub = this.personService.personFindProfileByToken(token).pipe(

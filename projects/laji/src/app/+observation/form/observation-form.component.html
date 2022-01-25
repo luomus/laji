@@ -591,7 +591,7 @@
     [alt]="'MX.iucnStatuses'"></laji-metadata-select>
   <laji-habitat-select
     [query]="query"
-    (select)="onHabitatChange($event)"
+    (habitatSelect)="onHabitatChange($event)"
   ></laji-habitat-select>
   <p>
     {{ 'observation.intro.typeOfOccurrenceId' | translate }}
@@ -620,7 +620,7 @@
       <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
     </div>
     <laji-three-state-switch
-      (change)="onQueryChange()"
+      (update)="onQueryChange()"
       [onText]="'yes' | translate"
       [offText]="'no' | translate"
       [(value)]="query.finnish">
