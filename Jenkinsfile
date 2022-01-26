@@ -17,14 +17,17 @@ node {
     }
     stage('Run integration tests') {
       sh 'echo debug3'
+        echo "currentBuild.result1: '${currentBuild.result}'"
       sh './node_modules/.bin/webdriver-manager clean'
       sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
         sh 'npm run e2e:ci -- --webdriver-update=false'
       }
       junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
+        echo "currentBuild.result2: '${currentBuild.result}'"
     }
     stage('Build') {
+        echo "currentBuild.result3: '${currentBuild.result}'"
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         milestone()
         sh 'rm -rf dist'
@@ -33,6 +36,7 @@ node {
       }
     }
     stage('Archive') {
+        echo "currentBuild.result4: '${currentBuild.result}'"
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         sh 'tar -cvzf dist.tar.gz --strip-components=1 dist'
         archive 'dist.tar.gz'
