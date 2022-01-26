@@ -31,7 +31,7 @@ export class UniquePipe implements PipeTransform {
       }
 
       if (arg.removedTags) {
-        for (const tag of  arg.removedTags) {
+        for (const tag of arg.removedTags) {
           if (!arg.deleted) {
             removedTags.push(IdService.getId(tag));
           }

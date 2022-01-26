@@ -63,7 +63,7 @@ export class Tree {
     node.state.isExpanded = false;
 
     if (node.children) {
-      for (const child of  node.children) {
+      for (const child of node.children) {
         this.hideNode(child);
       }
     }

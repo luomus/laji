@@ -236,7 +236,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
   // add tags and filter after add a positive or negative tag
   findFirstTagNegativePositive(tags): any {
-    for (const tag of tags.length) {
+    for (const tag of tags) {
       if (Global.annotationTags[tag].quality !== 'MMAN.typeCheck' && Global.annotationTags[tag].quality !== 'MMAN.typeInfo'
       && Global.annotationTags[tag].quality !== 'MMAN.typeInvasive' && (Global.annotationTags[tag].quality !== 'MMAN.typeAdmin' ||  tag === 'MMAN.3')) {
         return tag;
@@ -506,7 +506,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     ||
     ((((this.personRoleAnnotation === this.annotationRole.expert) && !this.expert) || (this.personRoleAnnotation === this.annotationRole.basic && this.expert)) &&
     ((this.annotation.addedTags.length === 0 || (this.annotation.addedTags.length === 1 && (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ||
-    this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1 )
+    this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
     || (!this.checkTypeTag('check'))) || (this.annotation.addedTags.length > 1 && !this.checkTypeTag('check'))) &&
     (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
     (this.annotation.notes === '' || this.annotation.notes === undefined)))
@@ -551,7 +551,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   }
 
   initElements() {
-    if (this.annotation.addedTags.indexOf('MMAN.3') !== -1 ) {
+    if (this.annotation.addedTags.indexOf('MMAN.3') !== -1) {
     this.initComment();
     }
 

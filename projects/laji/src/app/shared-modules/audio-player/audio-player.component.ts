@@ -147,7 +147,7 @@ export class AudioPlayerComponent implements OnInit {
     this.playingAudio = this.listAudio[index];
   }
 
-  onHidepopupSpectrum() {
+  onHidePopupSpectrum() {
     this.popupSpectrum = false;
     this.childComunication.emitChildEvent(false);
     this.cd.detectChanges();
