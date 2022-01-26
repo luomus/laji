@@ -271,10 +271,10 @@ export class SykeInsectResultService {
       const property = season
         ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')
         : !onlySections
-        ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day'])
-                + '-' + this.padMonthDay(item['gathering.conversions.month'])
-                + '-' + item['gathering.conversions.year']
-        : filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined');
+          ? 'day' + '_' + this.padMonthDay(item['gathering.conversions.day'])
+                  + '-' + this.padMonthDay(item['gathering.conversions.month'])
+                  + '-' + item['gathering.conversions.year']
+          : filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' +  (item[filters[2]] !== '' ? item[filters[2]] : 'undefined');
 
       if (existing.length) {
         const existingIndex = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].indexOf(existing[0]);
