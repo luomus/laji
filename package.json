@@ -119,7 +119,7 @@
     "jsonpath-plus": "^6.0.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "label-designer": "^4.0.3",
-    "laji-form": "^12.3.4",
+    "laji-form": "^12.3.5",
     "laji-map": "^3.14.3",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.10.0",
@@ -218,7 +218,6 @@
     "proj4": "2.3.16",
     "leaflet": "1.6.0",
     "@types/leaflet-draw": "0.4.14",
-    "laji-map": "3.2.5",
     "typescript": "3.4.5"
   },
   "keywords": [
