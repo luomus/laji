@@ -80,7 +80,7 @@ export class ObservationDataService {
     const queryParams = [];
     const unitValues = [];
     const speciesValues = ['aggregateBy: "unit.linkings.taxon.speciesId"', 'includeNonValidTaxa: false', 'taxonRankId: "MX.species"'];
-    const privateValues = ['secured: true'];
+    const privateValues = [];
 
     this.searchQueryService.forEachType({
       cb: (type, key) => {
@@ -109,6 +109,10 @@ export class ObservationDataService {
         }
       }
     });
+
+    if (query.secured === undefined) {
+      privateValues.push('secured: true');
+    }
 
     return gql`
       query${this.getGraphQLFilters(queryParams)} {

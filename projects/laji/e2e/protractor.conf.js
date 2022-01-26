@@ -40,6 +40,7 @@ exports.config = {
   ],
   suites: {
     saveObservations: './src/+save-observations/**/*.e2e-spec.ts',
+    observations: './src/+observations/**/*.e2e-spec.ts',
     home: './src/+home/**/*.e2e-spec.ts',
     user: './src/+user/**/*.e2e-spec.ts',
     map: './src/+map/**/*.e2e-spec.ts',

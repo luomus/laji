@@ -80,7 +80,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'selected',
     'orderBy',
     'collectionAndRecordQuality',
-    'plantStatusCode'
+    'plantStatusCode',
+    'sourceOfCoordinates'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -145,7 +146,6 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
-    'sourceOfCoordinates',
     'formId'
   ];
 

@@ -226,14 +226,14 @@ export interface WarehouseQueryInterface {
   teamMember?: Array<string>;
   teamMemberId?: Array<string>;
   taxonCensus?: Array<string>;
-  sourceOfCoordinates?: string;
+  sourceOfCoordinates?: Array<string>;
   _coordinatesIntersection?: number;
   primaryHabitat?: Array<string>;
   anyHabitat?: Array<string>;
   effectiveTag?: Array<string>;
   formId?: string;
   reliability?: Array<string>;
-  collectionAndRecordQuality?: Array<string>;
+  collectionAndRecordQuality?: string;
   plantStatusCode?: Array<string>;
 }
 
