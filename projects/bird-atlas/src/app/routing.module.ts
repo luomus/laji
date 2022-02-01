@@ -5,11 +5,10 @@ import { LocaleEnComponent } from '../../../laji/src/app/locale/locale-en.compon
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { LocaleSvComponent } from '../../../laji/src/app/locale/locale-sv.component';
 import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.component';
-import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
 
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule), data: {preload: true}}
+  {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)}
 ];
 
 const routesWithLang: Routes = [
@@ -37,14 +36,14 @@ const routesWithLang: Routes = [
 ];
 
 const allRoutes: Routes = [
-  {path: '', children: routesWithLang, canActivate: [CheckLoginGuard]}
+  {path: '', children: routesWithLang}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(allRoutes, {
-    initialNavigation: 'enabled',
+    initialNavigation: 'enabledBlocking',
     relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule]
 })
-export class VirRoutingModule { }
+export class BaRoutingModule { }

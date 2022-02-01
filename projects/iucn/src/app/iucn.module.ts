@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
+import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -43,6 +44,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   imports: [
     GraphQLModule,
     AppComponentModule,
+    LocaleModule,
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,

@@ -35,6 +35,7 @@ import { UsageDropdownComponent } from './component/nav-bar/usage-dropdown/usage
 import { LazyTranslateLoader } from './service/lazy-translate-loader';
 import { GlobalMessageComponent } from './component/global-message/global-message.component';
 import { FooterComponent } from './component/footer/footer.component';
+import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -47,6 +48,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   imports: [
     GraphQLModule,
     AppComponentModule,
+    LocaleModule,
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,
