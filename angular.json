@@ -1182,6 +1182,115 @@
         }
       }
     },
+    "bird-atlas": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/bird-atlas",
+      "sourceRoot": "projects/bird-atlas/src",
+      "prefix": "ba",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/bird-atlas",
+            "index": "projects/bird-atlas/src/index.html",
+            "main": "projects/bird-atlas/src/main.ts",
+            "polyfills": "projects/laji/src/polyfills.ts",
+            "tsConfig": "projects/bird-atlas/tsconfig.json",
+            "aot": false,
+            "assets": [
+              "projects/bird-atlas/src/favicon.ico",
+              "projects/bird-atlas/src/assets"
+            ],
+            "styles": [
+              "projects/bird-atlas/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/laji-ui/src/lib",
+                "projects/bird-atlas/src/styles"
+              ]
+            },
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/bird-atlas/src/env/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "local": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "bird-atlas:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "bird-atlas:build:production"
+            },
+            "dev": {
+              "browserTarget": "bird-atlas:build:dev"
+            },
+            "local": {
+              "browserTarget": "bird-atlas:build:local"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/bird-atlas/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
     "kerttu-global": {
       "root": "projects/kerttu-global/",
       "sourceRoot": "projects/kerttu-global/src",
