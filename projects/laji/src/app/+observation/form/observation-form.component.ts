@@ -116,7 +116,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
   screenWidthSub: Subscription;
   containerTypeAhead: string;
-  collectionAndRecordQualityString: any;
+  collectionAndRecordQualityString: string;
 
   private _query: WarehouseQueryInterface;
 
