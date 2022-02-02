@@ -72,5 +72,6 @@
   "identification.recordings.drawABox": "Draw a box to the spectrogram",
   "identification.recordings.draw": "Draw",
   "identification.recordings.createTemplates": "Create templates",
-  "identification.recordings.seeTemplates": "See templates"
+  "identification.recordings.seeTemplates": "View templates",
+  "identification.recordings.containsBirdsNotOnList": "Recording contains birds that are not on the list"
 }

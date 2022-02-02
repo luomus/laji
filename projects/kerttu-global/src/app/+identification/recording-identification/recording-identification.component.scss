@@ -1,7 +1,4 @@
-.checkbox > label {
-  display: inline;
-}
-
+@import 'vars';
 
 .button-container {
   float: right;
@@ -13,5 +10,13 @@
 
   lu-button {
     margin-left: 0.25em;
+  }
+}
+
+.general-annotation-section {
+  .checkbox > label {
+    display: inline;
+    font-size: $fs-2;
+    font-weight: bold;
   }
 }

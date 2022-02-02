@@ -42,22 +42,14 @@
       (drawEnd)="drawEnd($event)"
     ></laji-audio-viewer>
   </div>
-  <div class="col-sm-12">
+  <div class="col-sm-12 general-annotation-section mb-4">
     <div class="row">
       <div class="col-sm-4">
         <div class="checkbox">
-          <label class="text-sm">
+          <label>
             <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'theme.kerttu.isLowQuality' | translate }}
           </label>
           <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsNoiseCausedByHumanActivity" (change)="updateAnnotation()">{{ 'theme.kerttu.containsNoiseCausedByHumanActivity' | translate }}
-          </label>
-          <laji-info [html]="'theme.kerttu.info.containsNoiseCausedByHumanActivity' | translate"></laji-info>
         </div>
         <div class="checkbox">
           <label>
@@ -79,6 +71,14 @@
           </label>
           <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
         </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.recordings.containsBirdsNotOnList' | translate }}:
+          </label>
+        </div>
+        <input class="form-control" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList">
       </div>
     </div>
   </div>
