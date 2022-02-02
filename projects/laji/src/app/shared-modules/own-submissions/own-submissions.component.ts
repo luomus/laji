@@ -321,11 +321,13 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     if (this.namedPlace) {
       _query.namedPlace = this.namedPlace;
     }
+    if (query.year) {
+      _query.observationYear = String(query.year);
+    }
     return this.documentApi.findAll(
       this.userService.getToken(),
       String(page),
       String(10000),
-      query.year ? String(query.year) : undefined,
       _query
     ).pipe(
       switchMap(result => {

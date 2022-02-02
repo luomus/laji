@@ -316,5 +316,5 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #copyToClipboard>
-  <div class="copy-to-clipboard d-flex" (click)="onCopyToClipboard(value)" tabindex="0" luKeyboardClickable><span class="glyphicon glyphicon-paperclip mr-2"></span> {{ value }}</div>
+  <laji-copy-to-clipboard [value]="value"></laji-copy-to-clipboard>
 </ng-template>

@@ -7,7 +7,6 @@
         class="form-control input-sm"
         [class.loading]="loading"
         name="target"
-        id="autocomplete-input"
         [placeholder]="placeholder"
         [(ngModel)]="value"
         [typeahead]="dataSource"
@@ -21,6 +20,7 @@
         [typeaheadIsFirstItemActive]="!allowInvalid"
         autocomplete="off"
         autocorrect="off"
+        #input
       >
       <ng-container *ngIf="allowInvalid && renderButton">
         <span class="input-group-btn">

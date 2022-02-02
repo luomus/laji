@@ -205,8 +205,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       }, []).sort((a, b) => b.path.join('.').localeCompare(a.path.join('')));
     };
 
-    const document = this.documentService.removeMeta(JSON.parse(JSON.stringify(this.document)), diffIgnoredFields);
-    const acceptedDocument = this.documentService.removeMeta(JSON.parse(JSON.stringify(this.namedPlace.acceptedDocument || {})), diffIgnoredFields);
+    const document = this.documentService.removeMeta(this.document, diffIgnoredFields);
+    const acceptedDocument = this.documentService.removeMeta(this.namedPlace.acceptedDocument || {}, diffIgnoredFields);
     const geometryDiffers = !equals(getGeometry(this.document), getGeometry((this.namedPlace.acceptedDocument || {})));
     const otherwiseDiffers = !equals(document, acceptedDocument);
     const differs = otherwiseDiffers || geometryDiffers;

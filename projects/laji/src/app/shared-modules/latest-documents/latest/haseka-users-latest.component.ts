@@ -1,8 +1,7 @@
-import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Observable } from 'rxjs';
-import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.facade';
+import { LatestDocumentsFacade } from '../latest-documents.facade';
 
 
 @Component({
@@ -11,9 +10,9 @@ import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.faca
   styleUrls: ['./haseka-users-latest.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersLatestComponent implements OnInit, OnChanges {
+export class UsersLatestComponent implements OnInit {
   @Input() tmpOnly = false;
-  @Input() forms: string[];
+  @Input() formID: string;
   @Input() showFormNames = true;
   @Input() complainLocality: boolean;
   @Input() staticWidth: number = undefined;
@@ -21,8 +20,8 @@ export class UsersLatestComponent implements OnInit, OnChanges {
   @Output() showViewer = new EventEmitter<Document>();
 
   public loading$: Observable<boolean>;
-  public tmpDocuments$: Observable<ILatestDocument[]>;
-  public latest$: Observable<ILatestDocument[]>;
+  public tmpDocuments$ = this.latestFacade.tmpDocuments$;
+  public latest$ = this.latestFacade.latest$;
   public formsById = {};
 
   constructor(
@@ -32,26 +31,7 @@ export class UsersLatestComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.latestFacade.update();
-    this.updateDocumentList();
-    this.updateTempDocumentList();
-  }
-
-  ngOnChanges() {
-    this.updateDocumentList();
-    this.updateTempDocumentList();
-  }
-
-  updateTempDocumentList() {
-    this.tmpDocuments$ = this.latestFacade.tmpDocuments$.pipe(
-      map(documents => this.forms ? documents.filter(res => this.forms.indexOf(res.document.formID) > -1) : documents)
-    );
-  }
-
-  updateDocumentList() {
-    this.latest$ = this.latestFacade.latest$.pipe(
-      map(documents => this.forms ? documents.filter(res => this.forms.indexOf(res.document.formID) > -1) : documents)
-    );
+    this.latestFacade.setFormID(this.formID);
   }
 
   discardTempDocument(document) {

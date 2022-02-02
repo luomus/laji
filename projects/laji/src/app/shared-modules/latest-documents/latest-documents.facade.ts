@@ -47,7 +47,10 @@ export class LatestDocumentsFacade implements OnDestroy {
 
   private readonly localUpdateSub: Subscription;
   private updateSub: Subscription;
+  private updateSubKey: string | undefined;
   private remoteRefresh;
+
+  private formID: string | undefined;
 
   constructor(
     private documentApi: DocumentApi,
@@ -67,6 +70,11 @@ export class LatestDocumentsFacade implements OnDestroy {
     if (this.localUpdateSub) {
       this.localUpdateSub.unsubscribe();
     }
+  }
+
+  setFormID(formID?: string): void {
+    this.formID = formID;
+    this.update();
   }
 
   update(): void {
@@ -94,6 +102,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     this.userService.user$.pipe(
       take(1),
       mergeMap(p => this.documentStorage.getAll(p, 'onlyTmp').pipe(
+        map(tmps => this.formID ? tmps.filter(tmp => tmp.formID === this.formID) : tmps),
         mergeMap(tmps => this.getAllForms().pipe(
           map(forms => tmps.map(tmp => ({
             document: tmp,
@@ -106,11 +115,12 @@ export class LatestDocumentsFacade implements OnDestroy {
   }
 
   private updateRemote() {
-    if (this.updateSub) {
+    if (this.updateSub && this.updateSubKey === this.getSubKey()) {
       return;
     }
+    this.updateSubKey = this.getSubKey();
     this.updateState({..._state, loading: true});
-    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10').pipe(
+    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10', {formID: this.formID}).pipe(
       map(docRes => docRes.results),
       mergeMap(documents => this.checkForLocalData(documents)),
       catchError((e) => {
@@ -121,6 +131,10 @@ export class LatestDocumentsFacade implements OnDestroy {
       this.updateState({..._state, latest, loading: false});
       delete this.updateSub;
     });
+  }
+
+  getSubKey() {
+    return this.formID;
   }
 
   private getAllForms(): Observable<{[id: string]: Form.List}> {

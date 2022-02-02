@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, filter, startWith, take } from 'rxjs/operators';
+import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -26,9 +26,11 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   children: Taxonomy[] = [];
   totalChildren$: Observable<number> = this.facade.totalChildren$;
+  loading = true;
 
   private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
     filter(d => d !== undefined),
+    tap(() => { this.loading = false; this.cdr.markForCheck(); }),
     switchMap(d => d.connect(this.collectionViewer)),
     distinctUntilChanged()
   );
@@ -54,8 +56,6 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     )
   };
 
-  loading = true;
-
   constructor(
     private facade: TaxonIdentificationFacade,
     private cdr: ChangeDetectorRef,
@@ -77,7 +77,6 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     this.subscription.add(
       this.children$.subscribe((t) => {
         this.children = t;
-        this.loading = false;
         this.cdr.markForCheck();
         this.totalChildren$.pipe(take(1)).subscribe(total => {
           if (this.children.length < total) {
@@ -98,29 +97,12 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     this.subscription.unsubscribe();
   }
 
-  isInViewport(element: Element): boolean {
-    if (this.platformService.isBrowser) {
-      const rect = element.getBoundingClientRect();
-      return (
-          rect.top >= 0 &&
-          rect.left >= 0 &&
-          rect.bottom <= (this.window.innerHeight || this.document.documentElement.clientHeight) &&
-          rect.right <= (this.window.innerWidth || this.document.documentElement.clientWidth)
-      );
-    } else {
-      return false;
-    }
-  }
-
   isWithinXPixelsOfViewport(element: Element, px: number): boolean {
-    if (this.platformService.isBrowser) {
-      const rect = element.getBoundingClientRect();
-      return (
-        this.window.innerHeight - rect.y > -px
-        || this.document.documentElement.clientHeight - rect.y > -px
-      );
-    } else {
-      return false;
-    }
+    if (!this.platformService.isBrowser) { return false; }
+    const rect = element.getBoundingClientRect();
+    return (
+      this.window.innerHeight - rect.y > -px
+      || this.document.documentElement.clientHeight - rect.y > -px
+    );
   }
 }
