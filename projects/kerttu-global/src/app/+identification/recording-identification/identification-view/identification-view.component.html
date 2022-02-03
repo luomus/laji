@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="button-container">
+      <div>
+        <lu-button [disabled]="!hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
+        <laji-info [html]="'theme.kerttu.info.previousRecording' | translate"></laji-info>
+      </div>
+      <div>
+        <lu-button [disabled]="buttonsAreDisabled" (click)="saveClick.emit()">{{ 'theme.kerttu.saveRecording' | translate }}</lu-button>
+        <laji-info [html]="'theme.kerttu.info.saveRecording' | translate"></laji-info>
+      </div>
+      <div>
+        <lu-button
+          [disabled]="buttonsAreDisabled"
+          [role]="'success'"
+          (click)="nextRecordingClick.emit()">
+          {{ 'theme.kerttu.nextRecording' | translate }}
+        </lu-button>
+        <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <h2 class="mt-3">
+      {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
+      <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+    </h2>
+  </div>
+  <div class="col-sm-12">
+    <laji-audio-viewer
+      [audio]="recording"
+      [zoomTime]="true"
+      [timePaddingOnZoom]="2"
+      [highlightFocusArea]="true"
+      [showZoomControl]="true"
+      [mode]="drawMode ? 'draw' : 'default'"
+      [rectangles]="rectangles"
+      [spectrogramHeight]="170"
+      (drawEnd)="drawEnd($event)"
+    ></laji-audio-viewer>
+  </div>
+  <div class="col-sm-12 general-annotation-section mb-4">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'theme.kerttu.isLowQuality' | translate }}
+          </label>
+          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'theme.kerttu.containsHumanSpeech' | translate }}
+          </label>
+          <laji-info [html]="'theme.kerttu.info.containsHumanSpeech' | translate"></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.containsUnknownBirds' | translate }}
+          </label>
+          <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate"></laji-info>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.doesNotContainBirds' | translate }}
+          </label>
+          <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.recordings.containsBirdsNotOnList' | translate }}:
+          </label>
+        </div>
+        <input class="form-control" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList">
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="species-select">
+        {{ 'theme.kerttu.listSpecies' | translate }}
+        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+      </label>
+      <bsg-taxon-select
+        id="species-select"
+        (taxonSelect)="addToIdentifications($event)"
+      ></bsg-taxon-select>
+    </div>
+    <bsg-identification-table
+      [(identifications)]="annotation.identifications"
+      [loading]="false"
+      (drawClick)="onDrawClick($event)"
+      (removeDrawingClick)="removeDrawing($event)"
+    ></bsg-identification-table>
+  </div>
+</div>

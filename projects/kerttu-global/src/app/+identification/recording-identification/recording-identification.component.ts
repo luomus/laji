@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import {IGlobalSpecies, IRecordingAnnotation, ISpeciesIdentification, SpeciesAnnotationEnum} from '../../kerttu-global-shared/models';
-import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { IAudio } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -8,62 +9,30 @@ import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../laji/src
   styleUrls: ['./recording-identification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecordingIdentificationComponent {
-  recording = {
-    audio: {
-      url: 'https://image.laji.fi/cornell239808151/239808151_00.mp3'
-    },
-    xRange: [2, 12]
-  };
-  hasPreviousRecording = false;
-  buttonsAreDisabled = false;
+export class RecordingIdentificationComponent implements OnInit {
+  recording: IAudio;
 
-  annotation: IRecordingAnnotation = {
-    identifications: []
-  };
+  loading = false;
+  firstRecordingLoaded = false;
+  hasError = false;
 
-  drawMode = false;
-  drawIdx?: number;
-  rectangles: IAudioViewerRectangle[] = [];
+  constructor(
+    private kerttuGlobalApi: KerttuGlobalApi,
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
-  @Output() nextRecordingClick = new EventEmitter();
-  @Output() previousRecordingClick = new EventEmitter();
-  @Output() saveClick = new EventEmitter();
-  @Output() annotationChange = new EventEmitter<ISpeciesIdentification[]>();
-
-  addToIdentifications(species: IGlobalSpecies) {
-    this.annotation.identifications = [
-      ...this.annotation.identifications,
-      {species: species, occurrence: SpeciesAnnotationEnum.occurs}
-    ];
-  }
-
-  onDrawClick(data: {drawClicked: boolean, rowIndex: number}) {
-    this.drawMode = data.drawClicked;
-    this.drawIdx = data.rowIndex;
-  }
-
-  drawEnd(area: IAudioViewerArea) {
-    const identifications = this.annotation.identifications;
-    const label = identifications[this.drawIdx].species.commonName;
-    this.rectangles = this.rectangles.filter(r => r.label !== label);
-    this.rectangles = [...this.rectangles, {area: area, label: label}];
-
-    identifications[this.drawIdx].area = area;
-    this.annotation.identifications = [...identifications];
-    this.drawMode = false;
-  }
-
-  removeDrawing(rowIndex: number) {
-    const identifications = this.annotation.identifications;
-    const label = identifications[rowIndex].species.commonName;
-    this.rectangles = this.rectangles.filter(r => r.label !== label);
-
-    identifications[this.drawIdx].area = null;
-    this.annotation.identifications = [...identifications];
-  }
-
-  updateAnnotation() {
-
+  ngOnInit() {
+    this.loading = true;
+    this.kerttuGlobalApi.getRecordingForIdentification(this.userService.getToken()).subscribe((result) => {
+      this.recording = result;
+      this.firstRecordingLoaded = true;
+      this.loading = false;
+      this.cdr.markForCheck();
+    }, (err) => {
+      this.hasError = true;
+      this.loading = false;
+      this.cdr.markForCheck();
+    });
   }
 }

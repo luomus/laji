@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { WINDOW } from '@ng-toolkit/universal';
+import {IAudio} from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Injectable({
   providedIn: 'root'
@@ -94,6 +95,13 @@ export class KerttuGlobalApi {
     const params = this.queryToParams(query, new HttpParams());
 
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
+  }
+
+  public getRecordingForIdentification(personToken: string): Observable<IAudio> {
+    const path = this.basePath + '/identification/recording';
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IAudio>(path, { params });
   }
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {

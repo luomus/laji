@@ -7,6 +7,7 @@ import { LajiUiModule } from '../../../../laji-ui/src/lib/laji-ui.module';
 import { IdentificationComponent } from './identification.component';
 import { IdentificationInstructionsComponent } from './identification-instructions/identification-instructions.component';
 import { RecordingIdentificationComponent } from './recording-identification/recording-identification.component';
+import { IdentificationViewComponent } from './recording-identification/identification-view/identification-view.component';
 import { ExpertiseComponent } from './expertise/expertise.component';
 import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
@@ -35,7 +36,8 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
     ExpertiseComponent,
     IdentificationResultsComponent,
     TaxonSelectComponent,
-    IdentificationTableComponent
+    IdentificationTableComponent,
+    IdentificationViewComponent
   ]
 })
 export class IdentificationModule { }

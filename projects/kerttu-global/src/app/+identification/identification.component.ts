@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { KerttuGlobalApi } from '../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-identification',
@@ -40,8 +38,5 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationComponent {
-  constructor(
-    private kerttuGlobalApi: KerttuGlobalApi,
-    private userService: UserService
-  ) { }
+
 }
