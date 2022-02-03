@@ -9,6 +9,7 @@ import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { BaRoutingModule } from './routing.module';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,6 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, NotFoundComponent]
+  declarations: [AppComponent, NotFoundComponent, NavbarComponent]
 })
 export class AppModule { }

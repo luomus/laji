@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'ba-app',
   template: `
-    <p translate>hello-translate</p>
+    <ba-navbar></ba-navbar>
     <router-outlet></router-outlet>
   `,
   styleUrls: [
