@@ -28,7 +28,7 @@
   <a *ngIf="!useHref"
      class="lu-btn"
      tabindex="-1"
-     [routerLink]="routerLink"
+     [routerLink]="routerLink || []"
      [queryParams]="queryParams"
      [target]="target"
      [ngClass]="classes"

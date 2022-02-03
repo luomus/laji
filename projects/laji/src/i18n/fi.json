@@ -105,7 +105,7 @@
   "datasets.intro": "Vie oma havainto- tai kokoelma-aineistosi Lajitietokeskuksen Aineistopankkiin primääri- tai sekundääridatana. (<a href=\"/about/1289\">Lue lisää: Näin liität aineistosi</a>)",
   "datasets.label": "Aineistopankki",
   "datasets.new.help": "Voit pyytää pääsyä aineistoihin oman organisaatiosi tai ryhmäsi yhteyshenkilöltä.",
-  "datasets.new.intro": "Tässä voit pyytää että organisaatiollesi tai ryhmällesi perustetaan uusi aineisto Aineistopankkiin. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman pian, yleensä muutamassa päivässä.",
+  "datasets.new.intro": "Tässä voit pyytää, että organisaatiollesi tai ryhmällesi perustetaan uusi aineisto Aineistopankkiin. Pyyntö käsitellään Lajitietokeskuksessa mahdollisimman pian, yleensä muutamassa päivässä.",
   "datasets.new.title": "Perusta uusi aineisto",
   "datasets.observations.list": "Selaa aineiston havaintoja Laji.fi-portaalissa",
   "datasets.observations.title": "Aineiston havainnot",
@@ -1908,5 +1908,8 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "taxonAdminFiltersOperator.and": "Kaikilla näistä (oletus)",
+  "taxonAdminFiltersOperator.or": "Joillakin näistä",
+  "observation.form.conservation": "Uhanalaisuus ja asema"
 }

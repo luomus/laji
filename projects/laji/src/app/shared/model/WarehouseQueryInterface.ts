@@ -235,6 +235,7 @@ export interface WarehouseQueryInterface {
   reliability?: Array<string>;
   collectionAndRecordQuality?: string;
   plantStatusCode?: Array<string>;
+  taxonAdminFiltersOperator?: 'AND' | 'OR';
 }
 
 

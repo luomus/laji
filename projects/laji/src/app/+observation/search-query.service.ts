@@ -145,8 +145,10 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
+    'sourceOfCoordinates',
     'formId',
-    'collectionAndRecordQuality',
+    'taxonAdminFiltersOperator',
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols

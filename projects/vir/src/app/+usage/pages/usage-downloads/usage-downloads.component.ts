@@ -29,7 +29,7 @@ export class UsageDownloadsComponent {
 
   collectionSelect(col: string) {
     this.downloadRequests$ = this.virDownloadRequestsService.findDownloadRequests().pipe(
-      map(downloads => col ? downloads.filter(d => d?.rootCollections.includes(col)) : downloads),
+      map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
       map(downloads => downloads.map(download => ({...download, collectionIds: download.collections?.map(collection => collection.id)})))
     );
     this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
