@@ -1908,5 +1908,8 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "taxonAdminFiltersOperator.and": "Kaikilla näistä (oletus)",
+  "taxonAdminFiltersOperator.or": "Joillakin näistä",
+  "observation.form.conservation": "Uhanalaisuus ja asema"
 }
