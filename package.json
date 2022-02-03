@@ -35,6 +35,7 @@
     "build:beta": "npm run ng-high-memory -- build --configuration=beta --base-href https://beta.laji.fi",
     "build:dev:embedded": "npm run ng-high-memory -- build --configuration=dev-embedded --base-href https://dev-embedded.laji.fi",
     "build:exhibition-screen:prod": "npm run ng-high-memory -- build exhibition-screen --configuration=production",
+    "build:bird-atlas:dev": "npm run ng-high-memory -- build bird-atlas --configuration=development",
     "build:bird-atlas:prod": "npm run ng-high-memory -- build bird-atlas --configuration=production",
     "build:label-designer-electron": "rm -rf dist && ng build --base-href ./ label-designer-electron && tsc --p projects/label-designer-electron/electron && cp projects/label-designer-electron/package.json dist/",
     "build:laji-ui": "ng build laji-ui",
