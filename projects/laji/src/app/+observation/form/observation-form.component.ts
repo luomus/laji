@@ -104,7 +104,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode',
+      'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -463,8 +464,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ) {
     Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this[sectionKey][section].length; i++) {
-        const value = this.query[this[sectionKey][section][i]];
+      for (const key of this[sectionKey][section]) {
+        const value = this.query[key];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;

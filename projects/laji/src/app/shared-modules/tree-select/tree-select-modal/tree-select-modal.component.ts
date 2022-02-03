@@ -27,8 +27,8 @@ export class TreeSelectModalComponent implements OnInit {
   @Input() includeLink = false;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitConfirm = new EventEmitter<{
-    selectedId: string[],
-    selectedIdNot: string[]
+    selectedId: string[];
+    selectedIdNot: string[];
   }>();
 
   selectedOptions: SelectedOption[] = [];
@@ -142,7 +142,7 @@ export class TreeSelectModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField,
-      type: type
+      type
     });
   }
 
@@ -175,7 +175,7 @@ export class TreeSelectModalComponent implements OnInit {
     this.selectedOptions = this.selectedOptions.concat({
       id: node.id,
       value: node.displayField,
-      type: type
+      type
     });
   }
 

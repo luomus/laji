@@ -22,8 +22,8 @@ export class CollectionsSelectComponent implements OnChanges {
   @Input() clearButtonLabel: string;
   @Input() open = false;
   @Output() collectionIdChange = new EventEmitter<{
-    collectionId?: string[],
-    collectionIdNot?: string[],
+    collectionId?: string[];
+    collectionIdNot?: string[];
   }>();
 
   collectionsTree$: Observable<TreeOptionsNode[]> = null;

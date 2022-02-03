@@ -53,7 +53,7 @@ export class ManageComponent extends AbstractPermission implements OnInit, OnDes
   }
 
   makePermissionChange(personId: string, action: 'acceptAdmin' | 'acceptEditor' | 'reject') {
-    if (action === 'acceptAdmin' && !confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId: personId }))) {
+    if (action === 'acceptAdmin' && !confirm(this.translate.instant('form.permission.admin.confirmAdmin', { personId }))) {
       return;
     }
     this.disabled[personId] = true;

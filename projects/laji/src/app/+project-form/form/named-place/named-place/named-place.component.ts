@@ -335,9 +335,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
 
     return this.namedPlaceService.getAllNamePlaces(query)
       .pipe(
-        catchError(() => {
-          return throwError(this.translate.instant('np.loadError'));
-        })
+        catchError(() => throwError(this.translate.instant('np.loadError')))
       );
   }
 

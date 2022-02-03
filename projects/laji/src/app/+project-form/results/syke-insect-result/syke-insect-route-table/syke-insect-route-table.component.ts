@@ -16,7 +16,7 @@ import { DateFormatPipe } from 'ngx-moment';
 export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   @Input() routeId: string;
   @Input() season: string;
-  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   @Input() year = '';
   @Input() filter = '';
   @Input() taxonSet: string;
@@ -114,9 +114,7 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
       }
     });
 
-    otherCols = otherCols.filter((el, index) => {
-      return otherCols.indexOf(el) === index;
-    });
+    otherCols = otherCols.filter((el, index) => otherCols.indexOf(el) === index);
 
     if (this.filter !== 'gathering.conversions.year') {
       otherCols.sort((a, b) => a - b);
@@ -156,8 +154,8 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
   private getAoa(): string[][] {
     const aoa = [[]];
 
-    for (let i = 0; i < this.columns.length; i++) {
-      aoa[0].push(this.translate.instant(this.columns[i].label));
+    for (const col of this.columns) {
+      aoa[0].push(this.translate.instant(col.label));
     }
     for (let i = 0; i < this.rows.length; i++) {
       aoa.push([]);
@@ -209,9 +207,7 @@ export class SykeInsectRouteTableComponent implements OnInit, OnChanges {
 
   private getSortingComparator(prop: string): (a, b) => number {
     if (prop === 'name') {
-      return (a, b) => {
-        return (a).localeCompare(b);
-      };
+      return (a, b) => (a).localeCompare(b);
     }
 
     return (a, b) => {

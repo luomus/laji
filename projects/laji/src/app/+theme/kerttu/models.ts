@@ -97,7 +97,7 @@ export enum LetterAnnotation {
 
 export enum TaxonAnnotationEnum {
   occurs = 1,
-  possible_occurs = 2
+  possibleOccurs = 2
 }
 
 export enum KerttuErrorEnum {

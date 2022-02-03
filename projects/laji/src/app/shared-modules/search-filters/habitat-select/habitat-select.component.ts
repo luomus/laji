@@ -15,7 +15,7 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
 
   private subUpdate: Subscription;
 
-  @Output() select = new EventEmitter<{primaryHabitat?: string[], anyHabitat?: string[]}>();
+  @Output() habitatSelect = new EventEmitter<{primaryHabitat?: string[]; anyHabitat?: string[]}>();
 
   ngOnChanges() {
     this.setQuery(this.query);
@@ -30,9 +30,9 @@ export class HabitatSelectComponent implements OnChanges, OnDestroy {
   onSelect() {
     const habitatQuery = this.getHabitatQuery();
     if (this.onlyPrimary) {
-      this.select.emit({primaryHabitat: habitatQuery});
+      this.habitatSelect.emit({primaryHabitat: habitatQuery});
     } else {
-      this.select.emit({anyHabitat: habitatQuery});
+      this.habitatSelect.emit({anyHabitat: habitatQuery});
     }
   }
 

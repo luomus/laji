@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 export * from './APIUser';
 export * from './active';
 export * from './annotation';

@@ -36,9 +36,9 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() formVisible: boolean;
   @Input() listVisible: boolean;
   @Input() annotationTags: AnnotationTag[];
-  @Output() close = new EventEmitter<any>();
+  @Output() annotationsClose = new EventEmitter<any>();
   @Output() annotationChange = new EventEmitter<Annotation>();
-  @Output() loadingForm = new EventEmitter<Object>();
+  @Output() loadingForm = new EventEmitter<any>();
 
 
   @ViewChild('formAnnotation') formAnnotation: AnnotationFormNewComponent;
@@ -202,7 +202,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
     this.subscribeRefreshedAnnotations = timer(0, 5000).pipe(
       switchMap(() =>
         this.warehouseApi.warehouseQueryDocumentAggregateGet(
-          {'documentId': [this.rootID]},
+          {documentId: [this.rootID]},
           ['document.documentId', 'document.randomKey'],
           ['document.randomKey'],
           10,
@@ -243,7 +243,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
 
   findRendomKey1() {
     this.subscribeRefreshedAnnotations1 = this.warehouseApi.warehouseQueryDocumentAggregateGet(
-          {'documentId': [this.rootID]},
+          {documentId: [this.rootID]},
           ['document.documentId', 'document.randomKey'],
           ['document.randomKey'],
           10,

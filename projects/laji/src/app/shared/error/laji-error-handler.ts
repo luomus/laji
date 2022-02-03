@@ -61,7 +61,7 @@ export class LajiErrorHandler extends ErrorHandler {
       errorSent = true;
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy ? location.path() : '';
-      this.getLogger().error('Guru Meditation!', {clientPath: url, error: error, errorMsg: error?.toString()});
+      this.getLogger().error('Guru Meditation!', {clientPath: url, error, errorMsg: error?.toString()});
     }
     this.pauseMessage();
 

@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CollectionsSelectComponent } from './collections-select.component';
