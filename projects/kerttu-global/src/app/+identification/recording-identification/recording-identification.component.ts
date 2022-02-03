@@ -34,7 +34,7 @@ export class RecordingIdentificationComponent {
   addToIdentifications(species: IGlobalSpecies) {
     this.annotation.identifications = [
       ...this.annotation.identifications,
-      {species: species, occurrence: SpeciesAnnotationEnum.occurs, boxes: []}
+      {species: species, occurrence: SpeciesAnnotationEnum.occurs}
     ];
   }
 
@@ -45,11 +45,22 @@ export class RecordingIdentificationComponent {
 
   drawEnd(area: IAudioViewerArea) {
     const identifications = this.annotation.identifications;
-    this.rectangles = [...this.rectangles, {area: area, label: identifications[this.drawIdx].species.commonName}];
+    const label = identifications[this.drawIdx].species.commonName;
+    this.rectangles = this.rectangles.filter(r => r.label !== label);
+    this.rectangles = [...this.rectangles, {area: area, label: label}];
 
-    identifications[this.drawIdx].boxes.push(area);
+    identifications[this.drawIdx].area = area;
     this.annotation.identifications = [...identifications];
     this.drawMode = false;
+  }
+
+  removeDrawing(rowIndex: number) {
+    const identifications = this.annotation.identifications;
+    const label = identifications[rowIndex].species.commonName;
+    this.rectangles = this.rectangles.filter(r => r.label !== label);
+
+    identifications[this.drawIdx].area = null;
+    this.annotation.identifications = [...identifications];
   }
 
   updateAnnotation() {

@@ -25,6 +25,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
 
   @Output() identificationsChange = new EventEmitter<ISpeciesIdentification[]>();
   @Output() drawClick = new EventEmitter<{drawClicked: boolean, rowIndex: number}>();
+  @Output() removeDrawingClick = new EventEmitter<number>();
 
   ngOnInit() {
     this.columns = [

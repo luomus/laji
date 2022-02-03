@@ -111,7 +111,7 @@ export interface IRecordingAnnotation {
 export interface ISpeciesIdentification {
   species: IGlobalSpecies;
   occurrence: SpeciesAnnotationEnum;
-  boxes: IAudioViewerArea[];
+  area?: IAudioViewerArea;
 }
 
 export enum CommentType {
