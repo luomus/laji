@@ -6,12 +6,19 @@
       <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
       <laji-info>{{ 'observation.info.informalTaxonGroup' | translate }}</laji-info>
     </div>
-    <laji-observation-group-select
-      [(ngModel)]="formQuery.informalTaxonGroupId"
+    <laji-observation-extended-group-select
+      [query]="formQuery"
       name="informalTaxonGroupId"
-      (select)="onFormQueryChange()">
-      {{ 'observation.active.informalTaxonGroupAll'|translate }}
-    </laji-observation-group-select>
+      [useAdvanced]="true"
+      [modalTitle]="'observation.form.informalTaxonGroup.select' | translate"
+      [modalButtonLabel]="'observation.form.informalTaxonGroup.select' | translate"
+      [browseTitle]="'observation.form.informalTaxonGroup.browse' | translate"
+      [selectedTitle]="'observation.form.informalTaxonGroup.selected' | translate"
+      [okButtonLabel]="'labelDesigner.Ok' | translate"
+      [clearButtonLabel]="'labelDesigner.Clear' | translate"
+      (select)="onSelectionIdChange($event, 'formQuery')">
+      {{ 'observation.active.informalTaxonGroupAll'| translate }}
+    </laji-observation-extended-group-select>
   </div>
 
   <div>
@@ -498,19 +505,19 @@
 
 <!--Sources -->
 <section class="laji-panel bg-success" laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
-  <laji-select-collections
+  <laji-collections-select
     [query]="query"
-    (selectedOptionsChange)="onCollectionIdChange($event)"
+    (collectionIdChange)="onSelectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
-    [modalTitle]="'observation.form.datasetSelect' | translate"
-    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
-    [browseTitle]="'observation.form.datasetBrowse' | translate"
-    [selectedTitle]="'observation.form.datasetSelected' | translate"
-    [okButtonLabel]="'labelDesigner.Ok' | translate"
-    [clearButtonLabel]="'labelDesigner.Clear' | translate"
+    [modalTitle]="'observation.form.datasetSelect' | translate"
+    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
+    [browseTitle]="'observation.form.datasetBrowse' | translate"
+    [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [okButtonLabel]="'labelDesigner.Ok' | translate"
+    [clearButtonLabel]="'labelDesigner.Clear' | translate"
     name='collectionID'
-  ></laji-select-collections>
+  ></laji-collections-select>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"

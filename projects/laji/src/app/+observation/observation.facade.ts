@@ -153,13 +153,13 @@ export class ObservationFacade {
     this.updatePersistentState({...this.persistentState, showIntro: !_state.showIntro});
   }
 
-  taxaAutocomplete(token: string, informalTaxonGroupId: string, limit: number): Observable<ITaxonAutocomplete[]> {
+  taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {
     return this.lajiApi.get(LajiApi.Endpoints.autocomplete, 'taxon', {
       q: token,
       limit: '' + limit,
       includePayload: true,
       lang: this.translateService.currentLang,
-      informalTaxonGroup: informalTaxonGroupId,
+      informalTaxonGroup: informalTaxonGroupId?.toString(),
       excludeNameTypes: 'MX.hasMisspelledName,MX.hasMisappliedName'
     } as LajiApi.Query.AutocompleteQuery).pipe(
       map<Autocomplete[], ITaxonAutocomplete[]>(data => data.map(item => {
