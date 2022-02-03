@@ -295,7 +295,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  onSelectionIdChange(selections: any, target: string = 'query') {
+  onSelectionIdChange(selections: {[key: string]: string[]}, target: 'query' | 'formQuery' = 'query') {
     if (target === 'query') {
       Object.keys(selections).forEach(key => {
         this.query[key] = selections[key];

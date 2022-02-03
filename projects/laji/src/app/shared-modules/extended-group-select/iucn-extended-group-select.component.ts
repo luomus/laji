@@ -4,7 +4,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ExtendedGroupSelectComponent } from './extended-group-select.component';
+import { ExtendedGroupSelectComponent, InformalGroupEvent } from './extended-group-select.component';
 import { RedListTaxonGroup } from '../../shared/model/RedListTaxonGroup';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { PagedResult } from '../../shared/model/PagedResult';
@@ -52,7 +52,7 @@ export class IucnExtendedGroupSelectComponent extends ExtendedGroupSelectCompone
     return this.redListTaxonGroupApi.redListTaxonGroupsGetTree(lang);
   }
 
-  prepareEmit(includedOptions: string[], excludedOptions?: string[]) {
+  prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent {
     return {
       redListGroup: includedOptions,
     };

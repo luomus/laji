@@ -1,21 +1,16 @@
 /* tslint:disable:no-use-before-declare */
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../../shared/model/Group';
 import { PagedResult } from '../../shared/model/PagedResult';
-import { SelectedOption, OptionsTreeNode } from '../tree-select/tree-select.component';
+import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 
-interface InformalTaxonGroupEvent {
-  informalTaxonGroupId?: string[];
-  informalTaxonGroupIdNot?: string[];
-}
-
-interface RedlistGroupEvent {
-  redListGroup: string[];
+export interface InformalGroupEvent {
+  [key: string]: string[];
 }
 
 @Directive()
@@ -31,7 +26,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   @Input() selectedTitle = '';
   @Input() okButtonLabel = '';
   @Input() clearButtonLabel = '';
-  @Output() select = new EventEmitter<InformalTaxonGroupEvent | RedlistGroupEvent>();
+  @Output() select = new EventEmitter<InformalGroupEvent>();
 
   lang: string;
   includedOptions: string[] = [];
@@ -47,7 +42,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   public advanced = false;
   protected subLabel: any;
 
-  groupsTree$: Observable<OptionsTreeNode[]> = null;
+  groupsTree$: Observable<TreeOptionsNode[]> = null;
   groups$: Observable<SelectedOption[]> = null;
 
   get value(): any {
@@ -70,7 +65,9 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   onSimpleSelectorChange() {
-    this.select.emit(this.prepareEmit([this.value]));
+    if (this.value) {
+      this.select.emit(this.prepareEmit([this.value]));
+    }
   }
 
   ngOnChanges() {
@@ -90,20 +87,20 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   abstract convertToInformalTaxonGroup(group: T): InformalTaxonGroup;
   abstract getTree(lang): Observable<PagedResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
-  abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalTaxonGroupEvent | RedlistGroupEvent;
+  abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
   toggleAdvancedMode() {
     this.advanced = !this.advanced;
   }
 
-  initGroupTree() {
+  initGroupTree(): Observable<TreeOptionsNode[]> {
     return this.getTree(this.lang).pipe(
       map((data) => data.results),
       map((trees) => this.buildGroupTree(trees))
     );
   }
 
-  buildGroupTree(trees: any[]) {
+  buildGroupTree(trees: any[]): TreeOptionsNode[] {
     const groupsWithChildren = [];
 
     trees.forEach(tree => {
@@ -117,7 +114,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     return groupsWithChildren;
   }
 
-  buildTree(tree): OptionsTreeNode {
+  buildTree(tree): TreeOptionsNode {
     if (!!tree.hasSubGroup) {
       const children = tree.hasSubGroup.map(subTree => this.buildTree(this.convertToInformalTaxonGroup(subTree)));
 
@@ -161,7 +158,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     );
   }
 
-  selectedOptionsChange($event) {
+  selectedOptionsChange($event: TreeOptionsChangeEvent) {
     this.includedOptions = $event.selectedId;
     this.excludedOptions = $event.selectedIdNot;
 

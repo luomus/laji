@@ -1,9 +1,9 @@
 <div>
-  <lu-button role="secondary" (click)="openModal()">
+  <lu-button role='secondary' (click)='openModal()'>
     {{modalButtonLabel}}
   </lu-button>
-  <ng-container *ngIf="includedOptions?.length !== 0 || excludedOptions?.length !== 0">
-    <ng-container *ngIf="options$ | async; let options; else loading">
+  <ng-container *ngIf='includedOptions?.length !== 0 || excludedOptions?.length !== 0'>
+    <ng-container *ngIf='options$ | async; let options; else loading'>
       <laji-selected-tree-nodes [selectedOptions]='options' (selectedOptionsChange)='deselect($event)'></laji-selected-tree-nodes>
     </ng-container>
     <ng-template #loading>

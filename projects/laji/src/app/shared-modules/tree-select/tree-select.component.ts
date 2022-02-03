@@ -5,16 +5,21 @@ import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.
 
 
 export interface SelectedOption {
-  id: any;
-  value: any;
+  id: string;
+  value: string;
   type: 'included' | 'excluded';
 }
 
-export interface OptionsTreeNode {
+export interface TreeOptionsNode {
   id: string;
   name: string;
-  children?: OptionsTreeNode[];
+  children?: TreeOptionsNode[];
   count?: number;
+}
+
+export interface TreeOptionsChangeEvent {
+  selectedId?: string[];
+  selectedIdNot?: string[];
 }
 
 @Component({
@@ -26,7 +31,7 @@ export interface OptionsTreeNode {
 export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$: Observable<OptionsTreeNode[]>;
+  @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() options$: Observable<SelectedOption[]>;
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
@@ -36,10 +41,7 @@ export class TreeSelectComponent {
   @Input() clearButtonLabel: string;
   @Input() includeCount = false;
   @Input() includeLink = false;
-  @Output() selectedOptionsChange = new EventEmitter<{
-    selectedId?: string[],
-    selectedIdNot?: string[],
-  }>();
+  @Output() selectedOptionsChange = new EventEmitter<TreeOptionsChangeEvent>();
 
   lang: string;
   modalRef: BsModalRef;

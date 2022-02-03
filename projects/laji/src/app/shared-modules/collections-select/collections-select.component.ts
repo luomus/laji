@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
 import { CollectionService } from '../../shared/service/collection.service';
 import { Observable, zip } from 'rxjs';
-import { SelectedOption, OptionsTreeNode } from '../tree-select/tree-select.component';
+import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 
 @Component({
   selector: 'laji-collections-select',
@@ -26,7 +26,7 @@ export class CollectionsSelectComponent implements OnChanges {
     collectionIdNot?: string[],
   }>();
 
-  collectionsTree$: Observable<OptionsTreeNode[]> = null;
+  collectionsTree$: Observable<TreeOptionsNode[]> = null;
   collections$: Observable<SelectedOption[]> = null;
 
   lang: string;
@@ -59,7 +59,7 @@ export class CollectionsSelectComponent implements OnChanges {
     this.open = !this.open;
   }
 
-  selectedOptionsChange($event) {
+  selectedOptionsChange($event: TreeOptionsChangeEvent) {
     this.collectionIdChange.emit({
       collectionId: $event.selectedId,
       collectionIdNot: $event.selectedIdNot
@@ -94,7 +94,7 @@ export class CollectionsSelectComponent implements OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, allAggregates, filteredAggragates): OptionsTreeNode {
+  buildTree(tree, allAggregates, filteredAggragates): TreeOptionsNode {
     const allAggregate = allAggregates.find(elem => elem.id === tree.id);
     const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 

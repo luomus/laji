@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
-import { OptionsTreeNode, SelectedOption } from '../tree-select.component';
+import { TreeOptionsNode, SelectedOption } from '../tree-select.component';
 
 @Component({
   selector: 'laji-tree-select-modal',
@@ -17,7 +17,7 @@ import { OptionsTreeNode, SelectedOption } from '../tree-select.component';
 export class TreeSelectModalComponent implements OnInit {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
-  @Input() optionsTree$: Observable<OptionsTreeNode[]>;
+  @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
