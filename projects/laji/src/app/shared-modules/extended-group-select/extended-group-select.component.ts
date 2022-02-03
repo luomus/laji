@@ -14,7 +14,6 @@ export interface InformalGroupEvent {
 }
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
 export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnChanges {
   @Input() query: Record<string, any>;
   @Input() position: 'right'|'left' = 'right';
@@ -26,6 +25,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   @Input() selectedTitle = '';
   @Input() okButtonLabel = '';
   @Input() clearButtonLabel = '';
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<InformalGroupEvent>();
 
   lang: string;
@@ -121,7 +121,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
       return {
         id: tree.id,
         name: tree.name,
-        children: children,
+        children,
         };
     } else {
       return {
