@@ -146,7 +146,6 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
-    'sourceOfCoordinates',
     'formId',
     'taxonAdminFiltersOperator',
     'collectionAndRecordQuality'

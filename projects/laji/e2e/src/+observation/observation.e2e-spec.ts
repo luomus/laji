@@ -12,7 +12,7 @@ const path = `observation/map?
   &plantStatusCode=MY.plantStatusCodeL&sourceOfCoordinates=REPORTED_VALUE&finnish=true&invasive=false&typeSpecimen=true&hasDocumentMedia=true
   &hasGatheringMedia=true&hasUnitMedia=false&secured=true&unidentified=true&needsCheck=true&breedingSite=true&useIdentificationAnnotations=false
   &includeSubTaxa=false&annotated=true&individualCountMin=0&individualCountMax=1000&occurrenceCountFinlandMax=1000&coordinateAccuracyMax=1000
-  &qualityIssues=BOTH&firstLoadedSameOrAfter=2022-01-01&loadedSameOrAfter=2022-01-01&season=0101%2F1218'
+  &qualityIssues=BOTH&firstLoadedSameOrAfter=2022-01-01&loadedSameOrAfter=2022-01-01&season=0101%2F1218
 `;
 
 describe('Observation list', () => {
