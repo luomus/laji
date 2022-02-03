@@ -36,10 +36,11 @@ import { PillListModule } from '../shared-modules/pill-list/pill-list.module';
 import { ChartModule } from '../shared-modules/chart/chart.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
-import {SelectModule} from '../shared-modules/select/select.module';
+import { SelectModule } from '../shared-modules/select/select.module';
 import { CollectionsSelectModule } from '../shared-modules/collections-select/collections-select.module';
 import { OwnObservationsFilterComponent } from './form/own-observations-filter/own-observations-filter.component';
 import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-select/extended-group-select.module';
+import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-sele
     FormSampleComponent,
     HorizontalChartComponent,
     DateFormComponent,
-    OwnObservationsFilterComponent
+    OwnObservationsFilterComponent,
+    ConservationFilterComponent
   ],
   exports: [
     ObservationViewComponent

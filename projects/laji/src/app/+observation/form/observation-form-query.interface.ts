@@ -21,4 +21,5 @@ export interface ObservationFormQuery {
   asEditor: boolean;
   asNotEditorOrObserver: boolean;
   coordinatesInSource: boolean;
+  taxonAdminFiltersOperator: 'AND' | 'OR';
 }
