@@ -1,21 +1,21 @@
 /* eslint-disable no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { SelectCollectionsComponent } from './select-collections.component';
+import { CollectionsSelectComponent } from './collections-select.component';
 
-describe('SelectCollectionsComponent', () => {
-  let component: SelectCollectionsComponent;
-  let fixture: ComponentFixture<SelectCollectionsComponent>;
+describe('CollectionsSelectComponent', () => {
+  let component: CollectionsSelectComponent;
+  let fixture: ComponentFixture<CollectionsSelectComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectCollectionsComponent ]
+      declarations: [ CollectionsSelectComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectCollectionsComponent);
+    fixture = TestBed.createComponent(CollectionsSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,6 +16,7 @@
  * Use InformalTaxonGroups-API to find identifiers. Will return entries of taxons that belong to the groups.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
  * When multiple values are given, this is an OR search.
+ * @property informalTaxonGroupIdNot Filter to exclude from search on URI or Qname identifier of an informal taxon group.
  * @property administrativeStatusId Filter based on URI or Qname identifier of an administrative status.
  * Use Metadata-API to find identifiers. Will return entries of taxons that are marked with the admin status.
  * Multiple values are seperated by a comma (,) or by giving the HTTP parameter multiple times.
@@ -117,6 +118,7 @@ export interface WarehouseQueryInterface {
   useIdentificationAnnotations?: boolean;
   taxonRankId?: string;
   informalTaxonGroupId?: Array<string>;
+  informalTaxonGroupIdNot?: Array<string>;
   informalTaxonGroupIdIncludingReported?: Array<string>;
   administrativeStatusId?: Array<string>;
   redListStatusId?: Array<string>;

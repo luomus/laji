@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
-import { SelectedOption } from '../select-collections.component';
+import { SelectedOption } from '../tree-select.component';
 
 @Component({
-  selector: 'laji-selected-collections',
+  selector: 'laji-selected-tree-nodes',
   template: `
      <div>
       <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
@@ -13,10 +13,10 @@ import { SelectedOption } from '../select-collections.component';
       </span>
     </div>
   `,
-  styleUrls: ['./selected-collections.component.scss'],
+  styleUrls: ['./selected-tree-nodes.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedCollectionsComponent {
+export class SelectedTreeNodesComponent {
   @Input() selectedOptions: SelectedOption[];
   @Output() selectedOptionsChange = new EventEmitter<string>();
 

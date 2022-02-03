@@ -22,6 +22,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'target',
     'effectiveTag',
     'informalTaxonGroupId',
+    'informalTaxonGroupIdNot',
     'informalTaxonGroupIdIncludingReported',
     'administrativeStatusId',
     'redListStatusId',

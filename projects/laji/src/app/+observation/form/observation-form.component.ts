@@ -52,7 +52,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     taxon: '',
     timeStart: '',
     timeEnd: '',
-    informalTaxonGroupId: '',
+    informalTaxonGroupId: undefined,
+    informalTaxonGroupIdNot: undefined,
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
     controllingRisksOfInvasiveAlienSpeciesGovernment: undefined,
@@ -313,16 +314,21 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  onCollectionIdChange(collections: any) {
-    if (collections.collectionId) {
-      this.query.collectionId = collections.collectionId;
-    }
+  onSelectionIdChange(selections: {[key: string]: string[]}, target: 'query' | 'formQuery' = 'query') {
+    if (target === 'query') {
+      Object.keys(selections).forEach(key => {
+        this.query[key] = selections[key];
+      });
 
-    if (collections.collectionIdNot) {
-      this.query.collectionIdNot = collections.collectionIdNot;
-    }
+      this.onQueryChange();
 
-    this.onQueryChange();
+    } else if (target === 'formQuery') {
+      Object.keys(selections).forEach(key => {
+        this.formQuery[key] = selections[key];
+      });
+
+      this.onFormQueryChange();
+    }
   }
 
   onHabitatChange(habitats: any) {
@@ -497,8 +503,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       taxon: '',
       timeStart: this.getValidDate(timeStart),
       timeEnd: this.getValidDate(timeEnd),
-      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : '',
+      informalTaxonGroupId: query.informalTaxonGroupId ?
+        query.informalTaxonGroupId : undefined,
+      informalTaxonGroupIdNot: query.informalTaxonGroupIdNot ?
+        query.informalTaxonGroupIdNot : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
@@ -529,7 +537,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       query.time = time.length > 0 ? [time] : undefined;
     }
 
-    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
+    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? formQuery.informalTaxonGroupId : undefined;
+    query.informalTaxonGroupIdNot = formQuery.informalTaxonGroupIdNot ? formQuery.informalTaxonGroupIdNot : undefined;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
