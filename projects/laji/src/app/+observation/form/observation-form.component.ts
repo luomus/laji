@@ -119,7 +119,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
   screenWidthSub: Subscription;
   containerTypeAhead: string;
-  collectionAndRecordQualityString: any;
+  collectionAndRecordQualityString: string;
 
   private _query: WarehouseQueryInterface;
 
@@ -514,7 +514,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
-      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE',
+      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates.includes('REPORTED_VALUE'),
       taxonAdminFiltersOperator: query.taxonAdminFiltersOperator || 'AND'
     };
   }
@@ -541,7 +541,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
-    query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
+    query.sourceOfCoordinates = formQuery.coordinatesInSource ? ['REPORTED_VALUE'] : undefined;
     query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator || 'AND';
     this.invasiveStatuses
       .map((key) => {

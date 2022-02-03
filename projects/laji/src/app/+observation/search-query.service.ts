@@ -79,8 +79,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'aggregateBy',
     'selected',
     'orderBy',
-    'collectionAndRecordQuality',
-    'plantStatusCode'
+    'plantStatusCode',
+    'sourceOfCoordinates'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -147,7 +147,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'season',
     'sourceOfCoordinates',
     'formId',
-    'taxonAdminFiltersOperator'
+    'taxonAdminFiltersOperator',
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols
