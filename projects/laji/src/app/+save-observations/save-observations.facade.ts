@@ -59,22 +59,25 @@ export class SaveObservationsFacade {
           }
         });
 
-        return [citizen, birdMon, surveys].map(_forms => _forms.sort((a, b) => {
-          const order = Global.formCategoryOrder[a.category];
-          if (!order) {
-            return 0;
-          }
-          const [aIndex, bIndex] = [a,b].map(f => order.indexOf(f.id));
-          if ([aIndex, bIndex].every(i => i !== -1)) {
-            return aIndex - bIndex;
-          } else if (aIndex !== -1) {
-            return -1;
-          } else if (bIndex !== -1) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }));
+        return [citizen, birdMon, surveys].map(_forms =>
+          !_forms.length || !Global.formCategoryOrder[_forms[0].category]
+            ? _forms
+            : _forms.sort((a, b) => {
+              const order = Global.formCategoryOrder[a.category];
+              if (!order) {
+                return 0;
+              }
+              const [aIndex, bIndex] = [a,b].map(f => order.indexOf(f.id));
+              if ([aIndex, bIndex].every(i => i !== -1)) {
+                return aIndex - bIndex;
+              } else if (aIndex !== -1) {
+                return -1;
+              } else if (bIndex !== -1) {
+                return 1;
+              } else {
+                return 0;
+              }
+            }));
       })
     ).subscribe(this.reducer.bind(this));
   }
