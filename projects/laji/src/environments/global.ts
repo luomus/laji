@@ -46,6 +46,9 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
     'MHL.45': 'MHL.45',
     'MHL.45A': 'MHL.45'
   },
+  formCategoryOrder: {
+    'MHL.categoryBirdMonitoringSchemes': ['MHL.117']
+  },
   googleApiKey: 'AIzaSyCtGFaUCGx1J8GxuTwMZqmcpxGFzTUWZWE',
   sources: {
     kotka: 'KE.3'

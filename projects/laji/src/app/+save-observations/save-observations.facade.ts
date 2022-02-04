@@ -4,6 +4,7 @@ import { map, distinctUntilChanged } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
 import { Form } from '../shared/model/Form';
+import { Global } from '../../environments/global';
 
 interface State {
   citizenScienceForms: Form.List[];
@@ -41,6 +42,7 @@ export class SaveObservationsFacade {
         const citizen = [];
         const birdMon = [];
         const surveys = [];
+
         forms.sort((a, b) =>
           a.id.localeCompare(b.id, undefined, {numeric: true, sensitivity: 'base'})
         ).forEach((form) => {
@@ -56,7 +58,23 @@ export class SaveObservationsFacade {
               break;
           }
         });
-        return [citizen, birdMon, surveys];
+
+        return [citizen, birdMon, surveys].map(_forms => _forms.sort((a, b) => {
+          const order = Global.formCategoryOrder[a.category];
+          if (!order) {
+            return 0;
+          }
+          const [aIndex, bIndex] = [a,b].map(f => order.indexOf(f.id));
+          if ([aIndex, bIndex].every(i => i !== -1)) {
+            return aIndex - bIndex;
+          } else if (aIndex !== -1) {
+            return -1;
+          } else if (bIndex !== -1) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }));
       })
     ).subscribe(this.reducer.bind(this));
   }
