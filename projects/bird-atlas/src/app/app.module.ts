@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LazyTranslateLoader } from './locale/lazy-translate-loader';
 import { NotFoundComponent } from 'projects/laji/src/app/shared/not-found/not-found.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
+import { LocalizePipe } from 'projects/laji/src/app/locale/localize.pipe';
 import { BaRoutingModule } from './routing.module';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
@@ -30,6 +31,6 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, NotFoundComponent, NavbarComponent]
+  declarations: [AppComponent, NotFoundComponent, NavbarComponent, LocalizePipe]
 })
 export class AppModule { }

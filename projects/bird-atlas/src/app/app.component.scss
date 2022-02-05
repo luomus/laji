@@ -1,0 +1,7 @@
+@import 'vars';
+@import 'projects/laji-ui/src/lib/mixins/base';
+
+.main-view {
+  @include base();
+  padding-top: $navbar-min-height;
+}

@@ -1,0 +1,5 @@
+@import 'vars';
+
+:host .navbar {
+  min-height: $navbar-min-height;
+}
