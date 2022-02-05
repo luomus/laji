@@ -76,14 +76,12 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     }
 
     this._data = {
-      getFeatureStyle: () => {
-        return {
+      getFeatureStyle: () => ({
           weight: 5,
           opacity: 1,
           fillOpacity: 0.3,
           color: '#007700'
-        };
-      },
+        }),
       featureCollection: {
         type: 'FeatureCollection',
         features: [{
@@ -109,7 +107,7 @@ export class NpInfoMapComponent implements OnInit, OnChanges {
     } else if (geometries.length > 1) {
       geom = {
         type: 'GeometryCollection',
-        geometries: geometries
+        geometries
       };
     }
 

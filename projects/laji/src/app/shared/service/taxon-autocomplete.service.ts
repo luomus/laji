@@ -57,12 +57,14 @@ export class TaxonAutocompleteService {
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
-        : scientificName + ' <span class="taxon-second-element">(' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
+        string = (payload['vernacularName'] !== ''
+          ? vernacularName + '<span class="taxon-second-element"> - (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
+          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.colloquialVernacularName':
-        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + matchingName + ') </span>'
-        : scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>' );
+        string = (payload['vernacularName'] !== ''
+          ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + matchingName + ') </span>'
+          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       default:
         string = scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>';
@@ -103,7 +105,7 @@ export class TaxonAutocompleteService {
     const boldedWords: [string, boolean][] = original.split(' ').map(w => [w, false]);
 
     substring.split(' ').forEach(w => {
-      wordLoop: for (const i in boldedWords) { // tslint:disable-line forin
+      wordLoop: for (const i in boldedWords) { // eslint-disable-line guard-for-in
         const [_w, bolded] = boldedWords[i];
         if (bolded) {
           continue;

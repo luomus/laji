@@ -26,6 +26,7 @@ import { Profile } from '../../../../shared/model/Profile';
 import LajiForm from 'laji-form/lib/index';
 import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
+import { environment } from 'projects/laji/src/environments/environment';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -235,7 +236,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           showShortcutButton: this.showShortcutButton,
           onError: this._onError,
           onComponentDidMount: onReady ? onReady() : () => {},
-          optimizeOnChange: true
+          optimizeOnChange: true,
+          lajiGeoServerAddress: (environment as any).geoserver
         });
       });
     } catch (err) {
@@ -281,7 +283,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _onSubmit(data) {
     this.ngZone.run(() => {
       this.dataSubmit.emit({
-        data: data,
+        data,
         makeBlock: this.lajiFormWrapper.pushBlockingLoader,
         clearBlock: this.lajiFormWrapper.popBlockingLoader
       });

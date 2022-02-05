@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const LajiMapOptions: any = {};
 export const LajiMapTileLayerName: any = {};
+export const LajiMapOverlayName: any = {};
 export const LajiMapLang: any = {};
 
 export type LajiMapOptions = any;

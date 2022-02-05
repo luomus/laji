@@ -21,7 +21,7 @@ export class WbcResultComponent implements OnInit, OnDestroy {
 
   tab$: Observable<keyof typeof Tabs>;
 
-  Tabs = Tabs;
+  Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
 
   defaultTabSubscription: Subscription;
 

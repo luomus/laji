@@ -1,0 +1,42 @@
+<div class="extended-informal-group-buttons-container" *ngIf="!advanced; else advancedView">
+  <div class="extended-informal-group-selector " *ngIf="!redList; else redlistView">
+    <laji-observation-group-select
+      [(ngModel)]="value"
+      [position]="position"
+      name="informalTaxonGroupId"
+      (select)="onSimpleSelectorChange()">
+      {{ 'observation.active.informalTaxonGroupAll'| translate }}
+    </laji-observation-group-select>
+  </div>
+  <ng-template #redlistView>
+    <laji-iucn-group-select
+      [ngModel]="value"
+      [position]="position"
+      [rootGroups]="rootGroups"
+      name="informalTaxonGroupId"
+      (select)="onSimpleSelectorChange()">
+      {{ 'observation.active.informalTaxonGroupAll' | translate }}
+    </laji-iucn-group-select>
+  </ng-template>
+  <div class="extended-informal-group-toggle" *ngIf="useAdvanced">
+    <a class="btn btn-default" type="button" role="button" (click)="toggleAdvancedMode()" tabindex="0" luKeyboardClickable #groupBtn>
+      <i class="glyphicon glyphicon-option-horizontal"></i>
+    </a>
+  </div>
+</div>
+<ng-template #advancedView>
+  <laji-tree-select
+    [includedOptions]="includedOptions"
+    [excludedOptions]="excludedOptions"
+    [optionsTree$]="groupsTree$"
+    [options$]="groups$"
+    [modalButtonLabel]="modalButtonLabel"
+    [modalTitle]="modalTitle"
+    [browseTitle]="browseTitle"
+    [selectedTitle]="selectedTitle"
+    [okButtonLabel]="okButtonLabel"
+    [clearButtonLabel]="clearButtonLabel"
+    (selectedOptionsChange)="selectedOptionsChange($event)"
+  >
+  </laji-tree-select>
+</ng-template>

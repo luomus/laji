@@ -1,23 +1,16 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { map } from 'rxjs/operators';
-import { CollectionService, ICollectionsTreeNode } from '../../shared/service/collection.service';
-import { SelectCollectionsModalComponent } from './select-collections-modal/select-collections-modal.component';
+import { CollectionService } from '../../shared/service/collection.service';
 import { Observable, zip } from 'rxjs';
-
-export interface SelectedOption {
-  id: any;
-  value: any;
-  type: 'included' | 'excluded';
-}
+import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 
 @Component({
-  selector: 'laji-select-collections',
-  templateUrl: './select-collections.component.html',
-  styleUrls: ['./select-collections.component.scss']
+  selector: 'laji-collections-select',
+  templateUrl: './collections-select.component.html',
+  styleUrls: ['./collections-select.component.scss']
 })
-export class SelectCollectionsComponent implements OnInit, OnChanges {
+export class CollectionsSelectComponent implements OnChanges {
   @Input() title: string;
   @Input() query: Record<string, any>;
   @Input() info: string;
@@ -28,37 +21,35 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @Input() open = false;
-  @Output() selectedOptionsChange = new EventEmitter<{
-    collectionId?: string[],
-    collectionIdNot?: string[],
+  @Output() collectionIdChange = new EventEmitter<{
+    collectionId?: string[];
+    collectionIdNot?: string[];
   }>();
 
-  collectionsTree$: Observable<ICollectionsTreeNode[]> = null;
+  collectionsTree$: Observable<TreeOptionsNode[]> = null;
   collections$: Observable<SelectedOption[]> = null;
 
   lang: string;
-  modalRef: BsModalRef;
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
 
   constructor(
-    private modalService: BsModalService,
     private collectionService: CollectionService,
     private translate: TranslateService
-  ) { }
-
-  ngOnInit() {
-    if (this.query?.collectionId?.length !== 0) {
-      this.open = true;
-    }
+  ) {
+    this.lang = this.translate.currentLang;
   }
 
   ngOnChanges() {
-    this.lang = this.translate.currentLang;
-    this.collectionsTree$ = this.initCollectionsTree();
-    this.collections$ = this.initCollections();
+    if (this.query?.collectionId?.length !== 0) {
+      this.open = true;
+    }
+
     this.includedOptions = this.query?.collectionId || [];
     this.excludedOptions = this.query?.collectionIdNot || [];
+
+    this.collectionsTree$ = this.initCollectionsTree();
+    this.collections$ = this.initCollections();
   }
 
   toggle(event) {
@@ -68,29 +59,11 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     this.open = !this.open;
   }
 
-  openModal() {
-    const initialState = {
-      included: this.includedOptions,
-      excluded: this.excludedOptions,
-      collectionsTree$: this.collectionsTree$,
-      modalTitle: this.modalTitle,
-      browseTitle: this.browseTitle,
-      selectedTitle: this.selectedTitle,
-      okButtonLabel: this.okButtonLabel,
-      clearButtonLabel: this.clearButtonLabel,
-    };
-    this.modalRef = this.modalService.show(SelectCollectionsModalComponent, { class: 'modal-lg', initialState });
-    this.modalRef.content.emitConfirm.subscribe(result => {
-      this.selectedOptionsChange.emit(result);
+  selectedOptionsChange($event: TreeOptionsChangeEvent) {
+    this.collectionIdChange.emit({
+      collectionId: $event.selectedId,
+      collectionIdNot: $event.selectedIdNot
     });
-  }
-
-  deselect(id: string) {
-    if (this.includedOptions.includes(id)) {
-      this.selectedOptionsChange.emit({ collectionId: this.includedOptions.filter(option => option !== id) });
-    } else if (this.excludedOptions.includes(id)) {
-      this.selectedOptionsChange.emit({ collectionIdNot: this.excludedOptions.filter(option => option !== id) });
-    }
   }
 
   initCollectionsTree() {
@@ -121,7 +94,7 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, allAggregates, filteredAggragates) {
+  buildTree(tree, allAggregates, filteredAggragates): TreeOptionsNode {
     const allAggregate = allAggregates.find(elem => elem.id === tree.id);
     const filteredAggragate = filteredAggragates.find(elem => elem.id === tree.id);
 
@@ -141,21 +114,22 @@ export class SelectCollectionsComponent implements OnInit, OnChanges {
         children.sort((a, b) => b.count - a.count);
 
         return {
-          ...tree,
+          id: tree.id,
+          name: tree.longName,
           children,
           count: filteredAggragate ? filteredAggragate.count + childCount : childCount
         };
       } else if (allAggregate) {
         return {
-          ...tree,
-          hasChildren: false,
-          children: [],
+          id: tree.id,
+          name: tree.longName,
           count: filteredAggragate ? filteredAggragate.count : 0
         };
       }
     } else if (allAggregate) {
       return {
-        ...tree,
+        id: tree.id,
+        name: tree.longName,
         count: filteredAggragate ? filteredAggragate.count : 0
       };
     }

@@ -7,7 +7,7 @@ import { LabelDesignerTranslationsInterface } from './label-designer-translation
 @Injectable()
 export class TranslateService {
 
-  /* tslint:disable:max-line-length */
+  /* eslint-disable max-len */
   private translations: LabelDesignerTranslationsInterface = {
     'Labels on page': 'There can be a total of {{total}} labels on a single page (in {{cols}} columns and {{rows}} rows).',
     'Label intro': '  <p>With this tool you can make a label design to print labels for specimens.</p>\n' +

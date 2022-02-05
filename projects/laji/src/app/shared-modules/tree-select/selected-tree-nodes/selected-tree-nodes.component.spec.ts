@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectedCollectionsComponent } from './selected-collections.component';
+import { SelectedTreeNodesComponent } from './selected-tree-nodes.component';
 
 describe('SelectedCollectionsComponent', () => {
-  let component: SelectedCollectionsComponent;
-  let fixture: ComponentFixture<SelectedCollectionsComponent>;
+  let component: SelectedTreeNodesComponent;
+  let fixture: ComponentFixture<SelectedTreeNodesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelectedCollectionsComponent ]
+      declarations: [ SelectedTreeNodesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectedCollectionsComponent);
+    fixture = TestBed.createComponent(SelectedTreeNodesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

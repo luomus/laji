@@ -170,7 +170,7 @@
         [viewFormat]="'DD.MM.YYYY'"
         [otherFormats]="['D.M.YYYY', 'YYYY']"
         [format]="dateFormat"
-        (select)="onFormQueryChange()"
+        (dateSelect)="onFormQueryChange()"
         (change)="onFormQueryChange()"
         name="timeStart"></laji-datepicker>
     </div>
@@ -183,7 +183,7 @@
         [otherFormats]="['D.M.YYYY', 'YYYY']"
         [toLastOfYear]="true"
         [format]="dateFormat"
-        (select)="onFormQueryChange()"
+        (dateSelect)="onFormQueryChange()"
         (change)="onFormQueryChange()"
         name="timeEnd"></laji-datepicker>
     </div>

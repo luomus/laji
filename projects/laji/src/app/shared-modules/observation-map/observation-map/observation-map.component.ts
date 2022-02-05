@@ -102,7 +102,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   loading = false;
   reloading = false;
   topMargin = '0';
-  legendList: {color: string, range: string}[] = [];
+  legendList: {color: string; range: string}[] = [];
 
   _mapOptions: LajiMapOptions = {
     controls: {
@@ -234,7 +234,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           end = '-' + newStart;
         }
         legend.push({
-          color: color,
+          color,
           range: start + end
         });
         start = newStart + 1;
@@ -288,14 +288,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private initDrawData() {
-    this.drawData.getFeatureStyle = () => {
-      return {
+    this.drawData.getFeatureStyle = () => ({
         weight: 2,
         opacity: 1,
         fillOpacity: 0,
         color: this.selectColor
-      };
-    };
+      });
     if (!this.query.coordinates) {
       return;
     }
@@ -363,20 +361,20 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             properties[name] = ObservationMapComponent.getValue(row, field);
           });
           features.push({
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': coordinates
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates
             },
-            'properties': properties
+            properties
           });
         });
       }
       return {
         lastPage: 1,
         featureCollection: {
-          'type': 'FeatureCollection',
-          'features': features
+          type: 'FeatureCollection',
+          features
         },
         cluster: {
           spiderfyOnMaxZoom: true,
@@ -401,8 +399,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           return of({
             lastPage: 1,
             featureCollection: {
-              'type': 'FeatureCollection',
-              'features': []
+              type: 'FeatureCollection',
+              features: []
             }
           });
         } else if (cnt < this.showItemsWhenLessThan) {
@@ -416,12 +414,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       }));
 
     this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
-      switchMap((less) => {
-        return less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
+      switchMap((less) => less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
           this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
           undefined, this.size, page, true
-        );
-      })).pipe(
+        ))).pipe(
         timeout(WarehouseApi.longTimeout * 3),
         delay(100),
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
@@ -504,7 +500,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
 
-  private getPopup({featureIdx}, cb: Function) {
+  private getPopup({featureIdx}, cb: (description: string) => void) {
     const lang = this.translate.currentLang;
     this.translate.get('more')
       .subscribe((moreInfo) => {
