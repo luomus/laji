@@ -1,6 +1,16 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
-import { IGlobalSpecies, IRecordingAnnotation, ISpeciesIdentification, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
-import { IAudio, IAudioViewerArea, IAudioViewerRectangle } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
+import {
+  IGlobalSpecies,
+  IGlobalRecordingAnnotation,
+  IGlobalSpeciesAnnotation,
+  SpeciesAnnotationEnum,
+  IGlobalRecording, IGlobalSpeciesWithAnnotation, IGlobalRecordingStatusInfo
+} from '../../../kerttu-global-shared/models';
+import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { map } from 'rxjs/operators';
+import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
+import { Observable, Subscription, forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'bsg-identification-view',
@@ -8,16 +18,15 @@ import { IAudio, IAudioViewerArea, IAudioViewerRectangle } from '../../../../../
   styleUrls: ['./identification-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationViewComponent {
-  @Input() recording: IAudio;
+export class IdentificationViewComponent implements OnChanges {
+  @Input() recording: IGlobalRecording;
+  @Input() annotation: IGlobalRecordingAnnotation;
+  @Input() statusInfo: IGlobalRecordingStatusInfo;
+  @Input() buttonsAreDisabled = false;
 
-  hasPreviousRecording = false;
-  buttonsAreDisabled = false;
+  selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
 
-  annotation: IRecordingAnnotation = {
-    identifications: []
-  };
-
+  loadingSpecies = false;
   drawMode = false;
   drawIdx?: number;
   rectangles: IAudioViewerRectangle[] = [];
@@ -25,13 +34,41 @@ export class IdentificationViewComponent {
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
-  @Output() annotationChange = new EventEmitter<ISpeciesIdentification[]>();
+  @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
+
+  private selectedSpeciesSub: Subscription;
+
+  constructor(
+    private kerttuGlobalApi: KerttuGlobalApi,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.annotation) {
+      this.rectangles = [];
+      this.updateSelectecSpecies();
+    }
+  }
 
   addToIdentifications(species: IGlobalSpecies) {
-    this.annotation.identifications = [
-      ...this.annotation.identifications,
-      {species: species, occurrence: SpeciesAnnotationEnum.occurs}
-    ];
+    if (this.loadingSpecies) {
+      return;
+    }
+    if (this.selectedSpecies.filter(t => t.annotation.speciesId === species.id).length > 0) {
+      return;
+    }
+
+    const newSpecies: IGlobalSpeciesWithAnnotation = {
+      ...species,
+      annotation: {
+        speciesId: species.id,
+        occurrence: SpeciesAnnotationEnum.occurs
+      }
+    };
+
+    this.selectedSpecies = [...this.selectedSpecies, newSpecies];
+
+    this.updateAnnotation();
   }
 
   onDrawClick(data: {drawClicked: boolean, rowIndex: number}) {
@@ -40,26 +77,58 @@ export class IdentificationViewComponent {
   }
 
   drawEnd(area: IAudioViewerArea) {
-    const identifications = this.annotation.identifications;
-    const label = identifications[this.drawIdx].species.commonName;
+    const label = this.selectedSpecies[this.drawIdx].commonName;
     this.rectangles = this.rectangles.filter(r => r.label !== label);
     this.rectangles = [...this.rectangles, {area: area, label: label}];
 
-    identifications[this.drawIdx].area = area;
-    this.annotation.identifications = [...identifications];
+    this.selectedSpecies[this.drawIdx].annotation.area = area;
+    this.selectedSpecies = [...this.selectedSpecies];
     this.drawMode = false;
   }
 
   removeDrawing(rowIndex: number) {
-    const identifications = this.annotation.identifications;
-    const label = identifications[rowIndex].species.commonName;
+    const label = this.selectedSpecies[rowIndex].commonName;
     this.rectangles = this.rectangles.filter(r => r.label !== label);
 
-    identifications[this.drawIdx].area = null;
-    this.annotation.identifications = [...identifications];
+    this.selectedSpecies[rowIndex].annotation.area = null;
+    this.selectedSpecies = [...this.selectedSpecies];
   }
 
   updateAnnotation() {
+    const speciesAnnotations: IGlobalSpeciesAnnotation[] = this.selectedSpecies.map(species => species.annotation);
 
+    this.annotationChange.emit({
+      ...this.annotation,
+      speciesAnnotations: speciesAnnotations
+    });
+  }
+
+  private updateSelectecSpecies() {
+    if (this.selectedSpeciesSub) {
+      this.selectedSpeciesSub = undefined;
+    }
+
+    this.selectedSpecies = [];
+
+    const speciesAnnotations = this.annotation?.speciesAnnotations;
+
+    if (speciesAnnotations?.length > 0) {
+      const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations.map(
+        a => this.kerttuGlobalApi.getSpecies(a.speciesId).pipe(map(species => {
+          return {...species, annotation: a};
+        }))
+      );
+
+      this.loadingSpecies = true;
+      this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
+        this.selectedSpecies = results;
+        this.rectangles = this.selectedSpecies.filter(s => s.annotation.area).map(s => ({
+          label: s.commonName,
+          area: s.annotation.area
+        }));
+        this.loadingSpecies = false;
+        this.cdr.markForCheck();
+      });
+    }
   }
 }

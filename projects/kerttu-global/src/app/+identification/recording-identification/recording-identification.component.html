@@ -4,7 +4,15 @@
   <ng-container *lajiRequiresAudioSupport>
     <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
       <bsg-identification-view
+        *ngIf="firstRecordingLoaded"
         [recording]="recording"
+        [(annotation)]="annotation"
+        [statusInfo]="statusInfo"
+        [buttonsAreDisabled]="loading"
+        (nextRecordingClick)="getNextRecording()"
+        (previousRecordingClick)="getPreviousRecording()"
+        (saveClick)="save()"
+        (annotationChange)="onAnnotationChange()"
       ></bsg-identification-view>
     </laji-spinner>
   </ng-container>

@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="button-container">
       <div>
-        <lu-button [disabled]="!hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
+        <lu-button [disabled]="!statusInfo.hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
         <laji-info [html]="'theme.kerttu.info.previousRecording' | translate"></laji-info>
       </div>
       <div>
@@ -91,10 +91,11 @@
       ></bsg-taxon-select>
     </div>
     <bsg-identification-table
-      [(identifications)]="annotation.identifications"
-      [loading]="false"
+      [(identifications)]="selectedSpecies"
+      [loading]="loadingSpecies"
       (drawClick)="onDrawClick($event)"
       (removeDrawingClick)="removeDrawing($event)"
+      (identificationsChange)="updateAnnotation()"
     ></bsg-identification-table>
   </div>
 </div>

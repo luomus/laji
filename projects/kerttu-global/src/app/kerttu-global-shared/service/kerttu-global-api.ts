@@ -2,12 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
   IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum
+  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
+  IGlobalRecordingAnnotation
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { WINDOW } from '@ng-toolkit/universal';
-import {IAudio} from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Injectable({
   providedIn: 'root'
@@ -97,11 +97,32 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
 
-  public getRecordingForIdentification(personToken: string): Observable<IAudio> {
+  public getRecording(personToken: string): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording';
     const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IAudio>(path, { params });
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public getNextRecording(personToken: string, recordingId: number): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording/next/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public getPreviousRecording(personToken: string, recordingId: number): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording/previous/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
+    const path = this.basePath + '/identification/recording/annotation/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotation, { params });
   }
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {

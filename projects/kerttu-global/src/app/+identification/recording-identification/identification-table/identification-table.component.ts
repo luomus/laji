@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter, OnChanges } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { ISpeciesIdentification, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
+import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -9,7 +9,7 @@ import { ISpeciesIdentification, SpeciesAnnotationEnum } from '../../../kerttu-g
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationTableComponent implements OnInit, OnChanges {
-  @Input() identifications: ISpeciesIdentification[];
+  @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
   @Input() componentId = 0;
 
@@ -23,7 +23,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
 
-  @Output() identificationsChange = new EventEmitter<ISpeciesIdentification[]>();
+  @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
   @Output() drawClick = new EventEmitter<{drawClicked: boolean, rowIndex: number}>();
   @Output() removeDrawingClick = new EventEmitter<number>();
 
@@ -35,11 +35,11 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
         sortable: false
       },
       {
-        name: 'species.commonName',
+        name: 'commonName',
         label: 'taxonomy.vernacular.name'
       },
       {
-        name: 'species.scientificName',
+        name: 'scientificName',
         label: 'taxonomy.scientific.name',
         cellTemplate: 'cursive'
       },
@@ -67,7 +67,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   }
 
   annotationTypeChange(rowIndex: number, value: number) {
-    this.identifications[rowIndex].occurrence = value;
+    this.identifications[rowIndex].annotation.occurrence = value;
     this.identificationsChange.emit(this.identifications);
   }
 

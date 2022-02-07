@@ -1,5 +1,6 @@
 import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { IRecording, IRecordingAnnotation, IRecordingStatusInfo } from '../../../../laji/src/app/+theme/kerttu/models';
 
 export interface IListResult<T> {
   results: T[];
@@ -97,7 +98,11 @@ export interface IUserStat {
   speciesValidated: number;
 }
 
-export interface IRecordingAnnotation {
+export interface IGlobalRecording extends IAudio {
+  id: number;
+}
+
+export interface IGlobalRecordingAnnotation {
   isLowQuality?: boolean;
   containsHumanSpeech?: boolean;
   containsUnknownBirds?: boolean;
@@ -105,13 +110,27 @@ export interface IRecordingAnnotation {
   containsBirdsNotOnList?: boolean;
   birdsNotOnList?: string;
 
-  identifications?: ISpeciesIdentification[];
+  speciesAnnotations?: IGlobalSpeciesAnnotation[];
 }
 
-export interface ISpeciesIdentification {
-  species: IGlobalSpecies;
+export interface IGlobalSpeciesAnnotation {
+  speciesId: number;
   occurrence: SpeciesAnnotationEnum;
   area?: IAudioViewerArea;
+}
+
+export interface IGlobalRecordingStatusInfo {
+  hasPreviousRecording: boolean;
+}
+
+export interface IGlobalRecordingResponse {
+  statusInfo: IGlobalRecordingStatusInfo;
+  annotation: IGlobalRecordingAnnotation;
+  recording: IGlobalRecording;
+}
+
+export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {
+  annotation: IGlobalSpeciesAnnotation;
 }
 
 export enum CommentType {
@@ -126,4 +145,6 @@ export enum SpeciesAnnotationEnum {
 
 export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
+  invalidRecordingId = 'InvalidRecordingIdError',
+  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
 }

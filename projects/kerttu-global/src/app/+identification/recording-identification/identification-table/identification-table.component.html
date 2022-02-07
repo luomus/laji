@@ -12,10 +12,10 @@
     [ngClass]="{ 'active': drawClickedByIdx[row.preSortIndex] }"
     (click)="toggleDrawButton(row.preSortIndex)"
   >
-    {{ 'identification.recordings.' + (row.area ? 'redraw' : 'draw') | translate }}
+    {{ 'identification.recordings.' + (row.annotation.area ? 'redraw' : 'draw') | translate }}
   </button>
   <button
-    *ngIf="row.area"
+    *ngIf="row.annotation.area"
     class="btn btn-default btn-sm"
     (click)="removeDrawingClick.emit(row.preSortIndex)"
   >
@@ -32,13 +32,13 @@
 
 <ng-template let-row="row" let-rowIndex="rowIndex" let-value="value" #radioButton>
   <label class="datatable-checkbox">
-    <input type="radio" name="{{ componentId }}_occurrence_{{ rowIndex }}" [checked]="row.occurrence === value" (change)="annotationTypeChange(row.preSortIndex, value)"/>
+    <input type="radio" name="{{ componentId }}_occurrence_{{ rowIndex }}" [checked]="row.annotation.occurrence === value" (change)="annotationTypeChange(row.preSortIndex, value)"/>
   </label>
 </ng-template>
 
 <ng-template let-row="row" #buttons>
-  <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation', row.species.id]" target="_blank">
-    <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (row.species.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
+  <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation', row.id]" target="_blank">
+    <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (row.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
   </a>
   <button class="btn btn-danger btn-sm" (click)="deleteRow(row.preSortIndex)">x</button>
 </ng-template>
