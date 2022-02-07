@@ -99,6 +99,10 @@ export class TreeSelectModalComponent implements OnInit {
     this.includedOptions.forEach(key => {
       const node = this.treeModel.getNodeById(key);
 
+      if (!node) {
+        return;
+      }
+
       this.initializeNode(this.treeModel, node, 'initalizing', 'included');
       this.expandParents(this.treeModel, node, null);
     });
