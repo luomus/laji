@@ -50,7 +50,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   set value(v: any) {
-    if (v !== this.includedOptions[0]) {
+    if (v && v !== this.includedOptions[0]) {
       this.includedOptions[0] = v;
       this.excludedOptions = [];
     }
