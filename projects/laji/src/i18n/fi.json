@@ -158,7 +158,7 @@
   "excel.import.namesAsIs": "Kaikki nimet sellaisenaan",
   "excel.import.observationMap": "Havaintokartta",
   "excel.import.observations": "<strong>{{cnt}}</strong> havaintoerä(ä)",
-  "excel.import.onlyErroneous": "Näytä vain viheelliset",
+  "excel.import.onlyErroneous": "Näytä vain virheelliset",
   "excel.import.onlyWithCount": "Vain rivit, joissa on määrä",
   "excel.import.showMappings": "Näytä linkitetyt",
   "excel.import.split.no": "yksi sarake",
