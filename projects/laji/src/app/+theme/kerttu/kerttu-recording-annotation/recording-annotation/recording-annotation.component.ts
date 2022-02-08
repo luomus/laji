@@ -85,7 +85,7 @@ export class RecordingAnnotationComponent implements OnChanges {
 
     this.annotationChange.emit({
       ...this.generalAnnotation,
-      taxonAnnotations: taxonAnnotations
+      taxonAnnotations
     });
   }
 
@@ -107,8 +107,8 @@ export class RecordingAnnotationComponent implements OnChanges {
     }
 
     this.selectedTaxons = {
-      'main': [],
-      'other': []
+      main: [],
+      other: []
     };
 
     const taxonAnnotations = this.annotation?.taxonAnnotations;
@@ -118,9 +118,7 @@ export class RecordingAnnotationComponent implements OnChanges {
       for (const type of ['main', 'other']) {
         if (taxonAnnotations[type]?.length > 0) {
           const obs: Observable<ITaxonWithAnnotation>[] = taxonAnnotations[type].map(
-            a => this.taxonService.getTaxon(a.taxonId).pipe(map(taxon => {
-              return {...taxon, annotation: a};
-            }))
+            a => this.taxonService.getTaxon(a.taxonId).pipe(map(taxon => ({...taxon, annotation: a})))
           );
           observables.push(forkJoin(obs));
         } else {
@@ -131,8 +129,8 @@ export class RecordingAnnotationComponent implements OnChanges {
       this.loadingTaxons = true;
       this.selectedTaxonsSub = forkJoin(observables).subscribe((results: ITaxonWithAnnotation[][])  => {
         this.selectedTaxons = {
-          'main': results[0],
-          'other': results[1]
+          main: results[0],
+          other: results[1]
         };
         this.loadingTaxons = false;
         this.cdr.markForCheck();

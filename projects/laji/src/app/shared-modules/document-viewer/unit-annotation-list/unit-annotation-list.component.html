@@ -16,7 +16,7 @@
           [formVisible]="true"
           [listVisible]="true"
           [annotationTags]="annotationTags"
-          (close)="hideAnnotations()"
+          (annotationsClose)="hideAnnotations()"
           (loadingForm)="checkLoading($event)"
           (annotationChange)="initAnnotationStatus($event)"
         ></laji-annotations>

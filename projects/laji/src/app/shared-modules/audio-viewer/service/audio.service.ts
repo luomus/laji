@@ -10,7 +10,7 @@ export class AudioService {
   private audioContext: AudioContext;
 
   private buffer$: { [url: string]: Observable<AudioBuffer> } = {};
-  private buffer: { [url: string]: { buffer: AudioBuffer, time: number } } = {};
+  private buffer: { [url: string]: { buffer: AudioBuffer; time: number } } = {};
 
   private activePlayer: AudioPlayer;
 
@@ -63,8 +63,8 @@ export class AudioService {
           map(buffer => this.normaliseAudio(buffer)),
           tap(buffer => {
             this.buffer[url] = {
-              'buffer': buffer,
-              'time': Date.now()
+              buffer,
+              time: Date.now()
             };
             this.removeOldBuffersFromCache();
           }),

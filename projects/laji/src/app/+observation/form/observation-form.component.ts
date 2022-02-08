@@ -104,7 +104,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode',
+      'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
@@ -463,8 +464,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ) {
     Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this[sectionKey][section].length; i++) {
-        const value = this.query[this[sectionKey][section][i]];
+      for (const key of this[sectionKey][section]) {
+        const value = this.query[key];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
@@ -523,7 +524,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
       coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates.includes('REPORTED_VALUE'),
-      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator || 'AND'
+      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined
     };
   }
 
@@ -551,7 +552,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? ['REPORTED_VALUE'] : undefined;
-    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator || 'AND';
+    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;

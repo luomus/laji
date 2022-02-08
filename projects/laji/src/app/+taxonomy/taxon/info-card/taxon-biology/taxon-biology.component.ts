@@ -30,7 +30,7 @@ export class TaxonBiologyComponent implements OnChanges {
   constructor(private checklang: CheckLangService, private translation: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.ylesta = [{'text': undefined, 'visible': undefined}];
+    this.ylesta = [{text: undefined, visible: undefined}];
     this.ylestaTitle = undefined;
     this.groupHasTranslation = [];
     this.ylestaHasTranslation = [];

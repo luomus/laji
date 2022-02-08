@@ -10,7 +10,7 @@ import { Component, ChangeDetectionStrategy, OnInit, Input, Renderer2, ElementRe
 })
 export class TaxonDropdownComponent implements OnInit, OnDestroy {
   @Input() visible: boolean;
-  @Output() close = new EventEmitter<void>();
+  @Output() dropdownClose = new EventEmitter<void>();
 
   private destroyListener;
 
@@ -21,7 +21,7 @@ export class TaxonDropdownComponent implements OnInit, OnDestroy {
     });
   }
   onClose() {
-    this.close.emit();
+    this.dropdownClose.emit();
   }
   ngOnDestroy() {
     if (this.destroyListener) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
@@ -46,7 +46,7 @@ export class TreeSelectComponent {
   lang: string;
   modalRef: BsModalRef;
 
-  constructor (
+  constructor(
     private modalService: BsModalService,
   ) {}
 

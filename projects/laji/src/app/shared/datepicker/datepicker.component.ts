@@ -1,4 +1,3 @@
-/* tslint:disable:no-use-before-declare */
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
@@ -77,7 +76,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   @Input() toLastOfYear = false;
   @Input() addonText: string;
   @Input() popoverAlign: 'right' | 'left' = 'right';
-  @Output() select = new EventEmitter();
+  @Output() dateSelect = new EventEmitter();
 
   public validDate = true;
   public viewDate: string = null;
@@ -143,7 +142,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   private sendNewValue(value) {
     this.onChangeCallback(value);
-    this.select.emit(value);
+    this.dateSelect.emit(value);
     this.valueSource.next(value || '');
     this.cd.markForCheck();
   }
@@ -207,10 +206,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
         this.days.push({
           day: i,
           month: month + 1,
-          year: year,
+          year,
           enabled: true,
-          today: today,
-          selected: selected
+          today,
+          selected
         });
       } else {
         this.days.push({
@@ -219,7 +218,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
           year: null,
           enabled: false,
           today: false,
-          selected: selected
+          selected
         });
       }
     }
@@ -294,11 +293,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
 
   clear() {
     this.value = '';
-    this.select.emit(undefined);
+    this.dateSelect.emit(undefined);
   }
 
   private onTouchedCallback: () => void = () => {
-  }
+  };
   private onChangeCallback: (_: any) => void = () => {
-  }
+  };
 }

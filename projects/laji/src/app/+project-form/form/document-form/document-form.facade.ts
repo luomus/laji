@@ -90,7 +90,7 @@ export class DocumentFormFacade {
   private vmSub: Subscription;
   private saveTmpSub: Subscription;
   private annotationCache: Record<string, Observable<Annotation[]>> = {};
-  private memoizedForm: {form?: Form.SchemaForm, uiSchema?: any, uiSchemaContext?: any, result?: any} = {};
+  private memoizedForm: {form?: Form.SchemaForm; uiSchema?: any; uiSchemaContext?: any; result?: any} = {};
 
   constructor(
     private footerService: FooterService,
@@ -517,7 +517,7 @@ export class DocumentFormFacade {
     ?  of([])
     : this.lajiApi.getList(
       LajiApi.Endpoints.annotations,
-      {personToken: this.userService.getToken(), rootID: documentID, pageSize: 100, page: page}
+      {personToken: this.userService.getToken(), rootID: documentID, pageSize: 100, page}
     ).pipe(
       mergeMap(result => (result.currentPage < result.lastPage) ?
         this.getAnnotations(documentID, result.currentPage + 1, [...results, ...result.results]) :

@@ -25,7 +25,7 @@ interface ViewModel {
 })
 export class RequestComponent implements OnInit {
   // Allow use of AccessLevel Enum in templates
-  AccessLevel = AccessLevel;
+  AccessLevel = AccessLevel;  // eslint-disable-line @typescript-eslint/naming-convention
 
   vm$: Observable<ViewModel>;
   private resetVM$ = new BehaviorSubject<void>(undefined);
