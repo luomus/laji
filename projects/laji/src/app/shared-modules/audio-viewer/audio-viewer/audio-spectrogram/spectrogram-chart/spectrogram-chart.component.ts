@@ -267,7 +267,7 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('stroke', data.color[data.color.length - 1] || '#d98026')
       .attr('fill', 'none');
 
-      if (data.label.length > 0 && rectX >= 0 && rectX + rectWidth <= this.width && rectY >= 0 && rectY + rectHeight <= this.height) {
+      if (data.label.length > 0 && this.rectangleIsCompletelyVisible(rectX, rectWidth, rectY, rectHeight)) {
         const text = svgWithOverflow.append('text')
         .attr('x', rectX + (rectWidth / 2))
         .attr('y', rectY - 5)
@@ -341,5 +341,12 @@ export class SpectrogramChartComponent implements OnChanges {
       }
     }
     return true;
+  }
+
+  private rectangleIsCompletelyVisible(rectX: number, rectWidth: number, rectY: number, rectHeight: number, precision = 0.001) {
+    return (
+      rectX >= -precision && rectX + rectWidth <= this.width + precision &&
+      rectY >= -precision && rectY + rectHeight <= this.height + precision
+    );
   }
 }
