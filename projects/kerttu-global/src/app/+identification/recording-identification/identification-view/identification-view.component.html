@@ -29,9 +29,6 @@
   <div class="col-sm-12">
     <laji-audio-viewer
       [audio]="recording"
-      [zoomTime]="true"
-      [timePaddingOnZoom]="2"
-      [highlightFocusArea]="true"
       [showZoomControl]="true"
       [mode]="drawMode ? 'draw' : 'default'"
       [rectangles]="rectangles"
@@ -75,7 +72,7 @@
             <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.recordings.containsBirdsNotOnList' | translate }}:
           </label>
         </div>
-        <input class="form-control" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList">
+        <input class="form-control" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
       </div>
     </div>
   </div>
