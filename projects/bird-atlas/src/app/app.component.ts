@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
     <div class="main-view">
       <router-outlet></router-outlet>
     </div>
+    <ba-footer></ba-footer>
   `,
   styleUrls: [
     './app.component.scss'

@@ -11,6 +11,7 @@ import { BaRoutingModule } from './routing.module';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,6 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  declarations: [AppComponent, NotFoundComponent, NavbarComponent, LocalizePipe]
+  declarations: [AppComponent, NotFoundComponent, NavbarComponent, LocalizePipe, FooterComponent]
 })
 export class AppModule { }
