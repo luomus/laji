@@ -23,7 +23,7 @@ export class ThreeStateSwitchComponent {
   @Input() disabled = false;
 
   @Output() valueChange = new EventEmitter<any>();
-  @Output() change = new EventEmitter<any>();
+  @Output() update = new EventEmitter<any>();
 
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -54,7 +54,7 @@ export class ThreeStateSwitchComponent {
         )
       )
     );
-    this.change.emit();
+    this.update.emit();
   }
 
 }

@@ -265,8 +265,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     const columns = this.useColumns;
 
     this.visibleRows = this.allRows.reduce((cumulative, row, idx) => {
-      for (let i = 0; i < columns.length; i++) {
-        const rowValue = String(row[columns[i].prop]);
+      for (const col of columns) {
+        const rowValue = String(row[col.prop]);
         if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
           cumulative.push({...row, index: idx});
           break;
@@ -376,9 +376,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     } else if (prop === 'unitCount') {
       return (a, b) => b - a;
     }
-    return (a, b) => {
-      return ('' + a).localeCompare('' + b);
-    };
+    return (a, b) => ('' + a).localeCompare('' + b);
   }
 
   getDefaultSort() {

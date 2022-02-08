@@ -34,7 +34,7 @@
 <div *ngIf="result.results.length === 0 && !loading">
  {{ 'result.notOwnDocuments' | translate}}
 </div>
-  
+
   <laji-own-observation-table-settings
     [allAggregateFields]="allAggregateFields"
     [columnSelector]="columnSelector"
@@ -44,7 +44,7 @@
     [isAggregate]="isAggregate"
     [pageSize]="pageSize"
     (pageSizeChange)="onPageSizeChange($event)"
-    (close)="onCloseSettingsModal($event)"
+    (settingsClose)="onCloseSettingsModal($event)"
     (resetColumns)="resetColumns.emit()"
   ></laji-own-observation-table-settings>
-  
+

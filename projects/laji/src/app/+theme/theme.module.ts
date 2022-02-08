@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeRoutingModule } from './theme-routing.module';
@@ -59,7 +59,7 @@ import { KerttuAudioViewerComponent } from './kerttu/kerttu-audio-viewer/kerttu-
 import { AudioInfoComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info.component';
 import { AudioInfoMapComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info-map/audio-info-map.component';
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 @NgModule({
   imports: [

@@ -93,7 +93,7 @@ export class DocumentViewerFacade {
     this.documentApi.findById(param.document, this.userService.getToken()).subscribe((document) => {
       this.showDocument({
         ...param,
-        document: document
+        document
       });
     });
   }

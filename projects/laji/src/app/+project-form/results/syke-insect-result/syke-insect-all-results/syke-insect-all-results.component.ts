@@ -122,7 +122,7 @@ export class SykeInsectAllResultsComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private parseDateTime(date): {year: string, month: string} {
+  private parseDateTime(date): {year: string; month: string} {
     if (date.length === '4') {
       return {year: date, month: ''};
     }

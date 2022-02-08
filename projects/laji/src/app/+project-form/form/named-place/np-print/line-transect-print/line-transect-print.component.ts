@@ -25,13 +25,13 @@ export class LineTransectPrintComponent implements OnChanges {
   public routeLength: number;
   public neDistance: any = 0;
   public ykjGrid: string;
-  public info: {key: string, data: string}[];
+  public info: {key: string; data: string}[];
   public formSplit = 50;
   public landscape = false;
   public startPoint = {lat: 0, lng: 0};
   public bounds = {
-    'ne': {lat: 0, lng: 0},
-    'sw': {lat: 0, lng: 0}
+    ne: {lat: 0, lng: 0},
+    sw: {lat: 0, lng: 0}
   };
 
   private pageSize = 10;
@@ -174,12 +174,12 @@ export class LineTransectPrintComponent implements OnChanges {
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
-        feature: {type: 'Feature', properties: {}, geometry: geometry}
+        feature: {type: 'Feature', properties: {}, geometry}
       }
     };
   }
 
-  private getYkj(lat, lng): {lat: number, lng: number} {
+  private getYkj(lat, lng): {lat: number; lng: number} {
     const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
       lat: coord[0],

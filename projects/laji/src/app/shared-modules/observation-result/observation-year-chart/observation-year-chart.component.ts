@@ -116,7 +116,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            callback: function(value) {if (value % 1 === 0) {return value; }}
+            callback(value) {if (value % 1 === 0) {return value; }}
           },
           gridLines: {
             color: 'rgba(171,171,171,0.5)',
@@ -189,7 +189,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   private addYearToResults(year: number, count: number, individual: number) {
     this.allSubData.push(this.onlyCount === null ? count : this.onlyCount ? count : individual);
     this.subBarChartLabels.push('' + year);
-    this.resultList.push({'count': count, 'individualCountSum': individual, 'year': year});
+    this.resultList.push({count, individualCountSum: individual, year});
     if (year < 1970) {
       this.splitIdx++;
     }

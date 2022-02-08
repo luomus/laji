@@ -165,9 +165,7 @@ export class ObservationFacade {
       map<Autocomplete[], ITaxonAutocomplete[]>(data => data.map(item => {
         let groups = '';
         if (item.payload && item.payload.informalTaxonGroups) {
-          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-            return prev + ' ' + curr.id;
-          }, groups);
+          groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
         }
         return {...item, groups};
       }))

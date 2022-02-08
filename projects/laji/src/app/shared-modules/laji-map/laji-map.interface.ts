@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as LajiMap from 'laji-map';
 
 
-export interface LajiMapOptions extends LajiMap.Options { // tslint:disable-line
-
-}
+export type LajiMapOptions = LajiMap.Options;
 
 export const LajiMapTileLayerName = {
   ...LajiMap.TileLayerName

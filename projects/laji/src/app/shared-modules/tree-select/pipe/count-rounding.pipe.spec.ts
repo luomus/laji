@@ -1,10 +1,10 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars */
 
 import { CountRoundingPipe } from './count-rounding.pipe';
 
 describe('Pipe: CountPipee', () => {
   it('create an instance', () => {
-    let pipe = new CountRoundingPipe();
+    const pipe = new CountRoundingPipe();
     expect(pipe).toBeTruthy();
   });
 });

@@ -283,7 +283,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _onSubmit(data) {
     this.ngZone.run(() => {
       this.dataSubmit.emit({
-        data: data,
+        data,
         makeBlock: this.lajiFormWrapper.pushBlockingLoader,
         clearBlock: this.lajiFormWrapper.popBlockingLoader
       });
