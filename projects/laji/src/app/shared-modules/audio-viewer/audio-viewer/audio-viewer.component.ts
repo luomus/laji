@@ -79,6 +79,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
+  @Output() modeChange = new EventEmitter<AudioViewerMode>();
 
   private audioSub: Subscription;
   private clicks = 0;
@@ -155,7 +156,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   }
 
   onSpectrogramZoomEnd(area: IAudioViewerArea) {
-    this.mode = 'default';
+    this.changeMode('default');
     this.setView(area);
   }
 
@@ -173,7 +174,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   toggleZoomMode() {
     this.audioPlayer.stop();
-    this.mode = this.mode === 'zoom' ? 'default' : 'zoom';
+    this.changeMode(this.mode === 'zoom' ? 'default' : 'zoom');
   }
 
   setAudioLoading(loading: boolean) {
@@ -235,5 +236,10 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     this.hasError = true;
     this.setAudioLoading(false);
     this.cdr.markForCheck();
+  }
+
+  private changeMode(mode: AudioViewerMode) {
+    this.mode = mode;
+    this.modeChange.emit(this.mode);
   }
 }

@@ -103,7 +103,7 @@ export class RecordingAnnotationComponent implements OnChanges {
 
   private updateSelectedTaxons() {
     if (this.selectedTaxonsSub) {
-      this.selectedTaxonsSub = undefined;
+      this.selectedTaxonsSub.unsubscribe();
     }
 
     this.selectedTaxons = {

@@ -9,14 +9,17 @@
 <ng-template let-row="row" #drawBox>
   <button
     class="btn btn-primary btn-sm"
-    [ngClass]="{ 'active': drawClickedByIdx[row.preSortIndex] }"
+    [ngClass]="{
+      'btn-default': !drawClickedByIdx[row.preSortIndex],
+      'btn-primary': drawClickedByIdx[row.preSortIndex]
+     }"
     (click)="toggleDrawButton(row.preSortIndex)"
   >
     {{ 'identification.recordings.' + (row.annotation.area ? 'redraw' : 'draw') | translate }}
   </button>
   <button
     *ngIf="row.annotation.area"
-    class="btn btn-default btn-sm"
+    class="btn btn-default btn-sm ml-2"
     (click)="removeDrawingClick.emit(row.preSortIndex)"
   >
     {{ 'identification.recordings.remove' | translate }}

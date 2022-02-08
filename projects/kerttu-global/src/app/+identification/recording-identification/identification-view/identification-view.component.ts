@@ -6,7 +6,7 @@ import {
   SpeciesAnnotationEnum,
   IGlobalRecording, IGlobalSpeciesWithAnnotation, IGlobalRecordingStatusInfo
 } from '../../../kerttu-global-shared/models';
-import { IAudioViewerArea, IAudioViewerRectangle } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { Observable, Subscription, forkJoin } from 'rxjs';
@@ -27,7 +27,7 @@ export class IdentificationViewComponent implements OnChanges {
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
 
   loadingSpecies = false;
-  drawMode = false;
+  audioViewerMode: AudioViewerMode = 'default';
   drawIdx?: number;
   rectangles: IAudioViewerRectangle[] = [];
 
@@ -44,9 +44,9 @@ export class IdentificationViewComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.annotation) {
+    if (changes.recording) {
       this.rectangles = [];
-      this.updateSelectecSpecies();
+      this.updateSelectedSpecies();
     }
   }
 
@@ -72,7 +72,7 @@ export class IdentificationViewComponent implements OnChanges {
   }
 
   onDrawClick(data: {drawClicked: boolean, rowIndex: number}) {
-    this.drawMode = data.drawClicked;
+    this.audioViewerMode = data.drawClicked ? 'draw' : 'default';
     this.drawIdx = data.rowIndex;
   }
 
@@ -83,7 +83,10 @@ export class IdentificationViewComponent implements OnChanges {
 
     this.selectedSpecies[this.drawIdx].annotation.area = area;
     this.selectedSpecies = [...this.selectedSpecies];
-    this.drawMode = false;
+
+    this.audioViewerMode = 'default';
+
+    this.updateAnnotation();
   }
 
   removeDrawing(rowIndex: number) {
@@ -92,6 +95,8 @@ export class IdentificationViewComponent implements OnChanges {
 
     this.selectedSpecies[rowIndex].annotation.area = null;
     this.selectedSpecies = [...this.selectedSpecies];
+
+    this.updateAnnotation();
   }
 
   updateAnnotation() {
@@ -103,9 +108,9 @@ export class IdentificationViewComponent implements OnChanges {
     });
   }
 
-  private updateSelectecSpecies() {
+  private updateSelectedSpecies() {
     if (this.selectedSpeciesSub) {
-      this.selectedSpeciesSub = undefined;
+      this.selectedSpeciesSub.unsubscribe();
     }
 
     this.selectedSpecies = [];

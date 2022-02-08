@@ -1,6 +1,18 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef, Output, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  ViewChild,
+  TemplateRef,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
+import { AudioViewerMode } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -12,6 +24,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
   @Input() componentId = 0;
+  @Input() audioViewerMode: AudioViewerMode;
 
   @ViewChild('drawBox', { static: true }) drawBoxTpl: TemplateRef<any>;
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
@@ -62,8 +75,10 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges() {
-    this.drawClickedByIdx = this.identifications.map(() => false);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.identifications || this.audioViewerMode !== 'draw') {
+      this.drawClickedByIdx = this.identifications.map(() => false);
+    }
   }
 
   annotationTypeChange(rowIndex: number, value: number) {

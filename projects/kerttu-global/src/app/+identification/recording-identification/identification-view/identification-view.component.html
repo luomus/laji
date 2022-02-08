@@ -30,7 +30,7 @@
     <laji-audio-viewer
       [audio]="recording"
       [showZoomControl]="true"
-      [mode]="drawMode ? 'draw' : 'default'"
+      [(mode)]="audioViewerMode"
       [rectangles]="rectangles"
       [spectrogramHeight]="170"
       (drawEnd)="drawEnd($event)"
@@ -90,6 +90,7 @@
     <bsg-identification-table
       [(identifications)]="selectedSpecies"
       [loading]="loadingSpecies"
+      [audioViewerMode]="audioViewerMode"
       (drawClick)="onDrawClick($event)"
       (removeDrawingClick)="removeDrawing($event)"
       (identificationsChange)="updateAnnotation()"
