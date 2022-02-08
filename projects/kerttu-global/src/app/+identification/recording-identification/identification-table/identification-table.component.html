@@ -4,11 +4,12 @@
   [clientSideSorting]="true"
   [virtualScrolling]="false"
   [loading]="loading"
+  [showFooter]="false"
 ></laji-datatable>
 
 <ng-template let-row="row" #drawBox>
   <button
-    class="btn btn-primary btn-sm"
+    class="btn btn-sm"
     [ngClass]="{
       'btn-default': !drawClickedByIdx[row.preSortIndex],
       'btn-primary': drawClickedByIdx[row.preSortIndex]

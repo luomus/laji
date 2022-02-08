@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
-import { AudioViewerMode } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -24,7 +23,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
   @Input() componentId = 0;
-  @Input() audioViewerMode: AudioViewerMode;
+  @Input() drawActive = false;
 
   @ViewChild('drawBox', { static: true }) drawBoxTpl: TemplateRef<any>;
   @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
@@ -76,7 +75,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.identifications || this.audioViewerMode !== 'draw') {
+    if (changes.identifications || !this.drawActive) {
       this.drawClickedByIdx = this.identifications.map(() => false);
     }
   }

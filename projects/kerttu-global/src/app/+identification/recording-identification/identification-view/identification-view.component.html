@@ -34,6 +34,7 @@
       [rectangles]="rectangles"
       [spectrogramHeight]="170"
       (drawEnd)="drawEnd($event)"
+      (modeChange)="onAudioViewerModeChange()"
     ></laji-audio-viewer>
   </div>
   <div class="col-sm-12 general-annotation-section mb-4">
@@ -90,10 +91,34 @@
     <bsg-identification-table
       [(identifications)]="selectedSpecies"
       [loading]="loadingSpecies"
-      [audioViewerMode]="audioViewerMode"
-      (drawClick)="onDrawClick($event)"
+      [drawActive]="drawBirdActive"
+      (drawClick)="onDrawBirdClick($event)"
       (removeDrawingClick)="removeDrawing($event)"
       (identificationsChange)="updateAnnotation()"
     ></bsg-identification-table>
+    <div class="form-group mt-4 mb-4">
+      <label for="species-select">
+        {{ 'identification.recordings.drawNonBird' | translate }}
+      </label>
+      <div>
+        <button
+          class="btn"
+          [ngClass]="{
+            'btn-default': !drawNonBirdActive,
+            'btn-primary': drawNonBirdActive
+           }"
+          (click)="toggleDrawNonBird()"
+        >
+          {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
+          </button>
+        <button
+          *ngIf="annotation.nonBirdArea"
+          class="btn btn-default ml-2"
+          (click)="removeDrawing(-1)"
+        >
+          {{ 'identification.recordings.remove' | translate }}
+        </button>
+      </div>
+    </div>
   </div>
 </div>
