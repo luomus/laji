@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "vir",
+      "ba",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "vir",
+      "ba",
       "kebab-case"
     ]
   }
