@@ -1,5 +1,4 @@
 @import 'vars';
-@import 'projects/laji-ui/src/lib/mixins/base';
 
 :host {
   display: flex;
@@ -8,7 +7,6 @@
 }
 
 .main-view {
-  @include base();
   padding-top: $navbar-min-height;
   flex-grow: 1;
 }

@@ -1,5 +1,6 @@
 @import 'vars';
 @import 'projects/laji-ui/src/lib/utils';
+@import 'projects/laji-ui/src/lib/mixins/base';
 
 html, body {
   overflow: hidden;
@@ -13,4 +14,8 @@ html, body {
 body {
   background-color: $neutral-2;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.main-view, footer {
+  @include base();
 }
