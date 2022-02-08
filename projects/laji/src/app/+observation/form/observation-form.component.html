@@ -1,4 +1,9 @@
 <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
+<div *lajiForTypes="['vir']"><a class="btn btn-default btn-sm"
+    [routerLink]="['/observation/map'] | localize"
+    [queryParams]="virFilterShortcutQueryParams">
+  {{ 'observation.form.virFilterShortcut' | translate }}
+</a></div>
 
 <section class="top-section">
   <div>
