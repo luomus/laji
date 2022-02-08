@@ -126,19 +126,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   private _query: WarehouseQueryInterface;
 
   virFilterShortcutQueryParams = {
-    administrativeStatusId: `
-      MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,
-      MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,
-      MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,
-      MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,
-      MX.birdsDirectiveStatusMigratoryBirds`,
-      redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
-      countryId: 'ML.206',
-      time: '1990-01-01%2F',
-      collectionAndRecordQuality: `PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;
-      HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;`,
-      individualCountMin: 0,
-      coordinateAccuracyMax: 1000
+    // eslint-disable-next-line max-len
+    administrativeStatusId: `MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,MX.birdsDirectiveStatusMigratoryBirds`,
+    redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
+    countryId: 'ML.206',
+    time: '1990-01-01%2F',
+    // eslint-disable-next-line max-len
+    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+    individualCountMin: 0,
+    coordinateAccuracyMax: 1000
   };
 
   constructor(
