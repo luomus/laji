@@ -41,7 +41,7 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
 
   ngOnInit() {
     this.observationFacade.emptyQuery = {
-      _coordinatesIntersection: environment.type === 'vir' ? 0 : 100
+      _coordinatesIntersection: (environment as any).observationForm.defaultCoordinatesIntersection ?? 100
     };
     this.observationFacade.hideFooter();
     this.init();
