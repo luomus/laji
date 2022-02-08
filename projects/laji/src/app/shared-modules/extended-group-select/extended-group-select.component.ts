@@ -17,9 +17,6 @@ export interface InformalGroupEvent {
 // tslint:disable-next-line:directive-class-suffix
 export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnChanges {
   @Input() query: Record<string, any>;
-  @Input() position: 'right'|'left' = 'right';
-  @Input() rootGroups: string[];
-  @Input() useAdvanced = false;
   @Input() modalButtonLabel = '';
   @Input() modalTitle = '';
   @Input() browseTitle = '';
