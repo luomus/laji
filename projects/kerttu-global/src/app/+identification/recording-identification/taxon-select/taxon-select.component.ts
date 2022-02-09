@@ -74,7 +74,9 @@ export class TaxonSelectComponent {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), {searchQuery: token, pageSize: this.limit}).pipe(
+    return this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), {
+      searchQuery: token, pageSize: this.limit, orderBy: ['searchQuery ASC']
+    }).pipe(
       map(result => (result.results)),
       map(result => {
         result.forEach(res => {
