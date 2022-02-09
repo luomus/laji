@@ -1108,7 +1108,7 @@
   "observation.form.unidentified": "Rajaa kuvallisiin havaintoihin, jotka kaipaavat määritysapua",
   "observation.form.unidentified.title": "Määritysapu",
   "observation.form.unit": "Yksilö",
-  "observation.form.virFilterShortcut": "Aseta viranomaisrajoitukset",
+  "observation.form.virFilterShortcut": "Aseta Virva-viranomaisrajaukset",
   "observation.form.zeroObservations": "Myös nollahavainnot",
   "observation.horizontalBar.title": "Havaintojen jakauma taksoneittain",
   "observation.info.adminStatus": "Rajaa havainnot koskemaan lajeja, joille on määritelty yksi tai useampi valitsemistasi hallinnollisista asemista.",
@@ -1912,5 +1912,6 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "observation.form.virva-info": "Tämä valinta käyttää viranomaistyössä tarpeellisiksi määriteltyjä rajauksia. Pääset näkemään ja muuttamaan halutessasi automaattisesti tehtyjä valintoja avaamalla: Aika, Paikka-Havaintopaikan koordinaattien tarkkuus, Laatu, Uhanalaisuus ja asema. Kaikkia muitakin rajauksia voi muuttaa tarpeen mukaan."
 }
