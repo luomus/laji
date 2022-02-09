@@ -37,10 +37,15 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
-  public getSpecies(speciesId: number): Observable<IGlobalSpecies> {
+  public getSpecies(speciesId: number, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
     const path = this.basePath + '/species/' + speciesId;
 
-    return this.httpClient.get<IGlobalSpecies>(path);
+    let params = new HttpParams();
+    if (includeValidationCount != null) {
+      params = params.set('includeValidationCount', includeValidationCount);
+    }
+
+    return this.httpClient.get<IGlobalSpecies>(path, { params });
   }
 
   public lockSpecies(personToken: string, speciesId: number): Observable<ISuccessResult> {

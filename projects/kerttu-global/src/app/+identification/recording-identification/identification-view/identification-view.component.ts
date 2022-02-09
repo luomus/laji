@@ -161,7 +161,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
 
     if (speciesAnnotations?.length > 0) {
       const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations.map(
-        a => this.kerttuGlobalApi.getSpecies(a.speciesId).pipe(map(species => {
+        a => this.kerttuGlobalApi.getSpecies(a.speciesId, true).pipe(map(species => {
           return {...species, annotation: a};
         }))
       );
