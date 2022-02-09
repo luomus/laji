@@ -1108,6 +1108,7 @@
   "observation.form.unidentified": "Visa observationer med bilder som kräver identifieringshjälp",
   "observation.form.unidentified.title": "Hjälp identifiera",
   "observation.form.unit": "Individ",
+  "observation.form.virFilterShortcut": "Aseta viranomaisrajoitukset",
   "observation.form.zeroObservations": "Inkludera negativa observationer",
   "observation.horizontalBar.title": "Observationer per taxon",
   "observation.info.adminStatus": "Rajaa havainnot koskemaan lajeja, joille on määritelty yksi tai useampi valitsemistasi hallinnollisista asemista.",

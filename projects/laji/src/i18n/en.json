@@ -1108,6 +1108,7 @@
   "observation.form.unidentified": "Show observations with images that require identification help",
   "observation.form.unidentified.title": "Help identify",
   "observation.form.unit": "Individual",
+  "observation.form.virFilterShortcut": "Aseta viranomaisrajoitukset",
   "observation.form.zeroObservations": "Explicit absences included",
   "observation.horizontalBar.title": "Observations per taxon",
   "observation.info.adminStatus": "Filter observations to incude those species/taxa that have one of the selected administrative properties.",
