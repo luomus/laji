@@ -169,12 +169,22 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       this.loadingSpecies = true;
       this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
         this.selectedSpecies = results;
-        this.rectangles = this.selectedSpecies.filter(s => s.annotation.area).map(s => ({
-          label: s.commonName,
-          area: s.annotation.area
-        }));
         this.loadingSpecies = false;
+        this.initRectangles();
         this.cdr.markForCheck();
+      });
+    }
+  }
+
+  private initRectangles() {
+    this.rectangles = this.selectedSpecies.filter(s => s.annotation.area).map(s => ({
+      label: s.commonName,
+      area: s.annotation.area
+    }));
+    if (this.annotation.nonBirdArea) {
+      this.rectangles.push({
+        label: this.nonBirdLabel,
+        area: this.annotation.nonBirdArea
       });
     }
   }

@@ -108,6 +108,7 @@
             'btn-primary': drawNonBirdActive
            }"
           (click)="toggleDrawNonBird()"
+          [disabled]="loadingSpecies"
         >
           {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
           </button>
@@ -115,6 +116,7 @@
           *ngIf="annotation.nonBirdArea"
           class="btn btn-default ml-2"
           (click)="removeDrawing(-1)"
+          [disabled]="loadingSpecies"
         >
           {{ 'identification.recordings.remove' | translate }}
         </button>

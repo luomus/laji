@@ -15,6 +15,7 @@
       'btn-primary': drawClickedByIdx[row.preSortIndex]
      }"
     (click)="toggleDrawButton(row.preSortIndex)"
+    [disabled]="loading"
   >
     {{ 'identification.recordings.' + (row.annotation.area ? 'redraw' : 'draw') | translate }}
   </button>
@@ -22,6 +23,7 @@
     *ngIf="row.annotation.area"
     class="btn btn-default btn-sm ml-2"
     (click)="removeDrawingClick.emit(row.preSortIndex)"
+    [disabled]="loading"
   >
     {{ 'identification.recordings.remove' | translate }}
   </button>
@@ -44,5 +46,5 @@
   <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation', row.id]" target="_blank">
     <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (row.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
   </a>
-  <button class="btn btn-danger btn-sm" (click)="deleteRow(row.preSortIndex)">x</button>
+  <button class="btn btn-danger btn-sm" (click)="deleteRow(row.preSortIndex)" [disabled]="loading">x</button>
 </ng-template>
