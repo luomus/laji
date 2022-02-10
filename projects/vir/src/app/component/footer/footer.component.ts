@@ -23,10 +23,11 @@ const informationWhitelist = [
 ];
 
 const augment = {
-  '263': [{id: '4271', title: 'Lokitus'}],
-  '261': [
+  263: [{id: '4271', title: 'Lokitus'}],
+  261: [
     {id: '4404', title: 'Usein kysytyt kysymykset'},
-    {id: '4515', title: 'Webinaarit'}
+    {id: '4515', title: 'Webinaarit'},
+    {id: '6461', title: 'Virva-viranomaisrajoitukset'}
   ]
 };
 
