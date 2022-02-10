@@ -133,6 +133,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     time: '1990-01-01%2F',
     // eslint-disable-next-line max-len
     collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+    taxonAdminFiltersOperator: 'OR',
     individualCountMin: 0,
     coordinateAccuracyMax: 1000
   };
