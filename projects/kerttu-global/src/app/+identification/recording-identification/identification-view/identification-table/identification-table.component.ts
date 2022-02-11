@@ -11,7 +11,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../kerttu-global-shared/models';
+import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-identification-table',

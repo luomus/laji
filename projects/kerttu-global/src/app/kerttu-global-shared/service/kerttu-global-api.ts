@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import {
   IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
   ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
-  IGlobalRecordingAnnotation
+  IGlobalRecordingAnnotation, IGlobalSite
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -128,6 +128,12 @@ export class KerttuGlobalApi {
     const params = new HttpParams().set('personToken', personToken);
 
     return this.httpClient.post(path, annotation, { params });
+  }
+
+  public getSites(): Observable<IListResult<IGlobalSite>> {
+    const path = this.basePath + '/identification/sites';
+
+    return this.httpClient.get<IListResult<IGlobalSite>>(path);
   }
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {

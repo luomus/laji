@@ -8,9 +8,9 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { Observable, of, of as ObservableOf } from 'rxjs';
-import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies } from '../../../kerttu-global-shared/models';
+import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
+import { IGlobalSpecies } from '../../../../kerttu-global-shared/models';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
   autocompleteDisplayName: string;

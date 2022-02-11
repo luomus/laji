@@ -1,6 +1,10 @@
 <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
-<ng-container *ngIf="!hasError">
+<bsg-site-selection-view
+  [sites]="sites$ | async"
+></bsg-site-selection-view>
+
+<!--ng-container *ngIf="!hasError">
   <ng-container *lajiRequiresAudioSupport>
     <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
       <bsg-identification-view
@@ -16,5 +20,5 @@
       ></bsg-identification-view>
     </laji-spinner>
   </ng-container>
-</ng-container>
+</ng-container-->
 

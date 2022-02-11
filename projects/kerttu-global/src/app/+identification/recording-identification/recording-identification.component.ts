@@ -1,12 +1,20 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
-import { IGlobalRecording, IGlobalRecordingAnnotation, IGlobalRecordingStatusInfo, IGlobalRecordingResponse, KerttuGlobalErrorEnum } from '../../kerttu-global-shared/models'
+import {
+  IGlobalRecording,
+  IGlobalRecordingAnnotation,
+  IGlobalRecordingStatusInfo,
+  IGlobalRecordingResponse,
+  KerttuGlobalErrorEnum,
+  IGlobalSite
+} from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -15,6 +23,8 @@ import { TranslateService } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecordingIdentificationComponent implements OnInit {
+  sites$: Observable<IGlobalSite[]>;
+
   recording: IGlobalRecording;
   annotation: IGlobalRecordingAnnotation;
   statusInfo: IGlobalRecordingStatusInfo;
@@ -37,12 +47,16 @@ export class RecordingIdentificationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.sites$ = this.kerttuGlobalApi.getSites().pipe(
+      map(result => result.results)
+    );
+    /*
     this.loading = true;
     this.kerttuGlobalApi.getRecording(this.userService.getToken()).subscribe((result) => {
       this.onGetRecordingSuccess(result);
     }, (err) => {
       this.handleError(err);
-    });
+    });*/
   }
 
   @HostListener('window:beforeunload', ['$event'])

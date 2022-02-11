@@ -1207,6 +1207,7 @@
               }
             ],
             "styles": [
+              "node_modules/laji-map/dist/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
@@ -1219,6 +1220,9 @@
               ]
             },
             "scripts": [],
+            "allowedCommonJsDependencies": [
+              "laji-map"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,

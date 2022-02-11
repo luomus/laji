@@ -12,10 +12,13 @@ import { ExpertiseComponent } from './expertise/expertise.component';
 import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
-import { TaxonSelectComponent } from './recording-identification/taxon-select/taxon-select.component';
+import { TaxonSelectComponent } from './recording-identification/identification-view/taxon-select/taxon-select.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { IdentificationTableComponent } from './recording-identification/identification-table/identification-table.component';
+import { IdentificationTableComponent } from './recording-identification/identification-view/identification-table/identification-table.component';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
+import { SiteSelectionViewComponent } from './recording-identification/site-selection-view/site-selection-view.component';
+import { SiteSelectionMapComponent } from './recording-identification/site-selection-view/site-selection-map/site-selection-map.component';
+import { LajiMapModule } from '@laji-map/laji-map.module';
 
 @NgModule({
   imports: [
@@ -27,7 +30,8 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
     IdentificationRoutingModule,
     AudioViewerModule,
     TypeaheadModule,
-    DatatableModule
+    DatatableModule,
+    LajiMapModule
   ],
   declarations: [
     IdentificationComponent,
@@ -37,7 +41,9 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
     IdentificationResultsComponent,
     TaxonSelectComponent,
     IdentificationTableComponent,
-    IdentificationViewComponent
+    IdentificationViewComponent,
+    SiteSelectionViewComponent,
+    SiteSelectionMapComponent
   ]
 })
 export class IdentificationModule { }
