@@ -884,7 +884,7 @@
   "observation.active.breedingSite": "Breeding site",
   "observation.active.collectionAndRecordQuality": "Kokoelman ja havainnon laatu",
   "observation.active.collectionId": "Information source",
-  "observation.active.collectionIdNot": "Possuljettu aineisto",
+  "observation.active.collectionIdNot": "Poissuljettu aineisto",
   "observation.active.collectionQuality": "Source quality rating",
   "observation.active.coordinateAccuracyMax": "Coordinate accuracy",
   "observation.active.coordinates": "Coordinates",

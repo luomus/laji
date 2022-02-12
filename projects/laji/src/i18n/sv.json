@@ -884,7 +884,7 @@
   "observation.active.breedingSite": "Avelsplats",
   "observation.active.collectionAndRecordQuality": "Kokoelman ja havainnon laatu",
   "observation.active.collectionId": "Samling",
-  "observation.active.collectionIdNot": "Possuljettu aineisto",
+  "observation.active.collectionIdNot": "Poissuljettu aineisto",
   "observation.active.collectionQuality": "Kvalitetsklassificering av samlingen",
   "observation.active.coordinateAccuracyMax": "Koordinera noggrannhet",
   "observation.active.coordinates": "Koordinater",
