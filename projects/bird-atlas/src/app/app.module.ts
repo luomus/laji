@@ -12,6 +12,8 @@ import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { LajiApiClientModule } from '../../../laji-api-client/src/public-api';
+import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
 
 @NgModule({
   imports: [
@@ -26,7 +28,8 @@ import { FooterComponent } from './footer/footer.component';
       }
     }),
     LocaleModule,
-    BaRoutingModule
+    BaRoutingModule,
+    LajiApiClientModule.forRoot(() => new Configuration({accessToken: undefined, apiKeys: {}, basePath: 'https://dev.laji.fi/api'}))
   ],
   exports: [
   ],

@@ -1,5 +1,3 @@
-<div class="container">
-  <main class="my-5">
-    home module
-  </main>
+<div class="container" *ngIf="homeContent$ | async; let information">
+  <main class="my-5" [innerHtml]="information?.content"></main>
 </div>

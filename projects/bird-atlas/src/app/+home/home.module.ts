@@ -5,7 +5,6 @@ import { HomeComponent } from './home.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { routing } from './home.routes';
 
-
 @NgModule({
   declarations: [HomeComponent],
   imports: [

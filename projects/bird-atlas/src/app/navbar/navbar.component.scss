@@ -3,4 +3,7 @@
 :host .navbar {
   min-height: $navbar-min-height;
   border-top: 2px solid $primary-5;
+  background-color: $neutral-1;
+  border-bottom: none;
+  box-shadow: 0 1px 4px 0 rgba($neutral-8, .2);
 }
