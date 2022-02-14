@@ -38,9 +38,9 @@ export class GeoConvertService {
   }
 
   public getGISDownloadLinkFromData(
-    data: FormData, fileNumber: number, format: FileFormat, geometry: FileGeometry, crs: FileCrs
+    data: FormData, fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
-    return this.startGeoConversionFromData(data, fileNumber, format, geometry, crs).pipe(
+    return this.startGeoConversionFromData(data, fileId, format, geometry, crs).pipe(
       switchMap(conversionId => this.getOutputLink(conversionId))
     );
   }
@@ -60,8 +60,10 @@ export class GeoConvertService {
   }
 
   private startGeoConversionFromData(
-    data: FormData, fileNumber: number, format: FileFormat, geometry: FileGeometry, crs: FileCrs
+    data: FormData, fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
+    const fileNumber = parseInt(fileId.split('.')[1], 10);
+
     const queryParams = {
       personToken: this.userService.getToken(),
       outputFormat: format,

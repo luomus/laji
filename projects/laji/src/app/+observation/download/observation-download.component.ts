@@ -288,9 +288,10 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   simpleDownload(params: DownloadParams) {
     this.downloadLoading = true;
+    const isGisDownload = this.isGisDownload(params.fileType);
 
     let selected = this.columnSelector.columns;
-    if (params.fileType === 'shp' || params.fileType === 'gpkg') {
+    if (isGisDownload) {
       if (selected.indexOf(this.gisDownloadGeometryField) === -1) {
         selected = [...selected, this.gisDownloadGeometryField];
       }
@@ -303,7 +304,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       [],
       this.translate.currentLang,
       true,
-      environment.type === Global.type.vir,
+      environment.type === Global.type.vir || isGisDownload,
       [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
     ).pipe(
       switchMap(data => this.downloadData(data, columns, params))
@@ -370,9 +371,9 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
   }
 
-  downloadData(data: any[], columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
-    if (params.fileType === 'shp' || params.fileType === 'gpkg') {
-      return this.exportService.getBlobFromData(data, columns, 'tsv', 'laji-data').pipe(
+  downloadData(data: {id?: string, results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
+    if (this.isGisDownload(params.fileType)) {
+      return this.exportService.getBlobFromData(data.results, columns, 'tsv', 'laji-data').pipe(
         map(blob => {
           const formData = new FormData();
           formData.append('file', blob, 'laji-data.tsv');
@@ -380,7 +381,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         switchMap(formData => this.geoConvertService.getGISDownloadLinkFromData(
           formData,
-          params.fileNumber,
+          data.id,
           params.fileType as FileFormat,
           params.geometry,
           params.crs
@@ -390,7 +391,11 @@ export class ObservationDownloadComponent implements OnDestroy {
         })
       );
     } else {
-      return this.exportService.exportFromData(data, columns, params.fileType as ExportFileType, 'laji-data');
+      return this.exportService.exportFromData(data.results, columns, params.fileType as ExportFileType, 'laji-data');
     }
+  }
+
+  private isGisDownload(fileType: FORMAT): boolean {
+    return fileType === 'shp' || fileType === 'gpkg';
   }
 }

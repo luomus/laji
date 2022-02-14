@@ -439,7 +439,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       [...this.orderBy, this.defaultOrder],
       this.lang
     ).pipe(
-      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;

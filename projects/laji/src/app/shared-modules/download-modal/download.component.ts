@@ -8,7 +8,6 @@ export type FORMAT = 'csv'|'tsv'|'ods'|'xlsx'|'shp'|'gpkg';
 
 export interface DownloadParams {
   fileType: FORMAT;
-  fileNumber?: number;
   geometry?: FileGeometry;
   crs?: FileCrs;
 }
@@ -59,10 +58,6 @@ export interface DownloadParams {
             </div>
             <ng-container *ngIf="fileType === 'shp' || fileType === 'gpkg'">
               <div class="mb-3">
-                <label for="fileNumber">{{ 'download.fileNumber' | translate }}:</label>
-                <input id="fileNumber" name="fileNumber" class="form-control" type="number" [(ngModel)]="fileNumber" (ngModelChange)="checkCanDownloadStatus()">
-              </div>
-              <div class="mb-3">
                 <label for="geometry">{{ 'download.geometry' | translate }}:</label>
                 <select id="geometry" name="geometry" class="form-control" [(ngModel)]="geometry">
                   <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
@@ -112,7 +107,6 @@ export class DownloadComponent implements OnChanges {
   _formats: FORMAT[] = ['tsv', 'ods', 'xlsx'];
 
   fileType: FORMAT = 'tsv';
-  fileNumber = 1234;
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
   modalRef: BsModalRef;
@@ -160,7 +154,6 @@ export class DownloadComponent implements OnChanges {
     }
     const params: DownloadParams = {fileType: this.fileType};
     if (this.fileType === 'shp' || this.fileType === 'gpkg') {
-      params.fileNumber = this.fileNumber;
       params.geometry = this.geometry;
       params.crs = this.crs;
     }
@@ -173,8 +166,7 @@ export class DownloadComponent implements OnChanges {
 
   checkCanDownloadStatus() {
     this.disableDownLoad = this.downloadLoading ||
-      (this.showReason && (!this.reason || !this.reasonEnum)) ||
-      ((this.fileType === 'shp' || this.fileType === 'gpkg') && (this.fileNumber == null || !this.geometry || !this.crs));
+      (this.showReason && (!this.reason || !this.reasonEnum));
   }
 
 }

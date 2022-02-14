@@ -139,7 +139,7 @@ export class ObservationResultService {
     sendDownloadMark = false,
     blockOnDownloadMarkFail = false,
     reason = ''
-  ): Observable<any[]> {
+  ): Observable<{id?: string, results: any[]}> {
 
     const all$ = this._getAll(
       query,
@@ -151,14 +151,19 @@ export class ObservationResultService {
     if (sendDownloadMark) {
       if (blockOnDownloadMarkFail) {
         return this.sendDownloadMark(query, lang, reason).pipe(
-          switchMap(() => all$)
+          switchMap((download) => all$.pipe(
+            map(all => ({
+              id: IdService.getId(download.id),
+              results: all
+            }))
+          ))
         );
       }
       this.sendDownloadMark(query, lang, reason).pipe(
         catchError(() => of(null))
       ).subscribe();
     }
-    return all$;
+    return all$.pipe(map(all => ({id: null, results: all})));
   }
 
   private sendDownloadMark(query: WarehouseQueryInterface, lang: string, reason: string): Observable<any> {
