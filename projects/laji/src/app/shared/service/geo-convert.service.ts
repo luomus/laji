@@ -46,8 +46,6 @@ export class GeoConvertService {
   }
 
   private startGeoConversion(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
-    const fileNumber = parseInt(fileId.split('.')[1], 10);
-
     const queryParams = {
       'personToken': this.userService.getToken(),
       'outputFormat': format,
@@ -56,14 +54,12 @@ export class GeoConvertService {
     };
     const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.get<string>('/api/geo-convert/' + fileNumber, {params: params});
+    return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params: params});
   }
 
   private startGeoConversionFromData(
     data: FormData, fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs
   ): Observable<string> {
-    const fileNumber = parseInt(fileId.split('.')[1], 10);
-
     const queryParams = {
       outputFormat: format,
       geometryType: geometry,
@@ -71,7 +67,7 @@ export class GeoConvertService {
     };
     const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.post<string>('/api/geo-convert/' + fileNumber, data, {params: params});
+    return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params: params});
   }
 
   private getOutputLink(conversionId: string) {
