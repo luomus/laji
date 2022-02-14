@@ -65,7 +65,6 @@ export class GeoConvertService {
     const fileNumber = parseInt(fileId.split('.')[1], 10);
 
     const queryParams = {
-      personToken: this.userService.getToken(),
       outputFormat: format,
       geometryType: geometry,
       crs: crs
