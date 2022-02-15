@@ -2,6 +2,9 @@
   <div class="col-sm-12">
     <div class="button-container">
       <div>
+        <button class="btn btn-default" (click)="backToSiteSelectionClick.emit()">{{ 'identification.recordings.backToSiteSelection' | translate }}</button>
+      </div>
+      <div>
         <lu-button [disabled]="!statusInfo.hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
         <laji-info [html]="'theme.kerttu.info.previousRecording' | translate"></laji-info>
       </div>

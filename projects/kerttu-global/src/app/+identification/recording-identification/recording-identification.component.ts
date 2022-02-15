@@ -11,10 +11,10 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
-import equals from 'deep-equal';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
+import equals from 'deep-equal';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -36,6 +36,10 @@ export class RecordingIdentificationComponent implements OnInit {
   allRecordingsAnnotated = false;
   hasError = false;
 
+  selectedSites?: number[];
+  private selectedSitesSubject = new Subject<number[]>();
+  selectedSites$ = this.selectedSitesSubject.asObservable();
+
   private originalAnnotation: IGlobalRecordingAnnotation;
 
   constructor(
@@ -50,13 +54,24 @@ export class RecordingIdentificationComponent implements OnInit {
     this.sites$ = this.kerttuGlobalApi.getSites().pipe(
       map(result => result.results)
     );
-    /*
-    this.loading = true;
-    this.kerttuGlobalApi.getRecording(this.userService.getToken()).subscribe((result) => {
-      this.onGetRecordingSuccess(result);
-    }, (err) => {
-      this.handleError(err);
-    });*/
+
+    this.selectedSites$.subscribe(siteIds => {
+      this.selectedSites = siteIds;
+
+      if (this.selectedSites) {
+        this.loading = true;
+        this.kerttuGlobalApi.getRecording(this.userService.getToken(), siteIds).subscribe((result) => {
+          this.onGetRecordingSuccess(result);
+        }, (err) => {
+          this.handleError(err);
+        });
+      } else {
+        this.firstRecordingLoaded = false;
+        this.allRecordingsAnnotated = false;
+      }
+
+      this.cdr.markForCheck();
+    });
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -66,11 +81,23 @@ export class RecordingIdentificationComponent implements OnInit {
     }
   }
 
-  canDeactivate() {
+  canDeactivate(): Observable<boolean> {
     if (!this.unsavedChanges) {
-      return true;
+      return of(true);
     }
     return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'));
+  }
+
+  onSiteSelect(siteIds?: number[]) {
+    this.selectedSitesSubject.next(siteIds);
+  }
+
+  goBackToSiteSelection() {
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.onSiteSelect(null);
+      }
+    });
   }
 
   getNextRecording() {
@@ -87,10 +114,14 @@ export class RecordingIdentificationComponent implements OnInit {
   }
 
   getPreviousRecording() {
-    this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id).subscribe(result => {
-      this.onGetRecordingSuccess(result);
-    }, (err) => {
-      this.handleError(err);
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id).subscribe(result => {
+          this.onGetRecordingSuccess(result);
+        }, (err) => {
+          this.handleError(err);
+        });
+      }
     });
   }
 

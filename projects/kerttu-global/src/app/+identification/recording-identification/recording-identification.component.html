@@ -1,24 +1,28 @@
 <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
-<bsg-site-selection-view
-  [sites]="sites$ | async"
-></bsg-site-selection-view>
-
-<!--ng-container *ngIf="!hasError">
+<ng-container *ngIf="!hasError">
   <ng-container *lajiRequiresAudioSupport>
-    <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
-      <bsg-identification-view
-        *ngIf="firstRecordingLoaded"
-        [recording]="recording"
-        [(annotation)]="annotation"
-        [statusInfo]="statusInfo"
-        [buttonsAreDisabled]="loading"
-        (nextRecordingClick)="getNextRecording()"
-        (previousRecordingClick)="getPreviousRecording()"
-        (saveClick)="save()"
-        (annotationChange)="onAnnotationChange()"
-      ></bsg-identification-view>
-    </laji-spinner>
-  </ng-container>
-</ng-container-->
+    <bsg-site-selection-view
+      *ngIf="!selectedSites else identificationView"
+      [sites]="sites$ | async"
+      (siteSelect)="onSiteSelect($event)"
+    ></bsg-site-selection-view>
 
+    <ng-template #identificationView>
+      <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
+        <bsg-identification-view
+          *ngIf="firstRecordingLoaded"
+          [recording]="recording"
+          [(annotation)]="annotation"
+          [statusInfo]="statusInfo"
+          [buttonsAreDisabled]="loading"
+          (nextRecordingClick)="getNextRecording()"
+          (previousRecordingClick)="getPreviousRecording()"
+          (saveClick)="save()"
+          (annotationChange)="onAnnotationChange()"
+          (backToSiteSelectionClick)="goBackToSiteSelection()"
+        ></bsg-identification-view>
+      </laji-spinner>
+    </ng-template>
+  </ng-container>
+</ng-container>

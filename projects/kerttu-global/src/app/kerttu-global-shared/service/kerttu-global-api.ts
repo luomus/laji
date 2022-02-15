@@ -102,9 +102,9 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
 
-  public getRecording(personToken: string): Observable<IGlobalRecordingResponse> {
+  public getRecording(personToken: string, siteIds: number[]): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording';
-    const params = new HttpParams().set('personToken', personToken);
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }

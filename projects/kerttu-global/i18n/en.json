@@ -77,5 +77,7 @@
   "identification.recordings.seeTemplates": "View templates",
   "identification.recordings.containsBirdsNotOnList": "Recording contains birds that are not on the list",
   "identification.recordings.drawNonBird": "Draw a box to the spectrogram that contains a non-bird sound",
-  "identification.recordings.nonBird": "Other than a bird"
+  "identification.recordings.nonBird": "Other than a bird",
+  "identification.siteSelection": "Select a site",
+  "identification.recordings.backToSiteSelection": "Go back to the site selection"
 }

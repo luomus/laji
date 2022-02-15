@@ -39,6 +39,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
+  @Output() backToSiteSelectionClick = new EventEmitter();
 
   private selectedSpeciesSub: Subscription;
   private nonBirdLabel = '';

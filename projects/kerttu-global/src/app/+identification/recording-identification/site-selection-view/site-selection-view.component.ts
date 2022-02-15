@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
 import { IGlobalSite } from '../../../kerttu-global-shared/models';
 
 @Component({
@@ -9,6 +9,8 @@ import { IGlobalSite } from '../../../kerttu-global-shared/models';
 })
 export class SiteSelectionViewComponent implements OnInit {
   @Input() sites: IGlobalSite[] = [];
+
+  @Output() siteSelect = new EventEmitter<number[]>();
 
   constructor() { }
 

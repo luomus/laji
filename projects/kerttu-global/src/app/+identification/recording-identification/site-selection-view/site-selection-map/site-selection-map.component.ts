@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
@@ -18,18 +18,28 @@ export class SiteSelectionMapComponent implements OnInit {
 
   data: LajiMapDataOptions;
 
+  @Output() siteSelect = new EventEmitter<number[]>();
+
   @Input() set sites(sites: IGlobalSite[]) {
     this.data = this.getData(sites);
   }
 
-
-  constructor() { }
+  constructor(
+    private ngZone: NgZone
+  ) { }
 
   ngOnInit(): void {
   }
 
   getData(sites: IGlobalSite[]): LajiMapDataOptions {
     return {
+      on: {
+        click: (event, data) => {
+          this.ngZone.run(() => {
+            this.siteSelect.emit([data.feature.properties.id]);
+          });
+        }
+      },
       getFeatureStyle: () => {
         return {
           weight: 2,
@@ -40,15 +50,13 @@ export class SiteSelectionMapComponent implements OnInit {
       },
       featureCollection: {
         type: 'FeatureCollection',
-        features: ([]).map(site => ({
+        features: (sites || []).map(site => ({
           type: 'Feature',
           geometry: site.geometry,
-          properties: {}
-        })).concat((sites || []).map(site => ({
-          type: 'Feature',
-          geometry: {...site.geometry, radius: undefined},
-          properties: {}
-        })))
+          properties: {
+            id: site.id
+          }
+        }))
       },
       cluster: {
         spiderfyOnMaxZoom: true,

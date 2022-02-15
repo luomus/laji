@@ -1,4 +1,5 @@
-<h1>Map!</h1>
+<h2>{{ 'identification.siteSelection' | translate }}</h2>
 <bsg-site-selection-map
   [sites]="sites"
+  (siteSelect)="siteSelect.emit($event)"
 ></bsg-site-selection-map>

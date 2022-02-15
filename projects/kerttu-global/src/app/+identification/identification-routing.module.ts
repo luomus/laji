@@ -6,6 +6,7 @@ import { ExpertiseComponent } from './expertise/expertise.component';
 import { RecordingIdentificationComponent } from './recording-identification/recording-identification.component';
 import { IdentificationResultsComponent } from './identification-results/identification-results.component';
 import { IdentificationComponent } from './identification.component';
+import { DocumentDeActivateGuard } from '../../../../laji/src/app/shared/guards/document-de-activate.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
       {path: 'instructions', pathMatch: 'full', component: IdentificationInstructionsComponent},
       {path: 'expertise', pathMatch: 'full', component: ExpertiseComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'recordings', pathMatch: 'full', component: RecordingIdentificationComponent, canActivate: [OnlyLoggedIn]},
+      {path: 'recordings', pathMatch: 'full', component: RecordingIdentificationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
       {path: 'results', pathMatch: 'full', component: IdentificationResultsComponent}
     ]
   }
