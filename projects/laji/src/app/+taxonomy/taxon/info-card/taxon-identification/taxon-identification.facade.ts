@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, of } from 'rxjs';
-import { map, distinctUntilChanged, tap, takeUntil, switchMap } from 'rxjs/operators';
+import { map, distinctUntilChanged, tap, takeUntil, switchMap, take } from 'rxjs/operators';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { Taxon } from '../../../../../../../laji-api-client/src/lib/models';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
@@ -29,16 +29,14 @@ const rankWhiteList: Taxon.TaxonRankEnum[] = [
   'MX.species'
 ];
 
-const isMainRank = (r: Taxon.TaxonRankEnum): boolean => {
-  return rankWhiteList.includes(r);
-};
+const isMainRank = (r: Taxon.TaxonRankEnum): boolean => rankWhiteList.includes(r);
+
+const taxonEnumReversed = Object.values(Taxon.TaxonRankEnum).reverse();
 
 const findNearestParentMainRankIdx = (root: Taxon.TaxonRankEnum): number => {
-    const ranks = Object.values(Taxon.TaxonRankEnum);
-    const idx = ranks.indexOf(root);
-    const rank0 = ranks.slice(idx).find(rank => isMainRank(rank));
-    return rankWhiteList.findIndex(r => r === rank0) - 1;
-
+    const idx = taxonEnumReversed.indexOf(root);
+    const parent = taxonEnumReversed.slice(idx + 1).find(rank => isMainRank(rank));
+    return rankWhiteList.findIndex(r => r === parent);
 };
 
 const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
@@ -48,7 +46,7 @@ const getSubMainRank = (root: Taxon.TaxonRankEnum): Taxon.TaxonRankEnum => {
     // find the closest parent that is mainrank instead
     rootIdx = findNearestParentMainRankIdx(root);
   }
-  return rankWhiteList[rootIdx + 1];
+  return rankWhiteList[rootIdx + 1] || rankWhiteList[rootIdx];
 };
 
 @Injectable()
@@ -70,7 +68,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
   }
 
   loadChildDataSource(root: Taxonomy) {
-    this.childDataSource$.pipe(takeUntil(this.unsubscribe$)).subscribe(d => {
+    this.childDataSource$.pipe(take(1)).subscribe(d => {
       if (d) {
         d.disconnect();
       }
@@ -95,7 +93,7 @@ export class TaxonIdentificationFacade implements OnDestroy {
       }
     ).pipe(
       switchMap(res => {
-        if (res.total > 0) {
+        if (res.total > 0 || rank === 'MX.species') {
           return of({...res, rank});
         } else {
           return this.getTaxaObservable$(id, getSubMainRank(rank));

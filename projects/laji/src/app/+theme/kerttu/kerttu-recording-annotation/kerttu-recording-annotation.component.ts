@@ -56,9 +56,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
     this.taxonList$ = this.taxonService.getTaxonList().pipe(
       map(taxons => taxons.map(taxon => taxon.id))
     );
-    this.taxonExpertise$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(map(profile => {
-      return profile.taxonExpertise || [];
-    }));
+    this.taxonExpertise$ = this.personService.personFindProfileByToken(this.userService.getToken()).pipe(map(profile => profile.taxonExpertise || []));
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -78,9 +76,7 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   getNextRecording() {
     this.loading = true;
     this.kerttuApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
-      switchMap(() => {
-        return this.kerttuApi.getNextRecording(this.userService.getToken(), this.recording.id);
-      })
+      switchMap(() => this.kerttuApi.getNextRecording(this.userService.getToken(), this.recording.id))
     ).subscribe(result => {
       this.onGetRecordingSuccess(result);
     }, (err) => {

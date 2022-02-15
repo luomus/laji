@@ -18,3 +18,7 @@
   line-height: 33px;
   text-align: center;
 }
+
+::ng-deep #flyingSquirrelPredictionModel {
+  display: none !important;
+}

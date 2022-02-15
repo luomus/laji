@@ -22,7 +22,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   notificationSource: NotificationDataSource;
 
-  @Output() close = new EventEmitter<void>();
+  @Output() notificationsClose = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll: CdkVirtualScrollViewport;
   loading: boolean;
 
@@ -47,7 +47,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onClose() {
-    this.close.emit();
+    this.notificationsClose.emit();
   }
 
   markAllAsSeen() {

@@ -45,9 +45,9 @@ export class PublicationPipe implements PipeTransform {
     }
 
     return this.publicationService.getPublication(value, this.translate.currentLang)
-      .pipe(map((res: Publication) => {
-        return res && res['dc:' + field] ? res['dc:' + field] : '';
-      }));
+      .pipe(map((res: Publication) =>
+        res && res['dc:' + field] ? res['dc:' + field] : ''
+      ));
   }
 }
 

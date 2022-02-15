@@ -41,7 +41,7 @@ export class TriplestoreLabelService {
 
   public getAll(keys: string[], lang: string): Observable<{[key: string]: string}> {
     const set = new Set(keys);
-    const subs: Observable<{key: string, value: string}>[] = [];
+    const subs: Observable<{key: string; value: string}>[] = [];
     set.forEach(val => {
       subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
     });

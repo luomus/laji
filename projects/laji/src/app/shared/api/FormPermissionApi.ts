@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable member-ordering max-line-length */
+/* eslint-disable no-unused-vars, max-len */
 
 
 import { map } from 'rxjs/operators';

@@ -1,0 +1,62 @@
+<ng-container *ngIf="downloadRequest">
+  <div class="row" *ngIf="showPerson">
+    <div class="col-sm-4">
+      <label>{{ 'usage.person' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.personId | users }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <label>{{ 'usage.requested' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.requested }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <label>{{ 'usage.approximateMatches' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.approximateMatches }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <label>{{ 'usage.dataUsePurpose' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.dataUsePurpose }}
+    </div>
+  </div>
+
+  <h4>{{ 'usage.downloadRequest.filters' | translate }}</h4>
+  <ul>
+    <li *ngFor="let desc of (downloadRequest.filterDescriptions | multiLang)">
+      {{ desc.label }}: {{ desc.value }}
+    </li>
+  </ul>
+  {{ 'usage.downloadRequest.link' | translate }}: <a [href]="downloadRequest.privateLink | multiLang" target="_blank">{{ downloadRequest.privateLink | multiLang }}</a>
+
+  <ng-container *ngIf="downloadRequest.collections">
+    <h4>{{ 'usage.downloadRequest.collections' | translate }}</h4>
+    <ul>
+      <li *ngFor="let col of downloadRequest.collections">
+        {{ col.id | label }} [<a [href]="col.id | toFullUri" target="_blank">{{ 'usage.downloadRequest.metadata' | translate }}</a>]
+      </li>
+    </ul>
+  </ng-container>
+
+  <ng-container *ngIf="showFileDownload">
+    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+      <h4>{{ 'usage.downloadRequest.download' | translate }}</h4>
+      <vir-file-download [downloadRequest]="downloadRequest"></vir-file-download>
+    </ng-container>
+    <ng-template #apiKey>
+      <h4>{{ 'usage.downloadRequest.copyApiKey' | translate }}</h4>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
+    </ng-template>
+  </ng-container>
+</ng-container>

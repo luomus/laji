@@ -7,7 +7,7 @@ import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.
 
 const SCROLL_SPEED = 500; // pixels per second
 
-const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: Function): [number, Array<T>] => {
+const indexAndArrAfterFilter = <T>(index: number, arr: Array<T>, fn: (element: T) => boolean): [number, Array<T>] => {
   const newArr: T[] = [];
   let newIdx: number = index;
 
@@ -96,14 +96,12 @@ export class IdentificationListComponent implements OnDestroy {
       index, this.taxon.children,
       taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
     );
-    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => {
-      return <Image>{
+    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
         ...taxonomy.multimedia[0],
         taxonId: taxonomy.id,
         vernacularName: taxonomy.vernacularName,
         scientificName: taxonomy.scientificName
-      };
-    });
+      });
     this.overlayRef.instance.showImage(filteredIndex);
     this.overlayRef.instance.close = () => {
       this.closeImage();

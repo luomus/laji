@@ -29,7 +29,7 @@
           [taxon]="value"
           [index]="i"
           [useValue]="useAsIs && mapping ? mapping[value] : ''"
-          (complete)="onSearchComplete()"
+          (finish)="onSearchComplete()"
           (taxonSelect)="onTaxonSelect(value, $event)"
         ></laji-taxon-autocomplete>
       </td>

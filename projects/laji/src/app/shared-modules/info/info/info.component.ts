@@ -18,6 +18,7 @@ export class InfoComponent implements OnInit {
   @Input() showOnHover = false;
   @Input() containerInfo = 'body';
   @Input() noShow = false;
+  @Input() adaptivePosition = false;
 
   @ViewChild('modal', {static: true}) public modal: ModalDirective;
   @ViewChild('pop', {static: true}) public popover: PopoverDirective;

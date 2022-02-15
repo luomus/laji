@@ -88,8 +88,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
 
-  columnSelector = new ColumnSelector;
-  numberColumnSelector = new ColumnSelector;
+  columnSelector = new ColumnSelector();
+  numberColumnSelector = new ColumnSelector();
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -101,9 +101,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   loading: boolean;
 
   private langMap = {
-    'fi': 'Finnish',
-    'sv': 'Swedish',
-    'en': 'English'
+    fi: 'Finnish',
+    sv: 'Swedish',
+    en: 'English'
   };
 
   columns: ObservationTableColumn[] = [];
@@ -244,11 +244,12 @@ export class ObservationTableComponent implements OnInit, OnChanges {
 
   onSort(event) {
     this.orderBy = event.sorts.map(sort => {
-      const col = this.columns.filter(column => column.prop === sort.prop)[0];
+      const col = this.columns.filter(column => column.prop ? column.prop === sort.prop : column.name === sort.prop)[0];
       if (!col) {
         return '';
       }
-      const sortBy: string =  this.setLangParams(col.sortBy || '' + col.prop);
+      const prop = col.prop || col.name;
+      const sortBy: string =  this.setLangParams(col.sortBy || '' + prop);
       return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
     });
     this.fetchPage(this.page);

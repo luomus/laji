@@ -11,7 +11,7 @@ export class PlatformService {
   private _canUseWebWorkerLogin = true;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: Object, // eslint-disable-line @typescript-eslint/ban-types
     @Inject(WINDOW) private window: Window,
     @Inject(DOCUMENT) private document: Document,
   ) { }

@@ -23,6 +23,6 @@
   </span>
   </laji-download>
 </div>
-<laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
+<laji-data-table-footer [top]="true" [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (pageChange)="changeSpeciesPage($event)"></laji-data-table-footer>
 <laji-red-list-species [fields]="selectedFields" [species]="species" [showTaxonLink]="showTaxonLink" [taxonLinkQueryParams]="taxonLinkQueryParams"></laji-red-list-species>
-<laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (change)="changeSpeciesPage($event)"></laji-data-table-footer>
+<laji-data-table-footer [page]="speciesPage" [count]="speciesCount" [pageSize]="speciesPageSize" (pageChange)="changeSpeciesPage($event)"></laji-data-table-footer>

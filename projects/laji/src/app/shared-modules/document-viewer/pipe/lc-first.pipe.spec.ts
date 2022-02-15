@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars */
 import { LcFirstPipe } from './lc-first.pipe';
 
 describe('LcFirstPipe', () => {

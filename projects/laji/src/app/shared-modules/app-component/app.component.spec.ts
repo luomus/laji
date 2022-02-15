@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars */
 
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';

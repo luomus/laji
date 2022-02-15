@@ -92,7 +92,7 @@ export class ObservationTableSettingsComponent<T extends IGenericColumn<Datatabl
 
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() resetColumns = new EventEmitter<void>();
-  @Output() close = new EventEmitter<boolean>();
+  @Output() settingsClose = new EventEmitter<boolean>();
 
   private modal: BsModalRef;
   private response = false;
@@ -106,7 +106,7 @@ export class ObservationTableSettingsComponent<T extends IGenericColumn<Datatabl
     this.response = false;
     this.modal = this.modalService.show(this.settingsModal, {class: 'modal-lg'});
     this.modalService.onHide.pipe(take(1)).subscribe(() => {
-      this.close.emit(this.response);
+      this.settingsClose.emit(this.response);
     });
   }
 

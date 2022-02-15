@@ -10,28 +10,28 @@ export interface HeaderImage {
 }
 
 const headerImages = {
-  'spring': {
+  spring: {
     imageUrl: 'https://cdn.laji.fi/images/backdrop/spring_1.jpg',
     attribution: 'Mikko Heikkinen',
     attributionUrl: 'https://www.biomi.org/',
     license: 'Creative Commons BY 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/'
   },
-  'summer': {
+  summer: {
     imageUrl: 'https://cdn.laji.fi/images/backdrop/spring_1.jpg',
     attribution: 'Mikko Heikkinen',
     attributionUrl: 'https://www.biomi.org/',
     license: 'Creative Commons BY 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/'
   },
-  'autumn': {
+  autumn: {
     imageUrl: 'https://cdn.laji.fi/images/backdrop/syksy2.jpg',
     attribution: 'Kari Lahti',
     attributionUrl: '',
     license: 'Creative Commons BY-SA 4.0',
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0/'
   },
-  'winter': {
+  winter: {
     imageUrl: 'https://cdn.laji.fi/images/backdrop/snow.jpg',
     attribution: 'Timo Newton-Syms',
     attributionUrl: 'https://www.flickr.com/photos/timo_w2s/15517459434/',

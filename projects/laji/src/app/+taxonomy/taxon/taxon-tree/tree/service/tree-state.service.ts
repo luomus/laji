@@ -18,13 +18,13 @@ export class TreeStateService {
 
   private static isSkipped(nodeValue: TreeNodeValue, params: TreeSkipParameter[]): boolean {
     if (params && params.length > 0) {
-      for (let i = 0; i < params.length; i++) {
-        const key = params[i].key;
-        const values = params[i].values;
-        const isWhiteList = params[i].isWhiteList;
+      for (const param of params) {
+        const key = param.key;
+        const values = param.values;
+        const isWhiteList = param.isWhiteList;
 
-        for (let j = 0; j < values.length; j++) {
-          if (nodeValue[key] === values[j]) {
+        for (const value of values) {
+          if (nodeValue[key] === value) {
             return !isWhiteList;
           }
         }

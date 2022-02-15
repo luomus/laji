@@ -1,0 +1,16 @@
+<div>
+  <laji-tree-select
+    [includedOptions]="includedOptions"
+    [excludedOptions]="excludedOptions"
+    [optionsTree$]="groupsTree$"
+    [options$]="groups$"
+    [modalButtonLabel]="modalButtonLabel"
+    [modalTitle]="modalTitle"
+    [browseTitle]="browseTitle"
+    [selectedTitle]="selectedTitle"
+    [okButtonLabel]="okButtonLabel"
+    [clearButtonLabel]="clearButtonLabel"
+    (selectedOptionsChange)="selectedOptionsChange($event)"
+  >
+  </laji-tree-select>
+</div>
