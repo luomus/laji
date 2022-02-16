@@ -6,7 +6,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-map-front',
@@ -19,6 +19,7 @@ export class FrontComponent implements OnInit, OnDestroy {
     center: [64.209802, 24.912872],
     zoom: 3,
     tileLayerName: LajiMapTileLayerName.maastokartta,
+    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset],
     controls: {
       draw: {
         marker: true,

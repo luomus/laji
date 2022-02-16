@@ -1,0 +1,12 @@
+.extended-informal-group-buttons-container {
+display: flex;
+flex-direction: row;
+width: 100%;
+}
+
+.extended-informal-group-selector {
+  flex: 1;
+}
+
+.extended-informal-group-toggle {
+}

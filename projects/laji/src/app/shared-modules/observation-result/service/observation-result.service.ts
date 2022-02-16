@@ -139,7 +139,7 @@ export class ObservationResultService {
     sendDownloadMark = false,
     blockOnDownloadMarkFail = false,
     reason = ''
-  ): Observable<{id?: string, results: any[]}> {
+  ): Observable<{id?: string; results: any[]}> {
 
     const all$ = this._getAll(
       query,
@@ -175,7 +175,7 @@ export class ObservationResultService {
       lang,
       'LIGHTWEIGHT',
       {
-        'dataUsePurpose': reason
+        dataUsePurpose: reason
       }
     );
   }
@@ -228,16 +228,16 @@ export class ObservationResultService {
       if (result.aggregateBy) {
         if (result.aggregateBy['unit.linkings.taxon.nameFinnish']) {
           result.aggregateBy['unit.linkings.taxon.vernacularName'] = {
-            'fi': result.aggregateBy['unit.linkings.taxon.nameFinnish'],
-            'en': result.aggregateBy['unit.linkings.taxon.nameEnglish'],
-            'sv': result.aggregateBy['unit.linkings.taxon.nameSwedish']
+            fi: result.aggregateBy['unit.linkings.taxon.nameFinnish'],
+            en: result.aggregateBy['unit.linkings.taxon.nameEnglish'],
+            sv: result.aggregateBy['unit.linkings.taxon.nameSwedish']
           };
         }
         if (result.aggregateBy['unit.linkings.taxon.speciesNameFinnish']) {
           result.aggregateBy['unit.linkings.taxon.speciesVernacularName'] = {
-            'fi': result.aggregateBy['unit.linkings.taxon.speciesNameFinnish'],
-            'en': result.aggregateBy['unit.linkings.taxon.speciesNameEnglish'],
-            'sv': result.aggregateBy['unit.linkings.taxon.speciesNameSwedish']
+            fi: result.aggregateBy['unit.linkings.taxon.speciesNameFinnish'],
+            en: result.aggregateBy['unit.linkings.taxon.speciesNameEnglish'],
+            sv: result.aggregateBy['unit.linkings.taxon.speciesNameSwedish']
           };
         }
         Object.keys(result.aggregateBy).map(key => {
@@ -281,7 +281,11 @@ export class ObservationResultService {
   private stringToObj(path, value, obj) {
     const parts = path.split('.');
     let part;
-    while (part = parts.shift()) {
+    while (true) {
+      part = parts.shift();
+      if (!part) {
+        break;
+      }
       if (typeof obj[part] !== 'object') {
         obj[part] = {};
       }
@@ -305,7 +309,7 @@ export class ObservationResultService {
     return document;
   }
 
-  private addFacts(document: object, cols: ObservationTableColumn[]) {
+  private addFacts(document: any, cols: ObservationTableColumn[]) {
     cols.forEach(col => {
       const paths = ObservationResultService.trueFieldPath(col.name).split('.');
       const targetPaths = (col.name).split('.');
@@ -318,7 +322,7 @@ export class ObservationResultService {
     return document;
   }
 
-  private getValue(document: object, paths: string[]) {
+  private getValue(document: any, paths: string[]) {
     let pointer = document;
     paths.forEach(path => {
       if (pointer) {
@@ -328,7 +332,7 @@ export class ObservationResultService {
     return pointer;
   }
 
-  private setValue(document: object, paths: string[], value: any) {
+  private setValue(document: any, paths: string[], value: any) {
     let pointer = document;
     let key = paths[0];
     for (let i = 0; i < paths.length - 1; i++) {
@@ -341,7 +345,7 @@ export class ObservationResultService {
     pointer[key] = value;
   }
 
-  private pickFacts(document: object, paths: string[], fact: string): string[] {
+  private pickFacts(document: any, paths: string[], fact: string): string[] {
     const facts = this.getValue(document, paths);
     if (!Array.isArray(facts) || fact.length === 0) {
       return [];
@@ -354,7 +358,7 @@ export class ObservationResultService {
     }, []);
   }
 
-  private transformDocument(document: object, transforms: IInternalObservationTableColumn[]): Observable<any> {
+  private transformDocument(document: any, transforms: IInternalObservationTableColumn[]): Observable<any> {
     return from(transforms).pipe(
       concatMap(transform => this.transformField(this.getValue(document, transform._paths), transform).pipe(
         map(value => this.setValue(document, transform._paths, value))
@@ -364,7 +368,7 @@ export class ObservationResultService {
     );
   }
 
-  private transformField(value: object, transforms: IInternalObservationTableColumn): Observable<any> {
+  private transformField(value: any, transforms: IInternalObservationTableColumn): Observable<any> {
     return this.datatableUtil.getVisibleValue(value, null, transforms.transform);
   }
 }

@@ -160,9 +160,7 @@ export class DownloadComponent implements OnChanges {
     this.download.emit(params);
   }
 
-  sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
-    return 0;
-  }
+  sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => 0;
 
   checkCanDownloadStatus() {
     this.disableDownLoad = this.downloadLoading ||

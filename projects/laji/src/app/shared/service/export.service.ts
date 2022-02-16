@@ -75,8 +75,8 @@ export class ExportService {
     const aoa: any = firstRow ? [firstRow, []] : [[]];
     const labelRow = firstRow ? 1 : 0;
     const observables = [];
-    for (let i = 0; i < cols.length; i++) {
-      const labels = this.translateService.instant(cols[i].label);
+    for (const col of cols) {
+      const labels = this.translateService.instant(col.label);
       aoa[labelRow].push(typeof labels === 'string' ? labels : Object.values(labels).join(', '));
     }
     for (let i = 0; i < data.length; i++) {
@@ -138,7 +138,7 @@ export class ExportService {
     }
 
     const data: Blob = new Blob([buffer], {
-      type: type
+      type
     });
 
     return data;

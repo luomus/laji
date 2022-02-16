@@ -69,7 +69,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Output() loaded = new EventEmitter<void>();
 
   count: {[k: string]: number} = {};
-  legendList: {color: string, label: string}[] = [];
+  legendList: {color: string; label: string}[] = [];
 
   private currentColor;
   private current;
@@ -126,7 +126,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
     if ((!this.query && !this.data) || !this.mapComponent.map) {
       return;
     }
-    const key = JSON.stringify({'query': this.query, 'zeroQuery': this.zeroObservationQuery});
+    const key = JSON.stringify({query: this.query, zeroQuery: this.zeroObservationQuery});
     if (!dataIsChanged && this.current === key) {
       const colorKey = this.getColorKey();
       if (this.currentColor !== colorKey) {

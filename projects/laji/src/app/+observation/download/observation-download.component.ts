@@ -79,7 +79,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   csvParams = '';
   reason = '';
   reasonEnum = '';
-  columnSelector = new ColumnSelector;
+  columnSelector = new ColumnSelector();
   columnGroups: IColumnGroup<IColumns>[][];
   columnLookup = {};
   queryHasFilters = false;
@@ -97,9 +97,9 @@ export class ObservationDownloadComponent implements OnDestroy {
   private _query: WarehouseQueryInterface;
   private _originalQuery: WarehouseQueryInterface;
   private taxaDownloadAggregateBy = {
-    'en': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
-    'fi': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
-    'sv': 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
+    en: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameEnglish',
+    fi: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
+    sv: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
   };
   private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
@@ -371,7 +371,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
   }
 
-  downloadData(data: {id?: string, results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
+  downloadData(data: {id?: string; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
     if (this.isGisDownload(params.fileType)) {
       return this.exportService.getBlobFromData(data.results, columns, 'tsv', 'laji-data').pipe(
         map(blob => {

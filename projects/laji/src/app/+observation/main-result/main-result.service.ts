@@ -40,7 +40,7 @@ export class MainResultService {
       taxonId,
       'multi',
       {
-        'selectedFields': 'scientificName,vernacularName,cursiveName'
+        selectedFields: 'scientificName,vernacularName,cursiveName'
       }
     ));
   }
@@ -64,15 +64,13 @@ export class MainResultService {
       false
     )).pipe(
       map(data => data.results),
-      map(data => {
-        return data.map(row => {
+      map(data => data.map(row => {
           row.aggregateBy['vernacularName'] =
             row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
             row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
             row.aggregateBy['unit.linkings.taxon.nameSwedish'];
           return row;
-        });
-      }), );
+        })), );
   }
 
   getList(query: WarehouseQueryInterface, page: number, pageSize: number): Observable<PagedResult<any>> {

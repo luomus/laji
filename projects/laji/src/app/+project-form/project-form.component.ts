@@ -55,7 +55,7 @@ interface BadgeTemplate {
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
 
-  constructor (
+  constructor(
     private route: ActivatedRoute,
     private translate: TranslateService,
     private documentViewerFacade: DocumentViewerFacade,
@@ -133,7 +133,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       || !_form.options?.useNamedPlaces && rights.edit
     ).map(_form => ({
       link:  [`form${(_form === form && !_subForms.length) ? '' : `/${_form.id}`}`],
-      label: _form.options.sidebarFormLabel || 'nafi.form'
+      label: _form.options?.sidebarFormLabel || 'nafi.form'
     }));
   }
 
@@ -349,9 +349,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.labelService.get(form.collectionID, this.translate.currentLang),
         this.translate.get('datasets.label')
       ]).pipe(
-        map((result: string[]) => {
-          return result.filter(res => !!res).join(' | ');
-        })
+        map((result: string[]) => result.filter(res => !!res).join(' | '))
       );
     }
 

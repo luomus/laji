@@ -47,14 +47,14 @@ export class GeoConvertService {
 
   private startGeoConversion(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
     const queryParams = {
-      'personToken': this.userService.getToken(),
-      'outputFormat': format,
-      'geometryType': geometry,
-      'crs': crs
+      personToken: this.userService.getToken(),
+      outputFormat: format,
+      geometryType: geometry,
+      crs
     };
     const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params: params});
+    return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params});
   }
 
   private startGeoConversionFromData(
@@ -63,11 +63,11 @@ export class GeoConvertService {
     const queryParams = {
       outputFormat: format,
       geometryType: geometry,
-      crs: crs
+      crs
     };
     const params = new HttpParams({fromObject: <any>queryParams});
 
-    return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params: params});
+    return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params});
   }
 
   private getOutputLink(conversionId: string) {

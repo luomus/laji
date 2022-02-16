@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 
 import { Global } from './global';
 
@@ -28,6 +28,9 @@ export const environment = {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.51', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.3'],
     researchProjects: ['MHL.33', 'MHL.50', 'MHL.57']
+  },
+  observationForm: {
+    defaultCoordinatesIntersection: 0
   },
   rootCollections: ['HR.128'],
   loginUrl: '/user/viranomaiset',

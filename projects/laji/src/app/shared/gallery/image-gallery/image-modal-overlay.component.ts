@@ -10,7 +10,7 @@ import { DocumentViewerChildComunicationService } from '../../../shared-modules/
 export class ImageModalOverlayComponent {
   public img: Image;
   public currentImageIndex: number;
-  public close: Function;
+  public close: () => void;
   public modalImages: Image[];
   public loading;
   public showLinkToSpeciesCard: boolean;

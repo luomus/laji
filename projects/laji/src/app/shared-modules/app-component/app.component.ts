@@ -11,7 +11,7 @@ import { PlatformService } from '../../shared/service/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
 
-declare const ga: Function;
+declare const ga: (eventName: string, hitType: string, data: string) => void;
 
 @Component({
   selector: 'laji-app',

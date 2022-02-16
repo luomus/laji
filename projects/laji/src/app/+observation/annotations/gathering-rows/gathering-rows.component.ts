@@ -14,9 +14,9 @@ export class GatheringRowsComponent implements OnInit {
   ngOnInit() {
     if (this.gathering.displayDateTime) {
       if (this.gathering.displayDateTime.indexOf(' ') !== -1) {
-        const split_date_time = this.gathering.displayDateTime.split(' ');
-        this.date = split_date_time[0];
-        this.time = split_date_time[1];
+        const splitDateTime = this.gathering.displayDateTime.split(' ');
+        this.date = splitDateTime[0];
+        this.time = splitDateTime[1];
       } else {
         this.date = this.gathering.displayDateTime;
         this.time = '';
