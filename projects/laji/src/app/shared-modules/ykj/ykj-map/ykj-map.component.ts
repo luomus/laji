@@ -17,8 +17,8 @@ import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 import { map } from 'rxjs/operators';
+import { Options as LajiMapOptions, Lang as LajiMapLang } from 'laji-map';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
   'individualCountSumPer10km';
