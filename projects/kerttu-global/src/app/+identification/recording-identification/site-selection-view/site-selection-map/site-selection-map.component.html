@@ -1,4 +1,8 @@
 <div class="map-wrap">
-  <laji-map [data]="data" [options]="mapOptions"></laji-map>
+  <laji-map
+    [data]="data"
+    [options]="mapOptions"
+    (create)="onCreate($event)"
+  ></laji-map>
 </div>
 

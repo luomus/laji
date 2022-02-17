@@ -1,5 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { IGlobalSite } from '../../../kerttu-global-shared/models';
+import { SiteSelectionMapComponent } from './site-selection-map/site-selection-map.component';
 
 @Component({
   selector: 'bsg-site-selection-view',
@@ -7,14 +8,27 @@ import { IGlobalSite } from '../../../kerttu-global-shared/models';
   styleUrls: ['./site-selection-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteSelectionViewComponent implements OnInit {
+export class SiteSelectionViewComponent {
+  @ViewChild(SiteSelectionMapComponent) siteMap: SiteSelectionMapComponent;
   @Input() sites: IGlobalSite[] = [];
 
   @Output() siteSelect = new EventEmitter<number[]>();
 
-  constructor() { }
+  drawActive = false;
 
-  ngOnInit(): void {
+  selectByDrawingClick() {
+    this.drawActive = !this.drawActive;
+    if (this.drawActive) {
+      this.siteMap.drawToMap('Rectangle');
+    } else {
+      this.siteMap.abortDrawing();
+    }
   }
 
+  onSiteSelect(siteIds: number[]) {
+    if (this.drawActive) {
+      this.selectByDrawingClick();
+    }
+    this.siteSelect.emit(siteIds);
+  }
 }

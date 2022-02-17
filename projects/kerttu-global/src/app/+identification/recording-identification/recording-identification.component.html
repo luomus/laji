@@ -3,7 +3,7 @@
 <ng-container *ngIf="!hasError">
   <ng-container *lajiRequiresAudioSupport>
     <bsg-site-selection-view
-      *ngIf="!selectedSites else identificationView"
+      *ngIf="(!selectedSites || selectedSites.length === 0) else identificationView"
       [sites]="sites$ | async"
       (siteSelect)="onSiteSelect($event)"
     ></bsg-site-selection-view>

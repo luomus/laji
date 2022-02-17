@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild } from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { Polygon } from 'geojson';
 
 @Component({
   selector: 'bsg-site-selection-map',
@@ -8,30 +10,50 @@ import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-
   styleUrls: ['./site-selection-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteSelectionMapComponent implements OnInit {
+export class SiteSelectionMapComponent {
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() color = '#00aa00';
 
   mapOptions: LajiMapOptions = {
     tileLayerName: LajiMapTileLayerName.openStreetMap,
-    controls: { location: false }
+    controls: { draw: false, location: false },
+    draw: {}
   };
 
   data: LajiMapDataOptions;
 
   @Output() siteSelect = new EventEmitter<number[]>();
 
+  private _sites: IGlobalSite[];
+
   @Input() set sites(sites: IGlobalSite[]) {
     this.data = this.getData(sites);
+    this._sites = sites;
   }
 
   constructor(
     private ngZone: NgZone
   ) { }
 
-  ngOnInit(): void {
+  drawToMap(type: 'Rectangle' = 'Rectangle') {
+    this.lajiMap.drawToMap(type);
   }
 
-  getData(sites: IGlobalSite[]): LajiMapDataOptions {
+  abortDrawing() {
+    if (this.lajiMap && this.lajiMap.map) {
+      this.lajiMap.map.abortDrawing({});
+      this.lajiMap.map.clearDrawData();
+    }
+  }
+
+  onCreate(rect?: Polygon) {
+    if (rect) {
+      const sites = this.getSitesInsideRectangle(rect);
+      this.siteSelect.emit(sites.map(site => site.id));
+    }
+  }
+
+  private getData(sites: IGlobalSite[]): LajiMapDataOptions {
     return {
       on: {
         click: (event, data) => {
@@ -65,5 +87,24 @@ export class SiteSelectionMapComponent implements OnInit {
         maxClusterRadius: 20
       }
     };
+  }
+
+  private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
+    const longtitudes = rect.coordinates[0].map(c => c[0]);
+    const latitudes = rect.coordinates[0].map(c => c[1]);
+    const lonMin = Math.min(...longtitudes);
+    const lonMax = Math.max(...longtitudes);
+    const latMin = Math.min(...latitudes);
+    const latMax = Math.max(...latitudes);
+
+    return this._sites.reduce((res, site) => {
+      const [lon, lat] = site.geometry.coordinates;
+
+      if (lon >= lonMin && lon <= lonMax && lat >= latMin && lat <= latMax) {
+        res.push(site);
+      }
+
+      return res;
+    }, []);
   }
 }

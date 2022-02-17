@@ -58,7 +58,7 @@ export class RecordingIdentificationComponent implements OnInit {
     this.selectedSites$.subscribe(siteIds => {
       this.selectedSites = siteIds;
 
-      if (this.selectedSites) {
+      if (this.selectedSites?.length > 0) {
         this.loading = true;
         this.kerttuGlobalApi.getRecording(this.userService.getToken(), siteIds).subscribe((result) => {
           this.onGetRecordingSuccess(result);

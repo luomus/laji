@@ -1,6 +1,6 @@
 import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
-import { Geometry } from 'geojson';
+import { Point } from 'geojson';
 
 export interface IListResult<T> {
   results: T[];
@@ -140,7 +140,7 @@ export interface IGlobalSite {
   id: number,
   name: string;
   country?: string;
-  geometry: Geometry;
+  geometry: Point;
 }
 
 export enum CommentType {

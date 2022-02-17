@@ -1,5 +1,11 @@
 <h2>{{ 'identification.siteSelection' | translate }}</h2>
+<p>
+  {{ 'identification.siteSelection.description' | translate }}
+  <button class="btn" [ngClass]="{'btn-default': !drawActive, 'btn-primary': drawActive}" (click)="selectByDrawingClick()">
+    {{ 'identification.siteSelection.draw' | translate }}
+  </button>
+</p>
 <bsg-site-selection-map
   [sites]="sites"
-  (siteSelect)="siteSelect.emit($event)"
+  (siteSelect)="onSiteSelect($event)"
 ></bsg-site-selection-map>
