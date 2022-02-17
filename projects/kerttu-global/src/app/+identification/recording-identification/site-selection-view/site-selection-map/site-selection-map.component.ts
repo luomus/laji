@@ -3,6 +3,8 @@ import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Polygon } from 'geojson';
+import { GetPopupOptions } from 'laji-map';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bsg-site-selection-map',
@@ -16,8 +18,9 @@ export class SiteSelectionMapComponent {
 
   mapOptions: LajiMapOptions = {
     tileLayerName: LajiMapTileLayerName.openStreetMap,
-    controls: { draw: false, location: false },
-    draw: {}
+    controls: { draw: false, location: false, layer: false },
+    draw: {},
+    popupOnHover: true
   };
 
   data: LajiMapDataOptions;
@@ -32,6 +35,7 @@ export class SiteSelectionMapComponent {
   }
 
   constructor(
+    private translate: TranslateService,
     private ngZone: NgZone
   ) { }
 
@@ -76,7 +80,9 @@ export class SiteSelectionMapComponent {
           type: 'Feature',
           geometry: site.geometry,
           properties: {
-            id: site.id
+            id: site.id,
+            name: site.name,
+            country: site.country
           }
         }))
       },
@@ -85,8 +91,20 @@ export class SiteSelectionMapComponent {
         showCoverageOnHover: true,
         singleMarkerMode: true,
         maxClusterRadius: 20
-      }
+      },
+      getPopup: this.getPopup.bind(this)
     };
+  }
+
+  private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
+    const siteTranslation = this.translate.instant('identification.siteSelection.site');
+    const data = options.feature.properties;
+
+    let popup = '<strong>' + siteTranslation + ' ' + data.id + '</strong><br>' + data.name;
+    if (data.country) {
+      popup += ', ' + data.country;
+    }
+    return popup;
   }
 
   private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
