@@ -104,7 +104,7 @@ export class RecordingIdentificationComponent implements OnInit {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
       switchMap(() => {
-        return this.kerttuGlobalApi.getNextRecording(this.userService.getToken(), this.recording.id);
+        return this.kerttuGlobalApi.getNextRecording(this.userService.getToken(), this.recording.id, this.selectedSites);
       })
     ).subscribe(result => {
       this.onGetRecordingSuccess(result);
@@ -116,7 +116,7 @@ export class RecordingIdentificationComponent implements OnInit {
   getPreviousRecording() {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
-        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id).subscribe(result => {
+        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id, this.selectedSites).subscribe(result => {
           this.onGetRecordingSuccess(result);
         }, (err) => {
           this.handleError(err);

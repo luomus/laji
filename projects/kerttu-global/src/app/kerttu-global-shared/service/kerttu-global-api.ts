@@ -109,16 +109,16 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
 
-  public getNextRecording(personToken: string, recordingId: number): Observable<IGlobalRecordingResponse> {
+  public getNextRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording/next/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken);
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
 
-  public getPreviousRecording(personToken: string, recordingId: number): Observable<IGlobalRecordingResponse> {
+  public getPreviousRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording/previous/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken);
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }

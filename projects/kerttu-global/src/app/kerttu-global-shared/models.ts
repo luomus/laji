@@ -100,6 +100,8 @@ export interface IUserStat {
 
 export interface IGlobalRecording extends IAudio {
   id: number;
+  dateTime: string;
+  site: IGlobalSite;
 }
 
 export interface IGlobalRecordingAnnotation {

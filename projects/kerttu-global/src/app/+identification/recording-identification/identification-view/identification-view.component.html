@@ -36,9 +36,16 @@
       [(mode)]="audioViewerMode"
       [rectangles]="rectangles"
       [spectrogramHeight]="170"
+      [audioInfoTpl]="audioInfo"
       (drawEnd)="drawEnd($event)"
       (modeChange)="onAudioViewerModeChange()"
     ></laji-audio-viewer>
+    <ng-template #audioInfo let-audio="audio">
+      <span>
+        {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+        {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
+      </span>
+    </ng-template>
   </div>
   <div class="col-sm-12 general-annotation-section mb-4">
     <div class="row">
