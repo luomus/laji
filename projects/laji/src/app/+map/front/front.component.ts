@@ -6,6 +6,8 @@ import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
+import { PlatformService } from '../../shared/service/platform.service';
 
 @Component({
   selector: 'laji-map-front',
@@ -64,7 +66,8 @@ export class FrontComponent implements OnInit, OnDestroy {
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private footerService: FooterService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private platformService: PlatformService
   ) {
   }
 
@@ -90,8 +93,10 @@ export class FrontComponent implements OnInit, OnDestroy {
   }
 
   onMapLoad() {
-    const params = this.route.snapshot.queryParams;
-    if (params['coordinates']) {
+    const {coordinates, gridsquare} = this.route.snapshot.queryParams;
+    if (gridsquare) {
+      this.zoomToGrid(gridsquare);
+    } else if (coordinates) {
       this.lajiMap.map.zoomToData();
     }
   }
@@ -108,6 +113,10 @@ export class FrontComponent implements OnInit, OnDestroy {
   }
 
   togglePrintMode(e: MouseEvent) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
     e.stopPropagation();
     this.printMode = !this.printMode;
     this.cdr.detectChanges();
@@ -121,5 +130,14 @@ export class FrontComponent implements OnInit, OnDestroy {
     } else {
       this.printControlsWell.nativeElement.appendChild(printControlsElem);
     }
+  }
+
+  private zoomToGrid(grid: string) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
+    const geometry = latLngGridToGeoJSON(grid.split(':') as [string, string]);
+    this.lajiMap.map.fitBounds((window.L as any).geoJSON(geometry).getBounds(), {paddingInMeters: 2000});
   }
 }
