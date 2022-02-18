@@ -93,6 +93,10 @@ export class FrontComponent implements OnInit, OnDestroy {
   }
 
   onMapLoad() {
+    if (this.printMode) {
+      this.printModeSideEffects();
+    }
+
     const {coordinates, gridsquare} = this.route.snapshot.queryParams;
     if (gridsquare) {
       this.zoomToGrid(gridsquare);
@@ -119,6 +123,10 @@ export class FrontComponent implements OnInit, OnDestroy {
 
     e.stopPropagation();
     this.printMode = !this.printMode;
+    this.printModeSideEffects();
+  }
+
+  private printModeSideEffects() {
     this.cdr.detectChanges();
 
     this.lajiMap.map.map.invalidateSize();
@@ -131,6 +139,7 @@ export class FrontComponent implements OnInit, OnDestroy {
       this.printControlsWell.nativeElement.appendChild(printControlsElem);
     }
   }
+
 
   private zoomToGrid(grid: string) {
     if (!this.platformService.isBrowser) {
