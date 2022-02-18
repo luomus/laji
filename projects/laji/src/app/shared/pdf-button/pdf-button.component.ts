@@ -22,7 +22,9 @@ export class PdfButtonComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  print() {
+  print(event: MouseEvent) {
+    event.stopPropagation();
+
     const {base = ''} = environment;
     const fileName = this.fileName ?? `${base.replace(/https?:\/\//, '')}.${moment().format('YYYY-MM-DDTHH:mm')}.pdf`;
     this.loading = true;
