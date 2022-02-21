@@ -26,7 +26,7 @@ export class PdfButtonComponent {
     event.stopPropagation();
 
     const {base = ''} = environment;
-    const fileName = this.fileName ?? `${base.replace(/https?:\/\//, '')}.${moment().format('YYYY-MM-DDTHH:mm')}.pdf`;
+    const fileName = this.fileName ?? `${base.replace(/https?:\/\//, '')}.${moment().format('YYYY-MM-DDTHH:mm')}`;
     this.loading = true;
     this.cdr.markForCheck();
     if (this.platformService.isBrowser) {
