@@ -19,6 +19,7 @@ import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatab
 import { SiteSelectionViewComponent } from './recording-identification/site-selection-view/site-selection-view.component';
 import { SiteSelectionMapComponent } from './recording-identification/site-selection-view/site-selection-map/site-selection-map.component';
 import { LajiMapModule } from '@laji-map/laji-map.module';
+import { ExpertiseByContinentComponent } from './expertise/expertise-by-continent/expertise-by-continent.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { LajiMapModule } from '@laji-map/laji-map.module';
     IdentificationTableComponent,
     IdentificationViewComponent,
     SiteSelectionViewComponent,
-    SiteSelectionMapComponent
+    SiteSelectionMapComponent,
+    ExpertiseByContinentComponent
   ]
 })
 export class IdentificationModule { }
