@@ -70,7 +70,7 @@
         </td>
         <td>
           <ll-available-fields
-            [includePseudoFields]="false"
+            [includeTextFields]="false"
             [availableFields]="availableFields"
             [value]="columnMap[header] || ''"
             (valueChange)="onColumnMap(header, $event)"

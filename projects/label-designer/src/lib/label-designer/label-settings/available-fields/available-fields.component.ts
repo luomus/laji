@@ -12,7 +12,7 @@ import { FieldType, ILabelField } from '../../../label-designer.interface';
 })
 export class AvailableFieldsComponent {
 
-  @Input() includePseudoFields = true;
+  @Input() includeTextFields = true;
   @Input() placeholder = 'add';
   @Input() availableFields: ILabelField[];
   @Input() value = '';
