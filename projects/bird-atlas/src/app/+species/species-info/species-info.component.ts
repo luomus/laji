@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxon } from 'projects/laji-api-client/src/public-api';
@@ -9,7 +9,8 @@ import { ApiService } from '../../core/api.service';
 @Component({
   selector: 'ba-species-info',
   templateUrl: './species-info.component.html',
-  styleUrls: ['./species-info.component.scss']
+  styleUrls: ['./species-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesInfoComponent {
   taxon$: Observable<Taxon> = this.route.paramMap.pipe(switchMap(params => this.api.getTaxon(params.get('id'))));
