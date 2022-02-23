@@ -8,8 +8,8 @@ interface CMSIds {
 
 export const cmsIds: CMSIds = {
   home: {
-    fi: '3033',
-    sv: '3033',
-    en: '3033'
+    fi: '6491',
+    sv: '6491',
+    en: '6491'
   }
 };
