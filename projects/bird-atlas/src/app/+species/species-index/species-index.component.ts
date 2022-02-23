@@ -10,7 +10,7 @@ import { ApiService } from '../../core/api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesIndexComponent {
-  speciesList$: Observable<any> = this.api.getTaxa('MX.37580', {
+  speciesList$ = this.api.getTaxa('MX.37580', {
     langFallback: true,
     typesOfOccurrenceNotFilters: 'MX.typeOfOccurrenceVagrant,MX.typeOfOccurrenceRareVagrant',
     selectedFields: 'id,scientificName,vernacularName',

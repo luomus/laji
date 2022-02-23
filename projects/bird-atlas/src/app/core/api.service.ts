@@ -24,11 +24,11 @@ const concatArgs = (...args): string => (
 );
 const hashArgs = (...args) => hashCode(concatArgs(...args));
 
-const cacheReturnObservable = () => (
+const cacheReturnObservable = (differentiateLangVersions = true) => (
   (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const original = descriptor.value;
     descriptor.value = function(this: any, ...args: any[]) {
-      const hash = hashArgs(...args, this.translate.currentLang);
+      const hash = differentiateLangVersions ? hashArgs(...args, this.translate.currentLang) : hashArgs(...args);
       if (!this.cache) {
         this.cache = {};
       }
@@ -57,12 +57,12 @@ export class ApiService {
     );
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(false)
   getTaxon(id: string, params: LajiApiClient.TaxonFindParams = {}): Observable<Taxon> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,
       id,
-      { lang: <Lang>this.translate.currentLang, ...params }
+      { lang: 'multi', ...params }
     ).pipe(
       map(taxa => <Taxon><unknown>taxa) // ApiClient typing is wrong here
     );
