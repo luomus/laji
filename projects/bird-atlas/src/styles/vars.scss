@@ -1,3 +1,5 @@
 @import 'projects/laji-ui/src/lib/vars';
 
-$navbar-min-height: 50px;
+$navbar-content-min-height: 50px;
+$navbar-border-height: 2px;
+$navbar-min-height: $navbar-content-min-height + $navbar-border-height;

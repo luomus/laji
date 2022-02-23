@@ -10,15 +10,15 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" routerLink="">
         LINTUATLAS
       </a>
     </div>
     <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
       <ul class="nav navbar-nav">
-        <li><a href="#">Lajit</a></li>
-        <li><a href="#">Ruudut</a></li>
-        <li><a href="#">Osallistu</a></li>
+        <li><a [routerLink]="['species']">Lajit</a></li>
+        <li><a [routerLink]="[]">Ruudut</a></li>
+        <li><a [routerLink]="[]">Osallistu</a></li>
       </ul>
     </div>
   </div>
