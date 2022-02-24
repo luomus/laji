@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 import { FieldType, ILabelField } from '../../../label-designer.interface';
 
 interface ILabelFieldWithIdx extends ILabelField {
@@ -14,22 +14,27 @@ interface ILabelFieldWithIdx extends ILabelField {
   styleUrls: ['./available-fields.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvailableFieldsComponent {
-
-  @Input() includeTextFields = true;
+export class AvailableFieldsComponent implements OnChanges {
+  @Input() availableFields: ILabelField[];
+  @Input() includeTextField = true;
   @Input() placeholder = 'add';
   @Input() value = '';
 
   @Output() valueChange = new EventEmitter<ILabelField>();
 
   fieldType = FieldType;
-  _availableFields: ILabelFieldWithIdx[] = [];
 
-  @Input() set availableFields(availableFields: ILabelField[]) {
-    this._availableFields = (availableFields || []).map((field, idx) => ({
+  availableFieldsWithIdx: ILabelFieldWithIdx[] = [];
+  selectedIdx: number;
+
+  ngOnChanges() {
+    this.availableFieldsWithIdx = (this.availableFields || []).map((field, idx) => ({
       ...field,
       idx: idx
     }));
+    this.selectedIdx = this.availableFieldsWithIdx.filter(
+      field => field.field === this.value && !(field.type == this.fieldType.qrCode || field.type == this.fieldType.text)
+    )[0]?.idx;
   }
 
   doValueSelect(event: Event): void {
@@ -38,7 +43,7 @@ export class AvailableFieldsComponent {
     select.value = '';
     const idx = parseInt(value);
     if (!isNaN(idx)) {
-      this.valueChange.emit({...this._availableFields[idx]});
+      this.valueChange.emit({...this.availableFields[idx]});
     } else {
       this.valueChange.emit(null);
     }
