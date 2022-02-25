@@ -13,7 +13,7 @@ import { ApiService } from '../../core/api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesInfoComponent {
-  taxon$: Observable<Taxon> = this.route.paramMap.pipe(switchMap(params => this.api.getTaxon(params.get('id'))));
+  taxon$: Observable<Taxon> = this.route.paramMap.pipe(switchMap(params => this.api.getTaxon(params.get('id'), {}, 'multi')));
   constructor(private route: ActivatedRoute, private api: ApiService, private translate: TranslateService) {}
   getVernacularName(taxon: Taxon) {
     return taxon.vernacularName[this.translate.currentLang];

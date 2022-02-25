@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { map, } from 'rxjs/operators';
 import { ApiService } from '../../core/api.service';
 
 @Component({
@@ -11,6 +10,7 @@ import { ApiService } from '../../core/api.service';
 })
 export class SpeciesIndexComponent {
   speciesList$ = this.api.getTaxa('MX.37580', {
+    species: true,
     langFallback: true,
     typesOfOccurrenceNotFilters: 'MX.typeOfOccurrenceVagrant,MX.typeOfOccurrenceRareVagrant',
     selectedFields: 'id,scientificName,vernacularName',
