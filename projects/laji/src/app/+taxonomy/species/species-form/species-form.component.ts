@@ -5,17 +5,27 @@ import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { SpeciesFormQuery } from './species-form-query.interface';
 import { Util } from '../../../shared/service/util.service';
 
+type InvasiveStatuses = Pick<SpeciesFormQuery,
+  'euInvasiveSpeciesList'
+  | 'controllingRisksOfInvasiveAlienSpecies'
+  | 'quarantinePlantPest'
+  | 'qualityPlantPest'
+  | 'otherPlantPest'
+  | 'nationalInvasiveSpeciesStrategy'
+  | 'otherInvasiveSpeciesList'
+>;
+
 @Component({
-  selector: 'laji-species-form',
+  selector: 'laji-species-form[searchQuery]',
   templateUrl: './species-form.component.html',
   styleUrls: ['./species-form.component.css']
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
-  @Input() searchQuery: TaxonomySearchQuery;
+  @Input() searchQuery!: TaxonomySearchQuery;
 
-  public taxonSelectFilters: {
-    informalTaxonGroup: string;
-    onlyFinnish: boolean;
+  public taxonSelectFilters?: {
+    informalTaxonGroup?: string;
+    onlyFinnish?: boolean;
   };
 
   public formQuery: SpeciesFormQuery = {
@@ -32,10 +42,10 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     qualityPlantPest: false
   };
 
-  public subUpdate: Subscription;
+  public subUpdate?: Subscription;
 
-  public invasiveSelected: string[] = [];
-  public invasiveStatuses: string[] = [
+  public invasiveSelected: (keyof SpeciesFormQuery)[] = [];
+  public invasiveStatuses: (keyof InvasiveStatuses)[] = [
     'euInvasiveSpeciesList',
     'controllingRisksOfInvasiveAlienSpecies',
     'quarantinePlantPest',
@@ -82,7 +92,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  onInvasiveChange(ids: string[]) {
+  onInvasiveChange(ids: (keyof InvasiveStatuses)[]) {
     const id = Util.arrayDiff(this.invasiveSelected, ids)[0];
     if (id === 'onlyInvasive') {
       this.onInvasiveToggle();
@@ -106,8 +116,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   private updateInvasiveSelected() {
-    const invasiveSelected = [];
-    const allFields = [
+    const invasiveSelected: (keyof SpeciesFormQuery)[] = [];
+    const allFields: (keyof Omit<SpeciesFormQuery, 'taxon'>)[] = [
       'onlyInvasive',
       'onlyNonInvasive',
       'euInvasiveSpeciesList',
@@ -145,12 +155,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  private onInvasiveCheckBoxToggle(field) {
+  private onInvasiveCheckBoxToggle(field: keyof SpeciesFormQuery) {
     if (field === 'allInvasiveSpecies') {
       this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
       this.invasiveStatuses.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
     } else {
-      this.formQuery[field] = !this.formQuery[field];
+      (this.formQuery as any)[field] = !this.formQuery[field];
       if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
         this.formQuery.allInvasiveSpecies = false;
       }
@@ -162,9 +172,9 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   onAdministrativeStatusChange() {
     const admins = this.searchQuery.query.adminStatusFilters;
     let cnt = 0;
-    this.invasiveStatuses.map(key => {
+    this.invasiveStatuses.map((key: keyof InvasiveStatuses) => {
       const realKey = 'MX.' + key;
-      this.formQuery[key] = admins && admins.indexOf(realKey) > -1;
+      this.formQuery[key] = admins && admins.indexOf(realKey) > -1 || false;
       if (this.formQuery[key]) {
         cnt++;
       }
@@ -190,7 +200,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   updateQuery(key: string, value: any) {
-    this.searchQuery.query[key] = value;
+    (this.searchQuery.query as any)[key] = value;
     this.onQueryChange();
   }
 
@@ -244,7 +254,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     this.updateInvasiveSelected();
   }
 
-  private hasInMulti(multi, value, noOther = false) {
+  private hasInMulti(multi: any, value: any, noOther = false) {
     if (Array.isArray(value)) {
       return value.filter(val => !this.hasInMulti(multi, val, noOther)).length === 0;
     }

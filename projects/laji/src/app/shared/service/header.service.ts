@@ -39,9 +39,9 @@ interface IHeaders {
 }
 
 export const getDescription = (html: string): string => {
-  const firstParagraph = html
+  const firstParagraph = (html
     .split('</p>')[0]
-    .split(/<p.*?>/).pop()
+    .split(/<p.*?>/).pop() as string)
     .replace(/<[^>]*>?/gm, '');
 
   if (firstParagraph.length <= 180) {
@@ -90,9 +90,9 @@ const getDeepestChildValue = (routeSnapshot: ActivatedRouteSnapshot, key = 'meta
 })
 export class HeaderService implements OnDestroy {
   private inferredHeaders: IHeaders;
-  private currentRoute: string;
   private renderer: Renderer2;
-  private routeSub: Subscription;
+  private currentRoute?: string;
+  private routeSub?: Subscription;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -139,13 +139,17 @@ export class HeaderService implements OnDestroy {
 
   public initialize() {
     const canonicalEl = this.renderer.createElement('link');
-    this.renderer.setAttribute(canonicalEl, 'rel', this.inferredHeaders.canonicalUrl.rel);
+    if (typeof this.inferredHeaders.canonicalUrl?.rel === 'string') {
+      this.renderer.setAttribute(canonicalEl, 'rel', this.inferredHeaders.canonicalUrl.rel);
+    }
     this.renderer.appendChild(this.document.head, canonicalEl);
 
-    this.inferredHeaders.alternativeLinks.forEach(link => {
+    this.inferredHeaders.alternativeLinks?.forEach(link => {
       const el = this.renderer.createElement('link');
       this.renderer.setAttribute(el, 'rel', link.rel);
-      this.renderer.setAttribute(el, 'hreflang', link.hreflang);
+      if (typeof link.hreflang === 'string') {
+        this.renderer.setAttribute(el, 'hreflang', link.hreflang);
+      }
       this.renderer.appendChild(this.document.head, el);
     });
 
@@ -192,7 +196,7 @@ export class HeaderService implements OnDestroy {
           this.metaService.updateTag({property: 'og:url', content: value.href});
           break;
         case 'alternativeLinks':
-          value.forEach(v => this.updateLink(v));
+          value.forEach((v: any) => this.updateLink(v));
           break;
       }
     });
