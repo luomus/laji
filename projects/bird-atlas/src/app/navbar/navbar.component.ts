@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
-  openMenu: boolean = false;
+  openMenu = false;
 
   toggleMenu() {
     this.openMenu = !this.openMenu;

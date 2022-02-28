@@ -9,7 +9,8 @@ import { LocaleFiComponent } from '../../../laji/src/app/locale/locale-fi.compon
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
-  {path: 'species', loadChildren: () => import('./+species/species.module').then(m => m.SpeciesModule)}
+  {path: 'species', loadChildren: () => import('./+species/species.module').then(m => m.SpeciesModule)},
+  {path: 'grid', loadChildren: () => import('./+grid/grid.module').then(m => m.GridModule)}
 ];
 
 const routesWithLang: Routes = [

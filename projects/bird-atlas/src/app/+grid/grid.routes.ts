@@ -1,12 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
 import { ModuleWithProviders } from '@angular/core';
+import { GridIndexComponent } from './grid-index/grid-index.component';
+import { GridInfoComponent } from './grid-info/grid-info.component';
 
 export const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    component: HomeComponent
+    component: GridIndexComponent
+  },
+  {
+    path: ':id',
+    component: GridInfoComponent
   }
 ];
 

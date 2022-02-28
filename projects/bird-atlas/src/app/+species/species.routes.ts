@@ -4,7 +4,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { SpeciesInfoComponent } from './species-info/species-info.component';
 import { SpeciesComponent } from './species.component';
 
-export const speciesRoutes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: SpeciesComponent,
@@ -21,4 +21,4 @@ export const speciesRoutes: Routes = [
   },
 ];
 
-export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(speciesRoutes);
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);
