@@ -11,6 +11,7 @@ import { ApiService } from '../../core/api.service';
 export class SpeciesIndexComponent {
   speciesList$ = this.api.getTaxa('MX.37580', {
     species: true,
+    taxonRanks: 'MX.species',
     langFallback: true,
     typesOfOccurrenceNotFilters: 'MX.typeOfOccurrenceVagrant,MX.typeOfOccurrenceRareVagrant',
     selectedFields: 'id,scientificName,vernacularName',
