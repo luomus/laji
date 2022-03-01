@@ -1,4 +1,12 @@
 <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
+<div *lajiForTypes="['vir']">
+  <a class="btn btn-default btn-sm"
+    [routerLink]="['/observation/map'] | localize"
+    [queryParams]="virFilterShortcutQueryParams">
+  {{ 'observation.form.virFilterShortcut' | translate }}
+  </a>
+  <laji-info>{{ 'observation.form.virva-info' | translate }}</laji-info>
+</div>
 
 <section class="top-section">
   <div>
@@ -9,7 +17,6 @@
     <laji-observation-extended-group-select
       [query]="formQuery"
       name="informalTaxonGroupId"
-      [useAdvanced]="true"
       [modalTitle]="'observation.form.informalTaxonGroup.select' | translate"
       [modalButtonLabel]="'observation.form.informalTaxonGroup.select' | translate"
       [browseTitle]="'observation.form.informalTaxonGroup.browse' | translate"

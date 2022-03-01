@@ -1,9 +1,11 @@
 <div [formGroup]="form">
   <div class="radio">
     <label><input type="radio" name="operator" value="AND" formControlName="operator">{{ 'taxonAdminFiltersOperator.and' | translate}}</label>
+    <laji-info [html]="'observation.form.conservation.and-info' | translate"></laji-info>
   </div>
   <div class="radio">
     <label><input type="radio" name="operator" value="OR" formControlName="operator">{{ 'taxonAdminFiltersOperator.or' | translate }}</label>
+    <laji-info [html]="'observation.form.conservation.or-info' | translate"></laji-info>
   </div>
 </div>
 

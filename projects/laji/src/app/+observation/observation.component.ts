@@ -7,6 +7,7 @@ import { ReloadObservationViewService } from '../shared/service/reload-observati
 import { Subscription } from 'rxjs';
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ObservationComponent extends AbstractObservation implements OnInit,
 
   ngOnInit() {
     this.observationFacade.emptyQuery = {
-      _coordinatesIntersection: 100
+      _coordinatesIntersection: (environment as any).observationForm?.defaultCoordinatesIntersection ?? 100
     };
     this.observationFacade.hideFooter();
     this.init();
