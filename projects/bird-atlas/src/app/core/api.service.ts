@@ -24,7 +24,7 @@ const concatArgs = (...args): string => (
 );
 const hashArgs = (...args) => hashCode(concatArgs(...args));
 
-const cacheReturnObservable = () => (
+const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const original = descriptor.value;
     descriptor.value = function(this: any, ...args: any[]) {
@@ -33,13 +33,21 @@ const cacheReturnObservable = () => (
         this.cache = {};
       }
       if (!this.cache[propertyKey]) {
-        this.cache[propertyKey] = {};
+        this.cache[propertyKey] = { val: {}, lastRefresh: 0};
       }
-      if (hash in this.cache[propertyKey]) {
-        return of(this.cache[propertyKey][hash]);
+      if (hash in this.cache[propertyKey] && (
+          cacheInvalidationMs === undefined
+          || Date.now() - this.cache[propertyKey][hash].lastRefresh < cacheInvalidationMs)
+      ) {
+        return of(this.cache[propertyKey][hash].val);
       }
       return original.apply(this, args).pipe(
-        tap(val => this.cache[propertyKey][hash] = val)
+        tap(val => {
+          this.cache[propertyKey][hash] = {
+            val,
+            lastRefresh: Date.now()
+          };
+        })
       );
     };
   }
@@ -49,7 +57,7 @@ const cacheReturnObservable = () => (
 export class ApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(604800000) // 1 week
   getInformation(id: string, lang: Lang = <Lang>this.translate.currentLang): Observable<Information> {
     return this.api.get(
       LajiApiClient.Endpoints.information,
@@ -57,7 +65,7 @@ export class ApiService {
     );
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getTaxon(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.currentLang): Observable<Taxon> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,
@@ -68,7 +76,7 @@ export class ApiService {
     );
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(604800000) // 1 week
   getTaxa(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.currentLang): Observable<PagedResult<Taxon>> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,
