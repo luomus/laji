@@ -137,11 +137,9 @@ export class ExportService {
       type = this.txtMimeType;
     }
 
-    const data: Blob = new Blob([buffer], {
+    return new Blob([buffer], {
       type
     });
-
-    return data;
   }
 
   private saveBlob(data: Blob, fileName: string, fileExtension: string) {

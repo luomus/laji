@@ -291,10 +291,8 @@ export class ObservationDownloadComponent implements OnDestroy {
     const isGisDownload = this.isGisDownload(params.fileType);
 
     let selected = this.columnSelector.columns;
-    if (isGisDownload) {
-      if (selected.indexOf(this.gisDownloadGeometryField) === -1) {
-        selected = [...selected, this.gisDownloadGeometryField];
-      }
+    if (isGisDownload && selected.indexOf(this.gisDownloadGeometryField) === -1) {
+      selected = [...selected, this.gisDownloadGeometryField];
     }
     const columns = this.tableColumnService.getColumns(selected);
 
