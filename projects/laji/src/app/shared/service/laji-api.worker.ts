@@ -54,11 +54,17 @@ function convertToken(data: any, replace: string, to: string) {
   return data;
 }
 
+type GraphqlRequest = Record<string, unknown> & { body: Record<string, unknown>; url: string };
+
+function isGraphqlRequest(request: any): request is GraphqlRequest {
+  return request.body && Util.isObject(request.body) && typeof request.url === 'string' && request.url.indexOf('graphql') !== -1;
+}
+
 function replaceToken(token: string, request: Record<string, unknown>): any {
   if (typeof request.url === 'string') {
     request.url = convertToken(request.url, PERSON_TOKEN, personToken);
   }
-  if (request.body && Util.isObject(request.body) && typeof request.url === 'string' && request.url.indexOf('graphql') !== -1) {
+  if (isGraphqlRequest(request)) {
     if (Util.isObject(request.body.variables)) {
       const variables = request.body.variables;
       request.body.variables = Object.keys(variables).reduce<Record<string, unknown>>((result, key) => {
