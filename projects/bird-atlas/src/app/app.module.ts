@@ -20,7 +20,7 @@ import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
     BrowserModule,
     HttpClientModule,
     NgtUniversalModule,
-    NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
+    NgxWebstorageModule.forRoot({prefix: 'ba-', separator: ''}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
