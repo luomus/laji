@@ -1,10 +1,5 @@
-interface CMSIds {
-  [k: string]: {
-    fi: string;
-    sv: string;
-    en: string;
-  };
-}
+type CMSKeys = 'home';
+type CMSIds = Record<CMSKeys, {fi: string; sv: string; en: string}>;
 
 export const cmsIds: CMSIds = {
   home: {
