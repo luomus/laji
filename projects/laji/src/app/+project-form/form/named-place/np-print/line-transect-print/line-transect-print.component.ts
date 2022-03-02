@@ -152,7 +152,7 @@ export class LineTransectPrintComponent implements OnChanges {
     this.lajiMap.map.map.dragging.disable();
     this.lajiMap.map.map.touchZoom.disable();
     this.lajiMap.map.map.doubleClickZoom.disable();
-    this.lajiMap.map.map.scrollWheelZoom.disable();
+    this.lajiMap.map.map.smoothWheelZoom.disable();
     this.lajiMap.map.map.boxZoom.disable();
     this.lajiMap.map.map.keyboard.disable();
     if (this.lajiMap.map.map.tap) {

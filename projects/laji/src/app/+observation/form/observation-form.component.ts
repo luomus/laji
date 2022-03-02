@@ -125,6 +125,19 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   private _query: WarehouseQueryInterface;
 
+  virFilterShortcutQueryParams = {
+    // eslint-disable-next-line max-len
+    administrativeStatusId: `MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,MX.birdsDirectiveStatusMigratoryBirds`,
+    redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
+    countryId: 'ML.206',
+    time: '1990-01-01%2F',
+    // eslint-disable-next-line max-len
+    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+    taxonAdminFiltersOperator: 'OR',
+    individualCountMin: 0,
+    coordinateAccuracyMax: 1000
+  };
+
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,
@@ -524,7 +537,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
       coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates.includes('REPORTED_VALUE'),
-      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator || 'AND'
+      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined
     };
   }
 
@@ -552,7 +565,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
     query.sourceOfCoordinates = formQuery.coordinatesInSource ? ['REPORTED_VALUE'] : undefined;
-    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator || 'AND';
+    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;

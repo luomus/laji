@@ -1,5 +1,5 @@
 <ng-container *ngIf="taxon$ | async; let taxon">
-  <h1>{{ getVernacularName(taxon) }} ({{ taxon.scientificName }})</h1>
+  <h1>{{ taxon.vernacularName | multiLang }} ({{ taxon.scientificName }})</h1>
   <h3>{{ getForeignVernacularNames(taxon) }}</h3>
 <!-- <div>kyhmyjoutsen, metsähanhi (navigaatio)</div> -->
   <div>SVG kartta</div>

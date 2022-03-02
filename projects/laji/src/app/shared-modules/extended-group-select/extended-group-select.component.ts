@@ -16,9 +16,6 @@ export interface InformalGroupEvent {
 @Directive()
 export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnChanges {
   @Input() query: Record<string, any>;
-  @Input() position: 'right'|'left' = 'right';
-  @Input() rootGroups: string[];
-  @Input() useAdvanced = false;
   @Input() modalButtonLabel = '';
   @Input() modalTitle = '';
   @Input() browseTitle = '';
@@ -38,23 +35,10 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   public open = false;
   public currentValue: string;
   public label = '';
-  public range: number[];
-  public advanced = false;
   protected subLabel: any;
 
   groupsTree$: Observable<TreeOptionsNode[]> = null;
   groups$: Observable<SelectedOption[]> = null;
-
-  get value(): any {
-    return this.includedOptions[0];
-  }
-
-  set value(v: any) {
-    if (v !== this.includedOptions[0]) {
-      this.includedOptions[0] = v;
-      this.excludedOptions = [];
-    }
-  }
 
   protected constructor(
     protected cd: ChangeDetectorRef,
@@ -64,20 +48,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     this.lang = this.translate.currentLang;
   }
 
-  onSimpleSelectorChange() {
-    if (this.value) {
-      this.select.emit(this.prepareEmit([this.value]));
-    }
-  }
-
   ngOnChanges() {
     [ this.includedOptions, this.excludedOptions ] = this.getOptions(this.query);
-
-    if (this.includedOptions.length > 1 || this.excludedOptions.length > 0) {
-      this.advanced = true;
-    }
-
-    this.value = this.includedOptions[0];
 
     this.groupsTree$ = this.initGroupTree();
     this.groups$ = this.initSelectionGroups();
@@ -88,10 +60,6 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   abstract getTree(lang): Observable<PagedResult<T>>;
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
-
-  toggleAdvancedMode() {
-    this.advanced = !this.advanced;
-  }
 
   initGroupTree(): Observable<TreeOptionsNode[]> {
     return this.getTree(this.lang).pipe(

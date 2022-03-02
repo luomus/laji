@@ -26,7 +26,6 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent {
   constructor(translate: TranslateService) {
-    translate.setDefaultLang('fi');
     translate.use('fi');
   }
 }
