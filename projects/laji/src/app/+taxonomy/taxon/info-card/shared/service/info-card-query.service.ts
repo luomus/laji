@@ -6,6 +6,7 @@ export class InfoCardQueryService {
       taxonId: [taxonId],
       collectionId: collectionId ? [collectionId] : undefined,
       superRecordBasis: ['PRESERVED_SPECIMEN'],
+      sourceId: ['KE.3', 'KE.167'],
       // eslint-disable-next-line max-len
       collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
       typeSpecimen,

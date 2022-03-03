@@ -5,7 +5,7 @@ import { SearchQueryService } from '../../+observation/search-query.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { Lang as LajiMapLang, Options as LajiMapOptions, OverlayName, TileLayerName, TileLayersOptions } from 'laji-map';
 import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
 import { PlatformService } from '../../shared/service/platform.service';
 
@@ -23,8 +23,8 @@ export class FrontComponent implements OnInit, OnDestroy {
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
-    tileLayerName: LajiMapTileLayerName.maastokartta,
-    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset],
+    tileLayerName: TileLayerName.maastokartta,
+    availableOverlayNameBlacklist: [OverlayName.kiinteistojaotus, OverlayName.kiinteistotunnukset],
     controls: {
       draw: {
         marker: true,
@@ -77,9 +77,9 @@ export class FrontComponent implements OnInit, OnDestroy {
     const {layers = '', overlayNames = '', world, coordinates, print} = this.route.snapshot.queryParams;
     const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)
-      .reduce<LajiMapTileLayersOptions['layers']>(
+      .reduce<TileLayersOptions['layers']>(
         (lrs, layerName) => ({...lrs, [layerName]: true}),
-        {maastokartta: true} as LajiMapTileLayersOptions['layers']
+        {maastokartta: true} as TileLayersOptions['layers']
       );
     if (typeof coordinates !== 'undefined') {
       this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(coordinates)};

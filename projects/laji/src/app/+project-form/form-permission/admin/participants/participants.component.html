@@ -10,7 +10,7 @@
       <div class="pull-right">
         <laji-download
           [downloadLoading]="fetching"
-          (download)="getParticipants($event)">
+          (download)="getParticipants($event.fileType)">
           <span>
             {{ 'form.permission.admin.participants.get' | translate }}
             <i class="glyphicon glyphicon-download-alt"></i>

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { FileCrs, FileFormat, FileGeometry, FileType, VirDownloadService } from '../../../service/vir-download.service';
+import { FileType, VirDownloadService } from '../../../service/vir-download.service';
 import { IDownloadRequest } from '../../../service/vir-download-requests.service';
 import { KeyValue } from '@angular/common';
+import { FileFormat, FileGeometry, FileCrs } from '../../../../../../laji/src/app/shared/service/geo-convert.service';
 
 @Component({
   selector: 'vir-file-download',
