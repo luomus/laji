@@ -13,6 +13,7 @@ import {
   REQUEST_MSG,
   SuccessResponse
 } from './laji-api-worker-common';
+import { Util } from './util.service';
 
 let loginUrl = '';
 let localKey = '';
@@ -45,7 +46,7 @@ function fetchPersonToken(): Observable<string> {
   return token$;
 }
 
-function convertToken(data: string, replace: string, to: string) {
+function convertToken(data: any, replace: string, to: string) {
   if (typeof data === 'string') {
     const rep = new RegExp(replace, 'gm');
     return data.replace(rep, to);
@@ -53,14 +54,20 @@ function convertToken(data: string, replace: string, to: string) {
   return data;
 }
 
-function replaceToken(token: string, request: any): any {
+type GraphqlRequest = Record<string, unknown> & { body: Record<string, unknown>; url: string };
+
+function isGraphqlRequest(request: any): request is GraphqlRequest {
+  return request.body && Util.isObject(request.body) && typeof request.url === 'string' && request.url.indexOf('graphql') !== -1;
+}
+
+function replaceToken(token: string, request: Record<string, unknown>): any {
   if (typeof request.url === 'string') {
     request.url = convertToken(request.url, PERSON_TOKEN, personToken);
   }
-  if (request.body && typeof request.body === 'object' && typeof request.url === 'string' && request.url.indexOf('graphql') !== -1) {
-    if (request.body.variables) {
+  if (isGraphqlRequest(request)) {
+    if (Util.isObject(request.body.variables)) {
       const variables = request.body.variables;
-      request.body.variables = Object.keys(variables).reduce((result, key) => {
+      request.body.variables = Object.keys(variables).reduce<Record<string, unknown>>((result, key) => {
         if (typeof variables[key] === 'string') {
           result[key] = convertToken(variables[key], PERSON_TOKEN, personToken);
         } else {
@@ -118,7 +125,7 @@ function prepareResponse(t: string): any {
 function makeRequest({url, ...request}: any): Observable<any> {
   if (request.dataUrls) {
     const formData = new FormData();
-    request.dataUrls.forEach((d, idx) => formData.append('data' + idx, dataUrlToBlob(d.content), d.filename));
+    request.dataUrls.forEach((d: any, idx: number) => formData.append('data' + idx, dataUrlToBlob(d.content), d.filename));
     request.body = formData;
     delete request.dataUrls;
     delete request.headers;
