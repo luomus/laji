@@ -1,12 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { UserService } from '../../shared/service/user.service';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
-import * as FileSaver from 'file-saver';
 import { PlatformService } from '../../shared/service/platform.service';
 
 @Component({
@@ -30,8 +28,6 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private documentService: DocumentApi,
     private userService: UserService,
-    private lajiApiService: LajiApiService,
-    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -66,30 +62,7 @@ export class ViewerPrintComponent implements OnInit, OnDestroy {
     }
   }
 
-  pdf(fileName) {
-    this.loading = true;
-    if (this.platformService.isBrowser) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.stripHTML(document.getElementsByTagName('html')[0].innerHTML))
-        .subscribe((response) => {
-          FileSaver.saveAs(response, fileName + '.pdf');
-          this.loading = false;
-          this.cd.markForCheck();
-        }, () => {
-          this.loading = false;
-          this.cd.markForCheck();
-        });
-    }
-  }
-
   toggleFacts() {
     this.showFacts = !this.showFacts;
-  }
-
-  private stripHTML(s: string) {
-    // Strip scripts
-    s = s.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-    // Make absolute SVG ids relative
-    s = s.replace(/xlink:href=".*?#/g, 'xlink:href="#');
-    return s;
   }
 }

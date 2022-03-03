@@ -1,0 +1,78 @@
+.map-wrap {
+  width: 100%;
+  height: calc(100vh - 50px);
+  position: relative;
+}
+.info a {
+  z-index: 1000;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  color: #464646;
+  width: 33px;
+  height: 33px;
+  border-radius: 4px;
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+  background-color: #fff;
+  line-height: 33px;
+  text-align: center;
+}
+
+@mixin print-map {
+  ::ng-host .no-print:not(.pdf-btn) {
+    display: none;
+  }
+  ::ng-deep .no-print:not(.pdf-btn) {
+    display: none;
+  }
+  ::ng-deep .leaflet-control {
+    background-color: white !important;
+  }
+  ::ng-deep .leaflet-bottom.leaflet-left {
+    z-index: 1001;
+  }
+}
+
+@page {
+  size: A4;
+}
+
+.page {
+  width: 200mm;
+  height: 292mm;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @include print-map;
+}
+
+@media print {
+  @include print-map;
+
+  .page {
+    padding-top: 5mm;
+  }
+
+  ::ng-deep .leaflet-top {
+    display: none;
+  }
+  ::ng-deep .laji-map-coordinates-control {
+    display: none !important;
+  }
+}
+
+::ng-deep #flyingSquirrelPredictionModel {
+  display: none !important;
+}
+
+.print-mode-controls {
+  position: absolute;
+  top: -1px;
+  right: -2px;
+}
+
+::ng-deep .pdf-btn:disabled {
+  opacity: 1;
+  background: #dddddd !important;
+}
