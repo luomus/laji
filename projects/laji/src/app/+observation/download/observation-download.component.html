@@ -23,7 +23,9 @@
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            [downloadLoading]="downloadLoading"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>
@@ -35,7 +37,9 @@
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
             (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            [downloadLoading]="downloadLoading"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>

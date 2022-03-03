@@ -16,7 +16,7 @@
 <div class="pull-right">
   <laji-download
     [downloadLoading]="downloadLoading"
-    (download)="onDownload($event)">
+    (download)="onDownload($event.fileType)">
   <span>
     {{ 'species.header.download' | translate }}
     <i class="glyphicon glyphicon-download-alt"></i>
