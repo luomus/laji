@@ -20,7 +20,7 @@ export class ErrorListComponent {
   @Input()
   set errors(data: unknown) {
     const errors = [];
-    if (typeof data === 'object' && !Array.isArray(data)) {
+    if (Util.isObject(data)) {
       if (Util.hasOwnProperty(data, 'status')) {
         switch (data.status) {
           case 403:
@@ -80,7 +80,7 @@ export class ErrorListComponent {
   }
 
   private getMessage(err: unknown): string {
-    if (typeof err !== 'object' || !Util.hasOwnProperty(err, 'message') || typeof err.message !== 'string') {
+    if (!Util.isObject(err) || !Util.hasOwnProperty(err, 'message') || typeof err.message !== 'string') {
       return this.translateService.instant('haseka.form.genericError');
     }
     let base = err.message;
