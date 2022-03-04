@@ -47,34 +47,32 @@ export class GalleryService {
   getImages(list: PagedResult<any>, limit = 1000): Image[] {
     const imgField = 'media';
     const images = [];
-    if (list.results) {
-      list.results.map(items => {
-        const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
-        const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
+    list.results?.forEach(items => {
+      const group = (items['unit'] && items['unit']['reportedInformalTaxonGroup']) ? items['unit']['reportedInformalTaxonGroup'] : '';
+      const verbatim = (items['unit'] && items['unit']['taxonVerbatim']) ? items['unit']['taxonVerbatim'] : '';
 
-        if (images.length >= limit) {
-          return images;
-        }
-        const media = items.media;
-        media['documentId'] = items['document']['documentId'];
-        media['unitId'] = items['unit']['unitId'];
-        if (imgField === 'media') {
-          media['taxonId'] = IdService.getId(items.unit
-            && items.unit.linkings
-            && items.unit.linkings.taxon
-            && items.unit.linkings.taxon.id || '');
-          media['vernacularName'] = items.unit
-            && items.unit.linkings
-            && items.unit.linkings.taxon
-            && items.unit.linkings.taxon.vernacularName || '';
-          media['scientificName'] = items['unit']
-            && items['unit']['linkings']
-            && items['unit']['linkings']['taxon']
-            && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
-        }
-        images.push(media);
-      });
-    }
+      if (images.length >= limit) {
+        return;
+      }
+      const media = items.media;
+      media['documentId'] = items['document']['documentId'];
+      media['unitId'] = items['unit']['unitId'];
+      if (imgField === 'media') {
+        media['taxonId'] = IdService.getId(items.unit
+          && items.unit.linkings
+          && items.unit.linkings.taxon
+          && items.unit.linkings.taxon.id || '');
+        media['vernacularName'] = items.unit
+          && items.unit.linkings
+          && items.unit.linkings.taxon
+          && items.unit.linkings.taxon.vernacularName || '';
+        media['scientificName'] = items['unit']
+          && items['unit']['linkings']
+          && items['unit']['linkings']['taxon']
+          && items['unit']['linkings']['taxon']['scientificName'] || verbatim || group || '';
+      }
+      images.push(media);
+    });
     return images;
   }
 }

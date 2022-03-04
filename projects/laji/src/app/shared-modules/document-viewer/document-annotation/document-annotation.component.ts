@@ -243,6 +243,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
             return hasHighlight;
           }
           hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
+          return undefined;
         });
       }
     });

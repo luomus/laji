@@ -315,12 +315,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   filterBasicForm() {
     this.annotation.removedTags = [];
     this.annotation.identification.taxonSpecifier = '';
-    this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
-      if (this.annotationTagsObservation[tag].type !== 'positive' && this.annotationTagsObservation[tag].type !== 'negative'
-      && this.annotationTagsObservation[tag].type !== 'admin' && this.annotationTagsObservation[tag].type !== 'info') {
-        return tag;
-      }
-    } );
+    this.annotation.addedTags = this.annotation.addedTags.filter(tag =>
+      this.annotationTagsObservation[tag].type !== 'positive' && this.annotationTagsObservation[tag].type !== 'negative'
+      && this.annotationTagsObservation[tag].type !== 'admin' && this.annotationTagsObservation[tag].type !== 'info'
+    );
   }
 
   saveAnnotation() {
@@ -339,11 +337,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     }
 
     if (this.expert && (this.annotation.addedTags.indexOf('MMAN.3') !== -1 || this.annotation.addedTags.indexOf('MMAN.5') !== -1)) {
-      this.annotation.addedTags = this.annotation.addedTags.filter(tag => {
-        if (this.annotationTagsObservation[tag].type !== 'check') {
-         return tag;
-        }
-      });
+      this.annotation.addedTags = this.annotation.addedTags.filter(tag => this.annotationTagsObservation[tag].type !== 'check');
     }
 
 
@@ -513,6 +507,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     ) {
       return true;
     }
+    return undefined;
   }
 
   checkTypeTag(type) {

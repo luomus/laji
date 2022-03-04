@@ -116,6 +116,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.translate.get('np.linker.success').pipe(take(1)).subscribe(msg => this.toastsService.showSuccess(msg));
       this.reloadSubmissions$.next();
+      return EMPTY;
     });
   }
 }

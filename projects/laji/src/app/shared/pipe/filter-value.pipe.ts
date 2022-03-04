@@ -27,6 +27,7 @@ export class FilterValuePipe implements PipeTransform {
         return (singleItem !== null && singleItem[field] !== null &&
           singleItem[field] !== undefined && value.indexOf(singleItem[field]) >= 0);
       }
+      return false;
     });
   }
 

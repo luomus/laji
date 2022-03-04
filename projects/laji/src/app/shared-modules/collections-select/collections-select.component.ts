@@ -133,6 +133,7 @@ export class CollectionsSelectComponent implements OnChanges {
         count: filteredAggragate ? filteredAggragate.count : 0
       };
     }
+    return undefined;
   }
 
   initCollections(): Observable<SelectedOption[]> {

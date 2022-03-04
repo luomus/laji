@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { flatMap, map, take, tap } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
@@ -39,7 +39,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
     if (!formID) {
       console.warn('HasFormPermission guard used for non project page');
       this.router.navigate(this.localizeRouteService.translateRoute(['/', 'project', formID]));
-      return;
+      return EMPTY;
     }
 
     return this.formService.getForm(formID, this.translate.currentLang).pipe(
@@ -53,7 +53,7 @@ export abstract class AbstractPermissionGuard implements CanActivate {
       map(fp => this.checkPermission(fp)),
       tap((hasPermission) => {
         if (!hasPermission) {
-          return this.userService.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
+          this.userService.isLoggedIn$.pipe(take(1)).subscribe(isLoggedIn => {
             if (isLoggedIn) {
               return this.router.navigate(this.localizeRouteService.translateRoute(['/', 'project', formID]));
             } else {
