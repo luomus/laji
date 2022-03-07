@@ -14,7 +14,6 @@ export class SpeciesIndexComponent {
     taxonRanks: 'MX.species',
     langFallback: true,
     typesOfOccurrenceFilters: 'MX.typeOfOccurrenceRegularBreeder,MX.typeOfOccurrenceIrregularBreeder',
-    typesOfOccurrenceNotFilters: 'MX.typeOfOccurrenceVagrant,MX.typeOfOccurrenceRareVagrant',
     selectedFields: 'id,scientificName,vernacularName',
     onlyFinnish: true,
     sortOrder: 'taxonomic',
