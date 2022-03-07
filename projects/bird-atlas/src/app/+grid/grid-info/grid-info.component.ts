@@ -1,10 +1,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import LajiMap, { TileLayerName } from 'laji-map';
+import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 
 interface DatatableRow {
-  num: number;
+  order: number;
   species: string;
+  index: string;
+  class: string;
 }
 
 const testData = [
@@ -46,25 +49,47 @@ const testData = [
 export class GridInfoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
-  rows: DatatableRow[] = [];
-  cols: TableColumn[] = [
+  rows: DatatableRow[] = [
     {
-      prop: 'num',
-      name: '#'
+      order: 0,
+      species: 'Kanadanhanhi',
+      index: 'Indeksi',
+      class: 'Luokka'
     },
     {
-      prop: 'species',
-      name: 'Laji'
-    },
-    {
-      prop: 'species',
-      name: 'Indeksi'
-    },
-    {
-      prop: 'species',
-      name: 'Luokka'
+      order: 1,
+      species: 'Kyhmyjoutsen',
+      index: 'Indeksi2',
+      class: 'Luokka2'
     }
   ];
+  cols: TableColumn[] = [
+    {
+      prop: 'order',
+      name: '#',
+      resizeable: false,
+      sortable: true
+    },
+    {
+      prop: 'species',
+      name: 'Laji',
+      resizeable: false,
+      sortable: true
+    },
+    {
+      prop: 'index',
+      name: 'Indeksi',
+      resizeable: false,
+      sortable: true
+    },
+    {
+      prop: 'class',
+      name: 'Luokka',
+      resizeable: false,
+      sortable: true
+    }
+  ];
+  datatableClasses = datatableClasses;
   map: any;
 
   constructor(private zone: NgZone) {}

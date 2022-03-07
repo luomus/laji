@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container my-5">
   <p>{{ 'grid.grid-index' | translate }}</p>
   <!-- <a [routerLink]="['123']">grid-info</a> -->
   <ngx-datatable
@@ -6,6 +6,7 @@
     [rowHeight]="35"
     [rows]="rows"
     [columns]="cols"
+    [cssClasses]="datatableClasses"
     (activate)="onActivate($event)"
   ></ngx-datatable>
 </div>

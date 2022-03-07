@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
+import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 
 interface DatatableRow {
   ykj: string;
@@ -35,12 +36,15 @@ export class GridIndexComponent {
   cols: TableColumn[] = [{
     prop: 'ykj',
     name: 'YKJ',
-    resizeable: false
+    resizeable: false,
+    sortable: true
   }, {
     prop: 'name',
     name: 'Nimi',
-    resizeable: false
+    resizeable: false,
+    sortable: true
   }];
+  datatableClasses = datatableClasses;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 

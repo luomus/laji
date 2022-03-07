@@ -15,4 +15,8 @@ body {
 
 ngx-datatable.material.ngx-datatable {
   box-shadow: 1px 1px 6px 0 rgba($neutral-8, .2);
+  .sort-btn {
+    color: $neutral-5;
+    margin-left: 4px;
+  }
 }

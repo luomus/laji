@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container my-5">
   <h1>Kemiönsaari</h1>
   <h3 class="mb-7">(663:335)</h3>
   <ngx-datatable
@@ -6,6 +6,7 @@
     [rowHeight]="35"
     [rows]="rows"
     [columns]="cols"
+    [cssClasses]="datatableClasses"
   ></ngx-datatable>
   <h2>Kartta</h2>
   <div #lajiMap class="ba-laji-map my-4"></div>
