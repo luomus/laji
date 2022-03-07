@@ -1168,6 +1168,7 @@
               "projects/bird-atlas/src/assets"
             ],
             "styles": [
+              "node_modules/laji-map/dist/styles.css",
               "projects/bird-atlas/src/styles.scss"
             ],
             "stylePreprocessorOptions": {

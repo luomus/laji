@@ -1,2 +1,11 @@
-<p>{{ 'grid.grid-index' | translate }}</p>
-<a [routerLink]="['123']">grid-info</a>
+<div class="container">
+  <p>{{ 'grid.grid-index' | translate }}</p>
+  <!-- <a [routerLink]="['123']">grid-info</a> -->
+  <ngx-datatable
+    class="material"
+    [rowHeight]="35"
+    [rows]="rows"
+    [columns]="cols"
+    (activate)="onActivate($event)"
+  ></ngx-datatable>
+</div>
