@@ -128,9 +128,11 @@ export class SpreadsheetService {
     const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
-
     this.setDateFormat(sheet, !!workBook.Workbook);
-    return this.combineSplittedFields(<any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}));
+
+    let sheetData = <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'});
+    sheetData = this.trimWhiteSpaces(sheetData);
+    return this.combineSplittedFields(sheetData);
   }
 
   setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
@@ -173,6 +175,16 @@ export class SpreadsheetService {
       }
       return '';
     }));
+  }
+
+  private trimWhiteSpaces(data: {[col: string]: string}[]): {[col: string]: string}[] {
+    return data.map(row => {
+      const newRow = {};
+      Object.keys(row).forEach(col => {
+        newRow[col] = typeof row[col] === 'string' ? row[col].trim() : row[col];
+      });
+      return newRow;
+    });
   }
 
   private combineSplittedFields(data: {[col: string]: string}[]): {data: any; errors: string[]} {
