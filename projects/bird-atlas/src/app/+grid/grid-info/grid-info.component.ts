@@ -1,12 +1,41 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
-import LajiMap from 'laji-map';
+import LajiMap, { TileLayerName } from 'laji-map';
 
 interface DatatableRow {
   num: number;
   species: string;
 }
+
+const testData = [
+  {
+    featureCollection: {
+      features: [
+        {
+          geometry: {
+            type: 'Polygon',
+            coordinates: [
+              [
+                [24, 60],
+                [25, 60],
+                [25, 61]
+              ]
+            ]
+          },
+          properties: {},
+          type: 'Feature'
+        }
+      ],
+      type: 'FeatureCollection'
+    },
+    getFeatureStyle: () => ({
+      weight: 5,
+      opacity: 1,
+      fillOpacity: 0.3,
+      color: '#00aa00'
+    })
+  }
+];
 
 @Component({
   selector: 'ba-grid-info',
@@ -14,7 +43,7 @@ interface DatatableRow {
   styleUrls: ['./grid-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GridInfoComponent implements AfterViewInit {
+export class GridInfoComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   rows: DatatableRow[] = [];
@@ -29,22 +58,29 @@ export class GridInfoComponent implements AfterViewInit {
     },
     {
       prop: 'species',
-      name: 'Suurin atlasCode'
+      name: 'Indeksi'
     },
     {
       prop: 'species',
-      name: 'Suurin atlasClass'
+      name: 'Luokka'
     }
   ];
   map: any;
 
-  constructor(private translate: TranslateService, private zone: NgZone) {}
+  constructor(private zone: NgZone) {}
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
-        rootElem: this.elemRef.nativeElement
+        rootElem: this.elemRef.nativeElement,
+        tileLayerName: TileLayerName.maastokartta,
+        data: testData,
+        zoomToData: true
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.map) { this.map.destroy(); }
   }
 }
