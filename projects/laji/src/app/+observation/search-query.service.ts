@@ -116,7 +116,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'breedingSite',
     'useIdentificationAnnotations',
     'includeSubTaxa',
-    'annotated'
+    'annotated',
+    'onlyNonStateLands'
   ];
 
   // noinspection JSUnusedLocalSymbols
