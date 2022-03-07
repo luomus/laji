@@ -237,6 +237,7 @@ export interface WarehouseQueryInterface {
   collectionAndRecordQuality?: string;
   plantStatusCode?: Array<string>;
   taxonAdminFiltersOperator?: 'AND' | 'OR';
+  onlyNonStateLands?: boolean;
 }
 
 

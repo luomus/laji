@@ -97,6 +97,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       'biogeographicalProvinceId',
       'elyCentreId',
       'finnishMunicipalityId',
+      'onlyNonStateLands',
       'area',
       'coordinates',
       'coordinateAccuracyMax',
