@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { Options as LajiMapOptions } from 'laji-map';
+import { LajiMapOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

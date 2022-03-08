@@ -13,7 +13,7 @@ import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-m
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PlatformService } from '../../../../../shared/service/platform.service';
-import { TileLayerName } from 'laji-map';
+import { LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-wbc-species-maps',
@@ -29,7 +29,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   @Input() season: SEASON;
   @Input() birdAssociationArea: string;
 
-  layers = TileLayerName;
+  layers = LajiMapTileLayerName;
   querys: WarehouseQueryInterface[] = [];
   zeroQuerys: WarehouseQueryInterface[] = [];
   data: any = [];

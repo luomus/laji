@@ -11,7 +11,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Options as LajiMapOptions, Lang as LajiMapLang } from 'laji-map';
+import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-special-geometry',

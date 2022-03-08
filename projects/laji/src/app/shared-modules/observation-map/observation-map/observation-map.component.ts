@@ -22,7 +22,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { Options as LajiMapOptions, TileLayerName } from 'laji-map';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
@@ -52,8 +52,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this._mapOptions = {
       ...this._mapOptions,
       tileLayerName: world
-        ? TileLayerName.openStreetMap
-        : TileLayerName.taustakartta
+        ? LajiMapTileLayerName.openStreetMap
+        : LajiMapTileLayerName.taustakartta
     };
   }
   @Input() lastPage = 0; // 0 = no page limit
@@ -110,7 +110,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     },
     zoom: 1.5,
     draw: false,
-    tileLayerName: TileLayerName.openStreetMap
+    tileLayerName: LajiMapTileLayerName.openStreetMap
   };
 
   private prev = '';

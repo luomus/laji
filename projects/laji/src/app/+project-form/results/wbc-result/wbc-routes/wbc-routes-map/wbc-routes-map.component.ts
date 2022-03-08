@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
-import { TileLayerName } from 'laji-map';
+import { LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-wbc-routes-map',
@@ -20,7 +20,7 @@ export class WbcRoutesMapComponent {
   breaks = [1, 2, 5, 10, 20];
   labels = ['1', '2-4', '5-9', '10-19', '20-'];
   colorRange = ['violet', 'blue', 'lime', 'yellow', 'orange'];
-  layers = TileLayerName;
+  layers = LajiMapTileLayerName;
 
   @Output() rowSelect = new EventEmitter<string>();
 

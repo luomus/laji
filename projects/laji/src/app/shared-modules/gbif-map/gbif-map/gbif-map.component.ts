@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { Options as LajiMapOptions, TileLayerName } from 'laji-map';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -37,10 +37,10 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
     zoom: -1,
     draw: false,
     center: [40, 25],
-    tileLayerName: TileLayerName.openStreetMap,
+    tileLayerName: LajiMapTileLayerName.openStreetMap,
     availableTileLayerNamesWhitelist: [
-      TileLayerName.openStreetMap,
-      TileLayerName.googleSatellite
+      LajiMapTileLayerName.openStreetMap,
+      LajiMapTileLayerName.googleSatellite
     ],
     availableOverlayNameWhitelist: []
   };

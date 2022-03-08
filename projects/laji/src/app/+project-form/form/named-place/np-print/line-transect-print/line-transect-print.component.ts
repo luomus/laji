@@ -3,7 +3,7 @@ import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { CoordinateService } from '../../../../../shared/service/coordinate.service';
-import { Options as LajiMapOptions, TileLayerName } from 'laji-map';
+import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
   selector: 'laji-line-transect-print',
@@ -170,7 +170,7 @@ export class LineTransectPrintComponent implements OnChanges {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
     this.lajiMapOptions = {
-      tileLayerName: TileLayerName.maastokartta,
+      tileLayerName: LajiMapTileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,

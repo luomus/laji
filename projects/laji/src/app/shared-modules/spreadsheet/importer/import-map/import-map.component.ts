@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
-import { Options as LajiMapOptions, TileLayerName, DataOptions as LajiMapDataOptions } from 'laji-map';
+import { LajiMapOptions, LajiMapTileLayerName, LajiMapDataOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
 import * as Hash from 'object-hash';
 
@@ -18,7 +18,7 @@ export class ImportMapComponent implements OnChanges {
   @Input() popupFields = ['gatheringEvent.dateBegin', 'gatherings[*].units[*].identifications[*].taxon'];
 
   mapOptions: LajiMapOptions = {
-    tileLayerName: TileLayerName.maastokartta,
+    tileLayerName: LajiMapTileLayerName.maastokartta,
     tileLayerOpacity: 0.5,
     controls: { location: false },
     zoomToData: { maxZoom: 13 },

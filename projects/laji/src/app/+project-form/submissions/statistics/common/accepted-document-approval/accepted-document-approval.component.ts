@@ -13,7 +13,7 @@ import { combineLatest, take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
 import { FormPermissionService } from '../../../../../shared/service/form-permission.service';
-import { LineTransectGeometry, Options as LajiMapOptions, TileLayerName } from 'laji-map';
+import { LajiMapLineTransectGeometry, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Document } from '../../../../../shared/model/Document';
 import { ToastsService } from '../../../../../shared/service/toasts.service';
@@ -98,7 +98,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
 
   private initMapOptions() {
     const options: LajiMapOptions = {
-      tileLayerName: TileLayerName.maastokartta,
+      tileLayerName: LajiMapTileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       zoomToData: {paddingInMeters: 100},
       controls: true
@@ -127,7 +127,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LineTransectGeometry;
+    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LajiMapLineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 

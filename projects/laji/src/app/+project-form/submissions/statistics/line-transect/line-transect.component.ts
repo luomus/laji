@@ -16,7 +16,7 @@ import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.ser
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
 import { FormService } from '../../../../shared/service/form.service';
-import { LineTransectGeometry } from 'laji-map';
+import { LajiMapLineTransectGeometry } from '@laji-map/laji-map.interface';
 
 interface LineTransectCount {
   psCouples: number;
@@ -202,7 +202,7 @@ export class LineTransectComponent implements OnChanges {
     }
   }
 
-  private getGeometry(documentName = 'document'): LineTransectGeometry {
+  private getGeometry(documentName = 'document'): LajiMapLineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;
