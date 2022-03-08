@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxon } from 'projects/laji-api-client/src/public-api';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { ApiService } from '../../core/api.service';
+import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 
 @Component({
   selector: 'ba-species-info',
@@ -14,14 +15,23 @@ import { ApiService } from '../../core/api.service';
 })
 export class SpeciesInfoComponent {
   taxon$: Observable<Taxon> = this.route.paramMap.pipe(
-    switchMap(params => this.api.getTaxon(params.get('id'), {}, 'multi'))
+    tap(() => this.breadcrumbs.setBreadcrumbName(BreadcrumbId.SpeciesInfo, undefined)),
+    switchMap(params => this.api.getTaxon(params.get('id'), {}, 'multi')),
+    tap(taxon => {
+      const name: string = taxon.vernacularName[this.translate.currentLang];
+      this.breadcrumbs.setBreadcrumbName(
+        BreadcrumbId.SpeciesInfo,
+        name.charAt(0).toUpperCase() + name.substring(1)
+      );
+    })
   );
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private translate: TranslateService) {}
-
-  getVernacularName(taxon: Taxon) {
-    return taxon.vernacularName[this.translate.currentLang];
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private api: ApiService,
+    private translate: TranslateService,
+    private breadcrumbs: BreadcrumbService
+  ) {}
 
   getForeignVernacularNames(taxon: Taxon) {
     return ['fi', 'sv', 'en'].filter(

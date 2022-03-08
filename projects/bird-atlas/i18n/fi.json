@@ -1,5 +1,8 @@
 {
   "grid.grid-index": "Lintuatlaksessa selvitetään pesimälinnusto kustakin Suomen 10 km yhtenäiskoordinaatistoruudusta. Ruutuja on yhteensä 3859 kpl.",
   "species.species-index.title": "Lajit",
-  "species.species-index.p": "Tulospalvelussa on mukana säännöllisesti tai satunnaisesti Suomessa pesivät lajit. Lintuatlaksessa käytetyt lajien tieteelliset nimet ja lajien järjestys noudattavat BirdLife Suomen käyttämää systematiikkaa.\nSensitiivisimpien lajien esiintymistieto on suojelusyistä keskitetty 25 tai 50 km ruutuihin. <a href='https://laji.fi/about/709'>Lue lisää sensitiivisen lajitiedon käsittelystä</a>."
+  "species.species-index.p": "Tulospalvelussa on mukana säännöllisesti tai satunnaisesti Suomessa pesivät lajit. Lintuatlaksessa käytetyt lajien tieteelliset nimet ja lajien järjestys noudattavat BirdLife Suomen käyttämää systematiikkaa.\nSensitiivisimpien lajien esiintymistieto on suojelusyistä keskitetty 25 tai 50 km ruutuihin. <a href='https://laji.fi/about/709'>Lue lisää sensitiivisen lajitiedon käsittelystä</a>.",
+  "breadcrumbs.home": "Etusivu",
+  "breadcrumbs.speciesIndex": "Lajit",
+  "breadcrumbs.gridIndex": "Ruudut"
 }
