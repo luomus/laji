@@ -5,7 +5,7 @@
     [queryParams]="virFilterShortcutQueryParams">
   {{ 'observation.form.virFilterShortcut' | translate }}
   </a>
-  <laji-info>{{ 'observation.form.virva-info' | translate }}</laji-info>
+  <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
 </div>
 
 <section class="top-section">
@@ -187,6 +187,18 @@
     [placeholder]="'observation.form.municipality'"
     name="finnishMunicipalityId"
     [field]="areaType.Municipality"></laji-metadata-select>
+
+  <laji-select
+    [selected]="[query.onlyNonStateLands]"
+    (selectedChange)="indirectQueryChange('onlyNonStateLands', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.onlyNonStateLands' | translate"
+    [info]="'observation.info.onlyNonStateLands' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.onlyNonStateLands.true' | translate)},
+        {id: false, value: ('observation.form.onlyNonStateLands.false' | translate)}
+      ]"></laji-select>
 
   <div>
     <div>

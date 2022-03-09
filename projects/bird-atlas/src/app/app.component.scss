@@ -1,0 +1,12 @@
+@import 'vars';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-view {
+  padding-top: $navbar-min-height;
+  flex-grow: 1;
+}

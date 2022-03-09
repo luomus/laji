@@ -150,16 +150,20 @@ export class Util {
     return true;
   }
 
-  public static hasOwnProperty<X extends any, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
+  public static hasOwnProperty<X extends Record<string, unknown>, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
     return obj.hasOwnProperty(prop);
   }
 
-  public static removeUndefinedFromObject = <T extends any>(obj: T): T => (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
+  public static removeUndefinedFromObject = <T extends Record<string, unknown>>(obj: T): T => (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
       if (typeof obj[current] !== 'undefined') {
         cumulative[current] = obj[current];
       }
       return cumulative;
     }, {} as T);
+
+  public static isObject(any: any): any is Record<string, unknown> {
+    return typeof any === 'object' && any !== null && !Array.isArray(any);
+  }
 
   private static getDateFromString(dateString: string) {
     const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;

@@ -2562,6 +2562,7 @@ export namespace LajiApiClient {
    * Parameters for TaxonFindTaxa
    */
   export interface TaxonFindParams {
+    parentTaxonId?: string;
 
     /**
      * Will not include these type(s) of occurrence. Multiple values are separated by a comma (,).
