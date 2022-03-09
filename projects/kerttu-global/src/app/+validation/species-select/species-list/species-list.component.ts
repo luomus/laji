@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { DatatableSort } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../kerttu-global-shared/models';
+import { IGlobalSpeciesQuery, IGlobalSpeciesFilters, IGlobalSpeciesListResult } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-species-list',

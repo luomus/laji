@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { IValidationStat } from '../../kerttu-global-shared/models';
+import { IValidationStat } from '../../../kerttu-global-shared/models';
 import { Color } from 'ng2-charts';
 import { TranslateService } from '@ngx-translate/core';
 

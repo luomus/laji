@@ -5,9 +5,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `
     <lu-sidebar>
       <nav>
-        <h5>
-          <span [innerHTML]="'theme.kerttu' | translate"></span>
-        </h5>
         <lu-sidebar-link [link]="['instructions'] | localize" routerLinkActive>
           {{ 'instructions' | translate }}
         </lu-sidebar-link>
@@ -15,7 +12,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           {{ 'theme.kerttu.expertise' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['recordings'] | localize" routerLinkActive>
-          {{ 'theme.kerttu.recordingAnnotation' | translate }}
+          {{ 'identification.recordings' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['results'] | localize" routerLinkActive>
           {{ 'theme.kerttu.result' | translate }}

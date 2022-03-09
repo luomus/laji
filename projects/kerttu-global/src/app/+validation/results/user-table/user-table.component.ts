@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IUserStat } from '../../kerttu-global-shared/models';
+import { IUserStat } from '../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-user-table',
