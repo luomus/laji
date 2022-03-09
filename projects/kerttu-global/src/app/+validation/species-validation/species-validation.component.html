@@ -1,30 +1,28 @@
-<div class="container-fluid laji-page">
-  <ng-container *ngIf="hasLock else noLock">
-    <bsg-version-nav
-      class="pull-right"
-      [versions]="templateVersions$ | async"
-      [activeIdx]="activeVersionIdx$ | async"
-      (activeIdxChange)="activeVersionIdxChange($event)"
-    ></bsg-version-nav>
-    <bsg-species-template-validation
-      [species]="species$ | async"
-      [recordings]="recordings$ | async"
-      [templates]="activeTemplates$ | async"
-      [historyView]="historyView$ | async"
-      [saving]="saving"
-      [spectrogramConfig]="spectrogramConfig"
-      (save)="saveTemplates($event)"
-      (cancel)="goToSpeciesList()"
-    ></bsg-species-template-validation>
+<ng-container *ngIf="hasLock else noLock">
+  <bsg-version-nav
+    class="pull-right"
+    [versions]="templateVersions$ | async"
+    [activeIdx]="activeVersionIdx$ | async"
+    (activeIdxChange)="activeVersionIdxChange($event)"
+  ></bsg-version-nav>
+  <bsg-species-template-validation
+    [species]="species$ | async"
+    [recordings]="recordings$ | async"
+    [templates]="activeTemplates$ | async"
+    [historyView]="historyView$ | async"
+    [saving]="saving"
+    [spectrogramConfig]="spectrogramConfig"
+    (save)="saveTemplates($event)"
+    (cancel)="goToSpeciesList()"
+  ></bsg-species-template-validation>
+</ng-container>
+<ng-template #noLock>
+  <ng-container *ngIf="hasLock === false else loading">
+    <div class="alert alert-danger">
+      {{ 'validation.noLock' | translate }}
+    </div>
   </ng-container>
-  <ng-template #noLock>
-    <ng-container *ngIf="hasLock === false else loading">
-      <div class="alert alert-danger">
-        {{ 'validation.noLock' | translate }}
-      </div>
-    </ng-container>
-  </ng-template>
-  <ng-template #loading>
-    <laji-spinner></laji-spinner>
-  </ng-template>
-</div>
+</ng-template>
+<ng-template #loading>
+  <laji-spinner></laji-spinner>
+</ng-template>

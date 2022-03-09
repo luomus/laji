@@ -1,22 +1,21 @@
-<div class="container laji-page">
-  <h1>{{ 'speciesList.title' | translate }}</h1>
-  <bsg-species-list-filters
-    [query]="query"
-    [filters]="filters"
-    (queryChange)="onQueryChange($event)"
-  ></bsg-species-list-filters>
-  <p class="text-danger" *ngIf="speciesList.hasModifications">
-    <i class="fa fa-exclamation-circle"></i>
-    {{ 'speciesList.hasModifications' | translate }}
-  </p>
-  <bsg-species-table
-    class="d-block"
-    [luFillHeight]="{ minHeight: 500 }"
-    [data]="speciesList"
-    [loading]="loading"
-    [sorts]="sorts"
-    (speciesSelect)="speciesSelect.emit($event)"
-    (pageChange)="onPageChange($event)"
-    (sortChange)="onSortChange($event)"
-  ></bsg-species-table>
-</div>
+<h1>{{ 'speciesList.title' | translate }}</h1>
+<bsg-species-list-filters
+  [query]="query"
+  [filters]="filters"
+  (queryChange)="onQueryChange($event)"
+></bsg-species-list-filters>
+<p class="text-danger" *ngIf="speciesList.hasModifications">
+  <i class="fa fa-exclamation-circle"></i>
+  {{ 'speciesList.hasModifications' | translate }}
+</p>
+<bsg-species-table
+  class="d-block"
+  [luFillHeight]="{ minHeight: 500 }"
+  [data]="speciesList"
+  [loading]="loading"
+  [sorts]="sorts"
+  (speciesSelect)="speciesSelect.emit($event)"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
+></bsg-species-table>
+

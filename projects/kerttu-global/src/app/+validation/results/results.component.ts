@@ -7,26 +7,24 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-results',
-  template: `
-    <div class="container laji-page">
-      <h1>{{ 'results.title' | translate }}</h1>
-      <bsg-species-list-filters
-        [query]="speciesQuery$ | async"
-        [filters]="speciesFilters$ | async"
-        [showOnlyUnvalidated]="false"
-        [showSearch]="false"
-        (queryChange)="onSpeciesQueryChange($event)"
-      ></bsg-species-list-filters>
-      <h2>{{ 'results.pie.title' | translate }}</h2>
-      <bsg-validation-pie-chart
-        [data]="validationStats$ | async"
-      ></bsg-validation-pie-chart>
-      <h2>{{ 'results.userTable.title' | translate }}</h2>
-      <bsg-user-table
-        [userId]="userId$ | async"
-        [data]="userStats$ | async"
-      ></bsg-user-table>
-    </div>
+  template: `    
+    <h1>{{ 'results.title' | translate }}</h1>
+    <bsg-species-list-filters
+      [query]="speciesQuery$ | async"
+      [filters]="speciesFilters$ | async"
+      [showOnlyUnvalidated]="false"
+      [showSearch]="false"
+      (queryChange)="onSpeciesQueryChange($event)"
+    ></bsg-species-list-filters>
+    <h2>{{ 'results.pie.title' | translate }}</h2>
+    <bsg-validation-pie-chart
+      [data]="validationStats$ | async"
+    ></bsg-validation-pie-chart>
+    <h2>{{ 'results.userTable.title' | translate }}</h2>
+    <bsg-user-table
+      [userId]="userId$ | async"
+      [data]="userStats$ | async"
+    ></bsg-user-table>
   `
 })
 export class ResultsComponent {
