@@ -1,16 +1,16 @@
-<table>
-  <tr *ngFor="let continent of continents">
-    <th>{{ continent.name }}</th>
-    <td>
-      <select
-        class="form-control input-sm"
-      >
-        <option></option>
-        <option>I can hardly recognize any bird sounds</option>
-        <option>I can recognize the most common songbirds</option>
-        <option>I can recognize majority of the breeding birds and most common passage migrants</option>
-        <option>I can recognize majority of the bird species</option>
-      </select>
-    </td>
-  </tr>
-</table>
+<laji-spinner [spinning]="!continents?.length" [hideContentWhileLoading]="true">
+  <table class="mt-0 mb-0">
+    <tr *ngFor="let continent of continents">
+      <th>{{ continent.name }}</th>
+      <td>
+        <select
+          class="form-control input-sm"
+        >
+          <option *ngFor="let idx of [1, 2, 3, 4]">
+            {{ ('expertise.identification.option' + idx) | translate }}
+          </option>
+        </select>
+      </td>
+    </tr>
+  </table>
+</laji-spinner>
