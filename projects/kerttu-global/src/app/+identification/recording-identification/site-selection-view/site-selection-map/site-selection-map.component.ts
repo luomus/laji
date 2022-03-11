@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
@@ -12,9 +12,10 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./site-selection-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteSelectionMapComponent {
+export class SiteSelectionMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
-  @Input() color = '#00aa00';
+  @Input() sites: IGlobalSite[] = [];
+  @Input() selectedSites: number[] = [];
 
   mapOptions: LajiMapOptions = {
     tileLayerName: LajiMapTileLayerName.openStreetMap,
@@ -23,28 +24,42 @@ export class SiteSelectionMapComponent {
     popupOnHover: true
   };
 
-  data: LajiMapDataOptions;
+  @Output() selectedSitesChange = new EventEmitter<number[]>();
 
-  @Output() siteSelect = new EventEmitter<number[]>();
-
-  private _sites: IGlobalSite[];
-
-  @Input() set sites(sites: IGlobalSite[]) {
-    this.data = this.getData(sites);
-    this._sites = sites;
-  }
+  private data: LajiMapDataOptions;
+  private defaultColor = '#888';
+  private partlyActiveColor = '#d1c400';
+  private activeColor = '#00aa00';
 
   constructor(
     private translate: TranslateService,
     private ngZone: NgZone
   ) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.sites) {
+      this.data = this.getData(this.sites);
+    }
+    this.lajiMap?.setData(this.data || {});
+
+    const data = this.lajiMap?.map?.getData();
+    if (data?.length > 0) {
+      data[0].groupContainer.on('clusterclick', (event) => {
+        this.ngZone.run(() => {
+          const markers = event.layer.getAllChildMarkers();
+          const siteIds = markers.map(marker => marker.feature.properties.id);
+          this.addOrRemoveSites(siteIds);
+        });
+      });
+    }
+  }
+
   drawToMap(type: 'Rectangle' = 'Rectangle') {
     this.lajiMap.drawToMap(type);
   }
 
   abortDrawing() {
-    if (this.lajiMap && this.lajiMap.map) {
+    if (this.lajiMap?.map) {
       this.lajiMap.map.abortDrawing({});
       this.lajiMap.map.clearDrawData();
     }
@@ -53,7 +68,8 @@ export class SiteSelectionMapComponent {
   onCreate(rect?: Polygon) {
     if (rect) {
       const sites = this.getSitesInsideRectangle(rect);
-      this.siteSelect.emit(sites.map(site => site.id));
+      this.addOrRemoveSites(sites.map(site => site.id));
+      this.abortDrawing();
     }
   }
 
@@ -62,18 +78,12 @@ export class SiteSelectionMapComponent {
       on: {
         click: (event, data) => {
           this.ngZone.run(() => {
-            this.siteSelect.emit([data.feature.properties.id]);
+            const id = data.feature.properties.id;
+            this.addOrRemoveSite(id);
           });
         }
       },
-      getFeatureStyle: () => {
-        return {
-          weight: 2,
-          opacity: 1,
-          fillOpacity: 0,
-          color: this.color
-        };
-      },
+      getClusterStyle: this.getClusterStyle.bind(this),
       featureCollection: {
         type: 'FeatureCollection',
         features: (sites || []).map(site => ({
@@ -87,12 +97,26 @@ export class SiteSelectionMapComponent {
         }))
       },
       cluster: {
-        spiderfyOnMaxZoom: true,
-        showCoverageOnHover: true,
         singleMarkerMode: true,
-        maxClusterRadius: 20
+        maxClusterRadius: 20,
+        zoomToBoundsOnClick: false,
       },
       getPopup: this.getPopup.bind(this)
+    };
+  }
+
+  private getClusterStyle(count: number, indices: number[]) {
+    const sites = this.sites.filter((site, idx) => indices.includes(idx)).filter(
+      site => this.selectedSites?.includes(site.id)
+    );
+
+    const color = sites.length === count ? this.activeColor : sites.length > 0 ? this.partlyActiveColor : this.defaultColor;
+
+    return {
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0,
+      color
     };
   }
 
@@ -107,6 +131,34 @@ export class SiteSelectionMapComponent {
     return popup;
   }
 
+  private addOrRemoveSites(ids: number[]) {
+    const allSelected = ids.every(id => this.selectedSites.includes(id));
+
+    if (allSelected) {
+      this.selectedSites = this.selectedSites.filter(id => !ids.includes(id));
+    } else {
+      ids.forEach(id => {
+        if (!this.selectedSites.includes(id)) {
+          this.selectedSites = [...this.selectedSites, id];
+        }
+      })
+    }
+
+    this.selectedSitesChange.emit(this.selectedSites);
+  }
+
+  private addOrRemoveSite(id: number) {
+    const filteredSites = this.selectedSites.filter(site => site !== id);
+
+    if (this.selectedSites.length > filteredSites.length) {
+      this.selectedSites = filteredSites;
+    } else {
+      this.selectedSites = [...filteredSites, id];
+    }
+
+    this.selectedSitesChange.emit(this.selectedSites);
+  }
+
   private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
     const longtitudes = rect.coordinates[0].map(c => c[0]);
     const latitudes = rect.coordinates[0].map(c => c[1]);
@@ -115,7 +167,7 @@ export class SiteSelectionMapComponent {
     const latMin = Math.min(...latitudes);
     const latMax = Math.max(...latitudes);
 
-    return this._sites.reduce((res, site) => {
+    return this.sites.reduce((res, site) => {
       const [lon, lat] = site.geometry.coordinates;
 
       if (lon >= lonMin && lon <= lonMax && lat >= latMin && lat <= latMax) {

@@ -14,6 +14,7 @@ export class SiteSelectionViewComponent {
 
   @Output() siteSelect = new EventEmitter<number[]>();
 
+  selectedSites = [];
   drawActive = false;
 
   selectByDrawingClick() {
@@ -25,10 +26,9 @@ export class SiteSelectionViewComponent {
     }
   }
 
-  onSiteSelect(siteIds: number[]) {
+  onSelectedSitesChange() {
     if (this.drawActive) {
       this.selectByDrawingClick();
     }
-    this.siteSelect.emit(siteIds);
   }
 }

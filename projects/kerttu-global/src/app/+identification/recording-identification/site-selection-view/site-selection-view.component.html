@@ -1,4 +1,4 @@
-<h2>{{ 'identification.siteSelection' | translate }}</h2>
+<h1>{{ 'identification.siteSelection' | translate }}</h1>
 <p>
   {{ 'identification.siteSelection.description' | translate }}
   <button class="btn" [ngClass]="{'btn-default': !drawActive, 'btn-primary': drawActive}" (click)="selectByDrawingClick()">
@@ -7,5 +7,6 @@
 </p>
 <bsg-site-selection-map
   [sites]="sites"
-  (siteSelect)="onSiteSelect($event)"
+  [(selectedSites)]="selectedSites"
+  (selectedSitesChange)="onSelectedSitesChange()"
 ></bsg-site-selection-map>
