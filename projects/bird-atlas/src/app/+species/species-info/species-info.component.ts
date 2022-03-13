@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxon } from 'projects/laji-api-client/src/public-api';
-import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { ApiService } from '../../core/api.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { LajiApiService } from '../../core/api.service';
+import { AtlasApiService } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 
 @Component({
@@ -14,11 +16,25 @@ import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesInfoComponent {
-  taxon$: Observable<Taxon> = this.route.paramMap.pipe(
+  data$ = this.route.paramMap.pipe(
     tap(() => this.breadcrumbs.setBreadcrumbName(BreadcrumbId.SpeciesInfo, undefined)),
-    switchMap(params => this.api.getTaxon(params.get('id'), {}, 'multi')),
-    tap(taxon => {
-      const name: string = taxon.vernacularName[this.translate.currentLang];
+    switchMap(params => forkJoin({
+      taxon: this.lajiApi.getTaxon(params.get('id'), {}, 'multi').pipe(
+        catchError(err => {
+          console.error(err);
+          return of(undefined);
+        })
+      ),
+      map: this.atlasApi.getSpeciesMap(params.get('id')).pipe(
+        map(html => this.sanitizer.bypassSecurityTrustHtml(html)),
+        catchError(err => {
+          console.error(err);
+          return of(undefined);
+        })
+      )
+    })),
+    tap(data => {
+      const name: string = data.taxon.vernacularName[this.translate.currentLang];
       this.breadcrumbs.setBreadcrumbName(
         BreadcrumbId.SpeciesInfo,
         name.charAt(0).toUpperCase() + name.substring(1)
@@ -28,9 +44,11 @@ export class SpeciesInfoComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private api: ApiService,
+    private lajiApi: LajiApiService,
     private translate: TranslateService,
-    private breadcrumbs: BreadcrumbService
+    private breadcrumbs: BreadcrumbService,
+    private atlasApi: AtlasApiService,
+    private sanitizer: DomSanitizer
   ) {}
 
   getForeignVernacularNames(taxon: Taxon) {

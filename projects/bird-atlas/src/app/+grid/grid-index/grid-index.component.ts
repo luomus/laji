@@ -2,12 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
-
-interface DatatableRow {
-  ykj: string;
-  name: string;
-  id: string;
-}
+import { of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { AtlasApiService, AtlasGridQueryElem } from '../../core/atlas-api.service';
 
 @Component({
   selector: 'ba-grid-index',
@@ -16,25 +13,9 @@ interface DatatableRow {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexComponent {
-  rows: DatatableRow[] = [
-    {
-      ykj: '123:123',
-      name: 'Ruudun nimi',
-      id: '123456'
-    },
-    {
-      ykj: '123:123',
-      name: 'Ruutu 2',
-      id: '123456'
-    },
-    {
-      ykj: '123:123',
-      name: 'Ruutu 3',
-      id: '123456'
-    }
-  ];
+  rows$ = this.atlasApi.getGrid();
   cols: TableColumn[] = [{
-    prop: 'ykj',
+    prop: 'coordinates',
     name: 'YKJ',
     resizeable: false,
     sortable: true
@@ -46,11 +27,11 @@ export class GridIndexComponent {
   }];
   datatableClasses = datatableClasses;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService) {}
 
-  onActivate(event: { type: string; row: DatatableRow }) {
+  onActivate(event: { type: string; row: AtlasGridQueryElem }) {
     if(event.type === 'click') {
-      this.router.navigate([event.row.id], { relativeTo: this.route });
+      this.router.navigate([event.row.coordinates], { relativeTo: this.route });
     }
   }
 }

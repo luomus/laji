@@ -3,3 +3,8 @@
 ngx-datatable ::ng-deep datatable-body-row {
   cursor: pointer;
 }
+
+ngx-datatable {
+  height: 75vh;
+  max-height: 600px;
+}

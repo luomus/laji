@@ -1,7 +1,7 @@
-<ng-container *ngIf="taxon$ | async; let taxon">
-  <h1>{{ taxon.vernacularName | multiLang }} ({{ taxon.scientificName }})</h1>
-  <h3>{{ getForeignVernacularNames(taxon) }}</h3>
+<ng-container *ngIf="data$ | async; let data">
+  <h1>{{ data.taxon.vernacularName | multiLang }} ({{ data.taxon.scientificName }})</h1>
+  <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
 <!-- <div>kyhmyjoutsen, metsähanhi (navigaatio)</div> -->
-  <div>SVG kartta</div>
+  <div class="map-container" [innerHtml]="data.map"></div>
   <a href="http://" target="_blank" rel="noopener noreferrer">Havainnot Laji.fi:ssa</a>
 </ng-container>

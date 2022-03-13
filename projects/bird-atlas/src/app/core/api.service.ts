@@ -24,7 +24,7 @@ const concatArgs = (...args): string => (
 );
 const hashArgs = (...args) => hashCode(concatArgs(...args));
 
-const cacheReturnObservable = (cacheInvalidationMs?: number) => (
+export const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const original = descriptor.value;
     descriptor.value = function(this: any, ...args: any[]) {
@@ -54,7 +54,7 @@ const cacheReturnObservable = (cacheInvalidationMs?: number) => (
 );
 
 @Injectable({providedIn: 'root'})
-export class ApiService {
+export class LajiApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 
   @cacheReturnObservable(604800000) // 1 week

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, } from 'rxjs/operators';
-import { ApiService } from '../../core/api.service';
+import { LajiApiService } from '../../core/api.service';
 
 @Component({
   selector: 'ba-species-index',
@@ -20,5 +20,5 @@ export class SpeciesIndexComponent {
     pageSize: 1000
   }).pipe(map(res => res.results));
 
-  constructor(private api: ApiService) {}
+  constructor(private api: LajiApiService) {}
 }
