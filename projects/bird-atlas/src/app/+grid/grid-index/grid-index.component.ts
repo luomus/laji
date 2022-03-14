@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
-import { of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
 import { AtlasApiService, AtlasGridQueryElem } from '../../core/atlas-api.service';
 
 @Component({

@@ -1,4 +1,5 @@
 <div class="container my-5">
+  <h1>Atlasruudut</h1>
   <p>{{ 'grid.grid-index' | translate }}</p>
   <!-- <a [routerLink]="['123']">grid-info</a> -->
   <ngx-datatable
@@ -9,6 +10,7 @@
     [cssClasses]="datatableClasses"
     [scrollbarV]="true"
     [messages]="{ emptyMessage: '' }"
+    [columnMode]="'flex'"
     (activate)="onActivate($event)"
   ></ngx-datatable>
 </div>
