@@ -6,6 +6,10 @@ import { Polygon } from 'geojson';
 import { GetPopupOptions } from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
 
+interface LajiMapData extends LajiMapDataOptions {
+  groupContainer: any;
+}
+
 @Component({
   selector: 'bsg-site-selection-map',
   templateUrl: './site-selection-map.component.html',
@@ -27,7 +31,7 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 
-  private data: LajiMapDataOptions;
+  private data: LajiMapData;
   private defaultColor = '#888';
   private partlyActiveColor = '#d1c400';
   private activeColor = '#00aa00';
@@ -39,22 +43,26 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.sites) {
-      this.data = this.getData(this.sites);
-    }
-    this.lajiMap?.setData(this.data || {});
-    if (changes.sites) {
-      this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
-    }
+      const data = this.getData(this.sites);
+      this.lajiMap?.setData(data || {});
 
-    const data = this.lajiMap?.map?.getData();
-    if (data?.length > 0) {
-      data[0].groupContainer.on('clusterclick', (event) => {
-        this.ngZone.run(() => {
-          const markers = event.layer.getAllChildMarkers();
-          const siteIds = markers.map(marker => marker.feature.properties.id);
-          this.addOrRemoveSites(siteIds);
+      this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
+
+      const lajiMapData = this.lajiMap?.map?.getData();
+      if (lajiMapData?.length > 0) {
+        this.data = lajiMapData[0];
+        this.data.groupContainer.on('clusterclick', (event) => {
+          this.ngZone.run(() => {
+            const markers = event.layer.getAllChildMarkers();
+            const siteIds = markers.map(marker => marker.feature.properties.id);
+            this.addOrRemoveSites(siteIds);
+          });
         });
-      });
+      } else {
+        this.data = null;
+      }
+    } else if (changes.selectedSites) {
+      this.data?.groupContainer.refreshClusters();
     }
   }
 
