@@ -11,5 +11,5 @@
   ></ngx-datatable>
   <h2>Kartta</h2>
   <div #lajiMap class="ba-laji-map my-4"></div>
-<!-- TODO create link: <a href="" target="_blank">Tulostettava ruutu karttapalvelussa</a> -->
+  <a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">Tulostettava ruutu karttapalvelussa</a>
 </div>
