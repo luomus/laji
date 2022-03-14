@@ -1,12 +1,30 @@
 <h1>{{ 'identification.siteSelection' | translate }}</h1>
 <p>
   {{ 'identification.siteSelection.description' | translate }}
+</p>
+<div class="mb-2">
   <button class="btn" [ngClass]="{'btn-default': !drawActive, 'btn-primary': drawActive}" (click)="selectByDrawingClick()">
     {{ 'identification.siteSelection.draw' | translate }}
   </button>
-</p>
-<bsg-site-selection-map
-  [sites]="sites"
-  [(selectedSites)]="selectedSites"
-  (selectedSitesChange)="onSelectedSitesChange()"
-></bsg-site-selection-map>
+  <div class="pull-right">
+    <button class="btn btn-success" [disabled]="selectedSiteIds?.length < 1" (click)="onConfirm()">
+      {{ 'identification.siteSelection.confirm' | translate }}
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-7 col-md-8 map-container">
+    <bsg-site-selection-map
+      [sites]="sites"
+      [height]="height"
+      [(selectedSites)]="selectedSiteIds"
+      (selectedSitesChange)="onSelectedSitesChange()"
+    ></bsg-site-selection-map>
+  </div>
+  <div class="col-xs-12 col-sm-5 col-md-4 table-container">
+    <bsg-site-table
+      [sites]="selectedSites"
+      [height]="height"
+    ></bsg-site-table>
+  </div>
+</div>

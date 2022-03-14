@@ -14,8 +14,11 @@ export class SiteSelectionViewComponent {
 
   @Output() siteSelect = new EventEmitter<number[]>();
 
-  selectedSites = [];
+  selectedSiteIds: number[] = [];
+  selectedSites: IGlobalSite[] = [];
   drawActive = false;
+
+  height = 'calc(100vh - 230px)';
 
   selectByDrawingClick() {
     this.drawActive = !this.drawActive;
@@ -30,5 +33,11 @@ export class SiteSelectionViewComponent {
     if (this.drawActive) {
       this.selectByDrawingClick();
     }
+
+    this.selectedSites = this.sites.filter(s => this.selectedSiteIds.includes(s.id));
+  }
+
+  onConfirm() {
+    this.siteSelect.emit(this.selectedSiteIds);
   }
 }

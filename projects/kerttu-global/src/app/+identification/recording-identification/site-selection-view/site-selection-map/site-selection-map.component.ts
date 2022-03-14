@@ -16,6 +16,7 @@ export class SiteSelectionMapComponent implements OnChanges {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @Input() sites: IGlobalSite[] = [];
   @Input() selectedSites: number[] = [];
+  @Input() height = '100%';
 
   mapOptions: LajiMapOptions = {
     tileLayerName: LajiMapTileLayerName.openStreetMap,
@@ -41,6 +42,9 @@ export class SiteSelectionMapComponent implements OnChanges {
       this.data = this.getData(this.sites);
     }
     this.lajiMap?.setData(this.data || {});
+    if (changes.sites) {
+      this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
+    }
 
     const data = this.lajiMap?.map?.getData();
     if (data?.length > 0) {
@@ -160,21 +164,26 @@ export class SiteSelectionMapComponent implements OnChanges {
   }
 
   private getSitesInsideRectangle(rect: Polygon): IGlobalSite[] {
-    const longtitudes = rect.coordinates[0].map(c => c[0]);
-    const latitudes = rect.coordinates[0].map(c => c[1]);
-    const lonMin = Math.min(...longtitudes);
-    const lonMax = Math.max(...longtitudes);
-    const latMin = Math.min(...latitudes);
-    const latMax = Math.max(...latitudes);
-
     return this.sites.reduce((res, site) => {
-      const [lon, lat] = site.geometry.coordinates;
-
-      if (lon >= lonMin && lon <= lonMax && lat >= latMin && lat <= latMax) {
+      if (this.pointIsInsideBox(site.geometry.coordinates, rect.coordinates[0])) {
         res.push(site);
       }
-
       return res;
     }, []);
   }
+
+  private pointIsInsideBox(point: number[], box: number[][]): boolean {
+    const bottomLeft = box[0];
+    const topRight = box[2];
+
+    // in case longitude 180 is inside the box
+    let longIsInRange = false;
+    if (topRight[1] < bottomLeft[1]) {
+      longIsInRange = point[1] >= bottomLeft[1] || point[1] <= topRight[1];
+    } else {
+      longIsInRange = point[1] >= bottomLeft[1] && point[1] <= topRight[1];
+    }
+    return point[0] >= bottomLeft[0] && point[0] <= topRight[0] && longIsInRange;
+  }
+
 }

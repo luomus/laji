@@ -1,5 +1,6 @@
-<div class="map-wrap">
+<div class="map-wrap" [style.height]="height">
   <laji-map
+    [loading]="!sites"
     [options]="mapOptions"
     (create)="onCreate($event)"
   ></laji-map>
