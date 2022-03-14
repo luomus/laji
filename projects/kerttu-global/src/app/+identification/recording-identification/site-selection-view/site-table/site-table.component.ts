@@ -1,5 +1,16 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  EventEmitter,
+  Output,
+  ViewChild,
+  TemplateRef,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
+import { DatatableColumn } from '../../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
   selector: 'bsg-site-table',
@@ -7,26 +18,51 @@ import { IGlobalSite } from '../../../../kerttu-global-shared/models';
   styleUrls: ['./site-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteTableComponent {
+export class SiteTableComponent implements OnInit {
+  @ViewChild('delete', { static: true }) deleteTpl: TemplateRef<any>;
+
   @Input() sites: IGlobalSite[] = [];
+  @Input() selectedSites: number[] = [];
   @Input() height = '100%';
 
-  columns = [
-    {
-      name: 'id',
-      label: 'Id',
-      width: 59
-    },
-    {
-      name: 'name',
-      label: 'Name',
-      width: 150
-    },
-    {
-      name: 'country',
-      label: 'Country',
-      width: 150
-    },
-  ];
+  columns: DatatableColumn[] = [];
+  data: IGlobalSite[] = [];
 
+  @Output() selectedSitesChange = new EventEmitter<number[]>();
+
+  ngOnInit() {
+    this.columns = [
+      {
+        name: 'id',
+        label: 'Id',
+        width: 50
+      },
+      {
+        name: 'name',
+        label: 'Name',
+        width: 100
+      },
+      {
+        name: 'country',
+        label: 'Country',
+        width: 100
+      },
+      {
+        cellTemplate: this.deleteTpl,
+        sortable: false,
+        width: 50
+      }
+    ];
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.sites || changes.selectedSites) {
+      this.data = (this.sites || []).filter(s => (this.selectedSites || []).includes(s.id));
+    }
+  }
+
+  onRemove(id: number) {
+    this.selectedSites = this.selectedSites.filter(siteId => siteId !== id);
+    this.selectedSitesChange.emit(this.selectedSites);
+  }
 }

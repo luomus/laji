@@ -7,7 +7,7 @@
     {{ 'identification.siteSelection.draw' | translate }}
   </button>
   <div class="pull-right">
-    <button class="btn btn-success" [disabled]="selectedSiteIds?.length < 1" (click)="onConfirm()">
+    <button class="btn btn-success" [disabled]="selectedSites?.length < 1" (click)="onConfirm()">
       {{ 'identification.siteSelection.confirm' | translate }}
     </button>
   </div>
@@ -17,14 +17,16 @@
     <bsg-site-selection-map
       [sites]="sites"
       [height]="height"
-      [(selectedSites)]="selectedSiteIds"
+      [(selectedSites)]="selectedSites"
       (selectedSitesChange)="onSelectedSitesChange()"
     ></bsg-site-selection-map>
   </div>
   <div class="col-xs-12 col-sm-5 col-md-4 table-container">
     <bsg-site-table
-      [sites]="selectedSites"
+      [sites]="sites"
       [height]="height"
+      [(selectedSites)]="selectedSites"
+      (selectedSitesChange)="onSelectedSitesChange()"
     ></bsg-site-table>
   </div>
 </div>
