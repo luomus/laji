@@ -14,6 +14,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { LajiApiClientModule } from '../../../laji-api-client/src/public-api';
 import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
+import { environment } from '../env/environment';
 
 @NgModule({
   imports: [
@@ -29,7 +30,7 @@ import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
     }),
     LocaleModule,
     BaRoutingModule,
-    LajiApiClientModule.forRoot(() => new Configuration({accessToken: undefined, apiKeys: {}, basePath: 'https://dev.laji.fi/api'}))
+    LajiApiClientModule.forRoot(() => new Configuration({accessToken: undefined, apiKeys: {}, basePath: environment.lajiApiBasePath}))
   ],
   exports: [
   ],

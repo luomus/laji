@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
 
 export type AtlasMap = any;
@@ -18,7 +19,7 @@ export interface AtlasGridQueryElem {
 };
 export type AtlasGridElement = any;
 
-const BASE_URL = 'https://atlas-api-dev.rahtiapp.fi/api/v1';
+const BASE_URL = environment.atlasApiBasePath;
 
 @Injectable({providedIn: 'root'})
 export class AtlasApiService {
