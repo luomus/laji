@@ -1,0 +1,26 @@
+<div class="map-wrap">
+  <laji-map
+    [loading]="!sites || !siteStats"
+    [options]="mapOptions"
+  >
+    <div class="legend">
+      <span class="cnt capitalize">
+        {{ 'results.sites' | translate }}
+      </span>
+      <span class="capitalize">
+        {{ 'results.annotations' | translate }}
+      </span>
+      <ul>
+        <li *ngFor="let leg of legendList">
+          <span [ngStyle]="{'background-color': leg.color}" class="color"></span>
+          {{ leg.label }}
+          <span class="cnt">{{ countByLegend[leg.label] || 0 }}</span>
+        </li>
+        <li>
+          {{ 'theme.total' | translate }}
+          <span class="cnt">{{ countByLegend['total'] }} {{ 'results.sites' | translate }}</span>
+        </li>
+      </ul>
+    </div>
+  </laji-map>
+</div>

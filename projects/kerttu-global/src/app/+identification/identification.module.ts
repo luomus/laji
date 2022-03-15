@@ -21,6 +21,7 @@ import { SiteSelectionMapComponent } from './recording-identification/site-selec
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { ExpertiseByContinentComponent } from './expertise/expertise-by-continent/expertise-by-continent.component';
 import { SiteTableComponent } from './recording-identification/site-selection-view/site-table/site-table.component';
+import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { SiteTableComponent } from './recording-identification/site-selection-vi
     SiteSelectionViewComponent,
     SiteSelectionMapComponent,
     ExpertiseByContinentComponent,
-    SiteTableComponent
+    SiteTableComponent,
+    SiteResultMapComponent
   ]
 })
 export class IdentificationModule { }

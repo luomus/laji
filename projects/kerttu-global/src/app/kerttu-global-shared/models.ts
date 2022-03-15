@@ -143,6 +143,11 @@ export interface IGlobalSite {
   geometry: Point;
 }
 
+export interface IIdentificationSiteStat {
+  siteId: number;
+  count: number;
+}
+
 export enum CommentType {
   replace = 0,
   reframe = 1

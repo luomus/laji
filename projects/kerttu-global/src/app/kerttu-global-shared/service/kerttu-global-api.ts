@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import {
   IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
   ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
-  IGlobalRecordingAnnotation, IGlobalSite
+  IGlobalRecordingAnnotation, IGlobalSite, IIdentificationSiteStat
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -135,6 +135,13 @@ export class KerttuGlobalApi {
 
     return this.httpClient.get<IListResult<IGlobalSite>>(path);
   }
+
+  public getIdentificationSiteStats(): Observable<IListResult<IIdentificationSiteStat>> {
+    const path = this.basePath + '/identification/statistics/sites';
+
+    return this.httpClient.get<IListResult<IIdentificationSiteStat>>(path);
+  }
+
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
     Object.keys(query).forEach(key => {

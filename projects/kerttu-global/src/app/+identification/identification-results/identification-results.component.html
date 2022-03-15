@@ -1,1 +1,7 @@
-<h1>{{ 'theme.kerttu.result' | translate }}</h1>
+<h1>{{ 'results.title' | translate }}</h1>
+
+<h3>{{ 'results.annotationCountMap' | translate }}</h3>
+<bsg-site-result-map
+  [sites]="sites$ | async"
+  [siteStats]="siteStats$ | async"
+></bsg-site-result-map>
