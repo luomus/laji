@@ -1,3 +1,11 @@
 .laji-page {
   padding: 20px 40px;
-}  
+}
+
+.marker-cluster.marker-cluster-empty {
+  background-color: rgba(211, 211, 211, 0.6);
+
+  > div {
+    background-color: rgb(169, 169, 169, 0.6);
+  }
+}

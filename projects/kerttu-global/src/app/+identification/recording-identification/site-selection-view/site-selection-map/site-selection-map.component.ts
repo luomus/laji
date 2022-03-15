@@ -5,6 +5,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Polygon } from 'geojson';
 import { GetPopupOptions } from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
+import * as L from 'leaflet';
 
 interface LajiMapData extends LajiMapDataOptions {
   groupContainer: any;
@@ -32,9 +33,6 @@ export class SiteSelectionMapComponent implements OnChanges {
   @Output() selectedSitesChange = new EventEmitter<number[]>();
 
   private data: LajiMapData;
-  private defaultColor = '#888';
-  private partlyActiveColor = '#d1c400';
-  private activeColor = '#00aa00';
 
   constructor(
     private translate: TranslateService,
@@ -95,7 +93,6 @@ export class SiteSelectionMapComponent implements OnChanges {
           });
         }
       },
-      getClusterStyle: this.getClusterStyle.bind(this),
       featureCollection: {
         type: 'FeatureCollection',
         features: (sites || []).map(site => ({
@@ -112,24 +109,30 @@ export class SiteSelectionMapComponent implements OnChanges {
         singleMarkerMode: true,
         maxClusterRadius: 20,
         zoomToBoundsOnClick: false,
+        spiderfyOnMaxZoom: false,
+        iconCreateFunction: this.iconCreateFunction.bind(this)
       },
       getPopup: this.getPopup.bind(this)
     };
   }
 
-  private getClusterStyle(count: number, indices: number[]) {
-    const sites = this.sites.filter((site, idx) => indices.includes(idx)).filter(
-      site => this.selectedSites?.includes(site.id)
-    );
+  private iconCreateFunction(cluster: any) {
+    const childCount = cluster.getChildCount();
+    const markers = cluster.getAllChildMarkers();
+    const sites = markers.map(marker => marker.feature.properties.id);
+    const selectedCount = sites.filter(siteId => this.selectedSites?.includes(siteId)).length;
 
-    const color = sites.length === count ? this.activeColor : sites.length > 0 ? this.partlyActiveColor : this.defaultColor;
+    let c = ' marker-cluster-';
+    if (selectedCount === 0) {
+      c += 'empty';
+    } else if (selectedCount < childCount) {
+      c += 'medium';
+    } else {
+      c += 'small';
+    }
 
-    return {
-      weight: 2,
-      opacity: 1,
-      fillOpacity: 0,
-      color
-    };
+    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>',
+      className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
