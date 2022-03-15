@@ -68,9 +68,9 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
       elem,
       rows: elem.data.map((d, idx) => ({
         idx: idx + 1,
-        species: d.speciesId,
-        code: d.atlasCode,
-        class: d.atlasClass
+        species: d.speciesName,
+        code: (<string>d.atlasCode.key).match(/[0-9]+/)?.[0] || null,
+        class: d.atlasClass.value
       }))
     })),
     tap(d => {
@@ -89,7 +89,8 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
       prop: 'idx',
       name: '#',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      width: 75
     },
     {
       prop: 'species',
@@ -101,13 +102,15 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
       prop: 'code',
       name: 'Indeksi',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      width: 75
     },
     {
       prop: 'class',
       name: 'Luokka',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      width: 225
     }
   ];
 
