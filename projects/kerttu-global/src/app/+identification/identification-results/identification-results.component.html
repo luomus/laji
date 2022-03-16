@@ -1,7 +1,33 @@
 <h1>{{ 'results.title' | translate }}</h1>
 
-<h3>{{ 'results.annotationCountMap' | translate }}</h3>
+<h2>{{ 'results.annotationCounts' | translate }}</h2>
+<div *ngIf="generalStats$ | async as stats; else spinner" class="row">
+  <div class="col-sm-4 stat-item">
+    <span class="stat-item-description">{{ 'results.userTable.annotationCount' | translate }}</span><br>
+    <span class="stat-item-value">{{ stats.annotationCount }}</span>
+  </div>
+  <div class="col-sm-4 stat-item">
+    <span class="stat-item-description">{{ 'results.userTable.speciesCount' | translate }}</span><br>
+    <span class="stat-item-value">{{ stats.speciesCount }}</span>
+  </div>
+  <div class="col-sm-4 stat-item">
+    <span class="stat-item-description">{{ 'results.userTable.drawnBoxesCount' | translate }}</span><br>
+    <span class="stat-item-value">{{ stats.drawnBoxesCount }}</span>
+  </div>
+</div>
+
+<h2>{{ 'results.annotationCountMap' | translate }}</h2>
 <bsg-site-result-map
   [sites]="sites$ | async"
   [siteStats]="siteStats$ | async"
 ></bsg-site-result-map>
+
+<h2>{{ 'results.userTable.title' | translate }}</h2>
+<bsg-identification-user-table
+  [data]="userStats$ | async"
+  [userId]="userId$ | async"
+></bsg-identification-user-table>
+
+<ng-template #spinner>
+  <laji-spinner></laji-spinner>
+</ng-template>

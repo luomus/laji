@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalSite, IIdentificationSiteStat } from '../../kerttu-global-shared/models';
-import { map } from 'rxjs/operators';
+import { IGlobalSite, IIdentificationSiteStat, IIdentificationStat, IIdentificationUserStat } from '../../kerttu-global-shared/models';
+import { map, share } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-identification-results',
@@ -13,9 +14,13 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 export class IdentificationResultsComponent implements OnInit {
   sites$: Observable<IGlobalSite[]>;
   siteStats$: Observable<IIdentificationSiteStat[]>;
+  userStats$: Observable<IIdentificationUserStat[]>;
+  generalStats$: Observable<IIdentificationStat>;
+  userId$: Observable<string>;
 
   constructor(
-    private kerttuGlobalApi: KerttuGlobalApi
+    private kerttuGlobalApi: KerttuGlobalApi,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -25,6 +30,29 @@ export class IdentificationResultsComponent implements OnInit {
     this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats().pipe(
       map(result => result.results)
     );
+    this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats().pipe(
+      map(result => result.results),
+      share()
+    );
+    this.generalStats$ = this.userStats$.pipe(map(stats => this.generalStatsFromUserStats(stats)));
+    this.userId$ = this.userService.user$.pipe(map(user => user?.id));
   }
 
+  private generalStatsFromUserStats(userList: IIdentificationUserStat[]): IIdentificationStat {
+    let annotationCount = 0;
+    let speciesCount = 0;
+    let drawnBoxesCount = 0;
+
+    userList.forEach(userStat => {
+      annotationCount += userStat.annotationCount;
+      speciesCount += userStat.speciesCount;
+      drawnBoxesCount += userStat.drawnBoxesCount;
+    });
+
+    return {
+      annotationCount,
+      speciesCount,
+      drawnBoxesCount
+    };
+  }
 }

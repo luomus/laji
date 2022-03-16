@@ -148,6 +148,17 @@ export interface IIdentificationSiteStat {
   count: number;
 }
 
+export interface IIdentificationStat {
+  annotationCount: number;
+  speciesCount: number;
+  drawnBoxesCount: number;
+}
+
+export interface IIdentificationUserStat extends IIdentificationStat {
+  userId: string;
+}
+
+
 export enum CommentType {
   replace = 0,
   reframe = 1
