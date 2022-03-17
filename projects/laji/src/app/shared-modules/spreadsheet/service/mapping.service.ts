@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
-import { CoordinateService } from '../../../shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature, CoordinateService } from '../../../shared/service/coordinate.service';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
 import { Util } from '../../../shared/service/util.service';
@@ -428,7 +428,7 @@ export class MappingService {
         const ykjParts = value.split(':');
         if (ykjParts[0].length === ykjParts[1].length) {
           try {
-            return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+            return convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
           } catch (e) {}
         }
       } else if (value.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {

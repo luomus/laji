@@ -1,6 +1,38 @@
 import { Injectable } from '@angular/core';
 import * as MapUtil from 'laji-map/lib/utils';
 
+const pad = (value) => {
+  value = '' + value;
+  return value + '0000000'.slice(value.length);
+};
+
+const convertYkjToWgs = (latLng: [string, string]): [string, string] => (
+  MapUtil.convertLatLng([+latLng[0], +latLng[1]], 'EPSG:2393', 'WGS84')
+);
+
+export const convertYkjToGeoJsonFeature = (origLat: any, origLng: any, properties: {[k: string]: any} = {}) => {
+  const lat = parseInt(origLat, 10);
+  const lng = parseInt(origLng, 10);
+  const latStart = pad(lat);
+  const latEnd = pad(lat + 1);
+  const lonStart = pad(lng);
+  const lonEnd = pad(lng + 1);
+  return {
+    type: 'Feature',
+    properties,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [([
+        [latStart, lonStart],
+        [latStart, lonEnd],
+        [latEnd, lonEnd],
+        [latEnd, lonStart],
+        [latStart, lonStart],
+      ] as [string, string][]).map((latLng: [string, string]) => convertYkjToWgs(latLng).reverse())],
+      coordinateVerbatim: origLat + ':' + origLng
+    }
+  };
+};
 @Injectable({providedIn: 'root'})
 export class CoordinateService {
 
@@ -57,32 +89,8 @@ export class CoordinateService {
         ]]
       };
     } else if (system === 'YKJ' && parts.length === 2) {
-      return this.convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
+      return convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
     }
-  }
-
-  convertYkjToGeoJsonFeature(origLat: any, origLng: any, properties: {[k: string]: any} = {}) {
-    const lat = parseInt(origLat, 10);
-    const lng = parseInt(origLng, 10);
-    const latStart = this.pad(lat);
-    const latEnd = this.pad(lat + 1);
-    const lonStart = this.pad(lng);
-    const lonEnd = this.pad(lng + 1);
-    return {
-      type: 'Feature',
-      properties,
-      geometry: {
-        type: 'Polygon',
-        coordinates: [([
-          [latStart, lonStart],
-          [latStart, lonEnd],
-          [latEnd, lonEnd],
-          [latEnd, lonStart],
-          [latStart, lonStart],
-        ] as [string, string][]).map((latLng: [string, string]) => this.convertYkjToWgs(latLng).reverse())],
-        coordinateVerbatim: origLat + ':' + origLng
-      }
-    };
   }
 
   /**
@@ -97,14 +105,5 @@ export class CoordinateService {
    */
   convertEtrsToWgs(lat: any, lng: any) {
     return MapUtil.convertLatLng([lat, lng], 'EPSG:3067', 'WGS84');
-  }
-
-  private convertYkjToWgs(latLng: [string, string]): [string, string] {
-    return MapUtil.convertLatLng([+latLng[0], +latLng[1]], 'EPSG:2393', 'WGS84');
-  }
-
-  private pad(value) {
-    value = '' + value;
-    return value + '0000000'.slice(value.length);
   }
 }

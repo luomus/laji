@@ -2,7 +2,7 @@ import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
-import { CoordinateService } from '../../../../shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature, CoordinateService } from '../../../../shared/service/coordinate.service';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 
@@ -143,7 +143,7 @@ export class ResultService {
   private _resultToGeoJson(data) {
     const features = [];
     data.map(result => {
-      features.push(this.coordinateService.convertYkjToGeoJsonFeature(
+      features.push(convertYkjToGeoJsonFeature(
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],
         {

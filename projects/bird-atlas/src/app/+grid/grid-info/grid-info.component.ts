@@ -2,47 +2,16 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, 
 import { ActivatedRoute } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import LajiMap, { TileLayerName } from 'laji-map';
-import * as MapUtil from 'laji-map/lib/utils';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { AtlasApiService } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
+import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/shared/service/coordinate.service';
 
-function convertYkjLatLngToWgsLngLat(latLng: [any, any]): [number, number] {
-  return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse();
-}
-
-function pad(value) {
-  value = '' + value;
-  return value + '0000000'.slice(value.length);
-}
-
-function getGeoJSONFeature(ykj: string): GeoJSON.Feature | null {
+function getGeoJSONFeature(ykj: string) {
   const langLngStr = ykj.split(':');
-  const lat = parseInt(langLngStr[0], 10);
-  const lng = parseInt(langLngStr[1], 10);
-  if (isNaN(lat) || isNaN(lng)) {
-    return null;
-  }
-  const latStart = pad(lat);
-  const latEnd = pad(lat + 1);
-  const lonStart = pad(lng);
-  const lonEnd = pad(lng + 1);
-  return {
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      type: 'Polygon',
-      coordinates: [([
-        [latStart, lonStart],
-        [latStart, lonEnd],
-        [latEnd, lonEnd],
-        [latEnd, lonStart],
-        [latStart, lonStart],
-      ] as [string, string][]).map(convertYkjLatLngToWgsLngLat)]
-    }
-  };
+  return convertYkjToGeoJsonFeature(langLngStr[0], langLngStr[1]);
 }
 
 @Component({
