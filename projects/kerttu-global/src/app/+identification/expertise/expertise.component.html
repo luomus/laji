@@ -9,17 +9,25 @@
 </div>
 <div class="row mb-4">
   <div class="col-sm-12">
-    <label>{{ 'expertise.activity' | translate }}</label>
-    <select class="form-control" style="width: auto">
-      <option></option>
-      <option *ngFor="let idx of [1, 2, 3, 4]">
-        {{ ('expertise.activity.option' + idx) | translate }}
-      </option>
-    </select>
+    <label for="birdwatchingActivityLevel">
+      {{ 'theme.kerttu.expertise.birdwatchingActivityLevel' | translate }}
+    </label>
+    <laji-metadata-select
+      [(ngModel)]="birdwatchingActivityLevel"
+      [multiple]="false"
+      [useFilter]="false"
+      name="birdwatchingActivityLevel"
+      id="birdwatchingActivityLevel"
+      [alt]="'MA.birdwatchingActivityLevelEnum'"
+      [selectStyle]="basicSelectStyle"
+      [disabled]="birdwatchingActivityLevel === undefined || saving"
+    ></laji-metadata-select>
   </div>
 </div>
 <button
   class="btn btn-success"
+  (click)="save()"
+  [disabled]="saving"
 >
   {{ 'save' | translate }}
 </button>

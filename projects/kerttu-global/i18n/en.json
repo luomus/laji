@@ -97,10 +97,5 @@
   "expertise.identification.option1": "I can hardly recognize any bird sounds",
   "expertise.identification.option2": "I can recognize the most common songbirds",
   "expertise.identification.option3": "I can recognize majority of the breeding birds and most common passage migrants",
-  "expertise.identification.option4": "I can recognize majority of the bird species",
-  "expertise.activity": "How actively do you engage in birdwatching?",
-  "expertise.activity.option1": "I'm not a birdwatcher",
-  "expertise.activity.option2": "I watch birds occasionally",
-  "expertise.activity.option3": "I watch birds actively and regularly",
-  "expertise.activity.option4": "I am bird researcher or professional birdwatcher"
+  "expertise.identification.option4": "I can recognize majority of the bird species"
 }

@@ -23,6 +23,7 @@ import { ExpertiseByContinentComponent } from './expertise/expertise-by-continen
 import { SiteTableComponent } from './recording-identification/site-selection-view/site-table/site-table.component';
 import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
 import { IdentificationUserTableComponent } from './identification-results/identification-user-table/identification-user-table.component';
+import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { IdentificationUserTableComponent } from './identification-results/ident
     AudioViewerModule,
     TypeaheadModule,
     DatatableModule,
-    LajiMapModule
+    LajiMapModule,
+    SelectModule
   ],
   declarations: [
     IdentificationComponent,
