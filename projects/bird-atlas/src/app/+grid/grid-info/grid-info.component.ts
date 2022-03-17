@@ -29,10 +29,6 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   data$ = this.route.paramMap.pipe(
     tap(() => this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined)),
     switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
-    catchError(err => {
-      console.error(err);
-      return of({id: 'test'});
-    }),
     map(elem => ({
       elem,
       rows: elem.data.map((d, idx) => ({
