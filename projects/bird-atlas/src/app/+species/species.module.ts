@@ -8,6 +8,7 @@ import { SpeciesInfoComponent } from './species-info/species-info.component';
 import { RouterModule } from '@angular/router';
 import { SpeciesComponent } from './species.component';
 import { LangModule } from '../../../../laji/src/app/shared-modules/lang/lang.module';
+import { SpinnerModule } from '../../../../laji/src/app/shared-modules/spinner/spinner.module';
 
 @NgModule({
   declarations: [SpeciesIndexComponent, SpeciesInfoComponent, SpeciesComponent],
@@ -16,7 +17,8 @@ import { LangModule } from '../../../../laji/src/app/shared-modules/lang/lang.mo
     CommonModule,
     TranslateModule,
     RouterModule,
-    LangModule
+    LangModule,
+    SpinnerModule
   ]
 })
 export class SpeciesModule { }
