@@ -1,5 +1,5 @@
 <ng-container *ngIf="data$ | async; let data">
-  <h1>{{ data.taxon.vernacularName | multiLang }} ({{ data.taxon.scientificName }})</h1>
+  <h1>{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
   <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
 <!-- <div>kyhmyjoutsen, metsähanhi (navigaatio)</div> -->
   <div class="map-container" [innerHtml]="data.map"></div>

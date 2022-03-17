@@ -9,6 +9,8 @@ import { LajiApiService } from '../../core/api.service';
 import { AtlasApiService } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 
+const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.substring(1);
+
 @Component({
   selector: 'ba-species-info',
   templateUrl: './species-info.component.html',
@@ -54,6 +56,10 @@ export class SpeciesInfoComponent {
   getForeignVernacularNames(taxon: Taxon) {
     return ['fi', 'sv', 'en'].filter(
       lang => lang !== this.translate.currentLang
-    ).map(lang => taxon.vernacularName[lang]).join(', ');
+    ).map(
+      lang => capitalize(taxon.vernacularName[lang])
+    ).join(', ');
   }
+
+  capitalize(str: string): string { return capitalize(str); }
 }
