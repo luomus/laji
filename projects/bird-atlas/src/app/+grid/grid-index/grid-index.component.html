@@ -2,10 +2,10 @@
   <h1>Atlasruudut</h1>
   <p>{{ 'grid.grid-index' | translate }}</p>
   <!-- <a [routerLink]="['123']">grid-info</a> -->
-  <ngx-datatable
+  <ngx-datatable *ngIf="rows$ | async; else loading; let rows"
     class="material"
     [rowHeight]="35"
-    [rows]="rows$ | async"
+    [rows]="rows"
     [columns]="cols"
     [cssClasses]="datatableClasses"
     [scrollbarV]="true"
@@ -13,4 +13,7 @@
     [columnMode]="'flex'"
     (activate)="onActivate($event)"
   ></ngx-datatable>
+  <ng-template #loading>
+    <laji-spinner></laji-spinner>
+  </ng-template>
 </div>
