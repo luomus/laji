@@ -15,6 +15,7 @@ import { DialogService } from '../../../../../laji/src/app/shared/service/dialog
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, Observable, of } from 'rxjs';
 import equals from 'deep-equal';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -37,8 +38,6 @@ export class RecordingIdentificationComponent implements OnInit {
   hasError = false;
 
   selectedSites?: number[];
-  private selectedSitesSubject = new Subject<number[]>();
-  selectedSites$ = this.selectedSitesSubject.asObservable();
 
   private originalAnnotation: IGlobalRecordingAnnotation;
 
@@ -46,6 +45,8 @@ export class RecordingIdentificationComponent implements OnInit {
     private kerttuGlobalApi: KerttuGlobalApi,
     private userService: UserService,
     private dialogService: DialogService,
+    private route: ActivatedRoute,
+    private router: Router,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -55,7 +56,11 @@ export class RecordingIdentificationComponent implements OnInit {
       map(result => result.results)
     );
 
-    this.selectedSites$.subscribe(siteIds => {
+    this.route.queryParams.pipe(
+      map(data => (
+        data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id))
+      ),
+    ).subscribe(siteIds => {
       this.selectedSites = siteIds;
 
       if (this.selectedSites?.length > 0) {
@@ -88,14 +93,18 @@ export class RecordingIdentificationComponent implements OnInit {
     return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'));
   }
 
-  onSiteSelect(siteIds?: number[]) {
-    this.selectedSitesSubject.next(siteIds);
+  onSiteSelect(siteIds: number[]) {
+    const queryParams = {};
+    if (siteIds?.length > 0) {
+      queryParams['siteId'] = siteIds.sort().join(',');
+    }
+    this.router.navigate([], {queryParams});
   }
 
   goBackToSiteSelection() {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
-        this.onSiteSelect(null);
+        this.onSiteSelect([]);
       }
     });
   }
