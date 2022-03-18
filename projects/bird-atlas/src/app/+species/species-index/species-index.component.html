@@ -1,5 +1,5 @@
-<h1>Lajit</h1>
-<p [innerHtml]="'species.species-index.p' | translate"></p>
+<h1 translate>ba.species-index.title</h1>
+<p [innerHtml]="'ba.species-index.p' | translate"></p>
 <ul *ngIf="speciesList$ | async; else loading; let speciesList">
   <li *ngFor="let species of speciesList"><a [routerLink]="[species.id]">{{ species.vernacularName }}</a></li>
 </ul>

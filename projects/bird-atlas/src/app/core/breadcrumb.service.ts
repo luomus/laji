@@ -24,11 +24,11 @@ export class BreadcrumbService implements OnDestroy {
   private currentStack: BreadcrumbId[] = [];
   private breadcrumbLookup: Record<BreadcrumbId, IBreadcrumb> = {
     [BreadcrumbId.Home]: {
-      translateId: 'breadcrumbs.home',
+      translateId: 'ba.breadcrumbs.home',
       link: ['']
     },
     [BreadcrumbId.SpeciesIndex]: {
-      translateId: 'breadcrumbs.speciesIndex',
+      translateId: 'ba.breadcrumbs.speciesIndex',
       link: ['species']
     },
     [BreadcrumbId.SpeciesInfo]: {
@@ -36,7 +36,7 @@ export class BreadcrumbService implements OnDestroy {
       link: ['species']
     },
     [BreadcrumbId.GridIndex]: {
-      translateId: 'breadcrumbs.gridIndex',
+      translateId: 'ba.breadcrumbs.gridIndex',
       link: ['grid']
     },
     [BreadcrumbId.GridInfo]: {
