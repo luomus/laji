@@ -15,11 +15,20 @@ const MAIN_TITLE = (() => {
       return 'iucn.page.title';
     case Global.type.vir:
       return 'vir.page.title';
+    case Global.type.birdAtlas:
+      return 'ba.header.title';
     default:
       return 'home.main-page.title';
   }
 })();
-const MAIN_DESCRIPTION = 'footer.intro1';
+const MAIN_DESCRIPTION = (() => {
+  switch (environment.type) {
+    case Global.type.birdAtlas:
+      return 'ba.header.description';
+    default:
+      return 'footer.intro1';
+  }
+})();
 const MAIN_IMAGE = 'https://cdn.laji.fi/images/logos/LAJI_FI_valk.png';
 
 interface ILinkElement {

@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxon } from 'projects/laji-api-client/src/public-api';
+import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { LajiApiService } from '../../core/api.service';
@@ -41,6 +42,9 @@ export class SpeciesInfoComponent {
         BreadcrumbId.SpeciesInfo,
         name.charAt(0).toUpperCase() + name.substring(1)
       );
+      this.headerService.setHeaders({
+        title: `${capitalize(data.taxon.vernacularName[this.translate.currentLang])} | ${this.translate.instant('ba.header.title')}`
+      });
     })
   );
 
@@ -50,7 +54,8 @@ export class SpeciesInfoComponent {
     private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private atlasApi: AtlasApiService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private headerService: HeaderService
   ) {}
 
   getForeignVernacularNames(taxon: Taxon) {

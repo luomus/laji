@@ -8,6 +8,8 @@ import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operato
 import { AtlasApiService } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/shared/service/coordinate.service';
+import { TranslateService } from '@ngx-translate/core';
+import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 
 function getGeoJSONFeature(ykj: string) {
   const langLngStr = ykj.split(':');
@@ -43,10 +45,11 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         BreadcrumbId.GridInfo,
         d.elem.coordinates
       );
-    }),
-    tap(d => {
+      this.headerService.setHeaders({
+        title: `${d.elem.name} ${d.elem.coordinates} | ${this.translate.instant('ba.header.title')}`
+      });
       this.loadMap$.next(d.elem.coordinates);
-    })
+    }),
   );
 
   cols: TableColumn[] = [
@@ -86,7 +89,9 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     private zone: NgZone,
     private atlasApi: AtlasApiService,
     private route: ActivatedRoute,
-    private breadcrumbs: BreadcrumbService
+    private breadcrumbs: BreadcrumbService,
+    private translate: TranslateService,
+    private headerService: HeaderService
   ) {}
 
   ngAfterViewInit(): void {

@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import { LajiApiClientModule } from '../../../laji-api-client/src/public-api';
 import { Configuration } from 'projects/laji-api-client/src/lib/configuration';
 import { environment } from '../env/environment';
+import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import { environment } from '../env/environment';
   ],
   exports: [
   ],
-  providers: [],
+  providers: [LocalizeRouterService],
   bootstrap: [AppComponent],
   declarations: [AppComponent, NotFoundComponent, NavbarComponent, LocalizePipe, FooterComponent]
 })

@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
+import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 
 @Component({
   selector: 'ba-app',
@@ -31,7 +32,13 @@ import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$.pipe(tap(() => this.cdr.detectChanges()));
 
-  constructor(translate: TranslateService, private breadcrumbs: BreadcrumbService, private cdr: ChangeDetectorRef) {
+  constructor(
+    translate: TranslateService,
+    private breadcrumbs: BreadcrumbService,
+    private cdr: ChangeDetectorRef,
+    private headerService: HeaderService
+  ) {
+    this.headerService.initialize();
     translate.use('fi');
   }
 
