@@ -21,7 +21,7 @@
   "result.load.error.minQuery": "Data ska filtreras av minst en filter.",
   "result.load.intro": "Din avgränsning täcker {{count}} observationer av {{species}} arter.",
   "result.load.introPublic": "En omfattande nedladdning av observationsdata ger en fil med all information som kan laddas ner från Artdatacenters datalager. Skapandet av filen kan ta lite tid om det finns många observationer. När filen är färdig kan den laddas ner under \"Mina egna nedladdningar av observationsdata\" i avsnittet \"Användning av data\". Data finns tillgängligt i TSV-, Shapefile- och GeoPackage-filformat.",
-  "result.load.introSimple": "Producerar en tydlig tabell med de data du väljer (TSV, Excel eller OpenOffice).<br><strong>Fördelar:</strong> Snabb, enkel och tydlig, den filtyp du väljer.<br><strong>Nackdelar:</strong> Omfattar inte all information som bifogas observationen, begränsad storlek.",
+  "result.load.introSimple": "Ladda ner data från valda kolumner som en kalkylarkfil (TSV, Excel eller OpenOffice) eller i GIS dataformat (.shp eller .gpkg). Den här nedladdningen innehåller inte all information relaterad till observationen, bara de kolumner du valt kommer att visas i resultattavlan. ",
   "result.load.thanksPublic": "Tack, filen kommer att vara tillgänglig för nedladdning ett tag i avsnittet \"Mina nedladdningar av observationsdata\".",
   "result.load.titleSimple": "Observationer: enkel tabell",
   "search.result.load": "Ladda ner data",
