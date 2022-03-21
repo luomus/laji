@@ -194,7 +194,7 @@ export class ObservationFacade {
       tap(countTaxa => this.updateState({..._state, loadingTaxa: false, countTaxa})),
       catchError(() => this.count(
         this.warehouseApi.warehouseQueryAggregateGet(
-          {...query, includeNonValidTaxa: false},
+          {...query},
           ['unit.linkings.taxon.speciesId'], [], 1, 1
         ),
         'loadingTaxa',

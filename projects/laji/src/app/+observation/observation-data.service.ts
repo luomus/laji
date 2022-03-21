@@ -79,7 +79,7 @@ export class ObservationDataService {
   private getGraphQuery(query: WarehouseQueryInterface): DocumentNode {
     const queryParams = [];
     const unitValues = [];
-    const speciesValues = ['aggregateBy: "unit.linkings.taxon.speciesId"', 'includeNonValidTaxa: false'];
+    const speciesValues = ['aggregateBy: "unit.linkings.taxon.speciesId"'];
     const privateValues = [];
 
     this.searchQueryService.forEachType({
