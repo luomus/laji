@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'projects/bird-atlas/src/env/environment';
 import { Taxon } from 'projects/laji-api-client/src/public-api';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, of } from 'rxjs';
@@ -65,6 +66,10 @@ export class SpeciesInfoComponent {
       lang => capitalize(taxon.vernacularName[lang])
     ).join(', ');
   }
+
+  getMapDownloadUrl(id: string) {
+    return `${environment.atlasApiBasePath}/map/${id}/atlas?lang=${this.translate.currentLang}&scaling=0`;
+  };
 
   capitalize(str: string): string { return capitalize(str); }
 }
