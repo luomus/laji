@@ -27,19 +27,19 @@ export class AtlasApiService {
 
   @cacheReturnObservable()
   getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
-    const url = BASE_URL + `/map/${speciesId}/atlas`;
+    const url = `${BASE_URL}/map/${speciesId}/atlas`;
     return this.http.get(url, {responseType: 'text', params: {lang, scaling: 0}});
   }
 
   @cacheReturnObservable()
   getGrid(): Observable<AtlasGridQueryElem[]> {
-    const url = BASE_URL + `/grid`;
+    const url = `${BASE_URL}/grid`;
     return <Observable<AtlasGridQueryElem[]>>this.http.get(url);
   }
 
   @cacheReturnObservable()
   getGridElement(gridId: string): Observable<AtlasGridElement> {
-    const url = BASE_URL + `/grid/${gridId}/atlas`;
+    const url = `${BASE_URL}/grid/${gridId}/atlas`;
     return this.http.get(url);
   }
 }
