@@ -107,6 +107,9 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
+          <alert *ngIf="gisDownloadLimit < unitCount">
+            <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+          </alert>
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
             [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"

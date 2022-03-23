@@ -982,6 +982,7 @@
   "observation.download.wip": "Tulossa<br><br>Viranomaisille tai muille aineistojen omistajille voi toistaiseksi tehdä aineiston luovutuspyynnön nykyisten käytäntöjen tapaan.",
   "observation.export.tooLittle": "Ei havaintoja, joita voisit ladata.",
   "observation.export.tooMany": "Liian paljon havaintoja. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
+  "observation.export.tooManyForGisDownload": "Liian paljon havaintoja paikkatietomutoiseen aineistolataukseen (Shapefile ja GeoPackage formaatit). Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>.",
   "observation.export.tooManySpecies": "Liian paljon taksoneita. Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>, joten rajaa hakua lisää.",
   "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
   "observation.filterBy.collectionId": "Aineistot ja kokoelmat",

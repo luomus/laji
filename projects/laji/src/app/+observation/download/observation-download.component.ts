@@ -38,7 +38,7 @@ import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
-import { FileFormat, GeoConvertService } from '../../shared/service/geo-convert.service';
+import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService } from '../../shared/service/geo-convert.service';
 import { WINDOW } from '@ng-toolkit/universal';
 
 
@@ -89,6 +89,8 @@ export class ObservationDownloadComponent implements OnDestroy {
   linkTimeout: any;
 
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
+
+  gisDownloadLimit = GEO_CONVERT_LIMIT;
 
   private _originalSelected: string[];
   private _settings: ISettingResultList;
