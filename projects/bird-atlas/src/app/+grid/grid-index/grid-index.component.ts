@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { AtlasApiService, AtlasGridQueryElem } from '../../core/atlas-api.service';
 
 type DatatableRow = any;
@@ -36,10 +36,6 @@ export class GridIndexComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService) {}
 
   ngOnInit(): void {
-    this.atlasApi.getGrid().subscribe(g => {
-      this.rows = g;
-      this.filteredRows$.next(this.rows);
-    });
     this.search$.pipe(
       debounceTime(200),
       takeUntil(this.unsubscribe$)
@@ -50,6 +46,10 @@ export class GridIndexComponent implements OnInit, OnDestroy {
           r => (r.name + r.coordinates).toLowerCase().includes(filterStr)
         )
       );
+    });
+    this.atlasApi.getGrid().subscribe(g => {
+      this.rows = g;
+      this.search$.next('');
     });
   }
 
