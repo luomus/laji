@@ -4,6 +4,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, mergeMap, first, map } from 'rxjs/operators';
 import { UserService } from './user.service';
 
+export const GEO_CONVERT_LIMIT = 100000;
+
 export enum FileFormat {
   shp = 'shp',
   gpkg = 'gpkg'
