@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { Subject } from 'rxjs';
@@ -21,19 +22,28 @@ export class GridIndexComponent implements OnInit, OnDestroy {
 
   cols: TableColumn[] = [{
     prop: 'coordinates',
-    name: 'YKJ',
+    name: this.translate.instant('ba.grid-index.coordinates'),
     resizeable: false,
-    sortable: true
+    sortable: true,
+    width: 75
   }, {
     prop: 'name',
-    name: 'Nimi',
+    name: this.translate.instant('ba.grid-index.name'),
     resizeable: false,
-    sortable: true
-  }];
+    sortable: true,
+    width: 200
+  }, {
+    prop: 'birdAssociationArea.value',
+    name: this.translate.instant('ba.grid-index.birdAssociationArea'),
+    resizeable: false,
+    sortable: true,
+    width: 350
+  }
+  ];
   filteredRows$ = new Subject<DatatableRow[]>();
   datatableClasses = datatableClasses;
 
-  constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService, private translate: TranslateService) {}
 
   ngOnInit(): void {
     this.search$.pipe(
@@ -43,7 +53,7 @@ export class GridIndexComponent implements OnInit, OnDestroy {
       const filterStr = s.toLowerCase();
       this.filteredRows$.next(
         this.rows.filter(
-          r => (r.name + r.coordinates).toLowerCase().includes(filterStr)
+          r => (r.name + r.coordinates + r.birdAssociationArea.value).toLowerCase().includes(filterStr)
         )
       );
     });
