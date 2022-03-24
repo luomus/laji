@@ -1,4 +1,5 @@
 <div *ngIf="data$ | async; let data" class="container my-5">
+<ng-container *ngIf="data.status === 200; else notFound">
   <h1>{{ data.elem.name }}</h1>
   <h3 class="mb-7">({{ data.elem.coordinates }})</h3>
   <ngx-datatable
@@ -13,4 +14,13 @@
   <h2 translate>ba.grid-info.map</h2>
   <div #lajiMap class="ba-laji-map my-4"></div>
   <a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">Tulostettava ruutu karttapalvelussa</a>
+</ng-container>
+<ng-template #notFound>
+  <ng-container *ngIf="data.status === 404; else error">
+    <h1 translate>ba.grid-info.notFound</h1>
+  </ng-container>
+</ng-template>
+<ng-template #error>
+  <h1 translate>ba.grid-info.error</h1>
+</ng-template>
 </div>

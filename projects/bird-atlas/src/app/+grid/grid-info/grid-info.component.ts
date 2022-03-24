@@ -31,16 +31,26 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   data$ = this.route.paramMap.pipe(
     tap(() => this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined)),
     switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
-    map(elem => ({
+    catchError(err => {
+      console.log(err);
+      return of(undefined);
+    }),
+    map(elem => elem ? {
       elem,
       rows: elem.data.map((d, idx) => ({
         idx: idx + 1,
         species: d.speciesName,
         code: (<string>d.atlasCode.key).match(/[0-9]+/)?.[0] || null,
         class: d.atlasClass.value
-      }))
-    })),
+      })),
+      status: 200
+    } : {
+      elem: undefined,
+      rows: [],
+      status: 404
+    }),
     tap(d => {
+      if (!d.elem) { return; }
       this.breadcrumbs.setBreadcrumbName(
         BreadcrumbId.GridInfo,
         d.elem.coordinates

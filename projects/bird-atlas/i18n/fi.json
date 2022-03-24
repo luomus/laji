@@ -16,10 +16,12 @@
   "ba.species-index.p": "Tulospalvelussa on mukana säännöllisesti tai satunnaisesti Suomessa pesivät lajit. Lintuatlaksessa käytetyt lajien tieteelliset nimet ja lajien järjestys noudattavat BirdLife Suomen käyttämää systematiikkaa.\nSensitiivisimpien lajien esiintymistieto on suojelusyistä keskitetty 25 tai 50 km ruutuihin. <a href='https://laji.fi/about/709'>Lue lisää sensitiivisen lajitiedon käsittelystä</a>.",
   "ba.species-info.downloadSvg": "Avaa svg tiedosto",
   "ba.species-info.lajiMap": "Havainnot Laji.fi:ssa",
-  "ba.grid-info.map": "Kartta",
   "ba.grid-index.title": "Atlasruudut",
   "ba.grid-index.p": "Lintuatlaksessa selvitetään pesimälinnusto kustakin Suomen 10 km yhtenäiskoordinaatistoruudusta. Ruutuja on yhteensä 3859 kpl. Voit järjestää taulukon sarakeotsikoita klikkaamalla.",
   "ba.grid-index.coordinates": "YKJ",
   "ba.grid-index.name": "Nimi",
-  "ba.grid-index.birdAssociationArea": "Lintuyhdistys"
+  "ba.grid-index.birdAssociationArea": "Lintuyhdistys",
+  "ba.grid-info.map": "Kartta",
+  "ba.grid-info.notFound": "Ruutua ei ole olemassa.",
+  "ba.grid-info.error": "Ruudun lataamisessa tapahtui virhe."
 }
