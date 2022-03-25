@@ -1,28 +1,37 @@
 <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
 <ng-container *ngIf="!hasError">
-  <ng-container *lajiRequiresAudioSupport>
-    <bsg-site-selection-view
-      *ngIf="(!selectedSites || selectedSites.length === 0) else identificationView"
-      [sites]="sites$ | async"
-      (siteSelect)="onSiteSelect($event)"
-    ></bsg-site-selection-view>
+  <laji-spinner [spinning]="expertiseMissing == null">
+    <ng-container *ngIf="expertiseMissing != null">
+      <ng-container *ngIf="!expertiseMissing else expertiseMissingText">
+        <ng-container *lajiRequiresAudioSupport>
+          <bsg-site-selection-view
+            *ngIf="(!selectedSites || selectedSites.length === 0) else identificationView"
+            [sites]="sites$ | async"
+            (siteSelect)="onSiteSelect($event)"
+          ></bsg-site-selection-view>
 
-    <ng-template #identificationView>
-      <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
-        <bsg-identification-view
-          *ngIf="firstRecordingLoaded"
-          [recording]="recording"
-          [(annotation)]="annotation"
-          [statusInfo]="statusInfo"
-          [buttonsAreDisabled]="loading"
-          (nextRecordingClick)="getNextRecording()"
-          (previousRecordingClick)="getPreviousRecording()"
-          (saveClick)="save()"
-          (annotationChange)="onAnnotationChange()"
-          (backToSiteSelectionClick)="goBackToSiteSelection()"
-        ></bsg-identification-view>
-      </laji-spinner>
-    </ng-template>
-  </ng-container>
+          <ng-template #identificationView>
+            <laji-spinner [spinning]="loading || !firstRecordingLoaded" [overlay]="true">
+              <bsg-identification-view
+                *ngIf="firstRecordingLoaded"
+                [recording]="recording"
+                [(annotation)]="annotation"
+                [statusInfo]="statusInfo"
+                [buttonsAreDisabled]="loading"
+                (nextRecordingClick)="getNextRecording()"
+                (previousRecordingClick)="getPreviousRecording()"
+                (saveClick)="save()"
+                (annotationChange)="onAnnotationChange()"
+                (backToSiteSelectionClick)="goBackToSiteSelection()"
+              ></bsg-identification-view>
+            </laji-spinner>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+      <ng-template #expertiseMissingText>
+        <div [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate"></div>
+      </ng-template>
+    </ng-container>
+  </laji-spinner>
 </ng-container>

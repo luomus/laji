@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, HostListener, OnDestroy } from '@angular/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
@@ -13,9 +13,10 @@ import { map, switchMap } from 'rxjs/operators';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { DialogService } from '../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import equals from 'deep-equal';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -23,7 +24,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./recording-identification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RecordingIdentificationComponent implements OnInit {
+export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   sites$: Observable<IGlobalSite[]>;
 
   recording: IGlobalRecording;
@@ -36,13 +37,18 @@ export class RecordingIdentificationComponent implements OnInit {
 
   allRecordingsAnnotated = false;
   hasError = false;
+  expertiseMissing?: boolean;
 
   selectedSites?: number[];
 
   private originalAnnotation: IGlobalRecordingAnnotation;
 
+  private expertiseMissingSub: Subscription;
+  private siteIdsSub: Subscription;
+
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
+    private personService: PersonApi,
     private userService: UserService,
     private dialogService: DialogService,
     private route: ActivatedRoute,
@@ -52,11 +58,16 @@ export class RecordingIdentificationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.personService.personFindProfileByToken(this.userService.getToken()).subscribe(profile => {
+      this.expertiseMissing = !profile.birdwatchingActivityLevel || !profile.birdSongRecognitionSkillLevels?.length;
+      this.cdr.markForCheck();
+    });
+
     this.sites$ = this.kerttuGlobalApi.getSites().pipe(
       map(result => result.results)
     );
 
-    this.route.queryParams.pipe(
+    this.siteIdsSub = this.route.queryParams.pipe(
       map(data => (
         data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id))
       ),
@@ -77,6 +88,11 @@ export class RecordingIdentificationComponent implements OnInit {
 
       this.cdr.markForCheck();
     });
+  }
+
+  ngOnDestroy() {
+    this.expertiseMissingSub?.unsubscribe();
+    this.siteIdsSub?.unsubscribe();
   }
 
   @HostListener('window:beforeunload', ['$event'])
