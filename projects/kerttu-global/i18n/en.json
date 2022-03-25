@@ -94,8 +94,7 @@
   "identification.recordings.backToSiteSelection": "Go back to the site selection",
   "identification.siteSelection.confirm": "Confirm and move to next",
   "expertise.identification": "How easily are you able to identify the vocalizations of bird species occurring in following continents?",
-  "expertise.identification.option1": "I can hardly recognize any bird sounds",
-  "expertise.identification.option2": "I can recognize the most common songbirds",
-  "expertise.identification.option3": "I can recognize majority of the breeding birds and most common passage migrants",
-  "expertise.identification.option4": "I can recognize majority of the bird species"
+  "expertise.identification.missingAnswer": "Please fill all fields before saving",
+  "expertise.identification.cannotRecognizeAnyBirds": "Are you sure you can't recognize any bird sounds from any continent?",
+  "expertise.identification.error": "Saving failed! Please try again after some time."
 }

@@ -3,7 +3,9 @@
   <div class="col-sm-12">
     <label>{{ 'expertise.identification' | translate }}</label>
     <laji-expertise-by-continent
-      [continents]="(speciesFilters$ | async)?.continent"
+      [continents]="continents$ | async"
+      [birdSongRecognitionSkillLevels]="birdSongRecognitionSkillLevels"
+      [disabled]="saving"
     ></laji-expertise-by-continent>
   </div>
 </div>
