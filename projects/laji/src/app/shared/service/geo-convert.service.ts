@@ -28,9 +28,9 @@ export enum ErrorType {
   geometryNotAvailable = 'geometry_not_available'
 }
 export interface GeoConvertError {
-  isGeoConvertError: true,
-  type: ErrorType,
-  msg: string
+  isGeoConvertError: true;
+  type: ErrorType;
+  msg: string;
 }
 export function isGeoConvertError(err: GeoConvertError|any): err is GeoConvertError {
   return err.isGeoConvertError;
@@ -49,9 +49,7 @@ export class GeoConvertService {
   public getGISDownloadLink(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
     return this.startGeoConversion(fileId, format, geometry, crs).pipe(
       switchMap(conversionId => this.getOutputLink(conversionId)),
-      catchError(err => {
-        return this.transformError(err);
-      })
+      catchError(err => this.transformError(err))
     );
   }
 
@@ -60,9 +58,7 @@ export class GeoConvertService {
   ): Observable<string> {
     return this.startGeoConversionFromData(data, fileId, format, geometry, crs).pipe(
       switchMap(conversionId => this.getOutputLink(conversionId)),
-      catchError(err => {
-        return this.transformError(err);
-      })
+      catchError(err => this.transformError(err))
     );
   }
 
@@ -106,7 +102,7 @@ export class GeoConvertService {
 
   private transformError(err: any): Observable<never> {
     if (err?.error?.err_name) {
-      let errorName = err.error.err_name;
+      const errorName = err.error.err_name;
 
       if (Object.values(ErrorType).some((type: string) => type === errorName)) {
         const msg = this.translate.instant('geoConvert.error.' + errorName);
