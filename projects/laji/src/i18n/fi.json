@@ -1927,5 +1927,8 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "geoConvert.error.too_complex": "Havaintojen geometria on liian monimutkainen .shp-tiedostomuodolle. Käytä sen sijaan .gpkg-muotoa.",
+  "geoConvert.error.not_supported": "Havaintojen lataaminen epäonnistui. Tiedostomuotoa ei tueta.",
+  "geoConvert.error.geometry_not_available": "Havaintojen lataaminen epäonnistui. Geometrinen data ei ole saatavilla."
 }
