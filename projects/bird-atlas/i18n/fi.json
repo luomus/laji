@@ -24,5 +24,6 @@
   "ba.grid-info.map": "Kartta",
   "ba.grid-info.notFound": "Ruutua ei ole olemassa.",
   "ba.grid-info.error": "Ruudun lataamisessa tapahtui virhe.",
-  "ba.grid-info.mapPrint": "Tulostettava ruutu karttapalvelussa"
+  "ba.grid-info.mapPrint": "Tulostettava ruutu karttapalvelussa",
+  "ba.grid-info.mapFullScreen": "Kartta koko ruudun kokoisena"
 }

@@ -26,9 +26,12 @@
       <div></div>
     </div>
   </div>
-  <a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
+  <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
     {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
-  </a>
+  </a></div>
+  <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
+    {{ 'ba.grid-info.mapFullScreen' | translate }} <span class="glyphicon glyphicon-link"></span>
+  </a></div>
 </ng-container>
 <ng-template #notFound>
   <ng-container *ngIf="data.status === 404; else error">
