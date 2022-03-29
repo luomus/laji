@@ -201,6 +201,21 @@ $basis: (
   }
 }
 
+@each $spacer, $spacerPx in $spacers {
+  .flex-gap-#{$spacer} {
+    gap: $spacerPx !important;
+  }
+}
+@each $breakpoint, $px in $breakpoints {
+  @each $spacer, $spacerPx in $spacers {
+    @media only screen and (max-width: $px) {
+      .#{$breakpoint}\:flex-gap-#{$spacer} {
+        gap: $spacerPx !important;
+      }
+    }
+  }
+}
+
 @each $bKey, $bVal in $basis {
   .width-#{$bKey} {
     width: $bVal !important;

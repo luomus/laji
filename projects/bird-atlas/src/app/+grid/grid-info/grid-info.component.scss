@@ -8,15 +8,21 @@ h3 {
   margin-top: $sp-2;
 }
 
+ngx-datatable {
+  width: 100%;
+  max-width: 600px;
+}
+
 .ba-laji-map-wrapper {
   width: 100%;
   max-width: 400px;
-  height: 400px;
+  aspect-ratio: 1;
 
   display: grid;
   grid-template-columns: max-content auto max-content;
   grid-template-rows: max-content auto max-content;
   place-items: center;
+  gap: $sp-2;
 }
 
 .ba-laji-map {
@@ -25,7 +31,6 @@ h3 {
 }
 
 a.glyphicon-arrow-up, a.glyphicon-arrow-down, a.glyphicon-arrow-left, a.glyphicon-arrow-right {
-  padding: $sp-3;
   font-size: $fs-4;
   text-decoration: none;
 }

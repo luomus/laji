@@ -76,7 +76,8 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
       prop: 'species',
       name: 'Laji',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      width: 125
     },
     {
       prop: 'code',

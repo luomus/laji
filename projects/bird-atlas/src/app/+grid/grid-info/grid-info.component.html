@@ -3,35 +3,39 @@
 <ng-container *ngIf="data.status === 200; else notFound">
   <h1>{{ data.elem.name }}</h1>
   <h3 class="mb-7">({{ data.elem.coordinates }})</h3>
-  <ngx-datatable
-    class="material"
-    [rowHeight]="35"
-    [rows]="data.rows"
-    [columns]="cols"
-    [cssClasses]="datatableClasses"
-    [scrollbarH]="true"
-    [messages]="{ emptyMessage: '' }"
-  ></ngx-datatable>
-  <h2 translate>ba.grid-info.map</h2>
-  <div class="d-flex my-4">
-    <div class="ba-laji-map-wrapper">
-      <div></div>
-      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 1, 0)" class="glyphicon glyphicon-arrow-up"></a>
-      <div></div>
-      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, -1)" class="glyphicon glyphicon-arrow-left"></a>
-      <div #lajiMap class="ba-laji-map"></div>
-      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, 1)" class="glyphicon glyphicon-arrow-right"></a>
-      <div></div>
-      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, -1, 0)" class="glyphicon glyphicon-arrow-down"></a>
-      <div></div>
+  <div class="d-flex flex-wrap flex-gap-4">
+    <ngx-datatable
+      class="material"
+      [rowHeight]="35"
+      [rows]="data.rows"
+      [columns]="cols"
+      [cssClasses]="datatableClasses"
+      [scrollbarH]="true"
+      [messages]="{ emptyMessage: '' }"
+    ></ngx-datatable>
+    <div class="flex-grow-1">
+      <h5 translate>ba.grid-info.map</h5>
+      <div class="d-flex my-3">
+        <div class="ba-laji-map-wrapper">
+          <div></div>
+          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 1, 0)" class="glyphicon glyphicon-arrow-up"></a>
+          <div></div>
+          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, -1)" class="glyphicon glyphicon-arrow-left"></a>
+          <div #lajiMap class="ba-laji-map"></div>
+          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, 1)" class="glyphicon glyphicon-arrow-right"></a>
+          <div></div>
+          <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, -1, 0)" class="glyphicon glyphicon-arrow-down"></a>
+          <div></div>
+        </div>
+      </div>
+      <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
+        {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
+      </a></div>
+      <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
+        {{ 'ba.grid-info.mapFullScreen' | translate }} <span class="glyphicon glyphicon-link"></span>
+      </a></div>
     </div>
   </div>
-  <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
-    {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
-  </a></div>
-  <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
-    {{ 'ba.grid-info.mapFullScreen' | translate }} <span class="glyphicon glyphicon-link"></span>
-  </a></div>
 </ng-container>
 <ng-template #notFound>
   <ng-container *ngIf="data.status === 404; else error">
