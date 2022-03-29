@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import LajiMap, { TileLayerName } from 'laji-map';
@@ -29,7 +29,11 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   private loadMap$ = new BehaviorSubject<string>(undefined);
 
   data$ = this.route.paramMap.pipe(
-    tap(() => this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined)),
+    tap(() => {
+      this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined);
+      this.loading = true;
+      this.cdr.markForCheck();
+    }),
     switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
     catchError(() => of(undefined)),
     map(elem => elem ? {
@@ -56,6 +60,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         title: `${d.elem.name} ${d.elem.coordinates} | ${this.translate.instant('ba.header.title')}`
       });
       this.loadMap$.next(d.elem.coordinates);
+      this.loading = false;
     }),
   );
 
@@ -89,6 +94,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     }
   ];
 
+  loading = true;
   datatableClasses = datatableClasses;
   map: any;
 
@@ -98,12 +104,14 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private breadcrumbs: BreadcrumbService,
     private translate: TranslateService,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit(): void {
     this.loadMap$.pipe(
       takeUntil(this.unsubscribe$),
+      tap(() => { if (this.map) { this.map.destroy(); } }),
       filter(d => d !== undefined)
     ).subscribe(ykj => {
       setTimeout(() => { // yield control to renderer before accessing lajiMapElem
@@ -130,6 +138,13 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         });
       });
     });
+  }
+
+  getAdjacentSqLink(coords: string, latDelta: number, lngDelta: number): string[] {
+    const c = coords.split(':');
+    const lat = parseInt(c[0], 10);
+    const lng = parseInt(c[1], 10);
+    return ['..', `${lat + latDelta}:${lng + lngDelta}`];
   }
 
   ngOnDestroy(): void {

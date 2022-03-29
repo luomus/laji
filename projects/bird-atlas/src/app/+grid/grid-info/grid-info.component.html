@@ -1,4 +1,5 @@
-<div *ngIf="data$ | async; let data" class="container my-5">
+<div *ngIf="loading" class="container"><laji-spinner></laji-spinner></div>
+<div *ngIf="data$ | async; let data" class="container my-5" [ngClass]="{'d-none': loading}">
 <ng-container *ngIf="data.status === 200; else notFound">
   <h1>{{ data.elem.name }}</h1>
   <h3 class="mb-7">({{ data.elem.coordinates }})</h3>
@@ -12,7 +13,19 @@
     [messages]="{ emptyMessage: '' }"
   ></ngx-datatable>
   <h2 translate>ba.grid-info.map</h2>
-  <div #lajiMap class="ba-laji-map my-4"></div>
+  <div class="d-flex my-4">
+    <div class="ba-laji-map-wrapper">
+      <div></div>
+      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 1, 0)" class="glyphicon glyphicon-arrow-up"></a>
+      <div></div>
+      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, -1)" class="glyphicon glyphicon-arrow-left"></a>
+      <div #lajiMap class="ba-laji-map"></div>
+      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, 0, 1)" class="glyphicon glyphicon-arrow-right"></a>
+      <div></div>
+      <a [routerLink]="getAdjacentSqLink(data.elem.coordinates, -1, 0)" class="glyphicon glyphicon-arrow-down"></a>
+      <div></div>
+    </div>
+  </div>
   <a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
     {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
   </a>
