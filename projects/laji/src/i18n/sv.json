@@ -985,7 +985,7 @@
   "observation.download.wip": "Arbete i progress<br><br>Data begäran för myndigheter eller andra data ägare kan göras för närvarande enligt nuförande praxis.",
   "observation.export.tooLittle": "Inga observationer som kan laddas ner.",
   "observation.export.tooMany": "För många observationer. Maksimiantal är {{max}}. Sökningen måste begränsas.",
-  "observation.export.tooManyForGisDownload": "Liian paljon havaintoja paikkatietomutoiseen aineistolataukseen (Shapefile ja GeoPackage formaatit). Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>.",
+  "observation.export.tooManyForGisDownload": "Maxgränsen för nedladdning i GIS-format (Shapefile och GeoPackage) är <strong>{{max}}</strong> observationer.",
   "observation.export.tooManySpecies": "För många arter. Maksimiantal är {{max}}. Sökningen måste begränsas.",
   "observation.extra": "Näytä lisärajaukset <i class=\"glyphicon glyphicon-cog\"></i>",
   "observation.filterBy.collectionId": "Dataset och samlingar",

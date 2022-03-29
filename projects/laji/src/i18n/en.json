@@ -985,7 +985,7 @@
   "observation.download.wip": "Work in progress<br><br>The data request for authorities or other data owners can be made for the time being according to present practice.",
   "observation.export.tooLittle": "No results for download.",
   "observation.export.tooMany": "Too many results. Max is {{max}}, you'll need to narrow the search.",
-  "observation.export.tooManyForGisDownload": "Liian paljon havaintoja paikkatietomutoiseen aineistolataukseen (Shapefile ja GeoPackage formaatit). Enimmäismäärä tälle lataukselle on <strong>{{max}}</strong>.",
+  "observation.export.tooManyForGisDownload": "Maximum limit for download in GIS-formats (Shapefile and GeoPackage) is <strong>{{max}}</strong> observations.",
   "observation.export.tooManySpecies": "Too many species. Max is {{max}}, you'll need to narrow the search.",
   "observation.extra": "Show additional filters <i class=\"glyphicon glyphicon-cog\"></i>",
   "observation.filterBy.collectionId": "Datasets and collections",
