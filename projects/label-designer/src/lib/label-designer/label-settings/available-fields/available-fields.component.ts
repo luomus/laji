@@ -25,16 +25,16 @@ export class AvailableFieldsComponent implements OnChanges {
   fieldType = FieldType;
 
   availableFieldsWithIdx: ILabelFieldWithIdx[] = [];
-  selectedIdx: number;
+  selectedIdx?: number;
 
   ngOnChanges() {
     this.availableFieldsWithIdx = (this.availableFields || []).map((field, idx) => ({
       ...field,
-      idx: idx
+      idx
     }));
-    this.selectedIdx = this.availableFieldsWithIdx.filter(
+    this.selectedIdx = this.availableFields?.findIndex(
       field => field.field === this.value && !(field.type == this.fieldType.qrCode || field.type == this.fieldType.text)
-    )[0]?.idx;
+    );
   }
 
   doValueSelect(event: Event): void {

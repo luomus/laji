@@ -1,7 +1,7 @@
 <select (change)="doValueSelect($event)" class="form-control">
   <option value="" [selected]="selectedIdx == null">{{ placeholder | translate }}...</option>
   <ng-container *ngFor="let field of availableFieldsWithIdx | sort:'label'">
-    <ng-container *ngIf="includeTextField || (!includeTextField && field.type !== fieldType.text)">
+    <ng-container *ngIf="includeTextField || field.type !== fieldType.text">
       <option [value]="field.idx" *ngIf="field.type !== fieldType.qrCode" [selected]="field.idx === selectedIdx">{{ field.label }}</option>
     </ng-container>
   </ng-container>
