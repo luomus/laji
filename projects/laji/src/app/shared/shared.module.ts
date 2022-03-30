@@ -80,6 +80,7 @@ import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 import { PluckPipe } from './pipe/pluck.pipe';
 import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
 import { TypeGuardPipe } from './pipe/type-guard.pipe';
+import { PdfButtonComponent } from './pdf-button/pdf-button.component';
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import { TypeGuardPipe } from './pipe/type-guard.pipe';
     CheckboxValuePipe,
     PluckPipe,
     TranslatableIucnPipe,
-    TypeGuardPipe
+    TypeGuardPipe,
+    PdfButtonComponent
   ],
   imports: [
     FormsModule,
@@ -160,7 +162,8 @@ import { TypeGuardPipe } from './pipe/type-guard.pipe';
     CheckboxValuePipe,
     PluckPipe,
     TranslatableIucnPipe,
-    TypeGuardPipe
+    TypeGuardPipe,
+    PdfButtonComponent
   ]
 })
 export class SharedModule {

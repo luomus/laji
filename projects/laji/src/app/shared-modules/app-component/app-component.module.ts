@@ -5,9 +5,6 @@ import { NavbarComponent } from '../../shared/navbar';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { FeedbackComponent } from '../../shared/feedback/feedback.component';
 import { ForumComponent } from '../../forum/forum.component';
-import { LocaleEnComponent } from '../../locale/locale-en.component';
-import { LocaleFiComponent } from '../../locale/locale-fi.component';
-import { LocaleSvComponent } from '../../locale/locale-sv.component';
 import { SharedModule } from '../../shared/shared.module';
 import { IucnFooterComponent } from '../../shared/iucn-footer/footer.component';
 import { LangModule } from '../lang/lang.module';
@@ -22,9 +19,6 @@ import { BetaPopupComponent } from './beta-popup/beta-popup.component';
     IucnFooterComponent,
     FeedbackComponent,
     ForumComponent,
-    LocaleEnComponent,
-    LocaleFiComponent,
-    LocaleSvComponent,
     AppComponent,
     BetaPopupComponent
   ],
@@ -41,9 +35,6 @@ import { BetaPopupComponent } from './beta-popup/beta-popup.component';
     IucnFooterComponent,
     FeedbackComponent,
     ForumComponent,
-    LocaleEnComponent,
-    LocaleFiComponent,
-    LocaleSvComponent,
     AppComponent
   ]
 })

@@ -1,15 +1,9 @@
 import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as FileSaver from 'file-saver';
 import { Observable } from 'rxjs';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
-import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
-import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.service';
-import { PlatformService } from '../../../../shared/service/platform.service';
-import { NamedPlacesService } from '../../../../shared/service/named-places.service';
 import { ProjectFormService } from '../../../project-form.service';
 
 @Component({
@@ -24,14 +18,8 @@ export class NpPrintComponent implements OnInit, OnDestroy {
   loading = false;
 
   constructor(
-    private platformService: PlatformService,
     private route: ActivatedRoute,
-    private translate: TranslateService,
-    private namedPlaceService: NamedPlacesService,
-    private userService: UserService,
     private footerService: FooterService,
-    private lajiApiService: LajiApiService,
-    private cdr: ChangeDetectorRef,
     private projectFormService: ProjectFormService
   ) { }
 
@@ -43,26 +31,4 @@ export class NpPrintComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.footerService.footerVisible = true;
   }
-
-  print(fileName) {
-    this.loading = true;
-    if (this.platformService.isBrowser) {
-      this.lajiApiService.post(LajiApi.Endpoints.htmlToPdf, this.prepareHtml(document.getElementsByTagName('html')[0].innerHTML))
-        .subscribe((response) => {
-          FileSaver.saveAs(response, fileName + '.pdf');
-          this.loading = false;
-          this.cdr.markForCheck();
-        }, () => {
-          this.loading = false;
-          this.cdr.markForCheck();
-        });
-    }
-  }
-
-  private prepareHtml(s: string) {
-    // Make absolute SVG ids relative
-    s = s.replace(/xlink:href=".*?#/g, 'xlink:href="#');
-    return s;
-  }
-
 }

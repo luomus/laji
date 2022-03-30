@@ -17,7 +17,7 @@ export class FormNamePipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _updateValue(key: string): Observable<Form.List> {
-    return this.formService.getFormInListFormat(key, this.translate.currentLang);
+    return this.formService.getFormInListFormat(key);
   }
   protected _parseValue(res: any): string {
     return res.title || this.key;
