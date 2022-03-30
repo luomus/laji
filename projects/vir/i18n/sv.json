@@ -73,6 +73,7 @@
   "usage.fileDownload.download": "Ladda ner",
   "usage.fileDownload.format": "Filformat",
   "usage.fileDownload.genericError": "Uppladdningen av filen misslyckades!",
+  "usage.fileDownload.gisDisabled": "Maxgränsen för nedladdning i GIS-format GIS-format är 100 000 observationer.",
   "usage.fileDownload.type": "Filtyp",
   "usage.fileDownload.type.gis": "GIS",
   "usage.fileDownload.type.gis.info": "Vid uppladdning av GIS data kan du ange filformat, geometrityp och koordinatsystem för data.<br><br>Filformat:<br>.shp = ESRI Shapefile<br>.gpkg = GeoPackage<br>< br>Geometri:<br>point = centrum för observationsplatserna<br>footprint * = observationsgeometrier i sina ursprungliga form: kan innehålla punkt-, linje- och areageometrier<br>bbox = observationers \"Bounding Box\" -områdesgränser<br><br>CRS (koordinatsystem):<br>euref (ETRS89 -TM35ENG, epsg 3067)<br>wgs84 (epsg 4326)<br><br>* OBS! Data i footprint-format kan innehålla observationer av 'geometry collection' som består av flera olika typer av geometri.<br>De flesta program för GIS data stöder inte denna typ av data, vilket utelämnar några observationer från kartan!<br>Se till att antalet observationer som anges i GIS matchar den ursprungliga siffran.",
