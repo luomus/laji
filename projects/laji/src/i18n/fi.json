@@ -317,8 +317,6 @@
   "friend.requests": "Kaveripyynnöt",
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "gathering.section.outsideSection": "Ei osiota",
-  "geoConvert.error.geometry_not_available": "Havaintojen lataaminen epäonnistui. Geometrinen data ei ole saatavilla.",
-  "geoConvert.error.not_supported": "Havaintojen lataaminen epäonnistui. Tiedostomuotoa ei tueta.",
   "geoConvert.error.too_complex": "Havaintojen geometria on liian monimutkainen .shp-tiedostomuodolle. Käytä sen sijaan .gpkg-muotoa.",
   "haseka.button": "Siirry Vihkoon",
   "haseka.createPrefilledForm": "Luo esitäytetty lomake",
