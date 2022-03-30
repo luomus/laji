@@ -1,5 +1,5 @@
 <div *ngIf="loading" class="container"><laji-spinner></laji-spinner></div>
-<div *ngIf="data$ | async; let data" class="container my-5" [ngClass]="{'d-none': loading}">
+<div *ngIf="data$ | async; let data" class="container mb-6" [ngClass]="{'d-none': loading}">
 <ng-container *ngIf="data.status === 200; else notFound">
   <h1>{{ data.elem.name }}</h1>
   <h3 class="mb-7">({{ data.elem.coordinates }})</h3>

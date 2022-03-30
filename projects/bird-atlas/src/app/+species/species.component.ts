@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'ba-species',
   template: `
-<div class="container my-6">
+<div class="container mb-6">
   <router-outlet></router-outlet>
 </div>
 `

@@ -1,7 +1,7 @@
 <div class="container my-5">
   <h1 translate>ba.grid-index.title</h1>
   <p>{{ 'ba.grid-index.p' | translate }}</p>
-  <div class="mt-6" *ngIf="filteredRows$ | async; else loading; let rows">
+  <div class="mb-6" *ngIf="filteredRows$ | async; else loading; let rows">
     <input class="form-control d-block my-4"
       type='text'
       placeholder="{{'haseka.submissions.filter' | translate}}"
@@ -17,7 +17,8 @@
       (activate)="onActivate($event)"
     ></ngx-datatable>
   </div>
-  <ng-template #loading>
-    <laji-spinner></laji-spinner>
-  </ng-template>
 </div>
+
+<ng-template #loading>
+  <laji-spinner></laji-spinner>
+</ng-template>
