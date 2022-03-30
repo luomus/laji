@@ -317,7 +317,7 @@
   "friend.requests": "Kaveripyynnöt",
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "gathering.section.outsideSection": "Ei osiota",
-  "geoConvert.error.too_complex": "Havaintojen geometria on liian monimutkainen .shp-tiedostomuodolle. Käytä sen sijaan .gpkg-muotoa.",
+  "geoConvert.error.too_complex": "Joidenkin havaintojen geometriat ovat liian monimutkaisia .shp-tiedostomuodolle (GeometryCollection). Käytä sen sijaan .gpkg-muotoa tai valitse toinen geometriatyyppi.",
   "haseka.button": "Siirry Vihkoon",
   "haseka.createPrefilledForm": "Luo esitäytetty lomake",
   "haseka.delete.cancel": "En",
