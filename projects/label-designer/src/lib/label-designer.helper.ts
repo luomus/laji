@@ -47,14 +47,12 @@ export class LabelDesignerHelper {
     if (fields1.length !== fields2.length) {
       return false;
     }
-    const keys = new Set<string>();
-    fields2.forEach(field => keys.add(field.field));
-    let result = true;
-    fields1.forEach(field => {
-      if (result && !keys.has(field.field)) {
-        result = false;
-      }
-    });
-    return result;
+    
+    const keys = fields2.reduce((keys, field) => {
+      keys.add(field.field);
+      return keys;
+    }, new Set<string>());
+
+    return fields1.every(field => keys.has(field.field));
   }
 }
