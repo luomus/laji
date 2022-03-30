@@ -18,6 +18,8 @@ export interface AtlasGridQueryElem {
   name: string;
 };
 export type AtlasGridElement = any;
+export type AtlasTaxa = any;
+export type AtlasTaxon = any;
 
 const BASE_URL = environment.atlasApiBasePath;
 
@@ -40,6 +42,18 @@ export class AtlasApiService {
   @cacheReturnObservable()
   getGridElement(gridId: string): Observable<AtlasGridElement> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
+    return this.http.get(url);
+  }
+
+  @cacheReturnObservable()
+  getTaxa(): Observable<AtlasTaxa> {
+    const url = `${BASE_URL}/taxon`;
+    return this.http.get(url);
+  }
+
+  @cacheReturnObservable()
+  getTaxon(id: string): Observable<AtlasTaxon> {
+    const url = `${BASE_URL}/taxon/${id}`;
     return this.http.get(url);
   }
 }

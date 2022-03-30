@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { map, } from 'rxjs/operators';
-import { LajiApiService } from '../../core/api.service';
+import { AtlasApiService } from '../../core/atlas-api.service';
 
 @Component({
   selector: 'ba-species-index',
@@ -9,16 +8,7 @@ import { LajiApiService } from '../../core/api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesIndexComponent {
-  speciesList$ = this.api.getTaxa('MX.37580', {
-    species: true,
-    taxonRanks: 'MX.species',
-    langFallback: true,
-    typesOfOccurrenceFilters: 'MX.typeOfOccurrenceRegularBreeder,MX.typeOfOccurrenceIrregularBreeder',
-    selectedFields: 'id,scientificName,vernacularName',
-    onlyFinnish: true,
-    sortOrder: 'taxonomic',
-    pageSize: 1000
-  }).pipe(map(res => res.results));
+  speciesList$ = this.atlasApi.getTaxa();
 
-  constructor(private api: LajiApiService) {}
+  constructor(private atlasApi: AtlasApiService) {}
 }

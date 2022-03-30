@@ -1,10 +1,18 @@
-<ng-container *ngIf="data$ | async; let data">
-  <h1>{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
+<div *ngIf="loading" class="container"><laji-spinner></laji-spinner></div>
+<div *ngIf="data$ | async; let data" [ngClass]="{'d-none': loading}">
+  <div class="d-flex">
+    <a [routerLink]="['..', data.taxon.prev.id]" class="prev mr-4">
+      <span class="glyphicon glyphicon-arrow-left"></span> {{ data.taxon.prev.vernacularName | multiLang }}
+    </a>
+    <a [routerLink]="['..', data.taxon.next.id]" class="next">
+      {{ data.taxon.next.vernacularName | multiLang }} <span class="glyphicon glyphicon-arrow-right"></span>
+    </a>
+  </div>
+  <h1 class="mt-4">{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
   <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
-<!-- <div>kyhmyjoutsen, metsähanhi (navigaatio)</div> -->
   <div class="map-container" [innerHtml]="data.map"></div>
   <a class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
   <a class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED'" target="_blank" rel="noopener noreferrer">
     {{ 'ba.species-info.lajiMap' | translate }} <span class="glyphicon glyphicon-link"></span>
   </a>
-</ng-container>
+</div>
