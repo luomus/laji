@@ -70,8 +70,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   dateFormat = 'YYYY-MM-DD';
   statusFilterMobile = false;
 
-  drawing = false;
-  drawingShape: string;
   invasiveStatuses: string[] = [
     'euInvasiveSpeciesList',
     'controllingRisksOfInvasiveAlienSpecies',
@@ -128,7 +126,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   draw(type: string) {
-    this.drawingShape = type;
     if (this.activeTab !== 'map') {
       this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }

@@ -223,7 +223,7 @@
       <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
-      {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
+      {{ 'observation.form.map.rectangle' | translate }}
     </div>
     <div>
       <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
