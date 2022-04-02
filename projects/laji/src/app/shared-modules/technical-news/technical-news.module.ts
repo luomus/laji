@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TechnicalNewsComponent } from './technical-news.component';
 import { SharedModule } from '../../shared/shared.module';
+import { TechnicalNewsDumbComponent } from './technical-news-dumb.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule,
     TranslateModule
   ],
-  declarations: [TechnicalNewsComponent],
+  declarations: [TechnicalNewsComponent, TechnicalNewsDumbComponent],
   exports: [TechnicalNewsComponent]
 })
 export class TechnicalNewsModule { }
