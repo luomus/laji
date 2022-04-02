@@ -11,7 +11,7 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { filter, skip, switchMap, take } from 'rxjs/operators';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
   CLEAR_TOKEN_MSG, hasPersonToken,

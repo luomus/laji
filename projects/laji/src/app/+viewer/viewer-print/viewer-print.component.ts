@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 
 @Component({
   selector: 'laji-viewer-print',

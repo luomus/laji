@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import RestrictAccess = Form.RestrictAccess;
 
 export interface Rights {

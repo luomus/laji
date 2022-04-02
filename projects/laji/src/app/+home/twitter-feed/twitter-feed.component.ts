@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 
 @Component({
   selector: 'laji-twitter-feed',

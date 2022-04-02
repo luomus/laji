@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
 import * as moment from 'moment';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../shared-modules/platform/platform.service';
 
 @Component({
   selector: 'laji-locale-en',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import { IndividualConfig } from 'ngx-toastr/toastr/toastr-config';
 
 @Injectable({providedIn: 'root'})

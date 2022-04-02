@@ -8,7 +8,7 @@ import { DatatableTemplatesComponent } from '../datatable-templates/datatable-te
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../platform/platform.service';
 import { DatatableUtil } from '../service/datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
 

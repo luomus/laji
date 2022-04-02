@@ -1,5 +1,5 @@
 import { ComponentFactoryResolver, Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../platform/platform.service';
 import { AudioNotSupportedErrorComponent } from './audio-not-supported-error.component';
 import { AudioIosWarningComponent } from './audio-ios-warning.component';
 

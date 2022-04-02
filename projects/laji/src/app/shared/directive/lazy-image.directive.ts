@@ -8,7 +8,7 @@ import {
   NgZone,
   OnDestroy
 } from '@angular/core';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 
 @Directive({
   selector: 'img[lajiLazyImage]'

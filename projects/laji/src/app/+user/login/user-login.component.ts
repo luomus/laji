@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FooterService } from '../../shared/service/footer.service';
 import { Router } from '@angular/router';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 

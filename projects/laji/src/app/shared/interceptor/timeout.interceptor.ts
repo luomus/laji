@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';

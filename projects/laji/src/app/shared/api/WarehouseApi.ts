@@ -31,7 +31,7 @@ import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInte
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 import { EMPTY } from 'rxjs';
 
 /* eslint-disable no-unused-vars member-ordering */

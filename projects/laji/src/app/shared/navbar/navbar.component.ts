@@ -17,7 +17,7 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../shared-modules/platform/platform.service';
 
 @Component({
   selector: 'laji-navbar',

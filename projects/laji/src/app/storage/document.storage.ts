@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../shared-modules/platform/platform.service';
 import { LocalDb } from '../shared/local-db/local-db.abstract';
 import { Document } from '../shared/model/Document';
 import { EMPTY, from, Observable, of, Subject } from 'rxjs';

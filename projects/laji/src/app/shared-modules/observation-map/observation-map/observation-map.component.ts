@@ -23,7 +23,7 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../platform/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';

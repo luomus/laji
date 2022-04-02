@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { LocalStorage } from 'ngx-webstorage';
 import { LAST_LANG_KEY, LocalizeRouterService } from './localize-router.service';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../shared-modules/platform/platform.service';
 import { GraphQLService } from '../graph-ql/service/graph-ql.service';
 
 /**
