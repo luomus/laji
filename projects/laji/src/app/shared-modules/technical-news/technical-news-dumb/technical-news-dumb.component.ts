@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { News } from '../../../shared/model/News';
 
 @Component({
@@ -14,10 +14,9 @@ export class TechnicalNewsDumbComponent {
       const isNew = Date.now() - parseInt(newsItem.posted, 10) < (days * 86400000); // number of milliseconds in a day
       const isTechnical = newsItem.tag === 'technical';
       return isTechnical && isNew;
-    }) || [];
-    this.cdr.markForCheck();
+    });
   }
-  technicalNews: News[] = [];
+  @Input() absoluteLink: string;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  technicalNews: News[];
 }

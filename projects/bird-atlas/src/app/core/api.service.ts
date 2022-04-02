@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Information, LajiApiClient, PagedResult, Taxon } from 'projects/laji-api-client/src/public-api';
+import { Information, LajiApiClient, News, PagedResult, Taxon } from 'projects/laji-api-client/src/public-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -83,5 +83,13 @@ export class LajiApiService {
       '',
       { lang, parentTaxonId: id, ...params }
     );
+  }
+
+  @cacheReturnObservable(60000) // 1 minute
+  getNews(query: LajiApiClient.NewsFindAllParams): Observable<News[]> {
+    return this.api.getList(
+      LajiApiClient.Endpoints.news,
+      query
+    ).pipe(map(res => res.results));
   }
 }

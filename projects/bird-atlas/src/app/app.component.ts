@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
+import { News } from 'projects/laji-api-client/src/public-api';
+import { LajiApiService } from './core/api.service';
 
 @Component({
   selector: 'ba-app',
@@ -20,6 +22,7 @@ import { HeaderService } from '../../../laji/src/app/shared/service/header.servi
             </ol>
         </div>
       </ng-container>
+      <laji-technical-news-dumb [news]="news$ | async" [absoluteLink]="'http://laji.fi/'" class="container"></laji-technical-news-dumb>
       <router-outlet></router-outlet>
     </div>
     <ba-footer></ba-footer>
@@ -31,12 +34,14 @@ import { HeaderService } from '../../../laji/src/app/shared/service/header.servi
 })
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$.pipe(tap(() => this.cdr.detectChanges()));
+  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5 });
 
   constructor(
     translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private cdr: ChangeDetectorRef,
-    private headerService: HeaderService
+    private headerService: HeaderService,
+    private api: LajiApiService
   ) {
     this.headerService.initialize();
     translate.use('fi');
