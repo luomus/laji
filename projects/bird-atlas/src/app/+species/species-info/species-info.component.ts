@@ -50,6 +50,7 @@ export class SpeciesInfoComponent {
         title: `${capitalize(data.taxon.vernacularName[this.translate.currentLang])} | ${this.translate.instant('ba.header.title')}`
       });
       this.loading = false;
+      this.cdr.detectChanges();
     })
   );
 
