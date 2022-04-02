@@ -1,5 +1,5 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../platform/platform.service';
 
 @Directive({ selector: '[lajiBrowserOnly]' })
 export class BrowserOnlyDirective implements OnInit {
