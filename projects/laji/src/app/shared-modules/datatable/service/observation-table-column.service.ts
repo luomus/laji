@@ -96,11 +96,9 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'sample.notes': ObservationTableColumn;
   'sample.collectionId': ObservationTableColumn;
   'document.facts.legID': ObservationTableColumn;
-  'document.facts.mappingReason': ObservationTableColumn;
-  'document.facts.speciesTrackingStatus': ObservationTableColumn;
-  'document.facts.targetState': ObservationTableColumn;
-  'document.facts.sourceMaterial': ObservationTableColumn;
-  'document.facts.sourceDescription': ObservationTableColumn;
+  'document.dataSource': ObservationTableColumn;
+  'document.siteType': ObservationTableColumn;
+  'document.siteStatus': ObservationTableColumn;
   'sample.facts.preparationMaterials': ObservationTableColumn;
   'sample.facts.elutionMedium': ObservationTableColumn;
   'sample.facts.additionalIDs': ObservationTableColumn;
@@ -476,11 +474,9 @@ export const COLUMNS: IColumns = {
     label: 'result.document.collectionId'
   },
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'http://tun.fi/MY.legID'},
-  'document.facts.mappingReason': {name: 'document.facts.mappingReason', sortable: false, fact: 'Kartoituksen tarkoitus'},
-  'document.facts.speciesTrackingStatus': {name: 'document.facts.speciesTrackingStatus', sortable: false, fact: 'Lajinseurantakohteen tila'},
-  'document.facts.targetState': {name: 'document.facts.targetState', sortable: false, fact: 'Kohteen taso'},
-  'document.facts.sourceMaterial': {name: 'document.facts.sourceMaterial', sortable: false, fact: 'Aineistolähde'},
-  'document.facts.sourceDescription': {name: 'document.facts.sourceDescription', sortable: false, fact: 'Tietolähteen kuvaus'},
+  'document.dataSource': {name: 'document.dataSource', sortable: false},
+  'document.siteType': {name: 'document.siteType', sortable: false},
+  'document.siteStatus': {name: 'document.siteStatus', sortable: false},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
     transform: 'label',
@@ -584,11 +580,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.dateEdited'],
     COLUMNS['document.dateObserved'],
     COLUMNS['document.namedPlaceId'],
-    COLUMNS['document.facts.mappingReason'],
-    COLUMNS['document.facts.speciesTrackingStatus'],
-    COLUMNS['document.facts.targetState'],
-    COLUMNS['document.facts.sourceMaterial'],
-    COLUMNS['document.facts.sourceDescription'],
+    COLUMNS['document.dataSource'],
+    COLUMNS['document.siteType'],
+    COLUMNS['document.siteStatus'],
     COLUMNS['document.formId'],
     COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
@@ -719,11 +713,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       },
       {
         header: lajiGISSectionHeader, fields: [
-          'document.facts.mappingReason',
-          'document.facts.speciesTrackingStatus',
-          'document.facts.targetState',
-          'document.facts.sourceMaterial',
-          'document.facts.sourceDescription'
+          'document.siteType',
+          'document.siteStatus'
         ]
       },
       {
@@ -731,13 +722,14 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.notes',
           'gathering.notes',
           'document.collectionId',
+          'document.dataSource',
           'document.sourceId',
           'document.secureLevel',
           'document.secureReasons',
           'document.documentId',
           'unit.unitId',
           'unit.linkings.taxon.occurrenceCountFinland',
-        ]
+        ].filter(field => environment.type === Global.type.vir ? true : field !== 'document.dataSource')
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
   ];
