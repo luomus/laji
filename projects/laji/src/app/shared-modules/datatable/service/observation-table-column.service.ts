@@ -475,7 +475,7 @@ export const COLUMNS: IColumns = {
   },
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'http://tun.fi/MY.legID'},
   'document.dataSource': {name: 'document.dataSource', sortable: false},
-  'document.siteType': {name: 'document.siteType', sortable: false},
+  'document.siteType': {name: 'document.siteType', width: 300, sortable: false},
   'document.siteStatus': {name: 'document.siteStatus', sortable: false},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
