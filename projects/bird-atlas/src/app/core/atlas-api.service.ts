@@ -23,7 +23,7 @@ export type AtlasTaxon = any;
 
 const BASE_URL = environment.atlasApiBasePath;
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 

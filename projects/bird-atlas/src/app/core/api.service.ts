@@ -53,7 +53,7 @@ export const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   }
 );
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class LajiApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 

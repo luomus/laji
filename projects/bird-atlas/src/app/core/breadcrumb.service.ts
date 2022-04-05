@@ -13,9 +13,7 @@ export interface IBreadcrumb {
   link: string[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BreadcrumbService implements OnDestroy {
   private unsubscribe$ = new Subject<void>();
 

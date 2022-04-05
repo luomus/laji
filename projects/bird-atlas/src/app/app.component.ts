@@ -6,6 +6,7 @@ import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 import { News } from 'projects/laji-api-client/src/public-api';
 import { LajiApiService } from './core/api.service';
+import { ScrollPositionService } from './core/scroll-position.service';
 
 @Component({
   selector: 'ba-app',
@@ -41,7 +42,8 @@ export class AppComponent {
     private breadcrumbs: BreadcrumbService,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService,
-    private api: LajiApiService
+    private api: LajiApiService,
+    scrollPositionService: ScrollPositionService // has to be injected for the service to initialize
   ) {
     this.headerService.initialize();
     translate.use('fi');
