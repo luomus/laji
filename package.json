@@ -123,8 +123,8 @@
     "jsonpath-plus": "^6.0.1",
     "jw-bootstrap-switch-ng2": "^2.0.5",
     "label-designer": "^4.0.3",
-    "laji-form": "^12.5.9",
-    "laji-map": "^3.15.2",
+    "laji-form": "^12.5.10",
+    "laji-map": "^3.16.0",
     "leaflet.sync": "^0.2.4",
     "localforage": "^1.10.0",
     "moment": "2.29.1",
@@ -220,10 +220,9 @@
   },
   "resolutions": {
     "proj4": "2.3.16",
-    "leaflet": "1.6.0",
     "@types/leaflet-draw": "0.4.14",
     "typescript": "3.4.5",
-    "leaflet-draw": "git+https://git@github.com/luomus/Leaflet.draw.git#9244cef9648b20180836fcd934c59c4f6c1c4b8d"
+    "leaflet-draw": "git+https://git@github.com/luomus/Leaflet.draw.git#19ab897a08d15a44213e53d486e2611c50f8c8ba"
   },
   "keywords": [
     "laji.fi"
