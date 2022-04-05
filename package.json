@@ -221,8 +221,7 @@
   "resolutions": {
     "proj4": "2.3.16",
     "@types/leaflet-draw": "0.4.14",
-    "typescript": "3.4.5",
-    "leaflet-draw": "git+https://git@github.com/luomus/Leaflet.draw.git#19ab897a08d15a44213e53d486e2611c50f8c8ba"
+    "typescript": "3.4.5"
   },
   "keywords": [
     "laji.fi"
