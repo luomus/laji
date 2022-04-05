@@ -106,6 +106,8 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'sample.facts.DNAVolumeMicroliters': ObservationTableColumn;
   'sample.facts.DNARatioOfAbsorbance260And280': ObservationTableColumn;
   'sample.facts.DNAConcentrationNgPerMicroliter': ObservationTableColumn;
+  'unit.atlasCode': ObservationTableColumn;
+  'unit.atlasClass': ObservationTableColumn;
 }
 
 export const COLUMNS: IColumns = {
@@ -511,6 +513,8 @@ export const COLUMNS: IColumns = {
     sortable: false,
     fact: 'http://tun.fi/MY.DNAConcentrationNgPerMicroliter'
   },
+  'unit.atlasCode': {name: 'unit.atlasCode', cellTemplate: 'label', sortable: false},
+  'unit.atlasClass': {name: 'unit.atlasClass', cellTemplate: 'label', sortable: false}
 };
 
 const lajiGISSectionHeader = 'lajiGIS.fields';
@@ -625,6 +629,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['gathering.conversions.wgs84CenterPoint.lon'],
     COLUMNS['gathering.conversions.wgs84WKT'],
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
+    COLUMNS['unit.atlasCode'],
+    COLUMNS['unit.atlasClass']
   ];
 
   protected columnGroups: IColumnGroup<IColumns>[][] = [
@@ -660,7 +666,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.abundanceUnit',
           'unit.interpretations.individualCount',
           'unit.lifeStage',
-          'unit.sex'
+          'unit.sex',
+          'unit.atlasCode',
+          'unit.atlasClass'
         ]
       },
     ],

@@ -1367,6 +1367,8 @@
   "result.unit.sensitive.true": "Tämän havainnon laji on Lajitietokeskuksen sensitiivisten lajien luettelolla.",
   "result.unit.taxonVerbatim": "Laji",
   "result.unit.unitId": "Havainnon tunniste",
+  "result.unit.atlasCode": "Pesimävarmuusindeksi",
+  "result.unit.atlasClass": "Pesimävarmuusluokka",
   "route.nro": "Reitin numero",
   "Sat": "la",
   "save": "Tallenna",
