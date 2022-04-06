@@ -484,7 +484,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return (this.expert && this.annotation.addedTags.length > 0) || (!this.expert && this.annotation.addedTags.indexOf(id) !== -1);
   }
 
-  disableSend() {
+  disableSend(): boolean {
     this.alertNotSpamVerified = false;
 
     if (
@@ -507,7 +507,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     ) {
       return true;
     }
-    return undefined;
+    return false;
   }
 
   checkTypeTag(type) {
