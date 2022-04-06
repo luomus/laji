@@ -127,6 +127,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit() {
     this.reloadSubscription$ = this.reload$?.subscribe(() => {
       this.initDocuments(this.onlyTemplates);
+      this.cd.markForCheck();
     });
   }
 
