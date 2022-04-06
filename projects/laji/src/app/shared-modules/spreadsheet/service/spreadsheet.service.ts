@@ -178,7 +178,7 @@ export class SpreadsheetService {
   }
 
   private trimWhiteSpaces(data: {[col: string]: string}[]): {[col: string]: string}[] {
-    return data.map(row => {
+    return data?.map(row => {
       const newRow = {};
       Object.keys(row).forEach(col => {
         newRow[col] = typeof row[col] === 'string' ? row[col].trim() : row[col];
