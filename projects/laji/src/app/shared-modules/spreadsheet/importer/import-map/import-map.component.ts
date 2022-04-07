@@ -58,7 +58,8 @@ export class ImportMapComponent implements OnChanges {
         type: 'FeatureCollection',
         features: this.groupedData.map(items => ({
           type: 'Feature',
-          geometry: items[0][geometryCol]
+          geometry: items[0][geometryCol],
+          properties: {}
         }))
       },
       getPopup: ({featureIdx, feature}, cb: (elem: string | HTMLElement) => void) => {
