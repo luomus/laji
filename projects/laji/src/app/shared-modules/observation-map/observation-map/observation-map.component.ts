@@ -1,5 +1,5 @@
 import { concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
-import { of, of as ObservableOf, Subscription, throwError as observableThrowError } from 'rxjs';
+import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -22,7 +22,7 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../shared/service/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
@@ -98,11 +98,21 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   limitResults = false;
 
   mapData;
-  drawData: any = {featureCollection: {type: 'featureCollection', features: []}};
+  drawData: LajiMapDataOptions = {
+    featureCollection: {type: 'FeatureCollection', features: []},
+    getFeatureStyle: () => ({
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0,
+      color: this.selectColor
+    })
+  };
   loading = false;
   reloading = false;
   topMargin = '0';
   legendList: {color: string; range: string}[] = [];
+
+  drawDataSubscription: Subscription;
 
   _mapOptions: LajiMapOptions = {
     controls: {
@@ -173,9 +183,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subDataFetch) {
-      this.subDataFetch.unsubscribe();
-    }
+    this.subDataFetch?.unsubscribe();
+    this.drawDataSubscription?.unsubscribe();
   }
 
   onCreate(e) {
@@ -183,9 +192,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   clearDrawData() {
-    if (this.lajiMap && this.lajiMap.map) {
-      this.lajiMap.map.clearDrawData();
-    }
+    this.lajiMap?.map?.clearDrawData();
   }
 
   drawToMap(type) {
@@ -287,27 +294,27 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private initDrawData() {
-    this.drawData.getFeatureStyle = () => ({
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0,
-        color: this.selectColor
-      });
-    if (!this.query.coordinates) {
-      return;
-    }
-    const features = [];
-    this.query.coordinates.map(coord => {
-      features.push(
-        this.coordinateService.getFeatureFromGeometry(
-          this.coordinateService.convertLajiEtlCoordinatesToGeometry(coord)
-        )
-      );
-    });
-    if (features.length) {
-      this.drawData.featureCollection.features = features;
-    }
+  private getFeatureCollection(): Observable<any> {
+    const featuresFromQueryCoordinates = (coordinates: any): Observable<any[]> => ObservableOf(coordinates
+        ? coordinates.map((coord: any) =>
+            this.coordinateService.getFeatureFromGeometry(
+              this.coordinateService.convertLajiEtlCoordinatesToGeometry(coord)
+            )
+        ) : []);
+
+    const featuresFromQueryPolygonId = (polygonId: number): Observable<any[]> => polygonId
+      ? this.warehouseService.getPolygonFeatureCollection(this.query.polygonId).pipe(
+          map(featureCollection => (featureCollection as any).features)
+      )
+      : ObservableOf([]);
+
+    return forkJoin([
+      featuresFromQueryCoordinates(this.query.coordinates),
+      featuresFromQueryPolygonId(this.query.polygonId)
+    ]).pipe(map(([f1, f2]) => ({
+      type: 'FeatureCollection',
+      features: [...f1, ...f2]
+    })));
   }
 
   private updateMapData() {
@@ -327,13 +334,16 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.subDataFetch.unsubscribe();
     }
     this.drawData.featureCollection.features = [];
-    if (this.query.coordinates) {
-      this.initDrawData();
+    if (this.query.coordinates || this.query.polygonId) {
+      this.drawDataSubscription?.unsubscribe();
+      this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+        this.drawData = {...this.drawData, featureCollection};
+        this.reset = true;
+        this.loading = true;
+        this.showingItems = false;
+        this.addToMap(this.query);
+      });
     }
-    this.reset = true;
-    this.loading = true;
-    this.showingItems = false;
-    this.addToMap(this.query);
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
@@ -474,7 +484,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
     }
-    return cache + this.activeBounds.toBBoxString() + this.activeLevel;
+    return cache + this.activeBounds.toBBoxString() + this.activeLevel + query.polygonId;
   }
 
   private getClusterStyle(count) {
@@ -543,11 +553,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const mapData = [];
     this.clearDrawData();
 
-    if (this.query.coordinates) {
-      this.initDrawData();
-      mapData.push(this.drawData);
+    if (this.query.coordinates || this.query.polygonId) {
+      this.drawDataSubscription?.unsubscribe();
+      this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+        this.drawData = {...this.drawData, featureCollection};
+        mapData.push(this.drawData);
+        this.mapData = mapData;
+      });
     }
-    this.mapData = mapData;
   }
 }
 

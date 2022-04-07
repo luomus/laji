@@ -72,7 +72,7 @@
       [query]="query"
     ></laji-observation-result-list>
   </lu-tab>
-  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate">
+  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate" class="obs-filter-map">
     <laji-observation-map
       *ngIf="loadedTabs.isLoaded('map')"
       [ready]="!loadingUnits"
@@ -81,7 +81,7 @@
       [opacity]="0.5"
       [height]="-1"
       [query]="query"
-      [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false}"
+      [draw]="{rectangle: true, marker: false, polygon: true, polyline: false, circle: false, single: true}"
       [legend]="true"
       [initWithWorldMap]="true"
       (create)="pickLocation($event)"

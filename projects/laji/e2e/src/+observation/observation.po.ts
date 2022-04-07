@@ -1,5 +1,29 @@
-import { $, browser } from 'protractor';
-import { waitForInvisibility } from '../../helper';
+// eslint-disable-next-line max-classes-per-file
+import { $, browser, ElementFinder, protractor } from 'protractor';
+import { EC, waitForInvisibility } from '../../helper';
+import { MapPageObject, PointTraveller, SAFE_CLICK_WAIT } from 'laji-map/test-export/test-utils';
+
+class LUTabPO {
+  private className: string;
+  constructor(name: string) {
+    this.className = `obs-filter-${name}`;
+  }
+  isActive = async () => (await $(`.${this.className}`).getAttribute('class')).includes('active');
+}
+
+class LUPanel {
+  locator: string;
+  $elem: ElementFinder;
+  constructor(locator: string) {
+    this.locator = locator;
+    this.$elem = $(locator);
+  }
+
+  async open() {
+    await this.$elem.click();
+    await browser.wait(EC.visibilityOf($(`${this.locator}[ng-reflect-open="true"]`)));
+  }
+}
 
 export class ObservationPage {
   private pathWithAllFilters = `observation/map?
@@ -16,9 +40,25 @@ export class ObservationPage {
     &qualityIssues=BOTH&firstLoadedSameOrAfter=2022-01-01&loadedSameOrAfter=2022-01-01&season=0101%2F1218
   `;
   private spinners$ = $('laji-observation-result').$$('.spinner');
+  public map = new MapPageObject();
+  public tabs: Record<string, LUTabPO> = {
+    map: new LUTabPO('map')
+  };
+
+  public placePanel = new LUPanel('.laji-panel-places');
+  public $placePanel = $('.laji-panel-places');
+  public $drawRectangleBtn = $('.draw-rectangle');
+  public $drawPolygonBtn = $('.draw-polygon');
+
+  async navigateTo(sub: 'list' | '' = '') {
+    await browser.get(`observation/${sub}`);
+  }
 
   async navigateToViewWithAllFilters() {
     await browser.get(this.pathWithAllFilters);
+  }
+
+  async waitUntilLoaded() {
     for (const spinner$ of await this.spinners$) {
       await waitForInvisibility(spinner$);
     }
@@ -28,5 +68,46 @@ export class ObservationPage {
     const browserLog = await browser.manage().logs().get('browser');
     const badRequests = browserLog.filter(entry => entry.message.includes('api/graphql') && entry.message.includes('400'));
     return badRequests.length > 0;
+  }
+
+  async drawRectangle() {
+    await this.map.drag([0, 0], [10, 10]);
+  }
+
+  async hasCoordinatesFilter() {
+    const url = new URL(await browser.getCurrentUrl());
+    const coordinatesFilter = url.searchParams.get('coordinates');
+    return !!coordinatesFilter?.match(/^(\d{2}\.\d+:){4,}WGS84:1$/);
+  }
+
+  async zoomClose() {
+    const $geosearch = this.map.$getElement().$('.leaflet-control-geosearch');
+    await $geosearch.click();
+    await $geosearch.$('input').sendKeys('luomus');
+    await browser.wait(EC.visibilityOf($geosearch.$('.results > div')));
+    await $geosearch.$('input').sendKeys(protractor.Key.DOWN);
+    await $geosearch.$('input').sendKeys(protractor.Key.ENTER);
+    await browser.wait(EC.invisibilityOf($('.loading-map')));
+  }
+
+  async drawPolygon() {
+    const traveller = new PointTraveller();
+    const coordinates: [number, number][] = [
+      traveller.travel(0, 0),
+      traveller.travel(0, -20),
+      traveller.travel(20, 0),
+      traveller.initial()
+    ];
+
+    for (const c of coordinates) {
+      await browser.sleep(SAFE_CLICK_WAIT);
+      await this.map.clickAt(...c);
+    }
+  }
+
+  async hasPolygonFilter() {
+    const url = new URL(await browser.getCurrentUrl());
+    const coordinatesFilter = url.searchParams.get('polygonId');
+    return !!coordinatesFilter?.match(/^\d+$/);
   }
 }

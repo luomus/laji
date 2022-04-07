@@ -33,6 +33,7 @@ import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../service/platform.service';
 import { EMPTY } from 'rxjs';
+import { geoJSONToWKT } from 'laji-map/lib/utils';
 
 /* eslint-disable no-unused-vars member-ordering */
 
@@ -466,6 +467,21 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
+  public registerPolygon(polygon: any, personToken: string, crs: string) {
+    const wkt = geoJSONToWKT(polygon);
+    const path = this.basePath + '/warehouse/polygon';
+
+    const queryParameters = {personToken, wkt, crs};
+
+    return this.http.post<{id: string}>(path, undefined, {params: queryParameters});
+  }
+
+  public getPolygonFeatureCollection(polygonId: string) {
+    const path = this.basePath + '/warehouse/polygon/' + polygonId;
+    const queryParameters = {format: 'geojson', crs: 'WGS84'};
+    return this.http.get(path, {params: queryParameters});
+  }
+
   private queryWithMetaData(query: WarehouseQueryInterface, selectedOrAggregatedBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number): any {
     return {
       ...query,
@@ -480,5 +496,4 @@ export class WarehouseApi {
   private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: Record<string, unknown>): void {
     this.queryService.getURLSearchParams(query, queryParameters);
   }
-
 }

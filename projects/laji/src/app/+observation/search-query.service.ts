@@ -129,7 +129,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'occurrenceCountFinlandMax',
     'coordinateAccuracyMax',
     'page',
-    'pageSize'
+    'pageSize',
+    'polygonId'
   ];
 
   // noinspection JSUnusedLocalSymbols

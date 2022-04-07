@@ -234,28 +234,16 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   onChange(events) {
-    events.map(event => {
-      switch (event.type) {
-        case 'create':
-          this.zone.run(() => {
-            this.create.emit(event.feature.geometry);
-          });
-          break;
-        case 'delete':
-          this.zone.run(() => {
-            this.create.emit();
-          });
-          break;
-        default:
-      }
+    this.zone.run(() => {
+      this.create.emit(events);
     });
   }
 
   drawToMap(type: string) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
-    } else if (['Rectangle'].indexOf(type) > -1) {
-      this.map.triggerDrawing('Rectangle');
+    } else if (['Rectangle', 'Polygon'].includes(type)) {
+      this.map.triggerDrawing(type);
     }
   }
 }

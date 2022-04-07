@@ -140,7 +140,7 @@
 </section>
 
 <!-- PLACE -->
-<section class="laji-panel"
+<section class="laji-panel laji-panel-places"
       laji-panel
       [autoToggle]="true"
       [open]="showPlace || visible['place']"
@@ -217,19 +217,25 @@
 
   <div>
     <div>
-        <label>{{ 'observation.form.map.intro'|translate }}</label>
+        <label>{{ 'observation.form.map.intro' | translate }}</label>
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Rectangle')">
+      <button type="button" class="lu-btn lu-btn-small draw-rectangle" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
     <div>
+      <button type="button" class="lu-btn lu-btn-small draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)">
+        <i class="lji-icon lji-polygon"></i>
+      </button>
+      {{ 'observation.form.map.polygon' | translate }}
+    </div>
+    <div>
       <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
         YKJ
       </button>
-      {{ 'observation.form.map.coordinates'|translate }}
+      {{ 'observation.form.map.coordinates' | translate }}
     </div>
   </div>
 
