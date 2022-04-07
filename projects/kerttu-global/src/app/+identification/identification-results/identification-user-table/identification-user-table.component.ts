@@ -14,7 +14,7 @@ export class IdentificationUserTableComponent implements OnInit {
   @Input() data: IIdentificationUserStat[] = [];
 
   columns: DatatableColumn[] = [];
-  sorts: { prop: string, dir: 'asc'|'desc' }[] = [
+  sorts: { prop: string; dir: 'asc'|'desc' }[] = [
     { prop: 'annotationCount', dir: 'desc' },
     { prop: 'speciesCount', dir: 'desc' },
     { prop: 'drawnBoxesCount', dir: 'desc' }

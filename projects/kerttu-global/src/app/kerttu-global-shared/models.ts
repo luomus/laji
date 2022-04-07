@@ -40,9 +40,9 @@ export interface IGlobalSpecies {
 }
 
 export interface IGlobalSpeciesFilters {
-  continent: { id: number, name: string }[];
-  order: { id: number, scientificName: string }[];
-  family: { id: number, scientificName: string, order: number }[];
+  continent: { id: number; name: string }[];
+  order: { id: number; scientificName: string }[];
+  family: { id: number; scientificName: string; order: number }[];
 }
 
 export interface IGlobalTemplateVersion {
@@ -137,7 +137,7 @@ export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {
 }
 
 export interface IGlobalSite {
-  id: number,
+  id: number;
   name: string;
   country?: string;
   geometry: Point;
@@ -166,7 +166,7 @@ export enum CommentType {
 
 export enum SpeciesAnnotationEnum {
   occurs = 1,
-  possible_occurs = 2
+  possiblyOccurs = 2
 }
 
 export enum KerttuGlobalErrorEnum {

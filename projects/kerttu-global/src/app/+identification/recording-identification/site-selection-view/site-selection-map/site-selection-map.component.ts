@@ -156,7 +156,7 @@ export class SiteSelectionMapComponent implements OnChanges {
         if (!this.selectedSites.includes(id)) {
           this.selectedSites = [...this.selectedSites, id];
         }
-      })
+      });
     }
 
     this.selectedSitesChange.emit(this.selectedSites);

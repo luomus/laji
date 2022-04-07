@@ -36,9 +36,7 @@ export class SpeciesListComponent implements OnChanges {
   }
 
   onSortChange(sorts: DatatableSort[]) {
-    const orderBy = sorts.map(sort => {
-      return sort.prop + ' ' + sort.dir.toUpperCase();
-    });
+    const orderBy = sorts.map(sort => sort.prop + ' ' + sort.dir.toUpperCase());
     this.changeQuery(this.query, 1, orderBy);
   }
 

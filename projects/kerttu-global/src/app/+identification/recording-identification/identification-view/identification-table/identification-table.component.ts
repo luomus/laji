@@ -36,7 +36,7 @@ export class IdentificationTableComponent implements OnInit, OnChanges {
   speciesAnnotationEnum = SpeciesAnnotationEnum;
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
-  @Output() drawClick = new EventEmitter<{drawClicked: boolean, rowIndex: number}>();
+  @Output() drawClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
   @Output() removeDrawingClick = new EventEmitter<number>();
 
   ngOnInit() {

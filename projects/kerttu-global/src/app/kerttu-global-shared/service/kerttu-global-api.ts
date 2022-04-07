@@ -80,7 +80,7 @@ export class KerttuGlobalApi {
   }
 
   public saveTemplates(personToken: string, taxonId: number, data: {
-    templates: IGlobalTemplate[], comments: IGlobalComment[]
+    templates: IGlobalTemplate[]; comments: IGlobalComment[];
   }): Observable<ISuccessResult> {
     const path = this.basePath + '/templates/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);

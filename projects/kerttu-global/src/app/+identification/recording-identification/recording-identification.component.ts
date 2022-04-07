@@ -128,9 +128,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   getNextRecording() {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
-      switchMap(() => {
-        return this.kerttuGlobalApi.getNextRecording(this.userService.getToken(), this.recording.id, this.selectedSites);
-      })
+      switchMap(() => this.kerttuGlobalApi.getNextRecording(this.userService.getToken(), this.recording.id, this.selectedSites))
     ).subscribe(result => {
       this.onGetRecordingSuccess(result);
     }, (err) => {

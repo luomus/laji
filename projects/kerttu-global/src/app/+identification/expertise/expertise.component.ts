@@ -18,7 +18,7 @@ import { DialogService } from '../../../../../laji/src/app/shared/service/dialog
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpertiseComponent implements OnInit {
-  continents$: Observable<{id: string, value: string}[]>;
+  continents$: Observable<{id: string; value: string}[]>;
 
   birdwatchingActivityLevel = '';
   birdSongRecognitionSkillLevels: BirdSongRecognitionSkillLevel[] = [];
@@ -97,7 +97,7 @@ export class ExpertiseComponent implements OnInit {
       this.saving = false;
       this.cdr.markForCheck();
     }, () => {
-      this.dialogService.alert('expertise.identification.error')
+      this.dialogService.alert('expertise.identification.error');
     });
   }
 }

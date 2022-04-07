@@ -14,7 +14,7 @@ export class UserTableComponent implements OnInit {
   @Input() data: IUserStat[] = [];
 
   columns: DatatableColumn[] = [];
-  sorts: { prop: string, dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];
+  sorts: { prop: string; dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];
 
   @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
 

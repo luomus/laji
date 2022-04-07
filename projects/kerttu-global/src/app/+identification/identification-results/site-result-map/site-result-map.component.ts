@@ -2,7 +2,7 @@ import { Component, OnChanges, ChangeDetectionStrategy, Input, SimpleChanges, Vi
 import { IGlobalSite, IIdentificationSiteStat } from '../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as L from "leaflet";
+import * as L from 'leaflet';
 import { GetPopupOptions } from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -24,7 +24,7 @@ export class SiteResultMapComponent implements OnChanges {
     popupOnHover: true
   };
 
-  legendList: { label: string, color: string }[];
+  legendList: { label: string; color: string }[];
   countByLegend: Record<string, number> = {};
 
   private countBySite: Record<string, number> = {};

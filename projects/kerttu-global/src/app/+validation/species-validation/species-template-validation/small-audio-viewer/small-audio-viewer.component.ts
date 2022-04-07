@@ -18,7 +18,7 @@ export class SmallAudioViewerComponent {
 
   @Input() width = '20%';
   @Input() spectrogramHeight = 50;
-  @Input() margin: { top: number, bottom: number, left: number, right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
+  @Input() margin: { top: number; bottom: number; left: number; right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
 
   @Output() templateClick = new EventEmitter<number>();
   @Output() audioLoading = new EventEmitter<boolean>();

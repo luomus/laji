@@ -7,7 +7,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-results',
-  template: `    
+  template: `
     <h1>{{ 'results.title' | translate }}</h1>
     <bsg-species-list-filters
       [query]="speciesQuery$ | async"
@@ -42,20 +42,16 @@ export class ResultsComponent {
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
     this.validationStats$ = this.speciesQuery$.pipe(
-      switchMap(speciesQuery => {
-        return this.kerttuGlobalApi.getValidationStats(speciesQuery).pipe(
+      switchMap(speciesQuery => this.kerttuGlobalApi.getValidationStats(speciesQuery).pipe(
           map(result => result.results),
           startWith(<IValidationStat[]>null)
-        );
-      })
+        ))
     );
     this.userStats$ = this.speciesQuery$.pipe(
-      switchMap(speciesQuery => {
-        return this.kerttuGlobalApi.getUserStats(speciesQuery).pipe(
+      switchMap(speciesQuery => this.kerttuGlobalApi.getUserStats(speciesQuery).pipe(
           map(result => result.results),
           startWith(<IUserStat[]>null)
-        );
-      })
+        ))
     );
     this.userId$ = this.userService.user$.pipe(map(user => user?.id));
   }

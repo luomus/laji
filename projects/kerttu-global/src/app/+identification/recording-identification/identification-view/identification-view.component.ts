@@ -82,7 +82,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     this.updateAnnotation();
   }
 
-  onDrawBirdClick(data: {drawClicked: boolean, rowIndex: number}) {
+  onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number}) {
     this.drawBirdActive = data.drawClicked;
     this.drawBirdIndex = data.rowIndex;
     this.drawNonBirdActive = false;
@@ -109,7 +109,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     }
 
     this.rectangles = this.rectangles.filter(r => r.label !== rectangleLabel);
-    this.rectangles = [...this.rectangles, {area: area, label: rectangleLabel}];
+    this.rectangles = [...this.rectangles, {area, label: rectangleLabel}];
 
     this.drawBirdActive = false;
     this.drawNonBirdActive = false;
@@ -140,7 +140,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
 
     this.annotationChange.emit({
       ...this.annotation,
-      speciesAnnotations: speciesAnnotations
+      speciesAnnotations
     });
   }
 
@@ -162,9 +162,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
 
     if (speciesAnnotations?.length > 0) {
       const observables: Observable<IGlobalSpeciesWithAnnotation>[] = speciesAnnotations.map(
-        a => this.kerttuGlobalApi.getSpecies(a.speciesId, true).pipe(map(species => {
-          return {...species, annotation: a};
-        }))
+        a => this.kerttuGlobalApi.getSpecies(a.speciesId, true).pipe(map(species => ({...species, annotation: a})))
       );
 
       this.loadingSpecies = true;

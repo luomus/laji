@@ -10,7 +10,7 @@ import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpertiseByContinentComponent implements OnChanges {
-  @Input() continents: {id: string, value: string}[] = [];
+  @Input() continents: {id: string; value: string}[] = [];
   @Input() birdSongRecognitionSkillLevels: BirdSongRecognitionSkillLevel[] = [];
   @Input() disabled = false;
 

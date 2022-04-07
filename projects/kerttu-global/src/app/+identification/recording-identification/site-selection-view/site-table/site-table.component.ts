@@ -7,6 +7,7 @@ import {
   ViewChild,
   TemplateRef,
   OnInit,
+  OnChanges,
   SimpleChanges
 } from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
@@ -18,7 +19,7 @@ import { DatatableColumn } from '../../../../../../../laji/src/app/shared-module
   styleUrls: ['./site-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteTableComponent implements OnInit {
+export class SiteTableComponent implements OnInit, OnChanges {
   @ViewChild('delete', { static: true }) deleteTpl: TemplateRef<any>;
 
   @Input() sites: IGlobalSite[] = [];

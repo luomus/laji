@@ -34,7 +34,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
   audioIdMap: {[id: number]: IGlobalAudio } = {};
   subSpecies: IGlobalSpecies[] = [];
 
-  @Output() save = new EventEmitter<{ templates: IGlobalTemplate[], comments: IGlobalComment[] }>();
+  @Output() save = new EventEmitter<{ templates: IGlobalTemplate[]; comments: IGlobalComment[] }>();
   @Output() cancel = new EventEmitter();
 
   constructor(
@@ -76,7 +76,7 @@ export class SpeciesTemplateValidationComponent implements OnChanges {
     }
   }
 
-  onAudioClick(data: { audioId: number, time: number }) {
+  onAudioClick(data: { audioId: number; time: number }) {
     this.onNewTemplateClick(data.audioId, null, data.time);
   }
 
