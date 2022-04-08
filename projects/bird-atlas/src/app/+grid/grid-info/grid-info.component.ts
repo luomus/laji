@@ -47,77 +47,13 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
   private loadMap$ = new BehaviorSubject<string>(undefined);
+  private map: any;
 
-  data$: Observable<GridInfoData> = this.route.paramMap.pipe(
-    tap(() => {
-      this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined);
-      this.loading = true;
-      this.cdr.markForCheck();
-    }),
-    switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
-    map(elem => ({
-      elem,
-      rows: elem.data.map((d, idx) => ({
-        idx: idx + 1,
-        species: d.speciesName,
-        code: (<string>d.atlasCode.key).match(/[0-9]+/)?.[0] || null,
-        class: d.atlasClass.value
-      })),
-      status: 200
-    })),
-    tap(d => {
-      this.breadcrumbs.setBreadcrumbName(
-        BreadcrumbId.GridInfo,
-        d.elem.coordinates
-      );
-      this.headerService.setHeaders({
-        title: `${d.elem.name} ${d.elem.coordinates} | ${this.translate.instant('ba.header.title')}`
-      });
-      this.loadMap$.next(d.elem.coordinates);
-    }),
-    catchError(() => of({
-      elem: undefined,
-      rows: [],
-      status: 404
-    })),
-    tap(() => this.loading = false)
-  );
-
-  cols: TableColumn[] = [
-    {
-      prop: 'idx',
-      name: '#',
-      resizeable: false,
-      sortable: true,
-      width: 75
-    },
-    {
-      prop: 'species',
-      name: 'Laji',
-      resizeable: false,
-      sortable: true,
-      width: 125
-    },
-    {
-      prop: 'code',
-      name: 'Indeksi',
-      resizeable: false,
-      sortable: true,
-      width: 75
-    },
-    {
-      prop: 'class',
-      name: 'Luokka',
-      resizeable: false,
-      sortable: true,
-      width: 225
-    }
-  ];
-
+  data$: Observable<GridInfoData>;
+  cols: TableColumn[];
   loading = true;
   datatableClasses = datatableClasses;
   getAdjacentSqLink = getAdjacentSqLink;
-  map: any;
 
   constructor(
     private zone: NgZone,
@@ -127,7 +63,73 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     private translate: TranslateService,
     private headerService: HeaderService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.data$ = this.route.paramMap.pipe(
+      tap(() => {
+        this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined);
+        this.loading = true;
+        this.cdr.markForCheck();
+      }),
+      switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
+      map(elem => ({
+        elem,
+        rows: elem.data.map((d, idx) => ({
+          idx: idx + 1,
+          species: d.speciesName,
+          code: (<string>d.atlasCode.key).match(/[0-9]+/)?.[0] || null,
+          class: d.atlasClass.value
+        })),
+        status: 200
+      })),
+      tap(d => {
+        this.breadcrumbs.setBreadcrumbName(
+          BreadcrumbId.GridInfo,
+          d.elem.coordinates
+        );
+        this.headerService.setHeaders({
+          title: `${d.elem.name} ${d.elem.coordinates} | ${this.translate.instant('ba.header.title')}`
+        });
+        this.loadMap$.next(d.elem.coordinates);
+      }),
+      catchError(() => of({
+        elem: undefined,
+        rows: [],
+        status: 404
+      })),
+      tap(() => this.loading = false)
+    );
+
+    this.cols = [
+      {
+        prop: 'idx',
+        name: '#',
+        resizeable: false,
+        sortable: true,
+        width: 75
+      },
+      {
+        prop: 'species',
+        name: 'Laji',
+        resizeable: false,
+        sortable: true,
+        width: 125
+      },
+      {
+        prop: 'code',
+        name: 'Indeksi',
+        resizeable: false,
+        sortable: true,
+        width: 75
+      },
+      {
+        prop: 'class',
+        name: 'Luokka',
+        resizeable: false,
+        sortable: true,
+        width: 225
+      }
+    ];
+  }
 
   ngAfterViewInit(): void {
     this.loadMap$.pipe(
@@ -160,7 +162,6 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
       });
     });
   }
-
 
   ngOnDestroy(): void {
     if (this.map) { this.map.destroy(); }
