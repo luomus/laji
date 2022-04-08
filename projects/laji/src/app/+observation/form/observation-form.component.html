@@ -240,7 +240,7 @@
   </div>
 
   <ng-container>
-    <div *ngIf="query.coordinates">
+    <div *ngIf="query.coordinates || query.polygonId">
       <div>
         <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
         <div class="input-group" style="max-width: 110px;">

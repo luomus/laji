@@ -191,7 +191,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
 
   registerPolygon(polygon: any) {
     return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
-      map((response: any) => response.id),
+      map((response: any) => '' + response.id),
       catchError(e => {
         const error = e.error?.error;
         if (error.status >= 400 && error.message) {

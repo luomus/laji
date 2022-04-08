@@ -302,8 +302,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             )
         ) : []);
 
-    const featuresFromQueryPolygonId = (polygonId: number): Observable<any[]> => polygonId
-      ? this.warehouseService.getPolygonFeatureCollection(this.query.polygonId).pipe(
+    const featuresFromQueryPolygonId = (polygonId: string): Observable<any[]> => polygonId
+      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
           map(featureCollection => (featureCollection as any).features)
       )
       : ObservableOf([]);
