@@ -49,6 +49,8 @@ export class ObservationPage {
   public $placePanel = $('.laji-panel-places');
   public $drawRectangleBtn = $('.draw-rectangle');
   public $drawPolygonBtn = $('.draw-polygon');
+  public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
+  public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
   async navigateTo(sub: 'list' | '' = '') {
     await browser.get(`observation/${sub}`);
@@ -74,10 +76,17 @@ export class ObservationPage {
     await this.map.drag([0, 0], [10, 10]);
   }
 
-  async hasCoordinatesFilter() {
+  private async getCoordinateFilter() {
     const url = new URL(await browser.getCurrentUrl());
-    const coordinatesFilter = url.searchParams.get('coordinates');
-    return !!coordinatesFilter?.match(/^(\d{2}\.\d+:){4,}WGS84:1$/);
+    return url.searchParams.get('coordinates');
+  }
+
+  async hasCoordinatesFilter() {
+    return !!(await this.getCoordinateFilter())?.match(/^(\d{2}\.\d+:){4,}WGS84:(0|1)(\.\d)?$/);
+  }
+
+  async getCoordinateIntersect() {
+    return +(await this.getCoordinateFilter()).split(':').pop();
   }
 
   async zoomClose() {
@@ -105,9 +114,16 @@ export class ObservationPage {
     }
   }
 
-  async hasPolygonFilter() {
+  private async getPolygonFilter() {
     const url = new URL(await browser.getCurrentUrl());
-    const coordinatesFilter = url.searchParams.get('polygonId');
-    return !!coordinatesFilter?.match(/^\d+:1$/);
+    return url.searchParams.get('polygonId');
+  }
+
+  async hasPolygonFilter() {
+    return !!(await this.getPolygonFilter())?.match(/^\d+:(0|1)(\.\d)?$/);
+  }
+
+  async getPolygonIntersect() {
+    return +(await this.getPolygonFilter()).split(':').pop();
   }
 }

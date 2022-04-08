@@ -280,10 +280,10 @@
       </div>
       <div>
         <div class="btn-group btn-group-xs">
-          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+          <button type="button" class="btn btn-default my-2 coordinate-intersect-min" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="btn btn-default my-2 coordinate-intersect-max" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>

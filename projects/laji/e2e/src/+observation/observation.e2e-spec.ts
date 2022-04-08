@@ -38,6 +38,17 @@ describe('Observation list', () => {
         done();
       });
 
+      it('coordinate intersect 1 by default', async (done) => {
+        expect(await page.getCoordinateIntersect()).toBe(1);
+        done();
+      });
+
+      it('coordinate intersect can be updated', async (done) => {
+        await page.$coordinateIntersectMinBtn.click();
+        expect(await page.getCoordinateIntersect()).toBe(0);
+        done();
+      });
+
       afterAll(async (done) => {
         await page.navigateTo('list');
         await page.placePanel.open();
@@ -74,6 +85,17 @@ describe('Observation list', () => {
           await page.zoomClose();
           await page.drawPolygon();
           expect(await page.hasPolygonFilter()).toBe(true);
+          done();
+        });
+
+        it('coordinate intersect 0 by default', async (done) => {
+          expect(await page.getPolygonIntersect()).toBe(0);
+          done();
+        });
+
+        it('coordinate intersect can be updated', async (done) => {
+          await page.$coordinateIntersectMaxBtn.click();
+          expect(await page.getPolygonIntersect()).toBe(1);
           done();
         });
       });
