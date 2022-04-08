@@ -3,17 +3,37 @@ import { ActivatedRoute } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import LajiMap, { TileLayerName } from 'laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { AtlasApiService } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasGridElement } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 
-function getGeoJSONFeature(ykj: string) {
+const getGeoJSONFeature = (ykj: string) => {
   const langLngStr = ykj.split(':');
   return convertYkjToGeoJsonFeature(langLngStr[0], langLngStr[1]);
+};
+
+const getAdjacentSqLink = (coords: string, latDelta: number, lngDelta: number): string[] => {
+  const c = coords.split(':');
+  const lat = parseInt(c[0], 10);
+  const lng = parseInt(c[1], 10);
+  return ['..', `${lat + latDelta}:${lng + lngDelta}`];
+};
+
+interface DatatableRow {
+  idx: number;
+  species: string;
+  code: string;
+  class: string;
+}
+
+interface GridInfoData {
+  elem: AtlasGridElement;
+  rows: DatatableRow[];
+  status: number;
 }
 
 @Component({
@@ -28,15 +48,14 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private loadMap$ = new BehaviorSubject<string>(undefined);
 
-  data$ = this.route.paramMap.pipe(
+  data$: Observable<GridInfoData> = this.route.paramMap.pipe(
     tap(() => {
       this.breadcrumbs.setBreadcrumbName(BreadcrumbId.GridInfo, undefined);
       this.loading = true;
       this.cdr.markForCheck();
     }),
     switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
-    catchError(() => of(undefined)),
-    map(elem => elem ? {
+    map(elem => ({
       elem,
       rows: elem.data.map((d, idx) => ({
         idx: idx + 1,
@@ -45,13 +64,8 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         class: d.atlasClass.value
       })),
       status: 200
-    } : {
-      elem: undefined,
-      rows: [],
-      status: 404
-    }),
+    })),
     tap(d => {
-      if (!d.elem) { return; }
       this.breadcrumbs.setBreadcrumbName(
         BreadcrumbId.GridInfo,
         d.elem.coordinates
@@ -60,8 +74,13 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         title: `${d.elem.name} ${d.elem.coordinates} | ${this.translate.instant('ba.header.title')}`
       });
       this.loadMap$.next(d.elem.coordinates);
-      this.loading = false;
     }),
+    catchError(() => of({
+      elem: undefined,
+      rows: [],
+      status: 404
+    })),
+    tap(() => this.loading = false)
   );
 
   cols: TableColumn[] = [
@@ -97,6 +116,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
 
   loading = true;
   datatableClasses = datatableClasses;
+  getAdjacentSqLink = getAdjacentSqLink;
   map: any;
 
   constructor(
@@ -141,12 +161,6 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  getAdjacentSqLink(coords: string, latDelta: number, lngDelta: number): string[] {
-    const c = coords.split(':');
-    const lat = parseInt(c[0], 10);
-    const lng = parseInt(c[1], 10);
-    return ['..', `${lat + latDelta}:${lng + lngDelta}`];
-  }
 
   ngOnDestroy(): void {
     if (this.map) { this.map.destroy(); }
