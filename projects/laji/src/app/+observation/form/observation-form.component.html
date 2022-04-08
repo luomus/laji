@@ -237,6 +237,12 @@
       </button>
       {{ 'observation.form.map.coordinates' | translate }}
     </div>
+    <div>
+      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('CoordinatesImport')">
+        <i class="glyphicon glyphicon-floppy-open"></i>
+      </button>
+      {{ 'observation.form.map.coordinatesImport' | translate }}
+    </div>
   </div>
 
   <ng-container>
