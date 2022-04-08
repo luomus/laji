@@ -34,13 +34,12 @@ import { ScrollPositionService } from './core/scroll-position.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$.pipe(tap(() => this.cdr.detectChanges()));
+  breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
   news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5 });
 
   constructor(
     translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
-    private cdr: ChangeDetectorRef,
     private headerService: HeaderService,
     private api: LajiApiService,
     scrollPositionService: ScrollPositionService // has to be injected for the service to initialize
