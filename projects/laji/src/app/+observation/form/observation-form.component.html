@@ -220,25 +220,25 @@
         <label>{{ 'observation.form.map.intro' | translate }}</label>
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small draw-rectangle" (click)="mapDraw.emit('Rectangle')">
+      <button type="button" class="lu-btn lu-btn-small obs-form-draw-btn draw-rectangle" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)">
+      <button type="button" class="lu-btn lu-btn-small obs-form-draw-btn draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)">
         <i class="lji-icon lji-polygon"></i>
       </button>
       {{ 'observation.form.map.polygon' | translate }}
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
+      <button type="button" class="lu-btn lu-btn-small obs-form-draw-btn" (click)="mapDraw.emit('Coordinates')">
         YKJ
       </button>
       {{ 'observation.form.map.coordinates' | translate }}
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('CoordinatesImport')">
+      <button type="button" class="lu-btn lu-btn-small obs-form-draw-btn" (click)="mapDraw.emit('CoordinatesImport')">
         <i class="glyphicon glyphicon-floppy-open"></i>
       </button>
       {{ 'observation.form.map.coordinatesImport' | translate }}
