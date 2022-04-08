@@ -1,6 +1,6 @@
-<div class="container my-5">
+<div class="container mb-6">
   <h1 translate>ba.grid-index.title</h1>
-  <p>{{ 'ba.grid-index.p' | translate }}</p>
+  <div [innerHtml]="'ba.grid-index.p' | translate"></div>
   <div class="mb-6" *ngIf="filteredRows$ | async; else loading; let rows">
     <input class="form-control d-block my-4"
       type='text'
