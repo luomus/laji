@@ -10,8 +10,7 @@ export class ScrollPositionService {
   constructor(router: Router, @Inject(PLATFORM_ID) platformId) {
     if (!isPlatformBrowser(platformId)) { return; }
     this.urlBeforeNavigation = router.url;
-    router.events.pipe(
-    ).subscribe(e => {
+    router.events.subscribe(e => {
       if (e instanceof NavigationStart) {
         this.urlToScrollPosition[this.urlBeforeNavigation] = this.getCurrentBodyScroll();
       } else if (e instanceof NavigationEnd) {
