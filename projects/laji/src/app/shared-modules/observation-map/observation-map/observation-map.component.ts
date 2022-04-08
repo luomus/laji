@@ -334,16 +334,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.subDataFetch.unsubscribe();
     }
     this.drawData.featureCollection.features = [];
-    if (this.query.coordinates || this.query.polygonId) {
-      this.drawDataSubscription?.unsubscribe();
-      this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
-        this.drawData = {...this.drawData, featureCollection};
-        this.reset = true;
-        this.loading = true;
-        this.showingItems = false;
-        this.addToMap(this.query);
-      });
-    }
+    this.drawDataSubscription?.unsubscribe();
+    this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+      this.drawData = {...this.drawData, featureCollection};
+      this.reset = true;
+      this.loading = true;
+      this.showingItems = false;
+      this.addToMap(this.query);
+    });
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
