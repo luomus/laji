@@ -108,6 +108,6 @@ export class ObservationPage {
   async hasPolygonFilter() {
     const url = new URL(await browser.getCurrentUrl());
     const coordinatesFilter = url.searchParams.get('polygonId');
-    return !!coordinatesFilter?.match(/^\d+$/);
+    return !!coordinatesFilter?.match(/^\d+:1$/);
   }
 }
