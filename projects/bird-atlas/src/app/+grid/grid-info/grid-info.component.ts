@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableColumn } from '@swimlane/ngx-datatable';
-import LajiMap, { TileLayerName } from 'laji-map';
+import { TileLayerName, LajiMap } from 'laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -15,6 +15,21 @@ const getGeoJSONFeature = (ykj: string) => {
   const langLngStr = ykj.split(':');
   return convertYkjToGeoJsonFeature(langLngStr[0], langLngStr[1]);
 };
+
+const getMapData = (ykj: string) => ({
+  featureCollection: {
+    features: [
+      getGeoJSONFeature(ykj),
+    ],
+    type: 'FeatureCollection'
+  },
+  getFeatureStyle: () => ({
+    weight: 5,
+    opacity: 1,
+    fillOpacity: 0.3,
+    color: '#00aa00'
+  })
+});
 
 const getAdjacentSqLink = (coords: string, latDelta: number, lngDelta: number): string[] => {
   const c = coords.split(':');
@@ -129,36 +144,22 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         width: 225
       }
     ];
+    this.zone.runOutsideAngular(() => {
+      this.map = new LajiMap({
+        tileLayerName: TileLayerName.maastokartta,
+      });
+    });
   }
 
   ngAfterViewInit(): void {
     this.loadMap$.pipe(
       takeUntil(this.unsubscribe$),
-      tap(() => { if (this.map) { this.map.destroy(); } }),
       filter(d => d !== undefined)
     ).subscribe(ykj => {
       setTimeout(() => { // yield control to renderer before accessing lajiMapElem
-        this.zone.runOutsideAngular(() => {
-          this.map = new LajiMap({
-            rootElem: this.lajiMapElem.nativeElement,
-            tileLayerName: TileLayerName.maastokartta,
-            data:   {
-              featureCollection: {
-                features: [
-                  getGeoJSONFeature(ykj),
-                ],
-                type: 'FeatureCollection'
-              },
-              getFeatureStyle: () => ({
-                weight: 5,
-                opacity: 1,
-                fillOpacity: 0.3,
-                color: '#00aa00'
-              })
-            },
-            zoomToData: true
-          });
-        });
+        this.map.setRootElem(this.lajiMapElem.nativeElement);
+        this.map.setData(getMapData(ykj));
+        this.map.zoomToData();
       });
     });
   }
