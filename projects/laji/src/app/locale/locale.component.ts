@@ -1,6 +1,6 @@
 import { LocalStorage } from 'ngx-webstorage';
 import { LAST_LANG_KEY } from './localize-router.service';
-import { PlatformService } from '../shared-modules/platform/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 export abstract class LocaleComponent {
 

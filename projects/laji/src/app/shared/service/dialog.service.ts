@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from './confirm-modal.component';
 import { map, take } from 'rxjs/operators';

@@ -1,6 +1,6 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';

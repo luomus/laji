@@ -12,7 +12,7 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PlatformService } from '../../../../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../../../../root/platform.service';
 import { LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({

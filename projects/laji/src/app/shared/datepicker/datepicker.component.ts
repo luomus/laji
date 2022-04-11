@@ -41,7 +41,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 export interface CalendarDate {
   day: number;

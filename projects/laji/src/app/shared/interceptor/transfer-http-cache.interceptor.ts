@@ -23,7 +23,7 @@ import {
 } from '@angular/platform-browser';
 import { Observable, of, of as observableOf } from 'rxjs';
 import { catchError, filter, take, tap, timeout } from 'rxjs/operators';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 export interface TransferHttpResponse {
   body?: any | null;

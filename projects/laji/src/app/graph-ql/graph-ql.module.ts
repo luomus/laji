@@ -10,7 +10,7 @@ import { concatMap, filter } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { PlatformService } from '../shared-modules/platform/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 const GRAPH_QL_STATE_KEY = makeStateKey<any>('graphql.state');
 

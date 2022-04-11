@@ -3,7 +3,7 @@ import {
   ElementRef,
   OnInit, Renderer2
 } from '@angular/core';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector

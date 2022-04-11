@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 
 import { UserService } from '../service/user.service';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { take, tap } from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})

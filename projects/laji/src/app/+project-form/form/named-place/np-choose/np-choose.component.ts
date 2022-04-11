@@ -13,7 +13,7 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Rights } from '../../../../shared/service/form-permission.service';
-import { PlatformService } from '../../../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../../../root/platform.service';
 import { Form } from '../../../../shared/model/Form';
 
 @Component({

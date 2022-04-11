@@ -1,7 +1,7 @@
 import { fromEvent as observableFromEvent, Observable, Subscription } from 'rxjs';
 import { Directive, ElementRef, EventEmitter, Inject, Input, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
-import { PlatformService } from '../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Directive({
   selector: '[lajiClickOutSide]'

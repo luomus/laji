@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
-import { PlatformService } from '../../../shared-modules/platform/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 
 let OpenSeadragon: any; // eslint-disable-line @typescript-eslint/naming-convention
 

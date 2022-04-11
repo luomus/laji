@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { LocaleComponent } from './locale.component';
 import * as moment from 'moment';
 import 'moment/locale/fi';
-import { PlatformService } from '../shared-modules/platform/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 @Component({
   selector: 'laji-locale-fi',

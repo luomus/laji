@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import {WINDOW} from '@ng-toolkit/universal';
 
 @Injectable({
