@@ -69,6 +69,11 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
+          <ng-container *lajiForTypes="['vir']">
+            <alert *ngIf="gisDownloadLimit < unitCount">
+              <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+            </alert>
+          </ng-container>
           <laji-download
             *lajiForTypes="['vir']"
             [showReason]="true"
@@ -106,6 +111,9 @@
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
+          </alert>
+          <alert *ngIf="gisDownloadLimit < unitCount">
+            <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
           </alert>
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
