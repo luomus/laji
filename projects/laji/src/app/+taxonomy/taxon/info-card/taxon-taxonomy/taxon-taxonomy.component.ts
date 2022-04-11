@@ -89,6 +89,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
         }
       }
     }
+    return undefined;
   }
 
   private getChildren() {

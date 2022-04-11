@@ -230,7 +230,12 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         },
         ticks: {
             beginAtZero: true,
-            callback(value) { if (value as any % 1 === 0) { return value; } },
+            callback(value) {
+              if (value as any % 1 === 0) {
+                return value;
+              }
+              return undefined;
+            },
             stepSize: 2
         }
       }],
