@@ -53,7 +53,7 @@ describe('Named place linker', () => {
 
   it('isn\'t shown if document is readonly', async (done) => {
     await projectFormPage.navigateTo(FORM_ID, `/form/${DOC_NO_NP_ID_FORM_HAS_NAMED_PLACES_NO_ACCESS}`);
-    expect(await projectFormPage.documentFormView.$openNamedPlaceLinker.isPresent()).toBe(false, 'named place linker ');
+    expect(await projectFormPage.documentFormView.$openNamedPlaceLinker.isPresent()).toBe(false, 'named place linker');
     done();
   });
 });

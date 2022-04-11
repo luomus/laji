@@ -69,6 +69,8 @@
 -->
 <laji-row [title]="'MY.lifeStage' | label" [value]="unit.lifeStage | label: 'warehouse'"></laji-row>
 <laji-row [title]="'MY.sex' | label" [value]="unit.sex | label: 'warehouse'"></laji-row>
+<laji-row [title]="'MY.atlasCode' | label" [value]="unit.atlasCode | label: 'fullUri'"></laji-row>
+<laji-row [title]="'MY.atlasClass' | label" [value]="unit.atlasClass | label: 'fullUri'"></laji-row>
 <laji-row [title]="'MY.notes' | label" [value]="unit.notes"></laji-row>
 <laji-row [title]="'audio.spectrum' | translate" *ngIf="unit.audioCount > 0">
   <laji-audio-player [audioFiles]="unit.media"></laji-audio-player>
