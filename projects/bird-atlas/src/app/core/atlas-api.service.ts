@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
 
-export type AtlasMap = any;
-export interface AtlasGridQueryElem {
-  birdAssociationArea: string;
+export type AtlasMap = string;
+export interface AtlasGridSquare {
+  birdAssociationArea: {key: string; value: string};
   coordinates: string;
   id: string;
   level1: number;
@@ -16,10 +16,28 @@ export interface AtlasGridQueryElem {
   level4: number;
   level5: number;
   name: string;
+  data?: {
+    atlasClass: {key: string; value: string};
+    atlasCode: {key: string; value: string};
+    speciesId: string;
+    speciesName: string;
+  }[];
+  atlas?: number;
+  atlasClassSum?: number;
+  activityCategory?: {key: string; value: string};
 };
-export type AtlasGridElement = any;
-export type AtlasTaxa = any;
-export type AtlasTaxon = any;
+export type AtlasGrid = AtlasGridSquare[];
+
+interface VernacularName {fi: string; sv: string; en: string};
+export interface AtlasTaxon {
+  id: string;
+  intellectualRights: string;
+  scientificName: string;
+  vernacularName: VernacularName;
+  next?: AtlasTaxon;
+  prev?: AtlasTaxon;
+}
+export type AtlasTaxa = AtlasTaxon[];
 
 const BASE_URL = environment.atlasApiBasePath;
 
@@ -34,26 +52,26 @@ export class AtlasApiService {
   }
 
   @cacheReturnObservable()
-  getGrid(): Observable<AtlasGridQueryElem[]> {
+  getGrid(): Observable<AtlasGrid> {
     const url = `${BASE_URL}/grid`;
-    return <Observable<AtlasGridQueryElem[]>>this.http.get(url);
+    return <Observable<AtlasGrid>>this.http.get(url);
   }
 
   @cacheReturnObservable()
-  getGridElement(gridId: string): Observable<AtlasGridElement> {
+  getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
-    return this.http.get(url);
+    return <Observable<AtlasGridSquare>>this.http.get(url);
   }
 
   @cacheReturnObservable()
   getTaxa(): Observable<AtlasTaxa> {
     const url = `${BASE_URL}/taxon`;
-    return this.http.get(url);
+    return <Observable<AtlasTaxa>>this.http.get(url);
   }
 
   @cacheReturnObservable()
   getTaxon(id: string): Observable<AtlasTaxon> {
     const url = `${BASE_URL}/taxon/${id}`;
-    return this.http.get(url);
+    return <Observable<AtlasTaxon>>this.http.get(url);
   }
 }

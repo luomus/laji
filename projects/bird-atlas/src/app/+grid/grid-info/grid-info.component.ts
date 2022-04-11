@@ -5,7 +5,7 @@ import { TileLayerName, LajiMap } from 'laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { AtlasApiService, AtlasGridElement } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,7 +46,7 @@ interface DatatableRow {
 }
 
 interface GridInfoData {
-  elem: AtlasGridElement;
+  elem: AtlasGridSquare;
   rows: DatatableRow[];
   status: number;
 }
@@ -85,7 +85,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         this.loading = true;
         this.cdr.markForCheck();
       }),
-      switchMap(params => this.atlasApi.getGridElement(params.get('id'))),
+      switchMap(params => this.atlasApi.getGridSquare(params.get('id'))),
       map(elem => ({
         elem,
         rows: elem.data.map((d, idx) => ({
