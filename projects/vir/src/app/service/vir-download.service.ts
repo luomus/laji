@@ -4,7 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { WINDOW } from '@ng-toolkit/universal';
 import { DialogService } from '../../../../laji/src/app/shared/service/dialog.service';
-import {FileFormat, FileGeometry, FileCrs, GeoConvertService} from '../../../../laji/src/app/shared/service/geo-convert.service';
+import {
+  FileFormat,
+  FileGeometry,
+  FileCrs,
+  GeoConvertService,
+  isGeoConvertError
+} from '../../../../laji/src/app/shared/service/geo-convert.service';
 
 export enum FileType {
   standard = 'standard',
@@ -35,8 +41,9 @@ export class VirDownloadService {
       this.window.location.href = res;
       this.loading = false;
       this.fileDownloadReady.emit();
-    }, () => {
-      this.dialogService.alert('usage.fileDownload.genericError');
+    }, err => {
+      const msg = isGeoConvertError(err) ? err.msg : 'usage.fileDownload.genericError';
+      this.dialogService.alert(msg);
       this.loading = false;
       this.fileDownloadReady.emit();
     });
