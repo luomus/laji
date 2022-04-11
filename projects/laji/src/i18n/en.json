@@ -900,6 +900,7 @@
   "observation.active.editorOrObserverPersonToken": "Observer or owner",
   "observation.active.editorPersonToken": "As editor",
   "observation.active.effectiveTag": "Quality control tags",
+  "observation.active.elyCentreId": "ELY-keskus",
   "observation.active.finnish": "Finnish taxa",
   "observation.active.finnishMunicipalityId": "Municipality",
   "observation.active.firstLoadedSameOrAfter": "Date First Submitted",

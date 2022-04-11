@@ -900,6 +900,7 @@
   "observation.active.editorOrObserverPersonToken": "Observer eller redaktör",
   "observation.active.editorPersonToken": "Som redaktör",
   "observation.active.effectiveTag": "Kvalitetskontroll taggar",
+  "observation.active.elyCentreId": "ELY-keskus",
   "observation.active.finnish": "Finska arter",
   "observation.active.finnishMunicipalityId": "Kommun",
   "observation.active.firstLoadedSameOrAfter": "Inträde tid",
