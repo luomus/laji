@@ -5,7 +5,14 @@
       <div class="col-sm-4" *ngFor="let option of fileTypeEnum | keyvalue: sortNull">
         <div class="radio">
           <label>
-            <input type="radio" name="fileType" [value]="option.value" [(ngModel)]="downloadService.fileType">{{ ('usage.fileDownload.type.' + option.value)  | translate }}
+            <input
+              type="radio"
+              name="fileType"
+              [value]="option.value"
+              [(ngModel)]="downloadService.fileType"
+              [disabled]="option.value === fileTypeEnum.gis && downloadRequest.approximateMatches > gisDownloadLimit"
+            >
+            {{ ('usage.fileDownload.type.' + option.value)  | translate }}
           </label>
           <laji-info *ngIf="option.value === fileTypeEnum.gis" [placement]="'right'" [adaptivePosition]="true" [html]="'usage.fileDownload.type.gis.info' | translate"></laji-info>
         </div>
@@ -32,6 +39,7 @@
       </select>
     </div>
   </div>
+  <span *ngIf="downloadRequest.approximateMatches > gisDownloadLimit" class="text text-warning"><i class="glyphicon glyphicon-alert"></i> {{ 'usage.fileDownload.gisDisabled' | translate }}</span>
 </div>
 <lu-button [loading]="downloadService.loading" [role]="'primary'" (click)="downloadFile()">
   <i class="glyphicon glyphicon-download-alt"></i>
