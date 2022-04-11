@@ -18,7 +18,8 @@ export enum SpecialTypes {
   dateTime = 'dateTime',
   date = 'date',
   time = 'time',
-  keywords = 'keywords'
+  keywords = 'keywords',
+  atlasCode = 'atlasCode'
 }
 
 @Injectable()
@@ -65,7 +66,8 @@ export class MappingService {
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon,
-    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID
+    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode
   };
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
@@ -228,7 +230,7 @@ export class MappingService {
     return this._map(value, field, allowUnMapped);
   }
 
-  mapByFieldType(value: any, field: IFormField) {
+  private mapByFieldType(value: any, field: IFormField) {
     const upperValue = ('' + value).toLowerCase();
     let realValue = null;
     switch (field.type) {
@@ -276,6 +278,11 @@ export class MappingService {
       const label = field.enumNames[idx].toLowerCase();
       this.mapping.string[field.key][value.toLowerCase()] = value;
       this.mapping.string[field.key][label.toLowerCase()] = value;
+
+      if (this.getSpecial(field) === SpecialTypes.atlasCode) {
+        const code = value.match(/\d+/)[0];
+        this.mapping.string[field.key][code] = value;
+      }
     });
   }
 

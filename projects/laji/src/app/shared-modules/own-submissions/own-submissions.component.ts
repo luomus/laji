@@ -127,6 +127,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit() {
     this.reloadSubscription$ = this.reload$?.subscribe(() => {
       this.initDocuments(this.onlyTemplates);
+      this.cd.markForCheck();
     });
   }
 
@@ -409,7 +410,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private getForm(formId: string): Observable<any> {
-    return this.formService.getFormInListFormat(formId, this.translate.currentLang).pipe(
+    return this.formService.getFormInListFormat(formId).pipe(
       map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);

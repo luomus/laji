@@ -80,7 +80,7 @@ export class SelectedFieldGroupComponent {
 
   getFieldColumnArray(field: string) {
     if (!field) {
-      return;
+      return undefined;
     } else if (/gathering\.conversions\.(wgs84|euref|ykj)(CenterPoint)(.(lat|lon))?$/.test(field)) {
       return [
         field + '.lat',

@@ -1,12 +1,15 @@
-import { catchError, delay, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, EventEmitter,
+  Component,
+  EventEmitter,
+  Inject,
   Input,
-  OnDestroy, Output,
+  OnDestroy,
+  Output,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
@@ -16,14 +19,13 @@ import { ToastsService } from '../../shared/service/toasts.service';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
-import { of, Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { BookType } from 'xlsx';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
-import { ExportService } from '../../shared/service/export.service';
+import { ExportFileType, ExportService } from '../../shared/service/export.service';
 import { Global } from '../../../environments/global';
-import { DownloadComponent } from '../../shared-modules/download-modal/download.component';
+import { DownloadComponent, DownloadParams } from '../../shared-modules/download-modal/download.component';
 import {
   ObservationTableSettingsComponent
 } from '../../shared-modules/observation-result/observation-table/observation-table-settings.component';
@@ -35,6 +37,10 @@ import { environment } from '../../../environments/environment';
 import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
+import { FORMAT } from '../../shared-modules/download-modal/download.component';
+import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
+import { WINDOW } from '@ng-toolkit/universal';
+import { DialogService } from '../../shared/service/dialog.service';
 
 
 enum RequestStatus {
@@ -83,6 +89,10 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   linkTimeout: any;
 
+  formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
+
+  gisDownloadLimit = GEO_CONVERT_LIMIT;
+
   private _originalSelected: string[];
   private _settings: ISettingResultList;
   private modalRef: BsModalRef;
@@ -94,8 +104,10 @@ export class ObservationDownloadComponent implements OnDestroy {
     fi: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameFinnish',
     sv: 'unit.linkings.taxon.speciesId,unit.linkings.taxon.speciesScientificName,unit.linkings.taxon.speciesNameSwedish'
   };
+  private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
-  constructor(public searchQuery: SearchQueryService,
+  constructor(@Inject(WINDOW) private window: Window,
+              public searchQuery: SearchQueryService,
               public userService: UserService,
               public translate: TranslateService,
               private observationResultService: ObservationResultService,
@@ -107,7 +119,9 @@ export class ObservationDownloadComponent implements OnDestroy {
               private exportService: ExportService,
               private modalService: BsModalService,
               private observationDataService: ObservationDataService,
-              private downloadService: DownloadService
+              private downloadService: DownloadService,
+              private geoConvertService: GeoConvertService,
+              private dialogService: DialogService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -276,20 +290,26 @@ export class ObservationDownloadComponent implements OnDestroy {
     );
   }
 
-  simpleDownload(type: any) {
+  simpleDownload(params: DownloadParams) {
     this.downloadLoading = true;
-    const selected = this.columnSelector.columns;
+    const isGisDownload = this.isGisDownload(params.fileType);
+
+    let selected = this.columnSelector.columns;
+    if (isGisDownload && selected.indexOf(this.gisDownloadGeometryField) === -1) {
+      selected = [...selected, this.gisDownloadGeometryField];
+    }
     const columns = this.tableColumnService.getColumns(selected);
+
     this.observationResultService.getAll(
       this._originalQuery,
       this.tableColumnService.getSelectFields(selected, this.query),
       [],
       this.translate.currentLang,
       true,
-      environment.type === Global.type.vir,
+      environment.type === Global.type.vir || isGisDownload,
       [this.reasonEnum, this.reason].filter(r => !!r).join(': ')
     ).pipe(
-      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.downloadData(data, columns, params))
     ).subscribe(
       () => {
         this.downloadLoading = false;
@@ -300,8 +320,13 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.cd.markForCheck();
       },
       (err) => {
-        this.logger.error('Simple download failed', err);
-        this.toastsService.showError(this.translate.instant('observation.download.error'));
+        if (isGeoConvertError(err)) {
+          this.dialogService.alert(err.msg);
+        } else{
+          this.logger.error('Simple download failed', err);
+          this.toastsService.showError(this.translate.instant('observation.download.error'));
+        }
+
         this.downloadLoading = false;
       }
     );
@@ -351,5 +376,33 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   resetColumnSelects() {
     this.columnSelector.columns = this.tableColumnService.getDefaultFields();
+  }
+
+  downloadData(data: {id?: string; results: any[]}, columns: ObservationTableColumn[], params: DownloadParams): Observable<void> {
+    if (this.isGisDownload(params.fileType)) {
+      return this.exportService.getBlobFromData(data.results, columns, 'tsv', 'laji-data').pipe(
+        map(blob => {
+          const formData = new FormData();
+          formData.append('file', blob, 'laji-data.tsv');
+          return formData;
+        }),
+        switchMap(formData => this.geoConvertService.getGISDownloadLinkFromData(
+          formData,
+          data.id,
+          params.fileType as FileFormat,
+          params.geometry,
+          params.crs
+        )),
+        map(link => {
+          this.window.location.href = link;
+        })
+      );
+    } else {
+      return this.exportService.exportFromData(data.results, columns, params.fileType as ExportFileType, 'laji-data');
+    }
+  }
+
+  private isGisDownload(fileType: FORMAT): boolean {
+    return fileType === 'shp' || fileType === 'gpkg';
   }
 }

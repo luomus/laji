@@ -6,7 +6,7 @@
     <laji-download
       [downloadLoading]="downloadLoading"
       [formats]="['csv', 'tsv', 'ods', 'xlsx']"
-      (download)="download($event)"
+      (download)="download($event.fileType)"
     ><span><i class="glyphicon glyphicon-download-alt"></i> {{ 'wbc.stats.route.table.download' | translate }} </span>
     </laji-download>
   </div>
@@ -53,4 +53,3 @@
       </span>
     </ng-template>
   </ng-template>
-  

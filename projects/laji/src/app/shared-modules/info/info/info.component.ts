@@ -106,8 +106,6 @@ export class InfoComponent implements OnInit {
   }
 
   private useModal() {
-    if (this.platformService.isBrowser) {
-      return window.innerWidth <= 767;
-    }
+    return this.platformService.isBrowser && window.innerWidth <= 767;
   }
 }

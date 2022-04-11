@@ -79,7 +79,14 @@ export class SpeciesImagesComponent implements OnInit, OnDestroy {
     this.subFetch = this.fetchPage()
       .subscribe(data => {
           this.images = data.results.map(res => {
-            const image = res['multimedia'][0];
+            let image = {};
+            for (const media of res['multimedia']) {
+              if (!media['keywords']?.includes('skeletal')) {
+                image = media;
+                break;
+              }
+            }
+
             image['vernacularName'] = res['vernacularName'];
             image['scientificName'] = res['scientificName'];
             image['taxonId'] = res['id'];

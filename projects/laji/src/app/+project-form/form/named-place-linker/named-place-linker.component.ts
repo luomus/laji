@@ -110,7 +110,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
     ).subscribe((res: null | {document: Document; form: Form.SchemaForm}) => {
       if (!res) {
         this.loading = false;
-        return EMPTY;
+        return;
       }
       this._linked = true;
       this.loading = false;

@@ -202,9 +202,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   }
 
   showMakeTemplate(formID: string): boolean {
-    if (formID) {
-      return Global.canHaveTemplate.indexOf(formID) > -1;
-    }
+    return formID && Global.canHaveTemplate.indexOf(formID) > -1;
   }
 
   private checkEditRight() {
