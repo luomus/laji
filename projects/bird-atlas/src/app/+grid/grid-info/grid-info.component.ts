@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
-import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature } from '../../../../../laji/src/app/root/coordinate-utils';
 import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 

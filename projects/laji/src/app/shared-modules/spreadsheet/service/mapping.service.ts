@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
-import { convertYkjToGeoJsonFeature, CoordinateService } from '../../../shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
 import { Util } from '../../../shared/service/util.service';
@@ -83,7 +83,6 @@ export class MappingService {
 
   constructor(
     private translationService: TranslateService,
-    private coordinateService: CoordinateService,
     private spreadsheetFacade: SpreadsheetFacade
   ) { }
 

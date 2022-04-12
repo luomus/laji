@@ -20,13 +20,13 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
-import { CoordinateService } from '../../../shared/service/coordinate.service';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
 import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
+import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 
 @Component({
   selector: 'laji-observation-map',
@@ -140,7 +140,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     private platformService: PlatformService,
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
-    private coordinateService: CoordinateService,
     private logger: Logger,
     private changeDetector: ChangeDetectorRef
   ) {
@@ -300,8 +299,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const features = [];
     this.query.coordinates.map(coord => {
       features.push(
-        this.coordinateService.getFeatureFromGeometry(
-          this.coordinateService.convertLajiEtlCoordinatesToGeometry(coord)
+        getFeatureFromGeometry(
+          convertLajiEtlCoordinatesToGeometry(coord)
         )
       );
     });

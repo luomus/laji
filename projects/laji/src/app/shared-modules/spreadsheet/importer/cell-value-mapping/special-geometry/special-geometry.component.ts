@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
-import { CoordinateService } from '../../../../../shared/service/coordinate.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import { getFeatureCollectionFromGeometry, getGeometryFromFeatureCollection } from 'projects/laji/src/app/root/coordinate-utils';
 
 @Component({
   selector: 'laji-special-geometry',
@@ -62,7 +62,6 @@ export class SpecialGeometryComponent {
   value: any;
 
   constructor(
-    private coordinateService: CoordinateService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
@@ -87,7 +86,7 @@ export class SpecialGeometryComponent {
     this.value = this.invalidValues[idx];
     if (this.mapping[this.value] && this.mapping[this.value] !== VALUE_IGNORE) {
       this.lajiMapComponent.map.setDraw({
-        featureCollection: this.coordinateService.getFeatureCollectionFromGeometry(this.mapping[this.value]),
+        featureCollection: getFeatureCollectionFromGeometry(this.mapping[this.value]),
         onChange: this.onChange.bind(this)
       });
       this.lajiMapComponent.map.focusToDrawLayer(0);
@@ -102,7 +101,7 @@ export class SpecialGeometryComponent {
   onChange() {
     this.initLast();
     const drawnData = this.lajiMapComponent.map.getDraw();
-    this.valueMap(this.value, this.coordinateService.getGeometryFromFeatureCollection(drawnData.featureCollection));
+    this.valueMap(this.value, getGeometryFromFeatureCollection(drawnData.featureCollection));
   }
 
   initLast() {
