@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { Global } from '../../../../environments/global';
+import { environment } from '../../../../../environments/environment';
+import { Global } from '../../../../../environments/global';
 
 @Directive({
   selector: '[lajiRouteTransformer]'

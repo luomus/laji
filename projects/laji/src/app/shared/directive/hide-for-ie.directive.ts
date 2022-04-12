@@ -1,5 +1,5 @@
 import { Directive, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Directive({ selector: '[lajiHideForIe]' })
 export class HideForIeDirective implements OnInit {

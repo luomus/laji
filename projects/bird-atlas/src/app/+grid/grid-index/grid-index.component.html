@@ -1,2 +1,24 @@
-<p>Lorem ipsum...</p>
-<a [routerLink]="['123']">grid-info</a>
+<div class="container mb-6">
+  <h1 translate>ba.grid-index.title</h1>
+  <div [innerHtml]="'ba.grid-index.p' | translate"></div>
+  <div class="mb-6" *ngIf="filteredRows$ | async; else loading; let rows">
+    <input class="form-control d-block my-4"
+      type='text'
+      placeholder="{{'haseka.submissions.filter' | translate}}"
+      (keyup)="onSearchKeyUp($event)">
+    <ngx-datatable
+      class="material"
+      [rowHeight]="35"
+      [rows]="rows"
+      [columns]="cols"
+      [cssClasses]="datatableClasses"
+      [scrollbarV]="true"
+      [messages]="{ emptyMessage: '' }"
+      (activate)="onActivate($event)"
+    ></ngx-datatable>
+  </div>
+</div>
+
+<ng-template #loading>
+  <laji-spinner></laji-spinner>
+</ng-template>

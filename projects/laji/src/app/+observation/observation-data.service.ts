@@ -9,7 +9,7 @@ import { HistoryService } from '../shared/service/history.service';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 export interface IObservationData {
   units: {

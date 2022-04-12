@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Information, LajiApiClient, PagedResult, Taxon } from 'projects/laji-api-client/src/public-api';
+import { Information, LajiApiClient, News, PagedResult, Taxon } from 'projects/laji-api-client/src/public-api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ const concatArgs = (...args): string => (
 );
 const hashArgs = (...args) => hashCode(concatArgs(...args));
 
-const cacheReturnObservable = (cacheInvalidationMs?: number) => (
+export const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
     const original = descriptor.value;
     descriptor.value = function(this: any, ...args: any[]) {
@@ -53,8 +53,8 @@ const cacheReturnObservable = (cacheInvalidationMs?: number) => (
   }
 );
 
-@Injectable({providedIn: 'root'})
-export class ApiService {
+@Injectable()
+export class LajiApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 
   @cacheReturnObservable(604800000) // 1 week
@@ -83,5 +83,13 @@ export class ApiService {
       '',
       { lang, parentTaxonId: id, ...params }
     );
+  }
+
+  @cacheReturnObservable(60000) // 1 minute
+  getNews(query: LajiApiClient.NewsFindAllParams): Observable<News[]> {
+    return this.api.getList(
+      LajiApiClient.Endpoints.news,
+      query
+    ).pipe(map(res => res.results));
   }
 }

@@ -7,7 +7,7 @@ import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
 import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-map-front',

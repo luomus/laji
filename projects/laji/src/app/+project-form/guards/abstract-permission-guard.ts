@@ -6,7 +6,7 @@ import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Injectable()

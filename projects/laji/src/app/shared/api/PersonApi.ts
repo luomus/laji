@@ -29,7 +29,7 @@ import { Util } from '../service/util.service';
 import { Profile } from '../model/Profile';
 import { Person } from '../model/Person';
 import { environment } from '../../../environments/environment';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Injectable({providedIn: 'root'})
 export class PersonApi {

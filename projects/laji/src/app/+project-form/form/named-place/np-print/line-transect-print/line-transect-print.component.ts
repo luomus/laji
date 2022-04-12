@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { CoordinateService } from '../../../../../shared/service/coordinate.service';
+import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
@@ -37,7 +37,6 @@ export class LineTransectPrintComponent implements OnChanges {
   private pageSize = 10;
 
   constructor(
-    private coordinateService: CoordinateService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -180,7 +179,7 @@ export class LineTransectPrintComponent implements OnChanges {
   }
 
   private getYkj(lat, lng): {lat: number; lng: number} {
-    const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
+    const coord = convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
       lat: coord[0],
       lng: coord[1]
