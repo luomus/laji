@@ -349,7 +349,7 @@
   "haseka.form.private": "Havaintoerää ei ole vielä julkaistu",
   "haseka.form.readonly": "Sinulla ei ole muokkausoikeutta",
   "haseka.form.rights.description": " <h1>Lomakkeen oikeuksien hallinta</h1> <p>Täältä voit hallinnoida sitä kuka pääsee käyttämään lomakketta.</p>",
-  "haseka.form.saveError.description": "Anteeksi, jokin meni pieleen. Ylläpidolle on lähetetty viesti. Tiedot ovat tallessa selaimessasi. Voit yrittää jatkaa lomakkeen käyttöä painamalla \"Ok\" tai poistua lomakkeelta ja yrittää myöhemmin uudelleen painamalla \"Poistu\". Mikäli ongelma ei ratkea, ota yhteyttä ylläpitoon (helpdesk@laji.fi) ja voimme palauttaa tiedot. *(Mikäli tallennat luonnosta, tämä ongelma voi johtua myös puuttuvasta päivämäärästä tai puuttuvasta karttapisteestä.)*",
+  "haseka.form.saveError.description": "Anteeksi, jokin meni pieleen. Ylläpidolle on lähetetty viesti. Voit yrittää jatkaa lomakkeen käyttöä painamalla \"Ok\" ja yrittää tallentaa uudestaan, tai poistua lomakkeelta ja yrittää myöhemmin uudelleen painamalla \"Poistu\". Jos painat \"Poistu\", tiedot ovat tallella omalla koneellasi tällä hetkellä käytössä olevalla nettiselaimella. Lomake on saavutettavista valikosta \"Tallentamattomat havaintoeräni\" kohdan alta (vaatii sivun uudellenlatauksen). Mikäli ongelma ei ratkea, ota yhteyttä ylläpitoon (helpdesk@laji.fi) ja voimme palauttaa tiedot. HUOM: Mikäli tallennat luonnosta, tämä ongelma voi johtua myös puuttuvasta päivämäärästä tai puuttuvasta karttapisteestä!",
   "haseka.form.savePrivate": "Tallenna luonnoksena",
   "haseka.form.savePublic": "Tallenna julkisena",
   "haseka.form.saveTemplate": "Tallenna esitäytetyksi lomakkeeksi.",

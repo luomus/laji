@@ -349,7 +349,7 @@
   "haseka.form.private": "Submission has not been published yet",
   "haseka.form.readonly": "You don't have permission to edit",
   "haseka.form.rights.description": " <h1>Form permission management</h1> <p>You can manage form permissions here.</p>",
-  "haseka.form.saveError.description": "Anteeksi, jokin meni pieleen. Ylläpidolle on lähetetty viesti. Tiedot ovat tallessa selaimessasi. Voit yrittää jatkaa lomakkeen käyttöä painamalla \"Ok\" tai poistua lomakkeelta ja yrittää myöhemmin uudelleen painamalla \"Poistu\". Mikäli ongelma ei ratkea, ota yhteyttä ylläpitoon (helpdesk@laji.fi) ja voimme palauttaa tiedot. *(Mikäli tallennat luonnosta, tämä ongelma voi johtua myös puuttuvasta päivämäärästä tai puuttuvasta karttapisteestä.)*",
+  "haseka.form.saveError.description": "Apologies, something went wrong! We have been notified. You can continue using the form by pressing \"Ok\" and try to save the form again, or you can exit the form by selecting \"Close\" and try again later. If you select \"Close\" the data is stored to your computer on your current broweser. You can find the unsaved form via side bar menu under \"Unsaved submissions\" (requires reload of the page). If the problem contiues, please contact helpdesk@laji.fi and we can restore the unsaved data for you. NOTE: If you are trying to save a form template this error may be because of missing date or map geometry!",
   "haseka.form.savePrivate": "Save draft",
   "haseka.form.savePublic": "Save as public",
   "haseka.form.saveTemplate": "Save as template.",
