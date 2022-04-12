@@ -111,7 +111,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
         rows: [],
         status: 404
       })),
-      tap(() => this.loading = false)
+      tap(() => { this.loading = false; this.cdr.detectChanges(); })
     );
 
     this.cols = [
