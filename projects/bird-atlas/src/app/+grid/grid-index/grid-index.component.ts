@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil, tap } from 'rxjs/operators';
-import { AtlasApiService, AtlasGridQueryElem } from '../../core/atlas-api.service';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
 
 type DatatableRow = any;
 
@@ -63,7 +63,7 @@ export class GridIndexComponent implements OnInit, OnDestroy {
     });
   }
 
-  onActivate(event: { type: string; row: AtlasGridQueryElem }) {
+  onActivate(event: { type: string; row: AtlasGridSquare }) {
     if(event.type === 'click') {
       this.router.navigate([event.row.coordinates], { relativeTo: this.route });
     }
