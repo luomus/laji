@@ -16,6 +16,7 @@ import { LajiMapDrawEvent, Rectangle } from '@laji-map/laji-map.interface';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { catchError, map } from 'rxjs/operators';
 import {ToastsService} from '../../shared/service/toasts.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -99,6 +100,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private warehouseApi: WarehouseApi,
     private userService: UserService,
     private toastsService: ToastsService,
+    private translate: TranslateService
   ) { }
 
   @Input()
@@ -194,8 +196,10 @@ export class ObservationResultComponent implements OnInit, OnChanges {
       map((response: any) => '' + response.id),
       catchError(e => {
         const error = e.error?.error;
-        if (error.status >= 400 && error.message) {
-          this.toastsService.showError(error.message);
+        const {message, localizedMessage} = error;
+        if (error.status >= 400 && message || localizedMessage) {
+          const localizedError = localizedMessage?.[this.translate.currentLang];
+          this.toastsService.showError(localizedError ?? message);
           return EMPTY;
         } else {
           throw e;
