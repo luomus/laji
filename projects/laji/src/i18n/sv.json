@@ -1457,7 +1457,7 @@
   "sykeInsect.stats.allResults": "Lajit",
   "sykeInsect.stats.routes": "Reitit",
   "sykeInsect.stats.times": "Valitse näytettävä havaintojakso:",
-  "taxonAdminFiltersOperator.and": "Alla dessa (standard)",
+  "taxonAdminFiltersOperator.and": "Alla dessa (OCH/AND) (standard)",
   "taxonAdminFiltersOperator.or": "Någon av dessa (ELLER/OR)",
   "taxonomy.acceptedName": "Accepterad namn",
   "taxonomy.active.adminStatusFilters": "Administrativ status",
