@@ -45,31 +45,31 @@ const BASE_URL = environment.atlasApiBasePath;
 export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
     const url = `${BASE_URL}/map/${speciesId}/atlas`;
     return this.http.get(url, {responseType: 'text', params: {lang, scaling: 0}});
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
   getGrid(): Observable<AtlasGrid> {
     const url = `${BASE_URL}/grid`;
     return <Observable<AtlasGrid>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(30000) // 30 seconds
   getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
     return <Observable<AtlasGridSquare>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
   getTaxa(): Observable<AtlasTaxa> {
     const url = `${BASE_URL}/taxon`;
     return <Observable<AtlasTaxa>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getTaxon(id: string): Observable<AtlasTaxon> {
     const url = `${BASE_URL}/taxon/${id}`;
     return <Observable<AtlasTaxon>>this.http.get(url);
