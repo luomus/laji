@@ -35,6 +35,7 @@ export class ScrollPositionService {
   }
 
   public recallScrollPosition() {
+    if (!isPlatformBrowser(this.platformId) || !(this.router.url in this.urlToScrollPosition)) { return; }
     /*
       Delaying execution until the next event cycle allows for this function to be
       called before the DOM is updated. Eg. in a tap pipe in an observable that is
@@ -42,17 +43,10 @@ export class ScrollPositionService {
       updated after some dynamic content has finished loading.
      */
     setTimeout(() => {
-      this._recallScrollPosition(this.router.url);
-    });
-  }
-
-  private _recallScrollPosition(url: string) {
-    if (!isPlatformBrowser(this.platformId)) { return; }
-    if (url in this.urlToScrollPosition) {
       window.scrollTo({
-        top: this.urlToScrollPosition[url],
+        top: this.urlToScrollPosition[this.router.url],
         behavior: 'smooth'
       });
-    }
+    });
   }
 }
