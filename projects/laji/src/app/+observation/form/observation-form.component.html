@@ -406,6 +406,26 @@
   </div>
   <div>
     <laji-metadata-select
+      [(ngModel)]="query.atlasCode"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="true"
+      name="atlasCode"
+      [placeholder]="'MY.atlasCode' | label"
+      [alt]="'MY.atlasCodeEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.atlasClass"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.atlasClass' | label"
+      [alt]="'MY.atlasClassEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
       [(ngModel)]="query.plantStatusCode"
       (ngModelChange)="onQueryChange()"
       [multiple]="true"

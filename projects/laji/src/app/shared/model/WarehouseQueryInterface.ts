@@ -109,6 +109,8 @@
  * @property namedPlaceId Filter by named place id.
  * @property birdAssociationAreaID Filter by bird association area id.
  * @property includeSubCollection Include sub collections if true (default true).
+ * @property atlasCode filter using unit atlas code
+ * @property atlasClass filter using unit atlas class
  */
 export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
@@ -238,6 +240,8 @@ export interface WarehouseQueryInterface {
   plantStatusCode?: Array<string>;
   taxonAdminFiltersOperator?: 'AND' | 'OR';
   onlyNonStateLands?: boolean;
+  atlasCode?: Array<string>;
+  atlasClass?: Array<string>;
 }
 
 
