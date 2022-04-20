@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -16,6 +16,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class PanelComponent {
   @Input() title: string;
+  @Input() headingTemplate: TemplateRef<any>;
   @Input() index: number;
   @Input() open = false;
   @Input() autoToggle = false;
