@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import { AtlasApiService } from '../../core/atlas-api.service';
+import { ScrollPositionService } from '../../core/scroll-position.service';
 
 @Component({
   selector: 'ba-species-index',
@@ -8,7 +10,9 @@ import { AtlasApiService } from '../../core/atlas-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesIndexComponent {
-  speciesList$ = this.atlasApi.getTaxa();
+  speciesList$ = this.atlasApi.getTaxa().pipe(tap(() => {
+    this.scroll.recallScrollPosition();
+  }));
 
-  constructor(private atlasApi: AtlasApiService) {}
+  constructor(private atlasApi: AtlasApiService, private scroll: ScrollPositionService) {}
 }

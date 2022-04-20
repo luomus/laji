@@ -4,8 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
+import { ScrollPositionService } from '../../core/scroll-position.service';
 
 type DatatableRow = any;
 
@@ -19,6 +20,7 @@ export class GridIndexComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private search$ = new Subject<string>();
   private rows: DatatableRow[] = [];
+  private rowsInitialized = false;
 
   cols: TableColumn[] = [{
     prop: 'coordinates',
@@ -40,10 +42,20 @@ export class GridIndexComponent implements OnInit, OnDestroy {
     width: 350
   }
   ];
-  filteredRows$ = new Subject<DatatableRow[]>();
+  private filteredRowsSubject = new Subject<DatatableRow[]>();
+  filteredRows$ = this.filteredRowsSubject.pipe(tap(() => {
+    // recall scroll position on first emit
+    if (this.rowsInitialized) { return; }
+    this.rowsInitialized = true;
+    this.scroll.recallScrollPosition();
+  }));
   datatableClasses = datatableClasses;
 
-  constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService, private translate: TranslateService) {}
+  constructor(
+    private router: Router, private route: ActivatedRoute,
+    private atlasApi: AtlasApiService, private translate: TranslateService,
+    private scroll: ScrollPositionService
+  ) {}
 
   ngOnInit(): void {
     this.search$.pipe(
@@ -51,7 +63,7 @@ export class GridIndexComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$)
     ).subscribe(s => {
       const filterStr = s.toLowerCase();
-      this.filteredRows$.next(
+      this.filteredRowsSubject.next(
         this.rows.filter(
           r => (r.name + r.coordinates + r.birdAssociationArea.value).toLowerCase().includes(filterStr)
         )
