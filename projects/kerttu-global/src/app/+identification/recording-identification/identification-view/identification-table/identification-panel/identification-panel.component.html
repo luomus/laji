@@ -1,0 +1,35 @@
+<ng-template #headingTemplate>
+  <strong class="panel-title">
+    {{ identification.commonName }} - {{ identification.scientificName }}
+  </strong>
+  <div class="pull-right">
+    <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation/species', identification.id]" target="_blank" (click)="stopPropagation($event)">
+      <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
+    </a>
+    <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">x</button>
+  </div>
+</ng-template>
+
+<div class="panel panel-default mb-0"
+     laji-panel
+     [headingTemplate]="headingTemplate"
+     [open]="open"
+     [autoToggle]="true"
+>
+  <div>
+    <label class="radio-inline" *ngFor="let value of [speciesAnnotationEnum.occurs, speciesAnnotationEnum.possiblyOccurs]">
+      <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange.emit(value)"/>
+      {{ 'theme.kerttu.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
+    </label>
+  </div>
+  <button
+    class="btn btn-primary d-block"
+    [ngClass]="{
+          'active': drawActive
+        }"
+    (click)="toggleDrawClick.emit()"
+    [disabled]="buttonsDisabled"
+  >
+    <i class="glyphicon glyphicon-plus"></i> Draw a new box
+  </button>
+</div>

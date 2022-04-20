@@ -24,6 +24,7 @@ import { SiteTableComponent } from './recording-identification/site-selection-vi
 import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
 import { IdentificationUserTableComponent } from './identification-results/identification-user-table/identification-user-table.component';
 import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
+import { IdentificationPanelComponent } from './recording-identification/identification-view/identification-table/identification-panel/identification-panel.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { SelectModule } from '../../../../laji/src/app/shared-modules/select/sel
     ExpertiseByContinentComponent,
     SiteTableComponent,
     SiteResultMapComponent,
-    IdentificationUserTableComponent
+    IdentificationUserTableComponent,
+    IdentificationPanelComponent,
   ]
 })
 export class IdentificationModule { }

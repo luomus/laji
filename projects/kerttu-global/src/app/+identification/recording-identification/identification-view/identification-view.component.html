@@ -89,16 +89,17 @@
   </div>
   <div class="col-sm-12">
     <div class="form-group">
-      <label for="species-select">
+      <h4>
         {{ 'theme.kerttu.listSpecies' | translate }}
         <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
-      </label>
+      </h4>
       <bsg-taxon-select
         id="species-select"
         (taxonSelect)="addToIdentifications($event)"
       ></bsg-taxon-select>
     </div>
     <bsg-identification-table
+      [recording]="recording"
       [(identifications)]="selectedSpecies"
       [loading]="loadingSpecies"
       [drawActive]="drawBirdActive"

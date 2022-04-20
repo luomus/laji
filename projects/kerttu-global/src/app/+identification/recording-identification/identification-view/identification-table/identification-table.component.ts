@@ -1,17 +1,13 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   Input,
-  ViewChild,
-  TemplateRef,
   Output,
   EventEmitter,
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../../kerttu-global-shared/models';
+import {IGlobalRecording, IGlobalSpeciesWithAnnotation} from '../../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -19,64 +15,24 @@ import { IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../..
   styleUrls: ['./identification-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationTableComponent implements OnInit, OnChanges {
+export class IdentificationTableComponent implements OnChanges {
+  @Input() recording: IGlobalRecording;
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
   @Input() componentId = 0;
   @Input() drawActive = false;
 
-  @ViewChild('drawBox', { static: true }) drawBoxTpl: TemplateRef<any>;
-  @ViewChild('occurs', { static: true }) occursTpl: TemplateRef<any>;
-  @ViewChild('possiblyOccurs', { static: true }) possiblyOccursTpl: TemplateRef<any>;
-  @ViewChild('buttons', { static: true }) buttonsTpl: TemplateRef<any>;
-
-  columns: DatatableColumn[];
   drawClickedByIdx = [];
-
-  speciesAnnotationEnum = SpeciesAnnotationEnum;
+  panelOpenByIdx = [];
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
   @Output() drawClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
   @Output() removeDrawingClick = new EventEmitter<number>();
 
-  ngOnInit() {
-    this.columns = [
-      {
-        label: 'identification.recordings.drawABox',
-        cellTemplate: this.drawBoxTpl,
-        sortable: false
-      },
-      {
-        name: 'commonName',
-        label: 'taxonomy.vernacular.name'
-      },
-      {
-        name: 'scientificName',
-        label: 'taxonomy.scientific.name',
-        cellTemplate: 'cursive'
-      },
-      {
-        label: 'theme.kerttu.occurs',
-        cellTemplate: this.occursTpl,
-        sortable: false
-      },
-      {
-        label: 'theme.kerttu.possiblyOccurs',
-        cellTemplate: this.possiblyOccursTpl,
-        sortable: false
-      },
-      {
-        cellTemplate: this.buttonsTpl,
-        width: 150,
-        minWidth: 150,
-        sortable: false
-      }
-    ];
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
       this.drawClickedByIdx = this.identifications.map(() => false);
+      this.panelOpenByIdx = this.identifications.map((el, idx) => idx === this.identifications.length - 1);
     }
   }
 
