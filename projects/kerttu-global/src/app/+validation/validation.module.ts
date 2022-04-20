@@ -14,7 +14,6 @@ import { RecordingsComponent } from './species-validation/species-template-valid
 import { TemplatesComponent } from './species-validation/species-template-validation/templates/templates.component';
 import { TemplateComponent } from './species-validation/species-template-validation/template/template.component';
 import { SpeciesTemplateValidationComponent } from './species-validation/species-template-validation/species-template-validation.component';
-import { SmallAudioViewerComponent } from './species-validation/species-template-validation/small-audio-viewer/small-audio-viewer.component';
 import { VersionNavComponent } from './species-validation/version-nav/version-nav.component';
 import { CornellAudioInfoComponent } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-info.component';
 import { CornellAudioDatePipe } from './species-validation/species-template-validation/cornell-audio-info/cornell-audio-date.pipe';
@@ -45,7 +44,6 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
     TemplatesComponent,
     TemplateComponent,
     SpeciesTemplateValidationComponent,
-    SmallAudioViewerComponent,
     VersionNavComponent,
     CornellAudioInfoComponent,
     CornellAudioDatePipe,
