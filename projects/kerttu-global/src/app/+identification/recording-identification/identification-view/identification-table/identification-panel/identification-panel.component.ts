@@ -18,9 +18,15 @@ export class IdentificationPanelComponent {
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   hideInside = true;
 
+  @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();
-  @Output() annotationTypeChange = new EventEmitter<SpeciesAnnotationEnum>();
   @Output() toggleDrawClick = new EventEmitter();
+  @Output() deleteBoxClick = new EventEmitter<number>();
+
+  annotationTypeChange(value: number) {
+    this.identification.annotation.occurrence = value;
+    this.identificationChange.emit(this.identification);
+  }
 
   onDeleteClick(e: Event) {
     this.deleteClick.emit();

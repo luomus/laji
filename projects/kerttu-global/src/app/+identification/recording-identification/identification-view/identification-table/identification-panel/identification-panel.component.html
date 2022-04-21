@@ -18,15 +18,45 @@
 >
   <div>
     <label class="radio-inline" *ngFor="let value of [speciesAnnotationEnum.occurs, speciesAnnotationEnum.possiblyOccurs]">
-      <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange.emit(value)"/>
+      <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange(value)"/>
       {{ 'theme.kerttu.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
     </label>
+  </div>
+  <label class="mt-4 mb-0">Boxes</label>
+  <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
+    <table class="table table-condensed mt-0 mb-0">
+      <tr *ngFor="let box of identification.annotation.boxes; let i=index">
+        <td style="width: 50px">{{ i + 1 }}.</td>
+        <td style="width: 200px">
+          <laji-small-audio-viewer
+            [audio]="recording"
+            [area]="box.area"
+            [width]="'150px'"
+          ></laji-small-audio-viewer>
+        </td>
+        <td style="width: 240px">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="box.overlapsWithOtherSpecies" (ngModelChange)="identificationChange.emit(identification)">
+              Overlaps with other species
+            </label>
+          </div>
+        </td>
+        <td>
+          <button
+            class="btn btn-danger btn-sm"
+            [disabled]="buttonsDisabled"
+            (click)="deleteBoxClick.emit(i)"
+          >x</button>
+        </td>
+      </tr>
+    </table>
   </div>
   <button
     class="btn btn-primary d-block"
     [ngClass]="{
-          'active': drawActive
-        }"
+      'active': drawActive
+    }"
     (click)="toggleDrawClick.emit()"
     [disabled]="buttonsDisabled"
   >

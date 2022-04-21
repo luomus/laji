@@ -7,7 +7,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import {IGlobalRecording, IGlobalSpeciesWithAnnotation} from '../../../../kerttu-global-shared/models';
+import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../kerttu-global-shared/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -27,7 +27,7 @@ export class IdentificationTableComponent implements OnChanges {
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
   @Output() drawClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
-  @Output() removeDrawingClick = new EventEmitter<number>();
+  @Output() deleteBoxClick = new EventEmitter<{rowIndex: number, boxIndex: number}>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
@@ -36,12 +36,12 @@ export class IdentificationTableComponent implements OnChanges {
     }
   }
 
-  annotationTypeChange(rowIndex: number, value: number) {
-    this.identifications[rowIndex].annotation.occurrence = value;
+  onIdentificationChange(rowIndex: number, identification: IGlobalSpeciesWithAnnotation) {
+    this.identifications[rowIndex] = identification;
     this.identificationsChange.emit(this.identifications);
   }
 
-  deleteRow(rowIndex) {
+  deleteRow(rowIndex: number) {
     this.identifications = this.identifications.filter((_, i) => i !== rowIndex);
     this.identificationsChange.emit(this.identifications);
   }

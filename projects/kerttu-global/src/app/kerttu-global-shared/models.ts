@@ -119,7 +119,12 @@ export interface IGlobalRecordingAnnotation {
 export interface IGlobalSpeciesAnnotation {
   speciesId: number;
   occurrence: SpeciesAnnotationEnum;
-  area?: IAudioViewerArea;
+  boxes?: IGlobalSpeciesAnnotationBox[];
+}
+
+export interface IGlobalSpeciesAnnotationBox {
+  area: IAudioViewerArea;
+  overlapsWithOtherSpecies?: boolean;
 }
 
 export interface IGlobalRecordingStatusInfo {

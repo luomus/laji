@@ -6,8 +6,9 @@
   [drawActive]="drawClickedByIdx[idx]"
   [open]="panelOpenByIdx[idx]"
   [componentId]="componentId + '_' + idx + '_'"
+  (identificationChange)="onIdentificationChange(idx, $event)"
   (deleteClick)="deleteRow(idx)"
-  (annotationTypeChange)="annotationTypeChange(idx, $event)"
   (toggleDrawClick)="toggleDrawButton(idx)"
+  (deleteBoxClick)="deleteBoxClick.emit({rowIndex: idx, boxIndex: $event})"
 >
 </bsg-identification-panel>

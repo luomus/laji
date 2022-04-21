@@ -104,7 +104,7 @@
       [loading]="loadingSpecies"
       [drawActive]="drawBirdActive"
       (drawClick)="onDrawBirdClick($event)"
-      (removeDrawingClick)="removeDrawing($event)"
+      (deleteBoxClick)="removeDrawing($event)"
       (identificationsChange)="updateAnnotation()"
     ></bsg-identification-table>
     <div class="form-group mt-4 mb-4">
@@ -126,7 +126,7 @@
         <button
           *ngIf="annotation.nonBirdArea"
           class="btn btn-default ml-2"
-          (click)="removeDrawing(-1)"
+          (click)="removeDrawing()"
           [disabled]="loadingSpecies"
         >
           {{ 'identification.recordings.remove' | translate }}

@@ -100,9 +100,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     let rectangleLabel: string;
 
     if (this.drawBirdIndex >= 0) {
-      this.selectedSpecies[this.drawBirdIndex].annotation.area = area;
+      const species = this.selectedSpecies[this.drawBirdIndex];
+      if (!species.annotation.boxes) {
+        species.annotation.boxes = [];
+      }
+      species.annotation.boxes.push({area});
       this.selectedSpecies = [...this.selectedSpecies];
-      rectangleLabel = this.selectedSpecies[this.drawBirdIndex].commonName;
+      rectangleLabel = species.commonName + ' ' + species.annotation.boxes.length;
     } else {
       this.annotation.nonBirdArea = area;
       rectangleLabel = this.nonBirdLabel;
@@ -118,19 +122,18 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     this.updateAnnotation();
   }
 
-  removeDrawing(rowIndex: number) {
+  removeDrawing(data?: {rowIndex: number, boxIndex: number}) {
     let rectangleLabel: string;
 
-    if (rowIndex >= 0) {
-      this.selectedSpecies[rowIndex].annotation.area = null;
+    if (data) {
+      this.selectedSpecies[data.rowIndex].annotation.boxes.splice(data.boxIndex, 1);
       this.selectedSpecies = [...this.selectedSpecies];
-      rectangleLabel = this.selectedSpecies[rowIndex].commonName;
+      this.initRectangles();
     } else {
       this.annotation.nonBirdArea = null;
       rectangleLabel = this.nonBirdLabel;
+      this.rectangles = this.rectangles.filter(r => r.label !== rectangleLabel);
     }
-
-    this.rectangles = this.rectangles.filter(r => r.label !== rectangleLabel);
 
     this.updateAnnotation();
   }
@@ -176,10 +179,16 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   private initRectangles() {
-    this.rectangles = this.selectedSpecies.filter(s => s.annotation.area).map(s => ({
-      label: s.commonName,
-      area: s.annotation.area
-    }));
+    this.rectangles = this.selectedSpecies.reduce((rectangles, species) => {
+      (species.annotation.boxes || []).forEach((box, idx) => {
+        rectangles.push({
+          label: species.commonName + ' ' + (idx + 1),
+          area: box.area
+        });
+      });
+      return rectangles;
+    }, []);
+
     if (this.annotation.nonBirdArea) {
       this.rectangles.push({
         label: this.nonBirdLabel,
