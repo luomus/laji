@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,21 +9,24 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   openMenu = false;
 
-  constructor(router: Router) {
-    router.events.pipe(takeUntil(this.unsubscribe$)).subscribe(e => {
-      if (e instanceof NavigationStart) {
-        this.openMenu = false;
-      }
-    });
+  constructor(private router: Router) {
   }
 
   toggleMenu() {
     this.openMenu = !this.openMenu;
+  }
+
+  ngOnInit(): void {
+    this.router.events.pipe(takeUntil(this.unsubscribe$)).subscribe(e => {
+      if (e instanceof NavigationStart) {
+        this.openMenu = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
