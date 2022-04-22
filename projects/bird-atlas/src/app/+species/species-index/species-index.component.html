@@ -4,5 +4,5 @@
   <li *ngFor="let species of speciesList"><a [routerLink]="[species.id]">{{ species.vernacularName | multiLang }}</a></li>
 </ul>
 <ng-template #loading>
-  <laji-spinner></laji-spinner>
+  <laji-spinner class="d-block m-6"></laji-spinner>
 </ng-template>
