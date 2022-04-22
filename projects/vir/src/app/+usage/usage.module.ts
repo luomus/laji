@@ -17,10 +17,9 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
 import { CollectionSelectComponent } from './component/collection-select/collection-select.component';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-downloads.component';
-import { FileDownloadComponent } from './component/file-download/file-download.component';
-import { DownloadRequestComponent } from './component/download-request/download-request.component';
 import { DownloadRequestModalComponent } from './component/download-request-modal/download-request-modal.component';
 import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/copy-to-clipboard/copy-to-clipboard.module';
+import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/download-request/download-request.module';
 
 
 @NgModule({
@@ -32,8 +31,6 @@ import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/c
     OrganizationSelectComponent,
     CollectionSelectComponent,
     DataTableComponent,
-    FileDownloadComponent,
-    DownloadRequestComponent,
     DownloadRequestModalComponent
   ],
   imports: [
@@ -48,7 +45,8 @@ import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/c
     LajiUiModule,
     InfoPageModule,
     SharedModule,
-    CopyToClipboardModule
+    CopyToClipboardModule,
+    DownloadRequestModule
   ]
 })
 export class UsageModule { }

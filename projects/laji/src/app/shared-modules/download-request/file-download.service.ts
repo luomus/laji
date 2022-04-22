@@ -1,16 +1,17 @@
 import { EventEmitter, Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from '../../../../laji/src/app/shared/service/user.service';
+import { UserService } from '../../shared/service/user.service';
 import { WINDOW } from '@ng-toolkit/universal';
-import { DialogService } from '../../../../laji/src/app/shared/service/dialog.service';
+import { DialogService } from '../../shared/service/dialog.service';
 import {
   FileFormat,
   FileGeometry,
   FileCrs,
   GeoConvertService,
   isGeoConvertError
-} from '../../../../laji/src/app/shared/service/geo-convert.service';
+} from '../../shared/service/geo-convert.service';
+import { environment } from '../../../environments/environment';
 
 export enum FileType {
   standard = 'standard',
@@ -18,7 +19,7 @@ export enum FileType {
 }
 
 @Injectable({providedIn: 'root'})
-export class VirDownloadService {
+export class FileDownloadService {
   fileType: FileType = FileType.standard;
   format: FileFormat = FileFormat.shp;
   geometry: FileGeometry = FileGeometry.point;
@@ -35,25 +36,30 @@ export class VirDownloadService {
     private geoConvertService: GeoConvertService
   ) {}
 
-  downloadFile(id: string) {
+  downloadFile(id: string, isPublic = false) {
     this.loading = true;
-    this.getDownloadLink(id, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
+    this.getDownloadLink(id, isPublic, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
       this.window.location.href = res;
       this.loading = false;
       this.fileDownloadReady.emit();
     }, err => {
-      const msg = isGeoConvertError(err) ? err.msg : 'usage.fileDownload.genericError';
+      const msg = isGeoConvertError(err) ? err.msg : 'downloadRequest.fileDownload.genericError';
       this.dialogService.alert(msg);
       this.loading = false;
       this.fileDownloadReady.emit();
     });
   }
 
-  private getDownloadLink(id: string, type: FileType, format?: FileFormat, geometry?: FileGeometry, crs?: FileCrs): Observable<string> {
+  private getDownloadLink(
+    id: string, isPublic: boolean, type: FileType, format?: FileFormat, geometry?: FileGeometry, crs?: FileCrs
+  ): Observable<string> {
+    const personToken = isPublic ? null : this.userService.getToken();
     if (type === FileType.gis) {
-      return this.geoConvertService.getGISDownloadLink(id, format, geometry, crs);
+      return this.geoConvertService.getGISDownloadLink(id, format, geometry, crs, personToken);
     } else {
-      return of('/api/warehouse/download/secured/' + id + '?personToken=' + this.userService.getToken());
+      let downloadLink = environment.apiBase + '/warehouse/download/';
+      downloadLink += isPublic ? id : ('secured/' + id + '?personToken=' + personToken);
+      return of(downloadLink);
     }
   }
 }

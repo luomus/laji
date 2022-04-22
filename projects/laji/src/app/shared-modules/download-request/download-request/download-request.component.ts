@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IDownloadRequest } from '../../../service/vir-download-requests.service';
+import { DownloadRequest } from '../models';
 
 @Component({
-  selector: 'vir-download-request',
+  selector: 'laji-download-request',
   templateUrl: './download-request.component.html',
   styleUrls: ['./download-request.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DownloadRequestComponent {
-  @Input() downloadRequest: IDownloadRequest;
+  @Input() downloadRequest: DownloadRequest;
   @Input() showPerson = false;
   @Input() showFileDownload = false;
-
+  @Input() showTitle = false;
 }

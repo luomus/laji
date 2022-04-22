@@ -1,0 +1,75 @@
+<ng-container *ngIf="downloadRequest">
+  <h3 *ngIf="showTitle">{{ (
+    downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload'
+  ) | translate }} {{ downloadRequest.id | toFullUri }}</h3>
+  <div class="row" *ngIf="showPerson && downloadRequest.personId">
+    <div class="col-sm-4">
+      <label>{{ 'downloadRequest.person' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.personId | users }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <label>{{ 'downloadRequest.requested' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.requested }}
+    </div>
+  </div>
+  <div class="row" *ngIf="downloadRequest.approximateMatches">
+    <div class="col-sm-4">
+      <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.approximateMatches }}
+    </div>
+  </div>
+  <div class="row" *ngIf="downloadRequest.dataUsePurpose">
+    <div class="col-sm-4">
+      <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.dataUsePurpose }}
+    </div>
+  </div>
+
+  <ng-container *ngIf="downloadRequest.filterDescriptions">
+    <h4>{{ 'downloadRequest.filters' | translate }}</h4>
+    <ul>
+      <li *ngFor="let desc of (downloadRequest.filterDescriptions | multiLang)">
+        {{ desc.label }}: {{ desc.value }}
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="downloadRequest.publicLink || downloadRequest.privateLink">
+    {{ 'downloadRequest.link' | translate }}:
+    <a
+      [href]="(downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang"
+      target="_blank"
+    >
+      {{ (downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang }}
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="downloadRequest.collections">
+    <h4>{{ 'downloadRequest.collections' | translate }}</h4>
+    <ul>
+      <li *ngFor="let col of downloadRequest.collections">
+        {{ col.id | label }} [<a [href]="col.id | toFullUri" target="_blank">{{ 'downloadRequest.metadata' | translate }}</a>]
+      </li>
+    </ul>
+  </ng-container>
+
+  <ng-container *ngIf="showFileDownload">
+    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+      <h4>{{ 'downloadRequest.download' | translate }}</h4>
+      <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
+    </ng-container>
+    <ng-template #apiKey>
+      <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
+    </ng-template>
+  </ng-container>
+</ng-container>

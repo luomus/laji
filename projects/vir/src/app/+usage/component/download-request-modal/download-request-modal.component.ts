@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { IDownloadRequest } from '../../../service/vir-download-requests.service';
+import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 
 @Component({
   selector: 'vir-download-request-modal',
@@ -9,14 +9,16 @@ import { IDownloadRequest } from '../../../service/vir-download-requests.service
         <button type="button" class="close" (click)="close.emit()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <h4 class="modal-title">{{ (downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'usage.apiKey' : 'usage.fileDownload') | translate }} {{ downloadRequest.id | toFullUri }}</h4>
+        <h4 class="modal-title">{{ (
+          downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload'
+        ) | translate }} {{ downloadRequest.id | toFullUri }}</h4>
       </div>
       <div class="modal-body">
-        <vir-download-request
+        <laji-download-request
           [downloadRequest]="downloadRequest"
           [showPerson]="showPerson"
           [showFileDownload]="showFileDownload"
-        ></vir-download-request>
+        ></laji-download-request>
       </div>
     </ng-container>
   `,
@@ -24,7 +26,7 @@ import { IDownloadRequest } from '../../../service/vir-download-requests.service
 })
 
 export class DownloadRequestModalComponent {
-  @Input() downloadRequest?: IDownloadRequest;
+  @Input() downloadRequest?: DownloadRequest;
   @Input() showPerson = true;
   @Input() showFileDownload = false;
 
