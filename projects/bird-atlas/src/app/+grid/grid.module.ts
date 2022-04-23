@@ -6,6 +6,9 @@ import { GridInfoComponent } from './grid-info/grid-info.component';
 import { routing } from './grid.routes';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spinner.module';
+import { GridIndexMapComponent } from './grid-index/grid-index-map/grid-index-map.component';
+import { GridIndexTableComponent } from './grid-index/grid-index-table/grid-index-table.component';
+import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 
 @NgModule({
   imports: [
@@ -13,8 +16,9 @@ import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spin
     CommonModule,
     TranslateModule,
     NgxDatatableModule,
-    SpinnerModule
+    SpinnerModule,
+    LajiUiModule
   ],
-  declarations: [GridIndexComponent, GridInfoComponent]
+  declarations: [GridIndexComponent, GridInfoComponent, GridIndexMapComponent, GridIndexTableComponent]
 })
 export class GridModule { }

@@ -18,10 +18,12 @@ import { environment } from '../env/environment';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { TechnicalNewsDumbModule } from 'projects/laji/src/app/shared-modules/technical-news/technical-news-dumb/technical-news-dumb.module';
 import { CoreModule } from './core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     NgtUniversalModule,
     NgxWebstorageModule.forRoot({prefix: 'ba-', separator: ''}),

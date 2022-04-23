@@ -1,22 +1,24 @@
 <div class="container mb-6">
   <h1 translate>ba.grid-index.title</h1>
   <div [innerHtml]="'ba.grid-index.p' | translate"></div>
-  <div class="mb-6" *ngIf="filteredRows$ | async; else loading; let rows">
-    <input class="form-control d-block my-4"
-      type='text'
-      placeholder="{{'haseka.submissions.filter' | translate}}"
-      (keyup)="onSearchKeyUp($event)">
-    <ngx-datatable
-      class="material"
-      [rowHeight]="35"
-      [rows]="rows"
-      [columns]="cols"
-      [cssClasses]="datatableClasses"
-      [scrollbarV]="true"
-      [messages]="{ emptyMessage: '' }"
-      (activate)="onActivate($event)"
-    ></ngx-datatable>
-  </div>
+  <lu-tabs
+    *ngIf="grid$ | async; else loading; let grid"
+    (selectedChange)="loadedElementsStore.load($event)"
+  >
+    <lu-tab [heading]="'ba.grid-index.tabs.map' | translate">
+      <ba-grid-index-map
+        *ngIf="loadedElementsStore.isLoaded('map')"
+        [atlasGrid]="grid"
+      ></ba-grid-index-map>
+    </lu-tab>
+    <lu-tab [heading]="'ba.grid-index.tabs.table' | translate">
+      <ba-grid-index-table
+        *ngIf="loadedElementsStore.isLoaded('table')"
+        [atlasGrid]="grid" 
+        (selectYKJ)="onSelectYKJ($event)"
+      ></ba-grid-index-table>
+    </lu-tab>
+  </lu-tabs>
 </div>
 
 <ng-template #loading>
