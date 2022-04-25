@@ -10,6 +10,6 @@ import { DownloadRequest } from '../models';
 export class DownloadRequestComponent {
   @Input() downloadRequest: DownloadRequest;
   @Input() showPerson = false;
-  @Input() showFileDownload = false;
+  @Input() showDownload: 'always'|'publicOnly'|'never' = 'never';
   @Input() showTitle = false;
 }

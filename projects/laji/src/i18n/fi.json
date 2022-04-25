@@ -1951,5 +1951,14 @@
   "downloadRequest.dataUsePurpose": "Käyttötarkoitus",
   "downloadRequest.person": "Lataaja",
   "downloadRequest.apiKey": "API-avain",
-  "downloadRequest.fileDownload": "Tiedostolataus"
+  "downloadRequest.fileDownload": "Tiedostolataus",
+  "downloadRequest.citation": "Viittausohje",
+  "downloadRequest.youMayCite": "Voit viitata tähän lataukseen seuraavasti:",
+  "downloadRequest.citationFinBIF": "Suomen Lajitietokeskus/FinBIF",
+  "downloadRequest.accessed": "haettu",
+  "downloadRequest.partialCitation": "Jos käytät vain osaa aineistoista, on suositeltavaa, että viittaat vain niihin aineistoihin. Latauksen osajoukkoon voi viitata seuraavasti (poista käyttämätön aineisto):",
+  "downloadRequest.rowCitation": "Viitataksesi latauksen yksittäiseen riviin voit käyttää [Document.DocumentID]-kenttää, esimerkiksi:",
+  "downloadRequest.downloadNotAllowedReason.pyha": "Tämä lataus on tuotettu aineistopyynnön tuloksena. Aineistopyynnön tuloksena on saatettu luovauttaa pyynnön tekijöille sensitiivistä lajitietoa. Ainoastaan aineistopyynnön tekijät voivat ladata tiedoston eikä sitä saa jakaa edelleen.",
+  "downloadRequest.downloadNotAllowedReason.lightweight": "Tämän latauksen tekijä on tallentanut tiedoston suoraan itselleen, eikä sitä ole tallennettu Lajitietokeskukseen uudelleenkäytettäväksi.",
+  "downloadRequest.downloadNotAllowedReason.authorities": "Tämä lataus on tuotettu Lajitietokeskuksen viranomaisportaalissa. Lataus saattaa sisältää sensitiivistä lajitietoa. Ainoastaan latauksen tekijä voi ladata tiedoston."
 }

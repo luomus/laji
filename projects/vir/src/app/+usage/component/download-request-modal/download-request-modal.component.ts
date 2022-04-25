@@ -17,7 +17,7 @@ import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/d
         <laji-download-request
           [downloadRequest]="downloadRequest"
           [showPerson]="showPerson"
-          [showFileDownload]="showFileDownload"
+          [showDownload]="showFileDownload ? 'always' : 'never'"
         ></laji-download-request>
       </div>
     </ng-container>

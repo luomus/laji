@@ -15,7 +15,7 @@
       <label>{{ 'downloadRequest.requested' | translate }}:</label>
     </div>
     <div class="col-sm-8">
-      {{ downloadRequest.requested }}
+      {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
     </div>
   </div>
   <div class="row" *ngIf="downloadRequest.approximateMatches">
@@ -34,6 +34,59 @@
       {{ downloadRequest.dataUsePurpose }}
     </div>
   </div>
+
+  <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
+    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+      <h4>{{ 'downloadRequest.download' | translate }}</h4>
+      <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
+    </ng-container>
+    <ng-template #apiKey>
+      <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="showDownload === 'publicOnly'">
+    <ng-container *ngIf="downloadRequest.publicDownload else downloadNotAllowedReason">
+      <h4>{{ 'downloadRequest.citation' | translate }}</h4>
+      <p>{{ 'downloadRequest.youMayCite' | translate }}</p>
+      <input class="form-control" type="text" readonly="readonly"
+             [value]="(
+        'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ' (' +
+        ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+        ').'
+      "
+      >
+      <ng-container *ngIf="downloadRequest.collections">
+        <p>{{ 'downloadRequest.partialCitation' | translate }}</p>
+        <input class="form-control" type="text" readonly="readonly"
+               [value]="(
+          'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ', ' +
+          (downloadRequest.collections | pluck:'id' | toFullUri | values) + ' (' +
+          ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+          ').'
+        "
+        >
+      </ng-container>
+      <p>{{ 'downloadRequest.rowCitation' | translate }}</p>
+      <input class="form-control" type="text" readonly="readonly"
+             [value]="(
+        'downloadRequest.citationFinBIF' | translate) + '. http://tun.fi/EXMP.1234, http://some.org/9876 (' +
+        ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+        ').'
+      "
+      >
+    </ng-container>
+    <ng-template #downloadNotAllowedReason>
+      <h4>
+        {{ 'downloadRequest.downloadNotAllowedReason.' + (
+        downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
+          downloadRequest.downloadType === 'LIGHTWEIGHT' ? 'lightweight' : 'authorities'
+        )) | translate
+        }}
+      </h4>
+    </ng-template>
+  </ng-container>
 
   <ng-container *ngIf="downloadRequest.filterDescriptions">
     <h4>{{ 'downloadRequest.filters' | translate }}</h4>
@@ -60,16 +113,5 @@
         {{ col.id | label }} [<a [href]="col.id | toFullUri" target="_blank">{{ 'downloadRequest.metadata' | translate }}</a>]
       </li>
     </ul>
-  </ng-container>
-
-  <ng-container *ngIf="showFileDownload">
-    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
-      <h4>{{ 'downloadRequest.download' | translate }}</h4>
-      <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
-    </ng-container>
-    <ng-template #apiKey>
-      <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
-      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
-    </ng-template>
   </ng-container>
 </ng-container>

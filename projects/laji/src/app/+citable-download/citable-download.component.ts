@@ -7,12 +7,12 @@ import { DownloadRequestResponse, isDownloadRequest, asDownloadRequest } from '.
 
 @Component({
   template: `
-    <div class="container" style="padding-bottom: 20px; padding-top: 20px;" *ngIf="downloadRequest$ | async as downloadRequest">
+    <div class="container laji-page" style="padding-bottom: 20px; padding-top: 20px;" *ngIf="downloadRequest$ | async as downloadRequest">
       <ng-container *ngIf="isDownloadRequest(downloadRequest) else notFound">
         <laji-download-request
           [downloadRequest]="asDownloadRequest(downloadRequest)"
           [showTitle]="true"
-          [showFileDownload]="downloadRequest.publicDownload"
+          [showDownload]="'publicOnly'"
         ></laji-download-request>
       </ng-container>
       <ng-template #notFound>
