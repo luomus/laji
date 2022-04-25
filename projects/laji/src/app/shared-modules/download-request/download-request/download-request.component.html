@@ -12,7 +12,9 @@
   </div>
   <div class="row">
     <div class="col-sm-4">
-      <label>{{ 'downloadRequest.requested' | translate }}:</label>
+      <label>{{ 'downloadRequest.' + (
+        downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'apiKeyRequested' : 'requested'
+      ) | translate }}:</label>
     </div>
     <div class="col-sm-8">
       {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
@@ -32,6 +34,14 @@
     </div>
     <div class="col-sm-8">
       {{ downloadRequest.dataUsePurpose }}
+    </div>
+  </div>
+  <div class="row" *ngIf="downloadRequest.apiKeyExpires">
+    <div class="col-sm-4">
+      <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
+    </div>
+    <div class="col-sm-8">
+      {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
     </div>
   </div>
 
@@ -78,9 +88,9 @@
       >
     </ng-container>
     <ng-template #downloadNotAllowedReason>
-      <h4>
+      <h4 *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY'">
         {{ 'downloadRequest.downloadNotAllowedReason.' + (
-        downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
+          downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
           downloadRequest.downloadType === 'LIGHTWEIGHT' ? 'lightweight' : 'authorities'
         )) | translate
         }}
