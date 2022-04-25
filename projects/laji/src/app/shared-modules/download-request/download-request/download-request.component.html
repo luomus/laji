@@ -52,7 +52,7 @@
     </ng-container>
     <ng-template #apiKey>
       <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
-      <laji-copy-to-clipboard [value]="downloadRequest.apiKey"></laji-copy-to-clipboard>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey" [wrapText]="true"></laji-copy-to-clipboard>
     </ng-template>
   </ng-container>
 
