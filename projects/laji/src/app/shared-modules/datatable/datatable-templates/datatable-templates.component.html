@@ -316,5 +316,7 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #copyToClipboard>
-  <laji-copy-to-clipboard [value]="value" [visibleText]="'copyToClipboard' | translate"></laji-copy-to-clipboard>
+  <span *ngIf="value" title="{{value}}">
+    <laji-copy-to-clipboard [value]="value" [visibleText]="'copyToClipboard' | translate"></laji-copy-to-clipboard>
+  </span>
 </ng-template>
