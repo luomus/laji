@@ -50,31 +50,31 @@
     <ng-container *ngIf="downloadRequest.publicDownload else downloadNotAllowedReason">
       <h4>{{ 'downloadRequest.citation' | translate }}</h4>
       <p>{{ 'downloadRequest.youMayCite' | translate }}</p>
-      <input class="form-control" type="text" readonly="readonly"
-             [value]="(
+      <input class="form-control" type="text" readonly="readonly" [value]="(
         'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ' (' +
         ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
-        ').'
-      "
+        ').'"
+        (focus)="selectInput($event)"
+        (click)="selectInput($event)"
       >
       <ng-container *ngIf="downloadRequest.collections">
         <p>{{ 'downloadRequest.partialCitation' | translate }}</p>
-        <input class="form-control" type="text" readonly="readonly"
-               [value]="(
+        <input class="form-control" type="text" readonly="readonly" [value]="(
           'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ', ' +
           (downloadRequest.collections | pluck:'id' | toFullUri | values) + ' (' +
           ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
-          ').'
-        "
+          ').'"
+          (focus)="selectInput($event)"
+          (click)="selectInput($event)"
         >
       </ng-container>
       <p>{{ 'downloadRequest.rowCitation' | translate }}</p>
-      <input class="form-control" type="text" readonly="readonly"
-             [value]="(
+      <input class="form-control" type="text" readonly="readonly" [value]="(
         'downloadRequest.citationFinBIF' | translate) + '. http://tun.fi/EXMP.1234, http://some.org/9876 (' +
         ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
-        ').'
-      "
+        ').'"
+        (focus)="selectInput($event)"
+        (click)="selectInput($event)"
       >
     </ng-container>
     <ng-template #downloadNotAllowedReason>

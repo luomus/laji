@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DownloadRequest } from '../models';
+import { toHtmlInputElement } from '../../../shared/service/html-element.service';
 
 @Component({
   selector: 'laji-download-request',
@@ -12,4 +13,8 @@ export class DownloadRequestComponent {
   @Input() showPerson = false;
   @Input() showDownload: 'always'|'publicOnly'|'never' = 'never';
   @Input() showTitle = false;
+
+  selectInput(event: Event) {
+    toHtmlInputElement(event.target).select();
+  }
 }
