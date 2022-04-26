@@ -10,7 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import {UserService} from '../../shared/service/user.service';
+import { UserService } from '../../shared/service/user.service';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;

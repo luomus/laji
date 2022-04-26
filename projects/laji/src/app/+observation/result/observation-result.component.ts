@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LajiMapDrawEvent, Rectangle } from '@laji-map/laji-map.interface';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { catchError, map } from 'rxjs/operators';
-import {ToastsService} from '../../shared/service/toasts.service';
+import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];

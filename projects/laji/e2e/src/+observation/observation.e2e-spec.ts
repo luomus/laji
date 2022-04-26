@@ -1,6 +1,6 @@
-import {browser} from 'protractor';
+import { browser } from 'protractor';
 import { UserPage } from '../+user/user.po';
-import {EC, isDisplayed} from '../../helper';
+import { EC, isDisplayed } from '../../helper';
 import { ObservationPage } from './observation.po';
 const page = new ObservationPage();
 const user = new UserPage();
