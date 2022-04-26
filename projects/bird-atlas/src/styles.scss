@@ -1,3 +1,5 @@
+@import '@swimlane/ngx-datatable/themes/material.scss';
+
 @import 'vars';
 @import 'projects/laji-ui/src/lib/utils';
 @import 'projects/laji-ui/src/lib/mixins/base';
@@ -9,4 +11,12 @@ body {
 
 .main-view, footer {
   @include base();
+}
+
+ngx-datatable.material.ngx-datatable {
+  box-shadow: 1px 1px 6px 0 rgba($neutral-8, .2);
+  .sort-btn {
+    color: $neutral-5;
+    margin-left: 4px;
+  }
 }

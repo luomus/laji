@@ -16,6 +16,7 @@ import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-view
 import { DatePipe } from '@angular/common';
 import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
+import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent,
@@ -30,7 +31,8 @@ import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spec
     LangModule,
     LajiUiModule,
     LajiMapModule,
-    JwBootstrapSwitchNg2Module
+    JwBootstrapSwitchNg2Module,
+    UtilitiesDumbDirectivesModule
   ],
   exports: [AudioViewerComponent, RequiresAudioSupportDirective, AudioViewerSettingsComponent, SpectrogramComponent]
 })

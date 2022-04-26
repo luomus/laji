@@ -12,7 +12,7 @@ import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterf
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { TaxonTagEffectiveService } from '../document-viewer/taxon-tag-effective.service';
 import { LoadingElementsService } from '../document-viewer/loading-elements.service';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { AnnotationTag } from '../../shared/model/AnnotationTag';
 
 @Component({

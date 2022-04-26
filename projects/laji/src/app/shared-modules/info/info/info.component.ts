@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild, OnInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 
 @Component({
   selector: 'laji-info',
@@ -106,8 +106,6 @@ export class InfoComponent implements OnInit {
   }
 
   private useModal() {
-    if (this.platformService.isBrowser) {
-      return window.innerWidth <= 767;
-    }
+    return this.platformService.isBrowser && window.innerWidth <= 767;
   }
 }

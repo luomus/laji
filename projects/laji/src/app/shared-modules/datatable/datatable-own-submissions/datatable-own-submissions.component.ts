@@ -19,7 +19,7 @@ import { DatatableTemplatesComponent } from '../datatable-templates/datatable-te
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 import { DocumentViewerFacade } from '../../document-viewer/document-viewer.facade';
 import { FormService } from '../../../shared/service/form.service';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';

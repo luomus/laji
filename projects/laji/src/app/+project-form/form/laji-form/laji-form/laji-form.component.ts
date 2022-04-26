@@ -206,7 +206,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.form.id;
         this.lajiFormWrapper = new this.lajiFormWrapperProto({
-          staticImgPath: '/static/lajiForm/',
           rootElem: this.lajiFormRoot.nativeElement,
           theme: this.lajiFormBs3Theme,
           schema: this.form.schema,

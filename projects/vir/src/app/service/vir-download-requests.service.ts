@@ -11,7 +11,7 @@ export interface IDownloadRequest {
   source: string;
   personId: string;
   dataUsePurpose: string;
-  approximateMatches: string;
+  approximateMatches: number;
   filters: {[key: string]: any}[];
   filterDescriptions: {[lang: string]: {label: string, value: string}[]};
   privateLink: {[lang: string]: string}[];

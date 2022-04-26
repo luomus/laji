@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 const LAJI_STATE_KEY = makeStateKey('l');
 

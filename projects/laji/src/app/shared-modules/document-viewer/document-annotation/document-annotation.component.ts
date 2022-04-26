@@ -235,19 +235,9 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     ) {
       return true;
     }
-    let hasHighlight = false;
-    ['gatherings', 'units'].forEach(level => {
-      if (Array.isArray(doc[level])) {
-        doc[level].forEach(subLevel => {
-          if (hasHighlight) {
-            return hasHighlight;
-          }
-          hasHighlight = this.shouldOnlyShowHighlighted(subLevel, highlight);
-        });
-      }
-    });
-    return hasHighlight;
-
+    return ['gatherings', 'units'].some(level =>
+      doc[level]?.some((subLevel: any) => this.shouldOnlyShowHighlighted(subLevel, highlight))
+    );
   }
 
   setActive(i) {

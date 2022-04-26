@@ -36,6 +36,7 @@ import { LabelDesignerTranslationsInterface } from '../translate/label-designer-
 import { TranslateService } from '../translate/translate.service';
 import { LabelMakerFacade } from './label-maker.facade';
 import { FieldKeyPipe } from '../pipe/field-key.pipe';
+import { LabelDesignerHelper } from '../label-designer.helper';
 
 /**
  * Label designer window that can be used to load, edit, show preview and send the html from the labels to the host component.
@@ -55,7 +56,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  version = '4.0.3';
+  version = '4.0.5';
 
   /**
    * @internal
@@ -651,6 +652,9 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
       this.data = [];
       this.resetContent();
       this.dataChange.emit(this.data);
+      if (!LabelDesignerHelper.fieldsAreSame(this.availableFields, this.defaultAvailableFields)) {
+        this.availableFieldsChange.emit(this.defaultAvailableFields);
+      }
     }
   }
 

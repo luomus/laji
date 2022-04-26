@@ -7,7 +7,7 @@ import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } fr
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
-import { PlatformService } from '../../../../shared/service/platform.service';
+import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
