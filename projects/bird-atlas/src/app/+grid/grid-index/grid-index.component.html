@@ -9,6 +9,7 @@
       <ba-grid-index-map
         *ngIf="loadedElementsStore.isLoaded('map')"
         [atlasGrid]="grid"
+        (selectYKJ)="onSelectYKJ($event)"
       ></ba-grid-index-map>
     </lu-tab>
     <lu-tab [heading]="'ba.grid-index.tabs.table' | translate">
