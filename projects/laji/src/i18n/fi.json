@@ -1963,5 +1963,7 @@
   "downloadRequest.downloadNotAllowedReason.pyha": "Tämä lataus on tuotettu aineistopyynnön tuloksena. Aineistopyynnön tuloksena on saatettu luovauttaa pyynnön tekijöille sensitiivistä lajitietoa. Ainoastaan aineistopyynnön tekijät voivat ladata tiedoston eikä sitä saa jakaa edelleen.",
   "downloadRequest.downloadNotAllowedReason.lightweight": "Tämän latauksen tekijä on tallentanut tiedoston suoraan itselleen, eikä sitä ole tallennettu Lajitietokeskukseen uudelleenkäytettäväksi.",
   "downloadRequest.downloadNotAllowedReason.authorities": "Tämä lataus on tuotettu Lajitietokeskuksen viranomaisportaalissa. Lataus saattaa sisältää sensitiivistä lajitietoa. Ainoastaan latauksen tekijä voi ladata tiedoston.",
+  "downloadRequest.fileDownload.instructionLinks": "<a target=\"_blank\" href=\"https://laji.fi/about/1068\">Tiedoston vienti Exceliin</a><br><a target=\"_blank\" href=\"https://laji.fi/about/5138\">Havaintoaineiston vienti paikkatieto-ohjelmistoihin (ArcGIs, QGIS)</a>",
+  "downloadRequest.fileDownload.licenseReminder": "Lataamalla tiedoston sitoudut noudattamaan alla mainittuja käyttöoikeuslisenssejä. Lisenssit löytyvät myös latauksen {{filename}} tiedostosta.",
   "copyToClipboard": "Kopioi"
 }

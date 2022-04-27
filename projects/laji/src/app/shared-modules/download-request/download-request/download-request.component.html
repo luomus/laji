@@ -48,7 +48,15 @@
   <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
     <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
       <h4>{{ 'downloadRequest.download' | translate }}</h4>
+      <div
+        role="alert"
+        class="alert alert-success"
+        [innerHTML]='"downloadRequest.fileDownload.licenseReminder" | translate:{
+          filename: "<span class=\"filename\">readme.txt</span>"
+        }'
+      ></div>
       <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
+      <div class="mt-4" [innerHTML]="'downloadRequest.fileDownload.instructionLinks' | translate"></div>
     </ng-container>
     <ng-template #apiKey>
       <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
