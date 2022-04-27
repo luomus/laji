@@ -320,3 +320,8 @@
     <laji-copy-to-clipboard [value]="value" [visibleText]="'copyToClipboard' | translate"></laji-copy-to-clipboard>
   </span>
 </ng-template>
+<ng-template let-value="value" #fullUriLink>
+  <span *ngIf="value" title="{{ value | toFullUri }}">
+    <a href="{{ value | toFullUri }}" target="_blank">{{ value | toFullUri }}</a>
+  </span>
+</ng-template>

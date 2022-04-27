@@ -1,0 +1,9 @@
+<laji-datatable
+  [loading]="!collections?.length"
+  [columns]="columns"
+  [rows]="collections || []"
+  [clientSideSorting]="true"
+  [virtualScrolling]="true"
+  [showRowAsLink]="false"
+  [height]="'calc(80vh - 50px)'"
+></laji-datatable>

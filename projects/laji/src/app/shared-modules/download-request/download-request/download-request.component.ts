@@ -4,7 +4,8 @@ import { toHtmlInputElement } from '../../../shared/service/html-element.service
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Collection } from '../../../shared/model/Collection';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, tap } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'laji-download-request',
@@ -22,16 +23,21 @@ export class DownloadRequestComponent implements OnChanges {
   private collectionIds$ = new BehaviorSubject<string[]>([]);
 
   constructor(
-    private lajiApi: LajiApiService
+    private lajiApi: LajiApiService,
+    private translate: TranslateService
   ) {
     this.collections$ = this.collectionIds$.pipe(
       switchMap(collectionIds => {
         if (collectionIds?.length > 0) {
           return this.lajiApi.getList(LajiApi.Endpoints.collections, {
             idIn: collectionIds.join(','),
+            lang: this.translate.currentLang,
             page: 1,
             pageSize: collectionIds.length
-          }).pipe(map(results => results.results));
+          }).pipe(
+            map(results => results.results),
+            tap(collections => this.sortCollections(collections, collectionIds))
+          );
         } else {
           return of([]);
         }
@@ -49,5 +55,14 @@ export class DownloadRequestComponent implements OnChanges {
 
   selectInput(event: Event) {
     toHtmlInputElement(event.target).select();
+  }
+
+  private sortCollections(collections: Collection[], sortedIds: string[]) {
+    const idxById: Record<string, number> = sortedIds.reduce((result, id, idx) => {
+      result[id] = idx;
+      return result;
+    }, {});
+
+    collections.sort((a, b) => idxById[a.id] - idxById[b.id]);
   }
 }

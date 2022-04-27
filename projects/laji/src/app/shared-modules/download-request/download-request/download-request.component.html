@@ -126,10 +126,8 @@
 
   <ng-container *ngIf="downloadRequest.collections">
     <h4>{{ 'downloadRequest.collections' | translate }}</h4>
-    <ul>
-      <li *ngFor="let col of downloadRequest.collections">
-        {{ col.id | label }} [<a [href]="col.id | toFullUri" target="_blank">{{ 'downloadRequest.metadata' | translate }}</a>]
-      </li>
-    </ul>
+    <laji-collection-table
+      [collections]="collections$ | async"
+    ></laji-collection-table>
   </ng-container>
 </ng-container>

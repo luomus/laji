@@ -6,6 +6,8 @@ import { DownloadRequestComponent } from './download-request/download-request.co
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
 import { InfoModule } from '../info/info.module';
+import { CollectionTableComponent } from './collection-table/collection-table.component';
+import { DatatableModule } from '../datatable/datatable.module';
 
 @NgModule({
   imports: [
@@ -13,9 +15,10 @@ import { InfoModule } from '../info/info.module';
     SharedModule,
     LajiUiModule,
     CopyToClipboardModule,
-    InfoModule
+    InfoModule,
+    DatatableModule
   ],
-  declarations: [FileDownloadComponent, DownloadRequestComponent],
+  declarations: [FileDownloadComponent, DownloadRequestComponent, CollectionTableComponent],
   exports: [DownloadRequestComponent]
 })
 export class DownloadRequestModule { }
