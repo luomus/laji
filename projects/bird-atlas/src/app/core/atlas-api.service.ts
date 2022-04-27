@@ -25,6 +25,7 @@ export interface AtlasGridSquare {
   atlas?: number;
   atlasClassSum?: number;
   activityCategory?: {key: string; value: string};
+  speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
 
