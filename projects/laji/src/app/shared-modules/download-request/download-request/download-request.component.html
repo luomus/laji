@@ -25,7 +25,7 @@
       <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
     </div>
     <div class="col-sm-8">
-      {{ downloadRequest.approximateMatches }}
+      {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
     </div>
   </div>
   <div class="row" *ngIf="downloadRequest.dataUsePurpose">
