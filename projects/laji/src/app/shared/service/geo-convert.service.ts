@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, mergeMap, first, map, catchError } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-export const GEO_CONVERT_LIMIT = 500000;
+export const GEO_CONVERT_LIMIT = 300000;
 
 export enum FileFormat {
   shp = 'shp',
