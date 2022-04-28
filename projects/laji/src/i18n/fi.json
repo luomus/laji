@@ -358,6 +358,7 @@
   "friend.requestSent": "Kaveripyyntö lähetetty",
   "gathering.section.outsideSection": "Ei osiota",
   "geoConvert.error.too_complex": "Joidenkin havaintojen geometriat ovat liian monimutkaisia .shp-tiedostomuodolle (GeometryCollection). Käytä sen sijaan .gpkg-muotoa tai valitse toinen geometriatyyppi.",
+  "geoConvert.error.too_large": "Tiedoston koko on liian suuri paikkatietomuotoiselle aineistolataukselle.",
   "haseka.button": "Siirry Vihkoon",
   "haseka.createPrefilledForm": "Luo esitäytetty lomake",
   "haseka.delete.cancel": "En",

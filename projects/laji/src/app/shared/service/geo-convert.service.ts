@@ -24,7 +24,8 @@ interface GeoConversionStatus {
   status: 'pending'|'complete';
 }
 export enum ErrorType {
-  tooComplex = 'too_complex'
+  tooComplex = 'too_complex',
+  tooLarge = 'too_large'
 }
 export interface GeoConvertError {
   isGeoConvertError: true;
