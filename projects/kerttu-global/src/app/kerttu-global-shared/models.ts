@@ -111,6 +111,7 @@ export interface IGlobalRecordingAnnotation {
   doesNotContainBirds?: boolean;
   containsBirdsNotOnList?: boolean;
   birdsNotOnList?: string;
+  hasBoxesForAllBirdSounds?: boolean;
   nonBirdArea?: IAudioViewerArea;
 
   speciesAnnotations?: IGlobalSpeciesAnnotation[];
