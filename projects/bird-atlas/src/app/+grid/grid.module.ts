@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { GridIndexComponent } from './grid-index/grid-index.component';
 import { GridInfoComponent } from './grid-info/grid-info.component';
@@ -17,7 +18,8 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
     TranslateModule,
     NgxDatatableModule,
     SpinnerModule,
-    LajiUiModule
+    LajiUiModule,
+    FormsModule
   ],
   declarations: [GridIndexComponent, GridInfoComponent, GridIndexMapComponent, GridIndexTableComponent]
 })

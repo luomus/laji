@@ -1,1 +1,25 @@
-<div #lajiMap></div>
+<div class="d-flex flex-row flex-wrap">
+  <div class="map mr-4" #lajiMap></div>
+
+  <div> <!-- sidebar -->
+    <div> <!-- legend -->
+      Legend goes here!
+    </div>
+    <hr>
+    <div> <!-- colorMode -->
+      <div class="radio">
+        <label>
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="speciesCount">
+          Lajimäärä
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="activityCategory">
+          Aktiviteettikategoria
+        </label>
+      </div>
+    </div>
+
+  </div>
+</div>

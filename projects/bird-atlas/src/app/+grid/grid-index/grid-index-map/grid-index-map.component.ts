@@ -23,13 +23,39 @@ const atlasActivityCategoryColor: Record<AtlasActivityCategory, string> = ((star
   'MY.atlasActivityCategoryEnum5': colorGradientLerp(start, end, 5/5)
 }))('abd1eb', '2691d9');
 
-const LEGEND_MAX_SPECIES = 5000;
+const LEGEND_MAX_SPECIES = 150;
 
-const speciesCountColor = (speciesCount: number) => colorGradientLerp('d92626', '40d926', Math.min(1, speciesCount / LEGEND_MAX_SPECIES));
+const speciesCountColor = (speciesCount: number) => colorGradientLerp('FAFAD1', '4B57A4', Math.min(1, speciesCount / LEGEND_MAX_SPECIES));
 
 const gridSqToFeature = (square: AtlasGridSquare) => {
   const latLngStr = square.coordinates.split(':');
   return convertYkjToGeoJsonFeature(latLngStr[0], latLngStr[1]);
+};
+
+const getFeatureCollection = (grid: AtlasGrid) => ({
+  features: [
+    ...grid.map(square => <any>gridSqToFeature(square))
+  ],
+  type: 'FeatureCollection'
+});
+
+type ColorMode = 'activityCategory' | 'speciesCount';
+const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
+  (opt) => ({
+    weight: 2,
+    opacity: .5,
+    fillOpacity: .5,
+    color: '#' + (
+      colorMode === 'activityCategory'
+        ? atlasActivityCategoryColor[grid[opt.featureIdx].activityCategory.key]
+        : speciesCountColor(grid[opt.featureIdx].speciesCount)
+    )
+  })
+);
+
+interface MapData {
+  grid: AtlasGrid;
+  data: DataOptions;
 };
 
 @Component({
@@ -43,14 +69,24 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
 
   @Input() set atlasGrid(grid: AtlasGrid) {
     // randomize species count for testing purposes
-/*     grid.forEach(e => e.speciesCount = Math.floor(Math.random() * 10000)); */
-    this.mapData$.next(this.getMapData(grid, 'speciesCount'));
+/*     grid.forEach(e => e.speciesCount = Math.floor(Math.random() * 150)); */
+    this.mapData$.next(this.getMapData(grid));
   }
   @Output() selectYKJ = new EventEmitter<string>();
 
   @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
+  private _colorMode: ColorMode = 'speciesCount';
+  set colorMode(m: ColorMode) {
+    this._colorMode = m;
+    const d = this.mapData$.getValue(); // mutate previous mapData for performance reasons
+    d.data.getFeatureStyle = getGetFeatureStyle(d.grid, this.colorMode);
+    this.mapData$.next(d);
+  }
+  get colorMode() {
+    return this._colorMode;
+  }
 
-  private mapData$ = new BehaviorSubject<any>(undefined);
+  private mapData$ = new BehaviorSubject<MapData>(undefined);
   private map: any;
 
   constructor(
@@ -71,31 +107,20 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
-      this.map.setData(mapData);
+      this.map.setData(mapData.data);
     });
   }
 
-  getMapData(grid: AtlasGrid, legend: 'activityCategory' | 'speciesCount'): DataOptions {
+  private getMapData(grid: AtlasGrid): MapData {
     return {
-      featureCollection: {
-        features: [
-          ...grid.map(square => <any>gridSqToFeature(square))
-        ],
-        type: 'FeatureCollection'
-      },
-      getFeatureStyle: (opt) => ({
-        weight: 2,
-        opacity: .5,
-        fillOpacity: .5,
-        color: '#' + (
-          legend === 'activityCategory'
-            ? atlasActivityCategoryColor[grid[opt.featureIdx].activityCategory.key]
-            : speciesCountColor(grid[opt.featureIdx].speciesCount)
-        )
-      }),
-      on: {
-        click: (e, d) => {
-          this.selectYKJ.emit((<any>d.feature.geometry).coordinateVerbatim);
+      grid,
+      data: {
+        featureCollection: <any>getFeatureCollection(grid),
+        getFeatureStyle: getGetFeatureStyle(grid, this.colorMode),
+        on: {
+          click: (e, d) => {
+            this.selectYKJ.emit((<any>d.feature.geometry).coordinateVerbatim);
+          }
         }
       }
     };
