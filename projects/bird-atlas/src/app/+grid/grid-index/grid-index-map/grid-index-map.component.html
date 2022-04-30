@@ -3,7 +3,9 @@
 
   <div> <!-- sidebar -->
     <div> <!-- legend -->
-      Legend goes here!
+      <div class="legend-row" *ngFor="let row of legends[colorMode]">
+        <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
+      </div>
     </div>
     <hr>
     <div> <!-- colorMode -->
@@ -20,6 +22,5 @@
         </label>
       </div>
     </div>
-
   </div>
 </div>

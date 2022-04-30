@@ -1,4 +1,19 @@
+@import 'vars';
+
 .map {
   height: 500px;
   width: 500px;
+}
+
+.legend-row {
+  display: block;
+  margin-bottom: $sp-3;
+}
+
+.legend-sq {
+  display: inline-block;
+  margin-right: $sp-3;
+
+  width: $sp-5;
+  height: $sp-5;
 }

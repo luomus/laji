@@ -14,18 +14,35 @@ type AtlasActivityCategory =
   | 'MY.atlasActivityCategoryEnum4'
   | 'MY.atlasActivityCategoryEnum5';
 
-const atlasActivityCategoryColor: Record<AtlasActivityCategory, string> = ((start: string, end: string) => ({
+type ColorMode = 'activityCategory' | 'speciesCount';
+
+interface MapData {
+  grid: AtlasGrid;
+  data: DataOptions;
+};
+
+const atlasActivityCategoryColors: Record<AtlasActivityCategory, string> = ((start: string, end: string) => ({
   'MY.atlasActivityCategoryEnum0': colorGradientLerp(start, end, 0/5),
   'MY.atlasActivityCategoryEnum1': colorGradientLerp(start, end, 1/5),
   'MY.atlasActivityCategoryEnum2': colorGradientLerp(start, end, 2/5),
   'MY.atlasActivityCategoryEnum3': colorGradientLerp(start, end, 3/5),
   'MY.atlasActivityCategoryEnum4': colorGradientLerp(start, end, 4/5),
   'MY.atlasActivityCategoryEnum5': colorGradientLerp(start, end, 5/5)
-}))('abd1eb', '2691d9');
+}))('FAFAD1', '4B57A4');
 
-const LEGEND_MAX_SPECIES = 150;
+const speciesCountColors: string[] = ((start: string, end: string) => [
+  colorGradientLerp(start, end, 0/3),
+  colorGradientLerp(start, end, 1/3),
+  colorGradientLerp(start, end, 2/3),
+  colorGradientLerp(start, end, 3/3)
+])('FAFAD1', '4B57A4');
 
-const speciesCountColor = (speciesCount: number) => colorGradientLerp('FAFAD1', '4B57A4', Math.min(1, speciesCount / LEGEND_MAX_SPECIES));
+const getSpeciesCountColor = (speciesCount: number): string => {
+  if (speciesCount < 50) { return speciesCountColors[0]; }
+  if (speciesCount < 100) { return speciesCountColors[1]; }
+  if (speciesCount < 150) { return speciesCountColors[2]; }
+  return speciesCountColors[3];
+};
 
 const gridSqToFeature = (square: AtlasGridSquare) => {
   const latLngStr = square.coordinates.split(':');
@@ -39,23 +56,44 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   type: 'FeatureCollection'
 });
 
-type ColorMode = 'activityCategory' | 'speciesCount';
 const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
   (opt) => ({
-    weight: 2,
+    weight: 4,
     opacity: .5,
     fillOpacity: .5,
     color: '#' + (
       colorMode === 'activityCategory'
-        ? atlasActivityCategoryColor[grid[opt.featureIdx].activityCategory.key]
-        : speciesCountColor(grid[opt.featureIdx].speciesCount)
+        ? atlasActivityCategoryColors[grid[opt.featureIdx].activityCategory.key]
+        : getSpeciesCountColor(grid[opt.featureIdx].speciesCount)
     )
   })
 );
 
-interface MapData {
-  grid: AtlasGrid;
-  data: DataOptions;
+const speciesCountLegendLabels = [
+  '1-49 lajia',
+  '50-99 lajia',
+  '100-149 lajia',
+  '150+ lajia',
+];
+
+const activityCategoryLegendLabels = {
+  'MY.atlasActivityCategoryEnum0': 'Ei havaintoja',
+  'MY.atlasActivityCategoryEnum1': 'Satunnaishavaintoja',
+  'MY.atlasActivityCategoryEnum2': 'Välttävä',
+  'MY.atlasActivityCategoryEnum3': 'Tyydyttävä',
+  'MY.atlasActivityCategoryEnum4': 'Hyvä',
+  'MY.atlasActivityCategoryEnum5': 'Erinomainen'
+};
+
+const legends: Record<ColorMode, { color: string; label: string }[]> = {
+  speciesCount: Object.entries(speciesCountColors).map(([key, val]) => ({
+    color: val,
+    label: speciesCountLegendLabels[key]
+  })),
+  activityCategory: Object.entries(atlasActivityCategoryColors).map(([key, val]) => ({
+    color: val,
+    label: activityCategoryLegendLabels[key]
+  }))
 };
 
 @Component({
@@ -68,8 +106,6 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   @Input() set atlasGrid(grid: AtlasGrid) {
-    // randomize species count for testing purposes
-/*     grid.forEach(e => e.speciesCount = Math.floor(Math.random() * 150)); */
     this.mapData$.next(this.getMapData(grid));
   }
   @Output() selectYKJ = new EventEmitter<string>();
@@ -85,6 +121,8 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
   get colorMode() {
     return this._colorMode;
   }
+
+  legends = legends;
 
   private mapData$ = new BehaviorSubject<MapData>(undefined);
   private map: any;
