@@ -14,6 +14,8 @@ export class IdentificationPanelComponent {
   @Input() drawActive = false;
   @Input() open = true;
   @Input() componentId = '';
+  @Input() birdRectangleColor = 'white';
+  @Input() overlappingBirdRectangleColor = 'orange';
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
   hideInside = true;

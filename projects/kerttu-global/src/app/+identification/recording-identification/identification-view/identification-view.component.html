@@ -107,10 +107,12 @@
     [recording]="recording"
     [(identifications)]="selectedSpecies"
     [loading]="loadingSpecies"
+    [birdRectangleColor]="birdRectangleColor"
+    [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
     [drawActive]="drawBirdActive"
     (drawClick)="onDrawBirdClick($event)"
     (deleteBoxClick)="removeDrawing($event)"
-    (identificationsChange)="updateAnnotation()"
+    (identificationsChange)="updateSpectrogramAndAnnotation()"
   ></bsg-identification-table>
   <div class="form-group mt-4 mb-4">
     <label for="species-select">

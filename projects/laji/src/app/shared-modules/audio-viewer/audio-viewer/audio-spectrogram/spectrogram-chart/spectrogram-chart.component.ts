@@ -20,6 +20,7 @@ export class SpectrogramChartComponent implements OnChanges {
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea: boolean;
   @Input() onlyFocusAreaClickable = false;
+  @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];
@@ -179,7 +180,7 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('width', rectWidth)
         .attr('height', rectHeight)
         .attr('stroke-width', strokeWidth)
-        .attr('stroke', 'white')
+        .attr('stroke', this.focusAreaColor || 'white')
         .attr('fill', 'none');
     }
 

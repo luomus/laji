@@ -21,6 +21,8 @@ export class IdentificationTableComponent implements OnChanges {
   @Input() loading = false;
   @Input() componentId = 0;
   @Input() drawActive = false;
+  @Input() birdRectangleColor = 'white';
+  @Input() overlappingBirdRectangleColor = 'orange';
 
   drawClickedByIdx = [];
   panelOpenById: Record<string, boolean> = {};

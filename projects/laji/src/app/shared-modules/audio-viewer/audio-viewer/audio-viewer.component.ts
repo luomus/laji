@@ -28,6 +28,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
+  @Input() focusAreaColor?: string;
 
   @Input() rectangles: IAudioViewerRectangle[];
 

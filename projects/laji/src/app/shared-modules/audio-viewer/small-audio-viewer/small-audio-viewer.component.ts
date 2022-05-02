@@ -10,6 +10,7 @@ import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../models';
 export class SmallAudioViewerComponent {
   @Input() audio?: IAudio;
   @Input() area?: IAudioViewerArea;
+  @Input() areaColor?: string;
   @Input() spectrogramConfig?: ISpectrogramConfig = {
     sampleRate: 22050,
     nperseg: 256,

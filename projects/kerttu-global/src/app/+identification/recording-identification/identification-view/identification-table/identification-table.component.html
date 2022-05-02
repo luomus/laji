@@ -6,6 +6,8 @@
   [drawActive]="drawClickedByIdx[idx]"
   [open]="panelOpenById[identification.id]"
   [componentId]="componentId + '_' + idx + '_'"
+  [birdRectangleColor]="birdRectangleColor"
+  [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
   (identificationChange)="onIdentificationChange(idx, $event)"
   (deleteClick)="deleteRow(idx)"
   (toggleDrawClick)="toggleDrawButton(idx)"

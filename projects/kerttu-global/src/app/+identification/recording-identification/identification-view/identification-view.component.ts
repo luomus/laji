@@ -35,6 +35,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   drawBirdIndex?: number;
   drawNonBirdActive = false;
 
+  birdRectangleColor = 'white';
+  overlappingBirdRectangleColor = 'orange';
+  nonBirdRectangleColor = 'red';
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
@@ -97,8 +101,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   drawEnd(area: IAudioViewerArea) {
-    let rectangleLabel: string;
-
     if (this.drawBirdIndex >= 0) {
       const species = this.selectedSpecies[this.drawBirdIndex];
       if (!species.annotation.boxes) {
@@ -106,35 +108,30 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       }
       species.annotation.boxes.push({area});
       this.selectedSpecies = [...this.selectedSpecies];
-      rectangleLabel = species.commonName + ' ' + species.annotation.boxes.length;
     } else {
       this.annotation.nonBirdArea = area;
-      rectangleLabel = this.nonBirdLabel;
     }
-
-    this.rectangles = this.rectangles.filter(r => r.label !== rectangleLabel);
-    this.rectangles = [...this.rectangles, {area, label: rectangleLabel}];
 
     this.drawBirdActive = false;
     this.drawNonBirdActive = false;
     this.audioViewerMode = 'default';
 
-    this.updateAnnotation();
+    this.updateSpectrogramAndAnnotation();
   }
 
-  removeDrawing(data?: {rowIndex: number, boxIndex: number}) {
-    let rectangleLabel: string;
-
+  removeDrawing(data?: {rowIndex: number; boxIndex: number}) {
     if (data) {
       this.selectedSpecies[data.rowIndex].annotation.boxes.splice(data.boxIndex, 1);
       this.selectedSpecies = [...this.selectedSpecies];
-      this.initRectangles();
     } else {
       this.annotation.nonBirdArea = null;
-      rectangleLabel = this.nonBirdLabel;
-      this.rectangles = this.rectangles.filter(r => r.label !== rectangleLabel);
     }
 
+    this.updateSpectrogramAndAnnotation();
+  }
+
+  updateSpectrogramAndAnnotation() {
+    this.updateSpectrogramRectangles();
     this.updateAnnotation();
   }
 
@@ -172,18 +169,19 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       this.selectedSpeciesSub = forkJoin(observables).subscribe((results: IGlobalSpeciesWithAnnotation[])  => {
         this.selectedSpecies = results;
         this.loadingSpecies = false;
-        this.initRectangles();
+        this.updateSpectrogramRectangles();
         this.cdr.markForCheck();
       });
     }
   }
 
-  private initRectangles() {
+  private updateSpectrogramRectangles() {
     this.rectangles = this.selectedSpecies.reduce((rectangles, species) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
         rectangles.push({
           label: species.commonName + ' ' + (idx + 1),
-          area: box.area
+          area: box.area,
+          color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
         });
       });
       return rectangles;
@@ -192,7 +190,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     if (this.annotation.nonBirdArea) {
       this.rectangles.push({
         label: this.nonBirdLabel,
-        area: this.annotation.nonBirdArea
+        area: this.annotation.nonBirdArea,
+        color: this.nonBirdRectangleColor
       });
     }
   }
