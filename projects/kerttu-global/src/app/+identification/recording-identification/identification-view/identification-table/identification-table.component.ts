@@ -23,16 +23,27 @@ export class IdentificationTableComponent implements OnChanges {
   @Input() drawActive = false;
 
   drawClickedByIdx = [];
-  panelOpenByIdx = [];
+  panelOpenById: Record<string, boolean> = {};
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
   @Output() drawClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
-  @Output() deleteBoxClick = new EventEmitter<{rowIndex: number, boxIndex: number}>();
+  @Output() deleteBoxClick = new EventEmitter<{rowIndex: number; boxIndex: number}>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
       this.drawClickedByIdx = this.identifications.map(() => false);
-      this.panelOpenByIdx = this.identifications.map((el, idx) => idx === this.identifications.length - 1);
+
+      const prevLength = Object.keys(this.panelOpenById).length;
+      const currLength = this.identifications?.length || 0;
+
+      this.panelOpenById = this.identifications.reduce((result, identification, idx) => {
+        if (currLength > prevLength) {
+          result[identification.id] = idx === this.identifications.length - 1;
+        } else {
+          result[identification.id] = this.panelOpenById[identification.id];
+        }
+        return result;
+      }, {});
     }
   }
 

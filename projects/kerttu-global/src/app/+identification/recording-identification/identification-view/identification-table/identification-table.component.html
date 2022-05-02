@@ -4,11 +4,12 @@
   [identification]="identification"
   [buttonsDisabled]="loading"
   [drawActive]="drawClickedByIdx[idx]"
-  [open]="panelOpenByIdx[idx]"
+  [open]="panelOpenById[identification.id]"
   [componentId]="componentId + '_' + idx + '_'"
   (identificationChange)="onIdentificationChange(idx, $event)"
   (deleteClick)="deleteRow(idx)"
   (toggleDrawClick)="toggleDrawButton(idx)"
   (deleteBoxClick)="deleteBoxClick.emit({rowIndex: idx, boxIndex: $event})"
+  (openChange)="panelOpenById[identification.id] = $event"
 >
 </bsg-identification-panel>

@@ -22,6 +22,7 @@ export class IdentificationPanelComponent {
   @Output() deleteClick = new EventEmitter();
   @Output() toggleDrawClick = new EventEmitter();
   @Output() deleteBoxClick = new EventEmitter<number>();
+  @Output() openChange = new EventEmitter<boolean>();
 
   annotationTypeChange(value: number) {
     this.identification.annotation.occurrence = value;

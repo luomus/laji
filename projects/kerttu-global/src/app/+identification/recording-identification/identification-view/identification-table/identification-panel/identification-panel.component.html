@@ -17,6 +17,7 @@
      [headingTemplate]="headingTemplate"
      [open]="open"
      [autoToggle]="true"
+     (activate)="openChange.emit($event.open)"
 >
   <div>
     <label class="radio-inline" *ngFor="let value of [speciesAnnotationEnum.occurs, speciesAnnotationEnum.possiblyOccurs]">
