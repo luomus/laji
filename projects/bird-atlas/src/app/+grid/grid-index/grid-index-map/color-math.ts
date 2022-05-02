@@ -61,5 +61,5 @@ export const colorGradientLerp = (start: string, end: string, t: number): string
     lerp(startHsl[1], endHsl[1], t),
     lerp(startHsl[2], endHsl[2], t)
   );
-  return outRgb.map(c => c.toString(16)).join('');
+  return outRgb.map(c => c.toString(16)).map(s => s.length < 2 ? '0' + s : s).join('');
 };
