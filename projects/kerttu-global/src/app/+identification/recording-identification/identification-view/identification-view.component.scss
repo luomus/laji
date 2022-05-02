@@ -1,22 +1,46 @@
 @import 'vars';
 
-.button-container {
-  float: right;
+:host {
+  margin: -20px -40px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
 
-  div {
-    display: inline-block;
-    margin-left: 0.5em;
+  .top-content {
+    flex: 0 0 auto;
+    padding: $sp-3 40px $sp-3;
+    background-color: #dde1e3;
+    box-shadow: 0 2px 6px 0 $neutral-5;
+    z-index: 1;
+
+    .top-bar {
+      overflow: auto;
+
+      .button-container {
+        div {
+          display: inline-block;
+          margin-left: 0.5em;
+        }
+
+        lu-button {
+          margin-left: 0.25em;
+        }
+      }
+    }
   }
 
-  lu-button {
-    margin-left: 0.25em;
-  }
-}
+  .bottom-content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 150px;
 
-.general-annotation-section {
-  .checkbox > label {
-    display: inline;
-    font-size: $fs-2;
-    font-weight: bold;
+    .general-annotation-section {
+      .checkbox > label {
+        display: inline;
+        font-size: $fs-2;
+        font-weight: bold;
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
-<div class="row">
-  <div class="col-sm-12">
-    <div class="button-container">
+<div class="top-content">
+  <div class="top-bar">
+    <div class="pull-right button-container">
       <div>
         <button class="btn btn-default" (click)="backToSiteSelectionClick.emit()">{{ 'identification.recordings.backToSiteSelection' | translate }}</button>
       </div>
@@ -23,31 +23,30 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-12">
-    <h2 class="mt-3">
-      {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
-      <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
-    </h2>
-  </div>
-  <div class="col-sm-12">
-    <laji-audio-viewer
-      [audio]="recording"
-      [showZoomControl]="true"
-      [(mode)]="audioViewerMode"
-      [rectangles]="rectangles"
-      [spectrogramHeight]="170"
-      [audioInfoTpl]="audioInfo"
-      (drawEnd)="drawEnd($event)"
-      (modeChange)="onAudioViewerModeChange()"
-    ></laji-audio-viewer>
-    <ng-template #audioInfo let-audio="audio">
+  <laji-audio-viewer
+    [audio]="recording"
+    [showZoomControl]="true"
+    [(mode)]="audioViewerMode"
+    [rectangles]="rectangles"
+    [spectrogramHeight]="170"
+    [audioInfoTpl]="audioInfo"
+    (drawEnd)="drawEnd($event)"
+    (modeChange)="onAudioViewerModeChange()"
+  ></laji-audio-viewer>
+  <ng-template #audioInfo let-audio="audio">
       <span>
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
       </span>
-    </ng-template>
-  </div>
-  <div class="col-sm-12 general-annotation-section mb-4">
+  </ng-template>
+
+</div>
+<div class="laji-page bottom-content">
+  <h2 class="mt-3">
+    {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
+    <laji-info [html]="'theme.kerttu.info.recordingAnnotation' | translate"></laji-info>
+  </h2>
+  <div class="general-annotation-section mb-4">
     <div class="row">
       <div class="col-sm-6">
         <div class="checkbox">
@@ -94,51 +93,49 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-12">
-    <div class="form-group">
-      <h4>
-        {{ 'theme.kerttu.listSpecies' | translate }}
-        <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
-      </h4>
-      <bsg-taxon-select
-        id="species-select"
-        (taxonSelect)="addToIdentifications($event)"
-      ></bsg-taxon-select>
-    </div>
-    <bsg-identification-table
-      [recording]="recording"
-      [(identifications)]="selectedSpecies"
-      [loading]="loadingSpecies"
-      [drawActive]="drawBirdActive"
-      (drawClick)="onDrawBirdClick($event)"
-      (deleteBoxClick)="removeDrawing($event)"
-      (identificationsChange)="updateAnnotation()"
-    ></bsg-identification-table>
-    <div class="form-group mt-4 mb-4">
-      <label for="species-select">
-        {{ 'identification.recordings.drawNonBird' | translate }}
-      </label>
-      <div>
-        <button
-          class="btn"
-          [ngClass]="{
+  <div class="form-group">
+    <h4>
+      {{ 'theme.kerttu.listSpecies' | translate }}
+      <laji-info [placement]="'right'" [html]="'theme.kerttu.info.listSpecies' | translate"></laji-info>
+    </h4>
+    <bsg-taxon-select
+      id="species-select"
+      (taxonSelect)="addToIdentifications($event)"
+    ></bsg-taxon-select>
+  </div>
+  <bsg-identification-table
+    [recording]="recording"
+    [(identifications)]="selectedSpecies"
+    [loading]="loadingSpecies"
+    [drawActive]="drawBirdActive"
+    (drawClick)="onDrawBirdClick($event)"
+    (deleteBoxClick)="removeDrawing($event)"
+    (identificationsChange)="updateAnnotation()"
+  ></bsg-identification-table>
+  <div class="form-group mt-4 mb-4">
+    <label for="species-select">
+      {{ 'identification.recordings.drawNonBird' | translate }}
+    </label>
+    <div>
+      <button
+        class="btn"
+        [ngClass]="{
             'btn-default': !drawNonBirdActive,
             'btn-primary': drawNonBirdActive
            }"
-          (click)="toggleDrawNonBird()"
-          [disabled]="loadingSpecies"
-        >
-          {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
-          </button>
-        <button
-          *ngIf="annotation.nonBirdArea"
-          class="btn btn-default ml-2"
-          (click)="removeDrawing()"
-          [disabled]="loadingSpecies"
-        >
-          {{ 'identification.recordings.remove' | translate }}
-        </button>
-      </div>
+        (click)="toggleDrawNonBird()"
+        [disabled]="loadingSpecies"
+      >
+        {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
+      </button>
+      <button
+        *ngIf="annotation.nonBirdArea"
+        class="btn btn-default ml-2"
+        (click)="removeDrawing()"
+        [disabled]="loadingSpecies"
+      >
+        {{ 'identification.recordings.remove' | translate }}
+      </button>
     </div>
   </div>
 </div>
