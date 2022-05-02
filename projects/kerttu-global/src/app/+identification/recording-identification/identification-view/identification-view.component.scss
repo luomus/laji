@@ -1,18 +1,7 @@
 @import 'vars';
 
 :host {
-  margin: -20px -40px;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 50px);
-
   .top-content {
-    flex: 0 0 auto;
-    padding: $sp-3 40px $sp-3;
-    background-color: #dde1e3;
-    box-shadow: 0 2px 6px 0 $neutral-5;
-    z-index: 1;
-
     .top-bar {
       overflow: auto;
 
@@ -30,17 +19,36 @@
   }
 
   .bottom-content {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    position: relative;
-    padding-bottom: 150px;
-
     .general-annotation-section {
       .checkbox > label {
         display: inline;
         font-size: $fs-2;
         font-weight: bold;
       }
+    }
+  }
+}
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  :host {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px);
+    margin: -20px -40px;
+
+    .top-content {
+      flex: 0 0 auto;
+      padding: $sp-3 40px $sp-3;
+      background-color: #dde1e3;
+      box-shadow: 0 2px 6px 0 $neutral-5;
+      z-index: 1;
+    }
+
+    .bottom-content {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      position: relative;
+      padding: 20px 40px;
     }
   }
 }

@@ -1,12 +1,14 @@
 <ng-template #headingTemplate>
-  <strong class="panel-title">
-    {{ identification.commonName }} - {{ identification.scientificName }}
-  </strong>
-  <div class="pull-right">
-    <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation/species', identification.id]" target="_blank" (click)="stopPropagation($event)">
-      <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
-    </a>
-    <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">x</button>
+  <div class="identification-heading">
+    <strong class="panel-title">
+      {{ identification.commonName }} - {{ identification.scientificName }}
+    </strong>
+    <div class="pull-right">
+      <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation/species', identification.id]" target="_blank" (click)="stopPropagation($event)">
+        <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
+      </a>
+      <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">x</button>
+    </div>
   </div>
 </ng-template>
 
