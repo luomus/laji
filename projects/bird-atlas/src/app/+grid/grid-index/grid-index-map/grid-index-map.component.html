@@ -11,14 +11,14 @@
     <div> <!-- colorMode -->
       <div class="radio">
         <label>
-          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="speciesCount">
-          Lajimäärä
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="activityCategory">
+          {{ 'ba.grid-index.map.activityCategory' | translate }}
         </label>
       </div>
       <div class="radio">
         <label>
-          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="activityCategory">
-          Aktiviteettikategoria
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="speciesCount">
+          {{ 'ba.grid-index.map.speciesCount' | translate }}
         </label>
       </div>
     </div>

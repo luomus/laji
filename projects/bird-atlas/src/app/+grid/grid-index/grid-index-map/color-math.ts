@@ -1,11 +1,11 @@
 // RGB HSL conversions adapted from https://stackoverflow.com/a/9493060
 
 const hueToRgb = (p, q, t) => {
-  if(t < 0) { t += 1; }
-  if(t > 1) { t -= 1; }
-  if(t < 1/6) { return p + (q - p) * 6 * t; }
-  if(t < 1/2) { return q; }
-  if(t < 2/3) { return p + (q - p) * (2/3 - t) * 6; }
+  if (t < 0) { t += 1; }
+  if (t > 1) { t -= 1; }
+  if (t < 1/6) { return p + (q - p) * 6 * t; }
+  if (t < 1/2) { return q; }
+  if (t < 2/3) { return p + (q - p) * (2/3 - t) * 6; }
   return p;
 };
 
@@ -33,12 +33,12 @@ const rgbToHsl = (r: number, g: number, b: number) => {
   // eslint-disable-next-line prefer-const
   let h, s, l = (max + min) / 2;
 
-  if(max === min){
+  if (max === min) {
       h = s = 0; // achromatic
-  }else{
+  } else {
       const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch(max){
+      switch (max) {
           case r: h = (g - b) / d + (g < b ? 6 : 0); break;
           case g: h = (b - r) / d + 2; break;
           case b: h = (r - g) / d + 4; break;
@@ -63,3 +63,7 @@ export const colorGradientLerp = (start: string, end: string, t: number): string
   );
   return outRgb.map(c => c.toString(16)).map(s => s.length < 2 ? '0' + s : s).join('');
 };
+
+export const discreteColorGradient = (start: string, end: string, count: number): string[] => (
+  (new Array(count)).fill(null).map((v, i) => colorGradientLerp(start, end, i / (count - 1)))
+);

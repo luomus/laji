@@ -23,6 +23,8 @@
   "ba.grid-index.birdAssociationArea": "Lintuyhdistys",
   "ba.grid-index.tabs.map": "Kartta",
   "ba.grid-index.tabs.table": "Taulukko",
+  "ba.grid-index.map.speciesCount": "Lajimäärä",
+  "ba.grid-index.map.activityCategory": "Selvitysaste",
   "ba.grid-info.map": "Kartta",
   "ba.grid-info.notFound": "Ruutua ei ole olemassa.",
   "ba.grid-info.error": "Ruudun lataamisessa tapahtui virhe.",

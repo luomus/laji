@@ -1,10 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, ViewChild } from '@angular/core';
-import { TileLayerName, LajiMap, DataOptions } from 'laji-map';
+import { LajiMap, DataOptions, TileLayersOptions } from 'laji-map';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
-import { colorGradientLerp } from './color-math';
+import { discreteColorGradient } from './color-math';
 
 type AtlasActivityCategory =
   'MY.atlasActivityCategoryEnum0'
@@ -21,27 +21,23 @@ interface MapData {
   data: DataOptions;
 };
 
-const atlasActivityCategoryColors: Record<AtlasActivityCategory, string> = ((start: string, end: string) => ({
-  'MY.atlasActivityCategoryEnum0': colorGradientLerp(start, end, 0/5),
-  'MY.atlasActivityCategoryEnum1': colorGradientLerp(start, end, 1/5),
-  'MY.atlasActivityCategoryEnum2': colorGradientLerp(start, end, 2/5),
-  'MY.atlasActivityCategoryEnum3': colorGradientLerp(start, end, 3/5),
-  'MY.atlasActivityCategoryEnum4': colorGradientLerp(start, end, 4/5),
-  'MY.atlasActivityCategoryEnum5': colorGradientLerp(start, end, 5/5)
-}))('FAFAD1', '4B57A4');
+const acGradient = discreteColorGradient('FAFAD1', '4B57A4', 6);
+const scGradient = discreteColorGradient('FAFAD1', '4B57A4', 4);
 
-const speciesCountColors: string[] = ((start: string, end: string) => [
-  colorGradientLerp(start, end, 0/3),
-  colorGradientLerp(start, end, 1/3),
-  colorGradientLerp(start, end, 2/3),
-  colorGradientLerp(start, end, 3/3)
-])('FAFAD1', '4B57A4');
+const atlasActivityCategoryColors: Record<AtlasActivityCategory, string> = ({
+  'MY.atlasActivityCategoryEnum0': acGradient[0],
+  'MY.atlasActivityCategoryEnum1': acGradient[1],
+  'MY.atlasActivityCategoryEnum2': acGradient[2],
+  'MY.atlasActivityCategoryEnum3': acGradient[3],
+  'MY.atlasActivityCategoryEnum4': acGradient[4],
+  'MY.atlasActivityCategoryEnum5': acGradient[5]
+});
 
 const getSpeciesCountColor = (speciesCount: number): string => {
-  if (speciesCount < 50) { return speciesCountColors[0]; }
-  if (speciesCount < 100) { return speciesCountColors[1]; }
-  if (speciesCount < 150) { return speciesCountColors[2]; }
-  return speciesCountColors[3];
+  if (speciesCount < 50) { return scGradient[0]; }
+  if (speciesCount < 100) { return scGradient[1]; }
+  if (speciesCount < 150) { return scGradient[2]; }
+  return scGradient[3];
 };
 
 const gridSqToFeature = (square: AtlasGridSquare) => {
@@ -86,7 +82,7 @@ const activityCategoryLegendLabels = {
 };
 
 const legends: Record<ColorMode, { color: string; label: string }[]> = {
-  speciesCount: Object.entries(speciesCountColors).map(([key, val]) => ({
+  speciesCount: Object.entries(scGradient).map(([key, val]) => ({
     color: val,
     label: speciesCountLegendLabels[key]
   })),
@@ -111,7 +107,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
   @Output() selectYKJ = new EventEmitter<string>();
 
   @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
-  private _colorMode: ColorMode = 'speciesCount';
+  private _colorMode: ColorMode = 'activityCategory';
   set colorMode(m: ColorMode) {
     this._colorMode = m;
     const d = this.mapData$.getValue(); // mutate previous mapData for performance reasons
@@ -132,7 +128,13 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
   ) {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
-        tileLayerName: TileLayerName.maastokartta,
+        tileLayers: <TileLayersOptions>{
+          layers: {
+            maastokartta: { opacity: 1, visible: true },
+            atlasGrid: { opacity: 1, visible: true }
+          }
+        },
+        controls: true,
         center: [64.8, 25],
         zoom: 1.6
       });
