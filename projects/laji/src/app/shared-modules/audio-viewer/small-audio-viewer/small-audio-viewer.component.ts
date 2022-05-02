@@ -24,6 +24,7 @@ export class SmallAudioViewerComponent {
   @Input() highlightType: 'default'|'warning'|'danger';
 
   @Input() width = '20%';
+  @Input() spectrogramWidth?: number;
   @Input() spectrogramHeight = 50;
   @Input() margin: { top: number; bottom: number; left: number; right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
   @Input() emptyAudioText = '';
