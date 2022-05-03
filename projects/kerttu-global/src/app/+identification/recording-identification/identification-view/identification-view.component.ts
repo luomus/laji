@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 
 
 @Component({
@@ -36,8 +37,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   drawNonBirdActive = false;
 
   birdRectangleColor = 'white';
-  overlappingBirdRectangleColor = 'orange';
-  nonBirdRectangleColor = 'red';
+  overlappingBirdRectangleColor = '#d9d926';
+  nonBirdRectangleColor = '#d98026';
 
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
@@ -176,10 +177,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   private updateSpectrogramRectangles() {
-    this.rectangles = this.selectedSpecies.reduce((rectangles, species) => {
+    this.rectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
         rectangles.push({
-          label: species.commonName + ' ' + (idx + 1),
+          label: (speciesIdx + 1) + KerttuGlobalUtil.numberToLetter(idx + 1),
           area: box.area,
           color: box.overlapsWithOtherSpecies ? this.overlappingBirdRectangleColor : this.birdRectangleColor
         });

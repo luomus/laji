@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { IGlobalRecording, IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../../../kerttu-global-shared/models';
+import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/kerttu-global-util.service';
 
 @Component({
   selector: 'bsg-identification-panel',
@@ -13,12 +14,13 @@ export class IdentificationPanelComponent {
   @Input() buttonsDisabled = false;
   @Input() drawActive = false;
   @Input() open = true;
+  @Input() idx?: number;
   @Input() componentId = '';
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
-  hideInside = true;
+  numberToLetter = KerttuGlobalUtil.numberToLetter;
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();

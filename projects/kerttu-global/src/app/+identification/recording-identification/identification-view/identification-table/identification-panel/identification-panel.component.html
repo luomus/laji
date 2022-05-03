@@ -1,7 +1,7 @@
 <ng-template #headingTemplate>
   <div class="identification-heading">
     <strong class="panel-title">
-      {{ identification.commonName }} - {{ identification.scientificName }}
+      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container>{{ identification.commonName }} - {{ identification.scientificName }}
     </strong>
     <div class="pull-right">
       <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation/species', identification.id]" target="_blank" (click)="stopPropagation($event)">
@@ -29,7 +29,7 @@
   <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
     <table class="table table-condensed mt-0 mb-0">
       <tr *ngFor="let box of identification.annotation.boxes; let i=index">
-        <td style="width: 50px">{{ i + 1 }}.</td>
+        <td style="width: 50px">{{ numberToLetter(i + 1) }}.</td>
         <td style="width: 200px">
           <laji-small-audio-viewer
             [audio]="recording"

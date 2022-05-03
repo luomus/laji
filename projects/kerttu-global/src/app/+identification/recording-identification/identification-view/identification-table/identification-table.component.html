@@ -1,5 +1,6 @@
 <bsg-identification-panel
   *ngFor="let identification of identifications; let idx=index"
+  [idx]="idx"
   [recording]="recording"
   [identification]="identification"
   [buttonsDisabled]="loading"
