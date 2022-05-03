@@ -1,5 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, ViewChild } from '@angular/core';
 import { LajiMap, DataOptions, TileLayersOptions } from 'laji-map';
+import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -102,6 +103,14 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   @Input() set atlasGrid(grid: AtlasGrid) {
+    if (environment.production === false) {
+      // populate test data
+      grid.forEach(g => {
+        g.speciesCount = Math.random() * 200;
+        const ac = Object.entries(activityCategoryLegendLabels)[Math.round(Math.random() * 5)];
+        g.activityCategory = {key: ac[0], value: ac[1]};
+      });
+    }
     this.mapData$.next(this.getMapData(grid));
   }
   @Output() selectYKJ = new EventEmitter<string>();
