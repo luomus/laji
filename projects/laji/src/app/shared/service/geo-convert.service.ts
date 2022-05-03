@@ -5,7 +5,7 @@ import { switchMap, mergeMap, first, map, catchError } from 'rxjs/operators';
 import { UserService } from './user.service';
 import { TranslateService } from '@ngx-translate/core';
 
-export const GEO_CONVERT_LIMIT = 500000;
+export const GEO_CONVERT_LIMIT = 300000;
 
 export enum FileFormat {
   shp = 'shp',
