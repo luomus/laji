@@ -55,8 +55,8 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
 
 const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
   (opt) => ({
-    weight: 4,
-    opacity: .5,
+    weight: 0,
+    opacity: 0,
     fillOpacity: .5,
     color: '#' + (
       colorMode === 'activityCategory'
