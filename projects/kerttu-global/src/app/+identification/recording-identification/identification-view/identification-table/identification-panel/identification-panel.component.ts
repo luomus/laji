@@ -1,4 +1,12 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import { IGlobalRecording, IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../../../kerttu-global-shared/models';
 import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/kerttu-global-util.service';
 
@@ -9,6 +17,8 @@ import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/ke
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationPanelComponent {
+  @ViewChild('toggleDrawBtn', { static: true }) toggleDrawBtn: ElementRef;
+
   @Input() recording: IGlobalRecording;
   @Input() identification: IGlobalSpeciesWithAnnotation;
   @Input() buttonsDisabled = false;
@@ -40,5 +50,9 @@ export class IdentificationPanelComponent {
 
   stopPropagation(e: Event) {
     e.stopPropagation();
+  }
+
+  scrollDrawButtonIntoView() {
+    this.toggleDrawBtn.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

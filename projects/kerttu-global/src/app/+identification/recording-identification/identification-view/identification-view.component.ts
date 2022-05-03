@@ -1,4 +1,15 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, SimpleChanges, OnInit, OnChanges, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+  Input,
+  SimpleChanges,
+  OnInit,
+  OnChanges,
+  ChangeDetectorRef,
+  ViewChild
+} from '@angular/core';
 import {
   IGlobalSpecies,
   IGlobalRecordingAnnotation,
@@ -12,6 +23,7 @@ import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-gl
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { IdentificationTableComponent } from './identification-table/identification-table.component';
 
 
 @Component({
@@ -21,6 +33,8 @@ import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-g
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationViewComponent implements OnInit, OnChanges {
+  @ViewChild(IdentificationTableComponent) identificationTable: IdentificationTableComponent;
+
   @Input() recording: IGlobalRecording;
   @Input() annotation: IGlobalRecordingAnnotation;
   @Input() statusInfo: IGlobalRecordingStatusInfo;
@@ -85,6 +99,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     this.selectedSpecies = [...this.selectedSpecies, newSpecies];
 
     this.updateAnnotation();
+    this.scrollDrawButtonIntoView(this.selectedSpecies.length - 1);
   }
 
   onDrawBirdClick(data: {drawClicked: boolean; rowIndex: number}) {
@@ -109,6 +124,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       }
       species.annotation.boxes.push({area});
       this.selectedSpecies = [...this.selectedSpecies];
+
+      this.scrollDrawButtonIntoView(this.drawBirdIndex);
     } else {
       this.annotation.nonBirdArea = area;
     }
@@ -195,5 +212,12 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
         color: this.nonBirdRectangleColor
       });
     }
+  }
+
+  private scrollDrawButtonIntoView(idx: number) {
+    // timeout ensures that the view is rendered before scrolling
+    setTimeout(() => {
+      this.identificationTable.scrollDrawButtonIntoView(idx);
+    }, 0);
   }
 }

@@ -5,9 +5,12 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../kerttu-global-shared/models';
+import { IdentificationPanelComponent } from './identification-panel/identification-panel.component';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -16,6 +19,8 @@ import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../kert
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationTableComponent implements OnChanges {
+  @ViewChildren(IdentificationPanelComponent) identificationPanels: QueryList<IdentificationPanelComponent>;
+
   @Input() recording: IGlobalRecording;
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
@@ -67,5 +72,9 @@ export class IdentificationTableComponent implements OnChanges {
       return false;
     });
     this.drawClick.emit({drawClicked: this.drawClickedByIdx[rowIndex], rowIndex});
+  }
+
+  scrollDrawButtonIntoView(rowIndex: number) {
+    this.identificationPanels.get(rowIndex).scrollDrawButtonIntoView();
   }
 }
