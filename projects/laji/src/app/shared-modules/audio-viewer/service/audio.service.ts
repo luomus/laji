@@ -26,6 +26,10 @@ export class AudioService {
     private ngZone: NgZone
   ) {}
 
+  /**
+   * Sets a default sample rate
+   * @returns true if sample rate is supported, otherwise false
+   */
   public setDefaultSampleRate(sampleRate: number): boolean {
     this.defaultSampleRate = sampleRate;
     const audioCtx = this.getAudioContext();
@@ -33,6 +37,7 @@ export class AudioService {
     if (audioCtx.sampleRate === sampleRate) {
       return true;
     } else {
+      // test whether offline audio context throws an error with the sample rate
       try {
         const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
         new offlineCtxClass(1, 1, sampleRate);
