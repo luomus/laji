@@ -9,6 +9,7 @@ import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
 import { AudioSpectrogramComponent } from './audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { AudioNotSupportedErrorComponent } from './directive/audio-not-supported-error.component';
 import { AudioIosWarningComponent } from './directive/audio-ios-warning.component';
+import { AudioSampleRateWarningComponent } from './directive/audio-sample-rate-warning.component';
 import { AudioService } from './service/audio.service';
 import { SpectrogramService } from './service/spectrogram.service';
 import { RequiresAudioSupportDirective } from './directive/requires-audio-support.directive';
@@ -22,7 +23,7 @@ import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-direc
   declarations: [AudioViewerComponent, AudioSpectrogramComponent,
     AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective, AudioViewerSettingsComponent,
-    SpectrogramComponent, SpectrogramChartComponent
+    SpectrogramComponent, SpectrogramChartComponent, AudioSampleRateWarningComponent
   ],
   providers: [AudioService, SpectrogramService, DatePipe],
   imports: [

@@ -167,8 +167,8 @@ export class AudioService {
       return of(buffer);
     }
 
-    const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
     try {
+      const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
       const offlineCtx = new offlineCtxClass(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
       const offlineSource = offlineCtx.createBufferSource();
       offlineSource.buffer = buffer;
@@ -177,6 +177,21 @@ export class AudioService {
       return from(offlineCtx.startRendering()) as Observable<AudioBuffer>;
     } catch (e) {
       return of(buffer);
+    }
+  }
+
+  public sampleRateConversionIsSupported(sampleRate: number): boolean {
+    this.initAudioContext(sampleRate);
+    if (this.audioContext.sampleRate === sampleRate) {
+      return true;
+    } else {
+      try {
+        const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
+        new offlineCtxClass(1, 1, sampleRate);
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
   }
 
