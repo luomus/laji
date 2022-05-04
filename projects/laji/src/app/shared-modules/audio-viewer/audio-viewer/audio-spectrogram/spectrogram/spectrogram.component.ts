@@ -65,7 +65,7 @@ export class SpectrogramComponent implements OnChanges {
     }
   }
 
-  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number, config: ISpectrogramConfig) {
+  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number, config: ISpectrogramConfig): Observable<void> {
     return this.processBuffer(buffer, startTime, endTime, config).pipe(
       switchMap(processedBuffer => this.createSpectrogramFromProcessedBuffer(processedBuffer))
     );
