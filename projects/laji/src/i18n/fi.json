@@ -1056,6 +1056,7 @@
   "observation.form.conservation.or-info": "<b>Millä tahansa näistä (TAI/OR)</b>: Tämä valinta antaa tuloksen, johon otetaan mukaan kaikki havainnot, joiden laji kuuluu (1) vähintään yhteen valituista hallinnollisista asemista <b>TAI</b> (2) lajin uhanalaisuusluokka on jokin valituista.",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus",
   "observation.form.coordinateIntersection": "Leikkausosuus",
+  "observation.form.coordinatesInfo": "Liirum laarum!",
   "observation.form.count": "Yksilömäärä",
   "observation.form.countMax": "max",
   "observation.form.countMin": "min",
