@@ -48,6 +48,7 @@ export class ObservationPage {
   public placePanel = new LUPanel('.laji-panel-places');
   public $placePanel = $('.laji-panel-places');
   public $drawRectangleBtn = $('.draw-rectangle');
+  public $enterYkjBtn = $('.enter-ykj-grid');
   public $drawPolygonBtn = $('.draw-polygon');
   public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
@@ -81,8 +82,12 @@ export class ObservationPage {
     return url.searchParams.get('coordinates');
   }
 
-  async hasCoordinatesFilter() {
+  async hasWGS84CoordinatesFilter() {
     return !!(await this.getCoordinateFilter())?.match(/^(\d{2}\.\d+:){4,}WGS84:(0|1)(\.\d)?$/);
+  }
+
+  async hasYKjCoordinatesFilter() {
+    return !!(await this.getCoordinateFilter())?.match(/^(\d{3,6}:){2}YKJ:(0|1)(\.\d)?$/);
   }
 
   async getCoordinateIntersect() {
@@ -125,5 +130,16 @@ export class ObservationPage {
 
   async getPolygonIntersect() {
     return +(await this.getPolygonFilter()).split(':').pop();
+  }
+
+  async opensYKJModal() {
+    return this.map.getCoordinateInputControl().$getContainer();
+  }
+
+
+  async enterYKJToOpenedModal() {
+    const control = this.map.getCoordinateInputControl();
+    await control.enterLatLng(666, 333);
+    await control.$getSubmit().click();
   }
 }

@@ -34,18 +34,18 @@ describe('Observation list', () => {
 
       it('and drawing adds polygon filter to query', async (done) => {
         await page.drawRectangle();
-        expect(await page.hasCoordinatesFilter()).toBe(true);
+        expect(await page.hasWGS84CoordinatesFilter()).toBe(true);
         done();
       });
 
-      it('coordinate intersect 1 by default', async (done) => {
-        expect(await page.getCoordinateIntersect()).toBe(1);
+      it('coordinate intersect 0 by default', async (done) => {
+        expect(await page.getCoordinateIntersect()).toBe(0);
         done();
       });
 
       it('coordinate intersect can be updated', async (done) => {
-        await page.$coordinateIntersectMinBtn.click();
-        expect(await page.getCoordinateIntersect()).toBe(0);
+        await page.$coordinateIntersectMaxBtn.click();
+        expect(await page.getCoordinateIntersect()).toBe(1);
         done();
       });
 
@@ -98,6 +98,55 @@ describe('Observation list', () => {
           expect(await page.getPolygonIntersect()).toBe(1);
           done();
         });
+      });
+
+      afterAll(async (done) => {
+        await page.navigateTo('list');
+        await page.placePanel.open();
+        done();
+      });
+    });
+
+    describe('YKJ grid button click', () => {
+      const control = page.map.getCoordinateInputControl();
+
+      beforeAll(async (done) => {
+        await page.$enterYkjBtn.click();
+        done();
+      });
+
+      it('changes tab to map', async (done) => {
+        expect(await page.tabs.map.isActive()).toBe(true);
+        done();
+      });
+
+      it('opens YKJ modal', async (done) => {
+        expect(isDisplayed(await control.$getContainer())).toBe(true);
+        done();
+      });
+
+      it('and entering YKJ rectangle filter to query', async (done) => {
+        await control.enterLatLng(666, 333);
+        await control.$getSubmit().click();
+        expect(await page.hasYKjCoordinatesFilter()).toBe(true);
+        done();
+      });
+
+      it('coordinate intersect 1 by default', async (done) => {
+        expect(await page.getCoordinateIntersect()).toBe(1);
+        done();
+      });
+
+      it('coordinate intersect can be updated', async (done) => {
+        await page.$coordinateIntersectMinBtn.click();
+        expect(await page.getCoordinateIntersect()).toBe(0);
+        done();
+      });
+
+      afterAll(async (done) => {
+        await page.navigateTo('list');
+        await page.placePanel.open();
+        done();
       });
     });
   });
