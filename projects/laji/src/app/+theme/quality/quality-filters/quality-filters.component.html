@@ -18,7 +18,7 @@
         [otherFormats]="['D.M.YYYY', 'YYYY']"
         [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeStart' | translate"
-        (select)="onSelectChange()"
+        (dateSelect)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeStart"></laji-datepicker>
       <laji-datepicker
@@ -28,7 +28,7 @@
         [toLastOfYear]="true"
         [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeEnd' | translate"
-        (select)="onSelectChange()"
+        (dateSelect)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeEnd"></laji-datepicker>
     </div>

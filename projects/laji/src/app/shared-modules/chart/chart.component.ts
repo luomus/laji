@@ -42,23 +42,23 @@ export class ChartComponent {
   @Input() public legend: boolean;
   @Input() public plugins: PluginServiceGlobalRegistrationAndOptions[];
 
-  @Output() public barClick: EventEmitter<{ event?: MouseEvent, active?: {}[], index: number}> = new EventEmitter();
-  @Output() public chartClick: EventEmitter<{ event?: MouseEvent, active?: {}[] }> = new EventEmitter();
-  @Output() public chartHover: EventEmitter<{ event: MouseEvent, active: {}[] }> = new EventEmitter();
+  @Output() public barClick: EventEmitter<{ event?: MouseEvent; active?: any[]; index: number}> = new EventEmitter();
+  @Output() public chartClick: EventEmitter<{ event?: MouseEvent; active?: any[] }> = new EventEmitter();
+  @Output() public chartHover: EventEmitter<{ event: MouseEvent; active: any[] }> = new EventEmitter();
 
   constructor(
     @Inject(WINDOW) private window: Window
   ) {
   }
 
-  onChartClick(event: { event?: MouseEvent, active?: {}[] }) {
+  onChartClick(event: { event?: MouseEvent; active?: Record<string, unknown>[] }) {
     this.chartClick.emit(event);
     try {
       this.onBarClick(event);
     } catch (e) { }
   }
 
-  private onBarClick(event: { event?: MouseEvent; active?: {}[] }) {
+  private onBarClick(event: { event?: MouseEvent; active?: Record<string, unknown>[] }) {
     const chart = this.barChart.chart;
     const scale = (chart as any).scales['x-axis-0'];
     const width = scale.width;
@@ -70,11 +70,11 @@ export class ChartComponent {
       // control if the point where i'm clicking is inside the chart but outside the legend block
       const scales = (chart as any).scales;
       const count = scales['x-axis-0'].ticks.length;
-      const padding_left = scales['x-axis-0'].paddingLeft;
-      const padding_right = scales['x-axis-0'].paddingRight;
-      const xwidth = ( width - padding_left - padding_right ) / count;
+      const paddingLeft = scales['x-axis-0'].paddingLeft;
+      const paddingRight = scales['x-axis-0'].paddingRight;
+      const xwidth = ( width - paddingLeft - paddingRight ) / count;
       const barIdx = Math.floor(
-        (event.event.offsetX - padding_left - scales['y-axis-0'].width) / xwidth // Calculate index
+        (event.event.offsetX - paddingLeft - scales['y-axis-0'].width) / xwidth // Calculate index
       );
 
       if (barIdx >= 0 && barIdx < count) {

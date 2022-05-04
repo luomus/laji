@@ -88,8 +88,8 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   _originalSelected: string[] = [];
   _originalSelectedNumbers: string[] = [];
 
-  columnSelector = new ColumnSelector;
-  numberColumnSelector = new ColumnSelector;
+  columnSelector = new ColumnSelector();
+  numberColumnSelector = new ColumnSelector();
 
   result: PagedResult<any> = {
     currentPage: 1,
@@ -101,9 +101,9 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   loading: boolean;
 
   private langMap = {
-    'fi': 'Finnish',
-    'sv': 'Swedish',
-    'en': 'English'
+    fi: 'Finnish',
+    sv: 'Swedish',
+    en: 'English'
   };
 
   columns: ObservationTableColumn[] = [];
@@ -328,7 +328,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       [...this.orderBy, this.defaultOrder],
       this.lang
     ).pipe(
-      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;

@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
@@ -31,10 +31,10 @@ import { WarehouseCountResultInterface } from '../model/WarehouseCountResultInte
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';
 
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable no-unused-vars member-ordering */
 
 'use strict';
 
@@ -92,12 +92,12 @@ export class WarehouseApi {
   public warehouseQueryAggregateGetCsv(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, onlyCount?: boolean): Observable<HttpResponse<any>> {
     const path = this.basePath + this.subPath + 'aggregate';
 
-    let queryParameters = {};
+    const queryParameters = {};
 
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (onlyCount !== undefined) {
-      queryParameters['onlyCount'] = onlyCount
+      queryParameters['onlyCount'] = onlyCount;
     }
     queryParameters['format'] = 'csv';
 
@@ -161,11 +161,11 @@ export class WarehouseApi {
     this.addQueryToQueryParams(this.queryWithMetaData(query, aggregateBy, orderBy, pageSize, page), queryParameters);
 
     if (geoJSON !== undefined) {
-      queryParameters['geoJSON'] = geoJSON
+      queryParameters['geoJSON'] = geoJSON;
     }
 
     if (onlyCount !== undefined) {
-      queryParameters['onlyCount'] = onlyCount
+      queryParameters['onlyCount'] = onlyCount;
     }
     if (target === 'count') {
       queryParameters = WarehouseApi.prepareCountQuery(queryParameters);
@@ -222,8 +222,8 @@ export class WarehouseApi {
   }
 
    /**
-   * Same as aggregate query, but performs the query on private data
-   */
+    * Same as aggregate query, but performs the query on private data
+    */
   public warehouseQueryUnitStatisticsGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     return this.warehouseQueryGet('unit/statistics', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
@@ -350,10 +350,10 @@ export class WarehouseApi {
   //Get filter to use in selection filters
   public warehouseQueryFilterGet(filter: string, extraHttpRequestParams?: any): Observable<any> {
     if (this.platformService.isServer) {
-      return EMPTY
+      return EMPTY;
     }
 
-    const path = this.basePath + '/warehouse/filters/' + filter
+    const path = this.basePath + '/warehouse/filters/' + filter;
 
     const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
 
@@ -471,13 +471,13 @@ export class WarehouseApi {
       ...query,
       aggregateBy: selectedOrAggregatedBy,
       selected: selectedOrAggregatedBy,
-      orderBy: orderBy,
-      pageSize: pageSize,
-      page: page
+      orderBy,
+      pageSize,
+      page
     };
   }
 
-  private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: object): void {
+  private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: Record<string, unknown>): void {
     this.queryService.getURLSearchParams(query, queryParameters);
   }
 

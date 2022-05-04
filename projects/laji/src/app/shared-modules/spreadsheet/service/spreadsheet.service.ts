@@ -124,13 +124,15 @@ export class SpreadsheetService {
     return result;
   }
 
-  loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any, errors: string[]} {
+  loadSheet(data: any, options: XLSX.ParsingOptions = {}): {data: any; errors: string[]} {
     const workBook: XLSX.WorkBook = XLSX.read(data, {type: 'array', cellDates: true, ...options});
     const sheetName: string = workBook.SheetNames[0];
     const sheet: XLSX.WorkSheet = workBook.Sheets[sheetName];
-
     this.setDateFormat(sheet, !!workBook.Workbook);
-    return this.combineSplittedFields(<any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'}));
+
+    let sheetData = <any>XLSX.utils.sheet_to_json<{[key: string]: string}>(sheet, {header: 'A'});
+    sheetData = this.trimWhiteSpaces(sheetData);
+    return this.combineSplittedFields(sheetData);
   }
 
   setDateFormat(sheet: XLSX.WorkSheet, hasWorkbook) {
@@ -175,7 +177,17 @@ export class SpreadsheetService {
     }));
   }
 
-  private combineSplittedFields(data: {[col: string]: string}[]): {data: any, errors: string[]} {
+  private trimWhiteSpaces(data: {[col: string]: string}[]): {[col: string]: string}[] {
+    return data?.map(row => {
+      const newRow = {};
+      Object.keys(row).forEach(col => {
+        newRow[col] = typeof row[col] === 'string' ? row[col].trim() : row[col];
+      });
+      return newRow;
+    });
+  }
+
+  private combineSplittedFields(data: {[col: string]: string}[]): {data: any; errors: string[]} {
     if (!data || data.length < 2) {
       return {data, errors: []};
     }
@@ -206,7 +218,7 @@ export class SpreadsheetService {
         combines.push({
           col: key,
           field: newField,
-          type: type,
+          type,
           groupId: group && group.groupId || SpreadsheetService.groupId++,
           order: matches.indexOf(match[1]),
           groupType: dateFields.includes(type) ? GroupTypeEnum.date : GroupTypeEnum.coordinate
@@ -278,7 +290,7 @@ export class SpreadsheetService {
     return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
   }
 
-  private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][], errors: string[]} {
+  private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][]; errors: string[]} {
     const errors = [];
     combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.date, errors);
     combines = this.checkCombinedHasRequiredColumns(combines, GroupTypeEnum.coordinate, errors);
@@ -353,21 +365,19 @@ export class SpreadsheetService {
       return;
     }
     const label = schema.title || lastLabel;
-    const getFieldData = () => {
-      return {
+    const getFieldData = () => ({
         type: schema.type,
-        label: label,
+        label,
         fullLabel: label + SpreadsheetService.nameSeparator + (this.translations[parent] || parent),
         key: root,
-        parent: parent,
+        parent,
         isArray: root.endsWith('[*]'),
         required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
         subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
         enum: schema.enum,
         enumNames: schema.enumNames,
         default: schema.default
-      };
-    };
+      });
 
     switch (schema.type) {
       case 'object':

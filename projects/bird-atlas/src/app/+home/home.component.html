@@ -1,0 +1,3 @@
+<div class="container my-5" *ngIf="homeContent$ | async; let information">
+  <main [innerHtml]="information?.content"></main>
+</div>

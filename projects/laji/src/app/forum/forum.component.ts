@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 @Component({
   selector: 'laji-foorum',

@@ -13,7 +13,7 @@ export class SearchQueryService implements SearchQueryInterface {
   public query: WarehouseQueryInterface = {};
 
   private readonly separator = {
-    'teamMember': ';'
+    teamMember: ';'
   };
 
   // noinspection JSUnusedLocalSymbols
@@ -22,6 +22,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'target',
     'effectiveTag',
     'informalTaxonGroupId',
+    'informalTaxonGroupIdNot',
     'informalTaxonGroupIdIncludingReported',
     'administrativeStatusId',
     'redListStatusId',
@@ -79,8 +80,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'aggregateBy',
     'selected',
     'orderBy',
-    'collectionAndRecordQuality',
-    'plantStatusCode'
+    'plantStatusCode',
+    'sourceOfCoordinates'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -115,7 +116,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'breedingSite',
     'useIdentificationAnnotations',
     'includeSubTaxa',
-    'annotated'
+    'annotated',
+    'onlyNonStateLands'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -145,8 +147,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
-    'sourceOfCoordinates',
-    'formId'
+    'formId',
+    'taxonAdminFiltersOperator',
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -167,8 +170,8 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public forEachType(opt: {
-    skip?: string[],
-    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void
+    skip?: string[];
+    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void;
   }) {
     const types: Array<'array'|'boolean'|'numeric'|'string'|'obscure'> = ['array', 'boolean', 'numeric', 'string', 'obscure'];
     types.forEach(type => {
@@ -295,7 +298,7 @@ export class SearchQueryService implements SearchQueryInterface {
     return result;
   }
 
-  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: object, skipParams: string[] = []): object {
+  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: Record<string, unknown>, skipParams: string[] = []): Record<string, unknown> {
     if (!queryParameters) {
       queryParameters = {};
     }

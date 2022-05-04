@@ -267,7 +267,7 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
-  possiblyRE?: object;
+  possiblyRE?: Record<string, unknown>;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
   endangermentReasons?: string[];
@@ -324,6 +324,8 @@ export interface TaxonomyImage {
   largeURL?: string;
 
   fullURL?: string;
+
+  keywords?: string[];
 
   licenseId?: string;
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
 import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
-import { CoordinateService } from '../../../shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';
 import { Util } from '../../../shared/service/util.service';
@@ -18,7 +18,8 @@ export enum SpecialTypes {
   dateTime = 'dateTime',
   date = 'date',
   time = 'time',
-  keywords = 'keywords'
+  keywords = 'keywords',
+  atlasCode = 'atlasCode'
 }
 
 @Injectable()
@@ -30,13 +31,13 @@ export class MappingService {
 
   // from boolean to translation key
   private readonly booleanMap = {
-    'true': 'yes',
-    'false': 'no'
+    true: 'yes',
+    false: 'no'
   };
 
   private mapping = {
-    'boolean': null,
-    'string': {}
+    boolean: null,
+    string: {}
   };
 
   private colMapping?: IColMap;
@@ -46,7 +47,7 @@ export class MappingService {
 
   private specials = {
     'editors[*]': SpecialTypes.person,
-    'namedPlaceID': SpecialTypes.namedPlaceID,
+    namedPlaceID: SpecialTypes.namedPlaceID,
     'keywords[*]': SpecialTypes.keywords,
     'gatheringEvent.leg[*]': SpecialTypes.person,
     'gatheringEvent.dateBegin': SpecialTypes.dateOptionalTime,
@@ -65,7 +66,8 @@ export class MappingService {
     'gatherings[*].dateEnd': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon,
-    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID
+    'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID,
+    'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode
   };
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
@@ -81,7 +83,6 @@ export class MappingService {
 
   constructor(
     private translationService: TranslateService,
-    private coordinateService: CoordinateService,
     private spreadsheetFacade: SpreadsheetFacade
   ) { }
 
@@ -142,13 +143,13 @@ export class MappingService {
 
   initColMap(fields: {[key: string]: IFormField}) {
     const lookup = {};
-    const simpleCols: {[label: string]: {cnt: number, key: string}} = {};
+    const simpleCols: {[label: string]: {cnt: number; key: string}} = {};
     Object.keys(fields).forEach((key) => {
       const label = fields[key].label.toLowerCase();
       lookup[key.toLowerCase()] = key;
       lookup[fields[key].fullLabel.toLowerCase()] = key;
       if (!simpleCols[label]) {
-        simpleCols[label] = {cnt: 1, key: key};
+        simpleCols[label] = {cnt: 1, key};
       } else {
         simpleCols[label].cnt++;
       }
@@ -228,7 +229,7 @@ export class MappingService {
     return this._map(value, field, allowUnMapped);
   }
 
-  mapByFieldType(value: any, field: IFormField) {
+  private mapByFieldType(value: any, field: IFormField) {
     const upperValue = ('' + value).toLowerCase();
     let realValue = null;
     switch (field.type) {
@@ -276,6 +277,11 @@ export class MappingService {
       const label = field.enumNames[idx].toLowerCase();
       this.mapping.string[field.key][value.toLowerCase()] = value;
       this.mapping.string[field.key][label.toLowerCase()] = value;
+
+      if (this.getSpecial(field) === SpecialTypes.atlasCode) {
+        const code = value.match(/\d+/)[0];
+        this.mapping.string[field.key][code] = value;
+      }
     });
   }
 
@@ -428,7 +434,7 @@ export class MappingService {
         const ykjParts = value.split(':');
         if (ykjParts[0].length === ykjParts[1].length) {
           try {
-            return this.coordinateService.convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
+            return convertYkjToGeoJsonFeature(ykjParts[0], ykjParts[1]).geometry;
           } catch (e) {}
         }
       } else if (value.match(/^-?[0-9]{1,2}(\.[0-9]+)?,-?1?[0-9]{1,2}(\.[0-9]+)?$/)) {

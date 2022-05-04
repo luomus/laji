@@ -29,9 +29,7 @@ const rankWhiteList: Taxon.TaxonRankEnum[] = [
   'MX.species'
 ];
 
-const isMainRank = (r: Taxon.TaxonRankEnum): boolean => {
-  return rankWhiteList.includes(r);
-};
+const isMainRank = (r: Taxon.TaxonRankEnum): boolean => rankWhiteList.includes(r);
 
 const taxonEnumReversed = Object.values(Taxon.TaxonRankEnum).reverse();
 

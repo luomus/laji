@@ -145,7 +145,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     this.documentApi.findById(this._documentID, this.userService.getToken()).pipe(
-      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
     ).subscribe(
       () => {
         this.translate.get('template.success')
@@ -202,9 +202,7 @@ export class UserDocumentToolsComponent implements OnInit, OnDestroy {
   }
 
   showMakeTemplate(formID: string): boolean {
-    if (formID) {
-      return Global.canHaveTemplate.indexOf(formID) > -1;
-    }
+    return formID && Global.canHaveTemplate.indexOf(formID) > -1;
   }
 
   private checkEditRight() {

@@ -21,7 +21,7 @@ import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
@@ -40,7 +40,7 @@ export interface IUserSettings {
   observationMap?: any;
   frontMap?: any;
   formDefault?: any;
-  '_global_form_settings_'?: any;
+  '_global_form_settings_'?: any; // eslint-disable-line @typescript-eslint/naming-convention
   [key: string]: any;
 }
 

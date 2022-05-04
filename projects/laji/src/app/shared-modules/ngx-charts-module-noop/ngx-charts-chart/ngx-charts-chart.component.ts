@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector max-classes-per-file */
+/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
 import { Component, Input } from '@angular/core';
 
 @Component({

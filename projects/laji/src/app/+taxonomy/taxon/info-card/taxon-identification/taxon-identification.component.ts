@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges,
+  ViewChild, ElementRef, Inject, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Taxonomy } from '../../../../shared/model/Taxonomy';
 import { TaxonIdentificationFacade } from './taxon-identification.facade';
 import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } from 'rxjs';
@@ -6,7 +7,7 @@ import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } fr
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { WINDOW } from '@ng-toolkit/universal';
-import { PlatformService } from '../../../../shared/service/platform.service';
+import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
@@ -47,12 +48,10 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   private collectionViewer: CollectionViewer = {
     viewChange: this.infiniteScrollStatusCheck$.pipe(
       filter(() => this.loadMoreElem && this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
-      map(() => {
-        return {
+      map(() => ({
           start: 0,
           end: this.children.length
-        };
-      })
+        }))
     )
   };
 

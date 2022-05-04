@@ -38,7 +38,7 @@ export class AudioPlayerComponent implements OnInit {
     mediaType: '',
   };
   public images: Image [] = [];
-  public PopupSpectrum = false;
+  public popupSpectrum = false;
   public audioFile: Audio;
 
   constructor(
@@ -53,7 +53,7 @@ export class AudioPlayerComponent implements OnInit {
     this.listAudio = this.audioFiles.filter(audio => audio['mediaType'] === 'AUDIO' );
 
     this.listAudio.forEach((element, index) =>
-       this.images.push({ 'id': 'a' + index, 'fullURL': element.fullURL , 'thumbnailURL': element.thumbnailURL, 'intellectualRights': element.licenseId })
+       this.images.push({ id: 'a' + index, fullURL: element.fullURL , thumbnailURL: element.thumbnailURL, intellectualRights: element.licenseId })
     );
 
     this.isPlaying = [...Array(this.listAudio.length)].fill(false);
@@ -82,8 +82,8 @@ export class AudioPlayerComponent implements OnInit {
     this.nowplayingAudioId = index;
     this.playingAudio = this.listAudio[index];
     this.images = [];
-    this.images.push({ 'id': 'a' + index , 'fullURL': this.listAudio[index].fullURL ,
-    'thumbnailURL': this.listAudio[index].thumbnailURL, 'intellectualRights': this.listAudio[index].licenseId });
+    this.images.push({ id: 'a' + index , fullURL: this.listAudio[index].fullURL ,
+    thumbnailURL: this.listAudio[index].thumbnailURL, intellectualRights: this.listAudio[index].licenseId });
   }
 
 
@@ -138,7 +138,7 @@ export class AudioPlayerComponent implements OnInit {
     } else {
       this.nowplayingAudioId = index;
     }
-    this.PopupSpectrum = true;
+    this.popupSpectrum = true;
     this.childComunication.emitChildEvent(true);
     this.startPopupPlayer(index);
   }
@@ -148,7 +148,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   onHidePopupSpectrum() {
-    this.PopupSpectrum = false;
+    this.popupSpectrum = false;
     this.childComunication.emitChildEvent(false);
     this.cd.detectChanges();
     this.audioPause(this.nowplayingAudioId);

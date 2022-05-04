@@ -16,6 +16,7 @@ import { LabelService } from '../../label.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { LabelDesignerHelper } from '../../label-designer.helper';
 
 /**
  * @internal
@@ -152,19 +153,7 @@ export class LabelFieldsAvailableComponent implements OnInit, OnDestroy {
     this.addToBackside = !this.addToBackside;
   }
 
-  checkIsSame(): boolean {
-    if (this.availableFields.length !== this.defaultAvailableFields.length) {
-      this.isSame = false;
-      return;
-    }
-    const keys = new Set<string>();
-    this.defaultAvailableFields.forEach(field => keys.add(field.field));
-    let result = true;
-    this.availableFields.forEach(field => {
-      if (result && !keys.has(field.field)) {
-        result = false;
-      }
-    });
-    this.isSame = result;
+  checkIsSame() {
+    this.isSame = LabelDesignerHelper.fieldsAreSame(this.availableFields, this.defaultAvailableFields);
   }
 }

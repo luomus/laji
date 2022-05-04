@@ -54,9 +54,7 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
             this.cd.markForCheck();
           }
 
-          for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
-
+          for (const match of matches) {
             this.subs.push(this.taxonConceptService.getMatchInfo(match).pipe(catchError(() => of(undefined))).subscribe(info => {
               if (info) {
                 this.matches.push(info);
@@ -68,10 +66,8 @@ export class TaxonConceptInfoComponent implements OnChanges, OnDestroy {
   }
 
   private unsubscribeSubs() {
-    for (let i = 0; i < this.subs.length; i++) {
-      if (this.subs[i]) {
-        this.subs[i].unsubscribe();
-      }
+    for (const sub of this.subs) {
+      sub?.unsubscribe();
     }
   }
 }

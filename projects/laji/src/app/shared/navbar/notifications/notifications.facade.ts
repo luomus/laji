@@ -103,7 +103,7 @@ export class NotificationsFacade {
   private subscribeNotifications(page = 1) {
     this.lajiApi.getList(LajiApi.Endpoints.notifications, {
       personToken: this.userService.getToken(),
-      page: page,
+      page,
       pageSize: this.pageSize
     }).pipe(
       catchError(() => EMPTY)

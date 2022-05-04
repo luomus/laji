@@ -9,6 +9,8 @@ import { Util } from './util.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableUtil } from '../../shared-modules/datatable/service/datatable-util.service';
 
+export type ExportFileType = BookType|'tsv';
+
 @Injectable({providedIn: 'root'})
 export class ExportService {
   private csvMimeType = 'text/csv;charset=utf-8';
@@ -23,13 +25,13 @@ export class ExportService {
     private datatableUtil: DatatableUtil
   ) { }
 
-  exportFromData(data: any[], cols: DatatableColumn[], type: BookType, filename: string, firstRow?: string[]): Observable<void> {
+  exportFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[]): Observable<void> {
     return this.getAoa<any>(cols, data, firstRow).pipe(
       switchMap((aoa) => this.export(aoa, type, filename))
     );
   }
 
-  export(aoa: string[][], type: BookType, filename: string): Observable<void> {
+  export(aoa: string[][], type: ExportFileType, filename: string): Observable<void> {
     return of(aoa).pipe(
       map(data => this.getBufferFromAoa(data, type)),
       map(buffer => this.exportArrayBuffer(buffer, filename, type))
@@ -37,26 +39,15 @@ export class ExportService {
   }
 
   exportArrayBuffer(buffer: any, fileName: string, fileExtension: string) {
-    let type;
-    if (fileExtension === 'ods') {
-      type = this.odsMimeType;
-    } else if (fileExtension === 'xlsx') {
-      type = this.xlsxMimeType;
-    } else if (fileExtension === 'tsv') {
-      type = this.tsvMimeType;
-    } else if (fileExtension === 'csv') {
-      type = this.csvMimeType;
-    } else if (fileExtension === 'zip') {
-      type = this.zipMimeType;
-    } else {
-      type = this.txtMimeType;
-    }
+    const data: Blob = this.createBlob(buffer, fileExtension);
+    this.saveBlob(data, fileName, fileExtension);
+  }
 
-    const data: Blob = new Blob([buffer], {
-      type: type
-    });
-
-    FileSaver.saveAs(data, fileName + '.' + fileExtension);
+  getBlobFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[]): Observable<Blob> {
+    return this.getAoa<any>(cols, data, firstRow).pipe(
+      map(aoa => this.getBufferFromAoa(aoa, type)),
+      map(buffer => this.createBlob(buffer, type))
+    );
   }
 
   private getBufferFromAoa(aoa: string[][], fileType: any): any {
@@ -84,8 +75,8 @@ export class ExportService {
     const aoa: any = firstRow ? [firstRow, []] : [[]];
     const labelRow = firstRow ? 1 : 0;
     const observables = [];
-    for (let i = 0; i < cols.length; i++) {
-      const labels = this.translateService.instant(cols[i].label);
+    for (const col of cols) {
+      const labels = this.translateService.instant(col.label);
       aoa[labelRow].push(typeof labels === 'string' ? labels : Object.values(labels).join(', '));
     }
     for (let i = 0; i < data.length; i++) {
@@ -128,5 +119,30 @@ export class ExportService {
   private hasScalarValue(value: any): boolean {
     const type = typeof value;
     return ['boolean', 'number', 'string'].includes(type);
+  }
+
+  private createBlob(buffer: any, fileExtension: string): Blob {
+    let type;
+    if (fileExtension === 'ods') {
+      type = this.odsMimeType;
+    } else if (fileExtension === 'xlsx') {
+      type = this.xlsxMimeType;
+    } else if (fileExtension === 'tsv') {
+      type = this.tsvMimeType;
+    } else if (fileExtension === 'csv') {
+      type = this.csvMimeType;
+    } else if (fileExtension === 'zip') {
+      type = this.zipMimeType;
+    } else {
+      type = this.txtMimeType;
+    }
+
+    return new Blob([buffer], {
+      type
+    });
+  }
+
+  private saveBlob(data: Blob, fileName: string, fileExtension: string) {
+    FileSaver.saveAs(data, fileName + '.' + fileExtension);
   }
 }

@@ -23,7 +23,7 @@ import {
 } from '@angular/platform-browser';
 import { Observable, of, of as observableOf } from 'rxjs';
 import { catchError, filter, take, tap, timeout } from 'rxjs/operators';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 export interface TransferHttpResponse {
   body?: any | null;
@@ -62,7 +62,6 @@ export class TransferHttpCacheInterceptor implements HttpInterceptor {
   ) {
     // Stop using the cache if the application has stabilized, indicating initial rendering is
     // complete.
-    // tslint:disable-next-line: no-floating-promises
     this.getStableObservable().toPromise()
       .then(() => { this.isCacheActive = false; });
   }

@@ -1,4 +1,12 @@
 <laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
+<div *lajiForTypes="['vir']">
+  <a class="btn btn-default btn-sm"
+    [routerLink]="['/observation/map'] | localize"
+    [queryParams]="virFilterShortcutQueryParams">
+  {{ 'observation.form.virFilterShortcut' | translate }}
+  </a>
+  <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
+</div>
 
 <section class="top-section">
   <div>
@@ -6,12 +14,18 @@
       <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
       <laji-info>{{ 'observation.info.informalTaxonGroup' | translate }}</laji-info>
     </div>
-    <laji-observation-group-select
-      [(ngModel)]="formQuery.informalTaxonGroupId"
+    <laji-observation-extended-group-select
+      [query]="formQuery"
       name="informalTaxonGroupId"
-      (select)="onFormQueryChange()">
-      {{ 'observation.active.informalTaxonGroupAll'|translate }}
-    </laji-observation-group-select>
+      [modalTitle]="'observation.form.informalTaxonGroup.select' | translate"
+      [modalButtonLabel]="'observation.form.informalTaxonGroup.select' | translate"
+      [browseTitle]="'observation.form.informalTaxonGroup.browse' | translate"
+      [selectedTitle]="'observation.form.informalTaxonGroup.selected' | translate"
+      [okButtonLabel]="'labelDesigner.Ok' | translate"
+      [clearButtonLabel]="'labelDesigner.Clear' | translate"
+      (select)="onSelectionIdChange($event, 'formQuery')">
+      {{ 'observation.active.informalTaxonGroupAll'| translate }}
+    </laji-observation-extended-group-select>
   </div>
 
   <div>
@@ -173,6 +187,18 @@
     [placeholder]="'observation.form.municipality'"
     name="finnishMunicipalityId"
     [field]="areaType.Municipality"></laji-metadata-select>
+
+  <laji-select
+    [selected]="[query.onlyNonStateLands]"
+    (selectedChange)="indirectQueryChange('onlyNonStateLands', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.onlyNonStateLands' | translate"
+    [info]="'observation.info.onlyNonStateLands' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.onlyNonStateLands.true' | translate)},
+        {id: false, value: ('observation.form.onlyNonStateLands.false' | translate)}
+      ]"></laji-select>
 
   <div>
     <div>
@@ -498,19 +524,19 @@
 
 <!--Sources -->
 <section class="laji-panel bg-success" laji-panel [title]="'observation.form.datasetTitle' | translate" [autoToggle]="true"  [open]="visible['dataset']">
-  <laji-select-collections
+  <laji-collections-select
     [query]="query"
-    (selectedOptionsChange)="onCollectionIdChange($event)"
+    (collectionIdChange)="onSelectionIdChange($event)"
     [title]="'observation.form.dataset' | translate"
     [info]="'observation.info.dataset' | translate"
-    [modalTitle]="'observation.form.datasetSelect' | translate"
-    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
-    [browseTitle]="'observation.form.datasetBrowse' | translate"
-    [selectedTitle]="'observation.form.datasetSelected' | translate"
-    [okButtonLabel]="'labelDesigner.Ok' | translate"
-    [clearButtonLabel]="'labelDesigner.Clear' | translate"
+    [modalTitle]="'observation.form.datasetSelect' | translate"
+    [modalButtonLabel]="'observation.form.datasetSelect' | translate"
+    [browseTitle]="'observation.form.datasetBrowse' | translate"
+    [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [okButtonLabel]="'labelDesigner.Ok' | translate"
+    [clearButtonLabel]="'labelDesigner.Clear' | translate"
     name='collectionID'
-  ></laji-select-collections>
+  ></laji-collections-select>
   <laji-metadata-select
     [(ngModel)]="query.sourceId"
     [info]="'observation.info.system' | translate"
@@ -569,29 +595,22 @@
   </div>
 </section>
 
+<section class="laji-panel" laji-panel [title]="'observation.form.conservation' | translate" [autoToggle]="true" [open]="visible['conservation']">
+  <laji-conservation-filter
+    [administrativeStatus]="query.administrativeStatusId"
+    [redListStatus]="query.redListStatusId"
+    [taxonAdminFiltersOperator]="query.taxonAdminFiltersOperator"
+    (administrativeStatusChange)="onAdministrativeStatusChange($event)"
+    (redListStatusChange)="onRedListStatusChange($event)"
+    (operatorChange)="onConservationOperatorChange($event)"
+  ></laji-conservation-filter>
+</section>
+
 <!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
-  <p [innerHTML]="'observation.intro.adminStatus' | translate"></p>
-  <laji-metadata-select
-    [info]="'observation.info.adminStatus' | translate"
-    [(ngModel)]="query.administrativeStatusId"
-    (ngModelChange)="onAdministrativeStatusChange()"
-    [multiple]="true"
-    [placeholder]="'MX.hasAdminStatus' | label"
-    name="administrativeStatusId"
-    [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
-  <laji-metadata-select
-    [info]="'observation.info.redListStatus' | translate"
-    [(ngModel)]="query.redListStatusId"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [useFilter]="false"
-    name="redListStatusId"
-    [placeholder]="'observation.form.redListStatusId'"
-    [alt]="'MX.iucnStatuses'"></laji-metadata-select>
   <laji-habitat-select
     [query]="query"
-    (select)="onHabitatChange($event)"
+    (habitatSelect)="onHabitatChange($event)"
   ></laji-habitat-select>
   <p>
     {{ 'observation.intro.typeOfOccurrenceId' | translate }}
@@ -620,7 +639,7 @@
       <label>{{ 'observation.form.finnish' | translate }}</label><laji-info>{{ 'observation.info.finnish' | translate }}</laji-info><br>
     </div>
     <laji-three-state-switch
-      (change)="onQueryChange()"
+      (update)="onQueryChange()"
       [onText]="'yes' | translate"
       [offText]="'no' | translate"
       [(value)]="query.finnish">

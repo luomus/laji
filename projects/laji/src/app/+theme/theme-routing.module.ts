@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OnlyLoggedIn } from '../shared/route/only-logged-in';
@@ -24,7 +24,7 @@ import { GeneticResourceLayoutComponent } from './genetic-resource/layout/geneti
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
 
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},

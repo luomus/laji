@@ -31,11 +31,11 @@ export class TaxonInfoComponent implements OnInit, OnDestroy {
   initLangTaxonNames() {
    this.langs.forEach(value => {
     if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
-      this.availableVernacularNames.push({'lang': value});
-      this.availableTaxonNames.vernacularNames.push({'lang': value});
+      this.availableVernacularNames.push({lang: value});
+      this.availableTaxonNames.vernacularNames.push({lang: value});
     }
     if (this.taxon.colloquialVernacularName?.hasOwnProperty(value) && this.taxon.colloquialVernacularName[value] !== '') {
-      this.availableTaxonNames.colloquialVernacularNames.push({'lang': value});
+      this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
     }
    });
 

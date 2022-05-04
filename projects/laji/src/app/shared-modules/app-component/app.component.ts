@@ -7,11 +7,11 @@ import { Global } from '../../../environments/global';
 import { setTheme } from 'ngx-bootstrap/utils';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { HistoryService } from '../../shared/service/history.service';
 import { Util } from '../../shared/service/util.service';
 
-declare const ga: Function;
+declare const ga: (eventName: string, hitType: string, data: string) => void;
 
 @Component({
   selector: 'laji-app',

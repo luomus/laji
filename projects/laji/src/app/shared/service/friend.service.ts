@@ -8,7 +8,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 @Injectable({providedIn: 'root'})
 export class FriendService {
 
-  private friends: Autocomplete[];
+  private friends?: Autocomplete[];
 
   constructor(
     private lajiApi: LajiApiService,

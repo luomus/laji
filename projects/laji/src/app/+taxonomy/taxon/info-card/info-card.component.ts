@@ -146,7 +146,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
   updateRoute(id: string, tab = this.activeTab, context = this.context, replaceUrl = false) {
     this.activeTab = tab;
-    this.routeUpdate.emit({id: id, tab: tab, context: context, replaceUrl: replaceUrl});
+    this.routeUpdate.emit({id, tab, context, replaceUrl});
     this.cd.markForCheck();
   }
 
@@ -159,7 +159,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
 
     const nbrOfImages = this.taxon.species ? 1 : 9;
 
-    const taxonImages = (this.taxonImages || []).slice(0, nbrOfImages);
+    const taxonImages = (this.taxonImages || []).filter(image => !image['keywords']?.includes('skeletal')).slice(0, nbrOfImages);
     if (taxonImages.length > 0) {
       this.hasImageData = true;
     }
@@ -228,7 +228,7 @@ export class InfoCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // used for translating tab indices
-  private getTabConditionals(): {e, t}[] {
+  private getTabConditionals(): {e; t}[] {
     return [
       {e: this.hasImageData, t: 'images'},
       {e: this.hasBiologyData, t: 'biology'},

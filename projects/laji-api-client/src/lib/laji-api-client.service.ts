@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length no-empty-interface no-unused-interface */
+/* eslint-disable max-len no-empty-interface no-unused-interface */
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -2562,6 +2562,7 @@ export namespace LajiApiClient {
    * Parameters for TaxonFindTaxa
    */
   export interface TaxonFindParams {
+    parentTaxonId?: string;
 
     /**
      * Will not include these type(s) of occurrence. Multiple values are separated by a comma (,).
@@ -3243,6 +3244,11 @@ export namespace LajiApiClient {
     informalTaxonGroupId?: string;
 
     /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
+
+    /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     individualId?: string;
@@ -3732,6 +3738,11 @@ export namespace LajiApiClient {
      * Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     informalTaxonGroupId?: string;
+
+    /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
 
     /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
@@ -4235,6 +4246,11 @@ export namespace LajiApiClient {
     informalTaxonGroupId?: string;
 
     /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
+
+    /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     individualId?: string;
@@ -4580,6 +4596,11 @@ export namespace LajiApiClient {
      * Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     informalTaxonGroupId?: string;
+
+    /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
 
     /**
      * Filter using idividual count. Unreported individual count is assumed to mean "1+", so searching min=1 returns where count > 0 or count is not given. To search for "zero observations" use max=0. Defaults to 1 but when using annotation endpoint defaults to null
@@ -4931,6 +4952,11 @@ export namespace LajiApiClient {
      * Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     informalTaxonGroupId?: string;
+
+    /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
 
     /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
@@ -5442,6 +5468,11 @@ export namespace LajiApiClient {
      * Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     informalTaxonGroupId?: string;
+
+    /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
 
     /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
@@ -5975,6 +6006,11 @@ export namespace LajiApiClient {
     informalTaxonGroupId?: string;
 
     /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
+
+    /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     individualId?: string;
@@ -6469,6 +6505,11 @@ export namespace LajiApiClient {
      * Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
      */
     informalTaxonGroupId?: string;
+
+    /**
+     * Filter to exclude from search on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search.
+     */
+    informalTaxonGroupIdNot?: string;
 
     /**
      * Filter using identifier of an individual, for example bird ring. Multiple values are seperated by ','. When multiple values are given, this is an OR search.

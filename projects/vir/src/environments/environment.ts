@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
@@ -38,6 +38,9 @@ export const environment = {
     citizenScienceForms: ['JX.652', 'MHL.6', 'MHL.53', 'MHL.25'],
     birdMonitoringForms: ['MHL.1', 'MHL.65', 'MHL.3', 'MHL.75'],
     researchProjects: ['MHL.33', 'MHL.35', 'MHL.50', 'MHL.57', 'MHL.45', 'MHL.59']
+  },
+  observationForm: {
+    defaultCoordinatesIntersection: 0
   },
   rootCollections: ['HR.128'],
   apiBase: 'https://dev.laji.fi/api',

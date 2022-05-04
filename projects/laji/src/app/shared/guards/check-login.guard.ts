@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/r
 import { UserService } from '../service/user.service';
 import { Observable, of } from 'rxjs';
 import { Location } from '@angular/common';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { PERSON_TOKEN } from '../service/laji-api-worker-common';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PersonApi } from '../api/PersonApi';

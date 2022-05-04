@@ -262,14 +262,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "tsconfig.worker.json"
-            ],
-            "exclude": []
+            "lintFilePatterns": [
+              "projects/laji/src/**/*.ts"
+            ]
           }
         },
         "server": {
@@ -403,14 +400,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/label-designer/tsconfig.lib.json",
-              "projects/label-designer/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/label-designer/src/**/*.ts"
             ]
           }
         }
@@ -548,14 +541,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/iucn/tsconfig.app.json",
-              "projects/iucn/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/iucn/src/**/*.ts"
             ]
           }
         }
@@ -660,14 +649,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/label-designer-electron/tsconfig.app.json",
-              "projects/label-designer-electron/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/label-designer-electron/src/**/*.ts"
             ]
           }
         }
@@ -776,14 +761,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/label-designer-element/tsconfig.app.json",
-              "projects/label-designer-element/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/label-designer-element/src/**/*.ts"
             ]
           }
         }
@@ -816,14 +797,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/laji-ui/tsconfig.lib.json",
-              "projects/laji-ui/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/laji-ui/src/**/*.ts"
             ]
           }
         }
@@ -856,14 +833,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/laji-api-client/tsconfig.lib.json",
-              "projects/laji-api-client/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/laji-api-client/src/**/*.ts"
             ]
           }
         }
@@ -1059,15 +1032,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/vir/tsconfig.app.json",
-              "projects/vir/tsconfig.spec.json",
-              "projects/vir/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/vir/src/**/*.ts"
             ]
           }
         }
@@ -1170,10 +1138,152 @@
           }
         },
         "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/exhibition-screen/src/**/*.ts"
+            ]
+          }
+        }
+      }
+    },
+    "bird-atlas": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/bird-atlas",
+      "sourceRoot": "projects/bird-atlas/src",
+      "prefix": "ba",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/bird-atlas",
+            "index": "projects/bird-atlas/src/index.html",
+            "main": "projects/bird-atlas/src/main.ts",
+            "polyfills": "projects/laji/src/polyfills.ts",
+            "tsConfig": "projects/bird-atlas/tsconfig.json",
+            "aot": false,
+            "assets": [
+              "projects/bird-atlas/src/favicon.ico",
+              "projects/bird-atlas/src/assets"
+            ],
+            "styles": [
+              "node_modules/laji-map/dist/styles.css",
+              "projects/bird-atlas/src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/bird-atlas/src/styles"
+              ]
+            },
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/bird-atlas/src/env/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "bird-atlas:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "bird-atlas:build:production"
+            },
+            "dev": {
+              "browserTarget": "bird-atlas:build:dev"
+            },
+            "local": {
+              "browserTarget": "bird-atlas:build:local"
+            }
+          }
+        },
+        "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/exhibition-screen/tsconfig.json"
+              "projects/bird-atlas/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -1342,14 +1452,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/kerttu-global/tsconfig.app.json",
-              "projects/kerttu-global/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/kerttu-global/src/**/*.ts"
             ]
           }
         }

@@ -19,7 +19,7 @@ export class LabelEditorComponent {
   _magnification = 2;
   _magnifiedStyle: ILabelStyle;
   init = false;
-  minSize = 10;
+  minSize = 4;
 
   @Input() grid: number;
   @Input() gridVisible: boolean;

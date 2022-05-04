@@ -99,9 +99,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
           this.loading = false;
           return EMPTY;
         }
-        return this.document$.pipe(switchMap((doc) => {
-          return this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken());
-        }));
+        return this.document$.pipe(switchMap((doc) => this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken())));
       }),
       switchMap(document => this.formService.getForm(document.formID).pipe(map(form => ({form, document})))),
       catchError(() => {
@@ -109,10 +107,10 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
         this.loading = false;
         return of(null);
       })
-    ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
+    ).subscribe((res: null | {document: Document; form: Form.SchemaForm}) => {
       if (!res) {
         this.loading = false;
-        return EMPTY;
+        return;
       }
       this._linked = true;
       this.loading = false;

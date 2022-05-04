@@ -8,7 +8,7 @@ import { DocumentViewerFacade } from '../shared-modules/document-viewer/document
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
