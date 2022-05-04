@@ -167,13 +167,17 @@ export class AudioService {
       return of(buffer);
     }
 
-    const OfflineCtx = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
-    const offlineCtx = new OfflineCtx(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
-    const offlineSource = offlineCtx.createBufferSource();
-    offlineSource.buffer = buffer;
-    offlineSource.connect(offlineCtx.destination);
-    offlineSource.start();
-    return from(offlineCtx.startRendering()) as Observable<AudioBuffer>;
+    const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
+    try {
+      const offlineCtx = new offlineCtxClass(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
+      const offlineSource = offlineCtx.createBufferSource();
+      offlineSource.buffer = buffer;
+      offlineSource.connect(offlineCtx.destination);
+      offlineSource.start();
+      return from(offlineCtx.startRendering()) as Observable<AudioBuffer>;
+    } catch (e) {
+      return of(buffer);
+    }
   }
 
   private createFilter(type: 'highpass'|'lowpass', frequency: number) {
