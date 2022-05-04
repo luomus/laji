@@ -73,7 +73,7 @@
   "usage.fileDownload.download": "Lataa",
   "usage.fileDownload.format": "Tiedostomuoto",
   "usage.fileDownload.genericError": "Tiedoston lataaminen epäonnistui!",
-  "usage.fileDownload.gisDisabled": "GIS-latauksen enimmäisraja on 500 000 havaintoa.",
+  "usage.fileDownload.gisDisabled": "GIS-latauksen enimmäisraja on 300 000 havaintoa.",
   "usage.fileDownload.type": "Tiedostotyyppi",
   "usage.fileDownload.type.gis": "GIS",
   "usage.fileDownload.type.gis.info": "Paikkatietomuotoisessa aineistolatauksessa voit itse määrittää aineiston tiedostomuodon, geometriatyypin ja koordinaattijärjestelmän.<br><br>Tiedostomuoto:<br>.shp = ESRI Shapefile<br>.gpkg = GeoPackage<br><br>Geometria:<br>point =  havaintojen sijaintien keskipisteet<br>footprint = havaintojen geometriat alkuperäisessä muodossaan: voi sisältää piste-, viiva- ja aluegeometrioita<br>bbox = havaintojen \"Bounding Box\" -aluerajaukset<br><br>CRS (koordinaattijärjestelmä):<br>euref (ETRS89-TM35FIN, epsg 3067)<br>wgs84 (epsg 4326)<br><br>",
