@@ -20,7 +20,8 @@ export class RequiresAudioSupportDirective {
       const factory = this.resolver.resolveComponentFactory(AudioNotSupportedErrorComponent);
       this.viewContainer.createComponent(factory);
     } else {
-      if (!this.audioService.sampleRateConversionIsSupported(sampleRate)) {
+      const sampleRateIsSupported = this.audioService.setDefaultSampleRate(sampleRate);
+      if (!sampleRateIsSupported) {
         const factory = this.resolver.resolveComponentFactory(AudioSampleRateWarningComponent);
         this.viewContainer.createComponent(factory);
       }
