@@ -1060,7 +1060,6 @@
   "observation.form.map.coordinates": "Syötä koordinaatit",
   "observation.form.map.intro": "Koordinaatit",
   "observation.form.map.rectangle": "Piirrä rajaus kartalle",
-  "observation.form.map.rectangle.active": "Piirrä kartalle",
   "observation.form.map.polygon": "Piirrä polygoni kartalle",
   "observation.form.map.polygon.error.generic": "Jokin meni pieleen. Koita piirtää uudestaan.",
   "observation.form.mapLink": "Rajaa alue kartalta",
