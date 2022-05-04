@@ -1168,6 +1168,7 @@
               "projects/bird-atlas/src/assets"
             ],
             "styles": [
+              "node_modules/laji-map/dist/styles.css",
               "projects/bird-atlas/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -1182,6 +1183,10 @@
               "fileReplacements": [
                 {
                   "replace": "projects/bird-atlas/src/env/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/bird-atlas/src/env/environment.prod.ts"
                 }
               ],
@@ -1208,6 +1213,10 @@
             },
             "development": {
               "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.ts"
+                }
               ],
               "optimization": true,
               "outputHashing": "all",
@@ -1231,13 +1240,17 @@
               ]
             },
             "local": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/bird-atlas/src/env/environment.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
-              ],
-              "fileReplacements": [
               ],
               "optimization": false,
               "outputHashing": "all",

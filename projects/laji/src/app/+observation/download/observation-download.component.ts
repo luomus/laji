@@ -38,8 +38,9 @@ import { DownloadService } from '../../shared/service/download.service';
 import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/apikey-modal.component';
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
-import { FileFormat, GeoConvertService } from '../../shared/service/geo-convert.service';
+import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
 import { WINDOW } from '@ng-toolkit/universal';
+import { DialogService } from '../../shared/service/dialog.service';
 
 
 enum RequestStatus {
@@ -90,6 +91,8 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   formats: FORMAT[] = ['tsv', 'ods', 'xlsx', 'shp', 'gpkg'];
 
+  gisDownloadLimit = GEO_CONVERT_LIMIT;
+
   private _originalSelected: string[];
   private _settings: ISettingResultList;
   private modalRef: BsModalRef;
@@ -117,7 +120,8 @@ export class ObservationDownloadComponent implements OnDestroy {
               private modalService: BsModalService,
               private observationDataService: ObservationDataService,
               private downloadService: DownloadService,
-              private geoConvertService: GeoConvertService
+              private geoConvertService: GeoConvertService,
+              private dialogService: DialogService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -316,8 +320,13 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.cd.markForCheck();
       },
       (err) => {
-        this.logger.error('Simple download failed', err);
-        this.toastsService.showError(this.translate.instant('observation.download.error'));
+        if (isGeoConvertError(err)) {
+          this.dialogService.alert(err.msg);
+        } else{
+          this.logger.error('Simple download failed', err);
+          this.toastsService.showError(this.translate.instant('observation.download.error'));
+        }
+
         this.downloadLoading = false;
       }
     );

@@ -1,0 +1,36 @@
+@import 'vars';
+
+h1 {
+  margin-bottom: 0;
+}
+h3 {
+  color: $neutral-6;
+  margin-top: $sp-2;
+}
+
+ngx-datatable {
+  width: 100%;
+  max-width: 600px;
+}
+
+.ba-laji-map-wrapper {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+
+  display: grid;
+  grid-template-columns: max-content auto max-content;
+  grid-template-rows: max-content auto max-content;
+  place-items: center;
+  gap: $sp-2;
+}
+
+.ba-laji-map {
+  width: 100%;
+  height: 100%;
+}
+
+a.glyphicon-arrow-up, a.glyphicon-arrow-down, a.glyphicon-arrow-left, a.glyphicon-arrow-right {
+  font-size: $fs-4;
+  text-decoration: none;
+}

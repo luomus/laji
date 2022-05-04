@@ -27,7 +27,7 @@ import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@swimlane/ngx-datatable';
 

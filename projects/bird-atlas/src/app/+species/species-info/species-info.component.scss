@@ -3,7 +3,16 @@
 h1 {
   margin-bottom: 0;
 }
+
 h3 {
   color: $neutral-6;
   margin-top: $sp-2;
+}
+
+.map-container {
+  max-width: 500px;
+}
+
+a.prev, a.next {
+  text-decoration: none;
 }

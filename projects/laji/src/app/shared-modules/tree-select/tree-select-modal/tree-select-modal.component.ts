@@ -212,6 +212,7 @@ export class TreeSelectModalComponent implements OnInit {
     } else if (selected.type === 'excluded') {
       return false;
     }
+    return undefined;
   }
 
   nodeSelected(tree: TreeModel, node: TreeNode, $event: any) {

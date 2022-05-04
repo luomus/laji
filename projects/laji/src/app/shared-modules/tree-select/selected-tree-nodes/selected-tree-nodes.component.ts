@@ -38,6 +38,7 @@ export class SelectedTreeNodesComponent {
     } else if (selected.type === 'excluded') {
       return false;
     }
+    return undefined;
   }
 
   deselect(id: string) {

@@ -1,9 +1,9 @@
 import * as FileSaver from 'file-saver';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { PlatformService } from '../service/platform.service';
 import * as moment from 'moment';
 import { environment } from 'projects/laji/src/environments/environment';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-pdf-button',

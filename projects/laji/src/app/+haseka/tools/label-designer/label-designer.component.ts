@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../../environments/environment';
 import { Global } from '../../../../environments/global';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 
 @Component({
   selector: 'laji-label-designer',

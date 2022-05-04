@@ -5,7 +5,7 @@ import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Document } from '../../shared/model/Document';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { PlatformService } from '../../shared/service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-viewer-print',
