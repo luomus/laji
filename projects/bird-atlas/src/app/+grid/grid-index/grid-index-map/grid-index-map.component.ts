@@ -139,7 +139,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
       this.map = new LajiMap({
         tileLayers: <TileLayersOptions>{
           layers: {
-            maastokartta: { opacity: 1, visible: true },
+            taustakartta: { opacity: 1, visible: true },
             atlasGrid: { opacity: 1, visible: true }
           }
         },
