@@ -75,7 +75,7 @@ export class SpectrogramService {
   }
 
   private getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
-    const {nperseg, noverlap} = this.getDefaultSegmentSizeAndOverlap(config, buffer.sampleRate);
+    const {nperseg, noverlap} = this.getSegmentSizeAndOverlap(config, buffer.sampleRate);
 
     const chanData = buffer.getChannelData(0);
 
@@ -193,7 +193,7 @@ export class SpectrogramService {
     return percent * (xMax - xMin) + xMin;
   }
 
-  private getDefaultSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
+  private getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
     const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
     const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
     return {nperseg, noverlap};
