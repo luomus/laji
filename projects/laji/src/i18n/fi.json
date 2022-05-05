@@ -1741,7 +1741,6 @@
   "theme.kerttu.info.timeBuffer": "Aikapuskurilla voit muuttaa toistettavan ajan pituutta ennen ehdokasta ja sen jälkeen. Suurenna aikaa jos haluat kuunnella pidemmän pätkän ehdokkaasta. Valinta vaikuttaa myös malliäänen äänitteeseen.",
   "theme.kerttu.intro": "Mikä lintu lauloi? Kerro tunnistuksesi ja auta tietokonetta oppimaan lintujen äänet",
   "theme.kerttu.iosWarning": "<strong>Huom.</strong> Jos laitteessa on soitto/äänetön-kytkin, sen on oltava soitto-tilassa, jotta sivun äänet kuuluvat.",
-  "theme.kerttu.sampleRateWarning": "<strong>Huom.</strong> Selaimen versioista johtuen spektrogrammia ei voi näyttää parhaalla mahdollisella laadulla. Suosittelemme vaihtamaan tai päivittämään selaimen.",
   "theme.kerttu.isLowQuality": "Äänite on huonolaatuinen (kohinaa, sadetta tmv.)",
   "theme.kerttu.letterAnnotation": "Tunnista malliääniä",
   "theme.kerttu.letterCandidate": "Ehdokas",

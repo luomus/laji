@@ -3,7 +3,6 @@ import { PlatformService } from '../../../root/platform.service';
 import { AudioNotSupportedErrorComponent } from './audio-not-supported-error.component';
 import { AudioIosWarningComponent } from './audio-ios-warning.component';
 import { AudioService } from '../service/audio.service';
-import { AudioSampleRateWarningComponent } from './audio-sample-rate-warning.component';
 
 @Directive({ selector: '[lajiRequiresAudioSupport]' })
 export class RequiresAudioSupportDirective {
@@ -20,11 +19,7 @@ export class RequiresAudioSupportDirective {
       const factory = this.resolver.resolveComponentFactory(AudioNotSupportedErrorComponent);
       this.viewContainer.createComponent(factory);
     } else {
-      const sampleRateIsSupported = this.audioService.setDefaultSampleRate(sampleRate);
-      if (!sampleRateIsSupported) {
-        const factory = this.resolver.resolveComponentFactory(AudioSampleRateWarningComponent);
-        this.viewContainer.createComponent(factory);
-      }
+      this.audioService.setDefaultSampleRate(sampleRate);
       if (this.platformService.isIOS) {
         const factory = this.resolver.resolveComponentFactory(AudioIosWarningComponent);
         this.viewContainer.createComponent(factory);

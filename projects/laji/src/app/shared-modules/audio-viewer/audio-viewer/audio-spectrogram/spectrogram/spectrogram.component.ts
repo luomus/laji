@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, SimpleChanges, OnChanges, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
-import { delay, map, switchMap, tap } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import { IAudioViewerArea, ISpectrogramConfig } from '../../../models';
 import { AudioViewerUtils } from '../../../service/audio-viewer-utils';
 import { AudioService } from '../../../service/audio.service';
@@ -29,7 +29,6 @@ export class SpectrogramComponent implements OnChanges {
 
   @Output() spectrogramReady = new EventEmitter();
 
-  private resampledBufferSampleRate?: number;
   private imageData?: ImageData;
   private imageDataSub?: Subscription;
 
@@ -50,7 +49,7 @@ export class SpectrogramComponent implements OnChanges {
 
       if (this.buffer && this.startTime != null && this.endTime != null) {
         const observable = this.pregeneratedSpectrogramUrl ? of(null) : this.createSpectrogram(
-          this.buffer, this.startTime, this.endTime, this.config
+          this.buffer, this.startTime, this.endTime
         );
         // has a delay because otherwise the changes caused by this.spectrogramReady.emit() are not always detected
         this.imageDataSub = observable.pipe(delay(0)).subscribe(() => {
@@ -65,21 +64,16 @@ export class SpectrogramComponent implements OnChanges {
     }
   }
 
-  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number, config: ISpectrogramConfig): Observable<void> {
-    return this.processBuffer(buffer, startTime, endTime, config).pipe(
-      switchMap(processedBuffer => this.createSpectrogramFromProcessedBuffer(processedBuffer))
-    );
+  private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number): Observable<void> {
+    buffer = this.processBuffer(buffer, startTime, endTime);
+    return this.createSpectrogramFromProcessedBuffer(buffer);
   }
 
-  private processBuffer(buffer: AudioBuffer, startTime: number, endTime: number, config: ISpectrogramConfig): Observable<AudioBuffer> {
+  private processBuffer(buffer: AudioBuffer, startTime: number, endTime: number): AudioBuffer {
     if (startTime !== 0 || endTime !== buffer.duration) {
       buffer = this.audioService.extractSegment(buffer, startTime, endTime);
     }
-    return this.audioService.resampleBuffer(buffer, config.sampleRate).pipe(
-      tap(processedBuffer => {
-        this.resampledBufferSampleRate = processedBuffer.sampleRate;
-      })
-    );
+    return buffer;
   }
 
   private createSpectrogramFromProcessedBuffer(buffer: AudioBuffer): Observable<void> {
@@ -95,7 +89,7 @@ export class SpectrogramComponent implements OnChanges {
 
   private drawImage(data: ImageData, canvas: HTMLCanvasElement) {
     const maxTime = this.endTime - this.startTime;
-    const maxFreq = AudioViewerUtils.getMaxFreq(this.resampledBufferSampleRate);
+    const maxFreq = AudioViewerUtils.getMaxFreq(this.buffer.sampleRate);
 
     const startTime = this.view?.xRange[0] ? this.view?.xRange[0] - this.startTime : 0;
     const endTime = this.view?.xRange[1] ? this.view?.xRange[1] - this.startTime : maxTime;

@@ -26,26 +26,8 @@ export class AudioService {
     private ngZone: NgZone
   ) {}
 
-  /**
-   * Sets a default sample rate
-   * @returns true if sample rate is supported, otherwise false
-   */
-  public setDefaultSampleRate(sampleRate: number): boolean {
+  public setDefaultSampleRate(sampleRate: number) {
     this.defaultSampleRate = sampleRate;
-    const audioCtx = this.getAudioContext();
-
-    if (audioCtx.sampleRate === sampleRate) {
-      return true;
-    } else {
-      // test whether offline audio context throws an error with the sample rate
-      try {
-        const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
-        new offlineCtxClass(1, 1, sampleRate);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
   }
 
   public setCacheSize(cacheSize: number) {
@@ -186,24 +168,6 @@ export class AudioService {
 
   public getPlayedTime(startTime: number, playbackRate: number) {
     return (this.getAudioContextTime() - startTime) * playbackRate;
-  }
-
-  public resampleBuffer(buffer: AudioBuffer, sampleRate: number): Observable<AudioBuffer> {
-    if (buffer.sampleRate === sampleRate) {
-      return of(buffer);
-    }
-
-    try {
-      const offlineCtxClass = this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'];
-      const offlineCtx = new offlineCtxClass(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
-      const offlineSource = offlineCtx.createBufferSource();
-      offlineSource.buffer = buffer;
-      offlineSource.connect(offlineCtx.destination);
-      offlineSource.start();
-      return from(offlineCtx.startRendering()) as Observable<AudioBuffer>;
-    } catch (e) {
-      return of(buffer);
-    }
   }
 
   private createFilter(type: 'highpass'|'lowpass', frequency: number) {
