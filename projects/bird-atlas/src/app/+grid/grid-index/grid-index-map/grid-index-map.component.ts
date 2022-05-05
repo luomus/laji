@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, ViewChild } from '@angular/core';
-import { LajiMap, DataOptions, TileLayersOptions } from 'laji-map';
+import { LajiMap, DataOptions, TileLayersOptions, Lang } from 'laji-map';
 import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -144,6 +144,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy {
           }
         },
         controls: true,
+        lang: Lang.fi,
         center: [64.8, 25],
         zoom: 1.6
       });
