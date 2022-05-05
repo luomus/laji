@@ -5,14 +5,14 @@ import { map, share, tap } from 'rxjs/operators';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { ISpectrogramConfig } from '../models';
-import { AudioService } from './audio.service';
+import { AudioViewerUtils } from './audio-viewer-utils';
 
 @Injectable()
 export class SpectrogramService {
   private defaultConfig: ISpectrogramConfig = {
     sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
+    targetWindowLengthInSeconds: 0.015,
+    targetWindowOverlapPercentage: 0.375,
     nbrOfRowsRemovedFromStart: 2,
     maxNbrOfColsForNoiseEstimation: 6000,
     noiseReductionParam: 2,
@@ -23,7 +23,6 @@ export class SpectrogramService {
   private colormaps$ = {};
 
   constructor(
-    private audioService: AudioService,
     private httpClient: HttpClient
   ) {}
 
@@ -76,7 +75,8 @@ export class SpectrogramService {
   }
 
   private getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
-    const {nperseg, noverlap} = config;
+    const {nperseg, noverlap} = this.getDefaultSegmentSizeAndOverlap(config, buffer.sampleRate);
+
     const chanData = buffer.getChannelData(0);
 
     const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
@@ -191,6 +191,12 @@ export class SpectrogramService {
     const percent = (inputY - yMin) / (yMax - yMin);
 
     return percent * (xMax - xMin) + xMin;
+  }
+
+  private getDefaultSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
+    const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
+    const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
+    return {nperseg, noverlap};
   }
 
   private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {

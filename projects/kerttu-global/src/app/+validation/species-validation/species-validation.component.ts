@@ -37,8 +37,8 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
 
   spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 32000,
-    nperseg: 512,
-    noverlap: 192,
+    targetWindowLengthInSeconds: 0.015,
+    targetWindowOverlapPercentage: 0.375,
     nbrOfRowsRemovedFromStart: 0
   };
 

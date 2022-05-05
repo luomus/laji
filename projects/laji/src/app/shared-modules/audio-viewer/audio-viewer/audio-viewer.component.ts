@@ -49,8 +49,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() spectrogramConfig: ISpectrogramConfig = {
     sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
+    targetWindowLengthInSeconds: 0.015,
+    targetWindowOverlapPercentage: 0.375,
     nbrOfRowsRemovedFromStart: 2,
     maxNbrOfColsForNoiseEstimation: 6000,
     noiseReductionParam: 2,
