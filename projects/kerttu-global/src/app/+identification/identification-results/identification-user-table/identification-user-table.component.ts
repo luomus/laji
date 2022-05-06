@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateR
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IIdentificationUserStat } from '../../../kerttu-global-shared/models';
+import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
   selector: 'bsg-identification-user-table',
@@ -10,7 +11,8 @@ import { IIdentificationUserStat } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationUserTableComponent implements OnInit {
-  @Input() userId?: string;
+  @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate: UserNameTemplateComponent;
+
   @Input() data: IIdentificationUserStat[] = [];
 
   columns: DatatableColumn[] = [];
@@ -31,7 +33,7 @@ export class IdentificationUserTableComponent implements OnInit {
       {
         name: 'userId',
         label: 'theme.kerttu.result.name',
-        cellTemplate: this.userNameTpl,
+        cellTemplate: this.userNameTemplate.userNameTpl,
         sortTemplate: 'label',
         summaryFunc: () => this.translate.instant('theme.total')
       },

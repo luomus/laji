@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IUserStat } from '../../../kerttu-global-shared/models';
+import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
   selector: 'bsg-user-table',
@@ -10,13 +11,12 @@ import { IUserStat } from '../../../kerttu-global-shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserTableComponent implements OnInit {
-  @Input() userId?: string;
+  @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate: UserNameTemplateComponent;
+
   @Input() data: IUserStat[] = [];
 
   columns: DatatableColumn[] = [];
   sorts: { prop: string; dir: 'asc'|'desc' }[] = [{ prop: 'speciesCreated', dir: 'desc' }, { prop: 'speciesValidated', dir: 'desc' }];
-
-  @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
 
   constructor(
     private translate: TranslateService
@@ -27,7 +27,7 @@ export class UserTableComponent implements OnInit {
       {
         name: 'userId',
         label: 'theme.kerttu.result.name',
-        cellTemplate: this.userNameTpl,
+        cellTemplate: this.userNameTemplate.userNameTpl,
         sortTemplate: 'label',
         summaryFunc: () => this.translate.instant('theme.total')
       },

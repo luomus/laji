@@ -25,7 +25,6 @@
 <h2>{{ 'results.userTable.title' | translate }}</h2>
 <bsg-identification-user-table
   [data]="userStats$ | async"
-  [userId]="userId$ | async"
 ></bsg-identification-user-table>
 
 <ng-template #spinner>

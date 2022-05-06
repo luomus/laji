@@ -3,7 +3,6 @@ import { IGlobalSpeciesFilters, IGlobalSpeciesQuery, IUserStat, IValidationStat 
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, startWith } from 'rxjs/operators';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-results',
@@ -22,7 +21,6 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
     ></bsg-validation-pie-chart>
     <h2>{{ 'results.userTable.title' | translate }}</h2>
     <bsg-user-table
-      [userId]="userId$ | async"
       [data]="userStats$ | async"
     ></bsg-user-table>
   `
@@ -31,14 +29,12 @@ export class ResultsComponent {
   speciesFilters$: Observable<IGlobalSpeciesFilters>;
   validationStats$: Observable<IValidationStat[]>;
   userStats$: Observable<IUserStat[]>;
-  userId$: Observable<string>;
 
   private speciesQuerySubject = new BehaviorSubject<IGlobalSpeciesQuery>({});
   speciesQuery$ = this.speciesQuerySubject.asObservable();
 
   constructor(
-    private kerttuGlobalApi: KerttuGlobalApi,
-    private userService: UserService
+    private kerttuGlobalApi: KerttuGlobalApi
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
     this.validationStats$ = this.speciesQuery$.pipe(
@@ -53,7 +49,6 @@ export class ResultsComponent {
           startWith(<IUserStat[]>null)
         ))
     );
-    this.userId$ = this.userService.user$.pipe(map(user => user?.id));
   }
 
   onSpeciesQueryChange(query: IGlobalSpeciesQuery) {

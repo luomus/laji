@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { IGlobalSite, IIdentificationSiteStat, IIdentificationStat, IIdentificationUserStat } from '../../kerttu-global-shared/models';
 import { map, share } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
-import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-identification-results',
@@ -19,8 +18,7 @@ export class IdentificationResultsComponent implements OnInit {
   userId$: Observable<string>;
 
   constructor(
-    private kerttuGlobalApi: KerttuGlobalApi,
-    private userService: UserService
+    private kerttuGlobalApi: KerttuGlobalApi
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +33,6 @@ export class IdentificationResultsComponent implements OnInit {
       share()
     );
     this.generalStats$ = this.userStats$.pipe(map(stats => this.generalStatsFromUserStats(stats)));
-    this.userId$ = this.userService.user$.pipe(map(user => user?.id));
   }
 
   private generalStatsFromUserStats(userList: IIdentificationUserStat[]): IIdentificationStat {
