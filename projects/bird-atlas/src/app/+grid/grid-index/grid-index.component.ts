@@ -4,7 +4,6 @@ import { AtlasApiService } from '../../core/atlas-api.service';
 import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 
 @Component({
-  selector: 'ba-grid-index',
   templateUrl: './grid-index.component.html',
   styleUrls: ['./grid-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

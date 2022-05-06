@@ -5,7 +5,6 @@ import { LajiApiService } from '../core/api.service';
 import { cmsIds } from '../locale/cms-ids';
 
 @Component({
-  selector: 'ba-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -52,7 +52,6 @@ interface GridInfoData {
 }
 
 @Component({
-  selector: 'ba-grid-info',
   templateUrl: './grid-info.component.html',
   styleUrls: ['./grid-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
