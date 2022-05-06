@@ -5,40 +5,9 @@
   position: relative;
 }
 
-.legend {
-  font-size: 10px;
-  width: 130px;
-  margin: 0;
-  padding: 10px;
-  position: absolute;
-  border: 0;
+.map-legend {
   top: 6px;
   right: 6px;
-  z-index: 400;
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-}
-
-.legend .cnt {
-  display: inline-block;
-  float: right;
-}
-
-.legend .color {
-  display: inline-block;
-  height: 12px;
-  width: 12px;
-  margin-right: 5px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
-}
-
-.legend ul {
-  padding: 0;
-  margin: 0;
-}
-
-.legend li {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  left: unset;
+  bottom: unset;
 }
