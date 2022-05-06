@@ -7,6 +7,7 @@ import { SpeciesSelectComponent } from './species-select/species-select.componen
 import { ResultsComponent } from './results/results.component';
 import { ValidationComponent } from './validation.component';
 import { ValidationInstructionsComponent } from './validation-instructions/validation-instructions.component';
+import { OnlyLoggedIn } from '../../../../laji/src/app/shared/route/only-logged-in';
 
 const routes: Routes = [
   {
@@ -27,12 +28,13 @@ const routes: Routes = [
         path: 'species',
         pathMatch: 'full',
         component: SpeciesSelectComponent,
-        canActivate: [SpeciesListQueryResetGuard],
+        canActivate: [OnlyLoggedIn, SpeciesListQueryResetGuard],
       },
       {
         path: 'species/:id',
         pathMatch: 'full',
         component: SpeciesValidationComponent,
+        canActivate: [OnlyLoggedIn],
         canDeactivate: [DocumentDeActivateGuard]
       },
       {

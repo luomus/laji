@@ -27,7 +27,6 @@ const routes: Routes = [
   },
   {
     path: 'validation',
-    canActivate: [OnlyLoggedIn],
     loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
     data: {title: 'Bird Sounds Global'}
   },
