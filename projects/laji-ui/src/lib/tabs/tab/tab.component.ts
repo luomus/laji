@@ -15,7 +15,7 @@ export class TabComponent {
     this.headingChange.emit();
   }
   get heading() { return this._heading; }
-  @Input() class: string | undefined;
+  @Input() headerClass: string | undefined;
 
   @Output() headingChange = new EventEmitter<null>();
 

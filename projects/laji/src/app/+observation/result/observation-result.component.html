@@ -72,7 +72,7 @@
       [query]="query"
     ></laji-observation-result-list>
   </lu-tab>
-  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate" class="obs-filter-map">
+  <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate" headerClass="obs-filter-map">
     <laji-observation-map
       *ngIf="loadedTabs.isLoaded('map')"
       [ready]="!loadingUnits"
