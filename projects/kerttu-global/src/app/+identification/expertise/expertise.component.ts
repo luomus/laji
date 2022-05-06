@@ -74,9 +74,9 @@ export class ExpertiseComponent implements OnInit {
     });
 
     if (missingLevel || !this.birdwatchingActivityLevel) {
-      this.dialogService.alert('expertise.identification.missingAnswer');
+      this.dialogService.alert('expertise.missingAnswer');
     } else if (allAreLevel1) {
-      this.dialogService.confirm('expertise.identification.cannotRecognizeAnyBirds').subscribe(confirm => {
+      this.dialogService.confirm('expertise.cannotRecognizeAnyBirds').subscribe(confirm => {
         if (confirm) {
           this.saveProfile();
           this.cdr.markForCheck();
@@ -97,7 +97,7 @@ export class ExpertiseComponent implements OnInit {
       this.saving = false;
       this.cdr.markForCheck();
     }, () => {
-      this.dialogService.alert('expertise.identification.error');
+      this.dialogService.alert('expertise.error');
     });
   }
 }

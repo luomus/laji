@@ -1,8 +1,9 @@
 <h1>{{ 'theme.kerttu.expertise' | translate }}</h1>
 <div class="row mb-5">
   <div class="col-sm-12">
-    <label>{{ 'expertise.identification' | translate }}</label>
+    <label for="birdSongRecognitionSkillLevels">{{ 'expertise.birdSongRecognitionSkillLevels' | translate }}</label>
     <laji-expertise-by-continent
+      id="birdSongRecognitionSkillLevels"
       [continents]="continents$ | async"
       [birdSongRecognitionSkillLevels]="birdSongRecognitionSkillLevels"
       [disabled]="saving"
@@ -15,11 +16,10 @@
       {{ 'theme.kerttu.expertise.birdwatchingActivityLevel' | translate }}
     </label>
     <laji-metadata-select
+      id="birdwatchingActivityLevel"
       [(ngModel)]="birdwatchingActivityLevel"
       [multiple]="false"
       [useFilter]="false"
-      name="birdwatchingActivityLevel"
-      id="birdwatchingActivityLevel"
       [alt]="'MA.birdwatchingActivityLevelEnum'"
       [selectStyle]="basicSelectStyle"
       [disabled]="birdwatchingActivityLevel === undefined || saving"
