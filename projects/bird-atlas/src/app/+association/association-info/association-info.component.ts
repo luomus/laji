@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  template: ``
+  templateUrl: 'association-info.component.html'
 })
 export class AssociationInfoComponent {
 
