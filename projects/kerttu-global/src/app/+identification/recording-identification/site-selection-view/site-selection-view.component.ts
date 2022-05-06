@@ -10,14 +10,14 @@ import { SiteSelectionMapComponent } from './site-selection-map/site-selection-m
 })
 export class SiteSelectionViewComponent {
   @ViewChild(SiteSelectionMapComponent) siteMap: SiteSelectionMapComponent;
-  @Input() sites: IGlobalSite[] = [];
 
-  @Output() siteSelect = new EventEmitter<number[]>();
+  @Input() sites: IGlobalSite[] = [];
 
   selectedSites: number[] = [];
   drawActive = false;
-
   height = 'calc(100vh - 230px)';
+
+  @Output() siteSelect = new EventEmitter<number[]>();
 
   selectByDrawingClick() {
     this.drawActive = !this.drawActive;

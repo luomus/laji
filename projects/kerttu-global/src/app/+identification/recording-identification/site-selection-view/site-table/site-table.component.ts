@@ -20,7 +20,7 @@ import { DatatableColumn } from '../../../../../../../laji/src/app/shared-module
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SiteTableComponent implements OnInit, OnChanges {
-  @ViewChild('delete', { static: true }) deleteTpl: TemplateRef<any>;
+  @ViewChild('deleteTpl', { static: true }) deleteTpl: TemplateRef<any>;
 
   @Input() sites: IGlobalSite[] = [];
   @Input() selectedSites: number[] = [];
@@ -35,17 +35,17 @@ export class SiteTableComponent implements OnInit, OnChanges {
     this.columns = [
       {
         name: 'id',
-        label: 'Id',
+        label: 'identification.siteSelection.site.id',
         width: 50
       },
       {
         name: 'name',
-        label: 'Name',
+        label: 'identification.siteSelection.site.name',
         width: 100
       },
       {
         name: 'country',
-        label: 'Country',
+        label: 'identification.siteSelection.site.country',
         width: 100
       },
       {

@@ -70,7 +70,7 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   abortDrawing() {
     if (this.lajiMap?.map) {
-      this.lajiMap.map.abortDrawing({});
+      this.lajiMap.map.abortDrawing();
       this.lajiMap.map.clearDrawData();
     }
   }
@@ -188,7 +188,7 @@ export class SiteSelectionMapComponent implements OnChanges {
     const topRight = box[2];
 
     // in case longitude 180 is inside the box
-    let longIsInRange = false;
+    let longIsInRange: boolean;
     if (topRight[1] < bottomLeft[1]) {
       longIsInRange = point[1] >= bottomLeft[1] || point[1] <= topRight[1];
     } else {
