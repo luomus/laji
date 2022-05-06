@@ -179,7 +179,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
           ];
           query.polygonId = undefined;
         } else {
-          this.registerPolygon(geometry).subscribe(id => {
+          this.registerPolygon$(geometry).subscribe(id => {
             this.queryChange.emit({...this.query, polygonId: id, coordinates: undefined});
           });
         }
@@ -191,7 +191,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.queryChange.emit(query);
   }
 
-  registerPolygon(polygon: any) {
+  registerPolygon$(polygon: any) {
     return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
       map((response: any) => '' + response.id),
       catchError(e => {
