@@ -31,13 +31,11 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   annotation: IGlobalRecordingAnnotation;
   statusInfo: IGlobalRecordingStatusInfo;
 
-  firstRecordingLoaded = false;
+  expertiseMissing?: boolean;
   loading = false;
-  unsavedChanges = false;
-
+  hasUnsavedChanges = false;
   allRecordingsAnnotated = false;
   hasError = false;
-  expertiseMissing?: boolean;
 
   selectedSites?: number[];
 
@@ -55,17 +53,17 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef
-  ) { }
-
-  ngOnInit() {
-    this.personService.personFindProfileByToken(this.userService.getToken()).subscribe(profile => {
-      this.expertiseMissing = !profile.birdwatchingActivityLevel || !profile.birdSongRecognitionSkillLevels?.length;
-      this.cdr.markForCheck();
-    });
-
+  ) {
     this.sites$ = this.kerttuGlobalApi.getSites().pipe(
       map(result => result.results)
     );
+  }
+
+  ngOnInit() {
+    this.expertiseMissingSub = this.personService.personFindProfileByToken(this.userService.getToken()).subscribe(profile => {
+      this.expertiseMissing = !profile.birdwatchingActivityLevel || !profile.birdSongRecognitionSkillLevels?.length;
+      this.cdr.markForCheck();
+    });
 
     this.siteIdsSub = this.route.queryParams.pipe(
       map(data => (
@@ -74,6 +72,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
 
+      this.hasUnsavedChanges = false;
+      this.allRecordingsAnnotated = false;
+      this.hasError = false;
+
       if (this.selectedSites?.length > 0) {
         this.loading = true;
         this.kerttuGlobalApi.getRecording(this.userService.getToken(), siteIds).subscribe((result) => {
@@ -81,9 +83,6 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
         }, (err) => {
           this.handleError(err);
         });
-      } else {
-        this.firstRecordingLoaded = false;
-        this.allRecordingsAnnotated = false;
       }
 
       this.cdr.markForCheck();
@@ -97,13 +96,13 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   @HostListener('window:beforeunload', ['$event'])
   preventLeave($event: any) {
-    if (this.unsavedChanges) {
+    if (this.hasUnsavedChanges) {
       $event.returnValue = false;
     }
   }
 
   canDeactivate(): Observable<boolean> {
-    if (!this.unsavedChanges) {
+    if (!this.hasUnsavedChanges) {
       return of(true);
     }
     return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'));
@@ -139,6 +138,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   getPreviousRecording() {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
+        this.loading = true;
         this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id, this.selectedSites).subscribe(result => {
           this.onGetRecordingSuccess(result);
         }, (err) => {
@@ -150,11 +150,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   save() {
     this.loading = true;
-    const originalAnnotation = Util.clone(this.annotation);
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
       this.loading = false;
-      this.originalAnnotation = originalAnnotation;
-      this.onAnnotationChange();
+      this.originalAnnotation = Util.clone(this.annotation);
+      this.hasUnsavedChanges = false;
       this.cdr.markForCheck();
     }, (err) => {
       this.handleError(err);
@@ -162,7 +161,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   onAnnotationChange() {
-    this.unsavedChanges = !equals(this.annotation, this.originalAnnotation);
+    this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 
   private onGetRecordingSuccess(data: IGlobalRecordingResponse) {
@@ -173,9 +172,8 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
       this.annotation = data.annotation || {};
       this.statusInfo = data.statusInfo;
 
-      this.firstRecordingLoaded = true;
       this.originalAnnotation = Util.clone(this.annotation);
-      this.onAnnotationChange();
+      this.hasUnsavedChanges = false;
     } else {
       this.allRecordingsAnnotated = true;
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
 import { IIdentificationUserStat } from '../../../kerttu-global-shared/models';
@@ -21,8 +21,6 @@ export class IdentificationUserTableComponent implements OnInit {
     { prop: 'speciesCount', dir: 'desc' },
     { prop: 'drawnBoxesCount', dir: 'desc' }
    ];
-
-  @ViewChild('userName', { static: true }) userNameTpl: TemplateRef<any>;
 
   constructor(
     private translate: TranslateService

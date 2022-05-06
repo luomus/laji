@@ -27,8 +27,6 @@ export class SiteResultMapComponent implements OnChanges {
   legendList: { label: string; color: string }[];
   countByLegend: Record<string, number> = {};
 
-  private countBySite: Record<string, number> = {};
-
   private legendThresholds = [0, 1, 10, 100];
   private legendLabels = ['0', '1-', '10-', '100-'];
   private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(110, 204, 57, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(241, 128, 23, 0.6)'];
@@ -44,24 +42,21 @@ export class SiteResultMapComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.sites && this.siteStats) {
-      this.siteStats.forEach(stat => {
-        this.countBySite[stat.siteId] = stat.count;
-      });
-      this.countByLegend = this.getCountByLegend();
+      this.countByLegend = this.getCountByLegend(this.sites, this.siteStats);
 
-      const data = this.getData(this.sites);
+      const data = this.getData(this.sites, this.siteStats);
       this.lajiMap.setData(data || {});
       this.lajiMap.map.zoomToData({ padding: [40, 40] });
     }
   }
 
-  private getCountByLegend(): Record<string, number> {
+  private getCountByLegend(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): Record<string, number> {
     const countByLegend = {};
     this.legendLabels.forEach(label => {
       countByLegend[label] = 0;
     });
 
-    this.siteStats.forEach(stat => {
+    siteStats.forEach(stat => {
       let legendIdx: number;
       for (let i = 0; i < this.legendThresholds.length; i++) {
         if (stat.count >= this.legendThresholds[i]) {
@@ -73,13 +68,18 @@ export class SiteResultMapComponent implements OnChanges {
       countByLegend[this.legendLabels[legendIdx]] += 1;
     });
 
-    countByLegend['0'] = this.sites.length - this.siteStats.length;
-    countByLegend['total'] = this.sites.length;
+    countByLegend['0'] = sites.length - siteStats.length;
+    countByLegend['total'] = sites.length;
 
     return countByLegend;
   }
 
-  private getData(sites: IGlobalSite[]): LajiMapDataOptions {
+  private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): LajiMapDataOptions {
+    const countBySite = {};
+    (siteStats || []).forEach(stat => {
+      countBySite[stat.siteId] = stat.count;
+    });
+
     return {
       featureCollection: {
         type: 'FeatureCollection',
@@ -90,7 +90,7 @@ export class SiteResultMapComponent implements OnChanges {
             id: site.id,
             name: site.name,
             country: site.country,
-            count: this.countBySite[site.id] || 0
+            count: countBySite[site.id] || 0
           }
         }))
       },

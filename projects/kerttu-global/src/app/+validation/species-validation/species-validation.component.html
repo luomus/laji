@@ -1,20 +1,22 @@
 <ng-container *ngIf="hasLock else noLock">
-  <bsg-version-nav
-    class="pull-right"
-    [versions]="templateVersions$ | async"
-    [activeIdx]="activeVersionIdx$ | async"
-    (activeIdxChange)="activeVersionIdxChange($event)"
-  ></bsg-version-nav>
-  <bsg-species-template-validation
-    [species]="species$ | async"
-    [recordings]="recordings$ | async"
-    [templates]="activeTemplates$ | async"
-    [historyView]="historyView$ | async"
-    [saving]="saving"
-    [spectrogramConfig]="spectrogramConfig"
-    (save)="saveTemplates($event)"
-    (cancel)="goToSpeciesList()"
-  ></bsg-species-template-validation>
+  <ng-container *lajiRequiresAudioSupport>
+    <bsg-version-nav
+      class="pull-right"
+      [versions]="templateVersions$ | async"
+      [activeIdx]="activeVersionIdx$ | async"
+      (activeIdxChange)="activeVersionIdxChange($event)"
+    ></bsg-version-nav>
+    <bsg-species-template-validation
+      [species]="species$ | async"
+      [recordings]="recordings$ | async"
+      [templates]="activeTemplates$ | async"
+      [historyView]="historyView$ | async"
+      [saving]="saving"
+      [spectrogramConfig]="spectrogramConfig"
+      (save)="saveTemplates($event)"
+      (cancel)="goToSpeciesList()"
+    ></bsg-species-template-validation>
+  </ng-container>
 </ng-container>
 <ng-template #noLock>
   <ng-container *ngIf="hasLock === false else loading">
