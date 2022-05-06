@@ -97,7 +97,7 @@ export class FormPermissionService {
       ictAdmin: false,
       view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
     };
-    if (!form.collectionID) {
+    if (!form.collectionID || !form.options?.restrictAccess) {
       return this.userService.user$.pipe(map(user => ({
         edit: true,
         view: true,
