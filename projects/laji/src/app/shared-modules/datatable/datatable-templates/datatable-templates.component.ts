@@ -51,6 +51,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
   @ViewChild('sensitiveIcon', {static: true }) sensitiveIcon: TemplateRef<any>;
   @ViewChild('copyToClipboard', {static: true }) copyToClipboard: TemplateRef<any>;
+  @ViewChild('biogeographicalProvinceOccurrence', { static: true }) biogeographicalProvinceOccurrence: TemplateRef<any>;
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;

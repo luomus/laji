@@ -155,6 +155,13 @@ export class TaxonomyColumns {
     },
     {
       name: 'observationCountFinland'
+    },
+    {
+      name: 'biogeographicalProvinceOccurrence',
+      label: 'result.gathering.biogeographicalProvince',
+      selectField: 'occurrences',
+      cellTemplate: 'biogeographicalProvinceOccurrence',
+      width: 200
     }
   ];
 
