@@ -1,6 +1,7 @@
 import { TableColumn } from '@swimlane/ngx-datatable';
 
 export interface DatatableColumn extends TableColumn {
+  name: string;
   label?: string | string[];
   target?: string;
   info?: string;

@@ -22,7 +22,7 @@ export class FilterService {
       return value;
     }
     let needle: any = filterBy;
-    let properties = null;
+    let properties: any = null;
     switch (typeof filterBy) {
       case 'object':
         needle = (filterBy as FilterObjType).by;
