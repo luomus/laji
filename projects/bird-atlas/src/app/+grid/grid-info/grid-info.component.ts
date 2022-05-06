@@ -164,7 +164,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.map) { this.map.destroy(); }
+    this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
