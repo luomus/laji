@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 export enum BreadcrumbId {
-  Home, SpeciesIndex, SpeciesInfo, GridIndex, GridInfo, AssociationIndex, AssociationInfo
+  Home, SpeciesIndex, SpeciesInfo, GridIndex, GridInfo, BirdSocietyIndex, BirdSocietyInfo
 }
 
 export interface IBreadcrumb {
@@ -41,13 +41,13 @@ export class BreadcrumbService implements OnDestroy {
       translateId: '',
       link: ['grid']
     },
-    [BreadcrumbId.AssociationIndex]: {
-      translateId: 'ba.breadcrumbs.associationIndex',
-      link: ['association']
+    [BreadcrumbId.BirdSocietyIndex]: {
+      translateId: 'ba.breadcrumbs.birdSocietyIndex',
+      link: ['society']
     },
-    [BreadcrumbId.AssociationInfo]: {
+    [BreadcrumbId.BirdSocietyInfo]: {
       translateId: '',
-      link: ['association']
+      link: ['society']
     }
   };
 

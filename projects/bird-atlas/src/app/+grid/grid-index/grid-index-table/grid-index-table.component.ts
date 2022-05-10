@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
@@ -38,7 +37,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy {
     width: 200
   }, {
     prop: 'birdAssociationArea.value',
-    name: this.translate.instant('ba.grid-index.birdAssociationArea'),
+    name: this.translate.instant('ba.grid-index.birdSociety'),
     resizeable: false,
     sortable: true,
     width: 350

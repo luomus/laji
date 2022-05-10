@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
   {path: 'species', loadChildren: () => import('./+species/species.module').then(m => m.SpeciesModule)},
   {path: 'grid', loadChildren: () => import('./+grid/grid.module').then(m => m.GridModule)},
-  {path: 'association', loadChildren: () => import('./+association/association.module').then(m => m.AssociationModule)}
+  {path: 'society', loadChildren: () => import('./+bird-society/bird-society.module').then(m => m.BirdSocietyModule)}
 ];
 
 const routesWithLang: Routes = [
