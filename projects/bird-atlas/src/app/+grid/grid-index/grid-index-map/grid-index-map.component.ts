@@ -7,15 +7,8 @@ import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { AtlasActivityCategory, AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
 
-type AtlasActivityCategory =
-  'MY.atlasActivityCategoryEnum0'
-  | 'MY.atlasActivityCategoryEnum1'
-  | 'MY.atlasActivityCategoryEnum2'
-  | 'MY.atlasActivityCategoryEnum3'
-  | 'MY.atlasActivityCategoryEnum4'
-  | 'MY.atlasActivityCategoryEnum5';
 type ColorMode = 'activityCategory' | 'speciesCount';
 
 interface MapData {
@@ -62,7 +55,7 @@ const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
     fillOpacity: .5,
     color: '#' + (
       colorMode === 'activityCategory'
-        ? getAtlasActivityCategoryColor(<AtlasActivityCategory>grid[opt.featureIdx].activityCategory.key)
+        ? getAtlasActivityCategoryColor(grid[opt.featureIdx].activityCategory.key)
         : getSpeciesCountColor(grid[opt.featureIdx].speciesCount)
     )
   })
@@ -96,12 +89,12 @@ const legends: Record<ColorMode, { color: string; label: string }[]> = {
 const populateTestData = (atlasGrid: AtlasGrid) => {
   atlasGrid.forEach(g => {
     g.speciesCount = Math.random() * 200;
-    const ac = Object.entries([
+    const ac = <AtlasActivityCategory>[
       'MY.atlasActivityCategoryEnum0', 'MY.atlasActivityCategoryEnum1',
       'MY.atlasActivityCategoryEnum2', 'MY.atlasActivityCategoryEnum3',
       'MY.atlasActivityCategoryEnum4', 'MY.atlasActivityCategoryEnum5'
-    ])[Math.round(Math.random() * 5)];
-    g.activityCategory = {key: ac[1], value: undefined};
+    ][Math.round(Math.random() * 5)];
+    g.activityCategory = {key: ac, value: undefined};
   });
 };
 
