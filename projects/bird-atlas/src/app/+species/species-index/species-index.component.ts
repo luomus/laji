@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AtlasApiService } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasTaxa } from '../../core/atlas-api.service';
 import { ScrollPositionService } from '../../core/scroll-position.service';
 
 @Component({
@@ -9,10 +10,14 @@ import { ScrollPositionService } from '../../core/scroll-position.service';
   styleUrls: ['./species-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpeciesIndexComponent {
-  speciesList$ = this.atlasApi.getTaxa().pipe(tap(() => {
-    this.scroll.recallScrollPosition();
-  }));
+export class SpeciesIndexComponent implements OnInit {
+  speciesList$: Observable<AtlasTaxa>;
 
   constructor(private atlasApi: AtlasApiService, private scroll: ScrollPositionService) {}
+
+  ngOnInit(): void {
+    this.speciesList$ = this.atlasApi.getTaxa().pipe(tap(() => {
+      this.scroll.recallScrollPosition();
+    }));
+  }
 }
