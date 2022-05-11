@@ -49,6 +49,7 @@
     <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
       <h4>{{ 'downloadRequest.download' | translate }}</h4>
       <div
+        *ngIf="showDownload === 'publicOnly' && downloadRequest.publicDownload"
         role="alert"
         class="alert alert-success"
         [innerHTML]='"downloadRequest.fileDownload.licenseReminder" | translate:{
