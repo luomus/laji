@@ -17,6 +17,7 @@ import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { ISpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import { defaultSpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 
 @Component({
   selector: 'bsg-species-validation',
@@ -36,10 +37,8 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   hasLock?: boolean;
 
   spectrogramConfig: ISpectrogramConfig = {
-    sampleRate: 32000,
-    targetWindowLengthInSeconds: 0.015,
-    targetWindowOverlapPercentage: 0.375,
-    nbrOfRowsRemovedFromStart: 0
+    ...defaultSpectrogramConfig,
+    sampleRate: 32000
   };
 
   private activeVersionIdxSubject = new BehaviorSubject<number>(0);

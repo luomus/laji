@@ -6,18 +6,11 @@ import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { ISpectrogramConfig } from '../models';
 import { AudioViewerUtils } from './audio-viewer-utils';
+import { defaultSpectrogramConfig } from '../variables';
 
 @Injectable()
 export class SpectrogramService {
-  private defaultConfig: ISpectrogramConfig = {
-    sampleRate: 22050,
-    targetWindowLengthInSeconds: 0.015,
-    targetWindowOverlapPercentage: 0.375,
-    nbrOfRowsRemovedFromStart: 2,
-    maxNbrOfColsForNoiseEstimation: 6000,
-    noiseReductionParam: 2,
-    logRange: 3
-  };
+  private defaultConfig: ISpectrogramConfig = defaultSpectrogramConfig;
 
   private colormaps = {};
   private colormaps$ = {};
