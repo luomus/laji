@@ -9,6 +9,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
 
+type AtlasActivityCategory =
+  'MY.atlasActivityCategoryEnum0'
+  | 'MY.atlasActivityCategoryEnum1'
+  | 'MY.atlasActivityCategoryEnum2'
+  | 'MY.atlasActivityCategoryEnum3'
+  | 'MY.atlasActivityCategoryEnum4'
+  | 'MY.atlasActivityCategoryEnum5';
 type ColorMode = 'activityCategory' | 'speciesCount';
 
 interface MapData {
@@ -23,7 +30,14 @@ interface MapData {
 const acGradient = ['fafad1', 'cbf2ad', '8ee59a', '72d5b9', '59a3c2', '4b57a4'];
 const scGradient = ['fafad1', '9bea98', '69cfc6', '4b57a4'];
 
-const getAtlasActivityCategoryColor = (ac: string): string => (acGradient[ac]);
+const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
+  'MY.atlasActivityCategoryEnum0': acGradient[0],
+  'MY.atlasActivityCategoryEnum1': acGradient[1],
+  'MY.atlasActivityCategoryEnum2': acGradient[2],
+  'MY.atlasActivityCategoryEnum3': acGradient[3],
+  'MY.atlasActivityCategoryEnum4': acGradient[4],
+  'MY.atlasActivityCategoryEnum5': acGradient[5]
+}[ac]);
 const getSpeciesCountColor = (speciesCount: number): string => {
   if (speciesCount < 50) { return scGradient[0]; }
   if (speciesCount < 100) { return scGradient[1]; }
@@ -48,7 +62,7 @@ const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
     fillOpacity: .5,
     color: '#' + (
       colorMode === 'activityCategory'
-        ? getAtlasActivityCategoryColor(grid[opt.featureIdx].activityCategory.key)
+        ? getAtlasActivityCategoryColor(<AtlasActivityCategory>grid[opt.featureIdx].activityCategory.key)
         : getSpeciesCountColor(grid[opt.featureIdx].speciesCount)
     )
   })
@@ -77,6 +91,18 @@ const legends: Record<ColorMode, { color: string; label: string }[]> = {
     color: val,
     label: activityCategoryLegendLabels[key]
   }))
+};
+
+const populateTestData = (atlasGrid: AtlasGrid) => {
+  atlasGrid.forEach(g => {
+    g.speciesCount = Math.random() * 200;
+    const ac = Object.entries([
+      'MY.atlasActivityCategoryEnum0', 'MY.atlasActivityCategoryEnum1',
+      'MY.atlasActivityCategoryEnum2', 'MY.atlasActivityCategoryEnum3',
+      'MY.atlasActivityCategoryEnum4', 'MY.atlasActivityCategoryEnum5'
+    ])[Math.round(Math.random() * 5)];
+    g.activityCategory = {key: ac[1], value: undefined};
+  });
 };
 
 @Component({
@@ -133,12 +159,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
     if (changes.atlasGrid) {
       const change = changes.atlasGrid;
       if (environment.production === false) {
-        // populate test data
-        change.currentValue.forEach(g => {
-          g.speciesCount = Math.random() * 200;
-          const ac = Object.entries(activityCategoryLegendLabels)[Math.round(Math.random() * 5)];
-          g.activityCategory = {key: ac[0], value: ac[1]};
-        });
+        populateTestData(change.currentValue);
       }
       this.mapData$.next(this.getMapData(change.currentValue));
     }
