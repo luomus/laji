@@ -1,3 +1,46 @@
 <div class="container">
   <h1>Society info component</h1>
+  <div class="d-flex flex-row flex-wrap">
+    <div class="bird-society-map mr-4">map</div>
+    <div>
+      <h2>Yhdistyksen tilastoja</h2>
+      <h3 class="mt-2">Ruutujen selvitysasteet</h3>
+      <ng-container *ngTemplateOutlet="society"></ng-container>
+      <p>Yhteensä 222 ruutua.</p>
+    </div>
+  </div>
 </div>
+
+<ng-template #society>
+  <table>
+    <tr>
+      <th>Luokka</th>
+      <th>%</th>
+      <th>Ruutua</th>
+    </tr>
+    <tr>
+      <td>Erinomainen</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Hyvä</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Tyydyttävä</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Välttävä</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #square>
+
+</ng-template>

@@ -6,7 +6,8 @@ interface BirdSocietyInfoData {
 };
 
 @Component({
-  templateUrl: 'bird-society-info.component.html'
+  templateUrl: 'bird-society-info.component.html',
+  styleUrls: ['bird-society-info.component.scss']
 })
 export class BirdSocietyInfoComponent {
 
