@@ -24,6 +24,7 @@
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
             [formats]="formats"
           >
             <i class="glyphicon glyphicon-download-alt"></i>
@@ -38,6 +39,7 @@
             [(reason)]="reason"
             (download)="simpleDownload($event)"
             [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
             [formats]="formats"
           >
             <i class="glyphicon glyphicon-download-alt"></i>

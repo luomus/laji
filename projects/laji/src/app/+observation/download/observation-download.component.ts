@@ -1,4 +1,4 @@
-import { catchError, first, map, switchMap } from 'rxjs/operators';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -74,6 +74,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   requests: {[place: string]: RequestStatus} = {};
   requestStatus = RequestStatus;
   downloadLoading = false;
+  downloadProgressPercent?: number;
   apiKeyLoading = false;
   apiKey = '';
   description = '';
@@ -292,6 +293,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   simpleDownload(params: DownloadParams) {
     this.downloadLoading = true;
+    this.downloadProgressPercent = null;
     const isGisDownload = this.isGisDownload(params.fileType);
 
     let selected = this.columnSelector.columns;
@@ -313,6 +315,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     ).subscribe(
       () => {
         this.downloadLoading = false;
+        this.downloadProgressPercent = null;
         // see https://github.com/valor-software/ngx-bootstrap/issues/2618
         for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
           this.modalService.hide(i);
@@ -393,6 +396,10 @@ export class ObservationDownloadComponent implements OnDestroy {
           params.geometry,
           params.crs
         )),
+        tap(response => {
+          this.downloadProgressPercent = response.progressPercent;
+          this.cd.markForCheck();
+        }),
         first(response => response.status === 'complete'),
         map(response => {
           this.window.location.href = response.outputLink;
