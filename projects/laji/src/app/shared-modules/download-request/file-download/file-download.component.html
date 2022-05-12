@@ -1,8 +1,8 @@
 <div class="mb-3">
   <div>
     <label class="d-block mb-0">{{ 'downloadRequest.fileDownload.type' | translate }}:</label>
-    <div class="row">
-      <div class="col-sm-4" *ngFor="let option of fileTypeEnum | keyvalue: sortNull">
+    <div class="d-flex">
+      <div class="mr-5" *ngFor="let option of fileTypeEnum | keyvalue: sortNull">
         <div class="radio">
           <label>
             <input
