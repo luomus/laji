@@ -147,6 +147,7 @@
   "downloadRequest.downloadNotAllowedReason.pyha": "Tämä lataus on tuotettu aineistopyynnön tuloksena. Aineistopyynnön tuloksena on saatettu luovauttaa pyynnön tekijöille sensitiivistä lajitietoa. Ainoastaan aineistopyynnön tekijät voivat ladata tiedoston eikä sitä saa jakaa edelleen.",
   "downloadRequest.fileDownload": "Tiedostolataus",
   "downloadRequest.fileDownload.download": "Lataa",
+  "downloadRequest.fileDownload.downloading": "Ladataan",
   "downloadRequest.fileDownload.format": "Tiedostomuoto",
   "downloadRequest.fileDownload.genericError": "Tiedoston lataaminen epäonnistui!",
   "downloadRequest.fileDownload.gisDisabled": "GIS-latauksen enimmäisraja on 300 000 havaintoa.",
