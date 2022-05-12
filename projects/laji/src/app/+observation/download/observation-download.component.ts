@@ -1,4 +1,4 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -386,15 +386,16 @@ export class ObservationDownloadComponent implements OnDestroy {
           formData.append('file', blob, 'laji-data.tsv');
           return formData;
         }),
-        switchMap(formData => this.geoConvertService.getGISDownloadLinkFromData(
+        switchMap(formData => this.geoConvertService.geoConvertData(
           formData,
           data.id,
           params.fileType as FileFormat,
           params.geometry,
           params.crs
         )),
-        map(link => {
-          this.window.location.href = link;
+        first(response => response.status === 'complete'),
+        map(response => {
+          this.window.location.href = response.outputLink;
         })
       );
     } else {

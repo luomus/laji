@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, interval, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { switchMap, mergeMap, first, map, catchError } from 'rxjs/operators';
+import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 export const GEO_CONVERT_LIMIT = Number.MAX_VALUE;
+export type GeoConversionStatus = 'pending'|'complete';
 
 export enum FileFormat {
   shp = 'shp',
@@ -19,19 +20,28 @@ export enum FileCrs {
   euref = 'euref',
   wgs84 = 'wgs84'
 }
-interface GeoConversionStatus {
-  id: string;
-  status: 'pending'|'complete';
-}
 export enum ErrorType {
   tooComplex = 'too_complex',
   tooLarge = 'too_large'
+}
+
+export interface GeoConversionResponse {
+  status: GeoConversionStatus;
+  progressPercent: number;
+  outputLink?: string;
 }
 export interface GeoConvertError {
   isGeoConvertError: true;
   type: ErrorType;
   msg: string;
 }
+interface GeoConversionStatusApiResponse {
+  id: string;
+  status: GeoConversionStatus;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  progress_percent: number;
+}
+
 export function isGeoConvertError(err: GeoConvertError|any): err is GeoConvertError {
   return err.isGeoConvertError;
 }
@@ -45,20 +55,20 @@ export class GeoConvertService {
     private translate: TranslateService
   ) {}
 
-  public getGISDownloadLink(
+  public geoConvertFile(
     fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
-  ): Observable<string> {
+  ): Observable<GeoConversionResponse> {
     return this.startGeoConversion(fileId, format, geometry, crs, personToken).pipe(
-      switchMap(conversionId => this.getOutputLink(conversionId)),
+      switchMap(conversionId => this.getResponse(conversionId)),
       catchError(err => this.transformError(err))
     );
   }
 
-  public getGISDownloadLinkFromData(
+  public geoConvertData(
     data: FormData, fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs
-  ): Observable<string> {
+  ): Observable<GeoConversionResponse> {
     return this.startGeoConversionFromData(data, fileId, format, geometry, crs).pipe(
-      switchMap(conversionId => this.getOutputLink(conversionId)),
+      switchMap(conversionId => this.getResponse(conversionId)),
       catchError(err => this.transformError(err))
     );
   }
@@ -92,17 +102,20 @@ export class GeoConvertService {
     return this.httpClient.post<string>('/api/geo-convert/' + fileId, data, {params});
   }
 
-  private getOutputLink(conversionId: string) {
+  private getResponse(conversionId: string): Observable<GeoConversionResponse> {
     return interval(this.pollInterval).pipe(
-      mergeMap(() => this.getGeoConversionStatus(conversionId)),
-      first(result => result.status === 'complete'),
-      map(() => '/api/geo-convert/output/' + conversionId)
+      concatMap(() => this.getGeoConversionStatus(conversionId)),
+      takeWhile(result => result.status !== 'complete', true),
+      map((result) => ({
+        status: result.status,
+        progressPercent: result.progress_percent,
+        outputLink: result.status === 'complete' ? '/api/geo-convert/output/' + conversionId : null
+      }))
     );
   }
 
-
-  private getGeoConversionStatus(conversionId: string): Observable<GeoConversionStatus> {
-    return this.httpClient.get<GeoConversionStatus>('/api/geo-convert/status/' + conversionId);
+  private getGeoConversionStatus(conversionId: string): Observable<GeoConversionStatusApiResponse> {
+    return this.httpClient.get<GeoConversionStatusApiResponse>('/api/geo-convert/status/' + conversionId);
   }
 
   private transformError(err: any): Observable<never> {
