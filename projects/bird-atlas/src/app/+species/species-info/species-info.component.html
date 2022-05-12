@@ -1,4 +1,4 @@
-<div *ngIf="loading" class="container"><laji-spinner></laji-spinner></div>
+<div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 <div *ngIf="data$ | async; let data" [ngClass]="{'d-none': loading}">
   <div class="d-flex">
     <a [routerLink]="['..', data.taxon.prev.id]" class="prev mr-4">
