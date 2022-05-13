@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   pure: false
 })
 export class CollectionNamePipe extends AbstractLabelPipe implements PipeTransform {
-  key: string;
+  key!: string;
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,

@@ -15,8 +15,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ]
 })
 export class PanelComponent {
-  @Input() title: string;
-  @Input() index: number;
+  @Input() title?: string;
+  @Input() index?: number;
   @Input() open = false;
   @Input() autoToggle = false;
   @Input() headerLink = true;
@@ -33,13 +33,13 @@ export class PanelComponent {
     });
   }
 
-  animationStart(event) {
+  animationStart(event: any) {
     if (event.toState === 'out') {
       this.hideInside = true;
     }
   }
 
-  animationDone(event) {
+  animationDone(event: any) {
     if (event.toState === 'in') {
       this.hideInside = false;
     }

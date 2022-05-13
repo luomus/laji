@@ -71,8 +71,8 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
-  getFormInListFormat(formId: string): Observable<Form.List | undefined> {
-    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId)));
+  getFormInListFormat(formId: string): Observable<Form.List> {
+    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId) as Form.List));
   }
 
   getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {

@@ -27,16 +27,16 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class ConfirmModalComponent implements OnInit, AfterViewInit {
 
-  message: string;
+  message!: string;
   confirmLabel = 'OK';
   cancelLabel = 'cancel';
   prompt = false;
   promptValue = '';
   showCancel = true;
 
-  value: boolean | string | null;
+  value!: boolean | string | null;
 
-  @ViewChild('confirm') confirmElem: ElementRef;
+  @ViewChild('confirm') confirmElem!: ElementRef;
 
   constructor(private modalRef: BsModalRef) { }
 
@@ -57,7 +57,7 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
     this.modalRef.hide();
   }
 
-  onPromptChange(value) {
+  onPromptChange(value: string) {
     this.promptValue = value;
   }
 }

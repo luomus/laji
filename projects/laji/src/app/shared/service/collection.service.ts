@@ -7,6 +7,7 @@ import { WarehouseApi } from '../api/WarehouseApi';
 import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
+import {WarehouseQueryInterface} from '../model/WarehouseQueryInterface';
 
 export interface ICollectionRange {
   id: string;
@@ -27,7 +28,7 @@ interface IQueryResult {
 @Injectable({providedIn: 'root'})
 export class CollectionService extends AbstractCachedHttpService<ICollectionRange> {
 
-  private allWarehouseCollection$;
+  private allWarehouseCollection$?: Observable<string[]>;
   private TREE_QUERY = gql`
   query {
     collection {
@@ -82,7 +83,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return all$;
   }
 
-  getName(id: string, lang, empty: null|string = null): Observable<string> {
+  getName(id: string, lang: string, empty: null|string = null): Observable<string> {
     return this.getAll(lang).pipe(
       map(data => data.find(col => col.id === id)),
       map(col => col ? col.value : (empty === null ? id : empty))
@@ -98,12 +99,12 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return this.allWarehouseCollection$;
   }
 
-  private fetchWarehouseCollections(page = 1, collections = []) {
+  private fetchWarehouseCollections(page = 1, collections: any[] = []): Observable<string[]> {
     let hasMore = false;
     return this.warehouseApi.warehouseQueryAggregateGet({cache: true}, ['document.collectionId'], undefined, 1000, page).pipe(
       tap(data => hasMore = data.lastPage && data.lastPage > page),
-      map(data => data.results || []),
-      map(data => data.map(d => IdService.getId(d?.aggregateBy?.['document.collectionId']))),
+      map(data => (data.results || []) as any[]),
+      map((data) => data.map(d => IdService.getId(d?.aggregateBy?.['document.collectionId']))),
       map(cols => [...collections, ...cols]),
       switchMap(cols => hasMore ? this.fetchWarehouseCollections(page + 1, cols) : of(cols))
     );
@@ -126,7 +127,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     );
   }
 
-  getCollectionsAggregate(query?, page = 1, collections = []): Observable<ICollectionRange[]> {
+  getCollectionsAggregate(query?: WarehouseQueryInterface, page = 1, collections: any[] = []): Observable<ICollectionRange[]> {
     let hasMore = false;
     let cacheQuery = { cache: true };
 
@@ -136,7 +137,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
 
     return this.warehouseApi.warehouseQueryAggregateGet(cacheQuery, ['document.collectionId'], undefined, 1000, page).pipe(
       tap(data => hasMore = data.lastPage && data.lastPage > page),
-      map(data => data.results || []),
+      map(data => (data.results || []) as any[]),
       map(data => data.map(d => ({
           id: IdService.getId(d?.aggregateBy?.['document.collectionId']),
           count: d.count
