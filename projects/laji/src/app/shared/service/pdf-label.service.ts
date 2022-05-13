@@ -90,7 +90,10 @@ export class PdfLabelService {
 
   allPossibleFields(): Observable<ILabelField[]> {
     return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
-      map(form => this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
+      map(form => form
+        ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields })
+        : []
+      )
     );
   }
 

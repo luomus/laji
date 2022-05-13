@@ -1058,7 +1058,7 @@
   "observation.form.conservation.or-info": "<b>Millä tahansa näistä (TAI/OR)</b>: Tämä valinta antaa tuloksen, johon otetaan mukaan kaikki havainnot, joiden laji kuuluu (1) vähintään yhteen valituista hallinnollisista asemista <b>TAI</b> (2) lajin uhanalaisuusluokka on jokin valituista.",
   "observation.form.coordinateAccuracyMax": "Havaintopaikan koordinaattien tarkkuus",
   "observation.form.coordinateIntersection": "Leikkausosuus",
-  "observation.form.coordinatesInfo": "Liirum laarum!",
+  "observation.form.coordinatesInfo": "Huomaa, että monikulmiorajauksen tuloksena käytetään oletusarvoa ”Leikkaa edes vähän”. Näin myös paikkatiedolta ”karkeita” (esim. ilmoitettu tarkkuus on 10x10km) havaintoja tulee näkyviin. Valitse painike ”Kokonaan sisällä”, jos haluat vain alueen rajojen sisäpuolelle ilmoitetut havainnot.",
   "observation.form.count": "Yksilömäärä",
   "observation.form.countMax": "max",
   "observation.form.countMin": "min",
