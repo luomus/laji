@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
-import { FileType, VirDownloadService } from '../../../service/vir-download.service';
-import { IDownloadRequest } from '../../../service/vir-download-requests.service';
+import { FileType, FileDownloadService } from '../file-download.service';
+import { DownloadRequest } from '../models';
 import { KeyValue } from '@angular/common';
-import { GEO_CONVERT_LIMIT, FileFormat, FileGeometry, FileCrs } from '../../../../../../laji/src/app/shared/service/geo-convert.service';
+import { GEO_CONVERT_LIMIT, FileFormat, FileGeometry, FileCrs } from '../../../shared/service/geo-convert.service';
 
 @Component({
-  selector: 'vir-file-download',
+  selector: 'laji-file-download',
   templateUrl: './file-download.component.html',
   styleUrls: ['./file-download.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileDownloadComponent implements OnChanges {
-  @Input() downloadRequest: IDownloadRequest;
+  @Input() downloadRequest: DownloadRequest;
 
   gisDownloadLimit = GEO_CONVERT_LIMIT;
   fileTypeEnum = FileType;
@@ -20,7 +20,7 @@ export class FileDownloadComponent implements OnChanges {
   fileCrsEnum = FileCrs;
 
   constructor(
-    public downloadService: VirDownloadService,
+    public downloadService: FileDownloadService,
     private cdr: ChangeDetectorRef
   ) {
     this.downloadService.fileDownloadReady.subscribe(() => {
@@ -35,10 +35,8 @@ export class FileDownloadComponent implements OnChanges {
   }
 
   downloadFile() {
-    this.downloadService.downloadFile(this.downloadRequest.id);
+    this.downloadService.downloadFile(this.downloadRequest.id, this.downloadRequest.publicDownload);
   }
 
-  sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
-    return 0;
-  }
+  sortNull = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => 0;
 }

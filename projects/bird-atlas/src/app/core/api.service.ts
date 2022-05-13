@@ -57,7 +57,7 @@ export const cacheReturnObservable = (cacheInvalidationMs?: number) => (
 export class LajiApiService {
   constructor(private api: LajiApiClient, private translate: TranslateService) {}
 
-  @cacheReturnObservable(604800000) // 1 week
+  @cacheReturnObservable(86400000) // 1 day
   getInformation(id: string, lang: Lang = <Lang>this.translate.currentLang): Observable<Information> {
     return this.api.get(
       LajiApiClient.Endpoints.information,
@@ -76,7 +76,7 @@ export class LajiApiService {
     );
   }
 
-  @cacheReturnObservable(604800000) // 1 week
+  @cacheReturnObservable(86400000) // 1 day
   getTaxa(id: string, params: LajiApiClient.TaxonFindParams = {}, lang: LangM = <Lang>this.translate.currentLang): Observable<PagedResult<Taxon>> {
     return this.api.get(
       LajiApiClient.Endpoints.taxon,

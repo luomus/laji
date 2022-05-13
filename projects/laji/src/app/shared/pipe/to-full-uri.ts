@@ -10,7 +10,7 @@ import { IdService } from '../service/id.service';
   name: 'toFullUri'
 })
 export class ToFullUriPipe implements PipeTransform {
-  transform(value: string): any {
+  transform(value: string|string[]): any {
     if (Array.isArray(value)) {
       return value.map(val => this.transform(val));
     }

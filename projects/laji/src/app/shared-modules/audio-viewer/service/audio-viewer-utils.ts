@@ -1,5 +1,5 @@
 export class AudioViewerUtils {
-  public static getPaddedRange(range: number[], padding: number, minValue: number, maxValue: number) {
+  public static getPaddedRange(range: number[], padding: number, minValue: number, maxValue: number): number[] {
     if (!range || padding == null) {
       return [minValue, maxValue];
     }
@@ -19,7 +19,12 @@ export class AudioViewerUtils {
     return [start, stop];
   }
 
-  public static getMaxFreq(sampleRate: number) {
+  public static getMaxFreq(sampleRate: number): number {
     return Math.floor(sampleRate / 2);
+  }
+
+  public static getSpectrogramSegmentLength(targetWindowLength: number, sampleRate: number): number {
+    const targetNperseg = Math.round(targetWindowLength * sampleRate);
+    return Math.pow(2, Math.round(Math.log(targetNperseg) / Math.log(2))); // find the closest power of two because the spectrogram script requires it to be power of two
   }
 }
