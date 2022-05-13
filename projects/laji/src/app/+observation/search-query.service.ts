@@ -151,7 +151,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'season',
     'formId',
     'taxonAdminFiltersOperator',
-    'collectionAndRecordQuality'
+    'collectionAndRecordQuality',
+    'polygonId'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -212,18 +213,30 @@ export class SearchQueryService implements SearchQueryInterface {
       }
     }});
 
+    const detachCoordinatesIntersection = (query: string): [string, number | undefined] => {
+      const parts = query.split(':');
+      const last = parseFloat(parts[parts.length - 1]);
+      let coordinatesIntersection: number | undefined;
+      if (parts.length > 1 && !isNaN(last)) {
+        parts.pop();
+        coordinatesIntersection = Math.floor(last * 100);
+      }
+      return [parts.join(':'), coordinatesIntersection];
+    };
+
     if (result.coordinates) {
       result.coordinates = result.coordinates.map(coordinate => {
-        const parts = coordinate.split(':');
-        const last = parseFloat(parts[parts.length - 1]);
-        if (!isNaN(last)) {
-          parts.pop();
-          result._coordinatesIntersection = Math.floor(last * 100);
-        } else {
-          result._coordinatesIntersection = 100;
-        }
-        return parts.join(':');
+        const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(coordinate);
+        result._coordinatesIntersection = coordinatesIntersection
+          ?? coordinate.match(/YKJ/)
+            ? 100
+            : 0;
+        return withoutCoordinatesIntersection;
       });
+    } else if (result.polygonId) {
+      const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(result.polygonId);
+      result.polygonId = withoutCoordinatesIntersection;
+      result._coordinatesIntersection = coordinatesIntersection ?? 0;
     }
     return result;
   }
@@ -274,9 +287,11 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQuery(result, query: WarehouseQueryInterface) {
-    if (result.coordinates && typeof query._coordinatesIntersection !== 'undefined') {
-      result.coordinates += ':' + query._coordinatesIntersection / 100;
-    }
+    ['coordinates', 'polygonId'].forEach(key => {
+      if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
+        result[key] += ':' + query._coordinatesIntersection / 100;
+      }
+    });
 
     if (result['target'] && Array.isArray(result['target'])) {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));

@@ -242,6 +242,7 @@ export interface WarehouseQueryInterface {
   onlyNonStateLands?: boolean;
   atlasCode?: Array<string>;
   atlasClass?: Array<string>;
+  polygonId?: string;
 }
 
 
