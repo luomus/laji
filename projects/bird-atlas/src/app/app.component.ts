@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 import { News } from 'projects/laji-api-client/src/public-api';
-import { LajiApiService } from './core/api.service';
+import { LajiApiService, Lang } from './core/api.service';
 import { ScrollPositionService } from './core/scroll-position.service';
 
 @Component({
@@ -35,10 +35,10 @@ import { ScrollPositionService } from './core/scroll-position.service';
 })
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
-  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5 });
+  news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.currentLang });
 
   constructor(
-    translate: TranslateService,
+    private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
     private api: LajiApiService,
