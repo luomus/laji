@@ -1056,6 +1056,7 @@
   "observation.form.conservation.or-info": "<b> Någon av dessa (ELLER/OR) </b>: Detta val returnerar ett resultat som inkluderar alla observationer som tillhör (1) minst en av de valda administrativa statusarna <b> ELLER </b> (2) hotkategorin är en av de utvalda.",
   "observation.form.coordinateAccuracyMax": "Noggrannhet av koordinater",
   "observation.form.coordinateIntersection": "Skärning förhållande",
+  "observation.form.coordinatesInfo": "Liirum laarum!",
   "observation.form.count": "Individsantal",
   "observation.form.countMax": "max",
   "observation.form.countMin": "min",
