@@ -1,7 +1,7 @@
 <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
 
 <ng-container *ngIf="!hasError">
-  <ng-container *lajiRequiresAudioSupport>
+  <ng-container *lajiRequiresAudioSupport="sampleRate">
     <div *ngIf="!(allLettersAnnotated || taxonExpertiseMissing)">
       <laji-spinner [spinning]="loadingLetters" [overlay]="true">
         <laji-letter-annotation

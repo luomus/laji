@@ -1056,6 +1056,7 @@
   "observation.form.conservation.or-info": "Filter with OR: Using the OR operator returns results that include observations of at least one of the selected regulatory statuses <b>OR</b> at least one of the selected Red List categories.",
   "observation.form.coordinateAccuracyMax": "Coordinate Accuracy",
   "observation.form.coordinateIntersection": "Intersection ratio",
+  "observation.form.coordinatesInfo": "Liirum laarum!",
   "observation.form.count": "Individual count",
   "observation.form.countMax": "max",
   "observation.form.countMin": "min",
