@@ -15,6 +15,7 @@ import {
 import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AudioViewerUtils } from '../../service/audio-viewer-utils';
 
 @Component({
   selector: 'laji-audio-spectrogram',
@@ -70,7 +71,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @HostListener('window:resize')
   onResize() {
     this.updateMargin();
-    this.updateWidthAndHeigth();
+    this.updateWidthAndHeight();
   }
 
   ngAfterViewInit() {
@@ -98,11 +99,16 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  private updateWidthAndHeigth() {
+  private updateWidthAndHeight() {
     this._width = this.width
-      ? this.width : this.containerRef
-      ? Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0)
-      : 0;
-    this._height = this.height ? this.height : this.config ? this.config.nperseg / 2 : 0;
+      ? this.width
+      : this.containerRef
+        ? Math.max(this.containerRef.nativeElement.offsetWidth - this._margin.left - this._margin.right, 0)
+        : 0;
+    this._height = this.height
+      ? this.height
+      : this.config
+        ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
+        : 0;
   }
 }

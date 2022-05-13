@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { from, Observable, of } from 'rxjs';
-import { map, share, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, share, tap } from 'rxjs/operators';
 import { FFT } from './assets/FFT';
 import { gaussBlur_4 } from './assets/gaussian-blur';
 import { ISpectrogramConfig } from '../models';
+import { AudioViewerUtils } from './audio-viewer-utils';
+import { defaultSpectrogramConfig } from '../variables';
 
 @Injectable()
 export class SpectrogramService {
-  private defaultConfig: ISpectrogramConfig = {
-    sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
-    nbrOfRowsRemovedFromStart: 2,
-    maxNbrOfColsForNoiseEstimation: 6000,
-    noiseReductionParam: 2,
-    logRange: 3
-  };
+  private defaultConfig: ISpectrogramConfig = defaultSpectrogramConfig;
 
   private colormaps = {};
   private colormaps$ = {};
@@ -29,9 +23,10 @@ export class SpectrogramService {
     config = config ? {...this.defaultConfig, ...config} : this.defaultConfig;
 
     return this.getColormap().pipe(
-      switchMap(colormap => this.computeSpectrogram(buffer, config).pipe(
-        map(({spectrogram, width, heigth}) => this.spectrogramToImageData(spectrogram, width, heigth, colormap))
-      ))
+      map(colormap => {
+        const {spectrogram, width, height} = this.computeSpectrogram(buffer, config);
+        return this.spectrogramToImageData(spectrogram, width, height, colormap);
+      })
     );
   }
 
@@ -42,7 +37,6 @@ export class SpectrogramService {
     let offset = 0;
     for (let value of spect) {
       value = this.convertRange(value, [minValue, maxValue], [0, colormap.length - 1]);
-
       const color = colormap[Math.round(value)];
 
       data[offset++] = color[0] * 256;
@@ -54,66 +48,56 @@ export class SpectrogramService {
     return new ImageData(data, width, height);
   }
 
-  private computeSpectrogram(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{
-    spectrogram: Float32Array; width: number; heigth: number;
-  }> {
-    return this.getData(buffer, config).pipe(map(({data, sumByColumn}) => {
-      const meanNoise = this.getMeanNoiseColumn(data, sumByColumn, config);
-      const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise, config);
+  private computeSpectrogram(buffer: AudioBuffer, config: ISpectrogramConfig): {
+    spectrogram: Float32Array; width: number; height: number;
+  } {
+    const {data, sumByColumn} = this.getData(buffer, config);
+    const meanNoise = this.getMeanNoiseColumn(data, sumByColumn, config);
+    const maxValue = this.filterNoiseAndFindMaxValue(data, meanNoise, config);
 
-      this.scaleSpectrogram(data, maxValue, config);
+    this.scaleSpectrogram(data, maxValue, config);
 
-      const width = data.length;
-      const heigth = data[0].length;
-      const flattenedData = this.flattenData(data);
+    const width = data.length;
+    const height = data[0].length;
 
-      const blurredData = new Float32Array(flattenedData.length);
-      gaussBlur_4(flattenedData, blurredData, width, heigth, 1);
+    const flattenedData = this.flattenData(data);
+    const blurredData = new Float32Array(flattenedData.length);
+    gaussBlur_4(flattenedData, blurredData, width, height, 1);
 
-      return {spectrogram: blurredData, width, heigth};
-    }));
+    return {spectrogram: blurredData, width, height};
   }
 
-  private getData(buffer: AudioBuffer, config: ISpectrogramConfig): Observable<{data: Float32Array[]; sumByColumn: number[]}> {
-    const {sampleRate, nperseg, noverlap} = config;
+  private getData(buffer: AudioBuffer, config: ISpectrogramConfig): {data: Float32Array[]; sumByColumn: number[]} {
+    const {nperseg, noverlap} = this.getSegmentSizeAndOverlap(config, buffer.sampleRate);
 
-    return this.resampleBuffer(buffer, sampleRate).pipe(map((resampled) => {
-      const chanData = resampled.getChannelData(0);
+    const chanData = buffer.getChannelData(0);
 
-      const fft = new FFT(nperseg, sampleRate, 'hann');
+    const fft = new FFT(nperseg, buffer.sampleRate, 'hann');
 
-      const data = [];
-      const sumByColumn = [];
+    const data = [];
+    const sumByColumn = [];
 
-      const maxRow =  Math.floor(buffer.sampleRate / 2) * nperseg / sampleRate;
+    let offset = 0;
+    while (offset + nperseg < chanData.length) {
+      const segment = chanData.slice(
+        offset,
+        offset + nperseg
+      );
+      const spectrum = fft.calculateSpectrum(segment);
+      const columnData = new Float32Array(nperseg / 2);
+      let columnSum = 0;
 
-      let offset = 0;
-      while (offset + nperseg < chanData.length) {
-        const segment = chanData.slice(
-          offset,
-          offset + nperseg
-        );
-        const spectrum = fft.calculateSpectrum(segment);
-        const columnData = new Float32Array(nperseg / 2);
-        let columnSum = 0;
-
-        for (let j = 0; j < nperseg / 2; j++) {
-          if (j <= maxRow) {
-            columnData[j] = Math.pow(Math.abs(spectrum[j]), 2);
-          } else {
-            columnData[j] = 0;
-          }
-
-          columnSum += columnData[j];
-        }
-
-        data.push(columnData);
-        sumByColumn.push(columnSum);
-        offset += nperseg - noverlap;
+      for (let j = 0; j < nperseg / 2; j++) {
+        columnData[j] = Math.pow(Math.abs(spectrum[j]), 2);
+        columnSum += columnData[j];
       }
 
-      return {data, sumByColumn};
-    }));
+      data.push(columnData);
+      sumByColumn.push(columnSum);
+      offset += nperseg - noverlap;
+    }
+
+    return {data, sumByColumn};
   }
 
   private getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config: ISpectrogramConfig): Float32Array {
@@ -121,7 +105,7 @@ export class SpectrogramService {
     const indexArray = [...Array(nbrOfColumns).keys()];
     indexArray.sort((a, b) => sumByColumn[a] < sumByColumn[b] ? -1 : sumByColumn[a] > sumByColumn[b] ? 1 : 0);
 
-    /* estimate noise level from 10% of columns with lowest energy */
+    /* estimate noise level from 10% of columns with the lowest energy */
     const n = Math.round(nbrOfColumns / 10);
     const meanByRow = new Float32Array(data[0].length);
     for (let i = 0; i < n; i++) {
@@ -202,17 +186,10 @@ export class SpectrogramService {
     return percent * (xMax - xMin) + xMin;
   }
 
-  private resampleBuffer(buffer: AudioBuffer, sampleRate: number): Observable<AudioBuffer> {
-    if (buffer.sampleRate === sampleRate) {
-      return of(buffer);
-    }
-
-    const offlineCtx = new OfflineAudioContext(buffer.numberOfChannels, buffer.duration * sampleRate, sampleRate);
-    const offlineSource = offlineCtx.createBufferSource();
-    offlineSource.buffer = buffer;
-    offlineSource.connect(offlineCtx.destination);
-    offlineSource.start();
-    return from(offlineCtx.startRendering());
+  private getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
+    const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
+    const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
+    return {nperseg, noverlap};
   }
 
   private getColormap(colormap: 'inferno' | 'viridis' = 'viridis'): Observable<any> {
