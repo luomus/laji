@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../../shared/service/util.service';
 import equals from 'deep-equal';
 import { DialogService } from '../../../shared/service/dialog.service';
+import { spectrogramConfig } from '../variables';
 
 @Component({
   selector: 'laji-kerttu-recording-annotation',
@@ -33,6 +34,8 @@ export class KerttuRecordingAnnotationComponent implements OnInit {
   notEnoughLetterAnnotations = false;
   allRecordingsAnnotated = false;
   hasError = false;
+
+  sampleRate = spectrogramConfig.sampleRate;
 
   private originalAnnotation: IRecordingAnnotation;
 

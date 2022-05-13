@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../models';
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
+import { defaultSpectrogramConfig } from '../variables';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -47,15 +48,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() showPregeneratedSpectrogram = false;
 
-  @Input() spectrogramConfig: ISpectrogramConfig = {
-    sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
-    nbrOfRowsRemovedFromStart: 2,
-    maxNbrOfColsForNoiseEstimation: 6000,
-    noiseReductionParam: 2,
-    logRange: 3
-  };
+  @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
 
   @Input() mode: AudioViewerMode = 'default';
 

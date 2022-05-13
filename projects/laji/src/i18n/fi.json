@@ -1008,6 +1008,7 @@
   "observation.active.unidentified": "Tarvitseeko määrityksen?",
   "observation.active.useIdentificationAnnotations": "Ei laadunvalvonnan määrityksiä",
   "observation.active.wild": "Luonnonvaraisuus",
+  "observation.active.polygonId": "Koordinaatit",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.commonness": "Yleisyys",
   "observation.count": "Havaintojen määrä",
@@ -1097,10 +1098,11 @@
   "observation.form.lifeStage": "Elinvaihe",
   "observation.form.loaded": "Muokkaussaika",
   "observation.form.map": "Paikka",
-  "observation.form.map.coordinates": "Syötä koordinaatit",
+  "observation.form.map.coordinates": "Syötä YKJ-ruutu",
   "observation.form.map.intro": "Koordinaatit",
   "observation.form.map.rectangle": "Piirrä rajaus kartalle",
-  "observation.form.map.rectangle.active": "Piirrä kartalle",
+  "observation.form.map.polygon": "Piirrä kuvio kartalle",
+  "observation.form.map.polygon.error.generic": "Jokin meni pieleen. Koita piirtää uudestaan.",
   "observation.form.mapLink": "Rajaa alue kartalta",
   "observation.form.max.finland": "Taksonin max havaintolkm Suomesta",
   "observation.form.menuTitle": "Rajaukset",
@@ -1971,5 +1973,7 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "observation.form.map.coordinatesImport": "Syötä kuvio tekstinä",
+  "disabled.feature": "Sinun täytyy kirjautua sisään käyttääksesi tätä toimintoa"
 }
