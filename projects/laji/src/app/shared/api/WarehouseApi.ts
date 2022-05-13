@@ -300,6 +300,18 @@ export class WarehouseApi {
     return this.http.post<any>(path, undefined, {params: queryParameters});
   }
 
+  public downloads(id: string, extraHttpRequestParams?: any): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling warehouse download.');
+    }
+
+    const path = this.basePath + '/warehouse/downloads/' + id;
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
+    return this.http.get<any>(path, {params: queryParameters});
+  }
+
   /**
    * Get count of results using given filter
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.

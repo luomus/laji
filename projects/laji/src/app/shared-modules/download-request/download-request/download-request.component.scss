@@ -1,0 +1,7 @@
+@import 'vars';
+
+.info-rows {
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: $sp-5;
+}
