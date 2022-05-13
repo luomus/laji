@@ -76,7 +76,7 @@ export class ExportService {
     const labelRow = firstRow ? 1 : 0;
     const observables = [];
     for (const col of cols) {
-      const labels = this.translateService.instant(col.label);
+      const labels = this.translateService.instant(col.label ?? '');
       aoa[labelRow].push(typeof labels === 'string' ? labels : Object.values(labels).join(', '));
     }
     for (let i = 0; i < data.length; i++) {

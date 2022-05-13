@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [],
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true
   },
   "files": [
     "projects/laji/src/main.ts",
