@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+=======
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+>>>>>>> bird-atlas
 import { TranslateService } from '@ngx-translate/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
@@ -6,51 +10,47 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
 
-type DatatableRow = any;
-
 @Component({
   selector: 'ba-grid-index-table',
   templateUrl: './grid-index-table.component.html',
   styleUrls: ['./grid-index-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GridIndexTableComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-
-  @Input() set atlasGrid(atlasGrid: AtlasGrid) {
-    this.rows = atlasGrid;
-    this.search$.next('');
-  }
+export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() atlasGrid: AtlasGrid;
   @Output() selectYKJ = new EventEmitter<string>();
 
-  cols: TableColumn[] = [{
-    prop: 'coordinates',
-    name: this.translate.instant('ba.grid-index.coordinates'),
-    resizeable: false,
-    sortable: true,
-    width: 75
-  }, {
-    prop: 'name',
-    name: this.translate.instant('ba.grid-index.name'),
-    resizeable: false,
-    sortable: true,
-    width: 200
-  }, {
-    prop: 'birdAssociationArea.value',
-    name: this.translate.instant('ba.grid-index.birdSociety'),
-    resizeable: false,
-    sortable: true,
-    width: 350
-  }];
-  filteredRows$ = new Subject<DatatableRow[]>();
+  cols: TableColumn[];
+  filteredRows$ = new Subject<AtlasGrid>();
   datatableClasses = datatableClasses;
 
+  private unsubscribe$ = new Subject<void>();
   private search$ = new BehaviorSubject<string>(undefined);
-  private rows: DatatableRow[] = [];
+  private rows: AtlasGrid = [];
 
   constructor(
     private translate: TranslateService
-  ) {}
+  ) {
+    this.cols = [{
+      prop: 'coordinates',
+      name: this.translate.instant('ba.grid-index.coordinates'),
+      resizeable: false,
+      sortable: true,
+      width: 75
+    }, {
+      prop: 'name',
+      name: this.translate.instant('ba.grid-index.name'),
+      resizeable: false,
+      sortable: true,
+      width: 200
+    }, {
+      prop: 'birdAssociationArea.value',
+      name: this.translate.instant('ba.grid-index.birdSociety'),
+      resizeable: false,
+      sortable: true,
+      width: 350
+    }];
+  }
 
   ngOnInit(): void {
     this.search$.pipe(
@@ -65,6 +65,13 @@ export class GridIndexTableComponent implements OnInit, OnDestroy {
         )
       );
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.atlasGrid) {
+      this.rows = changes.atlasGrid.currentValue;
+      this.search$.next('');
+    }
   }
 
   onActivate(event: { type: string; row: AtlasGridSquare }) {

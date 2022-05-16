@@ -6,6 +6,13 @@ import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
 
 export type AtlasMap = string;
+export type AtlasActivityCategory =
+  'MY.atlasActivityCategoryEnum0'
+  | 'MY.atlasActivityCategoryEnum1'
+  | 'MY.atlasActivityCategoryEnum2'
+  | 'MY.atlasActivityCategoryEnum3'
+  | 'MY.atlasActivityCategoryEnum4'
+  | 'MY.atlasActivityCategoryEnum5';
 export interface AtlasGridSquare {
   birdAssociationArea: {key: string; value: string};
   coordinates: string;
@@ -24,7 +31,7 @@ export interface AtlasGridSquare {
   }[];
   atlas?: number;
   atlasClassSum?: number;
-  activityCategory?: {key: string; value: string};
+  activityCategory?: {key: AtlasActivityCategory; value: string};
   speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
