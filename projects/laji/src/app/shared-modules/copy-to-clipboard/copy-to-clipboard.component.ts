@@ -4,8 +4,14 @@ import { WINDOW } from '@ng-toolkit/universal';
 @Component({
   selector: 'laji-copy-to-clipboard',
   template: `
-    <div class="copy-to-clipboard d-flex" (click)="onCopyToClipboard(value, $event)" tabindex="0" luKeyboardClickable>
-      <span class="glyphicon glyphicon-paperclip mr-2"></span> {{ value }}
+    <div
+      class="copy-to-clipboard"
+      [ngClass]="{'wrap-text': wrapText, 'd-flex': !wrapText}"
+      (click)="onCopyToClipboard(value, $event)"
+      tabindex="0"
+      luKeyboardClickable
+    >
+      <span class="glyphicon glyphicon-paperclip mr-2"></span> {{ visibleText ? visibleText : value }}
     </div>
   `,
   styleUrls: ['./copy-to-clipboard.component.scss'],
@@ -14,6 +20,8 @@ import { WINDOW } from '@ng-toolkit/universal';
 
 export class CopyToClipboardComponent {
   @Input() value = '';
+  @Input() visibleText?: string;
+  @Input() wrapText = false;
 
   constructor(
     @Inject(WINDOW) private window: Window

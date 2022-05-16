@@ -33,6 +33,7 @@ import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';
+import { geoJSONToWKT } from 'laji-map/lib/utils';
 
 /* eslint-disable no-unused-vars member-ordering */
 
@@ -299,6 +300,18 @@ export class WarehouseApi {
     return this.http.post<any>(path, undefined, {params: queryParameters});
   }
 
+  public downloads(id: string, extraHttpRequestParams?: any): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling warehouse download.');
+    }
+
+    const path = this.basePath + '/warehouse/downloads/' + id;
+
+    const queryParameters = {...Util.removeFromObject(extraHttpRequestParams)};
+
+    return this.http.get<any>(path, {params: queryParameters});
+  }
+
   /**
    * Get count of results using given filter
    * Use this API to test how many results your query would return and then proceed with list query. Also returns max result count allowed for list queries.
@@ -466,6 +479,21 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
+  public registerPolygon(polygon: any, personToken: string, crs: string) {
+    const wkt = geoJSONToWKT(polygon);
+    const path = this.basePath + '/warehouse/polygon';
+
+    const queryParameters = {personToken, wkt, crs};
+
+    return this.http.post<{id: string}>(path, undefined, {params: queryParameters});
+  }
+
+  public getPolygonFeatureCollection(polygonId: string) {
+    const path = this.basePath + '/warehouse/polygon/' + polygonId;
+    const queryParameters = {format: 'geojson', crs: 'WGS84'};
+    return this.http.get(path, {params: queryParameters});
+  }
+
   private queryWithMetaData(query: WarehouseQueryInterface, selectedOrAggregatedBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number): any {
     return {
       ...query,
@@ -480,5 +508,4 @@ export class WarehouseApi {
   private addQueryToQueryParams(query: WarehouseQueryInterface, queryParameters: Record<string, unknown>): void {
     this.queryService.getURLSearchParams(query, queryParameters);
   }
-
 }

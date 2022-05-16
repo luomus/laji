@@ -10,7 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import { OwnFilterModel } from './own-observations-filter/own-observations-filter.component';
+import { UserService } from '../../shared/service/user.service';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -75,8 +75,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   };
 
   showPlace = false;
-  drawing = false;
-  drawingShape: string;
   mediaStatutes: string[] = [];
 
   areaType = Area.AreaType;
@@ -105,7 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode',
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'atlasCode', 'atlasClass', 'plantStatusCode',
       'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
@@ -123,6 +121,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   screenWidthSub: Subscription;
   containerTypeAhead: string;
   collectionAndRecordQualityString: string;
+  isLoggedIn$ = this.userService.isLoggedIn$;
 
   private _query: WarehouseQueryInterface;
 
@@ -142,7 +141,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private userService: UserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);

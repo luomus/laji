@@ -7,6 +7,7 @@ import { KerttuApi } from '../service/kerttu-api';
 import { UserService } from '../../../shared/service/user.service';
 import { AudioService } from '../../../shared-modules/audio-viewer/service/audio.service';
 import { TranslateService } from '@ngx-translate/core';
+import { spectrogramConfig } from '../variables';
 
 @Component({
   selector: 'laji-kerttu-letter-annotation',
@@ -25,6 +26,8 @@ export class KerttuLetterAnnotationComponent implements OnInit, OnDestroy {
   firstTemplateLoaded = false;
 
   hasError = false;
+
+  sampleRate = spectrogramConfig.sampleRate;
 
   private nextLetterCandidate: ILetterCandidate;
   private nextLetterCandidate$: Observable<ILetterCandidate>;

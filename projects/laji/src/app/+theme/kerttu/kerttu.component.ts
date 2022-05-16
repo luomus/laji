@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AudioService } from '../../shared-modules/audio-viewer/service/audio.service';
-import { spectrogramConfig } from './variables';
 
 @Component({
   template: `
@@ -49,10 +47,4 @@ import { spectrogramConfig } from './variables';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KerttuComponent {
-  constructor(
-    private audioService: AudioService
-  ) {
-    this.audioService.setDefaultSampleRate(spectrogramConfig.sampleRate);
-  }
-}
+export class KerttuComponent {}

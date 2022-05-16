@@ -4,13 +4,25 @@ import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
 import { Form } from '../model/Form';
 
+interface Info {
+  dateBegin: string | null;
+  dateEnd: string | null;
+  unsavedUnitCount: number;
+  locality: string | null;
+  municipality: string | null;
+  namedPlaceID: string | null;
+  localityCount: number;
+  unitList: string[];
+  taxonID: string[];
+}
+
 /**
  * Document Info service
  */
 @Injectable({providedIn: 'root'})
 export class DocumentInfoService {
   static getGatheringInfo(document: Document, form: Form.List) {
-    const info = {
+    const info: Info = {
       dateBegin: null,
       dateEnd: null,
       unsavedUnitCount: 0,
@@ -26,9 +38,9 @@ export class DocumentInfoService {
       for (let i = 0; i < document.gatherings.length; i++) {
         const gathering = document.gatherings[i];
         if (i === 0) {
-          info.locality = gathering.locality;
+          info.locality = gathering.locality ?? null;
           info.municipality = gathering.municipality ? gathering.municipality : '';
-          info.namedPlaceID = gathering.namedPlaceID;
+          info.namedPlaceID = gathering.namedPlaceID ?? null;
           info.localityCount = document.gatherings.length - 1;
         }
         DocumentInfoService.updateMinMaxDates(info, gathering.dateBegin);
@@ -40,12 +52,12 @@ export class DocumentInfoService {
 
             let taxon = unit.informalNameString || '';
             if (unit.identifications && Array.isArray(unit.identifications)) {
-              taxon = unit.identifications.reduce(
+              taxon = unit.identifications.reduce<string>(
                 (acc, cur) => {
                   if (cur.taxonID) {
                     info.taxonID.push(cur.taxonID);
                   }
-                  const curTaxon = cur.taxon || cur.taxonVerbatim || cur.taxonID;
+                  const curTaxon = (cur.taxon || cur.taxonVerbatim || cur.taxonID) ?? 'undefined';
                   return acc ? acc + ', ' + curTaxon : curTaxon;
                 }, taxon);
             }
@@ -83,7 +95,7 @@ export class DocumentInfoService {
   public static isEmptyUnit(unit: Units, form: Form.List) {
     if (form?.options?.prepopulateWithInformalTaxonGroups || form?.options?.emptyOnNoCount) {
       let result = true;
-      Global.documentCountUnitProperties.forEach(key => {
+      (Global.documentCountUnitProperties as (keyof Units)[]).forEach(key => {
         if (typeof unit[key] !== 'undefined' && unit[key] !== '' && unit[key] !== null) {
           result = false;
         }
