@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { IAudio, IAudioViewerArea, ISpectrogramConfig } from '../models';
+import { defaultSpectrogramConfig } from '../variables';
 
 @Component({
   selector: 'laji-small-audio-viewer',
@@ -11,15 +12,7 @@ export class SmallAudioViewerComponent {
   @Input() audio?: IAudio;
   @Input() area?: IAudioViewerArea;
   @Input() areaColor?: string;
-  @Input() spectrogramConfig?: ISpectrogramConfig = {
-    sampleRate: 22050,
-    nperseg: 256,
-    noverlap: 256 - 160,
-    nbrOfRowsRemovedFromStart: 2,
-    maxNbrOfColsForNoiseEstimation: 6000,
-    noiseReductionParam: 2,
-    logRange: 3
-  };
+  @Input() spectrogramConfig?: ISpectrogramConfig = defaultSpectrogramConfig;
   @Input() label?: string;
   @Input() highlight = false;
   @Input() highlightType: 'default'|'warning'|'danger';

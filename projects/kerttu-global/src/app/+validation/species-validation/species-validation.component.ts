@@ -59,9 +59,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private audioService: AudioService,
     private cd: ChangeDetectorRef
-  ) {
-    this.audioService.setDefaultSampleRate(this.spectrogramConfig.sampleRate);
-  }
+  ) {}
 
   ngOnInit() {
     this.speciesId$ = this.route.params.pipe(

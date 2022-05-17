@@ -3,7 +3,7 @@
 <laji-spinner *ngIf="!hasError" [spinning]="expertiseMissing == null">
   <ng-container *ngIf="expertiseMissing != null">
     <ng-container *ngIf="!expertiseMissing else expertiseMissingText">
-      <ng-container *lajiRequiresAudioSupport>
+      <ng-container *lajiRequiresAudioSupport="33200">
         <bsg-site-selection-view
           *ngIf="(!selectedSites || selectedSites.length === 0) else identificationView"
           [sites]="sites$ | async"
