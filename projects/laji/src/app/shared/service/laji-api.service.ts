@@ -19,6 +19,7 @@ import { Feedback } from '../model/Feedback';
 import { News } from '../model/News';
 import { Image } from '../model/Image';
 import { AnnotationTag } from '../model/AnnotationTag';
+import { Collection } from '../model/Collection';
 import { Util } from './util.service';
 
 export namespace LajiApi {
@@ -30,6 +31,7 @@ export namespace LajiApi {
     autocomplete = 'autocomplete',
     documentStats = 'documents/stats',
     checklists = 'checklists',
+    collections = 'collections',
     feedback = 'feedback',
     forms = 'forms',
     htmlToPdf = 'html-to-pdf',
@@ -112,6 +114,10 @@ export namespace LajiApi {
       idIn?: string;
     }
 
+    export interface CollectionQuery extends Lang, Paged {
+      idIn?: string;
+    }
+
     export interface DocumentStatsQuery extends PersonToken {
       namedPlace: string;
     }
@@ -185,6 +191,8 @@ export namespace LajiApi {
 
     export type ChecklistListResponse = PagedResult<Checklist>;
 
+    export type CollectionResponse = PagedResult<Collection>;
+
     export type NewsListResponse = PagedResult<News>;
 
     export type FormsListResponse = PagedResult<Form.List>;
@@ -209,6 +217,7 @@ export class LajiApiService {
   getList(endpoint: LajiApi.Endpoints.annotations, query: LajiApi.Query.AnnotationListQuery): Observable<LajiApi.Response.AnnotationListResponse>;
   getList(endpoint: LajiApi.Endpoints.areas, query: LajiApi.Query.AreaQuery): Observable<LajiApi.Response.AreaListResponse>;
   getList(endpoint: LajiApi.Endpoints.checklists, query: LajiApi.Query.ChecklistQuery): Observable<LajiApi.Response.ChecklistListResponse>;
+  getList(endpoint: LajiApi.Endpoints.collections, query: LajiApi.Query.CollectionQuery): Observable<LajiApi.Response.CollectionResponse>;
   getList(endpoint: LajiApi.Endpoints.documentStats, query: LajiApi.Query.DocumentStatsQuery): Observable<LajiApi.Response.DocumentStats>;
   getList(endpoint: LajiApi.Endpoints.forms, query: LajiApi.Query.FormsListQuery): Observable<LajiApi.Response.FormsListResponse>;
   getList(endpoint: LajiApi.Endpoints.information, query: LajiApi.Query.InformationQuery): Observable<Information>;

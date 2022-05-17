@@ -6,6 +6,13 @@ import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
 
 export type AtlasMap = string;
+export type AtlasActivityCategory =
+  'MY.atlasActivityCategoryEnum0'
+  | 'MY.atlasActivityCategoryEnum1'
+  | 'MY.atlasActivityCategoryEnum2'
+  | 'MY.atlasActivityCategoryEnum3'
+  | 'MY.atlasActivityCategoryEnum4'
+  | 'MY.atlasActivityCategoryEnum5';
 export interface AtlasGridSquare {
   birdAssociationArea: {key: string; value: string};
   coordinates: string;
@@ -24,7 +31,8 @@ export interface AtlasGridSquare {
   }[];
   atlas?: number;
   atlasClassSum?: number;
-  activityCategory?: {key: string; value: string};
+  activityCategory?: {key: AtlasActivityCategory; value: string};
+  speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
 
@@ -45,31 +53,31 @@ const BASE_URL = environment.atlasApiBasePath;
 export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
     const url = `${BASE_URL}/map/${speciesId}/atlas`;
     return this.http.get(url, {responseType: 'text', params: {lang, scaling: 0}});
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
   getGrid(): Observable<AtlasGrid> {
     const url = `${BASE_URL}/grid`;
     return <Observable<AtlasGrid>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(30000) // 30 seconds
   getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
     return <Observable<AtlasGridSquare>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
   getTaxa(): Observable<AtlasTaxa> {
     const url = `${BASE_URL}/taxon`;
     return <Observable<AtlasTaxa>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getTaxon(id: string): Observable<AtlasTaxon> {
     const url = `${BASE_URL}/taxon/${id}`;
     return <Observable<AtlasTaxon>>this.http.get(url);

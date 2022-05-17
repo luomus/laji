@@ -1,0 +1,26 @@
+<div class="d-flex flex-row flex-wrap">
+  <div class="map mr-4" #lajiMap></div>
+
+  <div> <!-- sidebar -->
+    <div> <!-- legend -->
+      <div class="legend-row" *ngFor="let row of legends[colorMode]">
+        <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
+      </div>
+    </div>
+    <hr>
+    <div> <!-- colorMode -->
+      <div class="radio">
+        <label>
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="activityCategory">
+          {{ 'ba.grid-index.map.activityCategory' | translate }}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="optradio" [(ngModel)]="colorMode" value="speciesCount">
+          {{ 'ba.grid-index.map.speciesCount' | translate }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

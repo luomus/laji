@@ -12,6 +12,7 @@ import { ApikeyModalComponent } from './apikey-modal/apikey-modal.component';
 import { ReasonComponent } from './reason/reason.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
 
 @NgModule({
   declarations: [DownloadComponent, ApikeyModalComponent, ReasonComponent],
@@ -25,7 +26,8 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule,
     LajiUiModule,
     SelectModule,
-    TooltipModule
+    TooltipModule,
+    CopyToClipboardModule
   ],
   exports: [DownloadComponent, ApikeyModalComponent]
 })

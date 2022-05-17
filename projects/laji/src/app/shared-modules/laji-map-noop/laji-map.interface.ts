@@ -9,3 +9,5 @@ export type LajiMapLang = any;
 export type LajiMapLineTransectGeometry = any;
 export type LajiMapDataOptions = any;
 export type LajiMapTileLayersOptions = any;
+export type LajiMapDrawEvent = any;
+export class Rectangle {}

@@ -78,10 +78,6 @@ export class ApikeyModalComponent implements OnChanges {
     this.request.emit({reason: this.reason, reasonEnum: this.reasonEnum, expiration: this.expiration});
   }
 
-  onCopyToClipboard() {
-    navigator.clipboard.writeText(this.apiKey);
-  }
-
   private updateDisableRequestBtn() {
     this.disableRequestBtn = this.loading || (!this.reason || !this.reasonEnum);
     this.cdr.markForCheck();
