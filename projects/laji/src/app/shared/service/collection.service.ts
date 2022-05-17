@@ -7,7 +7,7 @@ import { WarehouseApi } from '../api/WarehouseApi';
 import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
-import {WarehouseQueryInterface} from '../model/WarehouseQueryInterface';
+import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
 
 export interface ICollectionRange {
   id: string;

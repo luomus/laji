@@ -4,7 +4,7 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 import { map } from 'rxjs/operators';
 import { AbstractCachedHttpService } from './abstract-cached-http.service';
 import { Checklist } from 'projects/laji-api-client/src/lib/models/checklist';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({providedIn: 'root'})
 export class ChecklistService extends AbstractCachedHttpService<Checklist> {

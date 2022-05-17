@@ -107,7 +107,7 @@ export class BrowserService implements OnDestroy {
       visibilityChange = 'webkitvisibilitychange' as keyof DocumentEventMap;
     }
 
-    if (!visibilityChange) {
+    if (!visibilityChange || !hidden) {
       return;
     }
 
