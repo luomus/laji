@@ -397,13 +397,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateSearchQuery(field, value) {
-    this.query[field] = value;
+  onTaxonListChange(value) {
     this.selectedNameTaxon = this.selectedNameTaxon.filter(item => {
       if (value.indexOf(item.id) > -1) {
         return item;
       }
     });
+    this.updateSearchQuery('target', value);
+  }
+
+  updateSearchQuery(field, value) {
+    this.query[field] = value;
     this.onQueryChange();
   }
 
