@@ -29,7 +29,7 @@ export class SiteResultMapComponent implements OnChanges {
 
   private legendThresholds = [0, 1, 10, 100];
   private legendLabels = ['0', '1-', '10-', '100-'];
-  private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(110, 204, 57, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(241, 128, 23, 0.6)'];
+  private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(241, 128, 23, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(110, 204, 57, 0.6)'];
 
   constructor(
     private translate: TranslateService
@@ -112,11 +112,11 @@ export class SiteResultMapComponent implements OnChanges {
     if (count === 0) {
       c += 'empty';
     } else if (count < 10) {
-      c += 'small';
+      c += 'large'; // red
     } else if (count < 100) {
-      c += 'medium';
+      c += 'medium'; // yellow
     } else {
-      c += 'large';
+      c += 'small'; // green
     }
 
     return new L.DivIcon({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
