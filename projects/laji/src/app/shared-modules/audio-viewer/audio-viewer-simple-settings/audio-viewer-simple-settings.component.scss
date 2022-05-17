@@ -1,0 +1,16 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  font-size: $fs-2;
+  display: inline-block;
+
+  > div {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 3px;
+
+    bswitch {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<div>
+  <label>Show time buffer</label>
+  <bSwitch
+    [switch-on-text]="'yes' | translate"
+    [switch-off-text]="'no' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="showWholeTimeRange"
+    (ngModelChange)="showWholeTimeRangeChange.emit($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>
+<div>
+  <label>Show whole frequency range</label>
+  <bSwitch
+    [switch-on-text]="'yes' | translate"
+    [switch-off-text]="'no' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="showWholeFrequencyRange"
+    (ngModelChange)="showWholeFrequencyRangeChange.emit($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>

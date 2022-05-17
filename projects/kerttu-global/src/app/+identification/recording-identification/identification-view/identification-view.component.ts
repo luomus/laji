@@ -17,13 +17,19 @@ import {
   SpeciesAnnotationEnum,
   IGlobalRecording, IGlobalSpeciesWithAnnotation, IGlobalRecordingStatusInfo
 } from '../../../kerttu-global-shared/models';
-import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
+import {
+  AudioViewerMode,
+  IAudioViewerArea,
+  IAudioViewerRectangle,
+  ISpectrogramConfig
+} from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
+import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 
 
 @Component({
@@ -46,6 +52,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   audioViewerMode: AudioViewerMode = 'default';
   rectangles: IAudioViewerRectangle[] = [];
 
+  spectrogramConfig: ISpectrogramConfig;
+  showWholeFrequencyRange = false;
+  showWholeTimeRange = true;
+
   drawBirdActive = false;
   drawBirdIndex?: number;
   drawNonBirdActive = false;
@@ -67,7 +77,9 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     private kerttuGlobalApi: KerttuGlobalApi,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {
+    this.updateSpectrogramConfig();
+  }
 
   ngOnInit() {
     this.nonBirdLabel = this.translate.instant('identification.recordings.nonBird');
@@ -166,6 +178,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     if (this.audioViewerMode !== 'draw') {
       this.drawBirdActive = false;
       this.drawNonBirdActive = false;
+    }
+  }
+
+  updateSpectrogramConfig() {
+    this.spectrogramConfig = {
+      ...defaultSpectrogramConfig,
+      sampleRate: this.showWholeFrequencyRange ? 32000 : 22050
     }
   }
 

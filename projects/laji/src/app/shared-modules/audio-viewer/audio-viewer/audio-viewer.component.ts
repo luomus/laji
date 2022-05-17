@@ -42,10 +42,11 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() autoplayRepeat = 1;
 
   @Input() showControls = true;
-  @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
+  @Input() showZoomControl = false; // zoom control allows the user to zoom into the spectrogram
+  @Input() showLoopControl = true; // loop control allows the user to loop the recording
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() playOnlyOnSingleClick = false; // play only when the user clicks once and not double-clicks
+  @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
 
@@ -58,6 +59,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
 
   @Input() audioInfoTpl: TemplateRef<any>;
+  @Input() customControlsTpl: TemplateRef<any>;
 
   @Input() zoomInfoText: string;
 
@@ -112,7 +114,12 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
         });
       }
     } else if (!this.hasError) {
-      if (changes.focusArea || changes.highlightFocusArea || changes.zoomTime || changes.timePaddingOnZoom || changes.zoomFrequency || changes.frequencyPaddingOnZoom) {
+      if (
+        changes.focusArea || changes.highlightFocusArea ||
+        changes.zoomTime || changes.timePaddingOnZoom ||
+        changes.zoomFrequency || changes.frequencyPaddingOnZoom ||
+        changes.spectrogramConfig
+      ) {
         this.setDefaultView();
       } else if (changes.mode) {
         this.audioPlayer.stop();

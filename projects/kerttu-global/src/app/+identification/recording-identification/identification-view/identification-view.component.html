@@ -26,20 +26,29 @@
   <laji-audio-viewer
     [audio]="recording"
     [showZoomControl]="true"
+    [showLoopControl]="false"
     [(mode)]="audioViewerMode"
     [rectangles]="rectangles"
     [spectrogramHeight]="170"
+    [spectrogramConfig]="spectrogramConfig"
     [audioInfoTpl]="audioInfo"
+    [customControlsTpl]="audioCustomControls"
     (drawEnd)="drawEnd($event)"
     (modeChange)="onAudioViewerModeChange()"
   ></laji-audio-viewer>
+  <ng-template #audioCustomControls>
+    <laji-audio-viewer-simple-settings
+      [(showWholeFrequencyRange)]="showWholeFrequencyRange"
+      [(showWholeTimeRange)]="showWholeTimeRange"
+      (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
+    ></laji-audio-viewer-simple-settings>
+  </ng-template>
   <ng-template #audioInfo let-audio="audio">
       <span>
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
       </span>
   </ng-template>
-
 </div>
 <div class="bottom-content">
   <h2 class="mt-3">
