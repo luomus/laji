@@ -139,7 +139,7 @@ export class SpectrogramChartComponent implements OnChanges {
 
     let [clickAreaX, clickAreaY, clickAreaWidth, clickAreaHeight] = [0, 0, this.width, this.height];
     let [brushAreaX, brushAreaY, brushAreaWidth, brushAreaHeight] = [0, 0, this.width, this.height];
-    const needToDrawFocusArea = !this.areaIsInsideAnotherArea(this.view, this.focusArea);
+    const needToDrawFocusArea = this.focusArea && !this.areaIsInsideAnotherArea(this.view, this.focusArea);
     if (needToDrawFocusArea) {
       let [areaX, areaY, areaWidth, areaHeight] = this.drawFocusArea(svg, startTime, endTime, startFreq, endFreq, strokeWidth);
       [areaX, areaY, areaWidth, areaHeight] = [Math.max(areaX, 0), Math.max(areaY, 0), Math.min(areaWidth, this.width), Math.min(areaHeight, this.height)];
