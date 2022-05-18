@@ -198,10 +198,10 @@ export class SpectrogramChartComponent implements OnChanges {
           }
           const [[x0, y0], [x1, y1]] = event.selection;
 
-          const xMin = Math.min(x0, x1);
-          const xMax = Math.max(x0, x1);
-          const yMin = Math.min(y0, y1);
-          const yMax = Math.max(y0, y1);
+          const xMin = Math.max(Math.min(x0, x1), brushAreaX);
+          const xMax = Math.min(Math.max(x0, x1), brushAreaX + brushAreaWidth);
+          const yMin = Math.max(Math.min(y0, y1), brushAreaY);
+          const yMax = Math.min(Math.max(y0, y1), brushAreaY + brushAreaHeight);
 
           const area = {
             xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
