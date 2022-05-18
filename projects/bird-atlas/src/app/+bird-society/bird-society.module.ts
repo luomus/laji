@@ -7,6 +7,7 @@ import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spin
 import { RouterModule } from '@angular/router';
 import { BirdSocietyIndexComponent } from './bird-society-index/bird-society-index.component';
 import { BirdSocietyInfoComponent } from './bird-society-info/bird-society-info.component';
+import { BirdSocietyInfoMapComponent } from './bird-society-info/bird-society-info-map/bird-society-info-map.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { BirdSocietyInfoComponent } from './bird-society-info/bird-society-info.
     SpinnerModule,
     RouterModule
   ],
-  declarations: [BirdSocietyIndexComponent, BirdSocietyInfoComponent]
+  declarations: [BirdSocietyIndexComponent, BirdSocietyInfoComponent, BirdSocietyInfoMapComponent]
 })
 export class BirdSocietyModule { }

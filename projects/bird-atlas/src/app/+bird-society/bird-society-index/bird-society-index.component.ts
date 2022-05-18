@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  templateUrl: 'bird-society-index.component.html'
+  templateUrl: 'bird-society-index.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyIndexComponent {
 

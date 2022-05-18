@@ -65,6 +65,12 @@ export class AtlasApiService {
     return <Observable<AtlasGrid>>this.http.get(url);
   }
 
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSociety(id: string): Observable<AtlasGrid> {
+    const url = `${BASE_URL}/grid/birdAssociation/${id}`;
+    return <Observable<AtlasGrid>>this.http.get(url);
+  }
+
   @cacheReturnObservable(30000) // 30 seconds
   getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;

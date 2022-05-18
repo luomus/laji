@@ -3,6 +3,7 @@ import {
   NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { LajiMap, DataOptions, TileLayersOptions, Lang } from 'laji-map';
+import { PathOptions } from 'leaflet';
 import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -49,7 +50,7 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   type: 'FeatureCollection'
 });
 const getGetFeatureStyle = (grid: AtlasGrid, colorMode: ColorMode) => (
-  (opt) => ({
+  (opt): PathOptions => ({
     weight: 0,
     opacity: 0,
     fillOpacity: .5,

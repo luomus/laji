@@ -1,8 +1,32 @@
 @import 'vars';
 
-.bird-society-map {
+ba-bird-society-info-map {
+/*   width: 100%;
+  max-width: 500px;
+  height: auto; */
   width: 500px;
   height: 500px;
-  
-  background-color: $neutral-4;
+}
+
+.side-panel {
+  width: 100%;
+  max-width: 600px;
+}
+
+.grid-square-panel {
+  background-color: $neutral-1;
+  border-radius: 12px;
+  padding: $sp-6 $sp-8;
+  box-shadow: 0 1px 4px 0 rgba($neutral-8, .15);
+}
+
+.coords {
+  color: $neutral-6;
+}
+
+.close-btn {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 4px;
 }
