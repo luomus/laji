@@ -17,6 +17,7 @@ import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpec
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -94,7 +95,9 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
       this.setAudioLoading(true);
 
       if (this.audio) {
-        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).subscribe((buffer) => {
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).pipe(
+          delay(0) // has a delay because otherwise the changes are not always detected
+        ).subscribe((buffer) => {
           if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;
