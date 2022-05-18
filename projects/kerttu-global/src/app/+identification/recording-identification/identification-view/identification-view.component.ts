@@ -213,6 +213,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
         this.updateSpectrogramRectangles();
         this.cdr.markForCheck();
       });
+    } else {
+      this.loadingSpecies = false;
     }
   }
 
