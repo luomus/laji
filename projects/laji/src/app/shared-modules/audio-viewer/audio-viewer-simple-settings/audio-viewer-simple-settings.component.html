@@ -1,8 +1,8 @@
 <div>
-  <label>Show time buffer</label>
+  <label>{{ showWholeTimeRangeLabel }}</label>
   <bSwitch
-    [switch-on-text]="'yes' | translate"
-    [switch-off-text]="'no' | translate"
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
     [switch-on-color]="'primary'"
     [switch-size]="'small'"
     [ngModel]="showWholeTimeRange"
@@ -11,10 +11,10 @@
   </bSwitch>
 </div>
 <div>
-  <label>Show whole frequency range</label>
+  <label>{{ showWholeFrequencyRangeLabel }}</label>
   <bSwitch
-    [switch-on-text]="'yes' | translate"
-    [switch-off-text]="'no' | translate"
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
     [switch-on-color]="'primary'"
     [switch-size]="'small'"
     [ngModel]="showWholeFrequencyRange"

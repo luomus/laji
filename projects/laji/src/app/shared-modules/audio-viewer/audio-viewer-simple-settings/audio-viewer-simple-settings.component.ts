@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'laji-audio-viewer-simple-settings',
@@ -9,6 +9,8 @@ import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter}
 export class AudioViewerSimpleSettingsComponent {
   @Input() showWholeFrequencyRange = false;
   @Input() showWholeTimeRange = false;
+  @Input() showWholeFrequencyRangeLabel = '';
+  @Input() showWholeTimeRangeLabel = '';
 
   @Output() showWholeFrequencyRangeChange = new EventEmitter<boolean>();
   @Output() showWholeTimeRangeChange = new EventEmitter<boolean>();

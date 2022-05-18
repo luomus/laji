@@ -29,10 +29,15 @@
     [showLoopControl]="false"
     [(mode)]="audioViewerMode"
     [rectangles]="rectangles"
+    [focusArea]="{xRange: [1, 9]}"
+    [timePaddingOnZoom]="showWholeTimeRange ? 1 : 0"
+    [zoomTime]="true"
+    [highlightFocusArea]="true"
     [spectrogramHeight]="170"
     [spectrogramConfig]="spectrogramConfig"
     [audioInfoTpl]="audioInfo"
     [customControlsTpl]="audioCustomControls"
+    [zoomInfoText]="'validation.info.zoom' | translate"
     (drawEnd)="drawEnd($event)"
     (modeChange)="onAudioViewerModeChange()"
   ></laji-audio-viewer>
@@ -41,6 +46,8 @@
       [(showWholeFrequencyRange)]="showWholeFrequencyRange"
       [(showWholeTimeRange)]="showWholeTimeRange"
       (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
+      [showWholeFrequencyRangeLabel]="'identification.recordings.highFrequencies' | translate"
+      [showWholeTimeRangeLabel]="'identification.recordings.timeBuffer' | translate"
     ></laji-audio-viewer-simple-settings>
   </ng-template>
   <ng-template #audioInfo let-audio="audio">
