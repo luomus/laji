@@ -18,8 +18,9 @@ export class SpectrogramChartComponent implements OnChanges {
 
   @Input() view: IAudioViewerArea;
   @Input() focusArea: IAudioViewerArea;
-  @Input() highlightFocusArea: boolean;
+  @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
+  @Input() onlyFocusAreaDrawable = false;
   @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
@@ -68,7 +69,7 @@ export class SpectrogramChartComponent implements OnChanges {
       .attr('width', this.width + (this.margin.left + this.margin.right))
       .attr('height', this.height + (this.margin.top + this.margin.bottom));
 
-    if (!this.width || !this.height || !this.view) {
+    if (!this.width || !this.height || !this.view) {
       return;
     }
 
@@ -109,6 +110,7 @@ export class SpectrogramChartComponent implements OnChanges {
 
     let svgWithOverflow: Selection<SVGSVGElement, any, any, any>;
     if (this.rectangles?.length > 0) {
+      // allow rectangle labels overflow the chart
       svgWithOverflow = svg.append('svg')
         .attr('x', this.margin.left)
         .attr('y', this.margin.top)
@@ -135,6 +137,92 @@ export class SpectrogramChartComponent implements OnChanges {
     const [startTime, endTime] = this.view.xRange;
     const [startFreq, endFreq] = this.view.yRange;
 
+    let [clickAreaX, clickAreaY, clickAreaWidth, clickAreaHeight] = [0, 0, this.width, this.height];
+    let [brushAreaX, brushAreaY, brushAreaWidth, brushAreaHeight] = [0, 0, this.width, this.height];
+    const needToDrawFocusArea = !this.areaIsInsideAnotherArea(this.view, this.focusArea);
+    if (needToDrawFocusArea) {
+      let [areaX, areaY, areaWidth, areaHeight] = this.drawFocusArea(svg, startTime, endTime, startFreq, endFreq, strokeWidth);
+      [areaX, areaY, areaWidth, areaHeight] = [Math.max(areaX, 0), Math.max(areaY, 0), Math.min(areaWidth, this.width), Math.max(areaHeight, this.height)];
+      if (this.onlyFocusAreaClickable) {
+        [clickAreaX, clickAreaY, clickAreaWidth, clickAreaHeight] = [areaX, areaY, areaWidth, areaHeight];
+      }
+      if (this.onlyFocusAreaDrawable && this.mode === 'draw') {
+        [brushAreaX, brushAreaY, brushAreaWidth, brushAreaHeight] = [areaX, areaY, areaWidth, areaHeight];
+      }
+    }
+
+    // draw scroll line
+    this.scrollLine = svg.append('line')
+      .attr('id', 'scrollLine')
+      .attr('y1', 0)
+      .attr('y2', this.height)
+      .attr('stroke-width', strokeWidth)
+      .attr('stroke', 'red');
+    this.updateScrollLinePosition();
+
+    // add functions
+    if (this.mode === 'default') {
+      // make spectrogram clickable by adding a transparent rectangle that catches click events
+      svg.attr('pointer-events', 'all');
+      svg.insert('rect', '#scrollLine')
+        .attr('x', clickAreaX)
+        .attr('y', clickAreaY)
+        .attr('width', clickAreaWidth)
+        .attr('height', clickAreaHeight)
+        .attr('fill', 'none')
+        .on('click', () => {
+          const x = clientPoint(event.target, event)[0];
+          this.spectrogramClick.emit(this.getTimeFromPosition(x));
+        })
+        .on('dblclick', () => {
+          const x = clientPoint(event.target, event)[0];
+          this.spectrogramDblclick.emit(this.getTimeFromPosition(x));
+        }).style('cursor', 'pointer');
+
+      // make scroll line draggable
+      const scrollLineDrag = drag<any, unknown>()
+        .on('start', () => { this.dragStart.emit(); })
+        .on('drag', () => {
+          this.currentTime = this.getTimeFromPosition(event.x);
+          this.updateScrollLinePosition();
+        })
+        .on('end', () => { this.dragEnd.emit(this.currentTime); });
+      this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
+    } else if (this.mode === 'zoom' || this.mode === 'draw') {
+      // add brush functionality
+      const brushFunc = brush()
+        .extent([[brushAreaX, brushAreaY], [brushAreaX + brushAreaWidth, brushAreaY + brushAreaHeight]])
+        .on('end', () => {
+          if (!event.selection) {
+            return;
+          }
+          const [[x0, y0], [x1, y1]] = event.selection;
+
+          const xMin = Math.min(x0, x1);
+          const xMax = Math.max(x0, x1);
+          const yMin = Math.min(y0, y1);
+          const yMax = Math.max(y0, y1);
+
+          const area = {
+            xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
+            yRange: [this.yScale.invert(yMax) * 1000, this.yScale.invert(yMin) * 1000]
+          };
+          if (this.mode === 'zoom') {
+            this.zoomEnd.emit(area);
+          } else {
+            this.drawEnd.emit(area);
+          }
+        });
+
+      svg.append('g')
+        .attr('class', 'brush')
+        .call(brushFunc);
+    }
+  }
+
+  private drawFocusArea(
+    svg: Selection<SVGSVGElement, any, any, any>, startTime: number, endTime: number, startFreq: number, endFreq: number, strokeWidth: number
+  ): number[] {
     const xRangeBuffer = this.xScale.invert(strokeWidth);
     const yRangeBuffer = this.yScale.invert(this.height - strokeWidth) * 1000;
     const xRange = this.focusArea?.xRange || [startTime - xRangeBuffer, endTime + xRangeBuffer];
@@ -143,6 +231,7 @@ export class SpectrogramChartComponent implements OnChanges {
     const [rectX, rectWidth, rectY, rectHeight] = this.getRectangleDimensions(xRange, yRange);
 
     if (this.highlightFocusArea) {
+      // highlight focus area by darkening other areas by drawing semi-transparent black rectangles around it
       const group = svg.append('g')
         .attr('fill', 'black')
         .attr('opacity', 0.4);
@@ -172,84 +261,17 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('height', this.height - (rectY + rectHeight));
     }
 
-    // draw focus area with white rectangle
-    if (this.focusArea) {
-      svg.append('rect')
-        .attr('x', rectX)
-        .attr('y', rectY)
-        .attr('width', rectWidth)
-        .attr('height', rectHeight)
-        .attr('stroke-width', strokeWidth)
-        .attr('stroke', this.focusAreaColor || 'white')
-        .attr('fill', 'none');
-    }
-
-    // draw scroll line
-    this.scrollLine = svg.append('line')
-      .attr('id', 'scrollLine')
-      .attr('y1', 0)
-      .attr('y2', this.height)
+    // draw focus area with a rectangle
+    svg.append('rect')
+      .attr('x', rectX)
+      .attr('y', rectY)
+      .attr('width', rectWidth)
+      .attr('height', rectHeight)
       .attr('stroke-width', strokeWidth)
-      .attr('stroke', 'red');
-    this.updateScrollLinePosition();
+      .attr('stroke', this.focusAreaColor || 'white')
+      .attr('fill', 'none');
 
-    // add functions
-    if (this.mode === 'default') {
-      // make spectrogram clickable by adding a transparent rectangle that catches click events
-      svg.attr('pointer-events', 'all');
-      svg.insert('rect', '#scrollLine')
-        .attr('x', this.onlyFocusAreaClickable ? rectX : 0)
-        .attr('y', this.onlyFocusAreaClickable ? rectY : 0)
-        .attr('width', this.onlyFocusAreaClickable ? rectWidth : this.width)
-        .attr('height', this.onlyFocusAreaClickable ? rectHeight : this.height)
-        .attr('fill', 'none')
-        .on('click', () => {
-          const x = clientPoint(event.target, event)[0];
-          this.spectrogramClick.emit(this.getTimeFromPosition(x));
-        })
-        .on('dblclick', () => {
-          const x = clientPoint(event.target, event)[0];
-          this.spectrogramDblclick.emit(this.getTimeFromPosition(x));
-        }).style('cursor', 'pointer');
-
-      // make scroll line draggable
-      const scrollLineDrag = drag<any, unknown>()
-        .on('start', () => { this.dragStart.emit(); })
-        .on('drag', () => {
-          this.currentTime = this.getTimeFromPosition(event.x);
-          this.updateScrollLinePosition();
-        })
-        .on('end', () => { this.dragEnd.emit(this.currentTime); });
-      this.scrollLine.call(scrollLineDrag).style('cursor', 'pointer');
-    } else if (this.mode === 'zoom' || this.mode === 'draw') {
-      // add brush functionality
-      const brushFunc = brush()
-        .on('end', () => {
-          if (!event.selection) {
-            return;
-          }
-          const [[x0, y0], [x1, y1]] = event.selection;
-
-          const xMin = Math.min(x0, x1);
-          const xMax = Math.max(x0, x1);
-          const yMin = Math.min(y0, y1);
-          const yMax = Math.max(y0, y1);
-
-          const area = {
-            xRange: [this.xScale.invert(xMin), this.xScale.invert(xMax)],
-            yRange: [this.yScale.invert(yMax) * 1000, this.yScale.invert(yMin) * 1000]
-          };
-          if (this.mode === 'zoom') {
-            this.zoomEnd.emit(area);
-          } else {
-            this.drawEnd.emit(area);
-          }
-        });
-
-      svg.append('g')
-        .attr('class', 'brush')
-        .call(brushFunc);
-    }
+    return [rectX, rectY, rectWidth, rectHeight];
   }
 
   private drawRectangles(
@@ -284,7 +306,7 @@ export class SpectrogramChartComponent implements OnChanges {
     }
   }
 
-  private getTimeFromPosition(x: number) {
+  private getTimeFromPosition(x: number): number {
     const time = this.xScale.invert(x);
     const minTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[0] : this.view.xRange[0];
     const maxTime = this.onlyFocusAreaClickable ? this.focusArea?.xRange[1] : this.view.xRange[1];
@@ -335,7 +357,7 @@ export class SpectrogramChartComponent implements OnChanges {
     }, []);
   }
 
-  private rectanglesAreSame(dim1: number[], dim2: number[]) {
+  private rectanglesAreSame(dim1: number[], dim2: number[]): boolean {
     for (let i = 0; i < dim1.length; i++) {
       if (dim1[i] !== dim2[i]) {
         return false;
@@ -344,10 +366,18 @@ export class SpectrogramChartComponent implements OnChanges {
     return true;
   }
 
-  private rectangleIsCompletelyVisible(rectX: number, rectWidth: number, rectY: number, rectHeight: number, precision = 0.001) {
+  private rectangleIsCompletelyVisible(rectX: number, rectWidth: number, rectY: number, rectHeight: number, precision = 0.001): boolean {
     return (
       rectX >= -precision && rectX + rectWidth <= this.width + precision &&
       rectY >= -precision && rectY + rectHeight <= this.height + precision
     );
+  }
+
+  private areaIsInsideAnotherArea(area1: IAudioViewerArea, area2: IAudioViewerArea): boolean {
+    if (!(area1.xRange && area2.xRange && area2.xRange[0] <= area1.xRange[0] && area2.xRange[1] >= area1.xRange[1])) {
+      return false;
+    }
+
+    return !(area1.yRange && area2.yRange && area2.yRange[0] <= area1.yRange[0] && area2.yRange[1] >= area1.yRange[1]);
   }
 }
