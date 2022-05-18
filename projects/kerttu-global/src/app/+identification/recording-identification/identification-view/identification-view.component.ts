@@ -86,6 +86,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.clearDrawMode();
     if (changes.recording) {
       this.rectangles = [];
       this.updateSelectedSpecies();
@@ -142,10 +143,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       this.annotation.nonBirdArea = area;
     }
 
-    this.drawBirdActive = false;
-    this.drawNonBirdActive = false;
-    this.audioViewerMode = 'default';
-
+    this.clearDrawMode();
     this.updateSpectrogramAndAnnotation();
   }
 
@@ -185,7 +183,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     this.spectrogramConfig = {
       ...defaultSpectrogramConfig,
       sampleRate: this.showWholeFrequencyRange ? 32000 : 22050
-    }
+    };
+  }
+
+  private clearDrawMode() {
+    this.drawBirdActive = false;
+    this.drawNonBirdActive = false;
+    this.audioViewerMode = 'default';
   }
 
   private updateSelectedSpecies() {
