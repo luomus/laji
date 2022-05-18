@@ -170,7 +170,6 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   clearZoomArea() {
     this.setView(this.defaultView);
-
   }
 
   toggleZoomMode() {
