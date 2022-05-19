@@ -233,7 +233,7 @@
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
   "husky": {
     "hooks": {
-      "pre-commit": "npm --silent run msg-a && npm --silent run lint"
+      "pre-push": "npm --silent run msg-a && npm --silent run lint"
     }
   }
 }
