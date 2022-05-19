@@ -56,57 +56,6 @@ describe('Observation list', () => {
       });
     });
 
-    describe('polygon button', () => {
-      it('disabled when logged out', async (done) => {
-        expect(await page.$drawPolygonBtn.getAttribute('disabled')).toBe('true');
-        done();
-      });
-
-      it('enabled when logged in', async (done) => {
-        await user.login();
-        expect(await page.$drawPolygonBtn.getAttribute('disabled')).not.toBe('true');
-        done();
-      });
-
-      describe('click', () => {
-        beforeAll(async (done) => {
-          await page.placePanel.open();
-          await page.$drawPolygonBtn.click();
-          done();
-        });
-
-        it('changes tab to map', async (done) => {
-          await browser.wait(EC.visibilityOf(page.map.$getElement()));
-          expect(await page.tabs.map.isActive()).toBe(true);
-          done();
-        });
-
-        it('and drawing adds polygon filter to query', async (done) => {
-          await page.zoomClose();
-          await page.drawPolygon();
-          expect(await page.hasPolygonFilter()).toBe(true);
-          done();
-        });
-
-        it('coordinate intersect 0 by default', async (done) => {
-          expect(await page.getPolygonIntersect()).toBe(0);
-          done();
-        });
-
-        it('coordinate intersect can be updated', async (done) => {
-          await page.$coordinateIntersectMaxBtn.click();
-          expect(await page.getPolygonIntersect()).toBe(1);
-          done();
-        });
-      });
-
-      afterAll(async (done) => {
-        await page.navigateTo('list');
-        await page.placePanel.open();
-        done();
-      });
-    });
-
     describe('YKJ grid button click', () => {
       const control = page.map.getCoordinateInputControl();
 

@@ -151,8 +151,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'season',
     'formId',
     'taxonAdminFiltersOperator',
-    'collectionAndRecordQuality',
-    'polygonId'
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -233,10 +232,6 @@ export class SearchQueryService implements SearchQueryInterface {
             : 0;
         return withoutCoordinatesIntersection;
       });
-    } else if (result.polygonId) {
-      const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(result.polygonId);
-      result.polygonId = withoutCoordinatesIntersection;
-      result._coordinatesIntersection = coordinatesIntersection ?? 0;
     }
     return result;
   }

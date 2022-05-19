@@ -49,7 +49,6 @@ export class ObservationPage {
   public $placePanel = $('.laji-panel-places');
   public $drawRectangleBtn = $('.draw-rectangle');
   public $enterYkjBtn = $('.enter-ykj-grid');
-  public $drawPolygonBtn = $('.draw-polygon');
   public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
@@ -104,38 +103,9 @@ export class ObservationPage {
     await browser.wait(EC.invisibilityOf($('.loading-map')));
   }
 
-  async drawPolygon() {
-    const traveller = new PointTraveller();
-    const coordinates: [number, number][] = [
-      traveller.travel(0, 0),
-      traveller.travel(0, -20),
-      traveller.travel(20, 0),
-      traveller.initial()
-    ];
-
-    for (const c of coordinates) {
-      await browser.sleep(SAFE_CLICK_WAIT);
-      await this.map.clickAt(...c);
-    }
-  }
-
-  private async getPolygonFilter() {
-    const url = new URL(await browser.getCurrentUrl());
-    return url.searchParams.get('polygonId');
-  }
-
-  async hasPolygonFilter() {
-    return !!(await this.getPolygonFilter())?.match(/^\d+:(0|1)(\.\d)?$/);
-  }
-
-  async getPolygonIntersect() {
-    return +(await this.getPolygonFilter()).split(':').pop();
-  }
-
   async opensYKJModal() {
     return this.map.getCoordinateInputControl().$getContainer();
   }
-
 
   async enterYKJToOpenedModal() {
     const control = this.map.getCoordinateInputControl();
