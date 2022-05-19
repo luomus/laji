@@ -301,18 +301,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             )
         ) : []);
 
-    const featuresFromQueryPolygonId = (polygonId: string): Observable<any[]> => polygonId
-      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
-          map(featureCollection => (featureCollection as any).features)
-      )
-      : ObservableOf([]);
-
-    return forkJoin([
-      featuresFromQueryCoordinates(this.query.coordinates),
-      featuresFromQueryPolygonId(this.query.polygonId)
-    ]).pipe(map(([f1, f2]) => ({
+    return featuresFromQueryCoordinates(this.query.coordinates).pipe(map(features => ({
       type: 'FeatureCollection',
-      features: [...f1, ...f2]
+      features
     })));
   }
 
@@ -481,7 +472,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
       return cache + this.activeLevel;
     }
-    return cache + this.activeBounds.toBBoxString() + this.activeLevel + query.polygonId;
+    return cache + this.activeBounds.toBBoxString() + this.activeLevel;
   }
 
   private getClusterStyle(count) {
@@ -550,7 +541,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const mapData = [];
     this.clearDrawData();
 
-    if (this.query.coordinates || this.query.polygonId) {
+    if (this.query.coordinates) {
       this.drawDataSubscription?.unsubscribe();
       this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};

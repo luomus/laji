@@ -479,15 +479,6 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  public registerPolygon(polygon: any, personToken: string, crs: string) {
-    const wkt = geoJSONToWKT(polygon);
-    const path = this.basePath + '/warehouse/polygon';
-
-    const queryParameters = {personToken, wkt, crs};
-
-    return this.http.post<{id: string}>(path, undefined, {params: queryParameters});
-  }
-
   public getPolygonFeatureCollection(polygonId: string) {
     const path = this.basePath + '/warehouse/polygon/' + polygonId;
     const queryParameters = {format: 'geojson', crs: 'WGS84'};
