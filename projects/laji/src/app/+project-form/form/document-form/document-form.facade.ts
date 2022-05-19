@@ -509,11 +509,12 @@ export class DocumentFormFacade {
   }
 
   private getAnnotations(documentID: string, page = 1, results = []): Observable<Annotation[]> {
-    if (this.annotationCache[this.getAnnotationCacheKey(documentID, page)]) {
-      return this.annotationCache[this.getAnnotationCacheKey(documentID, page)];
+    const cacheKey = documentID + page;
+    if (this.annotationCache[cacheKey]) {
+      return this.annotationCache[cacheKey];
     }
 
-    this.annotationCache[this.getAnnotationCacheKey(documentID, page)] = (!documentID || FormService.isTmpId(documentID))
+    this.annotationCache[cacheKey] = (!documentID || FormService.isTmpId(documentID))
     ?  of([])
     : this.lajiApi.getList(
       LajiApi.Endpoints.annotations,
@@ -526,10 +527,6 @@ export class DocumentFormFacade {
       shareReplay(),
     );
 
-    return this.annotationCache[this.getAnnotationCacheKey(documentID, page)];
-  }
-
-  private getAnnotationCacheKey(documentID: string, page: number) {
-    return documentID + page;
+    return this.annotationCache[cacheKey];
   }
 }
