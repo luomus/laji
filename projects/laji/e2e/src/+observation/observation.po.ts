@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { $, browser, ElementFinder, protractor } from 'protractor';
-import { EC, waitForInvisibility } from '../../helper';
+import { EC, isDisplayed, waitForInvisibility } from '../../helper';
 import { MapPageObject, PointTraveller, SAFE_CLICK_WAIT } from 'laji-map/test-export/test-utils';
 
 class LUTabPO {
@@ -91,6 +91,11 @@ export class ObservationPage {
 
   async getCoordinateIntersect() {
     return +(await this.getCoordinateFilter()).split(':').pop();
+  }
+
+  async updateCoordinateIntersectControlValue(value: number) {
+    await $('input[name=coordinatesIntersection]').sendKeys(value * 100);
+    await $('input[name=coordinatesIntersection]').sendKeys(protractor.Key.TAB);
   }
 
   async zoomClose() {

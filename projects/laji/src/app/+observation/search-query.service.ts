@@ -227,9 +227,9 @@ export class SearchQueryService implements SearchQueryInterface {
       result.coordinates = result.coordinates.map(coordinate => {
         const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(coordinate);
         result._coordinatesIntersection = coordinatesIntersection
-          ?? coordinate.match(/YKJ/)
+          ?? (coordinate.match(/YKJ/)
             ? 100
-            : 0;
+            : 0);
         return withoutCoordinatesIntersection;
       });
     }
