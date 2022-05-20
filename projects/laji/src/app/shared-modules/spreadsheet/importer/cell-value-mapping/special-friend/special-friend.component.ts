@@ -108,4 +108,16 @@ export class SpecialFriendComponent implements OnInit {
     this.currentValues = values;
     this.mappingChanged.emit(mapping);
   }
+  ignoreAll() {
+    const mapping = {...this._mapping};
+    const values = {...this.currentValues};
+    this.invalidValues.forEach(value => {
+      if (!mapping[value]) {
+        values[value] = VALUE_IGNORE;
+        mapping[value] = VALUE_IGNORE;
+      }
+    });
+    this.currentValues = values;
+    this.mappingChanged.emit(mapping); 
+  }
 }
