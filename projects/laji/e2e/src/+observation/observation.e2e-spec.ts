@@ -91,10 +91,14 @@ describe('Observation list', () => {
         expect(await page.getCoordinateIntersect()).toBe(0);
         done();
       });
+    });
 
-      afterAll(async (done) => {
-        await page.navigateTo('list');
-        await page.placePanel.open();
+    // Depends on previous describe block's state
+    // (there's a coordinate filter and // the coordinates intersection control is visible)
+    describe('coordinates intersect', () => {
+      it('can be some other value than min/max', async (done) => {
+        await page.updateCoordinateIntersectControlValue(0.3);
+        expect(await page.getCoordinateIntersect()).toBe(0.3);
         done();
       });
     });
