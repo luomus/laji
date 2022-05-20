@@ -30,6 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
+import { defaultAudioSampleRate, lowAudioSampleRate } from '../../../kerttu-global-shared/variables';
 
 
 @Component({
@@ -182,7 +183,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   updateSpectrogramConfig() {
     this.spectrogramConfig = {
       ...defaultSpectrogramConfig,
-      sampleRate: this.showWholeFrequencyRange ? 32000 : 22050
+      sampleRate: this.showWholeFrequencyRange ? defaultAudioSampleRate : lowAudioSampleRate
     };
   }
 

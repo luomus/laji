@@ -1,5 +1,5 @@
 <ng-container *ngIf="hasLock else noLock">
-  <ng-container *lajiRequiresAudioSupport="32000">
+  <ng-container *lajiRequiresAudioSupport="audioSampleRate">
     <bsg-version-nav
       class="pull-right"
       [versions]="templateVersions$ | async"
