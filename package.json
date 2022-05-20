@@ -51,6 +51,7 @@
     "lint:bird-atlas": "eslint \"projects/bird-atlas/src/**/*.ts\"",
     "lint:exhibition-screen": "eslint \"projects/exhibition-screen/src/**/*.ts\"",
     "lint:laji-ui": "eslint \"projects/laji-ui/src/**/*.ts\"",
+    "lint:vir": "eslint \"projects/vir/src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor projects/laji/e2e/protractor.conf.js",

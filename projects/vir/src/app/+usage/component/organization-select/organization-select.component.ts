@@ -20,6 +20,7 @@ export class OrganizationSelectComponent {
       })
   );
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<string>();
 
   constructor(
