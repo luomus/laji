@@ -68,7 +68,7 @@ const HOME_QUERY = gql`
     preservedSpecimensWithImage: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
       total
     },
-    identify: units(cache: true, hasUnitMedia: true, unidentified: true, page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
+    identify: units(cache: true, hasUnitMedia: true, unidentified: true, sourceId: "KE.389,KE.1221,KE.176", page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
       results {
         unit {
           media {
