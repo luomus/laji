@@ -2,23 +2,42 @@
   <div class="top-bar">
     <div class="pull-right button-container">
       <div>
-        <button class="btn btn-default" (click)="backToSiteSelectionClick.emit()">{{ 'identification.recordings.backToSiteSelection' | translate }}</button>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="backToSiteSelectionClick.emit()"
+        >
+          {{ 'identification.recordings.backToSiteSelection' | translate }}
+        </button>
       </div>
       <div>
-        <lu-button [disabled]="!statusInfo.hasPreviousRecording || buttonsAreDisabled" (click)="previousRecordingClick.emit()">{{ 'theme.kerttu.previousRecording' | translate }}</lu-button>
+        <button
+          class="btn btn-default"
+          [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
+          (click)="previousRecordingClick.emit()"
+        >
+          {{ 'theme.kerttu.previousRecording' | translate }}
+        </button>
         <laji-info [html]="'theme.kerttu.info.previousRecording' | translate"></laji-info>
       </div>
       <div>
-        <lu-button [disabled]="buttonsAreDisabled" (click)="saveClick.emit()">{{ 'theme.kerttu.saveRecording' | translate }}</lu-button>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="saveClick.emit()"
+        >
+          {{ 'theme.kerttu.saveRecording' | translate }}
+        </button>
         <laji-info [html]="'theme.kerttu.info.saveRecording' | translate"></laji-info>
       </div>
       <div>
-        <lu-button
-          [disabled]="buttonsAreDisabled"
-          [role]="'success'"
-          (click)="nextRecordingClick.emit()">
+        <button
+          class="btn btn-success"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="nextRecordingClick.emit()"
+        >
           {{ 'theme.kerttu.nextRecording' | translate }}
-        </lu-button>
+        </button>
         <laji-info [html]="'theme.kerttu.info.nextRecording' | translate"></laji-info>
       </div>
     </div>
@@ -28,7 +47,7 @@
     [showZoomControl]="true"
     [showLoopControl]="false"
     [(mode)]="audioViewerMode"
-    [rectangles]="rectangles"
+    [rectangles]="audioViewerRectangles"
     [focusArea]="{xRange: [1, 9]}"
     [timePaddingOnZoom]="showWholeTimeRange ? 1 : 0"
     [zoomTime]="true"
@@ -51,10 +70,10 @@
     ></laji-audio-viewer-simple-settings>
   </ng-template>
   <ng-template #audioInfo let-audio="audio">
-      <span>
-        {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-        {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
-      </span>
+    <span>
+      {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+      {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
+    </span>
   </ng-template>
 </div>
 <div class="bottom-content">
@@ -125,10 +144,11 @@
     [recording]="recording"
     [(identifications)]="selectedSpecies"
     [loading]="loadingSpecies"
+    [buttonsDisabled]="buttonsDisabled || loadingSpecies"
     [birdRectangleColor]="birdRectangleColor"
     [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
     [drawActive]="drawBirdActive"
-    (drawClick)="onDrawBirdClick($event)"
+    (drawBoxClick)="onDrawBirdClick($event)"
     (deleteBoxClick)="removeDrawing($event)"
     (identificationsChange)="updateSpectrogramAndAnnotation()"
   ></bsg-identification-table>
@@ -144,7 +164,7 @@
             'btn-primary': drawNonBirdActive
            }"
         (click)="toggleDrawNonBird()"
-        [disabled]="loadingSpecies"
+        [disabled]="buttonsDisabled || loadingSpecies"
       >
         {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
       </button>
@@ -152,7 +172,7 @@
         *ngIf="annotation.nonBirdArea"
         class="btn btn-default ml-2"
         (click)="removeDrawing()"
-        [disabled]="loadingSpecies"
+        [disabled]="buttonsDisabled || loadingSpecies"
       >
         {{ 'identification.recordings.remove' | translate }}
       </button>

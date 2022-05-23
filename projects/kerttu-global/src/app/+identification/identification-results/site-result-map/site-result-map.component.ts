@@ -2,7 +2,7 @@ import { Component, OnChanges, ChangeDetectionStrategy, Input, SimpleChanges, Vi
 import { IGlobalSite, IIdentificationSiteStat } from '../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import * as L from 'leaflet';
+import { DivIcon, Point } from 'leaflet';
 import { GetPopupOptions } from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -103,7 +103,7 @@ export class SiteResultMapComponent implements OnChanges {
     };
   }
 
-  private iconCreateFunction(cluster: any) {
+  private iconCreateFunction(cluster: any): DivIcon {
     const markers = cluster.getAllChildMarkers();
     const counts = markers.map(marker => marker.feature.properties.count);
     const count = counts.reduce((sum, curr) => (sum + curr), 0);
@@ -119,8 +119,8 @@ export class SiteResultMapComponent implements OnChanges {
       c += 'small'; // green
     }
 
-    return new L.DivIcon({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
-      className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+    return new DivIcon({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
+      className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {

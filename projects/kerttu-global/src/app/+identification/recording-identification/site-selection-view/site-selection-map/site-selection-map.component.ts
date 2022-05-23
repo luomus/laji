@@ -5,7 +5,7 @@ import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Polygon } from 'geojson';
 import { GetPopupOptions } from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
-import * as L from 'leaflet';
+import { DivIcon, Point } from 'leaflet';
 
 interface LajiMapData extends LajiMapDataOptions {
   groupContainer: any;
@@ -116,7 +116,7 @@ export class SiteSelectionMapComponent implements OnChanges {
     };
   }
 
-  private iconCreateFunction(cluster: any) {
+  private iconCreateFunction(cluster: any): DivIcon {
     const childCount = cluster.getChildCount();
     const markers = cluster.getAllChildMarkers();
     const sites = markers.map(marker => marker.feature.properties.id);
@@ -131,8 +131,8 @@ export class SiteSelectionMapComponent implements OnChanges {
       c += 'small';
     }
 
-    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>',
-      className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+    return new DivIcon({ html: '<div><span>' + childCount + '</span></div>',
+      className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {

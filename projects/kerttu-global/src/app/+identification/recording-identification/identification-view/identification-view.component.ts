@@ -45,15 +45,14 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   @Input() recording: IGlobalRecording;
   @Input() annotation: IGlobalRecordingAnnotation;
   @Input() statusInfo: IGlobalRecordingStatusInfo;
-  @Input() buttonsAreDisabled = false;
+  @Input() buttonsDisabled = false;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
-
   loadingSpecies = false;
-  audioViewerMode: AudioViewerMode = 'default';
-  rectangles: IAudioViewerRectangle[] = [];
 
   spectrogramConfig: ISpectrogramConfig;
+  audioViewerMode: AudioViewerMode = 'default';
+  audioViewerRectangles: IAudioViewerRectangle[] = [];
   showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 
@@ -89,7 +88,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.rectangles = [];
+      this.audioViewerRectangles = [];
       this.updateSelectedSpecies();
     }
   }
@@ -220,7 +219,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   private updateSpectrogramRectangles() {
-    this.rectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
+    this.audioViewerRectangles = this.selectedSpecies.reduce((rectangles, species, speciesIdx) => {
       (species.annotation.boxes || []).forEach((box, idx) => {
         rectangles.push({
           label: (speciesIdx + 1) + KerttuGlobalUtil.numberToLetter(idx + 1),
@@ -232,7 +231,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     }, []);
 
     if (this.annotation.nonBirdArea) {
-      this.rectangles.push({
+      this.audioViewerRectangles.push({
         label: this.nonBirdLabel,
         area: this.annotation.nonBirdArea,
         color: this.nonBirdRectangleColor

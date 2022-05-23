@@ -148,6 +148,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
           this.handleError(err);
         });
       }
+      this.cdr.markForCheck();
     });
   }
 

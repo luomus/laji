@@ -30,7 +30,7 @@ export class TaxonSelectComponent {
   @Output() taxonSelect = new EventEmitter<IGlobalSpecies>();
 
   dataSource: Observable<any>;
-  value: string | undefined = '';
+  value? = '';
   loading = false;
 
   private tokenMinLength = 3;
@@ -51,7 +51,8 @@ export class TaxonSelectComponent {
           return ObservableOf(data);
         }
         return ObservableOf([]);
-      }), );
+      })
+    );
   }
 
   onTaxonSelect(result: any) {

@@ -24,32 +24,33 @@ export class IdentificationTableComponent implements OnChanges {
   @Input() recording: IGlobalRecording;
   @Input() identifications: IGlobalSpeciesWithAnnotation[];
   @Input() loading = false;
+  @Input() buttonsDisabled = false;
   @Input() componentId = 0;
   @Input() drawActive = false;
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
 
-  drawClickedByIdx = [];
+  drawBoxClickedByIdx = [];
   panelOpenById: Record<string, boolean> = {};
 
   @Output() identificationsChange = new EventEmitter<IGlobalSpeciesWithAnnotation[]>();
-  @Output() drawClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
+  @Output() drawBoxClick = new EventEmitter<{drawClicked: boolean; rowIndex: number}>();
   @Output() deleteBoxClick = new EventEmitter<{rowIndex: number; boxIndex: number}>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.identifications || !this.drawActive) {
-      this.drawClickedByIdx = this.identifications.map(() => false);
+      this.drawBoxClickedByIdx = this.identifications.map(() => false);
 
       const prevLength = Object.keys(this.panelOpenById).length;
       const currLength = this.identifications?.length || 0;
 
-      this.panelOpenById = this.identifications.reduce((result, identification, idx) => {
+      this.panelOpenById = this.identifications.reduce((panelOpenById, identification, idx) => {
         if (currLength > prevLength) {
-          result[identification.id] = idx === this.identifications.length - 1;
+          panelOpenById[identification.id] = idx === this.identifications.length - 1;
         } else {
-          result[identification.id] = this.panelOpenById[identification.id];
+          panelOpenById[identification.id] = this.panelOpenById[identification.id];
         }
-        return result;
+        return panelOpenById;
       }, {});
     }
   }
@@ -64,14 +65,14 @@ export class IdentificationTableComponent implements OnChanges {
     this.identificationsChange.emit(this.identifications);
   }
 
-  toggleDrawButton(rowIndex: number) {
-    this.drawClickedByIdx = this.drawClickedByIdx.map((value, idx) => {
+  toggleDrawBox(rowIndex: number) {
+    this.drawBoxClickedByIdx = this.drawBoxClickedByIdx.map((value, idx) => {
       if (idx === rowIndex) {
         return !value;
       }
       return false;
     });
-    this.drawClick.emit({drawClicked: this.drawClickedByIdx[rowIndex], rowIndex});
+    this.drawBoxClick.emit({drawClicked: this.drawBoxClickedByIdx[rowIndex], rowIndex});
   }
 
   scrollDrawButtonIntoView(rowIndex: number) {

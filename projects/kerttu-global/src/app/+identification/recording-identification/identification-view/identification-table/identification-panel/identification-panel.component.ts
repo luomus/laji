@@ -22,7 +22,7 @@ export class IdentificationPanelComponent {
   @Input() recording: IGlobalRecording;
   @Input() identification: IGlobalSpeciesWithAnnotation;
   @Input() buttonsDisabled = false;
-  @Input() drawActive = false;
+  @Input() drawBoxActive = false;
   @Input() open = true;
   @Input() idx?: number;
   @Input() componentId = '';
@@ -34,7 +34,7 @@ export class IdentificationPanelComponent {
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();
   @Output() deleteClick = new EventEmitter();
-  @Output() toggleDrawClick = new EventEmitter();
+  @Output() drawBoxClick = new EventEmitter();
   @Output() deleteBoxClick = new EventEmitter<number>();
   @Output() openChange = new EventEmitter<boolean>();
 
