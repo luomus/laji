@@ -3,7 +3,7 @@ import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Polygon } from 'geojson';
-import { GetPopupOptions } from 'laji-map';
+import {GetPopupOptions, LajiMapCreateEvent} from 'laji-map';
 import { TranslateService } from '@ngx-translate/core';
 import { DivIcon, Point } from 'leaflet';
 
@@ -75,7 +75,8 @@ export class SiteSelectionMapComponent implements OnChanges {
     }
   }
 
-  onCreate(rect?: Polygon) {
+  onCreate(events: LajiMapCreateEvent[]) {
+    const rect = events[0]?.feature?.geometry as Polygon;
     if (rect) {
       const sites = this.getSitesInsideRectangle(rect);
       this.addOrRemoveSites(sites.map(site => site.id));
