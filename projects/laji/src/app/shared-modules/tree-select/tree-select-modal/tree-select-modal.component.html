@@ -60,7 +60,7 @@
           <div class="col-md-4">
             <h5>{{selectedTitle}}</h5>
             <div class="scrollable-selection-list">
-              <laji-selected-tree-nodes [selectedOptions]="selectedOptions" (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+              <laji-selected-tree-nodes [selectedOptions]="selectedOptions" [includedTitle]="includedTitle" [excludedTitle]="excludedTitle" (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
             </div>
           </div>
         </div>

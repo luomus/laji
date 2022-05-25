@@ -20,6 +20,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   @Input() modalTitle = '';
   @Input() browseTitle = '';
   @Input() selectedTitle = '';
+  @Input() includedTitle = '';
+  @Input() excludedTitle = '';
   @Input() okButtonLabel = '';
   @Input() clearButtonLabel = '';
   // eslint-disable-next-line @angular-eslint/no-output-native
