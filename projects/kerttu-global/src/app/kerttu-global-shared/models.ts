@@ -101,6 +101,7 @@ export interface IUserStat {
 export interface IGlobalRecording extends IAudio {
   id: number;
   dateTime: string;
+  xRange: number[];
   site: IGlobalSite;
 }
 
