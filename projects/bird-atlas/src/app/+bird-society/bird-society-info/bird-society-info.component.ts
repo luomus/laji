@@ -1,14 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { AtlasApiService, AtlasGrid, AtlasGridSquare } from '../../core/atlas-api.service';
-import { BreadcrumbService } from '../../core/breadcrumb.service';
-
-interface BirdSocietyInfoData {
-  grid: any[];
-  societyStats: any;
-};
+import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
+import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 
 @Component({
   templateUrl: 'bird-society-info.component.html',
@@ -16,7 +10,8 @@ interface BirdSocietyInfoData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoComponent implements OnInit {
-  atlasGrid: AtlasGrid;
+  birdSociety: BirdSociety;
+  loading = true;
   selectedDataIdx = -1;
 
   constructor(
@@ -29,35 +24,23 @@ export class BirdSocietyInfoComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.pipe(
       tap(() => {
-        // this.breadcrumbs.setBreadcrumbName(BreadcrumbId.SpeciesInfo, undefined);
-        //this.loading = true;
-        //this.cdr.markForCheck();
+        this.breadcrumbs.setBreadcrumbName(BreadcrumbId.BirdSocietyInfo, undefined);
+        this.loading = true;
       }),
       switchMap(params => this.atlasApi.getBirdSociety(params.get('id'))),
       tap(data => {
-        // const name: string = data.taxon.vernacularName[this.translate.currentLang];
-        /*
-        this.breadcrumbs.setBreadcrumbName(
-          BreadcrumbId.SpeciesInfo,
-          name.charAt(0).toUpperCase() + name.substring(1)
-        );
-        this.headerService.setHeaders({
-          title: `${capitalize(data.taxon.vernacularName[this.translate.currentLang])} | ${this.translate.instant('ba.header.title')}`
-        });
+        this.breadcrumbs.setBreadcrumbName(BreadcrumbId.BirdSocietyInfo, data.birdAssociationArea.value);
         this.loading = false;
-        this.cdr.detectChanges();
- */
       })
-    ).subscribe(atlasGrid => {
-      this.atlasGrid = atlasGrid;
+    ).subscribe(birdSociety => {
+      this.birdSociety = birdSociety;
       this.cdr.markForCheck();
     });
   }
 
   onSelectDataIdx(idx: number) {
-    if (idx > 0 && idx < this.atlasGrid.length) {
+    if (idx > 0 && idx < this.birdSociety.gridSquares.length) {
       this.selectedDataIdx = idx;
-      console.log(this.atlasGrid[this.selectedDataIdx]);
       this.cdr.markForCheck();
     }
   }
@@ -65,5 +48,10 @@ export class BirdSocietyInfoComponent implements OnInit {
   resetSelected() {
     this.selectedDataIdx = -1;
     this.cdr.markForCheck();
+  }
+
+  getActivityCategoriesAsList() {
+    if (!this.birdSociety?.activityCategories) { return []; }
+    return Object.values(this.birdSociety.activityCategories);
   }
 }

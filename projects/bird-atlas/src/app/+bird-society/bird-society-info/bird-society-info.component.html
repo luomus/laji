@@ -1,14 +1,14 @@
-<div class="container">
-  <h1>Society info component</h1>
+<div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
+<div *ngIf="!loading" class="container">
+  <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
   <div class="d-flex flex-row flex-wrap">
     <ba-bird-society-info-map
-      [atlasGrid]="atlasGrid"
+      [atlasGrid]="birdSociety?.gridSquares"
       [selectedDataIdx]="selectedDataIdx"
       (selectDataIdx)="onSelectDataIdx($event)"
       class="d-block mr-5"
     ></ba-bird-society-info-map>
     <div class="side-panel">
-      <h2>Yhdistyksen tilastoja</h2>
       <ng-container *ngIf="selectedDataIdx > 0 else society">
         <ng-container *ngTemplateOutlet="square"></ng-container>
       </ng-container>
@@ -24,79 +24,45 @@
       <th>%</th>
       <th>Ruutua</th>
     </tr>
-    <tr>
-      <td>Erinomainen</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <td>Hyvä</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <td>Tyydyttävä</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <td>Välttävä</td>
-      <td>0</td>
-      <td>0</td>
+    <tr *ngFor="let cat of getActivityCategoriesAsList()">
+      <td>{{ cat.name }}</td>
+      <td>{{ cat.squarePercentage | number: '1.0-2'}}</td>
+      <td>{{ cat.squareSum }}</td>
     </tr>
   </table>
   <p>Yhteensä 222 ruutua.</p>
 </ng-template>
 
 <ng-template #square>
-  <div class="grid-square-panel" *ngIf="atlasGrid[selectedDataIdx] as selected">
+  <div class="grid-square-panel" *ngIf="birdSociety.gridSquares[selectedDataIdx] as selected">
     <div class="d-flex flex-row justify-between">
       <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
       <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>
     </div>
-    <h4 class="mt-2">Selvitysaste</h4>
-    <h6>Pesimävarmuussumman raja-arvot</h6>
+    <p>Selvitysaste: {{ selected.activityCategory.value }}</p>
+    <p>Pesimävarmuussumma: {{ selected.atlasClassSum }}</p>
+    <p><a [routerLink]="'/grid/' + selected.coordinates">Lajit</a></p>
     <table>
       <tr>
+        <th>Pesimävarmuussumma</th>
+        <th>Raja-arvo</th>
+      </tr>
+      <tr>
         <td>Välttävä</td>
-        <td>-1</td>
+        <td>{{ selected.level2 | number: '1.0-2' }}</td>
       </tr>
       <tr>
         <td>Tyydyttävä</td>
-        <td>-1</td>
+        <td>{{ selected.level3 | number: '1.0-2' }}</td>
       </tr>
       <tr>
         <td>Hyvä</td>
-        <td>-1</td>
+        <td>{{ selected.level4 | number: '1.0-2' }}</td>
       </tr>
       <tr>
         <td>Erinomainen</td>
-        <td>-1</td>
+        <td>{{ selected.level5 | number: '1.0-2' }}</td>
       </tr>
     </table>
-    <table>
-      <tr>
-        <th>Lajien pesinnän varmuusluokka</th>
-        <th>Lajia</th>
-      </tr>
-      <tr>
-        <td>Varma</td>
-        <td>-1</td>
-      </tr>
-      <tr>
-        <td>Todennäköinen</td>
-        <td>-1</td>
-      </tr>
-      <tr>
-        <td>Mahdollinen</td>
-        <td>-1</td>
-      </tr>
-      <tr>
-        <td>Epätodennäköinen</td>
-        <td>-1</td>
-      </tr>
-    </table>
-    Täydellisiä lajilistoja:
-    <h4>Lajit</h4>
   </div>
 </ng-template>

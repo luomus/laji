@@ -35,6 +35,18 @@ export interface AtlasGridSquare {
   speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
+export interface BirdSociety {
+  gridSquares: AtlasGrid;
+  birdAssociationArea: {
+    key: string;
+    value: string;
+  };
+  activityCategories: Record<AtlasActivityCategory, {
+    name: string;
+    squareSum: number;
+    squarePercentage: number;
+  }>;
+}
 
 interface VernacularName {fi: string; sv: string; en: string};
 export interface AtlasTaxon {
@@ -66,9 +78,9 @@ export class AtlasApiService {
   }
 
   @cacheReturnObservable(86400000) // 1 day
-  getBirdSociety(id: string): Observable<AtlasGrid> {
+  getBirdSociety(id: string): Observable<BirdSociety> {
     const url = `${BASE_URL}/grid/birdAssociation/${id}`;
-    return <Observable<AtlasGrid>>this.http.get(url);
+    return <Observable<BirdSociety>>this.http.get(url);
   }
 
   @cacheReturnObservable(30000) // 30 seconds
