@@ -87,18 +87,6 @@ const legends: Record<ColorMode, { color: string; label: string }[]> = {
   }))
 };
 
-const populateTestData = (atlasGrid: AtlasGrid) => {
-  atlasGrid.forEach(g => {
-    g.speciesCount = Math.random() * 200;
-    const ac = <AtlasActivityCategory>[
-      'MY.atlasActivityCategoryEnum0', 'MY.atlasActivityCategoryEnum1',
-      'MY.atlasActivityCategoryEnum2', 'MY.atlasActivityCategoryEnum3',
-      'MY.atlasActivityCategoryEnum4', 'MY.atlasActivityCategoryEnum5'
-    ][Math.round(Math.random() * 5)];
-    g.activityCategory = {key: ac, value: undefined};
-  });
-};
-
 @Component({
   selector: 'ba-grid-index-map',
   templateUrl: './grid-index-map.component.html',
@@ -152,9 +140,6 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.atlasGrid) {
       const change = changes.atlasGrid;
-      if (environment.production === false) {
-        populateTestData(change.currentValue);
-      }
       this.mapData$.next(this.getMapData(change.currentValue));
     }
   }
