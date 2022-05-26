@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 import { News } from 'projects/laji-api-client/src/public-api';
 import { LajiApiService, Lang } from './core/api.service';
 import { ScrollPositionService } from './core/scroll-position.service';
+import { FooterService } from './core/footer.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ba-app',
@@ -26,7 +27,7 @@ import { ScrollPositionService } from './core/scroll-position.service';
       <laji-technical-news-dumb [news]="news$ | async" [absoluteLink]="'http://laji.fi/'" class="container"></laji-technical-news-dumb>
       <router-outlet></router-outlet>
     </div>
-    <ba-footer></ba-footer>
+    <ba-footer *ngIf="showFooter$ | async"></ba-footer>
   `,
   styleUrls: [
     './app.component.scss'
@@ -36,12 +37,15 @@ import { ScrollPositionService } from './core/scroll-position.service';
 export class AppComponent {
   breadcrumbs$: Observable<IBreadcrumb[]> = this.breadcrumbs.breadcrumbs$;
   news$: Observable<News[]> = this.api.getNews({ tag: 'technical', pageSize: 5, lang: <Lang>this.translate.currentLang });
+  showFooter$ = this.footerService.show$.pipe(tap(() => { setTimeout(() => { this.cdr.markForCheck(); }); }));
 
   constructor(
     private translate: TranslateService,
     private breadcrumbs: BreadcrumbService,
     private headerService: HeaderService,
     private api: LajiApiService,
+    private footerService: FooterService,
+    private cdr: ChangeDetectorRef,
     scrollPositionService: ScrollPositionService // has to be injected for the service to initialize
   ) {
     this.headerService.initialize();
