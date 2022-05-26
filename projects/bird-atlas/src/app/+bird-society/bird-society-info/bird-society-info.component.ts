@@ -13,6 +13,14 @@ export class BirdSocietyInfoComponent implements OnInit {
   birdSociety: BirdSociety;
   loading = true;
   selectedDataIdx = -1;
+  activityCategoryClass = {
+    'MY.atlasActivityCategoryEnum0': 'limit-neutral',
+    'MY.atlasActivityCategoryEnum1': 'limit-danger',
+    'MY.atlasActivityCategoryEnum2': 'limit-warning',
+    'MY.atlasActivityCategoryEnum3': 'limit-success',
+    'MY.atlasActivityCategoryEnum4': 'limit-success',
+    'MY.atlasActivityCategoryEnum5': 'limit-success'
+  };
 
   constructor(
     private atlasApi: AtlasApiService,

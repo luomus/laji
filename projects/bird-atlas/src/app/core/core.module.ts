@@ -6,6 +6,7 @@ import { ScrollPositionService } from './scroll-position.service';
 import { BreadcrumbService } from './breadcrumb.service';
 import { LajiApiService } from './api.service';
 import { AtlasApiService } from './atlas-api.service';
+import { FooterService } from './footer.service';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import { AtlasApiService } from './atlas-api.service';
     ScrollPositionService,
     BreadcrumbService,
     LajiApiService,
-    AtlasApiService
+    AtlasApiService,
+    FooterService
   ],
   imports: [
     CommonModule,
