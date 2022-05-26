@@ -1,3 +1,11 @@
-<div class="container">
-  <a [routerLink]="['ML.1091']">Helsingin seutu</a>
+<div *ngIf="birdSocieties$ | async; let birdSocieties; else loading" class="container">
+  <ul>
+    <li *ngFor="let birdSociety of birdSocieties">
+      <a [routerLink]="[birdSociety.key]">{{ birdSociety.value }}</a>
+    </li>
+  </ul>
 </div>
+
+<ng-template #loading>
+  <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
+</ng-template>
