@@ -1126,6 +1126,7 @@
   "observation.form.noImages": "Annetuilla hakuehdoilla ei löytynyt yhtään kuvaa.",
   "observation.form.nonInvasive": "Ei-vieraslajit",
   "observation.form.observer": "Havainnoija",
+  "observation.form.onlyFinShortcut": "Havainnot Suomesta",
   "observation.form.onlyNonStateLands": "Yksityismaat / Valtion maat",
   "observation.form.onlyNonStateLands.false": "LajiGIS-aineistot valtion mailla",
   "observation.form.onlyNonStateLands.true": "LajiGIS-aineistot yksityismailla",

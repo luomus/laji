@@ -760,4 +760,11 @@
     </a>
     <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
   </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="{ countryId: 'ML.206' }">
+    {{ 'observation.form.onlyFinShortcut' | translate }}
+    </a>
+  </div>
 </section>
