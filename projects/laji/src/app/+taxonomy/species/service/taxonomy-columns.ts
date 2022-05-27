@@ -158,7 +158,7 @@ export class TaxonomyColumns {
     },
     {
       name: 'biogeographicalProvinceOccurrence',
-      label: 'result.gathering.biogeographicalProvince',
+      label: 'result.gathering.biogeographicalProvinceOccurrence',
       selectField: 'occurrences',
       cellTemplate: 'biogeographicalProvinceOccurrence',
       width: 200
