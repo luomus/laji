@@ -18,6 +18,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
 
   public email: string;
   public isFront = false;
+  public showLatest = true;
   public publicity = Document.PublicityRestrictionsEnum;
 
   private subRoute: Subscription;
@@ -40,6 +41,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
       startWith(true)
     ).subscribe(() => {
       this.isFront = this.router.isActive('/vihko/home', true);
+      this.showLatest = !this.router.isActive('/vihko/tools/import', true);
     });
 
     this.headerService.setHeaders({
@@ -56,4 +58,5 @@ export class HasekaComponent implements OnInit, OnDestroy {
   showDocumentViewer(document: Document) {
     this.documentViewerFacade.showDocument({document, own: true});
   }
+
 }
