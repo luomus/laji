@@ -31,7 +31,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
-
+import { HistoryService } from '../../../shared/service/history.service';
 
 
 @Component({
@@ -98,7 +98,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private translate: TranslateService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private deleteDocumentService: DeleteOwnDocumentService
+    private deleteDocumentService: DeleteOwnDocumentService,
+    private historyService: HistoryService
   ) { }
 
   ngOnInit() {
@@ -322,6 +323,20 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.deleteDocumentService.emitChildEvent(e);
       this.closeDocument();
       this.deleteDocumentService.emitChildEvent(null);
+
+      if (!this.router.url.includes('/view')) {
+        return;
+      }
+
+      if(this.historyService.isFirstLoad()) {
+        this.router.navigate(
+          this.localizeRouterService.translateRoute(['/vihko/home/'])
+        );
+      } else {
+        this.router.navigate(
+          this.localizeRouterService.translateRoute([this.historyService.getPrevious()])
+        );
+      }
     }
   }
 

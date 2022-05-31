@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
@@ -21,6 +21,8 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Input() imageData: {[key: string]: any} = {};
   @Input() useWorldMap = true;
   @Input() zoomToData = false;
+
+  @Output() onDelete = new EventEmitter();
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -64,9 +66,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   onDocumentDeleted(e) {
     if (e) {
-      this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
-      );
+      this.onDelete.emit();
     }
   }
 
