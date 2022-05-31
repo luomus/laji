@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
+import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
 
 @Component({
   templateUrl: 'bird-society-info.component.html',
@@ -13,6 +14,7 @@ export class BirdSocietyInfoComponent implements OnInit {
   birdSociety: BirdSociety;
   loading = true;
   selectedDataIdx = -1;
+  visualizationMode: VisualizationMode = 'activityCategory';
   activityCategoryClass = {
     'MY.atlasActivityCategoryEnum0': 'limit-neutral',
     'MY.atlasActivityCategoryEnum1': 'limit-danger',
@@ -61,5 +63,9 @@ export class BirdSocietyInfoComponent implements OnInit {
   getActivityCategoriesAsList() {
     if (!this.birdSociety?.activityCategories) { return []; }
     return Object.values(this.birdSociety.activityCategories);
+  }
+
+  onVisualizationChange(visualization: VisualizationMode) {
+    this.visualizationMode = visualization;
   }
 }

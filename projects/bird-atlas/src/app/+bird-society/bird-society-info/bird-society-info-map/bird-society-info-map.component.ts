@@ -8,6 +8,7 @@ import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinat
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
   grid: AtlasGrid;
@@ -25,14 +26,20 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   ],
   type: 'FeatureCollection'
 });
-const getGetFeatureStyle = (selectedIdx: number) => (
+
+const getFeatureColor = (gridSq: AtlasGridSquare, visualizationMode: VisualizationMode): string => (
+  visualizationMode === 'activityCategory'
+    ? getAtlasActivityCategoryColor(gridSq.activityCategory.key)
+    : getSpeciesCountColor(gridSq.speciesCount)
+);
+const getGetFeatureStyle = (selectedIdx: number, grid: AtlasGrid, visualizationMode: VisualizationMode) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
     if (opt.featureIdx === selectedIdx) {
       return {
         weight: 2,
         color: '#000000',
         opacity: .6,
-        fillColor: '#ff00ff',
+        fillColor: '#' + getFeatureColor(grid[opt.featureIdx], visualizationMode),
         fillOpacity: .5
       };
     } else {
@@ -40,7 +47,7 @@ const getGetFeatureStyle = (selectedIdx: number) => (
         weight: 1,
         color: '#000000',
         opacity: .2,
-        fillColor: '#ff00ff',
+        fillColor: '#' + getFeatureColor(grid[opt.featureIdx], visualizationMode),
         fillOpacity: .4
       };
     }
@@ -55,6 +62,7 @@ const getGetFeatureStyle = (selectedIdx: number) => (
 })
 export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() atlasGrid: AtlasGrid;
+  @Input() visualizationMode: VisualizationMode = 'activityCategory';
   @Input() set selectedDataIdx(idx: number) { this.setSelectedDataIdx(idx); };
   get selectedDataIdx() { return this._selectedDataIdx; };
   @Output() selectDataIdx = new EventEmitter<number>();
@@ -63,6 +71,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   private map: any;
   private mapData$ = new BehaviorSubject<MapData>(undefined);
+  private mapInitialized = false;
   private _selectedDataIdx = -1;
   private unsubscribe$ = new Subject<void>();
 
@@ -92,8 +101,9 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
       filter(d => d !== undefined)
     ).subscribe(mapData => {
       this.map.setData(mapData.data);
-      if (mapData.zoomToData) {
+      if (mapData.zoomToData || !this.mapInitialized) {
         this.map.zoomToData();
+        this.mapInitialized = true;
       }
     });
   }
@@ -105,7 +115,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         zoomToData: true,
         data: {
           featureCollection: <any>getFeatureCollection(changes.atlasGrid.currentValue),
-          getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx),
+          getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, changes.atlasGrid.currentValue, this.visualizationMode),
           on: {
             click: (e, d) => {
               this.selectDataIdx.emit(d.idx);
@@ -114,14 +124,21 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         }
       });
     }
+    if (changes.visualizationMode?.currentValue) {
+      this.triggerFeatureStyleUpdate();
+    }
   }
 
   private setSelectedDataIdx(idx: number) {
     this._selectedDataIdx = idx;
+    this.triggerFeatureStyleUpdate();
+  }
+
+  private triggerFeatureStyleUpdate() {
     const curr = this.mapData$.getValue();
     this.mapData$.next({grid: curr?.grid, zoomToData: false, data: {
       ...curr?.data,
-      getFeatureStyle: getGetFeatureStyle(idx)
+      getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, curr?.grid, this.visualizationMode)
     }});
   }
 

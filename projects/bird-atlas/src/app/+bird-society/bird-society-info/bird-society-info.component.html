@@ -2,12 +2,19 @@
 <div *ngIf="!loading" class="container">
   <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
   <div class="d-flex flex-row flex-wrap">
-    <ba-bird-society-info-map
-      [atlasGrid]="birdSociety?.gridSquares"
-      [selectedDataIdx]="selectedDataIdx"
-      (selectDataIdx)="onSelectDataIdx($event)"
-      class="d-block mr-5"
-    ></ba-bird-society-info-map>
+    <div>
+      <ba-bird-society-info-map
+        [atlasGrid]="birdSociety?.gridSquares"
+        [selectedDataIdx]="selectedDataIdx"
+        [visualizationMode]="visualizationMode"
+        (selectDataIdx)="onSelectDataIdx($event)"
+        class="d-block mr-5"
+      ></ba-bird-society-info-map>
+      <div class="d-flex flex-row flex-wrap my-4 legend-container">
+        <ba-visualization-legend [visualization]="visualizationMode"></ba-visualization-legend>
+        <ba-visualization-selector [visualization]="visualizationMode" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
+      </div>
+    </div>
     <div class="side-panel">
       <ng-container *ngIf="selectedDataIdx > 0 else society">
         <ng-container *ngTemplateOutlet="square"></ng-container>
