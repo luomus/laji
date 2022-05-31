@@ -10,12 +10,13 @@
     margin-right: 3px;
 
     label {
+      display: block;
       margin-bottom: 0;
       font-size: $fs-1;
     }
 
     bswitch {
-      display: block;
+      display: inline-block;
     }
   }
 }

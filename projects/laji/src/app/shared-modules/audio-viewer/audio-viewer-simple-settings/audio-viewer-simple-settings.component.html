@@ -9,6 +9,7 @@
     (ngModelChange)="showWholeTimeRangeChange.emit($event)"
     [switch-base-class]="'bootstrap-switch'">
   </bSwitch>
+  <laji-info *ngIf="showWholeTimeRangeInfo" [placement]="'right'" [html]="showWholeTimeRangeInfo"></laji-info>
 </div>
 <div>
   <label>{{ showWholeFrequencyRangeLabel }}</label>
@@ -21,4 +22,5 @@
     (ngModelChange)="showWholeFrequencyRangeChange.emit($event)"
     [switch-base-class]="'bootstrap-switch'">
   </bSwitch>
+  <laji-info *ngIf="showWholeFrequencyRangeInfo" [placement]="'right'" [html]="showWholeFrequencyRangeInfo"></laji-info>
 </div>

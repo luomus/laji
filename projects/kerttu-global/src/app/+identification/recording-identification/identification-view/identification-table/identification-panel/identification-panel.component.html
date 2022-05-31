@@ -4,9 +4,12 @@
       <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container>{{ identification.commonName }} - {{ identification.scientificName }}
     </strong>
     <div class="pull-right">
-      <a class="btn btn-sm btn-default mr-2" [routerLink]="['/validation/species', '' + identification.id] | localize" target="_blank" (click)="stopPropagation($event)">
-        <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
-      </a>
+      <div class="d-inline mr-3">
+        <a class="btn btn-sm btn-default" [routerLink]="['/validation/species', '' + identification.id] | localize" target="_blank" (click)="stopPropagation($event)">
+          <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.recordings.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
+        </a>
+        <laji-info (click)="stopPropagation($event)" [html]="'identification.recordings.createTemplates.info' | translate"></laji-info>
+      </div>
       <button class="btn btn-danger btn-sm" (click)="onDeleteClick($event)" [disabled]="buttonsDisabled">x</button>
     </div>
   </div>

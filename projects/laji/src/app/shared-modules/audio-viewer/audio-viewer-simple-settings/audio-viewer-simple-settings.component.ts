@@ -11,6 +11,8 @@ export class AudioViewerSimpleSettingsComponent {
   @Input() showWholeTimeRange = false;
   @Input() showWholeFrequencyRangeLabel = '';
   @Input() showWholeTimeRangeLabel = '';
+  @Input() showWholeFrequencyRangeInfo = '';
+  @Input() showWholeTimeRangeInfo = '';
 
   @Output() showWholeFrequencyRangeChange = new EventEmitter<boolean>();
   @Output() showWholeTimeRangeChange = new EventEmitter<boolean>();
