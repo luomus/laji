@@ -58,6 +58,7 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
 import { KerttuAudioViewerComponent } from './kerttu/kerttu-audio-viewer/kerttu-audio-viewer.component';
 import { AudioInfoComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info.component';
 import { AudioInfoMapComponent } from './kerttu/kerttu-audio-viewer/audio-info/audio-info-map/audio-info-map.component';
+import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 
 /* eslint-enable max-len */
 
@@ -116,7 +117,8 @@ import { AudioInfoMapComponent } from './kerttu/kerttu-audio-viewer/audio-info/a
     KerttuLetterResultTableComponent,
     KerttuAudioViewerComponent,
     AudioInfoComponent,
-    AudioInfoMapComponent
+    AudioInfoMapComponent,
+    KerttuClosedComponent
   ],
   providers: [
     QualityService,

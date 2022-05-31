@@ -23,6 +23,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
+import {KerttuClosedComponent} from './kerttu/kerttu-closed.component';
 
 /* eslint-enable max-len */
 
@@ -78,17 +79,16 @@ const routes: Routes = [
   },
   {
     path: 'kerttu',
-    component: KerttuComponent,
+    component: KerttuClosedComponent,
     data: {
       title: 'Kerttu'
     },
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
-      {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
-      {path: 'result', pathMatch: 'full', component: KerttuResultComponent}
+      {path: 'instructions', pathMatch: 'full', redirectTo: ''},
+      {path: 'expertise', pathMatch: 'full', redirectTo: ''},
+      {path: 'letters', pathMatch: 'full', redirectTo: ''},
+      {path: 'recordings', pathMatch: 'full', redirectTo: ''},
+      {path: 'result', pathMatch: 'full', redirectTo: ''}
     ]
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
