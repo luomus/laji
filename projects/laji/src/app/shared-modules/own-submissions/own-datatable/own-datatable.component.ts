@@ -30,6 +30,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { PlatformService } from '../../../root/platform.service';
 import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 export interface RowDocument {
   creator: string;
@@ -152,6 +153,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   usersId: string;
   usersIdSub: Subscription;
 
+  subscriptionDeleteOwnDocument: Subscription;
+
   downloadedDocumentId: string;
   fileType = 'csv';
 
@@ -180,7 +183,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     private documentService: DocumentService,
     private toastService: ToastsService,
     private logger: Logger,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private deleteOwnDocument: DeleteOwnDocumentService
   ) {
     this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(value => value || {})
@@ -222,6 +226,14 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.usersIdSub = this.userService.user$.pipe(
       map(user => user.id)
     ).subscribe(id => this.usersId = id);
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.allRows = this.allRows.filter(row => row.id !== id);
+        this.updateFilteredRows(false);
+        this.cd.markForCheck();
+      }
+    });
   }
 
   ngAfterViewChecked() {
@@ -237,6 +249,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.usersIdSub) {
       this.usersIdSub.unsubscribe();
     }
+
+    this.subscriptionDeleteOwnDocument?.unsubscribe()
   }
 
   goToStart(goToStart = true) {
