@@ -11,6 +11,7 @@ interface PathData {
 export class ScrollPositionService {
   private urlBeforeNavigation: string;
   private urlToPathData: {[url: string]: PathData} = {};
+  private lastNavigationWasPopstate = false;
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId) {
     if (!isPlatformBrowser(platformId)) { return; }
@@ -27,12 +28,14 @@ export class ScrollPositionService {
       if (e instanceof NavigationStart) {
         // save the scroll position for the page we are leaving
         this.saveScrollPosition();
+        this.lastNavigationWasPopstate = e.navigationTrigger === 'popstate';
       } else if (e instanceof NavigationEnd) {
-        // scroll to top on the new page
         window.scrollTo({
           top: 0,
           behavior: 'auto'
         });
+        this.recallScrollPosition();
+
         // update the current url
         this.urlBeforeNavigation = e.url;
       }
@@ -40,7 +43,7 @@ export class ScrollPositionService {
   }
 
   recallScrollPosition() {
-    if (!isPlatformBrowser(this.platformId) || !(this.router.url in this.urlToPathData)) { return; }
+    if (!isPlatformBrowser(this.platformId) || !this.lastNavigationWasPopstate || !(this.router.url in this.urlToPathData)) { return; }
     /*
       Delaying execution until the next event cycle allows for this function to be
       called before the DOM is updated. Eg. in a tap pipe in an observable that is
