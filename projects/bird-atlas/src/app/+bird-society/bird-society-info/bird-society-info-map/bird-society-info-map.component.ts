@@ -8,11 +8,12 @@ import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinat
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { ScrollPositionService } from '../../../core/scroll-position.service';
 import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
   grid: AtlasGrid;
-  data: DataOptions;
+  dataOptions: DataOptions;
   zoomToData: boolean;
 };
 
@@ -76,7 +77,8 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   private unsubscribe$ = new Subject<void>();
 
   constructor(
-    private zone: NgZone
+    private zone: NgZone,
+    private scrollPositionService: ScrollPositionService
   ) {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
@@ -95,15 +97,23 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   }
 
   ngAfterViewInit(): void {
+    const pathData = this.scrollPositionService.getPathData();
     this.map.setRootElem(this.lajiMapElem.nativeElement);
     this.mapData$.pipe(
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
-      this.map.setData(mapData.data);
-      if (mapData.zoomToData || !this.mapInitialized) {
-        this.map.zoomToData();
+      this.map.setData(mapData.dataOptions);
+      if (!this.mapInitialized) {
+        if (pathData['map']) {
+          this.map.setNormalizedZoom(pathData['map'].zoom);
+          this.map.setCenter(pathData['map'].center);
+        } else {
+          this.map.zoomToData();
+        }
         this.mapInitialized = true;
+      } else if (mapData.zoomToData) {
+        this.map.zoomToData();
       }
     });
   }
@@ -113,7 +123,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
       this.mapData$.next({
         grid: changes.atlasGrid.currentValue,
         zoomToData: true,
-        data: {
+        dataOptions: {
           featureCollection: <any>getFeatureCollection(changes.atlasGrid.currentValue),
           getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, changes.atlasGrid.currentValue, this.visualizationMode),
           on: {
@@ -136,13 +146,18 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   private triggerFeatureStyleUpdate() {
     const curr = this.mapData$.getValue();
-    this.mapData$.next({grid: curr?.grid, zoomToData: false, data: {
-      ...curr?.data,
+    this.mapData$.next({grid: curr?.grid, zoomToData: false, dataOptions: {
+      ...curr?.dataOptions,
       getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, curr?.grid, this.visualizationMode)
     }});
   }
 
   ngOnDestroy(): void {
+    if (this.map) {
+      this.scrollPositionService.setPathData(
+        { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
+      );
+    }
     this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

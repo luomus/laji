@@ -2,10 +2,15 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
+interface PathData {
+  scrollPosition: number;
+  [additionalKeys: string | number]: any;
+}
+
 @Injectable()
 export class ScrollPositionService {
   private urlBeforeNavigation: string;
-  private urlToScrollPosition: {[url: string]: number} = {};
+  private urlToPathData: {[url: string]: PathData} = {};
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId) {
     if (!isPlatformBrowser(platformId)) { return; }
@@ -21,7 +26,7 @@ export class ScrollPositionService {
     router.events.subscribe(e => {
       if (e instanceof NavigationStart) {
         // save the scroll position for the page we are leaving
-        this.urlToScrollPosition[this.urlBeforeNavigation] = window.scrollY;
+        this.saveScrollPosition();
       } else if (e instanceof NavigationEnd) {
         // scroll to top on the new page
         window.scrollTo({
@@ -34,8 +39,8 @@ export class ScrollPositionService {
     });
   }
 
-  public recallScrollPosition() {
-    if (!isPlatformBrowser(this.platformId) || !(this.router.url in this.urlToScrollPosition)) { return; }
+  recallScrollPosition() {
+    if (!isPlatformBrowser(this.platformId) || !(this.router.url in this.urlToPathData)) { return; }
     /*
       Delaying execution until the next event cycle allows for this function to be
       called before the DOM is updated. Eg. in a tap pipe in an observable that is
@@ -44,9 +49,27 @@ export class ScrollPositionService {
      */
     setTimeout(() => {
       window.scrollTo({
-        top: this.urlToScrollPosition[this.router.url],
+        top: this.urlToPathData[this.router.url].scrollPosition,
         behavior: 'smooth'
       });
     });
+  }
+
+  setPathData(data: any) {
+    this.urlToPathData[this.urlBeforeNavigation] = {
+      ...this.urlToPathData[this.urlBeforeNavigation],
+      ...data
+    };
+  }
+  getPathData() {
+    return this.urlToPathData[this.urlBeforeNavigation] ?? {};
+  }
+
+  private saveScrollPosition() {
+    if (this.urlToPathData[this.urlBeforeNavigation]) {
+      this.urlToPathData[this.urlBeforeNavigation].scrollPosition = window.scrollY;
+    } else {
+      this.urlToPathData[this.urlBeforeNavigation] = { scrollPosition: window.scrollY };
+    }
   }
 }
