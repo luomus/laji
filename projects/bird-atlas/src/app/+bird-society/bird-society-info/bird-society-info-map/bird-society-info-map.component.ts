@@ -8,7 +8,7 @@ import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinat
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
-import { ScrollPositionService } from '../../../core/scroll-position.service';
+import { PopstateService } from '../../../core/popstate.service';
 import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
@@ -77,7 +77,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   constructor(
     private zone: NgZone,
-    private scrollPositionService: ScrollPositionService
+    private popstateService: PopstateService
   ) {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
@@ -96,7 +96,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   }
 
   ngAfterViewInit(): void {
-    const pathData = this.scrollPositionService.getPathData();
+    const pathData = this.popstateService.getPathData();
     this.map.setRootElem(this.lajiMapElem.nativeElement);
     this.mapData$.pipe(
       takeUntil(this.unsubscribe$),
@@ -150,7 +150,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   ngOnDestroy(): void {
     if (this.map) {
-      this.scrollPositionService.setPathData(
+      this.popstateService.setPathData(
         { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
       );
     }

@@ -5,7 +5,7 @@ import { BreadcrumbService, IBreadcrumb } from './core/breadcrumb.service';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 import { News } from 'projects/laji-api-client/src/public-api';
 import { LajiApiService, Lang } from './core/api.service';
-import { ScrollPositionService } from './core/scroll-position.service';
+import { PopstateService } from './core/popstate.service';
 import { FooterService } from './core/footer.service';
 import { tap } from 'rxjs/operators';
 
@@ -46,7 +46,7 @@ export class AppComponent {
     private api: LajiApiService,
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
-    scrollPositionService: ScrollPositionService // has to be injected for the service to initialize
+    popstateService: PopstateService // has to be injected for the service to initialize
   ) {
     this.headerService.initialize();
     translate.use('fi');

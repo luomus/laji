@@ -8,7 +8,7 @@ interface PathData {
 }
 
 @Injectable()
-export class ScrollPositionService {
+export class PopstateService {
   private urlBeforeNavigation: string;
   private urlToPathData: {[url: string]: PathData} = {};
   private lastNavigationWasPopstate = false;

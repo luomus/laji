@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
-import { ScrollPositionService } from '../../core/scroll-position.service';
+import { PopstateService } from '../../core/popstate.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
 
 @Component({
@@ -30,11 +30,11 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private breadcrumbs: BreadcrumbService,
     private cdr: ChangeDetectorRef,
-    private scrollPositionService: ScrollPositionService
+    private popstateService: PopstateService
   ) {}
 
   ngOnInit(): void {
-    const pathData = this.scrollPositionService.getPathData();
+    const pathData = this.popstateService.getPathData();
     this.selectedDataIdx = pathData['selectedDataIdx'] ?? -1;
     this.route.paramMap.pipe(
       tap(() => {
@@ -74,6 +74,6 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.scrollPositionService.setPathData({selectedDataIdx: this.selectedDataIdx});
+    this.popstateService.setPathData({selectedDataIdx: this.selectedDataIdx});
   }
 }
