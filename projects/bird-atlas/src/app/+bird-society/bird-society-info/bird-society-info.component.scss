@@ -1,16 +1,13 @@
 @import 'vars';
 
-ba-bird-society-info-map {
-/*   width: 100%;
-  max-width: 500px;
-  height: auto; */
-  width: 500px;
-  height: 500px;
+.map-panel {
+  max-width: 100%;
 }
 
-.side-panel {
-  width: 100%;
+.info-panel {
+  flex-grow: 1;
   max-width: 600px;
+  overflow-x: hidden;
 }
 
 .grid-square-panel {
