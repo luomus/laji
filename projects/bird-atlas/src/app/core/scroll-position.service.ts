@@ -65,7 +65,9 @@ export class ScrollPositionService {
     };
   }
   getPathData() {
-    return this.urlToPathData[this.urlBeforeNavigation] ?? {};
+    return (this.lastNavigationWasPopstate && this.urlToPathData[this.urlBeforeNavigation])
+      ? this.urlToPathData[this.urlBeforeNavigation]
+      : {};
   }
 
   private saveScrollPosition() {
