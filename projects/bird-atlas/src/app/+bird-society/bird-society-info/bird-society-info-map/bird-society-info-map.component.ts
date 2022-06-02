@@ -14,7 +14,6 @@ import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode 
 interface MapData {
   grid: AtlasGrid;
   dataOptions: DataOptions;
-  zoomToData: boolean;
 };
 
 const gridSqToFeature = (square: AtlasGridSquare) => {
@@ -112,8 +111,6 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
           this.map.zoomToData();
         }
         this.mapInitialized = true;
-      } else if (mapData.zoomToData) {
-        this.map.zoomToData();
       }
     });
   }
@@ -122,7 +119,6 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
     if (changes.atlasGrid?.currentValue) {
       this.mapData$.next({
         grid: changes.atlasGrid.currentValue,
-        zoomToData: true,
         dataOptions: {
           featureCollection: <any>getFeatureCollection(changes.atlasGrid.currentValue),
           getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, changes.atlasGrid.currentValue, this.visualizationMode),
@@ -146,7 +142,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   private triggerFeatureStyleUpdate() {
     const curr = this.mapData$.getValue();
-    this.mapData$.next({grid: curr?.grid, zoomToData: false, dataOptions: {
+    this.mapData$.next({grid: curr?.grid, dataOptions: {
       ...curr?.dataOptions,
       getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, curr?.grid, this.visualizationMode)
     }});
