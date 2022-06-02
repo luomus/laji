@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
+import { ScrollPositionService } from '../../core/scroll-position.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
 
 @Component({
@@ -10,10 +11,10 @@ import { VisualizationMode } from '../../shared-modules/map-utils/visualization-
   styleUrls: ['bird-society-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BirdSocietyInfoComponent implements OnInit {
+export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   birdSociety: BirdSociety;
   loading = true;
-  selectedDataIdx = -1;
+  selectedDataIdx: number;
   visualizationMode: VisualizationMode = 'activityCategory';
   activityCategoryClass = {
     'MY.atlasActivityCategoryEnum0': 'limit-neutral',
@@ -28,10 +29,13 @@ export class BirdSocietyInfoComponent implements OnInit {
     private atlasApi: AtlasApiService,
     private route: ActivatedRoute,
     private breadcrumbs: BreadcrumbService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private scrollPositionService: ScrollPositionService
   ) {}
 
   ngOnInit(): void {
+    const pathData = this.scrollPositionService.getPathData();
+    this.selectedDataIdx = pathData['selectedDataIdx'] ?? -1;
     this.route.paramMap.pipe(
       tap(() => {
         this.breadcrumbs.setBreadcrumbName(BreadcrumbId.BirdSocietyInfo, undefined);
@@ -67,5 +71,9 @@ export class BirdSocietyInfoComponent implements OnInit {
 
   onVisualizationChange(visualization: VisualizationMode) {
     this.visualizationMode = visualization;
+  }
+
+  ngOnDestroy(): void {
+    this.scrollPositionService.setPathData({selectedDataIdx: this.selectedDataIdx});
   }
 }
