@@ -69,6 +69,10 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     return Object.values(this.birdSociety.activityCategories);
   }
 
+  getGridSquareCount(): string {
+    return this.birdSociety?.gridSquares?.length + '' ?? '';
+  }
+
   onVisualizationChange(visualization: VisualizationMode) {
     this.visualizationMode = visualization;
   }
