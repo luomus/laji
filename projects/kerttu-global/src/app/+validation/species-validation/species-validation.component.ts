@@ -163,7 +163,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   }
 
   goToSpeciesList() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['validation/species']));
   }
 
   activeVersionIdxChange(activeIdx: number) {
