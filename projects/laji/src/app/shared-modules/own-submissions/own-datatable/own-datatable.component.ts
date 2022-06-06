@@ -250,7 +250,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
       this.usersIdSub.unsubscribe();
     }
 
-    this.subscriptionDeleteOwnDocument?.unsubscribe()
+    this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   goToStart(goToStart = true) {

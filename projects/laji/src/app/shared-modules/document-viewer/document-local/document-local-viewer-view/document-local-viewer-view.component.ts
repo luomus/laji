@@ -4,8 +4,6 @@ import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-local-viewer-view',
@@ -22,7 +20,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Input() useWorldMap = true;
   @Input() zoomToData = false;
 
-  @Output() onDelete = new EventEmitter();
+  @Output() documentDeleted = new EventEmitter();
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -34,9 +32,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   constructor(
     private userService: UserService,
-    private cd: ChangeDetectorRef,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -66,7 +62,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   onDocumentDeleted(e) {
     if (e) {
-      this.onDelete.emit();
+      this.documentDeleted.emit();
     }
   }
 
