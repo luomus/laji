@@ -75,8 +75,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   private documents: RowDocument[];
   loading = true;
   reloadSubscription$: Subscription;
-  subscriptionDeleteOwnDocument: Subscription
-  childEvent: any
+  subscriptionDeleteOwnDocument: Subscription;
 
   @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
