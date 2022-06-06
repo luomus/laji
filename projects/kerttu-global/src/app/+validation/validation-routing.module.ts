@@ -26,16 +26,20 @@ const routes: Routes = [
       },
       {
         path: 'species',
-        pathMatch: 'full',
-        component: SpeciesSelectComponent,
         canActivate: [OnlyLoggedIn, SpeciesListQueryResetGuard],
-      },
-      {
-        path: 'species/:id',
-        pathMatch: 'full',
-        component: SpeciesValidationComponent,
-        canActivate: [OnlyLoggedIn],
-        canDeactivate: [DocumentDeActivateGuard]
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: SpeciesSelectComponent
+          },
+          {
+            path: ':id',
+            pathMatch: 'full',
+            component: SpeciesValidationComponent,
+            canDeactivate: [DocumentDeActivateGuard]
+          }
+        ]
       },
       {
         path: 'results',
