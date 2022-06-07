@@ -31,6 +31,7 @@ import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
+import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
 
 interface DocumentQuery {
   year?: string;
@@ -74,6 +75,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   private documents: RowDocument[];
   loading = true;
   reloadSubscription$: Subscription;
+  subscriptionDeleteOwnDocument: Subscription;
 
   @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
@@ -116,7 +118,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
     private documentViewerFacade: DocumentViewerFacade,
-    private latestFacade: LatestDocumentsFacade
+    private latestFacade: LatestDocumentsFacade,
+    private deleteOwnDocument: DeleteOwnDocumentService,
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
     if (!this.year) {
@@ -129,10 +132,20 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       this.initDocuments(this.onlyTemplates);
       this.cd.markForCheck();
     });
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.documents = this.documents.filter(doc => doc.id !== id);
+        this.documentsLoaded.emit(this.documents);
+        this.cd.markForCheck();
+        this.latestFacade.update();
+      }
+    });
   }
 
   ngOnDestroy() {
     this.reloadSubscription$?.unsubscribe();
+    this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
