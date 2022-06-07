@@ -31,5 +31,18 @@
   "ba.grid-info.notFound": "Ruutua ei ole olemassa.",
   "ba.grid-info.error": "Ruudun lataamisessa tapahtui virhe.",
   "ba.grid-info.mapPrint": "Tulostettava ruutu karttapalvelussa",
-  "ba.grid-info.mapFullScreen": "Kartta koko ruudun kokoisena"
+  "ba.grid-info.mapFullScreen": "Kartta koko ruudun kokoisena",
+  "ba.bird-society-info.activityCategoryTable": "Ruutujen selvitysasteet",
+  "ba.bird-society-info.activityCategoryTable.cat": "Luokka",
+  "ba.bird-society-info.activityCategoryTable.percent": "%",
+  "ba.bird-society-info.activityCategoryTable.squareSum": "Ruutua",
+  "ba.bird-society-info.square.activityCategory": "Selvitysaste",
+  "ba.bird-society-info.square.atlasClassSum": "Pesimävarmuussumma",
+  "ba.bird-society-info.square.gridPageLink": "Lajit",
+  "ba.bird-society-info.square.atlasClassSumTable": "Pesimävarmuussumma",
+  "ba.bird-society-info.square.atlasClassSumTable.threshold": "Raja-arvo",
+  "ba.bird-society-info.square.atlasClassSumTable.level2": "Välttävä",
+  "ba.bird-society-info.square.atlasClassSumTable.level3": "Tyydyttävä",
+  "ba.bird-society-info.square.atlasClassSumTable.level4": "Hyvä",
+  "ba.bird-society-info.square.atlasClassSumTable.level5": "Erinomainen"
 }

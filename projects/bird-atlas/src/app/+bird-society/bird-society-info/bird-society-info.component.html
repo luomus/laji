@@ -24,12 +24,12 @@
 </div>
 
 <ng-template #society>
-  <h3 class="mt-2">Ruutujen selvitysasteet</h3>
+  <h3 class="mt-2">{{ 'ba.bird-society-info.activityCategoryTable' | translate }}</h3>
   <table>
     <tr>
-      <th>Luokka</th>
-      <th>%</th>
-      <th>Ruutua</th>
+      <th>{{ 'ba.bird-society-info.activityCategoryTable.cat' | translate }}</th>
+      <th>{{ 'ba.bird-society-info.activityCategoryTable.percent' | translate }}</th>
+      <th>{{ 'ba.bird-society-info.activityCategoryTable.squareSum' | translate }}</th>
     </tr>
     <tr *ngFor="let cat of getActivityCategoriesAsList()">
       <td>{{ cat.name }}</td>
@@ -48,35 +48,35 @@
     </div>
     <div [ngClass]="'cat-info-container d-flex flex-wrap mt-3 mb-5 ' + activityCategoryClass[selected.activityCategory.key]">
       <div class="d-flex flex-col mr-6 mb-3">
-        <h6>Selvitysaste</h6>
+        <h6>{{ 'ba.bird-society-info.square.activityCategory' | translate }}</h6>
         <strong>{{ selected.activityCategory.value }}</strong>
       </div>
       <div class="d-flex flex-col">
-        <h6>Pesimävarmuussumma</h6>
+        <h6>{{ 'ba.bird-society-info.square.atlasClassSum' | translate }}</h6>
         <strong>{{ selected.atlasClassSum }}</strong>
       </div>
     </div>
-    <p><a [routerLink]="'/grid/' + selected.coordinates">Lajit</a></p>
+    <p><a [routerLink]="'/grid/' + selected.coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
     <hr>
     <table>
       <tr>
-        <th>Pesimävarmuussumma</th>
-        <th>Raja-arvo</th>
+        <th>{{ 'ba.bird-society-info.square.atlasClassSumTable' | translate }}</th>
+        <th>{{ 'ba.bird-society-info.square.atlasClassSumTable.threshold' | translate }}</th>
       </tr>
       <tr>
-        <td>Välttävä</td>
+        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level2' | translate }}</td>
         <td>{{ selected.level2 | number: '1.0-2' }}</td>
       </tr>
       <tr>
-        <td>Tyydyttävä</td>
+        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level3' | translate }}</td>
         <td>{{ selected.level3 | number: '1.0-2' }}</td>
       </tr>
       <tr>
-        <td>Hyvä</td>
+        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level4' | translate }}</td>
         <td>{{ selected.level4 | number: '1.0-2' }}</td>
       </tr>
       <tr>
-        <td>Erinomainen</td>
+        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level5' | translate }}</td>
         <td>{{ selected.level5 | number: '1.0-2' }}</td>
       </tr>
     </table>
