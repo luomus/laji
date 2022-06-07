@@ -134,7 +134,7 @@ export class DatatableUtil {
       this.labelService.get(IdService.getId(occurrence.status), this.translate.currentLang)
     ]).pipe(
       map(data => data[0]+ ': ' + data[1])
-    ), '; ')
+    ), '; ');
   }
 
   private getWarehouseLabels(values): Observable<string> {

@@ -45,6 +45,7 @@ export interface IHomeData {
   };
 }
 
+/* eslint-disable max-len */
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "") {
     observations: units(cache: true) {
@@ -92,6 +93,7 @@ const HOME_QUERY = gql`
     }
   }
 `;
+/* eslint-enable max-len */
 
 @Injectable({
   providedIn: 'root'

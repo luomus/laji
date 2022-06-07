@@ -118,6 +118,6 @@ export class SpecialFriendComponent implements OnInit {
       }
     });
     this.currentValues = values;
-    this.mappingChanged.emit(mapping); 
+    this.mappingChanged.emit(mapping);
   }
 }
