@@ -12,7 +12,7 @@ import { PlatformService } from '../../root/platform.service';
 })
 export class PdfButtonComponent {
 
-  @Input() fileName: string;
+  @Input() fileName?: string;
 
   public loading = false;
 

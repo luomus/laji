@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
 })
 export class PublicationPipe implements PipeTransform {
   value: any;
-  lastKey: string;
-  lastField: string;
+  lastKey?: string;
+  lastField?: string;
 
   constructor(private translate: TranslateService,
               private publicationService: PublicationService,
@@ -39,14 +39,14 @@ export class PublicationPipe implements PipeTransform {
       });
   }
 
-  private getValueObservable(value, field) {
+  private getValueObservable(value: any, field: string) {
     if (!value || typeof value !== 'string' || value.length === 0) {
       return of(value);
     }
 
     return this.publicationService.getPublication(value, this.translate.currentLang)
       .pipe(map((res: Publication) =>
-        res && res['dc:' + field] ? res['dc:' + field] : ''
+        (res as any)?.['dc:' + field] || ''
       ));
   }
 }

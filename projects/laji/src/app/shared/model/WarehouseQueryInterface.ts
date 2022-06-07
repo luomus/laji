@@ -114,7 +114,7 @@
  */
 export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
-  taxonId?: Array<string>;
+  taxonId?: string | Array<string>;
   target?: Array<string>;
   includeSubTaxa?: boolean;
   useIdentificationAnnotations?: boolean;
