@@ -1,4 +1,4 @@
-.map-legend {
+.map-color-legend {
   font-size: 10px;
   width: 130px;
   margin: 0;
@@ -11,12 +11,12 @@
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 
-  .map-legend-cnt {
+  .map-color-legend-cnt {
     display: inline-block;
     float: right;
   }
 
-  .map-legend-color {
+  .map-color-legend-color {
     display: inline-block;
     height: 12px;
     width: 12px;

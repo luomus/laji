@@ -3,8 +3,8 @@
     [loading]="!sites || !siteStats"
     [options]="mapOptions"
   >
-    <div class="map-legend">
-      <span class="map-legend-cnt capitalize">
+    <div class="map-color-legend">
+      <span class="map-color-legend-cnt capitalize">
         {{ 'results.sites' | translate }}
       </span>
       <span class="capitalize">
@@ -12,13 +12,13 @@
       </span>
       <ul>
         <li *ngFor="let leg of legendList">
-          <span [ngStyle]="{'background-color': leg.color}" class="map-legend-color"></span>
+          <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
           {{ leg.label }}
-          <span class="map-legend-cnt">{{ countByLegend[leg.label] || 0 }}</span>
+          <span class="map-color-legend-cnt">{{ countByLegend[leg.label] || 0 }}</span>
         </li>
         <li>
           {{ 'theme.total' | translate }}
-          <span class="map-legend-cnt">{{ countByLegend['total'] }} {{ 'results.sites' | translate }}</span>
+          <span class="map-color-legend-cnt">{{ countByLegend['total'] }} {{ 'results.sites' | translate }}</span>
         </li>
       </ul>
     </div>

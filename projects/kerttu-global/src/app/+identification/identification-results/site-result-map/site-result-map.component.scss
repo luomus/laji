@@ -1,4 +1,4 @@
-@import 'projects/laji/src/styles/map-legend.scss';
+@import 'projects/laji/src/styles/map-color-legend.scss';
 
 .map-wrap {
   width: 100%;
@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.map-legend {
+.map-color-legend {
   top: 6px;
   right: 6px;
   left: unset;
