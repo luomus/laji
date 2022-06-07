@@ -13,7 +13,7 @@ export class RecordingsComponent implements OnChanges {
   @Input() templates: IGlobalTemplate[] = [];
   @Input() spectrogramConfig?: ISpectrogramConfig;
 
-  @Output() audioClick = new EventEmitter<{audioId: number, time: number}>();
+  @Output() audioClick = new EventEmitter<{audioId: number; time: number}>();
   @Output() candidateClick = new EventEmitter<IGlobalTemplate>();
 
   rectangles: IAudioViewerRectangle[][] = [];
@@ -31,11 +31,11 @@ export class RecordingsComponent implements OnChanges {
   }
 
   onAudioClick(audio: IGlobalAudio, time: number) {
-    this.audioClick.emit({'audioId': audio.id, time});
+    this.audioClick.emit({audioId: audio.id, time});
   }
 
   onCandidateClick(audio: IGlobalAudio, area: IAudioViewerArea) {
-    this.candidateClick.emit({'audioId': audio.id, area});
+    this.candidateClick.emit({audioId: audio.id, area});
   }
 
   onAudioLoadingChange(loading: boolean) {
@@ -46,13 +46,11 @@ export class RecordingsComponent implements OnChanges {
 
   private initRectangles() {
     this.rectangles = (this.recordings || []).map(recording => {
-      const candidates = (recording.candidates || []).map((candidate, i) => {
-        return {
+      const candidates = (recording.candidates || []).map((candidate, i) => ({
           area: candidate,
           color: '#26bed9',
           label: 'C' + (i + 1)
-        };
-      });
+        }));
 
       const templates = (this.templates || []).reduce((result, template, i) => {
         if (template?.audioId === recording.audio.id) {

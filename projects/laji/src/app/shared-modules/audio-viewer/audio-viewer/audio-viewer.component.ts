@@ -17,6 +17,7 @@ import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpec
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -29,6 +30,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
+  @Input() focusAreaColor?: string;
 
   @Input() rectangles: IAudioViewerRectangle[];
 
@@ -41,10 +43,11 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() autoplayRepeat = 1;
 
   @Input() showControls = true;
-  @Input() showZoomControl = false; // zoom control allows the user to zoom into spectrogram
+  @Input() showZoomControl = false; // zoom control allows the user to zoom into the spectrogram
+  @Input() showLoopControl = true; // loop control allows the user to loop the recording
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
-  @Input() playOnlyOnSingleClick = false; // play only when the user clicks once and not double-clicks
+  @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
 
@@ -57,6 +60,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
 
   @Input() audioInfoTpl: TemplateRef<any>;
+  @Input() customControlsTpl: TemplateRef<any>;
 
   @Input() zoomInfoText: string;
 
@@ -72,6 +76,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() audioLoading = new EventEmitter<boolean>();
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
+  @Output() modeChange = new EventEmitter<AudioViewerMode>();
 
   private audioSub: Subscription;
   private clicks = 0;
@@ -90,7 +95,9 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
       this.setAudioLoading(true);
 
       if (this.audio) {
-        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).subscribe((buffer) => {
+        this.audioSub = this.audioService.getAudioBuffer(this.audio.url, this.audio.duration).pipe(
+          delay(0) // has a delay because otherwise the changes are not always detected
+        ).subscribe((buffer) => {
           if (!this.areaIsValid(buffer, this.focusArea)) {
             this.onError();
             return;
@@ -110,7 +117,12 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
         });
       }
     } else if (!this.hasError) {
-      if (changes.focusArea || changes.highlightFocusArea || changes.zoomTime || changes.timePaddingOnZoom || changes.zoomFrequency || changes.frequencyPaddingOnZoom) {
+      if (
+        changes.focusArea || changes.highlightFocusArea ||
+        changes.zoomTime || changes.timePaddingOnZoom ||
+        changes.zoomFrequency || changes.frequencyPaddingOnZoom ||
+        changes.spectrogramConfig
+      ) {
         this.setDefaultView();
       } else if (changes.mode) {
         this.audioPlayer.stop();
@@ -148,7 +160,7 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   }
 
   onSpectrogramZoomEnd(area: IAudioViewerArea) {
-    this.mode = 'default';
+    this.changeMode('default');
     this.setView(area);
   }
 
@@ -161,12 +173,11 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
   clearZoomArea() {
     this.setView(this.defaultView);
-
   }
 
   toggleZoomMode() {
     this.audioPlayer.stop();
-    this.mode = this.mode === 'zoom' ? 'default' : 'zoom';
+    this.changeMode(this.mode === 'zoom' ? 'default' : 'zoom');
   }
 
   setAudioLoading(loading: boolean) {
@@ -228,5 +239,10 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     this.hasError = true;
     this.setAudioLoading(false);
     this.cdr.markForCheck();
+  }
+
+  private changeMode(mode: AudioViewerMode) {
+    this.mode = mode;
+    this.modeChange.emit(this.mode);
   }
 }

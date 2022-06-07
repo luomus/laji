@@ -33,6 +33,8 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() focusArea: IAudioViewerArea;
   @Input() highlightFocusArea = false;
   @Input() onlyFocusAreaClickable = false;
+  @Input() onlyFocusAreaDrawable = false;
+  @Input() focusAreaColor?: string;
   @Input() showAxisLabels = true;
   @Input() axisFontSize = 10;
   @Input() rectangles: IAudioViewerRectangle[];

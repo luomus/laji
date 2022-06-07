@@ -97,6 +97,8 @@ export interface Profile {
 
   nameVisibleInKerttu?: boolean;
 
+  birdSongRecognitionSkillLevels?: Profile.BirdSongRecognitionSkillLevel[];
+
 }
 
 export namespace Profile {
@@ -135,4 +137,15 @@ export namespace Profile {
     | 'MA.birdwatchingActivityLevelEnum2'
     | 'MA.birdwatchingActivityLevelEnum3'
     | 'MA.birdwatchingActivityLevelEnum4';
+
+  export type BirdSongRecognitionSkillLevelEnum =
+    'MA.birdSongRecognitionSkillLevelEnum1'
+    | 'MA.birdSongRecognitionSkillLevelEnum2'
+    | 'MA.birdSongRecognitionSkillLevelEnum3'
+    | 'MA.birdSongRecognitionSkillLevelEnum4';
+
+  export interface BirdSongRecognitionSkillLevel {
+    birdSongRecognitionArea: string;
+    birdSongRecognitionSkillLevel: BirdSongRecognitionSkillLevelEnum;
+  }
 }

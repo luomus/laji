@@ -1,0 +1,26 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+:host {
+  font-size: $fs-2;
+  display: inline-block;
+
+  > div {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 3px;
+
+    label {
+      display: block;
+      margin-bottom: 0;
+      font-size: $fs-1;
+    }
+
+    bswitch {
+      display: inline-block;
+    }
+  }
+}
+
+::ng-deep .bootstrap-switch-handle-off, ::ng-deep .bootstrap-switch-handle-on {
+  white-space: nowrap;
+}

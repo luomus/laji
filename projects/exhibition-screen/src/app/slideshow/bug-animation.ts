@@ -1,9 +1,11 @@
-import { ElementRef, Renderer2 } from "@angular/core";
-import { interval, Subject } from "rxjs";
-import { delay, switchMap, takeUntil } from "rxjs/operators"
-import { AnimationEngine } from "../../animations/animation-engine";
-import { ConfusedCurveFollower, EsAnimatable, PathFollower } from "../../animations/es-animatable";
-import { V2 } from "../../animations/math";
+import { ElementRef, Renderer2 } from '@angular/core';
+import { interval, Subject } from 'rxjs';
+import { delay, switchMap, takeUntil } from 'rxjs/operators';
+import { ConfusedCurveFollower } from '../../animations/animatables/confused-curve-follower';
+import { EsAnimatable } from '../../animations/animatables/es-animatable';
+import { PathFollower } from '../../animations/animatables/path-follower';
+import { AnimationEngine } from '../../animations/animation-engine';
+import { V2 } from '../../animations/math';
 
 export type BugPath = 'topleft' | 'topright' | 'botright' | 'botleft';
 
@@ -61,7 +63,7 @@ export class BugAnimation {
         this.bugEl = this.renderer.createElement('div');
         this.renderer.addClass(this.bugEl, 'bug-animation');
         this.renderer.appendChild(this.baseEl.nativeElement, this.bugEl);
-        
+
         const pathIdx = randomChoice(this.bugPaths.length);
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -78,7 +80,11 @@ export class BugAnimation {
       // update
       (dt) => {
         const s = this.bug.update(dt);
-        this.renderer.setStyle(this.bugEl, 'transform', `translate(${roundToTwoDecimals(this.bug.pos[0])}px, ${roundToTwoDecimals(this.bug.pos[1])}px) rotate(${roundToTwoDecimals(this.bug.rot)}deg)`);
+        this.renderer.setStyle(
+          this.bugEl,
+          'transform',
+          `translate(${roundToTwoDecimals(this.bug.pos[0])}px, ${roundToTwoDecimals(this.bug.pos[1])}px) rotate(${roundToTwoDecimals(this.bug.rot)}deg)`
+        );
         return s;
       },
       // destroy
@@ -87,7 +93,7 @@ export class BugAnimation {
 
     this.destroyClickListener = this.renderer.listen(window, 'click', () => this.input$.next());
     this.destroyTouchListener = this.renderer.listen(window, 'touchstart', () => this.input$.next());
-    
+
     this.input$.pipe(
       takeUntil(this.unsubscribe$),
       delay(INITIAL_DELAY),
@@ -98,15 +104,15 @@ export class BugAnimation {
   }
 
   private destroyAnim() {
-    if (this.baseEl && this.bugEl) { this.renderer.removeChild(this.baseEl.nativeElement, this.bugEl) }
+    if (this.baseEl && this.bugEl) { this.renderer.removeChild(this.baseEl.nativeElement, this.bugEl); }
   }
 
   destroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
-    if (this.destroyClickListener) { this.destroyClickListener() }
-    if (this.destroyTouchListener) { this.destroyTouchListener() }
+    if (this.destroyClickListener) { this.destroyClickListener(); }
+    if (this.destroyTouchListener) { this.destroyTouchListener(); }
 
     this.destroyAnim();
   }

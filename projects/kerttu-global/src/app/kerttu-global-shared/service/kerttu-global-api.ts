@@ -2,7 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
   IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum
+  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
+  IGlobalRecordingAnnotation, IGlobalSite, IIdentificationSiteStat, IIdentificationUserStat
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -36,10 +37,15 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
-  public getSpecies(speciesId: number): Observable<IGlobalSpecies> {
+  public getSpecies(speciesId: number, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
     const path = this.basePath + '/species/' + speciesId;
 
-    return this.httpClient.get<IGlobalSpecies>(path);
+    let params = new HttpParams();
+    if (includeValidationCount != null) {
+      params = params.set('includeValidationCount', includeValidationCount);
+    }
+
+    return this.httpClient.get<IGlobalSpecies>(path, { params });
   }
 
   public lockSpecies(personToken: string, speciesId: number): Observable<ISuccessResult> {
@@ -74,7 +80,7 @@ export class KerttuGlobalApi {
   }
 
   public saveTemplates(personToken: string, taxonId: number, data: {
-    templates: IGlobalTemplate[], comments: IGlobalComment[]
+    templates: IGlobalTemplate[]; comments: IGlobalComment[];
   }): Observable<ISuccessResult> {
     const path = this.basePath + '/templates/' + taxonId;
     const params = new HttpParams().set('personToken', personToken);
@@ -95,6 +101,53 @@ export class KerttuGlobalApi {
 
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
+
+  public getRecording(personToken: string, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording';
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public getNextRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording/next/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public getPreviousRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording/previous/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+
+    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+  }
+
+  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
+    const path = this.basePath + '/identification/recording/annotation/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken);
+
+    return this.httpClient.post(path, annotation, { params });
+  }
+
+  public getSites(): Observable<IListResult<IGlobalSite>> {
+    const path = this.basePath + '/identification/sites';
+
+    return this.httpClient.get<IListResult<IGlobalSite>>(path);
+  }
+
+  public getIdentificationSiteStats(): Observable<IListResult<IIdentificationSiteStat>> {
+    const path = this.basePath + '/identification/statistics/sites';
+
+    return this.httpClient.get<IListResult<IIdentificationSiteStat>>(path);
+  }
+
+  public getIdentificationUserStats(): Observable<IListResult<IIdentificationUserStat>> {
+    const path = this.basePath + '/identification/statistics/users';
+
+    return this.httpClient.get<IListResult<IIdentificationUserStat>>(path);
+  }
+
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
     Object.keys(query).forEach(key => {

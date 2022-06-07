@@ -21,6 +21,8 @@ export class TreeSelectModalComponent implements OnInit {
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
+  @Input() includedTitle: string;
+  @Input() excludedTitle: string;
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @Input() includeCount = false;

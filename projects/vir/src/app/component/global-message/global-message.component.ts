@@ -30,7 +30,7 @@ export class GlobalMessageComponent implements OnDestroy, OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
-    @Inject(PLATFORM_ID) private platformId: Object) {}
+    @Inject(PLATFORM_ID) private platformId: any) {}
 
   ngOnInit() {
     this.router.events.pipe(

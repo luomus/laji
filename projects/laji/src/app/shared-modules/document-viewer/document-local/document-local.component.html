@@ -6,6 +6,7 @@
                                      [imageData]="imageData"
                                      [mapData]="mapData"
                                      [zoomToData]="zoomToData"
+                                     (documentDeleted)="closeDocument()"
     ></laji-document-local-viewer-view>
     <laji-document-local-print-view *ngIf="view === 'print' && document.formID !== collectionContestFormId"
                                     [document]="document"

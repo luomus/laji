@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
   pure: false
 })
 export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
-  private sources;
+  private sources?: Record<string, string>;
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
@@ -29,6 +29,6 @@ export class SourcePipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _parseValue(sources: any): string {
-    return sources[this.key] || this.key;
+    return this.key !== undefined && sources?.[this.key] || this.key;
   }
 }

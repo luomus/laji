@@ -18,13 +18,13 @@
       (audioLoading)="onAudioLoadingChange($event)"
     ></laji-audio-viewer>
     <h5 class="mt-0">{{ 'validation.candidates' | translate }}</h5>
-    <bsg-small-audio-viewer
+    <laji-small-audio-viewer
       *ngFor="let candidate of recording.candidates"
       [audio]="recording.audio"
       [area]="candidate"
       [spectrogramConfig]="spectrogramConfig"
       (templateClick)="onCandidateClick(recording.audio, candidate)"
     >
-    </bsg-small-audio-viewer>
+    </laji-small-audio-viewer>
   </ng-container>
 </div>

@@ -31,7 +31,7 @@ export class TabComponent {
 
   constructor(
               private cdr: ChangeDetectorRef,
-              @Inject(PLATFORM_ID) private platformId: Object,
+              @Inject(PLATFORM_ID) private platformId: any,
               @Inject(WINDOW) private window: Window
   ) { }
 
@@ -47,7 +47,7 @@ export class TabComponent {
           const evt: any = this.window.document.createEvent('UIEvents');
           evt.initUIEvent('resize', true, false, this.window, 0);
           this.window.dispatchEvent(evt);
-        } catch (e) {}
+        } catch (error) {}
       }
     }, 100);
   }

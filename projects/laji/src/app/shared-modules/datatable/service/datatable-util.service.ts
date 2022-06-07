@@ -9,6 +9,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../../shared/service/id.service';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
+import { AreaService } from '../../../shared/service/area.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { WarehouseValueMappingService } from '../../../shared/service/warehouse-
 export class DatatableUtil {
   constructor(
     private labelService: TriplestoreLabelService,
+    private areaService: AreaService,
     private publicationService: PublicationService,
     private userService: UserService,
     private translate: TranslateService,
@@ -24,7 +26,7 @@ export class DatatableUtil {
 
   getVisibleValue(value, row, templateName: string): Observable<string> {
     if (value == null || (Array.isArray(value) && value.length === 0)) {
-      if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName']
+      if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName', 'biogeographicalProvinceOccurrence']
         .indexOf(templateName) === -1) {
         return ObservableOf('');
       }
@@ -35,7 +37,7 @@ export class DatatableUtil {
       return from(value).pipe(
         concatMap(val => this.getVisibleValue(val, row, templateName)),
         toArray(),
-        map(values => values.join(', '))
+        map(values => values.join('; '))
       );
     }
 
@@ -112,11 +114,27 @@ export class DatatableUtil {
       case 'informalTaxonGroup':
         observable = this.getLabels(value[value.length - 1]);
         break;
+      case 'biogeographicalProvinceOccurrence':
+        observable = this.getBiogeographicalProvinceOccurence(row.occurrences);
+        break;
       default:
         break;
     }
 
     return observable || ObservableOf(value);
+  }
+
+  private getBiogeographicalProvinceOccurence(occurrences): Observable<string> {
+    if (!occurrences) {
+      return ObservableOf('');
+    }
+
+    return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.currentLang),
+      this.labelService.get(IdService.getId(occurrence.status), this.translate.currentLang)
+    ]).pipe(
+      map(data => data[0]+ ': ' + data[1])
+    ), '; ')
   }
 
   private getWarehouseLabels(values): Observable<string> {

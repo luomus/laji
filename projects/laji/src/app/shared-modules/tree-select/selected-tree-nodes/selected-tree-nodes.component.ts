@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
 import { SelectedOption } from '../tree-select.component';
 
@@ -6,21 +6,50 @@ import { SelectedOption } from '../tree-select.component';
   selector: 'laji-selected-tree-nodes',
   template: `
      <div>
-      <span class="lj-container" *ngFor="let option of selectedOptions; trackBy: track">
-        <label class="lj-item selected">
-          <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
-        </label>
-      </span>
+      <div *ngIf="included">
+      <h6>{{ includedTitle }}</h6>
+        <span class="lj-container" *ngFor="let option of included; trackBy: track">
+          <label class="lj-item selected">
+            <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
+          </label>
+        </span>
+      </div>
+      <div *ngIf="excluded">
+        <h6>{{ excludedTitle }}</h6>
+        <span class="lj-container" *ngFor="let option of excluded; trackBy: track">
+          <label class="lj-item selected">
+            <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(option.id)" (valueChange)="deselect(option.id)"></laji-checkbox> {{ option.value }}
+          </label>
+        </span>
+      </div>
     </div>
   `,
   styleUrls: ['./selected-tree-nodes.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedTreeNodesComponent {
+export class SelectedTreeNodesComponent implements OnChanges {
   @Input() selectedOptions: SelectedOption[];
+  @Input() includedTitle: string;
+  @Input() excludedTitle: string;
   @Output() selectedOptionsChange = new EventEmitter<string>();
 
   checkboxType = CheckboxType.excluded;
+
+  excluded = []
+  included = []
+
+  ngOnChanges () {
+    this.included = []
+    this.excluded = []
+
+    this.selectedOptions.forEach(option => {
+      if (option.type === 'included') {
+        this.included.push(option)
+      } else {
+        this.excluded.push(option)
+      }
+    })
+  }
 
   track(idx, item) {
     return item.id;

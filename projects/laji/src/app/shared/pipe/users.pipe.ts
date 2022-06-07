@@ -18,8 +18,8 @@ import { concatMap, toArray } from 'rxjs/operators';
 })
 export class UsersPipe implements PipeTransform {
   value: string|string[] = '';
-  lastId: string|string[];
-  lastFormat: string;
+  lastId?: string|string[];
+  lastFormat?: string;
 
   constructor(private userService: UserService,
               private _ref: ChangeDetectorRef) {
@@ -43,7 +43,7 @@ export class UsersPipe implements PipeTransform {
     return this.value;
   }
 
-  private updateValue(id: string|string[], format: keyof Person | 'fullNameWithGroup'): void {
+  private updateValue(id: string|string[], format?: keyof Person | 'fullNameWithGroup'): void {
     const nameObs$ = Array.isArray(id) ?
       from(id).pipe(
         concatMap(userId => this.userService.getPersonInfo(userId, format)),

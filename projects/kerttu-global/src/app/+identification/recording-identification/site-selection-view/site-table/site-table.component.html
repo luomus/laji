@@ -1,0 +1,16 @@
+<laji-datatable
+  [columns]="columns"
+  [rows]="data"
+  [clientSideSorting]="true"
+  [showFooter]="false"
+  [height]="height"
+></laji-datatable>
+
+<ng-template let-row="row" #deleteTpl>
+  <button
+    class="btn btn-danger btn-sm"
+    (click)="onRemove(row.id)"
+  >
+    x
+  </button>
+</ng-template>
