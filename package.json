@@ -48,6 +48,7 @@
     "build:ssr:local": "npm run build:local && ng run laji:server:local",
     "bundle-report": "npm run ng-high-memory -- build --configuration production --aot --stats-json --named-chunks=true && webpack-bundle-analyzer dist/browser/stats.json",
     "lint": "eslint \"projects/laji/src/**/*.ts\"",
+    "lint:kerttu-global": "eslint \"projects/kerttu-global/src/**/*.ts\"",
     "lint:bird-atlas": "eslint \"projects/bird-atlas/src/**/*.ts\"",
     "lint:exhibition-screen": "eslint \"projects/exhibition-screen/src/**/*.ts\"",
     "lint:laji-ui": "eslint \"projects/laji-ui/src/**/*.ts\"",

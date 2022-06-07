@@ -1,0 +1,31 @@
+@import 'projects/laji/src/styles/map-color-legend.scss';
+
+.title {
+  position: absolute;
+  z-index: 401;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+  margin: 0 auto;
+}
+.title h5 {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  display: inline-block;
+  margin: 6px 0;
+}
+
+.type-switch {
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.link {
+  padding: 3px 20px;
+}
+
+:host >>> .leaflet-container {
+  background-color: #eee;
+}
