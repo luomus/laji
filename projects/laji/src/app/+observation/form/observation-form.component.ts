@@ -533,7 +533,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       qualityPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.qualityPlantPest'),
       otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2 && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN']) && query.superRecordBasis.length === 1,
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'])
+        && query.sourceId.length === 2
+        && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN'])
+        && query.superRecordBasis.length === 1,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,

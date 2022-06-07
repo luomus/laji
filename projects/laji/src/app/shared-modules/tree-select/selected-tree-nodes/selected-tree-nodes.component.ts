@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CheckboxType } from '../../select/checkbox/checkbox.component';
 import { SelectedOption } from '../tree-select.component';
 
@@ -35,20 +35,20 @@ export class SelectedTreeNodesComponent implements OnChanges {
 
   checkboxType = CheckboxType.excluded;
 
-  excluded = []
-  included = []
+  excluded = [];
+  included = [];
 
-  ngOnChanges () {
-    this.included = []
-    this.excluded = []
+  ngOnChanges() {
+    this.included = [];
+    this.excluded = [];
 
     this.selectedOptions.forEach(option => {
       if (option.type === 'included') {
-        this.included.push(option)
+        this.included.push(option);
       } else {
-        this.excluded.push(option)
+        this.excluded.push(option);
       }
-    })
+    });
   }
 
   track(idx, item) {

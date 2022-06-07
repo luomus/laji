@@ -430,7 +430,7 @@ export class MappingService {
 
   private analyzeGeometry(value: any) {
     if (typeof value === 'string') {
-      value = value.replace(/\s/g, '')
+      value = value.replace(/\s/g, '');
       if (value.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
         const ykjParts = value.split(':');
         if (ykjParts[0].length === ykjParts[1].length) {
