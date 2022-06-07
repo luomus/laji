@@ -1105,7 +1105,7 @@
   "observation.form.map.intro": "Koordinaatit",
   "observation.form.map.polygon": "Piirrä kuvio kartalle",
   "observation.form.map.polygon.error.generic": "Jokin meni pieleen. Koita piirtää uudestaan.",
-  "observation.form.map.rectangle": "Piirrä rajaus kartalle",
+  "observation.form.map.rectangle": "Piirrä suorakulmio kartalle",
   "observation.form.mapLink": "Rajaa alue kartalta",
   "observation.form.max.finland": "Taksonin max havaintolkm Suomesta",
   "observation.form.menuTitle": "Rajaukset",
