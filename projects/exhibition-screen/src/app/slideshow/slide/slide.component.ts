@@ -1,14 +1,14 @@
-import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, TemplateRef, ViewChild } from "@angular/core";
-import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
-import { BugPath } from "../bug-animation";
-import { PdfModalComponent } from "./pdf-modal.component";
+import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, TemplateRef, ViewChild } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BugPath } from '../bug-animation';
+import { PdfModalComponent } from './pdf-modal.component';
 
 export interface ISlideData {
   title: string;
   bgSrc?: string;
   bgIsVideo?: boolean;
   bgCaption?: string;
-  style: 'front' | 'default',
+  style: 'front' | 'default';
   contentPlacement: 'left' | 'right';
   content: string;
   animationPlacement?: BugPath[];
@@ -43,7 +43,7 @@ export class SlideComponent implements OnChanges, AfterViewChecked {
   }
 
   private registerPdfModalEventListeners() {
-    const els: HTMLAnchorElement[] = this.el.nativeElement.querySelectorAll('a[href*=".pdf"]')
+    const els: HTMLAnchorElement[] = this.el.nativeElement.querySelectorAll('a[href*=".pdf"]');
     els.forEach(el => {
       const href = el.getAttribute('href');
       this.renderer.setAttribute(el, 'href', 'javascript:void(0)');
@@ -51,7 +51,7 @@ export class SlideComponent implements OnChanges, AfterViewChecked {
         event.stopImmediatePropagation();
         this.bsModalRef = this.modalService.show(PdfModalComponent, {class: 'modal-lg'});
         this.bsModalRef.content.url = href;
-      })
+      });
     });
   }
 }

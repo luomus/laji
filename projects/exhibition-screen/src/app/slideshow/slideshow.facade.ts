@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { Information } from "projects/laji/src/app/shared/model/Information";
-import { BehaviorSubject, forkJoin } from "rxjs";
-import { filter, map, switchMap } from "rxjs/operators";
-import { InformationService } from "../core/information.service";
-import { ISlideData } from "./slide/slide.component";
-import { i18nMap } from "../core/i18n-map";
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Information } from 'projects/laji/src/app/shared/model/Information';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { InformationService } from '../core/information.service';
+import { ISlideData } from './slide/slide.component';
+import { i18nMap } from '../core/i18n-map';
 
 @Injectable()
 export class SlideshowFacade {
@@ -19,7 +19,7 @@ export class SlideshowFacade {
     this.informationService.getInformation(i18nMap.screenOne[this.translate.currentLang], {}).pipe(
       filter(information => {
         const a = !information.children;
-        if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`) }
+        if (a) { console.warn(`The slideshow root element does not have children: ${information?.id}`); }
         return !a;
       }),
       switchMap(information => forkJoin(...information.children.map(child => this.informationService.getInformation(child.id, {})))),
@@ -65,7 +65,7 @@ export class SlideshowFacade {
             animationPlacement,
             contentPlacement,
             style
-          }
+          };
         })
       ))
     ).subscribe(slideData => {
