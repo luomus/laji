@@ -1,0 +1,8 @@
+@import 'vars';
+
+.main-view .laji-map .leaflet-control-container .leaflet-control a {
+  &.leaflet-control-zoom-in, &.leaflet-control-zoom-out, &.locating {
+    color: $neutral-7;
+    text-decoration: none;
+  }
+}

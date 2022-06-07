@@ -37,7 +37,7 @@ export class DatatableUtil {
       return from(value).pipe(
         concatMap(val => this.getVisibleValue(val, row, templateName)),
         toArray(),
-        map(values => values.join(', '))
+        map(values => values.join('; '))
       );
     }
 

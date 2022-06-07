@@ -12,8 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 
 const getGeoJSONFeature = (ykj: string) => {
-  const langLngStr = ykj.split(':');
-  return convertYkjToGeoJsonFeature(langLngStr[0], langLngStr[1]);
+  const latLngStr = ykj.split(':');
+  return convertYkjToGeoJsonFeature(latLngStr[0], latLngStr[1]);
 };
 
 const getMapData = (ykj: string) => ({
@@ -52,7 +52,6 @@ interface GridInfoData {
 }
 
 @Component({
-  selector: 'ba-grid-info',
   templateUrl: './grid-info.component.html',
   styleUrls: ['./grid-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -165,7 +164,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.map) { this.map.destroy(); }
+    this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

@@ -6,8 +6,19 @@ import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
 
 export type AtlasMap = string;
+export type AtlasActivityCategory =
+  'MY.atlasActivityCategoryEnum0'
+  | 'MY.atlasActivityCategoryEnum1'
+  | 'MY.atlasActivityCategoryEnum2'
+  | 'MY.atlasActivityCategoryEnum3'
+  | 'MY.atlasActivityCategoryEnum4'
+  | 'MY.atlasActivityCategoryEnum5';
+export interface KeyValuePair<K, T> {
+  key: K;
+  value: T;
+}
 export interface AtlasGridSquare {
-  birdAssociationArea: {key: string; value: string};
+  birdAssociationArea: KeyValuePair<string, string>;
   coordinates: string;
   id: string;
   level1: number;
@@ -17,16 +28,26 @@ export interface AtlasGridSquare {
   level5: number;
   name: string;
   data?: {
-    atlasClass: {key: string; value: string};
-    atlasCode: {key: string; value: string};
+    atlasClass: KeyValuePair<string, string>;
+    atlasCode: KeyValuePair<string, string>;
     speciesId: string;
     speciesName: string;
   }[];
   atlas?: number;
   atlasClassSum?: number;
-  activityCategory?: {key: string; value: string};
+  activityCategory?: KeyValuePair<AtlasActivityCategory, string>;
+  speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
+export interface BirdSociety {
+  gridSquares: AtlasGrid;
+  birdAssociationArea: KeyValuePair<string, string>;
+  activityCategories: Record<AtlasActivityCategory, {
+    name: string;
+    squareSum: number;
+    squarePercentage: number;
+  }>;
+}
 
 interface VernacularName {fi: string; sv: string; en: string};
 export interface AtlasTaxon {
@@ -45,31 +66,43 @@ const BASE_URL = environment.atlasApiBasePath;
 export class AtlasApiService {
   constructor(private http: HttpClient, private translate: TranslateService) {}
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getSpeciesMap(speciesId: string, lang: Lang = <Lang>this.translate.currentLang): Observable<AtlasMap> {
     const url = `${BASE_URL}/map/${speciesId}/atlas`;
     return this.http.get(url, {responseType: 'text', params: {lang, scaling: 0}});
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
   getGrid(): Observable<AtlasGrid> {
     const url = `${BASE_URL}/grid`;
     return <Observable<AtlasGrid>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSociety(id: string): Observable<BirdSociety> {
+    const url = `${BASE_URL}/grid/birdAssociation/${id}`;
+    return <Observable<BirdSociety>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(30000) // 30 seconds
   getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
     return <Observable<AtlasGridSquare>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSocieties(): Observable<KeyValuePair<string, string>[]> {
+    const url = `${BASE_URL}/birdAssociation`;
+    return <Observable<KeyValuePair<string, string>[]>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(86400000) // 1 day
   getTaxa(): Observable<AtlasTaxa> {
     const url = `${BASE_URL}/taxon`;
     return <Observable<AtlasTaxa>>this.http.get(url);
   }
 
-  @cacheReturnObservable()
+  @cacheReturnObservable(60000) // 1 minute
   getTaxon(id: string): Observable<AtlasTaxon> {
     const url = `${BASE_URL}/taxon/${id}`;
     return <Observable<AtlasTaxon>>this.http.get(url);

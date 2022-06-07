@@ -1,80 +1,35 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { TableColumn } from '@swimlane/ngx-datatable';
-import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AtlasApiService, AtlasGridSquare } from '../../core/atlas-api.service';
-
-type DatatableRow = any;
+import { AtlasApiService, AtlasGrid } from '../../core/atlas-api.service';
+import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { PopstateService } from '../../core/popstate.service';
 
 @Component({
-  selector: 'ba-grid-index',
   templateUrl: './grid-index.component.html',
   styleUrls: ['./grid-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GridIndexComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-  private search$ = new Subject<string>();
-  private rows: DatatableRow[] = [];
+export class GridIndexComponent implements OnInit {
+  grid$: Observable<AtlasGrid>;
+  loadedElementsStore = new LoadedElementsStore(['map', 'table']);
 
-  cols: TableColumn[] = [{
-    prop: 'coordinates',
-    name: this.translate.instant('ba.grid-index.coordinates'),
-    resizeable: false,
-    sortable: true,
-    width: 75
-  }, {
-    prop: 'name',
-    name: this.translate.instant('ba.grid-index.name'),
-    resizeable: false,
-    sortable: true,
-    width: 200
-  }, {
-    prop: 'birdAssociationArea.value',
-    name: this.translate.instant('ba.grid-index.birdAssociationArea'),
-    resizeable: false,
-    sortable: true,
-    width: 350
-  }
-  ];
-  filteredRows$ = new Subject<DatatableRow[]>();
-  datatableClasses = datatableClasses;
-
-  constructor(private router: Router, private route: ActivatedRoute, private atlasApi: AtlasApiService, private translate: TranslateService) {}
+  constructor(
+    private atlasApi: AtlasApiService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private popstateService: PopstateService
+  ) {}
 
   ngOnInit(): void {
-    this.search$.pipe(
-      debounceTime(200),
-      takeUntil(this.unsubscribe$)
-    ).subscribe(s => {
-      const filterStr = s.toLowerCase();
-      this.filteredRows$.next(
-        this.rows.filter(
-          r => (r.name + r.coordinates + r.birdAssociationArea.value).toLowerCase().includes(filterStr)
-        )
-      );
-    });
-    this.atlasApi.getGrid().subscribe(g => {
-      this.rows = g;
-      this.search$.next('');
-    });
+    this.grid$ = this.atlasApi.getGrid().pipe(tap(() => {
+      this.popstateService.recallScrollPosition();
+    }));
+    this.loadedElementsStore.load('map');
   }
 
-  onActivate(event: { type: string; row: AtlasGridSquare }) {
-    if(event.type === 'click') {
-      this.router.navigate([event.row.coordinates], { relativeTo: this.route });
-    }
-  }
-
-  onSearchKeyUp(event) {
-    this.search$.next(event.target.value);
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  onSelectYKJ(ykj: string) {
+    this.router.navigate([ykj], { relativeTo: this.route });
   }
 }

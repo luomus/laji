@@ -1,0 +1,47 @@
+<div class="mb-3">
+  <div>
+    <label class="d-block mb-0">{{ 'downloadRequest.fileDownload.type' | translate }}:</label>
+    <div class="d-flex">
+      <div class="mr-5" *ngFor="let option of fileTypeEnum | keyvalue: sortNull">
+        <div class="radio">
+          <label>
+            <input
+              type="radio"
+              name="fileType"
+              [value]="option.value"
+              [(ngModel)]="downloadService.fileType"
+              [disabled]="option.value === fileTypeEnum.gis && downloadRequest.approximateMatches > gisDownloadLimit"
+            >
+            {{ ('downloadRequest.fileDownload.type.' + option.value)  | translate }}
+          </label>
+          <laji-info *ngIf="option.value === fileTypeEnum.gis" [placement]="'right'" [adaptivePosition]="true" [html]="'downloadRequest.fileDownload.type.gis.info' | translate"></laji-info>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="downloadService.fileType === fileTypeEnum.gis" class="row">
+    <div class="col-sm-4">
+      <label for="format">{{ 'downloadRequest.fileDownload.format' | translate }}:</label>
+      <select id="format" name="format" class="form-control" [(ngModel)]="downloadService.format">
+        <option *ngFor="let option of fileFormatEnum | keyvalue: sortNull" [ngValue]="option.value">{{ '.' + option.value }}</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <label for="geometry">{{ 'download.geometry' | translate }}:</label>
+      <select id="geometry" name="geometry" class="form-control" [(ngModel)]="downloadService.geometry">
+        <option *ngFor="let option of fileGeometryEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <label for="crs">{{ 'download.crs' | translate }}:</label>
+      <select id="crs" name="crs" class="form-control" [(ngModel)]="downloadService.crs">
+        <option *ngFor="let option of fileCrsEnum | keyvalue: sortNull" [ngValue]="option.value">{{ option.value }}</option>
+      </select>
+    </div>
+  </div>
+  <span *ngIf="downloadRequest.approximateMatches > gisDownloadLimit" class="text text-warning"><i class="glyphicon glyphicon-alert"></i> {{ 'downloadRequest.fileDownload.gisDisabled' | translate }}</span>
+</div>
+<lu-button [loading]="downloadService.loading" [role]="'primary'" (click)="downloadFile()">
+  <i class="glyphicon glyphicon-download-alt"></i>
+  {{ 'downloadRequest.fileDownload.download' | translate }}
+</lu-button>

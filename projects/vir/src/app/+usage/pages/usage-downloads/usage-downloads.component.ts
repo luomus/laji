@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
-import { IDownloadRequest, VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
+import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -13,10 +14,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class UsageDownloadsComponent {
   @ViewChild('downloadModal', { static: true }) downloadModal: TemplateRef<any>;
-  downloadRequests$: Observable<IDownloadRequest[]>;
-  apiKeys$: Observable<IDownloadRequest[]>;
+  downloadRequests$: Observable<DownloadRequest[]>;
+  apiKeys$: Observable<DownloadRequest[]>;
 
-  selectedRequest?: IDownloadRequest;
+  selectedRequest?: DownloadRequest;
 
   private modal: BsModalRef;
 
@@ -43,7 +44,7 @@ export class UsageDownloadsComponent {
     this.openDownloadModal(event.row);
   }
 
-  openDownloadModal(request: IDownloadRequest) {
+  openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
     this.modal = this.modalService.show(this.downloadModal, {class: 'modal-md'});
   }

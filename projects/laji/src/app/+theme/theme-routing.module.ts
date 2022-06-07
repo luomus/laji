@@ -1,28 +1,21 @@
 /* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OnlyLoggedIn } from '../shared/route/only-logged-in';
 import { HerpetologyComponent } from './herpetology/herpetology.component';
-import { DocumentDeActivateGuard } from '../shared/guards/document-de-activate.guard';
 import { IdentifyComponent } from './identify/identify.component';
 import { QualityComponent } from './quality/quality.component';
 import { ThemeComponent } from './theme.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { GeneticResourceComponent } from './genetic-resource/genetic-resource.component';
 import { DatasetsComponent } from './datasets/datasets.component';
-import { KerttuComponent } from './kerttu/kerttu.component';
-import { KerttuInstructionsComponent } from './kerttu/kerttu-instructions/kerttu-instructions.component';
 import { PinkkaComponent } from './pinkka/pinkka.component';
 import { BibliographyComponent } from './bibliography/bibliography.component';
 import { InsectGuideComponent } from './insect-guide/insect-guide.component';
-import {KerttuExpertiseFormComponent} from './kerttu/kerttu-expertise-form/kerttu-expertise-form.component';
-import {KerttuLetterAnnotationComponent} from './kerttu/kerttu-letter-annotation/kerttu-letter-annotation.component';
-import {KerttuRecordingAnnotationComponent} from './kerttu/kerttu-recording-annotation/kerttu-recording-annotation.component';
 import { ProtaxComponent } from './protax/protax.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
-import { KerttuResultComponent } from './kerttu/kerttu-result/kerttu-result.component';
+import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 
 /* eslint-enable max-len */
 
@@ -78,17 +71,16 @@ const routes: Routes = [
   },
   {
     path: 'kerttu',
-    component: KerttuComponent,
+    component: KerttuClosedComponent,
     data: {
       title: 'Kerttu'
     },
     children: [
-      {path: '', pathMatch: 'full', redirectTo: 'instructions'},
-      {path: 'instructions', pathMatch: 'full', component: KerttuInstructionsComponent},
-      {path: 'expertise', pathMatch: 'full', component: KerttuExpertiseFormComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
-      {path: 'letters', pathMatch: 'full', component: KerttuLetterAnnotationComponent, canActivate: [OnlyLoggedIn]},
-      {path: 'recordings', pathMatch: 'full', component: KerttuRecordingAnnotationComponent, canActivate: [OnlyLoggedIn], canDeactivate: [DocumentDeActivateGuard]},
-      {path: 'result', pathMatch: 'full', component: KerttuResultComponent}
+      {path: 'instructions', pathMatch: 'full', redirectTo: ''},
+      {path: 'expertise', pathMatch: 'full', redirectTo: ''},
+      {path: 'letters', pathMatch: 'full', redirectTo: ''},
+      {path: 'recordings', pathMatch: 'full', redirectTo: ''},
+      {path: 'result', pathMatch: 'full', redirectTo: ''}
     ]
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
