@@ -104,18 +104,14 @@ export class FormPermissionService {
       ictAdmin: false,
       view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
     };
-    const noRestrictFeature$ = this.userService.user$.pipe(map(user => user ? {
-      edit: true,
-      view: true,
-      admin: false,
-      ictAdmin: UserService.isIctAdmin(user)
-    } : notLoggedIn));
     const {collectionID} = form;
-    if (!collectionID) {
-      return noRestrictFeature$;
-    }
-    if (!form.options?.restrictAccess) {
-      return noRestrictFeature$;
+    if (!collectionID || (!form.options?.restrictAccess && !form.options?.hasAdmins)) {
+      return this.userService.user$.pipe(map(user => user ? {
+        edit: true,
+        view: true,
+        admin: false,
+        ictAdmin: UserService.isIctAdmin(user)
+      } : notLoggedIn));
     }
     return this.userService.isLoggedIn$.pipe(
       take(1),

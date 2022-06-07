@@ -242,9 +242,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   drawToMap(type: string) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
-    } else if (type === 'CoordinatesImport') {
-      this.map.openDrawUploadDialog();
-    } else if (['Rectangle', 'Polygon'].includes(type)) {
+    } else if (['Rectangle'].includes(type)) {
       this.map.triggerDrawing(type);
     }
   }
