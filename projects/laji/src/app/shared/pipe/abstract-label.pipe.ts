@@ -7,10 +7,10 @@ import { Observable, Subscription } from 'rxjs';
 })
 export abstract class AbstractLabelPipe implements PipeTransform, OnDestroy {
   value = '';
-  lastKey: string;
-  protected key: string;
-  updateSub: Subscription;
-  onLangChange: Subscription;
+  lastKey?: string | null;
+  protected key?: string;
+  updateSub?: Subscription;
+  onLangChange?: Subscription;
 
   protected constructor(
     protected translate: TranslateService,

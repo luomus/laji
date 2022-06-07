@@ -10,6 +10,7 @@ import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spin
 import { GridIndexMapComponent } from './grid-index/grid-index-map/grid-index-map.component';
 import { GridIndexTableComponent } from './grid-index/grid-index-table/grid-index-table.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
+import { MapUtilsModule } from '../shared-modules/map-utils/map-utils.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
     NgxDatatableModule,
     SpinnerModule,
     LajiUiModule,
-    FormsModule
+    FormsModule,
+    MapUtilsModule
   ],
   declarations: [GridIndexComponent, GridInfoComponent, GridIndexMapComponent, GridIndexTableComponent]
 })

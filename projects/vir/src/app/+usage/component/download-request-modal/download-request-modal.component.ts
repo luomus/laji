@@ -30,5 +30,6 @@ export class DownloadRequestModalComponent {
   @Input() showPerson = true;
   @Input() showFileDownload = false;
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter();
 }

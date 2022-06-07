@@ -52,7 +52,6 @@ interface GridInfoData {
 }
 
 @Component({
-  selector: 'ba-grid-info',
   templateUrl: './grid-info.component.html',
   styleUrls: ['./grid-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -165,7 +164,7 @@ export class GridInfoComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.map) { this.map.destroy(); }
+    this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

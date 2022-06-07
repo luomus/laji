@@ -106,7 +106,7 @@ export class ExportService {
   }
 
   private getValue(obj: any, col: DatatableColumn) {
-    const nameValue = Util.parseJSONPath(obj, col.name);
+    const nameValue = Util.parseJSONPath(obj, col.name ?? '');
     if (!this.hasScalarValue(nameValue) && typeof col.prop !== 'undefined') {
       const propValue = Util.parseJSONPath(obj, '' + col.prop);
       if (typeof propValue !== 'undefined') {

@@ -59,17 +59,17 @@ export class FooterComponent implements OnInit {
     });
     this.tree$ = this.baseDataService.getBaseData().pipe(
       map(data => data.information && data.information.children || []),
-      map(data => {
-        return data.map(information => {
-          return {
+      map(data => (
+        data.map(information => (
+          {
             ...information,
             children: [
               ...information.children.filter(child => informationWhitelist.some(w => w === child.id)),
               ...(augment[information.id] ?? [])
             ]
-          };
-        });
-      })
+          }
+        ))
+      ))
     );
   }
 }

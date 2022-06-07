@@ -4,8 +4,8 @@ import { map, shareReplay } from 'rxjs/operators';
 
 export abstract class AbstractCachedHttpService<T> {
 
-  protected currentLang: string;
-  private _fetch;
+  protected currentLang?: string;
+  private _fetch?: Observable<{[id: string]: T|string}>;
 
   protected constructor(private valueKey = '', private idKey = 'id') {}
 

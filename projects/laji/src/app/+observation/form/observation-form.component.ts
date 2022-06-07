@@ -209,6 +209,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onOnlyFromCollectionCheckBoxToggle() {
     this.query.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
+    this.query.superRecordBasis = this.formQuery.onlyFromCollectionSystems ? ['PRESERVED_SPECIMEN'] : [];
     this.onQueryChange();
   }
 
@@ -532,7 +533,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       qualityPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.qualityPlantPest'),
       otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2 && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN']) && query.superRecordBasis.length === 1,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
@@ -560,6 +561,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];
+      query.superRecordBasis = ['PRESERVED_SPECIMEN'];
     }
     query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
     query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;

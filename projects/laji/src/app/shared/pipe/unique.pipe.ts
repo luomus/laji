@@ -17,9 +17,9 @@ export class UniquePipe implements PipeTransform {
       return value;
     }
 
-    const addedTags = [];
-    const removedTags = [];
-    let active = [];
+    const addedTags: any[] = [];
+    const removedTags: any[] = [];
+    let active: any[] = [];
 
     for (const arg of args) {
       if (arg.addedTags) {
@@ -50,8 +50,8 @@ export class UniquePipe implements PipeTransform {
     return value;
   }
 
-  mergeUniqueValues(...arrays) {
-    let jointArray = [];
+  mergeUniqueValues(...arrays: any[]) {
+    let jointArray: any[] = [];
 
     arrays.forEach(array => {
         jointArray = [...jointArray, ...array];
@@ -60,7 +60,7 @@ export class UniquePipe implements PipeTransform {
   }
 
 
-  arrDiff(a1, a2) {
+  arrDiff(a1: any[], a2: any[]) {
     const a = [], diff = [];
 
     for (const a1Item of a1) {

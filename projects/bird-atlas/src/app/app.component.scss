@@ -9,5 +9,8 @@
 .main-view {
   padding-top: $navbar-min-height;
   flex-grow: 1;
-  min-height: 80vh;
+}
+
+.breadcrumb {
+  background-color: $neutral-3;
 }

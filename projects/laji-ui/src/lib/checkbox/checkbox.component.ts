@@ -17,6 +17,7 @@ export class CheckboxComponent implements OnDestroy{
   /**
    * Set initial state of checkbox
    */
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('checked') set checkedInput(checked: boolean) {
     this.isChecked = checked;
     this.checkbox.nativeElement.checked = checked;

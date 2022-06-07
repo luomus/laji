@@ -176,8 +176,8 @@ export class UserService {
   }
 
   getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
-  getPersonInfo(id: string, info: keyof Person | 'fullNameWithGroup'): Observable<string|string[]>;
-  getPersonInfo(id: string, info: keyof Person | 'fullNameWithGroup' = 'fullName'): Observable<string|string[]> {
+  getPersonInfo(id: string, info?: keyof Person | 'fullNameWithGroup'): Observable<string | string[]>;
+  getPersonInfo(id: string, info: keyof Person | 'fullNameWithGroup' = 'fullName'): Observable<string | string[]> {
     if (!id || !id.startsWith('MA.')) {
       return of(id);
     }

@@ -14,7 +14,7 @@ import { catchError } from 'rxjs/operators';
   pure: false
 })
 export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
-  private type;
+  private type!: 'vernacular' | 'scientific';
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
@@ -37,6 +37,6 @@ export class TaxonNamePipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _parseValue(res: Taxonomy): string {
-    return this.type === 'vernacular' ? res.vernacularName : res.scientificName;
+    return (this.type === 'vernacular' ? res.vernacularName : res.scientificName) ?? '';
   }
 }

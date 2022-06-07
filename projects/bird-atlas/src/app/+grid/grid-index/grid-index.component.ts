@@ -4,10 +4,9 @@ import { AtlasApiService, AtlasGrid } from '../../core/atlas-api.service';
 import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ScrollPositionService } from '../../core/scroll-position.service';
+import { PopstateService } from '../../core/popstate.service';
 
 @Component({
-  selector: 'ba-grid-index',
   templateUrl: './grid-index.component.html',
   styleUrls: ['./grid-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,12 +19,12 @@ export class GridIndexComponent implements OnInit {
     private atlasApi: AtlasApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private scroll: ScrollPositionService
+    private popstateService: PopstateService
   ) {}
 
   ngOnInit(): void {
     this.grid$ = this.atlasApi.getGrid().pipe(tap(() => {
-      this.scroll.recallScrollPosition();
+      this.popstateService.recallScrollPosition();
     }));
     this.loadedElementsStore.load('map');
   }

@@ -17,7 +17,7 @@ export class MonitoringFacade {
 
   monitoringForms$ = this.store$.asObservable().pipe(map(state => state.monitoringForms), distinctUntilChanged());
 
-  constructor (private formService: FormService, private translate: TranslateService) {}
+  constructor(private formService: FormService, private translate: TranslateService) {}
 
   reducer(forms) {
     this.store$.next({

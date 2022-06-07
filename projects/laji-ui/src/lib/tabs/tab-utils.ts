@@ -10,7 +10,7 @@
 export class LoadedElementsStore {
   private loaded = {};
 
-  constructor (private names: string[]) {
+  constructor(private names: string[]) {
     this.reset();
   }
 

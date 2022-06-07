@@ -49,6 +49,11 @@
     "bundle-report": "npm run ng-high-memory -- build --configuration production --aot --stats-json --named-chunks=true && webpack-bundle-analyzer dist/browser/stats.json",
     "lint": "eslint \"projects/laji/src/**/*.ts\"",
     "lint:kerttu-global": "eslint \"projects/kerttu-global/src/**/*.ts\"",
+    "lint:bird-atlas": "eslint \"projects/bird-atlas/src/**/*.ts\"",
+    "lint:exhibition-screen": "eslint \"projects/exhibition-screen/src/**/*.ts\"",
+    "lint:laji-ui": "eslint \"projects/laji-ui/src/**/*.ts\"",
+    "lint:vir": "eslint \"projects/vir/src/**/*.ts\"",
+    "lint:all": "eslint \"projects/{laji,bird-atlas,exhibition-screen,laji-ui,vir}/src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor projects/laji/e2e/protractor.conf.js",
@@ -207,6 +212,7 @@
     "patch-package": "^6.4.7",
     "postinstall-prepare": "^1.0.1",
     "protractor": "^7.0.0",
+    "protractor-console-plugin": "^0.1.1",
     "redis": "^3.1.2",
     "redlock": "^4.2.0",
     "regexp-replace-loader": "^1.0.1",
@@ -234,7 +240,7 @@
   "homepage": "https://bitbucket.org/luomus/laji.fi-front",
   "husky": {
     "hooks": {
-      "pre-commit": "npm --silent run msg-a && npm --silent run lint"
+      "pre-push": "npm --silent run msg-a && npm --silent run lint:all"
     }
   }
 }

@@ -9,7 +9,7 @@ export const V2 = {
   sub: (a: V2, b: V2): V2 => ([a[0] - b[0], a[1] - b[1]]),
   normalize: (v: V2): V2 => {
     const mag = V2.mag(v);
-    if (mag === 0) { return [0, 0] }
+    if (mag === 0) { return [0, 0]; }
     return [v[0] / mag, v[1] / mag];
   },
   mag: (v: V2): number => Math.sqrt(Math.pow(v[0], 2) + Math.pow(v[1], 2)),
@@ -18,7 +18,7 @@ export const V2 = {
   ceil: (v: V2, max: number) => {
     if (V2.mag(v) > max) {
       return V2.scale(V2.normalize(v), max);
-    } else return v;
+    } else { return v; }
   },
   dot: (a: V2, b: V2): number => a[0] * b[0] + a[1] * b[1],
   rotRad: (v: V2, rad: number): V2 => [Math.cos(rad) * v[0] - Math.sin(rad) * v[1], Math.sin(rad) * v[0] + Math.cos(rad) * v[1]], // anticlockwise rotation
@@ -29,4 +29,4 @@ export const V2 = {
     return V2.lerp(ab, cb, t);
   },
   perp: (v: V2): V2 => ([v[1], -v[0]])
-}
+};
