@@ -41,7 +41,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
       width: 200
     }, {
       prop: 'birdAssociationArea.value',
-      name: this.translate.instant('ba.grid-index.birdAssociationArea'),
+      name: this.translate.instant('ba.grid-index.birdSociety'),
       resizeable: false,
       sortable: true,
       width: 350

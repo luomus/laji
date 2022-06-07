@@ -13,8 +13,12 @@ export type AtlasActivityCategory =
   | 'MY.atlasActivityCategoryEnum3'
   | 'MY.atlasActivityCategoryEnum4'
   | 'MY.atlasActivityCategoryEnum5';
+export interface KeyValuePair<K, T> {
+  key: K;
+  value: T;
+}
 export interface AtlasGridSquare {
-  birdAssociationArea: {key: string; value: string};
+  birdAssociationArea: KeyValuePair<string, string>;
   coordinates: string;
   id: string;
   level1: number;
@@ -24,17 +28,26 @@ export interface AtlasGridSquare {
   level5: number;
   name: string;
   data?: {
-    atlasClass: {key: string; value: string};
-    atlasCode: {key: string; value: string};
+    atlasClass: KeyValuePair<string, string>;
+    atlasCode: KeyValuePair<string, string>;
     speciesId: string;
     speciesName: string;
   }[];
   atlas?: number;
   atlasClassSum?: number;
-  activityCategory?: {key: AtlasActivityCategory; value: string};
+  activityCategory?: KeyValuePair<AtlasActivityCategory, string>;
   speciesCount?: number;
 };
 export type AtlasGrid = AtlasGridSquare[];
+export interface BirdSociety {
+  gridSquares: AtlasGrid;
+  birdAssociationArea: KeyValuePair<string, string>;
+  activityCategories: Record<AtlasActivityCategory, {
+    name: string;
+    squareSum: number;
+    squarePercentage: number;
+  }>;
+}
 
 interface VernacularName {fi: string; sv: string; en: string};
 export interface AtlasTaxon {
@@ -65,10 +78,22 @@ export class AtlasApiService {
     return <Observable<AtlasGrid>>this.http.get(url);
   }
 
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSociety(id: string): Observable<BirdSociety> {
+    const url = `${BASE_URL}/grid/birdAssociation/${id}`;
+    return <Observable<BirdSociety>>this.http.get(url);
+  }
+
   @cacheReturnObservable(30000) // 30 seconds
   getGridSquare(gridId: string): Observable<AtlasGridSquare> {
     const url = `${BASE_URL}/grid/${gridId}/atlas`;
     return <Observable<AtlasGridSquare>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSocieties(): Observable<KeyValuePair<string, string>[]> {
+    const url = `${BASE_URL}/birdAssociation`;
+    return <Observable<KeyValuePair<string, string>[]>>this.http.get(url);
   }
 
   @cacheReturnObservable(86400000) // 1 day
