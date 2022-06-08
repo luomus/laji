@@ -9,6 +9,7 @@ import { BirdSocietyIndexComponent } from './bird-society-index/bird-society-ind
 import { BirdSocietyInfoComponent } from './bird-society-info/bird-society-info.component';
 import { BirdSocietyInfoMapComponent } from './bird-society-info/bird-society-info-map/bird-society-info-map.component';
 import { MapUtilsModule } from '../shared-modules/map-utils/map-utils.module';
+import { GridSquareModule } from '../shared-modules/grid-square/grid-square.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { MapUtilsModule } from '../shared-modules/map-utils/map-utils.module';
     NgxDatatableModule,
     SpinnerModule,
     RouterModule,
-    MapUtilsModule
+    MapUtilsModule,
+    GridSquareModule
   ],
   declarations: [BirdSocietyIndexComponent, BirdSocietyInfoComponent, BirdSocietyInfoMapComponent]
 })

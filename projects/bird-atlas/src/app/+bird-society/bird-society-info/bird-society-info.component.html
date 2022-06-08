@@ -47,39 +47,7 @@
       <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
       <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>
     </div>
-    <div [ngClass]="'cat-info-container d-flex flex-wrap mt-3 mb-5 ' + activityCategoryClass[selected.activityCategory.key]">
-      <div class="d-flex flex-col mr-6 mb-3">
-        <h6>{{ 'ba.bird-society-info.square.activityCategory' | translate }}</h6>
-        <strong>{{ selected.activityCategory.value }}</strong>
-      </div>
-      <div class="d-flex flex-col">
-        <h6>{{ 'ba.bird-society-info.square.atlasClassSum' | translate }}</h6>
-        <strong>{{ selected.atlasClassSum }}</strong>
-      </div>
-    </div>
-    <p><a [routerLink]="'/grid/' + selected.coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
-    <hr>
-    <table>
-      <tr>
-        <th>{{ 'ba.bird-society-info.square.atlasClassSumTable' | translate }}</th>
-        <th>{{ 'ba.bird-society-info.square.atlasClassSumTable.threshold' | translate }}</th>
-      </tr>
-      <tr>
-        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level2' | translate }}</td>
-        <td>{{ selected.level2 | number: '1.0-2' }}</td>
-      </tr>
-      <tr>
-        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level3' | translate }}</td>
-        <td>{{ selected.level3 | number: '1.0-2' }}</td>
-      </tr>
-      <tr>
-        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level4' | translate }}</td>
-        <td>{{ selected.level4 | number: '1.0-2' }}</td>
-      </tr>
-      <tr>
-        <td>{{ 'ba.bird-society-info.square.atlasClassSumTable.level5' | translate }}</td>
-        <td>{{ selected.level5 | number: '1.0-2' }}</td>
-      </tr>
-    </table>
+    <ba-grid-square-info [square]="birdSociety.gridSquares[selectedDataIdx]"></ba-grid-square-info>
+    <p><a [routerLink]="'/grid/' + birdSociety.gridSquares[selectedDataIdx].coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
   </div>
 </ng-template>
