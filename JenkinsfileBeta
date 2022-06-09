@@ -1,9 +1,11 @@
 node {
    nvm('v14.16.0') {
      stage('Prepare environment') {
-      def branch = getBranch(env.ref);
       echo "test"
-      echo "${branch}"
+      echo "${env.ref}"
+      if (env.ref != 'beta') {
+        currentBuild.result = 'ABORTED'
+      }
       cleanWs()
       git branch: 'beta', url: 'https://github.com/luomus/laji.git'
       sh 'npm ci'
@@ -11,24 +13,30 @@ node {
       sh 'rm -rf test-results/*'
     }
     stage('Run integration tests') {
-      sh './node_modules/.bin/webdriver-manager clean'
-      sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
-      catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh 'npm run e2e:ci -- --webdriver-update=false'
+      if (currentBuild.result != 'ABORTED') {
+        sh './node_modules/.bin/webdriver-manager clean'
+        sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
+        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+          sh 'npm run e2e:ci -- --webdriver-update=false'
+        }
+        junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
       }
-      junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
     }
     stage('Build beta') {
-      milestone()
-      sh 'rm -rf dist'
-      sh 'npm run --silent build:ssr:beta'
-      sh 'pre-compress-web-assets dist/browser'
-      sh 'npm prune --silent --production'
-      sh 'tar -cvzf beta.tar.gz --strip-components=1 dist node_modules'
+      if (currentBuild.result != 'ABORTED') {
+        milestone()
+        sh 'rm -rf dist'
+        sh 'npm run --silent build:ssr:beta'
+        sh 'pre-compress-web-assets dist/browser'
+        sh 'npm prune --silent --production'
+        sh 'tar -cvzf beta.tar.gz --strip-components=1 dist node_modules'
+      }
     }
     stage('Archive') {
-      milestone()
-      archive 'beta.tar.gz'
+      if (currentBuild.result != 'ABORTED') {
+        milestone()
+        archive 'beta.tar.gz'
+      }
     }
   }
 }
