@@ -942,7 +942,7 @@
   "observation.active.editorOrObserverIsNotPersonToken": "Sulje pois omat havainnot",
   "observation.active.editorOrObserverPersonToken": "Havainnoijana tai muokkaajana",
   "observation.active.editorPersonToken": "Muokkausoikeus",
-  "observation.active.effectiveTag": "Quality control tags",
+  "observation.active.effectiveTag": "Laadunvalvontatagit",
   "observation.active.elyCentreId": "ELY-keskus",
   "observation.active.finnish": "Suomalaiset lajit",
   "observation.active.finnishMunicipalityId": "Kunta",
