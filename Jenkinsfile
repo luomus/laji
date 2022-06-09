@@ -6,6 +6,7 @@ node {
       sh 'npm ci'
       sh 'mkdir test-results'
       sh 'rm -rf test-results/*'
+      currentBuild.result = 'SUCCESS'
     }
     stage('Build') {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
