@@ -1,6 +1,8 @@
 node {
    nvm('v14.16.0') {
      stage('Prepare environment') {
+      def branch = getBranch(env.ref);
+      echo "${branch}"
       cleanWs()
       git branch: 'beta', url: 'https://github.com/luomus/laji.git'
       sh 'npm ci'
