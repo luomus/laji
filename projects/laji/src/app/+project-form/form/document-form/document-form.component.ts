@@ -133,7 +133,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         if (confirmed && this.isFromCancel) {
             this.userService.user$.pipe(
               take(1),
-              delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone thought
+              delay(100), // Adding data to documentStorage is asynchronous so this delay is to make sure that the last save has gone through
               mergeMap(person => this.documentStorage.removeItem(this.vm.formData.id, person)),
             ).subscribe();
         }
