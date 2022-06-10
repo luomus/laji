@@ -30,6 +30,7 @@
       </div>
       <ba-grid-square-info [square]="data.elem"></ba-grid-square-info>
       <hr>
+      <p><a [routerLink]="['/society', data.elem.birdAssociationArea.key]">{{ data.elem.birdAssociationArea.value }}</a></p>
       <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
         {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
