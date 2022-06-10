@@ -2,14 +2,13 @@ import {
   AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild
 } from '@angular/core';
-import { LajiMap, DataOptions, TileLayersOptions, Lang } from 'laji-map';
+import { LajiMap, DataOptions, TileLayersOptions, Lang, GetFeatureStyleOptions } from 'laji-map';
 import { PathOptions } from 'leaflet';
-import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasActivityCategory, AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
-import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
+import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import {getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
   grid: AtlasGrid;
@@ -26,17 +25,25 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   ],
   type: 'FeatureCollection'
 });
-const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode) => (
-  (opt): PathOptions => ({
-    weight: 0,
-    opacity: 0,
-    fillOpacity: .5,
-    color: '#' + (
-      visualizationMode === 'activityCategory'
-        ? getAtlasActivityCategoryColor(grid[opt.featureIdx].activityCategory.key)
-        : getSpeciesCountColor(grid[opt.featureIdx].speciesCount)
-    )
-  })
+export const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode) => (
+  (opt: GetFeatureStyleOptions): PathOptions => {
+    const sq: AtlasGridSquare = grid[opt.featureIdx];
+    const o: PathOptions = {
+      weight: 1,
+      color: '#000000',
+      opacity: .2,
+      fillColor: '#' + getFeatureColor(sq, visualizationMode),
+      fillOpacity: .8
+    };
+    if (
+      (visualizationMode === 'activityCategory' && sq.activityCategory.key === 'MY.atlasActivityCategoryEnum0')
+      || (visualizationMode === 'speciesCount' && sq.speciesCount === 0)
+    ) {
+      o['fillOpacity'] = 0;
+      o['opacity'] = 0;
+    }
+    return o;
+  }
 );
 
 @Component({
@@ -65,7 +72,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
         tileLayers: <TileLayersOptions>{
           layers: {
             taustakartta: { opacity: 1, visible: true },
-            atlasGrid: { opacity: 1, visible: true }
+            atlasGrid: { opacity: .6, visible: true }
           }
         },
         controls: true,
