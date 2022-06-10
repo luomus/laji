@@ -8,6 +8,7 @@ import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinat
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { PopstateService } from '../../../core/popstate.service';
 import {getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
@@ -62,10 +63,12 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
 
   private map: any;
   private mapData$ = new BehaviorSubject<MapData>(undefined);
+  private mapInitialized = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
-    private zone: NgZone
+    private zone: NgZone,
+    private popstateService: PopstateService
   ) {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
@@ -84,12 +87,20 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngAfterViewInit(): void {
+    const pathData = this.popstateService.getPathData();
     this.map.setRootElem(this.lajiMapElem.nativeElement);
     this.mapData$.pipe(
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
       this.map.setData(mapData.data);
+      if (!this.mapInitialized) {
+        if (pathData['map']) {
+          this.map.setNormalizedZoom(pathData['map'].zoom);
+          this.map.setCenter(pathData['map'].center);
+        }
+        this.mapInitialized = true;
+      }
     });
   }
 
@@ -124,7 +135,12 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngOnDestroy(): void {
-    this.map?.destroy();
+    if (this.map) {
+      this.popstateService.setPathData(
+        { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
+      );
+      this.map.destroy();
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

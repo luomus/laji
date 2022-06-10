@@ -149,8 +149,8 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
       this.popstateService.setPathData(
         { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
       );
+      this.map.destroy();
     }
-    this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
