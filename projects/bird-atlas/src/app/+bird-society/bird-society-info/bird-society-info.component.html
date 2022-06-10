@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="info-panel">
-      <ng-container *ngIf="selectedDataIdx > 0 else society">
+      <ng-container *ngIf="selectedDataIdx >= 0 else society">
         <ng-container *ngTemplateOutlet="square"></ng-container>
       </ng-container>
     </div>
@@ -47,7 +47,7 @@
       <h3 class="mr-4">{{ selected.name }} <span class="coords">({{selected.coordinates}})</span></h3>
       <button class="btn btn-default close-btn" (click)="resetSelected()">X</button>
     </div>
-    <ba-grid-square-info [square]="birdSociety.gridSquares[selectedDataIdx]"></ba-grid-square-info>
-    <p><a [routerLink]="'/grid/' + birdSociety.gridSquares[selectedDataIdx].coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
+    <ba-grid-square-info [square]="selected"></ba-grid-square-info>
+    <p><a [routerLink]="'/grid/' + selected.coordinates">{{ 'ba.bird-society-info.square.gridPageLink' | translate }}</a></p>
   </div>
 </ng-template>
