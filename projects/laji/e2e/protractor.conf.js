@@ -66,9 +66,15 @@ exports.config = {
     jasmine.getEnv().addReporter(junitReporter);
     browser.driver.manage().window().setSize(width, height);
   },
-  onComplete() {
-    browser.driver.close().then(function(){
-      browser.driver.quit();
-    });
-  }
+  plugins: [{
+    package: 'protractor-console-plugin',
+    exclude: [
+      /node_modules_laji-form/, // laji-form internal bug
+      /reading '_leaflet_pos'/, // Leaflet internal bug
+      /Failed to load resource: the server responded with a status of /, // Behaviour of failing resources might be intentionally tested.
+      /fbcdn/, // Facebook widget
+      /Error while waiting for Protractor/ // Test framework bugs are not bugs in the app
+    ],
+    logWarnings: false
+  }],
 };

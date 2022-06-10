@@ -17,7 +17,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
 
   constructor(private el: ElementRef,
     private renderer: Renderer2,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
   ngAfterViewInit() {

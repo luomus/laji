@@ -19,6 +19,8 @@ export class AreaSelectComponent implements OnInit {
   @Input() value: string[] = [];
   @Input() selectOptionEnabled = true;
   @Input() allOptionEnabled = false;
+  @Input() allOptionLast = false;
+  @Input() allOptionLabel = 'area-select.all';
 
   @Output() areaSelect = new EventEmitter<string>();
 
@@ -47,11 +49,13 @@ export class AreaSelectComponent implements OnInit {
         if (!this.multiselect && this.selectOptionEnabled) {
           options.push({id: undefined, value: 'select', translate: true});
         }
-        if (!this.multiselect && this.allOptionEnabled) {
-          options.push({id: 'all', value: 'area-select.all', translate: true});
+        if (!this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
+          options.push({id: 'all', value: this.allOptionLabel, translate: true});
         }
         this.options = [...options, ...data.sort((a, b) => a.value.localeCompare(b.value))];
-
+        if (this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
+          this.options.push({id: 'all', value: this.allOptionLabel, translate: true});
+        }
         this.cd.markForCheck();
       });
   }

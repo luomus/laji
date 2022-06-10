@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Singleton cache.
-const locationCache = {};
+const locationCache: any = {};
 
 @Pipe({
   name: 'coordinate'
@@ -32,7 +32,7 @@ export class CoordinatePipe implements PipeTransform {
     }
   }
 
-  private getYkjCoord(min, max, minLen = 3) {
+  private getYkjCoord(min: any, max: any, minLen = 3) {
     const key = min + ':' + max;
     if (!locationCache[key]) {
       let tmpMin = ('' + min).replace(/[0]*$/, '');
@@ -45,14 +45,14 @@ export class CoordinatePipe implements PipeTransform {
     return locationCache[key];
   }
 
-  private joinCoordinate(value, joinBy = ':') {
+  private joinCoordinate(value: any, joinBy = ':') {
     if (value.lat && value.lon) {
       return `${value.lat}${joinBy}${value.lon}`;
     }
     return '';
   }
 
-  private makeMinMaxCoordinate(value) {
+  private makeMinMaxCoordinate(value: any) {
     if (value.latMax && value.latMin && value.lonMax && value.lonMin) {
       const lat = value.latMax === value.latMin ? value.latMax : value.latMin + '-' + value.latMax;
       const lon = value.lonMax === value.lonMin ? value.lonMax : value.lonMin + '-' + value.lonMax;
@@ -61,7 +61,7 @@ export class CoordinatePipe implements PipeTransform {
     return '';
   }
 
-  private makeMinMaxYkj(value) {
+  private makeMinMaxYkj(value: any) {
     if (value.latMin) {
       const lat = this.getYkjCoord(value.latMin, value.latMax);
       return lat + ':' + this.getYkjCoord(value.lonMin, value.lonMax, lat.split('-')[0].length);

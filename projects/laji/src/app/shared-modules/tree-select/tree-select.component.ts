@@ -37,6 +37,8 @@ export class TreeSelectComponent {
   @Input() modalTitle: string;
   @Input() browseTitle: string;
   @Input() selectedTitle: string;
+  @Input() includedTitle: string;
+  @Input() excludedTitle: string;
   @Input() okButtonLabel: string;
   @Input() clearButtonLabel: string;
   @Input() includeCount = false;
@@ -58,6 +60,8 @@ export class TreeSelectComponent {
       modalTitle: this.modalTitle,
       browseTitle: this.browseTitle,
       selectedTitle: this.selectedTitle,
+      includedTitle: this.includedTitle,
+      excludedTitle: this.excludedTitle,
       okButtonLabel: this.okButtonLabel,
       clearButtonLabel: this.clearButtonLabel,
       includeCount: this.includeCount,

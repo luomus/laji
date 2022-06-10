@@ -114,7 +114,7 @@
  */
 export interface WarehouseQueryInterface {
   includeNonValidTaxa?: boolean;
-  taxonId?: Array<string>;
+  taxonId?: string | Array<string>;
   target?: Array<string>;
   includeSubTaxa?: boolean;
   useIdentificationAnnotations?: boolean;
@@ -242,7 +242,6 @@ export interface WarehouseQueryInterface {
   onlyNonStateLands?: boolean;
   atlasCode?: Array<string>;
   atlasClass?: Array<string>;
-  polygonId?: string;
 }
 
 

@@ -1,11 +1,11 @@
 export class AnimationEngine {
-  private playing: boolean = false;
+  private playing = false;
   private lastLoop: DOMHighResTimeStamp;
 
-  constructor(private initFn: Function, private updateFn: (dt: number) => boolean, private destroyFn: Function) {}
+  constructor(private initFn: () => void, private updateFn: (dt: number) => boolean, private destroyFn: () => void) {}
 
   public play() {
-    if (this.playing) { return }
+    if (this.playing) { return; }
     this.lastLoop = performance.now();
     this.playing = true;
     this.initFn();

@@ -29,6 +29,7 @@ export class ButtonComponent implements OnChanges, OnInit {
   get target() {
     return this._target;
   }
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() click = new EventEmitter<MouseEvent>();
   @Input() queryParams;
 

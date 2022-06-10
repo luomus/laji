@@ -12,6 +12,7 @@ import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
 import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 
 @Component({
@@ -42,7 +43,8 @@ export class DocumentLocalComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private lajiApi: LajiApiService,
     private formService: FormService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private deleteDocumentService: DeleteOwnDocumentService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -191,7 +193,9 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   closeDocument() {
+    this.deleteDocumentService.emitChildEvent(this.document.id);
     this.documentClose.emit(true);
+    this.deleteDocumentService.emitChildEvent(null);
   }
 
 

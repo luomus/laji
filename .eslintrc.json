@@ -28,7 +28,7 @@
           "error",
           {
             "type": "element",
-            "prefix": ["laji", "ba"],
+            "prefix": ["laji"],
             "style": "kebab-case"
           }
         ],
@@ -36,7 +36,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": ["laji", "ba"],
+            "prefix": ["laji"],
             "style": "camelCase"
           }
         ],

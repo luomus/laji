@@ -18,6 +18,7 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
 import { AudioService } from '../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { ISpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { defaultSpectrogramConfig } from '../../../../../laji/src/app/shared-modules/audio-viewer/variables';
+import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
 
 @Component({
   selector: 'bsg-species-validation',
@@ -36,9 +37,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   canLeaveWithoutConfirm = false;
   hasLock?: boolean;
 
+  audioSampleRate = defaultAudioSampleRate;
   spectrogramConfig: ISpectrogramConfig = {
     ...defaultSpectrogramConfig,
-    sampleRate: 32000
+    sampleRate: this.audioSampleRate
   };
 
   private activeVersionIdxSubject = new BehaviorSubject<number>(0);
@@ -59,9 +61,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private audioService: AudioService,
     private cd: ChangeDetectorRef
-  ) {
-    this.audioService.setDefaultSampleRate(this.spectrogramConfig.sampleRate);
-  }
+  ) {}
 
   ngOnInit() {
     this.speciesId$ = this.route.params.pipe(
@@ -147,7 +147,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  saveTemplates(data: { templates: IGlobalTemplate[], comments: IGlobalComment[] }) {
+  saveTemplates(data: { templates: IGlobalTemplate[]; comments: IGlobalComment[] }) {
     this.saving = true;
     this.kerttuGlobalApi.saveTemplates(this.userService.getToken(), this.speciesId, data).subscribe(() => {
       this.saving = false;
@@ -163,7 +163,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
   }
 
   goToSpeciesList() {
-    this.router.navigate(this.localizeRouterService.translateRoute(['validation']));
+    this.router.navigate(this.localizeRouterService.translateRoute(['validation/species']));
   }
 
   activeVersionIdxChange(activeIdx: number) {

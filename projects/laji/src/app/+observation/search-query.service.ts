@@ -151,8 +151,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'season',
     'formId',
     'taxonAdminFiltersOperator',
-    'collectionAndRecordQuality',
-    'polygonId'
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -228,15 +227,11 @@ export class SearchQueryService implements SearchQueryInterface {
       result.coordinates = result.coordinates.map(coordinate => {
         const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(coordinate);
         result._coordinatesIntersection = coordinatesIntersection
-          ?? coordinate.match(/YKJ/)
+          ?? (coordinate.match(/YKJ/)
             ? 100
-            : 0;
+            : 0);
         return withoutCoordinatesIntersection;
       });
-    } else if (result.polygonId) {
-      const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(result.polygonId);
-      result.polygonId = withoutCoordinatesIntersection;
-      result._coordinatesIntersection = coordinatesIntersection ?? 0;
     }
     return result;
   }

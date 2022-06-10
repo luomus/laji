@@ -11,6 +11,7 @@ export class CollectionSelectComponent {
 
   readonly collections = environment.rootCollections;
 
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<string>();
 
   constructor() {}

@@ -54,7 +54,7 @@ export class TemplateComponent {
     this.audioViewerMode = 'default';
     this.framedTemplate = {
       audioId: this.audio.id,
-      area: area
+      area
     };
 
     if (this.template?.id) {

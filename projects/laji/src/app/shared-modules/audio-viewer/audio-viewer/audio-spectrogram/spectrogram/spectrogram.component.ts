@@ -39,7 +39,10 @@ export class SpectrogramComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.buffer || changes.startTime || changes.endTime || changes.config || changes.pregeneratedSpectrogramUrl) {
+    if (
+      changes.buffer || changes.startTime || changes.endTime || changes.pregeneratedSpectrogramUrl || (
+      changes.config && this.spectrogramNeedsToBeRecreatedOnConfigChange(changes.config.currentValue, changes.config.previousValue)
+    )) {
       this.imageData = null;
       this.clearCanvas();
 
@@ -62,6 +65,17 @@ export class SpectrogramComponent implements OnChanges {
         this.drawImage(this.imageData, this.canvasRef.nativeElement);
       }
     }
+  }
+
+  private spectrogramNeedsToBeRecreatedOnConfigChange(currConfig?: ISpectrogramConfig, prevConfig?: ISpectrogramConfig): boolean {
+    if (!currConfig || !prevConfig) {
+      return true;
+    }
+    if (Object.keys(currConfig).length !== Object.keys(prevConfig).length) {
+      return true;
+    }
+
+    return Object.keys(currConfig).some(key => key !== 'sampleRate' && currConfig[key] !== prevConfig[key]);
   }
 
   private createSpectrogram(buffer: AudioBuffer, startTime: number, endTime: number): Observable<void> {
