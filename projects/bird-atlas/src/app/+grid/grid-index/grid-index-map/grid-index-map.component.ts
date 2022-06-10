@@ -98,6 +98,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
         if (pathData['map']) {
           this.map.setNormalizedZoom(pathData['map'].zoom);
           this.map.setCenter(pathData['map'].center);
+          this.map.setTileLayers(pathData['map'].tileLayers);
         }
         this.mapInitialized = true;
       }
@@ -136,9 +137,13 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
 
   ngOnDestroy(): void {
     if (this.map) {
-      this.popstateService.setPathData(
-        { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
-      );
+      this.popstateService.setPathData({
+        map: {
+          center: this.map.getOption('center'),
+          zoom: this.map.getNormalizedZoom(),
+          tileLayers: this.map.getOption('tileLayers')
+        }
+      });
       this.map.destroy();
     }
     this.unsubscribe$.next();

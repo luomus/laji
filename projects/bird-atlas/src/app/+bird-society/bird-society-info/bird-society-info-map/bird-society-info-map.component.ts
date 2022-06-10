@@ -103,6 +103,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         if (pathData['map']) {
           this.map.setNormalizedZoom(pathData['map'].zoom);
           this.map.setCenter(pathData['map'].center);
+          this.map.setTileLayers(pathData['map'].tileLayers);
         } else {
           this.map.zoomToData();
         }
@@ -146,9 +147,13 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
 
   ngOnDestroy(): void {
     if (this.map) {
-      this.popstateService.setPathData(
-        { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
-      );
+      this.popstateService.setPathData({
+        map: {
+          center: this.map.getOption('center'),
+          zoom: this.map.getNormalizedZoom(),
+          tileLayers: this.map.getOption('tileLayers')
+        }
+      });
       this.map.destroy();
     }
     this.unsubscribe$.next();
