@@ -32,6 +32,7 @@
   "identification.recordings.seeTemplates": "View templates",
   "identification.recordings.timeBuffer": "Time buffer",
   "identification.recordings.timeBuffer.info": "Add a time buffer to the beginning and to the end of the spectrogram.",
+  "identification.recordings.allContinents": "Filter by a continent",
   "identification.siteSelection": "Select a recording site",
   "identification.siteSelection.confirm": "Confirm and move to next",
   "identification.siteSelection.description": "Select sites by clicking a point in the map or by drawing an area with a draw tool.",
