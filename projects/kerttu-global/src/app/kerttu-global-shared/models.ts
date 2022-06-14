@@ -158,11 +158,16 @@ export interface IIdentificationSiteStat {
 export interface IIdentificationStat {
   annotationCount: number;
   speciesCount: number;
+  distinctSpeciesCount: number;
   drawnBoxesCount: number;
 }
 
 export interface IIdentificationUserStat extends IIdentificationStat {
   userId: string;
+}
+
+export interface IIdentificationUserStatResult extends IListResult<IIdentificationUserStat> {
+  totalDistinctSpeciesCount: number;
 }
 
 

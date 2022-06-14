@@ -1,6 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IGlobalSite, IIdentificationSiteStat, IIdentificationStat, IIdentificationUserStat } from '../../kerttu-global-shared/models';
+import {
+  IGlobalSite,
+  IIdentificationSiteStat,
+  IIdentificationStat,
+  IIdentificationUserStatResult
+} from '../../kerttu-global-shared/models';
 import { map, share } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 
@@ -13,7 +18,7 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 export class IdentificationResultsComponent implements OnInit {
   sites$: Observable<IGlobalSite[]>;
   siteStats$: Observable<IIdentificationSiteStat[]>;
-  userStats$: Observable<IIdentificationUserStat[]>;
+  userStats$: Observable<IIdentificationUserStatResult>;
   generalStats$: Observable<IIdentificationStat>;
   userId$: Observable<string>;
 
@@ -29,18 +34,17 @@ export class IdentificationResultsComponent implements OnInit {
       map(result => result.results)
     );
     this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats().pipe(
-      map(result => result.results),
       share()
     );
     this.generalStats$ = this.userStats$.pipe(map(stats => this.generalStatsFromUserStats(stats)));
   }
 
-  private generalStatsFromUserStats(userList: IIdentificationUserStat[]): IIdentificationStat {
+  private generalStatsFromUserStats(data: IIdentificationUserStatResult): IIdentificationStat {
     let annotationCount = 0;
     let speciesCount = 0;
     let drawnBoxesCount = 0;
 
-    userList.forEach(userStat => {
+    data.results.forEach(userStat => {
       annotationCount += userStat.annotationCount;
       speciesCount += userStat.speciesCount;
       drawnBoxesCount += userStat.drawnBoxesCount;
@@ -49,6 +53,7 @@ export class IdentificationResultsComponent implements OnInit {
     return {
       annotationCount,
       speciesCount,
+      distinctSpeciesCount: data.totalDistinctSpeciesCount,
       drawnBoxesCount
     };
   }

@@ -1,11 +1,10 @@
 <laji-datatable
   [loading]="!data"
   [columns]="columns"
-  [rows]="data || []"
+  [rows]="data?.results || []"
   [clientSideSorting]="true"
   [virtualScrolling]="true"
   [summaryRow]="true"
-  [sorts]="sorts"
   [showRowAsLink]="false"
   [height]="'calc(80vh - 50px)'"
 ></laji-datatable>
