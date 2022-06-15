@@ -42,6 +42,7 @@
   "identification.siteSelection.site.id": "ID",
   "identification.siteSelection.site.name": "Name",
   "identification.title": "Annotate Soundscapes",
+  "identification.possiblyOccurs.info": "Select this if you are unsure about any of the bird species vocalizations in the recording. Moreover <strong>insert all the confusion species to the list</strong>, and select occurs possibly on all of them. For example, if you are unsure of the identification of a Crossbill species, you should insert Red Crossbill (Loxia curvirostra) and Parrot Crossbill (L. pytyopsittacus) and select the button occurs possibly on both of them.",
   "results.annotationCountMap": "Annotation count map",
   "results.annotationCounts": "Total annotation counts",
   "results.annotations": "annotations",

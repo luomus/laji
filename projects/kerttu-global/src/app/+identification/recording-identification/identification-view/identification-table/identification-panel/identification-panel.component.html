@@ -28,6 +28,7 @@
         <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange(value)"/>
         {{ 'theme.kerttu.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
       </label>
+      <laji-info [placement]="'right'" [html]="'identification.possiblyOccurs.info' | translate"></laji-info>
     </div>
     <label class="mt-4 mb-0">{{ 'identification.boxes' | translate }}</label>
     <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
