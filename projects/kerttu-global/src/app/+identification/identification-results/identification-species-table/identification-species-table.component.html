@@ -1,13 +1,10 @@
 <laji-datatable
   [loading]="!data"
   [columns]="columns"
-  [rows]="data?.results || []"
+  [rows]="data || []"
   [clientSideSorting]="true"
   [virtualScrolling]="true"
   [summaryRow]="true"
   [showRowAsLink]="false"
   [height]="'calc(80vh - 50px)'"
-  [showFooter]="false"
 ></laji-datatable>
-
-<bsg-user-name-template></bsg-user-name-template>

@@ -31,6 +31,11 @@
   [data]="userStats$ | async"
 ></bsg-identification-user-table>
 
+<h2>{{ 'results.speciesTable.title' | translate }}</h2>
+<bsg-identification-species-table
+  [data]="speciesStats$ | async"
+></bsg-identification-species-table>
+
 <ng-template #spinner>
   <laji-spinner></laji-spinner>
 </ng-template>

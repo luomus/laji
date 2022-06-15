@@ -1,9 +1,25 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
-  IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
-  IGlobalRecordingAnnotation, IGlobalSite, IIdentificationSiteStat, IIdentificationUserStat, IIdentificationUserStatResult
+  IListResult,
+  IGlobalSpeciesQuery,
+  IGlobalSpecies,
+  IGlobalSpeciesFilters,
+  IGlobalRecording,
+  IValidationStat,
+  IUserStat,
+  IGlobalTemplate,
+  ISuccessResult,
+  IGlobalComment,
+  IGlobalTemplateVersion,
+  IGlobalSpeciesListResult,
+  KerttuGlobalErrorEnum,
+  IGlobalRecordingResponse,
+  IGlobalRecordingAnnotation,
+  IGlobalSite,
+  IIdentificationSiteStat,
+  IIdentificationUserStatResult,
+  IIdentificationSpeciesStat
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -148,6 +164,11 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IIdentificationUserStatResult>(path);
   }
 
+  public getIdentificationSpeciesStats(): Observable<IListResult<IIdentificationSpeciesStat>> {
+    const path = this.basePath + '/identification/statistics/species';
+
+    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path);
+  }
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
     Object.keys(query).forEach(key => {

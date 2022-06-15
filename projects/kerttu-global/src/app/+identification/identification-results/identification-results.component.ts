@@ -4,7 +4,8 @@ import {
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationStat,
-  IIdentificationUserStatResult
+  IIdentificationUserStatResult,
+  IIdentificationSpeciesStat
 } from '../../kerttu-global-shared/models';
 import { map, share } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
@@ -19,6 +20,7 @@ export class IdentificationResultsComponent implements OnInit {
   sites$: Observable<IGlobalSite[]>;
   siteStats$: Observable<IIdentificationSiteStat[]>;
   userStats$: Observable<IIdentificationUserStatResult>;
+  speciesStats$: Observable<IIdentificationSpeciesStat[]>;
   generalStats$: Observable<IIdentificationStat>;
   userId$: Observable<string>;
 
@@ -35,6 +37,9 @@ export class IdentificationResultsComponent implements OnInit {
     );
     this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats().pipe(
       share()
+    );
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats().pipe(
+      map(result => result.results)
     );
     this.generalStats$ = this.userStats$.pipe(map(stats => this.generalStatsFromUserStats(stats)));
   }

@@ -170,6 +170,10 @@ export interface IIdentificationUserStatResult extends IListResult<IIdentificati
   totalDistinctSpeciesCount: number;
 }
 
+export interface IIdentificationSpeciesStat extends IGlobalSpecies {
+  count: number;
+  drawnBoxesCount: number;
+}
 
 export enum CommentType {
   replace = 0,
