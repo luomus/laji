@@ -9,9 +9,10 @@ import { RouterModule } from '@angular/router';
 import { SpeciesComponent } from './species.component';
 import { LangModule } from '../../../../laji/src/app/shared-modules/lang/lang.module';
 import { SpinnerModule } from '../../../../laji/src/app/shared-modules/spinner/spinner.module';
+import { SpeciesIndexListComponent } from './species-index/species-index-list/species-index-list.component';
 
 @NgModule({
-  declarations: [SpeciesIndexComponent, SpeciesInfoComponent, SpeciesComponent],
+  declarations: [SpeciesIndexComponent, SpeciesInfoComponent, SpeciesComponent, SpeciesIndexListComponent],
   imports: [
     routing,
     CommonModule,

@@ -1,8 +1,3 @@
 <h1 translate>ba.species-index.title</h1>
 <p [innerHtml]="'ba.species-index.p' | translate"></p>
-<ul *ngIf="speciesList$ | async; else loading; let speciesList">
-  <li *ngFor="let species of speciesList"><a [routerLink]="[species.id]">{{ species.vernacularName | multiLang }}</a></li>
-</ul>
-<ng-template #loading>
-  <laji-spinner class="d-block m-6"></laji-spinner>
-</ng-template>
+<ba-species-index-list [atlasTaxa]="atlasTaxa$ | async"></ba-species-index-list>
