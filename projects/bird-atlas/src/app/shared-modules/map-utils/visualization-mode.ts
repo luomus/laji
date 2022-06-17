@@ -6,16 +6,16 @@ export type VisualizationMode = 'activityCategory' | 'speciesCount';
 // import { discreteColorGradient } from './color-math';
 // export const activityCategoryGradient = discreteColorGradient('f3f38c', '4b57a4 ', 5);
 // export const speciesCountGradient = discreteColorGradient('f3f38c', '4b57a4', 4);
-export const activityCategoryGradient = ['f3f38c', '95e774', '61d694', '51b1c2', '4b57a4'];
+export const activityCategoryGradient = ['f3f38c', 'a9e979', '68dd79', '5acfae', '4e9dbe', '4b57a4'];
 export const speciesCountGradient = ['f3f38c', '73e26d', '56c9bf', '4b57a4'];
 
 export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
   'MY.atlasActivityCategoryEnum0': activityCategoryGradient[0],
-  'MY.atlasActivityCategoryEnum1': activityCategoryGradient[0],
-  'MY.atlasActivityCategoryEnum2': activityCategoryGradient[1],
-  'MY.atlasActivityCategoryEnum3': activityCategoryGradient[2],
-  'MY.atlasActivityCategoryEnum4': activityCategoryGradient[3],
-  'MY.atlasActivityCategoryEnum5': activityCategoryGradient[4]
+  'MY.atlasActivityCategoryEnum1': activityCategoryGradient[1],
+  'MY.atlasActivityCategoryEnum2': activityCategoryGradient[2],
+  'MY.atlasActivityCategoryEnum3': activityCategoryGradient[3],
+  'MY.atlasActivityCategoryEnum4': activityCategoryGradient[4],
+  'MY.atlasActivityCategoryEnum5': activityCategoryGradient[5]
 }[ac]);
 export const getSpeciesCountColor = (speciesCount: number): string => {
   if (speciesCount < 50) { return speciesCountGradient[0]; }

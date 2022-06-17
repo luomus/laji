@@ -30,19 +30,12 @@ export const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: Visualiza
   (opt: GetFeatureStyleOptions): PathOptions => {
     const sq: AtlasGridSquare = grid[opt.featureIdx];
     const o: PathOptions = {
-      weight: 1,
+      weight: 0,
       color: '#000000',
       opacity: .2,
       fillColor: '#' + getFeatureColor(sq, visualizationMode),
       fillOpacity: .8
     };
-    if (
-      (visualizationMode === 'activityCategory' && sq.activityCategory.key === 'MY.atlasActivityCategoryEnum0')
-      || (visualizationMode === 'speciesCount' && sq.speciesCount === 0)
-    ) {
-      o['fillOpacity'] = 0;
-      o['opacity'] = 0;
-    }
     return o;
   }
 );

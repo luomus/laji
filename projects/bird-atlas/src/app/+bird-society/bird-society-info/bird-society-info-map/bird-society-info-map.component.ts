@@ -36,12 +36,6 @@ const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMod
       fillColor: '#' + getFeatureColor(sq, visualizationMode),
       fillOpacity: .8
     };
-    if (
-      (visualizationMode === 'activityCategory' && sq.activityCategory.key === 'MY.atlasActivityCategoryEnum0')
-      || (visualizationMode === 'speciesCount' && sq.speciesCount === 0)
-    ) {
-      o['fillOpacity'] = 0;
-    }
     if (opt.featureIdx === selectedIdx) {
       o['weight'] = 2;
       o['opacity'] = 1;

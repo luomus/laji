@@ -8,6 +8,7 @@ const speciesCountLegendLabels = [
   '150+ lajia',
 ];
 const activityCategoryLegendLabels = [
+  'Ei havaintoja',
   'Satunnaishavaintoja',
   'Välttävä',
   'Tyydyttävä',
