@@ -4,10 +4,10 @@ export type VisualizationMode = 'activityCategory' | 'speciesCount';
 
 // Performance optimization: precomputing gradients
 // import { discreteColorGradient } from './color-math';
-// export const activityCategoryGradient = discreteColorGradient('f3f38c', '4b57a4 ', 5);
-// export const speciesCountGradient = discreteColorGradient('f3f38c', '4b57a4', 4);
-export const activityCategoryGradient = ['f3f38c', 'a9e979', '68dd79', '5acfae', '4e9dbe', '4b57a4'];
-export const speciesCountGradient = ['f3f38c', '73e26d', '56c9bf', '4b57a4'];
+// export const activityCategoryGradient = ['cccccc', ...discreteColorGradient('f3f38c', '4b57a4', 5)];
+export const activityCategoryGradient = ['cccccc', 'f3f38c', 'c6e774', '61d694', '4798b6', '4b57a4'];
+// export const speciesCountGradient = ['cccccc', ...discreteColorGradient('f3f38c', '4b57a4', 3)];
+export const speciesCountGradient = ['cccccc', 'f3f38c', '61d694', '4b57a4'];
 
 export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
   'MY.atlasActivityCategoryEnum0': activityCategoryGradient[0],
