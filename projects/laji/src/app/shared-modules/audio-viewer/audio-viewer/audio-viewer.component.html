@@ -51,7 +51,7 @@
         <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">
           {{ 'theme.kerttu.audioViewer.changeView' | translate }}
         </lu-button>
-        <laji-info *ngIf="zoomInfoText" [placement]="'right'" [html]="zoomInfoText"></laji-info>
+        <laji-info *ngIf="zoomInfoText" [placement]="'right'" [html]="zoomInfoText" [showOnHover]="true"></laji-info>
       </div>
       <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="view !== defaultView">
         {{ 'theme.kerttu.audioViewer.defaultView' | translate }}
