@@ -15,6 +15,7 @@ export class AudioPlayer {
   private source: AudioBufferSourceNode;
   private startOffset = 0;
   private startAudioContextTime: number;
+  private startedOutsidePlayArea = false;
 
   private autoplay = false;
   private autoplayRepeat = 1;
@@ -55,6 +56,8 @@ export class AudioPlayer {
   }
 
   start() {
+    this.startedOutsidePlayArea = this.playArea && (this.currentTime < this.playArea.xRange[0] || this.currentTime > this.playArea.xRange[1]);
+
     if (this.resumingContext) {
       return;
     }
@@ -179,7 +182,7 @@ export class AudioPlayer {
   }
 
   private getStartTime() {
-    if (this.playArea?.xRange) {
+    if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
       return this.playArea.xRange[0];
     } else {
       return 0;
@@ -187,7 +190,7 @@ export class AudioPlayer {
   }
 
   private getEndTime() {
-    if (this.playArea?.xRange) {
+    if (!this.startedOutsidePlayArea && this.playArea?.xRange) {
       return this.playArea.xRange[1];
     } else {
       return this.buffer.duration;

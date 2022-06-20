@@ -1618,6 +1618,8 @@ type Query {
       annotated: Boolean,
       anyHabitat: [String!],
       area: [String!],
+      atlasCode: [String!],
+      atlasClass: [String!],
       biogeographicalProvinceId: [String!],
       birdAssociationAreaId: [String!],
       breedingSite: Boolean,
@@ -2006,6 +2008,7 @@ type Unit {
   "Non-negative integer"
   areaInSquareMeters: Int
   atlasCode: String
+  atlasClass: String
   batBehavior: String
   beakInMillimeters: [String!]
   birdAge: String

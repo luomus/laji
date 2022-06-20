@@ -3,9 +3,12 @@
 @import 'vars';
 @import 'projects/laji-ui/src/lib/utils';
 @import 'projects/laji-ui/src/lib/mixins/base';
+@import 'projects/laji/src/styles/bs_overwrites';
+
+@import 'styles/laji-map-overwrites';
 
 body {
-  background-color: $neutral-2;
+  background-color: $neutral-3;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 

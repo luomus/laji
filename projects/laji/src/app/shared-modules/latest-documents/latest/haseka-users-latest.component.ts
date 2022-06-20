@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Observable } from 'rxjs';
 import { LatestDocumentsFacade } from '../latest-documents.facade';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { LatestDocumentsFacade } from '../latest-documents.facade';
   styleUrls: ['./haseka-users-latest.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersLatestComponent implements OnInit {
+export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
   @Input() formID: string;
   @Input() showFormNames = true;
@@ -23,15 +24,27 @@ export class UsersLatestComponent implements OnInit {
   public tmpDocuments$ = this.latestFacade.tmpDocuments$;
   public latest$ = this.latestFacade.latest$;
   public formsById = {};
+  public subscriptionDeleteOwnDocument;
 
   constructor(
-    private latestFacade: LatestDocumentsFacade
+    private latestFacade: LatestDocumentsFacade,
+    private deleteOwnDocument: DeleteOwnDocumentService
   ) {
     this.loading$ = this.latestFacade.loading$;
   }
 
   ngOnInit(): void {
     this.latestFacade.setFormID(this.formID);
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.latestFacade.update();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+      this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   discardTempDocument(document) {

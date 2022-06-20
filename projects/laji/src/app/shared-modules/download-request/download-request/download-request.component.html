@@ -1,0 +1,134 @@
+<ng-container *ngIf="downloadRequest">
+  <h3 *ngIf="showTitle">{{ (
+    downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload'
+  ) | translate }} {{ downloadRequest.id | toFullUri }}</h3>
+  <div class="info-rows">
+    <ng-container *ngIf="showPerson && downloadRequest.personId">
+      <div>
+        <label>{{ 'downloadRequest.person' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.personId | users }}
+      </div>
+    </ng-container>
+    <div>
+      <label>{{ 'downloadRequest.' + (
+        downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'apiKeyRequested' : 'requested'
+      ) | translate }}:</label>
+    </div>
+    <div>
+      {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
+    </div>
+    <ng-container *ngIf="downloadRequest.approximateMatches">
+      <div>
+        <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="downloadRequest.dataUsePurpose">
+      <div>
+        <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.dataUsePurpose }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="downloadRequest.apiKeyExpires">
+      <div>
+        <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
+    <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
+      <h4>{{ 'downloadRequest.download' | translate }}</h4>
+      <div
+        *ngIf="showDownload === 'publicOnly' && downloadRequest.publicDownload"
+        role="alert"
+        class="alert alert-success"
+        [innerHTML]='"downloadRequest.fileDownload.licenseReminder" | translate:{
+          filename: "<code>readme.txt</code>"
+        }'
+      ></div>
+      <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>
+      <div class="mt-4" [innerHTML]="'downloadRequest.fileDownload.instructionLinks' | translate"></div>
+    </ng-container>
+    <ng-template #apiKey>
+      <h4>{{ 'downloadRequest.copyApiKey' | translate }}</h4>
+      <laji-copy-to-clipboard [value]="downloadRequest.apiKey" [wrapText]="true"></laji-copy-to-clipboard>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="showDownload === 'publicOnly'">
+    <ng-container *ngIf="downloadRequest.publicDownload else downloadNotAllowedReason">
+      <h4>{{ 'downloadRequest.citation' | translate }}</h4>
+      <p>{{ 'downloadRequest.youMayCite' | translate }}</p>
+      <input class="form-control" type="text" readonly="readonly" [value]="(
+        'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ' (' +
+        ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+        ').'"
+        (focus)="selectInput($event)"
+        (click)="selectInput($event)"
+      >
+      <ng-container *ngIf="downloadRequest.collections">
+        <p>{{ 'downloadRequest.partialCitation' | translate }}</p>
+        <input class="form-control" type="text" readonly="readonly" [value]="(
+          'downloadRequest.citationFinBIF' | translate) + '. ' + (downloadRequest.id | toFullUri) + ', ' +
+          (downloadRequest.collections | pluck:'id' | toFullUri | values) + ' (' +
+          ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+          ').'"
+          (focus)="selectInput($event)"
+          (click)="selectInput($event)"
+        >
+      </ng-container>
+      <p>{{ 'downloadRequest.rowCitation' | translate }}</p>
+      <input class="form-control" type="text" readonly="readonly" [value]="(
+        'downloadRequest.citationFinBIF' | translate) + '. http://tun.fi/EXMP.1234, http://some.org/9876 (' +
+        ('downloadRequest.accessed' | translate) + ' ' + (downloadRequest.requested | amDateFormat:'D.M.YYYY') +
+        ').'"
+        (focus)="selectInput($event)"
+        (click)="selectInput($event)"
+      >
+    </ng-container>
+    <ng-template #downloadNotAllowedReason>
+      <h4 *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY'">
+        {{ 'downloadRequest.downloadNotAllowedReason.' + (
+          downloadRequest.downloadType === 'APPROVED_DATA_REQUEST' ? 'pyha' : (
+          downloadRequest.downloadType === 'LIGHTWEIGHT' ? 'lightweight' : 'authorities'
+        )) | translate
+        }}
+      </h4>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="downloadRequest.filterDescriptions">
+    <h4>{{ 'downloadRequest.filters' | translate }}</h4>
+    <ul>
+      <li *ngFor="let desc of (downloadRequest.filterDescriptions | multiLang)">
+        {{ desc.label }}: {{ desc.value }}
+      </li>
+    </ul>
+  </ng-container>
+  <ng-container *ngIf="downloadRequest.publicLink || downloadRequest.privateLink">
+    {{ 'downloadRequest.link' | translate }}:
+    <a
+      [href]="(downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang"
+      target="_blank"
+    >
+      {{ (downloadRequest.privateLink ? downloadRequest.privateLink : downloadRequest.publicLink) | multiLang }}
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="downloadRequest.collections">
+    <h4>{{ 'downloadRequest.collections' | translate }}</h4>
+    <laji-collection-table
+      [collections]="collections$ | async"
+    ></laji-collection-table>
+  </ng-container>
+</ng-container>

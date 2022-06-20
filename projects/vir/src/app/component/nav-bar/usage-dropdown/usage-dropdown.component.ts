@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnDestroy
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsageDropdownComponent implements OnInit, OnDestroy {
+  // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() close = new EventEmitter<void>();
   private destroyListener;
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}

@@ -1,5 +1,6 @@
 import { IAudio, IAudioViewerArea } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { PagedResult } from 'projects/laji/src/app/shared/model/PagedResult';
+import { Point } from 'geojson';
 
 export interface IListResult<T> {
   results: T[];
@@ -20,6 +21,7 @@ export interface IGlobalSpeciesQuery {
   family?: number;
   searchQuery?: string;
   page?: number;
+  pageSize?: number;
   orderBy?: string[];
 }
 
@@ -38,9 +40,9 @@ export interface IGlobalSpecies {
 }
 
 export interface IGlobalSpeciesFilters {
-  continent: { id: number, name: string }[];
-  order: { id: number, scientificName: string }[];
-  family: { id: number, scientificName: string, order: number }[];
+  continent: { id: number; name: string }[];
+  order: { id: number; scientificName: string }[];
+  family: { id: number; scientificName: string; order: number }[];
 }
 
 export interface IGlobalTemplateVersion {
@@ -96,11 +98,86 @@ export interface IUserStat {
   speciesValidated: number;
 }
 
+export interface IGlobalRecording extends IAudio {
+  id: number;
+  dateTime: string;
+  xRange: number[];
+  site: IGlobalSite;
+}
+
+export interface IGlobalRecordingAnnotation {
+  isLowQuality?: boolean;
+  containsHumanSpeech?: boolean;
+  containsUnknownBirds?: boolean;
+  doesNotContainBirds?: boolean;
+  containsBirdsNotOnList?: boolean;
+  birdsNotOnList?: string;
+  hasBoxesForAllBirdSounds?: boolean;
+  nonBirdArea?: IAudioViewerArea;
+
+  speciesAnnotations?: IGlobalSpeciesAnnotation[];
+}
+
+export interface IGlobalSpeciesAnnotation {
+  speciesId: number;
+  occurrence: SpeciesAnnotationEnum;
+  boxes?: IGlobalSpeciesAnnotationBox[];
+}
+
+export interface IGlobalSpeciesAnnotationBox {
+  area: IAudioViewerArea;
+  overlapsWithOtherSpecies?: boolean;
+}
+
+export interface IGlobalRecordingStatusInfo {
+  hasPreviousRecording: boolean;
+}
+
+export interface IGlobalRecordingResponse {
+  statusInfo: IGlobalRecordingStatusInfo;
+  annotation: IGlobalRecordingAnnotation;
+  recording: IGlobalRecording;
+}
+
+export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {
+  annotation: IGlobalSpeciesAnnotation;
+}
+
+export interface IGlobalSite {
+  id: number;
+  name: string;
+  country?: string;
+  geometry: Point;
+}
+
+export interface IIdentificationSiteStat {
+  siteId: number;
+  count: number;
+}
+
+export interface IIdentificationStat {
+  annotationCount: number;
+  speciesCount: number;
+  drawnBoxesCount: number;
+}
+
+export interface IIdentificationUserStat extends IIdentificationStat {
+  userId: string;
+}
+
+
 export enum CommentType {
   replace = 0,
   reframe = 1
 }
 
+export enum SpeciesAnnotationEnum {
+  occurs = 1,
+  possiblyOccurs = 2
+}
+
 export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
+  invalidRecordingId = 'InvalidRecordingIdError',
+  invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
 }

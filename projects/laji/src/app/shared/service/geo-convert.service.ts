@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, interval, throwError } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, mergeMap, first, map, catchError } from 'rxjs/operators';
-import { UserService } from './user.service';
 import { TranslateService } from '@ngx-translate/core';
 
 export const GEO_CONVERT_LIMIT = 300000;
@@ -25,7 +24,8 @@ interface GeoConversionStatus {
   status: 'pending'|'complete';
 }
 export enum ErrorType {
-  tooComplex = 'too_complex'
+  tooComplex = 'too_complex',
+  tooLarge = 'too_large'
 }
 export interface GeoConvertError {
   isGeoConvertError: true;
@@ -42,12 +42,13 @@ export class GeoConvertService {
 
   constructor(
     private httpClient: HttpClient,
-    private userService: UserService,
     private translate: TranslateService
   ) {}
 
-  public getGISDownloadLink(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
-    return this.startGeoConversion(fileId, format, geometry, crs).pipe(
+  public getGISDownloadLink(
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+  ): Observable<string> {
+    return this.startGeoConversion(fileId, format, geometry, crs, personToken).pipe(
       switchMap(conversionId => this.getOutputLink(conversionId)),
       catchError(err => this.transformError(err))
     );
@@ -62,14 +63,18 @@ export class GeoConvertService {
     );
   }
 
-  private startGeoConversion(fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs): Observable<string> {
-    const queryParams = {
-      personToken: this.userService.getToken(),
+  private startGeoConversion(
+    fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
+  ): Observable<string> {
+    const queryParams: any = {
       outputFormat: format,
       geometryType: geometry,
       crs
     };
-    const params = new HttpParams({fromObject: <any>queryParams});
+    if (personToken) {
+      queryParams['personToken'] = personToken;
+    }
+    const params = new HttpParams({fromObject: queryParams});
 
     return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params});
   }

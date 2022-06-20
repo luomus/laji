@@ -10,7 +10,6 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
-import { OwnFilterModel } from './own-observations-filter/own-observations-filter.component';
 
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
@@ -75,8 +74,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   };
 
   showPlace = false;
-  drawing = false;
-  drawingShape: string;
   mediaStatutes: string[] = [];
 
   areaType = Area.AreaType;
@@ -105,7 +102,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode',
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'atlasCode', 'atlasClass', 'plantStatusCode',
       'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
@@ -212,6 +209,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onOnlyFromCollectionCheckBoxToggle() {
     this.query.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
+    this.query.superRecordBasis = this.formQuery.onlyFromCollectionSystems ? ['PRESERVED_SPECIMEN'] : [];
     this.onQueryChange();
   }
 
@@ -397,13 +395,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateSearchQuery(field, value) {
-    this.query[field] = value;
+  onTaxonListChange(value) {
     this.selectedNameTaxon = this.selectedNameTaxon.filter(item => {
       if (value.indexOf(item.id) > -1) {
         return item;
       }
     });
+    this.updateSearchQuery('target', value);
+  }
+
+  updateSearchQuery(field, value) {
+    this.query[field] = value;
     this.onQueryChange();
   }
 
@@ -531,7 +533,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       qualityPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.qualityPlantPest'),
       otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'])
+        && query.sourceId.length === 2
+        && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN'])
+        && query.superRecordBasis.length === 1,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
@@ -559,6 +564,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];
+      query.superRecordBasis = ['PRESERVED_SPECIMEN'];
     }
     query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
     query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;

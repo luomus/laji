@@ -16,7 +16,7 @@ const mobileBreakpoint = 768;
   animations: [
     trigger('sidebarOpen_wrapper', [
       state('closed', style({
-        'width': '{{sidebarMinWidth}}px'
+        width: '{{sidebarMinWidth}}px'
       }), {params: {sidebarMinWidth: 0}}),
       state('open', style({
       })),
@@ -80,13 +80,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @ViewChild('navWrapper') navWrapperRef: ElementRef;
   @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
 
-  destroyResizeListener: Function;
-  destroyDragMoveListener: Function;
-  destroyDragEndListener: Function;
+  destroyResizeListener: () => void;
+  destroyDragMoveListener: () => void;
+  destroyDragEndListener: () => void;
 
-  destroyCloseOnClickListener: Function;
+  destroyCloseOnClickListener: () => void;
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: any) {
     if (isPlatformBrowser(this.platformId)) {
       this.open = !(window.innerWidth < mobileBreakpoint);
     } else {
@@ -136,13 +136,11 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   }
 
   checkCloseOnClickListener() {
-    if (this.mobile && this.open && this.contentRef && !this.destroyCloseOnClickListener) {
+    this.destroyCloseOnClickListener?.();
+    if (this.mobile && this.open && this.contentRef) {
       setTimeout(() => {
-        this.destroyCloseOnClickListener?.();
         this.destroyCloseOnClickListener = this.renderer.listen(this.contentRef.nativeElement, 'click', this.onContentClick.bind(this));
       });
-    } else if (this.destroyCloseOnClickListener) {
-      this.destroyCloseOnClickListener = this.destroyCloseOnClickListener();
     }
   }
 
@@ -167,7 +165,8 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   onDragStart() {
     this.widthBeforeDrag = this.sidebarRef.nativeElement.offsetWidth;
     this.dragging = true;
-    this.destroyDragListeners();
+    this.destroyDragMoveListener?.();
+    this.destroyDragEndListener?.();
     this.destroyDragMoveListener = this.renderer.listen(document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(document, 'mouseup', this.onDragEnd.bind(this));
   }
@@ -212,25 +211,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.destroyDragEndListener();
   }
 
-  destroyDragListeners() {
-    if (this.destroyDragMoveListener) {
-      this.destroyDragMoveListener = this.destroyDragMoveListener();
-    }
-    if (this.destroyDragEndListener) {
-      this.destroyDragMoveListener = this.destroyDragEndListener();
-    }
-  }
-
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    if (this.destroyResizeListener) {
-      this.destroyResizeListener = this.destroyResizeListener();
-    }
-    if (this.destroyCloseOnClickListener) {
-      this.destroyCloseOnClickListener = this.destroyCloseOnClickListener();
-    }
-    this.destroyDragListeners();
+    this.destroyResizeListener?.();
+    this.destroyCloseOnClickListener?.();
+    this.destroyDragMoveListener?.();
+    this.destroyDragEndListener?.();
   }
 
   calcSidebarWidth(mouseX) {

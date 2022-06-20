@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, ChangeDetectorRef, OnChanges } from '@angular/core';
+OnInit, OnChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
@@ -10,8 +10,9 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Subscription } from 'rxjs';
-import {LocalStorageService} from 'ngx-webstorage';
+import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
+import { LajiMapDrawEvent } from '@laji-map/laji-map.interface';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -90,9 +91,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private searchQueryService: SearchQueryService,
-    private cd: ChangeDetectorRef,
     private storage: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   @Input()
@@ -140,24 +140,35 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.loadedTabs.load(this.activeTab);
   }
 
-  pickLocation(e) {
-    if (!e) {
-      return;
-    }
+  pickLocation(events: LajiMapDrawEvent[]) {
     const query = {...this.query};
-    if (e.coordinateVerbatim) {
-      query.coordinates = [e.coordinateVerbatim + ':YKJ'];
-    } else if (
-      e.type === 'Polygon' &&
-      e.coordinates && e.coordinates.length === 1 && e.coordinates[0].length === 5
-    ) {
-      query.coordinates = [
-        e.coordinates[0][0][1] + ':' + e.coordinates[0][2][1] + ':' +
-        e.coordinates[0][0][0] + ':' + e.coordinates[0][2][0] + ':WGS84'
-      ];
-    } else {
-      query.coordinates = undefined;
-    }
+    events.forEach(e => {
+      let geometry: any;
+      if (e.type === 'create') {
+        geometry = e.feature.geometry;
+        // return;
+      } else if (e.type === 'edit') {
+        const keys = Object.keys(e.features);
+        if (keys.length > 1) {
+          throw new Error('Something wrong with map, there should never be multiple editable geometries');
+        }
+        geometry = e.features[keys[0]].geometry;
+      } else {
+        return;
+      }
+
+      const {coordinateVerbatim} = geometry as any;
+      if (coordinateVerbatim) {
+        query.coordinates = [coordinateVerbatim + ':YKJ'];
+      } else if (geometry.type === 'Polygon') {
+        query.coordinates = [
+          geometry.coordinates[0][0][1] + ':' +  geometry.coordinates[0][2][1] + ':' +
+          geometry.coordinates[0][0][0] + ':' +  geometry.coordinates[0][2][0] + ':WGS84'
+        ];
+      } else {
+        query.coordinates = undefined;
+      }
+    });
     this.queryChange.emit(query);
   }
 

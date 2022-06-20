@@ -14,6 +14,7 @@ import { CheckboxComponent } from '../checkbox/checkbox.component';
 export class ComboCheckboxRowComponent {
   @ViewChild(CheckboxComponent, { static: true }) cb: CheckboxComponent;
 
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('checked') set checkedInput(checked: boolean) {
     this.cb.checkedInput = checked;
   }

@@ -1,5 +1,5 @@
-<div class="container-fluid laji-page">
-  <ng-container *ngIf="hasLock else noLock">
+<ng-container *ngIf="hasLock else noLock">
+  <ng-container *lajiRequiresAudioSupport="audioSampleRate">
     <bsg-version-nav
       class="pull-right"
       [versions]="templateVersions$ | async"
@@ -17,14 +17,14 @@
       (cancel)="goToSpeciesList()"
     ></bsg-species-template-validation>
   </ng-container>
-  <ng-template #noLock>
-    <ng-container *ngIf="hasLock === false else loading">
-      <div class="alert alert-danger">
-        {{ 'validation.noLock' | translate }}
-      </div>
-    </ng-container>
-  </ng-template>
-  <ng-template #loading>
-    <laji-spinner></laji-spinner>
-  </ng-template>
-</div>
+</ng-container>
+<ng-template #noLock>
+  <ng-container *ngIf="hasLock === false else loading">
+    <div class="alert alert-danger">
+      {{ 'validation.noLock' | translate }}
+    </div>
+  </ng-container>
+</ng-template>
+<ng-template #loading>
+  <laji-spinner></laji-spinner>
+</ng-template>

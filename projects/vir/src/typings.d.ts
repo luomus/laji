@@ -4,6 +4,7 @@ declare module 'deepmerge';
 declare module 'electron';
 declare module 'jsonpath-plus';
 declare module 'laji-form/lib/laji-form';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 declare const OpenSeadragon: any;
 declare let d3: any;
 

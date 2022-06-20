@@ -5,9 +5,9 @@ import { DatePipe } from '@angular/common';
   name: 'cornellAudioDate'
 })
 export class CornellAudioDatePipe implements PipeTransform {
-  constructor (private datePipe: DatePipe) {}
+  constructor(private datePipe: DatePipe) {}
 
-  transform(value: {year?: number, month?: number, day?: number}): string {
+  transform(value: {year?: number; month?: number; day?: number}): string {
     const formatStringParts = [];
     if (value.day) {
       formatStringParts.push('d');

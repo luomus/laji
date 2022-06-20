@@ -51,7 +51,11 @@ export class AreaService extends AbstractCachedHttpService<Area> {
     return this.getAreaType(lang, this.types.ElyCentre);
   }
 
-  getName(id: string, lang) {
+  getContinents(lang: string): Observable<{id: string; value: string}[]> {
+    return this.getAreaType(lang, this.types.Continent);
+  }
+
+  getName(id: string, lang: string) {
     return this.getAllAsLookUp(lang).pipe(
       map(data => data[id] && data[id].name || id )
     );
@@ -65,10 +69,10 @@ export class AreaService extends AbstractCachedHttpService<Area> {
         }
         return Object.keys(area).reduce((total, key) => {
           if (area[key].areaType === type) {
-            total.push({id: key, value: area[key].name});
+            total.push({id: key, value: area[key].name ?? area[key].id});
           }
           return total;
-        }, []);
+        }, [] as {id: string; value: string}[]);
       }));
   }
 }

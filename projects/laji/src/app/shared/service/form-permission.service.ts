@@ -21,7 +21,7 @@ export interface Rights {
 @Injectable({providedIn: 'root'})
 export class FormPermissionService {
 
-  private static formPermissions = {};
+  private static formPermissions: Record<string, FormPermission | undefined> = {};
 
   public changes$ = new EventEmitter<FormPermission>();
 
@@ -39,13 +39,13 @@ export class FormPermissionService {
       return of(false);
     }
 
-    const permission$ = (collectionID) => this.formPermissionApi.findPermissions(token).pipe(
+    const permission$ = (collectionID: string) => this.formPermissionApi.findPermissions(token).pipe(
       switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
     return this.formService.getAllForms(this.translateService.currentLang).pipe(
       map(forms => forms.find(f => f.id === formID)),
-      switchMap(form => (!form.collectionID || !form.options?.restrictAccess)
+      switchMap(form => (!form || !form.collectionID || !form.options?.restrictAccess)
         ? of(true)
         : permission$(form.collectionID)
       )
@@ -53,39 +53,46 @@ export class FormPermissionService {
   }
 
   isEditAllowed(formPermission: FormPermission, person: Person, form: Form.List): boolean {
-    return !form.options?.restrictAccess
-      || formPermission.editors?.indexOf(person.id) > -1
-      || formPermission.admins?.indexOf(person.id) > -1;
+    return !!person.id && (
+      !form.options?.restrictAccess
+        || (!!formPermission.editors && formPermission.editors.indexOf(person.id) > -1)
+        || (!!formPermission.admins && formPermission.admins.indexOf(person.id) > -1)
+    );
   }
 
   isAdmin(permission: FormPermission, person: Person): boolean {
-    return permission.admins?.indexOf(person.id) > -1;
+    return !!person.id && !!permission.admins && permission.admins.indexOf(person.id) > -1;
   }
 
   getFormPermission(collectionID: string, personToken?: string): Observable<FormPermission> {
-    if (FormPermissionService.formPermissions[collectionID]) {
-      return ObservableOf(FormPermissionService.formPermissions[collectionID]);
+    const cached = FormPermissionService.formPermissions[collectionID];
+    if (cached) {
+      return ObservableOf(cached);
     }
     return this.formPermissionApi
       .findByCollectionID(collectionID, personToken).pipe(
-      tap(data => FormPermissionService.formPermissions[data.collectionID] = data));
+      tap(data => {
+        if (data.collectionID) {
+          FormPermissionService.formPermissions[data.collectionID] = data;
+        }
+      }));
   }
 
   makeAccessRequest(collectionID: string, personToken: string) {
-    FormPermissionService.formPermissions[collectionID] = false;
+    FormPermissionService.formPermissions[collectionID] = undefined;
     return this.formPermissionApi
       .requestAccess(collectionID, personToken).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
 
   acceptRequest(collectionID: string, personToken: string, personID: string, type?: FormPermission.Type) {
-    FormPermissionService.formPermissions[collectionID] = false;
+    FormPermissionService.formPermissions[collectionID] = undefined;
     return this.formPermissionApi.acceptRequest(collectionID, personID, personToken, type).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
 
   revokeAccess(collectionID: string, personToken: string, personID: string) {
-    FormPermissionService.formPermissions[collectionID] = false;
+    FormPermissionService.formPermissions[collectionID] = undefined;
     return this.formPermissionApi.revokeAccess(collectionID, personID, personToken).pipe(
       tap(fp => this.changes$.emit(fp)));
   }
@@ -97,13 +104,14 @@ export class FormPermissionService {
       ictAdmin: false,
       view: form.options?.restrictAccess !== RestrictAccess.restrictAccessStrict
     };
-    if (!form.collectionID || !form.options?.restrictAccess) {
-      return this.userService.user$.pipe(map(user => ({
+    const {collectionID} = form;
+    if (!collectionID || (!form.options?.restrictAccess && !form.options?.hasAdmins)) {
+      return this.userService.user$.pipe(map(user => user ? {
         edit: true,
         view: true,
         admin: false,
         ictAdmin: UserService.isIctAdmin(user)
-      })));
+      } : notLoggedIn));
     }
     return this.userService.isLoggedIn$.pipe(
       take(1),
@@ -113,22 +121,22 @@ export class FormPermissionService {
         }
         return this.userService.user$.pipe(
           take(1),
-          switchMap((person: Person) =>
-              this.getFormPermission(form.collectionID, this.userService.getToken()).pipe(
+          switchMap(person =>
+              this.getFormPermission(collectionID, this.userService.getToken()).pipe(
               catchError(() => of({
                 id: '',
-                collectionID: form.collectionID,
+                collectionID,
                 admins: [],
                 editors: []
               } as FormPermission)),
               map((formPermission: FormPermission) => ({person, formPermission}))
               )),
-          switchMap(({person, formPermission}) => ObservableOf({
+          switchMap(({person, formPermission}) => ObservableOf(person ? {
             view: this.isEditAllowed(formPermission, person, form) || form.options?.restrictAccess === RestrictAccess.restrictAccessLoose,
             edit: this.isEditAllowed(formPermission, person, form),
             admin: this.isAdmin(formPermission, person),
             ictAdmin: UserService.isIctAdmin(person)
-          })),
+          } : notLoggedIn)),
           catchError(() => ObservableOf(notLoggedIn))
         );
       })
