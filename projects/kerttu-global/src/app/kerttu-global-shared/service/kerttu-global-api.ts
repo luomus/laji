@@ -139,6 +139,13 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
 
+  public skipRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+    const path = this.basePath + '/identification/recording/skip/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+
+    return this.httpClient.post<IGlobalRecordingResponse>(path, {}, { params });
+  }
+
   public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
     const path = this.basePath + '/identification/recording/annotation/' + recordingId;
     const params = new HttpParams().set('personToken', personToken);

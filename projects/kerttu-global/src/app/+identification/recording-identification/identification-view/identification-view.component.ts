@@ -67,6 +67,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
+  @Output() skipClick = new EventEmitter();
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
   @Output() backToSiteSelectionClick = new EventEmitter();
 

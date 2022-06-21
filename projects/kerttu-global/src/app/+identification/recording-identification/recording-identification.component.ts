@@ -152,6 +152,20 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     });
   }
 
+  skipRecording() {
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.loading = true;
+        this.kerttuGlobalApi.skipRecording(this.userService.getToken(), this.recording.id, this.selectedSites).subscribe(result => {
+          this.onGetRecordingSuccess(result);
+        }, (err) => {
+          this.handleError(err);
+        });
+      }
+      this.cdr.markForCheck();
+    });
+  }
+
   save() {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
