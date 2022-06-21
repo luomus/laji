@@ -83,7 +83,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.nonBirdLabel = this.translate.instant('identification.recordings.nonBird');
+    this.nonBirdLabel = this.translate.instant('identification.nonBird');
   }
 
   ngOnChanges(changes: SimpleChanges) {

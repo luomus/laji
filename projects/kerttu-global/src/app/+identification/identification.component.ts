@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           {{ 'theme.kerttu.expertise' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['recordings'] | localize" routerLinkActive>
-          {{ 'identification.recordings' | translate }}
+          {{ 'identification.title' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['results'] | localize" routerLinkActive>
           {{ 'theme.kerttu.result' | translate }}

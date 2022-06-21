@@ -184,7 +184,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
       return of(true);
     }
     return this.dialogService.confirm(
-      this.translate.instant('identification.recordings.skipConfirm')
+      this.translate.instant('identification.skipConfirm')
     );
   }
 
