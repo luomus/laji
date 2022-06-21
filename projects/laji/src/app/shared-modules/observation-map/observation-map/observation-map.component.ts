@@ -69,7 +69,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this._mapOptions = {...this._mapOptions, clickBeforeZoomAndPan};
   }
   @Input() ready = true;
-  @Input() unitCount: number;
   /**
    * height < 0: fill remaining height in window
    * height > 0: set absolute height
@@ -170,7 +169,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     this.decorator.lang = this.translate.currentLang;
     // First update is triggered by tile layer update event from the laji-map
-    if (changes['query'] || changes['unitCount'] || changes['ready']) {
+    if (changes['query'] || changes['ready']) {
       this.updateMapData();
     }
     this.initLegendTopMargin();
@@ -303,11 +302,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
-      if (this.unitCount === 0) {
-        this.prev = '';
-        this.emptyMap();
-      }
+    if (!this.ready) {
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
@@ -385,7 +380,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       map(result => result.total)
     );
 
-    return (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
+    return countRemote$.pipe(
       switchMap(cnt => {
         if (!cnt) {
           return of({
@@ -467,7 +462,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    const cache = [JSON.stringify(query), this.limitResults, this.unitCount].join(':');
+    const cache = [JSON.stringify(query), this.limitResults].join(':');
     if (!this.activeBounds) {
       return cache + this.activeLevel;
     }
