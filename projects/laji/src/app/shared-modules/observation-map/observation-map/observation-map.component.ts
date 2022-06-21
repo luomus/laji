@@ -23,7 +23,6 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
@@ -44,9 +43,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() zoomThresholds: number[] = [4];
+  @Input() zoomThresholds: number[] = [4, 8];
   // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() onlyViewPortThreshold = 1;
+  @Input() onlyViewPortThreshold = 0;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
     this._mapOptions = {
@@ -84,7 +83,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  @Input() showItemsWhenLessThan = 0;
+  @Input() showItemsWhenLessThan = 10000;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'unit.taxonVerbatim',
@@ -126,9 +125,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private prev = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
-  private viewBound: any;
   private activeLevel = 0;
-  private activeBounds: any;
+  private activeBounds?: any;
   private reset = true;
   private showingItems = false;
   private dataCache: any;
@@ -165,8 +163,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (!this.init) {
       this.init = true;
 
-      this.viewBound = LlatLngBounds;
-      this.activeBounds = LlatLngBounds;
       if (!this.color) {
         this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
       }
@@ -201,14 +197,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   onMove(e) {
     const curActive = this.activeLevel;
     const len = this.zoomThresholds.length;
-    this.viewBound = e.bounds;
     this.activeLevel = 0;
     for (let i = 0; i < len; i++) {
       if (this.zoomThresholds[i] < e.zoom) {
         this.activeLevel = i + 1;
       }
     }
-    if (this.activeBounds && !this.activeBounds.contains) {
+    if (!this.activeBounds) {
       this.activeBounds = e.bounds.pad(1);
     }
     if (
@@ -334,11 +329,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     });
   }
 
-  private addToMap(query: WarehouseQueryInterface, page = 1) {
-    if (this.limitResults && !query.coordinates) {
-      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']};
-    }
-    const items$ = this.warehouseService.warehouseQueryListGet(query, [
+  private getItemsAsPoints$(query: WarehouseQueryInterface) {
+    return this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
@@ -386,12 +378,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         this.showingItems = true;
       }
     }));
+  }
 
+  private getCount$(query: WarehouseQueryInterface, page: number) {
     const countRemote$ = this.warehouseService.warehouseQueryCountGet(query).pipe(
       map(result => result.total)
     );
 
-    const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
+    return (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
       switchMap(cnt => {
         if (!cnt) {
           return of({
@@ -402,18 +396,26 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
             }
           });
         } else if (cnt < this.showItemsWhenLessThan) {
-          return items$;
+          return this.getItemsAsPoints$(query);
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(
-            this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+            query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
             undefined, this.size, page, true
           ));
         }
       }));
+  }
+
+  private addToMap(query: WarehouseQueryInterface, page = 1) {
+    if (this.limitResults && !query.coordinates) {
+      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']};
+    }
+    query = this.addViewPortCoordinates(query);
+    const count$ = this.getCount$(query, page);
 
     this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
       switchMap((less) => less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
-          this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+          query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
           undefined, this.size, page, true
         ))).pipe(
         timeout(WarehouseApi.longTimeout * 3),
@@ -452,7 +454,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
-    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
+    if (!query.coordinates && this.activeBounds  && this.activeLevel >= this.onlyViewPortThreshold) {
       return {
         ...query,
         coordinates: [
@@ -466,7 +468,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private getCacheKey(query: WarehouseQueryInterface) {
     const cache = [JSON.stringify(query), this.limitResults, this.unitCount].join(':');
-    if (!(this.activeBounds && this.activeBounds.toBBoxString)) {
+    if (!this.activeBounds) {
       return cache + this.activeLevel;
     }
     if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
