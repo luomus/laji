@@ -125,9 +125,12 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
 
-  public getNextRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+  public getNextRecording(personToken: string, recordingId: number, siteIds: number[], skipCurrent = false): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording/next/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+    let params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+    if (skipCurrent) {
+      params = params.set('skipCurrent', skipCurrent);
+    }
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
@@ -137,13 +140,6 @@ export class KerttuGlobalApi {
     const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
-  }
-
-  public skipRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording/skip/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
-
-    return this.httpClient.post<IGlobalRecordingResponse>(path, {}, { params });
   }
 
   public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {

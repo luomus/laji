@@ -127,10 +127,12 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     });
   }
 
-  getNextRecording() {
+  getNextRecording(skipCurrent = false) {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
-      switchMap(() => this.kerttuGlobalApi.getNextRecording(this.userService.getToken(), this.recording.id, this.selectedSites))
+      switchMap(() => this.kerttuGlobalApi.getNextRecording(
+        this.userService.getToken(), this.recording.id, this.selectedSites, skipCurrent
+      ))
     ).subscribe(result => {
       this.onGetRecordingSuccess(result);
     }, (err) => {
@@ -153,14 +155,9 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   skipRecording() {
-    this.canDeactivate().subscribe(canDeactivate => {
-      if (canDeactivate) {
-        this.loading = true;
-        this.kerttuGlobalApi.skipRecording(this.userService.getToken(), this.recording.id, this.selectedSites).subscribe(result => {
-          this.onGetRecordingSuccess(result);
-        }, (err) => {
-          this.handleError(err);
-        });
+    this.canSkip().subscribe(canSkip => {
+      if (canSkip) {
+        this.getNextRecording(true);
       }
       this.cdr.markForCheck();
     });
@@ -180,6 +177,29 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   onAnnotationChange() {
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
+  }
+
+  private canSkip(): Observable<boolean> {
+    if (this.isEmptyAnnotation(this.annotation)) {
+      return of(true);
+    }
+    return this.dialogService.confirm(
+      this.translate.instant('identification.recordings.skipConfirm')
+    );
+  }
+
+  private isEmptyAnnotation(annotation: IGlobalRecordingAnnotation): boolean {
+    return (
+      !annotation.birdsNotOnList &&
+      !annotation.containsBirdsNotOnList &&
+      !annotation.containsHumanSpeech &&
+      !annotation.containsUnknownBirds &&
+      !annotation.doesNotContainBirds &&
+      !annotation.hasBoxesForAllBirdSounds &&
+      !annotation.isLowQuality &&
+      !annotation.nonBirdArea &&
+      !annotation.speciesAnnotations?.length
+    );
   }
 
   private onGetRecordingSuccess(data: IGlobalRecordingResponse) {
