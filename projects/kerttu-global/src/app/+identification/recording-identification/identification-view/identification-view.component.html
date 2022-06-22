@@ -35,7 +35,7 @@
           [disabled]="buttonsDisabled || loadingSpecies"
           (click)="saveClick.emit()"
         >
-          {{ 'theme.kerttu.saveRecording' | translate }}
+          {{ 'save' | translate }}
         </button>
         <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
       </div>
@@ -65,7 +65,6 @@
     [spectrogramConfig]="spectrogramConfig"
     [audioInfoTpl]="audioInfo"
     [customControlsTpl]="audioCustomControls"
-    [zoomInfoText]="'validation.info.zoom' | translate"
     (drawEnd)="drawEnd($event)"
     (modeChange)="onAudioViewerModeChange()"
   ></laji-audio-viewer>
@@ -89,37 +88,37 @@
 </div>
 <div class="bottom-content">
   <h2 class="mt-3">
-    {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
-    <laji-info [html]="'identification.info' | translate" [showOnHover]="true"></laji-info>
+    {{ 'identification.identify' | translate }}
+    <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
   </h2>
   <div class="general-annotation-section mb-5">
     <div class="row">
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'theme.kerttu.isLowQuality' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate" [showOnHover]="true"></laji-info>
+          <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'theme.kerttu.containsHumanSpeech' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.containsHumanSpeech' | translate" [showOnHover]="true"></laji-info>
+          <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.containsUnknownBirds' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translate }}
           </label>
-          <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate" [showOnHover]="true"></laji-info>
+          <laji-info [html]="'identification.containsUnknownBirds.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.doesNotContainBirds' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translate }}
           </label>
-          <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate" [showOnHover]="true"></laji-info>
+          <laji-info [html]="'identification.doesNotContainBirds.info' | translate" [showOnHover]="true"></laji-info>
         </div>
       </div>
     </div>
@@ -144,7 +143,7 @@
   </div>
   <div class="form-group">
     <h4>
-      {{ 'theme.kerttu.listSpecies' | translate }}
+      {{ 'identification.listSpecies' | translate }}
       <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
     </h4>
     <bsg-taxon-select

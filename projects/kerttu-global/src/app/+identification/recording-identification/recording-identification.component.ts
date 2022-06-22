@@ -108,7 +108,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     if (!this.hasUnsavedChanges) {
       return of(true);
     }
-    return this.dialogService.confirm(this.translate.instant('theme.kerttu.recordingAnnotation.leaveConfirm'));
+    return this.dialogService.confirm(this.translate.instant('identification.leaveConfirm'));
   }
 
   onSiteSelect(siteIds: number[]) {
@@ -224,7 +224,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
     const msg = KerttuGlobalApi.getErrorMessage(err);
     if (msg === KerttuGlobalErrorEnum.invalidRecordingAnnotation) {
-      alert(this.translate.instant('theme.kerttu.nextRecording.validation'));
+      alert(this.translate.instant('identification.nextRecording.validation'));
     } else {
       this.hasError = true;
     }

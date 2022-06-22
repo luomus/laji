@@ -26,7 +26,7 @@
     <div>
       <label class="radio-inline" *ngFor="let value of [speciesAnnotationEnum.occurs, speciesAnnotationEnum.possiblyOccurs]">
         <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange(value)"/>
-        {{ 'theme.kerttu.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
+        {{ 'identification.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
       </label>
       <laji-info [placement]="'right'" [html]="'identification.possiblyOccurs.info' | translate" [showOnHover]="true"></laji-info>
     </div>

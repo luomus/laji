@@ -9,13 +9,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           {{ 'instructions' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['expertise'] | localize" routerLinkActive>
-          {{ 'theme.kerttu.expertise' | translate }}
+          {{ 'expertise.title' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['recordings'] | localize" routerLinkActive>
-          {{ 'identification.title' | translate }}
+          {{ 'identification.mainSection' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['results'] | localize" routerLinkActive>
-          {{ 'theme.kerttu.result' | translate }}
+          {{ 'results.title' | translate }}
         </lu-sidebar-link>
       </nav>
       <main>

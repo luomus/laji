@@ -1,6 +1,6 @@
 <div>
-  <label>{{ 'theme.kerttu.timeBuffer' | translate }}</label>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.timeBuffer' | translate"></laji-info>
+  <label>{{ 'audioViewer.timeBuffer' | translate }}</label>
+  <laji-info [placement]="'right'" [html]="'audioViewer.timeBuffer.info' | translate"></laji-info>
   <div class="input-group">
     <select
       class="form-control input-sm"
@@ -13,8 +13,8 @@
   </div>
 </div>
 <div>
-  <label>{{ 'theme.kerttu.targetFrequency' | translate }}</label>
-  <laji-info [placement]="'right'" [html]="'theme.kerttu.info.targetFrequency' | translate"></laji-info>
+  <label>{{ 'audioViewer.targetFrequency' | translate }}</label>
+  <laji-info [placement]="'right'" [html]="'audioViewer.targetFrequency.info' | translate"></laji-info>
   <bSwitch
     [switch-on-text]="'yes' | translate"
     [switch-off-text]="'no' | translate"
@@ -26,6 +26,6 @@
   </bSwitch>
 </div>
 <div [ngClass]="{'d-block': !displayInline}" class="mt-2">
-  <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'theme.kerttu.setDefaultSettings' | translate }}</lu-button>
+  <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'audioViewer.setDefaultSettings' | translate }}</lu-button>
   <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText"></laji-info>
 </div>
