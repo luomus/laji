@@ -43,9 +43,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() zoomThresholds: number[] = [4, 8];
+  @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
   // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() onlyViewPortThreshold = 0;
+  @Input() onlyViewPortThreshold = 1;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
     this._mapOptions = {
@@ -394,11 +394,23 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           return this.getItemsAsPoints$(query);
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(
-            query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+            query, this.activeLevelToAggregateBy(),
             undefined, this.size, page, true
           ));
         }
       }));
+  }
+
+  activeLevelToAggregateBy() {
+    return ['lat', 'lon'].map(latOrLon => {
+      let level = this.activeLevel;
+      let aggregateBy = this[latOrLon][level];
+      while (!aggregateBy) {
+        level--;
+        aggregateBy = this[latOrLon][level];
+      }
+      return aggregateBy;
+    });
   }
 
   private addToMap(query: WarehouseQueryInterface, page = 1) {
@@ -410,7 +422,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
       switchMap((less) => less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
-          query, [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+          query, this.activeLevelToAggregateBy(),
           undefined, this.size, page, true
         ))).pipe(
         timeout(WarehouseApi.longTimeout * 3),
@@ -449,7 +461,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
-    if (!query.coordinates && this.activeBounds  && this.activeLevel >= this.onlyViewPortThreshold) {
+    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
       return {
         ...query,
         coordinates: [
