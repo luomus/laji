@@ -202,19 +202,17 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         this.activeLevel = i + 1;
       }
     }
-    if (!this.activeBounds) {
-      this.activeBounds = e.bounds.pad(1);
-    }
+    const insideBounds = this.activeBounds && this.activeBounds.contains(e.bounds);
+    const outOfViewport = this.activeLevel >= this.onlyViewPortThreshold && !insideBounds;
+    const showingItemsAlreadyAndZoomedIn = this.activeLevel >= curActive && this.showingItems;
     if (
       e.type === 'moveend' && (
-        curActive !== this.activeLevel ||
-        (this.activeLevel >= this.onlyViewPortThreshold && !this.activeBounds.contains(e.bounds))
+        (curActive !== this.activeLevel && !showingItemsAlreadyAndZoomedIn)
+        || outOfViewport
       )
     ) {
       this.activeBounds = e.bounds.pad(1);
-      if (!this.showingItems) {
-        this.updateMapData();
-      }
+      this.updateMapData();
     }
   }
 
@@ -369,9 +367,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         }
       };
     })).pipe(tap(() => {
-      if (this.activeLevel < this.onlyViewPortThreshold) {
-        this.showingItems = true;
-      }
+      this.showingItems = true;
     }));
   }
 
@@ -396,7 +392,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           return (this.warehouseService.warehouseQueryAggregateGet(
             query, this.activeLevelToAggregateBy(),
             undefined, this.size, page, true
-          ));
+          )).pipe(tap(() => {
+            this.showingItems = false;
+          }));
         }
       }));
   }
@@ -419,16 +417,19 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     query = this.addViewPortCoordinates(query);
     const count$ = this.getCount$(query, page);
+    const simpleAggregate$ = this.warehouseService.warehouseQueryAggregateGet(
+      query, this.activeLevelToAggregateBy(),
+      undefined, this.size, page, true
+    ).pipe(tap(() => {
+      this.showingItems = false;
+    }));
 
     this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
-      switchMap((less) => less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
-          query, this.activeLevelToAggregateBy(),
-          undefined, this.size, page, true
-        ))).pipe(
+      switchMap((less) => less > 0 ? count$ : simpleAggregate$)).pipe(
         timeout(WarehouseApi.longTimeout * 3),
         delay(100),
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
-      ).subscribe((data: any) => {
+        ).subscribe((data: any) => {
           this.clearDrawData();
           if (this.reset) {
             this.reset = false;
