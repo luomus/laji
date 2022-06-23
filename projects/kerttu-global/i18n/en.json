@@ -183,5 +183,7 @@
   "expertise.birdwatchingActivityLevel2": "I watch birds occasionally",
   "expertise.birdwatchingActivityLevel3": "I watch birds actively and regularly",
   "expertise.birdwatchingActivityLevel4": "I am bird researcher or professional birdwatcher",
-  "select": "select"
+  "select": "select",
+  "OK": "OK",
+  "cancel": "Cancel"
 }
