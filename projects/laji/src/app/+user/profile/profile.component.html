@@ -11,55 +11,57 @@
           <div class="profile-image">
             <img *ngIf="currentProfile.image" [src]="currentProfile.image" alt="profile image" class="img-rounded">
           </div>
-          <lu-button *ngIf="isCurrentUser"
-               [small]="true"
-               class="edit-text"
-               (click)="toggleEditing()">
-               {{'np.edit' | translate}}
-               <i class="glyphicon glyphicon-cog"></i>
-          </lu-button>
-          <div *ngIf="!editing">
-            <p>{{ currentProfile.profileDescription }}</p>
-            <p *ngIf="currentProfile.personalCollectionIdentifier">
-              {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ currentProfile.personalCollectionIdentifier }}
-            </p>
-          </div>
-          <div *ngIf="editing" class="profile-edit">
-            <p>{{ 'profile.info.intro' | translate }}</p>
-            <div class="profile-edit-row">
-              {{ 'profile.image' | translate }}
-              <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="currentProfile.image">
+          <ng-container *lajiForTypes="['kerttuGlobal']; exclude: true">
+            <lu-button *ngIf="isCurrentUser"
+                       [small]="true"
+                       class="edit-text"
+                       (click)="toggleEditing()">
+              {{'np.edit' | translate}}
+              <i class="glyphicon glyphicon-cog"></i>
+            </lu-button>
+            <div *ngIf="!editing">
+              <p>{{ currentProfile.profileDescription }}</p>
+              <p *ngIf="currentProfile.personalCollectionIdentifier">
+                {{ 'MA.personalCollectionIdentifier' | label }}:<br>{{ currentProfile.personalCollectionIdentifier }}
+              </p>
             </div>
-            <div class="profile-edit-row">
-              {{ 'profile.description' | translate }}
-              <textarea class="form-control" [(ngModel)]="currentProfile.profileDescription"></textarea>
+            <div *ngIf="editing" class="profile-edit">
+              <p>{{ 'profile.info.intro' | translate }}</p>
+              <div class="profile-edit-row">
+                {{ 'profile.image' | translate }}
+                <input class="form-control" placeholder="{{'profile.imagePlaceholder' | translate}}" [(ngModel)]="currentProfile.image">
+              </div>
+              <div class="profile-edit-row">
+                {{ 'profile.description' | translate }}
+                <textarea class="form-control" [(ngModel)]="currentProfile.profileDescription"></textarea>
+              </div>
+              <div class="profile-edit-row">
+                {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+                <input class="form-control" [(ngModel)]="currentProfile.personalCollectionIdentifier">
+              </div>
+              <h4>{{ 'profile.defaultMediaMetadata.title' | translate }}</h4>
+              <div class="profile-edit-row">
+                {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
+                <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.capturerVerbatim">
+              </div>
+              <div class="profile-edit-row">
+                {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
+                <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualOwner">
+              </div>
+              <div class="profile-edit-row">
+                {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
+                <select class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualRights">
+                  <option *ngFor="let c of intellectualRightsArray" [ngValue]="c">{{ c | label }}</option>
+                </select>
+              </div>
+              <div class="profile-edit-row">
+                <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>
+              </div>
             </div>
-            <div class="profile-edit-row">
-              {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
-              <input class="form-control" [(ngModel)]="currentProfile.personalCollectionIdentifier">
-            </div>
-            <h4>{{ 'profile.defaultMediaMetadata.title' | translate }}</h4>
-            <div class="profile-edit-row">
-              {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
-              <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.capturerVerbatim">
-            </div>
-            <div class="profile-edit-row">
-              {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
-              <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualOwner">
-            </div>
-            <div class="profile-edit-row">
-              {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
-              <select class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualRights">
-                <option *ngFor="let c of intellectualRightsArray" [ngValue]="c">{{ c | label }}</option>
-              </select>
-            </div>
-            <div class="profile-edit-row">
-              <lu-button (click)="saveProfile()" role="primary">{{ 'profile.save' | translate }}</lu-button>
-            </div>
-          </div>
+          </ng-container>
         </div>
         <div class="col-md-4 col-xs-12" *lajiLoggedIn="true">
-          <div class="form-group">
+          <div class="form-group" *lajiForTypes="['kerttuGlobal']; exclude: true">
             <div class="col-sm-12 well">
               <laji-find-person (selectChange)="selectPerson($event)"></laji-find-person>
               <laji-friends [profile]="currentProfile" [usersProfile]="userProfile"></laji-friends>
