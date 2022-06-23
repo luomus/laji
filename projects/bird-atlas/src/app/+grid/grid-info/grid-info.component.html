@@ -28,11 +28,20 @@
           <div></div>
         </div>
       </div>
+      <ba-grid-square-info [square]="data.elem"></ba-grid-square-info>
+      <hr>
+      <p><a [routerLink]="['/society', data.elem.birdAssociationArea.key]">{{ data.elem.birdAssociationArea.value }}</a></p>
       <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid&print=true'" target="_blank">
         {{ 'ba.grid-info.mapPrint' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
       <div><a [href]="'https://laji.fi/map?gridsquare=' + data.elem.coordinates + '&layers=maastokartta,atlasGrid'" target="_blank">
         {{ 'ba.grid-info.mapFullScreen' | translate }} <span class="glyphicon glyphicon-link"></span>
+      </a></div>
+      <div><a [href]="'https://havistin.biomi.org/atlas/ruutulomake/' + data.elem.coordinates + '/vakio'" target="_blank">
+        {{ 'ba.grid-info.havistin' | translate }} <span class="glyphicon glyphicon-link"></span>
+      </a></div>
+      <div><a [href]="'https://laji.fi/observation/map?time=2022-01-01%2F2025-12-31&coordinates=' + data.elem.coordinates + ':YKJ:1&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD&target=MX.37580'" target="_blank">
+        {{ 'ba.grid-info.observations' | translate }} <span class="glyphicon glyphicon-link"></span>
       </a></div>
     </div>
   </div>
