@@ -24,7 +24,7 @@ export class IdentificationSpeciesTableComponent implements OnInit {
       {
         name: 'commonName',
         label: 'speciesList.column.commonName',
-        summaryFunc: () => this.translate.instant('theme.total')
+        summaryFunc: () => this.translate.instant('results.total')
       },
       {
         name: 'scientificName',

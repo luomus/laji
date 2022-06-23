@@ -29,7 +29,7 @@ export class UserTableComponent implements OnInit {
         label: 'results.userTable.name',
         cellTemplate: this.userNameTemplate.userNameTpl,
         sortTemplate: 'label',
-        summaryFunc: () => this.translate.instant('theme.total')
+        summaryFunc: () => this.translate.instant('results.total')
       },
       {
         name: 'speciesCreated',

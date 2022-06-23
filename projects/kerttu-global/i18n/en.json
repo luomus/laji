@@ -205,5 +205,7 @@
   "feedback.topic.description": "Description",
   "feedback.topic.empty": "Choose subject",
   "feedback.topic.good": "feature request",
-  "feedback.topic.other": "other"
+  "feedback.topic.other": "other",
+  "home.main-page.title": "Finnish Biodiversity Information Facility",
+  "results.total": "Total"
 }
