@@ -3,11 +3,8 @@ import { AtlasActivityCategory, AtlasGridSquare } from '../../core/atlas-api.ser
 export type VisualizationMode = 'activityCategory' | 'speciesCount';
 
 // Performance optimization: precomputing gradients
-// import { discreteColorGradient } from './color-math';
-// export const activityCategoryGradient = ['cccccc', ...discreteColorGradient('f3f38c', '4b57a4', 5)];
-export const activityCategoryGradient = ['cccccc', 'f3f38c', 'c6e774', '61d694', '4798b6', '4b57a4'];
-// export const speciesCountGradient = ['cccccc', ...discreteColorGradient('f3f38c', '4b57a4', 3)];
-export const speciesCountGradient = ['cccccc', 'f3f38c', '61d694', '4b57a4'];
+export const activityCategoryGradient = ['ffffff', 'ffff47', 'ffc000', '38ff8e', '479ab8', '282e57'];
+export const speciesCountGradient = ['ffffff', 'ffff47', '39db7f', '282e57'];
 
 export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
   'MY.atlasActivityCategoryEnum0': activityCategoryGradient[0],
