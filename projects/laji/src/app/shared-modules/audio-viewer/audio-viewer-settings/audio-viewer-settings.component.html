@@ -1,6 +1,6 @@
 <div>
   <label>{{ 'audioViewer.timeBuffer' | translate }}</label>
-  <laji-info [placement]="'right'" [html]="'audioViewer.timeBuffer.info' | translate"></laji-info>
+  <laji-info [placement]="'right'" [html]="'audioViewer.timeBuffer.info' | translate" [showOnHover]="true"></laji-info>
   <div class="input-group">
     <select
       class="form-control input-sm"
@@ -14,7 +14,7 @@
 </div>
 <div>
   <label>{{ 'audioViewer.targetFrequency' | translate }}</label>
-  <laji-info [placement]="'right'" [html]="'audioViewer.targetFrequency.info' | translate"></laji-info>
+  <laji-info [placement]="'right'" [html]="'audioViewer.targetFrequency.info' | translate" [showOnHover]="true"></laji-info>
   <bSwitch
     [switch-on-text]="'yes' | translate"
     [switch-off-text]="'no' | translate"
@@ -27,5 +27,5 @@
 </div>
 <div [ngClass]="{'d-block': !displayInline}" class="mt-2">
   <lu-button [small]="true" (click)="setDefaultSettings()">{{ 'audioViewer.setDefaultSettings' | translate }}</lu-button>
-  <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText"></laji-info>
+  <laji-info *ngIf="setDefaultSettingsInfoText" [placement]="'right'" [html]="setDefaultSettingsInfoText" [showOnHover]="true"></laji-info>
 </div>

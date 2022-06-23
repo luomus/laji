@@ -41,7 +41,7 @@
       <lu-button [role]="audioPlayer.loop ? 'primary' : 'secondary'" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
         <span class="fa fa-refresh"></span>
       </lu-button>
-      <laji-info [placement]="'right'" [html]="'audioViewer.loop.info' | translate"></laji-info>
+      <laji-info [placement]="'right'" [html]="'audioViewer.loop.info' | translate" [showOnHover]="true"></laji-info>
     </div>
     <ng-container *ngIf="customControlsTpl">
       <ng-template [ngTemplateOutlet]="customControlsTpl"></ng-template>
