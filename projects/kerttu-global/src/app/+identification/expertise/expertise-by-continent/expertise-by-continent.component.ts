@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { SelectStyle } from '../../../../../../laji/src/app/shared-modules/select/metadata-select/metadata-select.component';
 import { Profile } from '../../../../../../laji/src/app/shared/model/Profile';
 import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
+import BirdSongRecognitionSkillLevelEnum = Profile.BirdSongRecognitionSkillLevelEnum;
 
 @Component({
   selector: 'laji-expertise-by-continent',
@@ -15,7 +15,13 @@ export class ExpertiseByContinentComponent implements OnChanges {
   @Input() disabled = false;
 
   skillLevelByContinent = {};
-  basicSelectStyle = SelectStyle.basic;
+
+  birdSongRecognitionSkillLevelOptions: {id: BirdSongRecognitionSkillLevelEnum; label: string}[] = [
+    {id: 'MA.birdSongRecognitionSkillLevelEnum1', label: 'expertise.birdSongRecognitionSkillLevel1'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum2', label: 'expertise.birdSongRecognitionSkillLevel2'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum3', label: 'expertise.birdSongRecognitionSkillLevel3'},
+    {id: 'MA.birdSongRecognitionSkillLevelEnum4', label: 'expertise.birdSongRecognitionSkillLevel4'}
+  ];
 
   @Output() birdSongRecognitionSkillLevelsChange = new EventEmitter<BirdSongRecognitionSkillLevel[]>();
 
