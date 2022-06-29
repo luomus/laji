@@ -9,8 +9,8 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class GhostTextContentDirective implements OnInit, OnDestroy {
   @Input() disableTextContentGhost = false;
-  destroyListener: Function;
-  constructor(private el: ElementRef, private renderer: Renderer2, @Inject(PLATFORM_ID) private platformId: Object) {}
+  destroyListener: () => void;
+  constructor(private el: ElementRef, private renderer: Renderer2, @Inject(PLATFORM_ID) private platformId: any) {}
   ngOnInit() {
     if (isPlatformBrowser(this.platformId) && !this.disableTextContentGhost && (!this.el.nativeElement || this.el.nativeElement.textContent.trim().length === 0)) {
       this.renderer.addClass(this.el.nativeElement, 'lu-ghost-textcontent');

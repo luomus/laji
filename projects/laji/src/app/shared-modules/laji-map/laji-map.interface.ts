@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as LajiMap from 'laji-map';
-
+import * as L from 'leaflet';
 
 export type LajiMapOptions = LajiMap.Options;
 
@@ -23,3 +23,5 @@ export type LajiMapLineTransectGeometry = LajiMap.LineTransectGeometry;
 export type LajiMapDataOptions = LajiMap.DataOptions;
 
 export type LajiMapTileLayersOptions = LajiMap.TileLayersOptions;
+
+export type LajiMapDrawEvent = LajiMap.LajiMapEvent;

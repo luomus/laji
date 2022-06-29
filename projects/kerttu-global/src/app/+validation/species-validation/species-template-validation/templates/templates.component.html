@@ -1,5 +1,5 @@
 <ng-container *ngIf="templates">
-  <bsg-small-audio-viewer
+  <laji-small-audio-viewer
     *ngFor="let template of templates; let i = index"
     [label]="'T' + (i + 1)"
     [area]="template?.area"
@@ -7,8 +7,9 @@
     [spectrogramConfig]="spectrogramConfig"
     [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || template?.comment"
     [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"
+    [emptyAudioText]="'validation.undefined' | translate"
     (templateClick)="templateClick.emit(i)"
   >
   {{ template?.comment }}
-  </bsg-small-audio-viewer>
+  </laji-small-audio-viewer>
 </ng-container>

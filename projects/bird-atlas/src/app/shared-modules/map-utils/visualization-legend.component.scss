@@ -1,0 +1,14 @@
+@import 'vars';
+
+.legend-row {
+  display: block;
+  margin-bottom: $sp-3;
+}
+
+.legend-sq {
+  display: inline-block;
+  margin-right: $sp-3;
+
+  width: $sp-5;
+  height: $sp-5;
+}

@@ -1,4 +1,7 @@
-:host ::ng-deep .filename {
-  font-family: monospace;
-  padding: 1em;
+@import 'vars';
+
+.info-rows {
+  display: grid;
+  grid-template-columns: max-content auto;
+  column-gap: $sp-5;
 }

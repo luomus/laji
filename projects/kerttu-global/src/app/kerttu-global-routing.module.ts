@@ -27,15 +27,13 @@ const routes: Routes = [
   },
   {
     path: 'validation',
-    canActivate: [OnlyLoggedIn],
     loadChildren: () => import('./+validation/validation.module').then(m => m.ValidationModule),
-    data: {preload: true, title: 'Bird Sounds Global'}
+    data: {title: 'Bird Sounds Global'}
   },
   {
-    path: 'results',
-    pathMatch: 'full',
-    loadChildren: () => import('./+results/results.module').then(m => m.ResultsModule),
-    data: {preload: true, title: 'Bird Sounds Global'}
+    path: 'identification',
+    loadChildren: () => import('./+identification/identification.module').then(m => m.IdentificationModule),
+    data: {title: 'Bird Sounds Global'}
   },
   {
     path: 'user',

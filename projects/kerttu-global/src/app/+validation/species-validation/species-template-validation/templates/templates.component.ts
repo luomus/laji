@@ -18,5 +18,5 @@ export class TemplatesComponent {
 
   @Output() templateClick = new EventEmitter<number>();
 
-  margin: { top: number, bottom: number, left: number, right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
+  margin: { top: number; bottom: number; left: number; right: number } = { top: 0, bottom: 15, left: 20, right: 1 };
 }

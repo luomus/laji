@@ -9,7 +9,7 @@ export class DownloadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  downloadTextFile(url, filename) {
+  downloadTextFile(url: string, filename: string) {
     return this.httpClient.get(url, {
       responseType: 'text'
     }).pipe(

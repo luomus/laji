@@ -1,0 +1,23 @@
+<input
+  type="text"
+  class="form-control input-sm"
+  [class.loading]="loading"
+  name="target"
+  [placeholder]="placeholder"
+  [(ngModel)]="value"
+  [typeahead]="dataSource"
+  [typeaheadOptionsLimit]="limit"
+  [typeaheadWaitMs]="200"
+  [typeaheadMinLength]="0"
+  [typeaheadOptionField]="'commonName'"
+  [typeaheadItemTemplate]="taxonItem"
+  (typeaheadOnSelect)="onTaxonSelect($event)"
+  [typeaheadSelectFirstItem]="true"
+  [typeaheadIsFirstItemActive]="true"
+  autocomplete="off"
+  autocorrect="off"
+>
+
+<ng-template #taxonItem let-item="item">
+  <span class="autocomplete-container" [innerHTML]="item['autocompleteDisplayName']"></span>
+</ng-template>

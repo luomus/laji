@@ -18,7 +18,6 @@ interface SpeciesInfoData {
 }
 
 @Component({
-  selector: 'ba-species-info',
   templateUrl: './species-info.component.html',
   styleUrls: ['./species-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

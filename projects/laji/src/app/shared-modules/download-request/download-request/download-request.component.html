@@ -2,57 +2,58 @@
   <h3 *ngIf="showTitle">{{ (
     downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'downloadRequest.apiKey' : 'downloadRequest.fileDownload'
   ) | translate }} {{ downloadRequest.id | toFullUri }}</h3>
-  <div class="row" *ngIf="showPerson && downloadRequest.personId">
-    <div class="col-sm-4">
-      <label>{{ 'downloadRequest.person' | translate }}:</label>
-    </div>
-    <div class="col-sm-8">
-      {{ downloadRequest.personId | users }}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-4">
+  <div class="info-rows">
+    <ng-container *ngIf="showPerson && downloadRequest.personId">
+      <div>
+        <label>{{ 'downloadRequest.person' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.personId | users }}
+      </div>
+    </ng-container>
+    <div>
       <label>{{ 'downloadRequest.' + (
         downloadRequest.downloadType === 'AUTHORITIES_API_KEY' ? 'apiKeyRequested' : 'requested'
       ) | translate }}:</label>
     </div>
-    <div class="col-sm-8">
+    <div>
       {{ downloadRequest.requested | amDateFormat:'D.M.YYYY' }}
     </div>
-  </div>
-  <div class="row" *ngIf="downloadRequest.approximateMatches">
-    <div class="col-sm-4">
-      <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
-    </div>
-    <div class="col-sm-8">
-      {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
-    </div>
-  </div>
-  <div class="row" *ngIf="downloadRequest.dataUsePurpose">
-    <div class="col-sm-4">
-      <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
-    </div>
-    <div class="col-sm-8">
-      {{ downloadRequest.dataUsePurpose }}
-    </div>
-  </div>
-  <div class="row" *ngIf="downloadRequest.apiKeyExpires">
-    <div class="col-sm-4">
-      <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
-    </div>
-    <div class="col-sm-8">
-      {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
-    </div>
+    <ng-container *ngIf="downloadRequest.approximateMatches">
+      <div>
+        <label>{{ 'downloadRequest.approximateMatches' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.approximateMatches | formattedNumber:'&nbsp;' }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="downloadRequest.dataUsePurpose">
+      <div>
+        <label>{{ 'downloadRequest.dataUsePurpose' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.dataUsePurpose }}
+      </div>
+    </ng-container>
+    <ng-container *ngIf="downloadRequest.apiKeyExpires">
+      <div>
+        <label>{{ 'downloadRequest.apiKeyExpires' | translate }}:</label>
+      </div>
+      <div>
+        {{ downloadRequest.apiKeyExpires | amDateFormat:'D.M.YYYY' }}
+      </div>
+    </ng-container>
   </div>
 
   <ng-container *ngIf="showDownload === 'always' || (showDownload === 'publicOnly' && downloadRequest.publicDownload)">
     <ng-container *ngIf="downloadRequest.downloadType !== 'AUTHORITIES_API_KEY' else apiKey">
       <h4>{{ 'downloadRequest.download' | translate }}</h4>
       <div
+        *ngIf="showDownload === 'publicOnly' && downloadRequest.publicDownload"
         role="alert"
         class="alert alert-success"
         [innerHTML]='"downloadRequest.fileDownload.licenseReminder" | translate:{
-          filename: "<span class=\"filename\">readme.txt</span>"
+          filename: "<code>readme.txt</code>"
         }'
       ></div>
       <laji-file-download [downloadRequest]="downloadRequest"></laji-file-download>

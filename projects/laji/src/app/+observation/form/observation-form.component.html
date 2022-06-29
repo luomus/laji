@@ -21,6 +21,8 @@
       [modalButtonLabel]="'observation.form.informalTaxonGroup.select' | translate"
       [browseTitle]="'observation.form.informalTaxonGroup.browse' | translate"
       [selectedTitle]="'observation.form.informalTaxonGroup.selected' | translate"
+      [includedTitle]="'observation.form.informalTaxonGroup.included' | translate"
+      [excludedTitle]="'observation.form.informalTaxonGroup.excluded' | translate"
       [okButtonLabel]="'labelDesigner.Ok' | translate"
       [clearButtonLabel]="'labelDesigner.Clear' | translate"
       (select)="onSelectionIdChange($event, 'formQuery')">
@@ -140,7 +142,7 @@
 </section>
 
 <!-- PLACE -->
-<section class="laji-panel"
+<section class="laji-panel laji-panel-places"
       laji-panel
       [autoToggle]="true"
       [open]="showPlace || visible['place']"
@@ -217,19 +219,19 @@
 
   <div>
     <div>
-        <label>{{ 'observation.form.map.intro'|translate }}</label>
+        <label>{{ 'observation.form.map.intro' | translate }}</label>
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Rectangle')">
+      <button type="button" class="btn btn-default btn-small obs-form-draw-btn draw-rectangle" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
-      {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
+      {{ 'observation.form.map.rectangle' | translate }}
     </div>
     <div>
-      <button type="button" class="lu-btn lu-btn-small" (click)="mapDraw.emit('Coordinates')">
+      <button type="button" class="btn btn-default btn-small obs-form-draw-btn enter-ykj-grid" (click)="mapDraw.emit('Coordinates')">
         YKJ
       </button>
-      {{ 'observation.form.map.coordinates'|translate }}
+      {{ 'observation.form.map.coordinates' | translate }}
     </div>
   </div>
 
@@ -274,10 +276,10 @@
       </div>
       <div>
         <div class="btn-group btn-group-xs">
-          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
+          <button type="button" class="btn btn-default my-2 coordinate-intersect-min" (click)="updateSearchQuery('_coordinatesIntersection', 0)">
             {{ 'observation.form.intersect0' | translate }}
           </button>
-          <button type="button" class="btn btn-default my-2" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
+          <button type="button" class="btn btn-default my-2 coordinate-intersect-max" (click)="updateSearchQuery('_coordinatesIntersection', 100)">
             {{ 'observation.form.intersect100' | translate }}
           </button>
         </div>
@@ -403,6 +405,26 @@
         {id: true, value: ('observation.form.breedingSiteTrue' | translate)},
         {id: false, value: ('observation.form.breedingSiteFalse' | translate)}
       ]"></laji-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.atlasCode"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="true"
+      name="atlasCode"
+      [placeholder]="'MY.atlasCode' | label"
+      [alt]="'MY.atlasCodeEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.atlasClass"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.atlasClass' | label"
+      [alt]="'MY.atlasClassEnum'"></laji-metadata-select>
   </div>
   <div>
     <laji-metadata-select
@@ -533,6 +555,8 @@
     [modalButtonLabel]="'observation.form.datasetSelect' | translate"
     [browseTitle]="'observation.form.datasetBrowse' | translate"
     [selectedTitle]="'observation.form.datasetSelected' | translate"
+    [includedTitle]="'observation.form.datasetIncluded' | translate"
+    [excludedTitle]="'observation.form.datasetExcluded' | translate"
     [okButtonLabel]="'labelDesigner.Ok' | translate"
     [clearButtonLabel]="'labelDesigner.Clear' | translate"
     name='collectionID'
@@ -729,4 +753,22 @@
         {id: true, value: ('observation.form.secured.true' | translate)},
         {id: false, value: ('observation.form.secured.false' | translate)}
       ]"></laji-select>
+</section>
+
+<section *lajiForTypes="['vir']; exclude: true" class="laji-panel" laji-panel [title]="'observation.form.presetPanel' | translate" [autoToggle]="true">
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="virFilterShortcutQueryParams">
+    {{ 'observation.form.virFilterShortcut' | translate }}
+    </a>
+    <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
+  </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="{ countryId: 'ML.206' }">
+    {{ 'observation.form.onlyFinShortcut' | translate }}
+    </a>
+  </div>
 </section>

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { Autocomplete } from '../model/Autocomplete';
 
-interface TaxaWithAutocomplete extends Autocomplete {
+export interface TaxaWithAutocomplete extends Autocomplete {
   autocompleteDisplayName: string;
   autocompleteSelectedName: string;
 }

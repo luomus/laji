@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PluckPipe implements PipeTransform {
 
-  transform<T extends any, K extends keyof T>(value: T|T[], key: K): T[K] | Array<T[K]> {
+  transform<T extends any, K extends keyof T>(value: T|T[], key: K): T[K] | Array<T[K] | undefined> | undefined {
     if (Array.isArray(value)) {
       return value.map(v => v?.[key]);
     }

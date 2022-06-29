@@ -16,8 +16,8 @@
         <laji-info *ngIf="titleInfo">{{ titleInfo | translate }}</laji-info>
       </h5>
     </div>
-    <div class="legend">
-      <span class="cnt capitalize">
+    <div class="map-color-legend">
+      <span class="map-color-legend-cnt capitalize">
         {{ 'theme.square' | translate }}
       </span>
       <div dropdown style="position: relative">
@@ -42,13 +42,13 @@
       </div>
       <ul>
         <li *ngFor="let leg of legendList">
-          <span [ngStyle]="{'background-color': leg.color}" class="color"></span>
+          <span [ngStyle]="{'background-color': leg.color}" class="map-color-legend-color"></span>
           {{ leg.label }}
-          <span class="cnt">{{ count[leg.color] || 0 }}</span>
+          <span class="map-color-legend-cnt">{{ count[leg.color] || 0 }}</span>
         </li>
         <li>
           {{ 'theme.total' | translate }}
-          <span class="cnt">{{ count['total'] }} {{ 'theme.square' | translate }}</span>
+          <span class="map-color-legend-cnt">{{ count['total'] }} {{ 'theme.square' | translate }}</span>
         </li>
       </ul>
     </div>

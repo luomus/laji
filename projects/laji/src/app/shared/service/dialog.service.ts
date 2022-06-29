@@ -71,7 +71,12 @@ export class DialogService {
     });
 
     return modalRef.onHide.pipe(
-      map(() => modalRef.content.value as unknown as R),
+      map(() => {
+        if (!modalRef.content) {
+          throw new Error('Modal content wasn\'t ready');
+        }
+        return modalRef.content.value as unknown as R;
+      }),
       take(1)
     );
   }

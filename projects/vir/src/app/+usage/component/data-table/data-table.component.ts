@@ -162,8 +162,8 @@ export class DataTableComponent implements AfterViewInit {
   }
 
   private getCols(cols: string[]): DatatableColumn[] {
-    return cols.map(c => {
-      return this.allCols.find(col => c === col.name);
-    });
+    return cols.map(c => (
+      this.allCols.find(col => c === col.name)
+    ));
   }
 }

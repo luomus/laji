@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { filter, startWith } from "rxjs/operators";
-import { Lang } from "../core/i18n-map";
-import { BugAnimation } from "./bug-animation";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { filter, startWith } from 'rxjs/operators';
+import { Lang } from '../core/i18n-map';
+import { BugAnimation } from './bug-animation';
 import { ISlideData } from './slide/slide.component';
-import { SlideshowFacade } from "./slideshow.facade";
+import { SlideshowFacade } from './slideshow.facade';
 
 @Component({
   selector: 'es-slideshow',
@@ -20,7 +20,13 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild('slideContainer') slideContainer: ElementRef;
 
-  constructor(private translate: TranslateService, private el: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private facade: SlideshowFacade) {}
+  constructor(
+    private translate: TranslateService,
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private facade: SlideshowFacade
+  ) {}
 
   ngAfterViewInit() {
     this.bugAnimation = new BugAnimation(this.el, this.renderer);
@@ -29,7 +35,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
     this.facade.slides$.pipe(filter(s => s && s.length > 0)).subscribe(slides => {
       this.currentSlideIdx = 0;
       this.bugAnimation.bugPaths = slides[0].animationPlacement;
-      this.setSlides(slides)
+      this.setSlides(slides);
     });
   }
 
@@ -58,7 +64,7 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
 
   private setAnimatable(bool: boolean) {
     if (bool) {
-      this.renderer.setStyle(this.slideContainer.nativeElement, 'transition', 'transform .3s cubic-bezier(0.37, 0, 0.63, 1)')
+      this.renderer.setStyle(this.slideContainer.nativeElement, 'transition', 'transform .3s cubic-bezier(0.37, 0, 0.63, 1)');
     } else {
       this.renderer.removeStyle(this.slideContainer.nativeElement, 'transition');
     }
@@ -108,6 +114,6 @@ export class SlideshowComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.bugAnimation) { this.bugAnimation.destroy() }
+    if (this.bugAnimation) { this.bugAnimation.destroy(); }
   }
 }

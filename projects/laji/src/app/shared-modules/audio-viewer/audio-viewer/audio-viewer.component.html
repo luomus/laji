@@ -7,7 +7,8 @@
       [defaultView]="defaultView"
       [focusArea]="focusArea"
       [highlightFocusArea]="highlightFocusArea"
-      [onlyFocusAreaClickable]="highlightFocusArea && view === defaultView"
+      [onlyFocusAreaDrawable]="highlightFocusArea"
+      [focusAreaColor]="focusAreaColor"
       [showAxisLabels]="showAxisLabels"
       [axisFontSize]="axisFontSize"
       [rectangles]="rectangles"
@@ -36,12 +37,15 @@
       >
       </span>
     </lu-button>
-    <div class="btn-with-info">
+    <div class="btn-with-info" *ngIf="showLoopControl">
       <lu-button [role]="audioPlayer.loop ? 'primary' : 'secondary'" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
         <span class="fa fa-refresh"></span>
       </lu-button>
       <laji-info [placement]="'right'" [html]="'theme.kerttu.info.loop' | translate"></laji-info>
     </div>
+    <ng-container *ngIf="customControlsTpl">
+      <ng-template [ngTemplateOutlet]="customControlsTpl"></ng-template>
+    </ng-container>
     <ng-container *ngIf="showZoomControl">
       <div class="btn-with-info">
         <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">

@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { switchMap, concatMap, map, catchError, takeWhile } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-export const GEO_CONVERT_LIMIT = Number.MAX_VALUE;
+export const GEO_CONVERT_LIMIT = 500000;
 export type GeoConversionStatus = 'pending'|'complete';
 
 export enum FileFormat {
@@ -76,7 +76,7 @@ export class GeoConvertService {
   private startGeoConversion(
     fileId: string, format: FileFormat, geometry: FileGeometry, crs: FileCrs, personToken?: string
   ): Observable<string> {
-    const queryParams = {
+    const queryParams: any = {
       outputFormat: format,
       geometryType: geometry,
       crs
@@ -84,7 +84,7 @@ export class GeoConvertService {
     if (personToken) {
       queryParams['personToken'] = personToken;
     }
-    const params = new HttpParams({fromObject: <any>queryParams});
+    const params = new HttpParams({fromObject: queryParams});
 
     return this.httpClient.get<string>('/api/geo-convert/' + fileId, {params});
   }

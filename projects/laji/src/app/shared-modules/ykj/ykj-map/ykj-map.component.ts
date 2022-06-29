@@ -26,7 +26,7 @@ export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'indivi
 @Component({
   selector: 'laji-ykj-map',
   templateUrl: './ykj-map.component.html',
-  styleUrls: ['./ykj-map.component.css'],
+  styleUrls: ['./ykj-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {

@@ -24,18 +24,18 @@ alert {
   display: inline-block;
   width: 100%;
 
-  * {
-    vertical-align: middle;
+  > * {
+    vertical-align: bottom;
   }
 
   .btn-with-info {
     display: inline-block;
-    margin-right: 0.5em;
+    margin-right: 2px;
   }
 
   button, lu-button {
     display: inline-block;
-    margin: 0 2px 2px 2px;
+    margin: 0 2px;
   }
 
   .audio-info {

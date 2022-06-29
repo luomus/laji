@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { ISlideData } from "../slide/slide.component";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ISlideData } from '../slide/slide.component';
 
 @Component({
   selector: 'es-slide-navigation',

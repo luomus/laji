@@ -76,7 +76,7 @@ export class ExportService {
     const labelRow = firstRow ? 1 : 0;
     const observables = [];
     for (const col of cols) {
-      const labels = this.translateService.instant(col.label);
+      const labels = this.translateService.instant(col.label ?? '');
       aoa[labelRow].push(typeof labels === 'string' ? labels : Object.values(labels).join(', '));
     }
     for (let i = 0; i < data.length; i++) {
@@ -106,7 +106,7 @@ export class ExportService {
   }
 
   private getValue(obj: any, col: DatatableColumn) {
-    const nameValue = Util.parseJSONPath(obj, col.name);
+    const nameValue = Util.parseJSONPath(obj, col.name ?? '');
     if (!this.hasScalarValue(nameValue) && typeof col.prop !== 'undefined') {
       const propValue = Util.parseJSONPath(obj, '' + col.prop);
       if (typeof propValue !== 'undefined') {

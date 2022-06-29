@@ -26,6 +26,12 @@
     </tr>
   </tbody>
 </table>
-<button class="btn btn-default pull-left lower-btn" (click)="acceptAllAsIs()">
-  {{ 'excel.import.namesAsIs' | translate }}
-</button>
+<div class="btn-group  lower-btn">
+  <button type="button" class="btn btn-default" (click)="acceptAllAsIs()">
+    {{ 'excel.import.namesAsIs' | translate }}
+  </button>
+  <button type="button" class="btn btn-default" (click)="ignoreAll()">
+    {{ 'ignore' | translate}}
+  </button>
+</div>
+

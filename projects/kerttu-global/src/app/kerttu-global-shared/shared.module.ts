@@ -4,6 +4,7 @@ import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { SpeciesListFiltersComponent } from './component/species-list-filters/species-list-filters.component';
 import { SearchInputComponent } from './component/species-list-filters/search-input/search-input.component';
+import { UserNameTemplateComponent } from './component/user-name-template.component';
 
 @NgModule({
   imports: [
@@ -13,10 +14,12 @@ import { SearchInputComponent } from './component/species-list-filters/search-in
   ],
   declarations: [
     SpeciesListFiltersComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    UserNameTemplateComponent
   ],
   exports: [
-    SpeciesListFiltersComponent
+    SpeciesListFiltersComponent,
+    UserNameTemplateComponent
   ]
 })
 export class KerttuGlobalSharedModule { }

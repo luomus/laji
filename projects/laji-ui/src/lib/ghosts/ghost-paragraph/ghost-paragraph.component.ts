@@ -3,14 +3,14 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 /**
  * Usage
  *
-
-<div *ngIf="content$ | async; else loading; let content" [innerHtml]="content"></div>
-<ng-template #loading>
-  <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
-  <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
-  <lu-ghost-paragraph [length]="200"></lu-ghost-paragraph>
-</ng-template>
-
+ *
+ * <div *ngIf="content$ | async; else loading; let content" [innerHtml]="content"></div>
+ * <ng-template #loading>
+ *   <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
+ *   <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
+ *   <lu-ghost-paragraph [length]="200"></lu-ghost-paragraph>
+ * </ng-template>
+ *
  */
 
 @Component({

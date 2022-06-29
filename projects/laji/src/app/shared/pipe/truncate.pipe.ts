@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'truncate'
 })
 export class TruncatePipe implements PipeTransform {
-  transform(value: string, limit, wordComplete = false, dots = '...') {
+  transform(value: string, limit: number, wordComplete = false, dots = '...') {
     const lastWord = 50;
 
     if (value.length < limit) {

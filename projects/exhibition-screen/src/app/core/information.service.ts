@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { LajiApi } from "projects/laji/src/app/shared/service/laji-api.service";
-import { Information } from "projects/laji/src/app/shared/model/Information";
-import { Observable, of } from "rxjs";
-import { environment } from "projects/exhibition-screen/src/env/environment";
-import { tap } from "rxjs/operators";
-import { Util } from "projects/laji/src/app/shared/service/util.service";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { LajiApi } from 'projects/laji/src/app/shared/service/laji-api.service';
+import { Information } from 'projects/laji/src/app/shared/model/Information';
+import { Observable, of } from 'rxjs';
+import { environment } from 'projects/exhibition-screen/src/env/environment';
+import { tap } from 'rxjs/operators';
+import { Util } from 'projects/laji/src/app/shared/service/util.service';
 
 @Injectable({providedIn: 'root'})
 export class InformationService {
