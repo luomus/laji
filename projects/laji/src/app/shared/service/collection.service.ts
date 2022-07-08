@@ -8,6 +8,8 @@ import { IdService } from './id.service';
 import { GraphQLService } from '../../graph-ql/service/graph-ql.service';
 import { gql } from 'apollo-angular';
 import { WarehouseQueryInterface } from '../model/WarehouseQueryInterface';
+import { Collection } from '../model/Collection';
+import { CollectionApi } from '../api/CollectionApi';
 
 export interface ICollectionRange {
   id: string;
@@ -18,6 +20,7 @@ export interface ICollectionsTreeNode {
   id: string;
   longName: string;
   hasChildren: boolean;
+  collectionType: string;
   children?: ICollectionsTreeNode[];
 }
 
@@ -35,26 +38,38 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       id
       longName
       hasChildren
+      collectionType
+      collectionQuality
       children {
         id
         longName
         hasChildren
+        collectionType
+        collectionQuality
         children {
           id
           longName
           hasChildren
+          collectionType
+          collectionQuality
           children {
             id
             longName
             hasChildren
+            collectionType
+            collectionQuality
             children {
               id
               longName
               hasChildren
+              collectionType
+              collectionQuality
               children {
                 id
                 longName
                 hasChildren
+                collectionType
+                collectionQuality
               }
             }
           }
@@ -66,6 +81,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
   constructor(
     private metadataService: MetadataApi,
     private warehouseApi: WarehouseApi,
+    private collectionApi: CollectionApi,
     private graphQlService: GraphQLService,
   ) {
     super();
@@ -81,6 +97,10 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       );
     }
     return all$;
+  }
+
+  getById(id: string, lang?: string): Observable<Collection> {
+    return this.collectionApi.findById(id, lang);
   }
 
   getName(id: string, lang: string, empty: null|string = null): Observable<string> {
@@ -125,6 +145,29 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       map(({data}) => data),
       map(({collection}) => collection)
     );
+  }
+  
+  getCollectionSpecimenCounts(id: string) {
+    return this.warehouseApi.warehouseQueryAggregateGet({cache: true, collectionId: [id]}, ['unit.superRecordBasis', 'unit.typeSpecimen'], undefined, 1000).pipe(
+      map(data => (data.results || []) as any[]),
+      map(data => {
+        const toReturn = {};
+
+        data.forEach(data => {
+          if (data.aggregateBy['unit.superRecordBasis'] === 'PRESERVED_SPECIMEN') {
+            if (data.aggregateBy['unit.typeSpecimen']) {
+              toReturn['typeSpecimen'] = data.count;
+            } else {
+              toReturn['specimen'] = data.count;
+            }
+          } else if (data.aggregateBy['unit.superRecordBasis'] === 'HUMAN_OBSERVATION_UNSPECIFIED') {
+            toReturn['observation'] = data.count;
+          }
+        });
+
+        return toReturn
+      })
+    )
   }
 
   getCollectionsAggregate(query?: WarehouseQueryInterface, page = 1, collections: any[] = []): Observable<ICollectionRange[]> {

@@ -66,6 +66,27 @@ export interface Collection {
   collectionType?: string;
 
   /**
+   * Quality
+   */
+  collectionQuality?: string;
+
+  /**
+   * Personal or general (e.g. group of people in the organisation) email address to reach the person(s) responsible.
+   */
+  contactEmail?: string;
+
+  /**
+   * Ids of persons responsible of handling dowload requests
+   */
+  downloadRequestHandler?: string[];
+
+  publisherShortname?: string[];
+  
+  taxonomicCoverage?: string;
+  
+  language?: string;
+  
+  /**
    * Person responsible for this metadata
    */
   personResponsible?: string;

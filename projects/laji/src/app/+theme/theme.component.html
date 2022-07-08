@@ -76,6 +76,10 @@
       <h5>{{ 'datasets.label' | translate }}</h5>
       <p [innerHTML]="'datasets.intro' | translate" lajiRouteTransformer></p>
     </a>
+    <a [routerLink]="['/theme/dataset-metadata'] | localize" class="navbox">
+      <h5>{{ 'dataset-metadata.label' | translate }}</h5>
+      <p [innerHTML]="'dataset-metadata.intro' | translate" lajiRouteTransformer></p>
+    </a>
   </div>
 
   <h4><span class="glyphicon glyphicon-picture"></span> {{ 'theme.speciesIdentification.main' | translate }}</h4>

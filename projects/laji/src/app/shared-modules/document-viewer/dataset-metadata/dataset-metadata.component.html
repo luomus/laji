@@ -1,0 +1,47 @@
+<div *ngIf="collection">
+  <laji-row [title]="'collection.collectionName' | translate" [value]="collection.collectionName | multiLang">
+  </laji-row>
+  <laji-row [title]="'collection.publisherShortname' | translate" [value]="collection.publisherShortname | multiLang">
+  </laji-row>
+  <laji-row [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
+  </laji-row>
+  <laji-row [title]="'collection.description' | translate" [value]="collection.description | multiLang">
+  </laji-row>
+  <laji-row [title]="'collection.taxonomicCoverage' | translate" [value]="collection.taxonomicCoverage">
+  </laji-row>
+  <laji-row [title]="'collection.temporalCoverage' | translate" [value]="collection.temporalCoverage">
+  </laji-row> 
+  <laji-row [title]="'collection.geographicCoverage' | translate" [value]="collection.geographicCoverage">
+  </laji-row> 
+  <laji-row [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
+  </laji-row>
+  <laji-row [title]="'collection.intellectualOwner' | translate" [value]="collection.intellectualOwner">
+  </laji-row> 
+  <laji-row [title]="'collection.collectionSize' | translate" [value]="collection.collectionSize">
+  </laji-row> 
+  <laji-row *ngIf="collection.digitizedSize" [title]="'collection.digitizedSize' | translate">
+    <span>{{collection.digitizedSize}}%</span>
+  </laji-row> 
+  <laji-row [title]="'collection.citation' | translate" [value]="collection.citation">
+  </laji-row> 
+  <laji-row [title]="'collection.isPartOf' | translate" [value]="collection.isPartOf | toQName | collectionName">
+  </laji-row> 
+  <laji-row [title]="'collection.dataQuality' | translate" [value]="collection.dataQuality | label">
+  </laji-row> 
+  <laji-row [title]="'collection.language' | translate" [value]="collection.language">
+  </laji-row> 
+  <laji-row [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
+  </laji-row> 
+  <laji-row [title]="'collection.personResponsible' | translate" [value]="collection.personResponsible">
+  </laji-row>
+  <laji-row [title]="'collection.onlineUrl' | translate" [value]="collection.onlineUrl | multiLang">
+  </laji-row>
+  <laji-row [title]="'collection.contactEmail' | translate" [value]="collection.contactEmail">
+  </laji-row>
+  <laji-row *ngIf="collection.collectionQuality" [title]="'collection.collectionQuality' | translate">
+    <laji-quality-row
+      [quality]="collection.collectionQuality | label:'warehouse'" 
+      [qualityIcon]="collection.collectionQuality | qualityUrl">
+    </laji-quality-row>
+  </laji-row>
+</div>

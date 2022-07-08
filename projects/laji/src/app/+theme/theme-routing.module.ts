@@ -16,6 +16,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
+import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.component';
 
 /* eslint-enable max-len */
 
@@ -92,6 +93,8 @@ const routes: Routes = [
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
   {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},
   {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},
+  {path: 'dataset-metadata', pathMatch: 'full', component: DatasetMetadataComponent, data: {title: 'theme.dataset-metadata'}},
+  {path: 'dataset-metadata/:collectionId', pathMatch: 'full', component: DatasetMetadataComponent, data: {title: 'theme.dataset-metadata'}},
   {path: '**', component: NotFoundComponent}
 ];
 

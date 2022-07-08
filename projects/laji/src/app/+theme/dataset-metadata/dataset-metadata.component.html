@@ -1,0 +1,15 @@
+<div style="display:flex; width: 100%; height: 100%;">
+  <lu-sidebar [staticWidth]="400" [displayNav]="showBrowser">
+    <nav>
+      <laji-dataset-metadata-browser
+        *ngIf="showBrowser" [selected]="collectionId" (selectedChange)="changeCollection($event)"
+      >
+      </laji-dataset-metadata-browser>
+    </nav>
+    <main>
+        <laji-dataset-metadata-viewer *ngIf=!loading [collection]="collection" [collectionCounts]="collectionCounts">
+        </laji-dataset-metadata-viewer>
+        <laji-spinner *ngIf="loading"></laji-spinner>
+    </main>
+  </lu-sidebar>
+</div>
