@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, zip } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { zip } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
-import { CollectionService } from '../../shared/service/collection.service';
+import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
 
 @Component({
   selector: 'laji-dataset-metadata',
@@ -15,7 +14,7 @@ export class DatasetMetadataComponent implements OnInit {
   collectionId: string;
   _collectionId: string;
   collection: Collection;
-  collectionCounts: Object;
+  collectionCounts: ICollectionCounts;
   loading = false;
   showBrowser = true;
 

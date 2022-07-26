@@ -9,6 +9,7 @@ import { GatheringComponent } from './gathering/gathering.component';
 import { UnitComponent } from './unit/unit.component';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { LcFirstPipe } from './pipe/lc-first.pipe';
+import { CollectionLangPipe } from './pipe/collection-lang.pipe';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SecureInfoComponent } from './secure-info/secure-info.component';
 import { IssueComponent } from './issue/issue.component';
@@ -90,6 +91,7 @@ import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.co
     TypeComponent,
     AbundanceRowComponent,
     DatasetMetadataComponent,
+    CollectionLangPipe
   ],
   exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent, DatasetMetadataComponent]
 })

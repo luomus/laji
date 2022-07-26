@@ -80,12 +80,96 @@ export interface Collection {
    */
   downloadRequestHandler?: string[];
 
+  /**
+   * Short name for publisher
+   */
   publisherShortname?: string[];
   
+  /**
+   * Taxonomic coverage of the collection
+   */
   taxonomicCoverage?: string;
   
+  /**
+   * Collections language
+   */
   language?: string;
   
+  /**
+   * Collections abbreviation
+   */
+  abbreviation?: string;
+
+  /**
+   * Physical location of the collection
+   */
+  collectionLocation?: string;
+
+  /**
+   * Legal basis for concealment or quarantine
+   */
+  concealmentBasis?: string;
+
+  /**
+   * Definition of coverage if not obvious from name
+   */
+  coverageBasis?: string;
+
+  /**
+   * Reasoning for data quality value
+   */
+  dataQualityDescription?: string;
+
+  /**
+   * Possible speial terms for data usage
+   */
+  dataUseTerms?: string;
+
+  /**
+   * Creation date of collection in the system
+   */
+  dateCreated?: string;
+
+  /**
+   * Date of latest odit of colletion metadata
+   */
+  dateEdited?: string;
+
+  /**
+   * Collection methods for collection
+   */
+  methods?: string;
+
+  /**
+   * Publicity restrictions of the data 
+   */
+  publicityRestrictions?: string;
+
+  /**
+   * Is the collection for Kotka internal use only
+   */
+  internalUseOnly?: boolean;
+
+  /**
+   * Is the physical collection available for public, used for botanical collections 
+   */
+  publicAccess?: boolean;
+
+  /**
+   * notes for collection metadata
+   */
+  notes?: string;
+
+  /**
+   * notes for collection data
+   */
+  dataNotes?: string;
+
+  /**
+   * Is the collection shared to GBIF, value denotes under which collection it is shared
+   */
+  shareToGbif?: string;
+
   /**
    * Person responsible for this metadata
    */

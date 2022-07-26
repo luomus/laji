@@ -1,13 +1,17 @@
 <div>
   <ng-container *ngIf="!loading; else loadingSpinner">
-    <label>
-      <laji-checkbox [value]="showEmpty" (valueChange)="toggleShowEmpty()"></laji-checkbox>
-      {{ 'theme.dataset-metadata.showEmpty' | translate }} 
-    </label>
-    <label>
-      {{ 'theme.collection-metadata.collectionsCount' | translate }}
-      {{ collectionsCount }}
-    </label>
+    <div>
+      <label>
+        <laji-checkbox [value]="showEmpty" (valueChange)="toggleShowEmpty()"></laji-checkbox>
+        {{ 'theme.dataset-metadata.showEmpty' | translate }} 
+      </label>
+    </div>
+    <div>
+      <label>
+        {{ 'theme.collection-metadata.collectionsCount' | translate }}
+        {{ collectionsCount }}
+      </label>
+    </div>
     <laji-tree-selector
       [optionsTree]="optionsTree"
       [includeCheckbox]="false"
