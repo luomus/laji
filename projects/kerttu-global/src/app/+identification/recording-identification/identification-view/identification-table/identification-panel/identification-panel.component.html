@@ -4,7 +4,7 @@
       <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container>{{ identification.commonName }} - {{ identification.scientificName }}
     </strong>
     <div class="pull-right">
-      <div class="d-inline mr-3">
+      <div class="d-inline mr-3" *ngIf="identification.hasAudio">
         <a class="btn btn-sm btn-default" [routerLink]="['/validation/species', '' + identification.id] | localize" target="_blank" (click)="stopPropagation($event)">
           <i class="glyphicon glyphicon-new-window"></i> {{ 'identification.' + (identification.validationCount === 0 ? 'createTemplates' : 'seeTemplates') | translate }}
         </a>

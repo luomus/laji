@@ -81,7 +81,11 @@ export class TaxonSelectComponent {
     this.cdr.markForCheck();
 
     return this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), {
-      searchQuery: token, pageSize: this.limit, orderBy: ['searchQuery ASC'], continent: this.continent
+      searchQuery: token,
+      pageSize: this.limit,
+      orderBy: ['searchQuery ASC'],
+      continent: this.continent,
+      includeSpeciesWithoutAudio: true
     }).pipe(
       map(result => (result.results)),
       map(result => {

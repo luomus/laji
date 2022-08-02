@@ -23,6 +23,7 @@ export interface IGlobalSpeciesQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
+  includeSpeciesWithoutAudio?: boolean;
 }
 
 export interface IGlobalSpecies {
@@ -37,6 +38,7 @@ export interface IGlobalSpecies {
   hasNotPossibleValidations?: boolean;
   isSpecies?: boolean;
   taxonOrder?: number;
+  hasAudio?: boolean;
 }
 
 export interface IGlobalSpeciesFilters {
