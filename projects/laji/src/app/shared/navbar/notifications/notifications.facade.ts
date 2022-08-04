@@ -81,15 +81,22 @@ export class NotificationsFacade {
   ) {}
 
   private notificationsReducer(notifications: PagedResult<Notification>) {
-      this.store$.next({
-        ...this.store$.getValue(), notifications
-      });
+    this.store$.next({
+      ...this.store$.getValue(), notifications
+    });
+  }
+
+  private totalReducer(total: number) {
+    const curr = this.store$.getValue();
+    this.store$.next({
+      ...curr, notifications: { ...curr.notifications, total }
+    });
   }
 
   private unseenCountReducer(unseenCount: number) {
-      this.store$.next({
-        ...this.store$.getValue(), unseenCount
-      });
+    this.store$.next({
+      ...this.store$.getValue(), unseenCount
+    });
   }
 
   private localUnseenCountReducer(amount = 1) {
@@ -159,10 +166,20 @@ export class NotificationsFacade {
       catchError(() => of({unseenCount: {total: 0}, notifications: {total: 0, results: []}}))
     ).subscribe((data) => {
       this.unseenCountReducer(data.unseenCount.total);
+      const curr = this.store$.getValue();
+
+      // get total count from graphql to avoid api query until the dropdown is opened
+      if (curr.notifications.total === 0 && data.notifications.total !== 0) {
+        this.totalReducer(data.notifications.total);
+      }
+
+      // reload if new notifications are detected
       if (
         data.notifications &&
         data.notifications.total > 0 &&
-        this.store$.getValue().notifications?.[0]?.id !== data.notifications.results[0].id
+        // no need to reload notifications if the dropdown has not been opened
+        curr.notifications?.pageSize > 0 &&
+        curr.notifications?.results[0]?.id !== data.notifications.results[0].id
       ) {
         this.loadNotifications(1);
       }
