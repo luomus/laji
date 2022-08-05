@@ -7,7 +7,7 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'select[laji-dropdown]',
+  selector: 'select[iucn-dropdown]',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss']
 })

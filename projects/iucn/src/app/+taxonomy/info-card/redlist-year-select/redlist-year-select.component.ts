@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-redlist-year-select',
+  selector: 'iucn-redlist-year-select',
   templateUrl: './redlist-year-select.component.html',
   styleUrls: ['./redlist-year-select.component.css']
 })

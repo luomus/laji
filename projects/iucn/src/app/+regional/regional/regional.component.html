@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <h1>{{ 'iucn.regional.title' | translate }}</h1>
   <div class="year-select">
-    <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+    <select iucn-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
   </div>
   <p>
     {{ 'iucn.regional.intro' | translate }}
@@ -23,7 +23,7 @@
     </ul>
   </div>
   <div class="well">
-    <laji-filters [type]="'regional'" [query]="queryParams" [groupSelectRootGroups]="groupSelectRootGroups" (queryChange)="queryChange($event)"></laji-filters>
+    <iucn-filters [type]="'regional'" [query]="queryParams" [groupSelectRootGroups]="groupSelectRootGroups" (queryChange)="queryChange($event)"></iucn-filters>
   </div>
   <div style="margin-top: 15px;">
     <ng-container *ngFor="let option of types">
@@ -31,9 +31,9 @@
         <h3 role="presentation" class="active" >
           {{ (option.label) | translate }}
         </h3>
-        <laji-active-filters [query]="queryParams"></laji-active-filters>
+        <iucn-active-filters [query]="queryParams"></iucn-active-filters>
       </ng-container>
     </ng-container>
   </div>
-  <laji-regional-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></laji-regional-results>
+  <iucn-regional-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event)"></iucn-regional-results>
 </div>
