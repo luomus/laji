@@ -4,7 +4,7 @@ import { Profile } from '../../../../../../laji/src/app/shared/model/Profile';
 import BirdSongRecognitionSkillLevel = Profile.BirdSongRecognitionSkillLevel;
 
 @Component({
-  selector: 'laji-expertise-by-continent',
+  selector: 'bsg-expertise-by-continent',
   templateUrl: './expertise-by-continent.component.html',
   styleUrls: ['./expertise-by-continent.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
