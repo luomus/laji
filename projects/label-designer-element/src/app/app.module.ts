@@ -23,8 +23,8 @@ export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
 
   ngDoBootstrap(appRef: ApplicationRef): void {
-    const LabelDesignerElement = createCustomElement(LabelDesignerComponent, {injector: this.injector});
-    customElements.define('label-designer', LabelDesignerElement);
+    const labelDesignerElement = createCustomElement(LabelDesignerComponent, {injector: this.injector});
+    customElements.define('label-designer', labelDesignerElement);
   }
 
 }

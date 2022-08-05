@@ -36,7 +36,7 @@ export class SchemaService {
    *        If there are levels under this only the first item will be picked. If there is no
    *        value given then the root will be used and only one item from arrays beneath it will be selected
    */
-  convertSchemaDataToLabelData(schema: any, data: object[], select?: string, options?: ISchemaOptions): ILabelData[] {
+  convertSchemaDataToLabelData(schema: any, data: Record<string, any>[], select?: string, options?: ISchemaOptions): ILabelData[] {
     return this.convertDataToLabelData(this.schemaToAvailableFields(schema, [], options), data, select);
   }
 
@@ -46,7 +46,7 @@ export class SchemaService {
    *        If there are levels under this only the first item will be picked. If there is no
    *        value given then the root will be used and only one item from arrays beneath it will be selected
    */
-  convertDataToLabelData(fields: ILabelField[], data: object[], select?: string): ILabelData[] {
+  convertDataToLabelData(fields: ILabelField[], data: Record<string, any>[], select?: string): ILabelData[] {
     const fieldMap: ILabelFieldMap = fields.reduce((cumulative, current) => {
       cumulative[current.field] = current;
       return cumulative;
@@ -61,7 +61,7 @@ export class SchemaService {
   }
 
   private convertData(
-    data: object,
+    data: Record<string, any>,
     fields: ILabelFieldMap,
     select?: string,
     result = [],

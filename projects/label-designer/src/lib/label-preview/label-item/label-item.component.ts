@@ -16,7 +16,7 @@ export class LabelItemComponent {
 
   _item: ILabelItem;
   _originalFields: ILabelField[];
-  _data: object;
+  _data: Record<string, any>;
   _map: ILabelValueMap;
 
   size;
@@ -33,7 +33,7 @@ export class LabelItemComponent {
   }
 
   @Input()
-  set data(data: object) {
+  set data(data: Record<string, any>) {
     this._data = data;
     this.initContent();
   }
@@ -70,7 +70,7 @@ export class LabelItemComponent {
       if (field.type === FieldType.text) {
         newField = {
           ...field,
-          content: typeof this._data[dataKey] === 'undefined' ? field.content : this._data[dataKey]
+          content: typeof this._data[dataKey] === 'undefined' ? field.content : this._data[dataKey] as string
         };
       } else if (field.separatorAlways || LabelService.hasValue(this._data[dataKey])) {
         newField = {
