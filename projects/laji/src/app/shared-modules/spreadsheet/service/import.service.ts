@@ -224,13 +224,18 @@ export class ImportService {
         if (!this.hasValue(value)) {
           return;
         }
+
         const parent = this.getParent(field, combineBy);
-        if (!parentData[parent]) {
-          parentData[parent] = {
-            rowIdx,
-            hash: '' + rowIdx,
-            data: {}
-          };
+
+        // Initialize data for required levels if it isn't initialized yet (document level should never be empty)
+        for (let level of [LEVEL_DOCUMENT, parent]) {
+          if (!parentData[level]) {
+            parentData[level] = {
+              rowIdx,
+              hash: '' + rowIdx,
+              data: {}
+            };
+          }
         }
 
         // Check if array value has values that should be ignored
