@@ -228,7 +228,7 @@ export class ImportService {
         const parent = this.getParent(field, combineBy);
 
         // Initialize data for required levels if it isn't initialized yet (document level should never be empty)
-        for (let level of [LEVEL_DOCUMENT, parent]) {
+        for (const level of [LEVEL_DOCUMENT, parent]) {
           if (!parentData[level]) {
             parentData[level] = {
               rowIdx,
