@@ -182,7 +182,7 @@ export class ImportService {
 
   private findDocumentData(data: ILevelData[]): IData {
     const l = (data || []).length;
-    for (let i = 0; i <= l; i++) {
+    for (let i = 0; i < l; i++) {
       if (data[i].document) {
         return data[i].document;
       }
