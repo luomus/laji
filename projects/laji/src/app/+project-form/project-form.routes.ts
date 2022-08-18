@@ -21,23 +21,25 @@ export const routes: Routes = [
     path: ':projectID',
     component: ProjectFormComponent,
     children : [
-      {path: 'disabled', component: DisabledComponent},
-      {path: 'about', component: AboutComponent},
-      {path: 'instructions', component: InstructionsComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
-      {path: 'stats', loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)},
+      {path: 'disabled', pathMatch: 'prefix', component: DisabledComponent},
+      {path: 'about', pathMatch: 'prefix', component: AboutComponent},
+      {path: 'instructions', pathMatch: 'prefix', component: InstructionsComponent, canActivate: [OnlyLoggedIn, HasFormPermission]},
+      {path: 'stats', pathMatch: 'prefix', loadChildren: () => import('./results/results.module').then(m => m.ResultsModule)},
       {
         path: 'submissions',
+        pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         loadChildren: () => import('./submissions/submissions.module').then(m => m.SubmissionsModule)
       },
-      {path: 'form', loadChildren: () => import('./form/form.module').then(m => m.FormModule)},
+      {path: 'form', pathMatch: 'prefix', loadChildren: () => import('./form/form.module').then(m => m.FormModule)},
       {
         path: 'admin',
+        pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasAdminPermission],
         component: AdminComponent,
         children: [
-          {path: '', redirectTo: 'instructions'},
-          {path: 'instructions', component: IntroComponent},
+          {path: '',pathMatch: 'prefix',  redirectTo: 'instructions'},
+          {path: 'instructions',pathMatch: 'prefix',  component: IntroComponent},
           {path: 'accept', pathMatch: 'full', component: AcceptComponent},
           {path: 'manage/:type', pathMatch: 'full', component: ManageComponent},
           {path: 'participants', pathMatch: 'full', component: ParticipantsComponent},
@@ -45,16 +47,19 @@ export const routes: Routes = [
       },
       {
         path: 'import',
+        pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         component: ImportComponent
       },
       {
         path: 'generate',
+        pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         component: GenerateSpreadsheetComponent
       },
       {
         path: 'templates',
+        pathMatch: 'prefix',
         canActivate: [OnlyLoggedIn, HasFormPermission],
         component: TemplatesComponent
       }
