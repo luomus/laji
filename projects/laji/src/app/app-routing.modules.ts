@@ -104,7 +104,7 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {
     enableTracing: false,
     preloadingStrategy: QuicklinkStrategy,
-    initialNavigation: 'enabled',
+    initialNavigation: 'enabledBlocking',
     relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule],
