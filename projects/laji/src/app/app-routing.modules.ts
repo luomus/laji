@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
@@ -55,9 +55,9 @@ const redirectsEn: Routes = [];
 const redirectsSv: Routes = [];
 const redirectsFi: Routes = [];
 
-redirectsEn.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsSv.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsFi.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsEn.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsSv.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
 
 const routesWithLang: Routes = [
   {path: 'in', children: [
