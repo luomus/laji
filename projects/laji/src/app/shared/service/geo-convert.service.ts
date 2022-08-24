@@ -109,7 +109,7 @@ export class GeoConvertService {
       map((result) => ({
         status: result.status,
         progressPercent: result.progress_percent,
-        outputLink: result.status === 'complete' ? '/api/geo-convert/output/' + conversionId : null
+        outputLink: result.status === 'complete' ? '/api/geo-convert/output/' + conversionId : undefined
       }))
     );
   }

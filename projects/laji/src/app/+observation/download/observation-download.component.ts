@@ -293,7 +293,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   simpleDownload(params: DownloadParams) {
     this.downloadLoading = true;
-    this.downloadProgressPercent = null;
+    this.downloadProgressPercent = undefined;
     const isGisDownload = this.isGisDownload(params.fileType);
 
     let selected = this.columnSelector.columns;
@@ -315,7 +315,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     ).subscribe(
       () => {
         this.downloadLoading = false;
-        this.downloadProgressPercent = null;
+        this.downloadProgressPercent = undefined;
         // see https://github.com/valor-software/ngx-bootstrap/issues/2618
         for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
           this.modalService.hide(i);

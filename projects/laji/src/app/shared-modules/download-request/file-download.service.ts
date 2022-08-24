@@ -41,18 +41,18 @@ export class FileDownloadService {
 
   downloadFile(id: string, isPublic = false) {
     this.loading = true;
-    this.progressPercentage = null;
+    this.progressPercentage = undefined;
 
     this.getDownloadLink(id, isPublic, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
       this.window.location.href = res;
       this.loading = false;
-      this.progressPercentage = null;
+      this.progressPercentage = undefined;
       this.fileDownloadStateChangeSubject.next();
     }, err => {
       const msg = isGeoConvertError(err) ? err.msg : 'downloadRequest.fileDownload.genericError';
       this.dialogService.alert(msg);
       this.loading = false;
-      this.progressPercentage = null;
+      this.progressPercentage = undefined;
       this.fileDownloadStateChangeSubject.next();
     });
   }
