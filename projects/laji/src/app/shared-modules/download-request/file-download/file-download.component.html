@@ -44,7 +44,7 @@
 <lu-button [loading]="downloadService.loading" [role]="'primary'" (click)="downloadFile()">
   <i class="glyphicon glyphicon-download-alt"></i>
   {{ (downloadService.loading ? 'downloadRequest.fileDownload.downloading' : 'downloadRequest.fileDownload.download') | translate }}
-  <ng-container *ngIf="downloadService.loading && downloadService.progressPercentage != null">
+  <ng-container *ngIf="downloadService.loading && downloadService.progressPercentage != undefined">
     {{ downloadService.progressPercentage }} %
   </ng-container>
 </lu-button>
