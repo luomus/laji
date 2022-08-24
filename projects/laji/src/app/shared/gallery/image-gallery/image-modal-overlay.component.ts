@@ -2,6 +2,31 @@ import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
 import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
 
+// licenseId or licenseAbbreviation
+const licenseLinkMap = {
+  'MZ.intellectualRightsCC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+  'MZ.intellectualRightsCC-BY-4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'MZ.intellectualRightsCC0-4.0': 'https://creativecommons.org/share-your-work/public-domain/cc0/',
+  'MZ.intellectualRightsODBL-1.0': 'https://opendatacommons.org/licenses/odbl/1-0/',
+  'MZ.intellectualRightsPD': 'https://creativecommons.org/share-your-work/public-domain/',
+  'MZ.intellectualRightsARR': '',
+  'MZ.intellectualRightsCC-BY-2.0': 'https://creativecommons.org/licenses/by/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.0': 'https://creativecommons.org/licenses/by-sa/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.0-DE': 'https://creativecommons.org/licenses/by-sa/2.0/de',
+  'MZ.intellectualRightsCC-BY-NC-2.0': 'https://creativecommons.org/licenses/by-nc/2.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-2.0': 'https://creativecommons.org/licenses/by-nc-sa/2.0/',
+  'MZ.intellectualRightsCC-BY-NC-ND-2.0': 'https://creativecommons.org/licenses/by-nc-nd/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.5': 'https://creativecommons.org/licenses/by-sa/2.5/',
+  'MZ.intellectualRightsCC-BY-SA-2.5-SE': 'https://creativecommons.org/licenses/by-sa/2.5/se/',
+  'MZ.intellectualRightsCC-BY-3.0': 'https://creativecommons.org/licenses/by/3.0/',
+  'MZ.intellectualRightsCC-BY-SA-3.0': 'https://creativecommons.org/licenses/by-sa/3.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-3.0': 'https://creativecommons.org/licenses/by-nc-sa/3.0/',
+  'MZ.intellectualRightsCC-BY-ND-4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-ND-4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/'
+};
+
 @Component({
   selector: 'laji-image-gallery-overlay',
   styleUrls: ['./image-modal.component.css'],
@@ -19,6 +44,10 @@ export class ImageModalOverlayComponent {
   constructor(
    private childComunication: DocumentViewerChildComunicationService
   ) { }
+
+  getLicenseLink(license: string): string {
+    return licenseLinkMap[license];
+  }
 
   closeGallery() {
     if (this.close) {
