@@ -84,7 +84,7 @@ export interface DownloadParams {
                       (click)="onDownload()">
                 <span>
                   {{ (downloadLoading ? 'haseka.submissions.downloading' : 'haseka.submissions.download') | translate }}
-                  <ng-container *ngIf="downloadLoading && progressPercent != undefined">
+                  <ng-container *ngIf="downloadLoading && progressPercent !== undefined">
                     {{ progressPercent }} %
                   </ng-container>
                 </span>
