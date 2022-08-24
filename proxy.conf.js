@@ -17,5 +17,13 @@ module.exports = {
         (req.url.indexOf('?') === -1 ? '?' : '&' ) +
         'access_token=' + config.access_token;
     }
-  }
+  },
+	"/loginInfo": {
+		"target": "https://login.laji.fi/loginInfo",
+		"secure": true,
+		"changeOrigin": true,
+		"pathRewrite": {
+			"^/loginInfo": ""
+		}
+	}
 };
