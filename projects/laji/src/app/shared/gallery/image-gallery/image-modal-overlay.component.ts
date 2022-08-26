@@ -1,9 +1,8 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
-import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { Image as ImageModel } from '../../../../../../laji-api-client/src/lib/models/image';
 
-// licenseId or licenseAbbreviation
-const licenseLinkMap = {
+const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
   'MZ.intellectualRightsCC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
   'MZ.intellectualRightsCC-BY-NC-4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
   'MZ.intellectualRightsCC-BY-NC-SA-4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
@@ -30,19 +29,19 @@ const licenseLinkMap = {
 @Component({
   selector: 'laji-image-gallery-overlay',
   styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal-overlay.component.html'
+  templateUrl: './image-modal-overlay.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalOverlayComponent {
   public img: Image;
   public currentImageIndex: number;
-  public close: () => void;
   public modalImages: Image[];
-  public loading;
   public showLinkToSpeciesCard: boolean;
   @Output() cancelEvent = new EventEmitter<any>();
+  @Output() showModal = new EventEmitter<boolean>();
 
   constructor(
-   private childComunication: DocumentViewerChildComunicationService
+   private cdr: ChangeDetectorRef
   ) { }
 
   getLicenseLink(license: string): string {
@@ -50,12 +49,9 @@ export class ImageModalOverlayComponent {
   }
 
   closeGallery() {
-    if (this.close) {
-      this.modalImages = [];
-      this.close();
-    }
+    this.modalImages = [];
     this.cancelEvent.emit(null);
-    this.childComunication.emitChildEvent(false);
+    this.showModal.emit(false);
   }
 
   prevImage() {
@@ -82,13 +78,8 @@ export class ImageModalOverlayComponent {
     if (this.modalImages[index]) {
       this.img = this.modalImages[index];
     }
-    this.childComunication.emitChildEvent(true);
-  }
-
-  handleLoading(loading) {
-    setTimeout(() => {
-      this.loading = loading;
-    }, 200);
+    this.showModal.emit(true);
+    this.cdr.markForCheck();
   }
 
   @HostListener('document:keydown', ['$event'])

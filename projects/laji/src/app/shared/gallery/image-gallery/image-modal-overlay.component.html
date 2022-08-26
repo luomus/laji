@@ -8,7 +8,6 @@
     <laji-image
       id="openseadragon-wrapper"
       *ngIf="img"
-      (loading)="handleLoading($event)"
       [src]="img.fullURL || img.largeURL"
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
