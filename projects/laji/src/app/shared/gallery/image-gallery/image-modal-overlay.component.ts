@@ -11,7 +11,7 @@ const licenseLinkMap = {
   'MZ.intellectualRightsCC0-4.0': 'https://creativecommons.org/share-your-work/public-domain/cc0/',
   'MZ.intellectualRightsODBL-1.0': 'https://opendatacommons.org/licenses/odbl/1-0/',
   'MZ.intellectualRightsPD': 'https://creativecommons.org/share-your-work/public-domain/',
-  'MZ.intellectualRightsARR': '',
+  'MZ.intellectualRightsARR': 'https://en.wikipedia.org/wiki/All_rights_reserved',
   'MZ.intellectualRightsCC-BY-2.0': 'https://creativecommons.org/licenses/by/2.0/',
   'MZ.intellectualRightsCC-BY-SA-2.0': 'https://creativecommons.org/licenses/by-sa/2.0/',
   'MZ.intellectualRightsCC-BY-SA-2.0-DE': 'https://creativecommons.org/licenses/by-sa/2.0/de',
