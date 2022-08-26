@@ -44,7 +44,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // zoom levels from lowest to highest when to move to more accurate grid
   @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
-  // when active level is higher or equal to this will be using viewport coordinates to show grid
+  // When active level is higher or equal to this, the viewport coordinates are added to the query
   @Input() onlyViewPortThreshold = 1;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
