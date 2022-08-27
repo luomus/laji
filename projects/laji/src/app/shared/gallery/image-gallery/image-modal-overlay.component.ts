@@ -45,7 +45,7 @@ export class ImageModalOverlayComponent {
   ) { }
 
   getLicenseLink(license: string): string {
-    return licenseLinkMap[license];
+    return licenseLinkMap[license.match(/(MZ\..*)/)[1]];
   }
 
   closeGallery() {
