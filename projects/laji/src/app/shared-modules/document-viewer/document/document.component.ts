@@ -162,6 +162,11 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     }
   }
 
+  onShowModalChange(state: boolean) {
+    this.childEvent = state;
+    this.cd.markForCheck();
+  }
+
   updateDocument() {
     if (!this.uri) {
       return;
