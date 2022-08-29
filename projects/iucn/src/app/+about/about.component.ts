@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'laji-about',
+  selector: 'iucn-about',
   template: `
-    <laji-simple-omni></laji-simple-omni>
+    <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
       <div id="wrapper" class="row">
         <div class="col-sm-6 col-md-7 col-lg-8">

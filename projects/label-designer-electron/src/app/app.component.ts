@@ -65,14 +65,14 @@ export class AppComponent implements OnInit {
   @LocalStorage('viewSetting', {magnification: 2}) viewSetting: IViewSettings;
   @LocalStorage('columnMap', {}) colMap: IColumnMap;
   @LocalStorage('setup', NEW_SETUP) setup: ISetup;
-  @SessionStorage('data', []) data: object[];
+  @SessionStorage('data', []) data: Record<string, any>[];
   availableFields: ILabelField[];
   defaultAvailableFields: ILabelField[];
 
   constructor(
     private http: HttpClient,
     private formService: SchemaService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: any,
     private lajiApiService: LajiApiService,
     private cdr: ChangeDetectorRef
   ) {}
@@ -133,7 +133,7 @@ export class AppComponent implements OnInit {
     this.availableFields = fields;
   }
 
-  onDataChange(data: object[]) {
+  onDataChange(data: Record<string, any>[]) {
     this.data = data;
   }
 }

@@ -14,7 +14,7 @@ import { TranslateService } from '../../translate/translate.service';
 })
 export class LabelValueMapComponent {
 
-  @Input() data: object[];
+  @Input() data: Record<string, any>[];
 
   fieldLookup: {[field: string]: ILabelField} = {};
   addableFields: ILabelField[] = [];

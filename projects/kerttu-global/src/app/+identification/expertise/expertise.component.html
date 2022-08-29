@@ -2,12 +2,12 @@
 <div class="row mb-5">
   <div class="col-sm-12">
     <label for="birdSongRecognitionSkillLevels">{{ 'expertise.birdSongRecognitionSkillLevels' | translate }}</label>
-    <laji-expertise-by-continent
+    <bsg-expertise-by-continent
       id="birdSongRecognitionSkillLevels"
       [continents]="continents$ | async"
       [birdSongRecognitionSkillLevels]="birdSongRecognitionSkillLevels"
       [disabled]="saving"
-    ></laji-expertise-by-continent>
+    ></bsg-expertise-by-continent>
   </div>
 </div>
 <div class="row mb-4">

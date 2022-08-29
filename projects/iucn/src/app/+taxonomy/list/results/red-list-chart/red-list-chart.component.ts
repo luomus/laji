@@ -5,7 +5,7 @@ const BAR_HEIGHT = 20;
 export interface ChartData {
   'id'?: string;
   'name': string;
-  'series': {name: string, value: number}[];
+  'series': {name: string; value: number}[];
 }
 
 export interface SimpleChartData {
@@ -15,7 +15,7 @@ export interface SimpleChartData {
 }
 
 @Component({
-  selector: 'laji-red-list-chart',
+  selector: 'iucn-red-list-chart',
   templateUrl: './red-list-chart.component.html',
   styleUrls: ['./red-list-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,9 +35,9 @@ export class RedListChartComponent implements AfterViewInit {
   @Input()
   label = '';
 
-  @Output() select = new EventEmitter<string>();
+  @Output() valueSelect = new EventEmitter<string>();
 
-  colorSchema: {name: string, value: string}[] = [];
+  colorSchema: {name: string; value: string}[] = [];
 
   constructor(
     private el: ElementRef
@@ -83,6 +83,6 @@ export class RedListChartComponent implements AfterViewInit {
     if (idx === -1) {
       return;
     }
-    this.select.emit(this._data[idx].id);
+    this.valueSelect.emit(this._data[idx].id);
   }
 }
