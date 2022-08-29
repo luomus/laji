@@ -1,8 +1,7 @@
 <div style="display:flex; width: 100%; height: 100%;">
-  <lu-sidebar [staticWidth]="400" [displayNav]="showBrowser">
+  <lu-sidebar [staticWidth]="400">
     <nav>
-      <laji-dataset-metadata-browser
-        *ngIf="showBrowser" [selected]="collectionId" (selectedChange)="changeCollection($event)"
+      <laji-dataset-metadata-browser [selected]="collectionId" (selectedChange)="changeCollection($event)"
       >
       </laji-dataset-metadata-browser>
     </nav>

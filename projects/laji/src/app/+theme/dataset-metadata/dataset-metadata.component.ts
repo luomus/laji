@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { zip } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
@@ -20,6 +21,8 @@ export class DatasetMetadataComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
   ) { }
@@ -55,7 +58,22 @@ export class DatasetMetadataComponent implements OnInit {
 
   }
 
+  changeUrl(collectionId) {
+    if (collectionId) {
+      const url = this.router.createUrlTree(['theme', 'dataset-metadata', collectionId]).toString();
+      this.location.go(url)
+      this.route.params['collectionId'] = collectionId
+    } else {
+      this.location.go('theme/dataset-metadata')
+      this.route.params['collectionId'] = undefined
+    }
+  }
+
   changeCollection(collectionId) {
+    if (!collectionId || collectionId !== this.collectionId) {
+      this.changeUrl(collectionId);
+    }
+
     this.collectionId = collectionId;
     this.getCollectionData();
   }

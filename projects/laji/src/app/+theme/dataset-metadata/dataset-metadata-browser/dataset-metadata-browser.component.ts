@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Output, Input, E
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TreeOptionsNode } from '../../../shared-modules/tree-select/tree-select.component';
+import { SelectedOption, TreeOptionsNode } from '../../../shared-modules/tree-select/tree-select.component';
 import { CollectionService } from '../../../shared/service/collection.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   @Output() selectedChange = new EventEmitter<string>();
 
   collectionsCount = 0;
+  selectedOption: SelectedOption[] = [];
   optionsTree: TreeOptionsNode[] = null;
   lang: string;
   showEmpty = true;
@@ -121,6 +122,14 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
         this.collectionsCount++
 
+        if (this.selected && tree.id === this.selected) {
+          this.selectedOption = [{
+            id: this.selected,
+            value: tree.longName,
+            type: 'included',
+          }];
+        }
+
         return {
           id: tree.id,
           name: tree.longName,
@@ -163,6 +172,6 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
   changeSelected(value) {
     this.selected = value[0]?.id;
-    if (this.selected) this.selectedChange.emit(this.selected);
+    this.selectedChange.emit(this.selected);
   }
 }
