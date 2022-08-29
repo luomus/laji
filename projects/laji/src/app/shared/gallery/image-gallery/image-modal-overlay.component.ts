@@ -1,32 +1,57 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { Image } from './image.interface';
-import { DocumentViewerChildComunicationService } from '../../../shared-modules/document-viewer/document-viewer-child-comunication.service';
+import { Image as ImageModel } from '../../../../../../laji-api-client/src/lib/models/image';
+
+const licenseLinkMap: Record<ImageModel.IntellectualRightsEnum, string> = {
+  'MZ.intellectualRightsCC-BY-SA-4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+  'MZ.intellectualRightsCC-BY-4.0': 'https://creativecommons.org/licenses/by/4.0/',
+  'MZ.intellectualRightsCC0-4.0': 'https://creativecommons.org/share-your-work/public-domain/cc0/',
+  'MZ.intellectualRightsODBL-1.0': 'https://opendatacommons.org/licenses/odbl/1-0/',
+  'MZ.intellectualRightsPD': 'https://creativecommons.org/share-your-work/public-domain/',
+  'MZ.intellectualRightsARR': 'https://en.wikipedia.org/wiki/All_rights_reserved',
+  'MZ.intellectualRightsCC-BY-2.0': 'https://creativecommons.org/licenses/by/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.0': 'https://creativecommons.org/licenses/by-sa/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.0-DE': 'https://creativecommons.org/licenses/by-sa/2.0/de',
+  'MZ.intellectualRightsCC-BY-NC-2.0': 'https://creativecommons.org/licenses/by-nc/2.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-2.0': 'https://creativecommons.org/licenses/by-nc-sa/2.0/',
+  'MZ.intellectualRightsCC-BY-NC-ND-2.0': 'https://creativecommons.org/licenses/by-nc-nd/2.0/',
+  'MZ.intellectualRightsCC-BY-SA-2.5': 'https://creativecommons.org/licenses/by-sa/2.5/',
+  'MZ.intellectualRightsCC-BY-SA-2.5-SE': 'https://creativecommons.org/licenses/by-sa/2.5/se/',
+  'MZ.intellectualRightsCC-BY-3.0': 'https://creativecommons.org/licenses/by/3.0/',
+  'MZ.intellectualRightsCC-BY-SA-3.0': 'https://creativecommons.org/licenses/by-sa/3.0/',
+  'MZ.intellectualRightsCC-BY-NC-SA-3.0': 'https://creativecommons.org/licenses/by-nc-sa/3.0/',
+  'MZ.intellectualRightsCC-BY-ND-4.0': 'https://creativecommons.org/licenses/by-nd/4.0/',
+  'MZ.intellectualRightsCC-BY-NC-ND-4.0': 'https://creativecommons.org/licenses/by-nc-nd/4.0/'
+};
 
 @Component({
   selector: 'laji-image-gallery-overlay',
   styleUrls: ['./image-modal.component.css'],
-  templateUrl: './image-modal-overlay.component.html'
+  templateUrl: './image-modal-overlay.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageModalOverlayComponent {
   public img: Image;
   public currentImageIndex: number;
-  public close: () => void;
   public modalImages: Image[];
-  public loading;
   public showLinkToSpeciesCard: boolean;
   @Output() cancelEvent = new EventEmitter<any>();
+  @Output() showModal = new EventEmitter<boolean>();
 
   constructor(
-   private childComunication: DocumentViewerChildComunicationService
+   private cdr: ChangeDetectorRef
   ) { }
 
+  getLicenseLink(license: string): string {
+    return licenseLinkMap[license.match(/(MZ\..*)/)[1]];
+  }
+
   closeGallery() {
-    if (this.close) {
-      this.modalImages = [];
-      this.close();
-    }
+    this.modalImages = [];
     this.cancelEvent.emit(null);
-    this.childComunication.emitChildEvent(false);
+    this.showModal.emit(false);
   }
 
   prevImage() {
@@ -53,13 +78,8 @@ export class ImageModalOverlayComponent {
     if (this.modalImages[index]) {
       this.img = this.modalImages[index];
     }
-    this.childComunication.emitChildEvent(true);
-  }
-
-  handleLoading(loading) {
-    setTimeout(() => {
-      this.loading = loading;
-    }, 200);
+    this.showModal.emit(true);
+    this.cdr.markForCheck();
   }
 
   @HostListener('document:keydown', ['$event'])

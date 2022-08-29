@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-iucn-result-pie',
+  selector: 'iucn-iucn-result-pie',
   templateUrl: './iucn-result-pie.component.html',
   styleUrls: ['./iucn-result-pie.component.css']
 })
 export class IucnResultPieComponent {
 
   @Input() year;
-  _data: {name: string, value: number}[];
+  _data: {name: string; value: number}[];
   total = 0;
   _colors = {
     'MX.iucnRE': '#000',
@@ -22,7 +22,7 @@ export class IucnResultPieComponent {
   colorSchema = [];
 
   @Input()
-  set data(data: {name: string, value: number, key: string}[]) {
+  set data(data: {name: string; value: number; key: string}[]) {
     if (!data) {
       return;
     }

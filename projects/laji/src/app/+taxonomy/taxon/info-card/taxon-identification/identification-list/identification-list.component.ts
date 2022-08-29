@@ -4,6 +4,7 @@ import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
+import { Subscription } from 'rxjs';
 
 const SCROLL_SPEED = 500; // pixels per second
 
@@ -40,6 +41,7 @@ export class IdentificationListComponent implements OnDestroy {
 
   private overlayRef: ComponentRef<ImageModalOverlayComponent>;
   private overlayLoader: ComponentLoader<ImageModalOverlayComponent>;
+  private showModalSub: Subscription;
   private showOverlay = false;
 
   constructor(
@@ -103,9 +105,10 @@ export class IdentificationListComponent implements OnDestroy {
         scientificName: taxonomy.scientificName
       });
     this.overlayRef.instance.showImage(filteredIndex);
-    this.overlayRef.instance.close = () => {
-      this.closeImage();
-    };
+    if (this.showModalSub) { this.showModalSub.unsubscribe(); }
+    this.showModalSub = this.overlayRef.instance.showModal.subscribe(state => {
+      if (state === false) { this.closeImage(); }
+    });
     this.overlayRef.instance.showLinkToSpeciesCard = true;
   }
 

@@ -28,7 +28,7 @@ export class TaxonImagesComponent implements OnChanges {
           query: InfoCardQueryService.getSpecimenQuery(this.taxon.id, false)
         }, {
           title: 'taxonomy.confirmedObservations',
-          query: InfoCardQueryService.getReliableHumanObservationQuery(this.taxon.id)
+          query: InfoCardQueryService.getExpertVerifiedObservationQuery(this.taxon.id)
         }];
     }
   }

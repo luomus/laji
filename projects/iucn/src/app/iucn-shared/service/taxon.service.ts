@@ -74,7 +74,7 @@ export class TaxonService {
     vernacularNameField = 'parent.family.vernacularName.' + lang,
   ) {
     return this.getRedListStatusTree(lang).pipe(
-      map<RedListTaxonGroup[], {groups: string[], aggregateBy: string[], hasKeys: boolean, isRoot?: boolean}>(tree => {
+      map<RedListTaxonGroup[], {groups: string[]; aggregateBy: string[]; hasKeys: boolean; isRoot?: boolean}>(tree => {
         if (!query[groupField]) {
           return {
             groups: rootGroupIds ? rootGroupIds : tree.map(v => v.id),

@@ -9,7 +9,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
-import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
+import { getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
   grid: AtlasGrid;
@@ -26,31 +26,21 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   ],
   type: 'FeatureCollection'
 });
-
-const getFeatureColor = (gridSq: AtlasGridSquare, visualizationMode: VisualizationMode): string => (
-  visualizationMode === 'activityCategory'
-    ? getAtlasActivityCategoryColor(gridSq.activityCategory.key)
-    : getSpeciesCountColor(gridSq.speciesCount)
-);
-const getGetFeatureStyle = (selectedIdx: number, grid: AtlasGrid, visualizationMode: VisualizationMode) => (
+const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode, selectedIdx = -1) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
+    const sq: AtlasGridSquare = grid[opt.featureIdx];
+    const o: PathOptions = {
+      weight: 1,
+      color: '#000000',
+      opacity: .4,
+      fillColor: '#' + getFeatureColor(sq, visualizationMode),
+      fillOpacity: .8
+    };
     if (opt.featureIdx === selectedIdx) {
-      return {
-        weight: 2,
-        color: '#000000',
-        opacity: .6,
-        fillColor: '#' + getFeatureColor(grid[opt.featureIdx], visualizationMode),
-        fillOpacity: .5
-      };
-    } else {
-      return {
-        weight: 1,
-        color: '#000000',
-        opacity: .2,
-        fillColor: '#' + getFeatureColor(grid[opt.featureIdx], visualizationMode),
-        fillOpacity: .4
-      };
+      o['weight'] = 2;
+      o['opacity'] = 1;
     }
+    return o;
   }
 );
 
@@ -84,7 +74,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         tileLayers: <TileLayersOptions>{
           layers: {
             taustakartta: { opacity: 1, visible: true },
-            atlasGrid: { opacity: .3, visible: true }
+            atlasGrid: { opacity: .6, visible: true }
           }
         },
         controls: true,
@@ -107,6 +97,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         if (pathData['map']) {
           this.map.setNormalizedZoom(pathData['map'].zoom);
           this.map.setCenter(pathData['map'].center);
+          this.map.setTileLayers(pathData['map'].tileLayers);
         } else {
           this.map.zoomToData();
         }
@@ -121,7 +112,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         grid: changes.atlasGrid.currentValue,
         dataOptions: {
           featureCollection: <any>getFeatureCollection(changes.atlasGrid.currentValue),
-          getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, changes.atlasGrid.currentValue, this.visualizationMode),
+          getFeatureStyle: getGetFeatureStyle(changes.atlasGrid.currentValue, this.visualizationMode, this.selectedDataIdx),
           on: {
             click: (e, d) => {
               this.selectDataIdx.emit(d.idx);
@@ -144,17 +135,21 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
     const curr = this.mapData$.getValue();
     this.mapData$.next({grid: curr?.grid, dataOptions: {
       ...curr?.dataOptions,
-      getFeatureStyle: getGetFeatureStyle(this.selectedDataIdx, curr?.grid, this.visualizationMode)
+      getFeatureStyle: getGetFeatureStyle(curr?.grid, this.visualizationMode, this.selectedDataIdx)
     }});
   }
 
   ngOnDestroy(): void {
     if (this.map) {
-      this.popstateService.setPathData(
-        { map: { center: this.map.getOption('center'), zoom: this.map.getNormalizedZoom() } }
-      );
+      this.popstateService.setPathData({
+        map: {
+          center: this.map.getOption('center'),
+          zoom: this.map.getNormalizedZoom(),
+          tileLayers: this.map.getOption('tileLayers')
+        }
+      });
+      this.map.destroy();
     }
-    this.map?.destroy();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

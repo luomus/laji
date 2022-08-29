@@ -5,11 +5,11 @@ import { map, mergeMap } from 'rxjs/operators';
 import { DEFAULT_YEAR, ResultService } from '../iucn-shared/service/result.service';
 
 @Component({
-  selector: 'laji-taxonomy',
+  selector: 'iucn-taxonomy',
   template: `
-    <laji-simple-omni></laji-simple-omni>
+    <iucn-simple-omni></iucn-simple-omni>
     <div class="container">
-      <laji-info-card [taxonId]="taxon" [year]="year" [checklistId]="checklist"></laji-info-card>
+      <iucn-info-card [taxonId]="taxon" [year]="year" [checklistId]="checklist"></iucn-info-card>
     </div>
   `,
   styles: []

@@ -25,11 +25,11 @@ export class TranslateService {
     this.translations = {...this.translations, ...translations};
   }
 
-  get(key: keyof LabelDesignerTranslationsInterface, variables?: object) {
+  get(key: keyof LabelDesignerTranslationsInterface, variables?: Record<string, any>) {
     return this.openVariables(this.translations[key] || key, variables);
   }
 
-  private openVariables(value: string, variables?: object) {
+  private openVariables(value: string, variables?: Record<string, any>) {
     if (variables) {
       Object.keys(variables).forEach(key =>  {
         value = value.replace(`{{${key}}}`, variables[key] || '');

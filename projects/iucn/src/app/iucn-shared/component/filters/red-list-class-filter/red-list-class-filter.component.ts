@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'laji-redlist-class-filter',
+  selector: 'iucn-redlist-class-filter',
   templateUrl: './red-list-class-filter.component.html',
   styleUrls: ['./red-list-class-filter.component.scss']
 })
@@ -22,15 +22,15 @@ export class RedListClassFilterComponent {
   };
 
   selected: {
-    RE?: boolean,
-    CR?: boolean,
-    EN?: boolean,
-    VU?: boolean,
-    DD?: boolean,
-    NT?: boolean,
-    LC?: boolean,
-    NA?: boolean,
-    NE?: boolean
+    RE?: boolean;
+    CR?: boolean;
+    EN?: boolean;
+    VU?: boolean;
+    DD?: boolean;
+    NT?: boolean;
+    LC?: boolean;
+    NA?: boolean;
+    NE?: boolean;
   } = {};
 
   @Input()

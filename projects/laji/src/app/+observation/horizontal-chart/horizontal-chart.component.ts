@@ -48,7 +48,8 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
    { data: 'classId', label: this.translate.instant('observation.label.class')},
    { data: 'orderId', label: this.translate.instant('observation.label.order')},
    { data: 'familyId', label: this.translate.instant('observation.label.family')},
-   { data: 'genusId', label: this.translate.instant('observation.label.genus')}
+   { data: 'genusId', label: this.translate.instant('observation.label.genus')},
+   { data: 'speciesId', label: this.translate.instant('observation.label.species')}
   ];
 
   classificationValue = 'classId';

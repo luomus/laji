@@ -18,7 +18,7 @@ import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
 
 @Component({
-  selector: 'laji-results',
+  selector: 'iucn-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -77,7 +77,7 @@ export class ResultsComponent implements OnChanges {
   ];
   selectedSpeciesFields: string[];
   labels = {
-    'redListStatusesInFinland': 'iucn.results.redListStatusesInFinland',
+    redListStatusesInFinland: 'iucn.results.redListStatusesInFinland',
     'latestRedListEvaluation.redListStatus': 'iucn.results.column.status',
     'latestRedListEvaluation.criteriaForStatus': 'iucn.results.column.criteriaForStatus',
     'latestRedListEvaluation.endangermentReasons': 'iucn.results.column.reasons',
@@ -144,7 +144,7 @@ export class ResultsComponent implements OnChanges {
 
     this.selectedSpeciesFields = this.query.speciesFields ? this.query.speciesFields.split(',') : [];
     this.taxonLinkQueryParams = {
-      'year': this.year
+      year: this.year
     };
 
     this.initStatusQuery();
@@ -308,7 +308,7 @@ export class ResultsComponent implements OnChanges {
           });
           const spots = [];
           Object.keys(changeIdx).forEach(parent => {
-            spots.push({parent: parent, spot: changeIdx[parent]});
+            spots.push({parent, spot: changeIdx[parent]});
           });
           spots.sort((a, b) => b.spot - a.spot);
           let curSpot = data.length;
@@ -461,7 +461,7 @@ export class ResultsComponent implements OnChanges {
 
   private fetchLabels(keys: string[]): Observable<{[key: string]: string}> {
     const obs = keys.map(key => this.triplestoreLabelService.get(key, this.lang).pipe(map(val => ({
-        key: key,
+        key,
         label: val
       }))));
     return ObservableForkJoin(obs).pipe(
@@ -472,7 +472,7 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private removeKeys(obj: object, keys: string[]) {
+  private removeKeys(obj: Record<string, unknown>, keys: string[]) {
     const result = {};
     Object.keys(obj).forEach(key => {
       if (keys.indexOf(key) === -1) {
@@ -512,7 +512,7 @@ export class ResultsComponent implements OnChanges {
     });
   }
 
-  download(event: {type: string, fields: ISelectFields[]}) {
+  download(event: {type: string; fields: ISelectFields[]}) {
     this.downloadLoading = true;
 
     this.getAllSpecies().pipe(

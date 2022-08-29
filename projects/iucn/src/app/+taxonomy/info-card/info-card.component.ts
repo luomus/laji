@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 
 @Component({
-  selector: 'laji-info-card',
+  selector: 'iucn-info-card',
   templateUrl: './info-card.component.html',
   styleUrls: ['./info-card.component.css']
 })
@@ -24,7 +24,7 @@ export class InfoCardComponent implements OnChanges, OnInit {
   @Input() public checklistId: string;
   @Input() private taxonId: string;
 
-  years$: Observable<{label: string, value: string}[]>;
+  years$: Observable<{label: string; value: string}[]>;
   species$: Observable<Taxonomy[]>;
 
   taxonSub: Subscription;
