@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FileType, FileDownloadService } from '../file-download.service';
 import { DownloadRequest } from '../models';
 import { KeyValue } from '@angular/common';
 import { GEO_CONVERT_LIMIT, FileFormat, FileGeometry, FileCrs } from '../../../shared/service/geo-convert.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'laji-file-download',
@@ -10,7 +11,7 @@ import { GEO_CONVERT_LIMIT, FileFormat, FileGeometry, FileCrs } from '../../../s
   styleUrls: ['./file-download.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileDownloadComponent implements OnChanges {
+export class FileDownloadComponent implements OnChanges, OnDestroy {
   @Input() downloadRequest: DownloadRequest;
 
   gisDownloadLimit = GEO_CONVERT_LIMIT;
@@ -19,11 +20,13 @@ export class FileDownloadComponent implements OnChanges {
   fileGeometryEnum = FileGeometry;
   fileCrsEnum = FileCrs;
 
+  private fileDownloadStateChangeSub: Subscription;
+
   constructor(
     public downloadService: FileDownloadService,
     private cdr: ChangeDetectorRef
   ) {
-    this.downloadService.fileDownloadReady.subscribe(() => {
+    this.fileDownloadStateChangeSub = this.downloadService.fileDownloadStateChange.subscribe(() => {
       this.cdr.markForCheck();
     });
   }
@@ -32,6 +35,10 @@ export class FileDownloadComponent implements OnChanges {
     if (this.downloadRequest?.approximateMatches > this.gisDownloadLimit && this.downloadService.fileType === this.fileTypeEnum.gis) {
       this.downloadService.fileType = this.fileTypeEnum.standard;
     }
+  }
+
+  ngOnDestroy() {
+    this.fileDownloadStateChangeSub?.unsubscribe();
   }
 
   downloadFile() {

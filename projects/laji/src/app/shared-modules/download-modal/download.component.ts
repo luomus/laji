@@ -82,7 +82,12 @@ export interface DownloadParams {
                       class="btn btn-default pull-right"
                       [disabled]="disableDownLoad"
                       (click)="onDownload()">
-                <span>{{ "haseka.submissions.download" | translate }}</span>
+                <span>
+                  {{ (downloadLoading ? 'haseka.submissions.downloading' : 'haseka.submissions.download') | translate }}
+                  <ng-container *ngIf="downloadLoading && progressPercent !== undefined">
+                    {{ progressPercent }} %
+                  </ng-container>
+                </span>
               </button>
             </laji-spinner>
           </div>
@@ -96,6 +101,7 @@ export class DownloadComponent implements OnChanges {
 
   @Input() disabled = false;
   @Input() downloadLoading = false;
+  @Input() progressPercent?: number;
   @Input() showFileTypes = true;
   @Input() showBackdrop = true;
   @Input() showReason = false;
