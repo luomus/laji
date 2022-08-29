@@ -1,145 +1,165 @@
-<div *ngIf="collection" class="container-fluid dataset-container">
-  <div class="page-header">
-    <h3 ngPreserveWhitespaces>
-      {{ collection.collectionName | multiLang }}
-      <small>
-        <a *ngIf="isInternalLink(); else externalLink" [routerLink]="['/theme/dataset-metadata', collection.id] | localize" target="_blank">
-          {{ collection.id | toFullUri }}
-        </a>
-        <ng-template #externalLink>
-          <a [href]="collection.id | toFullUri" target="_blank">
+<ng-container *ngIf="collection$ | async; let collection; else loadingSpinner;">
+  <div *ngIf="collection" class="container-fluid dataset-container">
+    <div class="page-header">
+      <h3 ngPreserveWhitespaces>
+        {{ collection.collectionName | multiLang }}
+        <small>
+          <a *ngIf="isInternalLink(collection); else externalLink" [routerLink]="['/theme/dataset-metadata', collection.id] | localize" target="_blank">
             {{ collection.id | toFullUri }}
           </a>
-        </ng-template>
-      </small>
-    </h3>
+          <ng-template #externalLink>
+            <a [href]="collection.id | toFullUri" target="_blank">
+              {{ collection.id | toFullUri }}
+            </a>
+          </ng-template>
+        </small>
+      </h3>
+    </div>
+    <laji-row [title]="'collection.collectionName' | translate" [value]="collection.collectionName | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation">    
+    </laji-row>
+    <laji-row [title]="'collection.publisherShortname' | translate" [value]="collection.publisherShortname | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
+    </laji-row>
+    <laji-row [title]="'collection.description' | translate" [value]="collection.description | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.notes' | translate" [value]="collection.notes">
+    </laji-row>
+    <laji-row [title]="'collection.dataNotes' | translate" [value]="collection.dataNotes">
+    </laji-row>
+    <laji-row [title]="'collection.coverageBasis' | translate" [value]="collection.coverageBasis">
+    </laji-row>
+    <laji-row [title]="'collection.taxonomicCoverage' | translate" [value]="collection.taxonomicCoverage">
+    </laji-row>
+    <laji-row [title]="'collection.temporalCoverage' | translate" [value]="collection.temporalCoverage">
+    </laji-row> 
+    <laji-row [title]="'collection.geographicCoverage' | translate" [value]="collection.geographicCoverage">
+    </laji-row>
+    <laji-row [title]="'collection.methods' | translate" [value]="collection.methods">
+    </laji-row>
+    <laji-row [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
+    </laji-row>
+    <laji-row [title]="'collection.intellectualDescription' | translate" [value]="collection.intellectualDescription | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.dataUseTerms' | translate" [value]="collection.dataUseTerms | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.intellectualOwner' | translate" [value]="collection.intellectualOwner">
+    </laji-row> 
+    <laji-row [title]="'collection.publicationTerms' | translate" [value]="collection.publicationTerms | label">
+    </laji-row>
+    <laji-row [title]="'collection.publicationDescription' | translate" [value]="collection.publicationDescription | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.publicityRestrictions' | translate" [value]="collection.publicityRestrictions | label">
+    </laji-row>
+    <laji-row [title]="'collection.collectionLocation' | translate" [value]="collection.collectionLocation | multiLangAll">
+    </laji-row>
+    <laji-row *ngIf="collection.internalUseOnly" [title]="'collection.internalUseOnly' | translate">
+      {{ (collection.internalUseOnly ? "yes" : "no") | translate }}
+    </laji-row>
+    <laji-row *ngIf="collection.publicAccess" [title]="'collection.publicAccess' | translate">
+      {{ (collection.publicAccess ? "yes" : "no") | translate }}
+    </laji-row>
+    <laji-row [title]="'collection.concealmentBasis' | translate" [value]="collection.concealmentBasis">
+    </laji-row>
+    <laji-row [title]="'collection.collectionSize' | translate" [value]="collection.collectionSize">
+    </laji-row> 
+    <laji-row *ngIf="collection.digitizedSize" [title]="'collection.digitizedSize' | translate">
+      <span>{{collection.digitizedSize}}%</span>
+    </laji-row>
+    <laji-row [title]="'collection.citation' | translate" [value]="collection.citation">
+    </laji-row> 
+    <laji-row [title]="'collection.isPartOf' | translate" [value]="collection.isPartOf | toQName | collectionName">
+    </laji-row> 
+    <laji-row [title]="'collection.dataQuality' | translate" [value]="collection.dataQuality | label">
+    </laji-row> 
+    <laji-row [title]="'collection.dataQualityDescription' | translate" [value]="collection.dataQualityDescription | multiLangAll">
+    </laji-row>
+    <laji-row *ngIf="collection.dataQuarantinePeriod" [title]="'collection.dataQuarantinePeriod' | translate">
+      <span>{{collection.dataQuarantinePeriod}}</span>
+    </laji-row>
+    <laji-row [title]="'collection.language' | translate" [value]="collection.language | collectionLang | translate">
+    </laji-row> 
+    <laji-row [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
+    </laji-row> 
+    <laji-row [title]="'collection.personResponsible' | translate" [value]="collection.personResponsible">
+    </laji-row>
+    <laji-row [title]="'collection.onlineUrl' | translate" [value]="collection.onlineUrl | multiLangAll">
+    </laji-row>
+    <laji-row [title]="'collection.contactEmail' | translate" [value]="collection.contactEmail">
+    </laji-row>
+    <laji-row [title]="'collection.shareToGbif' | translate" [value]="collection.shareToGbif | collectionName">
+    </laji-row>
+    <laji-row *ngIf="collection.collectionQuality" [title]="'collection.collectionQuality' | translate">
+      <laji-quality-row
+        [quality]="collection.collectionQuality | label:'warehouse'" 
+        [qualityIcon]="collection.collectionQuality | qualityUrl">
+      </laji-quality-row>
+    </laji-row>
+    <laji-row [title]="'collection.dateCreated' | translate" [value]="collection.dateCreated | amDateFormat:'DD.MM.YYYY HH:mm'">
+    </laji-row>
+    <laji-row [title]="'collection.dateEdited' | translate" [value]="collection.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'">
+    </laji-row>
+    <ng-container *ngIf="collectionCounts$ | async; let collectionCounts; else countsLoading">
+      <laji-row *ngIf="collectionCounts.specimen" [title]="'collection.count.specimen' | translate">
+        {{ collectionCounts.specimen }}
+        <a
+        id="selectionLink"
+        [tooltip]="'collection.viewObservations' | translate"
+        [routerLink]="['/observation/list'] | localize"
+        [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
+        container="body"
+        target="_blank">
+        <i 
+          id="selectionLink"
+          class="glyphicon glyphicon-eye-open selection-link"></i>
+      </a>
+      </laji-row>
+      <laji-row *ngIf="collectionCounts.typeSpecimen" [title]="'collection.count.typeSpecimen' | translate">
+        {{ collectionCounts.typeSpecimen }}
+        <a
+        id="selectionLink"
+        [tooltip]="'collection.viewObservations' | translate"
+        [routerLink]="['/observation/list'] | localize"
+        [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
+        container="body"
+        target="_blank">
+        <i 
+          id="selectionLink"
+          class="glyphicon glyphicon-eye-open selection-link"></i>
+      </a>
+      </laji-row>
+      <laji-row *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
+        {{ collectionCounts.observation }}
+        <a
+        id="selectionLink"
+        [tooltip]="'collection.viewObservations' | translate"
+        [routerLink]="['/observation/list'] | localize"
+        [queryParams]="{collectionId: collection.id}"
+        container="body"
+        target="_blank">
+        <i 
+          id="selectionLink"
+          class="glyphicon glyphicon-eye-open selection-link"></i>
+      </a>
+      </laji-row>
+    </ng-container>
+    <ng-template #countsLoading>
+      <laji-row [title]="'collection.count.specimen' | translate">
+        <laji-spinner></laji-spinner>
+      </laji-row>
+      <laji-row [title]="'collection.count.typeSpecimen' | translate">
+        <laji-spinner></laji-spinner>
+      </laji-row>
+      <laji-row [title]="'collection.count.allObservation' | translate">
+        <laji-spinner></laji-spinner>
+      </laji-row>
+    </ng-template>
+  
   </div>
-  <laji-row [title]="'collection.collectionName' | translate" [value]="collection.collectionName | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation">    
-  </laji-row>
-  <laji-row [title]="'collection.publisherShortname' | translate" [value]="collection.publisherShortname | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
-  </laji-row>
-  <laji-row [title]="'collection.description' | translate" [value]="collection.description | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.notes' | translate" [value]="collection.notes">
-  </laji-row>
-  <laji-row [title]="'collection.dataNotes' | translate" [value]="collection.dataNotes">
-  </laji-row>
-  <laji-row [title]="'collection.coverageBasis' | translate" [value]="collection.coverageBasis">
-  </laji-row>
-  <laji-row [title]="'collection.taxonomicCoverage' | translate" [value]="collection.taxonomicCoverage">
-  </laji-row>
-  <laji-row [title]="'collection.temporalCoverage' | translate" [value]="collection.temporalCoverage">
-  </laji-row> 
-  <laji-row [title]="'collection.geographicCoverage' | translate" [value]="collection.geographicCoverage">
-  </laji-row>
-  <laji-row [title]="'collection.methods' | translate" [value]="collection.methods">
-  </laji-row>
-  <laji-row [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
-  </laji-row>
-  <laji-row [title]="'collection.intellectualDescription' | translate" [value]="collection.intellectualDescription | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.dataUseTerms' | translate" [value]="collection.dataUseTerms | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.intellectualOwner' | translate" [value]="collection.intellectualOwner">
-  </laji-row> 
-  <laji-row [title]="'collection.publicationTerms' | translate" [value]="collection.publicationTerms | label">
-  </laji-row>
-  <laji-row [title]="'collection.publicationDescription' | translate" [value]="collection.publicationDescription | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.publicityRestrictions' | translate" [value]="collection.publicityRestrictions | label">
-  </laji-row>
-  <laji-row [title]="'collection.collectionLocation' | translate" [value]="collection.collectionLocation | multiLangAll">
-  </laji-row>
-  <laji-row *ngIf="collection.internalUseOnly" [title]="'collection.internalUseOnly' | translate">
-    {{ (collection.internalUseOnly ? "yes" : "no") | translate }}
-  </laji-row>
-  <laji-row *ngIf="collection.publicAccess" [title]="'collection.publicAccess' | translate">
-    {{ (collection.publicAccess ? "yes" : "no") | translate }}
-  </laji-row>
-  <laji-row [title]="'collection.concealmentBasis' | translate" [value]="collection.concealmentBasis">
-  </laji-row>
-  <laji-row [title]="'collection.collectionSize' | translate" [value]="collection.collectionSize">
-  </laji-row> 
-  <laji-row *ngIf="collection.digitizedSize" [title]="'collection.digitizedSize' | translate">
-    <span>{{collection.digitizedSize}}%</span>
-  </laji-row>
-  <laji-row [title]="'collection.citation' | translate" [value]="collection.citation">
-  </laji-row> 
-  <laji-row [title]="'collection.isPartOf' | translate" [value]="collection.isPartOf | toQName | collectionName">
-  </laji-row> 
-  <laji-row [title]="'collection.dataQuality' | translate" [value]="collection.dataQuality | label">
-  </laji-row> 
-  <laji-row [title]="'collection.dataQualityDescription' | translate" [value]="collection.dataQualityDescription | multiLangAll">
-  </laji-row>
-  <laji-row *ngIf="collection.dataQuarantinePeriod" [title]="'collection.dataQuarantinePeriod' | translate">
-    <span>{{collection.dataQuarantinePeriod}}</span>
-  </laji-row>
-  <laji-row [title]="'collection.language' | translate" [value]="collection.language | collectionLang | translate">
-  </laji-row> 
-  <laji-row [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
-  </laji-row> 
-  <laji-row [title]="'collection.personResponsible' | translate" [value]="collection.personResponsible">
-  </laji-row>
-  <laji-row [title]="'collection.onlineUrl' | translate" [value]="collection.onlineUrl | multiLangAll">
-  </laji-row>
-  <laji-row [title]="'collection.contactEmail' | translate" [value]="collection.contactEmail">
-  </laji-row>
-  <laji-row [title]="'collection.shareToGbif' | translate" [value]="collection.shareToGbif | collectionName">
-  </laji-row>
-  <laji-row *ngIf="collection.collectionQuality" [title]="'collection.collectionQuality' | translate">
-    <laji-quality-row
-      [quality]="collection.collectionQuality | label:'warehouse'" 
-      [qualityIcon]="collection.collectionQuality | qualityUrl">
-    </laji-quality-row>
-  </laji-row>
-  <laji-row [title]="'collection.dateCreated' | translate" [value]="collection.dateCreated | amDateFormat:'DD.MM.YYYY HH:mm'">
-  </laji-row>
-  <laji-row [title]="'collection.dateEdited' | translate" [value]="collection.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'">
-  </laji-row>
-  <laji-row *ngIf="collectionCounts.specimen" [title]="'collection.count.specimen' | translate">
-    {{ collectionCounts.specimen }}
-    <a
-    id="selectionLink"
-    [tooltip]="'collection.viewObservations' | translate"
-    [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
-    container="body"
-    target="_blank">
-    <i 
-      id="selectionLink"
-      class="glyphicon glyphicon-eye-open selection-link"></i>
-  </a>
-  </laji-row>
-  <laji-row *ngIf="collectionCounts.typeSpecimen" [title]="'collection.count.typeSpecimen' | translate">
-    {{ collectionCounts.typeSpecimen }}
-    <a
-    id="selectionLink"
-    [tooltip]="'collection.viewObservations' | translate"
-    [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
-    container="body"
-    target="_blank">
-    <i 
-      id="selectionLink"
-      class="glyphicon glyphicon-eye-open selection-link"></i>
-  </a>
-  </laji-row>
-  <laji-row *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
-    {{ collectionCounts.observation }}
-    <a
-    id="selectionLink"
-    [tooltip]="'collection.viewObservations' | translate"
-    [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id}"
-    container="body"
-    target="_blank">
-    <i 
-      id="selectionLink"
-      class="glyphicon glyphicon-eye-open selection-link"></i>
-  </a>
-  </laji-row>
-</div>
+</ng-container>
+<ng-template #loadingSpinner>
+  <laji-spinner [overlay]="true">
+  </laji-spinner>
+</ng-template>

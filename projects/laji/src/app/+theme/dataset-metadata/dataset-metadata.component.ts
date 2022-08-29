@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { zip } from 'rxjs';
+import { zip, Observable } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
 
@@ -14,8 +14,8 @@ import { CollectionService, ICollectionCounts } from '../../shared/service/colle
 export class DatasetMetadataComponent implements OnInit {
   collectionId: string;
   _collectionId: string;
-  collection: Collection;
-  collectionCounts: ICollectionCounts;
+  collection$: Observable<Collection>;
+  collectionCounts$: Observable<ICollectionCounts>;
   loading = false;
   showBrowser = true;
 
@@ -39,18 +39,10 @@ export class DatasetMetadataComponent implements OnInit {
 
   getCollectionData() {
     if (this.collectionId && this.collectionId !== this._collectionId) {
-      this.loading = true;
-      zip(
-        this.collectionService.getById(this.collectionId, 'multi'),
-        this.collectionService.getCollectionSpecimenCounts(this.collectionId)
-      ).subscribe(([ collection, collectionCounts ]) => {
-        this.collection = collection;
-        this.collectionCounts = collectionCounts;
-        this.loading = false;
+      this.collection$ = this.collectionService.getById(this.collectionId, 'multi'),
+      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts(this.collectionId)
 
-        this.cd.markForCheck();
-
-      })
+      this.cd.markForCheck();
     }
   }
 

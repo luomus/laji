@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { Collection } from '../../../shared/model/Collection';
 import { ICollectionCounts } from '../../../shared/service/collection.service';
-import { IdService } from '../../../shared/service/id.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-dataset-metadata-viewer',
@@ -10,21 +10,25 @@ import { IdService } from '../../../shared/service/id.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetMetadataComponent implements OnInit, OnChanges {
-  @Input() collection: Collection;
-  @Input() collectionCounts: ICollectionCounts;
+  @Input() collection$: Observable<Collection>;
+  @Input() collectionCounts$: Observable<ICollectionCounts>;
+
+  collection: Collection;
+  collectionCounts: ICollectionCounts;
+  dataLoading = false;
+  countLoading = false;
 
   constructor(
     private cd: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
-    this.cd.markForCheck();
   }
 
   ngOnChanges() {
   }
 
-  isInternalLink() {
-    return /^HR\.\d+$/g.test(this.collection.id);
+  isInternalLink(collection) {
+    return /^HR\.\d+$/g.test(collection.id);
   }
 }
