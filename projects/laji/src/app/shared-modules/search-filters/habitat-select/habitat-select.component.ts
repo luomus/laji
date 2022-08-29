@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 })
 export class HabitatSelectComponent implements OnChanges, OnDestroy {
   @Input() query: any;
+  @Input() info: string | undefined;
 
   habitat: string[];
   habitatSpecific: string[];
