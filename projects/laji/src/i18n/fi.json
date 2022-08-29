@@ -1060,6 +1060,8 @@
   "observation.active.unidentified": "Tarvitseeko määrityksen?",
   "observation.active.useIdentificationAnnotations": "Ei laadunvalvonnan määrityksiä",
   "observation.active.wild": "Luonnonvaraisuus",
+  "observation.active.atlasCode": "Pesimävarmuusindeksi",
+  "observation.active.atlasClass": "Pesimävarmuusluokka",
   "observation.changedNames": "Käytä laadunvalvonnassa annettuja määrityksiä",
   "observation.commonness": "Yleisyys",
   "observation.count": "Havaintojen määrä",
