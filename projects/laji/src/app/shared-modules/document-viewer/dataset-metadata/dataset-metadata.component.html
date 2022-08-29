@@ -1,7 +1,7 @@
 <div *ngIf="collection" class="container-fluid dataset-container">
   <div class="page-header">
     <h3 ngPreserveWhitespaces>
-      {{ 'viewer.dataset' | translate }}
+      {{ collection.collectionName | multiLang }}
       <small>
         <a *ngIf="isInternalLink(); else externalLink" [routerLink]="['/theme/dataset-metadata', collection.id] | localize" target="_blank">
           {{ collection.id | toFullUri }}
@@ -106,7 +106,7 @@
     id="selectionLink"
     [tooltip]="'collection.viewObservations' | translate"
     [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id, superRecordBasis: specimenRecordBasis}"
+    [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
     container="body"
     target="_blank">
     <i 
@@ -120,7 +120,7 @@
     id="selectionLink"
     [tooltip]="'collection.viewObservations' | translate"
     [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id, superRecordBasis: specimenRecordBasis, typeSpecimen: 'true'}"
+    [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
     container="body"
     target="_blank">
     <i 
@@ -128,13 +128,13 @@
       class="glyphicon glyphicon-eye-open selection-link"></i>
   </a>
   </laji-row>
-  <laji-row *ngIf="collectionCounts.observation" [title]="'collection.count.observation' | translate">
+  <laji-row *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
     {{ collectionCounts.observation }}
     <a
     id="selectionLink"
     [tooltip]="'collection.viewObservations' | translate"
     [routerLink]="['/observation/list'] | localize"
-    [queryParams]="{collectionId: collection.id, superRecordBasis: obsRecordBasis}"
+    [queryParams]="{collectionId: collection.id}"
     container="body"
     target="_blank">
     <i 

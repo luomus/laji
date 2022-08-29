@@ -96,6 +96,7 @@
   "collection.collectionType": "Aineiston tyyppi",
   "collection.concealmentBasis": "Salauksen peruste",
   "collection.contactEmail": "Yhteyssähköposti",
+  "collection.count.allObservation": "Kaikkien havaintojen lkm",
   "collection.count.observation": "Havaintojen lkm",
   "collection.count.specimen": "Näytteiden lkm",
   "collection.count.typeSpecimen": "Tyyppinäytteiden lkm",

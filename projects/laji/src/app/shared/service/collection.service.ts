@@ -160,16 +160,15 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
         const toReturn = {};
 
         data.forEach(data => {
-          if (data.aggregateBy['unit.superRecordBasis'].includes('SPECIMEN')) {
+          if (data.aggregateBy['unit.superRecordBasis'] === 'PRESERVED_SPECIMEN') {
+            toReturn['specimen'] ? toReturn['specimen'] += data.count : toReturn['specimen'] = data.count;
+
             if (data.aggregateBy['unit.typeSpecimen'] === 'true') {
               toReturn['typeSpecimen'] ? toReturn['typeSpecimen'] += data.count : toReturn['typeSpecimen'] = data.count;
-              toReturn['specimen'] ? toReturn['specimen'] += data.count : toReturn['specimen'] = data.count;
-            } else {
-              toReturn['specimen'] ? toReturn['specimen'] += data.count : toReturn['specimen'] = data.count;
             }
-          } else {
-            toReturn['observation'] ? toReturn['observation'] += data.count : toReturn['observation'] = data.count;
           }
+
+          toReturn['observation'] ? toReturn['observation'] += data.count : toReturn['observation'] = data.count;
         });
 
         return toReturn;
