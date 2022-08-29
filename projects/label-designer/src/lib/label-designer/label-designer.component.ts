@@ -79,7 +79,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  _data: object[] = [];
+  _data: Record<string, any>[] = [];
   /**
    * @internal
    */
@@ -161,7 +161,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * Triggered when the data is changed. This can occurs when the excel is imported or when the data is generated using the generate dialog.
    */
-  @Output() dataChange: EventEmitter<object[]> = new EventEmitter<object[]>();
+  @Output() dataChange: EventEmitter<Record<string, any>[]> = new EventEmitter<Record<string, any>[]>();
 
   /**
    * Triggered when setup changes. This happens on every change on the label, so make sure that performance of the chain of the event's
@@ -226,7 +226,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     uri: string;
     rangeStart: number;
     rangeEnd: number;
-    data: {[key: string]: string}
+    data: {[key: string]: string};
   } = {
     uri: '',
     rangeStart: undefined,
@@ -251,7 +251,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
     private infoWindowService: InfoWindowService,
     private cdr: ChangeDetectorRef,
     private translateService: TranslateService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: any,
     private labelMakerFacade: LabelMakerFacade
   ) { }
 
@@ -280,7 +280,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
    * Array of data objects. Each object in the array will generate one label.
    */
   @Input()
-  set data(data: object[]) {
+  set data(data: Record<string, any>[]) {
     if (!Array.isArray(data)) {
       data = [];
     }

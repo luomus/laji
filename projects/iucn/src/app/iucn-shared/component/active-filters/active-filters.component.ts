@@ -3,7 +3,7 @@ import { FilterQuery } from '../../service/result.service';
 import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
-  selector: 'laji-active-filters',
+  selector: 'iucn-active-filters',
   templateUrl: './active-filters.component.html',
   styleUrls: ['./active-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -11,7 +11,7 @@ import { RegionalFilterQuery } from '../../service/regional.service';
 export class ActiveFiltersComponent {
 
   _query: FilterQuery & RegionalFilterQuery = {};
-  queryItems: {field: string, label: string, value: string, separator: string}[] = [];
+  queryItems: {field: string; label: string; value: string; separator: string}[] = [];
 
   skip = [
     'type',
@@ -24,12 +24,12 @@ export class ActiveFiltersComponent {
   ];
 
   useLabel: {[key: string]: string} = {
-    'reasons': 'iucn.hasEndangermentReason',
-    'threats': 'iucn.hasThreat'
+    reasons: 'iucn.hasEndangermentReason',
+    threats: 'iucn.hasThreat'
   };
 
   separator: {[key: string]: string}  = {
-    'threatenedAtArea': '; '
+    threatenedAtArea: '; '
   };
 
   order = [
@@ -45,13 +45,13 @@ export class ActiveFiltersComponent {
 
   @Input() set query(q: FilterQuery) {
     this._query = q;
-    const items: {field: keyof typeof q, value: any, label: string, separator: string}[] = [];
+    const items: {field: keyof typeof q; value: any; label: string; separator: string}[] = [];
     (Object.keys(q) as Array<keyof typeof q>).forEach(field => {
       if (this.skip.indexOf(field) !== -1 || !q[field]) {
         return;
       }
       items.push({
-        field: field,
+        field,
         value: q[field],
         label: this.useLabel[field] || '',
         separator: this.separator[field] || ','

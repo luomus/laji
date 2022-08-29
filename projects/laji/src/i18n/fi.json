@@ -189,6 +189,7 @@
   "downloadRequest.downloadNotAllowedReason.pyha": "Tämä lataus on tuotettu aineistopyynnön tuloksena. Aineistopyynnön tuloksena on saatettu luovauttaa pyynnön tekijöille sensitiivistä lajitietoa. Ainoastaan aineistopyynnön tekijät voivat ladata tiedoston eikä sitä saa jakaa edelleen.",
   "downloadRequest.fileDownload": "Tiedostolataus",
   "downloadRequest.fileDownload.download": "Lataa",
+  "downloadRequest.fileDownload.downloading": "Ladataan",
   "downloadRequest.fileDownload.format": "Tiedostomuoto",
   "downloadRequest.fileDownload.genericError": "Tiedoston lataaminen epäonnistui!",
   "downloadRequest.fileDownload.gisDisabled": "GIS-latauksen enimmäisraja on 300 000 havaintoa.",
@@ -460,6 +461,7 @@
   "haseka.submissions.dateObserved": "Havaintopvm",
   "haseka.submissions.dateStart": "Alkupvm",
   "haseka.submissions.download": "Lataa",
+  "haseka.submissions.downloading": "Ladataan",
   "haseka.submissions.downloadFile": "Lataa",
   "haseka.submissions.edit": "Muokkaa",
   "haseka.submissions.filter": "Rajaa...",
@@ -2033,4 +2035,8 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "observation.label.species": "Laji"
+  "species.info.habitat": "Lajeille uhanalaisuusarvioinnin 2019 yhteydessä merkityt elinympäristöluokat.",
+  "species.info.redlist": "Suomen lajien uhanalaisuusarvioinnin 2019 mukaiset uhanalaisuusluokat. Luokitus on tehty Kansainvälisen luonnonsuojeluliiton IUCN kriteerien mukaan.",
+  "species.info.administrative": "Hallinnolliset ja muut lajiluettelot, jotka liittyvät lajien tilan arviointiin, suojeluun, lainsäädännölliseen asemaan tai haitallisuuteen Suomessa ja EU:ssa. Mukana on myös suojeluhankkeissa koottuja lajiluetteloita, joita hyödynnetään töiden suunnittelussa ja priorisoinneissa.",
+  "observation.info.habitat": "Rajaa havaintoja elinympäristöjen mukaan. Elinympäristöluokat on merkitty uhanalaisuusarvioinnin 2019 yhteydessä."
 }

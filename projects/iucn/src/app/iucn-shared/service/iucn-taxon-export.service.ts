@@ -11,27 +11,27 @@ import { Observable } from 'rxjs';
 })
 export class IucnTaxonExportService {
   exportKeyMap: {[key: string]: string} = {
-    'species': 'taxonName',
-    'status': 'latestRedListEvaluation.redListStatus',
-    'habitat': 'latestRedListEvaluationHabitats',
-    'reasons': 'latestRedListEvaluation.endangermentReasons',
-    'threats': 'latestRedListEvaluation.threats',
-    'reasonForStatusChange': 'latestRedListEvaluation.reasonForStatusChange',
-    'criteriaForStatus': 'latestRedListEvaluation.criteriaForStatus',
-    '2015': 'redListStatus2015',
-    '2010': 'redListStatus2010',
-    'redListGroup': 'redListEvaluationGroups'
+    species: 'taxonName',
+    status: 'latestRedListEvaluation.redListStatus',
+    habitat: 'latestRedListEvaluationHabitats',
+    reasons: 'latestRedListEvaluation.endangermentReasons',
+    threats: 'latestRedListEvaluation.threats',
+    reasonForStatusChange: 'latestRedListEvaluation.reasonForStatusChange',
+    criteriaForStatus: 'latestRedListEvaluation.criteriaForStatus',
+    2015: 'redListStatus2015',
+    2010: 'redListStatus2010',
+    redListGroup: 'redListEvaluationGroups'
   };
   exportTemplates: {[key: string]: string} = {
-    'taxonName': 'taxonName',
+    taxonName: 'taxonName',
     'latestRedListEvaluation.redListStatus': 'label',
-    'latestRedListEvaluationHabitats': 'latestRedListEvaluationHabitats',
+    latestRedListEvaluationHabitats: 'latestRedListEvaluationHabitats',
     'latestRedListEvaluation.endangermentReasons': 'label',
     'latestRedListEvaluation.threats': 'label',
     'latestRedListEvaluation.reasonForStatusChange': 'label',
-    'redListStatus2015': 'redListStatus2015',
-    'redListStatus2010': 'redListStatus2010',
-    'redListEvaluationGroups': 'informalTaxonGroup'
+    redListStatus2015: 'redListStatus2015',
+    redListStatus2010: 'redListStatus2010',
+    redListEvaluationGroups: 'informalTaxonGroup'
   };
 
   constructor(
@@ -59,7 +59,7 @@ export class IucnTaxonExportService {
       columns.push((!template ? this.taxonomyColumns.getColumn(key) : false) || {
         name: key,
         cellTemplate: template,
-        label: label
+        label
       });
     });
 

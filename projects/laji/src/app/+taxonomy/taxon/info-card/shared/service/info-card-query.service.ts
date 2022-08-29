@@ -16,6 +16,16 @@ export class InfoCardQueryService {
     };
   }
 
+  static getExpertVerifiedObservationQuery(taxonId: string): WarehouseQueryInterface {
+    return {
+      taxonId: [taxonId],
+      superRecordBasis: ['HUMAN_OBSERVATION_UNSPECIFIED'],
+      recordQuality: ['EXPERT_VERIFIED'],
+      includeNonValidTaxa: false,
+      cache: true
+    };
+  }
+
   static getReliableHumanObservationQuery(taxonId: string): WarehouseQueryInterface {
     return {
       taxonId: [taxonId],

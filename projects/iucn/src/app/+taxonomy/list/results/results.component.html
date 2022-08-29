@@ -1,9 +1,9 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="'status'">
-    <laji-red-list-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></laji-red-list-status>
+    <iucn-red-list-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></iucn-red-list-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
-    <laji-species-table
+    <iucn-species-table
       [species]="speciesQuery$ | async"
       [defaultFields]="defaultSpeciesFields"
       [allFields]="speciesAllFields"
@@ -18,26 +18,26 @@
       (pageChange)="changeSpeciesPage($event)"
       (fieldsChange)="newFields($event)"
       (download)="download($event)"
-    ></laji-species-table>
+    ></iucn-species-table>
   </ng-container>
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-chart (select)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async" [label]="'taxonomy.species' | translate"></laji-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async" [label]="'taxonomy.species' | translate"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'threats'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-chart (select)="changeQuery('threats', $event)" [data]="threadQuery$ | async" [label]="'taxonomy.species' | translate"></laji-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('threats', $event)" [data]="threadQuery$ | async" [label]="'taxonomy.species' | translate"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'habitat'">
     <div class="row">
       <div class="col-sm-10">
-        <laji-red-list-habitat (habitatSelect)="changeQuery('habitat', $event)" [data]="habitatQuery$ | async"></laji-red-list-habitat>
+        <iucn-red-list-habitat (habitatSelect)="changeQuery('habitat', $event)" [data]="habitatQuery$ | async"></iucn-red-list-habitat>
       </div>
     </div>
     <div class="row">

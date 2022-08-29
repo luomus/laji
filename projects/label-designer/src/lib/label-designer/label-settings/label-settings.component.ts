@@ -55,8 +55,8 @@ export class LabelSettingsComponent {
       this.setupChange.emit({
         ...this.setup,
         [field]: {
-          ...this.setup[field] as object,
-          ...value as object
+          ...this.setup[field] as Record<string, any>,
+          ...value as Record<string, any>
         } as any
       });
     }
@@ -225,7 +225,7 @@ export class LabelSettingsComponent {
     });
   }
 
-  private findItem(item?: ILabelItem): {location: TLabelLocation, itemIdx: number} {
+  private findItem(item?: ILabelItem): {location: TLabelLocation; itemIdx: number} {
     const labelItem = item || this._selectedLabelItem;
     let location: TLabelLocation = 'labelItems';
     let itemIdx = this.setup.labelItems.findIndex(i => i === labelItem);

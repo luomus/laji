@@ -53,7 +53,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   }
 
   onSelectDataIdx(idx: number) {
-    if (idx > 0 && idx < this.birdSociety.gridSquares.length) {
+    if (idx >= 0 && idx < this.birdSociety.gridSquares.length) {
       this.selectedDataIdx = idx;
       this.cdr.markForCheck();
     }
