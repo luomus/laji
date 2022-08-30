@@ -105,6 +105,7 @@
   "identification.timeBuffer": "Time buffer",
   "identification.timeBuffer.info": "Add a time buffer to the beginning and to the end of the spectrogram.",
   "identification.title": "Annotate Soundscapes",
+  "identification.boxes.info": "It's recommended to label sounds with boxes if it is easy i.e. recording has clear vocalizations. It is not mandatory. Don't get stuck with labelling all distant or overlapping sounds.",
   "instructions": "Instructions",
   "navigation.user": "User settings",
   "navigation.user.login": "Log In | Sign Up",

@@ -30,7 +30,10 @@
       </label>
       <laji-info [placement]="'right'" [html]="'identification.possiblyOccurs.info' | translate" [showOnHover]="true"></laji-info>
     </div>
-    <label class="mt-4 mb-0">{{ 'identification.boxes' | translate }}</label>
+    <div class="mt-4">
+      <label>{{ 'identification.boxes' | translate }}</label>
+      <laji-info [placement]="'right'" [html]="'identification.boxes.info' | translate" [showOnHover]="true"></laji-info>
+    </div>
     <div class="table-responsive" *ngIf="identification?.annotation?.boxes?.length > 0">
       <table class="table table-condensed mt-0 mb-0">
         <tr *ngFor="let box of identification.annotation.boxes; let i=index">
