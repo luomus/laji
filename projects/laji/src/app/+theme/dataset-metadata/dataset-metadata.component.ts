@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { zip, Observable } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
+
+const mobileBreakpoint = 768;
 
 @Component({
   selector: 'laji-dataset-metadata',
@@ -11,14 +13,14 @@ import { CollectionService, ICollectionCounts } from '../../shared/service/colle
   styleUrls: ['./dataset-metadata.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataComponent implements OnInit {
+export class DatasetMetadataComponent implements OnInit, AfterViewInit {
   collectionId: string;
   _collectionId: string;
   collection$: Observable<Collection>;
   collectionCounts$: Observable<ICollectionCounts>;
-  loading = false;
   showBrowser = true;
-
+  isMobile = false;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -27,13 +29,30 @@ export class DatasetMetadataComponent implements OnInit {
     private cd: ChangeDetectorRef
   ) { }
 
+  checkScreenWidth() {
+    this.isMobile = window.innerWidth < mobileBreakpoint;
+  }
+
   ngOnInit() {
+    this.checkScreenWidth()
+
     const routeCollectionId = this.route.snapshot.paramMap.get('collectionId')
 
     if (routeCollectionId) {
-      this.showBrowser = false;
       this.collectionId = routeCollectionId;
       this.getCollectionData();
+    }
+
+    if (this.isMobile) {
+      this.showBrowser = false;
+    }
+  }
+
+  ngAfterViewInit() {
+    const routeCollectionId = this.route.snapshot.paramMap.get('collectionId');
+
+    if (this.isMobile && !routeCollectionId) {
+      this.showBrowser = true;
     }
   }
 
@@ -68,5 +87,9 @@ export class DatasetMetadataComponent implements OnInit {
 
     this.collectionId = collectionId;
     this.getCollectionData();
+
+    if(this.isMobile) {
+      this.showBrowser = false;
+    }
   }
 }
