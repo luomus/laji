@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DatasetMetadataComponent } from './dataset-metadata.component';
+import { DatasetMetadataViewerComponent } from './dataset-metadata-viewer.component';
 
 describe('DatasetMetadataViewerComponent', () => {
-  let component: DatasetMetadataComponent;
-  let fixture: ComponentFixture<DatasetMetadataComponent>;
+  let component: DatasetMetadataViewerComponent;
+  let fixture: ComponentFixture<DatasetMetadataViewerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatasetMetadataComponent ]
+      declarations: [ DatasetMetadataViewerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatasetMetadataComponent);
+    fixture = TestBed.createComponent(DatasetMetadataViewerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

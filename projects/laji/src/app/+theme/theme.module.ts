@@ -35,6 +35,8 @@ import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.component';
 import { DatasetMetadataBrowserComponent } from './dataset-metadata/dataset-metadata-browser/dataset-metadata-browser.component';
+import { DatasetMetadataViewerComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer.component';
+import { DatasetMetadataViewerItemComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer-item/dataset-metadata-viewer-item.component'
 import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
@@ -79,6 +81,8 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
     KerttuClosedComponent,
     DatasetMetadataComponent,
     DatasetMetadataBrowserComponent,
+    DatasetMetadataViewerComponent,
+    DatasetMetadataViewerItemComponent
   ],
   providers: [
     QualityService,

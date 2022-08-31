@@ -5,11 +5,11 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-dataset-metadata-viewer',
-  templateUrl: './dataset-metadata.component.html',
-  styleUrls: ['./dataset-metadata.component.scss'],
+  templateUrl: './dataset-metadata-viewer.component.html',
+  styleUrls: ['./dataset-metadata-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataComponent implements OnInit, OnChanges {
+export class DatasetMetadataViewerComponent implements OnInit, OnChanges {
   @Input() collection$: Observable<Collection>;
   @Input() collectionCounts$: Observable<ICollectionCounts>;
 

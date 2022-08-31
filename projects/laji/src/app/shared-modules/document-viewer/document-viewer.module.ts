@@ -51,7 +51,6 @@ import { IdentificationComponent } from './identifications/identification/identi
 import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
-import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.component';
 
 @NgModule({
   imports: [
@@ -90,9 +89,8 @@ import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.co
     TypesComponent,
     TypeComponent,
     AbundanceRowComponent,
-    DatasetMetadataComponent,
     CollectionLangPipe
   ],
-  exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent, DatasetMetadataComponent]
+  exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent, QualityRowComponent ]
 })
 export class DocumentViewerModule { }

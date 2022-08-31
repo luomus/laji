@@ -196,6 +196,11 @@ export interface Collection {
   metadataStatus?: string;
 
   /**
+   * Metadata creator
+   */
+  metadataCreator?: string;
+
+  /**
    * Data quality
    */
   dataQuality?: string;

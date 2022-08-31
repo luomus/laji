@@ -1,0 +1,202 @@
+<ng-container *ngIf="collection$ | async; let collection; else loadingSpinner;">
+  <div *ngIf="collection" class="container-fluid dataset-container">
+    <div class="page-header">
+      <h3 ngPreserveWhitespaces>
+        {{ collection.collectionName | multiLang }}
+        <small>
+          <a *ngIf="isInternalLink(collection); else externalLink" [routerLink]="['/theme/dataset-metadata', collection.id] | localize" target="_blank">
+            {{ collection.id | toFullUri }}
+          </a>
+          <ng-template #externalLink>
+            <a [href]="collection.id | toFullUri" target="_blank">
+              {{ collection.id | toFullUri }}
+            </a>
+          </ng-template>
+        </small>
+      </h3>
+    </div>
+    <div class="panel panel-default description-panel"
+      laji-panel
+      [title]="'collection.viewer.group.basicInformation' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item [title]="'collection.longName' | translate" [value]="collection.longName | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.description' | translate" [value]="collection.description | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.onlineUrl' | translate" [value]="collection.onlineUrl | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+    </div>
+    <div class="panel panel-default description-panel"
+      *ngIf="collection.taxonomicCoverage || collection.temporalCoverage || collection.geographicCoverage || collection.coverageBasis || collection.methods"
+      laji-panel
+      [title]="'collection.viewer.group.coverageMethods' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item [title]="'collection.taxonomicCoverage' | translate" [value]="collection.taxonomicCoverage">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.temporalCoverage' | translate" [value]="collection.temporalCoverage">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.geographicCoverage' | translate" [value]="collection.geographicCoverage">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.coverageBasis' | translate" [value]="collection.coverageBasis">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.methods' | translate" [value]="collection.methods">
+      </laji-dataset-metadata-viewer-item>
+    </div>
+    <div class="panel panel-default description-panel"
+      *ngIf="collection.collectionQuality || collection.dataQualityDescription || collection.dataNotes"
+      laji-panel
+      [title]="'collection.viewer.group.quality' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item *ngIf="collection.collectionQuality" [title]="'collection.collectionQuality' | translate">
+        <laji-quality-row
+          [quality]="collection.collectionQuality | label:'warehouse'" 
+          [qualityIcon]="collection.collectionQuality | qualityUrl">
+        </laji-quality-row>
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.dataQualityDescription' | translate" [value]="collection.dataQualityDescription | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.dataNotes' | translate" [value]="collection.dataNotes">
+      </laji-dataset-metadata-viewer-item>
+    </div>
+    <div class="panel panel-default description-panel"
+      *ngIf="collection.intellectualRights || collection.intellectualDescription || collection.intellectualOwner || 
+        collection.contactEmail || collection.citation || collection.dataQuarantinePeriod || collection.dataUseTerms || collection.concealmentBasis"
+      laji-panel
+      [title]="'collection.viewer.group.dataUse' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.intellectualDescription' | translate" [value]="collection.intellectualDescription | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.intellectualOwner' | translate" [value]="collection.intellectualOwner">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.contactEmail' | translate" [value]="collection.contactEmail">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.citation' | translate" [value]="collection.citation">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item *ngIf="collection.dataQuarantinePeriod" [title]="'collection.dataQuarantinePeriod' | translate">
+        <span>{{collection.dataQuarantinePeriod}}</span>
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.dataUseTerms' | translate" [value]="collection.dataUseTerms | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.concealmentBasis' | translate" [value]="collection.concealmentBasis | multiLangAll">
+      </laji-dataset-metadata-viewer-item>
+    </div>
+    <div class="panel panel-default description-panel"
+      *ngIf="collection.collectionSize || collection.digitizedSize || collection.typesSize"
+      laji-panel
+      [title]="'collection.viewer.group.size' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item [title]="'collection.collectionSize' | translate" [value]="collection.collectionSize">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.digitizedSize' | translate" [value]="collection.digitizedSize">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.typesSize' | translate" [value]="collection.typesSize">
+      </laji-dataset-metadata-viewer-item>
+    </div>
+    <ng-container *ngIf="collectionCounts$ | async; let collectionCounts; else countsLoading">
+      <div class="panel panel-default description-panel"
+        *ngIf="collectionCounts.specimen || collectionCounts.typeSpecimen || collectionCounts.observation"
+        laji-panel
+        [title]="'collection.viewer.group.browse' | translate"
+        [open]="true"
+        [autoToggle]="true"
+      >
+        <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.specimen" [title]="'collection.count.specimen' | translate">
+          {{ collectionCounts.specimen }}
+          <a
+          id="selectionLink"
+          [tooltip]="'collection.viewObservations' | translate"
+          [routerLink]="['/observation/list'] | localize"
+          [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
+          container="body"
+          target="_blank">
+          <i 
+            id="selectionLink"
+            class="glyphicon glyphicon-eye-open selection-link"></i>
+        </a>
+        </laji-dataset-metadata-viewer-item>
+        <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.typeSpecimen" [title]="'collection.count.typeSpecimen' | translate">
+          {{ collectionCounts.typeSpecimen }}
+          <a
+          id="selectionLink"
+          [tooltip]="'collection.viewObservations' | translate"
+          [routerLink]="['/observation/list'] | localize"
+          [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
+          container="body"
+          target="_blank">
+          <i 
+            id="selectionLink"
+            class="glyphicon glyphicon-eye-open selection-link"></i>
+        </a>
+        </laji-dataset-metadata-viewer-item>
+        <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
+          {{ collectionCounts.observation }}
+          <a
+          id="selectionLink"
+          [tooltip]="'collection.viewObservations' | translate"
+          [routerLink]="['/observation/list'] | localize"
+          [queryParams]="{collectionId: collection.id}"
+          container="body"
+          target="_blank">
+          <i 
+            id="selectionLink"
+            class="glyphicon glyphicon-eye-open selection-link"></i>
+        </a>
+        </laji-dataset-metadata-viewer-item>
+      </div>
+    </ng-container>
+      <ng-template #countsLoading>
+        <div class="panel panel-default description-panel"
+          laji-panel
+          [title]="'collection.viewer.group.browse' | translate"
+          [open]="true"
+          [autoToggle]="true"
+        >
+          <laji-dataset-metadata-viewer-item [title]="'collection.count.specimen' | translate">
+            <laji-spinner></laji-spinner>
+          </laji-dataset-metadata-viewer-item>
+          <laji-dataset-metadata-viewer-item [title]="'collection.count.typeSpecimen' | translate">
+            <laji-spinner></laji-spinner>
+          </laji-dataset-metadata-viewer-item>
+          <laji-dataset-metadata-viewer-item [title]="'collection.count.allObservation' | translate">
+            <laji-spinner></laji-spinner>
+          </laji-dataset-metadata-viewer-item>
+        </div>
+      </ng-template>
+    <div class="panel panel-default description-panel"
+    *ngIf="collection.metadataCreator || collection.metadataStatus || collection.dateCreated || collection.dateEdited"
+      laji-panel
+      [title]="'collection.viewer.group.metadata' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <laji-dataset-metadata-viewer-item [title]="'collection.metadataCreator' | translate" [value]="collection.metadataCreator">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.metadataStatus' | translate" [value]="collection.metadataStatus | label">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.dateCreated' | translate" [value]="collection.dateCreated | amDateFormat:'DD.MM.YYYY HH:mm'">
+      </laji-dataset-metadata-viewer-item>
+      <laji-dataset-metadata-viewer-item [title]="'collection.dateEdited' | translate" [value]="collection.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'">
+      </laji-dataset-metadata-viewer-item>
+    </div> 
+  </div>
+</ng-container>
+<ng-template #loadingSpinner>
+  <laji-spinner [overlay]="true">
+  </laji-spinner>
+</ng-template>
