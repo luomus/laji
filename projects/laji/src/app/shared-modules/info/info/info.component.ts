@@ -51,7 +51,6 @@ export class InfoComponent {
   }
 
   show(e?: MouseEvent) {
-    e?.stopPropagation();
     if (this.platformService.isServer) {
       return;
     }
