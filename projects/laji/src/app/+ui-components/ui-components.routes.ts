@@ -5,6 +5,7 @@ import { UiComponentsComponent } from './ui-components.component';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'prefix',
     component: UiComponentsComponent
   }
 ];
