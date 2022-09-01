@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { PlatformService } from '../../../root/platform.service';
@@ -9,28 +9,22 @@ import { PlatformService } from '../../../root/platform.service';
   styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfoComponent implements OnInit {
-
+export class InfoComponent {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'left';
   @Input() html: string;
   @Input() glyphicon: string;
   @Input() labelType = 'info';
   @Input() showOnHover = false;
-  @Input() containerInfo = 'body';
+  @Input() container = 'body';
   @Input() noShow = false;
   @Input() adaptivePosition = false;
 
   @ViewChild('modal', {static: true}) public modal: ModalDirective;
   @ViewChild('pop', {static: true}) public popover: PopoverDirective;
 
-  isInsideModal: string;
-  container: string;
-  position: any;
+  position: string;
 
-  constructor(
-    private platformService: PlatformService
-  ) {
-  }
+  constructor(private platformService: PlatformService) {}
 
   @HostListener('window:resize')
   onResize() {
@@ -44,16 +38,12 @@ export class InfoComponent implements OnInit {
     if (this.modal.isShown) {
 
     } else {
-      if (this.containerInfo !== 'body') {
+      if (this.container !== 'body') {
         this.position = (event.pageY - event.clientY + 300) + 'px';
       } else {
         this.position = 'auto';
       }
     }
-  }
-
-  ngOnInit() {
-    this.container = this.containerInfo;
   }
 
   toggle(e?: any) {
