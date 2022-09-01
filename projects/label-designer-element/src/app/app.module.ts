@@ -7,16 +7,15 @@ import { LabelDesignerComponent } from './label-designer/label-designer.componen
 import { createCustomElement } from '@angular/elements';
 
 @NgModule({
-  declarations: [
-    LabelDesignerComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgxWebstorageModule.forRoot({prefix: 'LME-', separator: ''}),
-    LabelDesignerModule
-  ],
-  providers: [],
-  entryComponents: [LabelDesignerComponent]
+    declarations: [
+        LabelDesignerComponent
+    ],
+    imports: [
+        BrowserModule,
+        NgxWebstorageModule.forRoot({ prefix: 'LME-', separator: '' }),
+        LabelDesignerModule
+    ],
+    providers: []
 })
 export class AppModule implements DoBootstrap {
 
