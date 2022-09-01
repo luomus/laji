@@ -48,6 +48,10 @@ export class HomeComponent implements OnInit {
     this.publications$ = this.apiService.get(LajiApi.Endpoints.information, 'finbif-bib-top', {});
   }
 
+  navigateTo(path) {
+    this.router.navigate([path]);
+  }
+
   taxonSelect(e) {
     this.router.navigate(['/taxon/' + e]);
   }
