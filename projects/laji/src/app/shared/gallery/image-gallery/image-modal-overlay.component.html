@@ -8,7 +8,6 @@
     <laji-image
       id="openseadragon-wrapper"
       *ngIf="img"
-      (loading)="handleLoading($event)"
       [src]="img.fullURL || img.largeURL"
       class="effect"></laji-image>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
@@ -31,7 +30,7 @@
       <span *ngIf="img.copyrightOwner && (!img.author || img.author.indexOf(img.copyrightOwner) === -1)">
         {{ img.copyrightOwner }},
       </span>
-      <span *ngIf="img.licenseId">{{ img.licenseId | toQName | label }}</span>
+      <a *ngIf="img.licenseId" class="link" [href]="getLicenseLink(img.licenseId)" target="_blank">{{ img.licenseId | toQName | label }}</a>
       <span *ngIf="img.licenseAbbreviation && !img.licenseId" [innerHtml]="img.licenseAbbreviation"></span>
       <br *ngIf="img.author || img.copyrightOwner || img.licenseId || img.licenseAbbreviation">
       <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">

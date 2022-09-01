@@ -98,10 +98,10 @@ export class ResultService {
   ];
 
   private yearToChecklistVersion = {
-    '2019': 'MR.424',
-    '2015': 'MR.425',
-    '2010': 'MR.426',
-    '2000': 'MR.427',
+    2019: 'MR.424',
+    2015: 'MR.425',
+    2010: 'MR.426',
+    2000: 'MR.427',
   };
 
   constructor(
@@ -122,7 +122,7 @@ export class ResultService {
     return Object.keys(this.yearToChecklistVersion).find(key => this.yearToChecklistVersion[key] === checklistVersion);
   }
 
-  getYearsStats(year: number): Observable<{name: string, value: number, key: string}[]> {
+  getYearsStats(year: number): Observable<{name: string; value: number; key: string}[]> {
     if (!this.requestCache[year]) {
       this.requestCache[year] = {};
     }

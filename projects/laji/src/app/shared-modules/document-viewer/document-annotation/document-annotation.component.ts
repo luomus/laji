@@ -207,6 +207,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     }
   }
 
+  onShowModalChange(state: boolean) {
+    this.childEvent = state;
+    this.cd.markForCheck();
+  }
 
   updateDocument() {
     if (!this.uri) {

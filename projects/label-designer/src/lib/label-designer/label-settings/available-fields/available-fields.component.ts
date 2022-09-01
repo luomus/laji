@@ -33,7 +33,7 @@ export class AvailableFieldsComponent implements OnChanges {
       idx
     }));
     this.selectedIdx = this.availableFields?.findIndex(
-      field => field.field === this.value && !(field.type == this.fieldType.qrCode || field.type == this.fieldType.text)
+      field => field.field === this.value && !(field.type === this.fieldType.qrCode || field.type === this.fieldType.text)
     );
   }
 
@@ -41,7 +41,7 @@ export class AvailableFieldsComponent implements OnChanges {
     const select = event.target as HTMLSelectElement;
     const value = select.value;
     select.value = '';
-    const idx = parseInt(value);
+    const idx = parseInt(value, 10);
     if (!isNaN(idx)) {
       this.valueChange.emit({...this.availableFields[idx]});
     } else {

@@ -3,7 +3,7 @@ import { ResultService } from '../../../../../iucn-shared/service/result.service
 import { RedListHabitatData } from '../red-list-habitat.component';
 
 @Component({
-  selector: 'laji-red-list-habitat-list',
+  selector: 'iucn-red-list-habitat-list',
   templateUrl: './red-list-habitat-list.component.html',
   styleUrls: ['./red-list-habitat-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

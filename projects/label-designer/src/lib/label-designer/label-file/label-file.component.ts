@@ -34,7 +34,7 @@ export class LabelFileComponent {
 
   @Input() newSetup: ISetup;
   @Input() setup: ISetup;
-  @Input() data: object[];
+  @Input() data: Record<string, any>[];
   @Input() defaultAvailableFields: ILabelField[];
   @Input() availableFields: ILabelField[];
   @Input() pdfLoading = false;
@@ -42,10 +42,10 @@ export class LabelFileComponent {
   @Input() presets: PresetSetup[];
   @Input() allowLabelItemRepeat = false;
 
-  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup, filename: string, availableFields: ILabelField[]}[];
+  @LocalStorage('recent-files', []) recentFiles: {setup: ISetup; filename: string; availableFields: ILabelField[]}[];
 
   @Output() html = new EventEmitter<ILabelPdf>();
-  @Output() dataChange = new EventEmitter<object[]>();
+  @Output() dataChange = new EventEmitter<Record<string, any>[]>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() availableFieldsChange = new EventEmitter<ILabelField[]>();
   @Output() pdfLoadingChange = new EventEmitter<boolean>();
@@ -132,7 +132,7 @@ export class LabelFileComponent {
       };
       zip.file('data.json', JSON.stringify(data));
       zip.generateAsync({type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 }})
-        .then(function (blob) {
+        .then(function(blob) {
           saveAs(blob, filename);
         });
     }
@@ -212,7 +212,7 @@ export class LabelFileComponent {
     });
   }
 
-  private updateResentFiles(data: {setup: ISetup, availableFields: ILabelField[]}, filename: string): void {
+  private updateResentFiles(data: {setup: ISetup; availableFields: ILabelField[]}, filename: string): void {
     const idx = this.recentFiles.findIndex(i => i.filename === filename);
     if (idx === -1) {
       this.recentFiles = [

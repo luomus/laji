@@ -1,10 +1,10 @@
-<laji-simple-omni></laji-simple-omni>
+<iucn-simple-omni></iucn-simple-omni>
 <div class="container-fluid" *ngIf="queryParams">
   <div class="row">
     <div class="col-sm-8">
       <h1>{{ 'iucn.results.title' | translate }}</h1>
       <div class="year-select">
-        <select laji-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
+        <select iucn-dropdown [options]="years$ | async" [value]="queryParams.year" (valueChange)="queryParamChange('year', $event)"></select>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@
     </ul>
   </div>
   <div class="well">
-    <laji-filters [type]="queryParams.type === 'status' ? 'status' : 'default'" [query]="queryParams" (queryChange)="queryChange($event)"></laji-filters>
+    <iucn-filters [type]="queryParams.type === 'status' ? 'status' : 'default'" [query]="queryParams" (queryChange)="queryChange($event)"></iucn-filters>
   </div>
   <div style="margin-top: 15px;">
     <ng-container *ngFor="let option of types">
@@ -27,9 +27,9 @@
         <h3 role="presentation" class="active" >
           {{ (option.labelLong || option.label) | translate }}
         </h3>
-        <laji-active-filters [query]="queryParams"></laji-active-filters>
+        <iucn-active-filters [query]="queryParams"></iucn-active-filters>
       </ng-container>
     </ng-container>
   </div>
-  <laji-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event, false)"></laji-results>
+  <iucn-results [type]="queryParams.type" [query]="queryParams" [checklist]="checklist" (queryChange)="queryChange($event, false)"></iucn-results>
 </div>

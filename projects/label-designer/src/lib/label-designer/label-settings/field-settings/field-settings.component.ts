@@ -20,7 +20,7 @@ export class FieldSettingsComponent {
   more = false;
   fieldType = FieldType;
 
-  separators: {sep: string, label?: string}[] = [
+  separators: {sep: string; label?: string}[] = [
     {sep: ', '},
     {sep: '. '},
     {sep: '-'},

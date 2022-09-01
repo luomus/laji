@@ -1,0 +1,62 @@
+@import 'vars';
+
+.cat-info-container {
+  border-left: 4px solid;
+  padding-left: $sp-4;
+  padding-top: $sp-3;
+  padding-bottom: $sp-1;
+
+  & > {
+    min-width: 170px;
+  }
+  h6 {
+    font-size: $fs-2;
+    text-transform: uppercase;
+  }
+  strong {
+    font-size: $fs-4;
+  }
+}
+
+.limit-neutral {
+  border-color: $neutral-4;
+  h6 {
+    color: hsl(0deg, 10%, 50%);
+  }
+  strong {
+    color: hsl(0deg, 10%, 40%);
+  }
+}
+
+.limit-danger {
+  border-color: $danger-4;
+  background-color: $danger-1;
+  h6 {
+    color: hsl(0deg, 10%, 50%);
+  }
+  strong {
+    color: hsl(0deg, 10%, 40%);
+  }
+}
+
+.limit-warning {
+  border-color: $warning-4;
+  background-color: $warning-1;
+  h6 {
+    color: hsl(30deg, 10%, 50%);
+  }
+  strong {
+    color: hsl(30deg, 10%, 40%);
+  }
+}
+
+.limit-success {
+  border-color: $success-4;
+  background-color: $success-1;
+  h6 {
+    color: hsl(100deg, 10%, 50%);
+  }
+  strong {
+    color: hsl(100deg, 10%, 40%);
+  }
+}

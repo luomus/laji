@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { TaxonSelectComponent } from '../../../../../../laji/src/app/shared-modules/taxon-select/taxon-select.component';
 
 @Component({
-  selector: 'laji-simple-omni',
+  selector: 'iucn-simple-omni',
   templateUrl: './simple-omni.component.html',
   styleUrls: ['./simple-omni.component.scss']
 })

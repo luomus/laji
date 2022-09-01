@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { IPageStyle } from './label-designer.interface';
 
 export class Presets {

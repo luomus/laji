@@ -4,7 +4,7 @@ import { Taxonomy } from '../../../../../../../laji/src/app/shared/model/Taxonom
 import { ISelectFields } from '../../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 
 @Component({
-  selector: 'laji-red-list-species',
+  selector: 'iucn-red-list-species',
   templateUrl: './red-list-species.component.html',
   styleUrls: ['./red-list-species.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

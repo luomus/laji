@@ -273,7 +273,7 @@ export interface IAddLabelEvent {
 
 export interface ILabelValueMap {
   [field: string]: {
-    [value: string]: string
+    [value: string]: string;
   };
 }
 

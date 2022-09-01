@@ -15,12 +15,12 @@ export interface QueryParams extends FilterQuery {
 }
 
 @Component({
-  selector: 'laji-list',
+  selector: 'iucn-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit, OnDestroy {
-  types: {label: string, value: ListType, labelLong?: string}[] = [
+  types: {label: string; value: ListType; labelLong?: string}[] = [
     {label: 'iucn.results.tab.status', value: 'status'},
     {label: 'iucn.results.tab.species', value: 'species'},
     {label: 'iucn.results.tab.reasons', labelLong: 'iucn.hasEndangermentReason', value: 'reasons'},
@@ -28,7 +28,7 @@ export class ListComponent implements OnInit, OnDestroy {
     {label: 'iucn.results.tab.habitat', value: 'habitat'}
   ];
 
-  years$: Observable<{label: string, value: string}[]>;
+  years$: Observable<{label: string; value: string}[]>;
   checklist: string;
   queryParams: QueryParams;
   private querySub: Subscription;
@@ -104,7 +104,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (queryParams['page'] && toFirstPage) {
       delete queryParams['page'];
     }
-    this.router.navigate([], {queryParams: queryParams});
+    this.router.navigate([], {queryParams});
   }
 
   private setTitle(title: string) {
