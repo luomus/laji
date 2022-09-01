@@ -135,34 +135,30 @@
 <ng-template #navigationThumbnails>
   <div class="my-7 col">
     <div class="d-flex flex-wrap row">
-      <a class="home-card d-flex flex-col items-center mr-3 mb-3 col" (click)="navigateTo('taxon')">
+      <a routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
         <div>
           <span translate>home.taxon-sub-intro</span>
-          <laji-info placement="right">{{ 'home.taxon-intro' | translate }}</laji-info>
         </div>
       </a>
-      <a class="home-card d-flex flex-col items-center mr-3 mb-3 col" (click)="navigateTo('observation')">
+      <a routerLink="observation" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
         <div>
           <span translate>home.observation-sub-intro</span>
-          <laji-info placement="right">{{ 'home.observation-intro' | translate }}</laji-info>
         </div>
       </a>
     </div>
     <div class="d-flex flex-wrap row">
-      <a class="home-card d-flex flex-col items-center mr-3 mb-3 col" (click)="navigateTo('save-observations')">
+      <a routerLink="save-observations" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
         <div>
           <span translate>home.notebook-sub-intro</span>
-          <laji-info placement="right">{{ 'home.notebook-intro' | translate }}</laji-info>
         </div>
       </a>
-      <a class="home-card d-flex flex-col items-center mr-3 mb-3 col" (click)="navigateTo('theme/dataset-metadata')">
+      <a routerLink="theme/dataset-metadata" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dataset.svg)'"></div>
         <div>
           <span translate>home.dataset-metadata</span>
-          <laji-info placement="right">{{ 'home.dataset-metadata-intro' | translate }}</laji-info>
         </div>
       </a>
     </div>
