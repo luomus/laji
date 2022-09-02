@@ -27,6 +27,8 @@ import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 
+const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
@@ -414,7 +416,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private fetchQueryAndShowOnMap(query: WarehouseQueryInterface, page = 1) {
     if (this.limitResults && !query.coordinates) {
-      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']};
+      query = {...query, coordinates: LIMITED_BOUNDS};
     }
     query = this.addViewPortCoordinates(query);
     const count$ = this.getCount$(query, page);
@@ -462,8 +464,22 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       );
   }
 
+  private queryInsideViewport(query: WarehouseQueryInterface) {
+    if (!query.coordinates)  {
+      return false;
+    }
+
+    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+    return this.lajiMap?.map.map.getBounds().contains(bounds);
+  }
+
   private addViewPortCoordinates(query: WarehouseQueryInterface) {
-    if (!query.coordinates && this.activeZoomThresholdBounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
+    if (
+      !this.showingIndividualPoints
+      && !this.queryInsideViewport(this.query)
+      && this.activeZoomThresholdBounds
+      && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel
+    ) {
       return {
         ...query,
         coordinates: [
