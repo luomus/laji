@@ -132,6 +132,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private showingIndividualPoints = false;
   private dataCache: any;
   private init = false;
+  private totalCount: number;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -173,6 +174,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     // First update is triggered by tile layer update event from the laji-map
     if (changes['query'] || changes['ready']) {
       this.updateMapData();
+      this.updateTotalCount();
     }
     this.initLegendTopMargin();
     this.initLegend();
@@ -208,11 +210,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const outOfViewport = this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel && !insideActiveBounds;
     const showingIndividualPointsAlreadyAndZoomedIn = this.activeZoomThresholdLevel >= curActiveZoomThresholdLevel && this.showingIndividualPoints;
     const tresholdLevelChanged = curActiveZoomThresholdLevel !== this.activeZoomThresholdLevel;
-    if (
-      e.type === 'moveend' && (
-        (tresholdLevelChanged && !showingIndividualPointsAlreadyAndZoomedIn)
-        || outOfViewport
-      )
+    const inputQueryAlreadyShowingIndividual = this.totalCount < this.showIndividualPointsWhenLessThan;
+    if (!inputQueryAlreadyShowingIndividual
+        && (
+          (tresholdLevelChanged && !showingIndividualPointsAlreadyAndZoomedIn)
+          || outOfViewport
+        )
     ) {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMapData();
@@ -288,7 +291,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private getFeatureCollection(): Observable<any> {
+  private getDrawFeatureCollection(): Observable<any> {
     const featuresFromQueryCoordinates = (coordinates: any): Observable<any[]> => ObservableOf(coordinates
         ? coordinates.map((coord: any) =>
             getFeatureFromGeometry(
@@ -316,7 +319,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     this.drawData.featureCollection.features = [];
     this.drawDataSubscription?.unsubscribe();
-    this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+    this.drawDataSubscription = this.getDrawFeatureCollection().subscribe(featureCollection => {
       this.drawData = {...this.drawData, featureCollection};
       this.reset = true;
       this.loading = true;
@@ -374,12 +377,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }));
   }
 
-  private getCount$(query: WarehouseQueryInterface, page: number) {
-    const countRemote$ = this.warehouseService.warehouseQueryCountGet(query).pipe(
+  private getCountForQuery$(query: WarehouseQueryInterface) {
+    return this.warehouseService.warehouseQueryCountGet(query).pipe(
       map(result => result.total)
     );
+  }
 
-    return countRemote$.pipe(
+  private tryToQueryIndividualPoints$(query: WarehouseQueryInterface, page: number) {
+    return this.getCountForQuery$(query).pipe(
       switchMap(cnt => {
         if (!cnt) {
           return of({
@@ -418,8 +423,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (this.limitResults && !query.coordinates) {
       query = {...query, coordinates: LIMITED_BOUNDS};
     }
-    query = this.addViewPortCoordinates(query);
-    const count$ = this.getCount$(query, page);
+    query = this.addViewportCoordinates(query);
     const simpleAggregate$ = this.warehouseService.warehouseQueryAggregateGet(
       query, this.activeZoomThresholdLevelToAggregateBy(),
       undefined, this.size, page, true
@@ -428,7 +432,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }));
 
     this.subDataFetch = ObservableOf(this.showIndividualPointsWhenLessThan).pipe(
-      switchMap((less) => less > 0 ? count$ : simpleAggregate$)).pipe(
+      switchMap((less) => less > 0 ? this.tryToQueryIndividualPoints$(query, page) : simpleAggregate$)).pipe(
         timeout(WarehouseApi.longTimeout * 3),
         delay(100),
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
@@ -473,7 +477,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     return this.lajiMap?.map.map.getBounds().contains(bounds);
   }
 
-  private addViewPortCoordinates(query: WarehouseQueryInterface) {
+  private addViewportCoordinates(query: WarehouseQueryInterface) {
     if (
       !this.showingIndividualPoints
       && !this.queryInsideViewport(this.query)
@@ -531,7 +535,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       .subscribe((moreInfo) => {
         try {
           const properties = this.mapData[0].featureCollection.features[featureIdx].properties;
-          const cnt = properties.count;
           let description = '';
           this.itemFields.map(field => {
             const name = field.split('.').pop();
@@ -553,10 +556,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           }
           if (description) {
             cb(description);
-          } else if (cnt) {
-            return;
-            // this.translate.getList('result.allObservation')
-            //  .subscribe(translation => cb(`${cnt} ${translation}`));
           }
         } catch (e) {
           this.logger.log('Failed to display popup for the map', e);
@@ -570,12 +569,19 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     if (this.query.coordinates) {
       this.drawDataSubscription?.unsubscribe();
-      this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+      this.drawDataSubscription = this.getDrawFeatureCollection().subscribe(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
         mapData.push(this.drawData);
         this.mapData = mapData;
       });
     }
+  }
+
+  private updateTotalCount() {
+    this.getCountForQuery$(this.query).subscribe(count => {
+      this.totalCount = count;
+    });
+
   }
 }
 
