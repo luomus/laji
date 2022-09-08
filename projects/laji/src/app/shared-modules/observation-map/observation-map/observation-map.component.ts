@@ -206,16 +206,19 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         this.activeZoomThresholdLevel = i + 1;
       }
     }
-    const insideActiveBounds = this.activeZoomThresholdBounds && this.activeZoomThresholdBounds.contains(e.bounds);
-    const outOfViewport = this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel && !insideActiveBounds;
-    const showingIndividualPointsAlreadyAndZoomedIn = this.activeZoomThresholdLevel >= curActiveZoomThresholdLevel && this.showingIndividualPoints;
-    const tresholdLevelChanged = curActiveZoomThresholdLevel !== this.activeZoomThresholdLevel;
-    const inputQueryAlreadyShowingIndividual = this.totalCount < this.showIndividualPointsWhenLessThan;
-    if (!inputQueryAlreadyShowingIndividual
-        && (
-          (tresholdLevelChanged && !showingIndividualPointsAlreadyAndZoomedIn)
-          || outOfViewport
-        )
+
+    const outOfActiveBounds = this.activeZoomThresholdBounds && !this.activeZoomThresholdBounds.contains(e.bounds);
+    const alreadyShowingAll = !this.activeZoomThresholdBounds && this.totalCount < this.showIndividualPointsWhenLessThan;
+    const zoomedInAndNotShowingPoints = this.activeZoomThresholdLevel > curActiveZoomThresholdLevel && !this.showingIndividualPoints;
+    const zoomedOut = this.activeZoomThresholdLevel < curActiveZoomThresholdLevel;
+
+    if (alreadyShowingAll) {
+      return;
+    }
+
+    if (outOfActiveBounds
+      || zoomedInAndNotShowingPoints
+      || zoomedOut
     ) {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMapData();
