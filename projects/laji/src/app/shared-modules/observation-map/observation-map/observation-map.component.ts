@@ -133,6 +133,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private dataCache: any;
   private init = false;
   private totalCount: number;
+  private totalCountSubscription: Subscription;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -183,6 +184,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   ngOnDestroy() {
     this.subDataFetch?.unsubscribe();
     this.drawDataSubscription?.unsubscribe();
+    this.totalCountSubscription?.unsubscribe();
   }
 
   onCreate(e) {
@@ -471,7 +473,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       );
   }
 
-  private queryInsideViewport(query: WarehouseQueryInterface) {
+  private queryIsInsideViewport(query: WarehouseQueryInterface): boolean {
     if (!query.coordinates)  {
       return false;
     }
@@ -483,7 +485,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private addViewportCoordinates(query: WarehouseQueryInterface) {
     if (
       !this.showingIndividualPoints
-      && !this.queryInsideViewport(this.query)
+      && !this.queryIsInsideViewport(this.query)
       && this.activeZoomThresholdBounds
       && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel
     ) {
@@ -581,7 +583,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateTotalCount() {
-    this.getCountForQuery$(this.query).subscribe(count => {
+    this.totalCountSubscription?.unsubscribe();
+    this.totalCountSubscription = this.getCountForQuery$(this.query).subscribe(count => {
       this.totalCount = count;
     });
 
