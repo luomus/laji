@@ -13,95 +13,132 @@ export const routes: Routes = [
   {
     path: '', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
   },
   {
     path: 'template', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true}
+    data: {displayFeedback: false, template: true},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/places/new', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
-    path: ':formOrDocument/places/:namedPlace/print', component: NpPrintComponent
+    path: ':formOrDocument/places/:namedPlace/print', component: NpPrintComponent,
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/places/:namedPlace/edit', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/places/:namedPlace', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/places/:namedPlace/template', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true}
+    data: {displayFeedback: false, template: true},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/places', component: NamedPlaceWrapperComponent,
     canActivate: [HasViewPermission],
-    data: {noScrollToTop: true}
+    data: {noScrollToTop: true},
+    pathMatch: 'prefix'
+
   },
   {
     path: 'places/new', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
    },
   {
     path: 'places/:namedPlace/edit', component: NpEditFormComponent,
     canActivate: [HasFormPermission],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
-    path: 'places/:namedPlace/print', component: NpPrintComponent
+    path: 'places/:namedPlace/print', component: NpPrintComponent,
+    pathMatch: 'prefix'
+
   },
   {
     path: 'places/:namedPlace', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: 'places/:namedPlace/template', component: FormComponent,
     canActivate: [HasFormPermission],
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true}
+    data: {displayFeedback: false, template: true},
+    pathMatch: 'prefix'
+
   },
   {
     path: 'places', component: NamedPlaceWrapperComponent,
     canActivate: [HasViewPermission],
-    data: { noScrollToTop: true }
+    data: { noScrollToTop: true },
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/:document', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/:document/link', component: NamedPlaceLinkerWrapperComponent,
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/template', component: FormComponent,
     canDeactivate: [DocumentDeActivateGuard],
-    data: {displayFeedback: false, template: true}
+    data: {displayFeedback: false, template: true},
+    pathMatch: 'prefix'
+
   },
   {
     path: ':formOrDocument/link', component: NamedPlaceLinkerWrapperComponent,
-    data: {displayFeedback: false}
+    data: {displayFeedback: false},
+    pathMatch: 'prefix'
+
   },
 ];
 
