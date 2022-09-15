@@ -22,8 +22,7 @@ export interface IFormField {
   type: string;
   splitType?: SplitType;
   subGroup?: string;
-  enum?: string[];
-  enumNames?: string[];
+  enum?: {title: string; const: string}[];
   default?: any;
   col?: string;
   previousValue?: any;
