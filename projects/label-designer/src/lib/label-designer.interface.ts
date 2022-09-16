@@ -281,8 +281,13 @@ export interface IColumnMap {
   [col: string]: string;
 }
 
+/**
+ * @internal
+ */
+export type LabelDataValue = string|number|boolean|string[];
+
 export interface ILabelData {
-  [key: string]: string|number|boolean|string[];
+  [key: string]: LabelDataValue;
 }
 
 export interface IPageLayout {
