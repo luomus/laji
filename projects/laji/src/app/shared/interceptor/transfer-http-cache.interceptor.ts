@@ -52,7 +52,7 @@ export class TransferHttpCacheInterceptor implements HttpInterceptor {
     const encodedParams = params.keys().sort().map(k => `${k}=${params.get(k)}`).join('&');
     const key = (method === 'GET' ? 'G.' : 'H.') + url + '?' + encodedParams;
 
-    return makeStateKey<TransferHttpResponse>(key);
+    return makeStateKey(key);
   }
 
   constructor(

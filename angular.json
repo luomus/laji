@@ -346,7 +346,7 @@
           },
           "defaultConfiguration": ""
         },
-        "serve-ssr":  {
+        "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
             "browserTarget": "laji:build",
@@ -1108,8 +1108,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "fileReplacements": [
-              ],
+              "fileReplacements": [],
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
@@ -1277,17 +1276,6 @@
             "local": {
               "browserTarget": "bird-atlas:build:local"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/bird-atlas/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -1466,7 +1454,6 @@
       }
     }
   },
-  "defaultProject": "laji",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "laji",
