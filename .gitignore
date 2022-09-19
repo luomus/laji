@@ -36,6 +36,11 @@ settings.json
 /e2e/*.map
 !/projects/laji/e2e/protractor.conf.js
 
+# files related to generate spectrograms script
+/projects/kerttu-global/generate-spectrograms/node_modules
+/projects/kerttu-global/generate-spectrograms/input
+/projects/kerttu-global/generate-spectrograms/output
+
 # Don't include script with this repo!
 **/*.sh
 
