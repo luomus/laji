@@ -1,10 +1,10 @@
-import { LajiMapVisualization } from "@laji-map/visualization/laji-map-visualization";
+import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
 
 const baseFeatureStyle = {
   weight: 1,
   opacity: 1,
   fillOpacity: .5
-}
+};
 
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
@@ -37,17 +37,23 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     getFeatureStyle: (o) => {
       if (o.feature.properties.count === 0) { return { opacity: 0, fillOpacity: 0 }; }
       let idx;
-      if (o.feature.properties.count <= 10) { idx = 0; }
-      else if (o.feature.properties.count <= 100) { idx = 1; }
-      else if (o.feature.properties.count <= 1000) { idx = 2; }
-      else if (o.feature.properties.count <= 10000) { idx = 3; }
-      else { idx = 4; }
+      if (o.feature.properties.count <= 10) {
+        idx = 0;
+      } else if (o.feature.properties.count <= 100) {
+        idx = 1;
+      } else if (o.feature.properties.count <= 1000) {
+        idx = 2;
+      } else if (o.feature.properties.count <= 10000) {
+        idx = 3;
+      } else {
+        idx = 4;
+      }
       return {
         ...baseFeatureStyle,
         color: lajiMapObservationVisualization.obsCount.categories[idx].color
       };
     },
-    getClusterStyle: () => ({})
+    getClusterStyle: undefined
   },
   recordQuality: {
     label: 'label',
@@ -73,30 +79,30 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: 'Erroneous'
       }
     ],
-    getFeatureStyle: (o) => {
-      return {
+    getFeatureStyle: (o) => (
+      {
         ...baseFeatureStyle,
         color: lajiMapObservationVisualization.recordQuality.categories[0].color
-      };
-    },
-    getClusterStyle: () => ({})
+      }
+    ),
+    getClusterStyle: undefined
   },
   redlistStatus: {
     label: 'label',
     categories: [],
-    getFeatureStyle: () => ({}),
-    getClusterStyle: () => ({})
+    getFeatureStyle: undefined,
+    getClusterStyle: undefined
   },
   individualCount: {
     label: 'label',
     categories: [],
-    getFeatureStyle: () => ({}),
-    getClusterStyle: () => ({})
+    getFeatureStyle: undefined,
+    getClusterStyle: undefined
   },
   recordAge: {
     label: 'label',
     categories: [],
-    getFeatureStyle: () => ({}),
-    getClusterStyle: () => ({})
+    getFeatureStyle: undefined,
+    getClusterStyle: undefined
   }
 };

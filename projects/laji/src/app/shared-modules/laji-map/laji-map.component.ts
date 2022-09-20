@@ -31,7 +31,12 @@ import { LajiMapVisualization } from './visualization/laji-map-visualization';
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-      <laji-map-legend *ngIf="visualization" [visualization]="visualization" [mode]="visualizationMode" (modeChange)="onVisualizationModeChange($event)"></laji-map-legend>
+      <laji-map-legend
+        *ngIf="visualization"
+        [visualization]="visualization"
+        [mode]="visualizationMode"
+        (modeChange)="onVisualizationModeChange($event)"
+      ></laji-map-legend>
     </div>`,
   styleUrls: ['./laji-map.component.css'],
   providers: [],

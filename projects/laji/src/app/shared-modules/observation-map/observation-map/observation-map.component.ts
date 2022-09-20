@@ -26,7 +26,10 @@ import { PlatformService } from '../../../root/platform.service';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
-import { lajiMapObservationVisualization, ObservationVisualizationMode } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
+import {
+  lajiMapObservationVisualization,
+  ObservationVisualizationMode
+} from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 
 @Component({
   selector: 'laji-observation-map',

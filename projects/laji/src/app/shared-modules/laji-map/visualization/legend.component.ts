@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
-import { LajiMapVisualization } from "./laji-map-visualization";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { LajiMapVisualization } from './laji-map-visualization';
 
 @Component({
   selector: 'laji-map-legend',
@@ -7,7 +7,7 @@ import { LajiMapVisualization } from "./laji-map-visualization";
   styleUrls: ['./legend.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapLegend<T extends string> {
+export class LajiMapLegendComponent<T extends string> {
   @Input() visualization: LajiMapVisualization<T>;
   @Input() mode: T;
   @Output() modeChange = new EventEmitter<T>();

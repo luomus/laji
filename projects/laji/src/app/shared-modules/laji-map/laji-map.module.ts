@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LajiMapComponent } from './laji-map.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TranslateModule } from '@ngx-translate/core';
-import { LajiMapLegend } from './visualization/legend.component';
-import { SimpleLegend } from './visualization/simple-legend.component';
+import { LajiMapLegendComponent } from './visualization/legend.component';
 
 @NgModule({
   imports: [
@@ -12,7 +11,7 @@ import { SimpleLegend } from './visualization/simple-legend.component';
     BsDropdownModule,
     TranslateModule
   ],
-  declarations: [LajiMapComponent, LajiMapLegend, SimpleLegend],
-  exports: [LajiMapComponent]
+  declarations: [ LajiMapComponent, LajiMapLegendComponent ],
+  exports: [ LajiMapComponent ]
 })
 export class LajiMapModule { }
