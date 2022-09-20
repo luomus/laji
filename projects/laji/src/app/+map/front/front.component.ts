@@ -16,7 +16,7 @@ import { PlatformService } from '../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrontComponent implements OnInit, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent<any>;
   @ViewChild('printControlWell') printControlsWell: {nativeElement: HTMLDivElement};
   @ViewChild('printControl') printControls: {nativeElement: HTMLDivElement};
 

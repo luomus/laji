@@ -13,7 +13,7 @@ import { tileLayer as LtileLayer } from 'leaflet';
   styleUrls: ['./gbif-map.component.scss']
 })
 export class GbifMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) mapComponent: LajiMapComponent<any>;
 
   @Input() taxon: Taxonomy;
   @Input() height = '605px';

@@ -26,6 +26,7 @@ import { PlatformService } from '../../../root/platform.service';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
+import { lajiMapObservationVisualization, ObservationVisualizationMode } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 
 @Component({
   selector: 'laji-observation-map',
@@ -35,7 +36,7 @@ import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent<ObservationVisualizationMode>;
 
   @Input() visible = false;
   @Input() query: any;
@@ -93,8 +94,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     'unit.interpretations.recordQuality',
     'document.linkings.collectionQuality'
   ];
-  limitResults = false;
 
+  visualization = lajiMapObservationVisualization;
+  limitResults = false;
   mapData;
   drawData: LajiMapDataOptions = {
     featureCollection: {type: 'FeatureCollection', features: []},

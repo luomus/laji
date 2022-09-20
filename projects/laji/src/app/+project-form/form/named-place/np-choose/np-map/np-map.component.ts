@@ -19,6 +19,7 @@ import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { Logger } from '../../../../../shared/logger';
 import { Form } from '../../../../../shared/model/Form';
+import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
 
 @Component({
   selector: 'laji-np-map',
@@ -27,7 +28,7 @@ import { Form } from '../../../../../shared/model/Form';
   providers: [ LabelPipe, AreaNamePipe ]
 })
 export class NpMapComponent implements OnInit, OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent<any>;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];
@@ -39,7 +40,7 @@ export class NpMapComponent implements OnInit, OnChanges {
   @Input() documentForm: Form.SchemaForm;
   @Output() activePlaceChange = new EventEmitter<number>();
 
-  legend;
+  visualization: LajiMapVisualization<any>;
   listItems: NpInfoRow[] = [];
   tileLayerName;
   overlayNames;
@@ -126,12 +127,32 @@ export class NpMapComponent implements OnInit, OnChanges {
       }),
       {all: 0, free: 0, reserved: 0, mine: 0, sent: 0}
     );
-    this.legend = {
-      [this.placeColor]: `Vapaa ${counts.free} / ${counts.all}`,
-      [this.reservedColor]: `Varattu ${counts.reserved} / ${counts.all}`,
-      [this.mineColor]: `Itselle varattu ${counts.mine} / ${counts.all}`,
-      [this.sentColor]: `Ilmoitettu ${counts.sent} / ${counts.all}`
+    this.visualization = {
+      npVisualization: {
+        label: 'label',
+        categories: [
+          {
+            color: this.placeColor,
+            label: `Vapaa ${counts.free} / ${counts.all}`
+          },
+          {
+            color: this.reservedColor,
+            label: `Varattu ${counts.reserved} / ${counts.all}`
+          },
+          {
+            color: this.mineColor,
+            label: `Itselle varattu ${counts.mine} / ${counts.all}`
+          },
+          {
+            color: this.sentColor,
+            label: `Ilmoitettu ${counts.sent} / ${counts.all}`
+          }
+        ],
+        getFeatureStyle: undefined,
+        getClusterStyle: undefined
+      }
     };
+    this.cdr.markForCheck();
   }
 
   private initMapData() {

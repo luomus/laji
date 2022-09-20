@@ -11,6 +11,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { IUserSettings, UserService } from '../../shared/service/user.service';
@@ -21,7 +22,7 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-
+import { LajiMapVisualization } from './visualization/laji-map-visualization';
 
 @Component({
   selector: 'laji-map',
@@ -30,19 +31,16 @@ import { environment } from 'projects/laji/src/environments/environment';
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-      <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
-        <li *ngFor="let leg of _legend">
-          <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
-        </li>
-      </ul>
+      <laji-map-legend *ngIf="visualization" [visualization]="visualization" [mode]="visualizationMode" (modeChange)="onVisualizationModeChange($event)"></laji-map-legend>
     </div>`,
   styleUrls: ['./laji-map.component.css'],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
-
+export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges, AfterViewInit {
   @Input() data: any = [];
+  @Input() visualization: LajiMapVisualization<T> | undefined; // overwrites getFeatureStyle and getClusterStyle
+  @Input() visualizationMode: T | undefined;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
@@ -58,7 +56,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   lang: string;
   map: any;
   _options: Options = {};
-  _legend: {color: string; label: string}[];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -73,9 +70,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private logger: Logger,
     private translate: TranslateService,
     private zone: NgZone
-  ) {
-
-  }
+  ) {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -134,17 +129,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  @Input() set legend(legend: {[color: string]: string} | undefined) {
-    if (!legend) {
-      return;
-    }
-    const leg = [];
-    Object.keys(legend).forEach(color => {
-      leg.push({color, label: legend[color]});
-    });
-    this._legend = leg;
-  }
-
   ngOnDestroy() {
     try {
       this.map.destroy();
@@ -155,10 +139,14 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     this.lang = this.translate.currentLang;
     if (changes.data) {
       this.setData(this.data);
+    }
+    if (changes.visualization && changes.visualization.currentValue) {
+      this.visualizationMode = <T>Object.keys(this.visualization)[0];
+      this.updateVisualization();
     }
   }
 
@@ -230,6 +218,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (!data) {
       return;
     }
+    if (this.visualization) {
+      data = this.patchVisualizationStyles(data);
+    }
     this.map.setData(data);
   }
 
@@ -245,5 +236,24 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     } else if (['Rectangle'].includes(type)) {
       this.map.triggerDrawing(type);
     }
+  }
+
+  onVisualizationModeChange(mode: T) {
+    this.visualizationMode = mode;
+    this.updateVisualization();
+  }
+
+  updateVisualization() {
+    if (!this.map) { return; }
+    this.map.setData(this.patchVisualizationStyles(this.map.getData()));
+  }
+
+  patchVisualizationStyles(data: any) {
+    const vis = this.visualization[this.visualizationMode];
+    data.forEach(d => {
+      if (vis.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
+      if (vis.getClusterStyle) { d.getClusterStyle = vis.getClusterStyle; }
+    });
+    return data;
   }
 }
