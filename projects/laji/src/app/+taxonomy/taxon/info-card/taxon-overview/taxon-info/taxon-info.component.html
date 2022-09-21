@@ -35,9 +35,9 @@
     <li *ngFor="let type of taxon.typeOfOccurrenceInFinland">{{ type | label }}</li>
   </ul>
 </laji-taxon-info-row>
-<laji-taxon-info-row *ngIf="taxon.invasiveSpecies" [keyTextContentGhost]="false">
+<laji-taxon-info-row *ngIf="taxon.invasiveSpecies && taxon.species" [keyTextContentGhost]="false">
   <ng-template #label>
-    <img *ngIf="taxon.species" src="/static/images/vieraslaji.png" class="img-responsive" width="70px" height="70px"/>
+    <img src="/static/images/vieraslaji.png" class="img-responsive" width="70px" height="70px"/>
   </ng-template>
   {{ 'taxonomy.invasive.phrase' | translate }}
   <a href="http://vieraslajit.fi"> {{ 'taxonomy.invasive.title' | translate }}</a>
