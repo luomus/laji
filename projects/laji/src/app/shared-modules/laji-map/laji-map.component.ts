@@ -56,6 +56,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Output() move = new EventEmitter();
   @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
+  @Output() visualizationModeChange = new EventEmitter<T>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -245,6 +246,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
 
   onVisualizationModeChange(mode: T) {
     this.visualizationMode = mode;
+    this.visualizationModeChange.emit(mode);
     this.updateVisualization();
   }
 

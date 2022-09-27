@@ -99,6 +99,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   ];
 
   visualization = lajiMapObservationVisualization;
+  visualizationMode: ObservationVisualizationMode = 'obsCount';
   limitResults = false;
   mapData;
   drawData: LajiMapDataOptions = {
@@ -261,6 +262,28 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const shouldLimit = layerOptions.active === 'finnish';
     if (this.limitResults !== shouldLimit) {
       this.limitResults = shouldLimit;
+    }
+    this.updateMapData();
+  }
+
+  onVisualizationModeChange(mode: ObservationVisualizationMode) {
+    this.visualizationMode = mode;
+    switch (mode) {
+      case 'individualCount':
+      case 'recordQuality':
+      case 'recordAge':
+      case 'obsCount':
+        this.query.featureType = 'CENTER_POINT';
+        this.query.onlyCount = false;
+        this.query.pessimisticDateRangeHandling = true;
+        this.query.taxonCounts = undefined;
+        break;
+      case 'redlistStatus':
+        this.query.featureType = 'CENTER_POINT';
+        this.query.onlyCount = false;
+        this.query.pessimisticDateRangeHandling = undefined;
+        this.query.taxonCounts = true;
+        break;
     }
     this.updateMapData();
   }

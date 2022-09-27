@@ -7,10 +7,12 @@
           [data]="mapData"
           [visualization]="visualization"
           [settingsKey]="settingsKey"
+          [visualizationMode]="visualizationMode"
           (create)="onCreate($event)"
           (failure)="refreshMap()"
           (tileLayersChange)="onTileLayersChange($event)"
-          (move)="onMapPanOrZoom($event)">
+          (move)="onMapPanOrZoom($event)"
+          (visualizationModeChange)="onVisualizationModeChange($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
 <!--     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
       <li *ngFor="let leg of legendList">
