@@ -19,7 +19,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   selectedOption: SelectedOption[] = [];
   optionsTree: TreeOptionsNode[] = null;
   lang: string;
-  showEmpty = true;
+  showEmpty = false;
   loading = false;
   excludedTypes = [
     'MY.collectionTypeGardenArea',
