@@ -40,6 +40,7 @@ import { DatasetMetadataViewerItemComponent } from './dataset-metadata/dataset-m
 import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
+import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer-multilang-item/dataset-metadata-viewer-multilang-item.component';
 
 /* eslint-enable max-len */
 
@@ -82,7 +83,8 @@ import { DocumentViewerModule } from '../shared-modules/document-viewer/document
     DatasetMetadataComponent,
     DatasetMetadataBrowserComponent,
     DatasetMetadataViewerComponent,
-    DatasetMetadataViewerItemComponent
+    DatasetMetadataViewerItemComponent,
+    DatasetMetadataViewerMultilangItemComponent,
   ],
   providers: [
     QualityService,

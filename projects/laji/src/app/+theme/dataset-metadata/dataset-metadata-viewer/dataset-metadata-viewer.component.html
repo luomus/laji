@@ -21,15 +21,21 @@
       [open]="true"
       [autoToggle]="true"
     >
-      <laji-dataset-metadata-viewer-item [title]="'collection.longName' | translate" [value]="collection.longName | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.longName" [title]="'collection.longName' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.longName | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.abbreviation' | translate" [value]="collection.abbreviation | multiLangAll">
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.collectionType' | translate" [value]="collection.collectionType | label:'warehouse'">
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.description' | translate" [value]="collection.description | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.description" [title]="'collection.description' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.description | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.onlineUrl' | translate" [value]="collection.onlineUrl | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.onlineUrl" [title]="'collection.onlineUrl' | translate">
+        <laji-dataset-metadata-viewer-multilang-item  [values]="collection.onlineUrl | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
     </div>
     <div class="panel panel-default description-panel"
@@ -63,7 +69,9 @@
           [qualityIcon]="collection.collectionQuality | qualityUrl">
         </laji-quality-row>
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.dataQualityDescription' | translate" [value]="collection.dataQualityDescription | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.dataQualityDescription" [title]="'collection.dataQualityDescription' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.dataQualityDescription | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.dataNotes' | translate" [value]="collection.dataNotes">
       </laji-dataset-metadata-viewer-item>
@@ -78,7 +86,9 @@
     >
       <laji-dataset-metadata-viewer-item [title]="'collection.intellectualRights' | translate" [value]="collection.intellectualRights | label">
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.intellectualDescription' | translate" [value]="collection.intellectualDescription | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.intellectualDescription" [title]="'collection.intellectualDescription' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.intellectualDescription | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.intellectualOwner' | translate" [value]="collection.intellectualOwner">
       </laji-dataset-metadata-viewer-item>
@@ -89,9 +99,13 @@
       <laji-dataset-metadata-viewer-item *ngIf="collection.dataQuarantinePeriod" [title]="'collection.dataQuarantinePeriod' | translate">
         <span>{{collection.dataQuarantinePeriod}}</span>
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.dataUseTerms' | translate" [value]="collection.dataUseTerms | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.dataUseTerms" [title]="'collection.dataUseTerms' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.dataUseTerms | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
-      <laji-dataset-metadata-viewer-item [title]="'collection.concealmentBasis' | translate" [value]="collection.concealmentBasis | multiLangAll">
+      <laji-dataset-metadata-viewer-item *ngIf="collection.concealmentBasis" [title]="'collection.concealmentBasis' | translate">
+        <laji-dataset-metadata-viewer-multilang-item [values]="collection.concealmentBasis | multiLangRows">
+        </laji-dataset-metadata-viewer-multilang-item>
       </laji-dataset-metadata-viewer-item>
     </div>
     <div class="panel panel-default description-panel"
