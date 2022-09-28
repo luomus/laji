@@ -33,14 +33,10 @@ import { GeneticResourceLayoutComponent } from './genetic-resource/layout/geneti
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
-import { DatasetMetadataComponent } from './dataset-metadata/dataset-metadata.component';
-import { DatasetMetadataBrowserComponent } from './dataset-metadata/dataset-metadata-browser/dataset-metadata-browser.component';
-import { DatasetMetadataViewerComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer.component';
-import { DatasetMetadataViewerItemComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer-item/dataset-metadata-viewer-item.component'
 import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
-import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata/dataset-metadata-viewer/dataset-metadata-viewer-multilang-item/dataset-metadata-viewer-multilang-item.component';
+import { DatasetMetadataModule } from '../shared-modules/dataset-metadata/dataset-metadata.module';
 
 /* eslint-enable max-len */
 
@@ -59,6 +55,7 @@ import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata/
     TreeSelectModule,
     SelectModule,
     DocumentViewerModule,
+    DatasetMetadataModule,
   ],
   declarations: [
     HerpetologyComponent,
@@ -80,11 +77,6 @@ import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata/
     GeneticResourceLayoutComponent,
     GeneticResourceInstructionsComponent,
     KerttuClosedComponent,
-    DatasetMetadataComponent,
-    DatasetMetadataBrowserComponent,
-    DatasetMetadataViewerComponent,
-    DatasetMetadataViewerItemComponent,
-    DatasetMetadataViewerMultilangItemComponent,
   ],
   providers: [
     QualityService,

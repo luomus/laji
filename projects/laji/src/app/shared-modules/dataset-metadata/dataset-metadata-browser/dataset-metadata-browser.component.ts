@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Output, Input, E
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SelectedOption, TreeOptionsNode } from '../../../shared-modules/tree-select/tree-select.component';
+import { SelectedOption, TreeOptionsNode } from '../../tree-select/tree-select.component';
 import { CollectionService } from '../../../shared/service/collection.service';
 
 @Component({
