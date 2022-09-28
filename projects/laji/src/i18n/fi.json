@@ -1741,7 +1741,7 @@
   "theme.count": "Havaintojen lkm",
   "theme.countShort": "Havlkm",
   "theme.dataset-metadata": "Selaa aineistoja",
-  "theme.dataset-metadata.showEmpty": "Näytä tyhjät aineistot",
+  "theme.dataset-metadata.showEmpty": "Näytä myös aineistot, joista ei ole vielä havaintoja Lajitietokeskuksessa",
   "theme.emk.intro": "Tutustu Suomen eliömaakuntiin.",
   "theme.filterAll": "Koko aineisto {{from}} - {{to}}",
   "theme.filterAllNoYears": "Koko aineisto",
