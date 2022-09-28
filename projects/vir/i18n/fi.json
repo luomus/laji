@@ -82,6 +82,8 @@
   "usage.users.intro": "Voit selata Lajitietokeskuksen viranomaisportaalin käyttöön oikeutettuja henkilöitä organisaatioittain.\nKaikki tarvittavat muutokset käyttöoikeuksiin pitää ilmoittaa viipymättä osoitteeseen: viranomaiset@laji.fi",
   "vir.home.agreement": "Palvelun käyttö perustuu organisaatiotason (kunta, valtiohallinnon tutkimuslaitos, ELY-keskus jne.)  käyttöoikeussopimukseen Luomuksen/Lajitietokeskuksen kanssa. Voit tutustua sopimuksen sisältöön mallisopimuksen avulla.",
   "vir.home.agreement.btn": "Mallisopimus",
+  "vir.home.changelog": "Tutustu uusiin ominaisuuksiin ja tietoaineistoihin Lajitietokeskuksen palveluissa.",
+  "vir.home.changelog.btn": "Uudet ominaisuudet ja aineistot",
   "vir.home.links": "Linkkejä",
   "vir.home.loginInstructions": "Kirjautuminen palveluun on luvanvaraista. Kirjautumisohjeet voi jakaa kaikille uusille käyttäjille, joille on myönnetty käyttöoikeus.",
   "vir.home.loginInstructions.btn": "Kirjautumisohjeet",
