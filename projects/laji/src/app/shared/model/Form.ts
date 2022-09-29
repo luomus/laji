@@ -37,7 +37,9 @@ export namespace Form {
     options: ListOptions;
   }
 
-  export type IEnum = {const: string; title: string}[];
+  export interface IEnum {
+    oneOf: {const: string; title: string}[];
+  };
 
   export interface IAnnotationMap {
     [targetID: string]: Annotation[];
