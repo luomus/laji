@@ -10,7 +10,7 @@ interface ILabelFieldMap {
   [field: string]: ILabelField;
 }
 
-interface ISpecialTransform {
+export interface ISpecialTransform {
   [field: string]: (value: any) => {[field: string]: LabelDataValue};
 }
 

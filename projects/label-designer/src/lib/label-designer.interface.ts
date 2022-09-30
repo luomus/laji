@@ -281,9 +281,6 @@ export interface IColumnMap {
   [col: string]: string;
 }
 
-/**
- * @internal
- */
 export type LabelDataValue = string|number|boolean|string[];
 
 export interface ILabelData {
