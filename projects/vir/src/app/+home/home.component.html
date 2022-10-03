@@ -35,7 +35,7 @@
       <p class="mt-5" translate>vir.home.agreement</p>
       <lu-button anchor="https://cdn.laji.fi/files/vir/vir_mallisopimus.pdf" target="_blank"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.agreement.btn" | translate }}</lu-button>
       <p class="mt-5" translate>vir.home.changelog</p>
-      <lu-button [anchor]="['/about/6669']" target="_self"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.changelog.btn" | translate }}</lu-button>
+      <lu-button [anchor]="['/about/6669'] | localize" target="_self"><i class="glyphicon glyphicon-file"></i> {{ "vir.home.changelog.btn" | translate }}</lu-button>
     </div>
     <div class="flex-grow-2 d-flex flex-col justify-center items-center instructions-info">
       <i class="glyphicon glyphicon-info-sign"></i>
