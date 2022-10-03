@@ -182,7 +182,7 @@ export class ImportService {
 
   private findDocumentData(data: ILevelData[]): IData {
     const l = (data || []).length;
-    for (let i = 0; i <= l; i++) {
+    for (let i = 0; i < l; i++) {
       if (data[i].document) {
         return data[i].document;
       }
@@ -217,13 +217,23 @@ export class ImportService {
 
     const documents: {[hash: string]: ILevelData[]} = {};
     rows.forEach((row, rowIdx) => {
+      // Initialize data for all required levels
       const parentData: ILevelData = {};
+      for (const level of [LEVEL_DOCUMENT, LEVEL_GATHERING, LEVEL_UNIT]) {
+        parentData[level] = {
+          rowIdx,
+          hash: '' + rowIdx,
+          data: {}
+        };
+      }
+
       allCols.forEach(col => {
         const field = fields[mapping[col]];
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         if (!this.hasValue(value)) {
           return;
         }
+
         const parent = this.getParent(field, combineBy);
         if (!parentData[parent]) {
           parentData[parent] = {
@@ -296,6 +306,7 @@ export class ImportService {
           if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
             if (ignoreRowsWithNoCount && level === LEVEL_UNIT && !this.hasCountValue(row[level].data)) {
               docs[hash].skipped.push(row[level].rowIdx);
+              delete docs[hash].rows[row[level].rowIdx];
               return;
             }
             const parentHash = this.findParentHash(row, level);
@@ -310,6 +321,10 @@ export class ImportService {
           }
         });
       });
+
+      if (Object.keys(docs[hash].rows).length === 0) {
+        docs[hash].document = null;
+      }
     });
 
     return Object.keys(docs).map((hash) => ({document: docs[hash].document, rows: docs[hash].rows, skipped: docs[hash].skipped}));
