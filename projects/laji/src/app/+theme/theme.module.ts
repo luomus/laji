@@ -36,7 +36,6 @@ import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
 import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
 import { SelectModule } from '../shared-modules/select/select.module';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
-import { DatasetMetadataModule } from '../shared-modules/dataset-metadata/dataset-metadata.module';
 
 /* eslint-enable max-len */
 
@@ -54,8 +53,7 @@ import { DatasetMetadataModule } from '../shared-modules/dataset-metadata/datase
     BreadcrumbModule,
     TreeSelectModule,
     SelectModule,
-    DocumentViewerModule,
-    DatasetMetadataModule,
+    DocumentViewerModule
   ],
   declarations: [
     HerpetologyComponent,
