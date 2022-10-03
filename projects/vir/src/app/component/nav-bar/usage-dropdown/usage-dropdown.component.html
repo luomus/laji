@@ -11,19 +11,6 @@
     </div>
   </a>
 </div>
-<div class="d-flex flex-nowrap mb-4">
-  <div class="img-container">
-    <img src="/static/images/icons/person.svg">
-  </div>
-  <a [routerLink]="['/usage/by-organization'] | localize" (click)="onClose()" class="nav-container">
-    <div class="nav-title">
-      {{ 'usage.byOrganization' | translate }}
-    </div>
-    <div class="nav-description">
-      {{ 'usage.byOrganization.intro' | translate }}
-    </div>
-  </a>
-</div>
 <div class="d-flex flex-nowrap mb-2">
   <div class="img-container">
     <span class="glyphicon glyphicon-download-alt"></span>
@@ -34,6 +21,19 @@
     </div>
     <div class="nav-description">
       {{ 'usage.byUser.intro' | translate }}
+    </div>
+  </a>
+</div>
+<div class="d-flex flex-nowrap mb-4">
+  <div class="img-container">
+    <img src="/static/images/icons/person.svg">
+  </div>
+  <a [routerLink]="['/usage/by-organization'] | localize" (click)="onClose()" class="nav-container">
+    <div class="nav-title">
+      {{ 'usage.byOrganization' | translate }}
+    </div>
+    <div class="nav-description">
+      {{ 'usage.byOrganization.intro' | translate }}
     </div>
   </a>
 </div>
