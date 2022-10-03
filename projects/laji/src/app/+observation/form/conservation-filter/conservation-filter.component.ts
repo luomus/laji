@@ -5,7 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -25,8 +25,8 @@ export class ConservationFilterComponent {
   @Output() redListStatusChange = new EventEmitter<string[]>();
   @Output() operatorChange: Observable<'AND' | 'OR'>;
 
-  form: FormGroup;
-  constructor(fb: FormBuilder) {
+  form: UntypedFormGroup;
+  constructor(fb: UntypedFormBuilder) {
     this.form = fb.group({
       operator: 'AND'
     });

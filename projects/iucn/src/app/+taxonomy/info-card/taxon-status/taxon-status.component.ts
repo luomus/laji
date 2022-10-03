@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-taxon-status',
+  selector: 'iucn-taxon-status',
   templateUrl: './taxon-status.component.html',
   styleUrls: ['./taxon-status.component.css']
 })

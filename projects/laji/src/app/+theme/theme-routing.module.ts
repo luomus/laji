@@ -24,6 +24,7 @@ const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
     path: 'luomusgrc',
+    pathMatch: 'prefix',
     component: GeneticResourceLayoutComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
@@ -50,6 +51,7 @@ const routes: Routes = [
   },
   {
     path: 'datasets',
+    pathMatch: 'prefix',
     children: [
       {
         path: '',
@@ -72,6 +74,7 @@ const routes: Routes = [
   },
   {
     path: 'kerttu',
+    pathMatch: 'prefix',
     component: KerttuClosedComponent,
     data: {
       title: 'Kerttu'
@@ -97,7 +100,7 @@ const routes: Routes = [
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
   {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},
   {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},
-  {path: '**', component: NotFoundComponent},
+  {path: '**', pathMatch: 'prefix', component: NotFoundComponent}
 ];
 
 @NgModule({

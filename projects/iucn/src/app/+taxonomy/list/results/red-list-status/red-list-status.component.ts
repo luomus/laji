@@ -22,7 +22,7 @@ interface RedListStatusDataInternal extends RedListStatusData {
 }
 
 @Component({
-  selector: 'laji-red-list-status',
+  selector: 'iucn-red-list-status',
   templateUrl: './red-list-status.component.html',
   styleUrls: ['./red-list-status.component.scss']
 })

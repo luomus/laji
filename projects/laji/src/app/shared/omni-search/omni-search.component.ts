@@ -12,7 +12,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
@@ -44,7 +44,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Output() searchClose = new EventEmitter<void>();
 
   public search = '';
-  public searchControl = new FormControl();
+  public searchControl = new UntypedFormControl();
   public active = 0;
   public taxa: InternalTaxon[] = [];
   public taxon?: InternalTaxon;

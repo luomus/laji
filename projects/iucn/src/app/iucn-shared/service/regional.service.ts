@@ -33,11 +33,11 @@ export class RegionalService {
   rootGroups = ['MVL.721', 'MVL.727', 'MVL.1042', 'MVL.799', 'MVL.729']; // putkilokasvit, sammaleet, sienet ja jäkälät, perhoset, linnut
 
   private yearToChecklistVersion: {[year: string]: string} = {
-    '2020': 'MR.484'
+    2020: 'MR.484'
   };
 
   private yearToStatusEvaluationYear: {[year: string]: string} = {
-    '2020': '2019'
+    2020: '2019'
   };
 
   constructor(

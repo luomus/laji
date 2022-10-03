@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'laji-taxon-image',
+  selector: 'iucn-taxon-image',
   template: '<div class="img-container" *ngIf="image"><img [src]="image"></div>',
   styles: [`
     .img-container {

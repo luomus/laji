@@ -13,7 +13,7 @@ export class TranslatePipe implements PipeTransform {
     private translateService: TranslateService
   ) { }
 
-  transform(value: any, args?: object): string {
+  transform(value: any, args?: Record<string, any>): string {
     return this.translateService.get(value, args);
   }
 

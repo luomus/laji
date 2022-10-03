@@ -13,7 +13,7 @@ import { LabelService } from '../../label.service';
 })
 export class LabelPageComponent implements AfterViewInit {
 
-  @Input() data: object[];
+  @Input() data: Record<string, any>[];
   @Input() qrCodeErrorCorrectionLevel: QRCodeErrorCorrectionLevel = QRCodeErrorCorrectionLevel.levelM;
   @Output() ready = new EventEmitter<void>();
 

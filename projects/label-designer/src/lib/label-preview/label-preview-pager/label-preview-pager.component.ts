@@ -16,7 +16,7 @@ export class LabelPreviewPagerComponent {
   @Output() activeChange = new EventEmitter<number>();
 
   @Input()
-  set data(obj: object[]) {
+  set data(obj: Record<string, any>[]) {
     this.total = obj && obj.length || 0;
   }
 
