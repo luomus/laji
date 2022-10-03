@@ -79,7 +79,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
     collectionsWithChildren.sort((a, b) => {
       const diff = b.count - a.count;
-      
+
       if (diff) {
         return diff;
       }
@@ -94,7 +94,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
     const aggregate = aggregates.find(elem => elem.id === tree.id);
 
     if (this.excludedTypes.includes(tree.collectionType)) {
-      return undefined
+      return undefined;
     }
 
     if (tree.hasChildren) {
@@ -112,7 +112,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
       if (children.length !== 0) {
         children.sort((a, b) => {
           const diff = b.count - a.count;
-          
+
           if (diff) {
             return diff;
           }
@@ -120,7 +120,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
           return a.name > b.name ? 1 : -1;
         });
 
-        this.collectionsCount++
+        this.collectionsCount++;
 
         if (this.selected && tree.id === this.selected) {
           this.selectedOption = [{
@@ -138,7 +138,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
           count: aggregate ? aggregate.count + childCount : childCount
         };
       } else if (aggregate) {
-        this.collectionsCount++
+        this.collectionsCount++;
 
         return {
           id: tree.id,
@@ -148,7 +148,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
         };
       }
     } else if (aggregate) {
-      this.collectionsCount++
+      this.collectionsCount++;
 
       return {
         id: tree.id,
@@ -157,14 +157,14 @@ export class DatasetMetadataBrowserComponent implements OnInit {
         count: aggregate.count
       };
     } else if (this.showEmpty) {
-      this.collectionsCount++
+      this.collectionsCount++;
 
       return {
         id: tree.id,
         name: tree.longName,
         quality: tree.collectionQuality,
         count: 0
-      }
+      };
     }
 
     return undefined;

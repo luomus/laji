@@ -5,7 +5,7 @@ import { CollectionLangPipe } from './collection-lang.pipe';
 
 describe('Pipe: CollectionLange', () => {
   it('create an instance', () => {
-    let pipe = new CollectionLangPipe();
+    const pipe = new CollectionLangPipe();
     expect(pipe).toBeTruthy();
   });
 });

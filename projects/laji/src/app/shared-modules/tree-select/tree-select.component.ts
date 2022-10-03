@@ -60,7 +60,7 @@ export class TreeSelectComponent implements OnInit {
     this.options$.subscribe(data => {
       this.options = data;
 
-      this.cd.markForCheck()
+      this.cd.markForCheck();
     });
   }
 
@@ -82,9 +82,9 @@ export class TreeSelectComponent implements OnInit {
     this.modalRef.content.emitConfirm.subscribe(result => {
       const includeToReturn = [];
       const excludeToReturn = [];
-  
-      this.options = result
-  
+
+      this.options = result;
+
       result.forEach(option => {
         if (option.type === 'included') {
           includeToReturn.push(option.id);

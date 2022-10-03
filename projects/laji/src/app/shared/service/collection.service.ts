@@ -158,28 +158,28 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
       map(({collection}) => collection)
     );
   }
-  
+
   getCollectionSpecimenCounts$(id: string): Observable<ICollectionCounts> {
     return this.warehouseApi.warehouseQueryAggregateGet({cache: true, collectionId: [id]}, ['unit.superRecordBasis', 'unit.typeSpecimen'], undefined, 1000).pipe(
       map(data => (data.results || []) as any[]),
       map(data => {
         const toReturn = {};
 
-        data.forEach(data => {
-          if (data.aggregateBy['unit.superRecordBasis'] === 'PRESERVED_SPECIMEN') {
-            toReturn['specimen'] ? toReturn['specimen'] += data.count : toReturn['specimen'] = data.count;
+        data.forEach(d => {
+          if (d.aggregateBy['unit.superRecordBasis'] === 'PRESERVED_SPECIMEN') {
+            toReturn['specimen'] ? toReturn['specimen'] += d.count : toReturn['specimen'] = d.count;
 
-            if (data.aggregateBy['unit.typeSpecimen'] === 'true') {
-              toReturn['typeSpecimen'] ? toReturn['typeSpecimen'] += data.count : toReturn['typeSpecimen'] = data.count;
+            if (d.aggregateBy['unit.typeSpecimen'] === 'true') {
+              toReturn['typeSpecimen'] ? toReturn['typeSpecimen'] += d.count : toReturn['typeSpecimen'] = d.count;
             }
           }
 
-          toReturn['observation'] ? toReturn['observation'] += data.count : toReturn['observation'] = data.count;
+          toReturn['observation'] ? toReturn['observation'] += d.count : toReturn['observation'] = d.count;
         });
 
         return toReturn;
       })
-    )
+    );
   }
 
   getCollectionsAggregate$(query?: WarehouseQueryInterface, page = 1, collections: any[] = []): Observable<ICollectionAggregate[]> {

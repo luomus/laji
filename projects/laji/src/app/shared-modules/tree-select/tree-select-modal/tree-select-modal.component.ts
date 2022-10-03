@@ -12,7 +12,7 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
 })
 
 export class TreeSelectModalComponent {
-  @Input() selectedOptions$: SelectedOption[]; 
+  @Input() selectedOptions$: SelectedOption[];
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
@@ -33,7 +33,7 @@ export class TreeSelectModalComponent {
   ) { }
 
   deselect(id: string) {
-    this.treeSelectorComponent.deselect(id)
+    this.treeSelectorComponent.deselect(id);
   }
 
   close() {
@@ -41,11 +41,11 @@ export class TreeSelectModalComponent {
   }
 
   clear() {
-    this.treeSelectorComponent.clear()
+    this.treeSelectorComponent.clear();
   }
 
   changeSelected(newSelected: SelectedOption[]) {
-    this.selectedOptions = newSelected
+    this.selectedOptions = newSelected;
   }
 
   confirm() {

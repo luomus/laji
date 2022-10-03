@@ -29,7 +29,7 @@ export class TreeSelectorComponent implements OnInit {
   checkboxType: CheckboxType;
   filterDebounce$ = new Subject<string>();
   toHtmlInputElement = toHtmlInputElement;
-  
+
   state: ITreeState;
   options: ITreeOptions = {
     useVirtualScroll: true,
@@ -144,7 +144,7 @@ export class TreeSelectorComponent implements OnInit {
         this.nodeSelected(tree, node, $event);
       }
 
-      return
+      return;
     }
 
     const selected = this.selectedOptions.find(option => option.id === node.id);
@@ -161,7 +161,7 @@ export class TreeSelectorComponent implements OnInit {
         this.switchNodeSelection(node);
         this.clearChildSelections(node);
       } else {
-        this.nodeDeselected(tree, node, $event)
+        this.nodeDeselected(tree, node, $event);
       }
     } else if (this.tristate && node.isActive && selected?.type === 'excluded') {
       this.nodeDeselected(tree, node, $event);
@@ -178,7 +178,7 @@ export class TreeSelectorComponent implements OnInit {
       type
     }];
 
-    this.emitSelect.emit(this.selectedOptions)
+    this.emitSelect.emit(this.selectedOptions);
   }
 
   addNodeToSelection(node: TreeNode, type: 'included' | 'excluded' = 'included') {
@@ -188,7 +188,7 @@ export class TreeSelectorComponent implements OnInit {
       type
     });
 
-    this.emitSelect.emit(this.selectedOptions)
+    this.emitSelect.emit(this.selectedOptions);
   }
 
   switchNodeSelection(node: TreeNode) {
@@ -203,13 +203,13 @@ export class TreeSelectorComponent implements OnInit {
       }
     });
 
-    this.emitSelect.emit(this.selectedOptions)
+    this.emitSelect.emit(this.selectedOptions);
   }
 
   removeNodeFromSelection(node: TreeNode) {
     this.selectedOptions = this.selectedOptions.filter(option => option.id !== node.id);
 
-    this.emitSelect.emit(this.selectedOptions)
+    this.emitSelect.emit(this.selectedOptions);
   }
 
   getCheckboxValue(id: string) {
@@ -255,7 +255,7 @@ export class TreeSelectorComponent implements OnInit {
     this.removeNodeFromSelection(node);
 
     if (this.openOnSelect) {
-      node.collapseAll()
+      node.collapseAll();
     }
 
     this.multiselect ? TREE_ACTIONS.TOGGLE_ACTIVE_MULTI(tree, node, $event) : TREE_ACTIONS.TOGGLE_ACTIVE(tree, node, $event);
