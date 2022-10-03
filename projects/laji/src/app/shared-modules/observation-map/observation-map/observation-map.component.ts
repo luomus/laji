@@ -83,7 +83,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() color: any;
   @Input() showLoadMore = true;
   @Input() settingsKey = 'observationMap';
-  @Input() legend = false;
+  @Input() hideLegend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
   @Input() showIndividualPointsWhenLessThan = 10000;
@@ -113,8 +113,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   };
   loading = false;
   reloading = false;
-  topMargin = '0';
-  legendList: {color: string; range: string}[] = [];
 
   drawDataSubscription: Subscription;
 
@@ -178,8 +176,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (changes['query'] || changes['ready']) {
       this.updateMapData();
     }
-    this.initLegendTopMargin();
-    this.initLegend();
   }
 
   ngOnDestroy() {
@@ -221,32 +217,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMapData();
     }
-  }
-
-  initLegendTopMargin(): void {
-    const top = 20, items = this.color instanceof Array ? this.color.length : 1;
-    this.topMargin = '-' + (top + (items * 20)) + 'px';
-  }
-
-  initLegend(): void {
-    const legend = [];
-    let start = 1;
-    if (this.color instanceof Array) {
-      this.color.map((color, idx) => {
-        let end = '+', newStart;
-        if (this.colorThresholds[idx]) {
-          newStart = this.colorThresholds[idx];
-          end = '-' + newStart;
-        }
-        legend.push({
-          color,
-          range: start + end
-        });
-        start = newStart + 1;
-      });
-    }
-    this.legendList = legend;
-    this.changeDetector.markForCheck();
   }
 
   refreshMap() {

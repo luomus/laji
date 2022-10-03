@@ -5,7 +5,7 @@
           *ngIf="!reloading"
           [options]="_mapOptions"
           [data]="mapData"
-          [visualization]="visualization"
+          [visualization]="hideLegend ? undefined : visualization"
           [settingsKey]="settingsKey"
           [visualizationMode]="visualizationMode"
           (create)="onCreate($event)"
@@ -14,11 +14,6 @@
           (move)="onMapPanOrZoom($event)"
           (visualizationModeChange)="onVisualizationModeChange($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
-<!--     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
-      <li *ngFor="let leg of legendList">
-        <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.range }}
-      </li>
-    </ul> -->
   </laji-map>
 </div>
 
