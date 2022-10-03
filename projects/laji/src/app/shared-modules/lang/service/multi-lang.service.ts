@@ -42,7 +42,7 @@ export class MultiLangService {
     return '';
   }
 
-  static valuesToArray(multi:Record<string, unknown>): string[] {
+  static valuesToArray(multi: Record<string, unknown>): string[] {
     const values = [];
 
     for (const lang of MultiLangService.lang) {
@@ -58,7 +58,7 @@ export class MultiLangService {
       }
     }
 
-    return values
+    return values;
   }
 
   static valueToString(multi: Record<string, unknown>): string {

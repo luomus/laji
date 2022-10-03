@@ -13,6 +13,6 @@ export class MultiLangRowsPipe implements PipeTransform {
       return [value];
     }
 
-    return MultiLangService.valuesToArray(value);    
+    return MultiLangService.valuesToArray(value);
   }
 }

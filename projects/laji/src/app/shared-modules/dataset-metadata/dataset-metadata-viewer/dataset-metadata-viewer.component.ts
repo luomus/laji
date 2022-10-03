@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Collection } from '../../../shared/model/Collection';
 import { ICollectionCounts } from '../../../shared/service/collection.service';
 import { Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dataset-metadata-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataViewerComponent implements OnInit, OnChanges {
+export class DatasetMetadataViewerComponent {
   @Input() collection$: Observable<Collection>;
   @Input() collectionCounts$: Observable<ICollectionCounts>;
 
@@ -17,16 +17,6 @@ export class DatasetMetadataViewerComponent implements OnInit, OnChanges {
   collectionCounts: ICollectionCounts;
   dataLoading = false;
   countLoading = false;
-
-  constructor(
-    private cd: ChangeDetectorRef,
-  ) { }
-
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-  }
 
   isInternalLink(collection) {
     return /^HR\.\d+$/g.test(collection.id);

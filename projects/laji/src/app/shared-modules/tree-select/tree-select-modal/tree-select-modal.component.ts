@@ -11,8 +11,8 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TreeSelectModalComponent implements OnInit {
-  @Input() selectedOptions$: SelectedOption[]; 
+export class TreeSelectModalComponent {
+  @Input() selectedOptions$: SelectedOption[];
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
@@ -28,14 +28,12 @@ export class TreeSelectModalComponent implements OnInit {
 
   selectedOptions: SelectedOption[];
 
-  ngOnInit() { }
-
   constructor(
     private modalRef: BsModalRef,
   ) { }
 
   deselect(id: string) {
-    this.treeSelectorComponent.deselect(id)
+    this.treeSelectorComponent.deselect(id);
   }
 
   close() {
@@ -43,11 +41,11 @@ export class TreeSelectModalComponent implements OnInit {
   }
 
   clear() {
-    this.treeSelectorComponent.clear()
+    this.treeSelectorComponent.clear();
   }
 
   changeSelected(newSelected: SelectedOption[]) {
-    this.selectedOptions = newSelected
+    this.selectedOptions = newSelected;
   }
 
   confirm() {

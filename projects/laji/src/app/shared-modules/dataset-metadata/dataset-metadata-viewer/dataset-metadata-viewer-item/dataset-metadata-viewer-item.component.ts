@@ -1,6 +1,6 @@
 import { Component, OnChanges, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 
-const EMPTY_VALUE = ' '
+const EMPTY_VALUE = ' ';
 
 @Component({
   selector: 'laji-dataset-metadata-viewer-item',

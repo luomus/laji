@@ -31,7 +31,7 @@ export class LabelDesignerComponent {
   allowLabelItemRepeat = false;
 
   @Input()
-  data: object[];
+  data: Record<string, any>[];
 
   @Input()
   defaultDomain = 'http://tun.fi/EXAMPLE.';

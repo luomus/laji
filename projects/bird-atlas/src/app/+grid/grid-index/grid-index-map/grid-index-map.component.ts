@@ -2,14 +2,14 @@ import {
   AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild
 } from '@angular/core';
-import { LajiMap, DataOptions, TileLayersOptions, Lang } from 'laji-map';
+import { LajiMap, DataOptions, TileLayersOptions, Lang, GetFeatureStyleOptions } from 'laji-map';
 import { PathOptions } from 'leaflet';
-import { environment } from 'projects/bird-atlas/src/env/environment';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasActivityCategory, AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
-import { getAtlasActivityCategoryColor, getSpeciesCountColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
+import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { PopstateService } from '../../../core/popstate.service';
+import {getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
   grid: AtlasGrid;
@@ -26,17 +26,18 @@ const getFeatureCollection = (grid: AtlasGrid) => ({
   ],
   type: 'FeatureCollection'
 });
-const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode) => (
-  (opt): PathOptions => ({
-    weight: 0,
-    opacity: 0,
-    fillOpacity: .5,
-    color: '#' + (
-      visualizationMode === 'activityCategory'
-        ? getAtlasActivityCategoryColor(grid[opt.featureIdx].activityCategory.key)
-        : getSpeciesCountColor(grid[opt.featureIdx].speciesCount)
-    )
-  })
+export const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode) => (
+  (opt: GetFeatureStyleOptions): PathOptions => {
+    const sq: AtlasGridSquare = grid[opt.featureIdx];
+    const o: PathOptions = {
+      weight: 0,
+      color: '#000000',
+      opacity: .2,
+      fillColor: '#' + getFeatureColor(sq, visualizationMode),
+      fillOpacity: .8
+    };
+    return o;
+  }
 );
 
 @Component({
@@ -55,17 +56,19 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
 
   private map: any;
   private mapData$ = new BehaviorSubject<MapData>(undefined);
+  private mapInitialized = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
-    private zone: NgZone
+    private zone: NgZone,
+    private popstateService: PopstateService
   ) {
     this.zone.runOutsideAngular(() => {
       this.map = new LajiMap({
         tileLayers: <TileLayersOptions>{
           layers: {
             taustakartta: { opacity: 1, visible: true },
-            atlasGrid: { opacity: 1, visible: true }
+            atlasGrid: { opacity: .6, visible: true }
           }
         },
         controls: true,
@@ -77,12 +80,21 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngAfterViewInit(): void {
+    const pathData = this.popstateService.getPathData();
     this.map.setRootElem(this.lajiMapElem.nativeElement);
     this.mapData$.pipe(
       takeUntil(this.unsubscribe$),
       filter(d => d !== undefined)
     ).subscribe(mapData => {
       this.map.setData(mapData.data);
+      if (!this.mapInitialized) {
+        if (pathData['map']) {
+          this.map.setNormalizedZoom(pathData['map'].zoom);
+          this.map.setCenter(pathData['map'].center);
+          this.map.setTileLayers(pathData['map'].tileLayers);
+        }
+        this.mapInitialized = true;
+      }
     });
   }
 
@@ -117,7 +129,16 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   }
 
   ngOnDestroy(): void {
-    this.map?.destroy();
+    if (this.map) {
+      this.popstateService.setPathData({
+        map: {
+          center: this.map.getOption('center'),
+          zoom: this.map.getNormalizedZoom(),
+          tileLayers: this.map.getOption('tileLayers')
+        }
+      });
+      this.map.destroy();
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

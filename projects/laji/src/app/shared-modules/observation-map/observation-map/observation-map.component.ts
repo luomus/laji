@@ -23,10 +23,11 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { latLngBounds as LlatLngBounds } from 'leaflet';
 import { TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
+
+const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 
 @Component({
   selector: 'laji-observation-map',
@@ -41,12 +42,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() visible = false;
   @Input() query: any;
   @Input() opacity = .5;
-  @Input() lat: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
-  @Input() lon: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
-  // zoom levels from lowest to highest when to move to more accurate grid
-  @Input() zoomThresholds: number[] = [4];
-  // when active level is higher or equal to this will be using viewport coordinates to show grid
-  @Input() onlyViewPortThreshold = 1;
+  @Input() zoomThresholdAggregateByLatLevels: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
+  @Input() zoomThresholdAggregateByLonLevels: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
+  // Zoom levels from lowest to highest when to move to more accurate grid.
+  @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
+  // When active zoom threshold level (index in 'zoomThresholds') is below this, the viewport coordinates are added to the query.
+  @Input() onlyViewportThresholdLevel = 1;
   @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
     this._mapOptions = {
@@ -70,7 +71,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this._mapOptions = {...this._mapOptions, clickBeforeZoomAndPan};
   }
   @Input() ready = true;
-  @Input() unitCount: number;
   /**
    * height < 0: fill remaining height in window
    * height > 0: set absolute height
@@ -84,7 +84,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() legend = false;
   @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
-  @Input() showItemsWhenLessThan = 0;
+  @Input() showIndividualPointsWhenLessThan = 10000;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'unit.taxonVerbatim',
@@ -123,16 +123,17 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     tileLayerName: LajiMapTileLayerName.openStreetMap
   };
 
-  private prev = '';
+  private currentCacheKey = '';
   private subDataFetch: Subscription;
   private style: (count: number) => string;
-  private viewBound: any;
-  private activeLevel = 0;
-  private activeBounds: any;
+  private activeZoomThresholdLevel = 0;
+  private activeZoomThresholdBounds?: any;
   private reset = true;
-  private showingItems = false;
+  private showingIndividualPoints = false;
   private dataCache: any;
   private init = false;
+  private totalCount: number;
+  private totalCountSubscription: Subscription;
 
 
   private static getValue(row: any, propertyName: string): string {
@@ -165,8 +166,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (!this.init) {
       this.init = true;
 
-      this.viewBound = LlatLngBounds;
-      this.activeBounds = LlatLngBounds;
       if (!this.color) {
         this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
       }
@@ -174,8 +173,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     this.decorator.lang = this.translate.currentLang;
     // First update is triggered by tile layer update event from the laji-map
-    if (changes['query'] || changes['unitCount'] || changes['ready']) {
+    if (changes['query'] || changes['ready']) {
       this.updateMapData();
+      this.updateTotalCount();
     }
     this.initLegendTopMargin();
     this.initLegend();
@@ -184,6 +184,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   ngOnDestroy() {
     this.subDataFetch?.unsubscribe();
     this.drawDataSubscription?.unsubscribe();
+    this.totalCountSubscription?.unsubscribe();
   }
 
   onCreate(e) {
@@ -198,29 +199,31 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.lajiMap.drawToMap(type);
   }
 
-  onMove(e) {
-    const curActive = this.activeLevel;
+  onMapPanOrZoom(e) {
+    const curActiveZoomThresholdLevel = this.activeZoomThresholdLevel;
     const len = this.zoomThresholds.length;
-    this.viewBound = e.bounds;
-    this.activeLevel = 0;
+    this.activeZoomThresholdLevel = 0;
     for (let i = 0; i < len; i++) {
       if (this.zoomThresholds[i] < e.zoom) {
-        this.activeLevel = i + 1;
+        this.activeZoomThresholdLevel = i + 1;
       }
     }
-    if (this.activeBounds && !this.activeBounds.contains) {
-      this.activeBounds = e.bounds.pad(1);
+
+    const outOfActiveBounds = this.activeZoomThresholdBounds && !this.activeZoomThresholdBounds.contains(e.bounds);
+    const alreadyShowingAll = !this.activeZoomThresholdBounds && this.totalCount < this.showIndividualPointsWhenLessThan;
+    const zoomedInAndNotShowingPoints = this.activeZoomThresholdLevel > curActiveZoomThresholdLevel && !this.showingIndividualPoints;
+    const zoomedOut = this.activeZoomThresholdLevel < curActiveZoomThresholdLevel;
+
+    if (alreadyShowingAll) {
+      return;
     }
-    if (
-      e.type === 'moveend' && (
-        curActive !== this.activeLevel ||
-        (this.activeLevel >= this.onlyViewPortThreshold && !this.activeBounds.contains(e.bounds))
-      )
+
+    if (outOfActiveBounds
+      || zoomedInAndNotShowingPoints
+      || zoomedOut
     ) {
-      this.activeBounds = e.bounds.pad(1);
-      if (!this.showingItems) {
-        this.updateMapData();
-      }
+      this.activeZoomThresholdBounds = e.bounds.pad(1);
+      this.updateMapData();
     }
   }
 
@@ -293,7 +296,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
-  private getFeatureCollection(): Observable<any> {
+  private getDrawFeatureCollection(): Observable<any> {
     const featuresFromQueryCoordinates = (coordinates: any): Observable<any[]> => ObservableOf(coordinates
         ? coordinates.map((coord: any) =>
             getFeatureFromGeometry(
@@ -308,41 +311,34 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateMapData() {
-    if (!this.ready || (typeof this.unitCount !== 'undefined' && (this.unitCount === 0 || this.unitCount === null))) {
-      if (this.unitCount === 0) {
-        this.prev = '';
-        this.emptyMap();
-      }
+    if (!this.ready) {
       return;
     }
     const cacheKey = this.getCacheKey(this.query);
-    if (this.prev === cacheKey) {
+    if (this.currentCacheKey === cacheKey) {
       return;
     }
-    this.prev = cacheKey;
+    this.currentCacheKey = cacheKey;
     if (this.subDataFetch) {
       this.subDataFetch.unsubscribe();
     }
     this.drawData.featureCollection.features = [];
     this.drawDataSubscription?.unsubscribe();
-    this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+    this.drawDataSubscription = this.getDrawFeatureCollection().subscribe(featureCollection => {
       this.drawData = {...this.drawData, featureCollection};
       this.reset = true;
       this.loading = true;
-      this.showingItems = false;
-      this.addToMap(this.query);
+      this.showingIndividualPoints = false;
+      this.fetchQueryAndShowOnMap(this.query);
     });
   }
 
-  private addToMap(query: WarehouseQueryInterface, page = 1) {
-    if (this.limitResults && !query.coordinates) {
-      query = {...query, coordinates: ['51.692882:72.887912:-6.610917:60.892721:WGS84']};
-    }
-    const items$ = this.warehouseService.warehouseQueryListGet(query, [
+  private getItemsAsPoints$(query: WarehouseQueryInterface) {
+    return this.warehouseService.warehouseQueryListGet(query, [
       'gathering.conversions.wgs84CenterPoint.lon',
       'gathering.conversions.wgs84CenterPoint.lat',
       ...this.itemFields
-    ], undefined, this.showItemsWhenLessThan).pipe(map(data => {
+    ], undefined, this.showIndividualPointsWhenLessThan).pipe(map(data => {
       const features = [];
       if (data.results) {
         data.results.map(row => {
@@ -382,16 +378,18 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         }
       };
     })).pipe(tap(() => {
-      if (this.activeLevel < this.onlyViewPortThreshold) {
-        this.showingItems = true;
-      }
+      this.showingIndividualPoints = true;
     }));
+  }
 
-    const countRemote$ = this.warehouseService.warehouseQueryCountGet(query).pipe(
+  private getCountForQuery$(query: WarehouseQueryInterface) {
+    return this.warehouseService.warehouseQueryCountGet(query).pipe(
       map(result => result.total)
     );
+  }
 
-    const count$ = (typeof this.unitCount === 'undefined' ? countRemote$ : of(this.unitCount)).pipe(
+  private tryToQueryIndividualPoints$(query: WarehouseQueryInterface, page: number) {
+    return this.getCountForQuery$(query).pipe(
       switchMap(cnt => {
         if (!cnt) {
           return of({
@@ -401,25 +399,49 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
               features: []
             }
           });
-        } else if (cnt < this.showItemsWhenLessThan) {
-          return items$;
+        } else if (cnt < this.showIndividualPointsWhenLessThan) {
+          return this.getItemsAsPoints$(query);
         } else {
           return (this.warehouseService.warehouseQueryAggregateGet(
-            this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
+            query, this.activeZoomThresholdLevelToAggregateBy(),
             undefined, this.size, page, true
-          ));
+          )).pipe(tap(() => {
+            this.showingIndividualPoints = false;
+          }));
         }
       }));
+  }
 
-    this.subDataFetch = ObservableOf(this.showItemsWhenLessThan).pipe(
-      switchMap((less) => less > 0 ? count$ : this.warehouseService.warehouseQueryAggregateGet(
-          this.addViewPortCoordinates(query), [this.lat[this.activeLevel] + ',' + this.lon[this.activeLevel]],
-          undefined, this.size, page, true
-        ))).pipe(
+  activeZoomThresholdLevelToAggregateBy() {
+    return ['zoomThresholdAggregateByLatLevels', 'zoomThresholdAggregateByLonLevels'].map(latOrLon => {
+      let level = this.activeZoomThresholdLevel;
+      let aggregateBy = this[latOrLon][level];
+      while (!aggregateBy) {
+        level--;
+        aggregateBy = this[latOrLon][level];
+      }
+      return aggregateBy;
+    });
+  }
+
+  private fetchQueryAndShowOnMap(query: WarehouseQueryInterface, page = 1) {
+    if (this.limitResults && !query.coordinates) {
+      query = {...query, coordinates: LIMITED_BOUNDS};
+    }
+    query = this.addViewportCoordinates(query);
+    const simpleAggregate$ = this.warehouseService.warehouseQueryAggregateGet(
+      query, this.activeZoomThresholdLevelToAggregateBy(),
+      undefined, this.size, page, true
+    ).pipe(tap(() => {
+      this.showingIndividualPoints = false;
+    }));
+
+    this.subDataFetch = ObservableOf(this.showIndividualPointsWhenLessThan).pipe(
+      switchMap((less) => less > 0 ? this.tryToQueryIndividualPoints$(query, page) : simpleAggregate$)).pipe(
         timeout(WarehouseApi.longTimeout * 3),
         delay(100),
         retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
-      ).subscribe((data: any) => {
+        ).subscribe((data: any) => {
           this.clearDrawData();
           if (this.reset) {
             this.reset = false;
@@ -430,7 +452,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           }
           if (data.lastPage > page && (this.lastPage === 0 || page <= this.lastPage)) {
             page++;
-            this.addToMap(query, page);
+            this.fetchQueryAndShowOnMap(query, page);
           } else {
             this.mapData = [{
               featureCollection: this.dataCache,
@@ -451,13 +473,27 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       );
   }
 
-  private addViewPortCoordinates(query: WarehouseQueryInterface) {
-    if (!query.coordinates && this.activeBounds && this.activeLevel >= this.onlyViewPortThreshold) {
+  private queryIsInsideViewport(query: WarehouseQueryInterface): boolean {
+    if (!query.coordinates)  {
+      return false;
+    }
+
+    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+    return this.lajiMap?.map.map.getBounds().contains(bounds);
+  }
+
+  private addViewportCoordinates(query: WarehouseQueryInterface) {
+    if (
+      !this.showingIndividualPoints
+      && !this.queryIsInsideViewport(this.query)
+      && this.activeZoomThresholdBounds
+      && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel
+    ) {
       return {
         ...query,
         coordinates: [
-          Math.max(this.activeBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeBounds.getNorthEast().lat, 90) + ':' +
-          Math.max(this.activeBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeBounds.getNorthEast().lng, 180) + ':WGS84'
+          Math.max(this.activeZoomThresholdBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lat, 90) + ':' +
+          Math.max(this.activeZoomThresholdBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lng, 180) + ':WGS84'
         ]
       };
     }
@@ -465,14 +501,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private getCacheKey(query: WarehouseQueryInterface) {
-    const cache = [JSON.stringify(query), this.limitResults, this.unitCount].join(':');
-    if (!(this.activeBounds && this.activeBounds.toBBoxString)) {
-      return cache + this.activeLevel;
+    const cache = [JSON.stringify(query), this.limitResults].join(':');
+    if (!this.activeZoomThresholdBounds) {
+      return cache + this.activeZoomThresholdLevel;
     }
-    if ((!this.activeBounds || this.activeLevel < this.onlyViewPortThreshold) || query.coordinates) {
-      return cache + this.activeLevel;
+    if ((!this.activeZoomThresholdBounds || this.activeZoomThresholdLevel < this.onlyViewportThresholdLevel) || query.coordinates) {
+      return cache + this.activeZoomThresholdLevel;
     }
-    return cache + this.activeBounds.toBBoxString() + this.activeLevel;
+    return cache + this.activeZoomThresholdBounds.toBBoxString() + this.activeZoomThresholdLevel;
   }
 
   private getClusterStyle(count) {
@@ -504,7 +540,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       .subscribe((moreInfo) => {
         try {
           const properties = this.mapData[0].featureCollection.features[featureIdx].properties;
-          const cnt = properties.count;
           let description = '';
           this.itemFields.map(field => {
             const name = field.split('.').pop();
@@ -526,10 +561,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           }
           if (description) {
             cb(description);
-          } else if (cnt) {
-            return;
-            // this.translate.getList('result.allObservation')
-            //  .subscribe(translation => cb(`${cnt} ${translation}`));
           }
         } catch (e) {
           this.logger.log('Failed to display popup for the map', e);
@@ -543,12 +574,20 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     if (this.query.coordinates) {
       this.drawDataSubscription?.unsubscribe();
-      this.drawDataSubscription = this.getFeatureCollection().subscribe(featureCollection => {
+      this.drawDataSubscription = this.getDrawFeatureCollection().subscribe(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
         mapData.push(this.drawData);
         this.mapData = mapData;
       });
     }
+  }
+
+  private updateTotalCount() {
+    this.totalCountSubscription?.unsubscribe();
+    this.totalCountSubscription = this.getCountForQuery$(this.query).subscribe(count => {
+      this.totalCount = count;
+    });
+
   }
 }
 

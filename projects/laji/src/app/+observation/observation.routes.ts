@@ -6,6 +6,7 @@ import { ResetComponent } from './reset/reset.component';
 export const observationRoutes: Routes = [
   {
     path: '',
+    pathMatch: 'prefix',
     children: [
       {
         path: '',

@@ -24,6 +24,7 @@ const routes: Routes = [
   {path: '',  pathMatch: 'full', component: ThemeComponent, data: {title: 'navigation.theme'}},
   {
     path: 'luomusgrc',
+    pathMatch: 'prefix',
     component: GeneticResourceLayoutComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'instructions'},
@@ -50,6 +51,7 @@ const routes: Routes = [
   },
   {
     path: 'datasets',
+    pathMatch: 'prefix',
     children: [
       {
         path: '',
@@ -72,6 +74,7 @@ const routes: Routes = [
   },
   {
     path: 'kerttu',
+    pathMatch: 'prefix',
     component: KerttuClosedComponent,
     data: {
       title: 'Kerttu'
@@ -84,6 +87,10 @@ const routes: Routes = [
       {path: 'result', pathMatch: 'full', redirectTo: ''}
     ]
   },
+  {
+    path: 'dataset-metadata',
+    loadChildren: () => import('../shared-modules/dataset-metadata/dataset-metadata.module').then(m => m.DatasetMetadataModule)
+  },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},
   {path: 'identify',  pathMatch: 'full', component: IdentifyComponent, data: {title: 'navigation.identify'}},
@@ -93,9 +100,7 @@ const routes: Routes = [
   {path: 'pinkka',  pathMatch: 'full', component: PinkkaComponent, data: {title: 'navigation.pinkka'}},
   {path: 'publications',  pathMatch: 'full', component: BibliographyComponent, data: {title: 'finbif-bib.title'}},
   {path: 'hyonteisopas',  pathMatch: 'full', component: InsectGuideComponent, data: {title: 'navigation.hyonteisopas'}},
-  {path: 'dataset-metadata', pathMatch: 'full', component: DatasetMetadataComponent, data: {title: 'theme.dataset-metadata'}},
-  {path: 'dataset-metadata/:collectionId', pathMatch: 'full', component: DatasetMetadataComponent, data: {title: 'theme.dataset-metadata'}},
-  {path: '**', component: NotFoundComponent}
+  {path: '**', pathMatch: 'prefix', component: NotFoundComponent}
 ];
 
 @NgModule({

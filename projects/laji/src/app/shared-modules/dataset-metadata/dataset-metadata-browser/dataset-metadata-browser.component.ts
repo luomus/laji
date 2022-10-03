@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectedOption, TreeOptionsNode } from '../../tree-select/tree-select.component';
-import { CollectionService } from '../../../shared/service/collection.service';
+import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 
 @Component({
   selector: 'laji-dataset-metadata-browser',
@@ -17,7 +17,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
   collectionsCount = 0;
   selectedOption: SelectedOption[] = [];
-  optionsTree: TreeOptionsNode[] = null;
+  optionsTree: TreeOptionsNode[] = [];
   lang: string;
   showEmpty = false;
   loading = false;
@@ -38,7 +38,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setupTree()
+    this.setupTree();
   }
 
   toggleShowEmpty() {
@@ -50,23 +50,23 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   setupTree() {
     this.loading = true;
     this.cd.markForCheck();
-    this.initCollectionsTree().subscribe(data => {
+    this.initCollectionsTree$().subscribe(data => {
       this.optionsTree = data;
       this.loading = false;
       this.cd.markForCheck();
     });
   }
 
-  initCollectionsTree() {
+  initCollectionsTree$() {
     return zip(
-      this.collectionService.getCollectionsTree(),
-      this.collectionService.getCollectionsAggregate(),
+      this.collectionService.getCollectionsTree$(),
+      this.collectionService.getCollectionsAggregate$(),
     ).pipe(
       map(([ tree, agregates ]) => this.buildCollectionTree(tree, agregates))
     );
   }
 
-  buildCollectionTree(trees: any[], aggregates: any[]) {
+  buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
     const collectionsWithChildren = [];
 
     trees.forEach(tree => {
@@ -79,7 +79,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
     collectionsWithChildren.sort((a, b) => {
       const diff = b.count - a.count;
-      
+
       if (diff) {
         return diff;
       }
@@ -90,11 +90,11 @@ export class DatasetMetadataBrowserComponent implements OnInit {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, aggregates): TreeOptionsNode {
+  buildTree(tree: ICollectionsTreeNode, aggregates: ICollectionAggregate[]): TreeOptionsNode | undefined {
     const aggregate = aggregates.find(elem => elem.id === tree.id);
 
-    if (this.excludedTypes.includes(tree.collectionsType)) {
-      return undefined
+    if (this.excludedTypes.includes(tree.collectionType)) {
+      return undefined;
     }
 
     if (tree.hasChildren) {
@@ -112,7 +112,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
       if (children.length !== 0) {
         children.sort((a, b) => {
           const diff = b.count - a.count;
-          
+
           if (diff) {
             return diff;
           }
@@ -120,7 +120,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
           return a.name > b.name ? 1 : -1;
         });
 
-        this.collectionsCount++
+        this.collectionsCount++;
 
         if (this.selected && tree.id === this.selected) {
           this.selectedOption = [{
@@ -138,7 +138,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
           count: aggregate ? aggregate.count + childCount : childCount
         };
       } else if (aggregate) {
-        this.collectionsCount++
+        this.collectionsCount++;
 
         return {
           id: tree.id,
@@ -148,7 +148,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
         };
       }
     } else if (aggregate) {
-      this.collectionsCount++
+      this.collectionsCount++;
 
       return {
         id: tree.id,
@@ -157,14 +157,14 @@ export class DatasetMetadataBrowserComponent implements OnInit {
         count: aggregate.count
       };
     } else if (this.showEmpty) {
-      this.collectionsCount++
+      this.collectionsCount++;
 
       return {
         id: tree.id,
         name: tree.longName,
         quality: tree.collectionQuality,
         count: 0
-      }
+      };
     }
 
     return undefined;

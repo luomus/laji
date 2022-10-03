@@ -27,7 +27,7 @@
     <div class="col-sm-5 col-md-4">
       <label>{{ 'iucn.filter.habitat' | translate }}</label>
       <div class="input-group">
-        <select laji-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
+        <select iucn-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
         <span class="input-group-addon" *ngIf="type !== 'regional'">
           <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'iucn.results.onlyPrimary' | translate">
         </span>
@@ -35,11 +35,11 @@
     </div>
     <div class="col-sm-5 col-md-4" *ngIf="type !== 'regional'">
       <label>{{ 'iucn.filter.habitatSpecific' | translate }}</label>
-      <select [disabled]="!query?.habitat" laji-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="''"></select>
+      <select [disabled]="!query?.habitat" iucn-dropdown [value]="query?.habitatSpecific" (valueChange)="change('habitatSpecific', $event)" [options]="habitatsSpecific$ | async" [placeholder]="''"></select>
     </div>
     <div class="col-sm-5 col-md-4" *ngIf="type === 'regional'">
       <label>{{ 'iucn.filter.threatenedAtArea' | translate }}</label>
-      <laji-multi-select [value]="query?.threatenedAtArea" (valueChange)="change('threatenedAtArea', $event)" [options]="evaluationArea$ | async" [placeholder]="''"></laji-multi-select>
+      <iucn-multi-select [value]="query?.threatenedAtArea" (valueChange)="change('threatenedAtArea', $event)" [options]="evaluationArea$ | async" [placeholder]="''"></iucn-multi-select>
     </div>
   </div>
   <ng-container *ngIf="type !== 'regional'">
@@ -48,7 +48,7 @@
         <div class="col-sm-5 col-md-4">
           <label>{{ 'iucn.hasEndangermentReason' | translate }}</label>
           <div class="input-group">
-            <select laji-dropdown
+            <select iucn-dropdown
                     [value]="query?.reasons"
                     (valueChange)="change('reasons', $event)"
                     [placeholder]="''"
@@ -61,7 +61,7 @@
         <div class="col-sm-5 col-md-4">
           <label>{{ 'iucn.hasThreat' | translate }}</label>
           <div class="input-group">
-            <select laji-dropdown
+            <select iucn-dropdown
                     [value]="query?.threats"
                     (valueChange)="change('threats', $event)"
                     [placeholder]="''"
@@ -91,7 +91,7 @@
           <select class="form-control"  tabindex="-1">
             <option value="">{{ query.status ? query.status.join(',') : '' }}</option>
           </select>
-          <laji-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></laji-redlist-class-filter>
+          <iucn-redlist-class-filter [value]="query?.status" (valueChange)="change('status', $event)"></iucn-redlist-class-filter>
         </div>
       </div>
       <ng-template #statusDropDown>

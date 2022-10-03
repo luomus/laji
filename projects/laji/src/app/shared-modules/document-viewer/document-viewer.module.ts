@@ -91,6 +91,14 @@ import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
     AbundanceRowComponent,
     CollectionLangPipe
   ],
-  exports: [DocumentComponent, DocumentAnnotationComponent, DocumentPrintComponent, DocumentLocalComponent, ViewerModalComponent, AudioPlayerComponent, QualityRowComponent ]
+  exports: [
+    DocumentComponent,
+    DocumentAnnotationComponent,
+    DocumentPrintComponent,
+    DocumentLocalComponent,
+    ViewerModalComponent,
+    AudioPlayerComponent,
+    QualityRowComponent
+  ]
 })
 export class DocumentViewerModule { }

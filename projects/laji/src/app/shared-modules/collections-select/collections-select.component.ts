@@ -72,9 +72,9 @@ export class CollectionsSelectComponent implements OnChanges {
     const { collectionId, collectionIdNot, ...query } = this.query;
 
     return zip(
-      this.collectionService.getCollectionsTree(),
-      this.collectionService.getCollectionsAggregate(),
-      this.collectionService.getCollectionsAggregate(query)
+      this.collectionService.getCollectionsTree$(),
+      this.collectionService.getCollectionsAggregate$(),
+      this.collectionService.getCollectionsAggregate$(query)
     ).pipe(
       map(([ tree, allAgregates, filteredAggragates ]) => this.buildCollectionTree(tree, allAgregates, filteredAggragates))
     );
@@ -139,7 +139,7 @@ export class CollectionsSelectComponent implements OnChanges {
   }
 
   initCollections(): Observable<SelectedOption[]> {
-    return this.collectionService.getAll(this.lang, false).pipe(
+    return this.collectionService.getAll$(this.lang, false).pipe(
       map(data => {
         const toReturn: SelectedOption[] = [];
         data.forEach(item => {

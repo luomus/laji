@@ -13,18 +13,18 @@ export interface QueryParams extends RegionalFilterQuery {
 }
 
 @Component({
-  selector: 'laji-regional',
+  selector: 'iucn-regional',
   templateUrl: './regional.component.html',
   styleUrls: ['./regional.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegionalComponent implements OnDestroy {
-  types: {label: string, value: RegionalListType}[] = [
+  types: {label: string; value: RegionalListType}[] = [
     {label: 'iucn.regional.tab.status', value: 'status'},
     {label: 'iucn.regional.tab.species', value: 'species'}
   ];
 
-  years$: Observable<{label: string, value: string}[]>;
+  years$: Observable<{label: string; value: string}[]>;
   checklist?: string;
   groupSelectRootGroups: string[];
 
@@ -83,6 +83,6 @@ export class RegionalComponent implements OnDestroy {
         queryParams[i] = queryParams[i].join(',');
       }
     }
-    this.router.navigate([], {queryParams: queryParams});
+    this.router.navigate([], {queryParams});
   }
 }

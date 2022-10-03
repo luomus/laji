@@ -75,7 +75,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.notificationsTotal$ = this.notificationsFacade.total$;
     this.ngZone.runOutsideAngular(() => {
-      timer(1000, 60000).pipe(
+      timer(1000, 300000).pipe( // every 5 minutes
         switchMap(() => this.browserService.visibility$),
         filter(visible => visible),
         switchMap(() => this.userService.isLoggedIn$),

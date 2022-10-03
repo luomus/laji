@@ -20,7 +20,7 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
   collectionCounts$: Observable<ICollectionCounts>;
   showBrowser = true;
   isMobile = false;
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -34,9 +34,9 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.checkScreenWidth()
+    this.checkScreenWidth();
 
-    const routeCollectionId = this.route.snapshot.paramMap.get('collectionId')
+    const routeCollectionId = this.route.snapshot.paramMap.get('collectionId');
 
     if (routeCollectionId) {
       this.collectionId = routeCollectionId;
@@ -58,25 +58,21 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
 
   getCollectionData() {
     if (this.collectionId && this.collectionId !== this._collectionId) {
-      this.collection$ = this.collectionService.getById(this.collectionId, 'multi'),
-      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts(this.collectionId)
+      this.collection$ = this.collectionService.getById$(this.collectionId, 'multi');
+      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(this.collectionId);
 
       this.cd.markForCheck();
     }
   }
 
-  getSpecimenCounts() {
-
-  }
-
   changeUrl(collectionId) {
     if (collectionId) {
       const url = this.router.createUrlTree(['theme', 'dataset-metadata', collectionId]).toString();
-      this.location.go(url)
-      this.route.params['collectionId'] = collectionId
+      this.location.go(url);
+      this.route.params['collectionId'] = collectionId;
     } else {
-      this.location.go('theme/dataset-metadata')
-      this.route.params['collectionId'] = undefined
+      this.location.go('theme/dataset-metadata');
+      this.route.params['collectionId'] = undefined;
     }
   }
 

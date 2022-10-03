@@ -45,7 +45,7 @@ export class LabelService {
     return LabelService._getValue(value, field.valueMap, join ? field.join : undefined);
   }
 
-  public static parseUri(uri): {uri: string, id: string, domain: string} {
+  public static parseUri(uri): {uri: string; id: string; domain: string} {
     if (!uri.startsWith('http')) {
       return {uri, id: '', domain: ''};
     }
@@ -118,7 +118,7 @@ export class LabelService {
     return !!this.pixelToMMRation;
   }
 
-  public countMinLabelSize(setup: ISetup): {width: number, height: number} {
+  public countMinLabelSize(setup: ISetup): {width: number; height: number} {
     let width = 0, height = 0;
 
     const max = (item => {

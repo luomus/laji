@@ -1,9 +1,9 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="'status'">
-    <laji-red-list-regional-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></laji-red-list-regional-status>
+    <iucn-red-list-regional-status (groupSelect)="changeQuery('redListGroup', $event)" [data]="redListStatusQuery$ | async"></iucn-red-list-regional-status>
   </ng-container>
   <ng-container *ngSwitchCase="'species'">
-    <laji-species-table
+    <iucn-species-table
       [species]="speciesQuery$ | async"
       [defaultFields]="defaultSpeciesFields"
       [allFields]="speciesAllFields"
@@ -17,6 +17,6 @@
       (pageChange)="changeSpeciesPage($event)"
       (fieldsChange)="newFields($event)"
       (download)="download($event)"
-    ></laji-species-table>
+    ></iucn-species-table>
   </ng-container>
 </ng-container>

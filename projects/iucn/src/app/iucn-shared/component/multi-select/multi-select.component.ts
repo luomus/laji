@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, Change
 import { SelectOption } from '../select/select.component';
 
 @Component({
-  selector: 'laji-multi-select',
+  selector: 'iucn-multi-select',
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

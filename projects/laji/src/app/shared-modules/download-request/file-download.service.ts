@@ -1,5 +1,6 @@
-import { EventEmitter, Inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { Observable, of, Subject } from 'rxjs';
+import { tap, first, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../shared/service/user.service';
 import { WINDOW } from '@ng-toolkit/universal';
@@ -25,8 +26,10 @@ export class FileDownloadService {
   geometry: FileGeometry = FileGeometry.point;
   crs: FileCrs = FileCrs.euref;
   loading = false;
+  progressPercentage?: number;
 
-  fileDownloadReady = new EventEmitter();
+  private fileDownloadStateChangeSubject = new Subject<void>();
+  fileDownloadStateChange = this.fileDownloadStateChangeSubject.asObservable();
 
   constructor(
     @Inject(WINDOW) private window: Window,
@@ -38,15 +41,19 @@ export class FileDownloadService {
 
   downloadFile(id: string, isPublic = false) {
     this.loading = true;
+    this.progressPercentage = undefined;
+
     this.getDownloadLink(id, isPublic, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
       this.window.location.href = res;
       this.loading = false;
-      this.fileDownloadReady.emit();
+      this.progressPercentage = undefined;
+      this.fileDownloadStateChangeSubject.next();
     }, err => {
       const msg = isGeoConvertError(err) ? err.msg : 'downloadRequest.fileDownload.genericError';
       this.dialogService.alert(msg);
       this.loading = false;
-      this.fileDownloadReady.emit();
+      this.progressPercentage = undefined;
+      this.fileDownloadStateChangeSubject.next();
     });
   }
 
@@ -55,7 +62,14 @@ export class FileDownloadService {
   ): Observable<string> {
     const personToken = isPublic ? null : this.userService.getToken();
     if (type === FileType.gis) {
-      return this.geoConvertService.getGISDownloadLink(id, format, geometry, crs, personToken);
+      return this.geoConvertService.geoConvertFile(id, format, geometry, crs, personToken).pipe(
+        tap(response => {
+          this.progressPercentage = response.progressPercent;
+          this.fileDownloadStateChangeSubject.next();
+        }),
+        first(response => response.status === 'complete'),
+        map(response => response.outputLink)
+      );
     } else {
       let downloadLink = environment.apiBase + '/warehouse/download/';
       downloadLink += isPublic ? id : ('secured/' + id + '?personToken=' + personToken);

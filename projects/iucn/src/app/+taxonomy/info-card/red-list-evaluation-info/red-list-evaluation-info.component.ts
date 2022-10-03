@@ -4,7 +4,7 @@ import { IRow } from './red-list-evaluation-info-rowset/red-list-evaluation-info
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-red-list-evaluation-info',
+  selector: 'iucn-red-list-evaluation-info',
   templateUrl: './red-list-evaluation-info.component.html',
   styleUrls: ['./red-list-evaluation-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,9 +22,9 @@ export class RedListEvaluationInfoComponent {
   _evaluation: RedListEvaluation;
 
   private keyMap = {
-    'secondaryHabitats': 'secondaryHabitat',
-    'endangermentReasons': 'hasEndangermentReason',
-    'threats': 'hasThreat',
+    secondaryHabitats: 'secondaryHabitat',
+    endangermentReasons: 'hasEndangermentReason',
+    threats: 'hasThreat',
   };
 
   private localTranslate = {
@@ -109,12 +109,12 @@ export class RedListEvaluationInfoComponent {
   };
 
   minMax = {
-    'distributionAreaMin': {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
-    'distributionAreaMax': {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
-    'occurrenceAreaMin': {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
-    'occurrenceAreaMax': {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
-    'individualCountMin': {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'},
-    'individualCountMax': {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'}
+    distributionAreaMin: {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
+    distributionAreaMax: {fields: ['distributionAreaMin', 'distributionAreaMax'], combineTo: 'distributionArea'},
+    occurrenceAreaMin: {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
+    occurrenceAreaMax: {fields: ['occurrenceAreaMin', 'occurrenceAreaMax'], combineTo: 'occurrenceArea'},
+    individualCountMin: {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'},
+    individualCountMax: {fields: ['individualCountMin', 'individualCountMax'], combineTo: 'individualCount'}
   };
 
   constructor(
@@ -190,7 +190,7 @@ export class RedListEvaluationInfoComponent {
           results[this.fieldMap[fullKey]].push({
             key: fullKey,
             value: values,
-            translate: translate
+            translate
           });
         }
       }
@@ -212,9 +212,7 @@ export class RedListEvaluationInfoComponent {
   }
 
   private getSortFunction(order: string[]) {
-    return (a, b) => {
-      return order.indexOf(a.key) - order.indexOf(b.key);
-    };
+    return (a, b) => order.indexOf(a.key) - order.indexOf(b.key);
   }
 
 }

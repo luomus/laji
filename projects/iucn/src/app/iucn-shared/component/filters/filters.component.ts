@@ -12,7 +12,7 @@ import { Area } from '../../../../../../laji/src/app/shared/model/Area';
 import { RegionalFilterQuery } from '../../service/regional.service';
 
 @Component({
-  selector: 'laji-filters',
+  selector: 'iucn-filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss']
 })
@@ -64,7 +64,7 @@ export class FiltersComponent {
     return meta.map(options => ({value: options.id, label: options.label}));
   }
 
-  private mapAreaDataToOptions(area: {id: string, value: string}[]): SelectOption[] {
+  private mapAreaDataToOptions(area: {id: string; value: string}[]): SelectOption[] {
     return area.map(options => ({value: options.id, label: options.value}));
   }
 
@@ -74,7 +74,7 @@ export class FiltersComponent {
         group = {name: group, id: group};
       }
       const label = String.fromCharCode(160).repeat(level * 4) + (group.name || group.id);
-      result.push({value: group.id, label: label});
+      result.push({value: group.id, label});
       if (group.hasIucnSubGroup) {
         this.mapStatusesToOptions(group.hasIucnSubGroup as RedListTaxonGroup[], result, level + 1);
       }

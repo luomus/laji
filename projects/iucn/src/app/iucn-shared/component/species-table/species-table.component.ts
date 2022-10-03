@@ -6,7 +6,7 @@ import { Params } from '@angular/router';
 import { DownloadComponent } from '../../../../../../laji/src/app/shared-modules/download-modal/download.component';
 
 @Component({
-  selector: 'laji-species-table',
+  selector: 'iucn-species-table',
   templateUrl: './species-table.component.html',
   styleUrls: ['./species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -34,7 +34,7 @@ export class SpeciesTableComponent implements OnChanges {
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() fieldsChange = new EventEmitter<ISelectFields[]>();
-  @Output() download = new EventEmitter<{type: string, fields: ISelectFields[]}>();
+  @Output() download = new EventEmitter<{type: string; fields: ISelectFields[]}>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.downloadLoading?.previousValue && !this.downloadLoading) {

@@ -8,7 +8,10 @@ import { DatasetMetadataBrowserComponent } from './dataset-metadata-browser/data
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { SelectModule } from '../select/select.module';
-import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata-viewer/dataset-metadata-viewer-multilang-item/dataset-metadata-viewer-multilang-item.component';
+import {
+  DatasetMetadataViewerMultilangItemComponent
+} from './dataset-metadata-viewer/dataset-metadata-viewer-multilang-item/dataset-metadata-viewer-multilang-item.component';
+import { DatasetMetadataRoutingModule } from './dataset-metadata-routing.module';
 
 @NgModule({
   imports: [
@@ -16,7 +19,8 @@ import { DatasetMetadataViewerMultilangItemComponent } from './dataset-metadata-
     TreeSelectModule,
     LajiUiModule,
     SelectModule,
-    DocumentViewerModule
+    DocumentViewerModule,
+    DatasetMetadataRoutingModule
   ],
   declarations: [
     DatasetMetadataComponent,

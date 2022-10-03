@@ -1,8 +1,12 @@
+diff --git a/node_modules/xlsx/.xlsx.js.swp b/node_modules/xlsx/.xlsx.js.swp
+new file mode 100644
+index 0000000..eb6cf7e
+Binary files /dev/null and b/node_modules/xlsx/.xlsx.js.swp differ
 diff --git a/node_modules/xlsx/xlsx.js b/node_modules/xlsx/xlsx.js
-index 7d1c1b4..807fa38 100644
+index da61f48..353c987 100644
 --- a/node_modules/xlsx/xlsx.js
 +++ b/node_modules/xlsx/xlsx.js
-@@ -13858,6 +13858,19 @@ function write_ws_xml_merges(merges) {
+@@ -13927,6 +13927,19 @@ function write_ws_xml_merges(merges) {
  	return o + '</mergeCells>';
  }
  
@@ -22,7 +26,7 @@ index 7d1c1b4..807fa38 100644
  /* 18.3.1.82-3 sheetPr CT_ChartsheetPr / CT_SheetPr */
  function parse_ws_xml_sheetpr(sheetPr, s, wb, idx) {
  	var data = parsexmltag(sheetPr);
-@@ -14347,6 +14360,7 @@ function write_ws_xml(idx, opts, wb, rels) {
+@@ -14416,6 +14429,7 @@ function write_ws_xml(idx, opts, wb, rels) {
  	/* customSheetViews */
  
  	if(ws['!merges'] != null && ws['!merges'].length > 0) o[o.length] = (write_ws_xml_merges(ws['!merges']));
