@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectedOption, TreeOptionsNode } from '../../tree-select/tree-select.component';
-import { CollectionService } from '../../../shared/service/collection.service';
+import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '../../../shared/service/collection.service';
 
 @Component({
   selector: 'laji-dataset-metadata-browser',
@@ -17,7 +17,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
   collectionsCount = 0;
   selectedOption: SelectedOption[] = [];
-  optionsTree: TreeOptionsNode[] = null;
+  optionsTree: TreeOptionsNode[] = [];
   lang: string;
   showEmpty = false;
   loading = false;
@@ -38,7 +38,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setupTree()
+    this.setupTree();
   }
 
   toggleShowEmpty() {
@@ -50,23 +50,23 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   setupTree() {
     this.loading = true;
     this.cd.markForCheck();
-    this.initCollectionsTree().subscribe(data => {
+    this.initCollectionsTree$().subscribe(data => {
       this.optionsTree = data;
       this.loading = false;
       this.cd.markForCheck();
     });
   }
 
-  initCollectionsTree() {
+  initCollectionsTree$() {
     return zip(
-      this.collectionService.getCollectionsTree(),
-      this.collectionService.getCollectionsAggregate(),
+      this.collectionService.getCollectionsTree$(),
+      this.collectionService.getCollectionsAggregate$(),
     ).pipe(
       map(([ tree, agregates ]) => this.buildCollectionTree(tree, agregates))
     );
   }
 
-  buildCollectionTree(trees: any[], aggregates: any[]) {
+  buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
     const collectionsWithChildren = [];
 
     trees.forEach(tree => {
@@ -90,10 +90,10 @@ export class DatasetMetadataBrowserComponent implements OnInit {
     return collectionsWithChildren;
   }
 
-  buildTree(tree, aggregates): TreeOptionsNode {
+  buildTree(tree: ICollectionsTreeNode, aggregates: ICollectionAggregate[]): TreeOptionsNode | undefined {
     const aggregate = aggregates.find(elem => elem.id === tree.id);
 
-    if (this.excludedTypes.includes(tree.collectionsType)) {
+    if (this.excludedTypes.includes(tree.collectionType)) {
       return undefined
     }
 

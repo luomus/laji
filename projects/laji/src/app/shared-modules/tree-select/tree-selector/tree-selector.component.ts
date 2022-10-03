@@ -27,7 +27,7 @@ export class TreeSelectorComponent implements OnInit {
 
   treeModel: TreeModel;
   checkboxType: CheckboxType;
-  filterDebounce = new Subject<string>();
+  filterDebounce$ = new Subject<string>();
   toHtmlInputElement = toHtmlInputElement;
   
   state: ITreeState;
@@ -81,7 +81,7 @@ export class TreeSelectorComponent implements OnInit {
 
   constructor(
   ) {
-    this.filterDebounce.pipe(
+    this.filterDebounce$.pipe(
       debounceTime(500)
     ).subscribe(query => this.filterTree(query));
   }
@@ -92,17 +92,13 @@ export class TreeSelectorComponent implements OnInit {
     this.selectedOptions.forEach(selected => {
       const node = this.treeModel.getNodeById(selected.id);
 
-      if (!node) {
-        return;
-      }
-
       this.nodeSelected(this.treeModel, node, 'initializing');
       this.expandParents(this.treeModel, node, null);
     });
   }
 
   onFilterChange(query) {
-    this.filterDebounce.next(query);
+    this.filterDebounce$.next(query);
   }
 
   filterTree(query) {

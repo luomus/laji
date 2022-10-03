@@ -58,15 +58,11 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
 
   getCollectionData() {
     if (this.collectionId && this.collectionId !== this._collectionId) {
-      this.collection$ = this.collectionService.getById(this.collectionId, 'multi'),
-      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts(this.collectionId)
+      this.collection$ = this.collectionService.getById$(this.collectionId, 'multi'),
+      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(this.collectionId)
 
       this.cd.markForCheck();
     }
-  }
-
-  getSpecimenCounts() {
-
   }
 
   changeUrl(collectionId) {

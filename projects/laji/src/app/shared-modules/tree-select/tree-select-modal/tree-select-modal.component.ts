@@ -11,7 +11,7 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TreeSelectModalComponent implements OnInit {
+export class TreeSelectModalComponent {
   @Input() selectedOptions$: SelectedOption[]; 
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() modalTitle: string;
@@ -27,8 +27,6 @@ export class TreeSelectModalComponent implements OnInit {
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 
   selectedOptions: SelectedOption[];
-
-  ngOnInit() { }
 
   constructor(
     private modalRef: BsModalRef,
