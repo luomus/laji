@@ -9,6 +9,7 @@ import { SelectModule } from '../select/select.module';
 import { SelectedTreeNodesComponent } from './selected-tree-nodes/selected-tree-nodes.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { CountRoundingPipe } from './pipe/count-rounding.pipe';
+import { TreeSelectorComponent } from './tree-selector/tree-selector.component';
 
 @NgModule({
   imports: [
@@ -21,12 +22,14 @@ import { CountRoundingPipe } from './pipe/count-rounding.pipe';
   ],
   declarations: [
     TreeSelectComponent,
+    TreeSelectorComponent,
     TreeSelectModalComponent,
     SelectedTreeNodesComponent,
     CountRoundingPipe,
    ],
   exports: [
     TreeSelectComponent,
+    TreeSelectorComponent,
     TreeSelectModalComponent,
     SelectedTreeNodesComponent,
     CountRoundingPipe,
