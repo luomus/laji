@@ -1,5 +1,5 @@
 {
-  "title": "my-awesome-module",
+  "title": "generate-spectrograms",
   "scripts": {
     "generate-spectrograms": "ts-node generate-spectrograms.ts"
   },
