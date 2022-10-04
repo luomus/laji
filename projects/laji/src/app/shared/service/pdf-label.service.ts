@@ -24,6 +24,9 @@ export class PdfLabelService {
   private data: ILabelData[] | undefined;
   private memoryData: ILabelData[] | undefined;
 
+  private gatheringGeometryField = 'gatherings.geometry';
+  private unitGeometryField = 'gatherings.units.unitGathering.geometry';
+
   skipFields: string[] = [
     '@type',
     'geometry',
@@ -34,6 +37,17 @@ export class PdfLabelService {
     'gatherings.images',
     'gatherings.units.unitFact.autocompleteSelectedTaxonID',
   ];
+
+  specialFields: {[field: string]: ILabelField[]} = {
+    [this.gatheringGeometryField]: [
+      { field: this.gatheringGeometryField + '_coordinateVerbatim', label: 'label.coordinateVerbatim' },
+      { field: this.gatheringGeometryField + '_pointCoordinates', label: 'label.pointCoordinates' }
+    ],
+    [this.unitGeometryField]: [
+      { field: this.unitGeometryField + '_coordinateVerbatim', label: 'label.coordinateVerbatim' },
+      { field: this.unitGeometryField + '_pointCoordinates', label: 'label.pointCoordinates' }
+    ]
+  };
 
   defaultFields: ILabelField[] = [
     { field: 'gatherings.units.id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
@@ -51,9 +65,12 @@ export class PdfLabelService {
     private triplestoreLabelService: TriplestoreLabelService
   ) {
     this.defaultFields.forEach(field => {
-      if (field.label.startsWith('label.')) {
-        field.label = this.translateService.instant(field.label);
-      }
+      this.translateLabel(field);
+    });
+    Object.keys(this.specialFields).forEach(key => {
+      this.specialFields[key].forEach(field => {
+        this.translateLabel(field);
+      });
     });
   }
 
@@ -63,8 +80,17 @@ export class PdfLabelService {
       switchMap(docs => this.openDocuments(docs)),
       switchMap(openDocuments => this.allPossibleFields().pipe(
         map(fields => this.schemaService.convertDataToLabelData(
-          [...fields, {field: 'id', label: ''}], openDocuments, 'gatherings.units')
-        ),
+          [
+            ...fields,
+            {field: 'id', label: ''}
+          ],
+          openDocuments,
+          'gatherings.units',
+          {
+            [this.gatheringGeometryField]: this.getTransformGeometryDataFunction(this.gatheringGeometryField),
+            [this.unitGeometryField]: this.getTransformGeometryDataFunction(this.unitGeometryField)
+          }
+        )),
         map(data => data.map(item => {
           item['gatherings.units.id'] = IdService.getUri(item['gatherings.units.id'] || item['id']) || '';
           item['gatherings.units.id_short'] = IdService.getId(item['gatherings.units.id'] || item['id'] || '');
@@ -91,10 +117,38 @@ export class PdfLabelService {
   allPossibleFields(): Observable<ILabelField[]> {
     return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
       map(form => form
-        ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields })
+        ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields, special: this.specialFields })
         : []
       )
     );
+  }
+
+  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string[]> {
+    return (geometryData) => {
+      const result = {};
+
+      const coordinateVerbatim = [];
+      if (geometryData.coordinateVerbatim) {
+        coordinateVerbatim.push(geometryData.coordinateVerbatim);
+      }
+      geometryData.geometries?.forEach(geometry => {
+        if (geometry.coordinateVerbatim) {
+          coordinateVerbatim.push(geometry.coordinateVerbatim);
+        }
+      });
+      result[path + '_coordinateVerbatim'] = coordinateVerbatim;
+
+      const singleGeometry = !geometryData.geometries
+        ? geometryData
+        : geometryData.geometries.length === 1
+          ? geometryData.geometries[0]
+          : null;
+      if (singleGeometry && singleGeometry.type === 'Point' && !singleGeometry.radius) {
+        result[path + '_pointCoordinates'] = singleGeometry.coordinates[1] + ', ' + singleGeometry.coordinates[0] + ' (wgs84)';
+      }
+
+      return result;
+    };
   }
 
   private filterDocuments(documents: Document[], filter: LabelFilter): Observable<Document[]> {
@@ -254,6 +308,12 @@ export class PdfLabelService {
       gathering.dateEnd = this.ISODateToLocal(gathering.dateEnd);
     }
     return gathering;
+  }
+
+  private translateLabel(field: ILabelField) {
+    if (field.label.startsWith('label.')) {
+      field.label = this.translateService.instant(field.label);
+    }
   }
 
   private ISODateToLocal(value: string) {

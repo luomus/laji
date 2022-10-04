@@ -3,8 +3,12 @@
     {{modalButtonLabel}}
   </lu-button>
   <ng-container *ngIf='includedOptions?.length !== 0 || excludedOptions?.length !== 0'>
-    <ng-container *ngIf='options$ | async; let options; else loading'>
-      <laji-selected-tree-nodes [selectedOptions]='options' [includedTitle]="includedTitle" [excludedTitle]="excludedTitle" (selectedOptionsChange)='deselect($event)'></laji-selected-tree-nodes>
+    <ng-container *ngIf='options; else loading'>
+      <laji-selected-tree-nodes
+        [selectedOptions]='options'
+        [includedTitle]="includedTitle"
+        [excludedTitle]="excludedTitle"
+        (selectedOptionsChange)='deselect($event)'></laji-selected-tree-nodes>
     </ng-container>
     <ng-template #loading>
       <laji-spinner></laji-spinner>

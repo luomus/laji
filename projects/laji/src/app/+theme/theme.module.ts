@@ -33,6 +33,9 @@ import { GeneticResourceLayoutComponent } from './genetic-resource/layout/geneti
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
+import { TreeSelectModule } from '../shared-modules/tree-select/tree-select.module';
+import { SelectModule } from '../shared-modules/select/select.module';
+import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 
 /* eslint-enable max-len */
 
@@ -47,7 +50,10 @@ import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
     InfoPageModule,
     LajiUiModule,
     ObservationComponentModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    TreeSelectModule,
+    SelectModule,
+    DocumentViewerModule
   ],
   declarations: [
     HerpetologyComponent,
@@ -68,7 +74,7 @@ import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
     NotFoundComponent,
     GeneticResourceLayoutComponent,
     GeneticResourceInstructionsComponent,
-    KerttuClosedComponent
+    KerttuClosedComponent,
   ],
   providers: [
     QualityService,

@@ -1,0 +1,47 @@
+<div>
+  <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange(toHtmlInputElement($event.target).value)"/>
+  <div class="scrollable-tree">
+    <tree-root
+      #tree
+      [focused]="true"
+      [nodes]="optionsTree"
+      [options]="options"
+      (initialized)="treeInit()"
+    >
+      <ng-template #treeNodeWrapperTemplate let-node>
+        <div class="node-wrapper">
+          <tree-node-expander [node]="node"></tree-node-expander>
+          <div [class]="node.getClass()" [style.padding-left]="node.getNodePadding()"
+            [class.node-content-wrapper-active]="node.isActive"
+            [class.node-content-wrapper-focused]="node.isFocused"
+            (click)="node.mouseAction('click', $event)">
+            <ng-container *ngIf="includeQualityIcon && node.data.quality">
+              <img class="quality-image" [src]="node.data.quality | qualityUrl" [tooltip]="node.data.quality | label">
+            </ng-container>
+            <ng-container *ngIf="includeCheckbox">
+              <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
+            </ng-container>
+            <span *ngIf="includeCount then withCount; else withoutCount"></span>
+            <ng-template #withCount>
+              <span>{{ node.data.name }} ({{ node.data.count | countRounding }})</span>
+            </ng-template>
+            <ng-template #withoutCount>
+              <span>{{ node.data.name }}</span>
+            </ng-template>
+            <span *ngIf="includeLink">                     
+              <a
+                id="selectionLink"
+                [tooltip]="'openCollectionPage' | translate"
+                container="body"
+                target="_blank" [href]="node.data.id | toFullUri">
+                <i 
+                  id="selectionLink"
+                  class="glyphicon glyphicon-eye-open selection-link"></i>
+              </a>
+            </span>
+          </div>
+        </div>
+      </ng-template>
+    </tree-root>
+  </div>
+</div>

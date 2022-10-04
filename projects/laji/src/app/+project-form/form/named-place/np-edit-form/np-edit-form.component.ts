@@ -232,11 +232,10 @@ export class NpEditFormComponent implements OnInit {
     const getAreaEnum = (
       type: keyof Pick<AreaService, 'getMunicipalities' | 'getBiogeographicalProvinces' | 'getBirdAssociationAreas'>
     ): Observable<Form.IEnum> => (this.areaService[type](this.translate.currentLang)).pipe(
-      map(areas => areas.reduce((enums, area) => {
-        enums.enum.push(area.id);
-        enums.enumNames.push(area.value);
-        return enums;
-      }, { enum: [], enumNames: [] }))
+      map(areas => areas.reduce((schema, area) => {
+        schema.oneOf.push({const: area.id, title: area.value});
+        return schema;
+      }, {oneOf: []}))
     );
     return this.projectFormService.getPlaceForm$(data.documentForm).pipe(switchMap(placeForm => forkJoin([
       placeForm.schema.properties.municipality ? getAreaEnum('getMunicipalities') : of(null),

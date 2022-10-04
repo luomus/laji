@@ -1,0 +1,4 @@
+<div *ngIf="show">
+  <h4>{{ title }}</h4>
+  <ng-container *ngIf="!hideValue">{{ value }}</ng-container><ng-content></ng-content>
+</div>

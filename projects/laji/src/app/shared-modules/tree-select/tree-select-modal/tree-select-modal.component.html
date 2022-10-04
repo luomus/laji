@@ -16,51 +16,25 @@
         <div class="row">
           <div class="col-md-8">
             <h5>{{browseTitle}}</h5>
-            <input class="tree-filter form-control input-sm" type="text" (keyup)="onFilterChange(toHtmlInputElement($event.target).value)"/>
-            <div class="scrollable-tree">
-              <tree-root
-                #tree
-                [focused]="true"
-                [nodes]="optionsTree"
-                [options]="options"
-                (initialized)="treeInit()"
-              >
-                <ng-template #treeNodeWrapperTemplate let-node>
-                  <div class="node-wrapper">
-                    <tree-node-expander [node]="node"></tree-node-expander>
-                    <div [class]="node.getClass()" [style.padding-left]="node.getNodePadding()"
-                      [class.node-content-wrapper-active]="node.isActive"
-                      [class.node-content-wrapper-focused]="node.isFocused"
-                      (click)="node.mouseAction('click', $event)">
-                      <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
-                      <span *ngIf="includeCount then withCount; else withoutCount"></span>
-                      <ng-template #withCount>
-                        <span>{{ node.data.name }} ({{ node.data.count | countRounding }})</span>
-                      </ng-template>
-                      <ng-template #withoutCount>
-                        <span>{{ node.data.name }}</span>
-                      </ng-template>
-                      <span *ngIf="includeLink">                     
-                        <a
-                          id="selectionLink"
-                          [tooltip]="'openCollectionPage' | translate"
-                          container="body"
-                          target="_blank" [href]="node.data.id | toFullUri">
-                          <i 
-                            id="selectionLink"
-                            class="glyphicon glyphicon-eye-open selection-link"></i>
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                </ng-template>
-              </tree-root>
-            </div>
+            <laji-tree-selector
+              [selectedOptions]="selectedOptions"
+              [optionsTree]="optionsTree"
+              [multiselect]="true"
+              [tristate]="true"
+              [includeCheckbox]="true"
+              [includeCount]="includeCount"
+              [includeLink]="includeLink"
+              (emitSelect)="changeSelected($event)" #treeSelector>
+            </laji-tree-selector>
           </div>
           <div class="col-md-4">
             <h5>{{selectedTitle}}</h5>
             <div class="scrollable-selection-list">
-              <laji-selected-tree-nodes [selectedOptions]="selectedOptions" [includedTitle]="includedTitle" [excludedTitle]="excludedTitle" (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+              <laji-selected-tree-nodes
+                [selectedOptions]="selectedOptions"
+                [includedTitle]="includedTitle"
+                [excludedTitle]="excludedTitle"
+                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
             </div>
           </div>
         </div>
