@@ -80,6 +80,7 @@ export interface IGlobalAudio extends IAudio {
   recordist?: string;
   country?: string;
   state?: string;
+  location?: string;
   year?: number;
   month?: number;
   day?: number;
@@ -87,6 +88,7 @@ export interface IGlobalAudio extends IAudio {
   specimenUrl: string;
   checklistId?: string;
   checklistUrl?: string;
+  license?: string;
 }
 
 export interface IValidationStat {

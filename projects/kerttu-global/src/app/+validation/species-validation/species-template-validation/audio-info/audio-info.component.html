@@ -1,16 +1,27 @@
 <ul class="list-inline list-divided d-flex flex-row text-sm">
   <li class="d-inline-block">
     &copy; {{ audio.recordist }}<br/>
-    {{ audio.state }}<ng-container *ngIf="audio.state && audio.country">, </ng-container>{{ audio.country }}
+    {{ audio | audioLocation }}
     {{ audio | audioDate }}
   </li>
   <li class="d-inline-block">
-    <a target="_blank" rel="noopener" [href]="audio.specimenUrl">Macaulay Library<br/>ML{{ audio.assetId }}</a>
+    <a target="_blank" rel="noopener" [href]="audio.specimenUrl">
+      <ng-container *ngIf="audio.specimenUrl.includes('macaulaylibrary') else xenoCanto">
+        Macaulay Library
+        <br/>
+        ML{{ audio.assetId }}
+      </ng-container>
+      <ng-template #xenoCanto>
+        xeno-canto
+        <br/>
+        XC{{ audio.assetId }}
+      </ng-template>
+    </a>
   </li>
   <li class="d-inline-block" *ngIf="audio.checklistId">
     <a target="_blank" rel="noopener" [href]="audio.checklistUrl">eBird&nbsp;{{ audio.checklistId }}</a>
   </li>
-  <li class="d-inline-block">
+  <li class="d-inline-block" *ngIf="audio.specimenUrl.includes('macaulaylibrary')">
     <a target="_blank" rel="noopener" href="http://birds.cornell.edu/" class="MediaCredit-logoLab">
       <svg class="cornell-logo" viewBox="0 0 360 68" role="img" aria-labelledby="clo-short-logo-title">
         <title id="clo-short-logo-title">Cornell Lab of Ornithology logo</title>
@@ -27,5 +38,8 @@
         </g>
       </svg>
     </a>
+  </li>
+  <li class="d-inline-block" *ngIf="audio.license">
+    <laji-license [type]="audio.license"></laji-license>
   </li>
 </ul>

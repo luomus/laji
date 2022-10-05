@@ -17,11 +17,13 @@ import { SpeciesTemplateValidationComponent } from './species-validation/species
 import { VersionNavComponent } from './species-validation/version-nav/version-nav.component';
 import { AudioInfoComponent } from './species-validation/species-template-validation/audio-info/audio-info.component';
 import { AudioDatePipe } from './species-validation/species-template-validation/audio-info/audio-date.pipe';
+import { AudioLocationPipe } from './species-validation/species-template-validation/audio-info/audio-location.pipe';
 import { SpeciesListQueryService } from './service/species-list-query.service';
 import { SpeciesListQueryResetGuard } from './service/species-list-query-reset.guard';
 import { SpeciesSelectComponent } from './species-select/species-select.component';
 import { ValidationInstructionsComponent } from './validation-instructions/validation-instructions.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
+import { LicenseModule } from '../../../../laji/src/app/shared-modules/license/license.module';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
     AudioViewerModule,
     LajiUiModule,
     InfoPageModule,
-    ValidationRoutingModule
+    ValidationRoutingModule,
+    LicenseModule
   ],
   declarations: [
     ValidationComponent,
@@ -47,6 +50,7 @@ import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-pag
     VersionNavComponent,
     AudioInfoComponent,
     AudioDatePipe,
+    AudioLocationPipe,
     SpeciesSelectComponent,
     ValidationInstructionsComponent
   ],
