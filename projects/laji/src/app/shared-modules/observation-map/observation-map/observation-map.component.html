@@ -8,6 +8,7 @@
           [visualization]="hideLegend ? undefined : visualization"
           [settingsKey]="settingsKey"
           [visualizationMode]="visualizationMode"
+          [displayObservationAccuracy]="showingIndividualPoints"
           (create)="onCreate($event)"
           (failure)="refreshMap()"
           (tileLayersChange)="onTileLayersChange($event)"

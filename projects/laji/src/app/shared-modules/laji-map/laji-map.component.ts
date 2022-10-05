@@ -35,6 +35,7 @@ import { LajiMapVisualization } from './visualization/laji-map-visualization';
         *ngIf="visualization"
         [visualization]="visualization"
         [mode]="visualizationMode"
+        [displayObservationAccuracy]="displayObservationAccuracy"
         (modeChange)="onVisualizationModeChange($event)"
       ></laji-map-legend>
     </div>`,
@@ -50,6 +51,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
+  @Input() displayObservationAccuracy = false;
 
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();

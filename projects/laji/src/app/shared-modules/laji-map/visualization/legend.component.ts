@@ -10,6 +10,7 @@ import { LajiMapVisualization } from './laji-map-visualization';
 export class LajiMapLegendComponent<T extends string> {
   @Input() visualization: LajiMapVisualization<T>;
   @Input() mode: T;
+  @Input() displayObservationAccuracy = false;
   @Output() modeChange = new EventEmitter<T>();
 
   switchMode(m: T) {

@@ -113,6 +113,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   };
   loading = false;
   reloading = false;
+  showingIndividualPoints = false;
 
   drawDataSubscription: Subscription;
 
@@ -131,7 +132,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private reset = true;
-  private showingIndividualPoints = false;
   private dataCache: any;
   private init = false;
 
