@@ -53,4 +53,10 @@ export interface Person {
   role?: Array<string>;
 
   roleAnnotation?: Annotation.AnnotationRoleEnum;
+
+  organisation?: Array<string>;
+
+  organisationAdmin?: Array<string>;
+
+  securePortalUserRoleExpires?: string;
 }

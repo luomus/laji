@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
-import { VirOrganisationService } from '../../../service/vir-organisation.service';
-import { map } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IVirUser } from '../../../service/vir-organisation.service';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'vir-organization-select',
@@ -8,22 +10,39 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./organization-select.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrganizationSelectComponent {
+export class OrganizationSelectComponent implements OnInit {
 
-  readonly organisations$ = this.virOrganisationService.users$.pipe(
-      map(data => {
-        const organizations = new Set<string>();
-        data.forEach(person => {
-          person.organisation.forEach(o => organizations.add(o));
-        });
-        return Array.from(organizations.values());
-      })
-  );
+  /**
+   *  Filter the organizations to include only the ones that that user is admin of.
+   */
+  @Input() filterByAdmin = false;
+
+  @Input() users$: Observable<IVirUser[]>;
+
+  readonly organisations$: Observable<string[]>;
 
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<string>();
 
   constructor(
-      private virOrganisationService: VirOrganisationService
+      private userService: UserService
   ) {}
+
+  ngOnInit(): void {
+    this.users$.pipe(
+      switchMap(data => {
+        const organizations = new Set<string>();
+        data.forEach(person => {
+          person.organisation.forEach(o => organizations.add(o));
+        });
+        const arr = Array.from(organizations.values());
+        if (!this.filterByAdmin) {
+          return of(arr);
+        }
+        return this.userService.user$.pipe(map(user =>
+          arr.filter(org => user.organisationAdmin.includes(org))
+        ));
+      })
+    );
+  }
 }

@@ -20,7 +20,7 @@ import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-d
 import { DownloadRequestModalComponent } from './component/download-request-modal/download-request-modal.component';
 import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/copy-to-clipboard/copy-to-clipboard.module';
 import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/download-request/download-request.module';
-
+import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/d
     OrganizationSelectComponent,
     CollectionSelectComponent,
     DataTableComponent,
-    DownloadRequestModalComponent
+    DownloadRequestModalComponent,
+    UsageAdminComponent
   ],
   imports: [
     FormsModule,

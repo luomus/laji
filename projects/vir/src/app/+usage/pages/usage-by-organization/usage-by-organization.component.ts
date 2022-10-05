@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
-import { Observable } from 'rxjs';
+import { VirOrganisationService } from '../../../service/vir-organisation.service';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -11,19 +11,18 @@ import { map } from 'rxjs/operators';
 })
 export class UsageByOrganizationComponent {
 
-  organisation: string;
-  users$: Observable<IVirUser[]>;
+  private organization$ = new BehaviorSubject<string | undefined>(undefined);
 
-  constructor(
-      private virOrganisationService: VirOrganisationService
-  ) {
-    this.users$ = this.virOrganisationService.users$;
-  }
+  users$ = combineLatest([
+    this.virOrganisationService.users$,
+    this.organization$
+  ]).pipe(
+    map(([users, organisation]) => organisation ? users.filter(u => u?.organisation.includes(organisation)) : users),
+  );
+
+  constructor( private virOrganisationService: VirOrganisationService) { }
 
   organizationSelect(org: string) {
-    this.organisation = org;
-    this.users$ = this.virOrganisationService.users$.pipe(
-      map(users => org ? users.filter(u => u?.organisation.includes(org)) : users)
-    );
+    this.organization$.next(org);
   }
 }
