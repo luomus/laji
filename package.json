@@ -31,6 +31,7 @@
     "build:iucn": "npm run ng-high-memory -- build iucn --configuration production",
     "build:vir": "npm run ng-high-memory -- build vir --configuration production",
     "build:vir-dev": "npm run ng-high-memory -- build vir --configuration=dev",
+    "build:vir:integrate-w-backend:watch": "npm run ng-high-memory -- build vir --configuration=integrate-w-backend --watch",
     "build:dev": "npm run ng-high-memory -- build laji --configuration=dev --base-href https://dev.laji.fi",
     "build:beta": "npm run ng-high-memory -- build laji --configuration=beta --base-href https://beta.laji.fi",
     "build:dev:embedded": "npm run ng-high-memory -- build laji --configuration=dev-embedded --base-href https://dev-embedded.laji.fi",
