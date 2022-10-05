@@ -384,7 +384,7 @@ export class DocumentExportService {
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
       return this.collectionService
-        .getName(key, this.translate.currentLang);
+        .getName$(key, this.translate.currentLang);
     }
 
     return ObservableOf(key);

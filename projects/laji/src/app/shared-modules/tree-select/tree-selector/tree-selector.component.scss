@@ -1,0 +1,28 @@
+.collection-link {
+  padding-left: 5px;
+}
+.tree-filter {
+  padding: 10px;
+}
+.tree-active-child span {
+  opacity: 0.5;
+}
+.tree-active-exclusion {
+  background: #ffbebe;
+}
+.tree-active-focused {
+  filter: brightness(1.1)
+}
+.scrollable-tree {
+  height: 75vh;
+  padding: 10px;
+  overflow: hidden;
+}
+.quality-image {
+  float: left;
+  padding-right: 5px;
+  min-height: 20px;
+  min-width: 20px;
+  height: 20px;
+  width: 20px;
+}

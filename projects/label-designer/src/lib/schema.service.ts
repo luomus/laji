@@ -197,16 +197,16 @@ export class SchemaService {
   private getValueMap(item): undefined|{[value: string]: string} {
     function pick(from) {
       const result = {};
-      for (let i = 0; i < from.enum.length; i++) {
-        result[from.enum[i]] = from.enumNames[i];
+      for (const one of from.oneOf) {
+        result[one.const] = one.title;
       }
       return result;
     }
 
-    if (Array.isArray(item.enum) && Array.isArray(item.enumNames)) {
+    if (Array.isArray(item.oneOf)) {
       return pick(item);
     }
-    if (item.items && Array.isArray(item.items.enum) && Array.isArray(item.items.enumNames)) {
+    if (item.items && Array.isArray(item.items.oneOf)) {
       return pick(item.items);
     }
 
