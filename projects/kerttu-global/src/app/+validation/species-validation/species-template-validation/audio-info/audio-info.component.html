@@ -39,7 +39,7 @@
       </svg>
     </a>
   </li>
-  <li class="d-inline-block" *ngIf="audio.license">
-    <laji-license [type]="audio.license"></laji-license>
+  <li class="d-inline-block" *ngIf="audio.licenseUrl">
+    <bsg-license [licenseUrl]="audio.licenseUrl"></bsg-license>
   </li>
 </ul>

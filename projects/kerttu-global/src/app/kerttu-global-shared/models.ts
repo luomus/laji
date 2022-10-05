@@ -88,7 +88,7 @@ export interface IGlobalAudio extends IAudio {
   specimenUrl: string;
   checklistId?: string;
   checklistUrl?: string;
-  license?: string;
+  licenseUrl?: string;
 }
 
 export interface IValidationStat {

@@ -23,7 +23,7 @@ import { SpeciesListQueryResetGuard } from './service/species-list-query-reset.g
 import { SpeciesSelectComponent } from './species-select/species-select.component';
 import { ValidationInstructionsComponent } from './validation-instructions/validation-instructions.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
-import { LicenseModule } from '../../../../laji/src/app/shared-modules/license/license.module';
+import { LicenseComponent } from './species-validation/species-template-validation/audio-info/license.component';
 
 
 @NgModule({
@@ -35,8 +35,7 @@ import { LicenseModule } from '../../../../laji/src/app/shared-modules/license/l
     AudioViewerModule,
     LajiUiModule,
     InfoPageModule,
-    ValidationRoutingModule,
-    LicenseModule
+    ValidationRoutingModule
   ],
   declarations: [
     ValidationComponent,
@@ -52,7 +51,8 @@ import { LicenseModule } from '../../../../laji/src/app/shared-modules/license/l
     AudioDatePipe,
     AudioLocationPipe,
     SpeciesSelectComponent,
-    ValidationInstructionsComponent
+    ValidationInstructionsComponent,
+    LicenseComponent
   ],
   providers: [
     SpeciesListQueryService,
