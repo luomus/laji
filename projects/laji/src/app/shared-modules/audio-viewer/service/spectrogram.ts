@@ -129,7 +129,7 @@ function scaleSpectrogram(data: Float32Array[], maxValue: number, config: ISpect
 
   for (const item of data) {
     for (let j = 0; j < data[0].length; j++) {
-      item[j] = (Math.log10(item[j] / maxValue + Math.pow(10, -2 * logRange)) + 2 * logRange) / (2 * logRange);
+      item[j] = (Math.log10(item[j] / (maxValue || 1) + Math.pow(10, -2 * logRange)) + 2 * logRange) / (2 * logRange);
     }
   }
 }
@@ -160,13 +160,12 @@ function findMinAndMaxValue(data: Float32Array): {minValue: number; maxValue: nu
   return {minValue, maxValue};
 }
 
-function convertRange(inputY: number, yRange: number[], xRange: number[]): number {
-  const [xMin, xMax] = xRange;
-  const [yMin, yMax] = yRange;
+function convertRange(input: number, inputRange: number[], outputRange: number[]): number {
+  const [inputRangeMin, inputRangeMax] = inputRange;
+  const [outputRangeMin, outputRangeMax] = outputRange;
+  const percent = (input - inputRangeMin) / ((inputRangeMax - inputRangeMin) || 1);
 
-  const percent = (inputY - yMin) / (yMax - yMin);
-
-  return percent * (xMax - xMin) + xMin;
+  return percent * (outputRangeMax - outputRangeMin) + outputRangeMin;
 }
 
 function getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
