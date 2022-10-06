@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserService } from 'projects/laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'vir-usage-admin',
@@ -16,23 +15,16 @@ export class UsageAdminComponent {
 
   users$ = combineLatest([
     this.virOrganisationService.administrableUsers$,
-    this.organization$,
-    this.userService.user$.pipe(map(u => u.organisationAdmin))
+    this.organization$
   ]).pipe(
-    map(([users, organisation, organisationAdmin]) => organisation
-      ? organisationAdmin.includes(organisation)
-        ? users.filter(u => u?.organisation.includes(organisation))
-        : users
-      : []),
+    map(([users, organisation]) => !organisation
+      ? users
+      : users.filter(u => u?.organisation.includes(organisation))
+    )
   );
 
-    // this.users$ = this.virOrganisationService.administrableUsers$.pipe(
-    //   map(users => org ? users.filter(u => u?.organisation.includes(org)) : users)
-    // );
-
   constructor(
-    private virOrganisationService: VirOrganisationService,
-    private userService: UserService
+    private virOrganisationService: VirOrganisationService
   ) { }
 
   organizationSelect(org: string) {

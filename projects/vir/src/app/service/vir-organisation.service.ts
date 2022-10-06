@@ -9,12 +9,14 @@ export interface IVirUser {
   fullName: string;
   emailAddress: string;
   organisation: string[];
+  organisationAdmin: string[];
 }
 
 @Injectable({providedIn: 'root'})
 export class VirOrganisationService {
   readonly users$: Observable<IVirUser[]>;
   readonly administrableUsers$: Observable<IVirUser[]>;
+  readonly virUser$: Observable<IVirUser>;
   constructor(
     private httpClient: HttpClient,
     private userService: UserService
@@ -26,12 +28,19 @@ export class VirOrganisationService {
     );
     this.users$ = getUsers();
 
-    this.administrableUsers$ = this.userService.user$.pipe(
+    // PAP backend returns organisationAdmin as labels but lajiapi return user organisationAdmin as a code,
+    // so we need to dig the admin user from the PAP backend result so we can later compare the organisationAdmin
+    // of the PAP results to the user's organisationAdmin. There is no API for organisation  code -> label conversion.
+    this.virUser$ = this.userService.user$.pipe(
       filter(user => !!user.organisationAdmin?.length),
-      switchMap(user => getUsers({includeExpired: true}).pipe(map(
-        users => users.filter(u => u.organisation.some(o => user.organisationAdmin.includes(o)))
-      )))
+      switchMap(user => this.users$.pipe(map(users => users.find(u => u.id === user.id))))
+    );
+
+    this.administrableUsers$ = this.virUser$.pipe(
+      filter(user => !!user.organisationAdmin?.length),
+      switchMap(user => getUsers({includeExpired: true}).pipe(
+        map(users => users.filter(u => u.organisation.some(o => user.organisationAdmin.includes(o)))),
+      ))
     );
   }
-
 }
