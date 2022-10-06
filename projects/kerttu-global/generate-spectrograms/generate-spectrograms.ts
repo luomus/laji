@@ -39,34 +39,33 @@ function processNextFile() {
   if (!filename) {
     return;
   }
-  if (fs.existsSync(outputFolder + '/' + filename.replace('.mp3', '.jpg'))) {
-    processNextFile();
-  } else {
-    const decoder = new Lame({
-      output: 'buffer',
-      mp3Input: true
-    }).setFile(inputFolder + '/' + filename);
 
-    decoder
-      .decode()
-      .then(() => {
-        const buffer = decoder.getBuffer();
-        audioDecode(buffer).then((audioBuffer: any) => {
-          const imageData = getSpectrogramImageData(audioBuffer, colorMap);
-          drawImage(imageData, audioBuffer.sampleRate, filename);
-        }, (err: any) => {
-          console.log('Error while processing file ' + filename + ': ' + err);
-        });
-      })
-      .catch((err) => {
-        console.log('Error while decoding file ' + filename + ': ' + err);
+  const decoder = new Lame({
+    output: 'buffer',
+    mp3Input: true
+  }).setFile(inputFolder + '/' + filename);
+
+  decoder
+    .decode()
+    .then(() => {
+      const buffer = decoder.getBuffer();
+      audioDecode(buffer).then((audioBuffer: any) => {
+        const imageData = getSpectrogramImageData(audioBuffer, colorMap);
+        drawImage(imageData, audioBuffer.sampleRate, filename);
+      }, (err: any) => {
+        console.log('Error while processing file ' + filename + ': ' + err);
       });
-  }
+    })
+    .catch((err) => {
+      console.log('Error while decoding file ' + filename + ': ' + err);
+    });
 }
 
 if (!fs.existsSync(outputFolder)){
   fs.mkdirSync(outputFolder);
 }
 const colorMap = JSON.parse(fs.readFileSync('../../laji/src/static/audio/viridis-colormap.json') as any);
-const dirContents = fs.readdirSync(inputFolder);
+const dirContents = fs.readdirSync(inputFolder).filter(filename => (
+  !fs.existsSync(outputFolder + '/' + filename.replace('.mp3', '.jpg'))
+));
 processNextFile();
