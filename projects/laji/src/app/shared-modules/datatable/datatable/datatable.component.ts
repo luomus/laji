@@ -41,6 +41,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() sorts: DatatableSort[] = [];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
+  @Input() displayCheck: boolean;
   @Input() summaryRow = false;
   @Input() striped = true;
 

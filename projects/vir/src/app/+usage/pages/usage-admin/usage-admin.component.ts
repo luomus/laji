@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { VirOrganisationService } from '../../../service/vir-organisation.service';
+import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 @Component({
   selector: 'vir-usage-admin',
@@ -13,6 +14,8 @@ export class UsageAdminComponent {
 
   private organization$ = new BehaviorSubject<string | undefined>(undefined);
 
+  selectByCheckbox = SelectionType.checkbox;
+
   users$ = combineLatest([
     this.virOrganisationService.administrableUsers$,
     this.organization$
@@ -22,6 +25,7 @@ export class UsageAdminComponent {
       : users.filter(u => u?.organisation.includes(organisation))
     )
   );
+  selected$ = new BehaviorSubject<IVirUser[]>([]);
 
   constructor(
     private virOrganisationService: VirOrganisationService
@@ -29,5 +33,9 @@ export class UsageAdminComponent {
 
   organizationSelect(org: string) {
     this.organization$.next(org);
+  }
+
+  datatableSelect({selected}: {selected: IVirUser[]}) {
+    this.selected$.next(selected);
   }
 }

@@ -110,5 +110,7 @@
   "usage.admin": "Käyttäjien hallinta",
   "usage.admin.intro": "Voit muuttaa käyttäjien käyttöoikeuksia jotka kuuluvat organisaatioosi.",
   "usage.securePortalUserRoleExpires": "Käyttöoikeus voimassa",
-  "usage.userId": "MA-tunnus"
+  "usage.userId": "MA-tunnus",
+  "usage.continueExpirationBtnLabel": "Jatka käyttöoikeudet",
+  "usage.selectAll": "Valitse kaikki"
 }

@@ -3,6 +3,7 @@ import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/d
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 
@@ -30,12 +31,15 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
                   [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
+                  (datatableSelect)="datatableSelect.emit($event)"
                   [count]="0"
                   [page]="1"
                   [pageSize]="20"
                   [columnMode]="'force'"
                   [totalMessage]="'haseka.submissions.total' | translate"
-                  [columns]="cols">
+                  [columns]="cols"
+                  [selectionType]="selectionType"
+                  >
           </laji-datatable>
       </div>
   `
@@ -48,8 +52,10 @@ export class DataTableComponent implements AfterViewInit {
   @Input() height = 'calc(90vh - 195px)';
   @Input() data: any[];
   @Input() exportFileName = 'export';
+  @Input() selectionType: SelectionType;
 
   @Output() rowSelect = new EventEmitter<any>();
+  @Output() datatableSelect = new EventEmitter<any>();
 
   downloadLoading = false;
 
@@ -126,6 +132,13 @@ export class DataTableComponent implements AfterViewInit {
       prop: 'id',
       label: 'usage.userId',
       canAutoResize: true
+    },
+    {
+      name: 'check',
+      label: 'usage.selectAll',
+      canAutoResize: false,
+      headerCheckboxable: true,
+      checkboxable: true
     }
   ];
 
@@ -162,7 +175,7 @@ export class DataTableComponent implements AfterViewInit {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
       case 'admin':
-        return this.getCols(['organisation', 'fullName', 'emailAddress', 'userId', 'securePortalUserRoleExpires']);
+        return this.getCols(['organisation', 'fullName', 'emailAddress', 'userId', 'securePortalUserRoleExpires', 'check']);
       case 'downloads':
         return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':

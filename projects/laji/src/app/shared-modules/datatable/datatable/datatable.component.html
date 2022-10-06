@@ -39,6 +39,11 @@
     [summaryPosition]="'bottom'"
     [summaryHeight]="38"
   >
+  <ngx-datatable-column
+      [headerCheckboxable]="true"
+      [checkboxable]="true"
+    >
+  </ngx-datatable-column>
   </ngx-datatable>
   <laji-data-table-footer
     *ngIf="showFooter"
