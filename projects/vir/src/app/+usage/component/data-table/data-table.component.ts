@@ -4,7 +4,7 @@ import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
 
-type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 
 @Component({
   selector: 'vir-data-table',
@@ -115,6 +115,17 @@ export class DataTableComponent implements AfterViewInit {
       label: 'usage.apiKey',
       cellTemplate: 'copyToClipboard',
       canAutoResize: true
+    },
+    {
+      name: 'securePortalUserRoleExpires',
+      label: 'usage.securePortalUserRoleExpires',
+      canAutoResize: true
+    },
+    {
+      name: 'userId',
+      prop: 'id',
+      label: 'usage.userId',
+      canAutoResize: true
     }
   ];
 
@@ -150,6 +161,8 @@ export class DataTableComponent implements AfterViewInit {
     switch (type) {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
+      case 'admin':
+        return this.getCols(['organisation', 'fullName', 'emailAddress', 'userId', 'securePortalUserRoleExpires']);
       case 'downloads':
         return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
