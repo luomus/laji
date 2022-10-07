@@ -1,8 +1,11 @@
 <ul class="list-inline list-divided d-flex flex-row text-sm">
   <li class="d-inline-block">
     &copy; {{ audio.recordist }}<br/>
-    {{ audio | audioLocation }}
-    {{ audio | audioDate }}
+    {{ audio | audioLocation }} {{ audio | audioDate }}
+  </li>
+  <li class="d-inline-block" *ngIf="audio.soundType">
+    {{ 'validation.soundType' | translate }}:<br/>
+    {{ audio.soundType }}
   </li>
   <li class="d-inline-block">
     <a target="_blank" rel="noopener" [href]="audio.specimenUrl">
@@ -21,8 +24,8 @@
   <li class="d-inline-block" *ngIf="audio.checklistId">
     <a target="_blank" rel="noopener" [href]="audio.checklistUrl">eBird&nbsp;{{ audio.checklistId }}</a>
   </li>
-  <li class="d-inline-block" *ngIf="audio.specimenUrl.includes('macaulaylibrary')">
-    <a target="_blank" rel="noopener" href="http://birds.cornell.edu/" class="MediaCredit-logoLab">
+  <li class="d-inline-block">
+    <a target="_blank" rel="noopener" href="http://birds.cornell.edu/" class="MediaCredit-logoLab" *ngIf="audio.specimenUrl.includes('macaulaylibrary') else xenoCantoLogo">
       <svg class="cornell-logo" viewBox="0 0 360 68" role="img" aria-labelledby="clo-short-logo-title">
         <title id="clo-short-logo-title">Cornell Lab of Ornithology logo</title>
         <g fill="none" fill-rule="evenodd">
@@ -38,6 +41,11 @@
         </g>
       </svg>
     </a>
+    <ng-template #xenoCantoLogo>
+      <a href="https://xeno-canto.org/" target="_blank" rel="noopener nofollow">
+        <img src="static/images/icons/xc.png" alt="xeno-canto" style="height: 18px">
+      </a>
+    </ng-template>
   </li>
   <li class="d-inline-block" *ngIf="audio.licenseUrl">
     <bsg-license [licenseUrl]="audio.licenseUrl"></bsg-license>

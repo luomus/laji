@@ -166,6 +166,7 @@
   "speciesList.hasNotPossibleValidations.info": "Creating all templates for this species has been reported as not possible",
   "speciesList.isLocked.info": "Species is locked for another user",
   "speciesList.title": "Validate species templates",
+  "validation.soundType": "Sound type",
   "validation.audio": "Audio",
   "validation.cancel": "Cancel",
   "validation.candidates": "Candidates",
