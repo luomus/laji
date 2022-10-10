@@ -112,5 +112,6 @@
   "usage.securePortalUserRoleExpires": "Käyttöoikeus voimassa",
   "usage.userId": "MA-tunnus",
   "usage.continueExpirationBtnLabel": "Jatka käyttöoikeudet",
+  "usage.removeAccessBtnLabel": "Poist käyttöoikeudet",
   "usage.selectAll": "Valitse kaikki"
 }

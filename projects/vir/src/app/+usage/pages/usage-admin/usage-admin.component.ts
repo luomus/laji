@@ -25,17 +25,24 @@ export class UsageAdminComponent {
       : users.filter(u => u?.organisation.includes(organisation))
     )
   );
+
   selected$ = new BehaviorSubject<IVirUser[]>([]);
 
   constructor(
     private virOrganisationService: VirOrganisationService
   ) { }
 
-  organizationSelect(org: string) {
+  onOrganizationSelect(org: string) {
     this.organization$.next(org);
   }
 
-  datatableSelect({selected}: {selected: IVirUser[]}) {
+  onDatatableSelect({selected}: {selected: IVirUser[]}) {
     this.selected$.next(selected);
+  }
+
+  onContinueExpirationDateButtonClick() {
+  }
+
+  onRemoveAccessButtonClick() {
   }
 }
