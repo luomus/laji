@@ -124,18 +124,18 @@ export class DataTableComponent implements AfterViewInit {
     },
     {
       name: 'securePortalUserRoleExpires',
-      label: 'usage.securePortalUserRoleExpires',
+      label: 'usage.admin.securePortalUserRoleExpires',
       canAutoResize: true
     },
     {
       name: 'userId',
       prop: 'id',
-      label: 'usage.userId',
+      label: 'usage.admin.userId',
       canAutoResize: true
     },
     {
       name: 'check',
-      label: 'usage.selectAll',
+      label: 'usage.admin.selectAll',
       canAutoResize: false,
       headerCheckboxable: true,
       checkboxable: true

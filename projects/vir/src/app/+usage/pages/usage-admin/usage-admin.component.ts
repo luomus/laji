@@ -45,4 +45,7 @@ export class UsageAdminComponent {
 
   onRemoveAccessButtonClick() {
   }
+
+  onSelectedAddUser() {
+  }
 }

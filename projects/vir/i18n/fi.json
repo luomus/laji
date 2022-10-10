@@ -107,11 +107,13 @@
   "vir.taxonomyHeader.li.1.3": "lajit ja niihin liitetyt hallinnolliset ominaisuudet.",
   "vir.taxonomyHeader.li.2": "Taksonomiaselailupalvelun avulla saat käyttöösi tieteellisen luokittelun mukaan järjestetyt lajitiedot.",
   "vir.taxonomyHeader.title": "Lajiluettelot",
-  "usage.admin": "Käyttäjien hallinta",
+  "usage.admin.title": "Käyttäjien hallinta",
   "usage.admin.intro": "Voit muuttaa käyttäjien käyttöoikeuksia jotka kuuluvat organisaatioosi.",
-  "usage.securePortalUserRoleExpires": "Käyttöoikeus voimassa",
-  "usage.userId": "MA-tunnus",
-  "usage.continueExpirationBtnLabel": "Jatka käyttöoikeudet",
-  "usage.removeAccessBtnLabel": "Poist käyttöoikeudet",
-  "usage.selectAll": "Valitse kaikki"
+  "usage.admin.securePortalUserRoleExpires": "Käyttöoikeus voimassa",
+  "usage.admin.userId": "MA-tunnus",
+  "usage.admin.continueExpirationBtnLabel": "Jatka käyttöoikeudet",
+  "usage.admin.removeAccessBtnLabel": "Poista käyttöoikeudet",
+  "usage.admin.selectAll": "Valitse kaikki",
+  "usage.admin.addUser": "Lisää käyttäjä",
+  "usage.selectOrganization": "Valitse organisaatio"
 }
