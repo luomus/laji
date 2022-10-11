@@ -374,8 +374,7 @@ export class SpreadsheetService {
         isArray: root.endsWith('[*]'),
         required: this.hasRequiredValidator(schema.id, lastKey, validators, required, root),
         subGroup: this.analyzeSubGroup(root, parent, unitSubGroups),
-        enum: schema.enum,
-        enumNames: schema.enumNames,
+        enum: schema.oneOf,
         default: schema.default
       });
 

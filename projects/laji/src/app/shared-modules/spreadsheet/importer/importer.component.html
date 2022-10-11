@@ -225,10 +225,10 @@
 </ng-template>
 
 <ng-template #importData>
-  <button type="button" (click)="openMapModal()" class="btn btn-default mb-3"> 
+  <button type="button" (click)="openMapModal()" class="btn btn-default mb-3">
     {{ 'excel.import.step4.showObservationMap' | translate }}
   </button>
-  
+
   <laji-datatable
     #dataTable
     class="import-table"
@@ -237,7 +237,7 @@
     [virtualScrolling]="true"
     [clientSideSorting]="false"
     [height]="'50vh'"
-    [rows]='mappedData | onlyErroneous:showOnlyErroneous'
+    [rows]='mappedData | onlyErroneous:showOnlyErroneous | erroneousFirst'
     [count]="mappedData.length"
     [page]="1"
     [pageSize]="mappedData.length"

@@ -209,10 +209,10 @@ export class MappingService {
     }
     switch (field.type) {
       case 'string':
-        if (field.enum && field.enumNames) {
-          const idx = field.enum.indexOf(value);
-          if (idx !== -1) {
-            return field.enumNames[idx];
+        if (field.enum) {
+          const enu = field.enum.find(item => item.const === value);
+          if (enu !== undefined) {
+            return enu.title;
           }
         }
         break;
@@ -270,11 +270,12 @@ export class MappingService {
       return;
     }
     this.mapping.string[field.key] = {};
-    field.enum.map((value, idx) => {
+    field.enum.map((item) => {
+      const value = item.const;
       if (value === '') {
         return;
       }
-      const label = field.enumNames[idx].toLowerCase();
+      const label = item.title.toLowerCase();
       this.mapping.string[field.key][value.toLowerCase()] = value;
       this.mapping.string[field.key][label.toLowerCase()] = value;
 

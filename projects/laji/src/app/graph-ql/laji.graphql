@@ -175,6 +175,8 @@ type Collection {
   collectionSize: String
   "Type of the collection (specimen, monitoring etc)."
   collectionType: String
+  "Quality of the collection."
+  collectionQuality: String
   """
 
   Legal basis for concealment or quarantine If lang parameter is 'multi' this

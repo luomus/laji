@@ -59,5 +59,13 @@
     </a>
   </div>
 
+  <h4><span class="glyphicon glyphicon-eye-open"></span> {{ 'theme.observation.title' | translate }}</h4>
+  <div class="d-flex flex-wrap">
+    <a [routerLink]="['/theme/dataset-metadata'] | localize" class="navbox">
+      <h5>{{ 'dataset-metadata.label' | translate }}</h5>
+      <p [innerHTML]="'dataset-metadata.intro' | translate" lajiRouteTransformer></p>
+    </a>
+  </div>
+  
   <div class="my-8"></div>
 </div>

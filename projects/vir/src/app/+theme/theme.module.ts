@@ -5,6 +5,7 @@ import { ThemeRoutingModule } from './theme-routing.module';
 import { ThemeComponent } from './theme.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
+import { DatasetMetadataModule } from '../../../../laji/src/app/shared-modules/dataset-metadata/dataset-metadata.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
     CommonModule,
     ThemeRoutingModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    DatasetMetadataModule
   ]
 })
 export class ThemeModule { }
