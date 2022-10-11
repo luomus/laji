@@ -26,7 +26,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() selected: T[] = [];
-  @Input() open = false;
+  @Input() open: boolean; // false by default if @Input() title is provided, true if not. Initialized at ngOnInit.
   @Input() disabled = false;
   @Input() multiple = true;
   @Input() info: string;
@@ -58,6 +58,11 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
         this.filterBy = value;
         this.cd.markForCheck();
       });
+
+    if (this.open === undefined) {
+      this.open = this.title === undefined || this.title === '';
+      this.cd.markForCheck();
+    }
   }
 
   ngOnChanges() {
