@@ -98,7 +98,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   get value(): any {
-    return this.viewDate;
+    return this.currentValue;
   }
 
   set value(value: any) {
@@ -151,18 +151,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.classAttr = `ui-kit-calendar-container ${this.classAttr}`;
     this.opened = this.opened || false;
     this.format = this.format || 'YYYY-MM-DD';
-    this.viewFormat = this.viewFormat || 'D MMMM YYYY';
+    this.viewFormat = this.viewFormat || 'DD.MM.YYYY';
     this.firstWeekdaySunday = this.firstWeekdaySunday || false;
     if (this.platformService.isServer) {
       return;
     }
-    setTimeout(() => {
-      if (this.viewDate) {
-        this.value = this.viewDate;
-        this.generateCalendar();
-        this.cd.markForCheck();
-      }
-    }, 10);
     this.value$ = this.valueSource.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -255,8 +248,8 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.generateCalendar();
   }
 
-  updateValue(value) {
-    this.valueSource.next(value);
+  updateValue(viewFormatValue) {
+    this.valueSource.next(moment(viewFormatValue, this.viewFormat, true).format(this.format));
   }
 
   writeValue(value: any) {
