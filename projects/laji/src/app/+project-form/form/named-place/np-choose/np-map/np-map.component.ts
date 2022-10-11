@@ -149,7 +149,8 @@ export class NpMapComponent implements OnInit, OnChanges {
           }
         ],
         getFeatureStyle: undefined,
-        getClusterStyle: undefined
+        getClusterStyle: undefined,
+        getClusterClassName: undefined
       }
     };
     this.cdr.markForCheck();

@@ -28,13 +28,14 @@ import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
+  lajiMapObservationVisualizationContext,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
-  styleUrls: ['./observation-map.component.css'],
+  styleUrls: ['./observation-map.component.scss'],
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -80,11 +81,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
    */
   @Input() height;
   @Input() selectColor = '#00aa00';
-  @Input() color: any;
   @Input() showLoadMore = true;
   @Input() settingsKey = 'observationMap';
   @Input() hideLegend = false;
-  @Input() colorThresholds = [10, 100, 1000, 10000]; // 0-10 color[0], 11-100 color[1] etc and 1001+ color[4]
   @Output() create = new EventEmitter();
   @Input() showIndividualPointsWhenLessThan = 10000;
   @Input() itemFields: string[] = [
@@ -95,7 +94,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     'document.documentId',
     'unit.unitId',
     'unit.interpretations.recordQuality',
-    'document.linkings.collectionQuality'
+    'document.linkings.collectionQuality',
+    'gathering.interpretations.coordinateAccuracy'
   ];
 
   visualization = lajiMapObservationVisualization;
@@ -128,13 +128,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private currentCacheKey = '';
   private subDataFetch: Subscription;
-  private style: (count: number) => string;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private reset = true;
   private dataCache: any;
-  private init = false;
-
 
   private static getValue(row: any, propertyName: string): string {
     let val = '';
@@ -162,14 +159,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (!this.platformService.isBrowser) {
       return;
-    }
-    if (!this.init) {
-      this.init = true;
-
-      if (!this.color) {
-        this.color = ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'];
-      }
-      this.initColorScale();
     }
     this.decorator.lang = this.translate.currentLang;
     // First update is triggered by tile layer update event from the laji-map
@@ -258,32 +247,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.updateMapData();
   }
 
-  private initColorScale() {
-    if (typeof this.color === 'string') {
-      this.style = () => String(this.color);
-    } else {
-      let i;
-      const len = this.colorThresholds.length, memory = {};
-      this.style = (count) => {
-        if (memory[count]) {
-          return memory[count];
-        }
-        let found = false;
-        for (i = 0; i < len; i++) {
-          if (count <= this.colorThresholds[i]) {
-            memory[count] = this.color[i];
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          memory[count] = this.color[len];
-        }
-        return memory[count];
-      };
-    }
-  }
-
   private getFeatureCollection(): Observable<any> {
     const featuresFromQueryCoordinates = (coordinates: any): Observable<any[]> => ObservableOf(coordinates
         ? coordinates.map((coord: any) =>
@@ -359,8 +322,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           features
         },
         cluster: {
-          spiderfyOnMaxZoom: true,
-          showCoverageOnHover: true,
+          spiderfyOnMaxZoom: false,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: false,
           singleMarkerMode: true,
           maxClusterRadius: 20
         }
@@ -443,11 +407,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           } else {
             this.mapData = [{
               featureCollection: this.dataCache,
-              getFeatureStyle: this.getStyle.bind(this),
-              getClusterStyle: this.getClusterStyle.bind(this),
               getPopup: this.getPopup.bind(this),
               cluster: data.cluster || false
             }, this.drawData];
+            lajiMapObservationVisualizationContext.features = this.dataCache.features;
             this.loading = false;
             this.changeDetector.markForCheck();
           }
@@ -483,29 +446,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     return cache + this.activeZoomThresholdBounds.toBBoxString() + this.activeZoomThresholdLevel;
   }
-
-  private getClusterStyle(count) {
-    return {
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 1,
-      color: this.style(count)
-    };
-  }
-
-  private getStyle(data: StyleParam) {
-    let currentColor = '#00aa00';
-    if (data.feature && data.feature.properties && data.feature.properties.count) {
-      currentColor = this.style(+data.feature.properties.count);
-    }
-    return {
-      weight: 1,
-      opacity: 1,
-      fillOpacity: this.opacity,
-      color: currentColor
-    };
-  }
-
 
   private getPopup({featureIdx}, cb: (description: string) => void) {
     const lang = this.translate.currentLang;
@@ -559,10 +499,4 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       });
     }
   }
-}
-
-interface StyleParam {
-  dataIdx: number;
-  feature: any;
-  featureIdx: number;
 }

@@ -262,6 +262,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
     data.forEach(d => {
       if (vis.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
       if (vis.getClusterStyle) { d.getClusterStyle = vis.getClusterStyle; }
+      if (vis.getClusterClassName) { d.getClusterClassName = vis.getClusterClassName; }
     });
     return data;
   }

@@ -1,4 +1,6 @@
 import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
+import { Feature } from 'geojson';
+import { MarkerCluster, PathOptions } from 'leaflet';
 
 const baseFeatureStyle = {
   weight: 1,
@@ -14,8 +16,142 @@ const fallbackFeatureStyle = {
 const currentYear = new Date().getFullYear();
 const yearsAgoBreakpoints = [2, 10, 20, 40, Infinity];
 
+const getObsCountColor = (count: number): string => {
+  let idx;
+  if (count <= 10) {
+    idx = 0;
+  } else if (count <= 100) {
+    idx = 1;
+  } else if (count <= 1000) {
+    idx = 2;
+  } else if (count <= 10000) {
+    idx = 3;
+  } else {
+    idx = 4;
+  }
+  return lajiMapObservationVisualization.obsCount.categories[idx].color;
+};
+
+const getRecordQualityColorIdx = (quality: string): number => {
+  switch (quality) {
+    case 'EXPERT_VERIFIED':
+      return 0;
+    case 'COMMUNITY_VERIFIED':
+      return 1;
+    case 'NEUTRAL':
+      return 2;
+    case 'UNCERTAIN':
+      return 3;
+    case 'ERRONEOUS':
+    default:
+      return 4;
+  }
+};
+
+const getRecordQualityColor = (qualities: string | string[]): string => {
+  if (!Array.isArray(qualities)) { return lajiMapObservationVisualization.recordQuality.categories[getRecordQualityColorIdx(qualities)].color; }
+  const a = qualities.map(q => getRecordQualityColorIdx(q));
+  return lajiMapObservationVisualization.recordQuality.categories[Math.min(...a)].color;
+};
+
+const getRedlistColorIdx = (status: string): number => {
+  switch (status) {
+    case 'http://tun.fi/MX.iucnGroup8':
+      return 0;
+    case 'http://tun.fi/MX.iucnGroup7':
+      return 1;
+    case 'http://tun.fi/MX.iucnGroup6':
+      return 2;
+    case 'http://tun.fi/MX.iucnGroup5':
+      return 3;
+    case 'http://tun.fi/MX.iucnGroup4':
+      return 4;
+    case 'http://tun.fi/MX.iucnGroup3':
+    case 'http://tun.fi/MX.iucnGroup2':
+    case 'http://tun.fi/MX.iucnGroup1':
+      return 5;
+    case 'http://tun.fi/MX.iucnGroup9':
+      return 6;
+    case 'http://tun.fi/MX.iucnGroup10':
+      return 7;
+    case 'http://tun.fi/MX.iucnGroup11':
+    default:
+      return 8;
+  }
+};
+
+const getRedlistStatusColor = (statuses: string | string[]): string => {
+  if (!Array.isArray(statuses)) { return lajiMapObservationVisualization.redlistStatus.categories[getRedlistColorIdx(statuses)].color; }
+  const a = statuses.map(s => getRedlistColorIdx(s));
+  return lajiMapObservationVisualization.redlistStatus.categories[Math.min(...a)].color;
+};
+
+const getIndividualCountColorIdx = (count: number): number => {
+  if (count <= 5) {
+    return 0;
+  } else if (count <= 20) {
+    return 1;
+  } else if (count <= 50) {
+    return 2;
+  } else if (count <= 100) {
+    return 3;
+  } else {
+    return 4;
+  }
+};
+
+const getIndividualCountColor = (count: number): string => (
+  lajiMapObservationVisualization.individualCount.categories[getIndividualCountColorIdx(count)].color
+);
+
+const getRecordAgeColorIdx = (year: number): number => {
+  for (let i = 0; i < yearsAgoBreakpoints.length; i++) {
+    const bp = yearsAgoBreakpoints[i];
+    if (year >= currentYear - bp) {
+      return i;
+    }
+  }
+  return yearsAgoBreakpoints.length - 1;
+};
+
+const sliceYear = (newestRecord: string): number => (
+  parseInt((newestRecord).slice(0, 4), 10)
+);
+
+const getRecordAgeColor = (newestRecords: string | string[]): string => {
+  if (!Array.isArray(newestRecords)) { return lajiMapObservationVisualization.recordAge.categories[getRecordAgeColorIdx(sliceYear(newestRecords))].color; }
+  const a = newestRecords.map(s => sliceYear(s));
+  const year = Math.max(...a);
+  return lajiMapObservationVisualization.recordAge.categories[getRecordAgeColorIdx(year)].color;
+};
+
+const getClusterAccuracyClassName = (
+  childCount: number, featureIdxs: number[], cluster: MarkerCluster
+): string => {
+  const accuracies: number[] = [];
+  featureIdxs.forEach(i => accuracies.push(lajiMapObservationVisualizationContext.features[i].properties.coordinateAccuracy));
+  const coordinateAccuracy = Math.max(...accuracies);
+  let className: string;
+  if (coordinateAccuracy <= 10) {
+    className = 'cluster-accuracy-1';
+  } else if (coordinateAccuracy <= 100) {
+    className = 'cluster-accuracy-2';
+  } else if (coordinateAccuracy <= 1000) {
+    className = 'cluster-accuracy-3';
+  } else if (coordinateAccuracy <= 10000) {
+    className = 'cluster-accuracy-4';
+  } else if (coordinateAccuracy <= 100000) {
+    className = 'cluster-accuracy-5';
+  }
+
+  return className;
+};
+
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
+
+// this global state exists, because getClusterStyle doesn't get features directly (only featureIdx)
+export const lajiMapObservationVisualizationContext: { features?: Feature[] } = {};
 
 export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVisualizationMode> = {
   obsCount: {
@@ -44,24 +180,23 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     ],
     getFeatureStyle: (o) => {
       if (o.feature.properties.count === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      let idx;
-      if (o.feature.properties.count <= 10) {
-        idx = 0;
-      } else if (o.feature.properties.count <= 100) {
-        idx = 1;
-      } else if (o.feature.properties.count <= 1000) {
-        idx = 2;
-      } else if (o.feature.properties.count <= 10000) {
-        idx = 3;
-      } else {
-        idx = 4;
-      }
       return {
         ...baseFeatureStyle,
-        color: lajiMapObservationVisualization.obsCount.categories[idx].color
+        color: getObsCountColor(o.feature.properties.count)
       };
     },
-    getClusterStyle: undefined
+    getClusterStyle: (
+      childCount: number, featureIdxs: number[], cluster: MarkerCluster
+    ): PathOptions => {
+      let count = 0;
+      featureIdxs.forEach(i => count += lajiMapObservationVisualizationContext.features[i].properties.count);
+      if (count === 0) { return { opacity: 0, fillOpacity: 0 }; }
+      return {
+        opacity: 1,
+        color: getObsCountColor(count),
+      };
+    },
+    getClusterClassName: getClusterAccuracyClassName
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
@@ -89,30 +224,26 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     ],
     getFeatureStyle: (o) => {
       if (!o?.feature?.properties?.recordQualityMax) { return fallbackFeatureStyle; }
-      let idx;
-      switch (o.feature.properties.recordQualityMax) {
-        case 'EXPERT_VERIFIED':
-          idx = 0;
-          break;
-        case 'COMMUNITY_VERIFIED':
-          idx = 1;
-          break;
-        case 'NEUTRAL':
-          idx = 2;
-          break;
-        case 'UNCERTAIN':
-          idx = 3;
-          break;
-        case 'ERRONEOUS':
-          idx = 4;
-          break;
-      }
       return {
         ...baseFeatureStyle,
-        color: lajiMapObservationVisualization.recordQuality.categories[idx].color
+        color: getRecordQualityColor(o.feature.properties.recordQualityMax)
       };
     },
-    getClusterStyle: undefined
+    getClusterStyle: (
+      childCount: number, featureIdxs: number[], cluster: MarkerCluster
+    ): PathOptions => {
+      const qualities: string[] = [];
+      featureIdxs.forEach(i => qualities.push(
+        lajiMapObservationVisualizationContext.features[i].properties.recordQualityMax
+        || lajiMapObservationVisualizationContext.features[i].properties.recordQuality
+      ));
+      if (qualities.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
+      return {
+        opacity: 1,
+        color: getRecordQualityColor(qualities),
+      };
+    },
+    getClusterClassName: getClusterAccuracyClassName
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
@@ -148,44 +279,25 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     ],
     getFeatureStyle: (o) => {
       if (!o?.feature?.properties?.redListStatusMax) { return fallbackFeatureStyle; }
-      let idx;
-      switch (o.feature.properties.redListStatusMax) {
-        case 'http://tun.fi/MX.iucnGroup8':
-          idx = 0;
-          break;
-        case 'http://tun.fi/MX.iucnGroup7':
-          idx = 1;
-          break;
-        case 'http://tun.fi/MX.iucnGroup6':
-          idx = 2;
-          break;
-        case 'http://tun.fi/MX.iucnGroup5':
-          idx = 3;
-          break;
-        case 'http://tun.fi/MX.iucnGroup4':
-          idx = 4;
-          break;
-        case 'http://tun.fi/MX.iucnGroup3':
-        case 'http://tun.fi/MX.iucnGroup2':
-        case 'http://tun.fi/MX.iucnGroup1':
-          idx = 5;
-          break;
-        case 'http://tun.fi/MX.iucnGroup9':
-          idx = 6;
-          break;
-        case 'http://tun.fi/MX.iucnGroup10':
-          idx = 7;
-          break;
-        case 'http://tun.fi/MX.iucnGroup11':
-          idx = 8;
-          break;
-      }
       return {
         ...baseFeatureStyle,
-        color: lajiMapObservationVisualization.redlistStatus.categories[idx].color
+        color: getRedlistStatusColor(o.feature.properties.redListStatusMax)
       };
     },
-    getClusterStyle: undefined
+    getClusterStyle: (
+      childCount: number, featureIdxs: number[], cluster: MarkerCluster
+    ): PathOptions => {
+      const statuses: string[] = [];
+      featureIdxs.forEach(i => statuses.push(
+        lajiMapObservationVisualizationContext.features[i].properties.redListStatusMax
+      ));
+      if (statuses.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
+      return {
+        opacity: 1,
+        color: getRedlistStatusColor(statuses),
+      };
+    },
+    getClusterClassName: getClusterAccuracyClassName
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
@@ -213,25 +325,23 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     ],
     getFeatureStyle: (o) => {
       if (!o?.feature?.properties?.individualCountSum) { return fallbackFeatureStyle; }
-      if (o.feature.properties.individualCountSum === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      let idx;
-      if (o.feature.properties.individualCountSum <= 5) {
-        idx = 0;
-      } else if (o.feature.properties.individualCountSum <= 20) {
-        idx = 1;
-      } else if (o.feature.properties.individualCountSum <= 50) {
-        idx = 2;
-      } else if (o.feature.properties.individualCountSum <= 100) {
-        idx = 3;
-      } else {
-        idx = 4;
-      }
       return {
         ...baseFeatureStyle,
-        color: lajiMapObservationVisualization.individualCount.categories[idx].color
+        color: getIndividualCountColor(o.feature.properties.individualCountSum)
       };
     },
-    getClusterStyle: undefined
+    getClusterStyle: (
+      childCount: number, featureIdxs: number[], cluster: MarkerCluster
+    ): PathOptions => {
+      let count = 0;
+      featureIdxs.forEach(i => count += lajiMapObservationVisualizationContext.features[i].properties.individualCount);
+      if (count === 0) { return { opacity: 0, fillOpacity: 0 }; }
+      return {
+        opacity: 1,
+        color: getIndividualCountColor(count),
+      };
+    },
+    getClusterClassName: getClusterAccuracyClassName
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -259,20 +369,24 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     ],
     getFeatureStyle: (o) => {
       if (!o?.feature?.properties?.newestRecord) { return fallbackFeatureStyle; }
-      const year = parseInt((<string>o.feature.properties.newestRecord).slice(0, 4), 10);
-      let color;
-      for (let i = 0; i < yearsAgoBreakpoints.length; i++) {
-        const bp = yearsAgoBreakpoints[i];
-        if (year >= currentYear - bp) {
-          color = lajiMapObservationVisualization.recordAge.categories[i].color;
-          break;
-        }
-      }
       return {
         ...baseFeatureStyle,
-        color
+        color: getRecordAgeColor(o.feature.properties.newestRecord)
       };
     },
-    getClusterStyle: undefined
+    getClusterStyle: (
+      childCount: number, featureIdxs: number[], cluster: MarkerCluster
+    ): PathOptions => {
+      const recordAges: string[] = [];
+      featureIdxs.forEach(i => recordAges.push(
+        lajiMapObservationVisualizationContext.features[i].properties.newestRecord
+      ));
+      if (recordAges.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
+      return {
+        opacity: 1,
+        color: getRecordAgeColor(recordAges),
+      };
+    },
+    getClusterClassName: getClusterAccuracyClassName
   }
 };
