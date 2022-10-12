@@ -552,7 +552,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     // mutating it outside of ObservationFacade causes unpredictable behavior with person tokens
     // because personToken is 'true' in formQuery, but replaced by person token in ObservationFacade
     // therefore we are creating a shallow copy on the next line
-    const query = {...this.query};
+    //const query = {...this.query};
+    const query = this.query;
 
     if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
       query.time = [formQuery.timeStart];
