@@ -3,13 +3,14 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { filter, shareReplay, switchMap, map } from 'rxjs/operators';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
+import {Person} from 'projects/laji-api-client/src/lib/models';
 
 export interface IVirUser {
   id: string;
   fullName: string;
   emailAddress: string;
   organisation: string[];
-  organisationAdmin: string[];
+  organisationAdmin: {id: string; label: string}[];
 }
 
 @Injectable({providedIn: 'root'})
@@ -39,8 +40,14 @@ export class VirOrganisationService {
     this.administrableUsers$ = this.virUser$.pipe(
       filter(user => !!user.organisationAdmin?.length),
       switchMap(user => getUsers({includeExpired: true}).pipe(
-        map(users => users.filter(u => u.organisation.some(o => user.organisationAdmin.includes(o)))),
+        map(users => users.filter(u => u.organisation.some(o => user.organisationAdmin.some(({label}) => o === label)))),
       ))
     );
+
+    this.getUser$ = this.getUser$.bind(this);
+  }
+
+  getUser$(id: string) {
+    return this.httpClient.get<Person>(`/api/authorities/${id}`, {params: {token: this.userService.getToken()}});
   }
 }

@@ -22,6 +22,7 @@ import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/c
 import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/download-request/download-request.module';
 import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
 import {FindPersonModule} from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
+import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {FindPersonModule} from 'projects/laji/src/app/shared-modules/find-person
     SharedModule,
     CopyToClipboardModule,
     DownloadRequestModule,
-    FindPersonModule
+    FindPersonModule,
+    SelectModule
   ]
 })
 export class UsageModule { }

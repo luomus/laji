@@ -2,7 +2,7 @@
   <h2>{{ "usage.admin.title" | translate }}</h2>
   <div class="form-group">
     <label for="add-user">{{ "usage.admin.addUser" | translate }}</label>
-    <laji-find-person inputId="add-user" [showUserID]="true" (selectChange)="onSelectedAddUser()"></laji-find-person>
+    <laji-find-person inputId="add-user" [showUserID]="true" (selectChange)="onSelectedAddUser($event)"></laji-find-person>
   </div>
   <vir-organization-select [filterByAdmin]="true" [users$]="users$" (select)="onOrganizationSelect($event)"></vir-organization-select>
   <vir-data-table type="admin" [selectionType]="selectByCheckbox" (datatableSelect)="onDatatableSelect($event)" [data]="users$ | async"></vir-data-table>
@@ -11,3 +11,33 @@
     <button type="button" class="btn btn-danger" (click)="onRemoveAccessButtonClick()" [disabled]="!(selected$ | async).length" >{{ "usage.admin.removeAccessBtnLabel" | translate }}</button>
   </div>
 </div>
+
+<div class="modal template-form" tabindex="-1" role="dialog" bsModal #addUser="bs-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="addUserModal.hide()">
+          <i class="glyphicon glyphicon-remove"></i>
+        </button>
+        <h4 class="modal-title">{{ "usage.admin.addUser" | translate }}</h4>
+      </div>
+      <div class="modal-body" *ngIf="addUser$ | async as user">
+        <h5>{{ user.fullName }} ({{ user.id }})</h5>
+        <span>{{ user.emailAddress }}</span>
+        <form [formGroup]="addUserForm" (ngSubmit)="onUserFormSubmit(addUserForm)" class="mt-5">
+          <fieldset *ngIf="administratableOrganisations$ | async as orgs" class="form-group">
+            <legend>{{ "usage.admin.modal.addOrganisation" | translate }}</legend>
+            <laji-select [options]="orgs" [useFilter]="false" formControlName="organisations"></laji-select>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend>{{ "usage.admin.modal.expiration.title" | translate }}</legend>
+            <laji-datepicker formControlName="expirationUntil"> {{ "usage.admin.modal.expiration.until" | translate }}</laji-datepicker>
+          </fieldset>
+
+          <button type="submit" [disabled]="addUserSubmitDisabled$ | async" class="btn btn-primary">{{ "save" | translate }}</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
