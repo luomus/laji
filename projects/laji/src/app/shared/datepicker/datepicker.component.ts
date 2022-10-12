@@ -248,8 +248,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.generateCalendar();
   }
 
-  updateValue(viewFormatValue) {
-    this.valueSource.next(moment(viewFormatValue, this.viewFormat, true).format(this.format));
+  updateValue(viewFormatValue: string) {
+    this.valueSource.next(viewFormatValue.length
+      ? moment(viewFormatValue, this.viewFormat, true).format(this.format)
+      : ''
+    );
   }
 
   writeValue(value: any) {
