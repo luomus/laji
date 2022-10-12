@@ -1296,7 +1296,7 @@
   "observation.info.typeOfOccurrenceId": "Rajaa havainnot koskemaan lajeja, joille on määritelty yksi tai useampi valitsemistasi asemista. Voit myös rajata havainnot lajeihin, joilla EI ole tiettyjä asemia. Jälkimmäinen tapahtuu klikkaamalla aseman edessä olevaa ruutua kahdesti.",
   "observation.info.typeSpecimen": "Näytä vain tyyppinäytteet. Tyyppinäyte on näyte, johon kyseisen lajin tai esimerkiksi alalajin tieteellinen nimi ja kuvaus perustuvat. Tyyppinäytteet ovat erityisen arvokkaita, koska niiden avulla tieteellisten nimien käyttö saadaan vakinnutettua. Katso esimerkiksi <a target=\"_blank\" href=\"http://tieteentermipankki.fi/wiki/Kasvitiede:tyyppi\">tieteen termipankki</a>.",
   "observation.info.unidentified": "Lue lisää <a href=\"/theme/identify\" target=\"_blank\">määrityspalvelun toiminnasta</a>.",
-  "observation.intro": "Lajitietokeskukseen on koottuna havaintoja monista suomalaisista lajitietokannoista. Havaintoja kertyy yksittäisiltä harrastajilta, kansalaistiedehankkeissa, viranomaisilta ja tieteellisen työn tuloksena. Havainnot sisältävät myös tieteellisiä kokoelma-aineistoja.",
+  "observation.intro": "Lajitietokeskukseen on koottuna havaintoja monista suomalaisista lajitietokannoista. Havaintoja kertyy yksittäisiltä harrastajilta, kansalaistiedehankkeissa, viranomaisilta ja tieteellisen työn tuloksena. Havainnot sisältävät myös tieteellisiä kokoelma-aineistoja. <a href=\"/theme/dataset-metadata\">Selaa aineistojen tietoja</a>",
   "observation.intro.adminStatus": "Haku näyttää havainnot, jotka täsmäävät <strong>kaikkiin</strong> antamiisi ehtoihin.",
   "observation.intro.images": "Rajaa niihin havaintoihin, joissa on",
   "observation.intro.noImages": "Rajaa niihin havaintoihin, joissa",

@@ -1296,7 +1296,7 @@
   "observation.info.typeOfOccurrenceId": "Filter observations to include only the taxa that have one or more of the statuses that you have selected. You can also filter to include only observations that DO NOT have a certain status. The later you can do by clicking the status twice.",
   "observation.info.typeSpecimen": "Include only type specimen. A type specimen is an object in collections, which is used to describe the definition of a species or subspecies. Type specimen are especially valuable, because they stabilize concepts of scientific names.",
   "observation.info.unidentified": "Read more <a href=\"/theme/identify\" target=\"_blank\">here</a>.",
-  "observation.intro": "FinBIF is a compilation of nature observations, museum collections and other scientific datasets from many sources. These data have been collected by academics, public authorities and citizen scientists.",
+  "observation.intro": "FinBIF is a compilation of nature observations, museum collections and other scientific datasets from many sources. These data have been collected by academics, public authorities and citizen scientists. <a href=\"/en/theme/dataset-metadata\">Browse sources</a>",
   "observation.intro.adminStatus": "Observations that match <strong>all</strong> selected features are displayed.",
   "observation.intro.images": "Filter to those observations that have",
   "observation.intro.noImages": "Filter to those observations that",

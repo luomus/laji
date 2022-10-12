@@ -1296,7 +1296,7 @@
   "observation.info.typeOfOccurrenceId": "Rajaa havainnot koskemaan lajeja, joille on määritelty yksi tai useampi valitsemistasi asemista. Voit myös rajata havainnot lajeihin, joilla EI ole tiettyjä asemia. Jälkimmäinen tapahtuu klikkaamalla aseman edessä olevaa ruutua kahdesti.",
   "observation.info.typeSpecimen": "Visa endast typprover. Ett typprov är ett prov som exempelvis baseras på det vetenskapliga namnet och beskrivningen av arten eller underarten. Typprover är särskilt värdefulla eftersom de hjälper till att etablera användningen av vetenskapliga namn.",
   "observation.info.unidentified": "Lue lisää <a href=\"/theme/identify\" target=\"_blank\">määrityspalvelun toiminnasta</a>.",
-  "observation.intro": "Finlands Artdatacenter samlar observationer från olika finska databaser. Observationerna ackumuleras från utövar, medborgarnaturvetenskapliga projekter, myndigheter och som ett resultat av vetenskapligt arbete. Observationerna består också av data från vetenskapliga samlingar.",
+  "observation.intro": "Finlands Artdatacenter samlar observationer från olika finska databaser. Observationerna ackumuleras från utövar, medborgarnaturvetenskapliga projekter, myndigheter och som ett resultat av vetenskapligt arbete. Observationerna består också av data från vetenskapliga samlingar. <a href=\"/sv/theme/dataset-metadata\">Bläddra dataseten</a>",
   "observation.intro.adminStatus": "Observationer som matchar <strong> alla </strong> valda funktioner visas.",
   "observation.intro.images": "Filtrera till de observationer som har",
   "observation.intro.noImages": "Filtrera till de observationer som",
