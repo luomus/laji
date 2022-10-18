@@ -38,7 +38,7 @@ export class OrganizationSelectComponent implements OnInit {
           return of(Array.from(organizations.values()));
         }
         return this.virOrganisationService.virUser$.pipe(map(user =>
-          Array.from(organizations.values()).filter(org => user.organisationAdmin.some(({label}) => label === org))
+          Array.from(organizations.values()).filter(org => user.organisationAdmin.some(({value}) => value === org))
         ));
       })
     );
