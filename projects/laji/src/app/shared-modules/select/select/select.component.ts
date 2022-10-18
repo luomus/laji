@@ -61,12 +61,15 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.selected = obj;
     this.initOptions(this.selected);
   }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
   }
+
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
@@ -219,24 +222,15 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
       return;
     }
 
-    this.selectedOptions = [];
-    if (!selected || selected.length === 0) {
-      this.options.forEach(option => {
-        option.checkboxValue = this.checkboxType === 'basic' ? false : undefined;
-      });
-      this.unselectedOptions = this.options;
-      this.onChange?.(selected);
-      this.onTouch?.(selected);
-      return;
-    }
-    this.unselectedOptions = [];
+    const selectedOptions = [];
+    const unselectedOptions = [];
 
     this.options.forEach(option => {
       const selectedItem = selected.find(select =>
         (option.id === select) ||
         (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
       );
-      const targetOptions = selectedItem !== undefined ? this.selectedOptions : this.unselectedOptions;
+      const targetOptions = selectedItem !== undefined ? selectedOptions : unselectedOptions;
       const checkboxValue = selectedItem?.checkboxValue ?? selectedItem !== undefined;
 
       targetOptions.push({
@@ -245,9 +239,13 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
       });
     });
 
+    this.selectedOptions = selectedOptions;
+    this.unselectedOptions = unselectedOptions;
+
     this.open = this.open || !!this.selectedOptions.length;
     this.onChange?.(selected);
     this.onTouch?.(selected);
+    this.cd.markForCheck();
   }
 
   private isSelectOptions(option: IdType|SelectOption): option is SelectOption {
