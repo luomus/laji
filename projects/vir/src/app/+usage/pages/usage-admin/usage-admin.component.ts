@@ -42,7 +42,8 @@ export class UsageAdminComponent {
   selected$ = new BehaviorSubject<IVirUser[]>([]);
   addUser$ = this.addUserEvent$.pipe(
     switchMap(this.virOrganisationService.getUser$),
-    tap(() => {
+    tap((u) => {
+      this.addUserForm.patchValue(this.userToFormData(u));
       this.addUserModal.show();
     }));
   administratableOrganisations$ = this.virOrganisationService.virUser$.pipe(map(user => user.organisationAdmin));
@@ -70,7 +71,14 @@ export class UsageAdminComponent {
     this.addUserEvent$.next(autocompletePerson.id);
   }
 
-  getDefaultExpirationDate() {
+  userToFormData(user: IVirUser) {
+    return {
+        organisations: user.organisationAdmin?.map(({id}) => id) || [],
+        expirationUntil: this.getDefaultExpirationDate()
+      };
+  }
+
+  private getDefaultExpirationDate() {
     const expirationYear = new Date().getFullYear()
       + (new Date().getMonth() < 7 ? 1 : 2);
     return new Date(expirationYear + '-01-31').toISOString().split('T')[0];
