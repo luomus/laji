@@ -3,14 +3,13 @@
      [ngStyle]="height > 0 ? { height: height + 'px'} : null">
   <laji-map
           *ngIf="!reloading"
-          [options]="_mapOptions"
+          [options]="mapOptions"
           [data]="mapData"
           [visualization]="hideLegend ? undefined : visualization"
-          [settingsKey]="settingsKey"
           [visualizationMode]="visualizationMode"
+          [settingsKey]="settingsKey"
           [displayObservationAccuracy]="showingIndividualPoints"
           (create)="onCreate($event)"
-          (failure)="refreshMap()"
           (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMapPanOrZoom($event)"
           (visualizationModeChange)="onVisualizationModeChange($event)">

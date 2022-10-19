@@ -56,7 +56,6 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
-  @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
   @Output() visualizationModeChange = new EventEmitter<T>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
