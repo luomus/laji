@@ -11,6 +11,10 @@ import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
+interface TaxonomyWithDescriptions extends Taxonomy {
+  taxonDescriptions: Record<string, string>
+}
+
 @Component({
   selector: 'laji-taxon-identification',
   templateUrl: './taxon-identification.component.html',
@@ -25,7 +29,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   @ViewChild('loadMore') loadMoreElem: ElementRef;
 
-  children: Taxonomy[] = [];
+  children: TaxonomyWithDescriptions[] = [];
   totalChildren$: Observable<number> = this.facade.totalChildren$;
   loading = true;
 
@@ -49,11 +53,70 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     viewChange: this.infiniteScrollStatusCheck$.pipe(
       filter(() => this.loadMoreElem && this.isWithinXPixelsOfViewport(this.loadMoreElem.nativeElement, INFINITE_SCROLL_DISTANCE)),
       map(() => ({
-          start: 0,
-          end: this.children.length
-        }))
+        start: 0,
+        end: this.children.length
+      }))
     )
   };
+
+  private parseTaxonDescriptions(child: Taxonomy) {
+    let descriptions = child.descriptions;
+
+    if (!descriptions || descriptions.length < 1) {
+      return undefined;
+    }
+
+    let taxonDescriptions = {};
+
+    let requestedVariables = {
+      'MX.SDVG1': [
+        'MX.descriptionText',
+        'MX.identificationText',
+        'MX.descriptionMicroscopicIdentification'
+      ],
+      'MX.SDVG2': [
+        'MX.distributionFinland'
+      ],
+      'MX.SDVG4': [
+        'MX.reproductionFloweringTime'
+      ],
+      'MX.SDVG5': [
+        'MX.habitat',
+        'MX.habitatSubstrate'
+      ],
+      'MX.SDVG8': [
+        'MX.growthFormAndGrowthHabit',
+        'MX.descriptionOrganismSize',
+        'MX.descriptionStem',
+        'MX.descriptionLeaf',
+        'MX.descriptionRoot',
+        'MX.descriptionFlower',
+        'MX.descriptionFruitAndSeed',
+        'MX.descriptionCone',
+        'MX.descriptionThallus',
+        'MX.descriptionFruitbody',
+        'MX.descriptionSpore',
+        'MX.descriptionSporangiumAndAsexualReproduction',
+        'MX.algalPartnerOfLichen'
+      ],
+    };
+
+    descriptions.forEach(description => {
+      description.groups.forEach(group => {
+        if (Object.keys(requestedVariables).includes(group.group)) {
+          group.variables.forEach(variable => {
+            if (requestedVariables[group.group].includes(variable.variable) && !taxonDescriptions[variable.variable]) {
+              const title = '<h4>' + variable.title + '</h4>';
+              const content = variable.content;
+              taxonDescriptions[variable.variable] = title + content;
+            }
+          });
+        }
+      });
+    });
+
+    return taxonDescriptions;
+  }
 
   constructor(
     private facade: TaxonIdentificationFacade,
@@ -75,7 +138,10 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
     this.subscription.add(
       this.children$.subscribe((t) => {
-        this.children = t;
+        this.children = t.map(child => {
+          const taxonDescriptions = this.parseTaxonDescriptions(child);
+          return { ...child, taxonDescriptions };
+        });
         this.cdr.markForCheck();
         this.totalChildren$.pipe(take(1)).subscribe(total => {
           if (this.children.length < total) {

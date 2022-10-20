@@ -6,16 +6,26 @@
 
 <ng-template #parent>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    <div class="mb-7" *ngFor="let child of children">
-      <h3 class="child-name">
-        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
-      </h3>
-      <h4 class="child-info">
-        {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} -  {{ child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
-      </h4>
-      <laji-identification-list
-        [taxon]="child"
-      ></laji-identification-list>
+    <div class="child-container" *ngFor="let child of children">
+      <div>
+        <h3 class="child-name">
+          <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
+            <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
+          </a>
+        </h3>
+        <h4 class="child-info">
+          {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1
+          ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} - {{
+          child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ?
+          'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
+        </h4>
+        <laji-identification-list [taxon]="child"></laji-identification-list>
+      </div>
+      <div class="description-container">
+        <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue"
+          [innerHtml]="taxonDescription.value | translate">
+        </div>
+      </div>
     </div>
     <div #loadMore></div>
     <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
