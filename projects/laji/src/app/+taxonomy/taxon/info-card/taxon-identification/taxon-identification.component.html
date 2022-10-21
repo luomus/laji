@@ -6,7 +6,7 @@
 
 <ng-template #parent>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    <div class="child-container" *ngFor="let child of children">
+    <div *ngFor="let child of children">
       <div>
         <h3 class="child-name">
           <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
@@ -19,11 +19,16 @@
           child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ?
           'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
         </h4>
-        <laji-identification-list [taxon]="child"></laji-identification-list>
       </div>
-      <div class="description-container">
-        <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue"
-          [innerHtml]="taxonDescription.value | translate">
+      <div class="child-container">
+        <div class="image-container">
+          <laji-identification-list [taxon]="child"></laji-identification-list>
+        </div>
+        <div class="description-container">
+          <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue">
+            <h4>{{ taxonDescription.value.title }}</h4>
+            <p [innerHtml]="taxonDescription.value.content"></p>
+          </div>
         </div>
       </div>
     </div>

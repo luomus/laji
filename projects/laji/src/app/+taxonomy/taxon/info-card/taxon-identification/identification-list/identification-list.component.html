@@ -1,4 +1,4 @@
-<div class="parent-img" *ngIf="taxon.children?.length === 0 && taxon.multimedia?.length > 0">
+<div *ngIf="taxon.children?.length === 0 && taxon.multimedia?.length > 0">
   <img [src]="taxon.multimedia[0].largeURL">
 </div>
 <div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">

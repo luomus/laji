@@ -12,7 +12,7 @@ import { PlatformService } from '../../../../root/platform.service';
 const INFINITE_SCROLL_DISTANCE = 300;
 
 interface TaxonomyWithDescriptions extends Taxonomy {
-  taxonDescriptions: Record<string, string>
+  taxonDescriptions: Record<string, any>;
 }
 
 @Component({
@@ -60,15 +60,15 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   };
 
   private parseTaxonDescriptions(child: Taxonomy) {
-    let descriptions = child.descriptions;
+    const descriptions = child.descriptions;
 
     if (!descriptions || descriptions.length < 1) {
       return undefined;
     }
 
-    let taxonDescriptions = {};
+    const taxonDescriptions = {};
 
-    let requestedVariables = {
+    const requestedVariables = {
       'MX.SDVG1': [
         'MX.descriptionText',
         'MX.identificationText',
@@ -106,9 +106,9 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
         if (Object.keys(requestedVariables).includes(group.group)) {
           group.variables.forEach(variable => {
             if (requestedVariables[group.group].includes(variable.variable) && !taxonDescriptions[variable.variable]) {
-              const title = '<h4>' + variable.title + '</h4>';
+              const title = variable.title;
               const content = variable.content;
-              taxonDescriptions[variable.variable] = title + content;
+              taxonDescriptions[variable.variable] = { title, content };
             }
           });
         }
