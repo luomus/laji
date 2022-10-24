@@ -25,7 +25,7 @@ import { ObservationTableColumn } from '../../../observation-result/model/observ
   ) {}
 
   ngOnInit(): void {
-    const selected: string[] = JSON.parse(localStorage.getItem('laji-users-global-settings')).resultList.selected;
+    const selected: string[] = JSON.parse(localStorage.getItem('laji-users-global-settings'))?.resultList?.selected || this.tableColumnService.getDefaultFields();
     this.columns = this.tableColumnService.getAllColumns().filter(c => selected.includes(c.name));
   }
 
