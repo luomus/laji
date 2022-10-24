@@ -23,6 +23,23 @@
       <div class="child-container">
         <div class="image-container">
           <laji-identification-list [taxon]="child"></laji-identification-list>
+          <div class="image-copyright" *ngIf="child.taxonMultimedia">
+            <div *ngIf="child.taxonMultimedia.copyrightOwner">
+              <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
+              {{ child.taxonMultimedia.copyrightOwner }}
+            </div>
+            <div *ngIf="child.taxonMultimedia.licenseAbbreviation">
+              <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
+              {{ child.taxonMultimedia.licenseAbbreviation }}
+            </div>
+            <div *ngIf="child.taxonMultimedia.taxonDescriptionCaption">
+              <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
+              {{ child.taxonMultimedia.taxonDescriptionCaption | multiLang }}
+            </div>
+            <ng-container *ngIf="child.taxonMultimedia.licenseId">
+              <laji-license type={{child.taxonMultimedia.licenseId}}></laji-license>
+            </ng-container>
+          </div>
         </div>
         <div class="description-container">
           <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue">

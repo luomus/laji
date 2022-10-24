@@ -11,8 +11,9 @@ import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
-interface TaxonomyWithDescriptions extends Taxonomy {
+interface TaxonomyWithDescriptionsAndMultimedia extends Taxonomy {
   taxonDescriptions: Record<string, any>;
+  taxonMultimedia: Record<string, any>;
 }
 
 @Component({
@@ -29,7 +30,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
   @ViewChild('loadMore') loadMoreElem: ElementRef;
 
-  children: TaxonomyWithDescriptions[] = [];
+  children: TaxonomyWithDescriptionsAndMultimedia[] = [];
   totalChildren$: Observable<number> = this.facade.totalChildren$;
   loading = true;
   descriptionSources: Array<string> = [];
@@ -136,6 +137,18 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     return taxonDescriptions;
   }
 
+  private parseTaxonMultimedia(child: Taxonomy) {
+    const multimedia = {};
+    const mainImage = child.multimedia[0];
+
+    if (mainImage.copyrightOwner) {  multimedia['copyrightOwner'] = mainImage.copyrightOwner; }
+    if (mainImage.licenseAbbreviation) {  multimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
+    if (mainImage.licenseId) { multimedia['licenseId'] = mainImage.licenseId; }
+    if (mainImage.taxonDescriptionCaption) { multimedia['taxonDescriptionCaption'] = mainImage.taxonDescriptionCaption; }
+
+    return multimedia;
+  };
+
   constructor(
     private facade: TaxonIdentificationFacade,
     private cdr: ChangeDetectorRef,
@@ -158,7 +171,8 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
       this.children$.subscribe((t) => {
         this.children = t.map(child => {
           const taxonDescriptions = this.parseTaxonDescriptions(child);
-          return { ...child, taxonDescriptions };
+          const taxonMultimedia = this.parseTaxonMultimedia(child);
+          return { ...child, taxonDescriptions, taxonMultimedia };
         });
         this.cdr.markForCheck();
         this.totalChildren$.pipe(take(1)).subscribe(total => {
