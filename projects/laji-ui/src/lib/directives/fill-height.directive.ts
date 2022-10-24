@@ -21,7 +21,6 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    if (this.options.disabled) { return; }
     if (isPlatformBrowser(this.platformId) && document.readyState === 'complete') {
       this.onLoad();
     } else {
@@ -42,6 +41,7 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
   }
 
   private updateHeight() {
+    if (this.options.disabled) { return; }
     const boundingRect = this.el.nativeElement.getBoundingClientRect();
     let h = window.innerHeight - boundingRect.top;
     if (this.options.minHeight && h < this.options.minHeight) {

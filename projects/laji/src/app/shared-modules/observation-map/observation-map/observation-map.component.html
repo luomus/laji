@@ -1,6 +1,7 @@
 <div class="observation-map"
-     [luFillHeight]="{ disabled: !height || height >= 0 }"
-     [ngStyle]="height > 0 ? { height: height + 'px'} : null">
+     [luFillHeight]="{ disabled: !height || height >= 0 || clusterViewHeightOverride > 0 }"
+     [ngStyle]="clusterViewHeightOverride > 0 ? { height: clusterViewHeightOverride + 'px' } : (height > 0 ? { height: height + 'px'} : null)"
+     #mapContainer>
   <laji-map
           *ngIf="!reloading"
           [options]="mapOptions"
@@ -12,8 +13,15 @@
           (create)="onCreate($event)"
           (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMapPanOrZoom($event)"
-          (visualizationModeChange)="onVisualizationModeChange($event)">
+          (visualizationModeChange)="onVisualizationModeChange($event)"
+          (clusterclick)="onClusterclick($event)"
+  >
     <div class="loading-map loading" *ngIf="loading"></div>
   </laji-map>
 </div>
-
+<div *ngIf="clusterViewObservations.length > 0" class="cluster-info">
+  <laji-observation-cluster-table [data]="clusterViewObservations"></laji-observation-cluster-table>
+<!--   <ul>
+    <li *ngFor="let o of clusterViewObservations">{{ o }}</li>
+  </ul> -->
+</div>

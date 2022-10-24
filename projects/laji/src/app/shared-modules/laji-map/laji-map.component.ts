@@ -58,6 +58,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Output() move = new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
   @Output() visualizationModeChange = new EventEmitter<T>();
+  @Output() clusterclick = new EventEmitter<{leafletEvent; lajiMapEvent}>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -226,7 +227,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
       return;
     }
     if (this.visualization) {
-      data = this.patchVisualizationStyles(data);
+      data = this.patchMapDataCallbacks(data);
     }
     this.map.setData(data);
   }
@@ -253,15 +254,21 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
 
   updateVisualization() {
     if (!this.map) { return; }
-    this.map.setData(this.patchVisualizationStyles(this.map.getData()));
+    this.map.setData(this.patchMapDataCallbacks(this.map.getData()));
   }
 
-  patchVisualizationStyles(data: any) {
+  patchMapDataCallbacks(data: any) {
     const vis = this.visualization[this.visualizationMode];
     data.forEach(d => {
       if (vis.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
       if (vis.getClusterStyle) { d.getClusterStyle = vis.getClusterStyle; }
       if (vis.getClusterClassName) { d.getClusterClassName = vis.getClusterClassName; }
+      if (!d.on) {
+        d.on = {};
+      }
+      d.on['clusterclick'] = (leafletEvent, lajiMapEvent) => {
+        this.clusterclick.emit({leafletEvent, lajiMapEvent});
+      };
     });
     return data;
   }

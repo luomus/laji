@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -78,6 +79,7 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
 })
 export class ObservationMapComponent implements OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent<ObservationVisualizationMode>;
+  @ViewChild('mapContainer', { static: false }) mapContainerElem: ElementRef;
 
   @Input() visible = false;
   @Input() query: any;
@@ -143,6 +145,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   reloading = false;
   showingIndividualPoints = false;
   mapOptions: LajiMapOptions;
+  clusterViewHeightOverride = -1;
+  clusterViewObservations = [];
 
   private limitResults = false;
   private drawData: LajiMapDataOptions = {
@@ -165,7 +169,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     public translate: TranslateService,
     private decorator: ValueDecoratorService,
     private logger: Logger,
-    private changeDetector: ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {
     this.mapOptions = {
       controls: {
@@ -244,7 +248,20 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.updateMap();
   }
 
-  addVisualizationParams(query: WarehouseQueryInterface) {
+  onClusterclick(event: {leafletEvent; lajiMapEvent}) {
+    const features = event.leafletEvent.layer.getAllChildMarkers().map(l => l.feature);
+    this.clusterViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
+    this.clusterViewObservations = features;
+    this.cdr.detectChanges();
+  }
+
+  private resetClusterView() {
+    this.clusterViewHeightOverride = -1;
+    this.clusterViewObservations = [];
+    this.cdr.markForCheck();
+  }
+
+  private addVisualizationParams(query: WarehouseQueryInterface) {
     switch (this.visualizationMode) {
       case 'individualCount':
       case 'recordQuality':
@@ -426,10 +443,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       }, this.drawData];
       lajiMapObservationVisualizationContext.features = dataOptions.featureCollection.features;
       this.loading = false;
-      this.changeDetector.markForCheck();
+      this.resetClusterView();
+      //this.cdr.markForCheck();
     }, (err) => {
       this.loading = false;
-      this.changeDetector.markForCheck();
+      this.resetClusterView();
+      //this.cdr.markForCheck();
       this.logger.warn('Failed to add observations to the map!', err);
     });
   }
@@ -446,7 +465,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     });
   }
 
-  // TODO: check everything below this ...
   private getQueryHash(query: WarehouseQueryInterface) {
     const cache = [JSON.stringify(query), this.limitResults].join(':');
     if (!this.activeZoomThresholdBounds) {
