@@ -32,6 +32,9 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   children: TaxonomyWithDescriptions[] = [];
   totalChildren$: Observable<number> = this.facade.totalChildren$;
   loading = true;
+  descriptionSources: Array<string> = [];
+  speciesCardAuthors: Array<string> = [];
+  speciesCardAuthorsTitle: string | undefined = undefined;
 
   private children$: Observable<Taxonomy[]> = this.facade.childDataSource$.pipe(
     filter(d => d !== undefined),
@@ -109,6 +112,21 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
               const title = variable.title;
               const content = variable.content;
               taxonDescriptions[variable.variable] = { title, content };
+
+              if (description.title && !this.descriptionSources.includes(description.title)) {
+                this.descriptionSources.push(description.title);
+              }
+
+              if ( description.speciesCardAuthors) {
+                //remove html-tags from speciesCardAuthors.content
+                const authorContentWithoutTags = description.speciesCardAuthors.content.replace(/(<([^>]+)>)/ig, '');
+                if (!this.speciesCardAuthors.includes(authorContentWithoutTags)) {
+                  this.speciesCardAuthors.push(authorContentWithoutTags);
+                  if (!this.speciesCardAuthorsTitle) {
+                    this.speciesCardAuthorsTitle = description.speciesCardAuthors.title;
+                  }
+                }
+              }
             }
           });
         }

@@ -38,5 +38,21 @@
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
+    <ng-container *ngIf="descriptionSources.length > 0">
+      <h3>{{ 'taxonomy.author' | translate }}</h3>
+      <div>
+        <strong>{{ 'taxonomy.sources' | translate }}: </strong>
+        <ul>
+          <li *ngFor="let descriptionSource of descriptionSources">{{ descriptionSource }}</li>
+        </ul>
+      </div>
+      <ng-container *ngIf="speciesCardAuthors.length > 0">
+        <strong>{{ speciesCardAuthorsTitle }}:</strong>
+        <ul>
+          <li *ngFor="let speciesCardAuthor of speciesCardAuthors">{{ speciesCardAuthor }}</li>
+        </ul>
+      </ng-container>
+      <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
+    </ng-container>
   </laji-spinner>
 </ng-template>
