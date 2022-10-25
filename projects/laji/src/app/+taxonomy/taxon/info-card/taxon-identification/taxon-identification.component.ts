@@ -114,18 +114,14 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
               const content = variable.content;
               taxonDescriptions[variable.variable] = { title, content };
 
-              if (description.title && !this.descriptionSources.includes(description.title)) {
-                this.descriptionSources.push(description.title);
+              if (description.title && !this.descriptionSources.includes('<p>' + description.title + '</p>')) {
+                this.descriptionSources.push('<p>' + description.title + '</p>');
               }
 
-              if ( description.speciesCardAuthors) {
-                //remove html-tags from speciesCardAuthors.content
-                const authorContentWithoutTags = description.speciesCardAuthors.content.replace(/(<([^>]+)>)/ig, '');
-                if (!this.speciesCardAuthors.includes(authorContentWithoutTags)) {
-                  this.speciesCardAuthors.push(authorContentWithoutTags);
-                  if (!this.speciesCardAuthorsTitle) {
-                    this.speciesCardAuthorsTitle = description.speciesCardAuthors.title;
-                  }
+              if (description.speciesCardAuthors && !this.speciesCardAuthors.includes(description.speciesCardAuthors.content)) {
+                this.speciesCardAuthors.push(description.speciesCardAuthors.content);
+                if (!this.speciesCardAuthorsTitle) {
+                  this.speciesCardAuthorsTitle = description.speciesCardAuthors.title;
                 }
               }
             }
@@ -141,8 +137,8 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     const multimedia = {};
     const mainImage = child.multimedia[0];
 
-    if (mainImage.copyrightOwner) {  multimedia['copyrightOwner'] = mainImage.copyrightOwner; }
-    if (mainImage.licenseAbbreviation) {  multimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
+    if (mainImage.copyrightOwner) { multimedia['copyrightOwner'] = mainImage.copyrightOwner; }
+    if (mainImage.licenseAbbreviation) { multimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
     if (mainImage.licenseId) { multimedia['licenseId'] = mainImage.licenseId; }
     if (mainImage.taxonDescriptionCaption) { multimedia['taxonDescriptionCaption'] = mainImage.taxonDescriptionCaption; }
 
