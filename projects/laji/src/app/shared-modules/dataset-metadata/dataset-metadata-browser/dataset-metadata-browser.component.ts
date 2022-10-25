@@ -69,10 +69,12 @@ export class DatasetMetadataBrowserComponent implements OnInit {
   buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
     const collectionsWithChildren = [];
 
-    const aggregate = aggregates.find(elem => elem.id === this.selected);
+    if (this.selected) {
+      const aggregate = aggregates.find(elem => elem.id === this.selected);
 
-    if (!aggregate || aggregate.count === 0) {
-      this.showEmpty = true;
+      if (!aggregate || aggregate.count === 0) {
+        this.showEmpty = true;
+      }
     }
 
     trees.forEach(tree => {
