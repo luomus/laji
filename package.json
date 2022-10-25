@@ -25,7 +25,7 @@
     "start:label-designer-electron": "ng serve label-designer-electron --host 0.0.0.0",
     "start:kerttu-global": "npm run ng-high-memory -- serve kerttu-global --configuration=local --host 0.0.0.0 --port 3000",
     "build:label-designer": "ng build label-designer --configuration production",
-    "build:prod": "npm run ng-high-memory -- build laji --configuration=production --base-href https://laji.fi/",
+    "build:prod": "npm run ng-high-memory -- build laji --configuration=production --base-href http://localhost:3000/",
     "build:local": "npm run ng-high-memory -- build laji --configuration=local --base-href http://localhost:3000/",
     "build:embedded": "npm run ng-high-memory -- build laji --configuration=embedded",
     "build:iucn": "npm run ng-high-memory -- build iucn --configuration production",
