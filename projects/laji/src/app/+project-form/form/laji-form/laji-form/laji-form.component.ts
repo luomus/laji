@@ -226,12 +226,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           topOffset: LajiFormComponent.TOP_OFFSET,
           bottomOffset: LajiFormComponent.BOTTOM_OFFSET,
           googleApiKey: Global.googleApiKey,
-          notifier: {
-            success: msg => this.toastsService.showSuccess(msg),
-            info: msg => this.toastsService.showInfo(msg),
-            warning: msg => this.toastsService.showWarning(msg),
-            error: msg => this.toastsService.showError(msg),
-          },
+          notifier: this.notifier,
           showShortcutButton: this.showShortcutButton,
           onError: this._onError,
           onComponentDidMount: onReady ? onReady() : () => {},
@@ -311,5 +306,12 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     } catch (err) {
       this.logger.warn('Unmounting failed', err);
     }
+  }
+
+  private notifier = {
+    success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+    info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+    warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+    error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
   }
 }
