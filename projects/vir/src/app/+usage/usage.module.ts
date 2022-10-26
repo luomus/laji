@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { UsageRoutingModule } from './usage-routing.module';
 import { UsageComponent } from './usage.component';
@@ -37,7 +37,6 @@ import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select
     UsageAdminComponent
   ],
   imports: [
-    FormsModule,
     CommonModule,
     UsageRoutingModule,
     TranslateModule,

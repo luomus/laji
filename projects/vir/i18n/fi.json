@@ -118,5 +118,9 @@
   "usage.selectOrganization": "Valitse organisaatio",
   "usage.admin.modal.addOrganisation": "Lisää organisaatio",
   "usage.admin.modal.expiration.title": "Käyttöoikeus voimassa",
-  "usage.admin.modal.expiration.until": "asti"
+  "usage.admin.modal.expiration.until": "asti",
+  "usage.admin.api.error": "Jokin meni pieleen",
+  "usage.admin.api.continueExpiration.success": "Käyttäjien käyttöoikeutta jatkettiin",
+  "usage.admin.api.revokeAccess.success": "Käyttäjien pääsyoikeus poistettiin",
+  "usage.admin.api.grantAccess.success": "Käyttäjälle myönnettiin pääsyoikeus"
 }

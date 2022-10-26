@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { map, switchMap, tap, startWith } from 'rxjs/operators';
+import { map, switchMap, tap, take } from 'rxjs/operators';
 import { SelectionType } from '@swimlane/ngx-datatable';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Person } from 'projects/laji-api-client/src/lib/models/person';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'vir-usage-admin',
@@ -33,11 +35,12 @@ export class UsageAdminComponent {
   );
 
   addUserForm = this.formBuilder.group({
-    organisations: this.formBuilder.control<string[]>([]),
+    id: this.formBuilder.control<string>(''),
+    organisations: this.formBuilder.control<string[]>([], Validators.required),
     expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate())
   });
 
-  addUserSubmitDisabled$ = this.addUserForm.valueChanges.pipe(map(addUser => !addUser?.organisations.length), startWith(true));
+  userDataReqPending$ = new BehaviorSubject<boolean>(false);
 
   selected$ = new BehaviorSubject<IVirUser[]>([]);
   addUser$ = this.addUserEvent$.pipe(
@@ -50,7 +53,9 @@ export class UsageAdminComponent {
 
   constructor(
     private virOrganisationService: VirOrganisationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastrService: ToastrService,
+    private translate: TranslateService
   ) { }
 
   onOrganizationSelect(org: string) {
@@ -62,9 +67,43 @@ export class UsageAdminComponent {
   }
 
   onContinueExpirationDateButtonClick() {
+    this.selected$.pipe(
+      tap(() => this.userDataReqPending$.next(true)),
+      take(1),
+      switchMap(selected =>
+        this.virOrganisationService.continueExpiration(selected)
+      )
+    ).subscribe(
+      () => {
+        this.virOrganisationService.reloadUsers();
+        this.userDataReqPending$.next(false);
+        this.toastrService.success(this.translate.instant('usage.admin.api.continueExpiration.success'));
+      },
+      () => {
+        this.userDataReqPending$.next(false);
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+      }
+    );
   }
 
   onRemoveAccessButtonClick() {
+    this.selected$.pipe(
+      tap(() => this.userDataReqPending$.next(true)),
+      take(1),
+      switchMap(selected =>
+        this.virOrganisationService.revokeAccess(selected)
+      )
+    ).subscribe(
+      () => {
+        this.virOrganisationService.reloadUsers();
+        this.userDataReqPending$.next(false);
+        this.toastrService.success(this.translate.instant('usage.admin.api.revokeAccess.success'));
+      },
+      () => {
+        this.userDataReqPending$.next(false);
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+      }
+    );
   }
 
   onSelectedAddUser(autocompletePerson: Person) {
@@ -73,6 +112,7 @@ export class UsageAdminComponent {
 
   userToFormData(user: IVirUser) {
     return {
+        id: user.id,
         organisations: user.organisationAdmin?.map(({id}) => id) || [],
         expirationUntil: this.getDefaultExpirationDate()
       };
@@ -85,5 +125,14 @@ export class UsageAdminComponent {
   }
 
   onUserFormSubmit({value}: {value: any}) {
+    this.virOrganisationService.grantAccess(value.id, value.organisations, value.expirationUntil).subscribe(
+      () => {
+        this.virOrganisationService.reloadUsers();
+        this.toastrService.success(this.translate.instant('usage.admin.api.grantAccess.success'));
+      },
+      () => {
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+      }
+    );
   }
 }
