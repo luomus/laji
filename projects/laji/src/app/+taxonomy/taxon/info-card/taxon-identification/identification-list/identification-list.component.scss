@@ -81,3 +81,14 @@
 .cursive {
   font-style: italic;
 }
+
+.no-image {
+  display: inline-block;
+  margin: $sp-4;
+}
+
+.no-image-title {
+  color: $neutral-6;
+  margin: $sp-4;
+  text-align: center;
+}

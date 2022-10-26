@@ -1,6 +1,18 @@
-<div *ngIf="taxon.children?.length === 0 && taxon.multimedia?.length > 0">
-  <img [src]="taxon.multimedia[0].largeURL">
-</div>
+<ng-container *ngIf="taxon.children?.length === 0">
+  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
+    <img [src]="taxon.multimedia[0].largeURL">
+  </ng-container>
+
+  <ng-template #noImage>
+    <div class="no-image">
+      <img [src]="noImageSource">
+      <h4 class="no-image-title">
+        {{ 'annotation.noImages' | translate }}
+      </h4>
+    </div>
+  </ng-template>
+</ng-container>
+
 <div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">
   <div class="species-navigation back" (mousedown)="discreteScroll(-1)">
     <div class="glyphicon glyphicon-chevron-left"></div>
@@ -11,7 +23,9 @@
   <div class="d-flex species-container" #speciesContainer>
     <div *ngFor="let child of taxon.children; index as i" class="species d-flex flex-col mr-4">
       <h5>
-        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
+        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
+          <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
+        </a>
       </h5>
       <div class="species-img-container flex-grow">
         <ng-container *ngIf="child.multimedia?.length > 0">

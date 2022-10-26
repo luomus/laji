@@ -36,6 +36,7 @@ export class IdentificationListComponent implements OnDestroy {
   previousScrollTimestamp: DOMHighResTimeStamp;
   scrolling = false;
   scrollDirection = 1;
+  noImageSource = '../../../../../../static/images/icons/x-octagon.png';
 
   destroyMouseupListener: () => void;
 
