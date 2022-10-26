@@ -15,10 +15,12 @@ li {
 }
 
 .child-container {
+  border-bottom: 1px solid $neutral-6;
   display: flex;
   flex-direction: row;
-  margin-bottom: $sp-9;
+  flex-wrap: wrap;
   height: 100%;
+  margin-bottom: $sp-6;
   width: 100%;
 }
 
@@ -60,21 +62,18 @@ li {
 }
 
 .description-container {
-  margin-left: $sp-9;
-  margin-right: $sp-9;
+  padding-left: $sp-6;
+  padding-right: $sp-6;
+  padding-bottom: $sp-6;
+  max-width: 500px;
 }
 
 .description-items {
   display: flex;
   flex-direction: column;
-  flex-grow: 0;
-  width: 500px;
-}
-
-.image-container {
-  flex-grow: 1;
 }
 
 .image-copyright {
   margin-top: $sp-4;
+  margin-bottom: $sp-6;
 }
