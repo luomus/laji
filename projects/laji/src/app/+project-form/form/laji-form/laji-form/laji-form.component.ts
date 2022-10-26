@@ -313,5 +313,5 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
     warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
     error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
-  }
+  };
 }
