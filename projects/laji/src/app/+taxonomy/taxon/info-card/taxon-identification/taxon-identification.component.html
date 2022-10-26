@@ -20,7 +20,7 @@
           'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
         </h4>
       </div>
-      <div class="child-container">
+      <div class="child-container" *ngIf="taxon.taxonRank === 'MX.genus'; else noDescriptions">
         <div class="image-container">
           <laji-identification-list [taxon]="child"></laji-identification-list>
           <div class="image-copyright" *ngIf="child.taxonMultimedia">
@@ -48,6 +48,9 @@
           </div>
         </div>
       </div>
+      <ng-template #noDescriptions>
+        <laji-identification-list [taxon]="child"></laji-identification-list>
+      </ng-template>
     </div>
     <div #loadMore></div>
     <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
@@ -55,7 +58,7 @@
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
-    <ng-container *ngIf="descriptionSources.length > 0">
+    <ng-container *ngIf="taxon.taxonRank === 'MX.genus' && descriptionSources.length > 0">
       <h3>{{ 'taxonomy.author' | translate }}</h3>
       <strong>{{ 'taxonomy.sources' | translate }}:</strong>
       <ng-container *ngFor="let descriptionSource of descriptionSources">

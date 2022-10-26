@@ -64,12 +64,9 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   };
 
   private parseTaxonDescriptions(child: Taxonomy) {
+    if (!child.descriptions || child.descriptions.length < 1) { return undefined; }
+
     const descriptions = child.descriptions;
-
-    if (!descriptions || descriptions.length < 1) {
-      return undefined;
-    }
-
     const taxonDescriptions = {};
 
     const requestedVariables = {
@@ -134,15 +131,17 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
   }
 
   private parseTaxonMultimedia(child: Taxonomy) {
-    const multimedia = {};
+    if (!child.multimedia || child.multimedia.length < 0) { return undefined; }
+
     const mainImage = child.multimedia[0];
+    const taxonMultimedia = {};
 
-    if (mainImage.copyrightOwner) { multimedia['copyrightOwner'] = mainImage.copyrightOwner; }
-    if (mainImage.licenseAbbreviation) { multimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
-    if (mainImage.licenseId) { multimedia['licenseId'] = mainImage.licenseId; }
-    if (mainImage.taxonDescriptionCaption) { multimedia['taxonDescriptionCaption'] = mainImage.taxonDescriptionCaption; }
+    if (mainImage.copyrightOwner) { taxonMultimedia['copyrightOwner'] = mainImage.copyrightOwner; }
+    if (mainImage.licenseAbbreviation) { taxonMultimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
+    if (mainImage.licenseId) { taxonMultimedia['licenseId'] = mainImage.licenseId; }
+    if (mainImage.taxonDescriptionCaption) { taxonMultimedia['taxonDescriptionCaption'] = mainImage.taxonDescriptionCaption; }
 
-    return multimedia;
+    return taxonMultimedia;
   };
 
   constructor(
