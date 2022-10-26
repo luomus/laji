@@ -21,7 +21,7 @@
         </h4>
       </div>
       <div class="child-container" *ngIf="taxon.taxonRank === 'MX.genus'; else noDescriptions">
-        <div>
+        <div class="image-container">
           <laji-identification-list [taxon]="child"></laji-identification-list>
           <div class="image-copyright" *ngIf="child.taxonMultimedia">
             <div *ngIf="child.taxonMultimedia.copyrightOwner">

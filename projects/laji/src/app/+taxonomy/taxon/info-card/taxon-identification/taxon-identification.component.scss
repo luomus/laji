@@ -62,7 +62,6 @@ li {
 }
 
 .description-container {
-  padding-left: $sp-6;
   padding-right: $sp-6;
   padding-bottom: $sp-6;
   max-width: 500px;
@@ -71,6 +70,10 @@ li {
 .description-items {
   display: flex;
   flex-direction: column;
+}
+
+.image-container {
+  padding-right: $sp-6;
 }
 
 .image-copyright {
