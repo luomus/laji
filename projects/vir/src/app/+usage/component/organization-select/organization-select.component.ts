@@ -32,7 +32,7 @@ export class OrganizationSelectComponent implements OnInit {
       switchMap(data => {
         const organizations = new Set<string>();
         data.forEach(person => {
-          person.organisation.forEach(o => organizations.add(o));
+          person.organisation.forEach(o => organizations.add(o.value));
         });
         if (!this.filterByAdmin) {
           return of(Array.from(organizations.values()));

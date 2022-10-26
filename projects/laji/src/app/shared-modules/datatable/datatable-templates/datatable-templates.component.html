@@ -334,3 +334,6 @@
     <a href="{{ value | toFullUri }}" target="_blank">{{ value | toFullUri }}</a>
   </span>
 </ng-template>
+<ng-template let-value="value" #pluckValueSemiColonArray>
+  {{ value | pluck:'value' | values:'; ' }}
+</ng-template>

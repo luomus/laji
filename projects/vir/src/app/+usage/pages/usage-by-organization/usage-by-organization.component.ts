@@ -13,11 +13,12 @@ export class UsageByOrganizationComponent {
 
   private organization$ = new BehaviorSubject<string | undefined>(undefined);
 
-  users$ = combineLatest([
+  allUsers$ = this.virOrganisationService.users$;
+  selectedUsers$ = combineLatest([
     this.virOrganisationService.users$,
     this.organization$
   ]).pipe(
-    map(([users, organisation]) => organisation ? users.filter(u => u?.organisation.includes(organisation)) : users),
+    map(([users, organisation]) => organisation ? users.filter(u => u?.organisation.some(org => org.value === organisation)) : users),
   );
 
   constructor( private virOrganisationService: VirOrganisationService) { }

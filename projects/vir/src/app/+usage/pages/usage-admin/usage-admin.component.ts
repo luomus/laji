@@ -24,13 +24,14 @@ export class UsageAdminComponent {
 
   selectByCheckbox = SelectionType.checkbox;
 
-  users$ = combineLatest([
+  administrableUsers$ = this.virOrganisationService.administrableUsers$;
+  selectedUsers$ = combineLatest([
     this.virOrganisationService.administrableUsers$,
     this.organization$
   ]).pipe(
-    map(([users, organisation]) => !organisation
+    map(([users, organisation]) =>!organisation
       ? users
-      : users.filter(u => u?.organisation.includes(organisation))
+      : users.filter(u => u?.organisation.some(org => org.value === organisation))
     )
   );
 

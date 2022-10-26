@@ -64,13 +64,13 @@ export class DataTableComponent implements AfterViewInit {
     {
       name: 'organisation',
       label: 'usage.organisation',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true,
     },
     {
       name: 'section',
       label: 'usage.section',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true
     },
     {

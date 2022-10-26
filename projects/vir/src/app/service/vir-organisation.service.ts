@@ -8,7 +8,7 @@ export interface IVirUser {
   id: string;
   fullName: string;
   emailAddress: string;
-  organisation: string[];
+  organisation: {id: string; value: string}[];
   organisationAdmin: {id: string; value: string}[];
 }
 
@@ -37,7 +37,7 @@ export class VirOrganisationService {
     this.administrableUsers$ = this.virUser$.pipe(
       filter(user => !!user.organisationAdmin?.length),
       switchMap(user => getUsers({includeExpired: true}).pipe(
-        map(users => users.filter(u => u.organisation.some(o => user.organisationAdmin.some(({value}) => o === value)))),
+        map(users => users.filter(u => u.organisation.some(o => user.organisationAdmin.some(({value}) => o.value === value)))),
       )),
       share()
     );
