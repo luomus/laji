@@ -82,7 +82,7 @@ export class UsageAdminComponent {
       },
       () => {
         this.userDataReqPending$.next(false);
-        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
   }
@@ -102,7 +102,7 @@ export class UsageAdminComponent {
       },
       () => {
         this.userDataReqPending$.next(false);
-        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
   }
@@ -132,7 +132,7 @@ export class UsageAdminComponent {
         this.toastrService.success(this.translate.instant('usage.admin.api.grantAccess.success'));
       },
       () => {
-        this.toastrService.error(this.translate.instant('usage.admin.api.error'))
+        this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
   }
