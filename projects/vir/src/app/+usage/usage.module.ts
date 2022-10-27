@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UsageRoutingModule } from './usage-routing.module';
-import { UsageComponent } from './usage.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavigationThumbnailModule } from '../../../../laji/src/app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { UsageByOrganizationComponent } from './pages/usage-by-organization/usage-by-organization.component';
@@ -25,7 +24,6 @@ import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select
 
 @NgModule({
   declarations: [
-    UsageComponent,
     UsageByOrganizationComponent,
     UsageMyDownloadsComponent,
     UsageDownloadsComponent,
