@@ -402,7 +402,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     this.loading = true;
     this.drawData.featureCollection.features = [];
-    this.showingIndividualPoints = false; // TODO: why are we resetting here?
 
     this.dataFetchSubscription = getFeatureCollectionFromQueryCoordinates$(this.query.coordinates).pipe(
       // update drawData
