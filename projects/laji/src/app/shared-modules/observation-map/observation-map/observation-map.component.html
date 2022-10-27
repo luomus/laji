@@ -1,6 +1,8 @@
 <div class="observation-map"
-     [luFillHeight]="{ disabled: !height || height >= 0 || clusterViewHeightOverride > 0 }"
-     [ngStyle]="clusterViewHeightOverride > 0 ? { height: clusterViewHeightOverride + 'px' } : (height > 0 ? { height: height + 'px'} : null)"
+    [luFillHeight]="{
+      disabled: height === undefined || height === 0,
+      height: clusterViewHeightOverride > 0 ? clusterViewHeightOverride : height > 0 ? height : undefined
+    }"
      #mapContainer>
   <laji-map
           *ngIf="!reloading"

@@ -226,10 +226,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
     if (!data) {
       return;
     }
-    if (this.visualization) {
-      data = this.patchMapDataCallbacks(data);
-    }
-    this.map.setData(data);
+    this.map.setData(this.patchMapDataCallbacks(data));
   }
 
   onChange(events) {
@@ -258,11 +255,11 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   }
 
   patchMapDataCallbacks(data: any) {
-    const vis = this.visualization[this.visualizationMode];
+    const vis = this.visualization?.[this.visualizationMode];
     data.forEach(d => {
-      if (vis.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
-      if (vis.getClusterStyle) { d.getClusterStyle = vis.getClusterStyle; }
-      if (vis.getClusterClassName) { d.getClusterClassName = vis.getClusterClassName; }
+      if (vis?.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
+      if (vis?.getClusterStyle) { d.getClusterStyle = vis.getClusterStyle; }
+      if (vis?.getClusterClassName) { d.getClusterClassName = vis.getClusterClassName; }
       if (!d.on) {
         d.on = {};
       }

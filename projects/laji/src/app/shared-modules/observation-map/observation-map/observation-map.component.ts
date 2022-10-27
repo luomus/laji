@@ -32,7 +32,6 @@ import {
   lajiMapObservationVisualizationContext,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import { FeatureCollection } from 'geojson';
 
 interface ObservationDataOptions extends DataOptions {
   lastPage: number;
@@ -177,7 +176,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       },
       zoom: 1.5,
       draw: false,
-      tileLayerName: LajiMapTileLayerName.openStreetMap
+      tileLayerName: LajiMapTileLayerName.openStreetMap,
+      clickBeforeZoomAndPan: true
     };
     if ((environment as any).observationMapOptions) {
       Object.assign(this.mapOptions, ...(environment as any).observationMapOptions);

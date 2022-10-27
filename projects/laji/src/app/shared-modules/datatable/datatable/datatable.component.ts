@@ -21,7 +21,6 @@ interface Settings {[key: string]: DatatableColumn }
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy {
-
   @ViewChild('dataTable') public datatable: NgxDatatableComponent;
   @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates: DatatableTemplatesComponent;
 
