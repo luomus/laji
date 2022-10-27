@@ -59,7 +59,7 @@
   margin: 0 auto !important;
 }
 
-// /* Fix conflict between bootstrap & material styles */
+/* Fix conflict between bootstrap & material styles */
 :host ::ng-deep .datatable-checkbox input[type=checkbox]:before {
   content: none;
 }

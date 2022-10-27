@@ -18,10 +18,13 @@ export class UsageByOrganizationComponent {
     this.virOrganisationService.users$,
     this.organization$
   ]).pipe(
-    map(([users, organisation]) => organisation ? users.filter(u => u?.organisation.some(org => org.value === organisation)) : users),
+    map(([users, organisation]) => organisation
+      ? users.filter(u => u?.organisation.some(org => org.value === organisation))
+      : users
+    ),
   );
 
-  constructor( private virOrganisationService: VirOrganisationService) { }
+  constructor(private virOrganisationService: VirOrganisationService) { }
 
   organizationSelect(org: string) {
     this.organization$.next(org);

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { UsageRoutingModule } from './usage-routing.module';
 import { UsageComponent } from './usage.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,7 +20,7 @@ import { DownloadRequestModalComponent } from './component/download-request-moda
 import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/copy-to-clipboard/copy-to-clipboard.module';
 import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/download-request/download-request.module';
 import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
-import {FindPersonModule} from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
+import { FindPersonModule } from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
 import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select.module';
 
 @NgModule({
