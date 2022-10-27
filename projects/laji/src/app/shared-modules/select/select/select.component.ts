@@ -218,7 +218,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     return item.id;
   }
 
-  private initOptions(selected) {
+  private initOptions(selected = []) {
     if (!this.options) {
       return;
     }
