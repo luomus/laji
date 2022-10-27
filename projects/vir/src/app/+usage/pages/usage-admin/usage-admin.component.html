@@ -19,7 +19,7 @@
         <button type="button" class="close" (click)="addUserModal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <h4 class="modal-title">{{ "usage.admin.addUser" | translate }}</h4>
+        <h4 class="modal-title">{{ 'usage.admin.addUser' | translate }}</h4>
       </div>
       <div class="modal-body" *ngIf="addUser$ | async as user">
         <h5>{{ user.fullName }} ({{ user.id }})</h5>
@@ -31,7 +31,7 @@
           </fieldset>
 
           <fieldset class="form-group">
-            <legend>{{ "usage.admin.modal.expiration.title" | translate }}</legend>
+            <legend>{{ 'usage.admin.modal.expiration.title' | translate }} <laji-info [html]="'usage.admin.modal.expiration.info' | translate"></laji-info></legend>
             <laji-datepicker formControlName="expirationUntil"> {{ "usage.admin.modal.expiration.until" | translate }}</laji-datepicker>
           </fieldset>
 
