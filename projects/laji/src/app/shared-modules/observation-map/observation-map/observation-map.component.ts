@@ -434,7 +434,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
     ).subscribe(dataOptions => {
       // update map data
-      this.clearDrawData(); // TODO: why are we clearing draw data??
+      this.clearDrawData();
       this.mapData = [{
         featureCollection: dataOptions.featureCollection,
         getPopup: this.getPopup.bind(this),
@@ -443,11 +443,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       lajiMapObservationVisualizationContext.features = dataOptions.featureCollection.features;
       this.loading = false;
       this.resetClusterView();
-      //this.cdr.markForCheck();
     }, (err) => {
       this.loading = false;
       this.resetClusterView();
-      //this.cdr.markForCheck();
       this.logger.warn('Failed to add observations to the map!', err);
     });
   }
