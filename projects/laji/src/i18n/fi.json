@@ -1636,6 +1636,7 @@
   "taxonomy.habitat.secondary": "Toissijaiset",
   "taxonomy.habitats": "Elinympäristöt",
   "taxonomy.identification": "Tunnistus",
+  "taxonomy.identification.descriptionAuthors": "Lajikuvausten lähteet",
   "taxonomy.identification.observation": "havainto",
   "taxonomy.identification.observationsPlural": "havaintoa",
   "taxonomy.identification.species": "laji",

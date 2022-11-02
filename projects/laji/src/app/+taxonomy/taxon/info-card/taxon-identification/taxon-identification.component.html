@@ -59,7 +59,7 @@
       <div class="bounce3"></div>
     </div>
     <ng-container *ngIf="taxon.taxonRank === 'MX.genus' && descriptionSources.length > 0">
-      <h3>{{ 'taxonomy.author' | translate }}</h3>
+      <h3>{{ 'taxonomy.identification.descriptionAuthors' | translate }}</h3>
       <strong>{{ 'taxonomy.sources' | translate }}:</strong>
       <ng-container *ngFor="let descriptionSource of descriptionSources">
         <span [innerHTML]="descriptionSource"></span>
