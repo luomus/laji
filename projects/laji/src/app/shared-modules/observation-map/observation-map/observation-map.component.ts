@@ -267,12 +267,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       case 'recordQuality':
       case 'recordAge':
       case 'obsCount':
-        query.featureType = 'CENTER_POINT';
         query.onlyCount = false;
         query.pessimisticDateRangeHandling = true;
         break;
       case 'redlistStatus':
-        query.featureType = 'CENTER_POINT';
         query.onlyCount = false;
         query.taxonCounts = true;
         break;
@@ -289,56 +287,29 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
-    return this.warehouseService.warehouseQueryListGet(
-      query, [
-        'gathering.conversions.wgs84CenterPoint.lon',
-        'gathering.conversions.wgs84CenterPoint.lat',
-        ...this.itemFields
-      ],
+    return this.warehouseService.warehouseQueryAggregateGet(
+      { ...query, featureType: 'CENTER_POINT' },
+      [ 'gathering.interpretations.coordinateAccuracy' ],
       undefined,
-      this.showIndividualPointsWhenLessThan
+      this.showIndividualPointsWhenLessThan,
+      undefined,
+      true,
+      query.onlyCount
     ).pipe(
-      map(data => {
-        const features = [];
-        if (data.results) {
-          data.results.map(row => {
-            const coordinates = [
-              getNestedPropertyFromObj('gathering.conversions.wgs84CenterPoint.lon', row),
-              getNestedPropertyFromObj('gathering.conversions.wgs84CenterPoint.lat', row)
-            ];
-            if (!coordinates[0] || !coordinates[1]) {
-              return;
-            }
-            const properties = {count: 1};
-            this.itemFields.map(field => {
-              const name = field.split('.').pop();
-              properties[name] = getNestedPropertyFromObj(field, row);
-            });
-            features.push({
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates
-              },
-              properties
-            });
-          });
+      map(data => ({
+        ...data,
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: data.features
+        },
+        cluster: {
+          spiderfyOnMaxZoom: false,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: false,
+          singleMarkerMode: true,
+          maxClusterRadius: 0
         }
-        return {
-          lastPage: 1,
-          featureCollection: {
-            type: 'FeatureCollection' as const,
-            features
-          },
-          cluster: {
-            spiderfyOnMaxZoom: false,
-            showCoverageOnHover: false,
-            zoomToBoundsOnClick: false,
-            singleMarkerMode: true,
-            maxClusterRadius: 20
-          }
-        };
-      }),
+      })),
       tap(() => {
         this.showingIndividualPoints = true;
       })
