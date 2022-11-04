@@ -2,15 +2,6 @@
   <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
     <img [src]="taxon.multimedia[0].largeURL">
   </ng-container>
-
-  <ng-template #noImage>
-    <div class="no-image">
-      <img [src]="noImageSource">
-      <h4 class="no-image-title">
-        {{ 'annotation.noImages' | translate }}
-      </h4>
-    </div>
-  </ng-template>
 </ng-container>
 
 <div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">
@@ -27,11 +18,26 @@
           <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
         </a>
       </h5>
-      <div class="species-img-container flex-grow">
-        <ng-container *ngIf="child.multimedia?.length > 0">
+      <ng-container *ngIf="child.multimedia?.length > 0; else noImageContainer">
+        <div class="species-img-container">
           <img (click)="openImage(i)" [src]="child.multimedia[0].largeURL">
-        </ng-container>
-      </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
+
+<ng-template #noImageContainer>
+  <div class="species-no-img-container">
+    <ng-container *ngTemplateOutlet="noImage"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #noImage>
+  <div class="no-image">
+    <img [src]="noImageSource">
+    <h4 class="no-image-title">
+      {{ 'annotation.noImages' | translate }}
+    </h4>
+  </div>
+</ng-template>
