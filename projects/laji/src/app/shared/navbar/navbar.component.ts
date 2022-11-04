@@ -10,6 +10,7 @@ import {
 import { UserService } from '../service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { environment as virEnvironment } from '../../../../../vir/src/environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable } from 'rxjs';
@@ -54,7 +55,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private ngZone: NgZone
   ) {
     this.navId = environment.type + '-nav';
-    this.devRibbon = !environment.production || environment.type === Global.type.beta;
+    this.devRibbon = environment.type === Global.type.vir ?
+      virEnvironment.displayDevRibbon :
+      !environment.production || environment.type === Global.type.beta;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
     this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';
   }

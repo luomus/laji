@@ -87,5 +87,6 @@ export const environment = {
     },
   },
   geoserver: 'https://geoserver-dev.laji.fi',
-  observationMapOptions: {availableOverlayNameBlacklist: []}
+  observationMapOptions: {availableOverlayNameBlacklist: []},
+  displayDevRibbon: true
 };
