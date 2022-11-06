@@ -23,6 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { LajiMapVisualization } from './visualization/laji-map-visualization';
+import L from 'leaflet';
 
 @Component({
   selector: 'laji-map',
@@ -58,7 +59,6 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Output() move = new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
   @Output() visualizationModeChange = new EventEmitter<T>();
-  @Output() clusterclick = new EventEmitter<{leafletEvent; lajiMapEvent}>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -263,8 +263,8 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
       if (!d.on) {
         d.on = {};
       }
-      d.on['clusterclick'] = (leafletEvent, lajiMapEvent) => {
-        this.clusterclick.emit({leafletEvent, lajiMapEvent});
+      d.marker = {
+        icon: L.DivIcon.extend({})
       };
     });
     return data;

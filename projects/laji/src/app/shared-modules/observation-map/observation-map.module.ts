@@ -4,8 +4,8 @@ import { ObservationMapComponent } from './observation-map/observation-map.compo
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
-import { ObservationClusterTableComponent } from './observation-map/observation-cluster-table/observation-cluster-table.component';
 import { DatatableModule } from '../datatable/datatable.module';
+import { ObservationMapTableComponent } from './observation-map/observation-map-table/observation-map-table.component';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { DatatableModule } from '../datatable/datatable.module';
     LajiUiModule,
     DatatableModule
   ],
-  declarations: [ObservationMapComponent, ObservationClusterTableComponent],
+  declarations: [ObservationMapComponent, ObservationMapTableComponent],
   exports: [ObservationMapComponent]
 })
 export class ObservationMapModule { }

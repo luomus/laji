@@ -32,6 +32,8 @@ import {
   lajiMapObservationVisualizationContext,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
+import L from 'leaflet';
+import { convertLatLng } from 'laji-map/lib/utils';
 
 interface ObservationDataOptions extends DataOptions {
   lastPage: number;
@@ -144,8 +146,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   reloading = false;
   showingIndividualPoints = false;
   mapOptions: LajiMapOptions;
-  clusterViewHeightOverride = -1;
-  clusterViewObservations = [];
+
+  tableViewHeightOverride = -1;
+  selectedObservationCoordinates: [number, number];
 
   private limitResults = false;
   private drawData: LajiMapDataOptions = {
@@ -248,16 +251,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.updateMap();
   }
 
-  onClusterclick(event: {leafletEvent; lajiMapEvent}) {
-    const features = event.leafletEvent.layer.getAllChildMarkers().map(l => l.feature);
-    this.clusterViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
-    this.clusterViewObservations = features;
-    this.cdr.detectChanges();
-  }
-
-  private resetClusterView() {
-    this.clusterViewHeightOverride = -1;
-    this.clusterViewObservations = [];
+  private resetTable() {
+    this.selectedObservationCoordinates = undefined;
     this.cdr.markForCheck();
   }
 
@@ -297,17 +292,18 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       query.onlyCount
     ).pipe(
       map(data => ({
-        ...data,
         featureCollection: {
           type: 'FeatureCollection' as const,
           features: data.features
         },
-        cluster: {
-          spiderfyOnMaxZoom: false,
-          showCoverageOnHover: false,
-          zoomToBoundsOnClick: false,
-          singleMarkerMode: true,
-          maxClusterRadius: 0
+        lastPage: 1,
+        on: {
+          click: (...args) => {
+            this.selectedObservationCoordinates = args[1].feature.geometry.coordinates;
+            this.tableViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
+            this.cdr.detectChanges();
+            this.cdr.markForCheck();
+          }
         }
       })),
       tap(() => {
@@ -406,17 +402,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     ).subscribe(dataOptions => {
       // update map data
       this.clearDrawData();
-      this.mapData = [{
-        featureCollection: dataOptions.featureCollection,
-        getPopup: this.getPopup.bind(this),
-        cluster: dataOptions.cluster || false
-      }, this.drawData];
+      this.mapData = [dataOptions, this.drawData];
       lajiMapObservationVisualizationContext.features = dataOptions.featureCollection.features;
       this.loading = false;
-      this.resetClusterView();
+      this.resetTable();
     }, (err) => {
       this.loading = false;
-      this.resetClusterView();
+      this.resetTable();
       this.logger.warn('Failed to add observations to the map!', err);
     });
   }

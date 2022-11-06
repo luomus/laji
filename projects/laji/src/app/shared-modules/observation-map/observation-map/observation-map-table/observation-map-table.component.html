@@ -1,7 +1,7 @@
 <laji-datatable
   class="observation-table d-block"
   [height]="'300px'"
-  [rows]='rows'
+  [rows]='rows$ | async'
   [columns]="columns"
   [pageSize]="100">
 </laji-datatable>
