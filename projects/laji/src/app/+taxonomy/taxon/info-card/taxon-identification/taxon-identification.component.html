@@ -1,4 +1,4 @@
-<div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
+<div *ngIf="taxon.species; else parent" class="lu-text-content">
   <div *ngFor="let media of taxon.multimedia">
     <img lajiLazyImage [src]="media.largeURL">
     <div class="image-copyright">
