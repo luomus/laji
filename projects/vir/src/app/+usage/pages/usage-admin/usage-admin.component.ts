@@ -76,7 +76,7 @@ export class UsageAdminComponent {
       )
     ).subscribe(
       () => {
-        this.virOrganisationService.reloadUsers();
+        this.reloadData();
         this.userDataReqPending$.next(false);
         this.toastrService.success(this.translate.instant('usage.admin.api.continueExpiration.success'));
       },
@@ -96,7 +96,7 @@ export class UsageAdminComponent {
       )
     ).subscribe(
       () => {
-        this.virOrganisationService.reloadUsers();
+        this.reloadData();
         this.userDataReqPending$.next(false);
         this.toastrService.success(this.translate.instant('usage.admin.api.revokeAccess.success'));
       },
@@ -105,6 +105,11 @@ export class UsageAdminComponent {
         this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
+  }
+
+  reloadData() {
+    this.selected$.next([]);
+    this.virOrganisationService.reloadUsers();
   }
 
   onSelectedAddUser(autocompletePerson: Person) {
@@ -128,7 +133,7 @@ export class UsageAdminComponent {
   onUserFormSubmit({value}: {value: any}) {
     this.virOrganisationService.grantAccess(value.id, value.organisations, value.expirationUntil).subscribe(
       () => {
-        this.virOrganisationService.reloadUsers();
+        this.reloadData();
         this.toastrService.success(this.translate.instant('usage.admin.api.grantAccess.success'));
       },
       () => {

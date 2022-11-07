@@ -39,6 +39,7 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
                   [totalMessage]="'haseka.submissions.total' | translate"
                   [columns]="cols"
                   [selectionType]="selectionType"
+                  [selected]="selected"
                   >
           </laji-datatable>
       </div>
@@ -52,6 +53,7 @@ export class DataTableComponent implements AfterViewInit {
   @Input() height = 'calc(90vh - 195px)';
   @Input() data: any[];
   @Input() exportFileName = 'export';
+  @Input() selected: any = [];
   @Input() selectionType: SelectionType;
 
   @Output() rowSelect = new EventEmitter<any>();
