@@ -37,7 +37,7 @@ export class UsageAdminComponent {
 
   addUserForm = this.formBuilder.group({
     id: this.formBuilder.control<string>(''),
-    organisations: this.formBuilder.control<string[]>([], Validators.required),
+    organisation: this.formBuilder.control<string[]>([], Validators.required),
     expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate())
   });
 
@@ -119,7 +119,7 @@ export class UsageAdminComponent {
   userToFormData(user: IVirUser) {
     return {
         id: user.id,
-        organisations: user.organisationAdmin?.map(({id}) => id) || [],
+        organisation: user.organisation?.map(({id}) => id) || [],
         expirationUntil: this.getDefaultExpirationDate()
       };
   }
@@ -131,7 +131,7 @@ export class UsageAdminComponent {
   }
 
   onUserFormSubmit({value}: {value: any}) {
-    this.virOrganisationService.grantAccess(value.id, value.organisations, value.expirationUntil).subscribe(
+    this.virOrganisationService.grantAccess(value.id, value.organisation, value.expirationUntil).subscribe(
       () => {
         this.reloadData();
         this.toastrService.success(this.translate.instant('usage.admin.api.grantAccess.success'));
