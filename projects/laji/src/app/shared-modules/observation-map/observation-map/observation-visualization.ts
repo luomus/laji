@@ -231,28 +231,14 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: 'Erroneous'
       }
     ],
-    getFeatureStyle: (o) => {
-      if (!o?.feature?.properties?.recordQualityMax) { return fallbackFeatureStyle; }
+    getFeatureStyle: (options) => {
+      if (!options?.feature?.properties?.recordQualityMax) { return fallbackFeatureStyle; }
       return {
         ...baseFeatureStyle,
-        color: getRecordQualityColor(o.feature.properties.recordQualityMax)
+        color: getRecordQualityColor(options.feature.properties.recordQualityMax),
+        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
       };
-    },
-    getClusterStyle: (
-      childCount: number, featureIdxs: number[], cluster: MarkerCluster
-    ): PathOptions => {
-      const qualities: string[] = [];
-      featureIdxs.forEach(i => qualities.push(
-        lajiMapObservationVisualizationContext.features[i].properties.recordQualityMax
-        || lajiMapObservationVisualizationContext.features[i].properties.recordQuality
-      ));
-      if (qualities.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      return {
-        opacity: 1,
-        color: getRecordQualityColor(qualities),
-      };
-    },
-    getClusterClassName: getClusterAccuracyClassName
+    }
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
@@ -286,27 +272,14 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: 'DD, NA, NE'
       }
     ],
-    getFeatureStyle: (o) => {
-      if (!o?.feature?.properties?.redListStatusMax) { return fallbackFeatureStyle; }
+    getFeatureStyle: (options) => {
+      if (!options?.feature?.properties?.redListStatusMax) { return fallbackFeatureStyle; }
       return {
         ...baseFeatureStyle,
-        color: getRedlistStatusColor(o.feature.properties.redListStatusMax)
+        color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
+        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
       };
-    },
-    getClusterStyle: (
-      childCount: number, featureIdxs: number[], cluster: MarkerCluster
-    ): PathOptions => {
-      const statuses: string[] = [];
-      featureIdxs.forEach(i => statuses.push(
-        lajiMapObservationVisualizationContext.features[i].properties.redListStatusMax
-      ));
-      if (statuses.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      return {
-        opacity: 1,
-        color: getRedlistStatusColor(statuses),
-      };
-    },
-    getClusterClassName: getClusterAccuracyClassName
+    }
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
@@ -332,25 +305,14 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: '> 100'
       }
     ],
-    getFeatureStyle: (o) => {
-      if (!o?.feature?.properties?.individualCountSum) { return fallbackFeatureStyle; }
+    getFeatureStyle: (options) => {
+      if (!options?.feature?.properties?.individualCountSum) { return fallbackFeatureStyle; }
       return {
         ...baseFeatureStyle,
-        color: getIndividualCountColor(o.feature.properties.individualCountSum)
+        color: getIndividualCountColor(options.feature.properties.individualCountSum),
+        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
       };
-    },
-    getClusterStyle: (
-      childCount: number, featureIdxs: number[], cluster: MarkerCluster
-    ): PathOptions => {
-      let count = 0;
-      featureIdxs.forEach(i => count += lajiMapObservationVisualizationContext.features[i].properties.individualCount);
-      if (count === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      return {
-        opacity: 1,
-        color: getIndividualCountColor(count),
-      };
-    },
-    getClusterClassName: getClusterAccuracyClassName
+    }
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -376,26 +338,13 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: `< ${currentYear - yearsAgoBreakpoints[3]}`
       }
     ],
-    getFeatureStyle: (o) => {
-      if (!o?.feature?.properties?.newestRecord) { return fallbackFeatureStyle; }
+    getFeatureStyle: (options) => {
+      if (!options?.feature?.properties?.newestRecord) { return fallbackFeatureStyle; }
       return {
         ...baseFeatureStyle,
-        color: getRecordAgeColor(o.feature.properties.newestRecord)
+        color: getRecordAgeColor(options.feature.properties.newestRecord),
+        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
       };
-    },
-    getClusterStyle: (
-      childCount: number, featureIdxs: number[], cluster: MarkerCluster
-    ): PathOptions => {
-      const recordAges: string[] = [];
-      featureIdxs.forEach(i => recordAges.push(
-        lajiMapObservationVisualizationContext.features[i].properties.newestRecord
-      ));
-      if (recordAges.length === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      return {
-        opacity: 1,
-        color: getRecordAgeColor(recordAges),
-      };
-    },
-    getClusterClassName: getClusterAccuracyClassName
+    }
   }
 };
