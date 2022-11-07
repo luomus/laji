@@ -1,6 +1,23 @@
 <div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
   <div *ngFor="let media of taxon.multimedia">
     <img lajiLazyImage [src]="media.largeURL">
+    <div class="image-copyright">
+      <div *ngIf="media.copyrightOwner">
+        <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
+        {{ media.copyrightOwner }}
+      </div>
+      <div *ngIf="media.licenseAbbreviation">
+        <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
+        {{ media.licenseAbbreviation }}
+      </div>
+      <div *ngIf="media.taxonDescriptionCaption">
+        <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
+        {{ media.taxonDescriptionCaption | multiLang }}
+      </div>
+      <ng-container *ngIf="media.licenseId">
+        <laji-license type={{media.licenseId}}></laji-license>
+      </ng-container>
+    </div>
   </div>
 </div>
 
@@ -20,7 +37,7 @@
           'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
         </h4>
       </div>
-      <div class="child-container" *ngIf="taxon.taxonRank === 'MX.genus'; else noDescriptions">
+      <div class="child-container" *ngIf="child.children?.length === 0; else noDescriptions">
         <div class="image-container">
           <laji-identification-list [taxon]="child"></laji-identification-list>
           <div class="image-copyright" *ngIf="child.taxonMultimedia">
