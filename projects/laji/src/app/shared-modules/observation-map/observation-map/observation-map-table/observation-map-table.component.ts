@@ -8,7 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
 import { TableColumnService } from '../../../datatable/service/table-column.service';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
@@ -27,8 +27,8 @@ const defaultColumnProps: (keyof IColumns)[] = [
   'document.linkings.collectionQuality',
   'unit.taxon',
   'gathering.displayDateTime',
-/*   'gathering.team.memberName', */
-/*   'count' */
+  'gathering.team',
+  'unit.abundanceString'
 ];
 
 @Component({
@@ -65,18 +65,48 @@ const defaultColumnProps: (keyof IColumns)[] = [
 
   private updateRows() {
     const wgs = this.coordinates[1] + ':' +  this.coordinates[0] + ':WGS84';
-    const selected: string[] = this.columns.map(col => col.selectField || <string>col.prop || col.name);
+    //const selected: string[] = this.columns.map(col => col.selectField || <string>col.prop || col.name);
+    const selected = [
+      'unit.interpretations.recordQuality',
+      'document.linkings.collectionQuality',
+      'unit',
+      'unit.abundanceString',
+      'gathering.displayDateTime',
+      'gathering.team'
+    ];
+/*     const selected = [
+      'unit.interpretations.recordQuality',
+      'document.linkings.collectionQuality',
+      'unit.linkings.taxon.taxonomicOrder',
+      'unit',
+      'unit.abundanceString',
+      'gathering.displayDateTime',
+      'gathering.interpretations.countryDisplayname',
+      'gathering.interpretations.biogeographicalProvinceDisplayname',
+      'gathering.locality',
+      'document.collectionId',
+      'document.documentId',
+      'gathering.team',
+      'unit.unitId',
+      'document.documentId'
+    ]; */
     this.rows$ = this.warehouse.warehouseQueryListGet({
       wgs84CenterPoint: wgs,
       coordinateAccuracyMax: 5000
     }, selected /* , <string[]>[...defaultColumnProps, ...Object.values(obsVizToColProp)] */).pipe(
-      map(d => d.results)
+      map(d => d.results),
+      tap(() => {
+        setTimeout(() => {
+          this.cdr.markForCheck(); this.cdr.detectChanges();
+        });
+      })
     );
     this.cdr.markForCheck();
   }
 
   private updateColumns() {
     const names = [...defaultColumnProps/* , obsVizToColProp[this.visualizationMode] */];
+    // TODO fix order
     this.columns = this.tableColumnService.getAllColumns().filter(c => names.includes(c.name));
   }
 }

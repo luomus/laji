@@ -147,6 +147,26 @@ const getClusterAccuracyClassName = (
   return className;
 };
 
+const getCoordinateAccuracyClassName = (
+  coordinateAccuracy: number
+): string => {
+  if (!coordinateAccuracy) { return ''; }
+  let className: string;
+  if (coordinateAccuracy <= 10) {
+    className = 'cluster-accuracy-1';
+  } else if (coordinateAccuracy <= 100) {
+    className = 'cluster-accuracy-2';
+  } else if (coordinateAccuracy <= 1000) {
+    className = 'cluster-accuracy-3';
+  } else if (coordinateAccuracy <= 10000) {
+    className = 'cluster-accuracy-4';
+  } else if (coordinateAccuracy <= 100000) {
+    className = 'cluster-accuracy-5';
+  }
+
+  return className;
+};
+
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
 
@@ -178,25 +198,14 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: '10001+'
       }
     ],
-    getFeatureStyle: (o) => {
-      if (o.feature.properties.count === 0) { return { opacity: 0, fillOpacity: 0 }; }
+    getFeatureStyle: (options) => {
+      if (options.feature.properties.count === 0) { return <PathOptions>{ opacity: 0, fillOpacity: 0 }; }
       return {
         ...baseFeatureStyle,
-        color: getObsCountColor(o.feature.properties.count)
+        color: getObsCountColor(options.feature.properties.count),
+        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
       };
-    },
-    getClusterStyle: (
-      childCount: number, featureIdxs: number[], cluster: MarkerCluster
-    ): PathOptions => {
-      let count = 0;
-      featureIdxs.forEach(i => count += lajiMapObservationVisualizationContext.features[i].properties.count);
-      if (count === 0) { return { opacity: 0, fillOpacity: 0 }; }
-      return {
-        opacity: 1,
-        color: getObsCountColor(count),
-      };
-    },
-    getClusterClassName: getClusterAccuracyClassName
+    }
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',

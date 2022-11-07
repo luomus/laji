@@ -32,8 +32,7 @@ import {
   lajiMapObservationVisualizationContext,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L from 'leaflet';
-import { convertLatLng } from 'laji-map/lib/utils';
+import L, { PathOptions } from 'leaflet';
 
 interface ObservationDataOptions extends DataOptions {
   lastPage: number;
@@ -253,6 +252,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private resetTable() {
     this.selectedObservationCoordinates = undefined;
+    this.tableViewHeightOverride = undefined;
     this.cdr.markForCheck();
   }
 
@@ -291,7 +291,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       true,
       query.onlyCount
     ).pipe(
-      map(data => ({
+      map(data => (<ObservationDataOptions>{
         featureCollection: {
           type: 'FeatureCollection' as const,
           features: data.features
@@ -299,10 +299,28 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         lastPage: 1,
         on: {
           click: (...args) => {
-            this.selectedObservationCoordinates = args[1].feature.geometry.coordinates;
+            this.selectedObservationCoordinates = (args[1].feature.geometry as any).coordinates;
             this.tableViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
             this.cdr.detectChanges();
             this.cdr.markForCheck();
+          }
+        },
+        marker: {
+          icon: (po: PathOptions, feature) => {
+            const icon: any = L.divIcon({
+              className: po.className
+            });
+            icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
+              iconDomElem.style['background-color'] = po2.color + 'A0';
+              //iconDomElem.style['opacity'] = ''+po2.fillOpacity;
+              iconDomElem.style['height'] = '20px';
+              iconDomElem.style['width'] = '20px';
+              iconDomElem.style['border-radius'] = '100%';
+              if (po2.className) {
+                iconDomElem.classList.add(po2.className);
+              }
+            };
+            return icon;
           }
         }
       })),
@@ -434,44 +452,5 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       return cache + this.activeZoomThresholdLevel;
     }
     return cache + this.activeZoomThresholdBounds.toBBoxString() + this.activeZoomThresholdLevel;
-  }
-
-  private getPopup({featureIdx}, cb: (description: string) => void) {
-    const lang = this.translate.currentLang;
-    this.translate.get('more')
-      .subscribe((moreInfo) => {
-        try {
-          const properties = this.mapData[0].featureCollection.features[featureIdx].properties;
-          const cnt = properties.count;
-          let description = '';
-          this.itemFields.map(field => {
-            const name = field.split('.').pop();
-            if (properties[name] && name !== 'documentId' && name !== 'unitId') {
-              if (field === 'unit.taxonVerbatim' && properties['taxon']) {
-                return;
-              }
-              description += this.decorator.decorate(field, properties[name], {}) + '<br>';
-            }
-          });
-          if (properties['documentId'] && properties['unitId']) {
-            description += '<a target="_blank" href="' +
-              (lang !== 'fi' ? '/' + lang : '') +
-              '/view?uri=' +
-              properties['documentId'] +
-              '&highlight=' +
-              properties['unitId'].replace('#', '%23') + '">' +
-              moreInfo + '</a>';
-          }
-          if (description) {
-            cb(description);
-          } else if (cnt) {
-            return;
-            // this.translate.getList('result.allObservation')
-            //  .subscribe(translation => cb(`${cnt} ${translation}`));
-          }
-        } catch (e) {
-          this.logger.log('Failed to display popup for the map', e);
-        }
-      });
   }
 }

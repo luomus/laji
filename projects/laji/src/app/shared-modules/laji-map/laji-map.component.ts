@@ -263,9 +263,6 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
       if (!d.on) {
         d.on = {};
       }
-      d.marker = {
-        icon: L.DivIcon.extend({})
-      };
     });
     return data;
   }
