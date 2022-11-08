@@ -41,7 +41,8 @@ export class UsageAdminComponent {
     expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate())
   });
 
-  userDataReqPending$ = new BehaviorSubject<boolean>(false);
+  userModifyReqPending$ = new BehaviorSubject<boolean>(false);
+  userAddReqPending: string[] = [];
 
   selected$ = new BehaviorSubject<IVirUser[]>([]);
   addUser$ = this.addUserEvent$.pipe(
@@ -69,7 +70,7 @@ export class UsageAdminComponent {
 
   onContinueExpirationDateButtonClick() {
     this.selected$.pipe(
-      tap(() => this.userDataReqPending$.next(true)),
+      tap(() => this.userModifyReqPending$.next(true)),
       take(1),
       switchMap(selected =>
         this.virOrganisationService.continueExpiration(selected)
@@ -77,11 +78,11 @@ export class UsageAdminComponent {
     ).subscribe(
       () => {
         this.reloadData();
-        this.userDataReqPending$.next(false);
+        this.userModifyReqPending$.next(false);
         this.toastrService.success(this.translate.instant('usage.admin.api.continueExpiration.success'));
       },
       () => {
-        this.userDataReqPending$.next(false);
+        this.userModifyReqPending$.next(false);
         this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
@@ -89,7 +90,7 @@ export class UsageAdminComponent {
 
   onRemoveAccessButtonClick() {
     this.selected$.pipe(
-      tap(() => this.userDataReqPending$.next(true)),
+      tap(() => this.userModifyReqPending$.next(true)),
       take(1),
       switchMap(selected =>
         this.virOrganisationService.revokeAccess(selected)
@@ -97,11 +98,11 @@ export class UsageAdminComponent {
     ).subscribe(
       () => {
         this.reloadData();
-        this.userDataReqPending$.next(false);
+        this.userModifyReqPending$.next(false);
         this.toastrService.success(this.translate.instant('usage.admin.api.revokeAccess.success'));
       },
       () => {
-        this.userDataReqPending$.next(false);
+        this.userModifyReqPending$.next(false);
         this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );
@@ -131,12 +132,16 @@ export class UsageAdminComponent {
   }
 
   onUserFormSubmit({value}: {value: any}) {
+    this.userAddReqPending = [...this.userAddReqPending, value.id];
     this.virOrganisationService.grantAccess(value.id, value.organisation, value.expirationUntil).subscribe(
       () => {
+        this.userAddReqPending = this.userAddReqPending.filter(id => id !== value.id);
         this.reloadData();
+        this.addUserModal.hide();
         this.toastrService.success(this.translate.instant('usage.admin.api.grantAccess.success'));
       },
       () => {
+        this.userAddReqPending = this.userAddReqPending.filter(id => id !== value.id);
         this.toastrService.error(this.translate.instant('usage.admin.api.error'));
       }
     );

@@ -7,8 +7,8 @@
   <vir-organization-select [filterByAdmin]="true" [users$]="administrableUsers$" (select)="onOrganizationSelect($event)"></vir-organization-select>
   <vir-data-table type="admin" [selectionType]="selectByCheckbox" (datatableSelect)="onDatatableSelect($event)" [data]="selectedUsers$ | async" [selected]="selected$ | async"></vir-data-table>
   <div class="mt-3" style="float: right;">
-    <button type="button" class="btn btn-primary mr-2" (click)="onContinueExpirationDateButtonClick()" [disabled]="(userDataReqPending$ | async) || !(selected$ | async).length">{{ "usage.admin.continueExpirationBtnLabel" | translate }}</button>
-    <button type="button" class="btn btn-danger" (click)="onRemoveAccessButtonClick()" [disabled]="(userDataReqPending$ | async) || !(selected$ | async).length" >{{ "usage.admin.removeAccessBtnLabel" | translate }}</button>
+    <button type="button" class="btn btn-primary mr-2" (click)="onContinueExpirationDateButtonClick()" [disabled]="(userModifyReqPending$ | async) || !(selected$ | async).length">{{ "usage.admin.continueExpirationBtnLabel" | translate }}</button>
+    <button type="button" class="btn btn-danger" (click)="onRemoveAccessButtonClick()" [disabled]="(userModifyReqPending$ | async) || !(selected$ | async).length" >{{ "usage.admin.removeAccessBtnLabel" | translate }}</button>
   </div>
 </div>
 
@@ -35,7 +35,7 @@
             <laji-datepicker formControlName="expirationUntil"> {{ "usage.admin.modal.expiration.until" | translate }}</laji-datepicker>
           </fieldset>
 
-          <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-primary">{{ "save" | translate }}</button>
+          <button type="submit" [disabled]="!addUserForm.valid || userAddReqPending.includes(user.id)" class="btn btn-primary">{{ "save" | translate }}</button>
         </form>
       </div>
     </div><!-- /.modal-content -->
