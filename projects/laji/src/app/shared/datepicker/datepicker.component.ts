@@ -157,7 +157,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
       return;
     }
     this.value$ = this.valueSource.pipe(
-      debounceTime(500),
       distinctUntilChanged(),
     ).subscribe((val) => this.value = val);
   }
