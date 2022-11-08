@@ -39,7 +39,7 @@ export class UsageAdminComponent {
     id: this.formBuilder.control<string>(''),
     organisation: this.formBuilder.control<string[]>([]),
     expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate(), [Validators.required, function validator(date) {
-      return date.value === "Invalid date" ? {dateInvalid: true} : null;
+      return date.value === 'Invalid date' ? {dateInvalid: true} : null;
     }])
   });
 
