@@ -119,7 +119,7 @@ export class UsageAdminComponent {
   userToFormData(user: IVirUser) {
     return {
         id: user.id,
-        organisation: user.organisation?.map(({id}) => id) || [],
+        organisation: [],
         expirationUntil: this.getDefaultExpirationDate()
       };
   }
