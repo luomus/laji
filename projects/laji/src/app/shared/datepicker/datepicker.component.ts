@@ -151,7 +151,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.classAttr = `ui-kit-calendar-container ${this.classAttr}`;
     this.opened = this.opened || false;
     this.format = this.format || 'YYYY-MM-DD';
-    this.viewFormat = this.viewFormat || 'DD.MM.YYYY';
+    this.viewFormat = this.viewFormat || 'D.M.YYYY';
     this.firstWeekdaySunday = this.firstWeekdaySunday || false;
     if (this.platformService.isServer) {
       return;
