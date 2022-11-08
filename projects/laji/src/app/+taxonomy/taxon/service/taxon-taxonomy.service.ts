@@ -30,7 +30,8 @@ export class TaxonTaxonomyService {
       this.pending[id] = this.taxonService
         .taxonomyFindBySubject(id, 'multi', {
           selectedFields: this.getSelectedFields(),
-          onlyFinnish: false
+          onlyFinnish: false,
+          includeHidden: true
         })
         .pipe(
           tap((data) => {
@@ -62,7 +63,8 @@ export class TaxonTaxonomyService {
       this.pendingChildren[id] = this.taxonService
         .taxonomyFindChildren(id, 'multi', undefined, {
           selectedFields: this.getSelectedFields(),
-          onlyFinnish: false
+          onlyFinnish: false,
+          includeHidden: true
         })
         .pipe(
           tap(children => {
@@ -160,6 +162,7 @@ export class TaxonTaxonomyService {
       'id',
       'hasChildren',
       'hasParent',
+      'hiddenTaxon',
       'vernacularName',
       'scientificName',
       'cursiveName',

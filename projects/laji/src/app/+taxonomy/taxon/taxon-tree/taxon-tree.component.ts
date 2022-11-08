@@ -15,9 +15,10 @@ export class TaxonTreeComponent {
   getDataFunc = this.getData.bind(this);
   getChildrenFunc = this.getChildren.bind(this);
   getParentsFunc = this.getParents.bind(this);
-  skipParams: TreeSkipParameter[];
+  skipParams: TreeSkipParameter[] = [{key: 'hiddenTaxon', isWhiteList: true, values: [false]}];
 
   showMainLevels = false;
+  showHidden = false;
 
   constructor(
     private taxonomyService: TaxonTaxonomyService
@@ -36,8 +37,10 @@ export class TaxonTreeComponent {
   }
 
   setSkipParams() {
+    const tempSkipParams = [];
+
     if (this.showMainLevels) {
-      this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
+      tempSkipParams.push({key: 'taxonRank', isWhiteList: true, values: [
         'MX.superdomain',
         'MX.domain',
         'MX.kingdom',
@@ -47,9 +50,13 @@ export class TaxonTreeComponent {
         'MX.family',
         'MX.genus',
         'MX.species'
-      ]}];
-    } else {
-      this.skipParams = undefined;
+      ]});
     }
+
+    if (!this.showHidden) {
+      tempSkipParams.push({key: 'hiddenTaxon', isWhiteList: true, values: [false]});
+    }
+
+    tempSkipParams.length === 0 ? this.skipParams = undefined : this.skipParams = tempSkipParams;
   }
 }
