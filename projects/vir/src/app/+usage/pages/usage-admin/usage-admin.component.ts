@@ -37,7 +37,7 @@ export class UsageAdminComponent {
 
   addUserForm = this.formBuilder.group({
     id: this.formBuilder.control<string>(''),
-    organisation: this.formBuilder.control<string[]>([], Validators.required),
+    organisation: this.formBuilder.control<string[]>([]),
     expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate())
   });
 
