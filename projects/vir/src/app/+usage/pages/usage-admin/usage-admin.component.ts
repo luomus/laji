@@ -38,7 +38,9 @@ export class UsageAdminComponent {
   addUserForm = this.formBuilder.group({
     id: this.formBuilder.control<string>(''),
     organisation: this.formBuilder.control<string[]>([]),
-    expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate())
+    expirationUntil: this.formBuilder.control(this.getDefaultExpirationDate(), [Validators.required, function validator(date) {
+      return date.value === "Invalid date" ? {dateInvalid: true} : null;
+    }])
   });
 
   userModifyReqPending$ = new BehaviorSubject<boolean>(false);
