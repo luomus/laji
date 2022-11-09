@@ -11,6 +11,7 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
 export class TaxonTreeComponent {
   @Input() activeId: string;
   @Input() activeTab: string;
+  @Input() showHidden: boolean;
   @Output() routeUpdate = new EventEmitter();
 
   getDataFunc = this.getData.bind(this);
@@ -19,7 +20,6 @@ export class TaxonTreeComponent {
   skipParams: TreeSkipParameter[] = [{key: 'hiddenTaxon', isWhiteList: true, values: [false]}];
 
   showMainLevels = false;
-  showHidden = false;
 
   constructor(
     private taxonomyService: TaxonTaxonomyService

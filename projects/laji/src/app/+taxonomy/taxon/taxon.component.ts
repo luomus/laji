@@ -29,6 +29,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
   showTree = false;
   canShowTree = true;
 
+  showHidden = false;
+
   loading = false;
   private initTaxonSub: Subscription;
 
@@ -54,6 +56,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
       this.infoCardTab = data[0]['tab'] || 'overview';
       this.infoCardContext = data[1]['context'] || 'default';
       this.showTree = data[1]['showTree'] === 'true';
+      this.showHidden = data[1]['showHidden'] === 'true';
       this.cd.markForCheck();
 
       if (!this.taxon || data[0]['id'] !== this.taxon.id) {
@@ -79,7 +82,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false, showHidden = false) {
+  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false, showHidden = this.showHidden) {
     const route = ['/taxon', id];
     const params = {};
     const extra = {};
