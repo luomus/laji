@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
 import { TreeSkipParameter } from './tree/model/tree.interface';
 
@@ -11,6 +11,7 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
 export class TaxonTreeComponent {
   @Input() activeId: string;
   @Input() activeTab: string;
+  @Output() routeUpdate = new EventEmitter();
 
   getDataFunc = this.getData.bind(this);
   getChildrenFunc = this.getChildren.bind(this);
@@ -58,5 +59,7 @@ export class TaxonTreeComponent {
     }
 
     tempSkipParams.length === 0 ? this.skipParams = undefined : this.skipParams = tempSkipParams;
+
+    this.routeUpdate.emit({ showHidden: this.showHidden });
   }
 }

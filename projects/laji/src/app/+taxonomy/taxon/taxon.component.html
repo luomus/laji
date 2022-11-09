@@ -5,6 +5,7 @@
         <laji-taxon-tree
           [activeId]="taxon.id"
           [activeTab]="infoCardTab"
+          (routeUpdate)="updateRoute(undefined, undefined, undefined, showTree, undefined, $event.showHidden)"
         ></laji-taxon-tree>
       </nav>
       <main>

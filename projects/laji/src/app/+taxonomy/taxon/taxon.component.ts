@@ -79,7 +79,7 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false) {
+  updateRoute(id = this.taxon.id, tab = this.infoCardTab, context = this.infoCardContext, showTree = this.showTree, replaceUrl = false, showHidden = false) {
     const route = ['/taxon', id];
     const params = {};
     const extra = {};
@@ -98,6 +98,9 @@ export class TaxonComponent implements OnInit, OnDestroy {
     }
     if (replaceUrl) {
       extra['replaceUrl'] = true;
+    }
+    if (showHidden) {
+      params['showHidden'] = true;
     }
 
     this.router.navigate(
