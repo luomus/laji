@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
 import { TreeSkipParameter } from './tree/model/tree.interface';
 
@@ -8,7 +8,7 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
   styleUrls: ['./taxon-tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonTreeComponent {
+export class TaxonTreeComponent implements OnInit {
   @Input() activeId: string;
   @Input() activeTab: string;
   @Input() showHidden: boolean;
