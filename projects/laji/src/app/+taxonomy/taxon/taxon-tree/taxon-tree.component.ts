@@ -25,6 +25,10 @@ export class TaxonTreeComponent {
     private taxonomyService: TaxonTaxonomyService
   ) {}
 
+  ngOnInit(): void {
+    this.setSkipParams();
+  }
+
   getData(id: string) {
     return this.taxonomyService.getTaxon(id);
   }
