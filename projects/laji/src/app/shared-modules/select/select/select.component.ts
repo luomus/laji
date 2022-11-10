@@ -238,9 +238,6 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.selectedOptions = selectedOptions;
     this.unselectedOptions = unselectedOptions;
 
-    if (this.open !== undefined) { // Don't touch if not initialized yet. 'open' is initialized at OnInit.
-      this.open = this.open || !!this.selectedOptions.length;
-    }
     this.onChange?.(selected);
     this.onTouch?.(selected);
     this.cd.markForCheck();
