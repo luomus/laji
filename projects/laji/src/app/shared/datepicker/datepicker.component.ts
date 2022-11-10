@@ -188,7 +188,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     }
 
     this.days = [];
-    const selectedDate = moment(this.value, this.viewFormat);
+    const selectedDate = moment(this.value, this.format);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
       const iteratedDate = moment(`${year}-${month + 1}-${i}`, 'YYYY-MM-DD');
       const today = moment().isSame(iteratedDate, 'day') && moment().isSame(iteratedDate, 'month');
