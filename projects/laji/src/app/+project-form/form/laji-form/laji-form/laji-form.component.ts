@@ -167,7 +167,11 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   popErrorListIfNeeded() {
-    this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
+    if (this.lajiFormWrapper) {
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
+      });
+    }
   }
 
   displayErrorModal(type: 'saveError' | 'reactCrash') {
