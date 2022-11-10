@@ -55,9 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private ngZone: NgZone
   ) {
     this.navId = environment.type + '-nav';
-    this.devRibbon = environment.type === Global.type.vir ?
-      virEnvironment.displayDevRibbon :
-      !environment.production || environment.type === Global.type.beta;
+    this.devRibbon = environment.displayDevRibbon ||  environment.production === false;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
     this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';
   }
