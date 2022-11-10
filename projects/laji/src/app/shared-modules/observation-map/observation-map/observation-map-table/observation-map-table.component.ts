@@ -11,6 +11,7 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { map, tap } from 'rxjs/operators';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
 import { TableColumnService } from '../../../datatable/service/table-column.service';
+import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.facade';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { ObservationVisualizationMode } from '../observation-visualization';
 
@@ -46,7 +47,8 @@ const defaultColumnProps: (keyof IColumns)[] = [
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private warehouse: WarehouseApi,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private documentViewerFacade: DocumentViewerFacade
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +65,19 @@ const defaultColumnProps: (keyof IColumns)[] = [
     }
   }
 
+  onRowSelect(event) {
+    const row = event.row || {};
+    if (row.document?.documentId && row.unit?.unitId) {
+      this.documentViewerFacade.showDocumentID({
+        document: row.document.documentId,
+        highlight: row.unit.unitId,
+        openAnnotation: false,
+        own: false /* query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken) */,
+        result: undefined
+      });
+    }
+  }
+
   private updateRows() {
     const wgs = this.coordinates[1] + ':' +  this.coordinates[0] + ':WGS84';
     //const selected: string[] = this.columns.map(col => col.selectField || <string>col.prop || col.name);
@@ -72,7 +87,8 @@ const defaultColumnProps: (keyof IColumns)[] = [
       'unit',
       'unit.abundanceString',
       'gathering.displayDateTime',
-      'gathering.team'
+      'gathering.team',
+      'document.documentId'
     ];
 /*     const selected = [
       'unit.interpretations.recordQuality',

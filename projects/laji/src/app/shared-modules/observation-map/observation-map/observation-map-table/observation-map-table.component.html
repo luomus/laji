@@ -3,5 +3,6 @@
   [height]="'300px'"
   [rows]='rows$ | async'
   [columns]="columns"
-  [pageSize]="100">
+  [pageSize]="100"
+  (rowSelect)="onRowSelect($event)">
 </laji-datatable>
