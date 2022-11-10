@@ -33,7 +33,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
   @Input() selected: T[] = [];
-  @Input() open: boolean; // false by default if @Input() title is provided, true if not. Initialized at ngOnInit.
+  @Input() open = false;
   @Input() disabled = false;
   @Input() multiple = true;
   @Input() info: string;
@@ -71,7 +71,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     this.onTouch = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
 
@@ -85,11 +85,6 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
         this.filterBy = value;
         this.cd.markForCheck();
       });
-
-    if (this.open === undefined) {
-      this.open = this.title === undefined || this.title === '';
-      this.cd.markForCheck();
-    }
   }
 
   ngOnChanges() {

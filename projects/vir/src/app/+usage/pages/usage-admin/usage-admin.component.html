@@ -27,7 +27,7 @@
         <form [formGroup]="addUserForm" (ngSubmit)="onUserFormSubmit(addUserForm)" class="mt-5">
           <fieldset *ngIf="administratableOrganisations$ | async as orgs" class="form-group">
             <legend>{{ "usage.admin.modal.addOrganisation" | translate }}</legend>
-            <laji-select [options]="orgs" [useFilter]="false" formControlName="organisation"></laji-select>
+            <laji-select [options]="orgs" [useFilter]="false" formControlName="organisation" [open]="true"></laji-select>
           </fieldset>
 
           <fieldset class="form-group">
