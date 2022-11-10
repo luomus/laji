@@ -33,6 +33,7 @@ import {
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { PathOptions } from 'leaflet';
+import { Feature } from 'geojson';
 
 interface ObservationDataOptions extends DataOptions {
   lastPage: number;
@@ -306,15 +307,16 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           }
         },
         marker: {
-          icon: (po: PathOptions, feature) => {
+          icon: (po: PathOptions, feature: Feature) => {
             const icon: any = L.divIcon({
-              className: po.className
+              className: po.className,
+              html: `<span>${feature.properties.count}</span>`
             });
             icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
               iconDomElem.style['background-color'] = po2.color + 'A0';
               //iconDomElem.style['opacity'] = ''+po2.fillOpacity;
-              iconDomElem.style['height'] = '20px';
-              iconDomElem.style['width'] = '20px';
+              iconDomElem.style['height'] = '30px';
+              iconDomElem.style['width'] = '30px';
               iconDomElem.style['border-radius'] = '100%';
               if (po2.className) {
                 iconDomElem.classList.add(po2.className);
