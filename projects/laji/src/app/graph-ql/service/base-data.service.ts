@@ -99,9 +99,7 @@ export class BaseDataService {
       fetchPolicy: 'cache-first'
     });
 
-    this.translationService.onLangChange.pipe(
-      map(() => this.baseDataSub.next(undefined))
-    ).subscribe(() => this.query.refetch().then());
+    this.translationService.onLangChange.subscribe(() => this.query.refetch().then());
 
     this.query.valueChanges.pipe(
       map(({data}) => data)
