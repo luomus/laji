@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *
@@ -190,9 +190,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.days = [];
     const selectedDate = moment(this.value, this.viewFormat);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      const currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-      const today = moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month');
-      const selected = selectedDate.isSame(currentDate, 'day');
+      const iteratedDate = moment(`${year}-${month + 1}-${i}`, 'YYYY-MM-DD');
+      const today = moment().isSame(iteratedDate, 'day') && moment().isSame(iteratedDate, 'month');
+      const selected = selectedDate.isSame(iteratedDate, 'day');
 
       if (i > 0) {
         this.days.push({
