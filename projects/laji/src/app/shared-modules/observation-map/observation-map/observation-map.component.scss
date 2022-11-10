@@ -61,6 +61,10 @@ $blur: 1px;
                -1px -1px  $blur $textStrokeColor,  1px -1px  $blur $textStrokeColor; // diagonal */
 }
 
+.cluster-info {
+  position: relative; // fixes the height of the spinner inside child laji-datatable
+}
+
 @mixin clusterAccuracy {
   display: flex;
   justify-content: center;

@@ -43,6 +43,7 @@ const defaultColumnProps: (keyof IColumns)[] = [
   @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
   columns: ObservationTableColumn[] = [];
   rows$;
+  loading = false;
 
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
@@ -106,18 +107,22 @@ const defaultColumnProps: (keyof IColumns)[] = [
       'unit.unitId',
       'document.documentId'
     ]; */
+    this.loading = true;
     this.rows$ = this.warehouse.warehouseQueryListGet({
       wgs84CenterPoint: wgs,
       coordinateAccuracyMax: 5000
     }, selected /* , <string[]>[...defaultColumnProps, ...Object.values(obsVizToColProp)] */).pipe(
       map(d => d.results),
       tap(() => {
+        this.loading = false;
         setTimeout(() => {
-          this.cdr.markForCheck(); this.cdr.detectChanges();
+          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         });
       })
     );
     this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   private updateColumns() {
