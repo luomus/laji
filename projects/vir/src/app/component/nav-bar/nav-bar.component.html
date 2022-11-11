@@ -12,7 +12,7 @@
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
-            <span>LAJI.FI</span>
+            <span>{{ 'navigation.title' | translate }}</span>
           </a>
           <div class="visible-xs-inline-block pull-right search">
             <laji-omni-search
