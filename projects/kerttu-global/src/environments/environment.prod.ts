@@ -15,5 +15,6 @@ export const environment = {
   kerttuApi: 'https://kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api.rahtiapp.fi',
   geoserver: 'https://geoserver.laji.fi',
-  defaultLang: 'en'
+  defaultLang: 'en',
+  displayDevRibbon: false
 };
