@@ -11,6 +11,39 @@ import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
 
+const requestedDescriptionVariables = {
+  'MX.SDVG1': [
+    'MX.descriptionText',
+    'MX.identificationText',
+    'MX.descriptionMicroscopicIdentification'
+  ],
+  'MX.SDVG2': [
+    'MX.distributionFinland'
+  ],
+  'MX.SDVG4': [
+    'MX.reproductionFloweringTime'
+  ],
+  'MX.SDVG5': [
+    'MX.habitat',
+    'MX.habitatSubstrate'
+  ],
+  'MX.SDVG8': [
+    'MX.growthFormAndGrowthHabit',
+    'MX.descriptionOrganismSize',
+    'MX.descriptionStem',
+    'MX.descriptionLeaf',
+    'MX.descriptionRoot',
+    'MX.descriptionFlower',
+    'MX.descriptionFruitAndSeed',
+    'MX.descriptionCone',
+    'MX.descriptionThallus',
+    'MX.descriptionFruitbody',
+    'MX.descriptionSpore',
+    'MX.descriptionSporangiumAndAsexualReproduction',
+    'MX.algalPartnerOfLichen'
+  ],
+};
+
 interface TaxonomyWithDescriptionsAndMultimedia extends Taxonomy {
   taxonDescriptions: Record<string, any>;
   taxonMultimedia: Record<string, any>;
@@ -126,7 +159,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     );
   }
 
-  private parseTaxonDescriptions(taxon: Taxonomy) {
+  private parseTaxonDescriptions(taxon: Taxonomy): any {
     if (!taxon.descriptions || taxon.descriptions.length < 1) { return undefined; }
 
     const descriptions = taxon.descriptions;
@@ -164,7 +197,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     return taxonDescriptions;
   }
 
-  private parseTaxonMultimedia(taxon: Taxonomy) {
+  private parseTaxonMultimedia(taxon: Taxonomy): any {
     if (!taxon.multimedia || taxon.multimedia.length < 0) { return undefined; }
 
     const mainImage = taxon.multimedia[0];
@@ -178,36 +211,3 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     return taxonMultimedia;
   };
 }
-
-const requestedDescriptionVariables = {
-  'MX.SDVG1': [
-    'MX.descriptionText',
-    'MX.identificationText',
-    'MX.descriptionMicroscopicIdentification'
-  ],
-  'MX.SDVG2': [
-    'MX.distributionFinland'
-  ],
-  'MX.SDVG4': [
-    'MX.reproductionFloweringTime'
-  ],
-  'MX.SDVG5': [
-    'MX.habitat',
-    'MX.habitatSubstrate'
-  ],
-  'MX.SDVG8': [
-    'MX.growthFormAndGrowthHabit',
-    'MX.descriptionOrganismSize',
-    'MX.descriptionStem',
-    'MX.descriptionLeaf',
-    'MX.descriptionRoot',
-    'MX.descriptionFlower',
-    'MX.descriptionFruitAndSeed',
-    'MX.descriptionCone',
-    'MX.descriptionThallus',
-    'MX.descriptionFruitbody',
-    'MX.descriptionSpore',
-    'MX.descriptionSporangiumAndAsexualReproduction',
-    'MX.algalPartnerOfLichen'
-  ],
-};
