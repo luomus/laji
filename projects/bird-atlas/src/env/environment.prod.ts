@@ -5,5 +5,6 @@ export const environment = {
   production: true,
   base: 'https://tulokset.lintuatlas.fi',
   lajiApiBasePath: 'https://laji.fi/api',
-  atlasApiBasePath: 'https://atlas-api.rahtiapp.fi/api/v1'
+  atlasApiBasePath: 'https://atlas-api.rahtiapp.fi/api/v1',
+  displayDevRibbon: false
 };
