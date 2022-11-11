@@ -15,15 +15,7 @@ import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.f
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { ObservationVisualizationMode } from '../observation-visualization';
 
-const obsVizToColProp: Record<ObservationVisualizationMode, keyof IColumns> = {
-  obsCount: 'count',
-  individualCount: 'unit.interpretations.individualCount',
-  recordAge: 'newestRecord',
-  recordQuality: 'unit.interpretations.recordQuality',
-  redlistStatus: 'unit.linkings.taxon.latestRedListStatusFinland'
-};
-
-const defaultColumnProps: (keyof IColumns)[] = [
+const defaultColumnNames: (keyof IColumns)[] = [
   'unit.interpretations.recordQuality',
   'document.linkings.collectionQuality',
   'unit.taxon',
@@ -45,12 +37,16 @@ const defaultColumnProps: (keyof IColumns)[] = [
   rows$;
   loading = false;
 
+  private columnLookup: any;
+
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private warehouse: WarehouseApi,
     private cdr: ChangeDetectorRef,
     private documentViewerFacade: DocumentViewerFacade
-  ) {}
+  ) {
+    this.columnLookup = this.tableColumnService.getAllColumnLookup();
+  }
 
   ngOnInit(): void {
     this.updateRows();
@@ -81,7 +77,6 @@ const defaultColumnProps: (keyof IColumns)[] = [
 
   private updateRows() {
     const wgs = this.coordinates[1] + ':' +  this.coordinates[0] + ':WGS84';
-    //const selected: string[] = this.columns.map(col => col.selectField || <string>col.prop || col.name);
     const selected = [
       'unit.interpretations.recordQuality',
       'document.linkings.collectionQuality',
@@ -89,29 +84,16 @@ const defaultColumnProps: (keyof IColumns)[] = [
       'unit.abundanceString',
       'gathering.displayDateTime',
       'gathering.team',
-      'document.documentId'
-    ];
-/*     const selected = [
-      'unit.interpretations.recordQuality',
-      'document.linkings.collectionQuality',
-      'unit.linkings.taxon.taxonomicOrder',
-      'unit',
-      'unit.abundanceString',
-      'gathering.displayDateTime',
-      'gathering.interpretations.countryDisplayname',
-      'gathering.interpretations.biogeographicalProvinceDisplayname',
-      'gathering.locality',
-      'document.collectionId',
       'document.documentId',
-      'gathering.team',
-      'unit.unitId',
-      'document.documentId'
-    ]; */
+      'unit.interpretations.individualCount',
+      'unit.linkings.taxon.latestRedListStatusFinland.status',
+      'unit.linkings.taxon.latestRedListStatusFinland.year'
+    ];
     this.loading = true;
     this.rows$ = this.warehouse.warehouseQueryListGet({
       wgs84CenterPoint: wgs,
       coordinateAccuracyMax: 5000
-    }, selected /* , <string[]>[...defaultColumnProps, ...Object.values(obsVizToColProp)] */).pipe(
+    }, selected).pipe(
       map(d => d.results),
       tap(() => {
         this.loading = false;
@@ -126,8 +108,20 @@ const defaultColumnProps: (keyof IColumns)[] = [
   }
 
   private updateColumns() {
-    const names = [...defaultColumnProps/* , obsVizToColProp[this.visualizationMode] */];
-    // TODO fix order
-    this.columns = this.tableColumnService.getAllColumns().filter(c => names.includes(c.name));
+    const colNames = [...defaultColumnNames];
+    switch (this.visualizationMode) {
+      case 'individualCount':
+        colNames.push('unit.interpretations.individualCount');
+        break;
+      case 'redlistStatus':
+        colNames.push('unit.linkings.taxon.latestRedListStatusFinland');
+        break;
+      case 'obsCount':
+      case 'recordAge':
+      case 'recordQuality':
+        break;
+    }
+    this.columns = colNames.map(colName => this.columnLookup[colName]);
+    this.cdr.markForCheck();
   }
 }
