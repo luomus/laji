@@ -38,8 +38,8 @@ settings.json
 
 # files related to generate spectrograms script
 /projects/kerttu-global/generate-spectrograms/node_modules
-/projects/kerttu-global/generate-spectrograms/input
-/projects/kerttu-global/generate-spectrograms/output
+/projects/kerttu-global/generate-spectrograms/input*
+/projects/kerttu-global/generate-spectrograms/output*
 
 # Don't include script with this repo!
 **/*.sh
