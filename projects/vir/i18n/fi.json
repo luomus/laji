@@ -106,5 +106,22 @@
   "vir.taxonomyHeader.li.1.2": "Suomen kansallisen lajiluettelon ",
   "vir.taxonomyHeader.li.1.3": "lajit ja niihin liitetyt hallinnolliset ominaisuudet.",
   "vir.taxonomyHeader.li.2": "Taksonomiaselailupalvelun avulla saat käyttöösi tieteellisen luokittelun mukaan järjestetyt lajitiedot.",
-  "vir.taxonomyHeader.title": "Lajiluettelot"
+  "vir.taxonomyHeader.title": "Lajiluettelot",
+  "usage.admin.title": "Käyttäjien hallinta",
+  "usage.admin.intro": "Voit lisätä ja muuttaa organisaatioosi kuuluvien henkilöiden käyttöoikeuksia.",
+  "usage.admin.securePortalUserRoleExpires": "Käyttöoikeus voimassa",
+  "usage.admin.userId": "MA-tunnus",
+  "usage.admin.continueExpirationBtnLabel": "Jatka käyttöoikeuksia",
+  "usage.admin.removeAccessBtnLabel": "Poista käyttöoikeudet",
+  "usage.admin.selectAll": "Valitse kaikki",
+  "usage.selectOrganization": "Valitse organisaatio",
+  "usage.admin.addUser": "Lisää käyttäjä",
+  "usage.admin.modal.addOrganisation": "Lisää organisaatio",
+  "usage.admin.modal.expiration.title": "Käyttöoikeus voimassa",
+  "usage.admin.modal.expiration.until": "asti",
+  "usage.admin.modal.expiration.info": "Kaikki käyttöoikeudet ovat määräaikaisia ja uusitaan tarvittaessa kerran vuodessa. Voit valita oikeutta lisätessäsi, että henkilön käyttöoikeus on voimassa seuraavan vuoden tammikuun loppuun saakka tai tarvittaessa lyhyemmän aikaa.",
+  "usage.admin.api.error": "Jokin meni pieleen",
+  "usage.admin.api.continueExpiration.success": "Käyttöoikeuksia jatkettiin",
+  "usage.admin.api.revokeAccess.success": "Käyttöoikeudet poistettiin",
+  "usage.admin.api.grantAccess.success": "Käyttöoikeus lisättiin"
 }

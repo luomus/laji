@@ -13,6 +13,7 @@ export class FindPersonComponent implements OnInit {
 
   @Input() limit = 10;
   @Input() showUserID = false;
+  @Input() inputId = '';
   @Output() selectChange = new EventEmitter<Person>();
 
   dataSource: Observable<any>;

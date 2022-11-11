@@ -2,7 +2,7 @@
   <span *ngIf="addonText" class="input-group-addon">{{ addonText }}</span>
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
-         [value]="value"
+         [value]="viewDate"
          (blur)="updateValue(dateInput.value)"
          #dateInput>
   <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>

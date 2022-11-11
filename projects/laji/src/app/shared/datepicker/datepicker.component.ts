@@ -1,4 +1,4 @@
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *
@@ -98,7 +98,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   get value(): any {
-    return this.viewDate;
+    return this.currentValue;
   }
 
   set value(value: any) {
@@ -151,20 +151,12 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.classAttr = `ui-kit-calendar-container ${this.classAttr}`;
     this.opened = this.opened || false;
     this.format = this.format || 'YYYY-MM-DD';
-    this.viewFormat = this.viewFormat || 'D MMMM YYYY';
+    this.viewFormat = this.viewFormat || 'D.M.YYYY';
     this.firstWeekdaySunday = this.firstWeekdaySunday || false;
     if (this.platformService.isServer) {
       return;
     }
-    setTimeout(() => {
-      if (this.viewDate) {
-        this.value = this.viewDate;
-        this.generateCalendar();
-        this.cd.markForCheck();
-      }
-    }, 10);
     this.value$ = this.valueSource.pipe(
-      debounceTime(500),
       distinctUntilChanged(),
     ).subscribe((val) => this.value = val);
   }
@@ -196,11 +188,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     }
 
     this.days = [];
-    const selectedDate = moment(this.value, this.viewFormat);
+    const selectedDate = moment(this.value, this.format);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      const currentDate = moment(`${i}.${month + 1}.${year}`, 'DD.MM.YYYY');
-      const today = moment().isSame(currentDate, 'day') && moment().isSame(currentDate, 'month');
-      const selected = selectedDate.isSame(currentDate, 'day');
+      const iteratedDate = moment(`${year}-${month + 1}-${i}`, 'YYYY-MM-DD');
+      const today = moment().isSame(iteratedDate, 'day') && moment().isSame(iteratedDate, 'month');
+      const selected = selectedDate.isSame(iteratedDate, 'day');
 
       if (i > 0) {
         this.days.push({
@@ -255,8 +247,11 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     this.generateCalendar();
   }
 
-  updateValue(value) {
-    this.valueSource.next(value);
+  updateValue(viewFormatValue: string) {
+    this.valueSource.next(viewFormatValue.length
+      ? moment(viewFormatValue, this.viewFormat, true).format(this.format)
+      : ''
+    );
   }
 
   writeValue(value: any) {

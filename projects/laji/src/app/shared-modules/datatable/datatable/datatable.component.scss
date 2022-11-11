@@ -58,3 +58,11 @@
 :host ::ng-deep .cell-centered-content > .datatable-body-cell-label {
   margin: 0 auto !important;
 }
+
+/* Fix conflict between bootstrap & material styles */
+:host ::ng-deep .datatable-checkbox input[type=checkbox]:before {
+  content: none;
+}
+:host ::ng-deep .datatable-checkbox input[type=checkbox]:after {
+  content: none;
+}
