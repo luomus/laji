@@ -1,29 +1,13 @@
 <div *ngIf="taxon.species; else parent" class="lu-text-content">
   <div *ngFor="let media of taxon.multimedia">
     <img lajiLazyImage [src]="media.largeURL">
-    <div class="image-copyright">
-      <div *ngIf="media.copyrightOwner">
-        <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
-        {{ media.copyrightOwner }}
-      </div>
-      <div *ngIf="media.licenseAbbreviation">
-        <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
-        {{ media.licenseAbbreviation }}
-      </div>
-      <div *ngIf="media.taxonDescriptionCaption">
-        <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
-        {{ media.taxonDescriptionCaption | multiLang }}
-      </div>
-      <ng-container *ngIf="media.licenseId">
-        <laji-license type={{media.licenseId}}></laji-license>
-      </ng-container>
-    </div>
+    <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: media }"></ng-container>
   </div>
 </div>
 
 <ng-template #parent>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    <div *ngFor="let child of children">
+    <div *ngFor="let child of data.children">
       <div>
         <h3 class="child-name">
           <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
@@ -31,32 +15,31 @@
           </a>
         </h3>
         <h4 class="child-info">
-          {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1
-          ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} - {{
-          child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ?
-          'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
+          {{
+            child.taxonRank | label
+          }} - {{
+            child.countOfSpecies| formattedNumber:' '
+          }}
+          {{
+            (child.countOfSpecies === 1 ?
+              'taxonomy.identification.species' :
+              'taxonomy.identification.speciesPlural'
+            ) | translate
+          }} - {{
+            child.observationCountFinland | formattedNumber:' '
+          }}
+          {{
+            (child.observationCountFinland === 1 ?
+              'taxonomy.identification.observation' :
+              'taxonomy.identification.observationsPlural'
+            ) | translate
+          }}
         </h4>
       </div>
       <div class="child-container" *ngIf="child.children?.length === 0; else noDescriptions">
         <div class="image-container">
           <laji-identification-list [taxon]="child"></laji-identification-list>
-          <div class="image-copyright" *ngIf="child.taxonMultimedia">
-            <div *ngIf="child.taxonMultimedia.copyrightOwner">
-              <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
-              {{ child.taxonMultimedia.copyrightOwner }}
-            </div>
-            <div *ngIf="child.taxonMultimedia.licenseAbbreviation">
-              <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
-              {{ child.taxonMultimedia.licenseAbbreviation }}
-            </div>
-            <div *ngIf="child.taxonMultimedia.taxonDescriptionCaption">
-              <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
-              {{ child.taxonMultimedia.taxonDescriptionCaption | multiLang }}
-            </div>
-            <ng-container *ngIf="child.taxonMultimedia.licenseId">
-              <laji-license type={{child.taxonMultimedia.licenseId}}></laji-license>
-            </ng-container>
-          </div>
+          <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: child.taxonMultimedia }"></ng-container>
         </div>
         <div class="description-container">
           <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue">
@@ -70,24 +53,44 @@
       </ng-template>
     </div>
     <div #loadMore></div>
-    <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
+    <div *ngIf="data.children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
-    <ng-container *ngIf="taxon.taxonRank === 'MX.genus' && descriptionSources.length > 0">
+    <ng-container *ngIf="taxon.taxonRank === 'MX.genus' && data.descriptionSources.length > 0">
       <h3>{{ 'taxonomy.identification.descriptionAuthors' | translate }}</h3>
       <strong>{{ 'taxonomy.sources' | translate }}:</strong>
-      <ng-container *ngFor="let descriptionSource of descriptionSources">
-        <span [innerHTML]="descriptionSource"></span>
+      <ng-container *ngFor="let descriptionSource of data.descriptionSources">
+        <p>{{ descriptionSource }}</p>
       </ng-container>
-      <ng-container *ngIf="speciesCardAuthors.length > 0">
-        <strong>{{ speciesCardAuthorsTitle }}:</strong>
-        <ng-container *ngFor="let speciesCardAuthor of speciesCardAuthors">
+      <ng-container *ngIf="data.speciesCardAuthors.length > 0">
+        <strong>{{ data.speciesCardAuthorsTitle }}:</strong>
+        <ng-container *ngFor="let speciesCardAuthor of data.speciesCardAuthors">
           <span [innerHTML]="speciesCardAuthor"></span>
         </ng-container>
       </ng-container>
       <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
     </ng-container>
   </laji-spinner>
+</ng-template>
+
+<ng-template #imageCopyright let-multimedia>
+  <div class="image-copyright" *ngIf="multimedia">
+    <div *ngIf="multimedia.copyrightOwner">
+      <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
+      {{ multimedia.copyrightOwner }}
+    </div>
+    <div *ngIf="multimedia.licenseAbbreviation">
+      <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
+      {{ multimedia.licenseAbbreviation }}
+    </div>
+    <div *ngIf="multimedia.taxonDescriptionCaption">
+      <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
+      {{ multimedia.taxonDescriptionCaption | multiLang }}
+    </div>
+    <ng-container *ngIf="multimedia.licenseId">
+      <laji-license type={{multimedia.licenseId}}></laji-license>
+    </ng-container>
+  </div>
 </ng-template>
