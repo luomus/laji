@@ -89,7 +89,8 @@ export class TaxonIdentificationFacade implements OnDestroy {
         taxonRanks: rank,
         sortOrder: 'observationCountFinland DESC',
         selectedFields: 'id,vernacularName,scientificName,cursiveName,taxonRank,hasChildren,countOfSpecies,observationCountFinland',
-        includeMedia: true
+        includeMedia: true,
+        includeDescriptions: true
       }
     ).pipe(
       switchMap(res => {
