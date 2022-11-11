@@ -34,4 +34,17 @@
     {{ 'species.tree.showMainLevels' | translate }}
   </label>
   <laji-info [placement]="'right'">{{ 'species.tree.info.showMainLevels' | translate }}</laji-info>
+  <br/>
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="showHidden"
+      (ngModelChange)="setSkipParams()"
+      name="showHidden"
+      role="checkbox"
+      luKeyboardClickable
+    >
+    {{ 'species.tree.showHidden' | translate }}
+  </label>
+  <laji-info [placement]="'right'">{{ 'species.tree.info.showHidden' | translate }}</laji-info>
 </div>

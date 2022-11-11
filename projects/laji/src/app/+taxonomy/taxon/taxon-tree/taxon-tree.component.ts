@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TaxonTaxonomyService } from '../service/taxon-taxonomy.service';
 import { TreeSkipParameter } from './tree/model/tree.interface';
 
@@ -8,20 +8,26 @@ import { TreeSkipParameter } from './tree/model/tree.interface';
   styleUrls: ['./taxon-tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonTreeComponent {
+export class TaxonTreeComponent implements OnInit {
   @Input() activeId: string;
   @Input() activeTab: string;
+  @Input() showHidden: boolean;
+  @Output() routeUpdate = new EventEmitter();
 
   getDataFunc = this.getData.bind(this);
   getChildrenFunc = this.getChildren.bind(this);
   getParentsFunc = this.getParents.bind(this);
-  skipParams: TreeSkipParameter[];
+  skipParams: TreeSkipParameter[] = [{key: 'hiddenTaxon', isWhiteList: true, values: [false]}];
 
   showMainLevels = false;
 
   constructor(
     private taxonomyService: TaxonTaxonomyService
   ) {}
+
+  ngOnInit(): void {
+    this.setSkipParams();
+  }
 
   getData(id: string) {
     return this.taxonomyService.getTaxon(id);
@@ -36,8 +42,10 @@ export class TaxonTreeComponent {
   }
 
   setSkipParams() {
+    const tempSkipParams = [];
+
     if (this.showMainLevels) {
-      this.skipParams = [{key: 'taxonRank', isWhiteList: true, values: [
+      tempSkipParams.push({key: 'taxonRank', isWhiteList: true, values: [
         'MX.superdomain',
         'MX.domain',
         'MX.kingdom',
@@ -47,9 +55,15 @@ export class TaxonTreeComponent {
         'MX.family',
         'MX.genus',
         'MX.species'
-      ]}];
-    } else {
-      this.skipParams = undefined;
+      ]});
     }
+
+    if (!this.showHidden) {
+      tempSkipParams.push({key: 'hiddenTaxon', isWhiteList: true, values: [false]});
+    }
+
+    tempSkipParams.length === 0 ? this.skipParams = undefined : this.skipParams = tempSkipParams;
+
+    this.routeUpdate.emit({ showHidden: this.showHidden });
   }
 }
