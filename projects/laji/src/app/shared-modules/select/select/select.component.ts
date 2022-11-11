@@ -237,6 +237,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
 
     this.selectedOptions = selectedOptions;
     this.unselectedOptions = unselectedOptions;
+    this.open = this.open || !!this.selectedOptions.length;
 
     this.onChange?.(selected);
     this.onTouch?.(selected);
