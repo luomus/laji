@@ -62,12 +62,20 @@ export class DatasetMetadataBrowserComponent implements OnInit {
       this.collectionService.getCollectionsTree$(),
       this.collectionService.getCollectionsAggregate$(),
     ).pipe(
-      map(([ tree, agregates ]) => this.buildCollectionTree(tree, agregates))
+      map(([ tree, aggregates ]) => this.buildCollectionTree(tree, aggregates))
     );
   }
 
   buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
     const collectionsWithChildren = [];
+
+    if (this.selected) {
+      const aggregate = aggregates.find(elem => elem.id === this.selected);
+
+      if (!aggregate || aggregate.count === 0) {
+        this.showEmpty = true;
+      }
+    }
 
     trees.forEach(tree => {
       const prunedTree = this.buildTree(tree, aggregates);
@@ -97,6 +105,14 @@ export class DatasetMetadataBrowserComponent implements OnInit {
       return undefined;
     }
 
+    if ((this.selected && tree.id === this.selected) && (tree.hasChildren || aggregate || this.showEmpty)) {
+      this.selectedOption = [{
+        id: this.selected,
+        value: tree.longName,
+        type: 'included',
+      }];
+    }
+
     if (tree.hasChildren) {
       const children = [];
       let childCount = 0;
@@ -121,14 +137,6 @@ export class DatasetMetadataBrowserComponent implements OnInit {
         });
 
         this.collectionsCount++;
-
-        if (this.selected && tree.id === this.selected) {
-          this.selectedOption = [{
-            id: this.selected,
-            value: tree.longName,
-            type: 'included',
-          }];
-        }
 
         return {
           id: tree.id,
