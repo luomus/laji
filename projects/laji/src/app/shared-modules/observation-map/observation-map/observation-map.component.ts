@@ -29,7 +29,6 @@ import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
-  lajiMapObservationVisualizationContext,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { PathOptions } from 'leaflet';
@@ -381,7 +380,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.addViewPortCoordinatesParams(query);
     this.addVisualizationParams(query);
 
-    const queryHash = this.getQueryHash(this.query);
+    const queryHash = this.getQueryHash(query);
     if (this.previousQueryHash === queryHash) {
       return;
     }
@@ -423,7 +422,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       // update map data
       this.clearDrawData();
       this.mapData = [dataOptions, this.drawData];
-      lajiMapObservationVisualizationContext.features = dataOptions.featureCollection.features;
       this.loading = false;
       this.resetTable();
     }, (err) => {

@@ -1,6 +1,5 @@
 import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
-import { Feature } from 'geojson';
-import { MarkerCluster, PathOptions } from 'leaflet';
+import { PathOptions } from 'leaflet';
 
 const baseFeatureStyle = {
   weight: 1,
@@ -125,43 +124,21 @@ const getRecordAgeColor = (newestRecords: string | string[]): string => {
   return lajiMapObservationVisualization.recordAge.categories[getRecordAgeColorIdx(year)].color;
 };
 
-const getClusterAccuracyClassName = (
-  childCount: number, featureIdxs: number[], cluster: MarkerCluster
-): string => {
-  const accuracies: number[] = [];
-  featureIdxs.forEach(i => accuracies.push(lajiMapObservationVisualizationContext.features[i].properties.coordinateAccuracy));
-  const coordinateAccuracy = Math.max(...accuracies);
-  let className: string;
-  if (coordinateAccuracy <= 10) {
-    className = 'cluster-accuracy-1';
-  } else if (coordinateAccuracy <= 100) {
-    className = 'cluster-accuracy-2';
-  } else if (coordinateAccuracy <= 1000) {
-    className = 'cluster-accuracy-3';
-  } else if (coordinateAccuracy <= 10000) {
-    className = 'cluster-accuracy-4';
-  } else if (coordinateAccuracy <= 100000) {
-    className = 'cluster-accuracy-5';
-  }
-
-  return className;
-};
-
 const getCoordinateAccuracyClassName = (
   coordinateAccuracy: number
 ): string => {
   if (!coordinateAccuracy) { return ''; }
   let className: string;
   if (coordinateAccuracy <= 10) {
-    className = 'cluster-accuracy-1';
+    className = 'coordinate-accuracy-1';
   } else if (coordinateAccuracy <= 100) {
-    className = 'cluster-accuracy-2';
+    className = 'coordinate-accuracy-2';
   } else if (coordinateAccuracy <= 1000) {
-    className = 'cluster-accuracy-3';
+    className = 'coordinate-accuracy-3';
   } else if (coordinateAccuracy <= 10000) {
-    className = 'cluster-accuracy-4';
+    className = 'coordinate-accuracy-4';
   } else if (coordinateAccuracy <= 100000) {
-    className = 'cluster-accuracy-5';
+    className = 'coordinate-accuracy-5';
   }
 
   return className;
@@ -169,9 +146,6 @@ const getCoordinateAccuracyClassName = (
 
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
-
-// this global state exists, because getClusterStyle doesn't get features directly (only featureIdx)
-export const lajiMapObservationVisualizationContext: { features?: Feature[] } = {};
 
 export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVisualizationMode> = {
   obsCount: {
