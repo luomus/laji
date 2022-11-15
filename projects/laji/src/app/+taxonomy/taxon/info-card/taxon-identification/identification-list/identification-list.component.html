@@ -1,6 +1,16 @@
+<ng-container *ngIf="taxon.species">
+  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
+    <ng-container *ngFor="let multimedia of taxon.multimedia; index as i">
+      <img lajiLazyImage (click)="openImage(i)" [src]="taxon.multimedia[i].largeURL">
+      <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[i] }"></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
 <ng-container *ngIf="taxon.children?.length === 0">
   <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
-    <img [src]="taxon.multimedia[0].largeURL">
+    <img (click)="openImage()" [src]="taxon.multimedia[0].largeURL">
+    <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[0] }"></ng-container>
   </ng-container>
 </ng-container>
 
@@ -39,5 +49,25 @@
     <h4 class="no-image-title">
       {{ 'annotation.noImages' | translate }}
     </h4>
+  </div>
+</ng-template>
+
+<ng-template #imageCopyright let-multimedia>
+  <div class="image-copyright" *ngIf="multimedia">
+    <div *ngIf="multimedia.copyrightOwner">
+      <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
+      {{ multimedia.copyrightOwner }}
+    </div>
+    <div *ngIf="multimedia.licenseAbbreviation">
+      <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
+      {{ multimedia.licenseAbbreviation }}
+    </div>
+    <div *ngIf="multimedia.taxonDescriptionCaption">
+      <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
+      {{ multimedia.taxonDescriptionCaption | multiLang }}
+    </div>
+    <ng-container *ngIf="multimedia.licenseId">
+      <laji-license type={{multimedia.licenseId}}></laji-license>
+    </ng-container>
   </div>
 </ng-template>
