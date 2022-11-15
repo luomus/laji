@@ -91,8 +91,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
     ];
     this.loading = true;
     this.rows$ = this.warehouse.warehouseQueryListGet({
-      wgs84CenterPoint: wgs,
-      coordinateAccuracyMax: 5000
+      wgs84CenterPoint: wgs
     }, selected).pipe(
       map(d => d.results),
       tap(() => {
