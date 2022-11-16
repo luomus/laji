@@ -1605,6 +1605,7 @@
   "taxonomy.bold": "Julkisten DNA-viivakoodisekvenssien määrä",
   "taxonomy.bold.disabled": "Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
   "taxonomy.bold.info": "Julkisten DNA-viivakoodisekvenssien määrä BOLD-tietokannassa. HUOM: Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
+  "taxonomy.bold.publicRecords": "julkista näytettä",
   "taxonomy.browse": "Selaa havaintoja",
   "taxonomy.browse.download": "Lataa havaintoja itsellesi",
   "taxonomy.browse.downloadSpecies": "Lataa lajiluettelo",
