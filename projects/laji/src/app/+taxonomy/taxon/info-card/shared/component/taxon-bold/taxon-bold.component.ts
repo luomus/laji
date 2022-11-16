@@ -26,13 +26,13 @@ export class TaxonBoldComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.taxon) {
+      this.boldEntries = [];
       this.getBoldEntries();
     }
   }
 
   getBoldEntries() {
     if (this.taxon.hasBold === false) {
-      this.boldEntries = [];
       return;
     }
 
