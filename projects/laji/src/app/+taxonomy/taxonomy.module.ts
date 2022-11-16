@@ -77,6 +77,7 @@ import {SelectModule} from '../shared-modules/select/select.module';
 import { IdentificationListComponent } from './taxon/info-card/taxon-identification/identification-list/identification-list.component';
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
+import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bold/taxon-bold.component';
 /* eslint-enable max-len */
 
 @NgModule({
@@ -107,6 +108,7 @@ import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identificatio
     BrowseSpeciesComponent, InformalGroupSelectComponent,
     InformalListComponent, InformalListBreadcrumbComponent,
     SelectedParentsComponent,
+    TaxonBoldComponent,
     TaxonOverviewComponent,
     TaxonImagesComponent,
     TaxonBiologyComponent,

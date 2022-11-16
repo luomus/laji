@@ -1,0 +1,9 @@
+<ng-container *ngIf="boldEntries.length > 0">
+  <div class="bold-entry" *ngFor="let boldEntry of boldEntries">
+    <b>{{ boldEntry.scientificName }}</b><br />
+    <span>{{ boldEntry.publicRecords }} {{ 'taxonomy.bold.publicRecords' | translate }}</span>
+    <ul>
+      <li *ngFor="let bin of boldEntry.bins">{{ bin }}</li>
+    </ul>
+  </div>
+</ng-container>

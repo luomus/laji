@@ -70,15 +70,7 @@
   </ul>
 </laji-taxon-info-row>
 <laji-taxon-info-row [label]="'taxonomy.bold' | translate">
-  <ng-container *ngIf="boldEntries.length > 0">
-    <div class="bold-entry" *ngFor="let boldEntry of boldEntries">
-      <b>{{ boldEntry.scientificName }}</b><br/>
-      <span>{{ boldEntry.publicRecords }} {{ 'taxonomy.bold.publicRecords' | translate }}</span>
-      <ul>
-        <li *ngFor="let bin of boldEntry.bins">{{ bin }}</li>
-      </ul>
-    </div>
-  </ng-container>
+   <laji-taxon-bold [taxon]="taxon"></laji-taxon-bold>
 </laji-taxon-info-row>
 <laji-taxon-info-row *ngIf="taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0" [label]="'taxonomy.informalTaxonGroups' | translate">
   <ul>
