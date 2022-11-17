@@ -48,6 +48,7 @@ const getRecordQualityColorIdx = (quality: string): number => {
 };
 
 const getRecordQualityColor = (qualities: string | string[]): string => {
+  if (!qualities) { return lajiMapObservationVisualization.recordQuality.categories[2].color; }
   if (!Array.isArray(qualities)) { return lajiMapObservationVisualization.recordQuality.categories[getRecordQualityColorIdx(qualities)].color; }
   const a = qualities.map(q => getRecordQualityColorIdx(q));
   return lajiMapObservationVisualization.recordQuality.categories[Math.min(...a)].color;
@@ -55,31 +56,22 @@ const getRecordQualityColor = (qualities: string | string[]): string => {
 
 const getRedlistColorIdx = (status: string): number => {
   switch (status) {
-    case 'http://tun.fi/MX.iucnGroup8':
-      return 0;
-    case 'http://tun.fi/MX.iucnGroup7':
-      return 1;
-    case 'http://tun.fi/MX.iucnGroup6':
-      return 2;
-    case 'http://tun.fi/MX.iucnGroup5':
-      return 3;
-    case 'http://tun.fi/MX.iucnGroup4':
-      return 4;
-    case 'http://tun.fi/MX.iucnGroup3':
-    case 'http://tun.fi/MX.iucnGroup2':
     case 'http://tun.fi/MX.iucnGroup1':
-      return 5;
-    case 'http://tun.fi/MX.iucnGroup9':
-      return 6;
-    case 'http://tun.fi/MX.iucnGroup10':
-      return 7;
-    case 'http://tun.fi/MX.iucnGroup11':
+      return 0;
+    case 'http://tun.fi/MX.iucnGroup2':
+      return 1;
+    case 'http://tun.fi/MX.iucnGroup3':
+      return 2;
+    case 'http://tun.fi/MX.iucnGroup4':
+      return 3;
+    case 'http://tun.fi/MX.iucnGroup5':
     default:
-      return 8;
+      return 4;
   }
 };
 
 const getRedlistStatusColor = (statuses: string | string[]): string => {
+  if (!statuses) { return '#ffffff'; }
   if (!Array.isArray(statuses)) { return lajiMapObservationVisualization.redlistStatus.categories[getRedlistColorIdx(statuses)].color; }
   const a = statuses.map(s => getRedlistColorIdx(s));
   return lajiMapObservationVisualization.redlistStatus.categories[Math.min(...a)].color;
@@ -118,6 +110,7 @@ const sliceYear = (newestRecord: string): number => (
 );
 
 const getRecordAgeColor = (newestRecords: string | string[]): string => {
+  if (!newestRecords) { return '#ffffff'; }
   if (!Array.isArray(newestRecords)) { return lajiMapObservationVisualization.recordAge.categories[getRecordAgeColorIdx(sliceYear(newestRecords))].color; }
   const a = newestRecords.map(s => sliceYear(s));
   const year = Math.max(...a);
@@ -127,7 +120,7 @@ const getRecordAgeColor = (newestRecords: string | string[]): string => {
 const getCoordinateAccuracyClassName = (
   coordinateAccuracy: number
 ): string => {
-  if (!coordinateAccuracy) { return ''; }
+  if (!coordinateAccuracy) { return 'coordinate-accuracy-undefined'; }
   let className: string;
   if (coordinateAccuracy <= 10) {
     className = 'coordinate-accuracy-1';
@@ -172,14 +165,11 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: '10001+'
       }
     ],
-    getFeatureStyle: (options) => {
-      if (options.feature.properties.count === 0) { return <PathOptions>{ opacity: 0, fillOpacity: 0 }; }
-      return {
-        ...baseFeatureStyle,
-        color: getObsCountColor(options.feature.properties.count),
-        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-      };
-    }
+    getFeatureStyle: (options) => ({
+      ...baseFeatureStyle,
+      color: getObsCountColor(options.feature.properties.count),
+      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+    })
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
@@ -205,21 +195,18 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: 'Erroneous'
       }
     ],
-    getFeatureStyle: (options) => {
-      if (!options?.feature?.properties?.recordQualityMax) { return fallbackFeatureStyle; }
-      return {
-        ...baseFeatureStyle,
-        color: getRecordQualityColor(options.feature.properties.recordQualityMax),
-        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-      };
-    }
+    getFeatureStyle: (options) => ({
+      ...baseFeatureStyle,
+      color: getRecordQualityColor(options.feature.properties.recordQualityMax),
+      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+    })
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
     categories: [
       {
         color: '#348cf0',
-        label: 'LC'
+        label: 'LC, DD, NA, NE'
       },
       {
         color: '#90dacf',
@@ -235,25 +222,14 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
       },
       {
         color: '#f26840',
-        label: 'CR'
-      },
-      {
-        color: '#cccccc',
-        label: 'RE, EW, EX'
-      },
-      {
-        color: '#ffffff',
-        label: 'DD, NA, NE'
+        label: 'CR, RE, EW, EX'
       }
     ],
-    getFeatureStyle: (options) => {
-      if (!options?.feature?.properties?.redListStatusMax) { return fallbackFeatureStyle; }
-      return {
-        ...baseFeatureStyle,
-        color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
-        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-      };
-    }
+    getFeatureStyle: (options) => ({
+      ...baseFeatureStyle,
+      color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
+      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+    })
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
@@ -279,14 +255,11 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: '> 100'
       }
     ],
-    getFeatureStyle: (options) => {
-      if (!options?.feature?.properties?.individualCountSum) { return fallbackFeatureStyle; }
-      return {
-        ...baseFeatureStyle,
-        color: getIndividualCountColor(options.feature.properties.individualCountSum),
-        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-      };
-    }
+    getFeatureStyle: (options) => ({
+      ...baseFeatureStyle,
+      color: getIndividualCountColor(options.feature.properties.individualCountSum),
+      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+    })
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -312,13 +285,10 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
         label: `< ${currentYear - yearsAgoBreakpoints[3]}`
       }
     ],
-    getFeatureStyle: (options) => {
-      if (!options?.feature?.properties?.newestRecord) { return fallbackFeatureStyle; }
-      return {
-        ...baseFeatureStyle,
-        color: getRecordAgeColor(options.feature.properties.newestRecord),
-        className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-      };
-    }
+    getFeatureStyle: (options) => ({
+      ...baseFeatureStyle,
+      color: getRecordAgeColor(options.feature.properties.newestRecord),
+      className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
+    })
   }
 };

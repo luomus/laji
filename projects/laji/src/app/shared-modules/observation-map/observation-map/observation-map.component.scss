@@ -71,6 +71,10 @@ $blur: 1px;
   align-items: center;
 }
 
+:host ::ng-deep .coordinate-accuracy-undefined {
+  @include coordinateAccuracy();
+}
+
 :host ::ng-deep .coordinate-accuracy-1 {
   @include coordinateAccuracy();
 }
