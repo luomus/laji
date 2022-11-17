@@ -37,7 +37,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
   columns: ObservationTableColumn[] = [];
   rows$: Observable<any>;
   loading = false;
-  pageSize = 10;
+  pageSize = 100;
 
   private columnLookup: any;
 
