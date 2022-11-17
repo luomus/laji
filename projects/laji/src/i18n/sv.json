@@ -1602,7 +1602,7 @@
   "taxonomy.author.lower": "auktor",
   "taxonomy.belongs.to": "Underliggande taxa",
   "taxonomy.biology": "Biologi",
-  "taxonomy.bold": "Antal offentliga DNA-streckkoder",
+  "taxonomy.bold": "DNA-streckkoder",
   "taxonomy.bold.disabled": "Vi kan inte visa denna siffra just nu på grund av begränsningarna vid gränsnitt av den internationella BOLD -tjänsten.",
   "taxonomy.bold.info": "Antalet offentliga DNA-streckkodsekvenser i den BOLD databasen. OBS: Vi kan inte visa denna siffra just nu på grund av begränsningarna vid gränsnitt av den internationella BOLD -tjänsten.",
   "taxonomy.browse": "Bläddra observationer",

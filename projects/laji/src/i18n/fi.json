@@ -1602,7 +1602,7 @@
   "taxonomy.author.lower": "auktorit",
   "taxonomy.belongs.to": "Alemmat taksonit",
   "taxonomy.biology": "Biologia",
-  "taxonomy.bold": "Julkisten DNA-viivakoodisekvenssien määrä",
+  "taxonomy.bold": "DNA-viivakoodisekvenssit",
   "taxonomy.bold.disabled": "Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
   "taxonomy.bold.info": "Julkisten DNA-viivakoodisekvenssien määrä BOLD-tietokannassa. HUOM: Emme voi näyttää tätä lukua tällä hetkellä johtuen kansainvälisen BOLD-palvelun rajapinnan rajoituksista.",
   "taxonomy.browse": "Selaa havaintoja",

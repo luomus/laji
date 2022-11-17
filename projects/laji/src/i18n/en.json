@@ -1602,7 +1602,7 @@
   "taxonomy.author.lower": "author",
   "taxonomy.belongs.to": "Subordinate taxa",
   "taxonomy.biology": "Biology",
-  "taxonomy.bold": "Number of public DNA barcode sequences",
+  "taxonomy.bold": "DNA barcode sequences",
   "taxonomy.bold.disabled": "Due to restrictions in the internatonal BOLD API, we currently cannot show these numbers.",
   "taxonomy.bold.info": "Number of public DNA barcode sequences in the BOLD database. NOTE: Due to restrictions in the internatonal BOLD API, we currently cannot show these numbers.\n",
   "taxonomy.browse": "Browse observations",
