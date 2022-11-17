@@ -26,7 +26,7 @@ export class SpecialGeometryComponent {
   @Input() field: IFormField;
   @Output() mappingChanged = new EventEmitter<{[value: string]: string}>();
   @Output() done = new EventEmitter();
-  @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent<any>;
+  @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;
 
   ignore = VALUE_IGNORE;
   lajiMapOptions: LajiMapOptions = {

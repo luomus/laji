@@ -14,7 +14,7 @@ import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interfa
 export class LineTransectPrintComponent implements OnChanges {
 
   @ViewChild(LajiMapComponent)
-  public lajiMap: LajiMapComponent<any>;
+  public lajiMap: LajiMapComponent;
   @Input()
   public namedPlace: NamedPlace;
 

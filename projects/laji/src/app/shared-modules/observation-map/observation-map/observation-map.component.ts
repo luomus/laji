@@ -78,7 +78,7 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationMapComponent implements OnChanges, OnDestroy {
-  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent<ObservationVisualizationMode>;
+  @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @ViewChild('mapContainer', { static: false }) mapContainerElem: ElementRef;
 
   @Input() visible = false;
@@ -160,6 +160,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     })
   };
   private previousQueryHash = '';
+  private previousQueryResponse;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
@@ -245,9 +246,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.updateMap();
   }
 
-  onVisualizationModeChange(mode: ObservationVisualizationMode) {
-    this.visualizationMode = mode;
-    this.updateMap();
+  onVisualizationModeChange(mode: string) {
+    this.visualizationMode = <ObservationVisualizationMode>mode;
+    this.updateMap(true);
   }
 
   private resetTable() {
@@ -368,56 +369,58 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private updateMap() {
-    if (!this.ready) {
-      return;
-    }
+  private updateMap(forceMapRefresh = false) {
+    if (!this.ready) { return; }
 
-    const query: WarehouseQueryInterface = {...this.query};
-    if (this.limitResults && !query.coordinates) {
-      query.coordinates = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+    const modifiedQuery: WarehouseQueryInterface = {...this.query};
+    if (this.limitResults && !modifiedQuery.coordinates) {
+      modifiedQuery.coordinates = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
     }
-    this.addViewPortCoordinatesParams(query);
-    this.addVisualizationParams(query);
+    this.addViewPortCoordinatesParams(modifiedQuery);
+    this.addVisualizationParams(modifiedQuery);
 
-    const queryHash = this.getQueryHash(query);
-    if (this.previousQueryHash === queryHash) {
-      return;
-    }
+    const queryHash = this.getQueryHash(modifiedQuery);
+    const hashMatch = this.previousQueryHash === queryHash;
+    if (hashMatch && !forceMapRefresh) { return; }
     this.previousQueryHash = queryHash;
 
     this.loading = true;
-    this.drawData.featureCollection.features = [];
-
     this.dataFetchSubscription = getFeatureCollectionFromQueryCoordinates$(this.query.coordinates).pipe(
       // update drawData
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
       }),
-      // get observation count
-      switchMap(() => this.warehouseService.warehouseQueryCountGet(query)),
-      map(result => result.total),
-      // get observations as points or aggregate
-      switchMap(count => {
-        if (!count) {
-          return of(<ObservationDataOptions>{
-            lastPage: 1,
-            featureCollection: {
-              type: 'FeatureCollection' as const,
-              features: []
-            }
-          });
-        }
-        if (count < this.showIndividualPointsWhenLessThan) {
-          return this.getPointsDataOptions$(query);
-        } else {
-          return this.getAllAggregatePages$(query);
-        }
-      }),
-      // retry on timeout
-      timeout(WarehouseApi.longTimeout * 3),
-      delay(100),
-      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+      switchMap(() => hashMatch ? of(this.previousQueryResponse) : this.warehouseService.warehouseQueryCountGet(modifiedQuery).pipe(
+        // get observation count
+        map(result => result.total),
+        // get observations as points or aggregate
+        switchMap(count => {
+          if (!count) {
+            return of(<ObservationDataOptions>{
+              lastPage: 1,
+              featureCollection: {
+                type: 'FeatureCollection' as const,
+                features: []
+              }
+            });
+          }
+          if (count < this.showIndividualPointsWhenLessThan) {
+            return this.getPointsDataOptions$(modifiedQuery);
+          } else {
+            return this.getAllAggregatePages$(modifiedQuery);
+          }
+        }),
+        // retry on timeout
+        timeout(WarehouseApi.longTimeout * 3),
+        delay(100),
+        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+        tap(data => this.previousQueryResponse = data)
+      )),
+      map(dataOptions => {
+        const vis = this.visualization?.[this.visualizationMode];
+        if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
+        return dataOptions;
+      })
     ).subscribe(dataOptions => {
       // update map data
       this.clearDrawData();

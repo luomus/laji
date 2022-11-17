@@ -8,7 +8,7 @@ import { LajiMapOptions } from '@laji-map/laji-map.interface';
   styleUrls: ['./print-map.component.css']
 })
 export class PrintMapComponent implements OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent<any>;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @Input() data: any;
 
   _data: any;

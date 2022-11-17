@@ -44,10 +44,10 @@ import L from 'leaflet';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() data: any = [];
-  @Input() visualization: LajiMapVisualization<T> | undefined; // overwrites getFeatureStyle and getClusterStyle
-  @Input() visualizationMode: T | undefined;
+  @Input() visualization: LajiMapVisualization<any> | undefined;
+  @Input() visualizationMode: string | undefined;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
@@ -58,7 +58,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
-  @Output() visualizationModeChange = new EventEmitter<T>();
+  @Output() visualizationModeChange = new EventEmitter<string>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -153,8 +153,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
       this.setData(this.data);
     }
     if (changes.visualization && changes.visualization.currentValue) {
-      this.visualizationMode = <T>Object.keys(this.visualization)[0];
-      this.updateVisualization();
+      this.visualizationMode = Object.keys(this.visualization)[0];
     }
   }
 
@@ -226,7 +225,7 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
     if (!data) {
       return;
     }
-    this.map.setData(this.patchMapDataCallbacks(data));
+    this.map.setData(data);
   }
 
   onChange(events) {
@@ -243,22 +242,13 @@ export class LajiMapComponent<T extends string> implements OnDestroy, OnChanges,
     }
   }
 
-  onVisualizationModeChange(mode: T) {
+  onVisualizationModeChange(mode: string) {
     this.visualizationMode = mode;
     this.visualizationModeChange.emit(mode);
-    this.updateVisualization();
   }
 
-  updateVisualization() {
+/*   updateVisualization() {
     if (!this.map) { return; }
-    this.map.setData(this.patchMapDataCallbacks(this.map.getData()));
-  }
-
-  patchMapDataCallbacks(data: any) {
-    const vis = this.visualization?.[this.visualizationMode];
-    data.forEach(d => {
-      if (vis?.getFeatureStyle) { d.getFeatureStyle = vis.getFeatureStyle; }
-    });
-    return data;
-  }
+    this.map.setData(this.map.getData());
+  } */
 }

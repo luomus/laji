@@ -28,7 +28,7 @@ import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualiza
   providers: [ LabelPipe, AreaNamePipe ]
 })
 export class NpMapComponent implements OnInit, OnChanges {
-  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent<any>;
+  @ViewChild(LajiMapComponent, { static: true }) lajiMap: LajiMapComponent;
   @ViewChild('popup', { static: true }) popupComponent;
   @Input() visible = false;
   @Input() namedPlaces: ExtendedNamedPlace[];

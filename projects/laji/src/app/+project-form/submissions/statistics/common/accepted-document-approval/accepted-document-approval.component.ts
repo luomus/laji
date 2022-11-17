@@ -40,7 +40,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   @Output() namedPlaceChange = new EventEmitter();
 
   @ViewChild(LajiMapComponent, { static: true })
-  lajiMap: LajiMapComponent<any>;
+  lajiMap: LajiMapComponent;
   lajiMapOptions: LajiMapOptions;
   data: any;
   placesDiff: false | any = false;
