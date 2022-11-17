@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 export interface IPageChange {
   count: number;
@@ -26,6 +26,8 @@ export class DataTableFooterComponent {
   _start: number;
   _end: number;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   @Input() set pageSize(size: number) {
     this._pageSize = size;
     this.initStartEnd();
@@ -44,6 +46,8 @@ export class DataTableFooterComponent {
   private initStartEnd() {
     this._start = ((this._page - 1) * this._pageSize) + 1;
     this._end = Math.min(this._start + this._pageSize - 1, this._count);
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   onChange(event) {

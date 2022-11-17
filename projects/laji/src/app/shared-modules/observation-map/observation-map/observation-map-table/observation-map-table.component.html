@@ -1,9 +1,17 @@
-<laji-datatable
-  class="observation-table d-block"
-  [height]="'300px'"
-  [rows]='rows$ | async'
-  [columns]="columns"
-  [pageSize]="100"
-  [loading]="loading"
-  (rowSelect)="onRowSelect($event)">
-</laji-datatable>
+<!-- The following *ngIf is always true, used just for the async pipe -->
+<ng-container *ngIf="{ rows: (rows$ | async) } as data">
+  <laji-datatable
+    class="observation-table d-block"
+    [height]="'600px'"
+    [rows]="data.rows?.results"
+    [columns]="columns"
+    [count]="data.rows?.total"
+    [page]="data.rows?.currentPage"
+    [pageSize]="pageSize"
+    [virtualScrolling]="false"
+    [showFooter]="true"
+    [loading]="loading"
+    (pageChange)="onPageChange($event)"
+    (rowSelect)="onRowSelect($event)">
+  </laji-datatable>
+</ng-container>

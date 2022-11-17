@@ -8,6 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
 import { TableColumnService } from '../../../datatable/service/table-column.service';
@@ -34,8 +35,9 @@ const defaultColumnNames: (keyof IColumns)[] = [
   @Input() coordinates: [number, number];
   @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
   columns: ObservationTableColumn[] = [];
-  rows$;
+  rows$: Observable<any>;
   loading = false;
+  pageSize = 10;
 
   private columnLookup: any;
 
@@ -75,7 +77,11 @@ const defaultColumnNames: (keyof IColumns)[] = [
     }
   }
 
-  private updateRows() {
+  onPageChange(event) {
+    this.updateRows(event.page);
+  }
+
+  private updateRows(page: number = 1) {
     const wgs = this.coordinates[1] + ':' +  this.coordinates[0] + ':WGS84';
     const selected = [
       'unit.interpretations.recordQuality',
@@ -92,9 +98,8 @@ const defaultColumnNames: (keyof IColumns)[] = [
     this.loading = true;
     this.rows$ = this.warehouse.warehouseQueryListGet({
       wgs84CenterPoint: wgs
-    }, selected).pipe(
-      map(d => d.results),
-      tap(() => {
+    }, selected, undefined, this.pageSize, page).pipe(
+      tap(d => {
         this.loading = false;
         setTimeout(() => {
           this.cdr.markForCheck();
