@@ -7,11 +7,6 @@ const baseFeatureStyle = {
   fillOpacity: .5
 };
 
-const fallbackFeatureStyle = {
-  weight: 0,
-  opacity: 0,
-  fillOpacity: 0
-};
 const currentYear = new Date().getFullYear();
 const yearsAgoBreakpoints = [2, 10, 20, 40, Infinity];
 
