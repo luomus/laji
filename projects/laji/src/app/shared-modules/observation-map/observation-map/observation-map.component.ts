@@ -38,21 +38,6 @@ interface ObservationDataOptions extends DataOptions {
   lastPage: number;
 }
 
-// given a string of delimited by , and .
-// take the first portion delimited by ,
-// then each part of the resulting string delimited by .
-// then attempt to find nested value of row that matches the sequence of properties
-// eg. for nestedProperty = 'gathering.conversions.wgs84CenterPoint.lon,gathering.conversions.wgs84CenterPoint.lat'
-//     get the value of 'obj.gathering.conversions.wgs84CenterPoint.lon'
-const getNestedPropertyFromObj = (nestedProperty: string, obj: any): string => {
-  let val = '';
-  const first = nestedProperty.split(',')[0];
-  try {
-    val = first.split('.').reduce((prev: any, curr: any) => prev[curr], obj);
-  } catch (e) {}
-  return val;
-};
-
 // Given coordinates in warehouse query format
 // Returns a featureCollection visualizing that set of coordinates
 const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable<any> => (
@@ -69,6 +54,8 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
     )
   )
 );
+
+const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 
 @Component({
   selector: 'laji-observation-map',
@@ -223,15 +210,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         this.activeZoomThresholdLevel = i + 1;
       }
     }
-    const insideActiveBounds = this.activeZoomThresholdBounds && this.activeZoomThresholdBounds.contains(e.bounds);
-    const outOfViewport = this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel && !insideActiveBounds;
-    const showingIndividualPointsAlreadyAndZoomedIn = this.activeZoomThresholdLevel >= curActiveZoomThresholdLevel && this.showingIndividualPoints;
-    const tresholdLevelChanged = curActiveZoomThresholdLevel !== this.activeZoomThresholdLevel;
-    if (
-      e.type === 'moveend' && (
-        (tresholdLevelChanged && !showingIndividualPointsAlreadyAndZoomedIn)
-        || outOfViewport
-      )
+
+    const outOfActiveBounds = this.activeZoomThresholdBounds && !this.activeZoomThresholdBounds.contains(e.bounds);
+    const zoomedInAndNotShowingPoints = this.activeZoomThresholdLevel > curActiveZoomThresholdLevel && !this.showingIndividualPoints;
+    const zoomedOut = this.activeZoomThresholdLevel < curActiveZoomThresholdLevel;
+
+    if (outOfActiveBounds
+      || zoomedInAndNotShowingPoints
+      || zoomedOut
     ) {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMap();
@@ -273,8 +259,17 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
+  private queryIsInsideViewport(query: WarehouseQueryInterface): boolean {
+    if (!query.coordinates)  {
+      return false;
+    }
+
+    const bounds = (window.L as any).geoJSON(convertLajiEtlCoordinatesToGeometry(query.coordinates)).getBounds();
+    return this.lajiMap?.map.map.getBounds().contains(bounds);
+  }
+
   private addViewPortCoordinatesParams(query: WarehouseQueryInterface) {
-    if (!query.coordinates && this.activeZoomThresholdBounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
+    if (!this.queryIsInsideViewport(query) && this.activeZoomThresholdBounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
       query.coordinates = [
         Math.max(this.activeZoomThresholdBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lat, 90) + ':' +
         Math.max(this.activeZoomThresholdBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lng, 180) + ':WGS84'
@@ -374,7 +369,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     const modifiedQuery: WarehouseQueryInterface = {...this.query};
     if (this.limitResults && !modifiedQuery.coordinates) {
-      modifiedQuery.coordinates = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+      modifiedQuery.coordinates = LIMITED_BOUNDS;
     }
     this.addViewPortCoordinatesParams(modifiedQuery);
     this.addVisualizationParams(modifiedQuery);
