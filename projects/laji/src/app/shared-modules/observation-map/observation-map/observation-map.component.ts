@@ -26,7 +26,7 @@ import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
-import { convertLajiEtlCoordinatesToGeometry, getFeatureFromGeometry } from '../../../root/coordinate-utils';
+import { convertLajiEtlCoordinatesToGeometry, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
@@ -55,7 +55,7 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
   )
 );
 
-const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 
 @Component({
   selector: 'laji-observation-map',
@@ -136,7 +136,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   tableViewHeightOverride = -1;
   selectedObservationCoordinates: [number, number];
 
-  private limitResults = false;
+  private useFinnishMap = false;
   private drawData: LajiMapDataOptions = {
     featureCollection: {type: 'FeatureCollection', features: []},
     getFeatureStyle: () => ({
@@ -225,10 +225,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   onTileLayersChange(layerOptions: TileLayersOptions) {
-    const shouldLimit = layerOptions.active === 'finnish';
-    if (this.limitResults !== shouldLimit) {
-      this.limitResults = shouldLimit;
-    }
+    this.useFinnishMap = layerOptions.active === 'finnish';
     this.updateMap();
   }
 
@@ -329,7 +326,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private getAggregateDataOptions$(query: WarehouseQueryInterface, page: number): Observable<ObservationDataOptions> {
     return this.warehouseService.warehouseQueryAggregateGet(
-      query, this.getActiveZoomThresholdLevelToAggregateBy(),
+      query,
+      this.useFinnishMap
+        ? ['gathering.conversions.ykj10kmCenter.lat', 'gathering.conversions.ykj10kmCenter.lon']
+        : this.getActiveZoomThresholdLevelToAggregateBy(),
       undefined, this.size, page, true
     ).pipe(
       map(res => (<ObservationDataOptions>{
@@ -368,8 +368,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     if (!this.ready) { return; }
 
     const modifiedQuery: WarehouseQueryInterface = {...this.query};
-    if (this.limitResults && !modifiedQuery.coordinates) {
-      modifiedQuery.coordinates = LIMITED_BOUNDS;
+    if (this.useFinnishMap && !modifiedQuery.coordinates) {
+      modifiedQuery.coordinates = FINNISH_MAP_BOUNDS;
     }
     this.addViewPortCoordinatesParams(modifiedQuery);
     this.addVisualizationParams(modifiedQuery);
@@ -442,7 +442,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private getQueryHash(query: WarehouseQueryInterface) {
-    const cache = [JSON.stringify(query), this.limitResults].join(':');
+    const cache = [JSON.stringify(query), this.useFinnishMap].join(':');
     if (!this.activeZoomThresholdBounds) {
       return cache + this.activeZoomThresholdLevel;
     }
