@@ -11,6 +11,8 @@ import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -41,7 +43,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   @Input() skipActiveFilters: string[] = [];
   @Input() invasiveStatuses: string[] = [];
-  @Input() dateFormat = 'YYYY-MM-DD';
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
@@ -499,7 +500,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private getValidDate(date) {
-    if (date && (moment(date, this.dateFormat, true).isValid() || isRelativeDate(date))) {
+    if (date && (moment(date, DATE_FORMAT, true).isValid() || isRelativeDate(date))) {
       return date;
     }
     return '';
@@ -607,8 +608,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return '';
     }
     if (
-      (start && !moment(start, this.dateFormat, true).isValid()) ||
-      (end && !moment(end, this.dateFormat, true).isValid())
+      (start && !moment(start, DATE_FORMAT, true).isValid()) ||
+      (end && !moment(end, DATE_FORMAT, true).isValid())
     ) {
       return '';
     }

@@ -21,8 +21,41 @@ class LUPanel {
 
   async open() {
     await this.$elem.click();
-    await browser.wait(EC.visibilityOf($(`${this.locator}[ng-reflect-open="true"]`)));
+    await browser.wait(EC.visibilityOf($(`${this.locator} .is-open`)));
   }
+
+  isOpen() {
+    return isDisplayed($(`${this.locator} .is-open`));
+  }
+}
+
+class DatePicker {
+  public $container: ElementFinder;
+
+  calendar = {
+    toggle: () => this.$container.$('.calendar-toggle').click(),
+    $getContainer: () => this.$container.$('.ng-datepicker'),
+    getYear: async () => (await this.calendar.$getContainer().$('.date').getText()).match(/\d+/)[0],
+    getMonth: async () => (await this.calendar.$getContainer().$('.date').getText()).match(/[^ ]+/)[0],
+    selectToday: () => this.$container.$('.today').click()
+  }
+
+  constructor(locator: string) {
+    this.$container = $(locator);
+  }
+
+  type(date: string) {
+   return this.$container.$('input').sendKeys(date, protractor.Key.TAB);
+  }
+
+  getInputValue() {
+    return this.$container.$('input').getAttribute('value');
+  }
+
+  clear() {
+    return this.$container.$('.clear').click();
+  }
+
 }
 
 export class ObservationPage {
@@ -45,6 +78,13 @@ export class ObservationPage {
     map: new LUTabPO('map')
   };
 
+  public timePanel = new LUPanel('.laji-panel-time');
+  public dateBegin = new DatePicker('.observation-time-container laji-datepicker[name="timeStart"]');
+  public dateEnd = new DatePicker('.observation-time-container laji-datepicker[name="timeEnd"]');
+  public $today = $('.btn-today');
+  public $week = $('.btn-week');
+  public $year = $('.btn-year');
+
   public placePanel = new LUPanel('.laji-panel-places');
   public $placePanel = $('.laji-panel-places');
   public $drawRectangleBtn = $('.draw-rectangle');
@@ -52,8 +92,8 @@ export class ObservationPage {
   public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
-  async navigateTo(sub: 'list' | '' = '') {
-    await browser.get(`observation/${sub}`);
+  async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {
+    await browser.get(`observation/${sub}?${new URLSearchParams(query || {}).toString()}`);
   }
 
   async navigateToViewWithAllFilters() {
@@ -116,5 +156,18 @@ export class ObservationPage {
     const control = this.map.getCoordinateInputControl();
     await control.enterLatLng(666, 333);
     await control.$getSubmit().click();
+  }
+
+  private async getTimeFilter() {
+    const url = new URL(await browser.getCurrentUrl());
+    return url.searchParams.get('time') || '';
+  }
+
+  async getTimeStart() {
+    return (await this.getTimeFilter()).match(/^([^/]+)\//)?.[1] || '';
+  }
+
+  async getTimeEnd() {
+    return (await this.getTimeFilter()).match(/\/(.+)$/)?.[1] || '';
   }
 }
