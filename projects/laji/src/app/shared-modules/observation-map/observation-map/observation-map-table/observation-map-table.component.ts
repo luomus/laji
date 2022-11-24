@@ -16,6 +16,17 @@ import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.f
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
 import { ObservationVisualizationMode } from '../observation-visualization';
 
+export interface Coordinates {
+  type: 'wgs84' | 'ykj';
+  coordinates?: [number, number];
+  square?: {
+    latMin: number;
+    latMax: number;
+    lonMin: number;
+    lonMax: number;
+  };
+}
+
 const defaultColumnNames: (keyof IColumns)[] = [
   'unit.interpretations.recordQuality',
   'document.linkings.collectionQuality',
@@ -32,7 +43,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
-  @Input() coordinates: [number, number];
+  @Input() coordinates: Coordinates;
   @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
   columns: ObservationTableColumn[] = [];
   rows$: Observable<any>;
@@ -51,8 +62,8 @@ const defaultColumnNames: (keyof IColumns)[] = [
   }
 
   ngOnInit(): void {
-    this.updateRows();
-    this.updateColumns();
+    //this.updateRows();
+    //this.updateColumns();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -82,7 +93,6 @@ const defaultColumnNames: (keyof IColumns)[] = [
   }
 
   private updateRows(page: number = 1) {
-    const wgs = this.coordinates[1] + ':' +  this.coordinates[0] + ':WGS84';
     const selected = [
       'unit.interpretations.recordQuality',
       'document.linkings.collectionQuality',
@@ -95,10 +105,23 @@ const defaultColumnNames: (keyof IColumns)[] = [
       'unit.linkings.taxon.latestRedListStatusFinland.status',
       'unit.linkings.taxon.latestRedListStatusFinland.year'
     ];
+    const query = {};
+    if (this.coordinates.type === 'wgs84') {
+      if (this.coordinates.square) {
+        query['wgs84CenterPoint'] = this.coordinates.square.latMin
+          + ':' + this.coordinates.square.latMax
+          + ':'+ this.coordinates.square.lonMin
+          + ':' + this.coordinates.square.lonMax + ':WGS84';
+      } else {
+        query['wgs84CenterPoint'] = this.coordinates.coordinates[1]
+          + ':' +  this.coordinates.coordinates[0] + ':WGS84';
+      }
+    } else {
+      const ykj = this.coordinates.coordinates[0] + ':' + this.coordinates.coordinates[1];
+      query['ykj10kmCenter'] = ykj;
+    }
     this.loading = true;
-    this.rows$ = this.warehouse.warehouseQueryListGet({
-      wgs84CenterPoint: wgs
-    }, selected, undefined, this.pageSize, page).pipe(
+    this.rows$ = this.warehouse.warehouseQueryListGet(query, selected, undefined, this.pageSize, page).pipe(
       tap(d => {
         this.loading = false;
         setTimeout(() => {

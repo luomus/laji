@@ -26,13 +26,14 @@ import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
-import { convertLajiEtlCoordinatesToGeometry, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
+import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { PathOptions } from 'leaflet';
 import { Feature } from 'geojson';
+import { Coordinates } from './observation-map-table/observation-map-table.component';
 
 interface ObservationDataOptions extends DataOptions {
   lastPage: number;
@@ -134,7 +135,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   mapOptions: LajiMapOptions;
 
   tableViewHeightOverride = -1;
-  selectedObservationCoordinates: [number, number];
+  selectedObservationCoordinates: Coordinates;
 
   private useFinnishMap = false;
   private drawData: LajiMapDataOptions = {
@@ -274,6 +275,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
+  private onDataClick(coordinates: Coordinates) {
+    this.selectedObservationCoordinates = coordinates;
+    this.tableViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
+    this.cdr.detectChanges();
+    this.cdr.markForCheck();
+  }
+
   private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
     return this.warehouseService.warehouseQueryAggregateGet(
       { ...query, featureType: 'CENTER_POINT' },
@@ -291,12 +299,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         },
         lastPage: 1,
         on: {
-          click: (...args) => {
-            this.selectedObservationCoordinates = (args[1].feature.geometry as any).coordinates;
-            this.tableViewHeightOverride = (window.innerHeight - this.mapContainerElem.nativeElement.getBoundingClientRect().top) *.8;
-            this.cdr.detectChanges();
-            this.cdr.markForCheck();
-          }
+          click: (...args) => this.onDataClick({
+            type: 'wgs84',
+            coordinates: (args[1].feature.geometry as any).coordinates
+          })
         },
         marker: {
           icon: (po: PathOptions, feature: Feature) => {
@@ -334,6 +340,34 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     ).pipe(
       map(res => (<ObservationDataOptions>{
         featureCollection: { type: res.type, features: res.features },
+        on: {
+          click: (...args) => {
+            const coords = (args[1].feature.geometry as any).coordinates[0];
+            if (this.useFinnishMap) {
+              const lats = []; const lons = [];
+              coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
+              const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
+              const ykj = convertWgs84ToYkj(latMin, lonMin);
+              const coordinates: Coordinates = {
+                type: 'ykj',
+                coordinates: [Math.round(ykj[0] / 10000), Math.round(ykj[1] / 10000)]
+              };
+              this.onDataClick(coordinates);
+            } else {
+              const lats = []; const lons = [];
+              coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
+              const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
+              const latMax = Math.max(...lats); const lonMax = Math.max(...lons);
+              const coordinates: Coordinates = {
+                type: 'wgs84',
+                square: {
+                  latMin, latMax, lonMin, lonMax
+                }
+              };
+              this.onDataClick(coordinates);
+            }
+          }
+        },
         lastPage: res.lastPage
       })),
       tap(() => {
