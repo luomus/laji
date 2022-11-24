@@ -32,14 +32,12 @@ import {
   EventEmitter,
   forwardRef,
   Input,
-  OnInit,
   Output,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
-import { PlatformService } from '../../root/platform.service';
 
 export interface CalendarDate {
   day: string;
@@ -65,7 +63,7 @@ const VIEW_FORMAT = 'D.M.YYYY'; // Allows e.g. '01.9.2022" and "1.09.2022".
   providers: [CALENDAR_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatePickerComponent implements ControlValueAccessor, OnInit {
+export class DatePickerComponent implements ControlValueAccessor {
   @Input() toLastOfYear = false;
   @Input() addonText: string;
   @Input() popoverAlign: 'right' | 'left' = 'right';
@@ -87,16 +85,9 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
   private onChangeCallback: (_: any) => void;
 
   constructor(
-    viewContainerRef: ViewContainerRef,
-    private platformService: PlatformService
+    viewContainerRef: ViewContainerRef
   ) {
     this.el = viewContainerRef.element.nativeElement;
-  }
-
-  ngOnInit() {
-    if (this.platformService.isServer) {
-      return;
-    }
   }
 
   onInputValueChange(viewFormatValue: string) {
@@ -132,6 +123,7 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
     if (!value) {
       value = undefined;
     }
+    const prevValue = this.value;
     this.value = value;
     this.viewValue = value
       ? moment(value, FORMAT).format(VIEW_FORMAT)
@@ -144,7 +136,10 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit {
 
     this.calendarUIValue = value;
     this.dateSelect.next(this.value);
-    this.onChangeCallback?.(this.value);
+    if (prevValue !== this.value) {
+      this.onChangeCallback?.(this.value);
+      this.onTouchedCallback?.();
+    }
     this.generateCalendar();
   }
 
