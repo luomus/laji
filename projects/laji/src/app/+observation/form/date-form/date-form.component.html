@@ -5,13 +5,11 @@
   </div>
   <laji-datepicker
     [(ngModel)]="datepickerTimeStart"
-    (dateSelect)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeStart"></laji-datepicker>
   <laji-datepicker
     [(ngModel)]="datepickerTimeEnd"
     [toLastOfYear]="true"
-    (dateSelect)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeEnd"></laji-datepicker>
   <div class="btn-group btn-group-xs mt-1">
@@ -42,13 +40,11 @@
     </div>
     <laji-datepicker
       [(ngModel)]="query.loadedSameOrAfter"
-      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeStart"></laji-datepicker>
     <laji-datepicker
       [(ngModel)]="query.loadedSameOrBefore"
       [toLastOfYear]="true"
-      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeEnd"></laji-datepicker>
     <div class="btn-group btn-group-xs mt-1">
