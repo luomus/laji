@@ -39,7 +39,9 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     nationalInvasiveSpeciesStrategy: false,
     otherInvasiveSpeciesList: false,
     otherPlantPest: false,
-    qualityPlantPest: false
+    qualityPlantPest: false,
+    onlyBold: false,
+    onlyNonBold: false
   };
 
   public subUpdate?: Subscription;
@@ -54,6 +56,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     'nationalInvasiveSpeciesStrategy',
     'otherInvasiveSpeciesList',
   ];
+
+  public boldSelected: (keyof SpeciesFormQuery)[] = [];
 
   constructor(
     public translate: TranslateService
@@ -79,7 +83,6 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       });
   }
 
-
   ngOnDestroy() {
     if (this.subUpdate) {
       this.subUpdate.unsubscribe();
@@ -89,6 +92,12 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   onTaxonSelect(key: string) {
     this.formQuery.taxon = key;
     this.searchQuery.query.target = key;
+    this.onQueryChange();
+  }
+
+  onHabitatChange(habitats: any) {
+    this.searchQuery.query.primaryHabitat = habitats.primaryHabitat;
+    this.searchQuery.query.anyHabitat = habitats.anyHabitat;
     this.onQueryChange();
   }
 
@@ -103,9 +112,23 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onHabitatChange(habitats: any) {
-    this.searchQuery.query.primaryHabitat = habitats.primaryHabitat;
-    this.searchQuery.query.anyHabitat = habitats.anyHabitat;
+  onBoldChange(ids: (keyof SpeciesFormQuery)[]) {
+    const id = Util.arrayDiff(this.boldSelected, ids)[0];
+
+    if (id === 'onlyBold') {
+      this.formQuery.onlyBold = !this.formQuery.onlyBold;
+      if (this.formQuery.onlyBold) {
+        this.formQuery.onlyNonBold = false;
+      }
+
+    } else if (id === 'onlyNonBold') {
+      this.formQuery.onlyNonBold = !this.formQuery.onlyNonBold;
+      if (this.formQuery.onlyNonBold) {
+        this.formQuery.onlyBold = false;
+      }
+    }
+
+    this.updateBoldSelected();
     this.onQueryChange();
   }
 
@@ -135,6 +158,20 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       }
     }
     this.invasiveSelected = invasiveSelected;
+  }
+
+  private updateBoldSelected() {
+    const boldSelected: (keyof SpeciesFormQuery)[] = [];
+    const allFields: (keyof Omit<SpeciesFormQuery, 'taxon'>)[] = [
+      'onlyBold',
+      'onlyNonBold'
+    ];
+    for (const i in allFields) {
+      if (this.formQuery[allFields[i]]) {
+        boldSelected.push(allFields[i]);
+      }
+    }
+    this.boldSelected = boldSelected;
   }
 
   private onInvasiveToggle() {
@@ -208,6 +245,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     const query = this.searchQuery.query;
     query.onlyFinnish = this.formQuery.onlyFinnish ? true : undefined;
     query.invasiveSpeciesFilter = this.formQuery.onlyInvasive ? true : (this.formQuery.onlyNonInvasive ? false : undefined);
+    query.hasBoldData = this.formQuery.onlyBold ? true : (this.formQuery.onlyNonBold ? false : undefined);
 
     if (query.adminStatusFilters) {
       query.adminStatusFilters = [...query.adminStatusFilters];
@@ -248,10 +286,13 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       nationalInvasiveSpeciesStrategy: this.hasInMulti(query.adminStatusFilters, 'MX.nationalInvasiveSpeciesStrategy'),
       otherInvasiveSpeciesList: this.hasInMulti(query.adminStatusFilters, 'MX.otherInvasiveSpeciesList'),
       controllingRisksOfInvasiveAlienSpecies: this.hasInMulti(query.adminStatusFilters, 'MX.controllingRisksOfInvasiveAlienSpecies'),
-      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val))
+      allInvasiveSpecies: this.hasInMulti(query.adminStatusFilters, this.invasiveStatuses.map(val => 'MX.' + val)),
+      onlyBold: query.hasBoldData === true,
+      onlyNonBold: query.hasBoldData === false
     };
 
     this.updateInvasiveSelected();
+    this.updateBoldSelected();
   }
 
   private hasInMulti(multi: any, value: any, noOther = false) {
