@@ -41,9 +41,6 @@
         <label>{{ 'observations.label.detAfter' | translate }}&nbsp;</label>
         <div class="date-picker-wrapper"><laji-datepicker
         [(ngModel)]="labelFilter.detLaterThan"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="'YYYY-MM-DD'"
         [popoverAlign]="'left'"
         (dateSelect)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
         (change)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"></laji-datepicker></div></div>

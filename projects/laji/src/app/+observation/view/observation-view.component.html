@@ -36,7 +36,6 @@
         [query]="vm.query"
         [skipActiveFilters]="skipUrlParameters"
         [invasiveStatuses]="invasiveStatuses"
-        [dateFormat]="dateFormat"
         (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
       ></laji-form-sample>
@@ -44,7 +43,6 @@
         *ngSwitchDefault
         [query]="vm.query"
         [invasiveStatuses]="invasiveStatuses"
-        [dateFormat]="dateFormat"
         (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
       ></laji-observation-form>

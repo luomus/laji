@@ -1,4 +1,3 @@
-import { distinctUntilChanged } from 'rxjs/operators';
 /**
  * Originally from here: https://github.com/jkuri/ng2-datepicker
  *
@@ -28,26 +27,22 @@ import { distinctUntilChanged } from 'rxjs/operators';
  */
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Input,
-  OnDestroy,
-  OnInit,
   Output,
+  ViewChild,
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import * as moment from 'moment';
-import { PlatformService } from '../../root/platform.service';
 
 export interface CalendarDate {
-  day: number;
-  month: number;
-  year: number;
-  enabled: boolean;
+  day: string;
+  month: string;
+  year: string;
   today: boolean;
   selected: boolean;
 }
@@ -58,6 +53,9 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
   multi: true
 };
 
+const FORMAT = 'YYYY-MM-DD'; // ISO-8601 format.
+const VIEW_FORMAT = 'D.M.YYYY'; // Allows e.g. '01.9.2022" and "1.09.2022".
+
 @Component({
   selector: 'laji-datepicker',
   templateUrl: './datepicker.component.html',
@@ -65,106 +63,84 @@ export const CALENDAR_VALUE_ACCESSOR: any = {
   providers: [CALENDAR_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  @Input() classAttr: string;
-  @Input() expanded: boolean;
-  @Input() opened: boolean;
-  @Input() format: string;
-  @Input() otherFormats: string[] = [];
-  @Input() viewFormat: string;
-  @Input() firstWeekdaySunday: boolean;
+export class DatePickerComponent implements ControlValueAccessor {
   @Input() toLastOfYear = false;
   @Input() addonText: string;
   @Input() popoverAlign: 'right' | 'left' = 'right';
   @Output() dateSelect = new EventEmitter();
 
+  @ViewChild('dateInput') dateInput: ElementRef;
+
+  public moment = moment;
   public validDate = true;
-  public viewDate: string = null;
+  public viewValue= '';
+  public calendarUIValue = ''; // The active calendar date in ISO-8601 format.
   public date: moment.Moment;
   public days: CalendarDate[] = [];
-  private readonly el: Element;
-  private currentValue;
+  public opened = false;
 
-  private valueSource = new BehaviorSubject<string>('');
-  private value$: Subscription;
+  private value: string | undefined;
+  private readonly el: Element;
+  private onTouchedCallback: () => void;
+  private onChangeCallback: (_: any) => void;
 
   constructor(
-    private viewContainerRef: ViewContainerRef,
-    private cd: ChangeDetectorRef,
-    private platformService: PlatformService
+    viewContainerRef: ViewContainerRef
   ) {
     this.el = viewContainerRef.element.nativeElement;
-    this.date = moment();
   }
 
-  get value(): any {
-    return this.currentValue;
-  }
+  onInputValueChange(viewFormatValue: string) {
+    const viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
 
-  set value(value: any) {
-    if (typeof value === 'string') {
-      value = value.trim();
-    }
-    let date: any = (value instanceof moment) ? value : moment(value, this.format, true);
-    if (date.isValid && !date.isValid()) {
+    if (this.validDate && viewFormatValue && !viewFormMoment.isValid()) {
       this.validDate = false;
-      for (const format of [this.format, ...this.otherFormats]) {
-        date = moment(value, format, true);
-        if (date.isValid()) {
-          if (format.length <= 4 && this.toLastOfYear) {
-            date = moment(value, format, true).endOf('year');
-          }
-          this.value = date.format(this.format);
-          return;
-        }
-      }
-    }
-    value = value || undefined;
-    if (date.isValid && date.isValid()) {
-      this.validDate = true;
-      this.viewDate = date.format(this.viewFormat);
-      this.date = date;
-      if (this.currentValue !== value) {
-        this.onTouchedCallback();
-      }
-    } else if (value === undefined) {
-      this.validDate = true;
-      this.viewDate = '';
+      return this.onInputValueChange(this.viewValue); // Restore prev value that is valid.
     } else {
-      this.validDate = false;
-      this.viewDate = value || '';
+      this.validDate = true;
     }
-    if (this.currentValue !== value) {
-      this.sendNewValue(value);
-      this.currentValue = value;
+
+
+    // First try formatting with default view format.
+    if (viewFormMoment.isValid()) {
+      return this.updateValue(viewFormMoment.format(FORMAT));
     }
+
+    // Try formatting a value that is just a year.
+    const yearMoment = moment(viewFormatValue, 'YYYY', true);
+    if (yearMoment.isValid()) {
+      const momentValue = this.toLastOfYear ? yearMoment.endOf('year') : yearMoment.startOf('year');
+      return this.updateValue(momentValue.format(FORMAT));
+    }
+
+    this.updateValue('');
   }
 
-  private sendNewValue(value) {
-    this.onChangeCallback(value);
-    this.dateSelect.emit(value);
-    this.valueSource.next(value || '');
-    this.cd.markForCheck();
-  }
-
-  ngOnInit() {
-    this.classAttr = `ui-kit-calendar-container ${this.classAttr}`;
-    this.opened = this.opened || false;
-    this.format = this.format || 'YYYY-MM-DD';
-    this.viewFormat = this.viewFormat || 'D.M.YYYY';
-    this.firstWeekdaySunday = this.firstWeekdaySunday || false;
-    if (this.platformService.isServer) {
-      return;
+  updateValue(value?: string) { // Expects ISO-8601 formatted value.
+    if (value && !moment(value, FORMAT, true).isValid()) {
+      throw new Error(`Invalid date for laji-datepicker$ (${value}). only ISO-8601 dates are accepted.`);
     }
-    this.value$ = this.valueSource.pipe(
-      distinctUntilChanged(),
-    ).subscribe((val) => this.value = val);
-  }
-
-  ngOnDestroy() {
-    if (this.value$) {
-      this.value$.unsubscribe();
+    if (!value) {
+      value = undefined;
     }
+    const prevValue = this.value;
+    this.value = value;
+    this.viewValue = value
+      ? moment(value, FORMAT).format(VIEW_FORMAT)
+      : '';
+
+    // Update input elem value manually, as updating the input value attribute doesn't work.
+    if ( this.dateInput) {
+      this.dateInput.nativeElement.value = this.viewValue;
+    }
+
+    this.calendarUIValue = value;
+    this.dateSelect.next(this.value);
+    if (prevValue !== this.value) {
+      this.onChangeCallback?.(this.value);
+      this.onTouchedCallback?.();
+    }
+    this.generateCalendar();
   }
 
   closeEvent(e) {
@@ -177,42 +153,24 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   generateCalendar() {
-    const date = moment(this.date);
-    const month = date.month();
-    const year = date.year();
-    let n = 1;
-    const firstWeekDay: number = (this.firstWeekdaySunday) ? date.date(2).day() : date.date(1).day();
-
-    if (firstWeekDay !== 1) {
-      n -= (firstWeekDay + 6) % 7;
-    }
+    const date = moment(this.calendarUIValue);
+    const month = date.month() + 1; // Moment month is zero indexed.
+    const year = date.format('YYYY');
 
     this.days = [];
-    const selectedDate = moment(this.value, this.format);
-    for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      const iteratedDate = moment(`${year}-${month + 1}-${i}`, 'YYYY-MM-DD');
-      const today = moment().isSame(iteratedDate, 'day') && moment().isSame(iteratedDate, 'month');
+    const selectedDate = moment(this.value, FORMAT);
+    for (let i = 1; i <= date.endOf('month').date(); i += 1) {
+      const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
+      const today = moment().isSame(iteratedDate.format(), 'day');
       const selected = selectedDate.isSame(iteratedDate, 'day');
 
-      if (i > 0) {
-        this.days.push({
-          day: i,
-          month: month + 1,
-          year,
-          enabled: true,
-          today,
-          selected
-        });
-      } else {
-        this.days.push({
-          day: null,
-          month: null,
-          year: null,
-          enabled: false,
-          today: false,
-          selected
-        });
-      }
+      this.days.push({
+        day: '' + iteratedDate.format('DD'),
+        month: '' + iteratedDate.format('MM'),
+        year,
+        today,
+        selected
+      });
     }
   }
 
@@ -220,42 +178,33 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
     e.preventDefault();
 
     const date: CalendarDate = this.days[i];
-    const selectedDate = moment(`${date.day}.${date.month}.${date.year}`, 'DD.MM.YYYY');
-    this.value = selectedDate.format(this.format);
-    this.viewDate = selectedDate.format(this.viewFormat);
+    this.updateValue(`${date.year}-${date.month}-${date.day}`);
     this.close();
     this.generateCalendar();
   }
 
   public prevYear(): void {
-    this.date = this.date.subtract(1, 'year');
+    this.calendarUIValue = moment(this.calendarUIValue).subtract(1, 'year').format();
     this.generateCalendar();
   }
 
   public nextYear(): void {
-    this.date = this.date.add(1, 'year');
+    this.calendarUIValue = moment(this.calendarUIValue).add(1, 'year').format();
     this.generateCalendar();
   }
 
   prevMonth() {
-    this.date = this.date.subtract(1, 'month');
+    this.calendarUIValue = moment(this.calendarUIValue).subtract(1, 'month').format();
     this.generateCalendar();
   }
 
   nextMonth() {
-    this.date = this.date.add(1, 'month');
+    this.calendarUIValue = moment(this.calendarUIValue).add(1, 'month').format();
     this.generateCalendar();
   }
 
-  updateValue(viewFormatValue: string) {
-    this.valueSource.next(viewFormatValue.length
-      ? moment(viewFormatValue, this.viewFormat, true).format(this.format)
-      : ''
-    );
-  }
-
-  writeValue(value: any) {
-    this.value = value;
+  writeValue(value: string) {
+    this.updateValue(value);
   }
 
   registerOnChange(fn: any) {
@@ -267,11 +216,6 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   }
 
   toggle() {
-    if (!this.viewDate) {
-      const value = moment().format(this.format);
-      this.value = value;
-      this.onChangeCallback(value);
-    }
     if (!this.opened) {
       this.generateCalendar();
     }
@@ -285,14 +229,4 @@ export class DatePickerComponent implements ControlValueAccessor, OnInit, OnDest
   close() {
     this.opened = false;
   }
-
-  clear() {
-    this.value = '';
-    this.dateSelect.emit(undefined);
-  }
-
-  private onTouchedCallback: () => void = () => {
-  };
-  private onChangeCallback: (_: any) => void = () => {
-  };
 }

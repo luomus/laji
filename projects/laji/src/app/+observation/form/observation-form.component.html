@@ -130,10 +130,9 @@
 </section>
 
 <!-- DATE -->
-<section class="laji-panel" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
+<section class="laji-panel laji-panel-time" laji-panel [title]="'observation.form.date' | translate" [autoToggle]="true"  [open]="visible['time']">
   <laji-date-form [query]="query"
                   [formQuery]="formQuery"
-                  [dateFormat]="dateFormat"
                   (formQueryChange)="onFormQueryChange()"
                   (queryChange)="onQueryChange()"
                   (searchQueryChange)="updateSearchQuery($event[0], $event[1])"
