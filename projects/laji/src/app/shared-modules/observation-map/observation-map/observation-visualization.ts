@@ -1,5 +1,4 @@
 import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
-import { PathOptions } from 'leaflet';
 
 const baseFeatureStyle = {
   weight: 1,
@@ -73,16 +72,18 @@ const getRedlistStatusColor = (statuses: string | string[]): string => {
 };
 
 const getIndividualCountColorIdx = (count: number): number => {
-  if (count <= 5) {
+  if (count === 0) {
     return 0;
-  } else if (count <= 20) {
+  } else if (count <= 5) {
     return 1;
-  } else if (count <= 50) {
+  } else if (count <= 20) {
     return 2;
-  } else if (count <= 100) {
+  } else if (count <= 50) {
     return 3;
-  } else {
+  } else if (count <= 100) {
     return 4;
+  } else {
+    return 5;
   }
 };
 
@@ -229,6 +230,10 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
     categories: [
+      {
+        color: '#ffffff',
+        label: '0'
+      },
       {
         color: '#348cf0',
         label: '1-5'
