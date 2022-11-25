@@ -25,26 +25,25 @@ ul {
   height: 15px;
   border-radius: 100%;
   background-color: $neutral-1;
-  border: 1px solid $neutral-8;
   align-self: center;
+  border: 1px solid $neutral-6;
 }
 
 .legend-label {
 }
 
 .accuracy-1 {
-  border-color: transparent;
+  border: 1px solid $neutral-6;
 }
 .accuracy-2 {
-
+  border: 2px dotted $neutral-7;
 }
 .accuracy-3 {
-  border: 2px dotted $neutral-8;
+  border: 2px dashed $neutral-8;
 }
 .accuracy-4 {
-  border: 2px dashed $neutral-8;
-
+  border: 3px dashed $neutral-9;
 }
 .accuracy-5 {
-  border: 4px dashed $neutral-8;
+  border: 4px dashed #000;
 }
