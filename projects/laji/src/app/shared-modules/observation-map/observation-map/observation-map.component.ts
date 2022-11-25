@@ -268,10 +268,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private addViewPortCoordinatesParams(query: WarehouseQueryInterface) {
     if (!this.queryIsInsideViewport(query) && this.activeZoomThresholdBounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
-      query.coordinates = [
-        Math.max(this.activeZoomThresholdBounds.getSouthWest().lat, -90) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lat, 90) + ':' +
-        Math.max(this.activeZoomThresholdBounds.getSouthWest().lng, -180) + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lng, 180) + ':WGS84'
-      ];
+      query.wgs84CenterPoint =
+        Math.max(this.activeZoomThresholdBounds.getSouthWest().lat, -90)
+        + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lat, 90)
+        + ':' + Math.max(this.activeZoomThresholdBounds.getSouthWest().lng, -180)
+        + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lng, 180)
+        + ':WGS84';
     }
   }
 
