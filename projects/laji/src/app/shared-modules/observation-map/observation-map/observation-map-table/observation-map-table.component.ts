@@ -8,6 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
+import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { IColumns } from '../../../datatable/service/observation-table-column.service';
@@ -43,12 +44,14 @@ const defaultColumnNames: (keyof IColumns)[] = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
+  @Input() query: WarehouseQueryInterface;
   @Input() coordinates: Coordinates;
   @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
   columns: ObservationTableColumn[] = [];
   rows$: Observable<any>;
   loading = false;
   pageSize = 100;
+  initialized = false;
 
   private columnLookup: any;
 
@@ -62,12 +65,17 @@ const defaultColumnNames: (keyof IColumns)[] = [
   }
 
   ngOnInit(): void {
-    //this.updateRows();
-    //this.updateColumns();
+    this.updateRows();
+    this.updateColumns();
+    this.initialized = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (!this.initialized) { return; }
     if (changes.coordinates) {
+      this.updateRows();
+    }
+    if (changes.query) {
       this.updateRows();
     }
     if (changes.visualizationMode) {
@@ -105,7 +113,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
       'unit.linkings.taxon.latestRedListStatusFinland.status',
       'unit.linkings.taxon.latestRedListStatusFinland.year'
     ];
-    const query = {};
+    const query: WarehouseQueryInterface = { ...this.query };
     if (this.coordinates.type === 'wgs84') {
       if (this.coordinates.square) {
         query['wgs84CenterPoint'] = this.coordinates.square.latMin
