@@ -1,7 +1,7 @@
-import { fromEvent as observableFromEvent, Subscription } from 'rxjs';
+import { fromEvent as observableFromEvent, Observable, Subscription } from 'rxjs';
 import { Directive, ElementRef, EventEmitter, Inject, Input, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
 import { WINDOW } from '@ng-toolkit/universal';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Directive({
   selector: '[lajiClickOutSide]'
@@ -26,7 +26,7 @@ export class ClickOutSideDirective implements OnInit, OnDestroy {
     }
     this.ngZone.runOutsideAngular(() => {
       const initTime = new Date().getTime();
-      this.sub = observableFromEvent(this.window.document, 'click').subscribe((e: MouseEvent) => {
+      this.sub = (observableFromEvent(this.window.document, 'click') as Observable<MouseEvent>).subscribe((e: MouseEvent) => {
         const clickTime = new Date().getTime();
         if (!this.clickOutSideActive || !e.target || (clickTime - initTime) < 100) {
           return;

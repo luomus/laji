@@ -57,7 +57,7 @@ interface BadgeTemplate {
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
 
-  constructor (
+  constructor(
     private route: ActivatedRoute,
     private translate: TranslateService,
     private documentViewerFacade: DocumentViewerFacade,
@@ -361,9 +361,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.labelService.get(form.collectionID, this.translate.currentLang),
         this.translate.get('datasets.label')
       ]).pipe(
-        map((result: string[]) => {
-          return result.filter(res => !!res).join(' | ');
-        })
+        map((result: string[]) => result.filter(res => !!res).join(' | '))
       );
     }
 

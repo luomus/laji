@@ -19,54 +19,38 @@ export class DateFormComponent implements OnDestroy {
 
   @Input() query;
   @Input() formQuery: ObservationFormQuery;
-  @Input() dateFormat = 'YYYY-MM-DD';
 
   @Output() formQueryChange = new EventEmitter<void>();
   @Output() queryChange = new EventEmitter<void>();
   @Output() searchQueryChange = new EventEmitter<any>();
   @Output() updateTime = new EventEmitter<any>();
 
-  // Datepicker component emits a value change event every time it receives an update
-  // with this hack we ignore value change events that were initiated by xDaysAgo
-  private ignoreStartDatepickerEvent = false;
-  private ignoreEndDatepickerEvent = false;
-
   get datepickerTimeStart() {
     return isRelativeDate(this.formQuery.timeStart) ? undefined : this.formQuery.timeStart;
   }
   set datepickerTimeStart(time) {
-    if (this.ignoreStartDatepickerEvent) {
-      this.ignoreStartDatepickerEvent = false;
-      return;
-    }
     this.formQuery.timeStart = time;
+    this.onFormQueryChange();
   }
 
   get datepickerTimeEnd() {
     return (!isRelativeDate(this.formQuery.timeStart) || !this.formQuery.timeStart) ? this.formQuery.timeEnd : undefined;
   }
   set datepickerTimeEnd(time) {
-    if (this.ignoreEndDatepickerEvent) {
-      this.ignoreEndDatepickerEvent = false;
-      return;
-    }
     if (isRelativeDate(this.formQuery.timeStart)) {
       this.formQuery.timeStart = undefined;
     }
     this.formQuery.timeEnd = time;
+    this.onFormQueryChange();
   }
 
   get xDaysAgo() {
     return isRelativeDate(this.formQuery.timeStart) ? Math.abs(parseInt(this.formQuery.timeStart, 10)) : undefined;
   }
   set xDaysAgo(days: number) {
-    if (this.formQuery.timeStart) {
-      this.ignoreStartDatepickerEvent = true;
-    }
-    if (this.formQuery.timeEnd) {
-      this.ignoreEndDatepickerEvent = true;
-    }
-    typeof days === 'number' ? this.formQuery.timeStart = (-1) * Math.abs(days) + '/0' : this.formQuery.timeStart = undefined;
+    this.formQuery.timeStart = typeof days === 'number'
+      ? (-1) * Math.abs(days) + '/0'
+      : undefined;
     this.formQuery.timeEnd = undefined;
     this.onFormQueryChange();
   }

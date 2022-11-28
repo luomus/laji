@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { Annotation } from './annotation';
 
 /**
@@ -27,8 +27,7 @@ export interface UISchemaContext {
 export namespace UISchemaContext {
 
   export interface ListEnum {
-    enum: string[];
-    enumNames: string[];
+    oneOf: {const: string, title: string}[];
   }
   export interface AnnotationMap {
     [targetID: string]: Annotation[];

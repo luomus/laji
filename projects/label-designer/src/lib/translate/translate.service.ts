@@ -7,7 +7,7 @@ import { LabelDesignerTranslationsInterface } from './label-designer-translation
 @Injectable()
 export class TranslateService {
 
-  /* tslint:disable:max-line-length */
+  /* eslint-disable max-len */
   private translations: LabelDesignerTranslationsInterface = {
     'Labels on page': 'There can be a total of {{total}} labels on a single page (in {{cols}} columns and {{rows}} rows).',
     'Label intro': '  <p>With this tool you can make a label design to print labels for specimens.</p>\n' +
@@ -25,11 +25,11 @@ export class TranslateService {
     this.translations = {...this.translations, ...translations};
   }
 
-  get(key: keyof LabelDesignerTranslationsInterface, variables?: object) {
+  get(key: keyof LabelDesignerTranslationsInterface, variables?: Record<string, any>) {
     return this.openVariables(this.translations[key] || key, variables);
   }
 
-  private openVariables(value: string, variables?: object) {
+  private openVariables(value: string, variables?: Record<string, any>) {
     if (variables) {
       Object.keys(variables).forEach(key =>  {
         value = value.replace(`{{${key}}}`, variables[key] || '');

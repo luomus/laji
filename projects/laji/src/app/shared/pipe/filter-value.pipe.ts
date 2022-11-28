@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterValuePipe implements PipeTransform {
 
-  transform (items: any[], field: string, value: string[], except: string, fieldNew: string, elements: string[]): any[] {
+  transform(items: any[], field: string, value: string[], except: string, fieldNew: string, elements: string[]): any[] {
     if (!items) {
       return [];
     }
@@ -27,6 +27,7 @@ export class FilterValuePipe implements PipeTransform {
         return (singleItem !== null && singleItem[field] !== null &&
           singleItem[field] !== undefined && value.indexOf(singleItem[field]) >= 0);
       }
+      return false;
     });
   }
 

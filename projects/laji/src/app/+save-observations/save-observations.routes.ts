@@ -5,6 +5,7 @@ import { SaveObservationsComponent } from './save-observations.component';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'prefix',
     component: SaveObservationsComponent
   }
 ];

@@ -1,0 +1,9 @@
+.scrollable-selection-list {
+  max-height: calc(50vh + 20px);
+  padding: 10px;
+  overflow: auto;
+}
+.vertical-align {
+  display: flex;
+  align-items: center;
+}

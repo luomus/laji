@@ -41,11 +41,8 @@
         <label>{{ 'observations.label.detAfter' | translate }}&nbsp;</label>
         <div class="date-picker-wrapper"><laji-datepicker
         [(ngModel)]="labelFilter.detLaterThan"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="'YYYY-MM-DD'"
         [popoverAlign]="'left'"
-        (select)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
+        (dateSelect)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"
         (change)="updateLabelFilter('detLaterThan', labelFilter.detLaterThan)"></laji-datepicker></div></div>
     </ng-container>
   </div>
@@ -115,7 +112,7 @@
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPublic">
           <button
-            class="btn btn-success btn-xs"
+            class="btn btn-success btn-xs view-button"
             (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-open"></i>
             <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
@@ -123,7 +120,7 @@
         </div>
         <div class="mb-2 mr-2" *ngIf="(actions | includes:'view') && onlyTemplates === false && value === publicity.publicityRestrictionsPrivate">
           <button
-            class="btn btn-warning btn-xs"
+            class="btn btn-warning btn-xs view-button"
             (click)="showViewer(row.id)">
             <i class="glyphicon glyphicon-eye-close"></i>
             <span class="text-button">{{ 'haseka.submissions.view' | translate }}</span>
@@ -132,6 +129,7 @@
         <div class="mb-2 mr-2">
           <a *ngIf="(actions | includes:'edit')"
             class="btn btn-default btn-xs"
+            [ngClass]="{'edit-button': !onlyTemplates, 'template-button': onlyTemplates}"
             [routerLink]="row._editUrl | localize">
             <i class="glyphicon glyphicon-edit"></i>
             <span class="text-button" *ngIf="onlyTemplates; else noTemplates">{{ 'haseka.submissions.use' | translate }}</span>
@@ -143,6 +141,7 @@
 
         <!--<span *ngIf="showMakeTemplate(row)">
           <lu-button
+                class="template-button"
                 [role]="'warning'"
                 (click)="makeTemplate(row)"
                 [tooltip]="'haseka.form.saveTemplate' | translate"
@@ -181,13 +180,13 @@
         <div ngPreserveWhitespaces>
           <div class="mb-2 mr-2">
             <button *ngIf="(actions | includes:'download') && onlyTemplates === false"
-              class="btn btn-default btn-xs"
+              class="btn btn-default btn-xs download-button"
               (click)="openChooseFileTypeModal(row.id)">
               <i class="glyphicon glyphicon-download-alt"></i>
               <span class="text-button">{{ 'haseka.submissions.downloadFile' | translate }}</span>
             </button>
             <ng-container *ngIf="forms$ | async as forms">
-              <button *ngIf="(actions | includes:'stats') && forms[row.formID].options?.viewerType"
+              <button *ngIf="(actions | includes:'stats') && forms[row.formID]?.options?.viewerType"
                 class="btn btn-default btn-xs"
                 [routerLink]="'/project/' + row.formID + '/submissions/' + row.id">
                 <i class="glyphicon glyphicon-stats"></i>
@@ -196,7 +195,7 @@
             </ng-container>
           </div>
           <button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
-            class="btn btn-danger btn-xs"
+            class="btn btn-danger btn-xs delete-button"
             [tooltip]="'friend.remove' | translate"
             [placement]="'left'"
             [adaptivePosition]="false"
@@ -283,7 +282,7 @@
 
 <div class="modal" tabindex="-1" role="dialog" bsModal #deleteModal="bs-modal">
   <div class="modal-dialog modal-sm">
-    <div class="modal-content">
+    <div class="modal-content datatable-delete-modal">
       <div class="modal-header">
         <button class="close pull-right" type="button" (click)="deleteModal.hide()">
           <i class="glyphicon glyphicon-remove"></i>

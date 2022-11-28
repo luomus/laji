@@ -1,0 +1,9 @@
+<div class="d-flex flex-row flex-wrap">
+  <div class="map mr-4" #lajiMap></div>
+
+  <div> <!-- sidebar -->
+    <ba-visualization-legend [visualization]="visualization"></ba-visualization-legend>
+    <hr>
+    <ba-visualization-selector [visualization]="visualization" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
+  </div>
+</div>

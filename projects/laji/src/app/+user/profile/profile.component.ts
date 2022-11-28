@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       map(params => params['userId']),
       concatMap(id => this.userService.user$.pipe(
         take(1),
-        map(user => ({id: id, currentUser: user}))
+        map(user => ({id, currentUser: user}))
       )),
       concatMap(({currentUser, id}) => {
         const empty$ = ObservableOf({} as Profile);

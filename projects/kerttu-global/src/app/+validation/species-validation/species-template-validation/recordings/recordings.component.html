@@ -1,0 +1,30 @@
+<div *ngFor="let recording of recordings; let i = index" class="audio-container">
+  <div class="clearfix mt-3">
+    <h4 class="d-inline-block">{{ 'validation.audio' | translate }} {{ i + 1 }}</h4>
+    <div class="pull-right audio-info">
+      <bsg-cornell-audio-info [audio]="recording.audio"></bsg-cornell-audio-info>
+    </div>
+  </div>
+  <ng-container *ngIf="i < audioLoadingLimit">
+    <laji-audio-viewer
+      [audio]="recording.audio"
+      [spectrogramConfig]="spectrogramConfig"
+      [spectrogramHeight]="80"
+      [rectangles]="rectangles[i]"
+      [showPregeneratedSpectrogram]="true"
+      [playOnlyOnSingleClick]="true"
+      [showControls]="false"
+      (spectrogramDblclick)="onAudioClick(recording.audio, $event)"
+      (audioLoading)="onAudioLoadingChange($event)"
+    ></laji-audio-viewer>
+    <h5 class="mt-0">{{ 'validation.candidates' | translate }}</h5>
+    <laji-small-audio-viewer
+      *ngFor="let candidate of recording.candidates"
+      [audio]="recording.audio"
+      [area]="candidate"
+      [spectrogramConfig]="spectrogramConfig"
+      (templateClick)="onCandidateClick(recording.audio, candidate)"
+    >
+    </laji-small-audio-viewer>
+  </ng-container>
+</div>

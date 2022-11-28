@@ -87,7 +87,6 @@ export class ImporterComponent implements OnInit, OnDestroy {
   publ = Document.PublicityRestrictionsEnum.publicityRestrictionsPublic;
   excludedFromCopy: string[] = [];
   userMappings: any;
-  ambiguousColumns = [];
   separator = MappingService.valueSplitter;
   hash;
   currentTitle: string;
@@ -230,23 +229,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
         this.initDataColumns();
 
-        // Check that data has no ambiguous columns
-        const cols = Object.keys(this.header).map(key => this.header[key]);
-        const hasCol = {};
-        const ambiguousCols = new Set();
-        let hasAmbiguousColumns = false;
-        cols.forEach(col => {
-          if (hasCol[col]) {
-            hasAmbiguousColumns = true;
-            ambiguousCols.add(col);
-          } else {
-            hasCol[col] = true;
-          }
-        });
-        if (hasAmbiguousColumns) {
-          this.spreadsheetFacade.goToStep(Step.ambiguousColumns);
-          this.ambiguousColumns = Array.from(ambiguousCols);
-        } else if (errors?.length > 0) {
+        if (errors?.length > 0) {
           this.spreadsheetFacade.goToStep(Step.sheetLoadError);
           this.sheetLoadErrorMsg = errors[0];
         } else {
@@ -269,7 +252,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
         const rowLabel = this.translateService.instant('line');
         const columns: ImportTableColumn[] = [
           {prop: '_status', label: 'excel.import.status', sortable: false, width: 65, cellTemplate: this.statusColTpl},
-          {prop: '_doc', label: label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
+          {prop: '_doc', label, sortable: false, width: 40, cellTemplate: this.valueColTpl},
           {prop: '_row', label: rowLabel, sortable: false, width: 40}
         ];
         Object.keys(this.header).map(address => {

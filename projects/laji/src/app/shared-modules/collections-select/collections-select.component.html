@@ -1,0 +1,23 @@
+<div class="lj-select" [ngClass]="{'lj-close': open, 'lj-open': !open}">
+  <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
+  <div *ngIf="open">
+    <laji-tree-select
+      [includedOptions]="includedOptions"
+      [excludedOptions]="excludedOptions"
+      [optionsTree$]="collectionsTree$"
+      [options$]="collections$"
+      [modalButtonLabel]="modalButtonLabel"
+      [modalTitle]="modalTitle"
+      [browseTitle]="browseTitle"
+      [selectedTitle]="selectedTitle"
+      [includedTitle]="includedTitle"
+      [excludedTitle]="excludedTitle"
+      [okButtonLabel]="okButtonLabel"
+      [clearButtonLabel]="clearButtonLabel"
+      [includeCount]="true"
+      [includeLink]="true"
+      (selectedOptionsChange)="selectedOptionsChange($event)"
+    >
+    </laji-tree-select>
+  </div>
+</div>

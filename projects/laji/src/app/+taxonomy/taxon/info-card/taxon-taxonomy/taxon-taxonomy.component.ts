@@ -89,6 +89,7 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
         }
       }
     }
+    return undefined;
   }
 
   private getChildren() {
@@ -113,8 +114,8 @@ export class TaxonTaxonomyComponent implements OnChanges, OnDestroy {
   }
 
   taxonHasSynonymKey(taxon) {
-    for (let i = 0; i < this.synonymTypes.length; i++) {
-      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+    for (const synonymType of this.synonymTypes) {
+      if (taxon.hasOwnProperty(synonymType)) {
         return true;
       }
     }

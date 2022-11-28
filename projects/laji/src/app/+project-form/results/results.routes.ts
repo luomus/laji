@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ResultsComponent } from './results.component';
 
 export const routes: Routes = [
-  {path: '', component: ResultsComponent, data: {noScrollToTop: true}}
+  {path: '', pathMatch: 'prefix', component: ResultsComponent, data: {noScrollToTop: true}}
 ];
 
 export const routing: ModuleWithProviders<RouterModule> = RouterModule.forChild(routes);

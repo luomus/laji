@@ -31,6 +31,7 @@ import { Router } from '@angular/router';
 import { Global } from '../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer/document-viewer.facade';
 import { LatestDocumentsFacade } from '../latest-documents/latest-documents.facade';
+import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
 
 interface DocumentQuery {
   year?: string;
@@ -74,6 +75,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   private documents: RowDocument[];
   loading = true;
   reloadSubscription$: Subscription;
+  subscriptionDeleteOwnDocument: Subscription;
 
   @LocalStorage('own-submissions-year', '') year: string;
   yearInfo$: Observable<any[]>;
@@ -98,8 +100,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
 
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
   constructor(
@@ -117,7 +118,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     private localizeRouterService: LocalizeRouterService,
     private router: Router,
     private documentViewerFacade: DocumentViewerFacade,
-    private latestFacade: LatestDocumentsFacade
+    private latestFacade: LatestDocumentsFacade,
+    private deleteOwnDocument: DeleteOwnDocumentService,
   ) {
     this.selectedMap.taxon += ',' + Global.documentCountUnitProperties.map(prop => 'gatherings.units.' + prop).join(',');
     if (!this.year) {
@@ -128,11 +130,22 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit() {
     this.reloadSubscription$ = this.reload$?.subscribe(() => {
       this.initDocuments(this.onlyTemplates);
+      this.cd.markForCheck();
+    });
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.documents = this.documents.filter(doc => doc.id !== id);
+        this.documentsLoaded.emit(this.documents);
+        this.cd.markForCheck();
+        this.latestFacade.update();
+      }
     });
   }
 
   ngOnDestroy() {
     this.reloadSubscription$?.unsubscribe();
+    this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -158,15 +171,14 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     }
     this.loading = true;
     this.documentApi.findById(event.documentID, this.userService.getToken()).pipe(
-      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document: document}))
+      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
     ).subscribe(
       () => {
         this.translate.get('template.success')
           .subscribe((value) => this.toastService.showSuccess(value));
         this.templateForm = {
           name: '',
-          description: '',
-          type: 'gathering'
+          description: ''
         };
         this.loading = false;
         this.cd.markForCheck();
@@ -323,11 +335,13 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     if (this.namedPlace) {
       _query.namedPlace = this.namedPlace;
     }
+    if (query.year) {
+      _query.observationYear = String(query.year);
+    }
     return this.documentApi.findAll(
       this.userService.getToken(),
       String(page),
       String(10000),
-      query.year ? String(query.year) : undefined,
       _query
     ).pipe(
       switchMap(result => {
@@ -359,12 +373,11 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       switchMap((form) => {
         const gatheringInfo = DocumentInfoService.getGatheringInfo(document, form);
         return ObservableForkJoin(
-          this.getLocality(gatheringInfo, document),
           this.getObservers(document.gatheringEvent && document.gatheringEvent.leg),
           this.getNamedPlaceName(document.namedPlaceID),
           this.getTaxon(gatheringInfo.taxonID, gatheringInfo)
         ).pipe(
-          map<any, RowDocument>(([locality, observers, npName, taxon]) => {
+          map<any, RowDocument>(([observers, npName, taxon]) => {
             const dateObservedEnd = gatheringInfo.dateEnd ? moment(gatheringInfo.dateEnd).format('DD.MM.YYYY') : '';
             let dateObserved = gatheringInfo.dateBegin ? moment(gatheringInfo.dateBegin).format('DD.MM.YYYY') : '';
             if (dateObservedEnd && dateObservedEnd !== dateObserved) {
@@ -376,11 +389,11 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               templateDescription: document.templateDescription,
               publicity: document.publicityRestrictions as any,
               dateEdited: document.dateEdited ? moment(document.dateEdited).format('DD.MM.YYYY HH:mm') : '',
-              dateObserved: dateObserved,
+              dateObserved,
               dateCreated: dateObserved,
               namedPlaceName: npName,
-              locality: locality,
-              gatheringsCount: document.gatherings.length,
+              locality: this.getLocality(gatheringInfo),
+              gatheringsCount: document.gatherings?.length || 0,
               unitCount: gatheringInfo.unitList.length,
               observer: observers,
               taxon,
@@ -389,7 +402,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               id: document.id,
               locked: !!document.locked,
               index: idx,
-              formViewerType: form.viewerType,
               _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
             } as RowDocument;
           })
@@ -398,8 +410,8 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private getLocality(gatheringInfo: any, document): Observable<string> {
-    return getLocality$(this.translate, this.labelService, gatheringInfo, document);
+  private getLocality(gatheringInfo: any): string {
+    return DocumentInfoService.getLocality(gatheringInfo) || this.translate.instant('haseka.users.latest.localityMissing');
   }
 
   private getObservers(userArray: string[] = []): Observable<string> {
@@ -411,7 +423,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private getForm(formId: string): Observable<any> {
-    return this.formService.getForm(formId, this.translate.currentLang).pipe(
+    return this.formService.getFormInListFormat(formId).pipe(
       map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);
@@ -448,34 +460,4 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       })
     ).subscribe();
   }
-}
-
-export function getLocality$(translate: TranslateService,
-                             labelService: TriplestoreLabelService,
-                             gatheringInfo: any,
-                             document: any): Observable<string> {
-  let locality$ = ObservableOf(gatheringInfo);
-  const npID = gatheringInfo.namedPlaceID || document.namedPlaceID;
-
-  if (gatheringInfo.locality && gatheringInfo.municipality) {
-    locality$ = ObservableOf({...gatheringInfo, locality: gatheringInfo.municipality + ', ' + gatheringInfo.locality});
-  }
-
-  if (!gatheringInfo.locality && npID) {
-    locality$ = labelService.get(npID, 'multi').pipe(
-      map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-  }
-  const {gatherings = []} = document;
-  if (!gatheringInfo.locality) {
-    if (document.npID) {
-      locality$ = labelService.get(npID, 'multi').pipe(
-        map(namedPlace => ({...gatheringInfo, locality: namedPlace})));
-    } else if (gatherings[0] && gatherings[0].municipality) {
-      locality$ = ObservableOf({...gatheringInfo, municipality: gatherings[0].municipality});
-    }
-  }
-
-  return locality$.pipe(
-    switchMap((gathering) => translate.get('haseka.users.latest.localityMissing').pipe(
-      map(missing => gathering.locality || gathering.municipality || missing))));
 }

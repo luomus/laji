@@ -1,0 +1,31 @@
+<div>
+  <ng-container *ngIf="!loading; else loadingSpinner">
+    <div>
+      <label>
+        <laji-checkbox [value]="showEmpty" (valueChange)="toggleShowEmpty()"></laji-checkbox>
+        {{ 'theme.dataset-metadata.showEmpty' | translate }} 
+      </label>
+    </div>
+    <div>
+      <label>
+        {{ 'theme.collection-metadata.collectionsCount' | translate }}
+        {{ collectionsCount }}
+      </label>
+    </div>
+    <laji-tree-selector
+      [selectedOptions]="selectedOption"
+      [optionsTree]="optionsTree"
+      [includeCheckbox]="false"
+      [multiselect]="false"
+      [includeCount]="true"
+      [includeQualityIcon]="true"
+      [openOnSelect]="true"
+      (emitSelect)="changeSelected($event)"
+    >
+    </laji-tree-selector>
+  </ng-container>
+  <ng-template #loadingSpinner>
+    <laji-spinner [overlay]="true">
+    </laji-spinner>
+  </ng-template>
+</div>

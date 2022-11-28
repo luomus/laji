@@ -14,6 +14,7 @@
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
             <span *lajiForTypes="['dev', 'prod', 'beta']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
+            <span *lajiForTypes="['kerttuGlobal']">BIRD SOUNDS GLOBAL</span>
           </a>
           <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'beta']">
             <laji-omni-search
@@ -39,6 +40,14 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
+            <ng-container *lajiForTypes="['kerttuGlobal']">
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/identification'] | localize">{{ 'identification.title' | translate }}</a>
+              </li>
+            </ng-container>
             <li class="d-none xs:d-block" [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
@@ -48,7 +57,7 @@
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
               </a>
               <div *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
-                <laji-taxon-dropdown [visible]="taxonMenu.isOpen" (close)="onCloseTaxonDropdown()"></laji-taxon-dropdown>
+                <laji-taxon-dropdown [visible]="taxonMenu.isOpen" (dropdownClose)="onCloseTaxonDropdown()"></laji-taxon-dropdown>
               </div>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
@@ -76,7 +85,7 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
-              <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
+              <ng-container *lajiForTypes="['dev', 'prod', 'beta', 'kerttuGlobal']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
@@ -90,11 +99,13 @@
                     <li role="menuitem">
                       <a [routerLink]="['/user/logout'] | localize" class="navbar-link link">{{ 'navigation.user.logout' | translate }}</a>
                     </li>
-                    <ng-container *ngIf="(notificationsTotal$ | async) > 0">
-                      <li role="separator" class="divider"></li>
-                      <li>
-                        <laji-notifications (close)="onClose()"></laji-notifications>
-                      </li>
+                    <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
+                      <ng-container *ngIf="(notificationsTotal$ | async) > 0">
+                        <li role="separator" class="divider"></li>
+                        <li>
+                          <laji-notifications (notificationsClose)="onClose()"></laji-notifications>
+                        </li>
+                      </ng-container>
                     </ng-container>
                   </ul>
                 </li>

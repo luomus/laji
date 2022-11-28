@@ -18,6 +18,6 @@ export interface TreeNodeState {
 
 export interface TreeSkipParameter {
   key: string;
-  values: string[];
+  values: string[] | boolean[];
   isWhiteList?: boolean;
 }

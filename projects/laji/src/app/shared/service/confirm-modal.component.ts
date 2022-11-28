@@ -15,28 +15,28 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
              (keyup.enter)="onConfirm()" />
     </div>
     <div class="modal-footer">
-      <button type="button" *ngIf="showCancel"
-              class="btn btn-secondary laji-dialog-cancel"
-              (click)="onCancel()">{{ cancelLabel | translate }}</button>
       <button type="button" #confirm
               class="btn btn-primary laji-dialog-confirm"
               (click)="onConfirm()">{{ confirmLabel | translate }}</button>
+      <button type="button" *ngIf="showCancel"
+              class="btn btn-default laji-dialog-cancel"
+              (click)="onCancel()">{{ cancelLabel | translate }}</button>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmModalComponent implements OnInit, AfterViewInit {
 
-  message: string;
+  message!: string;
   confirmLabel = 'OK';
   cancelLabel = 'cancel';
   prompt = false;
   promptValue = '';
   showCancel = true;
 
-  value: boolean | string | null;
+  value!: boolean | string | null;
 
-  @ViewChild('confirm') confirmElem: ElementRef;
+  @ViewChild('confirm') confirmElem!: ElementRef;
 
   constructor(private modalRef: BsModalRef) { }
 
@@ -57,7 +57,7 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
     this.modalRef.hide();
   }
 
-  onPromptChange(value) {
+  onPromptChange(value: string) {
     this.promptValue = value;
   }
 }

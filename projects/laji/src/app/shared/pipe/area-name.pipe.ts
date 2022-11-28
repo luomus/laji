@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   pure: false
 })
 export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
-  private type;
+  private type!: 'name' | 'provinceCode';
 
   constructor(protected translate: TranslateService,
               protected _ref: ChangeDetectorRef,
@@ -29,6 +29,6 @@ export class AreaNamePipe extends AbstractLabelPipe implements PipeTransform {
   }
 
   protected _parseValue(res: string): string {
-    return res || this.key;
+    return (res || this.key) ?? '';
   }
 }

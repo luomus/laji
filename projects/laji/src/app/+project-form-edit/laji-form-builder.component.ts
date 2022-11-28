@@ -1,6 +1,7 @@
 import LajiFormBuilder from 'laji-form-builder';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
-import lajiFormBuilderBs3Theme from 'laji-form-builder/lib/themes/bs3';
+import lajiFormBuilderBs3Theme from 'laji-form-builder/lib/client/themes/bs3';
+import FormBuilderApiClient from 'laji-form-builder/lib/api-client';
 import { FormApiClient } from '../shared/api/FormApiClient';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../shared/service/user.service';
@@ -12,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'laji-form-builder',
@@ -55,7 +57,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   private mount() {
     this.apiClient.lang = this.translate.currentLang;
-    this.apiClient.personToken = this.userService.getToken();
     this._mount(false);
   }
 
@@ -89,6 +90,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   onChange(form: SchemaForm) {
     this.ngZone.run(() => {
       const id = form.id ? form.id : 'tmp';
+      console.log('onchange', id, this.id);
       if (id !== this.id) {
         of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
           this.projectFormService.updateLocalForm({...form, id});

@@ -17,29 +17,29 @@ export class UniquePipe implements PipeTransform {
       return value;
     }
 
-    const addedTags = [];
-    const removedTags = [];
-    let active = [];
+    const addedTags: any[] = [];
+    const removedTags: any[] = [];
+    let active: any[] = [];
 
-    for (let i = 0; i < args.length; i++) {
-      if (args[i].addedTags) {
-        for ( let j = 0; j < args[i].addedTags.length; j++) {
-          if (!args[i].deleted) {
-            addedTags.push(IdService.getId(args[i].addedTags[j]));
+    for (const arg of args) {
+      if (arg.addedTags) {
+        for (const tag of arg.addedTags) {
+          if (!arg.deleted) {
+            addedTags.push(IdService.getId(tag));
           }
         }
       }
 
-      if (args[i].removedTags) {
-        for ( let j = 0; j < args[i].removedTags.length; j++) {
-          if (!args[i].deleted) {
-          removedTags.push(IdService.getId(args[i].removedTags[j]));
+      if (arg.removedTags) {
+        for (const tag of arg.removedTags) {
+          if (!arg.deleted) {
+            removedTags.push(IdService.getId(tag));
           }
         }
       }
     }
 
-    active = this.arr_diff(this.mergeUniqueValues(addedTags), this.mergeUniqueValues(removedTags));
+    active = this.arrDiff(this.mergeUniqueValues(addedTags), this.mergeUniqueValues(removedTags));
 
     if (value) {
       value = value.filter(
@@ -50,8 +50,8 @@ export class UniquePipe implements PipeTransform {
     return value;
   }
 
-  mergeUniqueValues(...arrays) {
-    let jointArray = [];
+  mergeUniqueValues(...arrays: any[]) {
+    let jointArray: any[] = [];
 
     arrays.forEach(array => {
         jointArray = [...jointArray, ...array];
@@ -60,18 +60,18 @@ export class UniquePipe implements PipeTransform {
   }
 
 
-  arr_diff(a1, a2) {
+  arrDiff(a1: any[], a2: any[]) {
     const a = [], diff = [];
 
-    for (let i = 0; i < a1.length; i++) {
-        a[a1[i]] = true;
+    for (const a1Item of a1) {
+        a[a1Item] = true;
     }
 
-    for (let i = 0; i < a2.length; i++) {
-        if (a[a2[i]]) {
-            delete a[a2[i]];
+    for (const a2Item of a2) {
+        if (a[a2Item]) {
+            delete a[a2Item];
         } else {
-            a[a2[i]] = true;
+            a[a2Item] = true;
         }
     }
 

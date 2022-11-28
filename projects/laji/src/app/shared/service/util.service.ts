@@ -1,3 +1,4 @@
+import { NavigationEnd, Event } from '@angular/router';
 import * as merge from 'deepmerge';
 import { Document } from '../model/Document';
 
@@ -6,7 +7,7 @@ export class Util {
    * Clones the object using JSON stringify
    * @returns any
    */
-  public static clone(object) {
+  public static clone(object: any) {
     return JSON.parse(JSON.stringify(object));
   }
 
@@ -14,7 +15,7 @@ export class Util {
    * Checks the equality of arrays
    * @returns boolean
    */
-  public static equalsArray(a1, a2) {
+  public static equalsArray(a1?: any[], a2?: any[]) {
     return a1 && a2 && a1.length === a2.length && a1.every((value) => a2.includes(value));
   }
 
@@ -53,22 +54,22 @@ export class Util {
    * @param obj object to remove keys from
    * @param keys array of keys that should be removed
    */
-  public static removeFromObject(obj: object, keys?: string[]) {
+  public static removeFromObject<T extends {[prop: string]: any}>(obj: T, keys?: string[]): Partial<T> {
     if (typeof obj !== 'object') {
       return obj;
     }
-    return Object.keys(obj).reduce((cumulative, current) => {
-      if (typeof obj[current] !== 'undefined' && (!keys || keys.indexOf(current) === -1)) {
+    return Object.keys(obj).reduce<Partial<T>>((cumulative, current: keyof T) => {
+      if (typeof obj[current] !== 'undefined' && (!keys || keys.indexOf(current as string) === -1)) {
         cumulative[current] = obj[current];
       }
       return cumulative;
-    }, {});
+    }, {} as Partial<T>);
   }
 
   /**
    * Add leading zero so that the length of return string will be 2
    */
-  static addLeadingZero(val: string | number): string {
+  public static addLeadingZero(val: string | number): string {
     val = '' + val;
     if (val.length === 1) {
       return '0' + val;
@@ -106,9 +107,9 @@ export class Util {
     }, object);
   }
 
-  public static updateWithJSONPointer(object: any, jsonPointer, value): any {
+  public static updateWithJSONPointer(object: any, jsonPointer: string, value: any): any {
     const splits = jsonPointer.split('/');
-    const last = splits.pop();
+    const last = splits.pop() as string;
 
     const lastContainerPointer = splits.join('/');
     const lastContainer = this.parseJSONPointer(object, lastContainerPointer, true);
@@ -118,7 +119,7 @@ export class Util {
     return object;
   }
 
-  public static arrayCombineMerge(target, source, options) {
+  public static arrayCombineMerge(target: any[], source: any[], options: any) {
     const destination = target.slice();
 
     source.forEach(function(e, i) {
@@ -135,6 +136,9 @@ export class Util {
     return destination;
   }
 
+  public static eventIsNavigationEnd(event: Event): event is NavigationEnd {
+    return event instanceof NavigationEnd;
+  }
 
   public static isLocalNewestDocument(local: Document, remote: Document): boolean {
     if (remote && remote.dateEdited) {
@@ -146,13 +150,24 @@ export class Util {
     return true;
   }
 
-  public static hasOwnProperty<X extends {}, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
+  public static hasOwnProperty<X extends Record<string, unknown>, Y extends PropertyKey>(obj: X, prop: Y): obj is X & Record<Y, unknown> {
     return obj.hasOwnProperty(prop);
   }
 
-  private static getDateFromString(dateString) {
+  public static removeUndefinedFromObject = <T extends Record<string, unknown>>(obj: T): T => (Object.keys(obj) as (keyof T)[]).reduce((cumulative, current) => {
+      if (typeof obj[current] !== 'undefined') {
+        cumulative[current] = obj[current];
+      }
+      return cumulative;
+    }, {} as T);
+
+  public static isObject(any: any): any is Record<string, unknown> {
+    return typeof any === 'object' && any !== null && !Array.isArray(any);
+  }
+
+  private static getDateFromString(dateString: string) {
     const reggie = /(\d{4})-(\d{2})-(\d{2})[T\s](\d{2}):(\d{2}):(\d{2})/;
-    const dateArray = reggie.exec(dateString);
+    const dateArray = reggie.exec(dateString) || [];
     return new Date(
       (+dateArray[1]),
       (+dateArray[2]) - 1, // Careful, month starts at 0!
@@ -163,11 +178,11 @@ export class Util {
     );
   }
 
-  private static mergeClone(value, options) {
+  private static mergeClone(value: any, options: any) {
     return merge(Util.mergeEmptyTarget(value), value, options);
   }
 
-  private static mergeEmptyTarget(value) {
+  private static mergeEmptyTarget(value: any) {
     return Array.isArray(value) ? [] : {};
   }
 }

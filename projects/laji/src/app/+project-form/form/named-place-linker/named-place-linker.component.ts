@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
 import { Form } from '../../../shared/model/Form';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.document$ = this.documentApi.findById(this.documentID, this.userService.getToken());
+    this.document$ = this.documentService.findById(this.documentID);
 
     const form$ = this.document$.pipe(switchMap(document => this.formService.getForm(document.formID)));
     const rights$ = form$.pipe(switchMap(form => this.formPermissionService.getRights(form)));
@@ -61,9 +61,9 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
       map(([document, rights, person]) => this.documentService.getReadOnly(document, rights, person)),
       map(readonly => readonly === Readonly.true || readonly === Readonly.noEdit)
     );
-    const isLinked$ = combineLatest(this.document$, form$).pipe(map(([document, form]) =>  !!document?.namedPlaceID));
+    const isLinked$ = this.document$.pipe(map(document => !!document?.namedPlaceID));
 
-    this.vm$ = combineLatest(this.document$, form$, documentReadOnly$, isLinked$).pipe(
+    this.vm$ = combineLatest([this.document$, form$, documentReadOnly$, isLinked$]).pipe(
       map(([document, form, isReadonly, isLinked]) => ({document, form, isLinkable: !isReadonly, isLinked}))
     );
   }
@@ -91,28 +91,26 @@ export class NamedPlaceLinkerComponent implements OnInit, OnDestroy {
 
   use(id: string) {
     this.loading = true;
-    this.subscription = this.translate.get('np.linker.confirm').pipe(
+    this.subscription = this.translate.get(['np.linker.confirm', 'np.linker.doLink']).pipe(
       take(1),
-      switchMap(txt => this.dialogService.confirm(txt)),
+      switchMap(translations => this.dialogService.confirm(translations['np.linker.confirm'], translations['np.linker.doLink'])),
       switchMap(confirmed => {
         if (!confirmed) {
           this.loading = false;
           return EMPTY;
         }
-        return this.document$.pipe(switchMap((doc) => {
-          return this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken());
-        }));
+        return this.document$.pipe(switchMap((doc) => this.documentApi.update(doc.id, {...doc, namedPlaceID: id}, this.userService.getToken())));
       }),
       switchMap(document => this.formService.getForm(document.formID).pipe(map(form => ({form, document})))),
       catchError(() => {
         this.translate.get('np.linker.fail').pipe(take(1)).subscribe(msg => this.toastsService.showError(msg));
         this.loading = false;
-        return null;
+        return of(null);
       })
-    ).subscribe((res: null | {document: Document, form: Form.SchemaForm}) => {
+    ).subscribe((res: null | {document: Document; form: Form.SchemaForm}) => {
       if (!res) {
         this.loading = false;
-        return EMPTY;
+        return;
       }
       this._linked = true;
       this.loading = false;

@@ -42,4 +42,17 @@ export class LabelDesignerHelper {
       }
     });
   }
+
+  static fieldsAreSame(fields1: ILabelField[], fields2: ILabelField[]): boolean {
+    if (fields1.length !== fields2.length) {
+      return false;
+    }
+
+    const keys = fields2.reduce((_keys, field) => {
+      _keys.add(field.field);
+      return _keys;
+    }, new Set<string>());
+
+    return fields1.every(field => keys.has(field.field));
+  }
 }

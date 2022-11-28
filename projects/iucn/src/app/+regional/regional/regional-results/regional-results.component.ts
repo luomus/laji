@@ -19,7 +19,7 @@ export type RedListRegionalStatusData = {
 };
 
 @Component({
-  selector: 'laji-regional-results',
+  selector: 'iucn-regional-results',
   templateUrl: './regional-results.component.html',
   styleUrls: ['./regional-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -107,7 +107,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
     );
   }
 
-  download(event: {type: string, fields: ISelectFields[]}) {
+  download(event: {type: string; fields: ISelectFields[]}) {
     this.downloadLoading = true;
 
     this.getAllSpecies().pipe(
@@ -218,7 +218,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
       for (const area of areas) {
         const key = area.id;
         areaFields.push({
-          label: area.shortLabel, key: key
+          label: area.shortLabel, key
         });
       }
 
@@ -226,7 +226,7 @@ export class RegionalResultsComponent implements OnChanges, OnDestroy {
         const key = 'occurrence_' + area.id;
         occurrenceFields.push({
           label: this.translate.instant('iucn.results.column.occurrence') + ' ' + area.shortLabel,
-          key: key
+          key
         });
       }
 

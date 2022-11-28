@@ -38,9 +38,8 @@ export namespace Form {
   }
 
   export interface IEnum {
-    enum: string[];
-    enumNames: string[];
-  }
+    oneOf: {const: string; title: string}[];
+  };
 
   export interface IAnnotationMap {
     [targetID: string]: Annotation[];
@@ -101,9 +100,11 @@ export namespace Form {
     hideDraftButton?: boolean;
     printType?: PrintType;
     resultServiceType?: ResultServiceType;
-    footerDescription?: string;
-    footerLogos?: {
-      [imageURL: string]: string;
+    footer?: {
+      footerDescription?: string;
+      footerLogos?: {
+        [imageURL: string]: string;
+      };
     };
     formPermissionDescription?: string;
     formOwnSubmissionsLabel?: string;
@@ -138,7 +139,7 @@ export namespace Form {
       headerFields?: string[];
       documentListUseLocalDocumentViewer?: string;
       documentViewerGatheringGeometryJSONPath?: string | string[];
-      documentViewerForcedFields?: string[]
+      documentViewerForcedFields?: string[];
       listColumns?: string[];
       prepopulatedDocumentFields?: any;
       lastCensusLabel?: string;

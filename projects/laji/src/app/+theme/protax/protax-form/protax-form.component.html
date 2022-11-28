@@ -19,6 +19,19 @@
       id="threshold"
     >
   </div>
+
+  <div class="form-group">
+    <label for="minOverlap">{{ 'theme.protax.minimumOverlap' | translate }}</label>
+    <input
+      [(ngModel)]="minimumOverlap"
+      class="form-control input-sm"
+      type="number"
+      min="1"
+      max="500"
+      step="1"
+      id="minOverlap"
+    >
+  </div>
 </div>
 
 <div class="form-group">

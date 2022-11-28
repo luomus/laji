@@ -27,9 +27,10 @@ import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
 import { Logger } from '../../../shared/logger/logger.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@swimlane/ngx-datatable';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 export interface RowDocument {
   creator: string;
@@ -60,7 +61,6 @@ export interface DownloadEvent {
 export interface TemplateEvent {
   name: string;
   description: string;
-  type: 'gathering'|'unit';
   documentID: string;
 }
 
@@ -110,8 +110,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @Input() labels: string[] = [];
   @Input() templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
   @Output() documentClicked = new EventEmitter<string>();
   @Output() download = new EventEmitter<DownloadEvent>();
@@ -131,12 +130,12 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'templateName', mode: 'small'},
     {prop: 'templateDescription', mode: 'small'},
     {prop: 'dateEdited', mode: 'small'},
-    {prop: 'dateObserved', mode: 'large'},
+    {prop: 'dateObserved', mode: 'small'},
     {prop: 'namedPlaceName', mode: 'large'},
     {prop: 'locality', mode: 'medium'},
     {prop: 'taxon', mode: 'medium'},
     {prop: 'gatheringsCount', mode: 'large'},
-    {prop: 'unitCount', mode: 'medium'},
+    {prop: 'unitCount', mode: 'large'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
     {prop: 'id', mode: 'large'}
@@ -153,6 +152,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   usersId: string;
   usersIdSub: Subscription;
+
+  subscriptionDeleteOwnDocument: Subscription;
 
   downloadedDocumentId: string;
   fileType = 'csv';
@@ -182,7 +183,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     private documentService: DocumentService,
     private toastService: ToastsService,
     private logger: Logger,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private deleteOwnDocument: DeleteOwnDocumentService
   ) {
     this.labelFilter$ = this.userService.getUserSetting<LabelFilter>(this.labelSettingsKey).pipe(
       map(value => value || {})
@@ -224,6 +226,14 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.usersIdSub = this.userService.user$.pipe(
       map(user => user.id)
     ).subscribe(id => this.usersId = id);
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.allRows = this.allRows.filter(row => row.id !== id);
+        this.updateFilteredRows(false);
+        this.cd.markForCheck();
+      }
+    });
   }
 
   ngAfterViewChecked() {
@@ -239,6 +249,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     if (this.usersIdSub) {
       this.usersIdSub.unsubscribe();
     }
+
+    this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   goToStart(goToStart = true) {
@@ -267,8 +279,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     const columns = this.useColumns;
 
     this.visibleRows = this.allRows.reduce((cumulative, row, idx) => {
-      for (let i = 0; i < columns.length; i++) {
-        const rowValue = String(row[columns[i].prop]);
+      for (const col of columns) {
+        const rowValue = String(row[col.prop]);
         if (rowValue && (rowValue.toLowerCase().indexOf(val) !== -1 || !val)) {
           cumulative.push({...row, index: idx});
           break;
@@ -378,9 +390,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     } else if (prop === 'unitCount') {
       return (a, b) => b - a;
     }
-    return (a, b) => {
-      return ('' + a).localeCompare('' + b);
-    };
+    return (a, b) => ('' + a).localeCompare('' + b);
   }
 
   getDefaultSort() {

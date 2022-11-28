@@ -21,7 +21,7 @@ export interface RedListHabitatData {
 }
 
 @Component({
-  selector: 'laji-red-list-habitat',
+  selector: 'iucn-red-list-habitat',
   templateUrl: './red-list-habitat.component.html',
   styleUrls: ['./red-list-habitat.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

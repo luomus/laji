@@ -9,6 +9,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from '../../../shared/service/id.service';
 import { WarehouseValueMappingService } from '../../../shared/service/warehouse-value-mapping.service';
+import { AreaService } from '../../../shared/service/area.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,40 +17,41 @@ import { WarehouseValueMappingService } from '../../../shared/service/warehouse-
 export class DatatableUtil {
   constructor(
     private labelService: TriplestoreLabelService,
+    private areaService: AreaService,
     private publicationService: PublicationService,
     private userService: UserService,
     private translate: TranslateService,
     private warehouseValueMappingService: WarehouseValueMappingService
   ) { }
 
-  getVisibleValue(value, row, template): Observable<string> {
+  getVisibleValue(value, row, templateName: string): Observable<string> {
     if (value == null || (Array.isArray(value) && value.length === 0)) {
-      if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName']
-        .indexOf(template) === -1) {
+      if (['taxonHabitats', 'latestRedListEvaluationHabitats', 'redListStatus2010', 'redListStatus2015', 'taxonName', 'biogeographicalProvinceOccurrence']
+        .indexOf(templateName) === -1) {
         return ObservableOf('');
       }
     }
 
-    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(template) === -1 &&
-      !template.startsWith('latestRedListEvaluation.threatenedAtArea_') && !template.startsWith('latestRedListEvaluation.occurrences_')) {
+    if (Array.isArray(value) && ['informalTaxonGroup'].indexOf(templateName) === -1 &&
+      !templateName.startsWith('latestRedListEvaluation.threatenedAtArea_') && !templateName.startsWith('latestRedListEvaluation.occurrences_')) {
       return from(value).pipe(
-        concatMap(val => this.getVisibleValue(val, row, template)),
+        concatMap(val => this.getVisibleValue(val, row, templateName)),
         toArray(),
-        map(values => values.join(', '))
+        map(values => values.join('; '))
       );
     }
 
-    if (template.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
-      const area = template.split('_')[1];
+    if (templateName.startsWith('latestRedListEvaluation.threatenedAtArea_')) {
+      const area = templateName.split('_')[1];
       return ObservableOf(value.includes(area) ? 'RT' : '');
-    } else if (template.startsWith('latestRedListEvaluation.occurrences_')) {
-      const targetArea = template.split('_')[1];
+    } else if (templateName.startsWith('latestRedListEvaluation.occurrences_')) {
+      const targetArea = templateName.split('_')[1];
       const match = value.filter(val => val.area === targetArea);
       return match.length > 0 ? this.getLabels(match[0].status) : ObservableOf(value);
     }
 
     let observable;
-    switch (template) {
+    switch (templateName) {
       case 'warehouseLabel':
         observable = this.getWarehouseLabels(value);
         break;
@@ -85,7 +87,7 @@ export class DatatableUtil {
         break;
       case 'redListStatus2010':
       case 'redListStatus2015':
-        const year = template === 'redListStatus2010' ? 2010 : 2015;
+        const year = templateName === 'redListStatus2010' ? 2010 : 2015;
         (row.redListStatusesInFinland || []).forEach(status => {
           if (status.year === year) {
             observable = this.getLabels(status.status);
@@ -112,6 +114,9 @@ export class DatatableUtil {
       case 'informalTaxonGroup':
         observable = this.getLabels(value[value.length - 1]);
         break;
+      case 'biogeographicalProvinceOccurrence':
+        observable = this.getBiogeographicalProvinceOccurence(row.occurrences);
+        break;
       default:
         break;
     }
@@ -119,18 +124,27 @@ export class DatatableUtil {
     return observable || ObservableOf(value);
   }
 
+  private getBiogeographicalProvinceOccurence(occurrences): Observable<string> {
+    if (!occurrences) {
+      return ObservableOf('');
+    }
+
+    return this.getArray(occurrences, (occurrence) => ObservableForkJoin([
+      this.areaService.getProvinceCode(IdService.getId(occurrence.area), this.translate.currentLang),
+      this.labelService.get(IdService.getId(occurrence.status), this.translate.currentLang)
+    ]).pipe(
+      map(data => data[0]+ ': ' + data[1])
+    ), '; ');
+  }
+
   private getWarehouseLabels(values): Observable<string> {
-    return this.getArray(values, (value) => {
-      return this.warehouseValueMappingService.getSchemaKey(value).pipe(
+    return this.getArray(values, (value) => this.warehouseValueMappingService.getSchemaKey(value).pipe(
         concatMap(key => this.labelService.get(IdService.getId(key), this.translate.currentLang))
-      );
-    }, '; ');
+      ), '; ');
   }
 
   private getLabels(values): Observable<string> {
-    return this.getArray(values, (value) => {
-      return this.labelService.get(IdService.getId(value), this.translate.currentLang);
-    }, '; ');
+    return this.getArray(values, (value) => this.labelService.get(IdService.getId(value), this.translate.currentLang), '; ');
   }
 
   private getPublications(values): Observable<string> {
@@ -138,12 +152,10 @@ export class DatatableUtil {
       values = [values];
     }
     const labelObservables = [];
-    for (let i = 0; i < values.length; i++) {
+    for (const item of values) {
       labelObservables.push(
-        this.publicationService.getPublication(values[i], this.translate.currentLang).pipe(
-          map((res: Publication) => {
-            return res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : values[i];
-          }))
+        this.publicationService.getPublication(item, this.translate.currentLang).pipe(
+          map((res: Publication) => res && res['dc:bibliographicCitation'] ? res['dc:bibliographicCitation'] : item))
       );
     }
     return ObservableForkJoin(labelObservables).pipe(

@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as LajiMap from 'laji-map';
+import * as L from 'leaflet';
 
-
-export interface LajiMapOptions extends LajiMap.Options { // tslint:disable-line
-
-}
+export type LajiMapOptions = LajiMap.Options;
 
 export const LajiMapTileLayerName = {
   ...LajiMap.TileLayerName
+};
+
+export const LajiMapOverlayName = {
+  ...LajiMap.OverlayName
 };
 
 export const LajiMapLang = {
@@ -18,3 +21,7 @@ export type LajiMapLang = LajiMap.Lang;
 export type LajiMapLineTransectGeometry = LajiMap.LineTransectGeometry;
 
 export type LajiMapDataOptions = LajiMap.DataOptions;
+
+export type LajiMapTileLayersOptions = LajiMap.TileLayersOptions;
+
+export type LajiMapDrawEvent = LajiMap.LajiMapEvent;

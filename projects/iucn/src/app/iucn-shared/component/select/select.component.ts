@@ -1,4 +1,4 @@
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 
 export interface SelectOption {
@@ -7,7 +7,7 @@ export interface SelectOption {
 }
 
 @Component({
-  selector: 'select[laji-dropdown]',
+  selector: 'select[iucn-dropdown]',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss']
 })

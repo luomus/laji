@@ -1,15 +1,6 @@
-<div class="map-wrap" *ngIf="hasQuery">
-  <laji-observation-map
-          [settingsKey]="''"
-          [color]="color"
-          [showControls]="showControls"
-          [initWithWorldMap]="true"
-          [draw]="false"
-          [query]="query"></laji-observation-map>
-</div>
-<div class="map-wrap" *ngIf="!hasQuery">
-  <div class="info">
-    <a [routerLink]="instructions[translate.currentLang] | localize" [tooltip]="'haseka.instructions' | translate" placement="left">
+<div class="map-wrap" [ngClass]="{'page': printMode}">
+  <div class="info no-print">
+    <a [routerLink]="instructions[translate.currentLang] | localize" [tooltip]="'haseka.instructions' | translate" placement="left" target="_blank" rel="noopener noreferrer">
       <i class="glyphicon glyphicon-info-sign"></i>
     </a>
   </div>
@@ -19,4 +10,11 @@
     [options]="mapOptions"
     [settingsKey]="''"
     (create)="onCreate()"></laji-map>
+
+  <div #printControlWell [ngStyle]="{'display': 'none'}">
+    <div class="print-mode-controls" id="print-controls" #printControl>
+      <laji-pdf-button></laji-pdf-button>
+      <button type="button" class="btn btn-danger mt-2" (click)="togglePrintMode($event)">{{ 'map.front.print.stop' | translate }}</button>
+    <div>
+  </div>
 </div>

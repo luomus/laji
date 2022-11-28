@@ -1,0 +1,11 @@
+.form-group, ::ng-deep select {
+  max-width: 400px;
+}
+
+fieldset legend {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.form-group {
+  margin-bottom: 5px;
+}

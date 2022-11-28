@@ -4,6 +4,7 @@
       [@activeTab]="index === selectedIndex ? 'active' : 'inactive'"
       (click)="onSelect(index)"
       role="tab"
+      [class]="tab.headerClass"
       [tabindex]="index === selectedIndex ? -1 : 0" luKeyboardClickable>{{tab.heading}}</li>
 </ul>
 <div class="tab-content">

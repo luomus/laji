@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { IndividualConfig } from 'ngx-toastr/toastr/toastr-config';
 
 @Injectable({providedIn: 'root'})
@@ -31,7 +31,7 @@ export class ToastsService {
     this.toast('info', message, title, options);
   }
 
-  private toast(type, message, title?: string, options?: Partial<IndividualConfig>) {
+  private toast(type: 'success' | 'error' | 'warning' | 'info', message: string, title?: string, options?: Partial<IndividualConfig>) {
     if (!this.platformService.isBrowser) {
       return;
     }

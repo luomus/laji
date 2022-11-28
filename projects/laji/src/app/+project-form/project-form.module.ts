@@ -22,45 +22,47 @@ import { StatisticsModule } from './submissions/statistics/statistics.module';
 import { HasAdminPermission } from './guards/has-admin-permission';
 import { HasFormPermission } from './guards/has-form-permission';
 import { HasViewPermission } from './guards/has-view-permission';
-import { DocumentFormHeaderModule } from '../shared-modules/laji-form/document-form-header/document-form-header.module';
 import { DisabledComponent } from './disabled/disabled.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
+import { ProjectFormHeaderModule } from './header/project-form-header.module';
+import { ProjectFormService } from '../shared/service/project-form.service';
 
 @NgModule({
-    imports: [
-        routing,
-        CommonModule,
-        SharedModule,
-        LajiUiModule,
-        LatestDocumentsModule,
-        InfoPageModule,
-        FormPermissionModule,
-        LajiFormModule,
-        OwnSubmissionsModule,
-        SpreadsheetModule,
-        StatisticsModule,
-        DocumentFormHeaderModule,
-        BreadcrumbModule,
-        TechnicalNewsModule
-    ],
-    declarations: [
-        ProjectFormComponent,
-        AboutComponent,
-        DatasetAboutComponent,
-        InstructionsComponent,
-        SubmissionsComponent,
-        ImportComponent,
-        GenerateSpreadsheetComponent,
-        TemplatesComponent,
-        TermsComponent,
-        DisabledComponent,
-    ],
-    providers: [
-        HasAdminPermission,
-        HasFormPermission,
-        HasViewPermission
-    ]
+  imports: [
+    routing,
+    CommonModule,
+    SharedModule,
+    LajiUiModule,
+    LatestDocumentsModule,
+    InfoPageModule,
+    FormPermissionModule,
+    LajiFormModule,
+    OwnSubmissionsModule,
+    SpreadsheetModule,
+    StatisticsModule,
+    ProjectFormHeaderModule,
+    BreadcrumbModule,
+    TechnicalNewsModule
+  ],
+  declarations: [
+    ProjectFormComponent,
+    AboutComponent,
+    DatasetAboutComponent,
+    InstructionsComponent,
+    SubmissionsComponent,
+    ImportComponent,
+    GenerateSpreadsheetComponent,
+    TemplatesComponent,
+    TermsComponent,
+    DisabledComponent
+  ],
+  providers: [
+    ProjectFormService,
+    HasAdminPermission,
+    HasFormPermission,
+    HasViewPermission
+  ]
 })
 export class ProjectFormModule {
 }

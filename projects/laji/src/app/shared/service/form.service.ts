@@ -24,11 +24,11 @@ export class FormService {
 
   static readonly tmpNs = 'T';
 
-  @LocalStorage() private formDataStorage;
-  private currentLang: string;
-  private formCache: {[key: string]: Observable<Form.SchemaForm>} = {};
+  @LocalStorage() private formDataStorage: any;
+  private currentLang?: string;
+  private formCache: {[key: string]: Observable<Form.SchemaForm | null>} = {};
   private jsonFormCache: {[key: string]: Observable<Form.JsonForm>} = {};
-  private allForms: Observable<Form.List[]>;
+  private allForms?: Observable<Form.List[]>;
 
   protected basePath = environment.apiBase;
 
@@ -43,7 +43,7 @@ export class FormService {
     return id?.indexOf(FormService.tmpNs + ':') === 0;
   }
 
-  getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm> {
+  getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm | null> {
     if (!formId) {
       return ObservableOf(null);
     }
@@ -71,6 +71,10 @@ export class FormService {
     return this.jsonFormCache[formId];
   }
 
+  getFormInListFormat(formId: string): Observable<Form.List> {
+    return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId) as Form.List));
+  }
+
   getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {
     this.setLang(lang);
     if (!this.allForms) {
@@ -90,11 +94,11 @@ export class FormService {
    return this.getSpreadsheetForms().pipe(map(forms => forms.filter(form => !form.options?.excludeFromGlobalExcel)));
   }
 
-  getAddUrlPath(formId) {
+  getAddUrlPath(formId: string) {
     return `/project/${formId}/form`;
   }
 
-  getEditUrlPath(formId, documentId) {
+  getEditUrlPath(formId: string, documentId: string) {
     return `${this.getAddUrlPath(formId)}/${documentId}`;
   }
 

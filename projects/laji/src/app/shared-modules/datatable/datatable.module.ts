@@ -9,11 +9,12 @@ import { DataTableFooterComponent } from './data-table-footer/data-table-footer.
 import { DatatableTemplatesComponent } from './datatable-templates/datatable-templates.component';
 import { InfoModule } from '../info/info.module';
 import { DatatableHeaderComponent } from './datatable-header/datatable-header.component';
-import { DownloadModule } from '../download/download.module';
+import { DownloadModalModule } from '../download-modal/download-modal.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { DatatableOwnSubmissionsComponent } from './datatable-own-submissions/datatable-own-submissions.component';
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { IucnStatusPipe } from './pipes/iucn-status.pipe';
+import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
 
 @NgModule({
   imports: [
@@ -23,9 +24,10 @@ import { IucnStatusPipe } from './pipes/iucn-status.pipe';
     SpinnerModule,
     SharedModule,
     InfoModule,
-    DownloadModule,
+    DownloadModalModule,
     LajiUiModule,
-    OwnSubmissionsModule
+    OwnSubmissionsModule,
+    CopyToClipboardModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent, IucnStatusPipe],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent,

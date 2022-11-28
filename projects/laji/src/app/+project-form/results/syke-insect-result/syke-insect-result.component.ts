@@ -30,7 +30,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   mapQuery: WarehouseQueryInterface;
   resultQuery: WarehouseQueryInterface;
   taxon$: Observable<Taxonomy>;
-  Tabs = Tabs;
+  Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   tab$: Observable<keyof typeof Tabs>;
   year;
   currentMonth;
@@ -40,6 +40,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
   fromMonth;
   allTime = '';
   collectionId: string;
+  bumblebeeCollectionId = 'HR.3911';
 
   private subQuery: Subscription;
 
@@ -124,7 +125,7 @@ export class SykeInsectResultComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private parseDateTime(date): {year: string, month: string} {
+  private parseDateTime(date): {year: string; month: string} {
     if (date.length === '4') {
       return {year: date, month: ''};
     }

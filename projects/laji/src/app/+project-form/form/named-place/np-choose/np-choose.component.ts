@@ -13,7 +13,7 @@ import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { ExtendedNamedPlace } from '../model/extended-named-place';
 import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/tab-utils';
 import { Rights } from '../../../../shared/service/form-permission.service';
-import { PlatformService } from '../../../../shared/service/platform.service';
+import { PlatformService } from '../../../../root/platform.service';
 import { Form } from '../../../../shared/model/Form';
 import { formOptionToClassName } from '../../../../shared/directive/project-form-option.directive';
 
@@ -119,9 +119,7 @@ export class NpChooseComponent implements OnInit, OnChanges {
     if (!this._namedPlaces) {
       return null;
     }
-    return this._namedPlaces.findIndex((np) => {
-      return np.id === id;
-    });
+    return this._namedPlaces.findIndex((np) => np.id === id);
   }
 
   onActivePlaceChange(idx: number) {

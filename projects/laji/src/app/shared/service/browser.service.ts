@@ -1,6 +1,6 @@
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { DOCUMENT, Location } from '@angular/common';
 import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -29,10 +29,10 @@ export class BrowserService implements OnDestroy {
   lgScreen$ = this.state$.pipe(map((state) => state.lgScreen), distinctUntilChanged());
   visibility$ = this.state$.pipe(map((state) => state.visibility), distinctUntilChanged());
 
-  private resizingSub: Subscription;
-  private resizeSub: Subscription;
-  private visibilityChangeEvent: string;
-  private handlerForVisibilityChange: (doc: Document) => any;
+  private resizingSub?: Subscription;
+  private resizeSub?: Subscription;
+  private visibilityChangeEvent?: string;
+  private handlerForVisibilityChange?: EventListener;
   private resize = new Subject();
 
   constructor(
@@ -90,24 +90,31 @@ export class BrowserService implements OnDestroy {
       const [name, value] = param.split('=');
       q[name]  = value;
       return q;
-    }, {});
+    }, {} as Record<string, string>);
     return [path, queryObject];
   }
 
   private initVisibilityListener() {
-    let hidden, visibilityChange;
+    let hidden: keyof Document | undefined, visibilityChange: keyof DocumentEventMap | undefined;
     if (typeof this.document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
       hidden = 'hidden';
       visibilityChange = 'visibilitychange';
     } else if (typeof (this.document as any).msHidden !== 'undefined') {
-      hidden = 'msHidden';
-      visibilityChange = 'msvisibilitychange';
+      hidden = 'msHidden' as keyof Document;
+      visibilityChange = 'msvisibilitychange' as keyof DocumentEventMap;
     } else if (typeof (this.document as any).webkitHidden !== 'undefined') {
-      hidden = 'webkitHidden';
-      visibilityChange = 'webkitvisibilitychange';
+      hidden = 'webkitHidden' as keyof Document;
+      visibilityChange = 'webkitvisibilitychange' as keyof DocumentEventMap;
+    }
+
+    if (!visibilityChange || !hidden) {
+      return;
     }
 
     this.handlerForVisibilityChange = () => {
+      if (!hidden) {
+        return;
+      }
       this.updateState({..._state, visibility: !this.document[hidden]});
     };
     try {

@@ -1,23 +1,19 @@
-function error(type: string) {
-  throw new Error(`Element is not ${type}`);
-}
-
-function toElement<T>(elem, elemType: any, elemText: string): T {
+function toElement<T>(elem: any, elemType: any): T {
   if (elem instanceof elemType) {
     return elem;
   }
-  error(elemText);
+  throw new Error(`Element is not ${elemType}`);
 }
 
 export function toHtmlSelectElement(elem: unknown): HTMLSelectElement {
-  return toElement(elem, HTMLSelectElement, 'HTMLSelectElement');
+  return toElement(elem, HTMLSelectElement);
 }
 
 export function toHtmlInputElement(elem: unknown): HTMLInputElement {
-  return toElement(elem, HTMLInputElement, 'HTMLInputElement');
+  return toElement(elem, HTMLInputElement);
 }
 
 export function toHtmlSpanElement(elem: unknown): HTMLSpanElement {
-  return toElement(elem, HTMLSpanElement, 'HTMLSpanElement');
+  return toElement(elem, HTMLSpanElement);
 }
 

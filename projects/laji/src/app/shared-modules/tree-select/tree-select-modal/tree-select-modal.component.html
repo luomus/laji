@@ -1,0 +1,55 @@
+<div ng-template #treeModal>
+  <div class="modal-header">
+    <div class="modal-title pull-left">
+      <div class="vertical-align">
+        <h4>{{modalTitle}}</h4>
+        <laji-info class="vertical-align pull-left" [placement]="'bottom'">
+          <span [innerHtml]="'observation.info.collection.modal' | translate" lajiRouteTransformer></span>
+        </laji-info>
+      </div>
+    </div>
+    <button type="button" class="close" (click)="confirm()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="container-flex">
+      <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
+        <div class="row">
+          <div class="col-md-8">
+            <h5>{{browseTitle}}</h5>
+            <laji-tree-selector
+              [selectedOptions]="selectedOptions"
+              [optionsTree]="optionsTree"
+              [multiselect]="true"
+              [tristate]="true"
+              [includeCheckbox]="true"
+              [includeCount]="includeCount"
+              [includeLink]="includeLink"
+              (emitSelect)="changeSelected($event)" #treeSelector>
+            </laji-tree-selector>
+          </div>
+          <div class="col-md-4">
+            <h5>{{selectedTitle}}</h5>
+            <div class="scrollable-selection-list">
+              <laji-selected-tree-nodes
+                [selectedOptions]="selectedOptions"
+                [includedTitle]="includedTitle"
+                [excludedTitle]="excludedTitle"
+                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <laji-spinner [overlay]="true">
+        </laji-spinner>
+      </ng-template>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <lu-button role="secondary" (click)="clear()">{{clearButtonLabel}}</lu-button>
+    <lu-button role="primary" (click)="confirm()">{{okButtonLabel}}</lu-button>
+  </div>
+</div>
+
+
+

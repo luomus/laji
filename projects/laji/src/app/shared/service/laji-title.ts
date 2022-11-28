@@ -7,17 +7,17 @@ export class LajiTitle extends Title {
     super.setTitle(this.decodeHtmlEntity(newTitle));
   }
 
-  private decodeHtmlEntity(str) {
-    const translate_re = /&(nbsp|amp|quot|lt|gt|shy);/g;
-    const translate = {
-      'nbsp': ' ',
-      'amp' : '&',
-      'quot': '\'',
-      'lt'  : '<',
-      'gt'  : '>',
-      'shy' : ''
+  private decodeHtmlEntity(str: string) {
+    const translateRe = /&(nbsp|amp|quot|lt|gt|shy);/g;
+    const translate: Record<string, string> = {
+      nbsp: ' ',
+      amp : '&',
+      quot: '\'',
+      lt  : '<',
+      gt  : '>',
+      shy : ''
     };
-    return str.replace(translate_re, function(match, entity) {
+    return str.replace(translateRe, function(match, entity) {
       return translate[entity];
     }).replace(/&#(\d+);/gi, function(match, numStr) {
       return String.fromCharCode(parseInt(numStr, 10));

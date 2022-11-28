@@ -14,6 +14,20 @@
   .datatable-header .datatable-header-cell {
     background-color: $neutral-1;
   }
+
+  .datatable-body-row.red-row {
+    background-color: $danger-3;
+  }
+  :not(.cell-selection) .datatable-body-row.red-row:hover, :not(.cell-selection) .datatable-body-row.red-row:hover .datatable-row-group {
+    background-color: $danger-4;
+  }
+
+  .datatable-body-row.yellow-row {
+    background-color: $warning-3;
+  }
+  :not(.cell-selection) .datatable-body-row.yellow-row:hover, :not(.cell-selection) .datatable-body-row.yellow-row:hover .datatable-row-group {
+    background-color: $warning-4;
+  }
 }
 
 :host ::ng-deep .ngx-datatable.striped .datatable-row-odd {
@@ -43,4 +57,12 @@
 
 :host ::ng-deep .cell-centered-content > .datatable-body-cell-label {
   margin: 0 auto !important;
+}
+
+/* Fix conflict between bootstrap & material styles */
+:host ::ng-deep .datatable-checkbox input[type=checkbox]:before {
+  content: none;
+}
+:host ::ng-deep .datatable-checkbox input[type=checkbox]:after {
+  content: none;
 }

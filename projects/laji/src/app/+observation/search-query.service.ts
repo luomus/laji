@@ -13,7 +13,7 @@ export class SearchQueryService implements SearchQueryInterface {
   public query: WarehouseQueryInterface = {};
 
   private readonly separator = {
-    'teamMember': ';'
+    teamMember: ';'
   };
 
   // noinspection JSUnusedLocalSymbols
@@ -22,6 +22,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'target',
     'effectiveTag',
     'informalTaxonGroupId',
+    'informalTaxonGroupIdNot',
     'informalTaxonGroupIdIncludingReported',
     'administrativeStatusId',
     'redListStatusId',
@@ -79,8 +80,10 @@ export class SearchQueryService implements SearchQueryInterface {
     'aggregateBy',
     'selected',
     'orderBy',
-    'collectionAndRecordQuality',
-    'plantStatusCode'
+    'plantStatusCode',
+    'sourceOfCoordinates',
+    'atlasCode',
+    'atlasClass'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -115,7 +118,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'breedingSite',
     'useIdentificationAnnotations',
     'includeSubTaxa',
-    'annotated'
+    'annotated',
+    'onlyNonStateLands'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -145,8 +149,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'loadedSameOrBefore',
     'loadedSameOrAfter',
     'season',
-    'sourceOfCoordinates',
-    'formId'
+    'formId',
+    'taxonAdminFiltersOperator',
+    'collectionAndRecordQuality'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -167,8 +172,8 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public forEachType(opt: {
-    skip?: string[],
-    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void
+    skip?: string[];
+    cb: (type: 'array'|'boolean'|'numeric'|'string'|'obscure', key: string) => void;
   }) {
     const types: Array<'array'|'boolean'|'numeric'|'string'|'obscure'> = ['array', 'boolean', 'numeric', 'string', 'obscure'];
     types.forEach(type => {
@@ -207,17 +212,25 @@ export class SearchQueryService implements SearchQueryInterface {
       }
     }});
 
+    const detachCoordinatesIntersection = (query: string): [string, number | undefined] => {
+      const parts = query.split(':');
+      const last = parseFloat(parts[parts.length - 1]);
+      let coordinatesIntersection: number | undefined;
+      if (parts.length > 1 && !isNaN(last)) {
+        parts.pop();
+        coordinatesIntersection = Math.floor(last * 100);
+      }
+      return [parts.join(':'), coordinatesIntersection];
+    };
+
     if (result.coordinates) {
       result.coordinates = result.coordinates.map(coordinate => {
-        const parts = coordinate.split(':');
-        const last = parseFloat(parts[parts.length - 1]);
-        if (!isNaN(last)) {
-          parts.pop();
-          result._coordinatesIntersection = Math.floor(last * 100);
-        } else {
-          result._coordinatesIntersection = 100;
-        }
-        return parts.join(':');
+        const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(coordinate);
+        result._coordinatesIntersection = coordinatesIntersection
+          ?? (coordinate.match(/YKJ/)
+            ? 100
+            : 0);
+        return withoutCoordinatesIntersection;
       });
     }
     return result;
@@ -269,15 +282,26 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQuery(result, query: WarehouseQueryInterface) {
-    if (result.coordinates && typeof query._coordinatesIntersection !== 'undefined') {
-      result.coordinates += ':' + query._coordinatesIntersection / 100;
-    }
+    ['coordinates', 'polygonId'].forEach(key => {
+      if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
+        result[key] += ':' + query._coordinatesIntersection / 100;
+      }
+    });
 
     if (result['target'] && Array.isArray(result['target'])) {
       result['target'] = (result['target'] as string[]).map(target => target.replace(/http:\/\/tun\.fi\//g, ''));
     }
 
-    if (result.editorPersonToken && result.observerPersonToken && result.observerPersonToken === result.editorPersonToken) {
+    if (
+      (result.editorOrObserverPersonToken && (result.editorPersonToken || result.observerPersonToken))
+      || result.editorOrObserverIsNotPersonToken
+    ) {
+      delete result.editorOrObserverPersonToken;
+    } else if (
+      result.editorPersonToken
+      && result.observerPersonToken
+      && result.observerPersonToken === result.editorPersonToken
+    ) {
       result.editorOrObserverPersonToken = result.observerPersonToken;
       delete result.editorPersonToken;
       delete result.observerPersonToken;
@@ -286,7 +310,7 @@ export class SearchQueryService implements SearchQueryInterface {
     return result;
   }
 
-  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: object, skipParams: string[] = []): object {
+  public getURLSearchParams(dwQuery: WarehouseQueryInterface, queryParameters?: Record<string, unknown>, skipParams: string[] = []): Record<string, unknown> {
     if (!queryParameters) {
       queryParameters = {};
     }

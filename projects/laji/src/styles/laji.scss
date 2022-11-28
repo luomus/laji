@@ -240,59 +240,54 @@ treenode:last-child > .tree-node > .tree-children::after {
   background-size: 100% auto;
 }
 
-.active .informal-group-image {
-  -webkit-filter: brightness(0) invert(1);
-  filter: brightness(0) invert(1);
-}
-
 .informal-group-image.MVL\.1 {
-  background-image: url('/static/images/informalGroups/MVL.1.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.1.svg');
 }
 
 .informal-group-image.MVL\.2 {
-  background-image: url('/static/images/informalGroups/MVL.2.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.2.svg');
 }
 
 .informal-group-image.MVL\.343 {
-  background-image: url('/static/images/informalGroups/MVL.21.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.21.svg');
 }
 
 .informal-group-image.MVL\.22 {
-  background-image: url('/static/images/informalGroups/MVL.22.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.22.svg');
 }
 
 .informal-group-image.MVL\.26 {
-  background-image: url('/static/images/informalGroups/MVL.26.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.26.svg');
 }
 
 .informal-group-image.MVL\.27 {
-  background-image: url('/static/images/informalGroups/MVL.27.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.27.svg');
 }
 
 .informal-group-image.MVL\.37 {
-  background-image: url('/static/images/informalGroups/MVL.37.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.37.svg');
 }
 
 .informal-group-image.MVL\.39 {
-  background-image: url('/static/images/informalGroups/MVL.39.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.39.svg');
 }
 .informal-group-image.MVL\.40 {
-  background-image: url('/static/images/informalGroups/MVL.40.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.40.svg');
 }
 
 .informal-group-image.MVL\.41 {
-  background-image: url('/static/images/informalGroups/MVL.41.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.41.svg');
 }
 
 .informal-group-image.MVL\.232 {
-  background-image: url('/static/images/informalGroups/MVL.232.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.232.svg');
 }
 
 .informal-group-image.MVL\.233 {
-  background-image: url('/static/images/informalGroups/MVL.233.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.233.svg');
 }
 .informal-group-image.MVL\.28 {
-  background-image: url('/static/images/informalGroups/MVL.28.svg');
+  background-image: url('https://cdn.laji.fi/images/informalGroups/MVL.28.svg');
 }
 
 /** /informal taxon groups **/
@@ -628,6 +623,10 @@ body > .ui-select-bootstrap.open {
   background-image: url('/static/images/icons/crop.svg');
 }
 
+*[disabled] .lji-icon {
+  filter: invert(1) brightness(0.5);
+}
+
 .more-info {
   padding-bottom: 10px;
   padding-top: 15px;
@@ -946,7 +945,7 @@ body > .ui-select-bootstrap.open {
 
 .margin-top-25 {
   margin-top:25px;
-}¨
+}
 
 .block {
   display: block;
@@ -1205,6 +1204,11 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
   color: $primary-1;
 }
 
+typeahead-container .active .informal-group-image {
+  -webkit-filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
+}
+
 .alert-info {
   background-color: $primary-2;
   color: $primary-7;
@@ -1214,6 +1218,54 @@ typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .d
 
 .laji-page {
   @include base();
+
+  typeahead-container, .laji-map {
+    a:not(.btn, .lu-btn) {
+      color: initial;
+      text-decoration: initial;
+
+      &:visited {
+        color: initial;
+      }
+
+      &:hover {
+        color: initial;
+      }
+
+      &:active {
+        color: initial;
+      }
+
+      &:focus {
+        color: initial;
+      }
+    }
+  }
+
+  typeahead-container {
+    ul {
+      margin-block-start: initial;
+      margin-block-end: initial;
+      margin-inline-start: initial;
+      margin-inline-end: initial;
+      padding-inline-start: initial;
+
+    }
+
+    li {
+      margin-bottom: initial;
+    }
+
+    .dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
+      color: #f5fbff;
+    }
+  }
+
+  .laji-map {
+    .leaflet-control a {
+      color: #464646;
+    }
+  }
 }
 
   /* autocomplete */

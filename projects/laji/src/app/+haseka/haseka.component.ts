@@ -8,7 +8,7 @@ import { DocumentViewerFacade } from '../shared-modules/document-viewer/document
 import { getDescription, HeaderService } from '../shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
 
-/* tslint:disable:component-selector */
+/* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'haseka',
   templateUrl: './haseka.component.html',
@@ -18,6 +18,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
 
   public email: string;
   public isFront = false;
+  public showLatest = true;
   public publicity = Document.PublicityRestrictionsEnum;
 
   private subRoute: Subscription;
@@ -31,6 +32,8 @@ export class HasekaComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  lang = this.translate.currentLang;
+
   ngOnInit() {
     this.subRoute = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -38,6 +41,7 @@ export class HasekaComponent implements OnInit, OnDestroy {
       startWith(true)
     ).subscribe(() => {
       this.isFront = this.router.isActive('/vihko/home', true);
+      this.showLatest = !this.router.isActive('/vihko/tools/import', true);
     });
 
     this.headerService.setHeaders({
@@ -54,4 +58,5 @@ export class HasekaComponent implements OnInit, OnDestroy {
   showDocumentViewer(document: Document) {
     this.documentViewerFacade.showDocument({document, own: true});
   }
+
 }

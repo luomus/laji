@@ -2,11 +2,11 @@
   <span *ngIf="addonText" class="input-group-addon">{{ addonText }}</span>
   <input type="text"
          class="ng-datepicker-input form-control input-sm"
-         [value]="value"
-         (blur)="updateValue(dateInput.value)"
+         [value]="viewValue"
+         (blur)="onInputValueChange(dateInput.value)"
          #dateInput>
-  <span *ngIf="viewDate !== ''" class="input-group-addon link clear" (click)="clear()">x</span>
-  <span class="input-group-addon link" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
+  <span *ngIf="viewValue !== ''" class="input-group-addon link clear" (click)="onInputValueChange('')">x</span>
+  <span class="input-group-addon link calendar-toggle" (click)="toggle()"><i class="glyphicon glyphicon-calendar"></i></span>
 </div>
 
 <div *ngIf="opened">
@@ -18,7 +18,7 @@
         <i class="glyphicon glyphicon-chevron-left" (click)="prevMonth()"></i>
       </div>
       <span class="date">
-        {{ ('m-' + date.format('MM')) | translate }} {{ date.format('YYYY') }}
+        {{ ('m-' + moment(calendarUIValue).format('MM')) | translate }} {{ moment(calendarUIValue).format('YYYY') }}
       </span>
       <div class="right">
         <i class="glyphicon glyphicon-chevron-right" (click)="nextMonth()"></i>
@@ -37,7 +37,7 @@
     </div>
     <div class="calendar">
         <span *ngFor="let d of days; let i = index">
-          <span class="day" [ngClass]="{'disabled': !d.enabled, 'selected': d.selected && d.enabled}"h
+          <span class="day" [ngClass]="{'selected': d.selected, 'today': d.today}"h
                 (click)="selectDate($event, i)">
             {{ d.day }}
           </span>

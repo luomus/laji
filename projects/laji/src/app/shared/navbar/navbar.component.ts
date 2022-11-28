@@ -17,7 +17,7 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
-import { PlatformService } from '../service/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-navbar',
@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('userMenu') public dropDown: BsDropdownDirective;
   @ViewChild('taxonMenu') private taxonDropdown: BsDropdownDirective;
 
-  openMenu: Boolean = false;
+  openMenu = false;
   redTheme = false;
   devRibbon = false;
   showSearch = false;
@@ -54,7 +54,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private ngZone: NgZone
   ) {
     this.navId = environment.type + '-nav';
-    this.devRibbon = !environment.production || environment.type === Global.type.beta;
+    this.devRibbon = environment.displayDevRibbon || environment.production === false;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
     this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';
   }
@@ -75,7 +75,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.notificationsTotal$ = this.notificationsFacade.total$;
     this.ngZone.runOutsideAngular(() => {
-      timer(1000, 60000).pipe(
+      timer(1000, 300000).pipe( // every 5 minutes
         switchMap(() => this.browserService.visibility$),
         filter(visible => visible),
         switchMap(() => this.userService.isLoggedIn$),

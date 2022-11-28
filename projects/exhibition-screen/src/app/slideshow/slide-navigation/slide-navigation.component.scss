@@ -1,0 +1,26 @@
+@import 'mixins';
+
+:host {
+  @include panel();
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  max-width: 800px;
+}
+
+*:not(:last-child) {
+  border-right: 2px solid $neutral-4;
+}
+
+* {
+  padding: 10px;
+  color: $primary-6;
+  font-weight: 500;
+  font-size: $fs-2;
+  cursor: pointer;
+}
+
+.active {
+  color: $primary-9;
+  cursor: default;
+}

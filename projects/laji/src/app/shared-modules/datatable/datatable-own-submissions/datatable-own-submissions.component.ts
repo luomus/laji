@@ -19,7 +19,7 @@ import { DatatableTemplatesComponent } from '../datatable-templates/datatable-te
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
-import { PlatformService } from '../../../shared/service/platform.service';
+import { PlatformService } from '../../../root/platform.service';
 import { DocumentViewerFacade } from '../../document-viewer/document-viewer.facade';
 import { FormService } from '../../../shared/service/form.service';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
@@ -27,7 +27,7 @@ import { ObservationTableColumn } from '../../observation-result/model/observati
 import { IColumns } from '../service/observation-table-column.service';
 import { TableColumnService } from '../service/table-column.service';
 
-interface Settings {[key: string]: DatatableColumn; }
+interface Settings {[key: string]: DatatableColumn }
 @Component({
   selector: 'laji-datatable-own-submissions',
   templateUrl: './datatable-own-submissions.component.html',
@@ -52,7 +52,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Input() resizable = true;
   @Input() showRowAsLink = true;
   @Input() rowHeight = 35;
-  @Input() sorts: {prop: string, dir: 'asc'|'desc'}[] = [];
+  @Input() sorts: {prop: string; dir: 'asc'|'desc'}[] = [];
   @Input() actions: string[] | [] = ['edit', 'view'];
   @Input() getRowClass: (row: any) => any;
   @Input() selectionType: SelectionType;
@@ -66,7 +66,6 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() reorder = new EventEmitter<any>();
-  @Output() select = new EventEmitter<any>();
   @Output() rowSelect = new EventEmitter<any>();
 
   filterByChange: Subscription;
@@ -212,9 +211,7 @@ export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, Afte
     } else if (prop === 'unitCount') {
       return (a, b) => b - a;
     }
-    return (a, b) => {
-      return ('' + a).localeCompare('' + b);
-    };
+    return (a, b) => ('' + a).localeCompare('' + b);
   }
 
   onRowSelect(event) {

@@ -12,6 +12,7 @@ import { TriplestoreLabelService } from './triplestore-label.service';
 import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Units } from '../model/Units';
 import { Global } from '../../../environments/global';
+import { Gatherings } from '../model/Gatherings';
 
 
 @Injectable({
@@ -20,8 +21,11 @@ import { Global } from '../../../environments/global';
 export class PdfLabelService {
 
   @SessionStorage('pdf-data', [])
-  private data: ILabelData[];
-  private memoryData: ILabelData[];
+  private data: ILabelData[] | undefined;
+  private memoryData: ILabelData[] | undefined;
+
+  private gatheringGeometryField = 'gatherings.geometry';
+  private unitGeometryField = 'gatherings.units.unitGathering.geometry';
 
   skipFields: string[] = [
     '@type',
@@ -33,6 +37,17 @@ export class PdfLabelService {
     'gatherings.images',
     'gatherings.units.unitFact.autocompleteSelectedTaxonID',
   ];
+
+  specialFields: {[field: string]: ILabelField[]} = {
+    [this.gatheringGeometryField]: [
+      { field: this.gatheringGeometryField + '_coordinateVerbatim', label: 'label.coordinateVerbatim' },
+      { field: this.gatheringGeometryField + '_pointCoordinates', label: 'label.pointCoordinates' }
+    ],
+    [this.unitGeometryField]: [
+      { field: this.unitGeometryField + '_coordinateVerbatim', label: 'label.coordinateVerbatim' },
+      { field: this.unitGeometryField + '_pointCoordinates', label: 'label.pointCoordinates' }
+    ]
+  };
 
   defaultFields: ILabelField[] = [
     { field: 'gatherings.units.id', content: 'http://tun.fi/EXAMPLE', label: 'ID - QRCode', type: FieldType.qrCode },
@@ -50,9 +65,12 @@ export class PdfLabelService {
     private triplestoreLabelService: TriplestoreLabelService
   ) {
     this.defaultFields.forEach(field => {
-      if (field.label.startsWith('label.')) {
-        field.label = this.translateService.instant(field.label);
-      }
+      this.translateLabel(field);
+    });
+    Object.keys(this.specialFields).forEach(key => {
+      this.specialFields[key].forEach(field => {
+        this.translateLabel(field);
+      });
     });
   }
 
@@ -62,8 +80,17 @@ export class PdfLabelService {
       switchMap(docs => this.openDocuments(docs)),
       switchMap(openDocuments => this.allPossibleFields().pipe(
         map(fields => this.schemaService.convertDataToLabelData(
-          [...fields, {field: 'id', label: ''}], openDocuments, 'gatherings.units')
-        ),
+          [
+            ...fields,
+            {field: 'id', label: ''}
+          ],
+          openDocuments,
+          'gatherings.units',
+          {
+            [this.gatheringGeometryField]: this.getTransformGeometryDataFunction(this.gatheringGeometryField),
+            [this.unitGeometryField]: this.getTransformGeometryDataFunction(this.unitGeometryField)
+          }
+        )),
         map(data => data.map(item => {
           item['gatherings.units.id'] = IdService.getUri(item['gatherings.units.id'] || item['id']) || '';
           item['gatherings.units.id_short'] = IdService.getId(item['gatherings.units.id'] || item['id'] || '');
@@ -89,8 +116,39 @@ export class PdfLabelService {
 
   allPossibleFields(): Observable<ILabelField[]> {
     return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
-      map(form => this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields }))
+      map(form => form
+        ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields, special: this.specialFields })
+        : []
+      )
     );
+  }
+
+  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string[]> {
+    return (geometryData) => {
+      const result = {};
+
+      const coordinateVerbatim = [];
+      if (geometryData.coordinateVerbatim) {
+        coordinateVerbatim.push(geometryData.coordinateVerbatim);
+      }
+      geometryData.geometries?.forEach(geometry => {
+        if (geometry.coordinateVerbatim) {
+          coordinateVerbatim.push(geometry.coordinateVerbatim);
+        }
+      });
+      result[path + '_coordinateVerbatim'] = coordinateVerbatim;
+
+      const singleGeometry = !geometryData.geometries
+        ? geometryData
+        : geometryData.geometries.length === 1
+          ? geometryData.geometries[0]
+          : null;
+      if (singleGeometry && singleGeometry.type === 'Point' && !singleGeometry.radius) {
+        result[path + '_pointCoordinates'] = singleGeometry.coordinates[1] + ', ' + singleGeometry.coordinates[0] + ' (wgs84)';
+      }
+
+      return result;
+    };
   }
 
   private filterDocuments(documents: Document[], filter: LabelFilter): Observable<Document[]> {
@@ -100,11 +158,11 @@ export class PdfLabelService {
     return from(documents).pipe(
       map(doc => this.filterDocument(doc, filter)),
       toArray(),
-      map(docs => docs.filter(doc => !!doc)),
+      map(docs => docs.filter(doc => !!doc) as Document[]),
     );
   }
 
-  private filterDocument(doc: Document, filter: LabelFilter): Document {
+  private filterDocument(doc: Document, filter: LabelFilter): Document | null {
     if (!doc.gatherings) {
       return null;
     }
@@ -133,14 +191,14 @@ export class PdfLabelService {
           unitPrev.push(unit);
         }
         return unitPrev;
-      }, []);
+      }, [] as Units[]);
 
       // Only add gatherings that have some unit information in them
       if (gathering.units.length > 0) {
         gatheringPrev.push(gathering);
       }
       return gatheringPrev;
-    }, []);
+    }, [] as Gatherings[]);
 
     // Only return documents that have some gathering information in them
     if (doc.gatherings.length === 0) {
@@ -152,7 +210,7 @@ export class PdfLabelService {
   private countIndividuals(unit: Units): number {
     let cnt = 0;
     Global.documentCountUnitProperties.forEach(prop => {
-      const num = Number(unit[prop]);
+      const num = Number((unit as any)[prop]);
       if (!isNaN(num)) {
         cnt += num;
       }
@@ -202,13 +260,13 @@ export class PdfLabelService {
     return keys;
   }
 
-  private documentKeysToLabel(document: Document, keyMap): Document {
+  private documentKeysToLabel(document: Document, keyMap: {[key: string]: string}): Document {
     const result: Document = {...document};
     if (result.gatheringEvent) {
       result.gatheringEvent = this.openGathering({...document.gatheringEvent}, keyMap);
     }
     if (Array.isArray(result.gatherings)) {
-      result.gatherings = [...document.gatherings.map(originalGathering => {
+      result.gatherings = [...(document.gatherings || []).map(originalGathering => {
         const gathering = {...originalGathering};
 
         if (Array.isArray(gathering.units)) {
@@ -239,7 +297,7 @@ export class PdfLabelService {
     return result;
   }
 
-  private openGathering(gathering, keyMap) {
+  private openGathering(gathering: any, keyMap: {[key: string]: string}) {
     if (gathering.leg) {
       gathering.leg = this.keysToLabel(gathering.leg, keyMap);
     }
@@ -252,6 +310,12 @@ export class PdfLabelService {
     return gathering;
   }
 
+  private translateLabel(field: ILabelField) {
+    if (field.label.startsWith('label.')) {
+      field.label = this.translateService.instant(field.label);
+    }
+  }
+
   private ISODateToLocal(value: string) {
     if (typeof value !== 'string') {
       return value;
@@ -259,7 +323,9 @@ export class PdfLabelService {
     return value.replace(/([0-9]+)-([0-9]+)-([0-9]+)/, '$3.$2.$1').replace('T', ' ');
   }
 
-  private keysToLabel(value, keyMap) {
+  private keysToLabel(value: string, keyMap: {[key: string]: string}): string;
+  private keysToLabel(value: string[], keyMap: {[key: string]: string}): string[];
+  private keysToLabel(value: string | string[], keyMap: {[key: string]: string}): string | string[] {
     if (Array.isArray(value)) {
       return value.map(val => this.keysToLabel(val, keyMap));
     }

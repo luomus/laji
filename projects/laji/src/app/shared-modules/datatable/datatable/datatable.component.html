@@ -1,7 +1,8 @@
 <laji-spinner [spinning]="loading || sortLoading" [overlay]="true" *lajiBrowserOnly>
   <ngx-datatable
     #dataTable
-    class='material striped laji-datatable'
+    class='material laji-datatable'
+    [ngClass]="{'striped': striped}"
     [style.height]="_height"
     [cssClasses]="{
           sortAscending: 'glyphicon glyphicon-chevron-down',
@@ -29,7 +30,7 @@
     (sort)="onSort($event)"
     (reorder)="reorder.emit($event)"
     (resize)="onResize($event)"
-    (select)="select.emit($event)"
+    (select)="datatableSelect.emit($event)"
     [rowClass]="_getRowClass"
     (activate)="onRowSelect($event)"
     [selected]="selected"
@@ -45,7 +46,7 @@
     [page]="_page"
     [pageSize]="pageSize"
     [count]="_count"
-    (change)="onPage($event)"
+    (pageChange)="onPage($event)"
   ></laji-data-table-footer>
 </laji-spinner>
 

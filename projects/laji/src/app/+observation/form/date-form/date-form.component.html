@@ -1,29 +1,21 @@
-<div class="mb-4">
+<div class="mb-4 observation-time-container">
   <div>
     <label>{{ 'observation.form.time' | translate }}</label>
     <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
   </div>
   <laji-datepicker
     [(ngModel)]="datepickerTimeStart"
-    [viewFormat]="'DD.MM.YYYY'"
-    [otherFormats]="['D.M.YYYY', 'YYYY']"
-    [format]="dateFormat"
-    (select)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeStart"></laji-datepicker>
   <laji-datepicker
     [(ngModel)]="datepickerTimeEnd"
-    [viewFormat]="'DD.MM.YYYY'"
-    [otherFormats]="['D.M.YYYY', 'YYYY']"
     [toLastOfYear]="true"
-    [format]="dateFormat"
-    (select)="onFormQueryChange()"
     (change)="onFormQueryChange()"
     name="timeEnd"></laji-datepicker>
   <div class="btn-group btn-group-xs mt-1">
-    <button type="button" class="btn btn-default" (click)="onUpdateTime(1)">{{ 'observations.form.1d' | translate }}</button>
-    <button type="button" class="btn btn-default" (click)="onUpdateTime(7)">{{ 'observations.form.7d' | translate }}</button>
-    <button type="button" class="btn btn-default" (click)="onUpdateTime(365)">
+    <button type="button" class="btn btn-default btn-today" (click)="onUpdateTime(1)">{{ 'observations.form.1d' | translate }}</button>
+    <button type="button" class="btn btn-default btn-week" (click)="onUpdateTime(7)">{{ 'observations.form.7d' | translate }}</button>
+    <button type="button" class="btn btn-default btn-year" (click)="onUpdateTime(365)">
       {{ 'observation.form.thisYear' | translate }}
     </button>
   </div>
@@ -48,19 +40,11 @@
     </div>
     <laji-datepicker
       [(ngModel)]="query.loadedSameOrAfter"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeStart"></laji-datepicker>
     <laji-datepicker
       [(ngModel)]="query.loadedSameOrBefore"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
       [toLastOfYear]="true"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeEnd"></laji-datepicker>
     <div class="btn-group btn-group-xs mt-1">
@@ -79,20 +63,14 @@
     </div>
     <laji-datepicker
       [(ngModel)]="query.firstLoadedSameOrAfter"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeStart"></laji-datepicker>
 
     <laji-datepicker
       [(ngModel)]="query.firstLoadedSameOrBefore"
-      [viewFormat]="'DD.MM.YYYY'"
-      [otherFormats]="['D.M.YYYY', 'YYYY']"
       [toLastOfYear]="true"
-      [format]="dateFormat"
-      (select)="onQueryChange()"
+      (dateSelect)="onQueryChange()"
       (change)="onQueryChange()"
       name="timeEnd"></laji-datepicker>
 

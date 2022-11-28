@@ -4,7 +4,8 @@ export interface ObservationFormQuery {
   taxonUseAnnotated: boolean;
   timeStart: string;
   timeEnd: string;
-  informalTaxonGroupId: string;
+  informalTaxonGroupId: string[];
+  informalTaxonGroupIdNot: string[];
   includeOnlyValid: boolean;
   euInvasiveSpeciesList: boolean;
   controllingRisksOfInvasiveAlienSpeciesGovernment: boolean;
@@ -20,4 +21,5 @@ export interface ObservationFormQuery {
   asEditor: boolean;
   asNotEditorOrObserver: boolean;
   coordinatesInSource: boolean;
+  taxonAdminFiltersOperator: 'AND' | 'OR';
 }

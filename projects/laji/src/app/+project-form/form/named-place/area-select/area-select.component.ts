@@ -19,10 +19,12 @@ export class AreaSelectComponent implements OnInit {
   @Input() value: string[] = [];
   @Input() selectOptionEnabled = true;
   @Input() allOptionEnabled = false;
+  @Input() allOptionLast = false;
+  @Input() allOptionLabel = 'area-select.all';
 
-  @Output() select = new EventEmitter<string>();
+  @Output() areaSelect = new EventEmitter<string>();
 
-  options: {id: string, value: string, translate?: boolean}[] = [];
+  options: {id: string; value: string; translate?: boolean}[] = [];
   lang: string;
 
   constructor(
@@ -47,13 +49,13 @@ export class AreaSelectComponent implements OnInit {
         if (!this.multiselect && this.selectOptionEnabled) {
           options.push({id: undefined, value: 'select', translate: true});
         }
-        if (!this.multiselect && this.allOptionEnabled) {
-          options.push({id: 'all', value: 'area-select.all', translate: true});
+        if (!this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
+          options.push({id: 'all', value: this.allOptionLabel, translate: true});
         }
-        this.options = [...options, ...data.sort((a, b) => {
-          return a.value.localeCompare(b.value);
-        })];
-
+        this.options = [...options, ...data.sort((a, b) => a.value.localeCompare(b.value))];
+        if (this.allOptionLast && !this.multiselect && this.allOptionEnabled) {
+          this.options.push({id: 'all', value: this.allOptionLabel, translate: true});
+        }
         this.cd.markForCheck();
       });
   }
@@ -61,7 +63,7 @@ export class AreaSelectComponent implements OnInit {
   private getDataObservable(): Observable<any> {
     switch (this.field) {
       case 'MY.collectionID':
-        return this.collectionService.getAll(this.lang, true);
+        return this.collectionService.getAll$(this.lang, true);
       case <any>Area.AreaType.Biogeographical:
         return this.areaService.getBiogeographicalProvinces(this.lang);
       case <any>Area.AreaType.Municipality:

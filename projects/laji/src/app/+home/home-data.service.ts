@@ -11,40 +11,41 @@ import { News } from '../shared/model/News';
 
 export interface IHomeData {
   observations: {
-    total: number
+    total: number;
   };
   today: {
-    total: number
+    total: number;
   };
   speciesToday: {
-    total: number
+    total: number;
   };
   species: {
-    total: number
+    total: number;
   };
   sources: {
-    total: number
+    total: number;
   };
   preservedSpecimens: {
-    total: number
+    total: number;
   };
   preservedSpecimensWithImage: {
-    total: number
+    total: number;
   };
   identify: {
     results: {
       unit: {
-        media: Pick<Image, 'thumbnailURL'>[]
-      }
+        media: Pick<Image, 'thumbnailURL'>[];
+      };
     }[];
   };
   news: {
-    prevPage: number,
-    nextPage: number,
-    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'|'posted'>[]
+    prevPage: number;
+    nextPage: number;
+    results: Pick<News, 'id'|'title'|'external'|'externalURL'|'tag'|'posted'>[];
   };
 }
 
+/* eslint-disable max-len */
 const HOME_QUERY = gql`
   query($pageSize: Int = 5, $after: String = "") {
     observations: units(cache: true) {
@@ -68,7 +69,7 @@ const HOME_QUERY = gql`
     preservedSpecimensWithImage: units(cache: true, superRecordBasis: "PRESERVED_SPECIMEN", hasMedia: true) {
       total
     },
-    identify: units(cache: true, hasUnitMedia: true, unidentified: true, page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
+    identify: units(cache: true, hasUnitMedia: true, unidentified: true, sourceId: "KE.389,KE.1221,KE.176", page: 1, pageSize: 12, orderBy: "document.firstLoadDate DESC") {
       results {
         unit {
           media {
@@ -92,6 +93,7 @@ const HOME_QUERY = gql`
     }
   }
 `;
+/* eslint-enable max-len */
 
 @Injectable({
   providedIn: 'root'

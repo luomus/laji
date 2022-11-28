@@ -173,7 +173,7 @@
   </div>
 
   <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
-    <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info [containerInfo]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
+    <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info [container]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
     <input
     type="text"
     class="form-control taxon-specifier-input"

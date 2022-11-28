@@ -12,6 +12,7 @@ import { Global } from '../../../../environments/global';
 import { Image } from '../../../shared/model/Image';
 import { Form } from '../../../shared/model/Form';
 import { JSONPath } from 'jsonpath-plus';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class DocumentLocalComponent implements OnChanges {
   @Input() view: 'viewer'|'print' = 'viewer';
   @Input() showSpinner = false;
 
-  @Output() close = new EventEmitter<boolean>();
+  @Output() documentClose = new EventEmitter<boolean>();
 
   collectionContestFormId = Global.forms.collectionContest;
 
@@ -42,7 +43,8 @@ export class DocumentLocalComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private lajiApi: LajiApiService,
     private formService: FormService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private deleteDocumentService: DeleteOwnDocumentService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -78,13 +80,11 @@ export class DocumentLocalComponent implements OnChanges {
             observables.push(this.getImages(doc));
           }
 
-          doc.gatherings.forEach((gathering, i) => {
+          doc.gatherings?.forEach((gathering, i) => {
             try {
               const paths = this.gatheringGeometryJSONPath || '$.geometry';
               const geoData = {type: 'GeometryCollection', geometries:
-                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => {
-                  return [...geometries, ...JSONPath({json: gathering, path})];
-                }, []).filter(g => g)
+                (Array.isArray(paths)  ? paths : [paths]).reduce((geometries, path) => [...geometries, ...JSONPath({json: gathering, path})], []).filter(g => g)
               };
               if (geoData && geoData.geometries[0]) {
                 this.mapData[i] = {geoJSON: geoData};
@@ -187,13 +187,15 @@ export class DocumentLocalComponent implements OnChanges {
     }, []);
 
     return {
-      fields: fields,
-      next: next
+      fields,
+      next
     };
   }
 
   closeDocument() {
-    this.close.emit(true);
+    this.deleteDocumentService.emitChildEvent(this.document.id);
+    this.documentClose.emit(true);
+    this.deleteDocumentService.emitChildEvent(null);
   }
 
 

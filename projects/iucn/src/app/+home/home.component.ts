@@ -3,7 +3,7 @@ import { ResultService } from '../iucn-shared/service/result.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'laji-home',
+  selector: 'iucn-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,31 +1,31 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {map, switchMap, take} from 'rxjs/operators';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
-import { NamedPlacesService } from '../../shared/service/named-places.service';
-import { NamedPlace } from '../../shared/model/NamedPlace';
 import { FormService } from '../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DocumentFormComponent } from './document-form/document-form.component';
 import { UserService } from '../../shared/service/user.service';
 
 interface ViewModel {
-  form: Form.SchemaForm;
+  formID: string;
   documentID?: string;
-  namedPlace?: NamedPlace;
+  namedPlaceID?: string;
+  template?: boolean;
 }
 
 @Component({
   template: `
     <ng-container *ngIf="(vm$ | async) as vm; else loader">
-      <laji-project-form-document-form
-        [form]="vm.form"
+      <laji-document-form
+        [formID]="vm.formID"
         [documentID]="vm.documentID"
-        [namedPlace]="vm.namedPlace"
+        [namedPlaceID]="vm.namedPlaceID"
+        [template]="vm.template"
       >
-      </laji-project-form-document-form>
+      </laji-document-form>
     </ng-container>
     <ng-template #loader>
       <laji-spinner></laji-spinner>
@@ -42,7 +42,6 @@ export class FormComponent implements OnInit {
   constructor(private projectFormService: ProjectFormService,
               private route: ActivatedRoute,
               private router: Router,
-              private namedPlacesService: NamedPlacesService,
               private formService: FormService,
               private translate: TranslateService,
               private userService: UserService
@@ -51,54 +50,54 @@ export class FormComponent implements OnInit {
   ngOnInit() {
     this.vm$ = this.projectFormService.getProjectFormFromRoute$(this.route).pipe(
       switchMap(({form, subForms}) => this.route.params.pipe(
-        switchMap(routeParams => this.tryRedirectToSubForm(form, routeParams).pipe(
-          switchMap(redirected => {
-            if (redirected) {
-              return EMPTY;
-            }
-            const paramsStack = [
-              routeParams['document'],
-              routeParams['formOrDocument'],
-            ];
-            const hasManyForms = subForms.length;
-            const formID = hasManyForms
-              ? paramsStack.pop()
-              : form.id;
-            const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
-            if (hasManyForms && !_usedSubForm) {
-              this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
-              return EMPTY;
-            }
-            const documentID = paramsStack.pop();
-            return (_usedSubForm === form
-              ? of(form)
-              : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
-            ).pipe(
-              switchMap(usedSubForm => {
-                const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
-                const namedPlace$ = namedPlaceID
-                  ? this.namedPlacesService.getNamedPlace(namedPlaceID, undefined, usedSubForm.options?.namedPlaceOptions?.includeUnits)
-                  : of(null);
-                if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
-                  this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
-                  return EMPTY;
-                }
-
-                return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
-                  if (!isLoggedIn) {
-                    this.userService.redirectToLogin();
+        switchMap((routeParams) => this.route.data.pipe(
+          switchMap(({template}) => this.tryRedirectToSubForm(form, routeParams).pipe(
+            switchMap(redirected => {
+              if (redirected) {
+                return EMPTY;
+              }
+              const paramsStack = [
+                routeParams['document'],
+                routeParams['formOrDocument'],
+              ];
+              const hasManyForms = subForms.length;
+              const formID = hasManyForms
+                ? paramsStack.pop()
+                : form.id;
+              const _usedSubForm = [form, ...subForms].find(f => f.id === formID);
+              if (hasManyForms && !_usedSubForm) {
+                this.router.navigate([form.id], {relativeTo: this.route, replaceUrl: true});
+                return EMPTY;
+              }
+              const documentID = paramsStack.pop();
+              return (_usedSubForm === form
+                ? of(form)
+                : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
+              ).pipe(
+                switchMap(usedSubForm => {
+                  const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
+                  if (usedSubForm.options?.useNamedPlaces && !documentID && !namedPlaceID) {
+                    this.router.navigate(['places'], {relativeTo: this.route, replaceUrl: true});
                     return EMPTY;
                   }
-                  return namedPlace$.pipe(map(namedPlace => ({
-                    form: usedSubForm,
-                    documentID,
-                    namedPlace
-                  })));
-                }));
-              })
-            );
-          }))
-        )
+
+                  return this.userService.isLoggedIn$.pipe(switchMap(isLoggedIn => {
+                    if (!isLoggedIn) {
+                      this.userService.redirectToLogin();
+                      return EMPTY;
+                    }
+                    return of({
+                      formID: usedSubForm.id,
+                      documentID,
+                      namedPlaceID,
+                      template: !!template
+                    });
+                  }));
+                })
+              );
+            }))
+          )
+        ))
       ))
     );
   }

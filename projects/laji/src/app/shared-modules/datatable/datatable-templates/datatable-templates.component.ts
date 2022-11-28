@@ -7,7 +7,7 @@ import { toHtmlSpanElement } from '../../../shared/service/html-element.service'
 @Component({
   selector: 'laji-datatable-templates',
   templateUrl: './datatable-templates.component.html',
-  styleUrls: ['./datatable-templates.component.css']
+  styleUrls: ['./datatable-templates.component.scss']
 })
 export class DatatableTemplatesComponent {
   @ViewChild('defaultHeaderTpl', { static: true }) dafaultHeader: TemplateRef<any>;
@@ -27,6 +27,7 @@ export class DatatableTemplatesComponent {
   @ViewChild('taxonScientificNameLink', { static: true }) taxonScientificNameLink: TemplateRef<any>;
   @ViewChild('cursive', { static: true }) cursive: TemplateRef<any>;
   @ViewChild('boolean', { static: true }) boolean: TemplateRef<any>;
+  @ViewChild('booleanCheck', { static: true }) booleanCheck: TemplateRef<any>;
   @ViewChild('label', { static: true }) label: TemplateRef<any>;
   @ViewChild('labelArray', { static: true }) labelArray: TemplateRef<any>;
   @ViewChild('warehouseLabel', { static: true }) warehouseLabel: TemplateRef<any>;
@@ -49,6 +50,10 @@ export class DatatableTemplatesComponent {
   @ViewChild('userName', { static: true }) userName: TemplateRef<any>;
   @ViewChild('qualityIcon', { static: true }) qualityIcon: TemplateRef<any>;
   @ViewChild('sensitiveIcon', {static: true }) sensitiveIcon: TemplateRef<any>;
+  @ViewChild('copyToClipboard', {static: true }) copyToClipboard: TemplateRef<any>;
+  @ViewChild('biogeographicalProvinceOccurrence', { static: true }) biogeographicalProvinceOccurrence: TemplateRef<any>;
+  @ViewChild('fullUriLink', {static: true }) fullUriLink: TemplateRef<any>;
+  @ViewChild('pluckValueSemiColonArray', {static: true }) pluckValueSemiColonArray: TemplateRef<any>;
 
   annotationTypes = Annotation.TypeEnum;
   synonymKeys = SYNONYM_KEYS;

@@ -124,7 +124,9 @@
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: $sp-7;
-
+  }
+  ul > li > ul {
+    margin-block-start: $sp-2;
   }
   ul {
 

@@ -1,10 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Global = {
   type: {
     dev: 'dev',
     prod: 'prod',
     vir: 'vir',
     embedded: 'embedded',
-    iucn: 'iucn'
+    iucn: 'iucn',
+    kerttuGlobal: 'kerttuGlobal'
   },
   forms: {
     default: 'JX.519',

@@ -15,11 +15,12 @@ import {
 import { MappingService } from './mapping.service';
 import * as Hash from 'object-hash';
 import { catchError, delay, switchMap } from 'rxjs/operators';
+import { ArrayType } from '@angular/compiler';
 
 interface IData {
   rowIdx: number;
   hash: string;
-  data: object;
+  data: Record<string, string>;
 }
 
 interface ILevelData {
@@ -38,8 +39,8 @@ export interface IDocumentData {
   skipped: number[];
   ref?: {
     [hash: string]: {
-      [parentLevel: string]: number
-    }
+      [parentLevel: string]: number;
+    };
   };
 }
 
@@ -64,11 +65,11 @@ export class ImportService {
   ];
 
   private readonly newToParent = {
-    'identifications': LEVEL_UNIT,
-    'gatheringEvent': LEVEL_DOCUMENT,
-    'gatheringFact': LEVEL_GATHERING,
-    'unitFact': LEVEL_UNIT,
-    'unitGathering': LEVEL_UNIT
+    identifications: LEVEL_UNIT,
+    gatheringEvent: LEVEL_DOCUMENT,
+    gatheringFact: LEVEL_GATHERING,
+    unitFact: LEVEL_UNIT,
+    unitGathering: LEVEL_UNIT
   };
 
   constructor(
@@ -91,7 +92,7 @@ export class ImportService {
     });
   }
 
-  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void) {
+  waitToComplete(type: keyof Pick<DocumentApi, 'validate'|'create'>, jobPayload: DocumentJobPayload, processCB: (status: JobStatus) => void): Observable<any> {
     const personToken = this.userService.getToken();
     const source$ = type === 'validate' ?
       this.documentApi.validate(jobPayload, {personToken}) :
@@ -132,7 +133,7 @@ export class ImportService {
     formID: string,
     ignoreRowsWithNoCount = true,
     combineBy: CombineToDocument = CombineToDocument.gathering
-  ): {document: Document, skipped: number[], rows: {[row: number]: boolean}}[] {
+  ): {document: Document; skipped: number[]; rows: {[row: number]: boolean}}[] {
     return this.rowsToDocument(data, mapping, fields, formID, ignoreRowsWithNoCount, combineBy);
   }
 
@@ -181,7 +182,7 @@ export class ImportService {
 
   private findDocumentData(data: ILevelData[]): IData {
     const l = (data || []).length;
-    for (let i = 0; i <= l; i++) {
+    for (let i = 0; i < l; i++) {
       if (data[i].document) {
         return data[i].document;
       }
@@ -216,17 +217,27 @@ export class ImportService {
 
     const documents: {[hash: string]: ILevelData[]} = {};
     rows.forEach((row, rowIdx) => {
+      // Initialize data for all required levels
       const parentData: ILevelData = {};
+      for (const level of [LEVEL_DOCUMENT, LEVEL_GATHERING, LEVEL_UNIT]) {
+        parentData[level] = {
+          rowIdx,
+          hash: '' + rowIdx,
+          data: {}
+        };
+      }
+
       allCols.forEach(col => {
         const field = fields[mapping[col]];
         let value = this.mappingService.map(this.mappingService.rawValueToArray(row[col], field), field, true);
         if (!this.hasValue(value)) {
           return;
         }
+
         const parent = this.getParent(field, combineBy);
         if (!parentData[parent]) {
           parentData[parent] = {
-            rowIdx: rowIdx,
+            rowIdx,
             hash: '' + rowIdx,
             data: {}
           };
@@ -236,14 +247,17 @@ export class ImportService {
         if (Array.isArray(value)) {
           value = value.filter(val => val !== VALUE_IGNORE && val !== '');
         }
-
         // Check if there is are values that should be merged instead
         if (typeof value === 'object' && value[MappingService.mergeKey]) {
           Object.keys(value[MappingService.mergeKey]).forEach(location => {
             parentData[parent].data[location] = value[MappingService.mergeKey][location];
           });
         } else {
-          parentData[parent].data[field.key] = value;
+          if (Array.isArray(parentData[parent].data[field.key])) {
+            parentData[parent].data[field.key] = parentData[parent].data[field.key].concat(value);
+          } else {
+            parentData[parent].data[field.key] = value;
+          }
         }
       });
 
@@ -273,7 +287,7 @@ export class ImportService {
     const docs: {[hash: string]: IDocumentData} = {};
     Object.keys(documents).forEach(hash => {
       if (!docs[hash]) {
-        docs[hash] = {document: {'formID': formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
+        docs[hash] = {document: {formID}, ref: {[hash]: {}}, rows: {}, skipped: []};
         const docData = this.findDocumentData(documents[hash]);
         docs[hash].rows[docData.rowIdx] = true;
         if (ignoreRowsWithNoCount && !this.hasCountValue(docData.data) && combineBy === CombineToDocument.none) {
@@ -292,6 +306,7 @@ export class ImportService {
           if ((!docs[hash].ref[levelHash] || level === LEVEL_UNIT) && row[level] && row[level].data) {
             if (ignoreRowsWithNoCount && level === LEVEL_UNIT && !this.hasCountValue(row[level].data)) {
               docs[hash].skipped.push(row[level].rowIdx);
+              delete docs[hash].rows[row[level].rowIdx];
               return;
             }
             const parentHash = this.findParentHash(row, level);
@@ -306,6 +321,10 @@ export class ImportService {
           }
         });
       });
+
+      if (Object.keys(docs[hash].rows).length === 0) {
+        docs[hash].document = null;
+      }
     });
 
     return Object.keys(docs).map((hash) => ({document: docs[hash].document, rows: docs[hash].rows, skipped: docs[hash].skipped}));
@@ -346,7 +365,7 @@ export class ImportService {
   }
 
   private relativePathToAbsolute(values: {[key: string]: any}, spot?: {[level: string]: number}): {[key: string]: any} {
-    const replaces: {from: string, to: string}[] = [];
+    const replaces: {from: string; to: string}[] = [];
     const result = {};
     if (spot) {
       Object.keys(spot).map(level => {

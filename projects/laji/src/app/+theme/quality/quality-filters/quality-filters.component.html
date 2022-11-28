@@ -14,21 +14,15 @@
     <div class="form-inline">
       <laji-datepicker
         [(ngModel)]="filters.timeStart"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeStart' | translate"
-        (select)="onSelectChange()"
+        (dateSelect)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeStart"></laji-datepicker>
       <laji-datepicker
         [(ngModel)]="filters.timeEnd"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
         [toLastOfYear]="true"
-        [format]="'YYYY-MM-DD'"
         [addonText]="'quality.timeEnd' | translate"
-        (select)="onSelectChange()"
+        (dateSelect)="onSelectChange()"
         (change)="onSelectChange()"
         name="timeEnd"></laji-datepicker>
     </div>

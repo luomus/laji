@@ -1,6 +1,5 @@
 import { forkJoin as ObservableForkJoin, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Logger } from '../logger/logger.service';
 import { MultiLangService } from '../../shared-modules/lang/service/multi-lang.service';
 import { InformalTaxonGroup } from '../model/InformalTaxonGroup';
 import { Taxonomy } from '../model/Taxonomy';
@@ -20,15 +19,13 @@ import { BaseDataService, IBaseData } from '../../graph-ql/service/base-data.ser
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
 
-  static cache = {};
+  static cache: any = {};
   static requestCache: any = {};
 
   private guidRegEx: RegExp;
   private metaData: any;
-  private currentLang: string;
 
-  constructor(private logger: Logger,
-              private informalTaxonService: InformalTaxonGroupApi,
+  constructor(private informalTaxonService: InformalTaxonGroupApi,
               private namedPlaceApi: NamedPlaceApi,
               private sourceService: SourceService,
               private lajiApi: LajiApiService,
@@ -42,14 +39,14 @@ export class TriplestoreLabelService {
     this.guidRegEx = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/gi;
   }
 
-  public getAll(keys: string[], lang): Observable<{[key: string]: string}> {
+  public getAll(keys: string[], lang: string): Observable<{[key: string]: string}> {
     const set = new Set(keys);
-    const subs = [];
+    const subs: Observable<{key: string; value: string}>[] = [];
     set.forEach(val => {
       subs.push(this.get(val, lang).pipe(map(result => ({key: val, value: result}))));
     });
     return ObservableForkJoin(subs).pipe(
-      map((results: any) => results.reduce((cumulative: {[key: string]: string}, current) => {
+      map((results: any) => results.reduce((cumulative: {[key: string]: string}, current: any) => {
         if (!cumulative[current.key]) {
           cumulative[current.key] = current.value;
         }
@@ -64,7 +61,7 @@ export class TriplestoreLabelService {
       of('');
   }
 
-  private _get(key, lang): Observable<string> {
+  private _get(key: string, lang: string): Observable<string> {
     if (typeof TriplestoreLabelService.cache[key] !== 'undefined') {
       if (TriplestoreLabelService.requestCache[key]) {
         delete TriplestoreLabelService.requestCache[key];
@@ -132,7 +129,7 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
         case 'gbif-dataset':
         case 'HR':
-          return this.collectionService.getName(key, lang).pipe(share());
+          return this.collectionService.getName$(key, lang).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(
@@ -151,19 +148,16 @@ export class TriplestoreLabelService {
   }
 
   private getAllLabels(lang: string): Observable<{[key: string]: string}> {
-    if (this.currentLang !== lang) {
-      this.currentLang = lang;
-      this.metaData = this.baseDataService.getBaseData().pipe(
-          take(1),
-          map((data) => this.dataToLookup(data)),
-          shareReplay(1)
-      );
-    }
+    this.metaData = this.baseDataService.getBaseData().pipe(
+        take(1),
+        map((data) => this.dataToLookup(data)),
+        shareReplay(1)
+    );
     return this.metaData;
   }
 
   private dataToLookup(data: IBaseData) {
-    const labelMap = {};
+    const labelMap: any = {};
     (data.classes || []).forEach((meta) => {
       labelMap[meta.id] = meta.label;
     });

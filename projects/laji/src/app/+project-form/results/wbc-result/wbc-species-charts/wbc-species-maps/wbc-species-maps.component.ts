@@ -12,7 +12,7 @@ import { YkjService } from '../../../../../shared-modules/ykj/service/ykj.servic
 import { YkjMapComponent } from '../../../../../shared-modules/ykj/ykj-map/ykj-map.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PlatformService } from '../../../../../shared/service/platform.service';
+import { PlatformService } from '../../../../../root/platform.service';
 import { LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
@@ -65,9 +65,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   }
 
   mapLoaded() {
-    const maps = this.mapComponents.map(mapComponent => {
-      return mapComponent.mapComponent.map;
-    });
+    const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
     if (this.platformService.isBrowser && maps.every(mapComponents => mapComponents)) {
       this.maps = maps;
       maps.forEach(m => this.initEventListeners(m));

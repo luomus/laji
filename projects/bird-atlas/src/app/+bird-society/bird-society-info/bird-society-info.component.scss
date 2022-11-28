@@ -1,0 +1,33 @@
+@import 'vars';
+
+.map-panel {
+  max-width: 100%;
+}
+
+.info-panel {
+  flex-grow: 1;
+  max-width: 600px;
+  overflow-x: hidden;
+}
+
+.grid-square-panel {
+  background-color: $neutral-2;
+  border-radius: 12px;
+  padding: $sp-6 $sp-8;
+  box-shadow: 0 1px 4px 0 rgba($neutral-8, .25);
+}
+
+.coords {
+  color: $neutral-6;
+}
+
+.close-btn {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.legend-container > * {
+  flex-basis: 50%;
+}

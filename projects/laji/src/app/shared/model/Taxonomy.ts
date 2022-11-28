@@ -27,6 +27,9 @@
  */
 
 'use strict';
+
+import { MultiLanguage } from './MultiLanguage';
+
 export interface Taxonomy {
 
   id?: string;
@@ -267,7 +270,7 @@ export interface RedListEvaluation {
   redListStatus?: string;
   criteriaForStatus?: string;
   externalPopulationImpactOnRedListStatus?: string;
-  possiblyRE?: object;
+  possiblyRE?: Record<string, unknown>;
   primaryHabitat?: Habitat;
   secondaryHabitats?: Habitat[];
   endangermentReasons?: string[];
@@ -325,6 +328,8 @@ export interface TaxonomyImage {
 
   fullURL?: string;
 
+  keywords?: string[];
+
   licenseId?: string;
 
   licenseAbbreviation?: string;
@@ -332,6 +337,8 @@ export interface TaxonomyImage {
   licenseDescription?: string;
 
   source?: string;
+
+  taxonDescriptionCaption?: MultiLanguage;
 
   thumbnailURL?: string;
 

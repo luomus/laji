@@ -1,11 +1,9 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
-import { Router } from '@angular/router';
-import { LocalizeRouterService } from '../../../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-document-local-viewer-view',
@@ -22,6 +20,8 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Input() useWorldMap = true;
   @Input() zoomToData = false;
 
+  @Output() documentDeleted = new EventEmitter();
+
   publicity = Document.PublicityRestrictionsEnum;
 
   personID: string;
@@ -32,9 +32,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   constructor(
     private userService: UserService,
-    private cd: ChangeDetectorRef,
-    private router: Router,
-    private localizeRouterService: LocalizeRouterService
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -64,9 +62,7 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
 
   onDocumentDeleted(e) {
     if (e) {
-      this.router.navigate(
-        this.localizeRouterService.translateRoute(['/vihko/ownSubmissions/'])
-      );
+      this.documentDeleted.emit();
     }
   }
 

@@ -1,8 +1,8 @@
-import { map } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { Observable } from 'rxjs';
-import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.facade';
+import { LatestDocumentsFacade } from '../latest-documents.facade';
+import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 
 @Component({
@@ -11,47 +11,40 @@ import { ILatestDocument, LatestDocumentsFacade } from '../latest-documents.faca
   styleUrls: ['./haseka-users-latest.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersLatestComponent implements OnInit, OnChanges {
+export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
-  @Input() forms: string[];
-  @Input() showFormNames: boolean;
+  @Input() formID: string;
+  @Input() showFormNames = true;
   @Input() complainLocality: boolean;
   @Input() staticWidth: number = undefined;
 
   @Output() showViewer = new EventEmitter<Document>();
 
   public loading$: Observable<boolean>;
-  public tmpDocuments$: Observable<ILatestDocument[]>;
-  public latest$: Observable<ILatestDocument[]>;
+  public tmpDocuments$ = this.latestFacade.tmpDocuments$;
+  public latest$ = this.latestFacade.latest$;
   public formsById = {};
+  public subscriptionDeleteOwnDocument;
 
   constructor(
-    private latestFacade: LatestDocumentsFacade
+    private latestFacade: LatestDocumentsFacade,
+    private deleteOwnDocument: DeleteOwnDocumentService
   ) {
     this.loading$ = this.latestFacade.loading$;
   }
 
   ngOnInit(): void {
-    this.latestFacade.update();
-    this.updateDocumentList();
-    this.updateTempDocumentList();
+    this.latestFacade.setFormID(this.formID);
+
+    this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
+      if (id !== null) {
+        this.latestFacade.update();
+      }
+    });
   }
 
-  ngOnChanges() {
-    this.updateDocumentList();
-    this.updateTempDocumentList();
-  }
-
-  updateTempDocumentList() {
-    this.tmpDocuments$ = this.latestFacade.tmpDocuments$.pipe(
-      map(documents => this.forms ? documents.filter(res => this.forms.indexOf(res.document.formID) > -1) : documents)
-    );
-  }
-
-  updateDocumentList() {
-    this.latest$ = this.latestFacade.latest$.pipe(
-      map(documents => this.forms ? documents.filter(res => this.forms.indexOf(res.document.formID) > -1) : documents)
-    );
+  ngOnDestroy(): void {
+      this.subscriptionDeleteOwnDocument?.unsubscribe();
   }
 
   discardTempDocument(document) {

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { Autocomplete } from '../model/Autocomplete';
 
-interface TaxaWithAutocomplete extends Autocomplete {
+export interface TaxaWithAutocomplete extends Autocomplete {
   autocompleteDisplayName: string;
   autocompleteSelectedName: string;
 }
@@ -16,10 +16,6 @@ interface TaxaWithAutocomplete extends Autocomplete {
 })
 
 export class TaxonAutocompleteService {
-  scientificName: string;
-  vernacularName: string;
-  matchingName: string;
-
   constructor(
     private translate: TranslateService,
     private tripleStoreService: TriplestoreLabelService
@@ -42,39 +38,41 @@ export class TaxonAutocompleteService {
   getAutocompleteDisplayName(payload: any, rank: string, text: string): string {
 
     const scientificName = (payload['cursiveName'] ? '<i>' +
-    this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
+      this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)) + '</i>' : this.capitalizeFirstLetter(this.addBold(payload['scientificName'], text)));
     const vernacularName = this.addBold(payload['vernacularName'], text);
-    this.matchingName = this.addBold(payload['matchingName'], text);
-    let string;
+    const matchingName = this.addBold(payload['matchingName'], text);
+    let string: string;
 
     switch (payload['nameType']) {
       case 'MX.scientificName':
         return this.createAutocompleteDisplayNameRow(scientificName, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.birdlifeCode':
       case 'MX.euringCode':
-        string = this.matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span>';
+        string = matchingName + '<span class="taxon-second-element"> - ' + scientificName + '</span>';
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.vernacularName':
         string = (payload['vernacularName'] !== '' ? vernacularName + ' <span class="taxon-second-element">- ' + scientificName + '</span> '
-        : scientificName + '<span class="taxon-second-element"> (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
+        : scientificName + '<span class="taxon-second-element"> (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.alternativeVernacularName':
       case 'MX.obsoleteVernacularName':
       case 'MX.tradeName':
-        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - (' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
-        : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
+        string = (payload['vernacularName'] !== ''
+          ? vernacularName + '<span class="taxon-second-element"> - (' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>'
+          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ') - </span><span class="taxon-third-element">' + scientificName + '</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       case 'MX.colloquialVernacularName':
-        string = (payload['vernacularName'] !== '' ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + this.matchingName + ') </span>'
-        : scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>' );
+        string = (payload['vernacularName'] !== ''
+          ? vernacularName + '<span class="taxon-second-element"> - ' + scientificName + '</span>' + '<span class="taxon-third-element"> (' + matchingName + ') </span>'
+          : scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>' );
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
       default:
-        string = scientificName + ' <span class="taxon-second-element">(' + this.matchingName + ')</span>';
+        string = scientificName + ' <span class="taxon-second-element">(' + matchingName + ')</span>';
         return this.createAutocompleteDisplayNameRow(string, rank, payload['informalTaxonGroups'], payload['finnish']);
     }
   }
 
-  private createAutocompleteDisplayNameRow(start, taxonRankId, informalTaxonGroups, isFinnish ) {
+  private createAutocompleteDisplayNameRow(start: string, taxonRankId?: string, informalTaxonGroups?: {id: string}[], isFinnish?: boolean) {
     const taxonGroups = '<span class="container-taxon-group informal-group-image ' + (informalTaxonGroups || []).map(el => el.id).join(' ') + '"></span>';
     return start + '<span class="flag-taxonRank">' + (taxonRankId ? ' (' + taxonRankId + ') ' : '') +
     '<span class="container-flag-taxonRank"><span class="taxon-groups">' + taxonGroups + '</span>' +
@@ -103,19 +101,30 @@ export class TaxonAutocompleteService {
   }
 
   private addBold(original: string, substring: string): string {
-    const words = substring.split(' ');
-    words.forEach(el => {
-      const newOriginal = original.toLowerCase();
-      const newString = el.toLowerCase();
-      const index = newOriginal.indexOf(newString);
-      original = index > -1 ?
-      (original.slice(0, index) + '<b>' + original.slice(index, index + el.length) + '</b>' + original.slice(index + el.length))
-      : original;
+    // Pairs of bolded words and whether they've been bolded already (goal is to bold words only once).
+    const boldedWords: [string, boolean][] = original.split(' ').map(w => [w, false]);
+
+    substring.split(' ').forEach(w => {
+      wordLoop: for (const i in boldedWords) { // eslint-disable-line guard-for-in
+        const [_w, bolded] = boldedWords[i];
+        if (bolded) {
+          continue;
+        }
+        const startRegexp = new RegExp(`^(${w})`, 'i');
+        const endRegexp = new RegExp(`(${w})$`, 'i');
+        for (const regexp of [startRegexp, endRegexp]) {
+          const match = _w.match(regexp);
+          if (match) {
+            boldedWords[i] = [_w.replace(regexp, '<b>$1</b>'), true];
+            break wordLoop;
+          }
+        }
+      }
     });
-    return original;
+    return boldedWords.reduce((joined, [w]) => joined.concat(' ', w), '');
   }
 
-  private capitalizeFirstLetter(string) {
+  private capitalizeFirstLetter(string: string) {
     if (string.startsWith('<')) {
       return '<b>' + string.charAt(3).toUpperCase() + string.slice(4);
     } else {

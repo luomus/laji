@@ -12,7 +12,7 @@
           </button>
           <a class="navbar-brand" [routerLink]="['/'] | localize">
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
-            <span>LAJI.FI</span>
+            <span>{{ 'navigation.title' | translate }}</span>
           </a>
           <div class="visible-xs-inline-block pull-right search">
             <laji-omni-search
@@ -96,7 +96,7 @@
 <!--                     <ng-container *ngIf="(notificationsTotal$ | async) > 0">
                       <li role="separator" class="divider"></li>
                       <li>
-                        <laji-notifications (close)="onClose()"></laji-notifications>
+                        <laji-notifications (notificationsClose)="onClose()"></laji-notifications>
                       </li>
                     </ng-container> -->
                   </ul>

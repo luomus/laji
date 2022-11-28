@@ -7,10 +7,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
-  Output
+  Output,
+  Renderer2,
+  ViewChild
 } from '@angular/core';
 import { Observable, of, of as ObservableOf, Subscription, timer } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -43,20 +46,26 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   @Input() useValue = '';
   @Input() whiteList: string[];
   @Input() blackList: string[];
-  @Output() complete = new EventEmitter<void>();
+  @Output() finish = new EventEmitter<void>();
   @Output() taxonSelect = new EventEmitter<Autocomplete>();
 
+  @ViewChild('input') inputEl: ElementRef;
+
   dataSource: Observable<any>;
-  value = '';
+  value: string | undefined = '';
   result: Autocomplete;
   loading = false;
   taxonSub: Subscription;
+
+  private tokenMinLength = 3;
+  private destroyBlurListener: () => void;
 
   constructor(
     private lajiApi: LajiApiService,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
-    private taxonAutocompleteService: TaxonAutocompleteService
+    private taxonAutocompleteService: TaxonAutocompleteService,
+    private renderer: Renderer2
   ) {
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
@@ -76,8 +85,8 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     if (!this.renderButton && this.allowInvalid) {
       // emit empty string if input is deselected and value is empty
-      document.getElementById('autocomplete-input').addEventListener('blur', () => {
-        if (this.value.length < 1) {
+      this.destroyBlurListener = this.renderer.listen(this.inputEl.nativeElement, 'blur', () => {
+        if (this.value?.length < 1) {
           this.useCurrentValue();
         }
       });
@@ -96,9 +105,15 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
     if (this.taxonSub) {
       this.taxonSub.unsubscribe();
     }
+    if (this.destroyBlurListener) {
+      this.destroyBlurListener();
+    }
   }
 
   getTaxa(token: string, onlyExact = false): Observable<any> {
+    if (!token || token.length < this.tokenMinLength) {
+      return of([]);
+    }
     this.loading = true;
     this.cdr.markForCheck();
     return timer(onlyExact ? this.index * 100 : 0).pipe(
@@ -132,9 +147,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
         return data.map(item => {
           let groups = '';
           if (item.payload && item.payload.informalTaxonGroups) {
-            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => {
-              return prev + ' ' + curr.id;
-            }, groups);
+            groups = item.payload.informalTaxonGroups.reduce((prev, curr) => prev + ' ' + curr.id, groups);
           }
           item['groups'] = groups;
           return item;
@@ -144,7 +157,7 @@ export class TaxonAutocompleteComponent implements AfterViewInit, OnDestroy {
       tap(() => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.complete.emit();
+        this.finish.emit();
       }));
   }
 

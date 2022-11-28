@@ -1,16 +1,13 @@
 @import 'projects/laji-ui/src/lib/vars';
 
 :host {
+  height: 100%;
   width: 100%;
 }
 
 lu-sidebar-link .badge {
   margin: 0 5px 0 0;
   background-color: #2e921c;
-}
-
-:host ::ng-deep lu-sidebar .sidebar {
-  height: 100vh;
 }
 
 @media only screen and (min-width : 768px) {

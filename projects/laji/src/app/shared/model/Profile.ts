@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 /**
  * API documentation
  * To use this api you need an access token. To getList the token, send a post request with your email address to api-users resource and one will be send to your. See below for information on how to use this api and if you have any questions you can contact us at helpdesk@laji.fi.  Place refer to [schema.laji.fi](http://schema.laji.fi/) for more information about the used vocabulary
@@ -87,8 +87,8 @@ export interface Profile {
     defaultMediaMetadata?: {
       capturerVerbatim: string;
       intellectualOwner: string;
-      intellectualRights: Profile.IntellectualRights
-    }
+      intellectualRights: Profile.IntellectualRights;
+    };
   };
 
   finnishBirdSongRecognitionSkillLevel?: Profile.FinnishBirdSongRecognitionSkillLevelEnum;
@@ -96,6 +96,8 @@ export interface Profile {
   birdwatchingActivityLevel?: Profile.BirdwatchingActivityLevelEnum;
 
   nameVisibleInKerttu?: boolean;
+
+  birdSongRecognitionSkillLevels?: Profile.BirdSongRecognitionSkillLevel[];
 
 }
 
@@ -135,4 +137,15 @@ export namespace Profile {
     | 'MA.birdwatchingActivityLevelEnum2'
     | 'MA.birdwatchingActivityLevelEnum3'
     | 'MA.birdwatchingActivityLevelEnum4';
+
+  export type BirdSongRecognitionSkillLevelEnum =
+    'MA.birdSongRecognitionSkillLevelEnum1'
+    | 'MA.birdSongRecognitionSkillLevelEnum2'
+    | 'MA.birdSongRecognitionSkillLevelEnum3'
+    | 'MA.birdSongRecognitionSkillLevelEnum4';
+
+  export interface BirdSongRecognitionSkillLevel {
+    birdSongRecognitionArea: string;
+    birdSongRecognitionSkillLevel: BirdSongRecognitionSkillLevelEnum;
+  }
 }

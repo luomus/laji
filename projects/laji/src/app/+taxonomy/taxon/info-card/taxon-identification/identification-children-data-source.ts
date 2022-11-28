@@ -24,7 +24,7 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
 
   private childCache = {};
 
-  constructor (
+  constructor(
     private taxonApi: TaxonomyApi,
     private translate: TranslateService,
     private children: Taxonomy[],
@@ -36,8 +36,7 @@ export class IdentificationChildrenDataSource extends DataSource<Taxonomy> {
   connect(collectionViewer: CollectionViewer): Observable<Taxonomy[]> {
     return collectionViewer.viewChange.pipe(
       takeUntil(this.unsubscribe$),
-      map(range => clampRange(range, 0, this.children.length - 1)),
-      map(range => Array.from(rangeToIter(range))),
+      map(range => this.children.length > 0 ? Array.from(rangeToIter(clampRange(range, 0, this.children.length - 1))) : []),
       concatMap(indices => forkJoin(...indices.map(i => this.childByIdx$(i))))
     );
   }

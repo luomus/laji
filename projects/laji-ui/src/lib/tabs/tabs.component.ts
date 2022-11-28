@@ -17,11 +17,11 @@ import { Subject } from 'rxjs';
     trigger('activeTab', [
       state('inactive', style({
         'background-color': color.neutral[3],
-        'color': color.neutral[6]
+        color: color.neutral[6]
       })),
       state('active', style({
         'background-color': color.neutral[2],
-        'color': color.neutral[7]
+        color: color.neutral[7]
       })),
       transition('inactive=>active', animate('100ms')),
       transition('active=>inactive', animate('200ms'))

@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
-type TableType = 'downloads'|'people'|'user';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 
 @Component({
   selector: 'vir-data-table',
@@ -26,43 +27,52 @@ type TableType = 'downloads'|'people'|'user';
                   [showFooter]="false"
                   [virtualScrolling]="true"
                   [clientSideSorting]="true"
-                  [height]="'calc(90vh - 195px)'"
+                  [showRowAsLink]="showRowAsLink"
+                  [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
+                  (datatableSelect)="datatableSelect.emit($event)"
                   [count]="0"
                   [page]="1"
                   [pageSize]="20"
                   [columnMode]="'force'"
                   [totalMessage]="'haseka.submissions.total' | translate"
-                  [columns]="cols">
+                  [columns]="cols"
+                  [selectionType]="selectionType"
+                  [selected]="selected"
+                  >
           </laji-datatable>
       </div>
-      <ng-template let-value="value" let-row="row" let-sort="sortFn" #downloadFileTpl>
-        <a [href]="'/api/file-download?id=' + value">{{ ('download.' + row.downloadType) | translate }}</a>
-      </ng-template>
   `
 })
 export class DataTableComponent implements AfterViewInit {
-
   @ViewChild(DatatableHeaderComponent) header: DatatableHeaderComponent;
-  @ViewChild('downloadFileTpl') downloadFileTpl: TemplateRef<any>;
 
   @Input() showDownloadMenu = true;
+  @Input() showRowAsLink = false;
+  @Input() height = 'calc(90vh - 195px)';
+  @Input() data: any[];
+  @Input() exportFileName = 'export';
+  @Input() selected: any = [];
+  @Input() selectionType: SelectionType;
 
-  downloadLoading: boolean;
+  @Output() rowSelect = new EventEmitter<any>();
+  @Output() datatableSelect = new EventEmitter<any>();
+
+  downloadLoading = false;
 
   cols:  DatatableColumn[] = [];
   private allCols: DatatableColumn[] = [
     {
       name: 'organisation',
       label: 'usage.organisation',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true,
     },
     {
       name: 'section',
       label: 'usage.section',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true
     },
     {
@@ -80,13 +90,13 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      name: 'person',
+      name: 'personId',
       label: 'usage.person',
       cellTemplate: 'label',
       canAutoResize: true
     },
     {
-      name: 'collectionId',
+      name: 'collectionIds',
       label: 'usage.collectionId',
       cellTemplate: 'labelArray',
       canAutoResize: true
@@ -97,17 +107,42 @@ export class DataTableComponent implements AfterViewInit {
       canAutoResize: true
     },
     {
-      prop: 'id',
       name: 'download',
+      prop: 'id',
       label: 'usage.dataDownload',
       canAutoResize: true
+    },
+    {
+      name: 'apiKeyExpires',
+      prop: 'apiKeyExpires',
+      label: 'usage.apiKeyExpires',
+      canAutoResize: true
+    },
+    {
+      name: 'apiKey',
+      label: 'usage.apiKey',
+      cellTemplate: 'copyToClipboard',
+      canAutoResize: true
+    },
+    {
+      name: 'securePortalUserRoleExpires',
+      label: 'usage.admin.securePortalUserRoleExpires',
+      canAutoResize: true
+    },
+    {
+      name: 'userId',
+      prop: 'id',
+      label: 'usage.admin.userId',
+      canAutoResize: true
+    },
+    {
+      name: 'check',
+      label: 'usage.admin.selectAll',
+      canAutoResize: false,
+      headerCheckboxable: true,
+      checkboxable: true
     }
   ];
-
-  @Input() data: any[];
-  @Input() exportFileName = 'export';
-
-  @Output() rowSelect = new EventEmitter<any>();
 
   private _type: TableType;
 
@@ -134,30 +169,29 @@ export class DataTableComponent implements AfterViewInit {
   @Input()
   set type(type: TableType) {
     this._type = type;
-    if (this.downloadFileTpl) {
-      this.cols = this.getColsFromType(type);
-    }
+    this.cols = this.getColsFromType(type);
   }
 
   getColsFromType(type: TableType) {
     switch (type) {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
+      case 'admin':
+        return this.getCols(['organisation', 'fullName', 'emailAddress', 'userId', 'securePortalUserRoleExpires', 'check']);
       case 'downloads':
-        return this.getCols(['requested', 'person', 'collectionId', 'dataUsePurpose']);
+        return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':
-        return this.getCols(['requested', 'collectionId', 'dataUsePurpose', 'download']);
+        return this.getCols(['requested', 'collectionIds', 'dataUsePurpose']);
+      case 'userKeys':
+        return this.getCols(['apiKeyExpires', 'collectionIds', 'dataUsePurpose', 'apiKey']);
+      case 'apiKeys':
+        return this.getCols(['apiKeyExpires', 'personId', 'collectionIds', 'dataUsePurpose']);
     }
   }
 
   private getCols(cols: string[]): DatatableColumn[] {
-    return cols.map(c => {
-      const column = this.allCols.find(col => c === col.name);
-      if (column.name === 'download') {
-        column.cellTemplate = this.downloadFileTpl;
-      }
-
-      return column;
-    });
+    return cols.map(c => (
+      this.allCols.find(col => c === col.name)
+    ));
   }
 }

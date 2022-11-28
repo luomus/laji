@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 export const LAST_LANG_KEY = 'last-lang';
 
@@ -11,9 +12,10 @@ export class LocalizeRouterService {
   locales = ['fi', 'en', 'sv'];
 
   static translatePath(path: string, lang): string {
+    const defaultLang = (environment as any).defaultLang ?? 'fi';
     if (path.match(/^\/(in|en|sv|fi)\b/)) {
-      return path.replace(/^\/(in|en|sv|fi)\b/, lang === 'fi' ? '' : `/${lang}`);
-    } else if (lang === 'fi' || path.startsWith('.')) {
+      return path.replace(/^\/(in|en|sv|fi)\b/, lang === defaultLang ? '' : `/${lang}`);
+    } else if (lang === defaultLang || path.startsWith('.')) {
       return path;
     } else if (path === '/') {
       path = '';
@@ -65,6 +67,6 @@ export class LocalizeRouterService {
     if (pathSlices.length && this.locales.indexOf(pathSlices[0]) !== -1) {
       return pathSlices[0];
     }
-    return this.locales[0];
+    return (environment as any).defaultLang ?? 'fi';
   }
 }

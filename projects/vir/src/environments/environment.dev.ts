@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 
 import { Global } from './global';
 
@@ -80,5 +80,8 @@ export const environment = {
       sv: '4378',
       en: ''
     },
-  }
+  },
+  geoserver: 'https://geoserver-dev.laji.fi',
+  observationMapOptions: {availableOverlayNameBlacklist: []},
+  displayDevRibbon: true
 };

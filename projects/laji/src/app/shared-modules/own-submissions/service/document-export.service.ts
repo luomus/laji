@@ -56,8 +56,7 @@ export class DocumentExportService {
   private getAoa(docs: Document[]): Observable<any> {
     return this.getJsonForms(docs)
       .pipe(
-        switchMap(jsonForms => {
-          return this.getAllFields(jsonForms)
+        switchMap(jsonForms => this.getAllFields(jsonForms)
             .pipe(
               switchMap(({fields, fieldStructure}) => {
                 const dataObservables = [];
@@ -70,15 +69,14 @@ export class DocumentExportService {
 
                 return (dataObservables.length > 0 ? ObservableForkJoin(dataObservables) : ObservableOf([]))
                   .pipe(
-                    map(data => {
+                    map((data: any[]) => {
                       const mergedData = [].concat.apply([], data);
 
                       return this.convertDataToAoA(this.getUsedFields(fields), mergedData);
                     })
                   );
               })
-            );
-        })
+            ))
       );
   }
 
@@ -107,16 +105,16 @@ export class DocumentExportService {
 
     const aoa = [[]];
 
-    for (let i = 0; i < fields.length; i++) {
-      aoa[0].push(fields[i]['label']);
+    for (const field of fields) {
+      aoa[0].push(field['label']);
     }
 
     for (let i = 0; i < data.length; i++) {
       const obj = data[i];
       aoa.push([]);
 
-      for (let j = 0; j < fields.length; j++) {
-        aoa[i + 1].push(Util.parseJSONPath(obj, fields[j]['value'] as string));
+      for (const field of fields) {
+        aoa[i + 1].push(Util.parseJSONPath(obj, field['value'] as string));
       }
     }
 
@@ -128,8 +126,8 @@ export class DocumentExportService {
     let unwindKey: string;
 
     if (Array.isArray(obj)) {
-      for (let i = 0; i < obj.length; i++) {
-        this.processData(obj[i], form, fieldData, path, observables);
+      for (const item of obj) {
+        this.processData(item, form, fieldData, path, observables);
       }
       if (obj.length > fieldData['@multipleBy']) {
         fieldData['@multipleBy'] = obj.length;
@@ -145,17 +143,17 @@ export class DocumentExportService {
             if (unwindKey) {
               const getDataObservables = [];
 
-              for (let i = 0; i < obj[unwindKey].length; i++) {
-                if (!this.isEmpty(path + unwindKey, obj[unwindKey][i], form)) {
+              for (const item of obj[unwindKey]) {
+                if (!this.isEmpty(path + unwindKey, item, form)) {
                   getDataObservables.push(
-                    this.getData(obj[unwindKey][i], form, fieldData[unwindKey], path + unwindKey + '.')
+                    this.getData(item, form, fieldData[unwindKey], path + unwindKey + '.')
                   );
                 }
               }
 
               return (getDataObservables.length > 0 ? ObservableForkJoin(getDataObservables) : ObservableOf([]))
                 .pipe(
-                  map((arrays) => {
+                  map((arrays: any[]) => {
                     obj[unwindKey] = [].concat.apply([], arrays);
                     return this.unwind(unwindKey, obj);
                   })
@@ -254,20 +252,18 @@ export class DocumentExportService {
     return result;
   }
 
-  private getAllFields(jsonForms: {[formID: string]: Form.JsonForm}): Observable<{fields: DocumentField[], fieldStructure: DocumentField}> {
+  private getAllFields(jsonForms: {[formID: string]: Form.JsonForm}): Observable<{fields: DocumentField[]; fieldStructure: DocumentField}> {
     const fieldStructure: DocumentField = {};
     const fields: DocumentField[] = [];
 
-    const labelObservables = this.extraFields.map(value => {
-      return this.getFieldLabel(value)
+    const labelObservables = this.extraFields.map(value => this.getFieldLabel(value)
         .pipe(
           tap(label => {
-            const field: DocumentField = {value: value, label: label, used: false};
+            const field: DocumentField = {value, label, used: false};
             fieldStructure[value] = field;
             fields.push(field);
           })
-        );
-      });
+        ));
 
     return ObservableForkJoin(labelObservables)
       .pipe(
@@ -279,8 +275,8 @@ export class DocumentExportService {
               continue;
             }
             const form = jsonForms[formId];
-            for (let i = 0; i < form.fields.length; i++) {
-              queue.push({...form.fields[i], path: ''});
+            for (const field of form.fields) {
+              queue.push({...field, path: ''});
             }
           }
           queue = this.sortQueue(queue);
@@ -314,8 +310,8 @@ export class DocumentExportService {
               parent[next.name] = field;
 
               while (true) {
-                for (let i = 0; i < next.fields.length; i++) {
-                  queue.push({...next.fields[i], path: fieldName + '.'});
+                for (const _field of next.fields) {
+                  queue.push({..._field, path: fieldName + '.'});
                 }
 
                 if (queue.length < 1) {
@@ -333,15 +329,13 @@ export class DocumentExportService {
             }
           }
 
-          return {fields: fields, fieldStructure: fieldStructure};
+          return {fields, fieldStructure};
         })
       );
   }
 
   private sortQueue(queue: any[]) {
-    return queue.sort((a, b) => {
-      return this.getSortIdx(a) - this.getSortIdx(b);
-    });
+    return queue.sort((a, b) => this.getSortIdx(a) - this.getSortIdx(b));
   }
 
   private getSortIdx(queueItem: any) {
@@ -366,9 +360,7 @@ export class DocumentExportService {
           geometry: obj,
         }]} as FeatureCollection).replace(/\n$/, '');
     } else if (Array.isArray(obj)) {
-      return ObservableForkJoin(obj.map((labelKey) => {
-        return this.getDataLabel(labelKey, fieldData);
-      }))
+      return ObservableForkJoin(obj.map((labelKey) => this.getDataLabel(labelKey, fieldData)))
         .pipe(map(array => array.join(', ')));
     } else {
       return this.getDataLabel(obj, fieldData);
@@ -392,7 +384,7 @@ export class DocumentExportService {
 
     if (key.match(new RegExp('^' + this.valuePrefixes.collection + '\.[0-9]+$'))) {
       return this.collectionService
-        .getName(key, this.translate.currentLang);
+        .getName$(key, this.translate.currentLang);
     }
 
     return ObservableOf(key);
@@ -403,9 +395,7 @@ export class DocumentExportService {
       return this.labelService
         .get(this.classPrefixes[fieldName] + '.' + fieldName, this.translate.currentLang)
         .pipe(
-          map((label) => {
-            return label || fieldName;
-          })
+          map((label) => label || fieldName)
         );
     }
 
@@ -416,16 +406,16 @@ export class DocumentExportService {
     if (path === '') {
       if (!obj.gatherings || obj.gatherings.length < 1) { return true; }
 
-      for (let i = 0; i < obj.gatherings.length; i++) {
-        if (!this.isEmpty('gatherings', obj.gatherings[i], form)) { return false; }
+      for (const gathering of obj.gatherings) {
+        if (!this.isEmpty('gatherings', gathering, form)) { return false; }
       }
 
       return true;
     } else if (path === 'gatherings') {
       if (!obj.units || obj.units.length < 1) { return true; }
 
-      for (let i = 0; i < obj.units.length; i++) {
-        if (!this.isEmpty('gatherings.units', obj.units[i], form)) { return false; }
+      for (const unit of obj.units) {
+        if (!this.isEmpty('gatherings.units', unit, form)) { return false; }
       }
 
       return true;

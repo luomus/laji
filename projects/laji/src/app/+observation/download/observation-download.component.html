@@ -1,11 +1,11 @@
 <ng-template #downloadModal>
-  <div class="modal-header">
+  <div class="modal-header laji-page">
     <button class="close pull-right" type="button" (click)="closeModal()">
       <i class="glyphicon glyphicon-remove"></i>
     </button>
-    <h3 class="modal-title">{{ 'search.result.load' | translate }}</h3>
+    <h4 class="modal-title">{{ 'search.result.load' | translate }}</h4>
   </div>
-  <div class="modal-body">
+  <div class="modal-body laji-page">
     <p
       *ngIf="!hasPersonalData"
       [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
@@ -23,7 +23,10 @@
             role="primary"
             [showBackdrop]="false"
             (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>
@@ -35,7 +38,10 @@
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
             (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading">
+            [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
             {{ 'haseka.submissions.download' | translate }}
           </laji-download>
@@ -65,6 +71,11 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
+          <ng-container *lajiForTypes="['vir']">
+            <alert *ngIf="gisDownloadLimit < unitCount">
+              <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+            </alert>
+          </ng-container>
           <laji-download
             *lajiForTypes="['vir']"
             [showReason]="true"
@@ -103,6 +114,9 @@
           <alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
           </alert>
+          <alert *ngIf="gisDownloadLimit < unitCount">
+            <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+          </alert>
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
             [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
@@ -112,6 +126,23 @@
         </div>
       </ng-container>
     </section>
+    <ng-container>
+      <section *lajiForTypes="['vir']">
+        <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
+        <alert *lajiLoggedIn="false">
+          {{ 'result.load.error.notLoggedIn' | translate }}
+        </alert>
+        <alert *ngIf="!queryHasFilters">
+          {{ 'result.load.error.minQuery' | translate }}
+        </alert>
+        <ng-container *lajiLoggedIn="true">
+          <div *ngIf="queryHasFilters">
+            <p [innerHtml]="'result.load.api' | translate"></p>
+            <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
+          </div>
+        </ng-container>
+      </section>
+    </ng-container>
     <section>
       <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
       <alert *ngIf="taxaLimit < speciesCount">
@@ -142,5 +173,5 @@
   [isAggregate]="false"
   [showPageSize]="false"
   (resetColumns)="resetColumnSelects()"
-  (close)="onCloseColumnSettingsModal($event)"
+  (settingsClose)="onCloseColumnSettingsModal($event)"
 ></laji-observation-table-settings>

@@ -1,6 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import { browser, $, $$, ExpectedConditions, ElementFinder } from 'protractor';
 import { ConfirmPO } from '../shared/dialogs.po';
-import { getAddressWithLang } from "../../helper";
+import { getAddressWithLang } from '../../helper';
+import { SubmissionsPage as GenericSubmissionsPage } from '../+vihko/submissions.po';
+const fiTranslations = require('../../../src/i18n/fi.json');
+const enTranslations = require('../../../src/i18n/en.json');
+const svTranslations = require('../../../src/i18n/sv.json');
 
 const EC = ExpectedConditions;
 
@@ -9,6 +14,7 @@ const confirmDialog = new ConfirmPO();
 export class ProjectFormPage {
 
   public readonly $formLink = $('[href$="/form"]');
+  public readonly $templateLink = $('[href$="/templates"]');
   public readonly $sidebar = $('.sidebar');
   public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
@@ -21,6 +27,8 @@ export class ProjectFormPage {
   public readonly aboutPage = new AboutPage();
   public readonly mobileAboutPage = new MobileAboutPage();
   public readonly namedPlaceLinker = new NamedPlaceLinker();
+  public readonly templatePage = new TemplatePage();
+  public readonly submissionsPage = new SubmissionsPage();
 
   navigateTo(id, subPage = '', lang?: 'fi' | 'en' | 'sv') {
     return browser.get(getAddressWithLang(`/project/${id}${subPage}`, lang)) as Promise<void>;
@@ -56,7 +64,7 @@ export class ProjectFormPage {
   }
 }
 
-export class NamedPlacesView { // tslint:disable-line max-classes-per-file
+export class NamedPlacesView {
  public readonly $container = $('laji-named-places');
 
   public readonly $list = this.$container.$('laji-np-list');
@@ -87,7 +95,7 @@ export class NamedPlacesView { // tslint:disable-line max-classes-per-file
   }
 }
 
-class AreaFilter { // tslint:disable-line max-classes-per-file
+class AreaFilter {
   $select: ElementFinder;
   constructor(selector: string) {
     this.$select = $(`laji-area-select[ng-reflect-field="${selector}"]`);
@@ -99,12 +107,12 @@ class AreaFilter { // tslint:disable-line max-classes-per-file
   }
 }
 
-export class DocumentFormView { // tslint:disable-line max-classes-per-file
+export class DocumentFormView {
   public readonly $container = $('laji-project-form-form');
   public readonly $form = $('laji-form .laji-form');
-  public readonly $cancel = $('laji-document-form-footer .btn-danger');
-  public readonly $save = $('laji-document-form-footer .btn-success');
-  public readonly $savePrivate = $('laji-document-form-footer .btn-default');
+  public readonly $cancel = $('laji-form-footer .btn-danger');
+  public readonly $save = $('laji-form-footer .btn-success');
+  public readonly $savePrivate = $('laji-form-footer .btn-default');
   public readonly $blockingLoader = $('.laji-form.blocking-loader');
   public readonly $openNamedPlaceLinker = this.$container.$('#link-to-np');
 
@@ -124,25 +132,37 @@ export class DocumentFormView { // tslint:disable-line max-classes-per-file
     await this.$savePrivate.click();
     await browser.wait(EC.invisibilityOf(this.$blockingLoader));
   }
+
+  async isTemplate() {
+    const label = await this.$save.getText();
+    return [fiTranslations, enTranslations, svTranslations].some(translations => translations['haseka.form.saveTemplate'] === label);
+  }
 }
 
-class NamedPlaceLinker { // tslint:disable-line max-classes-per-file
+class NamedPlaceLinker {
   public readonly $container = $('laji-named-place-linker');
   public readonly namedPlacesView = new NamedPlacesView();
 }
 
-class AboutPage { // tslint:disable-line max-classes-per-file
+class AboutPage {
   public readonly $aboutContent = $('laji-about');
   public readonly $loginButton = $('.login-button');
 }
 
-class MobileAboutPage extends AboutPage { // tslint:disable-line max-classes-per-file
+class MobileAboutPage extends AboutPage {
   public readonly $useButton = $('.use-button');
   public readonly $terms = $('laji-project-form-terms');
   public readonly $termsAcceptButton = this.$terms.$('button');
 }
 
+class TemplatePage {
+  public readonly datatable = new GenericSubmissionsPage().datatable;
+}
 
-class DisabledPage { // tslint:disable-line max-classes-per-file
+class SubmissionsPage {
+  $container = $('laji-submissions');
+}
+
+class DisabledPage {
   public $container = $('laji-project-form-disabled')
 }

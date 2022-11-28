@@ -19,11 +19,11 @@ export class SykeInsectRouteComponent implements OnInit, OnDestroy {
   rows: any;
   selected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
   defaultSelected = ['unit.linkings.taxon.scientificName', 'individualCountSum'];
-  sorts: {prop: string, dir: 'asc'|'desc'}[] = [
+  sorts: {prop: string; dir: 'asc'|'desc'}[] = [
     {prop: 'unit.linkings.taxon.scientificName', dir: 'asc'}
   ];
 
-  observationStats = [{'dataSets': []}];
+  observationStats = [{dataSets: []}];
   activeYear: number;
   activeDate: string;
   onlySections: boolean;

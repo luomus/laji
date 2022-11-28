@@ -1,0 +1,10 @@
+:host ::ng-deep {
+  .input-group-btn span.btn {
+    margin-top: -1px;
+  }
+  .input-group .input-group-btn .btn {
+    &.active {
+      transform: initial;
+    }
+  }
+}

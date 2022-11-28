@@ -1,0 +1,15 @@
+<ng-container *lajiBrowserOnly>
+  <div class="news-article my-4" *ngFor="let news of technicalNews">
+    <ng-container *ngIf="news.id else error">
+      <a class="technical-news-link" *ngIf="absoluteLink else relativeLink" [href]="absoluteLink + '/news/' + news.id" target="_blank">
+        {{ news.title }} <span class="glyphicon glyphicon-link"></span>
+      </a>
+    </ng-container>
+    <ng-template #relativeLink>
+      <a class="technical-news-link" [routerLink]="['/news', news.id]">{{ news.title }}</a>
+    </ng-template>
+    <ng-template #error>
+      <span class="error" [innerHTML]="'technicalNews.error' | translate"></span>
+    </ng-template>
+  </div>
+</ng-container>

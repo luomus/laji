@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TaxonTaxonomyService {
-  private cacheById: { [key: string]: { taxon?: Taxonomy, parentId?: string, childrenIds?: string[] } } = {};
+  private cacheById: { [key: string]: { taxon?: Taxonomy; parentId?: string; childrenIds?: string[] } } = {};
   private pending: {[key: string]: Observable<Taxonomy>} = {};
   private pendingChildren: {[key: string]: Observable<Taxonomy[]>} = {};
   private pendingParents: {[key: string]: Observable<Taxonomy[]>} = {};
@@ -30,7 +30,8 @@ export class TaxonTaxonomyService {
       this.pending[id] = this.taxonService
         .taxonomyFindBySubject(id, 'multi', {
           selectedFields: this.getSelectedFields(),
-          onlyFinnish: false
+          onlyFinnish: false,
+          includeHidden: true
         })
         .pipe(
           tap((data) => {
@@ -62,7 +63,8 @@ export class TaxonTaxonomyService {
       this.pendingChildren[id] = this.taxonService
         .taxonomyFindChildren(id, 'multi', undefined, {
           selectedFields: this.getSelectedFields(),
-          onlyFinnish: false
+          onlyFinnish: false,
+          includeHidden: true
         })
         .pipe(
           tap(children => {
@@ -97,9 +99,7 @@ export class TaxonTaxonomyService {
         return of(cacheParents);
       }
 
-      return this.getParents(cacheParents[0].id).pipe(map(parents => {
-        return parents.concat(cacheParents);
-      }));
+      return this.getParents(cacheParents[0].id).pipe(map(parents => parents.concat(cacheParents)));
     }
 
     if (!this.pendingParents[id]) {
@@ -162,6 +162,7 @@ export class TaxonTaxonomyService {
       'id',
       'hasChildren',
       'hasParent',
+      'hiddenTaxon',
       'vernacularName',
       'scientificName',
       'cursiveName',

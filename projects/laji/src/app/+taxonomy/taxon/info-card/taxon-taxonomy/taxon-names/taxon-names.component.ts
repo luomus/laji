@@ -9,7 +9,7 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 })
 export class TaxonNamesComponent {
   _taxon: Taxonomy;
-  availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
+  availableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};
   synonymTypes = [
     'basionyms',
     'objectiveSynonyms',
@@ -25,7 +25,7 @@ export class TaxonNamesComponent {
   ];
 
   @Input() set taxon(taxon: Taxonomy) {
-      this.availableLangs = {'vernacularName': [], 'alternativeVernacularName': [], 'obsoleteVernacularName': [], 'colloquialVernacularName': [], 'tradeName': []};
+      this.availableLangs = {vernacularName: [], alternativeVernacularName: [], obsoleteVernacularName: [], colloquialVernacularName: [], tradeName: []};
       for (const lang of ['fi', 'sv', 'en', 'se', 'ru']) {
         if (taxon.vernacularName && taxon.vernacularName[lang]) {
           this.availableLangs.vernacularName.push(lang);
@@ -47,8 +47,8 @@ export class TaxonNamesComponent {
   }
 
   taxonHasSynonymKey(taxon) {
-    for (let i = 0; i < this.synonymTypes.length; i++) {
-      if (taxon.hasOwnProperty(this.synonymTypes[i])) {
+    for (const synonymType of this.synonymTypes) {
+      if (taxon.hasOwnProperty(synonymType)) {
         return true;
       }
     }
@@ -56,8 +56,8 @@ export class TaxonNamesComponent {
   }
 
   hasOtherNamesBefore(array) {
-    for (let i = 0; i < array.length; i++) {
-      if (this.availableLangs[array[i]].length > 0) {
+    for (const item of array) {
+      if (this.availableLangs[item].length > 0) {
         return true;
       }
     }

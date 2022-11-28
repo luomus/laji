@@ -3,13 +3,14 @@ import { DocumentApi } from '../../../shared/api/DocumentApi';
 import { UserService } from '../../../shared/service/user.service';
 import { Document } from '../../../shared/model/Document';
 import { Util } from '../../../shared/service/util.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { mergeMap, tap } from 'rxjs/operators';
+import { mergeMap, switchMap, shareReplay, tap } from 'rxjs/operators';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
+import { FormService } from '../../../shared/service/form.service';
 
 export enum Readonly {
   noEdit,
@@ -20,71 +21,58 @@ export enum Readonly {
 @Injectable()
 export class DocumentService {
 
-  public static readonly removableUnit = [
-    '$..images',
-    '$..dateBegin',
-    '$..dateEnd',
-    '$..timeStart',
-    '$..timeEnd',
-    '$..notes',
-    '$..observationDays',
-    '$..observationMinutes',
-    '$..weather',
-    '$..abundanceString',
-    '$..count',
-    '$..maleIndividualcount',
-    '$..femaleIndividualcount',
-    '$..sex',
-    '$..hostID',
-    '$..taste',
-    '$..tasteNotes',
-    '$..smell',
-    '$..smellNotes',
-    '$..plantStatusCode',
-    '$..movingStatus'
-  ];
-
-  public static readonly removableGathering = [
-    '$..units',
-    '$..images',
-    '$..dateBegin',
-    '$..dateEnd',
-    '$..timeStart',
-    '$..timeEnd',
-    '$..iceCover',
-    '$..cloudAndRain',
-    '$..meanTemperature',
-    '$..snowAndIceOnTrees',
-    '$..snowCover',
-    '$..typeOfSnowCover',
-    '$..visibility',
-    '$..weather',
-    '$..wind'
-  ];
+  private cache: Record<string, Observable<Document>> = {};
 
   constructor(
     private documentApi: DocumentApi,
     private userService: UserService,
-    private documentStorage: DocumentStorage
+    private documentStorage: DocumentStorage,
+    private formService: FormService
   ) { }
+
+  findById(id: string): Observable<Document> {
+    const cacheKey = this.getCacheKey(id);
+    if (!this.cache[cacheKey]) {
+      this.cache[cacheKey] = this.documentApi.findById(id, this.userService.getToken()).pipe(shareReplay());
+    }
+    return this.cache[cacheKey];
+  }
+
+  create(document: Document) {
+    return this.documentApi.create(document, this.userService.getToken()).pipe(tap(d => {
+      this.cache[this.getCacheKey(d.id)] = of(d);
+    }));
+  }
+
+  update(id: string, document: Document) {
+    return this.documentApi.update(id, document, this.userService.getToken()).pipe(tap(d => {
+      this.cache[this.getCacheKey(d.id)] = of(d);
+    }));
+  }
 
   deleteDocument(id: string) {
     return this.documentApi.delete(id, this.userService.getToken()).pipe(
       mergeMap(() => this.userService.user$),
-      tap(person => this.documentStorage.removeItem(id, person))
+      tap(person => {
+        this.documentStorage.removeItem(id, person);
+        delete this.cache[this.getCacheKey(id)];
+      })
     );
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
-    const template: Document = Util.clone(templateData.document);
-    this.removeMeta(template, templateData.type === 'unit' ? DocumentService.removableUnit : DocumentService.removableGathering);
-    template.isTemplate = true;
-    template.templateName = templateData.name;
-    template.templateDescription = templateData.description;
-    return this.documentApi.create(template, this.userService.getToken());
+    return this.formService.getForm(templateData.document.formID).pipe(switchMap(form => {
+      const template: Document = this.removeMeta(templateData.document, form.excludeFromCopy);
+      template.isTemplate = true;
+      template.templateName = templateData.name;
+      template.templateDescription = templateData.description;
+      return this.documentApi.create(template, this.userService.getToken());
+    }));
   }
 
   removeMeta(document: any, remove = []): any {
+    document = Util.clone(document);
+
     if (['$.id', '$..id'].every(idField => remove.indexOf(idField) === -1)) {
       remove = [...remove, '$..id', '$..dateEdited', '$..dateCreated', '$..publicityRestrictions', '$..locked'];
     }
@@ -134,4 +122,9 @@ export class DocumentService {
     }
     return data && typeof data.locked !== 'undefined' ? (data.locked ? Readonly.true : Readonly.false) : Readonly.false;
   }
+
+  private getCacheKey(documentID: string) {
+    return `${documentID}:${this.userService.getToken()}`;
+  }
+
 }

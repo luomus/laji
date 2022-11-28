@@ -1,0 +1,25 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.list-inline {
+ list-style:none
+}
+.list-inline,
+.list-inline li {
+ margin:0;
+ padding:0
+}
+.list-divided li {
+ border-right:1px solid $neutral-7;
+ padding-right:.6rem;
+ margin-right:.4rem;
+ align-self:center
+}
+.list-divided li:last-child {
+ border-right:0
+}
+.cornell-logo {
+ height:17px
+}
+.text-sm {
+  font-size: $fs-1;
+}

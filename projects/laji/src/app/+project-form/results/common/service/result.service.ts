@@ -2,7 +2,7 @@ import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, of as ObservableOf } from 'rxjs';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
-import { CoordinateService } from '../../../../shared/service/coordinate.service';
+import { convertYkjToGeoJsonFeature } from '../../../../root/coordinate-utils';
 import { TaxonomyApi } from '../../../../shared/api/TaxonomyApi';
 import { WarehouseQueryInterface } from '../../../../shared/model/WarehouseQueryInterface';
 
@@ -38,8 +38,7 @@ export class ResultService {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private taxonomyApi: TaxonomyApi,
-    private coordinateService: CoordinateService
+    private taxonomyApi: TaxonomyApi
   ) { }
 
   getTaxon(taxonId: string) {
@@ -47,7 +46,7 @@ export class ResultService {
       taxonId,
       'multi',
       {
-        'selectedFields': 'scientificName,vernacularName,cursiveName'
+        selectedFields: 'scientificName,vernacularName,cursiveName'
       }
     ));
   }
@@ -71,15 +70,13 @@ export class ResultService {
       false
     )).pipe(
       map(data => data.results),
-      map(data => {
-        return data.map(row => {
+      map(data => data.map(row => {
           row.aggregateBy['vernacularName'] =
             row.aggregateBy['unit.linkings.taxon.nameFinnish'] ||
             row.aggregateBy['unit.linkings.taxon.nameEnglish'] ||
             row.aggregateBy['unit.linkings.taxon.nameSwedish'];
           return row;
-        });
-      }), );
+        })), );
   }
 
   getList(query: WarehouseQueryInterface, page: number): Observable<any> {
@@ -145,7 +142,7 @@ export class ResultService {
   private _resultToGeoJson(data) {
     const features = [];
     data.map(result => {
-      features.push(this.coordinateService.convertYkjToGeoJsonFeature(
+      features.push(convertYkjToGeoJsonFeature(
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lat'],
         result.aggregateBy['gathering.conversions.ykj10kmCenter.lon'],
         {

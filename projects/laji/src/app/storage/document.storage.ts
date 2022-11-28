@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../root/platform.service';
 import { LocalDb } from '../shared/local-db/local-db.abstract';
 import { Document } from '../shared/model/Document';
-import { from, Observable, of as ObservableOf, of, Subject } from 'rxjs';
+import { EMPTY, from, Observable, of, Subject } from 'rxjs';
 import { Person } from '../shared/model/Person';
 import { catchError, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { FormService } from '../shared/service/form.service';
@@ -32,12 +32,12 @@ export class DocumentStorage extends LocalDb<Document> {
 
   removeItem(key: string, person?: string | Person): Observable<void> {
     if (!this.isPlatformBrowser) {
-      return ObservableOf(null);
+      return EMPTY;
     }
     const itemId = person ? DocumentStorage.key(key, person) : key;
     return from(this.db.removeItem(itemId)).pipe(
       tap(() => this.deletesSource.next()),
-      catchError(() => ObservableOf(null)),
+      catchError(() => EMPTY),
     );
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { saveAs } from 'file-saver';
 
-interface IFileLoad {
+export interface IFileLoad {
   filename: string;
   content: any;
   type: string;
@@ -64,9 +64,7 @@ export class FileService {
         });
         subscriber.complete();
       };
-      reader.onerror = () => {
-        return subscriber.error(FileService.ERROR_GENERIC);
-      };
+      reader.onerror = () => subscriber.error(FileService.ERROR_GENERIC);
       if (validTypes && !validTypes.includes(file.type)) {
         return subscriber.error(FileService.ERROR_INVALID_TYPE);
       } else {

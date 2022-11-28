@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from './confirm-modal.component';
 import { map, take } from 'rxjs/operators';
@@ -56,7 +56,13 @@ export class DialogService {
     return this.createDialog<PromptConfig, string | null>({message, showCancel: true, confirmLabel, prompt: true, promptValue: _default});
   }
 
-  private createDialog<T extends DialogConfig, R = (boolean | (string | null))>(options: T): Observable<R> {
+  private createDialog<T extends DialogConfig, R = boolean | string | null>(options: T): Observable<R> {
+    if (options.confirmLabel === undefined) {
+      delete options.confirmLabel;
+    }
+    if (options.promptValue === undefined) {
+      delete options.promptValue;
+    }
     const initialState: InitialState = {showCancel: true, prompt: false,  promptValue: '', ...options};
     const modalRef = this.modalService.show(ConfirmModalComponent, {
         backdrop: 'static',
@@ -65,7 +71,12 @@ export class DialogService {
     });
 
     return modalRef.onHide.pipe(
-      map(() => modalRef.content.value as unknown as R),
+      map(() => {
+        if (!modalRef.content) {
+          throw new Error('Modal content wasn\'t ready');
+        }
+        return modalRef.content.value as unknown as R;
+      }),
       take(1)
     );
   }

@@ -1,10 +1,10 @@
 <div class="container-fluid" style="width: 100%" >
   <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
-    <laji-document-form-header *ngIf="displayHeader"
-                               [formID]="data.documentForm.id"
-                               [displayObservationList]="false"
-                               [description]="data.description"
-    class="no-flex"></laji-document-form-header>
+    <laji-project-form-header *ngIf="displayHeader"
+                              [form]="data.documentForm"
+                              [description]="data.description"
+                              class="no-flex"
+                              lajiFormOption="logo titleoptions.hideTES"></laji-project-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
@@ -21,7 +21,6 @@
         </ng-container>
       </div>
     </ng-container>
-
     <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByMunicipality"
           lajiFormOption="options.namedPlaceOptions.filterByMunicipality"
           class="form-group col-xs-12">
@@ -31,7 +30,7 @@
                           [field]="areaTypes.Municipality"
                           [allOptionEnabled]='true'
                           [selectOptionEnabled]='false'
-                          (select)="onMunicipalityChange($event)"
+                          (areaselect)="onMunicipalityChange($any($event))"
                           [value]="[data.municipality]"></laji-area-select>
         </div>
     </div>
@@ -49,7 +48,10 @@
         </div>
         <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
                           [field]="areaTypes.BirdAssociationArea"
-                          (select)="onBirdAssociationAreaChange($event)"
+                          [allOptionEnabled]="true"
+                          [allOptionLabel]="'area-select.allRoutes'"
+                          [allOptionLast]="true"
+                          (areaSelect)="onBirdAssociationAreaChange($event)"
                           [value]="[data.birdAssociationArea]"></laji-area-select>
       </div>
     </div>

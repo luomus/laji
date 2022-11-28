@@ -2,7 +2,7 @@
   <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
     <a (click)="informalGroupSelect.emit()" tabindex="0" role="button" luKeyboardClickable>{{ 'observation.active.informalTaxonGroupAll' | translate }}</a>
   </li>
-  <li *ngFor="let group of groups; let i = index; let active = last;">
+  <li *ngFor="let group of parentGroups; let i = index; let active = last;">
     <a (click)="informalGroupSelect.emit(group.id)" tabindex="0" role="button" luKeyboardClickable>{{ group.name }}</a>
   </li>
   <li *ngIf="informalGroup" class="active">

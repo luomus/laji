@@ -11,6 +11,8 @@ import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 interface ISections {
   taxon?: Array<keyof WarehouseQueryInterface>;
   own?: Array<keyof WarehouseQueryInterface>;
@@ -23,6 +25,7 @@ interface ISections {
   quality: Array<keyof WarehouseQueryInterface>;
   dataset: Array<keyof WarehouseQueryInterface>;
   collection: Array<keyof WarehouseQueryInterface>;
+  conservation: Array<keyof WarehouseQueryInterface>;
   keywords: Array<keyof WarehouseQueryInterface>;
   features?: Array<keyof WarehouseQueryInterface>;
   invasive?: Array<keyof WarehouseQueryInterface>;
@@ -40,7 +43,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   @Input() skipActiveFilters: string[] = [];
   @Input() invasiveStatuses: string[] = [];
-  @Input() dateFormat = 'YYYY-MM-DD';
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() mapDraw = new EventEmitter<string>();
@@ -50,7 +52,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     taxon: '',
     timeStart: '',
     timeEnd: '',
-    informalTaxonGroupId: '',
+    informalTaxonGroupId: undefined,
+    informalTaxonGroupIdNot: undefined,
     includeOnlyValid: undefined,
     euInvasiveSpeciesList: undefined,
     controllingRisksOfInvasiveAlienSpeciesGovernment: undefined,
@@ -68,13 +71,11 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     taxonUseAnnotated: true,
     taxonIncludeLower: true,
     coordinatesInSource: false,
+    taxonAdminFiltersOperator: undefined
   };
 
   showPlace = false;
-  drawing = false;
-  drawingShape: string;
   mediaStatutes: string[] = [];
-  ownStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -94,6 +95,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       'biogeographicalProvinceId',
       'elyCentreId',
       'finnishMunicipalityId',
+      'onlyNonStateLands',
       'area',
       'coordinates',
       'coordinateAccuracyMax',
@@ -101,10 +103,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'plantStatusCode', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'atlasCode', 'atlasClass', 'plantStatusCode',
+      'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
+    conservation: ['administrativeStatusId', 'redListStatusId', 'taxonAdminFiltersOperator'],
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
     invasive: [],
@@ -116,9 +120,22 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   delayedSub: Subscription;
   screenWidthSub: Subscription;
   containerTypeAhead: string;
-  collectionAndRecordQualityString: any;
+  collectionAndRecordQualityString: string;
 
   private _query: WarehouseQueryInterface;
+
+  virFilterShortcutQueryParams = {
+    // eslint-disable-next-line max-len
+    administrativeStatusId: `MX.finlex160_1997_appendix4_2021,MX.finlex160_1997_appendix4_specialInterest_2021,MX.finlex160_1997_appendix2a,MX.finlex160_1997_appendix2b,MX.finlex160_1997_appendix3a,MX.finlex160_1997_appendix3b,MX.finlex160_1997_appendix3c,MX.finlex160_1997_largeBirdsOfPrey,MX.habitatsDirectiveAnnexII,MX.habitatsDirectiveAnnexIV,MX.birdsDirectiveStatusAppendix1,MX.birdsDirectiveStatusMigratoryBirds`,
+    redListStatusId: 'MX.iucnCR,MX.iucnEN,MX.iucnVU,MX.iucnNT',
+    countryId: 'ML.206',
+    time: '1990-01-01%2F',
+    // eslint-disable-next-line max-len
+    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL,UNCERTAIN;HOBBYIST:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;',
+    taxonAdminFiltersOperator: 'OR',
+    individualCountMin: 0,
+    coordinateAccuracyMax: 1000
+  };
 
   constructor(
     private observationFacade: ObservationFacade,
@@ -193,6 +210,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
   onOnlyFromCollectionCheckBoxToggle() {
     this.query.sourceId = this.formQuery.onlyFromCollectionSystems ? ['KE.3', 'KE.167'] : [];
+    this.query.superRecordBasis = this.formQuery.onlyFromCollectionSystems ? ['PRESERVED_SPECIMEN'] : [];
     this.onQueryChange();
   }
 
@@ -207,10 +225,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     }
     this.formQueryToSearchQuery(this.formQuery);
-    this.onAdministrativeStatusChange();
+    this.administrativeStatusChange();
   }
 
-  onAdministrativeStatusChange() {
+  private administrativeStatusChange() {
     const admins = this.query.administrativeStatusId;
     let cnt = 0;
     this.invasiveStatuses.map(key => {
@@ -221,6 +239,21 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       }
     });
     this.formQuery.allInvasiveSpecies = cnt === this.invasiveStatuses.length;
+    this.onQueryChange();
+  }
+
+  onAdministrativeStatusChange(administrativeStatusIds: string[]) {
+    this.query.administrativeStatusId = administrativeStatusIds;
+    this.administrativeStatusChange();
+  }
+
+  onRedListStatusChange(redListStatusIds: string[]) {
+    this.query.redListStatusId = redListStatusIds;
+    this.onQueryChange();
+  }
+
+  onConservationOperatorChange(operator: 'AND' | 'OR') {
+    this.query.taxonAdminFiltersOperator = operator === 'OR' ? 'OR' : undefined;
     this.onQueryChange();
   }
 
@@ -294,16 +327,21 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.delayedQueryChange();
   }
 
-  onCollectionIdChange(collections: any) {
-    if (collections.collectionId) {
-      this.query.collectionId = collections.collectionId;
-    }
+  onSelectionIdChange(selections: {[key: string]: string[]}, target: 'query' | 'formQuery' = 'query') {
+    if (target === 'query') {
+      Object.keys(selections).forEach(key => {
+        this.query[key] = selections[key];
+      });
 
-    if (collections.collectionIdNot) {
-      this.query.collectionIdNot = collections.collectionIdNot;
-    }
+      this.onQueryChange();
 
-    this.onQueryChange();
+    } else if (target === 'formQuery') {
+      Object.keys(selections).forEach(key => {
+        this.formQuery[key] = selections[key];
+      });
+
+      this.onFormQueryChange();
+    }
   }
 
   onHabitatChange(habitats: any) {
@@ -322,44 +360,24 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onQueryChange();
   }
 
-  ownItemSelected(field, selectValue: any = true) {
-    this.ownStatutes = this.query.editorPersonToken && this.query.observerPersonToken  ? ['asEditor', 'asObserver'] :
-    (this.query.editorPersonToken ? ['asEditor'] : (this.query.observerPersonToken ? ['asObserver'] : []));
-
-    if (Array.isArray(field)) {
-      if (selectValue === true) {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = true;
-        this.ownStatutes = this.ownStatutes.length === 2 ? [] : ['asEditor', 'asObserver'];
-      } else {
-        this.formQuery.asEditor = undefined;
-        this.formQuery.asObserver = undefined;
-        this.formQuery.asNotEditorOrObserver = this.formQuery.asNotEditorOrObserver ? undefined : true;
-        this.query.qualityIssues = undefined;
-        this.ownStatutes = selectValue ? this.ownStatutes : [] ;
-      }
-    } else {
-    if (this.ownStatutes.length === 0) {
-      this.formQuery.asEditor = undefined;
-      this.formQuery.asObserver = undefined;
-    }
-    if (this.ownStatutes.indexOf(field) === -1) {
-      this.ownStatutes.push(field);
-      this.formQuery.asNotEditorOrObserver = undefined;
-    } else {
-      const index = this.ownStatutes.indexOf(field);
-      this.ownStatutes.splice(index, 1);
-    }
-    this.ownStatutes.forEach(element => {
-      this.formQuery[element] = true;
-    });
-
-    if (this.ownStatutes.length === 2) {
-      this.query.qualityIssues = 'BOTH';
-    }
-  }
+  onAsObserverChange(value: boolean) {
+    this.formQuery.asObserver = value;
     this.onFormQueryChange();
+  }
+
+  onAsEditorChange(value: boolean) {
+    this.formQuery.asEditor = value;
+    this.onFormQueryChange();
+  }
+
+  onAsNotEditorOrObserverChange(value: boolean) {
+    this.formQuery.asNotEditorOrObserver = value;
+    this.onFormQueryChange();
+  }
+
+  onOwnQualityIssuesFilterChange(value: string) {
+    this.query.qualityIssues = value;
+    this.onQueryChange();
   }
 
   onFormQueryChange() {
@@ -378,13 +396,17 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateSearchQuery(field, value) {
-    this.query[field] = value;
+  onTaxonListChange(value) {
     this.selectedNameTaxon = this.selectedNameTaxon.filter(item => {
       if (value.indexOf(item.id) > -1) {
         return item;
       }
     });
+    this.updateSearchQuery('target', value);
+  }
+
+  updateSearchQuery(field, value) {
+    this.query[field] = value;
     this.onQueryChange();
   }
 
@@ -459,8 +481,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   ) {
     Object.keys(this[sectionKey]).forEach(section => {
       let visible = false;
-      for (let i = 0; i < this[sectionKey][section].length; i++) {
-        const value = this.query[this[sectionKey][section][i]];
+      for (const key of this[sectionKey][section]) {
+        const value = this.query[key];
         if ((Array.isArray(value) && value.length > 0) || typeof value !== 'undefined') {
           visible = true;
           break;
@@ -478,7 +500,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   }
 
   private getValidDate(date) {
-    if (date && (moment(date, this.dateFormat, true).isValid() || isRelativeDate(date))) {
+    if (date && (moment(date, DATE_FORMAT, true).isValid() || isRelativeDate(date))) {
       return date;
     }
     return '';
@@ -498,8 +520,10 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       taxon: '',
       timeStart: this.getValidDate(timeStart),
       timeEnd: this.getValidDate(timeEnd),
-      informalTaxonGroupId: query.informalTaxonGroupId && query.informalTaxonGroupId[0] ?
-        query.informalTaxonGroupId[0] : '',
+      informalTaxonGroupId: query.informalTaxonGroupId ?
+        query.informalTaxonGroupId : undefined,
+      informalTaxonGroupIdNot: query.informalTaxonGroupIdNot ?
+        query.informalTaxonGroupIdNot : undefined,
       includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
@@ -510,18 +534,28 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       qualityPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.qualityPlantPest'),
       otherPlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.otherPlantPest'),
       allInvasiveSpecies: this.invasiveStatuses.length > 0 && this.hasInMulti(query.administrativeStatusId, this.invasiveStatuses.map(val => 'MX.' + val)),
-      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3']) && query.sourceId.length === 2,
+      onlyFromCollectionSystems: this.hasInMulti(query.sourceId, ['KE.167', 'KE.3'])
+        && query.sourceId.length === 2
+        && this.hasInMulti(query.superRecordBasis, ['PRESERVED_SPECIMEN'])
+        && query.superRecordBasis.length === 1,
       asObserver: !!query.observerPersonToken || !!query.editorOrObserverPersonToken,
       asEditor: !!query.editorPersonToken || !!query.editorOrObserverPersonToken,
       asNotEditorOrObserver: !!query.editorOrObserverIsNotPersonToken,
       taxonIncludeLower: typeof query.includeSubTaxa !== 'undefined' ? query.includeSubTaxa : true,
       taxonUseAnnotated: typeof query.useIdentificationAnnotations !== 'undefined' ? query.useIdentificationAnnotations : true,
-      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates === 'REPORTED_VALUE'
+      coordinatesInSource: query.sourceOfCoordinates && query.sourceOfCoordinates.includes('REPORTED_VALUE'),
+      taxonAdminFiltersOperator: query.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined
     };
   }
 
   protected formQueryToSearchQuery(formQuery: ObservationFormQuery) {
+    // this.query is the same object reference from ObservationFacade!!
+    // mutating it outside of ObservationFacade causes unpredictable behavior with person tokens
+    // because personToken is 'true' in formQuery, but replaced by person token in ObservationFacade
+    // therefore we are creating a shallow copy on the next line
+    //const query = {...this.query};
     const query = this.query;
+
     if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
       query.time = [formQuery.timeStart];
     } else {
@@ -529,20 +563,23 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       query.time = time.length > 0 ? [time] : undefined;
     }
 
-    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? [formQuery.informalTaxonGroupId] : undefined;
+    query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? formQuery.informalTaxonGroupId : undefined;
+    query.informalTaxonGroupIdNot = formQuery.informalTaxonGroupIdNot ? formQuery.informalTaxonGroupIdNot : undefined;
     query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
     if (formQuery.allInvasiveSpecies) {
       query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
     }
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];
+      query.superRecordBasis = ['PRESERVED_SPECIMEN'];
     }
     query.editorPersonToken = formQuery.asEditor ? ObservationFacade.PERSON_TOKEN : undefined;
     query.observerPersonToken = formQuery.asObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.editorOrObserverIsNotPersonToken = formQuery.asNotEditorOrObserver ? ObservationFacade.PERSON_TOKEN : undefined;
     query.includeSubTaxa = formQuery.taxonIncludeLower ? undefined : false;
     query.useIdentificationAnnotations = formQuery.taxonUseAnnotated ? undefined : false;
-    query.sourceOfCoordinates = formQuery.coordinatesInSource ? 'REPORTED_VALUE' : undefined;
+    query.sourceOfCoordinates = formQuery.coordinatesInSource ? ['REPORTED_VALUE'] : undefined;
+    query.taxonAdminFiltersOperator = formQuery.taxonAdminFiltersOperator === 'OR' ? 'OR' : undefined;
     this.invasiveStatuses
       .map((key) => {
         const value = 'MX.' + key;
@@ -571,8 +608,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       return '';
     }
     if (
-      (start && !moment(start, this.dateFormat, true).isValid()) ||
-      (end && !moment(end, this.dateFormat, true).isValid())
+      (start && !moment(start, DATE_FORMAT, true).isValid()) ||
+      (end && !moment(end, DATE_FORMAT, true).isValid())
     ) {
       return '';
     }

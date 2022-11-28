@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ILabelData, ILabelField } from './label-designer.interface';
+import { ILabelData, ILabelField, LabelDataValue } from './label-designer.interface';
 
 export interface ISchemaOptions {
   skip?: string[];
@@ -8,6 +8,10 @@ export interface ISchemaOptions {
 
 interface ILabelFieldMap {
   [field: string]: ILabelField;
+}
+
+export interface ISpecialTransform {
+  [field: string]: (value: any) => {[field: string]: LabelDataValue};
 }
 
 @Injectable({
@@ -35,9 +39,17 @@ export class SchemaService {
    * @param select level to choose as a base in multidimensional arrays of objects.
    *        If there are levels under this only the first item will be picked. If there is no
    *        value given then the root will be used and only one item from arrays beneath it will be selected
+   * @param specialTransform it is possible to provide a transform function for field(s) that transforms the
+   *        field value according to the function
    */
-  convertSchemaDataToLabelData(schema: any, data: object[], select?: string, options?: ISchemaOptions): ILabelData[] {
-    return this.convertDataToLabelData(this.schemaToAvailableFields(schema, [], options), data, select);
+  convertSchemaDataToLabelData(
+    schema: any,
+    data: Record<string, any>[],
+    select?: string,
+    options?: ISchemaOptions,
+    specialTransform?: ISpecialTransform
+  ): ILabelData[] {
+    return this.convertDataToLabelData(this.schemaToAvailableFields(schema, [], options), data, select, specialTransform);
   }
 
   /**
@@ -45,15 +57,22 @@ export class SchemaService {
    * @param select level to choose as a base in multidimensional arrays of objects.
    *        If there are levels under this only the first item will be picked. If there is no
    *        value given then the root will be used and only one item from arrays beneath it will be selected
+   * @param specialTransform it is possible to provide a transform function for field(s) that transforms the
+   *        field value according to the function
    */
-  convertDataToLabelData(fields: ILabelField[], data: object[], select?: string): ILabelData[] {
+  convertDataToLabelData(
+    fields: ILabelField[],
+    data: Record<string, any>[],
+    select?: string,
+    specialTransform?: ISpecialTransform
+  ): ILabelData[] {
     const fieldMap: ILabelFieldMap = fields.reduce((cumulative, current) => {
       cumulative[current.field] = current;
       return cumulative;
     }, {});
     const result = [];
     try {
-      (data || []).forEach(item => result.push(...this.convertData(item, fieldMap, select) as ILabelData[]));
+      (data || []).forEach(item => result.push(...this.convertData(item, fieldMap, select, specialTransform) as ILabelData[]));
     } catch (e) {
       console.error(e);
     }
@@ -61,9 +80,10 @@ export class SchemaService {
   }
 
   private convertData(
-    data: object,
+    data: Record<string, any>,
     fields: ILabelFieldMap,
     select?: string,
+    specialTransform?: ISpecialTransform,
     result = [],
     base: ILabelData = {},
     parent = '',
@@ -79,7 +99,13 @@ export class SchemaService {
         continue;
       }
       const path = this.getPath(parent, key);
-      if (fields[path]) {
+
+      if (specialTransform[path]) {
+        const transforms = specialTransform[path](data[key]);
+        for (const transformPath of Object.keys(transforms)) {
+          base[transformPath] = transforms[transformPath];
+        }
+      } else if (fields[path]) {
         base[path] = data[key];
         if (path === select) {
           result.push(base);
@@ -93,18 +119,20 @@ export class SchemaService {
           }
         }
       } else {
-        this.convertData(data[key], fields, select, result, base, path, lvl + 1);
+        this.convertData(data[key], fields, select, specialTransform, result, base, path, lvl + 1);
       }
     }
 
     arrays.forEach(key => {
       const path = this.getPath(parent, key);
-      data[key].forEach(item => this.convertData(item, fields, select, result, base, path, lvl + 1));
+      data[key].forEach(item => this.convertData(item, fields, select, specialTransform, result, base, path, lvl + 1));
     });
 
     selected.forEach(key => {
       const path = this.getPath(parent, key);
-      data[key].forEach(item => result.push(this.convertData(item, fields, select, result, {...base}, path, lvl + 1)));
+      data[key].forEach(
+        item => result.push(this.convertData(item, fields, select, specialTransform, result, {...base}, path, lvl + 1))
+      );
     });
 
     if (lvl === 0) {
@@ -118,6 +146,14 @@ export class SchemaService {
     if (typeof schema !== 'object' || schema === null) {
       return base;
     }
+
+    if (options.special?.[path]) {
+      options.special[path].forEach(labelField => {
+        base.push({field: labelField.field, label: this.joinLabelWithParentLabel(labelField.label, parentLabel)});
+      });
+      return base;
+    }
+
     switch (schema.type) {
       case 'object':
         if (schema.properties) {
@@ -151,22 +187,26 @@ export class SchemaService {
   }
 
   private getLabel(item, parent: string): string {
-    return item.title + (parent ? ' - ' + parent : '');
+    return this.joinLabelWithParentLabel(item.title, parent);
+  }
+
+  private joinLabelWithParentLabel(label: string, parent?: string): string {
+    return label + (parent ? ' - ' + parent : '');
   }
 
   private getValueMap(item): undefined|{[value: string]: string} {
     function pick(from) {
       const result = {};
-      for (let i = 0; i < from.enum.length; i++) {
-        result[from.enum[i]] = from.enumNames[i];
+      for (const one of from.oneOf) {
+        result[one.const] = one.title;
       }
       return result;
     }
 
-    if (Array.isArray(item.enum) && Array.isArray(item.enumNames)) {
+    if (Array.isArray(item.oneOf)) {
       return pick(item);
     }
-    if (item.items && Array.isArray(item.items.enum) && Array.isArray(item.items.enumNames)) {
+    if (item.items && Array.isArray(item.items.oneOf)) {
       return pick(item.items);
     }
 

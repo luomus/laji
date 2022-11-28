@@ -69,12 +69,11 @@
     </div>
     <div class="map-container">
       <laji-observation-map
-        [unitCount]="(homeData$ | async)?.today?.total"
         [settingsKey]="'frontMap'"
         [height]="438"
         [showControls]="false"
         [initWithWorldMap]="false"
-        [showItemsWhenLessThan]="2000"
+        [showIndividualPointsWhenLessThan]="2000"
         [clickBeforeZoomAndPan]="true"
         [draw]="false"
         [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
@@ -133,27 +132,34 @@
 </ng-template>
 
 <ng-template #navigationThumbnails>
-  <div class="d-flex flex-wrap my-7">
-    <a routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
-      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
-      <div>
-        <span translate>home.taxon-sub-intro</span>
-        <laji-info placement="right">{{ 'home.taxon-intro' | translate }}</laji-info>
-      </div>
-    </a>
-    <a routerLink="observation" class="home-card d-flex flex-col items-center mr-3 mb-3">
-      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
-      <div>
-        <span translate>home.observation-sub-intro</span>
-        <laji-info placement="right">{{ 'home.observation-intro' | translate }}</laji-info>
-      </div>
-    </a>
-    <a routerLink="save-observations" class="home-card d-flex flex-col items-center mr-3 mb-3">
-      <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
-      <div>
-        <span translate>home.notebook-sub-intro</span>
-        <laji-info placement="right">{{ 'home.notebook-intro' | translate }}</laji-info>
-      </div>
-    </a>
+  <div class="my-7 col">
+    <div class="d-flex flex-wrap row">
+      <a routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+        <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
+        <div>
+          <span translate>home.taxon-sub-intro</span>
+        </div>
+      </a>
+      <a routerLink="observation" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+        <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
+        <div>
+          <span translate>home.observation-sub-intro</span>
+        </div>
+      </a>
+    </div>
+    <div class="d-flex flex-wrap row">
+      <a routerLink="save-observations" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+        <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
+        <div>
+          <span translate>home.notebook-sub-intro</span>
+        </div>
+      </a>
+      <a routerLink="theme/dataset-metadata" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+        <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dataset.svg)'"></div>
+        <div>
+          <span translate>home.dataset-metadata</span>
+        </div>
+      </a>
+    </div>
   </div>
 </ng-template>

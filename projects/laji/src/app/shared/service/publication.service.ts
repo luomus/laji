@@ -6,7 +6,6 @@ import { LajiApi, LajiApiService } from './laji-api.service';
 
 @Injectable({providedIn: 'root'})
 export class PublicationService {
-  private currentLang: string;
   private cache: {[key: string]: any} = {};
   private pending: {[key: string]: Observable<any>} = {};
 
@@ -14,15 +13,13 @@ export class PublicationService {
   }
 
   public getPublication(id: string, lang: string): Observable<Publication> {
-    this.setLang(lang);
-
     if (this.cache[id]) {
       return ObservableOf(this.cache[id]);
     } else if (!this.pending[id]) {
       this.pending[id] = this.lajiApi.get(LajiApi.Endpoints.publications, id, {lang}).pipe(
-        catchError(() => {
-          return ObservableOf(undefined);
-        }),
+        catchError(() =>
+          ObservableOf(undefined)
+        ),
         tap((res) => {
           this.cache[id] = res;
         }),
@@ -32,12 +29,5 @@ export class PublicationService {
     return this.pending[id];
   }
 
-  private setLang(lang: string) {
-    if (this.currentLang !== lang) {
-      this.cache = {};
-      this.pending = {};
-      this.currentLang = lang;
-    }
-  }
 }
 

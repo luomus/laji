@@ -9,22 +9,22 @@ import { HistoryService } from '../shared/service/history.service';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
-import { PlatformService } from '../shared/service/platform.service';
+import { PlatformService } from '../root/platform.service';
 
 export interface IObservationData {
   units: {
-    total: number
+    total: number;
   };
   species: {
-    total: number
+    total: number;
   };
   private: {
-    total: number
+    total: number;
   };
 }
 
 const overrideType = {
-  'qualityIssues': 'array'
+  qualityIssues: 'array'
 };
 
 @Injectable({
@@ -79,8 +79,8 @@ export class ObservationDataService {
   private getGraphQuery(query: WarehouseQueryInterface): DocumentNode {
     const queryParams = [];
     const unitValues = [];
-    const speciesValues = ['aggregateBy: "unit.linkings.taxon.speciesId"', 'includeNonValidTaxa: false', 'taxonRankId: "MX.species"'];
-    const privateValues = ['secured: true'];
+    const speciesValues = ['aggregateBy: "unit.linkings.taxon.speciesId"'];
+    const privateValues = [];
 
     this.searchQueryService.forEachType({
       cb: (type, key) => {
@@ -109,6 +109,10 @@ export class ObservationDataService {
         }
       }
     });
+
+    if (query.secured === undefined) {
+      privateValues.push('secured: true');
+    }
 
     return gql`
       query${this.getGraphQLFilters(queryParams)} {

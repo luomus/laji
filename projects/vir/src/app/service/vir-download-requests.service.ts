@@ -3,17 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
-
-export interface IDownloadRequest {
-  id: string;
-  requested: string;
-  downloadType: string;
-  source: string;
-  person: string;
-  dataUsePurpose: string;
-  collectionId: string[];
-  rootCollections: string[];
-}
+import { DownloadRequest } from '../../../../laji/src/app/shared-modules/download-request/models';
 
 @Injectable({providedIn: 'root'})
 export class VirDownloadRequestsService {
@@ -22,22 +12,36 @@ export class VirDownloadRequestsService {
     private userService: UserService
   ) {}
 
-  findDownloadRequests(): Observable<IDownloadRequest[]> {
+  findDownloadRequests(): Observable<DownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
         filter(loggedIn => loggedIn),
-        switchMap(() => this.httpClient.get<IDownloadRequest[]>('/api/download-requests', {params: {token: this.userService.getToken()}})),
+        switchMap(() => this.httpClient.get<DownloadRequest[]>('/api/warehouse/downloads')),
         shareReplay(1)
     );
   }
 
-  findMyDownloadRequests(): Observable<IDownloadRequest[]> {
+  findApiKeys(): Observable<DownloadRequest[]> {
+    return this.userService.isLoggedIn$.pipe(
+        filter(loggedIn => loggedIn),
+        switchMap(() => this.httpClient.get<DownloadRequest[]>('/api/warehouse/api-keys')),
+        shareReplay(1)
+    );
+  }
+
+  findMyDownloadRequests(): Observable<DownloadRequest[]> {
     return this.userService.isLoggedIn$.pipe(
       filter(loggedIn => loggedIn),
-      switchMap(() => this.userService.user$),
-      switchMap((user) => this.httpClient.get<IDownloadRequest[]>('/api/download-requests', {params: {token: this.userService.getToken(), person: user.id}})),
+      switchMap(() => this.httpClient.get<DownloadRequest[]>('/api/warehouse/downloads', {params: {personToken: this.userService.getToken()}})),
       map(data => data.filter(d => ['AUTHORITIES_FULL', 'AUTHORITIES_LIGHTWEIGHT'].includes(d.downloadType))),
       shareReplay(1)
     );
   }
 
+  findMyApiKeys(): Observable<DownloadRequest[]> {
+    return this.userService.isLoggedIn$.pipe(
+      filter(loggedIn => loggedIn),
+      switchMap(() => this.httpClient.get<DownloadRequest[]>('/api/warehouse/api-keys', {params: {personToken: this.userService.getToken()}})),
+      shareReplay(1)
+    );
+  }
 }

@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Route, RouterModule, Routes } from '@angular/router';
 import { ForumComponent } from './forum/forum.component';
 import { LocaleEnComponent } from './locale/locale-en.component';
 import { LocaleSvComponent } from './locale/locale-sv.component';
@@ -37,14 +37,15 @@ const baseRoutes: Routes = [
   {path: 'ui-components', loadChildren: () => import('./+ui-components/ui-components.module').then(m => m.UiComponentsModule), data: {preload: false}},
   {path: 'save-observations', loadChildren: () => import('./+save-observations/save-observations.module').then(m => m.SaveObservationsModule)},
   {path: 'project', loadChildren: () => import('./+project-form/project-form.module').then(m => m.ProjectFormModule)},
-  {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)}
+  {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
+  {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
 ];
 
 const rootRouting = {
-  'talvilintu': '/project/MHL.3',
-  'ykj': '/theme/ykj',
-  'emk': '/theme/emk',
-  'profile': '/user',
+  talvilintu: '/project/MHL.3',
+  ykj: '/theme/ykj',
+  emk: '/theme/emk',
+  profile: '/user',
 };
 
 Object.keys(Global.oldThemeRouting).forEach(path => {
@@ -55,9 +56,9 @@ const redirectsEn: Routes = [];
 const redirectsSv: Routes = [];
 const redirectsFi: Routes = [];
 
-redirectsEn.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsSv.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
-redirectsFi.push(...Object.keys(rootRouting).map(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsEn.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/en${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsSv.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `/sv${rootRouting[path]}`, pathMatch: 'full'})));
+redirectsFi.push(...Object.keys(rootRouting).map<Route>(path => ({path, redirectTo: `${rootRouting[path]}`, pathMatch: 'full'})));
 
 const routesWithLang: Routes = [
   {path: 'in', children: [
@@ -104,7 +105,7 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {
     enableTracing: false,
     preloadingStrategy: QuicklinkStrategy,
-    initialNavigation: 'enabled',
+    initialNavigation: 'enabledBlocking',
     relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule],

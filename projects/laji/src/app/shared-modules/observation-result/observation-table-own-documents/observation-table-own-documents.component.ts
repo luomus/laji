@@ -113,8 +113,8 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     {prop: 'id', mode: 'large'}
   ];
 
-  columnSelector = new ColumnSelector;
-  numberColumnSelector = new ColumnSelector;
+  columnSelector = new ColumnSelector();
+  numberColumnSelector = new ColumnSelector();
   subscriptionDeleteOwnDocument: Subscription;
   childEvent: any;
 
@@ -128,9 +128,9 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   loading: boolean;
 
   private langMap = {
-    'fi': 'Finnish',
-    'sv': 'Swedish',
-    'en': 'English'
+    fi: 'Finnish',
+    sv: 'Swedish',
+    en: 'English'
   };
 
   columns: ObservationTableColumn[] = [];
@@ -144,8 +144,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   private aggregateBy: string[] = [];
   templateForm: TemplateForm = {
     name: '',
-    description: '',
-    type: 'gathering'
+    description: ''
   };
 
   @Input() showRowAsLink = true;
@@ -440,7 +439,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
       [...this.orderBy, this.defaultOrder],
       this.lang
     ).pipe(
-      switchMap(data => this.exportService.exportFromData(data, columns, type as BookType, 'laji-data'))
+      switchMap(data => this.exportService.exportFromData(data.results, columns, type as BookType, 'laji-data'))
     ).subscribe(
       () => {
         this.downloadLoading = false;

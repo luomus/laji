@@ -12,7 +12,7 @@ import {
 import { IPageLayout, ISetup, QRCodeErrorCorrectionLevel } from '../label-designer.interface';
 import { LabelService } from '../label.service';
 
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 /**
  * @ignore
  */
@@ -52,7 +52,7 @@ img {
   transform: scale(0.25);
 }
 `;
-/* tslint:enable:max-line-length */
+/* eslint-enable max-len */
 
 export interface IRenderPageOptions {
   skip?: number;
@@ -87,7 +87,7 @@ export class LabelPrintComponent implements OnChanges {
   /**
    * Array that holds key value objects that are used for the data on the label.
    */
-  @Input() data: object[];
+  @Input() data: Record<string, any>[];
 
   /**
    * Css class that are on the print button.
@@ -119,7 +119,7 @@ export class LabelPrintComponent implements OnChanges {
   /**
    * @ignore
    */
-  pages: object[][] = [];
+  pages: Record<string, any>[][] = [];
   /**
    * @ignore
    */

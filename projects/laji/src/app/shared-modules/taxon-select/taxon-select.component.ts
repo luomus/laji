@@ -52,7 +52,7 @@ export class TaxonSelectComponent implements OnInit, OnDestroy {
 
   @ViewChild('typeahead', { static: true }) typeahead;
 
-  private typeaheadMatch: {id: string, match: string};
+  private typeaheadMatch: {id: string; match: string};
   private enteredValue: string;
 
   public _taxonName: string;

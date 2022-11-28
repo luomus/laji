@@ -1,0 +1,28 @@
+<div [formGroup]="form">
+  <div class="radio">
+    <label><input type="radio" name="operator" value="AND" formControlName="operator">{{ 'taxonAdminFiltersOperator.and' | translate}}</label>
+    <laji-info [html]="'observation.form.conservation.and-info' | translate"></laji-info>
+  </div>
+  <div class="radio">
+    <label><input type="radio" name="operator" value="OR" formControlName="operator">{{ 'taxonAdminFiltersOperator.or' | translate }}</label>
+    <laji-info [html]="'observation.form.conservation.or-info' | translate"></laji-info>
+  </div>
+</div>
+
+<laji-metadata-select
+  [info]="'observation.info.adminStatus' | translate"
+  [(ngModel)]="administrativeStatus"
+  (ngModelChange)="administrativeStatusChange.emit($event)"
+  [multiple]="true"
+  [placeholder]="'observation.form.administrativeStatus'"
+  name="administrativeStatusId"
+  [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
+<laji-metadata-select
+  [info]="'observation.info.redListStatus' | translate"
+  [(ngModel)]="redListStatus"
+  (ngModelChange)="redListStatusChange.emit($event)"
+  [multiple]="true"
+  [useFilter]="false"
+  name="redListStatusId"
+  [placeholder]="'observation.form.redListStatusId'"
+  [alt]="'MX.iucnStatuses'"></laji-metadata-select>

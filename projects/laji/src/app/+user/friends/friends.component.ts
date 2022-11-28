@@ -56,8 +56,8 @@ export class FriendsComponent implements OnInit {
   }
 
   removeFriend(userId, block = false) {
-    this.translateService.get(block ? 'friend.blockConfirm' : 'friend.removeConfirm').pipe(
-      switchMap(confirmMessage => this.dialogService.confirm(confirmMessage)),
+    this.translateService.get(['friend.blockConfirm', 'friend.removeConfirm']).pipe(
+      switchMap(translation => this.dialogService.confirm(block ? translation['friend.blockConfirm'] : translation['friend.removeConfirm'])),
       switchMap((confirm) => confirm ?
         this.personService.personRemoveFriend(this.userService.getToken(), userId, block) :
         ObservableOf(this.usersProfile)

@@ -17,15 +17,19 @@ const informationWhitelist = [
   // Services and instructions
   '803', // tietovarasto
   '806c1', '806', // API / technical
+  '5138', // paikkatieto
   // Muuta
   '2814' // punaisen kirjan verkkopalvelu
 ];
 
 const augment = {
-  '263': [{id: '4271', title: 'Lokitus'}],
-  '261': [
+  263: [{id: '4271', title: 'Lokitus'}],
+  261: [
     {id: '4404', title: 'Usein kysytyt kysymykset'},
-    {id: '4515', title: 'Webinaarit'}
+    {id: '4515', title: 'Webinaarit'},
+    {id: '6461', title: 'Virva-viranomaisrajoitukset'},
+    {id: '6403', title: 'Viranomaisportaalin ohjeet'},
+    {id: '6443', title: 'Rajapinnat'}
   ]
 };
 
@@ -55,17 +59,17 @@ export class FooterComponent implements OnInit {
     });
     this.tree$ = this.baseDataService.getBaseData().pipe(
       map(data => data.information && data.information.children || []),
-      map(data => {
-        return data.map(information => {
-          return {
+      map(data => (
+        data.map(information => (
+          {
             ...information,
             children: [
               ...information.children.filter(child => informationWhitelist.some(w => w === child.id)),
               ...(augment[information.id] ?? [])
             ]
-          };
-        });
-      })
+          }
+        ))
+      ))
     );
   }
 }

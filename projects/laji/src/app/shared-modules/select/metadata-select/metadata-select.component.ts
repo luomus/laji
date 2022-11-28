@@ -120,7 +120,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
     const byField$ = this.getDataObservable().pipe(
       map(result => this.pickValue(result)),
       catchError(err => {
-        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err: err });
+        this.logger.warn('Metadata select errorl', { field: this.field, alt: this.alt, lang: this.lang, err });
         return of([]);
       })
     );
@@ -233,7 +233,7 @@ export class MetadataSelectComponent implements OnChanges, OnDestroy, ControlVal
             map(tags => tags.map(t => ({id: t.id, value: MultiLangService.getValue(t.name as any, this.lang)})))
           );
         case 'MY.collectionID':
-          return this.collectionService.getAll(this.lang, true);
+          return this.collectionService.getAll$(this.lang, true);
         case <any>Area.AreaType.Biogeographical:
           return this.areaService.getBiogeographicalProvinces(this.lang);
         case <any>Area.AreaType.Municipality:

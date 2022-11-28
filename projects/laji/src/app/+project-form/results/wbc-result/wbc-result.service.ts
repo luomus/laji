@@ -8,24 +8,25 @@ import { PagedResult } from '../../../shared/model/PagedResult';
 export type SEASON = 'spring'|'fall'|'winter';
 
 interface Censuses {
-  [season: string]: {years: number[], documentIds: {[year: string]: string[]}};
+  [season: string]: {years: number[]; documentIds: {[year: string]: string[]}};
 }
 interface ObservationStats {
-  [season: string]: {speciesStats: any[], otherStats: any[], years: number[]};
+  [season: string]: {speciesStats: any[]; otherStats: any[]; years: number[]};
 }
 interface CountsPerYearForTaxon {
-  [season: string]: {[year: string]: {count: string, censusCount: string}};
+  [season: string]: {[year: string]: {count: string; censusCount: string}};
 }
 
 @Injectable()
 export class WbcResultService {
   private collectionId = 'HR.39';
   private birdId = 'MX.37580';
+  private loxiaId = 'MX.36355';
   private mammalId = 'MX.37612';
   private seasonRanges = {
-    'fall': [10, 11],
-    'winter': [12, 1],
-    'spring': [2, 3]
+    fall: [10, 11],
+    winter: [12, 1],
+    spring: [2, 3]
   };
 
   private yearCache: number[];
@@ -36,13 +37,12 @@ export class WbcResultService {
     private warehouseApi: WarehouseApi
   ) { }
 
-  getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, taxonId?: string|string[])
-  : WarehouseQueryInterface {
+  getFilterParams(year?: number|number[], season?: SEASON, birdAssociationArea?: string, taxonId?: string|string[]): WarehouseQueryInterface {
     const yearMonth = year ? (Array.isArray(year) ? year : [year]).map(y => this.getYearMonthParam(y, season)) : [];
     return {
       collectionId: [this.collectionId],
       birdAssociationAreaId: [birdAssociationArea],
-      yearMonth: yearMonth,
+      yearMonth,
       taxonId: taxonId ? (Array.isArray(taxonId) ? taxonId : [taxonId]) : []
     };
   }
@@ -97,8 +97,8 @@ export class WbcResultService {
       map(res => res.results),
       map(res => {
         const result = {};
-        for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], 1);
+        for (const r of res) {
+          this.addCount(result, r.aggregateBy['unit.linkings.taxon.speciesId'], 1);
         }
         return result;
       })
@@ -144,8 +144,8 @@ export class WbcResultService {
       map(res => res.results),
       map(res => {
         const result = {};
-        for (let i = 0; i < res.length; i++) {
-          this.addCount(result, res[i].aggregateBy['unit.linkings.taxon.speciesId'], res[i].individualCountSum);
+        for (const r of res) {
+          this.addCount(result, r.aggregateBy['unit.linkings.taxon.speciesId'], r.individualCountSum);
         }
         return result;
       })
@@ -203,9 +203,7 @@ export class WbcResultService {
         true
       )
     ).pipe(
-      switchMap(result => {
-        return this.addUnitStatsToResults(result, query);
-      })
+      switchMap(result => this.addUnitStatsToResults(result, query))
     );
   }
 
@@ -223,9 +221,7 @@ export class WbcResultService {
         true
       )
     ).pipe(
-      switchMap(result => {
-        return this.addUnitStatsToResults(result, query);
-      })
+      switchMap(result => this.addUnitStatsToResults(result, query))
     );
   }
 
@@ -233,15 +229,17 @@ export class WbcResultService {
     return forkJoin([
       this.getCensusesForRoute(routeId),
       this.getObservationStatsList(routeId, this.birdId),
+      this.getObservationStatsList(routeId, this.loxiaId),
       this.getObservationStatsList(routeId, this.mammalId)
       ]
     ).pipe(
       map(results => {
         const censuses = results[0];
         const birdResultList = results[1].results;
-        const mammalResultList = results[2].results;
+        const loxiaResultList = results[2].results;
+        const mammalResultList = results[3].results;
 
-        const result = this.parseObservationStatsLists(censuses, birdResultList, mammalResultList);
+        const result = this.parseObservationStatsLists(censuses, birdResultList, loxiaResultList, mammalResultList);
         this.addStatisticsToObservationStats(result);
         return result;
       })
@@ -267,7 +265,7 @@ export class WbcResultService {
         false
       )
     ]).pipe(map(data => {
-      const result = {'fall': {}, 'winter': {}, 'spring': {}};
+      const result = {fall: {}, winter: {}, spring: {}};
       this.addCounts(data[1].results, 'count', result, false, 'individualCountSum');
       this.addCounts(data[0].results, 'censusCount', result, true);
       return result;
@@ -324,8 +322,8 @@ export class WbcResultService {
         const result: Censuses = {};
         for (const season of ['fall', 'winter', 'spring']) {
           result[season] = {
-            'years': [],
-            'documentIds': {}
+            years: [],
+            documentIds: {}
           };
         }
 
@@ -360,29 +358,31 @@ export class WbcResultService {
       false);
   }
 
-  private parseObservationStatsLists(censuses: Censuses, birdResultList: any[], mammalResultList: any[]): ObservationStats {
+  private parseObservationStatsLists(censuses: Censuses, birdResultList: any[], loxiaResultList: any[], mammalResultList: any[]): ObservationStats {
     const result: ObservationStats = {};
 
     for (const season of ['fall', 'winter', 'spring']) {
       result[season] = {
-        'speciesStats': [],
-        'otherStats': [
-          {'name': 'birdSpeciesCount'},
-          {'name': 'birdIndividualCount'},
-          {'name': 'mammalSpeciesCount'},
-          {'name': 'mammalIndividualCount'},
-          {'name': 'documentIds', ...censuses[season].documentIds}
+        speciesStats: [],
+        otherStats: [
+          {name: 'birdSpeciesCount'},
+          {name: 'birdIndividualCount'},
+          {name: 'loxiaIndividualCount'},
+          {name: 'mammalSpeciesCount'},
+          {name: 'mammalIndividualCount'},
+          {name: 'documentIds', ...censuses[season].documentIds}
         ],
-        'years': censuses[season].years
+        years: censuses[season].years
       };
     }
 
     this.parseObservationStatsList(birdResultList, result);
     this.parseObservationStatsList(mammalResultList, result, true);
+    this.parseObservationStatsList(loxiaResultList, result, false, true);
     return result;
   }
 
-  private parseObservationStatsList(resultList: any[], result: ObservationStats, isMammal = false) {
+  private parseObservationStatsList(resultList: any[], result: ObservationStats, isMammal = false, isLoxia = false) {
     const currentState = {};
     for (const season of ['fall', 'winter', 'spring']) {
       currentState[season] = {taxonId: '', foundYears: [], row: undefined};
@@ -404,20 +404,22 @@ export class WbcResultService {
       const otherStats = result[season].otherStats;
       const yearString = year + '';
 
-      if (currentState[season].taxonId === taxonId) {
-        this.addCount(currentState[season].row, yearString, individualCount);
-      } else {
-        const row = {'name': taxonName, [yearString]: individualCount};
-        currentState[season] = {taxonId: taxonId, foundYears: [], row: row};
-        speciesStats.push(row);
+      if (!isLoxia) {
+        if (currentState[season].taxonId === taxonId) {
+          this.addCount(currentState[season].row, yearString, individualCount);
+        } else {
+          const row = {name: taxonName, [yearString]: individualCount};
+          currentState[season] = {taxonId, foundYears: [], row};
+          speciesStats.push(row);
+        }
+
+        if (currentState[season].foundYears.indexOf(yearString) === -1) {
+          currentState[season].foundYears.push(yearString);
+          this.addCount(otherStats[isMammal ? 3 : 0], yearString, 1);
+        }
       }
 
-      if (currentState[season].foundYears.indexOf(yearString) === -1) {
-        currentState[season].foundYears.push(yearString);
-        this.addCount(otherStats[isMammal ? 2 : 0], yearString, 1);
-      }
-
-      this.addCount(otherStats[isMammal ? 3 : 1], yearString, individualCount);
+      this.addCount(otherStats[isMammal ? 4 : isLoxia ? 2 : 1], yearString, individualCount);
     });
   }
 
@@ -428,8 +430,8 @@ export class WbcResultService {
 
       let sum = 0;
       const counts = [];
-      for (let i = 0; i < years.length; i++) {
-        const key = years[i] + '';
+      for (const year of years) {
+        const key = year + '';
         if (!obj[key]) {
           obj[key] = 0;
         }
@@ -452,13 +454,13 @@ export class WbcResultService {
       const years = result[season].years;
 
       const speciesStats = result[season].speciesStats;
-      for (let j = 0; j < speciesStats.length; j++) {
-        addStatisticsToObj(speciesStats[j], years);
+      for (const speciesStat of speciesStats) {
+        addStatisticsToObj(speciesStat, years);
       }
 
       const otherStats = result[season].otherStats;
-      for (let j = 0; j < otherStats.length - 1; j++) {
-        addStatisticsToObj(otherStats[j], years);
+      for (const otherStat of otherStats) {
+        addStatisticsToObj(otherStat, years);
       }
     }
   }
@@ -501,9 +503,7 @@ export class WbcResultService {
   private getList(obs: Observable<PagedResult<any>>): Observable<any[]> {
     return obs.pipe(
       map(res => res.results),
-      map(res => res.map(r => {
-        return {...r, aggregateBy: undefined, ...r.aggregateBy};
-      }))
+      map(res => res.map(r => ({...r, aggregateBy: undefined, ...r.aggregateBy})))
     );
   }
 

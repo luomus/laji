@@ -9,7 +9,7 @@
           (create)="onCreate($event)"
           (failure)="refreshMap()"
           (tileLayersChange)="onTileLayersChange($event)"
-          (move)="onMove($event)">
+          (move)="onMapPanOrZoom($event)">
     <div class="loading-map loading" *ngIf="loading"></div>
     <ul class="legend" *ngIf="legend" [ngStyle]="{'margin-top': topMargin }">
       <li *ngFor="let leg of legendList">

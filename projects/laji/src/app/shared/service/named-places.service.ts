@@ -12,11 +12,11 @@ import { JSONPath } from 'jsonpath-plus';
 @Injectable({providedIn: 'root'})
 export class NamedPlacesService {
 
-  private cache;
-  private cacheKey;
-  private idCache = {};
+  private cache: NamedPlace[] = [];
+  private cacheKey = '';
+  private idCache: Record<string, Observable<NamedPlace | null>> = {};
 
-  private deletedIds = {};
+  private deletedIds: Record<string, boolean> = {};
 
   private openBy: {[place: string]: 'label'|'boolean'} = {
     '$.municipality': 'label',
@@ -52,7 +52,7 @@ export class NamedPlacesService {
     );
   }
 
-  getNamedPlace(id, userToken?: string, includeUnits = false): Observable<NamedPlace> {
+  getNamedPlace(id: string, userToken?: string, includeUnits = false): Observable<NamedPlace | null> {
     if (!id) {
       return ObservableOf(null);
     }
@@ -65,7 +65,7 @@ export class NamedPlacesService {
               ? 'observation.form.placeNotFound'
               : 'haseka.form.genericError';
             this.toastService.showWarning(this.translateService.instant(msgKey));
-            return of(false);
+            return of(null);
           }),
           shareReplay(1)
         );
@@ -106,7 +106,7 @@ export class NamedPlacesService {
       }));
   }
 
-  reserve(id: string, options?: {until?: string, personID?: string}): Observable<NamedPlace> {
+  reserve(id: string, options?: {until?: string; personID?: string}): Observable<NamedPlace> {
     return this.namedPlaceApi
       .reserve(id, this.userService.getToken(), options).pipe(
         tap(() => {
@@ -124,7 +124,7 @@ export class NamedPlacesService {
       );
   }
 
-  private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces = []): Observable<NamedPlace[]>  {
+  private _getAllNamePlaces(query: NamedPlaceQuery, page = 1, namedPlaces: NamedPlace[] = []): Observable<NamedPlace[]>  {
     return this.namedPlaceApi
       .findAll(
         {
@@ -155,7 +155,7 @@ export class NamedPlacesService {
   }
 
   private openValue(np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
-    const value = JSONPath({json: np, path: path, wrap: false, flatten: true});
+    const value = JSONPath({json: np, path, wrap: false, flatten: true});
     if (typeof value === 'undefined') {
       return of(np);
     }
@@ -165,7 +165,7 @@ export class NamedPlacesService {
   }
 
   private openSingleValue(value: any, np: NamedPlace, path: string, type: string): Observable<NamedPlace> {
-    let convert$: Observable<string>;
+    let convert$: Observable<string> | undefined;
     switch (type) {
       case 'boolean':
         convert$ = this.translateService.get(value === true || value === 'true' ? 'yes' : 'no');

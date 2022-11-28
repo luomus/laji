@@ -19,7 +19,8 @@ import { Logger } from '../../shared/logger/logger.service';
 import { Options, Lang, TileLayersOptions } from 'laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import {LocalStorage} from 'ngx-webstorage';
+import { LocalStorage } from 'ngx-webstorage';
+import { environment } from 'projects/laji/src/environments/environment';
 
 
 @Component({
@@ -46,7 +47,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
-  @Output() select = new EventEmitter();
 
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
@@ -58,7 +58,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   lang: string;
   map: any;
   _options: Options = {};
-  _legend: {color: string, label: string}[];
+  _legend: {color: string; label: string}[];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -97,7 +97,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
             this.userService.setUserSetting(this._settingsKey, this.userSettings);
           }
         }
-        } as object};
+        } as any};
     }
     if (typeof options.draw === 'object' && !options.draw.onChange) {
       options = {
@@ -107,6 +107,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
           onChange: e => this.onChange(e)
         }
       };
+    }
+    if ((environment as any).geoserver) {
+      options.lajiGeoServerAddress = (environment as any).geoserver;
     }
     this._options = options;
     this.initMap();
@@ -160,7 +163,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   initMap() {
-    import('laji-map').then(({ LajiMap }) => {
+    import('laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
       this.zone.runOutsideAngular(() => {
         if (this.map) {
           this.map.destroy();
@@ -178,11 +181,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         }
         try {
           this.map = new LajiMap(options);
-          this.map.map.on('moveend', _ => {
+          this.map.map.on('moveend', () => {
             this.moveEvent('moveend');
-          });
-          this.map.map.on('movestart', () => {
-            this.moveEvent('movestart');
           });
           this.moveEvent('moveend');
           if (this.mapData) {
@@ -205,7 +205,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
       this.move.emit({
         zoom: this.map.getNormalizedZoom(),
         bounds: this.map.map.getBounds(),
-        type: type
+        type
       });
     });
   }
@@ -231,28 +231,16 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   onChange(events) {
-    events.map(event => {
-      switch (event.type) {
-        case 'create':
-          this.zone.run(() => {
-            this.create.emit(event.feature.geometry);
-          });
-          break;
-        case 'delete':
-          this.zone.run(() => {
-            this.create.emit();
-          });
-          break;
-        default:
-      }
+    this.zone.run(() => {
+      this.create.emit(events);
     });
   }
 
   drawToMap(type: string) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
-    } else if (['Rectangle'].indexOf(type) > -1) {
-      this.map.triggerDrawing('Rectangle');
+    } else if (['Rectangle'].includes(type)) {
+      this.map.triggerDrawing(type);
     }
   }
 }

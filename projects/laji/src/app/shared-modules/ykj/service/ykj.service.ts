@@ -124,16 +124,16 @@ export class YkjService {
     const lonEnd = this.pad(lng + 1);
     return {
       type: 'Feature',
-      properties: properties,
+      properties,
       geometry: {
         type: 'Polygon',
-        coordinates: [[
+        coordinates: [([
           [latStart, lonStart],
           [latStart, lonEnd],
           [latEnd, lonEnd],
           [latEnd, lonStart],
           [latStart, lonStart],
-        ].map(this.convertYkjLatLngToWgsLngLat)]
+        ] as [string, string][]).map(this.convertYkjLatLngToWgsLngLat)]
       }
     };
   }

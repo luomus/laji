@@ -11,7 +11,7 @@ export class Tree {
   private getChildren: (id: string) => Observable<any[]>;
   private getParents: (id: string) => Observable<any[]>;
 
-  private skipParams: {key: string, values: string[], isWhiteList?: boolean}[];
+  private skipParams: {key: string; values: string[] | boolean[]; isWhiteList?: boolean}[];
 
   private activeId: string;
   private rootId: string;
@@ -63,8 +63,8 @@ export class Tree {
     node.state.isExpanded = false;
 
     if (node.children) {
-      for (let i = 0; i < node.children.length; i++) {
-        this.hideNode(node.children[i]);
+      for (const child of node.children) {
+        this.hideNode(child);
       }
     }
   }
@@ -118,9 +118,9 @@ export class Tree {
       .pipe(switchMap(() => {
         let foundNode: TreeNode;
         if (childIds.length > 0) {
-          for (let i = 0; i < node.children.length; i++) {
-            if (node.children[i].value.id === childIds[0]) {
-              foundNode = node.children[i];
+          for (const child of node.children) {
+            if (child.value.id === childIds[0]) {
+              foundNode = child;
             }
           }
         }
@@ -135,8 +135,7 @@ export class Tree {
     return this.fetchChildren(node)
       .pipe(switchMap((children: TreeNode[]) => {
         const obs = [];
-        for (let i = 0; i < children.length; i++) {
-          const child = children[i];
+        for (const child of children) {
           if (!child.value.hasChildren) { continue; }
 
           if (child.state.isSkipped && child.value.id !== this.activeId) {

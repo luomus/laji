@@ -13,6 +13,7 @@ import { ISettingResultList, UserService } from '../../shared/service/user.servi
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
+import { ToastsService } from '../../shared/service/toasts.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -29,6 +30,10 @@ export interface VisibleSections {
   info?: boolean;
   own?: boolean;
 }
+
+
+// The info should be shown only once per browser session, so we initialize it here for the whole runtime.
+let coordinateFilterInfoShown = false;
 
 @Component({
   selector: 'laji-observation-view',
@@ -67,11 +72,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   subscription: any;
 
   showFilter = true;
-  dateFormat = 'YYYY-MM-DD';
   statusFilterMobile = false;
 
-  drawing = false;
-  drawingShape: string;
   invasiveStatuses: string[] = [
     'euInvasiveSpeciesList',
     'controllingRisksOfInvasiveAlienSpecies',
@@ -94,7 +96,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     private browserService: BrowserService,
     private localizeRouterService: LocalizeRouterService,
     private route: Router,
-    private userService: UserService
+    private userService: UserService,
+    private toastsService: ToastsService
   ) {}
 
   @Input()
@@ -113,7 +116,19 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
-      tap(() => { if (this.results) { this.results.reloadTabs(); }})
+      tap((query) => {
+        if (this.results) {
+          this.results.reloadTabs();
+        }
+        if ((query.coordinates) && !coordinateFilterInfoShown) {
+          coordinateFilterInfoShown = true;
+          this.toastsService.showInfo(
+            this.translate.instant('observation.form.coordinatesInfo'),
+            undefined,
+            {disableTimeOut: true, closeButton: true}
+          );
+        }
+      })
     ).subscribe();
   }
 
@@ -128,13 +143,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   draw(type: string) {
-    this.drawingShape = type;
     if (this.activeTab !== 'map') {
       this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
-    }, 100);
+    }, 120);
   }
 
   empty() {

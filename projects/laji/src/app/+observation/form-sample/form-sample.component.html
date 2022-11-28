@@ -167,10 +167,7 @@
     </laji-info>
       <laji-datepicker
         [(ngModel)]="formQuery.timeStart"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
-        [format]="dateFormat"
-        (select)="onFormQueryChange()"
+        (dateSelect)="onFormQueryChange()"
         (change)="onFormQueryChange()"
         name="timeStart"></laji-datepicker>
     </div>
@@ -179,11 +176,8 @@
     <div class="col-sm-12">
       <laji-datepicker
         [(ngModel)]="formQuery.timeEnd"
-        [viewFormat]="'DD.MM.YYYY'"
-        [otherFormats]="['D.M.YYYY', 'YYYY']"
         [toLastOfYear]="true"
-        [format]="dateFormat"
-        (select)="onFormQueryChange()"
+        (dateSelect)="onFormQueryChange()"
         (change)="onFormQueryChange()"
         name="timeEnd"></laji-datepicker>
     </div>
@@ -230,7 +224,7 @@
       <button type="button" class="lji-btn-sm btn btn-sm btn-default" (click)="mapDraw.emit('Rectangle')">
         <i class="lji-icon lji-crop"></i>
       </button>
-      {{ (drawing && drawingShape === 'Rectangle' ?  'observation.form.map.rectangle.active' : 'observation.form.map.rectangle') | translate }}
+      {{ 'observation.form.map.rectangle' | translate }}
     </div>
   </div>
 </section>

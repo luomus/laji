@@ -22,7 +22,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   notificationSource: NotificationDataSource;
 
-  @Output() close = new EventEmitter<void>();
+  @Output() notificationsClose = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll: CdkVirtualScrollViewport;
   loading: boolean;
 
@@ -47,7 +47,7 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onClose() {
-    this.close.emit();
+    this.notificationsClose.emit();
   }
 
   markAllAsSeen() {
@@ -68,9 +68,9 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
     this.loading = true;
-    this.translate.get('notification.deleteAll.confirm').pipe(
+    this.translate.get(['notification.deleteAll.confirm']).pipe(
       takeUntil(this.unsubscribe$),
-      switchMap(msg => this.dialogService.confirm(msg)),
+      switchMap(translations => this.dialogService.confirm(translations['notification.deleteAll.confirm'])),
       map((res) => {
         if (!res) {
           throw new Error('cancelled');
@@ -95,8 +95,8 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   removeNotification(notification: Notification) {
-    this.translate.get('notification.delete.confirm').pipe(
-      switchMap(msg => notification.seen ? of(true) : this.dialogService.confirm(msg)),
+    this.translate.get(['notification.delete.confirm']).pipe(
+      switchMap(translations => notification.seen ? of(true) : this.dialogService.confirm(translations['notificaiton.delete.confirm'])),
       filter(result => !!(result && notification.id)),
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
       switchMap(() => this.notificationsFacade.remove(notification))

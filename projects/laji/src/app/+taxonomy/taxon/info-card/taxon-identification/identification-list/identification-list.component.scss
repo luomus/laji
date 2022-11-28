@@ -1,10 +1,5 @@
 @import 'projects/laji-ui/src/lib/vars';
 
-.parent-img img {
-  max-width: 600px;
-  max-height: 600px;
-}
-
 .species-container-container {
   position: relative;
 }
@@ -62,7 +57,18 @@
 
 .species-img-container {
   box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
-  background-color: $neutral-4;
+  background-color: $neutral-2;
+  flex-grow: 1;
+  min-width: 250px;
+}
+
+.species-no-img-container {
+  align-items: center;
+  box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
+  background-color: $neutral-2;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
   min-width: 250px;
 }
 
@@ -85,4 +91,15 @@
 
 .cursive {
   font-style: italic;
+}
+
+.no-image {
+  display: inline-block;
+  margin: $sp-4;
+}
+
+.no-image-title {
+  color: $neutral-4;
+  margin: $sp-4;
+  text-align: center;
 }

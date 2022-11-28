@@ -12,15 +12,17 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { WarehouseApi } from '../api/WarehouseApi';
 import { Logger } from '../logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
+import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
 
+
+type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups?: any; informalTaxonGroupsClass?: any};
 
 @Component({
   selector: 'laji-omni-search',
@@ -30,27 +32,27 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() placeholder: string;
+  @Input() placeholder?: string;
   @Input() limit = 5;
   @Input() delay = 200;
   @Input() selectTo = '/taxon';
-  @Input() matchType: LajiApi.AutocompleteMatchType;
+  @Input() matchType?: LajiApi.AutocompleteMatchType;
   @Input() minLength = 3;
   @Input() expand = '';
   @Input() visible = true;
   @Output() visibleTaxon = new EventEmitter<any>();
-  @Output() close = new EventEmitter<void>();
+  @Output() searchClose = new EventEmitter<void>();
 
   public search = '';
-  public searchControl = new FormControl();
+  public searchControl = new UntypedFormControl();
   public active = 0;
-  public taxa = [];
-  public taxon: any;
+  public taxa: InternalTaxon[] = [];
+  public taxon?: InternalTaxon;
   public loading = false;
   public dropdownVisible = false;
-  private subTaxa: Subscription;
-  private subCnt: Subscription;
-  private inputChange: Subscription;
+  private subTaxa?: Subscription;
+  private subCnt?: Subscription;
+  private inputChange?: Subscription;
   private el: Element;
 
   constructor(private lajiApi: LajiApiService,
@@ -91,7 +93,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.dropdownVisible = false;
     this.search = '';
     this.taxa = [];
-    this.close.emit();
+    this.searchClose.emit();
     this.changeDetector.markForCheck();
   }
 
@@ -100,15 +102,13 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.active = index;
       this.taxon = this.taxa[index];
       this.taxon.informalTaxonGroupsClass = this.taxon.payload.informalTaxonGroups
-        .reduce((p, c) => p + ' ' + c.id, '');
+        .reduce((p: any, c: any) => p + ' ' + c.id, '');
       this.taxon.informalTaxonGroups = this.taxon.payload.informalTaxonGroups
-        .map(group => group.name);
+        .map((group: any) => group.name);
       this.subCnt =
         ObservableOf(this.taxon.key).pipe(combineLatest(
           this.warehouseApi.warehouseQueryCountGet({taxonId: this.taxon.key, cache: true}),
-          (id, cnt) => {
-            return {id: id, cnt: cnt.total};
-          }
+          (id, cnt) => ({id, cnt: cnt.total})
         )).subscribe(data => {
           this.taxa.map(auto => {
             if (auto.key === data.id ) {
@@ -123,7 +123,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  keyEvent(e) {
+  keyEvent(e: KeyboardEvent) {
     if (e.keyCode === 38) { // up
       if (this.taxa[this.active - 1]) {
         this.activate(this.active - 1);
@@ -190,7 +190,7 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
             taxon: this.search,
             lang: this.translate.currentLang,
             limit: this.limit,
-            err: err
+            err
           });
           this.changeDetector.markForCheck();
         }

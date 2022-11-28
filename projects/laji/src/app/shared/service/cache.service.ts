@@ -2,7 +2,7 @@ import { ApplicationRef, Injectable } from '@angular/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, take, timeout } from 'rxjs/operators';
-import { PlatformService } from './platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 @Injectable({providedIn: 'root'})
 export class CacheService {

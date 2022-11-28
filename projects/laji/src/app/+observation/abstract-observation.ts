@@ -7,7 +7,6 @@ import { switchMap, take, tap } from 'rxjs/operators';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractObservation {
   public activeTab$: Observable<string>;
 

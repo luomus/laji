@@ -1,24 +1,30 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
-import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-map-front',
   templateUrl: './front.component.html',
-  styleUrls: ['./front.component.css']
+  styleUrls: ['./front.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
+  @ViewChild('printControlWell') printControlsWell: {nativeElement: HTMLDivElement};
+  @ViewChild('printControl') printControls: {nativeElement: HTMLDivElement};
+
   mapOptions: LajiMapOptions = {
     center: [64.209802, 24.912872],
     zoom: 3,
     tileLayerName: LajiMapTileLayerName.maastokartta,
+    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset],
     controls: {
       draw: {
         marker: true,
@@ -30,6 +36,11 @@ export class FrontComponent implements OnInit, OnDestroy {
       } as any,
       coordinates: true
     },
+    customControls: [{
+      fn: this.togglePrintMode.bind(this) as (() => void),
+      iconCls: 'glyphicon glyphicon-print',
+      text: this.translate.instant('map.front.print.tooltip')
+    }]
   };
 
   readonly instructions = {
@@ -47,48 +58,49 @@ export class FrontComponent implements OnInit, OnDestroy {
     showMeasurements: true
   };
 
-  hasQuery = false;
-  showControls = false;
-  color = undefined;
-  query: WarehouseQueryInterface;
+  printMode = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     public searchQuery: SearchQueryService,
     public translate: TranslateService,
-    private footerService: FooterService
+    private footerService: FooterService,
+    private cdr: ChangeDetectorRef,
+    private platformService: PlatformService
   ) {
   }
 
   ngOnInit() {
     this.footerService.footerVisible = false;
     let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
-    const params = this.route.snapshot.queryParams;
-    let len = Object.keys(params).length;
-    if (params['overlayNames']) {
-      options = {...options, overlayNames: params['overlayNames'].split(',')};
-      len--;
+    const {layers = '', overlayNames = '', world, coordinates, print} = this.route.snapshot.queryParams;
+    const _layers = (`${layers},${overlayNames}`.split(',') as string[])
+      .filter(s => s)
+      .reduce<LajiMapTileLayersOptions['layers']>(
+        (lrs, layerName) => ({...lrs, [layerName]: true}),
+        {maastokartta: true} as LajiMapTileLayersOptions['layers']
+      );
+    if (typeof coordinates !== 'undefined') {
+      this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(coordinates)};
     }
-    if (typeof params['coordinates'] !== 'undefined') {
-      this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(params['coordinates'])};
-      len--;
-    }
-    this.hasQuery = len > 0;
-    if (params['color']) {
-      this.color = '#' + params['color'];
-    }
-    if (params['showControls'] && params['showControls'] !== 'false') {
-      this.showControls = true;
-    }
-    const query = this.searchQuery.getQueryFromUrlQueryParams(params);
+    const projection = world === 'true'
+      ? 'world'
+      : 'finnish';
+    options = {...options, tileLayers: {layers: _layers, active: projection}};
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
-    this.query = query;
+    this.printMode = print === 'true' ? true : false;
   }
 
   onMapLoad() {
-    const params = this.route.snapshot.queryParams;
-    if (params['coordinates']) {
+    if (this.printMode) {
+      this.printModeSideEffects();
+    }
+
+    const {coordinates, gridsquare} = this.route.snapshot.queryParams;
+    if (gridsquare) {
+      this.zoomToGrid(gridsquare);
+    } else if (coordinates) {
       this.lajiMap.map.zoomToData();
     }
   }
@@ -104,4 +116,37 @@ export class FrontComponent implements OnInit, OnDestroy {
     });
   }
 
+  togglePrintMode(e: MouseEvent) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
+    e.stopPropagation();
+    this.printMode = !this.printMode;
+    this.printModeSideEffects();
+  }
+
+  private printModeSideEffects() {
+    this.cdr.detectChanges();
+
+    this.lajiMap.map.map.invalidateSize();
+
+    const printControlsElem = this.printControls.nativeElement;
+    const lajiMapPrintControl = document.querySelector('.laji-map .glyphicon-print').parentElement;
+    if (this.printMode) {
+      lajiMapPrintControl.appendChild(printControlsElem);
+    } else {
+      this.printControlsWell.nativeElement.appendChild(printControlsElem);
+    }
+  }
+
+
+  private zoomToGrid(grid: string) {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
+    const geometry = latLngGridToGeoJSON(grid.split(':') as [string, string]);
+    this.lajiMap.map.fitBounds((window.L as any).geoJSON(geometry).getBounds(), {paddingInMeters: 2000});
+  }
 }

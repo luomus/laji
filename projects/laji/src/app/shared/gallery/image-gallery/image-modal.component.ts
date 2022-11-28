@@ -17,6 +17,7 @@ import { IImageSelectEvent, Image } from './image.interface';
 import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -79,11 +80,13 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() showOverlay = true;
   @Input() showLinkToSpeciesCard = false;
   @Input() shortcut: boolean;
-  @Input() linkOptions: {tab: string, queryParams: any, queryParamsHandling: QueryParamsHandling};
+  @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
+  @Output() showModal = new EventEmitter<boolean>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   private _overlay: ComponentLoader<ImageModalOverlayComponent>;
+  private showModalSub: Subscription;
   private _isShown = false;
   index: number;
   tmpImg: any;
@@ -118,13 +121,14 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
+    if (this.showModalSub) { this.showModalSub.unsubscribe(); }
     this._overlay.dispose();
   }
 
   openMainPic(url, index) {
    this.tmpImg = {
      mainURL: url,
-     index: index
+     index
    };
   }
 
@@ -149,9 +153,13 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     this.overlay = this._overlay._componentRef;
     this.overlay.instance.modalImages = this.modalImages;
     this.overlay.instance.showImage(index);
-    this.overlay.instance.close = () => {
-      this.closeImage();
-    };
+    if (this.showModalSub) { this.showModalSub.unsubscribe(); }
+    this.showModalSub = this.overlay.instance.showModal.subscribe(state => {
+      if (state === false) {
+        this.closeImage();
+      }
+      this.showModal.emit(state);
+    });
     this.overlay.instance.showLinkToSpeciesCard = this.showLinkToSpeciesCard;
   }
 

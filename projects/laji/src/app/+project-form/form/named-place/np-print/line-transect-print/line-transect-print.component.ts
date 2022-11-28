@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import * as MapUtil from 'laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { CoordinateService } from '../../../../../shared/service/coordinate.service';
+import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 
 @Component({
@@ -25,19 +25,18 @@ export class LineTransectPrintComponent implements OnChanges {
   public routeLength: number;
   public neDistance: any = 0;
   public ykjGrid: string;
-  public info: {key: string, data: string}[];
+  public info: {key: string; data: string}[];
   public formSplit = 50;
   public landscape = false;
   public startPoint = {lat: 0, lng: 0};
   public bounds = {
-    'ne': {lat: 0, lng: 0},
-    'sw': {lat: 0, lng: 0}
+    ne: {lat: 0, lng: 0},
+    sw: {lat: 0, lng: 0}
   };
 
   private pageSize = 10;
 
   constructor(
-    private coordinateService: CoordinateService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -152,7 +151,7 @@ export class LineTransectPrintComponent implements OnChanges {
     this.lajiMap.map.map.dragging.disable();
     this.lajiMap.map.map.touchZoom.disable();
     this.lajiMap.map.map.doubleClickZoom.disable();
-    this.lajiMap.map.map.scrollWheelZoom.disable();
+    this.lajiMap.map.map.smoothWheelZoom.disable();
     this.lajiMap.map.map.boxZoom.disable();
     this.lajiMap.map.map.keyboard.disable();
     if (this.lajiMap.map.map.tap) {
@@ -174,13 +173,13 @@ export class LineTransectPrintComponent implements OnChanges {
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,
-        feature: {type: 'Feature', properties: {}, geometry: geometry}
+        feature: {type: 'Feature', properties: {}, geometry}
       }
     };
   }
 
-  private getYkj(lat, lng): {lat: number, lng: number} {
-    const coord = this.coordinateService.convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
+  private getYkj(lat, lng): {lat: number; lng: number} {
+    const coord = convertWgs84ToYkj(lat, lng).map(val => Math.round(val / 10) * 10);
     return {
       lat: coord[0],
       lng: coord[1]

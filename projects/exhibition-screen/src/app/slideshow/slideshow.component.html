@@ -1,0 +1,11 @@
+<div class="slide-container" #slideContainer>
+  <es-slide *ngFor="let d of slides" [data]="d"></es-slide>
+</div>
+<div class="lang-select">
+  <a (click)="onLangChange('fi')">Suomi</a>
+  <a (click)="onLangChange('sv')">Svenska</a>
+  <a (click)="onLangChange('en')">English</a>
+</div>
+<div class="current-slide">
+  <es-slide-navigation [slides]="slides" [currentSlideIdx]="currentSlideIdx" (selectSlide)="selectSlide($event)"></es-slide-navigation>
+</div>

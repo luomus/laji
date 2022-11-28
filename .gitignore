@@ -16,8 +16,11 @@
 .c9/
 *.launch
 .settings/
+*.swp
+.vim*
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage/*
@@ -39,3 +42,5 @@ settings.json
 #System Files
 .DS_Store
 Thumbs.db
+
+.angular

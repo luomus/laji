@@ -12,6 +12,8 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'unit.linkings.taxon.vernacularName': ObservationTableColumn;
   'unit.linkings.taxon.scientificName': ObservationTableColumn;
   'unit.linkings.taxon.taxonomicOrder': ObservationTableColumn;
+  'unit.linkings.taxon.occurrenceCountFinland': ObservationTableColumn;
+  'unit.linkings.taxon.primaryHabitat': ObservationTableColumn;
   'unit.linkings.taxon.latestRedListStatusFinland': ObservationTableColumn;
   'unit.species': ObservationTableColumn;
   'unit.linkings.species.vernacularName': ObservationTableColumn;
@@ -61,6 +63,7 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'individualCountMax': ObservationTableColumn;
   'individualCountSum': ObservationTableColumn;
   'pairCountSum': ObservationTableColumn;
+  'gathering.coordinatesVerbatim': ObservationTableColumn;
   'gathering.conversions.ykj': ObservationTableColumn;
   'gathering.conversions.ykj.latMin': ObservationTableColumn;
   'gathering.conversions.ykj.latMax': ObservationTableColumn;
@@ -93,11 +96,9 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'sample.notes': ObservationTableColumn;
   'sample.collectionId': ObservationTableColumn;
   'document.facts.legID': ObservationTableColumn;
-  'document.facts.mappingReason': ObservationTableColumn;
-  'document.facts.speciesTrackingStatus': ObservationTableColumn;
-  'document.facts.targetState': ObservationTableColumn;
-  'document.facts.sourceMaterial': ObservationTableColumn;
-  'document.facts.sourceDescription': ObservationTableColumn;
+  'document.dataSource': ObservationTableColumn;
+  'document.siteType': ObservationTableColumn;
+  'document.siteStatus': ObservationTableColumn;
   'sample.facts.preparationMaterials': ObservationTableColumn;
   'sample.facts.elutionMedium': ObservationTableColumn;
   'sample.facts.additionalIDs': ObservationTableColumn;
@@ -105,6 +106,8 @@ export interface IColumns extends IGenericColumn<ObservationTableColumn> {
   'sample.facts.DNAVolumeMicroliters': ObservationTableColumn;
   'sample.facts.DNARatioOfAbsorbance260And280': ObservationTableColumn;
   'sample.facts.DNAConcentrationNgPerMicroliter': ObservationTableColumn;
+  'unit.atlasCode': ObservationTableColumn;
+  'unit.atlasClass': ObservationTableColumn;
 }
 
 export const COLUMNS: IColumns = {
@@ -154,6 +157,16 @@ export const COLUMNS: IColumns = {
     label: 'result.taxonomicOrder',
     aggregateBy: 'unit.linkings.taxon.id,unit.linkings.taxon.taxonomicOrder',
     width: 70
+  },
+  'unit.linkings.taxon.occurrenceCountFinland': {
+    name: 'unit.linkings.taxon.occurrenceCountFinland',
+    width: 70
+  },
+  'unit.linkings.taxon.primaryHabitat': {
+    name: 'unit.linkings.taxon.primaryHabitat',
+    prop: 'unit.linkings.taxon.primaryHabitat.habitat',
+    sortBy: 'unit.linkings.taxon.primaryHabitat',
+    cellTemplate: 'label',
   },
   'unit.linkings.taxon.latestRedListStatusFinland': {
     name: 'unit.linkings.taxon.latestRedListStatusFinland',
@@ -307,27 +320,30 @@ export const COLUMNS: IColumns = {
     name: 'unit.facts.value',
     prop: 'unit.facts.value'
   },
-  'oldestRecord': {name: 'oldestRecord', width: 85},
-  'newestRecord': {name: 'newestRecord', width: 85},
-  'count': {name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric'},
-  'individualCountMax': {
+  oldestRecord: {name: 'oldestRecord', width: 85},
+  newestRecord: {name: 'newestRecord', width: 85},
+  count: {name: 'count', draggable: false, label: 'theme.countShort', width: 75, cellTemplate: 'numeric'},
+  individualCountMax: {
     name: 'individualCountMax',
     label: 'theme.individualCountMax',
     width: 80,
     cellTemplate: 'numeric'
   },
-  'individualCountSum': {
+  individualCountSum: {
     name: 'individualCountSum',
     label: 'theme.individualCount',
     width: 80,
     cellTemplate: 'numeric'
   },
-  'pairCountSum': {
+  pairCountSum: {
     name: 'pairCountSum',
     label: 'theme.pairCount',
     width: 75,
     cellTemplate: 'numeric',
     aggregate: false
+  },
+  'gathering.coordinatesVerbatim': {
+    name: 'gathering.coordinatesVerbatim',
   },
   'gathering.conversions.ykj': {
     name: 'gathering.conversions.ykj',
@@ -460,11 +476,9 @@ export const COLUMNS: IColumns = {
     label: 'result.document.collectionId'
   },
   'document.facts.legID': {name: 'document.facts.legID', sortable: false, fact: 'http://tun.fi/MY.legID'},
-  'document.facts.mappingReason': {name: 'document.facts.mappingReason', sortable: false, fact: 'Kartoituksen tarkoitus'},
-  'document.facts.speciesTrackingStatus': {name: 'document.facts.speciesTrackingStatus', sortable: false, fact: 'Lajinseurantakohteen tila'},
-  'document.facts.targetState': {name: 'document.facts.targetState', sortable: false, fact: 'Kohteen taso'},
-  'document.facts.sourceMaterial': {name: 'document.facts.sourceMaterial', sortable: false, fact: 'Aineistolähde'},
-  'document.facts.sourceDescription': {name: 'document.facts.sourceDescription', sortable: false, fact: 'Tietolähteen kuvaus'},
+  'document.dataSource': {name: 'document.dataSource', sortable: false},
+  'document.siteType': {name: 'document.siteType', width: 300, sortable: false},
+  'document.siteStatus': {name: 'document.siteStatus', sortable: false},
   'sample.facts.preparationMaterials': {
     name: 'sample.facts.preparationMaterials',
     transform: 'label',
@@ -499,6 +513,8 @@ export const COLUMNS: IColumns = {
     sortable: false,
     fact: 'http://tun.fi/MY.DNAConcentrationNgPerMicroliter'
   },
+  'unit.atlasCode': {name: 'unit.atlasCode', cellTemplate: 'label', sortable: false},
+  'unit.atlasClass': {name: 'unit.atlasClass', cellTemplate: 'label', sortable: false}
 };
 
 const lajiGISSectionHeader = 'lajiGIS.fields';
@@ -509,6 +525,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
   protected defaultFields: Array<keyof IColumns> = [
     'unit.interpretations.recordQuality',
     'document.linkings.collectionQuality',
+    'unit.linkings.taxon.taxonomicOrder',
     'unit.taxon',
     'unit.abundanceString',
     'gathering.displayDateTime',
@@ -529,6 +546,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['unit.linkings.taxon.vernacularName'],
     COLUMNS['unit.linkings.taxon.scientificName'],
     COLUMNS['unit.linkings.taxon.taxonomicOrder'],
+    COLUMNS['unit.linkings.taxon.occurrenceCountFinland'],
+    COLUMNS['unit.linkings.taxon.primaryHabitat'],
     COLUMNS['unit.linkings.taxon.latestRedListStatusFinland'],
     COLUMNS['unit.species'],
     COLUMNS['unit.linkings.species.vernacularName'],
@@ -565,11 +584,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['document.dateEdited'],
     COLUMNS['document.dateObserved'],
     COLUMNS['document.namedPlaceId'],
-    COLUMNS['document.facts.mappingReason'],
-    COLUMNS['document.facts.speciesTrackingStatus'],
-    COLUMNS['document.facts.targetState'],
-    COLUMNS['document.facts.sourceMaterial'],
-    COLUMNS['document.facts.sourceDescription'],
+    COLUMNS['document.dataSource'],
+    COLUMNS['document.siteType'],
+    COLUMNS['document.siteStatus'],
     COLUMNS['document.formId'],
     COLUMNS['document.keywords'],
     COLUMNS['unit.det'],
@@ -584,6 +601,7 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['individualCountMax'],
     COLUMNS['individualCountSum'],
     COLUMNS['pairCountSum'],
+    COLUMNS['gathering.coordinatesVerbatim'],
     COLUMNS['gathering.conversions.ykj'],
     COLUMNS['gathering.conversions.ykj.latMin'],
     COLUMNS['gathering.conversions.ykj.latMax'],
@@ -611,19 +629,22 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
     COLUMNS['gathering.conversions.wgs84CenterPoint.lon'],
     COLUMNS['gathering.conversions.wgs84WKT'],
     COLUMNS['gathering.interpretations.coordinateAccuracy'],
+    COLUMNS['unit.atlasCode'],
+    COLUMNS['unit.atlasClass']
   ];
 
   protected columnGroups: IColumnGroup<IColumns>[][] = [
     [
       {
         header: 'identification', fields: [
+          'unit.linkings.taxon.taxonomicOrder',
           'unit.taxon',
           'unit.linkings.taxon.vernacularName',
           'unit.linkings.taxon.scientificName',
           'unit.taxonVerbatim',
-          'unit.linkings.taxon.taxonomicOrder',
           'unit.linkings.taxon.latestRedListStatusFinland',
-          'unit.linkings.taxon.sensitive'
+          'unit.linkings.taxon.sensitive',
+          'unit.linkings.taxon.primaryHabitat',
         ]
       },
       {
@@ -645,7 +666,9 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.abundanceUnit',
           'unit.interpretations.individualCount',
           'unit.lifeStage',
-          'unit.sex'
+          'unit.sex',
+          'unit.atlasCode',
+          'unit.atlasClass'
         ]
       },
     ],
@@ -674,7 +697,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       },
       {
         header: 'coordinates.geometryWKT', fields: [
-          'gathering.conversions.wgs84WKT'
+          'gathering.conversions.wgs84WKT',
+          'gathering.coordinatesVerbatim'
         ]
       },
       {
@@ -697,11 +721,8 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
       },
       {
         header: lajiGISSectionHeader, fields: [
-          'document.facts.mappingReason',
-          'document.facts.speciesTrackingStatus',
-          'document.facts.targetState',
-          'document.facts.sourceMaterial',
-          'document.facts.sourceDescription'
+          'document.siteType',
+          'document.siteStatus'
         ]
       },
       {
@@ -709,12 +730,14 @@ export class ObservationTableColumnService extends TableColumnService<Observatio
           'unit.notes',
           'gathering.notes',
           'document.collectionId',
+          'document.dataSource',
           'document.sourceId',
           'document.secureLevel',
           'document.secureReasons',
           'document.documentId',
           'unit.unitId',
-        ]
+          'unit.linkings.taxon.occurrenceCountFinland',
+        ].filter(field => environment.type === Global.type.vir ? true : field !== 'document.dataSource')
       }
     ].filter(set => environment.type === Global.type.vir ? true : set.header !== lajiGISSectionHeader)
   ];

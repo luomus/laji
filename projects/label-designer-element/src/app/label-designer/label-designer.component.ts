@@ -12,7 +12,7 @@ import {
 } from 'label-designer';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'label-designer',
   templateUrl: './label-designer.component.html',
   styleUrls: ['./label-designer.component.scss'],
@@ -31,7 +31,7 @@ export class LabelDesignerComponent {
   allowLabelItemRepeat = false;
 
   @Input()
-  data: object[];
+  data: Record<string, any>[];
 
   @Input()
   defaultDomain = 'http://tun.fi/EXAMPLE.';

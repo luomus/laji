@@ -28,8 +28,8 @@
           [placeholder]="'Etsi haluttu laji'"
           [taxon]="value"
           [index]="i"
-          [useValue]="useAsIs ? mapping[value] : ''"
-          (complete)="onSearchComplete()"
+          [useValue]="useAsIs && mapping ? mapping[value] : ''"
+          (finish)="onSearchComplete()"
           (taxonSelect)="onTaxonSelect(value, $event)"
         ></laji-taxon-autocomplete>
       </td>
@@ -37,7 +37,7 @@
         {{ lajiValue(value) }}
       </td>
       <td class="ok-col">
-        <laji-tool-success [success]="mapping[value]"></laji-tool-success>
+        <laji-tool-success [success]="mapping?.[value]"></laji-tool-success>
       </td>
     </tr>
   </ng-container>
