@@ -9,8 +9,8 @@ This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.
 ```bash
 
 # clone branch
-git clone https://bitbucket.org/luomus/laji.fi-front.git
-cd laji.fi-front
+git clone git@github.com:luomus/laji.git
+cd laji
 
 # change to dev
 git checkout -b development
@@ -19,11 +19,11 @@ git checkout -b development
 # Redis and make sure that it's running
 # Python and maker sure that the python executable is in the path
 
-# Install js dependencies
+# Install js dependencies (node >= v14)
 npm ci
 
 # Run the environment
-npm run start
+npm start
 
 # Go with your browser to http://localhost:3000/
 ```
