@@ -12,9 +12,6 @@ This repo contains 3 main branches. Follow guidelines set in [wiki](http://wiki.
 git clone git@github.com:luomus/laji.git
 cd laji
 
-# change to dev
-git checkout -b development
-
 # Install application dependencies
 # Redis and make sure that it's running
 # Python and maker sure that the python executable is in the path
