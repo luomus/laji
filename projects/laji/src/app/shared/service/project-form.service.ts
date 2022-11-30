@@ -4,7 +4,7 @@ import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../model/Form';
-import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 
@@ -41,7 +41,6 @@ export class ProjectFormService {
 
   currentFormID: string;
   form$: ReplaySubject<Form.SchemaForm>;
-  documentFormVisible$ = new ReplaySubject<boolean>();
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
@@ -66,10 +65,6 @@ export class ProjectFormService {
       this.form$ = new ReplaySubject<Form.SchemaForm>();
     }
     this.form$.next(form);
-  }
-
-  setDocumentFormVisible(visible: boolean) {
-    this.documentFormVisible$.next(visible);
   }
 
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {

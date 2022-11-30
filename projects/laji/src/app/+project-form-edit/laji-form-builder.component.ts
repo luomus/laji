@@ -1,10 +1,8 @@
 import LajiFormBuilder from 'laji-form-builder';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import lajiFormBuilderBs3Theme from 'laji-form-builder/lib/client/themes/bs3';
-import FormBuilderApiClient from 'laji-form-builder/lib/api-client';
 import { FormApiClient } from '../shared/api/FormApiClient';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from '../shared/service/user.service';
 import { Form } from '../shared/model/Form';
 import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
@@ -13,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'laji-form-builder',
@@ -34,7 +31,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private ngZone: NgZone,
     private apiClient: FormApiClient,
     private translate: TranslateService,
-    private userService: UserService,
     private toastsService:  ToastsService,
     private projectFormService: ProjectFormService,
     private router: Router,
@@ -45,9 +41,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.mount();
-    this.docFormVisibleSub = this.projectFormService.documentFormVisible$.subscribe(docFormVisible => {
-      this._mount(docFormVisible);
-    });
   }
 
   ngOnDestroy() {
@@ -56,12 +49,8 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   private mount() {
-    this.apiClient.lang = this.translate.currentLang;
-    this._mount(false);
-  }
-
-  private _mount(documentFormVisible: boolean) {
     this.ngZone.runOutsideAngular(() => {
+      this.apiClient.lang = this.translate.currentLang;
       this.lajiFormBuilder = new LajiFormBuilder({
         id: this.id,
         rootElem: this.lajiFormBuilderRoot.nativeElement,
@@ -77,20 +66,20 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
           info: msg => this.toastsService.showInfo(msg),
           warning: msg => this.toastsService.showWarning(msg),
           error: msg => this.toastsService.showError(msg),
-        },
-        documentFormVisible
+        }
       });
     });
   }
 
   private unmount() {
-    this.lajiFormBuilder.destroy();
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormBuilder.destroy();
+    });
   }
 
   onChange(form: SchemaForm) {
     this.ngZone.run(() => {
       const id = form.id ? form.id : 'tmp';
-      console.log('onchange', id, this.id);
       if (id !== this.id) {
         of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
           this.projectFormService.updateLocalForm({...form, id});

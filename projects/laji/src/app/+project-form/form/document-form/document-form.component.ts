@@ -79,14 +79,12 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       this.vm = vm;
     });
     this.footerService.footerVisible = false;
-    this.projectFormService.setDocumentFormVisible(true);
   }
 
   ngOnDestroy() {
     this.documentFormFacade.flush();
     this.vmSub.unsubscribe();
     this.footerService.footerVisible = true;
-    this.projectFormService.setDocumentFormVisible(false);
   }
 
   goBack() {
