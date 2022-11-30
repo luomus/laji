@@ -79,6 +79,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   onChange(form: SchemaForm) {
     this.ngZone.run(() => {
+      console.log('change', form);
       const id = form.id ? form.id : 'tmp';
       if (id !== this.id) {
         of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
