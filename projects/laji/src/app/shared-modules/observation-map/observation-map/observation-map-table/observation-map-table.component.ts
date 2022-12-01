@@ -34,7 +34,8 @@ const defaultColumnNames: (keyof IColumns)[] = [
   'unit.taxon',
   'gathering.displayDateTime',
   'gathering.team',
-  'unit.abundanceString'
+  'unit.abundanceString',
+  'gathering.interpretations.coordinateAccuracy'
 ];
 
 @Component({
@@ -111,7 +112,8 @@ const defaultColumnNames: (keyof IColumns)[] = [
       'document.documentId',
       'unit.interpretations.individualCount',
       'unit.linkings.taxon.latestRedListStatusFinland.status',
-      'unit.linkings.taxon.latestRedListStatusFinland.year'
+      'unit.linkings.taxon.latestRedListStatusFinland.year',
+      'gathering.interpretations.coordinateAccuracy'
     ];
     const query: WarehouseQueryInterface = { ...this.query };
     if (this.coordinates.type === 'wgs84') {
