@@ -235,10 +235,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.updateMap(true);
   }
 
-  private resetTable() {
+  resetTable() {
     this.selectedObservationCoordinates = undefined;
-    this.tableViewHeightOverride = undefined;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+    // Wait until next cycle so that height has time to adjust to the removal of the table
+    setTimeout(() => {
+      this.tableViewHeightOverride = undefined;
+      this.cdr.detectChanges();
+    });
   }
 
   private addVisualizationParams(query: WarehouseQueryInterface) {
@@ -457,10 +461,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.clearDrawData();
       this.mapData = [dataOptions, this.drawData];
       this.loading = false;
-      this.resetTable();
     }, (err) => {
       this.loading = false;
-      this.resetTable();
       this.logger.warn('Failed to add observations to the map!', err);
     });
   }
