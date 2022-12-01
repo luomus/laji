@@ -25,7 +25,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lajiFormBuilder', { static: true }) lajiFormBuilderRoot: ElementRef;
 
   private lajiFormBuilder: LajiFormBuilder;
-  private docFormVisibleSub: Subscription;
 
   constructor(
     private ngZone: NgZone,
@@ -44,7 +43,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.docFormVisibleSub.unsubscribe();
     this.unmount();
   }
 
@@ -79,7 +77,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   onChange(form: SchemaForm) {
     this.ngZone.run(() => {
-      console.log('change', form);
       const id = form.id ? form.id : 'tmp';
       if (id !== this.id) {
         of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {

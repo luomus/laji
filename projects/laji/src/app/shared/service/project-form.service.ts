@@ -4,7 +4,7 @@ import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../model/Form';
-import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject } from 'rxjs';
+import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 
@@ -39,8 +39,8 @@ export class ProjectFormService {
     private namedPlacesService: NamedPlacesService
   ) { }
 
-  currentFormID: string;
-  form$: ReplaySubject<Form.SchemaForm>;
+  private currentFormID: string;
+  private form$: ReplaySubject<Form.SchemaForm>;
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
@@ -48,21 +48,23 @@ export class ProjectFormService {
 
   getForm(id: string): Observable<Form.SchemaForm> {
     if (this.currentFormID === id) {
-      return this.form$.asObservable();
+      return this.form$;
     }
     this.currentFormID = id;
-    this.form$ = new ReplaySubject<Form.SchemaForm>();
+    this.form$?.complete();
+    this.form$ = new ReplaySubject<Form.SchemaForm>(1);
     this.formService.getForm(id).pipe(take(1)).subscribe(form => {
       this.form$.next(form);
     });
-    return this.form$.asObservable();
+    return this.form$;
   }
 
   updateLocalForm(form: Form.SchemaForm) {
     const {id} = form;
     if (this.currentFormID !== id) {
       this.currentFormID = id;
-      this.form$ = new ReplaySubject<Form.SchemaForm>();
+      this.form$?.complete();
+      this.form$ = new ReplaySubject<Form.SchemaForm>(1);
     }
     this.form$.next(form);
   }

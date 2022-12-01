@@ -26,7 +26,6 @@ import { DisabledComponent } from './disabled/disabled.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { ProjectFormHeaderModule } from './header/project-form-header.module';
-import { ProjectFormService } from '../shared/service/project-form.service';
 
 @NgModule({
   imports: [
@@ -58,7 +57,6 @@ import { ProjectFormService } from '../shared/service/project-form.service';
     DisabledComponent
   ],
   providers: [
-    ProjectFormService,
     HasAdminPermission,
     HasFormPermission,
     HasViewPermission

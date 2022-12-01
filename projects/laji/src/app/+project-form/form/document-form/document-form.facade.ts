@@ -5,7 +5,6 @@ import { NamedPlace } from '../../../shared/model/NamedPlace';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { Document } from '../../../shared/model/Document';
-import { TranslateService } from '@ngx-translate/core';
 import { LatestDocumentsFacade } from '../../../shared-modules/latest-documents/latest-documents.facade';
 import { DocumentService } from '../../../shared-modules/own-submissions/service/document.service';
 import { Form } from '../../../shared/model/Form';
@@ -26,7 +25,7 @@ import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.servic
 import { Logger } from '../../../shared/logger';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
 import equals from 'deep-equal';
-import {ProjectFormService} from '../../../shared/service/project-form.service';
+import { ProjectFormService } from '../../../shared/service/project-form.service';
 
 export enum FormError {
   notFoundForm = 'notFoundForm',
@@ -95,7 +94,6 @@ export class DocumentFormFacade {
 
   constructor(
     private footerService: FooterService,
-    private translate: TranslateService,
     private latestFacade: LatestDocumentsFacade,
     private documentService: DocumentService,
     private userService: UserService,
@@ -121,19 +119,19 @@ export class DocumentFormFacade {
 
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
       switchMap(([formID, template]) => this.projectFormService.getForm(formID).pipe(
-        switchMap(form =>  template && !form.options?.allowTemplate
+        switchMap(form => template && !form.options?.allowTemplate
           ? of(FormError.templateDisallowed)
           : this.formPermissionService.getRights(form).pipe(map(rights =>
             rights.edit === false
               ? FormError.noAccess
-            : form
+              : form
           ))
         ),
         catchError((error) => {
           this.logger.error('Failed to load form', {error});
           return of(error.status === 404 ? FormError.notFoundForm :  FormError.loadFailed);
         }),
-      )),
+      ))
     );
 
     const existingDocument$: Observable<DocumentAndHasChanges | FormError | null> = form$.pipe(
@@ -186,18 +184,18 @@ export class DocumentFormFacade {
       )
     );
 
-    const firstSaneInputModel$ = inputModel$.pipe(isSane, take(1), shareReplay());
+    const saneInputModel$ = inputModel$.pipe(isSane, shareReplay());
 
-    this.formData$ = concat(firstSaneInputModel$.pipe(map(({formData}) => formData)), this.formDataChange$);
+    this.formData$ = concat(saneInputModel$.pipe(take(1), map(({formData}) => formData)), this.formDataChange$);
     this.hasChanges$ = concat(
-      firstSaneInputModel$.pipe(map(({hasChanges}) => hasChanges)),
+      saneInputModel$.pipe(take(1), map(({hasChanges}) => hasChanges)),
       merge(
         this.formDataChange$.pipe(mapTo(true)),
         this.onSaved$.pipe(mapTo(false))
       )
     ).pipe(distinctUntilChanged());
 
-    this.locked$ = firstSaneInputModel$.pipe(switchMap(({form}) => this.formData$.pipe(
+    this.locked$ = saneInputModel$.pipe(switchMap(({form}) => this.formData$.pipe(
       map(formData => (form.id?.indexOf('T:') !== 0 && form.options?.adminLockable)
         ? (formData && !!formData.locked)
         : undefined

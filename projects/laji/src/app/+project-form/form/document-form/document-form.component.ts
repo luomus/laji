@@ -73,11 +73,14 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
     private documentFormFacade: DocumentFormFacade
   ) { }
 
+   form$: Observable<any>;
+
   ngOnInit() {
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
     this.vmSub = this.vm$.pipe(filter(isSaneViewModel)).subscribe(vm => {
       this.vm = vm;
     });
+    this.form$ = this.projectFormService.getForm(this.formID);
     this.footerService.footerVisible = false;
   }
 
