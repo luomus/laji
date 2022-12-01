@@ -2043,7 +2043,14 @@
   "yes": "Kyllä",
   "laji-map.legend.mode.obsCount": "Havaintomäärä",
   "laji-map.legend.mode.recordQuality": "Aineiston laatu",
+  "laji-map.legend.mode.recordQuality.1": "Asiantuntijan varmistama",
+  "laji-map.legend.mode.recordQuality.2": "Yhteisön varmistama",
+  "laji-map.legend.mode.recordQuality.3": "Ei arvioitu",
+  "laji-map.legend.mode.recordQuality.4": "Epävarma",
+  "laji-map.legend.mode.recordQuality.5": "Vihreellinen",
   "laji-map.legend.mode.redlistStatus": "Uhanalaisuusluokitus",
   "laji-map.legend.mode.individualCount": "Yksilöiden määrä",
-  "laji-map.legend.mode.recordAge": "Uusin aineisto"
+  "laji-map.legend.mode.recordAge": "Uusin aineisto",
+  "laji-map.legend.coordinateAccuracy": "Paikan tarkkuus (m)",
+  "laji-map.legend.coordinateAccuracy.info": "Havaintojen sijainnille on määritelty karkea tarkkuus metreinä: 1, 10 tai 100 metriä, 1 tai 10 kilometriä. Tarkkuus merkitsee havaintoalueen suurinta leveyttä tai pituutta. Tarkkuus ei erottele onko kyse siitä, että tarkkaa paikkaa ei tunneta, vai siitä että lajia on havaittu suurella alueella."
 }

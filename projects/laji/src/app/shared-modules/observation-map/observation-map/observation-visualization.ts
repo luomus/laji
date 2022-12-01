@@ -172,23 +172,28 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     categories: [
       {
         color: '#348cf0',
-        label: 'Expert verified'
+        //label: 'Expert verified',
+        translate: 'laji-map.legend.mode.recordQuality.1'
       },
       {
         color: '#90dacf',
-        label: 'Community verified'
+        //label: 'Community verified'
+        translate: 'laji-map.legend.mode.recordQuality.2'
       },
       {
         color: '#ffffbf',
-        label: 'Neutral'
+        //label: 'Neutral'
+        translate: 'laji-map.legend.mode.recordQuality.3'
       },
       {
         color: '#fdbf66',
-        label: 'Uncertain'
+        //label: 'Uncertain'
+        translate: 'laji-map.legend.mode.recordQuality.4'
       },
       {
         color: '#f26840',
-        label: 'Erroneous'
+        //label: 'Erroneous'
+        translate: 'laji-map.legend.mode.recordQuality.5'
       }
     ],
     getFeatureStyle: (options) => ({
