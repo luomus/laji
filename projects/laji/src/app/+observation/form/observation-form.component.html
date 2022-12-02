@@ -580,14 +580,6 @@
     <label><laji-checkbox [value]="query.typeSpecimen" (valueChange)="onCheckBoxToggle('typeSpecimen')"></laji-checkbox>{{ 'observation.form.typeSpecimen' | translate }}</label>
     <laji-info [html]="'observation.info.typeSpecimen' | translate"></laji-info>
   </div>
-  <laji-metadata-select
-    [(ngModel)]="query.collectionId"
-    (ngModelChange)="onQueryChange()"
-    [multiple]="true"
-    [field]="'MY.collectionID'"
-    [placeholder]="'MY.collectionID' | label"
-    [mapToWarehouse]="false"
-    name="collectionID"></laji-metadata-select>
 </section>
 
 <!-- IDs, keywords -->
