@@ -36,7 +36,7 @@
         </ng-container>
         <ng-container *ngIf="types.length <= 1">
           <span class="capitalize">
-            {{ (typeLabels[type] ? typeLabels[type] : 'theme.count') | translate }}
+            {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
           </span>
         </ng-container>
       </div>
