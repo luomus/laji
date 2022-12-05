@@ -47,6 +47,10 @@ const style = `
 .ll-label.preview {
   border: 1px solid #333;
 }
+.qrcode {
+  width: 100%;
+  height: 100%;
+}
 img {
   transform-origin: top left;
   transform: scale(0.25);
