@@ -9,6 +9,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild
@@ -21,12 +22,13 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { Profile } from '../../../../shared/model/Profile';
 import LajiForm from 'laji-form/lib/index';
 import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
 import { environment } from 'projects/laji/src/environments/environment';
+import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -45,7 +47,7 @@ interface ErrorModal {
   providers: [FormApiClient],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, OnInit {
 
   constructor(private apiClient: FormApiClient,
               private userService: UserService,
@@ -53,7 +55,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private translate: TranslateService
+              private translate: TranslateService,
+              private projectFormService: ProjectFormService
   ) {
     this._onError = this._onError.bind(this);
   }
@@ -94,9 +97,19 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   private _block = false;
   private settings: any;
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
+  private langSub: Subscription;
+  private localLang: string;
+
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
+
+  ngOnInit() {
+    this.langSub = this.projectFormService.localLang$.subscribe(lang => {
+      this.localLang = lang;
+      this.updateLajiFormLocalLang();
+    });
+  }
 
   ngAfterViewInit() {
     this.mount();
@@ -104,6 +117,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
 
   ngOnDestroy() {
     this.unMount();
+    this.langSub.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -124,21 +138,23 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   block() {
-    if (!this._block) {
-      this.ngZone.runOutsideAngular(() => {
-        this.lajiFormWrapper.pushBlockingLoader();
-      });
-      this._block = true;
+    if (this._block) {
+      return;
     }
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.pushBlockingLoader();
+    });
+    this._block = true;
   }
 
   unBlock() {
-    if (this._block) {
-      this.ngZone.runOutsideAngular(() => {
-        this.lajiFormWrapper.popBlockingLoader();
-      });
-      this._block = false;
+    if (!this._block) {
+      return;
     }
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.popBlockingLoader();
+    });
+    this._block = false;
   }
 
   reload() {
@@ -159,19 +175,21 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   submitOnlySchemaValidations() {
-    if (this.lajiFormWrapper) {
-      this.ngZone.runOutsideAngular(() => {
-        this.lajiFormWrapper.submitOnlySchemaValidations();
-      });
+    if (!this.lajiFormWrapper) {
+      return;
     }
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.submitOnlySchemaValidations();
+    });
   }
 
   popErrorListIfNeeded() {
-    if (this.lajiFormWrapper) {
-      this.ngZone.runOutsideAngular(() => {
-        this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
-      });
+    if (!this.lajiFormWrapper) {
+      return;
     }
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.lajiForm.popErrorListIfNeeded();
+    });
   }
 
   displayErrorModal(type: 'saveError' | 'reactCrash') {
@@ -191,9 +209,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
       return;
     }
     this.createNewLajiForm(() => {
-      if (this.lajiFormWrapper) {
-        this.lajiFormWrapper.invalidateSize();
-      }
+      this.lajiFormWrapper?.invalidateSize();
     });
   }
 
@@ -206,7 +222,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
         if (this.lajiFormWrapper) {
           this.unMount();
         }
-        this.apiClient.lang = this.translate.currentLang;
+        this.apiClient.lang = this.localLang;
         this.apiClient.personToken = this.userService.getToken();
         this.apiClient.formID = this.form.id;
         this.lajiFormWrapper = new this.lajiFormWrapperProto({
@@ -225,7 +241,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
           settings: this.settings,
           mediaMetadata: this.defaultMediaMetadata,
           apiClient: this.apiClient,
-          lang: this.translate.currentLang,
+          lang: this.localLang,
           renderSubmit: false,
           topOffset: LajiFormComponent.TOP_OFFSET,
           bottomOffset: LajiFormComponent.BOTTOM_OFFSET,
@@ -301,12 +317,13 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
   }
 
   private unMount() {
+    if (!this.lajiFormWrapper) {
+      return;
+    }
     try {
-      if (this.lajiFormWrapper) {
-        this.ngZone.runOutsideAngular(() => {
-          this.lajiFormWrapper.unmount();
-        });
-      }
+      this.ngZone.runOutsideAngular(() => {
+        this.lajiFormWrapper.unmount();
+      });
     } catch (err) {
       this.logger.warn('Unmounting failed', err);
     }
@@ -318,4 +335,14 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit {
     warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
     error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
   };
+
+  private updateLajiFormLocalLang() {
+    if (!this.lajiFormWrapper) {
+      return;
+    }
+    this.ngZone.runOutsideAngular(() => {
+      this.lajiFormWrapper.setState({lang: this.localLang as any});
+      this.apiClient.lang = this.localLang;
+    });
+  }
 }

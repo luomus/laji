@@ -8,7 +8,7 @@ import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../shared/service/toasts.service';
 import { ProjectFormService } from '../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, Subscription } from 'rxjs';
+import { of } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
 
@@ -35,7 +35,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.onChange = this.onChange.bind(this);
   }
 
   ngAfterViewInit() {
@@ -55,10 +54,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         theme: lajiFormBuilderBs3Theme,
         apiClient: this.apiClient,
         lang: this.translate.currentLang as Lang,
-        onLangChange: this.onLangChange,
+        onLangChange: this.onLangChange.bind(this),
         primaryDataBankFormID: Global.forms.databankPrimary,
         secondaryDataBankFormID: Global.forms.databankSecondary,
-        onChange: this.onChange,
+        onChange: this.onChange.bind(this),
         notifier: {
           success: msg => this.toastsService.showSuccess(msg),
           info: msg => this.toastsService.showInfo(msg),
@@ -89,6 +88,6 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   }
 
   onLangChange(lang: Lang) {
-    console.warn('TODO lang change');
+    this.projectFormService.updateLocalLang(lang);
   }
 }

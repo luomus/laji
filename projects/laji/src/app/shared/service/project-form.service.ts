@@ -4,7 +4,7 @@ import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../model/Form';
-import { combineLatest, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject } from 'rxjs';
 import { NamedPlacesService } from './named-places.service';
 import { NamedPlace } from '../model/NamedPlace';
 
@@ -41,6 +41,11 @@ export class ProjectFormService {
 
   private currentFormID: string;
   private form$: ReplaySubject<Form.SchemaForm>;
+
+  /**
+   * LajiFormBuilder can change the language of the form, without changing the lang of the whole page.
+   */
+  public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
     return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
@@ -143,5 +148,9 @@ export class ProjectFormService {
 
   getPlaceForm$(documentForm: Form.SchemaForm) {
     return this.formService.getPlaceForm(documentForm);
+  }
+
+  updateLocalLang(lang: string) {
+    this.localLang$.next(lang);
   }
 }
