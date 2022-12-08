@@ -1,4 +1,4 @@
-import { concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, from } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -128,7 +128,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   visualization = lajiMapObservationVisualization;
   visualizationMode: ObservationVisualizationMode = 'obsCount';
-  mapData;
+  mapData: any[] = [];
   loading = false;
   reloading = false;
   showingIndividualPoints = false;
@@ -148,7 +148,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     })
   };
   private previousQueryHash = '';
-  private previousQueryResponse;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
@@ -180,7 +179,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       return;
     }
     this.decorator.lang = this.translate.currentLang;
-    // First update is triggered by tile layer update event from the laji-map
     if (changes['query'] || changes['ready']) {
       this.updateMap();
     }
@@ -212,13 +210,18 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       }
     }
 
-    const outOfActiveBounds = this.activeZoomThresholdBounds && !this.activeZoomThresholdBounds.contains(e.bounds);
-    const zoomedInAndNotShowingPoints = this.activeZoomThresholdLevel > curActiveZoomThresholdLevel && !this.showingIndividualPoints;
-    const zoomedOut = this.activeZoomThresholdLevel < curActiveZoomThresholdLevel;
+    const activeBoundsContainViewport = this.activeZoomThresholdBounds && this.activeZoomThresholdBounds.contains(e.bounds);
 
-    if (outOfActiveBounds
-      || zoomedInAndNotShowingPoints
-      || zoomedOut
+    if (
+      !(this.showingIndividualPoints && activeBoundsContainViewport)
+      && (
+           // Zoom in
+           this.activeZoomThresholdLevel > curActiveZoomThresholdLevel
+           // Zoom out
+        || this.activeZoomThresholdLevel < curActiveZoomThresholdLevel
+           // Move
+        || !activeBoundsContainViewport
+      )
     ) {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMap();
@@ -226,13 +229,30 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   onTileLayersChange(layerOptions: TileLayersOptions) {
-    this.useFinnishMap = layerOptions.active === 'finnish';
-    this.updateMap();
+    const temp = layerOptions.active === 'finnish';
+    if (temp !== this.useFinnishMap) {
+      this.useFinnishMap = temp;
+      this.updateMap();
+    }
   }
 
   onVisualizationModeChange(mode: string) {
+    const fetchRequired = mode !== this.visualizationMode && (
+      mode === 'redlistStatus'
+      || this.visualizationMode === 'redlistStatus'
+    );
     this.visualizationMode = <ObservationVisualizationMode>mode;
-    this.updateMap(true);
+
+    if (fetchRequired) {
+      this.updateMap();
+    } else {
+      const dataOptions = this.mapData[0];
+      if (!dataOptions) { return; }
+      const vis = this.visualization?.[this.visualizationMode];
+      if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
+      // changing mapData object reference so that laji-map recognizes that it has changed
+      this.mapData = [...this.mapData];
+    }
   }
 
   resetTable() {
@@ -251,9 +271,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       case 'recordQuality':
       case 'recordAge':
       case 'obsCount':
-        query.onlyCount = false;
-        query.pessimisticDateRangeHandling = true;
-        break;
       case 'redlistStatus':
         query.onlyCount = false;
         query.taxonCounts = true;
@@ -404,67 +421,88 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private updateMap(forceMapRefresh = false) {
-    if (!this.ready) { return; }
-
-    const modifiedQuery: WarehouseQueryInterface = {...this.query};
-    if (this.useFinnishMap && !modifiedQuery.coordinates) {
-      modifiedQuery.coordinates = FINNISH_MAP_BOUNDS;
-    }
-    this.addViewPortCoordinatesParams(modifiedQuery);
-    this.addVisualizationParams(modifiedQuery);
-
-    const queryHash = this.getQueryHash(modifiedQuery);
-    const hashMatch = this.previousQueryHash === queryHash;
-    if (hashMatch && !forceMapRefresh) { return; }
+  private updateMap() {
+    const query = this.prepareQuery();
+    const queryHash = this.getQueryHash(query);
+    if (this.previousQueryHash === queryHash) { return; }
     this.previousQueryHash = queryHash;
+    forkJoin({
+      drawData: this.getDrawData$(query),
+      dataOptions: this.getDataOptions$(query)
+    }).subscribe(({drawData, dataOptions}) => {
+      this.lajiMap?.map?.clearDrawData();
+      this.mapData = [dataOptions, drawData];
+    });
+  }
 
-    this.loading = true;
-    this.dataFetchSubscription = getFeatureCollectionFromQueryCoordinates$(this.query.coordinates).pipe(
-      // update drawData
+  private prepareQuery(): WarehouseQueryInterface {
+    const query = { ...this.query };
+
+    this.addVisualizationParams(query);
+
+    if (this.useFinnishMap) {
+      if (!query.coordinates) {
+        query.coordinates = FINNISH_MAP_BOUNDS;
+      }
+    } else {
+      this.addViewPortCoordinatesParams(query);
+    }
+
+    return query;
+  }
+
+  private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
+    return getFeatureCollectionFromQueryCoordinates$(query.coordinates).pipe(
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
       }),
-      switchMap(() => hashMatch ? of(this.previousQueryResponse) : this.warehouseService.warehouseQueryCountGet(modifiedQuery).pipe(
-        // get observation count
-        map(result => result.total),
-        // get observations as points or aggregate
-        switchMap(count => {
-          if (!count) {
-            return of(<ObservationDataOptions>{
-              lastPage: 1,
-              featureCollection: {
-                type: 'FeatureCollection' as const,
-                features: []
-              }
-            });
-          }
-          if (count < this.showIndividualPointsWhenLessThan) {
-            return this.getPointsDataOptions$(modifiedQuery);
-          } else {
-            return this.getAllAggregatePages$(modifiedQuery);
-          }
-        }),
-        // retry on timeout
-        timeout(WarehouseApi.longTimeout * 3),
-        delay(100),
-        retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
-        tap(data => this.previousQueryResponse = data)
-      )),
+      map(() => this.drawData)
+    );
+  }
+
+  private getDataOptions$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
+    this.loading = true;
+    this.cdr.markForCheck();
+    // get observation count
+    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+      map(result => result.total),
+      // get observations as points or aggregate
+      switchMap(count => {
+        if (!count) {
+          return of(<ObservationDataOptions>{
+            lastPage: 1,
+            featureCollection: {
+              type: 'FeatureCollection' as const,
+              features: []
+            }
+          });
+        }
+        if (count < this.showIndividualPointsWhenLessThan) {
+          return this.getPointsDataOptions$(query);
+        } else {
+          return this.getAllAggregatePages$(query);
+        }
+      }),
+      // retry on timeout
+      timeout(WarehouseApi.longTimeout * 3),
+      delay(100),
+      retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
+      // add visualization
       map(dataOptions => {
         const vis = this.visualization?.[this.visualizationMode];
         if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
         return dataOptions;
+      }),
+      // update the map
+      tap(() => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }),
+      catchError(() => {
+        this.logger.warn('Failed to load observation map data!');
+        return of(null);
       })
-    ).subscribe(dataOptions => {
-      // update map data
-      this.clearDrawData();
-      this.mapData = [dataOptions, this.drawData];
-      this.loading = false;
-    }, (err) => {
-      this.loading = false;
-      this.logger.warn('Failed to add observations to the map!', err);
-    });
+    );
   }
 
   private getActiveZoomThresholdLevelToAggregateBy(): string[] {
