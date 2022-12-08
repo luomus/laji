@@ -59,10 +59,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         secondaryDataBankFormID: Global.forms.databankSecondary,
         onChange: this.onChange.bind(this),
         notifier: {
-          success: msg => this.toastsService.showSuccess(msg),
-          info: msg => this.toastsService.showInfo(msg),
-          warning: msg => this.toastsService.showWarning(msg),
-          error: msg => this.toastsService.showError(msg),
+          success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+          info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+          warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+          error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
         }
       });
     });
