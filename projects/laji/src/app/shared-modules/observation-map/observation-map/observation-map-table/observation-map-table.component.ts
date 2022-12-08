@@ -7,6 +7,7 @@ import {
   OnInit,
   SimpleChanges
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { WarehouseQueryInterface } from 'projects/laji/src/app/shared/model/WarehouseQueryInterface';
 import { Observable } from 'rxjs';
@@ -15,6 +16,7 @@ import { IColumns } from '../../../datatable/service/observation-table-column.se
 import { TableColumnService } from '../../../datatable/service/table-column.service';
 import { DocumentViewerFacade } from '../../../document-viewer/document-viewer.facade';
 import { ObservationTableColumn } from '../../../observation-result/model/observation-table-column';
+import { getSortsFromCols } from '../../../observation-result/observation-table/observation-table.component';
 import { ObservationVisualizationMode } from '../observation-visualization';
 
 export interface Coordinates {
@@ -42,7 +44,8 @@ const defaultColumnNames: (keyof IColumns)[] = [
   selector: 'laji-observation-map-table',
   templateUrl: './observation-map-table.component.html',
   styleUrls: ['./observation-map-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // Datatable component doesn't work properly with OnPush eg. when client-side sorting
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
   @Input() query: WarehouseQueryInterface;
@@ -55,12 +58,14 @@ const defaultColumnNames: (keyof IColumns)[] = [
   initialized = false;
 
   private columnLookup: any;
+  private orderBy: string[] = [];
 
   constructor(
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
     private warehouse: WarehouseApi,
     private cdr: ChangeDetectorRef,
-    private documentViewerFacade: DocumentViewerFacade
+    private documentViewerFacade: DocumentViewerFacade,
+    private translate: TranslateService
   ) {
     this.columnLookup = this.tableColumnService.getAllColumnLookup();
   }
@@ -101,6 +106,11 @@ const defaultColumnNames: (keyof IColumns)[] = [
     this.updateRows(event.page);
   }
 
+  onServerSort(event) {
+    this.orderBy = getSortsFromCols(event, this.columns, this.translate.currentLang);
+    this.updateRows();
+  }
+
   private updateRows(page: number = 1) {
     const selected = [
       'unit.interpretations.recordQuality',
@@ -131,7 +141,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
       query['ykj10kmCenter'] = ykj;
     }
     this.loading = true;
-    this.rows$ = this.warehouse.warehouseQueryListGet(query, selected, undefined, this.pageSize, page).pipe(
+    this.rows$ = this.warehouse.warehouseQueryListGet(query, selected, this.orderBy, this.pageSize, page).pipe(
       tap(d => {
         this.loading = false;
         setTimeout(() => {

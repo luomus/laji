@@ -11,7 +11,9 @@
     [virtualScrolling]="false"
     [showFooter]="true"
     [loading]="loading"
+    [clientSideSorting]="data.rows?.total <= pageSize"
     (pageChange)="onPageChange($event)"
-    (rowSelect)="onRowSelect($event)">
+    (rowSelect)="onRowSelect($event)"
+    (sortChange)="data.rows?.total > pageSize ? onServerSort($event) : ''">
   </laji-datatable>
 </ng-container>
