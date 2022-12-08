@@ -61,6 +61,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         primaryDataBankFormID: Global.forms.databankPrimary,
         secondaryDataBankFormID: Global.forms.databankSecondary,
         onChange: this.onChange.bind(this),
+        onRemountLajiForm: this.onRemountLajiForm.bind(this),
         notifier: {
           success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
           info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
@@ -92,5 +93,9 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   onLangChange(lang: Lang) {
     this.projectFormService.updateLocalLang(lang);
+  }
+
+  onRemountLajiForm() {
+    this.projectFormService.remountLajiForm();
   }
 }

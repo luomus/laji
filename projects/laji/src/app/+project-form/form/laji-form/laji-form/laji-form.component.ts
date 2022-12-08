@@ -97,6 +97,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private defaultMediaMetadata: Profile['settings']['defaultMediaMetadata'];
   private langSub: Subscription;
   private localLang: string;
+  private reloadSub: Subscription;
 
 
   @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
@@ -107,6 +108,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       this.localLang = lang;
       this.updateLajiFormLocalLang();
     });
+
+    this.reloadSub = this.projectFormService.remountLajiForm$.subscribe(() => this.reload());
   }
 
   ngAfterViewInit() {
@@ -116,6 +119,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   ngOnDestroy() {
     this.unMount();
     this.langSub.unsubscribe();
+    this.reloadSub.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
