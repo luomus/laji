@@ -157,19 +157,32 @@ export class DatePickerComponent implements ControlValueAccessor {
     const month = date.month() + 1; // Moment month is zero indexed.
     const year = date.format('YYYY');
 
+    // Find out the weekday number for first day of the month (e.g. 1.11.2022 is tuesday so that's number 1).
+    let n = 1;
+    const firstWeekDay = date.date(1).day();
+    if (firstWeekDay !== 1) {
+      n -= (firstWeekDay + 6) % 7;
+    }
+
     this.days = [];
     const selectedDate = moment(this.value, FORMAT);
-    for (let i = 1; i <= date.endOf('month').date(); i += 1) {
+    for (let i = n; i <= date.endOf('month').date(); i += 1) {
       const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
       const today = moment().isSame(iteratedDate.format(), 'day');
       const selected = selectedDate.isSame(iteratedDate, 'day');
 
-      this.days.push({
+      this.days.push(i > 0 ? {
         day: '' + iteratedDate.format('DD'),
         month: '' + iteratedDate.format('MM'),
         year,
         today,
         selected
+      } : {
+        day: null,
+        month: null,
+        year: null,
+        today: false,
+        selected: false
       });
     }
   }

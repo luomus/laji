@@ -37,7 +37,7 @@
     </div>
     <div class="calendar">
         <span *ngFor="let d of days; let i = index">
-          <span class="day" [ngClass]="{'selected': d.selected, 'today': d.today}"h
+          <span class="day" [ngClass]="{'selected': d.selected, 'today': d.today, 'disabled': d.day === null}"h
                 (click)="selectDate($event, i)">
             {{ d.day }}
           </span>
