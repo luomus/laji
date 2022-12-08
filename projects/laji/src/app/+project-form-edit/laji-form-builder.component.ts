@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Global } from '../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
+import { UserService } from '../shared/service/user.service';
 
 @Component({
   selector: 'laji-form-builder',
@@ -33,7 +34,8 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     private toastsService:  ToastsService,
     private projectFormService: ProjectFormService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {
   }
 
@@ -48,6 +50,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
   private mount() {
     this.ngZone.runOutsideAngular(() => {
       this.apiClient.lang = this.translate.currentLang;
+      this.apiClient.personToken = this.userService.getToken();
       this.lajiFormBuilder = new LajiFormBuilder({
         id: this.id,
         rootElem: this.lajiFormBuilderRoot.nativeElement,
