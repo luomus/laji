@@ -2042,7 +2042,7 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "laji-map.legend.mode.obsCount": "Havaintomäärä",
-  "laji-map.legend.mode.recordQuality": "Aineiston laatu",
+  "laji-map.legend.mode.recordQuality": "Havainnon luotettavuus",
   "laji-map.legend.mode.recordQuality.1": "Asiantuntijan varmistama",
   "laji-map.legend.mode.recordQuality.2": "Yhteisön varmistama",
   "laji-map.legend.mode.recordQuality.3": "Ei arvioitu",
