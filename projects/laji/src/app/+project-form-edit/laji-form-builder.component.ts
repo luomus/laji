@@ -82,6 +82,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     this.ngZone.run(() => {
       const id = form.id ? form.id : 'tmp';
       if (id !== this.id) {
+        this.id = id;
         of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
           this.projectFormService.updateLocalForm({...form, id});
         });
