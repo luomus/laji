@@ -284,6 +284,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   onSort(event) {
     this.sorts = event.sorts;
     this.sortRows(event.sorts);
+    this.changeDetectorRef.detectChanges();
     this.sortChange.emit(event);
   }
 

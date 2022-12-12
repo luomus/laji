@@ -44,8 +44,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
   selector: 'laji-observation-map-table',
   templateUrl: './observation-map-table.component.html',
   styleUrls: ['./observation-map-table.component.scss'],
-  // Datatable component doesn't work properly with OnPush eg. when client-side sorting
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
   export class ObservationMapTableComponent implements OnInit, OnChanges {
   @Input() query: WarehouseQueryInterface;
@@ -146,12 +145,10 @@ const defaultColumnNames: (keyof IColumns)[] = [
         this.loading = false;
         setTimeout(() => {
           this.cdr.markForCheck();
-          this.cdr.detectChanges();
         });
       })
     );
     this.cdr.markForCheck();
-    this.cdr.detectChanges();
   }
 
   private updateColumns() {
