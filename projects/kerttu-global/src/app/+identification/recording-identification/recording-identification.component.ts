@@ -57,7 +57,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
-    this.sites$ = this.kerttuGlobalApi.getSites().pipe(
+    this.sites$ = this.kerttuGlobalApi.getSites(this.userService.getToken()).pipe(
       map(result => result.results)
     );
   }

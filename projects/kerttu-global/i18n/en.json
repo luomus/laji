@@ -74,7 +74,7 @@
   "identification.drawABox": "Draw a box to the spectrogram",
   "identification.drawNonBird": "Draw a box to the spectrogram that contains a non-bird sound",
   "identification.drawNonBird.info": "With this tool, by drawing a rectangle with a mouse cursor, you can annotate clear non-bird sounds such as mammals, frogs etc. This teaches the identification model to filter out non-bird sounds.",
-  "identification.genericError": "There was an error uploading the file.",
+  "identification.genericError": "Unfortunately an unexpected error occurred. Please wait a while and try again in a little while.",
   "identification.hasBoxesForAllBirdSounds": "I have drawn boxes for all bird sounds for the clip",
   "identification.highFrequencies": "High frequencies",
   "identification.highFrequencies.info": "Scale the spectrogram to show higher frequencies up to 16 kHz.",

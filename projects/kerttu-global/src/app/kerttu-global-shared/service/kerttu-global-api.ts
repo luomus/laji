@@ -149,10 +149,11 @@ export class KerttuGlobalApi {
     return this.httpClient.post(path, annotation, { params });
   }
 
-  public getSites(): Observable<IListResult<IGlobalSite>> {
+  public getSites(personToken: string): Observable<IListResult<IGlobalSite>> {
     const path = this.basePath + '/identification/sites';
+    const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IListResult<IGlobalSite>>(path);
+    return this.httpClient.get<IListResult<IGlobalSite>>(path, { params });
   }
 
   public getIdentificationSiteStats(): Observable<IListResult<IIdentificationSiteStat>> {

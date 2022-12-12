@@ -9,6 +9,7 @@ import {
 } from '../../kerttu-global-shared/models';
 import { map, share } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
+import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 
 @Component({
   selector: 'bsg-identification-results',
@@ -25,11 +26,12 @@ export class IdentificationResultsComponent implements OnInit {
   userId$: Observable<string>;
 
   constructor(
+    private userService: UserService,
     private kerttuGlobalApi: KerttuGlobalApi
   ) { }
 
   ngOnInit(): void {
-    this.sites$ = this.kerttuGlobalApi.getSites().pipe(
+    this.sites$ = this.kerttuGlobalApi.getSites(this.userService.getToken()).pipe(
       map(result => result.results)
     );
     this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats().pipe(
