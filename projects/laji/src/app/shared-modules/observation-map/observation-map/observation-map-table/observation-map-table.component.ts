@@ -144,7 +144,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
       tap(d => {
         this.loading = false;
         setTimeout(() => {
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         });
       })
     );
