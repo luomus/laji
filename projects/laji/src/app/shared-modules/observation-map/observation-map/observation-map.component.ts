@@ -271,6 +271,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       case 'recordQuality':
       case 'recordAge':
       case 'obsCount':
+      default:
+        break;
       case 'redlistStatus':
         query.onlyCount = false;
         query.taxonCounts = true;
