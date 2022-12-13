@@ -41,8 +41,8 @@ interface ObservationDataOptions extends DataOptions {
 
 // Given coordinates in warehouse query format
 // Returns a featureCollection visualizing that set of coordinates
-const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable<any> => (
-  ObservableOf(coordinates
+const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any, finnishMode: boolean): Observable<any> => (
+  ObservableOf(coordinates && !finnishMode
     ? coordinates.map(
       (coord: any) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
@@ -454,7 +454,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
-    return getFeatureCollectionFromQueryCoordinates$(query.coordinates).pipe(
+    return getFeatureCollectionFromQueryCoordinates$(
+      query.coordinates, this.useFinnishMap
+    ).pipe(
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
       }),
