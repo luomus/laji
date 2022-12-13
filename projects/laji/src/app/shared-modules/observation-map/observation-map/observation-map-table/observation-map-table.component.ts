@@ -148,7 +148,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
         });
       })
     );
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   private updateColumns() {
