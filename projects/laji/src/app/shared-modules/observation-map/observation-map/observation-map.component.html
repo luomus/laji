@@ -22,7 +22,7 @@
 </div>
 <div *ngIf="selectedObservationCoordinates" class="cluster-info">
   <div class="d-flex justify-end">
-    <button class="btn btn-default btn-small my-3" (click)="resetTable()">Close</button>
+    <button class="btn btn-default btn-small my-3" (click)="resetTable()">{{ 'close' | translate }}</button>
   </div>
   <laji-observation-map-table [coordinates]="selectedObservationCoordinates" [visualizationMode]="visualizationMode" [query]="query"></laji-observation-map-table>
 </div>
