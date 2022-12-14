@@ -108,6 +108,8 @@ export interface IGlobalRecording extends IAudio {
   dateTime: string;
   xRange: number[];
   site: IGlobalSite;
+  locality?: string;
+  targetSpecies?: IGlobalSpecies;
 }
 
 export interface IGlobalRecordingAnnotation {
