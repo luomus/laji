@@ -58,6 +58,8 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any, finnishMode
 
 const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 
+const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
