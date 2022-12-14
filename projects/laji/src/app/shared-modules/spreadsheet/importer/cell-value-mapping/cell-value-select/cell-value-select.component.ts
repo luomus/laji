@@ -25,7 +25,7 @@ export class CellValueSelectComponent {
     this.labels = [];
 
     if (field.enum) {
-      this.labels = [VALUE_IGNORE, ...field.enumNames];
+      this.labels = [VALUE_IGNORE, ...field.enum.map(item => item.title)];
     }
   }
 
@@ -45,10 +45,10 @@ export class CellValueSelectComponent {
 
     if (to === VALUE_IGNORE) {
       mapping[value] = to;
-    } else if (this._field.enumNames) {
-      const idx = this._field.enumNames.indexOf(to);
-      if (idx > -1) {
-        mapping[value] = this._field.enum[idx];
+    } else if (this._field.enum) {
+      const enu = this._field.enum.find(item => item.title === to);
+      if (enu) {
+        mapping[value] = enu.const;
       }
     } else if (this._field.type === 'integer') {
       mapping[value] = +to;

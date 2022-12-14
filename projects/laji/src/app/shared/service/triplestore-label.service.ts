@@ -129,7 +129,7 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
         case 'gbif-dataset':
         case 'HR':
-          return this.collectionService.getName(key, lang).pipe(share());
+          return this.collectionService.getName$(key, lang).pipe(share());
         case 'MX':
           if (!TriplestoreLabelService.requestCache[key]) {
             TriplestoreLabelService.requestCache[key] = this.lajiApi.get(LajiApi.Endpoints.taxon, key, {lang: 'multi'}).pipe(

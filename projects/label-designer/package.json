@@ -1,13 +1,14 @@
 {
   "name": "label-designer",
-  "version": "4.0.5",
+  "version": "4.0.7",
   "author": "Ville-Matti Riihikoski",
   "contributors": [
-    "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>"
+    "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
+    "Meeri Rannisto <meeri.rannisto@helsinki.fi>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/luomus/laji.fi-front/src/development/projects/label-designer/"
+    "url": "https://github.com/luomus/laji/tree/development/projects/label-designer"
   },
   "bugs": {
     "email": "helpdesk@laji.fi"

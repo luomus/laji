@@ -38,9 +38,8 @@ export namespace Form {
   }
 
   export interface IEnum {
-    enum: string[];
-    enumNames: string[];
-  }
+    oneOf: {const: string; title: string}[];
+  };
 
   export interface IAnnotationMap {
     [targetID: string]: Annotation[];

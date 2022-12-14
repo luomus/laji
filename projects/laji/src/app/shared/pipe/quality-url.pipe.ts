@@ -21,10 +21,13 @@ export class QualityUrlPipe implements PipeTransform {
       case 'ERRONEOUS':
         return this.recordPath + 'erroneus.svg';
       case 'PROFESSIONAL':
+      case 'MY.collectionQualityEnum3':
         return this.collectionPath + 'professional_collection.svg';
       case 'HOBBYIST':
+      case 'MY.collectionQualityEnum2':
         return this.collectionPath + 'hobbyist_collection.svg';
       case 'AMATEUR':
+      case 'MY.collectionQualityEnum1':
         return this.collectionPath + 'amateur_collection.svg';
       default:
         return '';

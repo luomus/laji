@@ -17,7 +17,7 @@ export class InformationService {
       return of(this.informationCache[id]);
     }
     const url = `${environment.apiBase}/${LajiApi.Endpoints.information}/${id}`;
-    const options = { params: {...Util.removeUndefinedFromObject(query)} };
+    const options = { params: {...Util.removeUndefinedFromObject(<Record<string, string>>query)} };
     return this.httpClient.get<Information>(url, options).pipe(
       tap(result => this.informationCache[id] = result)
     );

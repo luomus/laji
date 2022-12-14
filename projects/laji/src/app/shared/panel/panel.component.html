@@ -1,4 +1,4 @@
-<div class="panel-heading" [ngClass]="{link: headerLink}" aria-expanded="true" role="tab" (click)="activateCurrent()" tabindex="0" luKeyboardClickable>
+<div class="panel-heading" [ngClass]="{link: headerLink, 'is-open': open}" aria-expanded="true" role="tab" (click)="activateCurrent()" tabindex="0" luKeyboardClickable>
   <ng-container *ngIf="headingTemplate else defaultHeading">
     <ng-template [ngTemplateOutlet]="headingTemplate"></ng-template>
   </ng-container>

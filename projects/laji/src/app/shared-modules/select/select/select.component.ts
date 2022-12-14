@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, forwardRef, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { FilterService } from '../../../shared/service/filter.service';
@@ -16,9 +18,14 @@ export interface SelectOption {
   selector: 'laji-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers:  [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => SelectComponent),
+    multi: true
+  }]
 })
-export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy {
+export class SelectComponent<T extends IdType|SelectOption = string> implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
   private unsubscribe$ = new Subject<null>();
 
   @Input() options: SelectOption[];
@@ -43,10 +50,30 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   filterBy: string;
   selectedIdx = -1;
 
+  private onChange?: (_: any) => void;
+  private onTouch?: (_: any) => void;
+
   constructor(
     private cd: ChangeDetectorRef,
     private filterService: FilterService
   ) { }
+
+  writeValue(obj: any): void {
+    this.selected = obj;
+    this.initOptions(this.selected);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
 
   ngOnInit() {
     this.filterInput
@@ -186,27 +213,20 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
     return item.id;
   }
 
-  private initOptions(selected) {
+  private initOptions(selected = []) {
     if (!this.options) {
       return;
     }
 
-    this.selectedOptions = [];
-    if (!selected || selected.length === 0) {
-      this.options.forEach(option => {
-        option.checkboxValue = this.checkboxType === 'basic' ? false : undefined;
-      });
-      this.unselectedOptions = this.options;
-      return;
-    }
-    this.unselectedOptions = [];
+    const selectedOptions = [];
+    const unselectedOptions = [];
 
     this.options.forEach(option => {
       const selectedItem = selected.find(select =>
         (option.id === select) ||
         (option.id === select?.id && (select.checkboxValue === true || select.checkboxValue === false))
       );
-      const targetOptions = selectedItem !== undefined ? this.selectedOptions : this.unselectedOptions;
+      const targetOptions = selectedItem !== undefined ? selectedOptions : unselectedOptions;
       const checkboxValue = selectedItem?.checkboxValue ?? selectedItem !== undefined;
 
       targetOptions.push({
@@ -215,7 +235,13 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
       });
     });
 
+    this.selectedOptions = selectedOptions;
+    this.unselectedOptions = unselectedOptions;
     this.open = this.open || !!this.selectedOptions.length;
+
+    this.onChange?.(selected);
+    this.onTouch?.(selected);
+    this.cd.markForCheck();
   }
 
   private isSelectOptions(option: IdType|SelectOption): option is SelectOption {

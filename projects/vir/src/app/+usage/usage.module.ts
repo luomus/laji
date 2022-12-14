@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { UsageRoutingModule } from './usage-routing.module';
-import { UsageComponent } from './usage.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavigationThumbnailModule } from '../../../../laji/src/app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { UsageByOrganizationComponent } from './pages/usage-by-organization/usage-by-organization.component';
@@ -20,21 +18,22 @@ import { UsageMyDownloadsComponent } from './pages/usage-my-downloads/usage-my-d
 import { DownloadRequestModalComponent } from './component/download-request-modal/download-request-modal.component';
 import { CopyToClipboardModule } from '../../../../laji/src/app/shared-modules/copy-to-clipboard/copy-to-clipboard.module';
 import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/download-request/download-request.module';
-
+import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
+import { FindPersonModule } from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
+import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select.module';
 
 @NgModule({
   declarations: [
-    UsageComponent,
     UsageByOrganizationComponent,
     UsageMyDownloadsComponent,
     UsageDownloadsComponent,
     OrganizationSelectComponent,
     CollectionSelectComponent,
     DataTableComponent,
-    DownloadRequestModalComponent
+    DownloadRequestModalComponent,
+    UsageAdminComponent
   ],
   imports: [
-    FormsModule,
     CommonModule,
     UsageRoutingModule,
     TranslateModule,
@@ -46,7 +45,9 @@ import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/d
     InfoPageModule,
     SharedModule,
     CopyToClipboardModule,
-    DownloadRequestModule
+    DownloadRequestModule,
+    FindPersonModule,
+    SelectModule
   ]
 })
 export class UsageModule { }

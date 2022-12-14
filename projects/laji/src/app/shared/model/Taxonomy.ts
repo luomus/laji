@@ -27,6 +27,9 @@
  */
 
 'use strict';
+
+import { MultiLanguage } from './MultiLanguage';
+
 export interface Taxonomy {
 
   id?: string;
@@ -334,6 +337,8 @@ export interface TaxonomyImage {
   licenseDescription?: string;
 
   source?: string;
+
+  taxonDescriptionCaption?: MultiLanguage;
 
   thumbnailURL?: string;
 
