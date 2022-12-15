@@ -104,7 +104,7 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
       },
       {
         color: '#90dacf',
-        translate: 'laji-map.legend.mode.recordQuality.' + + RecordQuality.CommunityVerified
+        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.CommunityVerified
       },
       {
         color: '#ffffbf',
