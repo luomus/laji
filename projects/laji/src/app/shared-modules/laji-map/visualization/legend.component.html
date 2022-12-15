@@ -14,7 +14,7 @@
   <ul class="mt-3">
     <li class="d-flex" *ngFor="let cat of visualization[mode].categories">
       <div class="legend-circle mr-2" [ngStyle]="{'background-color': cat.color}"></div>
-      <div class="legend-label">{{ cat.translate ? (cat.translate | translate) : cat.label }}</div>
+      <div class="legend-label">{{ cat.label | translate }}</div>
     </li>
   </ul>
   <ng-container *ngIf="displayObservationAccuracy">

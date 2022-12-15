@@ -18,6 +18,7 @@ export class LajiMapComponent {
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() tileLayerOpacity: number;
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
+  @Input() displayObservationAccuracy: boolean;
 
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();

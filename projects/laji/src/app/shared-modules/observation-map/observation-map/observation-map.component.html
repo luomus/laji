@@ -15,7 +15,7 @@
           (create)="onCreate($event)"
           (tileLayersChange)="onTileLayersChange($event)"
           (move)="onMapPanOrZoom($event)"
-          (visualizationModeChange)="onVisualizationModeChange($event)"
+          (visualizationModeChange)="onVisualizationModeChange($any($event))"
   >
     <div class="loading-map loading" *ngIf="loading"></div>
   </laji-map>

@@ -40,6 +40,11 @@ const defaultColumnNames: (keyof IColumns)[] = [
   'gathering.interpretations.coordinateAccuracy'
 ];
 
+const visualizationModeColNames = {
+  individualCount: ['unit.interpretations.individualCount'],
+  redlistStatus: ['unit.linkings.taxon.latestRedListStatusFinland']
+};
+
 @Component({
   selector: 'laji-observation-map-table',
   templateUrl: './observation-map-table.component.html',
@@ -95,7 +100,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
         document: row.document.documentId,
         highlight: row.unit.unitId,
         openAnnotation: false,
-        own: false /* query && (!!query.observerPersonToken || !!query.editorPersonToken || !!query.editorOrObserverPersonToken) */,
+        own: false,
         result: undefined
       });
     }
@@ -152,19 +157,7 @@ const defaultColumnNames: (keyof IColumns)[] = [
   }
 
   private updateColumns() {
-    const colNames = [...defaultColumnNames];
-    switch (this.visualizationMode) {
-      case 'individualCount':
-        colNames.push('unit.interpretations.individualCount');
-        break;
-      case 'redlistStatus':
-        colNames.push('unit.linkings.taxon.latestRedListStatusFinland');
-        break;
-      case 'obsCount':
-      case 'recordAge':
-      case 'recordQuality':
-        break;
-    }
+    const colNames = [...defaultColumnNames, ...visualizationModeColNames[this.visualizationMode] || []];
     this.columns = colNames.map(colName => this.columnLookup[colName]);
     this.cdr.markForCheck();
   }

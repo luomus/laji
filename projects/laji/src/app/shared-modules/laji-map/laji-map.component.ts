@@ -46,7 +46,7 @@ import L from 'leaflet';
 })
 export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() data: any = [];
-  @Input() visualization: LajiMapVisualization<any> | undefined;
+  @Input() visualization: LajiMapVisualization<string> | undefined;
   @Input() visualizationMode: string | undefined;
   @Input() loading = false;
   @Input() showControls = true;
@@ -152,7 +152,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.visualization && changes.visualization.currentValue) {
+    if (changes.visualization?.currentValue) {
       this.visualizationMode = Object.keys(this.visualization)[0];
     }
   }
@@ -243,9 +243,4 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     this.visualizationMode = mode;
     this.visualizationModeChange.emit(mode);
   }
-
-/*   updateVisualization() {
-    if (!this.map) { return; }
-    this.map.setData(this.map.getData());
-  } */
 }
