@@ -15,6 +15,8 @@ type InvasiveStatuses = Pick<SpeciesFormQuery,
   | 'otherInvasiveSpeciesList'
 >;
 
+type BoldField = keyof (Pick<SpeciesFormQuery, 'onlyBold' | 'onlyNonBold'>);
+
 @Component({
   selector: 'laji-species-form[searchQuery]',
   templateUrl: './species-form.component.html',
@@ -57,11 +59,11 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
-  public boldSelected: (keyof SpeciesFormQuery)[] = [];
+  public boldSelected: BoldField[] = [];
 
   constructor(
     public translate: TranslateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.taxonSelectFilters = {
@@ -112,16 +114,16 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onBoldChange(ids: (keyof SpeciesFormQuery)[]) {
-    const id = Util.arrayDiff(this.boldSelected, ids)[0];
+  onBoldChange(checkboxStates: BoldField[]) {
+    const changedSelection = Util.arrayDiff(this.boldSelected, checkboxStates)[0];
 
-    if (id === 'onlyBold') {
+    if (changedSelection === 'onlyBold') {
       this.formQuery.onlyBold = !this.formQuery.onlyBold;
       if (this.formQuery.onlyBold) {
         this.formQuery.onlyNonBold = false;
       }
 
-    } else if (id === 'onlyNonBold') {
+    } else if (changedSelection === 'onlyNonBold') {
       this.formQuery.onlyNonBold = !this.formQuery.onlyNonBold;
       if (this.formQuery.onlyNonBold) {
         this.formQuery.onlyBold = false;
@@ -161,14 +163,14 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   }
 
   private updateBoldSelected() {
-    const boldSelected: (keyof SpeciesFormQuery)[] = [];
-    const allFields: (keyof Omit<SpeciesFormQuery, 'taxon'>)[] = [
+    const boldSelected: BoldField[] = [];
+    const allBoldFields: BoldField[] = [
       'onlyBold',
       'onlyNonBold'
     ];
-    for (const i in allFields) {
-      if (this.formQuery[allFields[i]]) {
-        boldSelected.push(allFields[i]);
+    for (const i in allBoldFields) {
+      if (this.formQuery[allBoldFields[i]]) {
+        boldSelected.push(allBoldFields[i]);
       }
     }
     this.boldSelected = boldSelected;
@@ -195,7 +197,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   private onInvasiveCheckBoxToggle(field: keyof SpeciesFormQuery) {
     if (field === 'allInvasiveSpecies') {
       this.formQuery.allInvasiveSpecies = !this.formQuery.allInvasiveSpecies;
-      this.invasiveStatuses.map(status => {this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
+      this.invasiveStatuses.map(status => { this.formQuery[status] = this.formQuery.allInvasiveSpecies; });
     } else {
       (this.formQuery as any)[field] = !this.formQuery[field];
       if (!this.formQuery[field] && this.formQuery.allInvasiveSpecies) {
@@ -231,7 +233,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.formQueryToQuery();
     this.searchQuery.updateUrl();
-    this.searchQuery.query = {...this.searchQuery.query};
+    this.searchQuery.query = { ...this.searchQuery.query };
     this.formQuery.taxon = this.searchQuery.query.target ? this.formQuery.taxon : '';
     return false;
   }
