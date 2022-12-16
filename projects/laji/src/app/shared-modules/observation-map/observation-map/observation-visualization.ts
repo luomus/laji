@@ -100,23 +100,23 @@ export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVi
     categories: [
       {
         color: '#348cf0',
-        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.ExpertVerified
+        label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.ExpertVerified
       },
       {
         color: '#90dacf',
-        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.CommunityVerified
+        label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.CommunityVerified
       },
       {
         color: '#ffffbf',
-        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Neutral
+        label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Neutral
       },
       {
         color: '#fdbf66',
-        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Uncertain
+        label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Uncertain
       },
       {
         color: '#f26840',
-        translate: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Erroneous
+        label: 'laji-map.legend.mode.recordQuality.' + RecordQuality.Erroneous
       }
     ],
     getFeatureStyle: (options) => ({

@@ -1,7 +1,7 @@
 import { GetFeatureStyleOptions } from 'laji-map';
 import { MarkerCluster, PathOptions } from 'leaflet';
 
-export interface LajiMapVisualizationCategory { color: string; label?: string; translate?: string };
+export interface LajiMapVisualizationCategory { color: string; label?: string };
 export type LajiMapVisualization<T extends string> = Record<T,
   {
     label: string;
