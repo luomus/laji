@@ -96,18 +96,16 @@ export class IdentificationListComponent implements OnDestroy {
     this.overlayRef = this.overlayLoader._componentRef;
 
     if (this?.taxon?.species) {
-      const modalImages = [];
-      this.taxon.multimedia.forEach((media, i) => {
-        modalImages.push(<Image>{
+      this.overlayRef.instance.modalImages = this.taxon.multimedia.map((media, i) => {
+        const image = <Image>{
           ...this.taxon.multimedia[i],
           taxonId: this.taxon.id,
           vernacularName: this.taxon.vernacularName,
           scientificName: this.taxon.scientificName
-        });
+        };
+        return image;
       });
-      this.overlayRef.instance.modalImages = modalImages;
       this.overlayRef.instance.showImage(index);
-
     } else if (this.taxon.children?.length === 0) {
       this.overlayRef.instance.modalImages = [<Image>{
         ...this.taxon.multimedia[0],
@@ -116,7 +114,6 @@ export class IdentificationListComponent implements OnDestroy {
         scientificName: this.taxon.scientificName
       }];
       this.overlayRef.instance.showImage(0);
-
     } else if (this.taxon.children?.length > 0) {
       const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
         index, this.taxon.children,
