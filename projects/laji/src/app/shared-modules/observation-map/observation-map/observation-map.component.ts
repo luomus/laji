@@ -32,11 +32,21 @@ import {
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { PathOptions } from 'leaflet';
-import { Feature } from 'geojson';
+import { Feature, GeoJsonProperties, Geometry } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 
 interface ObservationDataOptions extends DataOptions {
+  total: number;
+}
+
+interface AggregateQueryResponse {
+  cacheTimestamp: number;
+  currentPage: number;
+  features: Array<Feature<Geometry, GeoJsonProperties>>;
   lastPage: number;
+  pageSize: number;
+  total: number;
+  type: 'FeatureCollection';
 }
 
 // Given coordinates in warehouse query format
@@ -56,9 +66,25 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any, finnishMode
   )
 );
 
-const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+const getPointIconStyle = (po: PathOptions, feature: Feature) => {
+  const icon: any = L.divIcon({
+    className: po.className,
+    html: `<span>${feature.properties.count}</span>`
+  });
+  icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
+    iconDomElem.style['background-color'] = po2.color + 'A0';
+    //iconDomElem.style['opacity'] = ''+po2.fillOpacity;
+    iconDomElem.style['height'] = '30px';
+    iconDomElem.style['width'] = '30px';
+    iconDomElem.style['border-radius'] = '100%';
+    if (po2.className) {
+      iconDomElem.classList.add(po2.className);
+    }
+  };
+  return icon;
+};
 
-const LIMITED_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 
 @Component({
   selector: 'laji-observation-map',
@@ -80,7 +106,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
   // When active zoom threshold level (index in 'zoomThresholds') is below this, the viewport coordinates are added to the query.
   @Input() onlyViewportThresholdLevel = 1;
-  @Input() size = 10000;
   @Input() set initWithWorldMap(world: boolean) {
     this.mapOptions = {
       ...this.mapOptions,
@@ -89,7 +114,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         : LajiMapTileLayerName.taustakartta
     };
   }
-  @Input() lastPage = 0; // 0 = no page limit
   @Input() set draw(draw: any) {
     this.mapOptions = {...this.mapOptions, draw};
   }
@@ -113,7 +137,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() showLoadMore = true;
   @Input() settingsKey = 'observationMap';
   @Input() hideLegend = false;
-  @Input() showIndividualPointsWhenLessThan = 10000;
   @Input() itemFields: string[] = [
     'unit.linkings.taxon',
     'unit.taxonVerbatim',
@@ -150,6 +173,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     })
   };
   private previousQueryHash = '';
+  private boxGeometryPageSize = 10000;
+  private pointGeometryPageSize = 2000;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
@@ -315,7 +340,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       { ...query, featureType: 'CENTER_POINT' },
       [ 'gathering.interpretations.coordinateAccuracy' ],
       undefined,
-      this.showIndividualPointsWhenLessThan,
+      this.pointGeometryPageSize,
       undefined,
       true,
       query.onlyCount
@@ -325,7 +350,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           type: 'FeatureCollection' as const,
           features: data.features
         },
-        lastPage: 1,
         on: {
           click: (...args) => this.onDataClick({
             type: 'wgs84',
@@ -333,28 +357,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           })
         },
         marker: {
-          icon: (po: PathOptions, feature: Feature) => {
-            const icon: any = L.divIcon({
-              className: po.className,
-              html: `<span>${feature.properties.count}</span>`
-            });
-            icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
-              iconDomElem.style['background-color'] = po2.color + 'A0';
-              //iconDomElem.style['opacity'] = ''+po2.fillOpacity;
-              iconDomElem.style['height'] = '30px';
-              iconDomElem.style['width'] = '30px';
-              iconDomElem.style['border-radius'] = '100%';
-              if (po2.className) {
-                iconDomElem.classList.add(po2.className);
-              }
-            };
-            return icon;
-          }
-        }
-      })),
-      tap(() => {
-        this.showingIndividualPoints = true;
-      })
+          icon: getPointIconStyle
+        },
+        total: data.total
+      }))
     );
   }
 
@@ -383,45 +389,40 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.onDataClick(coordinates);
   }
 
-  private getAggregateDataOptions$(query: WarehouseQueryInterface, page: number): Observable<ObservationDataOptions> {
+  private getBoxQuery$(query: WarehouseQueryInterface, page: number): Observable<AggregateQueryResponse> {
     return this.warehouseService.warehouseQueryAggregateGet(
       query,
       this.useFinnishMap
         ? ['gathering.conversions.ykj10kmCenter.lat', 'gathering.conversions.ykj10kmCenter.lon']
         : this.getActiveZoomThresholdLevelToAggregateBy(),
-      undefined, this.size, page, true
-    ).pipe(
-      map(res => (<ObservationDataOptions>{
-        featureCollection: { type: res.type, features: res.features },
-        on: {
-          click: (...args) => this.onAggregateDataClick(args)
-        },
-        lastPage: res.lastPage
-      })),
-      tap(() => {
-        this.showingIndividualPoints = false;
-      })
+      undefined, this.boxGeometryPageSize, page, true
     );
   }
 
-  private getAllAggregatePages$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
+  private getBoxDataOptions$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
     // do the first query
-    return this.getAggregateDataOptions$(query, 1).pipe(
+    return this.getBoxQuery$(query, 1).pipe(
       switchMap(firstPage => (
         forkJoin([
           of(firstPage),
           // get remaining pages
-          ...Array.from(new Array(firstPage.lastPage - 1).keys(), (_, i) => i + 2).map(i => this.getAggregateDataOptions$(query, i))
+          ...Array.from(new Array(firstPage.lastPage - 1).keys(), (_, i) => i + 2).map(i => this.getBoxQuery$(query, i))
         ])
       )),
       map(allPages => {
         const firstPage = allPages[0];
         for (let i = 1; i < allPages.length; i++) {
           // join features of all pages to the first page
-          firstPage.featureCollection.features.push(...(<ObservationDataOptions>allPages[i]).featureCollection.features);
+          firstPage.features.push(...allPages[i].features);
         }
         // return the modified first page
-        return firstPage;
+        return {
+          featureCollection: { type: firstPage.type, features: firstPage.features },
+          on: {
+            click: (...args) => this.onAggregateDataClick(args)
+          },
+          total: firstPage.total
+        };
       })
     );
   }
@@ -470,24 +471,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private getDataOptions$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
     this.loading = true;
     this.cdr.markForCheck();
-    // get observation count
-    return this.warehouseService.warehouseQueryCountGet(query).pipe(
-      map(result => result.total),
-      // get observations as points or aggregate
-      switchMap(count => {
-        if (!count) {
-          return of(<ObservationDataOptions>{
-            lastPage: 1,
-            featureCollection: {
-              type: 'FeatureCollection' as const,
-              features: []
-            }
-          });
-        }
-        if (count < this.showIndividualPointsWhenLessThan) {
-          return this.getPointsDataOptions$(query);
+
+    return this.getPointsDataOptions$(query).pipe(
+      switchMap(pointsDataOptions => {
+        if (pointsDataOptions.total <= this.pointGeometryPageSize) {
+          return of(pointsDataOptions).pipe(tap(() => this.showingIndividualPoints = true));
         } else {
-          return this.getAllAggregatePages$(query);
+          return this.getBoxDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = false));
         }
       }),
       // retry on timeout
