@@ -9,7 +9,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 const RECORD_AGE_BREAKPOINTS = [2, 10, 20, 40, Infinity].map(bp => CURRENT_YEAR - bp);
 
 const getObsCountColor = (count: number): string => {
-  const idx = [10, 100, 1000, 10000, Infinity].findIndex(i => i <= count);
+  const idx = [10, 100, 1000, 10000, Infinity].findIndex(bp => count <= bp);
   return lajiMapObservationVisualization.obsCount.categories[idx].color;
 };
 
@@ -41,7 +41,7 @@ const getRedlistStatusColor = (redlistStatus: string | undefined): string => {
 };
 
 const getIndividualCountColor = (count: number): string => {
-  const idx = [0, 5, 20, 50, 100, Infinity].findIndex(i => i <= count);
+  const idx = [0, 5, 20, 50, 100, Infinity].findIndex(bp => count <= bp);
   return lajiMapObservationVisualization.individualCount.categories[idx].color;
 };
 
