@@ -358,6 +358,31 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
+  private onAggregateDataClick(args: any[]) {
+    const coords = (args[1].feature.geometry as any).coordinates[0];
+    const lats = []; const lons = [];
+    coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
+    const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
+
+    let coordinates: Coordinates | undefined;
+    if (this.useFinnishMap) {
+      const ykj = convertWgs84ToYkj(latMin, lonMin);
+      coordinates = {
+        type: 'ykj',
+        coordinates: [Math.round(ykj[0] / 10000), Math.round(ykj[1] / 10000)]
+      };
+      this.onDataClick(coordinates);
+    } else {
+      const latMax = Math.max(...lats); const lonMax = Math.max(...lons);
+      coordinates = {
+        type: 'wgs84',
+        square: { latMin, latMax, lonMin, lonMax }
+      };
+    }
+
+    this.onDataClick(coordinates);
+  }
+
   private getAggregateDataOptions$(query: WarehouseQueryInterface, page: number): Observable<ObservationDataOptions> {
     return this.warehouseService.warehouseQueryAggregateGet(
       query,
@@ -369,32 +394,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       map(res => (<ObservationDataOptions>{
         featureCollection: { type: res.type, features: res.features },
         on: {
-          click: (...args) => {
-            const coords = (args[1].feature.geometry as any).coordinates[0];
-            if (this.useFinnishMap) {
-              const lats = []; const lons = [];
-              coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
-              const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
-              const ykj = convertWgs84ToYkj(latMin, lonMin);
-              const coordinates: Coordinates = {
-                type: 'ykj',
-                coordinates: [Math.round(ykj[0] / 10000), Math.round(ykj[1] / 10000)]
-              };
-              this.onDataClick(coordinates);
-            } else {
-              const lats = []; const lons = [];
-              coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
-              const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
-              const latMax = Math.max(...lats); const lonMax = Math.max(...lons);
-              const coordinates: Coordinates = {
-                type: 'wgs84',
-                square: {
-                  latMin, latMax, lonMin, lonMax
-                }
-              };
-              this.onDataClick(coordinates);
-            }
-          }
+          click: (...args) => this.onAggregateDataClick(args)
         },
         lastPage: res.lastPage
       })),
