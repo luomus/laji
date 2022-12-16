@@ -35,10 +35,6 @@ import L, { PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 
-interface ObservationDataOptions extends DataOptions {
-  total: number;
-}
-
 interface AggregateQueryResponse {
   cacheTimestamp: number;
   currentPage: number;
@@ -174,7 +170,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   };
   private previousQueryHash = '';
   private boxGeometryPageSize = 10000;
-  private pointGeometryPageSize = 2000;
+  private pointGeometryPageSize = 10000;
+  private pointModeBreakpoint = 5000;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
@@ -335,7 +332,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
+  private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<DataOptions> {
     return this.warehouseService.warehouseQueryAggregateGet(
       { ...query, featureType: 'CENTER_POINT' },
       [ 'gathering.interpretations.coordinateAccuracy' ],
@@ -345,7 +342,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       true,
       query.onlyCount
     ).pipe(
-      map(data => (<ObservationDataOptions>{
+      map(data => (<DataOptions>{
         featureCollection: {
           type: 'FeatureCollection' as const,
           features: data.features
@@ -358,8 +355,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         },
         marker: {
           icon: getPointIconStyle
-        },
-        total: data.total
+        }
       }))
     );
   }
@@ -399,7 +395,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private getBoxDataOptions$(query: WarehouseQueryInterface): Observable<ObservationDataOptions> {
+  private getBoxDataOptions$(query: WarehouseQueryInterface): Observable<DataOptions> {
     // do the first query
     return this.getBoxQuery$(query, 1).pipe(
       switchMap(firstPage => (
@@ -420,8 +416,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           featureCollection: { type: firstPage.type, features: firstPage.features },
           on: {
             click: (...args) => this.onAggregateDataClick(args)
-          },
-          total: firstPage.total
+          }
         };
       })
     );
@@ -472,10 +467,18 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.getPointsDataOptions$(query).pipe(
-      switchMap(pointsDataOptions => {
-        if (pointsDataOptions.total <= this.pointGeometryPageSize) {
-          return of(pointsDataOptions).pipe(tap(() => this.showingIndividualPoints = true));
+    return this.warehouseService.warehouseQueryCountGet(query).pipe(
+      switchMap(res => {
+        if (!res.total) {
+          return of(<DataOptions>{
+            lastPage: 1,
+            featureCollection: {
+              type: 'FeatureCollection' as const,
+              features: []
+            }
+          });
+        } else if (res.total <= this.pointModeBreakpoint) {
+          return this.getPointsDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = true));
         } else {
           return this.getBoxDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = false));
         }
