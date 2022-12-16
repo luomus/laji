@@ -1,5 +1,5 @@
 <ng-container *ngIf="boldEntries.length > 0">
-  <div class="bold-entry" *ngFor="let boldEntry of boldEntries">
+  <div class="mb-1" *ngFor="let boldEntry of boldEntries">
     <b>{{ boldEntry.scientificName }}</b><br />
     <a href="https://boldsystems.org/index.php/Public_SearchTerms?query={{boldEntry.scientificName}}">
       {{ boldEntry.publicRecords }} {{ 'taxonomy.bold.publicRecords' | translate }}
