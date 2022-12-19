@@ -1,17 +1,31 @@
 <ul class="list-inline list-divided d-flex flex-row text-sm">
   <li class="d-inline-block">
     &copy; {{ audio.recordist }}<br/>
-    {{ audio.state }}<ng-container *ngIf="audio.state && audio.country">, </ng-container>{{ audio.country }}
-    {{ audio | cornellAudioDate }}
+    {{ audio | audioLocation }} {{ audio | audioDate }}
+  </li>
+  <li class="d-inline-block" *ngIf="audio.soundType">
+    {{ 'validation.soundType' | translate }}:<br/>
+    {{ audio.soundType }}
   </li>
   <li class="d-inline-block">
-    <a target="_blank" rel="noopener" [href]="audio.specimenUrl">Macaulay Library<br/>ML{{ audio.assetId }}</a>
+    <a target="_blank" rel="noopener" [href]="audio.specimenUrl">
+      <ng-container *ngIf="audio.specimenUrl.includes('macaulaylibrary') else xenoCanto">
+        Macaulay Library
+        <br/>
+        ML{{ audio.assetId }}
+      </ng-container>
+      <ng-template #xenoCanto>
+        xeno-canto
+        <br/>
+        XC{{ audio.assetId }}
+      </ng-template>
+    </a>
   </li>
   <li class="d-inline-block" *ngIf="audio.checklistId">
     <a target="_blank" rel="noopener" [href]="audio.checklistUrl">eBird&nbsp;{{ audio.checklistId }}</a>
   </li>
   <li class="d-inline-block">
-    <a target="_blank" rel="noopener" href="http://birds.cornell.edu/" class="MediaCredit-logoLab">
+    <a target="_blank" rel="noopener" href="http://birds.cornell.edu/" class="MediaCredit-logoLab" *ngIf="audio.specimenUrl.includes('macaulaylibrary') else xenoCantoLogo">
       <svg class="cornell-logo" viewBox="0 0 360 68" role="img" aria-labelledby="clo-short-logo-title">
         <title id="clo-short-logo-title">Cornell Lab of Ornithology logo</title>
         <g fill="none" fill-rule="evenodd">
@@ -27,5 +41,13 @@
         </g>
       </svg>
     </a>
+    <ng-template #xenoCantoLogo>
+      <a href="https://xeno-canto.org/" target="_blank" rel="noopener nofollow">
+        <img src="static/images/icons/xc.png" alt="xeno-canto" style="height: 18px">
+      </a>
+    </ng-template>
+  </li>
+  <li class="d-inline-block" *ngIf="audio.licenseUrl">
+    <bsg-license [licenseUrl]="audio.licenseUrl"></bsg-license>
   </li>
 </ul>

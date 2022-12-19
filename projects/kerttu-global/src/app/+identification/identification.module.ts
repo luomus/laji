@@ -25,6 +25,7 @@ import { SiteResultMapComponent } from './identification-results/site-result-map
 import { IdentificationUserTableComponent } from './identification-results/identification-user-table/identification-user-table.component';
 import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
 import { IdentificationPanelComponent } from './recording-identification/identification-view/identification-table/identification-panel/identification-panel.component';
+import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { IdentificationPanelComponent } from './recording-identification/identif
     SiteResultMapComponent,
     IdentificationUserTableComponent,
     IdentificationPanelComponent,
+    IdentificationSpeciesTableComponent,
   ]
 })
 export class IdentificationModule { }

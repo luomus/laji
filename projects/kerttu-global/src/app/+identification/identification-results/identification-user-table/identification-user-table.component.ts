@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
-import { IIdentificationUserStat } from '../../../kerttu-global-shared/models';
+import { IIdentificationUserStatResult } from '../../../kerttu-global-shared/models';
 import { UserNameTemplateComponent } from '../../../kerttu-global-shared/component/user-name-template.component';
 
 @Component({
@@ -13,14 +13,9 @@ import { UserNameTemplateComponent } from '../../../kerttu-global-shared/compone
 export class IdentificationUserTableComponent implements OnInit {
   @ViewChild(UserNameTemplateComponent, { static: true }) public userNameTemplate: UserNameTemplateComponent;
 
-  @Input() data: IIdentificationUserStat[] = [];
+  @Input() data: IIdentificationUserStatResult = { results: [], totalDistinctSpeciesCount: 0 };
 
   columns: DatatableColumn[] = [];
-  sorts: { prop: string; dir: 'asc'|'desc' }[] = [
-    { prop: 'annotationCount', dir: 'desc' },
-    { prop: 'speciesCount', dir: 'desc' },
-    { prop: 'drawnBoxesCount', dir: 'desc' }
-   ];
 
   constructor(
     private translate: TranslateService
@@ -30,10 +25,10 @@ export class IdentificationUserTableComponent implements OnInit {
     this.columns = [
       {
         name: 'userId',
-        label: 'theme.kerttu.result.name',
+        label: 'results.userTable.name',
         cellTemplate: this.userNameTemplate.userNameTpl,
         sortTemplate: 'label',
-        summaryFunc: () => this.translate.instant('theme.total')
+        summaryFunc: () => this.translate.instant('results.total')
       },
       {
         name: 'annotationCount',
@@ -44,6 +39,12 @@ export class IdentificationUserTableComponent implements OnInit {
         name: 'speciesCount',
         label: 'results.userTable.speciesCount',
         width: 70
+      },
+      {
+        name: 'distinctSpeciesCount',
+        label: 'results.userTable.distinctSpeciesCount',
+        width: 70,
+        summaryFunc: () => this.data?.totalDistinctSpeciesCount
       },
       {
         name: 'drawnBoxesCount',

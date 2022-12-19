@@ -1,5 +1,4 @@
 <strong
-  class="link"
   (click)="toggle($event)"
   (mouseenter)="mouseEnter()"
   (mouseleave)="mouseLeave()"
@@ -13,7 +12,7 @@
   #pop="bs-popover"
   containerClass="popover-lg"
   container="{{ container }}"
-  [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph')"
+  [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph') + ' ' + (showOnHover ? 'hover-info' : 'link')"
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
   <ng-container *ngIf="!glyphicon">?</ng-container>
@@ -29,7 +28,7 @@
   </div>
 </div>
 <ng-template #content>
-  <button class="close pull-right" type="button" (click)="hide()">
+  <button class="close pull-right" type="button" (click)="hide()" [ngClass]="{'d-sm-none': showOnHover}">
     <i class="glyphicon glyphicon-remove"></i>
   </button>
   <div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content>

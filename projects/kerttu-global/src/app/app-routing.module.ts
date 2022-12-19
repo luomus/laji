@@ -62,4 +62,4 @@ const allRoutes: Routes = [
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]
 })
-export class KerttuGlobalRoutingModule { }
+export class AppRoutingModule { }

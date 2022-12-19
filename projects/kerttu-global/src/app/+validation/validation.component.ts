@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
           {{ 'speciesList.title' | translate }}
         </lu-sidebar-link>
         <lu-sidebar-link [link]="['results'] | localize" routerLinkActive>
-          {{ 'theme.kerttu.result' | translate }}
+          {{ 'results.title' | translate }}
         </lu-sidebar-link>
       </nav>
       <main>

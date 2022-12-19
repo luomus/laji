@@ -97,7 +97,7 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('text-anchor', 'middle')
         .attr('x', this.margin.left + this.width / 2)
         .attr('y', this.height + this.margin.top + 35)
-        .text(this.translate.instant('theme.kerttu.audioViewer.time') + ' (s)');
+        .text(this.translate.instant('audioViewer.time') + ' (s)');
 
       // y-axis label
       svg.append('text')
@@ -105,7 +105,7 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('transform', 'rotate(-90)')
         .attr('y', -this.margin.left + 65)
         .attr('x', -this.margin.top - this.height / 2)
-        .text(this.translate.instant('theme.kerttu.audioViewer.frequency') + ' (kHz)');
+        .text(this.translate.instant('audioViewer.frequency') + ' (kHz)');
     }
 
     let svgWithOverflow: Selection<SVGSVGElement, any, any, any>;
