@@ -2,9 +2,9 @@
   <tr>
     <td>
       <div class="editor-area">
-        <div class="editor" id="{{backSide ? 'back-side-label-editor' : 'label-editor'}}" [ngStyle]="_magnifiedStyle" *ngIf="init">
+        <div class="editor" id="{{_backSide ? 'back-side-label-editor' : 'label-editor'}}" [ngStyle]="_magnifiedStyle" *ngIf="init">
           <ll-editor-grid *ngIf="gridVisible" [grid]="grid" [magnification]="_magnification"></ll-editor-grid>
-          <ng-container *ngIf="backSide; else frontSide">
+          <ng-container *ngIf="_backSide; else frontSide">
             <ll-editor-item
               *ngFor="let item of _setup.backSideLabelItems; let i=index"
               [grid]="grid"
@@ -39,11 +39,11 @@
         </div>
       </div>
     </td>
-    <td *ngIf="!backSide" class="height-settings">
+    <td *ngIf="!_backSide" class="height-settings">
       <input style="width: 30px" type="text" [value]="_setup.label['height.mm']" (change)="updateDimensions($event, 'height.mm', 'label')">mm.
     </td>
   </tr>
-  <tr *ngIf="!backSide">
+  <tr *ngIf="!_backSide">
     <td class="width-settings">
       <input style="width: 30px" type="text" [value]="_setup.label['width.mm']" (change)="updateDimensions($event, 'width.mm', 'label')">mm.
     </td>
