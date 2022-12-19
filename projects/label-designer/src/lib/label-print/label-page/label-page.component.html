@@ -13,17 +13,23 @@
 </div>
 <ng-container *ngIf="setup.twoSided">
   <div [ngStyle]="backStyle" class="ll-page">
-    <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows, 'direction': 'rtl'}">
-      <ll-label-preview *ngFor="let item of data; let i=index"
-                        [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel"
-                        [style.border-top]="shouldPrintBorderHorizontal(i) ? setup.border : 'none'"
-                        [style.border-right]="shouldPrintBorderVertical(i) ? setup.border : 'none'"
-                        [style.border-bottom]="setup.border"
-                        [style.border-left]="setup.border"
-                        [backside]="true"
-                        [setup]="setup"
-                        [data]="item"
-      ></ll-label-preview>
+    <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows}">
+      <ng-container *ngFor="let item of (data | labelBacksideSort:_dim); let i=index">
+        <ll-label-preview
+          *ngIf="item else emptyDiv"
+          [qrCodeErrorCorrectionLevel]="qrCodeErrorCorrectionLevel"
+          [style.border-top]="shouldPrintBorderHorizontal(i) ? setup.border : 'none'"
+          [style.border-right]="shouldPrintBorderVertical(i, true) ? setup.border : 'none'"
+          [style.border-bottom]="setup.border"
+          [style.border-left]="setup.border"
+          [backside]="true"
+          [setup]="setup"
+          [data]="item"
+        ></ll-label-preview>
+        <ng-template #emptyDiv>
+          <div></div>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
 </ng-container>
