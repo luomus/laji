@@ -6,7 +6,7 @@ import { QRCodeErrorCorrectionLevel } from '../label-designer.interface';
   template: `
     <qrcode
       [style.display]="'block'"
-      [style.width]="size"
+      [style.width]="size + 'px'"
       [margin]="0"
       [class.print]="print"
       [qrdata]="qrdata"
