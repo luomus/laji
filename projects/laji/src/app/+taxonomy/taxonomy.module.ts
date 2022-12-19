@@ -14,7 +14,6 @@ import { InformalTaxonGroupApi } from '../shared/api/InformalTaxonGroupApi';
 import { TaxonInfoComponent } from './taxon/info-card/taxon-overview/taxon-info/taxon-info.component';
 import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
-import { BoldSequenceComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-sequence/bold-sequence.component';
 import { SpeciesFormComponent } from './species/species-form/species-form.component';
 import { SpeciesComponent } from './species/species.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
@@ -31,7 +30,6 @@ import { YkjModule } from '../shared-modules/ykj/ykj.module';
 import { TreeComponent } from './taxon/taxon-tree/tree/tree.component';
 import { SpeciesListOptionsModalComponent } from './species/species-list-options-modal/species-list-options-modal.component';
 import { InfoModule } from '../shared-modules/info/info.module';
-import { BoldSynonymComponent } from './taxon/info-card/taxon-overview/taxon-info/bold-synonym/bold-synonym.component';
 import { SpeciesCountComponent } from './species/species-count/species-count.component';
 import { SpeciesPieComponent } from './taxon/info-card/taxon-overview/species-pie/species-pie.component';
 import { NavigationThumbnailModule } from '../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
@@ -79,6 +77,7 @@ import {SelectModule} from '../shared-modules/select/select.module';
 import { IdentificationListComponent } from './taxon/info-card/taxon-identification/identification-list/identification-list.component';
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
+import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bold/taxon-bold.component';
 /* eslint-enable max-len */
 
 @NgModule({
@@ -101,13 +100,15 @@ import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identificatio
   ],
   declarations: [TaxonomyComponent, TaxonInfoComponent, IUCNComponent,
     TaxonTreeComponent, SpeciesListComponent, TaxonComponent,
-    BoldSequenceComponent, SpeciesFormComponent, SpeciesComponent,
+    SpeciesFormComponent, SpeciesComponent,
     InformalGroupRedirectComponent, SpeciesBrowseObservationsComponent,
     SpeciesImagesComponent, TaxonConceptInfoComponent, TreeComponent,
-    SpeciesListOptionsModalComponent, BoldSynonymComponent,
-    SpeciesCountComponent, SpeciesPieComponent, InfoCardComponent, TaxonSynonymsComponent,
-    TaxonNamesComponent, BrowseSpeciesComponent, InformalGroupSelectComponent, InformalListComponent, InformalListBreadcrumbComponent,
+    SpeciesListOptionsModalComponent, SpeciesCountComponent, SpeciesPieComponent,
+    InfoCardComponent, TaxonSynonymsComponent, TaxonNamesComponent,
+    BrowseSpeciesComponent, InformalGroupSelectComponent,
+    InformalListComponent, InformalListBreadcrumbComponent,
     SelectedParentsComponent,
+    TaxonBoldComponent,
     TaxonOverviewComponent,
     TaxonImagesComponent,
     TaxonBiologyComponent,

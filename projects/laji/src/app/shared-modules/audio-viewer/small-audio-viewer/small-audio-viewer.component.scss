@@ -3,6 +3,7 @@
 .template-container {
   display: inline-block;
   vertical-align: top;
+  height: 100%;
 
   &.highlight {
     background-color: $warning-2;

@@ -2,11 +2,11 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { IGlobalAudio } from 'projects/kerttu-global/src/app/kerttu-global-shared/models';
 
 @Component({
-  selector: 'bsg-cornell-audio-info',
-  templateUrl: './cornell-audio-info.component.html',
-  styleUrls: ['./cornell-audio-info.component.scss'],
+  selector: 'bsg-audio-info',
+  templateUrl: './audio-info.component.html',
+  styleUrls: ['./audio-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CornellAudioInfoComponent {
+export class AudioInfoComponent {
   @Input() audio: IGlobalAudio;
 }

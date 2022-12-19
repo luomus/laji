@@ -124,7 +124,7 @@ export class SiteResultMapComponent implements OnChanges {
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
-    const siteTranslation = this.translate.instant('identification.siteSelection.site');
+    const siteTranslation = this.translate.instant('siteSelection.site');
     const data = options.feature.properties;
 
     let popup = '<strong>' + siteTranslation + ' ' + data.id + '</strong><br>' + data.name;

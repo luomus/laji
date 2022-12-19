@@ -3,7 +3,8 @@
     [skip]="['onlyFinnish']"
     [(query)]="searchQuery.query"
     (queryChange)="onQueryChange(true)"
-    [queryType]="searchQuery.queryType"></laji-observation-active>
+    [queryType]="searchQuery.queryType"
+  ></laji-observation-active>
 </div>
 
 <label>{{ 'observation.active.informalTaxonGroupId' | translate }}</label>
@@ -21,8 +22,7 @@
   [searchParams]="taxonSelectFilters"
   [container]="'laji-taxon-browse'"
   [convertIdToName]="false"
-  >
-</laji-taxon-select>
+></laji-taxon-select>
 
 <bSwitch
   name="onlyFinnish"
@@ -42,10 +42,11 @@
   [title]="'observation.commonness' | translate"
   [info]="'observation.info.commonness' | translate"
   [options]="[
-      {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
-      {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
-      {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
-    ]"></laji-select>
+    {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
+    {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
+    {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
+  ]"
+></laji-select>
 
 <laji-metadata-select
   [(ngModel)]="searchQuery.query.taxonRanks"
@@ -66,7 +67,8 @@
   name="redListStatusFilters"
   [placeholder]="'observation.form.redListStatusId'"
   [info]="'species.info.redlist' | translate"
-  [alt]="'MX.iucnStatuses'"></laji-metadata-select>
+  [alt]="'MX.iucnStatuses'"
+></laji-metadata-select>
 
 <laji-habitat-select
   [query]="searchQuery.query"
@@ -81,7 +83,8 @@
   [placeholder]="'MX.hasAdminStatus' | label"
   name="adminStatusFilters"
   [info]="'species.info.administrative' | translate"
-  [alt]="'MX.adminStatusEnum'"></laji-metadata-select>
+  [alt]="'MX.adminStatusEnum'"
+></laji-metadata-select>
 
 <laji-three-state-multi-switch
   [title]="'observation.form.typeOfOccurrenceId' | translate"
@@ -91,19 +94,32 @@
   (update)="updateTypesOfOccurrence($event)"
 ></laji-three-state-multi-switch>
 
-<laji-select [options]="[
-                {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
-                {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
-                {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
-                {id: 'controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
-                {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
-                {id: 'qualityPlantPest', value: 'MX.qualityPlantPest' | label},
-                {id: 'otherPlantPest', value: 'MX.otherPlantPest' | label},
-                {id: 'nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
-                {id: 'otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
-                {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
-              ]"
-              [selected]="invasiveSelected"
-              [title]="'observation.form.invasive' | translate"
-              [useFilter]="false"
-              (selectedChange)="onInvasiveChange($event)"></laji-select>
+<laji-select
+  [options]="[
+    {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
+    {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
+    {id: 'euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
+    {id: 'controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
+    {id: 'quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
+    {id: 'qualityPlantPest', value: 'MX.qualityPlantPest' | label},
+    {id: 'otherPlantPest', value: 'MX.otherPlantPest' | label},
+    {id: 'nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
+    {id: 'otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
+    {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
+  ]"
+  [selected]="invasiveSelected"
+  [title]="'observation.form.invasive' | translate"
+  [useFilter]="false"
+  (selectedChange)="onInvasiveChange($event)"
+></laji-select>
+
+<laji-select
+  [options]="[
+    {id: 'onlyBold', value: 'observation.form.onlyBold' | translate},
+    {id: 'onlyNonBold', value: 'observation.form.onlyNonBold' | translate}
+  ]"
+  [selected]="boldSelected"
+  [title]="'observation.form.bold' | translate"
+  [useFilter]="false"
+  (selectedChange)="onBoldChange($event)"
+></laji-select>

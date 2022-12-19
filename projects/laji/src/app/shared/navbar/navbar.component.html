@@ -14,7 +14,6 @@
             <div class="env" [ngClass]="{dev: devRibbon}"></div>
             <span *lajiForTypes="['dev', 'prod', 'beta']">LAJI.FI</span>
             <span *lajiForTypes="['iucn']">{{ 'iucn.title' | translate }}</span>
-            <span *lajiForTypes="['kerttuGlobal']">BIRD SOUNDS GLOBAL</span>
           </a>
           <div class="visible-xs-inline-block pull-right search" *lajiForTypes="['dev', 'prod', 'beta']">
             <laji-omni-search
@@ -38,14 +37,6 @@
               </li>
               <li [routerLinkActive]="['active']">
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
-              </li>
-            </ng-container>
-            <ng-container *lajiForTypes="['kerttuGlobal']">
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/validation'] | localize">{{ 'validation.title' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']">
-                <a [routerLink]="['/identification'] | localize">{{ 'identification.title' | translate }}</a>
               </li>
             </ng-container>
             <li class="d-none xs:d-block" [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
@@ -85,7 +76,7 @@
                 [expand]="'right'"></laji-omni-search>
             </li>
             <ng-container *lajiBrowserOnly>
-              <ng-container *lajiForTypes="['dev', 'prod', 'beta', 'kerttuGlobal']">
+              <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
                 <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
                   <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
