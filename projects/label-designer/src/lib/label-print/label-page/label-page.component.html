@@ -13,7 +13,7 @@
 </div>
 <ng-container *ngIf="setup.twoSided">
   <div [ngStyle]="backStyle" class="ll-page">
-    <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows}">
+    <div class="ll-print-content" [ngStyle]="{'grid-template-columns': cols, 'grid-template-rows': rows, 'justify-content': 'end'}">
       <ng-container *ngFor="let item of (data | labelBacksideSort:_dim); let i=index">
         <ll-label-preview
           *ngIf="item else emptyDiv"
