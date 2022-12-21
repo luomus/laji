@@ -24,14 +24,14 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { DataOptions, TileLayersOptions } from 'laji-map';
+import { DataOptions, DataWrappedLeafletEventData, TileLayersOptions } from 'laji-map';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L, { PathOptions } from 'leaflet';
+import L, { LeafletEvent, Path, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 
@@ -62,14 +62,13 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any, finnishMode
   )
 );
 
-const getPointIconStyle = (po: PathOptions, feature: Feature) => {
+const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
   const icon: any = L.divIcon({
     className: po.className,
     html: `<span>${feature.properties.count}</span>`
   });
   icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
     iconDomElem.style['background-color'] = po2.color + 'A0';
-    //iconDomElem.style['opacity'] = ''+po2.fillOpacity;
     iconDomElem.style['height'] = '30px';
     iconDomElem.style['width'] = '30px';
     iconDomElem.style['border-radius'] = '100%';
@@ -235,16 +234,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
 
     const activeBoundsContainViewport = this.activeZoomThresholdBounds && this.activeZoomThresholdBounds.contains(e.bounds);
+    const zoomChange = this.activeZoomThresholdLevel !== curActiveZoomThresholdLevel;
 
     if (
       !(this.showingIndividualPoints && activeBoundsContainViewport)
       && (
-           // Zoom in
-           this.activeZoomThresholdLevel > curActiveZoomThresholdLevel
-           // Zoom out
-        || this.activeZoomThresholdLevel < curActiveZoomThresholdLevel
-           // Move
-        || !activeBoundsContainViewport
+            zoomChange
+        || !activeBoundsContainViewport // Moved
       )
     ) {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
@@ -348,20 +344,20 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           features: data.features
         },
         on: {
-          click: (...args) => this.onDataClick({
+          click: (e, d) => this.onDataClick({
             type: 'wgs84',
-            coordinates: (args[1].feature.geometry as any).coordinates
+            coordinates: (d.feature.geometry as any).coordinates
           })
         },
         marker: {
-          icon: getPointIconStyle
+          icon: getPointIcon
         }
       }))
     );
   }
 
-  private onAggregateDataClick(args: any[]) {
-    const coords = (args[1].feature.geometry as any).coordinates[0];
+  private onAggregateDataClick(e: LeafletEvent, data: DataWrappedLeafletEventData) {
+    const coords = (data.feature.geometry as any).coordinates[0];
     const lats = []; const lons = [];
     coords.forEach(c => { lats.push(c[1]); lons.push(c[0]); });
     const latMin = Math.min(...lats); const lonMin = Math.min(...lons);
@@ -405,20 +401,15 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
           ...Array.from(new Array(firstPage.lastPage - 1).keys(), (_, i) => i + 2).map(i => this.getBoxQuery$(query, i))
         ])
       )),
-      map(allPages => {
-        const firstPage = allPages[0];
-        for (let i = 1; i < allPages.length; i++) {
-          // join features of all pages to the first page
-          firstPage.features.push(...allPages[i].features);
+      map(allPages => ({
+        featureCollection: {
+          type: allPages[0].type,
+          features: allPages.reduce((p, c) => { p.push(...c.features); return p; }, [])
+        },
+        on: {
+          click: (e, data) => this.onAggregateDataClick(e, data)
         }
-        // return the modified first page
-        return {
-          featureCollection: { type: firstPage.type, features: firstPage.features },
-          on: {
-            click: (...args) => this.onAggregateDataClick(args)
-          }
-        };
-      })
+      }))
     );
   }
 
