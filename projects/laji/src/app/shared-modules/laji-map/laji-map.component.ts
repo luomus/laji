@@ -22,7 +22,6 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-import { LajiMapVisualization } from './visualization/laji-map-visualization';
 import L from 'leaflet';
 
 @Component({
@@ -32,13 +31,6 @@ import L from 'leaflet';
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-      <laji-map-legend
-        *ngIf="visualization"
-        [visualization]="visualization"
-        [mode]="visualizationMode"
-        [displayObservationAccuracy]="displayObservationAccuracy"
-        (modeChange)="onVisualizationModeChange($event)"
-      ></laji-map-legend>
     </div>`,
   styleUrls: ['./laji-map.component.css'],
   providers: [],
@@ -46,19 +38,15 @@ import L from 'leaflet';
 })
 export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Input() data: any = [];
-  @Input() visualization: LajiMapVisualization<string> | undefined;
-  @Input() visualizationMode: string | undefined;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
-  @Input() displayObservationAccuracy = false;
 
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
-  @Output() visualizationModeChange = new EventEmitter<string>();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -152,9 +140,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     if (changes.data) {
       this.setData(this.data);
     }
-    if (changes.visualization?.currentValue) {
-      this.visualizationMode = Object.keys(this.visualization)[0];
-    }
   }
 
   initMap() {
@@ -237,10 +222,5 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     } else if (['Rectangle'].includes(type)) {
       this.map.triggerDrawing(type);
     }
-  }
-
-  onVisualizationModeChange(mode: string) {
-    this.visualizationMode = mode;
-    this.visualizationModeChange.emit(mode);
   }
 }

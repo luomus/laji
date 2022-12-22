@@ -1,4 +1,4 @@
-import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
+import { LajiMapVisualization } from '../../legend/laji-map-visualization';
 
 const BASE_FEATURE_STYLE = {
   weight: 1,

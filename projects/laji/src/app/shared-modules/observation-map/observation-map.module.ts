@@ -6,16 +6,18 @@ import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { DatatableModule } from '../datatable/datatable.module';
 import { ObservationMapTableComponent } from './observation-map/observation-map-table/observation-map-table.component';
+import { LajiLegendModule } from '../legend/legend.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LajiMapModule,
-    SharedModule,
-    LajiUiModule,
-    DatatableModule
-  ],
-  declarations: [ObservationMapComponent, ObservationMapTableComponent],
-  exports: [ObservationMapComponent]
+    declarations: [ObservationMapComponent, ObservationMapTableComponent],
+    exports: [ObservationMapComponent],
+    imports: [
+        CommonModule,
+        LajiMapModule,
+        SharedModule,
+        LajiUiModule,
+        DatatableModule,
+        LajiLegendModule
+    ]
 })
 export class ObservationMapModule { }

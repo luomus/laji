@@ -19,7 +19,7 @@ import { LabelPipe } from '../../../../../shared/pipe';
 import { AreaNamePipe } from '../../../../../shared/pipe/area-name.pipe';
 import { Logger } from '../../../../../shared/logger';
 import { Form } from '../../../../../shared/model/Form';
-import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
+import { LajiMapVisualization } from '../../../../../shared-modules/legend/laji-map-visualization';
 
 @Component({
   selector: 'laji-np-map',
@@ -129,7 +129,7 @@ export class NpMapComponent implements OnInit, OnChanges {
     );
     this.visualization = {
       npVisualization: {
-        label: 'label',
+        label: '',
         categories: [
           {
             color: this.placeColor,

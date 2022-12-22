@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { LajiMapVisualization } from '@laji-map/visualization/laji-map-visualization';
 
 @Component({
   selector: 'laji-map',
@@ -11,14 +10,11 @@ export class LajiMapComponent {
   @Input() options: any;
   @Input() settingsKey: string;
   @Input() data: any = [];
-  @Input() visualization: LajiMapVisualization<any> | undefined;
-  @Input() visualizationMode: any | undefined;
   @Input() loading = false;
   @Input() showControls = true;
   @Input() maxBounds: [[number, number], [number, number]];
   @Input() tileLayerOpacity: number;
   @Input() onPopupClose: (elem: string | HTMLElement) => void;
-  @Input() displayObservationAccuracy: boolean;
 
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();

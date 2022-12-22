@@ -23,6 +23,7 @@ import { InfoModule } from '../../../shared-modules/info/info.module';
 import { FormPermissionModule } from '../../form-permission/form-permission.module';
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { ProjectFormHeaderModule } from '../../header/project-form-header.module';
+import { LajiLegendModule } from '../../../shared-modules/legend/legend.module';
 
 @NgModule({
   providers: [],
@@ -39,7 +40,8 @@ import { ProjectFormHeaderModule } from '../../header/project-form-header.module
     ClipboardModule,
     LajiUiModule,
     InfoModule,
-    ProjectFormHeaderModule
+    ProjectFormHeaderModule,
+    LajiLegendModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,
