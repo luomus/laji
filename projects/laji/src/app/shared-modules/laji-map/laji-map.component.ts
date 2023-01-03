@@ -11,6 +11,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { IUserSettings, UserService } from '../../shared/service/user.service';
@@ -21,7 +22,7 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-
+import L from 'leaflet';
 
 @Component({
   selector: 'laji-map',
@@ -30,18 +31,12 @@ import { environment } from 'projects/laji/src/environments/environment';
       <div #lajiMap class="laji-map"></div>
       <div class="loading-map loading" *ngIf="loading"></div>
       <ng-content></ng-content>
-      <ul class="legend" *ngIf="_legend && _legend.length > 0" [ngStyle]="{'margin-top': 0 }">
-        <li *ngFor="let leg of _legend">
-          <span class="color" [ngStyle]="{'background-color': leg.color}"></span>{{ leg.label }}
-        </li>
-      </ul>
     </div>`,
   styleUrls: ['./laji-map.component.css'],
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
-
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
@@ -51,14 +46,12 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
-  @Output() failure =  new EventEmitter();
   @Output() tileLayersChange =  new EventEmitter();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
   map: any;
   _options: Options = {};
-  _legend: {color: string; label: string}[];
   @LocalStorage('onlycount') onlyCount;
 
 
@@ -73,9 +66,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private logger: Logger,
     private translate: TranslateService,
     private zone: NgZone
-  ) {
-
-  }
+  ) {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -134,17 +125,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  @Input() set legend(legend: {[color: string]: string} | undefined) {
-    if (!legend) {
-      return;
-    }
-    const leg = [];
-    Object.keys(legend).forEach(color => {
-      leg.push({color, label: legend[color]});
-    });
-    this._legend = leg;
-  }
-
   ngOnDestroy() {
     try {
       this.map.destroy();
@@ -155,7 +135,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     }
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges) {
     this.lang = this.translate.currentLang;
     if (changes.data) {
       this.setData(this.data);

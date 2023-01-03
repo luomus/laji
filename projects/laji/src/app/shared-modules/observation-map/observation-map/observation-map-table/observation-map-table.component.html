@@ -1,0 +1,19 @@
+<!-- The following *ngIf is always true, used just for the async pipe -->
+<ng-container *ngIf="{ rows: (rows$ | async) } as data">
+  <laji-datatable
+    class="observation-table d-block"
+    [height]="'600px'"
+    [rows]="data.rows?.results"
+    [columns]="columns"
+    [count]="data.rows?.total"
+    [page]="data.rows?.currentPage"
+    [pageSize]="pageSize"
+    [virtualScrolling]="false"
+    [showFooter]="true"
+    [loading]="loading"
+    [clientSideSorting]="data.rows?.total <= pageSize"
+    (pageChange)="onPageChange($event)"
+    (rowSelect)="onRowSelect($event)"
+    (sortChange)="data.rows?.total > pageSize ? onServerSort($event) : ''">
+  </laji-datatable>
+</ng-container>
