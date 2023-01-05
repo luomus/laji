@@ -1,4 +1,4 @@
-import { catchError, concat, delay, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, concat, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, from } from 'rxjs';
 import {
   ChangeDetectionStrategy,
@@ -31,9 +31,10 @@ import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L, { LeafletEvent, Path, PathOptions } from 'leaflet';
+import L, { LeafletEvent, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
+import { BoxDataOptionsCache } from './box-dataoptions-cache';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -80,6 +81,10 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
 };
 
 const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
+const BOX_QUERY_AGGREGATE_LEVELS = [
+  ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
+  ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
+];
 
 @Component({
   selector: 'laji-observation-map',
@@ -95,8 +100,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   @Input() visible = false;
   @Input() query: any;
   @Input() opacity = .5;
-  @Input() zoomThresholdAggregateByLatLevels: string[] = ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid005.lat'];
-  @Input() zoomThresholdAggregateByLonLevels: string[] = ['gathering.conversions.wgs84Grid1.lon', 'gathering.conversions.wgs84Grid01.lon'];
   // Zoom levels from lowest to highest when to move to more accurate grid.
   @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
   // When active zoom threshold level (index in 'zoomThresholds') is below this, the viewport coordinates are added to the query.
@@ -167,7 +170,11 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       color: this.selectColor
     })
   };
+
   private previousQueryHash = '';
+  private boxDataOptionsCache = new BoxDataOptionsCache();
+  private previousDataOptions: DataOptions;
+
   private boxGeometryPageSize = 10000;
   private pointGeometryPageSize = 10000;
   private pointModeBreakpoint = 5000;
@@ -203,6 +210,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     this.decorator.lang = this.translate.currentLang;
     if (changes['query'] || changes['ready']) {
+      this.boxDataOptionsCache.reset();
       this.updateMap();
     }
   }
@@ -252,6 +260,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const temp = layerOptions.active === 'finnish';
     if (temp !== this.useFinnishMap) {
       this.useFinnishMap = temp;
+      this.boxDataOptionsCache.reset();
       this.updateMap();
     }
   }
@@ -264,6 +273,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.visualizationMode = <ObservationVisualizationMode>mode;
 
     if (fetchRequired) {
+      this.boxDataOptionsCache.reset();
       this.updateMap();
     } else {
       const dataOptions = this.mapData[0];
@@ -310,13 +320,13 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     return this.lajiMap?.map.map.getBounds().contains(bounds);
   }
 
-  private addViewPortCoordinatesParams(query: WarehouseQueryInterface) {
-    if (!this.queryIsInsideViewport(query) && this.activeZoomThresholdBounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
+  private addViewPortCoordinatesParams(query: WarehouseQueryInterface, bounds?: any) {
+    if (!this.queryIsInsideViewport(query) && bounds && this.activeZoomThresholdLevel >= this.onlyViewportThresholdLevel) {
       query.wgs84CenterPoint =
-        Math.max(this.activeZoomThresholdBounds.getSouthWest().lat, -90)
-        + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lat, 90)
-        + ':' + Math.max(this.activeZoomThresholdBounds.getSouthWest().lng, -180)
-        + ':' + Math.min(this.activeZoomThresholdBounds.getNorthEast().lng, 180)
+        Math.max(bounds.getSouthWest().lat, -90)
+        + ':' + Math.min(bounds.getNorthEast().lat, 90)
+        + ':' + Math.max(bounds.getSouthWest().lng, -180)
+        + ':' + Math.min(bounds.getNorthEast().lng, 180)
         + ':WGS84';
     }
   }
@@ -381,24 +391,18 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.onDataClick(coordinates);
   }
 
-  private getBoxQuery$(query: WarehouseQueryInterface, page: number): Observable<AggregateQueryResponse> {
-    return this.warehouseService.warehouseQueryAggregateGet(
-      query,
-      this.useFinnishMap
-        ? ['gathering.conversions.ykj10kmCenter.lat', 'gathering.conversions.ykj10kmCenter.lon']
-        : this.getActiveZoomThresholdLevelToAggregateBy(),
-      undefined, this.boxGeometryPageSize, page, true
-    );
+  private getBoxQuery$(query: WarehouseQueryInterface, aggregateBy: string[], page: number): Observable<AggregateQueryResponse> {
+    return this.warehouseService.warehouseQueryAggregateGet(query, aggregateBy, undefined, this.boxGeometryPageSize, page, true);
   }
 
-  private getBoxDataOptions$(query: WarehouseQueryInterface): Observable<DataOptions> {
+  private getAllBoxes$(query: WarehouseQueryInterface, aggregateBy: string[]): Observable<DataOptions> {
     // do the first query
-    return this.getBoxQuery$(query, 1).pipe(
+    return this.getBoxQuery$(query, aggregateBy, 1).pipe(
       switchMap(firstPage => (
         forkJoin([
           of(firstPage),
           // get remaining pages
-          ...Array.from(new Array(firstPage.lastPage - 1).keys(), (_, i) => i + 2).map(i => this.getBoxQuery$(query, i))
+          ...Array.from(new Array(firstPage.lastPage - 1).keys(), (_, i) => i + 2).map(i => this.getBoxQuery$(query, aggregateBy, i))
         ])
       )),
       map(allPages => ({
@@ -413,21 +417,50 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
+  private getBoxQueryAggregateLevel(): number {
+    return Math.min(BOX_QUERY_AGGREGATE_LEVELS.length - 1, this.activeZoomThresholdLevel);
+  }
+
+  private getBoxDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions | null> {
+    const aggregateLevel = this.getBoxQueryAggregateLevel();
+    const match = this.boxDataOptionsCache.match(bounds, aggregateLevel);
+    if (match) {
+      // return null if we are already displaying the cached result
+      if (match === this.previousDataOptions) {
+        this.loading = false;
+        this.cdr.markForCheck();
+        return of(null);
+      }
+      // return cached result
+      return of(match);
+    }
+    const aggregateBy = this.useFinnishMap
+      ? ['gathering.conversions.ykj10kmCenter.lat', 'gathering.conversions.ykj10kmCenter.lon']
+      : BOX_QUERY_AGGREGATE_LEVELS[aggregateLevel];
+
+    return this.getAllBoxes$(query, aggregateBy).pipe(
+      tap(data => {
+        this.boxDataOptionsCache.update(aggregateLevel, bounds, data);
+      })
+    );
+  }
+
   private updateMap() {
-    const query = this.prepareQuery();
-    const queryHash = this.getQueryHash(query);
-    if (this.previousQueryHash === queryHash) { return; }
-    this.previousQueryHash = queryHash;
+    const bounds = this.activeZoomThresholdBounds;
+    const query = this.prepareQuery(bounds);
+    const hash = JSON.stringify(query);
+    if (hash === this.previousQueryHash) { return; }
+    this.previousQueryHash = hash;
     forkJoin({
       drawData: this.getDrawData$(query),
-      dataOptions: this.getDataOptions$(query)
+      dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
       this.lajiMap?.map?.clearDrawData();
       this.mapData = [dataOptions, drawData];
     });
   }
 
-  private prepareQuery(): WarehouseQueryInterface {
+  private prepareQuery(bounds?: any): WarehouseQueryInterface {
     const query = { ...this.query };
 
     this.addVisualizationParams(query);
@@ -437,7 +470,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         query.coordinates = FINNISH_MAP_BOUNDS;
       }
     } else {
-      this.addViewPortCoordinatesParams(query);
+      this.addViewPortCoordinatesParams(query, bounds);
     }
 
     return query;
@@ -454,7 +487,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private getDataOptions$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
+  private getDataOptions$(query: WarehouseQueryInterface, bounds?): Observable<LajiMapDataOptions> {
     this.loading = true;
     this.cdr.markForCheck();
 
@@ -471,9 +504,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         } else if (res.total <= this.pointModeBreakpoint) {
           return this.getPointsDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = true));
         } else {
-          return this.getBoxDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = false));
+          return this.getBoxDataOptions$(query, bounds).pipe(tap(() => this.showingIndividualPoints = false));
         }
       }),
+      // null is returned when we get a valid result, but don't have to do anything
+      filter(d => d !== null),
+      tap(d => this.previousDataOptions = d),
       // retry on timeout
       timeout(WarehouseApi.longTimeout * 3),
       delay(100),
@@ -489,33 +525,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         this.loading = false;
         this.cdr.markForCheck();
       }),
-      catchError(() => {
-        this.logger.warn('Failed to load observation map data!');
+      catchError(e => {
+        this.logger.warn('Failed to load observation map data!', e);
         return of(null);
       })
     );
-  }
-
-  private getActiveZoomThresholdLevelToAggregateBy(): string[] {
-    return ['zoomThresholdAggregateByLatLevels', 'zoomThresholdAggregateByLonLevels'].map(latOrLon => {
-      let level = this.activeZoomThresholdLevel;
-      let aggregateBy = this[latOrLon][level];
-      while (!aggregateBy) {
-        level--;
-        aggregateBy = this[latOrLon][level];
-      }
-      return aggregateBy;
-    });
-  }
-
-  private getQueryHash(query: WarehouseQueryInterface) {
-    const cache = [JSON.stringify(query), this.useFinnishMap].join(':');
-    if (!this.activeZoomThresholdBounds) {
-      return cache + this.activeZoomThresholdLevel;
-    }
-    if ((!this.activeZoomThresholdBounds || this.activeZoomThresholdLevel < this.onlyViewportThresholdLevel) || query.coordinates) {
-      return cache + this.activeZoomThresholdLevel;
-    }
-    return cache + this.activeZoomThresholdBounds.toBBoxString() + this.activeZoomThresholdLevel;
   }
 }
