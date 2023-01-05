@@ -423,7 +423,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private getBoxDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions | null> {
     const aggregateLevel = this.getBoxQueryAggregateLevel();
-    const match = this.boxDataOptionsCache.match(bounds, aggregateLevel);
+    const match = this.boxDataOptionsCache.match(bounds, aggregateLevel, this.useFinnishMap);
     if (match) {
       // return null if we are already displaying the cached result
       if (match === this.previousDataOptions) {
