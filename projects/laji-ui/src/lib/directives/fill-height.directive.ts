@@ -30,7 +30,9 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges 
   }
 
   ngOnChanges() {
-    this.updateHeight();
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateHeight();
+    }
   }
 
   private onLoad() {
