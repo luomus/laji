@@ -464,10 +464,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const query = { ...this.query };
 
     this.addVisualizationParams(query);
-
-    if (this.useFinnishMap && !query.coordinates) {
-      query.coordinates = FINNISH_MAP_BOUNDS;
-    }
     this.addViewPortCoordinatesParams(query, bounds);
 
     return query;
