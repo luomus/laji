@@ -456,7 +456,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
       this.lajiMap?.map?.clearDrawData();
-      console.log(drawData);
       this.mapData = [drawData, dataOptions];
     });
   }
