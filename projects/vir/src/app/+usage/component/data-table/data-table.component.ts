@@ -3,8 +3,9 @@ import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/d
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
+import { SelectionType } from '@swimlane/ngx-datatable';
 
-type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
+type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 
 @Component({
   selector: 'vir-data-table',
@@ -30,12 +31,16 @@ type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys';
                   [height]="height"
                   [rows]='data'
                   (rowSelect)="rowSelect.emit($event)"
+                  (datatableSelect)="datatableSelect.emit($event)"
                   [count]="0"
                   [page]="1"
                   [pageSize]="20"
                   [columnMode]="'force'"
                   [totalMessage]="'haseka.submissions.total' | translate"
-                  [columns]="cols">
+                  [columns]="cols"
+                  [selectionType]="selectionType"
+                  [selected]="selected"
+                  >
           </laji-datatable>
       </div>
   `
@@ -48,8 +53,11 @@ export class DataTableComponent implements AfterViewInit {
   @Input() height = 'calc(90vh - 195px)';
   @Input() data: any[];
   @Input() exportFileName = 'export';
+  @Input() selected: any = [];
+  @Input() selectionType: SelectionType;
 
   @Output() rowSelect = new EventEmitter<any>();
+  @Output() datatableSelect = new EventEmitter<any>();
 
   downloadLoading = false;
 
@@ -58,13 +66,13 @@ export class DataTableComponent implements AfterViewInit {
     {
       name: 'organisation',
       label: 'usage.organisation',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true,
     },
     {
       name: 'section',
       label: 'usage.section',
-      cellTemplate: 'toSemicolon',
+      cellTemplate: 'pluckValueSemiColonArray',
       canAutoResize: true
     },
     {
@@ -115,6 +123,24 @@ export class DataTableComponent implements AfterViewInit {
       label: 'usage.apiKey',
       cellTemplate: 'copyToClipboard',
       canAutoResize: true
+    },
+    {
+      name: 'securePortalUserRoleExpires',
+      label: 'usage.admin.securePortalUserRoleExpires',
+      canAutoResize: true
+    },
+    {
+      name: 'userId',
+      prop: 'id',
+      label: 'usage.admin.userId',
+      canAutoResize: true
+    },
+    {
+      name: 'check',
+      label: 'usage.admin.selectAll',
+      canAutoResize: false,
+      headerCheckboxable: true,
+      checkboxable: true
     }
   ];
 
@@ -150,6 +176,8 @@ export class DataTableComponent implements AfterViewInit {
     switch (type) {
       case 'people':
         return this.getCols(['organisation', 'section', 'fullName', 'emailAddress']);
+      case 'admin':
+        return this.getCols(['organisation', 'fullName', 'emailAddress', 'userId', 'securePortalUserRoleExpires', 'check']);
       case 'downloads':
         return this.getCols(['requested', 'personId', 'collectionIds', 'dataUsePurpose']);
       case 'user':

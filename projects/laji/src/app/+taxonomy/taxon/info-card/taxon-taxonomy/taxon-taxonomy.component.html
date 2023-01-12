@@ -68,14 +68,7 @@
          [title]="'taxonomy.bold' | translate"
          [open]="true"
          [autoToggle]="true">
-      <laji-bold-sequence [scientificName]="taxon.scientificName" [cursive]="taxon.cursiveName"></laji-bold-sequence>
-      <laji-bold-synonym [taxa]="taxon.basionyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.heterotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.homotypicSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.objectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.orthographicVariants || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.subjectiveSynonyms || []"></laji-bold-synonym>
-      <laji-bold-synonym [taxa]="taxon.synonyms || []"></laji-bold-synonym>
+      <laji-taxon-bold [taxon]="taxon"></laji-taxon-bold>
     </div>
     <div class="panel panel-default"
          *ngIf="taxon.taxonExpert"

@@ -1,6 +1,19 @@
-<div class="parent-img" *ngIf="taxon.children?.length === 0 && taxon.multimedia?.length > 0">
-  <img [src]="taxon.multimedia[0].largeURL">
-</div>
+<ng-container *ngIf="taxon.species">
+  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
+    <ng-container *ngFor="let multimedia of taxon.multimedia; index as i">
+      <img lajiLazyImage (click)="openImage(i)" [src]="taxon.multimedia[i].largeURL">
+      <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[i] }"></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="taxon.children?.length === 0">
+  <ng-container *ngIf="taxon.multimedia?.length > 0; else noImage">
+    <img (click)="openImage()" [src]="taxon.multimedia[0].largeURL">
+    <ng-container *ngTemplateOutlet="imageCopyright; context:{ $implicit: taxon.multimedia[0] }"></ng-container>
+  </ng-container>
+</ng-container>
+
 <div class="species-container-container mb-8" *ngIf="taxon.children?.length > 0">
   <div class="species-navigation back" (mousedown)="discreteScroll(-1)">
     <div class="glyphicon glyphicon-chevron-left"></div>
@@ -11,13 +24,50 @@
   <div class="d-flex species-container" #speciesContainer>
     <div *ngFor="let child of taxon.children; index as i" class="species d-flex flex-col mr-4">
       <h5>
-        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
+        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
+          <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
+        </a>
       </h5>
-      <div class="species-img-container flex-grow">
-        <ng-container *ngIf="child.multimedia?.length > 0">
+      <ng-container *ngIf="child.multimedia?.length > 0; else noImageContainer">
+        <div class="species-img-container">
           <img (click)="openImage(i)" [src]="child.multimedia[0].largeURL">
-        </ng-container>
-      </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
+
+<ng-template #noImageContainer>
+  <div class="species-no-img-container">
+    <ng-container *ngTemplateOutlet="noImage"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #noImage>
+  <div class="no-image">
+    <img class="no-image-icon" [src]="'static/images/icons/x-octagon.png'">
+    <h4 class="no-image-title">
+      {{ 'annotation.noImages' | translate }}
+    </h4>
+  </div>
+</ng-template>
+
+<ng-template #imageCopyright let-multimedia>
+  <div class="image-copyright" *ngIf="multimedia">
+    <div *ngIf="multimedia.copyrightOwner">
+      <b>{{ 'taxonomy.multimedia.copyrightOwner' | translate }}:</b>
+      {{ multimedia.copyrightOwner }}
+    </div>
+    <div *ngIf="multimedia.licenseAbbreviation">
+      <b>{{ 'taxonomy.multimedia.licenseAbbreviation' | translate }}:</b>
+      {{ multimedia.licenseAbbreviation }}
+    </div>
+    <div *ngIf="multimedia.taxonDescriptionCaption">
+      <b>{{ 'taxonomy.multimedia.taxonDescriptionCaption' | translate }}:</b>
+      {{ multimedia.taxonDescriptionCaption | multiLang }}
+    </div>
+    <ng-container *ngIf="multimedia.licenseId">
+      <laji-license type={{multimedia.licenseId}}></laji-license>
+    </ng-container>
+  </div>
+</ng-template>

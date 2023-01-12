@@ -1,9 +1,25 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import {
-  IListResult, IGlobalSpeciesQuery, IGlobalSpecies, IGlobalSpeciesFilters, IGlobalRecording, IValidationStat, IUserStat, IGlobalTemplate,
-  ISuccessResult, IGlobalComment, IGlobalTemplateVersion, IGlobalSpeciesListResult, KerttuGlobalErrorEnum, IGlobalRecordingResponse,
-  IGlobalRecordingAnnotation, IGlobalSite, IIdentificationSiteStat, IIdentificationUserStat
+  IListResult,
+  IGlobalSpeciesQuery,
+  IGlobalSpecies,
+  IGlobalSpeciesFilters,
+  IGlobalRecording,
+  IValidationStat,
+  IUserStat,
+  IGlobalTemplate,
+  ISuccessResult,
+  IGlobalComment,
+  IGlobalTemplateVersion,
+  IGlobalSpeciesListResult,
+  KerttuGlobalErrorEnum,
+  IGlobalRecordingResponse,
+  IGlobalRecordingAnnotation,
+  IGlobalSite,
+  IIdentificationSiteStat,
+  IIdentificationUserStatResult,
+  IIdentificationSpeciesStat
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -109,9 +125,12 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
 
-  public getNextRecording(personToken: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
+  public getNextRecording(personToken: string, recordingId: number, siteIds: number[], skipCurrent = false): Observable<IGlobalRecordingResponse> {
     const path = this.basePath + '/identification/recording/next/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+    let params = new HttpParams().set('personToken', personToken).set('sites', '' + siteIds);
+    if (skipCurrent) {
+      params = params.set('skipCurrent', skipCurrent);
+    }
 
     return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
   }
@@ -130,10 +149,11 @@ export class KerttuGlobalApi {
     return this.httpClient.post(path, annotation, { params });
   }
 
-  public getSites(): Observable<IListResult<IGlobalSite>> {
+  public getSites(personToken: string): Observable<IListResult<IGlobalSite>> {
     const path = this.basePath + '/identification/sites';
+    const params = new HttpParams().set('personToken', personToken);
 
-    return this.httpClient.get<IListResult<IGlobalSite>>(path);
+    return this.httpClient.get<IListResult<IGlobalSite>>(path, { params });
   }
 
   public getIdentificationSiteStats(): Observable<IListResult<IIdentificationSiteStat>> {
@@ -142,12 +162,17 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IIdentificationSiteStat>>(path);
   }
 
-  public getIdentificationUserStats(): Observable<IListResult<IIdentificationUserStat>> {
+  public getIdentificationUserStats(): Observable<IIdentificationUserStatResult> {
     const path = this.basePath + '/identification/statistics/users';
 
-    return this.httpClient.get<IListResult<IIdentificationUserStat>>(path);
+    return this.httpClient.get<IIdentificationUserStatResult>(path);
   }
 
+  public getIdentificationSpeciesStats(): Observable<IListResult<IIdentificationSpeciesStat>> {
+    const path = this.basePath + '/identification/statistics/species';
+
+    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path);
+  }
 
   private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
     Object.keys(query).forEach(key => {

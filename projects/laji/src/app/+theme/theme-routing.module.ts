@@ -16,6 +16,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GeneticResourceLayoutComponent } from './genetic-resource/layout/genetic-resource-layout.component';
 import { GeneticResourceInstructionsComponent } from './genetic-resource/instructions/genetic-resource-instructions.component';
 import { KerttuClosedComponent } from './kerttu/kerttu-closed.component';
+import { DatasetMetadataComponent } from '../shared-modules/dataset-metadata/dataset-metadata.component';
 
 /* eslint-enable max-len */
 
@@ -85,6 +86,10 @@ const routes: Routes = [
       {path: 'recordings', pathMatch: 'full', redirectTo: ''},
       {path: 'result', pathMatch: 'full', redirectTo: ''}
     ]
+  },
+  {
+    path: 'dataset-metadata',
+    loadChildren: () => import('../shared-modules/dataset-metadata/dataset-metadata.module').then(m => m.DatasetMetadataModule)
   },
   {path: 'protax', pathMatch: 'full', component: ProtaxComponent, data: {title: 'theme.protax'}},
   {path: 'herpetology',  pathMatch: 'full', component: HerpetologyComponent, data: {title: 'navigation.herpetology'}},

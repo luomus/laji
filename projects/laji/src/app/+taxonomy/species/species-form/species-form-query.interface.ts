@@ -11,4 +11,6 @@ export interface SpeciesFormQuery {
   nationalInvasiveSpeciesStrategy: boolean;
   otherInvasiveSpeciesList: boolean;
   allInvasiveSpecies: boolean;
+  onlyBold: boolean;
+  onlyNonBold: boolean;
 }

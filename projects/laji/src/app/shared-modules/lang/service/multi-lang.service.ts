@@ -32,6 +32,7 @@ export class MultiLangService {
       if (_lang === lang) {
         continue;
       }
+
       if (multi[_lang]) {
         return !fallback ?
           multi[_lang] :
@@ -41,8 +42,9 @@ export class MultiLangService {
     return '';
   }
 
-  static valueToString(multi: Record<string, unknown>): string {
+  static valuesToArray(multi: Record<string, unknown>): string[] {
     const values = [];
+
     for (const lang of MultiLangService.lang) {
       if (MultiLangService.hasValue(multi, lang)) {
         const val = MultiLangService.getValue(multi, lang);
@@ -55,6 +57,12 @@ export class MultiLangService {
         }
       }
     }
+
+    return values;
+  }
+
+  static valueToString(multi: Record<string, unknown>): string {
+    const values = MultiLangService.valuesToArray(multi);
 
     return values.join('; ');
   }

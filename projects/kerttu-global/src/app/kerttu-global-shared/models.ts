@@ -23,6 +23,7 @@ export interface IGlobalSpeciesQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
+  includeSpeciesWithoutAudio?: boolean;
 }
 
 export interface IGlobalSpecies {
@@ -37,6 +38,7 @@ export interface IGlobalSpecies {
   hasNotPossibleValidations?: boolean;
   isSpecies?: boolean;
   taxonOrder?: number;
+  hasAudio?: boolean;
 }
 
 export interface IGlobalSpeciesFilters {
@@ -78,6 +80,7 @@ export interface IGlobalAudio extends IAudio {
   recordist?: string;
   country?: string;
   state?: string;
+  location?: string;
   year?: number;
   month?: number;
   day?: number;
@@ -85,6 +88,8 @@ export interface IGlobalAudio extends IAudio {
   specimenUrl: string;
   checklistId?: string;
   checklistUrl?: string;
+  licenseUrl?: string;
+  soundType?: string;
 }
 
 export interface IValidationStat {
@@ -103,6 +108,8 @@ export interface IGlobalRecording extends IAudio {
   dateTime: string;
   xRange: number[];
   site: IGlobalSite;
+  locality?: string;
+  targetSpecies?: IGlobalSpecies;
 }
 
 export interface IGlobalRecordingAnnotation {
@@ -158,6 +165,7 @@ export interface IIdentificationSiteStat {
 export interface IIdentificationStat {
   annotationCount: number;
   speciesCount: number;
+  distinctSpeciesCount: number;
   drawnBoxesCount: number;
 }
 
@@ -165,6 +173,14 @@ export interface IIdentificationUserStat extends IIdentificationStat {
   userId: string;
 }
 
+export interface IIdentificationUserStatResult extends IListResult<IIdentificationUserStat> {
+  totalDistinctSpeciesCount: number;
+}
+
+export interface IIdentificationSpeciesStat extends IGlobalSpecies {
+  count: number;
+  drawnBoxesCount: number;
+}
 
 export enum CommentType {
   replace = 0,

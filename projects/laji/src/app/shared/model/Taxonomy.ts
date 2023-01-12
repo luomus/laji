@@ -27,6 +27,9 @@
  */
 
 'use strict';
+
+import { MultiLanguage } from './MultiLanguage';
+
 export interface Taxonomy {
 
   id?: string;
@@ -208,6 +211,8 @@ export interface Taxonomy {
    */
   taxonomicSortOrder?: number;
 
+  hasBold?: boolean;
+
   /**
    * true if has parents
    */
@@ -259,6 +264,8 @@ export interface Taxonomy {
   observationCount?: number;
 
   observationCountFinland?: number;
+
+  bold?: Bold;
 }
 
 export interface RedListEvaluation {
@@ -335,6 +342,8 @@ export interface TaxonomyImage {
 
   source?: string;
 
+  taxonDescriptionCaption?: MultiLanguage;
+
   thumbnailURL?: string;
 
 }
@@ -351,7 +360,6 @@ export interface  Habitat {
 
 }
 
-
 export interface Occurrence {
 
   area: string;
@@ -364,4 +372,17 @@ export interface Occurrence {
 
   year?: number;
 
+}
+
+export interface Bold {
+
+  publicRecords?: number;
+
+  specimens?: number;
+
+  barcodes?: number;
+
+  bins?: string[];
+
+  binCount?: number;
 }

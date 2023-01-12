@@ -6,6 +6,24 @@
   margin-bottom: $sp-9;
 }
 
+h4 {
+  margin-top: 0;
+}
+
+li {
+  max-width: 450px;
+}
+
+.child-container {
+  border-bottom: 1px solid $neutral-4;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
+  margin-bottom: $sp-6;
+  width: 100%;
+}
+
 .child-name {
   margin-top: $sp-5;
   margin-bottom: $sp-4;
@@ -41,4 +59,20 @@
 
 .cursive {
   font-style: italic;
+}
+
+.description-container {
+  padding-right: $sp-6;
+  padding-bottom: $sp-6;
+  max-width: 500px;
+}
+
+.description-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container {
+  padding-right: $sp-6;
+  max-width: 800px;
 }

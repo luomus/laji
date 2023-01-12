@@ -10,4 +10,5 @@ export interface TaxonomySearchQueryInterface {
   taxonRanks?: string[];
   primaryHabitat?: string[];
   anyHabitat?: string[];
+  hasBoldData?: boolean;
 }

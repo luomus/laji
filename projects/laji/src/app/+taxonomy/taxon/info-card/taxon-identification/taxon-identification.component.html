@@ -1,27 +1,72 @@
-<div *ngIf="taxon.taxonRank === 'MX.species'; else parent" class="lu-text-content">
-  <div *ngFor="let media of taxon.multimedia">
-    <img lajiLazyImage [src]="media.largeURL">
-  </div>
+<div *ngIf="taxon.species; else parent" class="lu-text-content">
+  <laji-identification-list [taxon]="taxon"></laji-identification-list>
 </div>
 
 <ng-template #parent>
   <laji-spinner [spinning]="loading" [hideContentWhileLoading]="true">
-    <div class="mb-7" *ngFor="let child of children">
-      <h3 class="child-name">
-        <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve"><laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name></a>
-      </h3>
-      <h4 class="child-info">
-        {{ child.taxonRank | label }} - {{ child.countOfSpecies| formattedNumber:' ' }} {{ (child.countOfSpecies === 1 ? 'taxonomy.identification.species' : 'taxonomy.identification.speciesPlural') | translate }} -  {{ child.observationCountFinland | formattedNumber:' ' }} {{ (child.observationCountFinland === 1 ? 'taxonomy.identification.observation' : 'taxonomy.identification.observationsPlural') | translate }}
-      </h4>
-      <laji-identification-list
-        [taxon]="child"
-      ></laji-identification-list>
+    <div *ngFor="let child of data.children">
+      <div>
+        <h3 class="child-name">
+          <a [routerLink]="['/taxon', child.id, 'identification'] | localize" queryParamsHandling="preserve">
+            <laji-taxon-name [capitalizeName]="true" [addLink]="false" [taxon]="child"></laji-taxon-name>
+          </a>
+        </h3>
+        <h4 class="child-info">
+          {{
+            child.taxonRank | label
+          }} - {{
+            child.countOfSpecies| formattedNumber:' '
+          }}
+          {{
+            (child.countOfSpecies === 1 ?
+              'taxonomy.identification.species' :
+              'taxonomy.identification.speciesPlural'
+            ) | translate
+          }} - {{
+            child.observationCountFinland | formattedNumber:' '
+          }}
+          {{
+            (child.observationCountFinland === 1 ?
+              'taxonomy.identification.observation' :
+              'taxonomy.identification.observationsPlural'
+            ) | translate
+          }}
+        </h4>
+      </div>
+      <div class="child-container" *ngIf="child.children?.length === 0; else noDescriptions">
+        <div class="image-container">
+          <laji-identification-list [taxon]="child"></laji-identification-list>
+        </div>
+        <div class="description-container">
+          <div class="description-items" *ngFor="let taxonDescription of child.taxonDescriptions | keyvalue">
+            <h4>{{ taxonDescription.value.title }}</h4>
+            <p [innerHtml]="taxonDescription.value.content"></p>
+          </div>
+        </div>
+      </div>
+      <ng-template #noDescriptions>
+        <laji-identification-list [taxon]="child"></laji-identification-list>
+      </ng-template>
     </div>
     <div #loadMore></div>
-    <div *ngIf="children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
+    <div *ngIf="data.children.length < (totalChildren$ | async)" class="spinner three-bounce-spinner">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>
     </div>
+    <ng-container *ngIf="taxon.taxonRank === 'MX.genus' && data.descriptionSources.length > 0">
+      <h3>{{ 'taxonomy.identification.descriptionAuthors' | translate }}</h3>
+      <strong>{{ 'taxonomy.sources' | translate }}:</strong>
+      <ng-container *ngFor="let descriptionSource of data.descriptionSources">
+        <p>{{ descriptionSource }}</p>
+      </ng-container>
+      <ng-container *ngIf="data.speciesCardAuthors.length > 0">
+        <strong>{{ data.speciesCardAuthorsTitle }}:</strong>
+        <ng-container *ngFor="let speciesCardAuthor of data.speciesCardAuthors">
+          <span [innerHTML]="speciesCardAuthor"></span>
+        </ng-container>
+      </ng-container>
+      <laji-license type="MZ.intellectualRightsCC-BY-4.0"></laji-license>
+    </ng-container>
   </laji-spinner>
 </ng-template>

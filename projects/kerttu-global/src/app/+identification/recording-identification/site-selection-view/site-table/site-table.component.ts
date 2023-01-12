@@ -35,17 +35,17 @@ export class SiteTableComponent implements OnInit, OnChanges {
     this.columns = [
       {
         name: 'id',
-        label: 'identification.siteSelection.site.id',
+        label: 'siteSelection.site.id',
         width: 50
       },
       {
         name: 'name',
-        label: 'identification.siteSelection.site.name',
+        label: 'siteSelection.site.name',
         width: 100
       },
       {
         name: 'country',
-        label: 'identification.siteSelection.site.country',
+        label: 'siteSelection.site.country',
         width: 100
       },
       {

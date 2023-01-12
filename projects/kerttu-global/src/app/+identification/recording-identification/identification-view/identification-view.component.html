@@ -7,7 +7,16 @@
           [disabled]="buttonsDisabled || loadingSpecies"
           (click)="backToSiteSelectionClick.emit()"
         >
-          {{ 'identification.recordings.backToSiteSelection' | translate }}
+          {{ 'identification.backToSiteSelection' | translate }}
+        </button>
+      </div>
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="skipClick.emit()"
+        >
+          {{ 'identification.skip' | translate }}
         </button>
       </div>
       <div>
@@ -16,9 +25,9 @@
           [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
           (click)="previousRecordingClick.emit()"
         >
-          {{ 'identification.recordings.previousRecording' | translate }}
+          {{ 'identification.previousRecording' | translate }}
         </button>
-        <laji-info [html]="'identification.recordings.previousRecording.info' | translate"></laji-info>
+        <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
       </div>
       <div>
         <button
@@ -26,9 +35,9 @@
           [disabled]="buttonsDisabled || loadingSpecies"
           (click)="saveClick.emit()"
         >
-          {{ 'theme.kerttu.saveRecording' | translate }}
+          {{ 'save' | translate }}
         </button>
-        <laji-info [html]="'identification.recordings.saveRecording.info' | translate"></laji-info>
+        <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
       </div>
       <div>
         <button
@@ -36,9 +45,9 @@
           [disabled]="buttonsDisabled || loadingSpecies"
           (click)="nextRecordingClick.emit()"
         >
-          {{ 'identification.recordings.nextRecording' | translate }}
+          {{ 'identification.nextRecording' | translate }}
         </button>
-        <laji-info [html]="'identification.recordings.nextRecording.info' | translate"></laji-info>
+        <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
       </div>
     </div>
   </div>
@@ -56,7 +65,6 @@
     [spectrogramConfig]="spectrogramConfig"
     [audioInfoTpl]="audioInfo"
     [customControlsTpl]="audioCustomControls"
-    [zoomInfoText]="'validation.info.zoom' | translate"
     (drawEnd)="drawEnd($event)"
     (modeChange)="onAudioViewerModeChange()"
   ></laji-audio-viewer>
@@ -65,52 +73,58 @@
       [(showWholeFrequencyRange)]="showWholeFrequencyRange"
       [(showWholeTimeRange)]="showWholeTimeRange"
       (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
-      [showWholeFrequencyRangeLabel]="'identification.recordings.highFrequencies' | translate"
-      [showWholeTimeRangeLabel]="'identification.recordings.timeBuffer' | translate"
-      [showWholeFrequencyRangeInfo]="'identification.recordings.highFrequencies.info' | translate"
-      [showWholeTimeRangeInfo]="'identification.recordings.timeBuffer.info' | translate"
+      [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
+      [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
+      [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
+      [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
     ></laji-audio-viewer-simple-settings>
   </ng-template>
   <ng-template #audioInfo let-audio="audio">
+    <ng-container *ngIf="audio.targetSpecies">
+      <span>
+        {{ audio.targetSpecies.commonName }} - <i>{{ audio.targetSpecies.scientificName }}</i>
+      </span>
+      <br>
+    </ng-container>
     <span>
       {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-      {{ audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
+      {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
     </span>
   </ng-template>
 </div>
 <div class="bottom-content">
   <h2 class="mt-3">
-    {{ 'theme.kerttu.recordingAnnotation.title' | translate }}
-    <laji-info [html]="'identification.recordings.info' | translate"></laji-info>
+    {{ 'identification.identify' | translate }}
+    <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
   </h2>
   <div class="general-annotation-section mb-5">
     <div class="row">
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'theme.kerttu.isLowQuality' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.isLowQuality' | translate"></laji-info>
+          <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'theme.kerttu.containsHumanSpeech' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'theme.kerttu.info.containsHumanSpeech' | translate"></laji-info>
+          <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.containsUnknownBirds' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translate }}
           </label>
-          <laji-info [html]="'theme.kerttu.info.containsUnknownBirds' | translate"></laji-info>
+          <laji-info [html]="'identification.containsUnknownBirds.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'theme.kerttu.doesNotContainBirds' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translate }}
           </label>
-          <laji-info [html]="'theme.kerttu.info.doesNotContainBirds' | translate"></laji-info>
+          <laji-info [html]="'identification.doesNotContainBirds.info' | translate" [showOnHover]="true"></laji-info>
         </div>
       </div>
     </div>
@@ -118,16 +132,16 @@
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.recordings.containsBirdsNotOnList' | translate }}:
+            <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translate }}:
           </label>
-          <laji-info [placement]="'right'" [html]="'identification.recordings.containsBirdsNotOnList.info' | translate"></laji-info>
+          <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
         </div>
-        <input class="form-control" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
+        <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
       </div>
       <div class="col-sm-6">
         <div class="checkbox">
           <label>
-            <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.recordings.hasBoxesForAllBirdSounds' | translate }}
+            <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translate }}
           </label>
         </div>
       </div>
@@ -135,8 +149,8 @@
   </div>
   <div class="form-group">
     <h4>
-      {{ 'theme.kerttu.listSpecies' | translate }}
-      <laji-info [placement]="'right'" [html]="'identification.recordings.listSpecies.info' | translate"></laji-info>
+      {{ 'identification.listSpecies' | translate }}
+      <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
     </h4>
     <bsg-taxon-select
       id="species-select"
@@ -157,9 +171,9 @@
   ></bsg-identification-table>
   <div class="form-group mt-4 mb-4">
     <label for="drawNonBird" class="d-inline">
-      {{ 'identification.recordings.drawNonBird' | translate }}
+      {{ 'identification.drawNonBird' | translate }}
     </label>
-    <laji-info [placement]="'right'" [html]="'identification.recordings.drawNonBird.info' | translate"></laji-info>
+    <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
     <div>
       <button
         id="drawNonBird"
@@ -171,7 +185,7 @@
         (click)="toggleDrawNonBird()"
         [disabled]="buttonsDisabled || loadingSpecies"
       >
-        {{ 'identification.recordings.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
+        {{ 'identification.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
       </button>
       <button
         *ngIf="annotation.nonBirdArea"
@@ -179,7 +193,7 @@
         (click)="removeDrawing()"
         [disabled]="buttonsDisabled || loadingSpecies"
       >
-        {{ 'identification.recordings.remove' | translate }}
+        {{ 'identification.remove' | translate }}
       </button>
     </div>
   </div>

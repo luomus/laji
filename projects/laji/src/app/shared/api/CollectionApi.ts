@@ -30,7 +30,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Util } from '../service/util.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CollectionApi {
   protected basePath = environment.apiBase;
 

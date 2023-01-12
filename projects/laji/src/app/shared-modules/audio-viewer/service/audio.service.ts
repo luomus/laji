@@ -87,7 +87,7 @@ export class AudioService {
     const audioCtx = this.getAudioContext();
 
     const resultBuffer = audioCtx.createBuffer(
-      1,
+      buffer.numberOfChannels,
       buffer.length,
       buffer.sampleRate
     );

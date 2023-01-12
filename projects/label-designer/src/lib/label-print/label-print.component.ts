@@ -47,9 +47,8 @@ const style = `
 .ll-label.preview {
   border: 1px solid #333;
 }
-img {
-  transform-origin: top left;
-  transform: scale(0.25);
+.qrcode img {
+  width: 100%;
 }
 `;
 /* eslint-enable max-len */

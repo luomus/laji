@@ -110,8 +110,7 @@ export class GeneratorService {
       }
 
       if (useLabels && field.enum && field.default) {
-        const valueIdx = field.enum.indexOf(field.default);
-        value = field.enumNames[valueIdx];
+        value = field.enum.find(item => item.const === field.default).title;
       } else if (field.type === 'boolean') {
         value = this.mappingService.reverseMap(value, field);
       }
@@ -191,7 +190,7 @@ export class GeneratorService {
       }
 
       if (field.enum) {
-        validValues = (useLabels ? field.enumNames : field.enum).filter(val => val !== '');
+        validValues = field.enum.map(item => useLabels ? item.title : item.const).filter(val => val !== '');
       } else if (field.type === 'boolean') {
         validValues = [this.mappingService.mapFromBoolean(true), this.mappingService.mapFromBoolean(false)];
       } else if (special) {

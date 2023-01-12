@@ -5,7 +5,7 @@
   [ngClass]="classes"
   [class.pressed]="pressed"
   [class.lu-loading]="loading"
-  [disabled]="disabled || loading"
+  [disabled]="disabled || loading || isServer"
   (click)="onClick($event)"
   (mousedown)="onMouseDown()"
   (mouseup)="onMouseUp($event)">

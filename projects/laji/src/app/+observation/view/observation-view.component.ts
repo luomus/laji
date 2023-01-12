@@ -72,7 +72,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   subscription: any;
 
   showFilter = true;
-  dateFormat = 'YYYY-MM-DD';
   statusFilterMobile = false;
 
   invasiveStatuses: string[] = [

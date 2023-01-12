@@ -1,8 +1,20 @@
 @import 'projects/laji-ui/src/lib/vars';
 
-.parent-img img {
-  max-width: 600px;
-  max-height: 600px;
+img {
+  &:not(.no-image-icon) {
+    cursor: pointer;
+    transition: box-shadow 200ms;
+    box-shadow: 0 0 0 0 rgba($neutral-9, 0);
+
+    &:hover {
+      box-shadow: 0 4px 16px 0 rgba($neutral-9, .5);
+    }
+  }
+}
+
+.image-copyright {
+  margin-top: $sp-4;
+  margin-bottom: $sp-6;
 }
 
 .species-container-container {
@@ -62,21 +74,24 @@
 
 .species-img-container {
   box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
-  background-color: $neutral-4;
+  background-color: $neutral-2;
+  flex-grow: 1;
   min-width: 250px;
 }
 
 .species-img-container > img {
   max-width: 400px;
   max-height: 400px;
+}
 
-  cursor: pointer;
-  transition: box-shadow 200ms;
-  box-shadow: 0 0 0 0 rgba($neutral-9, 0);
-
-  &:hover {
-    box-shadow: 0 4px 16px 0 rgba($neutral-9, .5);
-  }
+.species-no-img-container {
+  align-items: center;
+  box-shadow: inset 0 1px 3px 0 rgba(#000,.2);
+  background-color: $neutral-2;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 250px;
 }
 
 ::-webkit-scrollbar {
@@ -85,4 +100,15 @@
 
 .cursive {
   font-style: italic;
+}
+
+.no-image {
+  display: inline-block;
+  margin: $sp-4;
+}
+
+.no-image-title {
+  color: $neutral-4;
+  margin: $sp-4;
+  text-align: center;
 }

@@ -28,7 +28,23 @@
   }
 }
 
+.d-sm-none {
+  display: none;
+}
+
+.hover-info {
+  cursor: default;
+}
+
 @media only screen and (max-width : 768px) {
+  .d-sm-none {
+    display: initial;
+  }
+
+  .hover-info {
+    cursor: pointer;
+  }
+
   .laji-form-help-glyph {
     width: 28px;
     height: 28px;

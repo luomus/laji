@@ -87,24 +87,47 @@ export class IdentificationListComponent implements OnDestroy {
     this.destroyMouseupListener();
   }
 
-  openImage(index) {
+  openImage(index?: number) {
     this.overlayLoader
       .attach(ImageModalOverlayComponent)
       .to('body')
       .show({isAnimated: false});
     this.showOverlay = true;
     this.overlayRef = this.overlayLoader._componentRef;
-    const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
-      index, this.taxon.children,
-      taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
-    );
-    this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
-        ...taxonomy.multimedia[0],
-        taxonId: taxonomy.id,
-        vernacularName: taxonomy.vernacularName,
-        scientificName: taxonomy.scientificName
+
+    if (this?.taxon?.species) {
+      this.overlayRef.instance.modalImages = this.taxon.multimedia.map((media, i) => {
+        const image = <Image>{
+          ...this.taxon.multimedia[i],
+          taxonId: this.taxon.id,
+          vernacularName: this.taxon.vernacularName,
+          scientificName: this.taxon.scientificName
+        };
+        return image;
       });
-    this.overlayRef.instance.showImage(filteredIndex);
+      this.overlayRef.instance.showImage(index);
+    } else if (this.taxon.children?.length === 0) {
+      this.overlayRef.instance.modalImages = [<Image>{
+        ...this.taxon.multimedia[0],
+        taxonId: this.taxon.id,
+        vernacularName: this.taxon.vernacularName,
+        scientificName: this.taxon.scientificName
+      }];
+      this.overlayRef.instance.showImage(0);
+    } else if (this.taxon.children?.length > 0) {
+      const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
+        index, this.taxon.children,
+        taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
+      );
+      this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
+          ...taxonomy.multimedia[0],
+          taxonId: taxonomy.id,
+          vernacularName: taxonomy.vernacularName,
+          scientificName: taxonomy.scientificName
+        });
+      this.overlayRef.instance.showImage(filteredIndex);
+    }
+
     if (this.showModalSub) { this.showModalSub.unsubscribe(); }
     this.showModalSub = this.overlayRef.instance.showModal.subscribe(state => {
       if (state === false) { this.closeImage(); }

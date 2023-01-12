@@ -145,15 +145,19 @@
   pointer-events: none;
 }
 
-.ng-datepicker > .calendar > span > span.day:hover {
-  background: rgba(0, 0, 0, 0.4);
-  color: #fff;
-}
-
 .ng-datepicker > .calendar > span > span.day.selected {
   background: rgba(0, 0, 0, 0.8);
   cursor: default;
   pointer-events: none;
+  color: #fff;
+}
+
+.ng-datepicker > .calendar > span > span.day.today {
+  background: #e3e3e3;
+}
+
+.ng-datepicker > .calendar > span > span.day:hover {
+  background: rgba(0, 0, 0, 0.4);
   color: #fff;
 }
 
