@@ -80,7 +80,6 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
   return icon;
 };
 
-const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
