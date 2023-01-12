@@ -9,7 +9,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class NotificationDataSource extends DataSource<Notification> {
   private unsubscribe$ = new Subject<void>();
 
-  private cachedData: Notification[] = [];
+  private cachedData: (Notification | undefined)[] = [];
   private data$ = new BehaviorSubject<(Notification | undefined)[]>(this.cachedData);
   private fetchedPages = new Set<number>();
 
@@ -49,7 +49,7 @@ export class NotificationDataSource extends DataSource<Notification> {
   }
 
   removeNotificationFromCache(id: string) {
-    this.cachedData = this.cachedData.filter(notification => notification.id !== id);
+    this.cachedData = this.cachedData.filter(notification => notification?.id !== id);
     this.data$.next(this.cachedData);
   }
 
