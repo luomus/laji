@@ -48,8 +48,8 @@ interface AggregateQueryResponse {
 
 // Given coordinates in warehouse query format
 // Returns a featureCollection visualizing that set of coordinates
-const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any, finnishMode: boolean): Observable<any> => (
-  ObservableOf(coordinates && !finnishMode
+const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable<any> => (
+  ObservableOf(coordinates
     ? coordinates.map(
       (coord: any) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
@@ -80,7 +80,6 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
   return icon;
 };
 
-const FINNISH_MAP_BOUNDS = ['51.692882:72.887912:-6.610917:60.892721:WGS84'];
 const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
@@ -456,7 +455,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
       this.lajiMap?.map?.clearDrawData();
-      this.mapData = [dataOptions, drawData];
+      this.mapData = [drawData, dataOptions];
     });
   }
 
@@ -464,10 +463,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const query = { ...this.query };
 
     this.addVisualizationParams(query);
-
-    if (this.useFinnishMap && !query.coordinates) {
-      query.coordinates = FINNISH_MAP_BOUNDS;
-    }
     this.addViewPortCoordinatesParams(query, bounds);
 
     return query;
@@ -475,7 +470,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
     return getFeatureCollectionFromQueryCoordinates$(
-      query.coordinates, this.useFinnishMap
+      query.coordinates
     ).pipe(
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
