@@ -46,6 +46,7 @@ exports.config = {
     map: './src/+map/**/*.e2e-spec.ts',
     vihko: './src/+vihko/**/*.e2e-spec.ts',
     projectForm: './src/+project-form/**/*.e2e-spec.ts',
+    geneticResource: './src/+theme/genetic-resource/*.e2e-spec.ts'
   },
   baseUrl: 'http://localhost:3000/',
   framework: 'jasmine',
