@@ -36,7 +36,11 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ) {}
 
   ngOnInit(): void {
-    this.notificationSource = new NotificationDataSource(this.notificationsFacade, this.virtualScroll);
+    this.notificationSource = new NotificationDataSource(this.notificationsFacade, this.virtualScroll, this.cdr);
+    this.notificationsFacade.loading$.pipe(takeUntil(this.unsubscribe$)).subscribe(loading => {
+      this.loading = loading;
+      this.cdr.markForCheck();
+    });
   }
 
   ngAfterViewInit() {
@@ -55,54 +59,38 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
     this.loading = true;
-    this.notificationsFacade.markAllAsSeen().pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe(() => {
-      this.loading = false;
-      this.cdr.markForCheck();
-    }, () => this.loading = false);
+    this.notificationsFacade.markAllAsSeen();
   }
 
   removeAll() {
     if (this.loading) {
       return;
     }
-    this.loading = true;
-    this.translate.get(['notification.deleteAll.confirm']).pipe(
+    this.translate.get('notification.deleteAll.confirm').pipe(
       takeUntil(this.unsubscribe$),
-      switchMap(translations => this.dialogService.confirm(translations['notification.deleteAll.confirm'])),
+      switchMap(translation => this.dialogService.confirm(translation)),
       map((res) => {
         if (!res) {
           throw new Error('cancelled');
         }
         return res;
       }),
-      switchMap(() => this.notificationsFacade.removeAll()),
+      tap(() => this.notificationsFacade.removeAll()),
       tap(() => this.notificationSource.removeAllNotificationsFromCache()),
-    ).subscribe(() => {
-      this.loading = false;
-      this.notificationsFacade.loadNotifications(1);
-      this.cdr.markForCheck();
-    }, () => {
-      this.loading = false;
-    });
+    ).subscribe();
   }
 
   markAsSeen(notification: Notification) {
-    this.notificationsFacade.markAsSeen(notification).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.notificationsFacade.markAsSeen(notification);
   }
 
   removeNotification(notification: Notification) {
-    this.translate.get(['notification.delete.confirm']).pipe(
-      switchMap(translations => notification.seen ? of(true) : this.dialogService.confirm(translations['notificaiton.delete.confirm'])),
+    this.translate.get('notification.delete.confirm').pipe(
+      switchMap(translation => notification.seen ? of(true) : this.dialogService.confirm(translation)),
       filter(result => !!(result && notification.id)),
       tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
-      switchMap(() => this.notificationsFacade.remove(notification))
-    ).subscribe(() => {
-      this.virtualScroll.checkViewportSize();
-    });
+      tap(() => this.notificationsFacade.remove(notification))
+    ).subscribe();
 }
 
   trackNotification(idx, notification) {

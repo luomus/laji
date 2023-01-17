@@ -4,17 +4,21 @@ import { NotificationsFacade } from './notifications.facade';
 import { Notification } from '../../model/Notification';
 import { takeUntil } from 'rxjs/operators';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { ChangeDetectorRef } from '@angular/core';
 
 export class NotificationDataSource extends DataSource<Notification> {
   private unsubscribe$ = new Subject<void>();
 
-  private cachedData: Notification[] = [];
+  private cachedData: (Notification | undefined)[] = [];
   private data$ = new BehaviorSubject<(Notification | undefined)[]>(this.cachedData);
   private fetchedPages = new Set<number>();
 
-  constructor(private facade: NotificationsFacade, private virtualScroll: CdkVirtualScrollViewport) {
+  constructor(private facade: NotificationsFacade, private virtualScroll: CdkVirtualScrollViewport, private cdr: ChangeDetectorRef) {
     super();
-    facade.notifications$.pipe(
+  }
+
+  connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
+    this.facade.notifications$.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((notifications) => {
       const newNotificationsExist = notifications.total > this.cachedData.length;
@@ -23,7 +27,7 @@ export class NotificationDataSource extends DataSource<Notification> {
         this.fetchedPages.clear();
         this.fetchedPages.add(notifications.currentPage);
         this.cachedData = new Array(notifications.total).fill(undefined);
-        this.fetchRange(virtualScroll.getRenderedRange());
+        this.fetchRange(this.virtualScroll.getRenderedRange());
       }
       this.cachedData.splice(
         (notifications.currentPage - 1) * notifications.pageSize,
@@ -31,10 +35,8 @@ export class NotificationDataSource extends DataSource<Notification> {
         ...notifications.results
       );
       this.data$.next(this.cachedData);
+      this.cdr.markForCheck();
     });
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
     collectionViewer.viewChange.pipe(takeUntil(this.unsubscribe$)).subscribe((range) => {
       this.fetchRange(range);
     });
@@ -47,7 +49,7 @@ export class NotificationDataSource extends DataSource<Notification> {
   }
 
   removeNotificationFromCache(id: string) {
-    this.cachedData = this.cachedData.filter(notification => notification.id !== id);
+    this.cachedData = this.cachedData.filter(notification => notification?.id !== id);
     this.data$.next(this.cachedData);
   }
 
