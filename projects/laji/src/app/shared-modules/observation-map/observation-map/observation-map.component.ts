@@ -24,7 +24,8 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { DataOptions, DataWrappedLeafletEventData, TileLayersOptions } from 'laji-map';
+import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
+import { combineColors } from 'laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
@@ -64,8 +65,9 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
 );
 
 const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
+  let currClassName = po.className;
   const icon: any = L.divIcon({
-    className: po.className,
+    className: currClassName,
     html: `<span>${feature.properties.count}</span>`
   });
   icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
@@ -74,7 +76,11 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
     iconDomElem.style['width'] = '30px';
     iconDomElem.style['border-radius'] = '100%';
     if (po2.className) {
-      iconDomElem.classList.add(po2.className);
+      if (currClassName) {
+        currClassName.split(' ').forEach(c => iconDomElem.classList.remove(c));
+      }
+      po2.className.split(' ').forEach(c => iconDomElem.classList.add(c));
+      currClassName = po2.className;
     }
   };
   return icon;
@@ -84,6 +90,30 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
 ];
+
+
+const activeColor = '#6ca31d';
+
+const getFeatureStyleWithHoverAndActive = (getFeatureStyle: DataOptions['getFeatureStyle']) => (params: GetFeatureStyleOptions) => {
+  const {active, hovered} = params;
+  const style = getFeatureStyle(params);
+  const isActiveBox =params.feature.geometry.type !== 'Point' && active;
+  // Active point is styled with classname, boxes receive color in the style object.
+  // This is because the Leaflet Path objects don't support updating the class name.
+  const baseColor = isActiveBox
+    ? activeColor
+    : style.color;
+  const maxColorChangeDecimal = 100;
+  const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
+  const className = [style.className, active && !isActiveBox ? 'laji-map-active-pointer' : undefined].filter(s => s).join(' ');
+  const _style = {...style, color, className};
+  if (isActiveBox) {
+    _style.weight = 3;
+    _style.color = color;
+    _style.fillColor = combineColors(style.color, activeColor, maxColorChangeDecimal); // Slide color towards active color.
+  }
+  return _style;
+};
 
 @Component({
   selector: 'laji-observation-map',
@@ -180,6 +210,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
+  private activeGeometryHash: string;
 
   constructor(
     private warehouseService: WarehouseApi,
@@ -278,7 +309,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       const dataOptions = this.mapData[0];
       if (!dataOptions) { return; }
       const vis = this.visualization?.[this.visualizationMode];
-      if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
+      if (vis?.getFeatureStyle) {
+        dataOptions.getFeatureStyle = getFeatureStyleWithHoverAndActive(vis.getFeatureStyle);
+      }
       // changing mapData object reference so that laji-map recognizes that it has changed
       this.mapData = [...this.mapData];
     }
@@ -337,6 +370,28 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  private dataOptionsWithActive(data: DataOptions) {
+    const hash = (f: Feature) => {
+      const {lajiMapIdx, ...properties} = f.properties; // lajiMapIdx isn't reliable for hashing so we filter it out.
+      return JSON.stringify({...f, properties});
+    };
+    const existingActiveIdx = this.activeGeometryHash
+      ? data.featureCollection.features.findIndex(f => hash(f) === this.activeGeometryHash)
+      : undefined;
+    const activeIdx = existingActiveIdx !== -1 ? existingActiveIdx : undefined;
+    return <DataOptions>{
+      ...data,
+      activeIdx,
+      getFeatureStyle: getFeatureStyleWithHoverAndActive(data.getFeatureStyle),
+      onChange: (events) => {
+        const [event] = events;
+        if (event.type === 'active') {
+          this.activeGeometryHash = hash(event.layer.feature);
+        }
+      }
+    };
+  }
+
   private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<DataOptions> {
     return this.warehouseService.warehouseQueryAggregateGet(
       { ...query, featureType: 'CENTER_POINT' },
@@ -348,20 +403,21 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       query.onlyCount
     ).pipe(
       map(data => (<DataOptions>{
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: data.features
-        },
-        on: {
-          click: (e, d) => this.onDataClick({
-            type: 'wgs84',
-            coordinates: (d.feature.geometry as any).coordinates
-          })
-        },
-        marker: {
-          icon: getPointIcon
+          featureCollection: {
+            type: 'FeatureCollection' as const,
+            features: data.features
+          },
+          on: {
+            click: (e, d) => this.onDataClick({
+              type: 'wgs84',
+              coordinates: (d.feature.geometry as any).coordinates
+            })
+          },
+          marker: {
+            icon: getPointIcon
+          }
         }
-      }))
+      ))
     );
   }
 
@@ -411,7 +467,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         },
         on: {
           click: (e, data) => this.onAggregateDataClick(e, data)
-        }
+        },
+        activeIdx: undefined
       }))
     );
   }
@@ -510,7 +567,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       map(dataOptions => {
         const vis = this.visualization?.[this.visualizationMode];
         if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
-        return dataOptions;
+        return this.dataOptionsWithActive(dataOptions);
       }),
       // update the map
       tap(() => {
