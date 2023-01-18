@@ -306,14 +306,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.boxDataOptionsCache.reset();
       this.updateMap();
     } else {
-      const dataOptions = this.mapData[0];
+      const dataOptions = this.lajiMap.map.getData()[1];
       if (!dataOptions) { return; }
       const vis = this.visualization?.[this.visualizationMode];
       if (vis?.getFeatureStyle) {
         dataOptions.getFeatureStyle = getFeatureStyleWithHoverAndActive(vis.getFeatureStyle);
       }
-      // changing mapData object reference so that laji-map recognizes that it has changed
-      this.mapData = [...this.mapData];
+      // changing mapData object reference so that laji-map recognizes that it has changed.
+      this.mapData = this.lajiMap.map.getData();
     }
   }
 
@@ -371,10 +371,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   }
 
   private dataOptionsWithActive(data: DataOptions) {
-    const hash = (f: Feature) => {
-      const {lajiMapIdx, ...properties} = f.properties; // lajiMapIdx isn't reliable for hashing so we filter it out.
-      return JSON.stringify({...f, properties});
-    };
+    const hash = (f: Feature) => JSON.stringify((f.geometry as any).coordinates);
     const existingActiveIdx = this.activeGeometryHash
       ? data.featureCollection.features.findIndex(f => hash(f) === this.activeGeometryHash)
       : undefined;
