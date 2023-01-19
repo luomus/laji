@@ -306,13 +306,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.boxDataOptionsCache.reset();
       this.updateMap();
     } else {
-      const dataOptions = this.lajiMap.map.getData()[1];
+      const dataIdx = 1;
+      const dataOptions = this.lajiMap.map.getData()[dataIdx];
       if (!dataOptions) { return; }
-      const vis = this.visualization?.[this.visualizationMode];
-      if (vis?.getFeatureStyle) {
-        dataOptions.getFeatureStyle = augmentGetFeatureStyleWithHoverAndActive(vis.getFeatureStyle);
-      }
-      this.mapData = this.lajiMap.map.getData();
+      const vis = this.visualization[this.visualizationMode];
+      this.lajiMap.map.updateData(dataIdx, {
+        ...this.lajiMap.map.getData()[dataIdx],
+        getFeatureStyle: augmentGetFeatureStyleWithHoverAndActive(vis.getFeatureStyle)
+      });
     }
   }
 
