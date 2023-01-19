@@ -413,8 +413,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         marker: {
           icon: getPointIcon
         }
-      }
-      ))
+      }))
     );
   }
 
