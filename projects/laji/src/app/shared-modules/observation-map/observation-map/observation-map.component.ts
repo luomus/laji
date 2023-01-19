@@ -400,20 +400,20 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       query.onlyCount
     ).pipe(
       map(data => (<DataOptions>{
-          featureCollection: {
-            type: 'FeatureCollection' as const,
-            features: data.features
-          },
-          on: {
-            click: (e, d) => this.onDataClick({
-              type: 'wgs84',
-              coordinates: (d.feature.geometry as any).coordinates
-            })
-          },
-          marker: {
-            icon: getPointIcon
-          }
+        featureCollection: {
+          type: 'FeatureCollection' as const,
+          features: data.features
+        },
+        on: {
+          click: (e, d) => this.onDataClick({
+            type: 'wgs84',
+            coordinates: (d.feature.geometry as any).coordinates
+          })
+        },
+        marker: {
+          icon: getPointIcon
         }
+      }
       ))
     );
   }
