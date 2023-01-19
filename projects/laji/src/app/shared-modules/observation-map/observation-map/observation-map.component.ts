@@ -94,10 +94,10 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
 
 const activeColor = '#6ca31d';
 
-const getFeatureStyleWithHoverAndActive = (getFeatureStyle: DataOptions['getFeatureStyle']) => (params: GetFeatureStyleOptions) => {
+const augmentGetFeatureStyleWithHoverAndActive = (getFeatureStyle: DataOptions['getFeatureStyle']) => (params: GetFeatureStyleOptions) => {
   const {active, hovered} = params;
   const style = getFeatureStyle(params);
-  const isActiveBox =params.feature.geometry.type !== 'Point' && active;
+  const isActiveBox = params.feature.geometry.type !== 'Point' && active;
   // Active point is styled with classname, boxes receive color in the style object.
   // This is because the Leaflet Path objects don't support updating the class name.
   const baseColor = isActiveBox
@@ -310,9 +310,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       if (!dataOptions) { return; }
       const vis = this.visualization?.[this.visualizationMode];
       if (vis?.getFeatureStyle) {
-        dataOptions.getFeatureStyle = getFeatureStyleWithHoverAndActive(vis.getFeatureStyle);
+        dataOptions.getFeatureStyle = augmentGetFeatureStyleWithHoverAndActive(vis.getFeatureStyle);
       }
-      // changing mapData object reference so that laji-map recognizes that it has changed.
       this.mapData = this.lajiMap.map.getData();
     }
   }
@@ -379,7 +378,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     return <DataOptions>{
       ...data,
       activeIdx,
-      getFeatureStyle: getFeatureStyleWithHoverAndActive(data.getFeatureStyle),
+      getFeatureStyle: augmentGetFeatureStyleWithHoverAndActive(data.getFeatureStyle),
       onChange: (events) => {
         const [event] = events;
         if (event.type === 'active') {
