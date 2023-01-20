@@ -64,10 +64,12 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
   )
 );
 
+const classNamesAsArr = (c?: string) => c?.split(' ') || [];
+
 const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
-  let currClassName = po.className;
+  let classNames = classNamesAsArr(po.className);
   const icon: any = L.divIcon({
-    className: currClassName,
+    className: classNames.join(' '),
     html: `<span>${feature.properties.count}</span>`
   });
   icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
@@ -75,13 +77,10 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
     iconDomElem.style['height'] = '30px';
     iconDomElem.style['width'] = '30px';
     iconDomElem.style['border-radius'] = '100%';
-    if (po2.className) {
-      if (currClassName) {
-        currClassName.split(' ').forEach(c => iconDomElem.classList.remove(c));
-      }
-      po2.className.split(' ').forEach(c => iconDomElem.classList.add(c));
-      currClassName = po2.className;
-    }
+    const newClassNames = classNamesAsArr(po2.className);
+    classNames.forEach(c => iconDomElem.classList.remove(c));
+    newClassNames.forEach(c => iconDomElem.classList.add(c));
+    classNames = newClassNames;
   };
   return icon;
 };
