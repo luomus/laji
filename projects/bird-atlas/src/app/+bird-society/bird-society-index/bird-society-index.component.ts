@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService } from '../../core/atlas-api.service';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs';
@@ -18,38 +18,25 @@ interface DatatableRow {
 
 @Component({
   templateUrl: 'bird-society-index.component.html',
+  styleUrls: ['bird-society-index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BirdSocietyIndexComponent {
-  birdSocieties$ = this.atlasApi.getBirdSocieties();
-  rows$: Observable<DatatableRow[]> = this.atlasApi.getBirdSocieties().pipe(
-    map(societies => {
-      const rows: DatatableRow[] = [];
-      societies.forEach(society => {
-        rows.push({
-          id: society.key,
-          society: society.value,
-          cat1: 0,
-          cat2: 0,
-          cat3: 0,
-          cat4: 0,
-          cat5: 0,
-          cat6: 0,
-          cat7: 0
-        });
-      });
-      return rows;
-    })
-  );
+export class BirdSocietyIndexComponent implements AfterViewInit {
+  @ViewChild('societyName') societyNameTemplate: TemplateRef<any>;
+
+  rows$: Observable<DatatableRow[]>;
   cols: TableColumn[];
-  constructor(private atlasApi: AtlasApiService) {
+  constructor(private atlasApi: AtlasApiService, private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit(): void {
     this.cols = [
       {
         prop: 'society',
         name: 'Lintuyhdistys',
         resizeable: false,
         sortable: true,
-        width: 300
+        width: 300,
+        cellTemplate: this.societyNameTemplate
       },
       {
         prop: 'cat1',
@@ -101,5 +88,25 @@ export class BirdSocietyIndexComponent {
         width: 100
       }
     ];
+    this.rows$ = this.atlasApi.getBirdSocieties().pipe(
+      map(societies => {
+        const rows: DatatableRow[] = [];
+        societies.forEach(society => {
+          rows.push({
+            id: society.key,
+            society: society.value,
+            cat1: 0,
+            cat2: 0,
+            cat3: 0,
+            cat4: 0,
+            cat5: 0,
+            cat6: 0,
+            cat7: 0
+          });
+        });
+        return rows;
+      })
+    );
+    this.cdr.detectChanges();
   }
 }

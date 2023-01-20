@@ -1,11 +1,3 @@
-<!-- <div *ngIf="birdSocieties$ | async; let birdSocieties; else loading" class="container">
-  <ul>
-    <li *ngFor="let birdSociety of birdSocieties">
-      <a [routerLink]="[birdSociety.key]">{{ birdSociety.value }}</a>
-    </li>
-  </ul>
-</div> -->
-
 <div class="container" *ngIf="rows$ | async; let rows; else loading">
   <ngx-datatable
     class="material"
@@ -16,6 +8,10 @@
     [messages]="{ emptyMessage: '' }"
   ></ngx-datatable>
 </div>
+
+<ng-template #societyName let-row="row">
+  <a [routerLink]="row.id">{{ row.society }}</a>
+</ng-template>
 
 <ng-template #loading>
   <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
