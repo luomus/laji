@@ -1,5 +1,5 @@
 import { catchError, concat, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
-import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, from } from 'rxjs';
+import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,17 +24,18 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { DataOptions, DataWrappedLeafletEventData, TileLayersOptions } from 'laji-map';
+import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
+import { combineColors } from 'laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
-import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, convertYkjToWgs, getFeatureFromGeometry } from '../../../root/coordinate-utils';
+import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { LeafletEvent, PathOptions } from 'leaflet';
-import { Feature, GeoJsonProperties, Geometry } from 'geojson';
+import { Feature, GeoJsonProperties, Geometry, FeatureCollection } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
-import { BoxDataOptionsCache } from './box-dataoptions-cache';
+import { BoxCache } from './box-cache';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -63,9 +64,12 @@ const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable
   )
 );
 
+const classNamesAsArr = (c?: string) => c?.split(' ') || [];
+
 const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
+  let classNames = classNamesAsArr(po.className);
   const icon: any = L.divIcon({
-    className: po.className,
+    className: classNames.join(' '),
     html: `<span>${feature.properties.count}</span>`
   });
   icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
@@ -73,9 +77,10 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
     iconDomElem.style['height'] = '30px';
     iconDomElem.style['width'] = '30px';
     iconDomElem.style['border-radius'] = '100%';
-    if (po2.className) {
-      iconDomElem.classList.add(po2.className);
-    }
+    const newClassNames = classNamesAsArr(po2.className);
+    classNames.forEach(c => iconDomElem.classList.remove(c));
+    newClassNames.forEach(c => iconDomElem.classList.add(c));
+    classNames = newClassNames;
   };
   return icon;
 };
@@ -170,9 +175,11 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     })
   };
 
+  private activeColor = '#6ca31d';
+
   private previousQueryHash = '';
-  private boxDataOptionsCache = new BoxDataOptionsCache();
-  private previousDataOptions: DataOptions;
+  private boxFeatureCollectionCache = new BoxCache<FeatureCollection>();
+  private previousFeatureCollection: FeatureCollection;
 
   private boxGeometryPageSize = 10000;
   private pointGeometryPageSize = 10000;
@@ -180,6 +187,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
+  private activeGeometryHash: string;
 
   constructor(
     private warehouseService: WarehouseApi,
@@ -209,7 +217,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
     this.decorator.lang = this.translate.currentLang;
     if (changes['query'] || changes['ready']) {
-      this.boxDataOptionsCache.reset();
+      this.boxFeatureCollectionCache.reset();
       this.updateMap();
     }
   }
@@ -259,7 +267,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     const temp = layerOptions.active === 'finnish';
     if (temp !== this.useFinnishMap) {
       this.useFinnishMap = temp;
-      this.boxDataOptionsCache.reset();
+      this.boxFeatureCollectionCache.reset();
       this.updateMap();
     }
   }
@@ -272,15 +280,14 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.visualizationMode = <ObservationVisualizationMode>mode;
 
     if (fetchRequired) {
-      this.boxDataOptionsCache.reset();
+      this.boxFeatureCollectionCache.reset();
       this.updateMap();
     } else {
-      const dataOptions = this.mapData[0];
+      const dataIdx = 1;
+      const dataOptions = this.lajiMap.map.getData()[dataIdx];
       if (!dataOptions) { return; }
-      const vis = this.visualization?.[this.visualizationMode];
-      if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
-      // changing mapData object reference so that laji-map recognizes that it has changed
-      this.mapData = [...this.mapData];
+      // Force LajiMap to redraw the occurrence data with the updated this.getFeatureStyle(), which uses the updated this.visualizationMode.
+      this.lajiMap.map.redrawDataItem(dataIdx);
     }
   }
 
@@ -337,7 +344,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private getPointsDataOptions$(query: WarehouseQueryInterface): Observable<DataOptions> {
+  private getPoints$(query: WarehouseQueryInterface): Observable<FeatureCollection> {
     return this.warehouseService.warehouseQueryAggregateGet(
       { ...query, featureType: 'CENTER_POINT' },
       [ 'gathering.interpretations.coordinateAccuracy' ],
@@ -347,20 +354,9 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       true,
       query.onlyCount
     ).pipe(
-      map(data => (<DataOptions>{
-        featureCollection: {
-          type: 'FeatureCollection' as const,
-          features: data.features
-        },
-        on: {
-          click: (e, d) => this.onDataClick({
-            type: 'wgs84',
-            coordinates: (d.feature.geometry as any).coordinates
-          })
-        },
-        marker: {
-          icon: getPointIcon
-        }
+      map(data => ({
+        type: 'FeatureCollection' as const,
+        features: data.features
       }))
     );
   }
@@ -394,7 +390,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     return this.warehouseService.warehouseQueryAggregateGet(query, aggregateBy, undefined, this.boxGeometryPageSize, page, true);
   }
 
-  private getAllBoxes$(query: WarehouseQueryInterface, aggregateBy: string[]): Observable<DataOptions> {
+  private getAllBoxes$(query: WarehouseQueryInterface, aggregateBy: string[]): Observable<FeatureCollection> {
     // do the first query
     return this.getBoxQuery$(query, aggregateBy, 1).pipe(
       switchMap(firstPage => (
@@ -405,13 +401,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
         ])
       )),
       map(allPages => ({
-        featureCollection: {
-          type: allPages[0].type,
+          type: 'FeatureCollection',
           features: allPages.reduce((p, c) => { p.push(...c.features); return p; }, [])
-        },
-        on: {
-          click: (e, data) => this.onAggregateDataClick(e, data)
-        }
       }))
     );
   }
@@ -420,12 +411,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     return Math.min(BOX_QUERY_AGGREGATE_LEVELS.length - 1, this.activeZoomThresholdLevel);
   }
 
-  private getBoxDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions | null> {
+  private getBoxes$(query: WarehouseQueryInterface, bounds?: any): Observable<FeatureCollection | null> {
     const aggregateLevel = this.getBoxQueryAggregateLevel();
-    const match = this.boxDataOptionsCache.match(bounds, aggregateLevel, this.useFinnishMap);
+    const match = this.boxFeatureCollectionCache.match(bounds, aggregateLevel, this.useFinnishMap);
     if (match) {
       // return null if we are already displaying the cached result
-      if (match === this.previousDataOptions) {
+      if (match === this.previousFeatureCollection) {
         this.loading = false;
         this.cdr.markForCheck();
         return of(null);
@@ -439,7 +430,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
     return this.getAllBoxes$(query, aggregateBy).pipe(
       tap(data => {
-        this.boxDataOptionsCache.update(aggregateLevel, bounds, data);
+        this.boxFeatureCollectionCache.update(aggregateLevel, bounds, data);
       })
     );
   }
@@ -479,39 +470,89 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     );
   }
 
-  private getDataOptions$(query: WarehouseQueryInterface, bounds?): Observable<LajiMapDataOptions> {
+  getFeatureStyle(params: GetFeatureStyleOptions) {
+    const style = this.visualization[this.visualizationMode].getFeatureStyle(params);
+
+    const {active, hovered} = params;
+    const isActiveBox = params.feature.geometry.type !== 'Point' && active;
+    // Active point is styled with classname, boxes receive color in the style object.
+    // This is because the Leaflet Path objects don't support updating the class name.
+    const baseColor = isActiveBox
+      ? this.activeColor
+      : style.color;
+    const maxColorChangeDecimal = 100;
+    const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
+    const className = [style.className, active && !isActiveBox ? 'laji-map-active-pointer' : undefined].filter(s => s).join(' ');
+    const _style = {...style, color, className};
+    if (isActiveBox) {
+      _style.weight = 3;
+      _style.color = color;
+      _style.fillColor = combineColors(style.color, this.activeColor, maxColorChangeDecimal); // Slide color towards active color.
+    }
+    return _style;
+  }
+
+  private featureCollectionToDataOptions(featureCollection: FeatureCollection): DataOptions {
+    const hash = (f: Feature) => JSON.stringify((f.geometry as any).coordinates);
+    const existingActiveIdx = this.activeGeometryHash
+      ? featureCollection.features.findIndex(f => hash(f) === this.activeGeometryHash)
+      : undefined;
+    const activeIdx = existingActiveIdx !== -1 ? existingActiveIdx : undefined;
+    return {
+      featureCollection,
+      getFeatureStyle: this.getFeatureStyle.bind(this),
+      activeIdx,
+      onChange: (events) => {
+        const [event] = events;
+        if (event.type === 'active') {
+          this.activeGeometryHash = hash(event.layer.feature);
+        }
+      },
+      on: {
+        click: this.onFeatureClick.bind(this)
+      },
+      marker: {
+        icon: getPointIcon
+      }
+    };
+  }
+
+  private onFeatureClick(e: any, d: any) {
+    if (d.feature.geometry.type === 'Point') {
+      this.onDataClick({
+        type: 'wgs84',
+        coordinates: (d.feature.geometry as any).coordinates
+      });
+    } else {
+      this.onAggregateDataClick(e, d);
+    }
+  }
+
+  private getDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<LajiMapDataOptions> {
     this.loading = true;
     this.cdr.markForCheck();
 
     return this.warehouseService.warehouseQueryCountGet(query).pipe(
       switchMap(res => {
         if (!res.total) {
-          return of(<DataOptions>{
-            lastPage: 1,
-            featureCollection: {
-              type: 'FeatureCollection' as const,
-              features: []
-            }
+          return of({
+            type: 'FeatureCollection' as const,
+            features: []
           });
         } else if (res.total <= this.pointModeBreakpoint) {
-          return this.getPointsDataOptions$(query).pipe(tap(() => this.showingIndividualPoints = true));
+          return this.getPoints$(query).pipe(tap(() => this.showingIndividualPoints = true));
         } else {
-          return this.getBoxDataOptions$(query, bounds).pipe(tap(() => this.showingIndividualPoints = false));
+          return this.getBoxes$(query, bounds).pipe(tap(() => this.showingIndividualPoints = false));
         }
       }),
       // null is returned when we get a valid result, but don't have to do anything
       filter(d => d !== null),
-      tap(d => this.previousDataOptions = d),
+      tap(d => this.previousFeatureCollection = d),
       // retry on timeout
       timeout(WarehouseApi.longTimeout * 3),
       delay(100),
       retryWhen(errors => errors.pipe(delay(1000), take(3), concat(observableThrowError(errors)))),
-      // add visualization
-      map(dataOptions => {
-        const vis = this.visualization?.[this.visualizationMode];
-        if (vis?.getFeatureStyle) { dataOptions.getFeatureStyle = vis.getFeatureStyle; }
-        return dataOptions;
-      }),
+      map(this.featureCollectionToDataOptions.bind(this)),
       // update the map
       tap(() => {
         this.loading = false;
