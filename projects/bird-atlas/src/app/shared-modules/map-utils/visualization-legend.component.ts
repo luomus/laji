@@ -15,7 +15,7 @@ const activityCategoryLegendLabels = [
   'Hyvä',
   'Erinomainen'
 ];
-const legends: Record<VisualizationMode, { color: string; label: string }[]> = {
+export const legends: Record<VisualizationMode, { color: string; label: string }[]> = {
   speciesCount: Object.entries(speciesCountGradient).map(([key, val]) => ({
     color: val,
     label: speciesCountLegendLabels[key]
