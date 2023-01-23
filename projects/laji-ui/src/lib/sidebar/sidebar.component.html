@@ -32,18 +32,29 @@
     <div class="sidebar-content-wrapper"
          [@sidebarOpen_content]="open ? 'open' : 'closed'"
          [ngClass]="{'static-width': staticWidth}"
-         [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
-         #navWrapper>
-      <div class="close-wrapper">
-        <lu-button-round (click)="onSwitchOpen()" role="neutral" tabindex="0" luKeyboardClickable>
-          <lu-icon type="close"></lu-icon>
-        </lu-button-round>
+         [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}">
+      <div class="sidebar-header" *ngIf="displayNavHeader">
+        <ng-container *ngTemplateOutlet="closeBtn"></ng-container>
+        <ng-content select=".nav-header"></ng-content>
       </div>
-      <ng-content select="nav"></ng-content>
+      <div class="sidebar-content">
+        <ng-container *ngIf="!displayNavHeader">
+          <ng-container *ngTemplateOutlet="closeBtn"></ng-container>
+        </ng-container>
+        <ng-content select="nav"></ng-content>
+      </div>
     </div>
     <div tabindex="0" *ngIf="!mobile" class="open-btn" [ngClass]="{'hide-sidebar-button': open}" role="button" (click)="onSwitchOpen()" luKeyboardClickable>
       <!-- Open menu -->
       <lu-icon type="menu"></lu-icon>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #closeBtn>
+  <div class="close-wrapper">
+    <lu-button-round (click)="onSwitchOpen()" role="neutral" tabindex="0" luKeyboardClickable>
+      <lu-icon type="close"></lu-icon>
+    </lu-button-round>
   </div>
 </ng-template>

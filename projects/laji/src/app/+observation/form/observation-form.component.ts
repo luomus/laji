@@ -41,7 +41,6 @@ interface ISections {
 })
 export class ObservationFormComponent implements OnInit, OnDestroy {
 
-  @Input() skipActiveFilters: string[] = [];
   @Input() invasiveStatuses: string[] = [];
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();

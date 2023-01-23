@@ -1,4 +1,4 @@
-<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate" [luFillHeight]="{}">
+<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate" [luFillHeight]="{}" [displayNavHeader]="true">
   <main>
     <laji-technical-news></laji-technical-news>
     <ng-container *lajiBrowserOnly>
@@ -29,12 +29,19 @@
       (listSettingsChange)="onListSettingsChange($event)"
     ></laji-observation-result>
   </main>
+  <div class="nav-header">
+    <laji-observation-active
+      [skip]="formType === 'sample' ? skipUrlParameters : []"
+      [(query)]="vm.query"
+      (queryChange)="onQueryChange($event)"
+      [queryType]="'observation'"
+    ></laji-observation-active>
+  </div>
   <nav>
     <ng-container [ngSwitch]="formType">
       <laji-form-sample
         *ngSwitchCase="'sample'"
         [query]="vm.query"
-        [skipActiveFilters]="skipUrlParameters"
         [invasiveStatuses]="invasiveStatuses"
         (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"

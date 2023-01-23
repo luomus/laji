@@ -51,6 +51,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
   @Input() menuTitle: string;
+  @Input() displayNavHeader = false;
   @Input() displayNav = true;
   @Input() noPrint: boolean;
 
@@ -77,7 +78,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   @ViewChild('sidebarRef') sidebarRef: ElementRef;
   @ViewChild('contentRef') contentRef: ElementRef;
-  @ViewChild('navWrapper') navWrapperRef: ElementRef;
   @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
 
   destroyResizeListener: () => void;
