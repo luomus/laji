@@ -1013,6 +1013,7 @@
   "np.tag": "Rajaa reitin ominaisuuksien perusteella",
   "np.template": "Luo esitäytetty lomake",
   "np.title": "Nimetyt paikat",
+  "observation.search": "Hae",
   "observation.active": "Rajauksia",
   "observation.active.administrativeStatusId": "Hallinnollinen asema",
   "observation.active.annotated": "Kommentoitu",

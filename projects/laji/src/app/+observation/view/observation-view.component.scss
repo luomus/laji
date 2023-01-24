@@ -4,6 +4,15 @@
   min-height: 100%;
 }
 
+laji-observation-active {
+  float: right;
+  margin-top: 5px;
+}
+
+:host ::ng-deep laji-observation-active .open-select {
+  border-bottom: 3px solid rgba(0,0,0,0)
+}
+
 laji-observation-form {
   display: block;
   max-width: 250px;
