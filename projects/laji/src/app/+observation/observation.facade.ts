@@ -21,7 +21,7 @@ interface IObservationState extends IPersistentState {
   query: WarehouseQueryInterface;
   filterVisible: boolean;
   settingsMap: any;
-  activeTab: string;
+  activeTab?: string;
   countTaxa: number;
   countUnit: number;
   loadingTaxa: boolean;
@@ -44,7 +44,7 @@ let _state: IObservationState = {
   ..._persistentState,
   query: {},
   filterVisible: true,
-  activeTab: 'map',
+  activeTab: undefined,
   countTaxa: 0,
   countUnit: 0,
   loadingTaxa: false,

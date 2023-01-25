@@ -26,7 +26,13 @@ export abstract class AbstractObservation {
     this.activeTab$ = this.observationFacade.activeTab$;
     this.subscription.add(
       this.route.params.subscribe(value => {
-        this.observationFacade.activeTab(value['tab'] || 'map');
+        const activeTab = value['tab'];
+        if (!activeTab) {
+          this.observationFacade.clearQuery();
+          this.observationFacade.activeTab(undefined);
+        } else {
+          this.observationFacade.activeTab(activeTab);
+        }
       })
     );
     this.qpUpdate.pipe(take(1)).subscribe(() => { // avoid query params being overwritten

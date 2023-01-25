@@ -19,7 +19,6 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
-import { ResetComponent } from './reset/reset.component';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
@@ -70,7 +69,6 @@ import { ConservationFilterComponent } from './form/conservation-filter/conserva
   declarations: [
     ObservationComponent,
     ObservationViewComponent,
-    ResetComponent,
     ObservationResultComponent,
     ObservationResultListComponent,
     ObservationDownloadComponent,
