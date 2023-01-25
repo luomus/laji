@@ -16,6 +16,7 @@
   "ba.breadcrumbs.birdSocietyIndex": "Yhdistykset",
   "ba.species-index.title": "Lajit",
   "ba.species-index.p": "Tulospalvelussa on mukana säännöllisesti tai satunnaisesti Suomessa pesivät lajit. Lintuatlaksessa käytetyt lajien tieteelliset nimet ja lajien järjestys noudattavat BirdLife Suomen käyttämää systematiikkaa.\nSensitiivisimpien lajien esiintymistieto on suojelusyistä keskitetty 25 tai 50 km ruutuihin. <a href='https://laji.fi/about/709'>Lue lisää sensitiivisen lajitiedon käsittelystä</a>.",
+  "ba.species-index.filter": "Rajaa nimellä (suomi, ruotsi, englanti, tieteellinen)",
   "ba.species-info.downloadSvg": "Avaa svg tiedosto",
   "ba.species-info.lajiMap": "Havainnot Laji.fi:ssa",
   "ba.grid-index.title": "Atlasruudut",

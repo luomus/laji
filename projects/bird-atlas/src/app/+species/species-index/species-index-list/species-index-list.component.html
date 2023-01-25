@@ -1,7 +1,6 @@
-
 <input class="form-control d-block my-4"
   type='text'
-  placeholder="{{'haseka.submissions.filter' | translate}}"
+  placeholder="{{'ba.species-index.filter' | translate}}"
   [value]="searchVal"
   (keyup)="onSearchKeyUp($event)">
 <ul *ngIf="filteredSpecies$ | async; else loading; let speciesList">
