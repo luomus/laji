@@ -36,7 +36,7 @@ import L from 'leaflet';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
@@ -67,12 +67,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private translate: TranslateService,
     private zone: NgZone
   ) {}
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.invalidateSize();
-    }, 100);
-  }
 
   @Input()
   set options(options: Options) {
@@ -188,15 +182,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
         type
       });
     });
-  }
-
-  invalidateSize() {
-    try {
-      if (this.map) {
-        this.map.map.invalidateSize();
-      }
-    } catch (e) {
-    }
   }
 
   setData(data) {

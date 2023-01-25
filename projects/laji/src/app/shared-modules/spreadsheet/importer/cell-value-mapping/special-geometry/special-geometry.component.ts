@@ -70,7 +70,6 @@ export class SpecialGeometryComponent {
 
   onMapLoad() {
     setTimeout(() => {
-      this.lajiMapComponent.invalidateSize();
       this.lajiMapComponent.map.setData([{}]);
       this.setActive(0);
       this.initLast();
