@@ -1,5 +1,5 @@
-import { catchError, concat, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
-import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin } from 'rxjs';
+import { catchError, concat, debounceTime, delay, filter, map, retryWhen, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { of, of as ObservableOf, Subscription, throwError as observableThrowError, Observable, forkJoin, Subject } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,6 +9,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild
@@ -97,7 +98,7 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
   providers: [ValueDecoratorService, LabelPipe, ToQNamePipe, CollectionNamePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationMapComponent implements OnChanges, OnDestroy {
+export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(LajiMapComponent) lajiMap: LajiMapComponent;
   @ViewChild('mapContainer', { static: false }) mapContainerElem: ElementRef;
 
@@ -157,7 +158,6 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   visualizationMode: ObservationVisualizationMode = 'obsCount';
   mapData: any[] = [];
   loading = false;
-  reloading = false;
   showingIndividualPoints = false;
   mapOptions: LajiMapOptions;
 
@@ -180,6 +180,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private previousQueryHash = '';
   private boxFeatureCollectionCache = new BoxCache<FeatureCollection>();
   private previousFeatureCollection: FeatureCollection;
+  private mapMoveEventSubject = new Subject<any>();
 
   private boxGeometryPageSize = 10000;
   private pointGeometryPageSize = 10000;
@@ -187,6 +188,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
+  private mapMoveSubscription: Subscription;
   private activeGeometryHash: string;
 
   constructor(
@@ -211,6 +213,12 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    this.mapMoveSubscription = this.mapMoveEventSubject.pipe(
+      debounceTime(100)
+    ).subscribe(e => this._onMapPanOrZoom(e));
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (!this.platformService.isBrowser) {
       return;
@@ -224,6 +232,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.dataFetchSubscription?.unsubscribe();
+    this.mapMoveSubscription?.unsubscribe();
   }
 
   onCreate(e) {
@@ -238,7 +247,8 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
     this.lajiMap.drawToMap(type);
   }
 
-  onMapPanOrZoom(e) {
+  // mapMoveEventSubject is debounced such that certain double events from leaflet are eliminated
+  _onMapPanOrZoom(e) {
     const curActiveZoomThresholdLevel = this.activeZoomThresholdLevel;
     const len = this.zoomThresholds.length;
     this.activeZoomThresholdLevel = 0;
@@ -261,6 +271,10 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
       this.activeZoomThresholdBounds = e.bounds.pad(1);
       this.updateMap();
     }
+  }
+
+  onMapPanOrZoom(e) {
+    this.mapMoveEventSubject.next(e);
   }
 
   onTileLayersChange(layerOptions: TileLayersOptions) {
@@ -438,7 +452,7 @@ export class ObservationMapComponent implements OnChanges, OnDestroy {
   private updateMap() {
     const bounds = this.activeZoomThresholdBounds;
     const query = this.prepareQuery(bounds);
-    const hash = JSON.stringify(query);
+    const hash = JSON.stringify(query) + this.useFinnishMap;
     if (hash === this.previousQueryHash) { return; }
     this.previousQueryHash = hash;
     forkJoin({
