@@ -370,6 +370,18 @@
       name="lifeStage"></laji-metadata-select>
   </div>
   <div>
+    <laji-select
+      [selected]="[query.alive]"
+      (selectedChange)="indirectQueryChange('alive', $event[0])"
+      [multiple]="false"
+      [useFilter]="false"
+      [title]="'observation.form.alive' | translate"
+      [options]="[
+        {id: true, value: ('observation.form.alive.true' | translate)},
+        {id: false, value: ('observation.form.alive.false' | translate)}
+      ]"></laji-select>
+  </div>
+  <div>
     <laji-metadata-select
       [(ngModel)]="query.recordBasis"
       (ngModelChange)="onQueryChange()"

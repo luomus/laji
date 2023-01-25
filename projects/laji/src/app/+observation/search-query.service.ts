@@ -119,7 +119,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'useIdentificationAnnotations',
     'includeSubTaxa',
     'annotated',
-    'onlyNonStateLands'
+    'onlyNonStateLands',
+    'alive'
   ];
 
   // noinspection JSUnusedLocalSymbols
