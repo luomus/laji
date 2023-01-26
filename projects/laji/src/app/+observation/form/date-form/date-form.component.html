@@ -3,15 +3,8 @@
     <label>{{ 'observation.form.time' | translate }}</label>
     <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
   </div>
-  <laji-datepicker
-    [(ngModel)]="datepickerTimeStart"
-    (change)="onFormQueryChange()"
-    name="timeStart"></laji-datepicker>
-  <laji-datepicker
-    [(ngModel)]="datepickerTimeEnd"
-    [toLastOfYear]="true"
-    (change)="onFormQueryChange()"
-    name="timeEnd"></laji-datepicker>
+  <laji-datepicker [(ngModel)]="datepickerTimeStart" ></laji-datepicker>
+  <laji-datepicker [(ngModel)]="datepickerTimeEnd" [toLastOfYear]="true"></laji-datepicker>
   <div class="btn-group btn-group-xs mt-1">
     <button type="button" class="btn btn-default btn-today" (click)="onUpdateTime(1)">{{ 'observations.form.1d' | translate }}</button>
     <button type="button" class="btn btn-default btn-week" (click)="onUpdateTime(7)">{{ 'observations.form.7d' | translate }}</button>
@@ -38,15 +31,8 @@
       <label>{{ 'observation.form.loaded' | translate }}</label>
       <laji-info>{{ 'observation.info.loaded' | translate }}</laji-info>
     </div>
-    <laji-datepicker
-      [(ngModel)]="query.loadedSameOrAfter"
-      (change)="onQueryChange()"
-      name="timeStart"></laji-datepicker>
-    <laji-datepicker
-      [(ngModel)]="query.loadedSameOrBefore"
-      [toLastOfYear]="true"
-      (change)="onQueryChange()"
-      name="timeEnd"></laji-datepicker>
+    <laji-datepicker [(ngModel)]="loadedSameOrAfter"></laji-datepicker>
+    <laji-datepicker [(ngModel)]="loadedSameOrBefore" [toLastOfYear]="true"></laji-datepicker>
     <div class="btn-group btn-group-xs mt-1">
       <button type="button" class="btn btn-default" (click)="onUpdateTime(1, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
       <button type="button" class="btn btn-default" (click)="onUpdateTime(7, 'loadedSameOrAfter', 'loadedSameOrBefore')">{{ 'observations.form.7d' | translate }}</button>
@@ -61,18 +47,9 @@
       <label>{{ 'observation.form.firstLoaded' | translate }}</label>
       <laji-info>{{ 'observation.info.firstLoaded' | translate }}</laji-info>
     </div>
-    <laji-datepicker
-      [(ngModel)]="query.firstLoadedSameOrAfter"
-      (dateSelect)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeStart"></laji-datepicker>
+    <laji-datepicker [(ngModel)]="firstLoadedSameOrAfter"></laji-datepicker>
 
-    <laji-datepicker
-      [(ngModel)]="query.firstLoadedSameOrBefore"
-      [toLastOfYear]="true"
-      (dateSelect)="onQueryChange()"
-      (change)="onQueryChange()"
-      name="timeEnd"></laji-datepicker>
+    <laji-datepicker [(ngModel)]="firstLoadedSameOrBefore"></laji-datepicker>
 
     <div class="btn-group btn-group-xs mt-1">
       <button type="button" class="btn btn-default" (click)="onUpdateTime(1, 'firstLoadedSameOrAfter', 'firstLoadedSameOrBefore')">{{ 'observations.form.1d' | translate }}</button>
