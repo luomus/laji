@@ -119,7 +119,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         ? LajiMapTileLayerName.openStreetMap
         : LajiMapTileLayerName.taustakartta
     };
-    console.log(this._mapOptions);
   }
   @Input() set draw(draw: any) {
     this.mapOptions = {...this.mapOptions, draw};
