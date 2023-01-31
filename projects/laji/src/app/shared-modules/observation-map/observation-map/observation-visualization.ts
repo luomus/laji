@@ -2,8 +2,6 @@ import { LajiMapVisualization, LajiMapVisualizationItem } from '../../legend/laj
 
 const BASE_FEATURE_STYLE = {
   weight: 1,
-  opacity: 1,
-  fillOpacity: .5
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const RECORD_AGE_BREAKPOINTS = [2, 10, 20, 40, Infinity].map(bp => CURRENT_YEAR - bp);
