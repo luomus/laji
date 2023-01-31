@@ -1338,6 +1338,7 @@
   "observation.label.order": "Lahko",
   "observation.label.phylum": "Pääjakso",
   "observation.label.species": "Laji",
+  "observation.map.dataOpacityControl.label": "Havainnot",
   "observation.maxOccurrenceFinland": "Taksonin max havaintomäärä Suomesta",
   "observation.notFound": "Havaintoa ei löytynyt",
   "observation.results.hits": "hits",
