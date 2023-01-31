@@ -1,0 +1,137 @@
+@import 'vars';
+
+.footer {
+  height: 100px;
+  background-color: #ECF0F1;
+  padding: 10px
+}
+
+.legend {
+  margin: 0;
+  padding: 10px;
+  position: absolute;
+  border: 0;
+  left: 7px;
+  z-index: 400;
+  bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend .color {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin-right: 5px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.legend li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.loading-map {
+  z-index: 1000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
+  background-color: rgba(255, 255, 255, 0.3);
+  background-position: center center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.observation-map {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+$textStrokeColor: rgba(#fff, .4);
+$blur: 1px;
+@mixin textStroke {
+  font-weight: bold;
+/*   text-shadow:  2px  0px  $blur $textStrokeColor, -2px  0px  $blur $textStrokeColor, // horizontal
+                0px  2px  $blur $textStrokeColor,  0px -2px  $blur $textStrokeColor, // vertical
+                1px  1px  $blur $textStrokeColor, -1px  1px  $blur $textStrokeColor, // diagonal
+               -1px -1px  $blur $textStrokeColor,  1px -1px  $blur $textStrokeColor; // diagonal */
+}
+
+.cluster-info {
+  position: relative; // fixes the height of the spinner inside child laji-datatable
+}
+
+@mixin coordinateAccuracy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:host ::ng-deep .coordinate-accuracy-0 {
+  @include coordinateAccuracy();
+}
+:host ::ng-deep .coordinate-accuracy-1 {
+  border: 1px solid $neutral-6;
+  @include coordinateAccuracy();
+}
+:host ::ng-deep .coordinate-accuracy-2 {
+  border: 2px dotted $neutral-7;
+  @include coordinateAccuracy();
+}
+:host ::ng-deep .coordinate-accuracy-3 {
+  border: 3px dashed $neutral-8;
+  @include coordinateAccuracy();
+}
+:host ::ng-deep .coordinate-accuracy-4 {
+  border: 4px dashed $neutral-9;
+  @include coordinateAccuracy();
+}
+:host ::ng-deep .coordinate-accuracy-5 {
+  border: 5px dashed #000;
+  @include coordinateAccuracy();
+}
+
+ul {
+  padding: 0;
+}
+
+.accuracy-legend-circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  background-color: $neutral-1;
+  align-self: center;
+  border: 1px solid $neutral-6;
+}
+
+.accuracy-1 {
+  border: 1px solid $neutral-6;
+}
+.accuracy-2 {
+  border: 2px dotted $neutral-7;
+}
+.accuracy-3 {
+  border: 2px dashed $neutral-8;
+}
+.accuracy-4 {
+  border: 3px dashed $neutral-9;
+}
+.accuracy-5 {
+  border: 4px dashed #000;
+}
+
+:host ::ng-deep .laji-map-active-pointer {
+  box-shadow: 0px 0px 5px 3px #6ca31d;
+}
+:host ::ng-deep .laji-map-active-pointer:before {
+  content: "🢓";
+  position: absolute;
+  top: -18px;
+  font-size: 26px;
+  color: #6ca31d;
+}
+

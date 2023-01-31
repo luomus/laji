@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { SelectStyle } from '../../../../../laji/src/app/shared-modules/select/metadata-select/metadata-select.component';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { Profile } from '../../../../../laji/src/app/shared/model/Profile';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
@@ -25,7 +24,12 @@ export class ExpertiseComponent implements OnInit {
 
   saving = false;
 
-  basicSelectStyle = SelectStyle.basic;
+  birdwatchingActivityLevelOptions: {id: BirdwatchingActivityLevelEnum; label: string}[] = [
+    {id: 'MA.birdwatchingActivityLevelEnum1', label: 'expertise.birdwatchingActivityLevel1'},
+    {id: 'MA.birdwatchingActivityLevelEnum2', label: 'expertise.birdwatchingActivityLevel2'},
+    {id: 'MA.birdwatchingActivityLevelEnum3', label: 'expertise.birdwatchingActivityLevel3'},
+    {id: 'MA.birdwatchingActivityLevelEnum4', label: 'expertise.birdwatchingActivityLevel4'}
+  ];
 
   private profile: Profile;
   private profileSub: Subscription;
@@ -40,7 +44,7 @@ export class ExpertiseComponent implements OnInit {
     private dialogService: DialogService,
     private cdr: ChangeDetectorRef
   ) {
-    this.continents$ = this.areaService.getContinents(this.translate.currentLang);
+    this.continents$ = this.areaService.getContinents('en');
   }
 
   ngOnInit() {

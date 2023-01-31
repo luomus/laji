@@ -17,7 +17,7 @@ import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/ke
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationPanelComponent {
-  @ViewChild('toggleDrawBtn', { static: true }) toggleDrawBtn: ElementRef;
+  @ViewChild('toggleDrawBtn', { static: false }) toggleDrawBtn: ElementRef;
 
   @Input() recording: IGlobalRecording;
   @Input() identification: IGlobalSpeciesWithAnnotation;

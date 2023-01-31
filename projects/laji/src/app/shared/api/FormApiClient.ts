@@ -64,7 +64,7 @@ export class FormApiClient {
 
     switch (resource) {
       case AUTOCOMPLETE_TAXON_RESOURCE:
-        queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName,MX.hasMisspelledName,MX.hasUncertainSynonym,MX.hasOrthographicVariant';
+        queryParameters['excludeNameTypes'] = 'MX.hasMisappliedName';
     }
 
     return this.http.request(

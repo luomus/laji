@@ -1,6 +1,5 @@
 <div [ngStyle]="{height: height}">
-  <laji-map [legend]="legend"
-            [options]="{
+  <laji-map [options]="{
 				      zoom: 2,
 				      tileLayerName: tileLayerName,
 				      overlayNames: overlayNames,
@@ -12,6 +11,7 @@
             (loaded)="onMapLoad()"
             lajiFormOption="options.namedPlaceOptions.mapOptions options.namedPlaceOptions.zoomToData"
   ></laji-map>
+  <laji-legend [visualization]="visualization"></laji-legend>
   <div style="display: none;">
     <div #popup>
 	    <ng-container *ngFor="let i of listItems">

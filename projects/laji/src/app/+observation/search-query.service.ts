@@ -151,7 +151,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'season',
     'formId',
     'taxonAdminFiltersOperator',
-    'collectionAndRecordQuality'
+    'collectionAndRecordQuality',
+    'featureType'
   ];
 
   // noinspection JSUnusedLocalSymbols

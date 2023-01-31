@@ -1,15 +1,21 @@
-<ng-container *ngIf="templates">
+<div *ngIf="templates" class="templates-container">
   <laji-small-audio-viewer
     *ngFor="let template of templates; let i = index"
+    class="text-center d-inline-block"
+    [width]="'100%'"
     [label]="'T' + (i + 1)"
     [area]="template?.area"
     [audio]="audioIdMap[template?.audioId]"
     [spectrogramConfig]="spectrogramConfig"
-    [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || template?.comment"
+    [highlight]="(template && !confirmedTemplates?.[i] && highlightNonConfirmed) || !!template?.comment"
     [highlightType]="template?.comment?.type === 0 ? 'danger' : (template?.comment?.type === 1 ? 'warning' : 'default')"
     [emptyAudioText]="'validation.undefined' | translate"
     (templateClick)="templateClick.emit(i)"
   >
-  {{ template?.comment }}
+    <div class="mb-2 mr-1 ml-1">
+      <small *ngIf="audioIdMap[template?.audioId]?.soundType" class="d-inline-block" style="vertical-align: top">
+        {{ 'validation.soundType' | translate }}: {{ audioIdMap[template.audioId].soundType }}
+      </small>
+    </div>
   </laji-small-audio-viewer>
-</ng-container>
+</div>

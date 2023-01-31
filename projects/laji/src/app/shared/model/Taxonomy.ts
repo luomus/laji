@@ -211,6 +211,8 @@ export interface Taxonomy {
    */
   taxonomicSortOrder?: number;
 
+  hasBold?: boolean;
+
   /**
    * true if has parents
    */
@@ -262,6 +264,8 @@ export interface Taxonomy {
   observationCount?: number;
 
   observationCountFinland?: number;
+
+  bold?: Bold;
 }
 
 export interface RedListEvaluation {
@@ -356,7 +360,6 @@ export interface  Habitat {
 
 }
 
-
 export interface Occurrence {
 
   area: string;
@@ -369,4 +372,17 @@ export interface Occurrence {
 
   year?: number;
 
+}
+
+export interface Bold {
+
+  publicRecords?: number;
+
+  specimens?: number;
+
+  barcodes?: number;
+
+  bins?: string[];
+
+  binCount?: number;
 }

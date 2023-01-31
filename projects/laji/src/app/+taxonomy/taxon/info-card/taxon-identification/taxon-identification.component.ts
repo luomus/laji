@@ -44,13 +44,12 @@ const requestedDescriptionVariables = {
   ],
 };
 
-interface TaxonomyWithDescriptionsAndMultimedia extends Taxonomy {
+interface TaxonomyWithDescriptions extends Taxonomy {
   taxonDescriptions: Record<string, any>;
-  taxonMultimedia: Record<string, any>;
 }
 
 interface Data {
-  children: TaxonomyWithDescriptionsAndMultimedia[];
+  children: TaxonomyWithDescriptions[];
   descriptionSources: Array<string>;
   speciesCardAuthors: Array<string>;
   speciesCardAuthorsTitle: string | undefined;
@@ -127,8 +126,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
       this.children$.subscribe((t) => {
         this.data.children = t.map(child => {
           const taxonDescriptions = this.parseTaxonDescriptions(child);
-          const taxonMultimedia = this.parseTaxonMultimedia(child);
-          return { ...child, taxonDescriptions, taxonMultimedia };
+          return { ...child, taxonDescriptions };
         });
         this.cdr.markForCheck();
         this.totalChildren$.pipe(take(1)).subscribe(total => {
@@ -196,18 +194,4 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
 
     return taxonDescriptions;
   }
-
-  private parseTaxonMultimedia(taxon: Taxonomy): any {
-    if (!taxon.multimedia || taxon.multimedia.length < 0) { return undefined; }
-
-    const mainImage = taxon.multimedia[0];
-    const taxonMultimedia = {};
-
-    if (mainImage.copyrightOwner) { taxonMultimedia['copyrightOwner'] = mainImage.copyrightOwner; }
-    if (mainImage.licenseAbbreviation) { taxonMultimedia['licenseAbbreviation'] = mainImage.licenseAbbreviation; }
-    if (mainImage.licenseId) { taxonMultimedia['licenseId'] = mainImage.licenseId; }
-    if (mainImage.taxonDescriptionCaption) { taxonMultimedia['taxonDescriptionCaption'] = mainImage.taxonDescriptionCaption; }
-
-    return taxonMultimedia;
-  };
 }

@@ -11,6 +11,7 @@ import { Notification } from '../../model/Notification';
 interface State {
   notifications: PagedResult<Notification>;
   unseenCount: number;
+  loading: boolean;
 }
 
 interface IRefreshDataResult {
@@ -36,16 +37,6 @@ const REFRESH_QUERY = gql`
   }
 `;
 
-const subscribeWithWrapper = (observable: Observable<any>, callback?) => {
-  const subject = new Subject<void>();
-  observable.pipe(take(1)).subscribe((res) => {
-    if (callback) { callback(res); }
-    subject.next();
-    subject.complete();
-  });
-  return subject.asObservable();
-};
-
 @Injectable()
 export class NotificationsFacade {
   private store$ = new BehaviorSubject<State>({
@@ -56,6 +47,7 @@ export class NotificationsFacade {
       results: []
     },
     unseenCount: 0,
+    loading: false
   });
 
   state$: Observable<State> = this.store$.asObservable();
@@ -69,6 +61,10 @@ export class NotificationsFacade {
   );
   unseenCount$: Observable<number> = this.state$.pipe(
     map(state => state.unseenCount),
+    distinctUntilChanged()
+  );
+  loading$: Observable<boolean> = this.state$.pipe(
+    map(state => state.loading),
     distinctUntilChanged()
   );
 
@@ -107,53 +103,10 @@ export class NotificationsFacade {
     });
   }
 
-  private subscribeNotifications(page = 1) {
-    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-      personToken: this.userService.getToken(),
-      page,
-      pageSize: this.pageSize
-    }).pipe(
-      catchError(() => EMPTY)
-    ).subscribe(this.notificationsReducer.bind(this));
-  }
-
-  private subscribeUnseenCount() {
-    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
-      personToken: this.userService.getToken(),
-      page: 1,
-      pageSize: 1,
-      onlyUnSeen: true
-    }).pipe(
-      map(unseen => unseen.total || 0),
-      catchError(() => of(0))
-    ).subscribe(this.unseenCountReducer.bind(this));
-  }
-
-  private subscribeMarkAsSeen(notification: Notification): Observable<void> {
-    if (notification.seen) {
-      const subject = new Subject<void>();
-      subject.complete();
-      return subject.asObservable();
-    }
-    notification.seen = true;
-    return subscribeWithWrapper(
-      this.lajiApi.update(LajiApi.Endpoints.notifications, notification, {personToken: this.userService.getToken()}),
-      this.localUnseenCountReducer.bind(this, 1)
-    );
-  }
-
-  private subscribeRemove(notification: Notification): Observable<void> {
-    if (!notification || !notification.id) {
-      const subject = new Subject<void>();
-      subject.error('Notification not provided.');
-      return subject;
-    }
-    if (!notification.seen) {
-      this.localUnseenCountReducer();
-    }
-    return subscribeWithWrapper(
-      this.lajiApi.remove(LajiApi.Endpoints.notifications, notification.id, {personToken: this.userService.getToken()})
-    );
+  private loadingReducer(loading: boolean) {
+    this.store$.next({
+      ...this.store$.getValue(), loading
+    });
   }
 
   checkForNewNotifications() {
@@ -187,19 +140,45 @@ export class NotificationsFacade {
   }
 
   loadNotifications(page) {
-    this.subscribeNotifications(page);
+    this.loadingReducer(true);
+    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+      personToken: this.userService.getToken(),
+      page,
+      pageSize: this.pageSize
+    }).pipe(
+      catchError(() => EMPTY)
+    ).subscribe((notifications) => {
+      this.notificationsReducer(notifications);
+      this.loadingReducer(false);
+    });
   }
 
   loadUnseenCount() {
-    this.subscribeUnseenCount();
+    this.lajiApi.getList(LajiApi.Endpoints.notifications, {
+      personToken: this.userService.getToken(),
+      page: 1,
+      pageSize: 1,
+      onlyUnSeen: true
+    }).pipe(
+      map(unseen => unseen.total || 0),
+      catchError(() => of(0))
+    ).subscribe(this.unseenCountReducer.bind(this));
   }
 
-  markAsSeen(notification: Notification): Observable<void> {
-    return subscribeWithWrapper(this.subscribeMarkAsSeen(notification));
+  markAsSeen(notification: Notification) {
+    if (notification.seen) {
+      return;
+    }
+    notification.seen = true;
+    this.lajiApi.update(
+      LajiApi.Endpoints.notifications,
+      notification, {personToken: this.userService.getToken()}
+    ).subscribe(this.localUnseenCountReducer.bind(this, 1));
   }
 
-  markAllAsSeen(): Observable<void> {
-    return subscribeWithWrapper(this.notifications$.pipe(
+  markAllAsSeen() {
+    this.loadingReducer(true);
+    this.notifications$.pipe(
       take(1),
       switchMap((notifications) =>  {
         const count = Math.ceil(notifications.total / NOTIFICATION_MAX_PAGESIZE);
@@ -216,19 +195,30 @@ export class NotificationsFacade {
       )),
       switchMap((notifications) => from(notifications.results)),
       filter(notification => !notification.seen),
-      concatMap(notification => this.subscribeMarkAsSeen(notification)),
-      toArray(),
-    ));
+      tap(notification => this.markAsSeen(notification)),
+      toArray()
+    ).subscribe(this.loadingReducer.bind(this, false));
   }
 
-  remove(notification: Notification): Observable<void> {
-    return subscribeWithWrapper(
-      this.subscribeRemove(notification)
-    );
+  remove(notification: Notification) {
+    if (!notification || !notification.id) {
+      console.warn('Notification not provided.');
+    }
+    if (!notification.seen) {
+      this.localUnseenCountReducer();
+    }
+
+    this.loadingReducer(true);
+    this.lajiApi.remove(
+      LajiApi.Endpoints.notifications,
+      notification.id,
+      {personToken: this.userService.getToken()}
+    ).subscribe(this.loadingReducer.bind(this, false));
   }
 
-  removeAll(): Observable<void> {
-    return subscribeWithWrapper(this.notifications$.pipe(
+  removeAll() {
+    this.loadingReducer(true);
+    this.notifications$.pipe(
       take(1),
       switchMap((notifications) =>  {
         const count = Math.ceil(notifications.total / NOTIFICATION_MAX_PAGESIZE);
@@ -245,8 +235,9 @@ export class NotificationsFacade {
       toArray(),
       switchMap(data => from(data)),
       concatMap((notifications) => from(notifications.results)),
-      concatMap(notification => this.subscribeRemove(notification)),
-      toArray()
-    ));
+      tap(notification => this.remove(notification)),
+      toArray(),
+      tap(() => this.loadNotifications(1))
+    ).subscribe();
   }
 }

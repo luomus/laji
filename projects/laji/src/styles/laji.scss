@@ -891,7 +891,7 @@ body > .ui-select-bootstrap.open {
 }
 
 @media only screen and (max-width: 768px) {
-  .input-sm {
+  .input-sm, select.input-sm {
     height: 36px;
   }
 }

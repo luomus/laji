@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
 @Component({
   selector: 'laji-taxon-info',
   templateUrl: './taxon-info.component.html',
-  styleUrls: ['./taxon-info.component.css'],
+  styleUrls: ['./taxon-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonInfoComponent implements OnInit, OnDestroy {
@@ -38,6 +37,5 @@ export class TaxonInfoComponent implements OnInit, OnDestroy {
       this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
     }
    });
-
   }
 }

@@ -242,6 +242,9 @@ export interface WarehouseQueryInterface {
   onlyNonStateLands?: boolean;
   atlasCode?: Array<string>;
   atlasClass?: Array<string>;
+  featureType?: string;
+  onlyCount?: boolean;
+  pessimisticDateRangeHandling?: boolean;
 }
 
 

@@ -23,12 +23,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { KerttuGlobalRoutingModule } from './kerttu-global-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
-import { AppComponent } from '../../../laji/src/app/shared-modules/app-component/app.component';
+import { AppComponent } from './app.component';
 import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LazyTranslateLoader } from './kerttu-global-shared/service/lazy-translate-loader';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -40,7 +41,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   imports: [
     GraphQLModule,
-    AppComponentModule,
     BrowserAnimationsModule,
     BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,
@@ -64,8 +64,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
-    KerttuGlobalRoutingModule,
-    TransferHttpCacheModule
+    AppRoutingModule,
+    TransferHttpCacheModule,
+    AppComponentModule
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/'},
@@ -79,6 +80,10 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       useFactory: createLoggerLoader
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent
+  ]
 })
 export class AppModule { }

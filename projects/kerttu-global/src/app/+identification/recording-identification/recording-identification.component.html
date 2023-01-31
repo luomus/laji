@@ -1,4 +1,4 @@
-<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "haseka.form.genericError" | translate }}</alert>
+<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "identification.genericError" | translate }}</alert>
 
 <laji-spinner *ngIf="!hasError" [spinning]="expertiseMissing == null">
   <ng-container *ngIf="expertiseMissing != null">
@@ -21,6 +21,7 @@
               (nextRecordingClick)="getNextRecording()"
               (previousRecordingClick)="getPreviousRecording()"
               (saveClick)="save()"
+              (skipClick)="skipRecording()"
               (annotationChange)="onAnnotationChange()"
               (backToSiteSelectionClick)="goBackToSiteSelection()"
             ></bsg-identification-view>
@@ -30,7 +31,7 @@
     </ng-container>
 
     <ng-template #expertiseMissingText>
-      <div [innerHTML]="'theme.kerttu.taxonExpertiseMissing' | translate"></div>
+      <div [innerHTML]="'identification.taxonExpertiseMissing' | translate"></div>
     </ng-template>
   </ng-container>
 </laji-spinner>
