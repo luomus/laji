@@ -1338,7 +1338,7 @@
   "observation.label.order": "Order",
   "observation.label.phylum": "Phylym",
   "observation.label.species": "Species",
-  "observation.map.dataOpacityControl.label": "Havainnot",
+  "observation.map.dataOpacityControl.label": "Observations",
   "observation.maxOccurrenceFinland": "Finnish Observations Limit",
   "observation.notFound": "Observation not found",
   "observation.results.hits": "hits",
