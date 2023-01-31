@@ -137,7 +137,6 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.calendarUIValue = value;
     this.dateSelect.next(this.value);
     if (prevValue !== this.value) {
-      console.log('change', this.value, !!this.onChangeCallback);
       this.onChangeCallback?.(this.value);
       this.onTouchedCallback?.();
     }
