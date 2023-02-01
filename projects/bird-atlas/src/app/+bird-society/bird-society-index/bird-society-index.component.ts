@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 
 interface DatatableRow extends AtlasSocietyStatsResponseElement {
   [activityCategory: number]: string;
+  targetPercentageString: string;
 }
 
 @Component({
@@ -77,18 +78,25 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         name: 'Yhteensä',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 75
+      },
+      {
+        prop: 'targetPercentageString',
+        name: 'Tavoitteesta saavutettu %',
+        resizeable: false,
+        sortable: true
       }
     ];
     this.rows$ = this.atlasApi.getBirdSocietyStats().pipe(
       map(societies => {
         const rows: DatatableRow[] = [];
         societies.forEach(society => {
-          const row: DatatableRow | AtlasSocietyStatsResponseElement = society;
+          const row: DatatableRow = <DatatableRow>society;
           Object.values(society.activityCategories).forEach((v, i) => {
             row[i] = v.squareSum + ` (${Math.round(v.squarePercentage)}%)`;
           });
-          rows.push(<DatatableRow>row);
+          row.targetPercentageString = Math.round(row.targetPercentage) + '%';
+          rows.push(row);
         });
         return rows;
       })
@@ -99,13 +107,24 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
   onDownloadCsv(rows: DatatableRow[]) {
     const _rows = [
       [
-        'Lintuyhdistys', 'Ei havaintoja', 'Satunnaista', 'Välttävä',
-        'Tyydyttävä', 'Hyvä', 'Erinomainen', 'Yhteensä'
+        'Lintuyhdistys',
+        'Ei havaintoja', 'Satunnaista', 'Välttävä',
+        'Tyydyttävä', 'Hyvä', 'Erinomainen',
+        'Yhteensä',
+        'Tavoitteesta saavutettu %',
+        'Ei havaintoja %', 'Satunnaista %', 'Välttävä %',
+        'Tyydyttävä %', 'Hyvä %', 'Erinomainen %',
       ],
       ...rows.map(row => [
         row.birdAssociationArea.value,
-        row[0], row[1], row[2], row[3], row[4], row[5],
-        row.totalSquares
+        ...Object.values(row.activityCategories).map(
+          c => c.squareSum
+        ),
+        row.totalSquares,
+        Math.round(row.targetPercentage),
+        ...Object.values(row.activityCategories).map(
+          c => Math.round(c.squarePercentage)
+        )
       ])
     ];
     const csvContent = 'data:text/csv;charset=utf-8,'
