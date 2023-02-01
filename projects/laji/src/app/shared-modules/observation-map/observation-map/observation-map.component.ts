@@ -214,7 +214,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       clickBeforeZoomAndPan: true
     };
     if ((environment as any).observationMapOptions) {
-      Object.assign(this.mapOptions, ...(environment as any).observationMapOptions);
+      Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
   }
 
