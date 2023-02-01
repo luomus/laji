@@ -1,4 +1,7 @@
 <div class="container" *ngIf="rows$ | async; let rows; else loading">
+  <div class="d-flex justify-end mb-3">
+    <button class="btn btn-default" (click)="onDownloadCsv(rows)">Lataa .csv</button>
+  </div>
   <ngx-datatable
     class="material"
     [rowHeight]="35"
@@ -10,7 +13,7 @@
 </div>
 
 <ng-template #societyName let-row="row">
-  <a [routerLink]="row.id">{{ row.society }}</a>
+  <a [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
 </ng-template>
 
 <ng-template #loading>

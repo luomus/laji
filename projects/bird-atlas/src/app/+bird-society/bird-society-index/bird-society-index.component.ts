@@ -1,19 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { AtlasApiService } from '../../core/atlas-api.service';
+import { AtlasActivityCategory, AtlasActivityCategoryElement, AtlasApiService, AtlasSocietyStatsResponseElement } from '../../core/atlas-api.service';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-interface DatatableRow {
-  id: string;
-  society: string;
-  cat1: number;
-  cat2: number;
-  cat3: number;
-  cat4: number;
-  cat5: number;
-  cat6: number;
-  cat7: number;
+interface DatatableRow extends AtlasSocietyStatsResponseElement {
+  [activityCategory: number]: string;
 }
 
 @Component({
@@ -39,74 +31,86 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         cellTemplate: this.societyNameTemplate
       },
       {
-        prop: 'cat1',
+        prop: '0',
         name: 'Ei havaintoja',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat2',
+        prop: '1',
         name: 'Satunnaista',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat3',
+        prop: '2',
         name: 'Välttävä',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat4',
+        prop: '3',
         name: 'Tyydyttävä',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat5',
+        prop: '4',
         name: 'Hyvä',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat6',
+        prop: '5',
         name: 'Erinomainen',
         resizeable: false,
         sortable: true,
         width: 100
       },
       {
-        prop: 'cat7',
+        prop: 'totalSquares',
         name: 'Yhteensä',
         resizeable: false,
         sortable: true,
         width: 100
       }
     ];
-    this.rows$ = this.atlasApi.getBirdSocieties().pipe(
+    this.rows$ = this.atlasApi.getBirdSocietyStats().pipe(
       map(societies => {
         const rows: DatatableRow[] = [];
         societies.forEach(society => {
-          rows.push({
-            id: society.key,
-            society: society.value,
-            cat1: 0,
-            cat2: 0,
-            cat3: 0,
-            cat4: 0,
-            cat5: 0,
-            cat6: 0,
-            cat7: 0
+          const row: DatatableRow | AtlasSocietyStatsResponseElement = society;
+          Object.values(society.activityCategories).forEach((v, i) => {
+            row[i] = v.squareSum + ` (${Math.round(v.squarePercentage)}%)`;
           });
+          rows.push(<DatatableRow>row);
         });
         return rows;
       })
     );
     this.cdr.detectChanges();
+  }
+
+  onDownloadCsv(rows: DatatableRow[]) {
+    const _rows = [
+      [
+        'Lintuyhdistys', 'Ei havaintoja', 'Satunnaista', 'Välttävä',
+        'Tyydyttävä', 'Hyvä', 'Erinomainen', 'Yhteensä'
+      ],
+      ...rows.map(row => [
+        row.birdAssociationArea.value,
+        row[0], row[1], row[2], row[3], row[4], row[5],
+        row.totalSquares
+      ])
+    ];
+    const csvContent = 'data:text/csv;charset=utf-8,'
+      + _rows.map(e => e.join(',')).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
   }
 }

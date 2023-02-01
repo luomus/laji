@@ -13,12 +13,12 @@ export type AtlasActivityCategory =
   | 'MY.atlasActivityCategoryEnum3'
   | 'MY.atlasActivityCategoryEnum4'
   | 'MY.atlasActivityCategoryEnum5';
-export interface KeyValuePair<K, T> {
+export interface KeyValueObject<K, T> {
   key: K;
   value: T;
 }
 export interface AtlasGridSquare {
-  birdAssociationArea: KeyValuePair<string, string>;
+  birdAssociationArea: KeyValueObject<string, string>;
   coordinates: string;
   id: string;
   level1: number;
@@ -28,20 +28,20 @@ export interface AtlasGridSquare {
   level5: number;
   name: string;
   data?: {
-    atlasClass: KeyValuePair<string, string>;
-    atlasCode: KeyValuePair<string, string>;
+    atlasClass: KeyValueObject<string, string>;
+    atlasCode: KeyValueObject<string, string>;
     speciesId: string;
     speciesName: string;
   }[];
   atlas?: number;
   atlasClassSum?: number;
-  activityCategory?: KeyValuePair<AtlasActivityCategory, string>;
+  activityCategory?: KeyValueObject<AtlasActivityCategory, string>;
   speciesCount?: number;
 };
-export type AtlasGrid = AtlasGridSquare[];
+
 export interface BirdSociety {
-  gridSquares: AtlasGrid;
-  birdAssociationArea: KeyValuePair<string, string>;
+  gridSquares: AtlasGridSquare[];
+  birdAssociationArea: KeyValueObject<string, string>;
   activityCategories: Record<AtlasActivityCategory, {
     name: string;
     squareSum: number;
@@ -58,7 +58,33 @@ export interface AtlasTaxon {
   next?: AtlasTaxon;
   prev?: AtlasTaxon;
 }
-export type AtlasTaxa = AtlasTaxon[];
+
+export type ActivityCategoryStatsObject = Record<AtlasActivityCategory, AtlasActivityCategoryElement>;
+
+export interface AtlasGridResponse {
+  grid: AtlasGridSquare;
+  stats: {
+    targetPercentage: number;
+    totalSquares: number;
+    activityCategories: ActivityCategoryStats;
+  };
+}
+
+export interface AtlasActivityCategoryElement {
+  name: string;
+  squareSum: number;
+  squarePercentage: number;
+}
+
+export interface ActivityCategoryStats {
+  targetPercentage: number;
+  totalSquares: number;
+  activityCategories: ActivityCategoryStatsObject;
+}
+
+export interface AtlasSocietyStatsResponseElement extends ActivityCategoryStats {
+  birdAssociationArea: KeyValueObject<string, string>;
+}
 
 const BASE_URL = environment.atlasApiBasePath;
 
@@ -73,9 +99,9 @@ export class AtlasApiService {
   }
 
   @cacheReturnObservable(86400000) // 1 day
-  getGrid(): Observable<AtlasGrid> {
+  getGrid(): Observable<AtlasGridResponse> {
     const url = `${BASE_URL}/grid`;
-    return <Observable<AtlasGrid>>this.http.get(url);
+    return <Observable<AtlasGridResponse>>this.http.get(url);
   }
 
   @cacheReturnObservable(86400000) // 1 day
@@ -91,15 +117,21 @@ export class AtlasApiService {
   }
 
   @cacheReturnObservable(86400000) // 1 day
-  getBirdSocieties(): Observable<KeyValuePair<string, string>[]> {
+  getBirdSocieties(): Observable<KeyValueObject<string, string>[]> {
     const url = `${BASE_URL}/birdAssociation`;
-    return <Observable<KeyValuePair<string, string>[]>>this.http.get(url);
+    return <Observable<KeyValueObject<string, string>[]>>this.http.get(url);
   }
 
   @cacheReturnObservable(86400000) // 1 day
-  getTaxa(): Observable<AtlasTaxa> {
+  getBirdSocietyStats(): Observable<AtlasSocietyStatsResponseElement[]> {
+    const url = `${BASE_URL}/birdAssociation/stats`;
+    return <Observable<AtlasSocietyStatsResponseElement[]>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(86400000) // 1 day
+  getTaxa(): Observable<AtlasTaxon[]> {
     const url = `${BASE_URL}/taxon`;
-    return <Observable<AtlasTaxa>>this.http.get(url);
+    return <Observable<AtlasTaxon[]>>this.http.get(url);
   }
 
   @cacheReturnObservable(60000) // 1 minute

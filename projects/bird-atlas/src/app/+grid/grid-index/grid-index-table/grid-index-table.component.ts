@@ -4,7 +4,7 @@ import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { AtlasGridSquare } from '../../../core/atlas-api.service';
 
 @Component({
   selector: 'ba-grid-index-table',
@@ -13,16 +13,16 @@ import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGrid;
+  @Input() atlasGrid: AtlasGridSquare[];
   @Output() selectYKJ = new EventEmitter<string>();
 
   cols: TableColumn[];
-  filteredRows$ = new Subject<AtlasGrid>();
+  filteredRows$ = new Subject<AtlasGridSquare[]>();
   datatableClasses = datatableClasses;
 
   private unsubscribe$ = new Subject<void>();
   private search$ = new BehaviorSubject<string>(undefined);
-  private rows: AtlasGrid = [];
+  private rows: AtlasGridSquare[] = [];
 
   constructor(
     private translate: TranslateService

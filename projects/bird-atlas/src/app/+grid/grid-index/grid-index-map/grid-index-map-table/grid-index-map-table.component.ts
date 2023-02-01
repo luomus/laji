@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ActivityCategoryStats } from 'projects/bird-atlas/src/app/core/atlas-api.service';
 import { legends } from 'projects/bird-atlas/src/app/shared-modules/map-utils/visualization-legend.component';
 
 type AugmentedLegend = {
   color: string;
   label: string;
-  count?: number;
+  countString?: string;
 }[];
 
 
@@ -20,7 +21,7 @@ type AugmentedLegend = {
   </tr>
   <tr *ngFor="let row of legend">
     <td><span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span></td>
-    <td>{{ row.count ? row.count : '-' }}</td>
+    <td>{{ row.countString ? row.countString : '-' }}</td>
     <td>{{ row.label }}</td>
   </tr>
 </table>
@@ -29,11 +30,13 @@ type AugmentedLegend = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexMapTableComponent implements OnChanges {
-  @Input() activityCounts: number[] = [];
+  @Input() activityCategoryStats: ActivityCategoryStats;
 
   legend: AugmentedLegend = legends['activityCategory'];
 
   ngOnChanges() {
-    this.activityCounts.forEach((v, i) => this.legend[i].count = v);
+    Object.values(this.activityCategoryStats.activityCategories).forEach((s, i) => {
+      this.legend[i].countString = s.squareSum + ` (${Math.round(s.squarePercentage)}%)`;
+    });
   }
 }
