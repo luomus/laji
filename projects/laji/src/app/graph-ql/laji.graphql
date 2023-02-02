@@ -1723,6 +1723,7 @@ type Query {
       ykj1km: String,
       ykj50kmCenter: String,
       ykj50km: String,
+      polygonId: String,
 	): UnitResponse
   warehouseLabels(id: ID): [WarehouseLabel!]
 }

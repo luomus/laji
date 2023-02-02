@@ -120,7 +120,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         if (this.results) {
           this.results.reloadTabs();
         }
-        if ((query.coordinates) && !coordinateFilterInfoShown) {
+        if ((query.coordinates || query.polygonId) && !coordinateFilterInfoShown) {
           coordinateFilterInfoShown = true;
           this.toastsService.showInfo(
             this.translate.instant('observation.form.coordinatesInfo'),

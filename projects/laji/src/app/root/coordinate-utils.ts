@@ -1,38 +1,40 @@
 import * as MapUtil from 'laji-map/lib/utils';
+import G from 'geojson';
 
-export const convertYkjToGeoJsonFeature = (origLat: any, origLng: any, properties: {[k: string]: any} = {}) => {
-  const lat = parseInt(origLat, 10);
-  const lng = parseInt(origLng, 10);
-  const latStart = pad(lat);
-  const latEnd = pad(lat + 1);
-  const lonStart = pad(lng);
-  const lonEnd = pad(lng + 1);
+export const convertYkjToGeoJsonFeature = (origLat: string | number, origLng: string | number, properties: {[k: string]: any} = {}): G.Feature<G.Polygon> => {
+  const lat = parseInt((origLat as string), 10);
+  const lng = parseInt((origLng as string), 10);
+  const latStart = +pad(lat);
+  const latEnd = +pad(lat + 1);
+  const lonStart = +pad(lng);
+  const lonEnd = +pad(lng + 1);
+  const polygon: G.Polygon = {
+    type: 'Polygon',
+    coordinates: [([
+      [latStart, lonStart],
+      [latStart, lonEnd],
+      [latEnd, lonEnd],
+      [latEnd, lonStart],
+      [latStart, lonStart],
+    ] as [number, number][]).map((latLng) => convertYkjToWgs(latLng).reverse())],
+  };
+  (polygon as any).coordinateVerbatim = origLat + ':' + origLng  // 'any' conversion because 'coordinateVerbatim' isn't in GeoJSON.
   return {
     type: 'Feature',
     properties,
-    geometry: {
-      type: 'Polygon',
-      coordinates: [([
-        [latStart, lonStart],
-        [latStart, lonEnd],
-        [latEnd, lonEnd],
-        [latEnd, lonStart],
-        [latStart, lonStart],
-      ] as [string, string][]).map((latLng: [string, string]) => convertYkjToWgs(latLng).reverse())],
-      coordinateVerbatim: origLat + ':' + origLng
-    }
+    geometry: polygon
   };
 };
 
-export const getFeatureFromGeometry = (geometry: Record<string, unknown>, properties = {}) => (
+export const getFeatureFromGeometry = <T extends G.Geometry>(geometry: T, properties = {}): G.Feature<T> => (
   {
     type: 'Feature',
     properties,
-    geometry: geometry || {}
+    geometry: geometry
   }
 );
 
-export const getFeatureCollectionFromGeometry = (geometry: Record<string, unknown>, properties = {}) => (
+export const getFeatureCollectionFromGeometry = <T extends G.Geometry>(geometry: T, properties = {}): G.FeatureCollection<T> => (
   {
     type: 'FeatureCollection',
     features: [getFeatureFromGeometry(geometry, properties)]
@@ -55,10 +57,9 @@ export const getGeometryFromFeatureCollection = (featureCollection: any) => {
   return undefined;
 };
 
-export const convertLajiEtlCoordinatesToGeometry = (coordinate) => {
-  if (!coordinate) {
-    return undefined;
-  }
+function convertLajiEtlCoordinatesToGeometry(coordinate: string[]): G.GeometryCollection;
+function convertLajiEtlCoordinatesToGeometry(coordinate: string): G.Polygon;
+function convertLajiEtlCoordinatesToGeometry(coordinate: string[] | string): G.GeometryCollection | G.Polygon {
   if (Array.isArray(coordinate)) {
     return {
       type: 'GeometryCollection',
@@ -67,21 +68,25 @@ export const convertLajiEtlCoordinatesToGeometry = (coordinate) => {
   }
   const parts = coordinate.split(':');
   const system = parts.pop();
+  const coords = parts.map(c => +c);
   if (system === 'WGS84' && parts.length === 4) {
     return {
       type: 'Polygon',
       coordinates: [[
-        [parts[2], parts[0]], [parts[2], parts[1]],
-        [parts[3], parts[1]], [parts[3], parts[0]],
-        [parts[2], parts[0]]
+        [coords[2], coords[0]], [coords[2], coords[1]],
+        [coords[3], coords[1]], [coords[3], coords[0]],
+        [coords[2], coords[0]]
       ]]
     };
   } else if (system === 'YKJ' && parts.length === 2) {
-    return convertYkjToGeoJsonFeature(parts[0], parts[1]).geometry;
+    return convertYkjToGeoJsonFeature(coords[0], parts[1]).geometry;
   }
+  throw new Error("Invalid Laji ETL coordinates " + coordinate);
 };
 
-export const convertYkjToWgs = (latLng: [string, string]): [string, string] => (
+export { convertLajiEtlCoordinatesToGeometry };
+
+export const convertYkjToWgs = <T extends string | number>(latLng: [T, T]): [number, number] => (
   MapUtil.convertLatLng([+latLng[0], +latLng[1]], 'EPSG:2393', 'WGS84')
 );
 

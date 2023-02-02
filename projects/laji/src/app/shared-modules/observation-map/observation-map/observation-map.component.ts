@@ -37,6 +37,7 @@ import L, { LeafletEvent, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
+import G from 'geojson';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -49,19 +50,12 @@ interface AggregateQueryResponse {
 }
 
 // Given coordinates in warehouse query format
-// Returns a featureCollection visualizing that set of coordinates
-const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable<any> => (
+// Returns features visualizing that set of coordinates
+const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<G.Feature<G.Polygon>[]> => (
   ObservableOf(coordinates
     ? coordinates.map(
-      (coord: any) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
+      (coord) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
-  ).pipe(
-    map(
-      features => ({
-        type: 'FeatureCollection',
-        features
-      })
-    )
   )
 );
 
@@ -478,10 +472,23 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return query;
   }
 
+  private getFeaturesFromQueryPolygonId(polygonId: string): Observable<G.Feature[]>{
+    return polygonId
+      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
+          map(featureCollection => (featureCollection as any).features)
+      )
+      : ObservableOf([]);
+  }
+
   private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
-    return getFeatureCollectionFromQueryCoordinates$(
-      query.coordinates
-    ).pipe(
+    return forkJoin([
+      getFeaturesFromQueryCoordinates$(query.coordinates),
+      this.getFeaturesFromQueryPolygonId(query.polygonId)
+    ]).pipe(
+      map(([f1, f2]) => ({
+        type: 'FeatureCollection' as const,
+        features: [...f1, ...f2]
+      })),
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
       }),

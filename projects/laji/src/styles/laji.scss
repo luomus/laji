@@ -621,6 +621,9 @@ body > .ui-select-bootstrap.open {
 .lji-crop {
   background-image: url('/static/images/icons/crop.svg');
 }
+.lji-polygon {
+  background-image: url('/static/images/icons/polygon.svg');
+}
 
 *[disabled] .lji-icon {
   filter: invert(1) brightness(0.5);
