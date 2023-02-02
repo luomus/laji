@@ -16,6 +16,7 @@ interface DatatableRow extends AtlasSocietyStatsResponseElement {
 })
 export class BirdSocietyIndexComponent implements AfterViewInit {
   @ViewChild('societyName') societyNameTemplate: TemplateRef<any>;
+  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
 
   rows$: Observable<DatatableRow[]>;
   cols: TableColumn[];
@@ -36,55 +37,63 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         name: 'Ei havaintoja',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: '1',
         name: 'Satunnaista',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: '2',
         name: 'Välttävä',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: '3',
         name: 'Tyydyttävä',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: '4',
         name: 'Hyvä',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: '5',
         name: 'Erinomainen',
         resizeable: false,
         sortable: true,
-        width: 100
+        width: 100,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: 'totalSquares',
         name: 'Yhteensä',
         resizeable: false,
         sortable: true,
-        width: 75
+        width: 75,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: 'targetPercentageString',
         name: 'Tavoitteesta saavutettu %',
         resizeable: false,
-        sortable: true
+        sortable: true,
+        cellTemplate: this.alignRightTemplate
       }
     ];
     this.rows$ = this.atlasApi.getBirdSocietyStats().pipe(
@@ -127,8 +136,7 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         )
       ])
     ];
-    const csvContent = 'data:text/csv;charset=utf-8,'
-      + _rows.map(e => e.join(',')).join('\n');
+    const csvContent = 'data:text/csv;charset=utf-8,' + _rows.map(e => e.join(',')).join('\n');
     const encodedUri = encodeURI(csvContent);
     window.open(encodedUri);
   }

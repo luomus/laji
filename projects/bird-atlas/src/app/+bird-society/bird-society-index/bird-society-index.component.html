@@ -16,6 +16,10 @@
   <a [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
 </ng-template>
 
+<ng-template #alignRight let-value="value">
+  <div style="text-align: right;">{{ value }}</div>
+</ng-template>
+
 <ng-template #loading>
   <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 </ng-template>
