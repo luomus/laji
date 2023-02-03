@@ -29,7 +29,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
   ylestaTitle: any;
   ylestaSpeciesCardAuthors: any;
   _taxonDescription: TaxonomyDescription[];
-  groupHasTranslation: any[];
+  groupTranslationChecklist: any[];
   ylestaHasTranslation: any[];
   isChildrenOnlySpecie = false;
   totalObservations = 0;
@@ -51,11 +51,11 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
     this.ylesta = [{text: undefined, visible: undefined}];
     this.ylestaTitle = undefined;
     this.ylestaSpeciesCardAuthors = undefined;
-    this.groupHasTranslation = [];
+    this.groupTranslationChecklist = [];
     this.ylestaHasTranslation = [];
     this._taxonDescription = taxonDescription && taxonDescription.length > 0 ? taxonDescription : undefined;
     if (this._taxonDescription && this._taxonDescription.length > 0) {
-      this.groupHasTranslation = this.checklang.checkValue(this._taxonDescription);
+      this.groupTranslationChecklist = this.checklang.createTranslationChecklist(this._taxonDescription);
       this._taxonDescription.forEach((item, idx) => {
         (item.groups || []).forEach(gruppo => {
           if (gruppo.group === 'MX.SDVG1' && this.description === undefined && this.ingress === undefined) {
@@ -72,7 +72,7 @@ export class TaxonOverviewComponent implements OnChanges, OnDestroy {
             this.ylestaSpeciesCardAuthors = item.speciesCardAuthors ? item.speciesCardAuthors : null;
             this.ylesta[0].text = gruppo.variables;
 
-            this.ylestaHasTranslation = this.groupHasTranslation[idx].groups.filter(el =>
+            this.ylestaHasTranslation = this.groupTranslationChecklist[idx].groups.filter(el =>
               el.id === 'MX.SDVG8'
             );
             this.ylesta[0].visible = this.ylestaHasTranslation.length > 0 ? this.ylestaHasTranslation[0].values : [];
