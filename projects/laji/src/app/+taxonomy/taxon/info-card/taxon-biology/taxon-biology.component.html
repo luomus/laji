@@ -29,7 +29,7 @@
         <div class="panel-group" role="tablist" aria-multiselectable="true">
           <div *ngFor="let group of taxonDescription[activeDescription]?.groups; let i = index">
             <div class="panel panel-default"
-               *ngIf="(group.group !== 'MX.SDVG14') && (group.group !== 'MX.SDVG8') && groupTranslationChecklist[activeDescription]"
+               *ngIf="(group.group !== 'MX.SDVG14') && (group.group !== 'MX.SDVG8') && (groupTranslationChecklist[activeDescription] && !(groupTranslationChecklist[activeDescription].groups[i].values.indexOf(false) == -1))"
                [title]="group.title | multiLang"
                [open]="true"
                [autoToggle]="true"
