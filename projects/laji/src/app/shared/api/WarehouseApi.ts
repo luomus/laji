@@ -39,12 +39,15 @@ import { geoJSONToWKT } from 'laji-map/lib/utils';
 
 'use strict';
 
+export enum WarehouseSubPath {
+  default = '/warehouse/query/',
+  sample = '/warehouse/query/sample/'
+}
+
 @Injectable({providedIn: 'root'})
 export class WarehouseApi {
   public static readonly longTimeout = 10000;
-  public subPath:
-    '/warehouse/query/sample/' |
-    '/warehouse/query/' = '/warehouse/query/';
+  public subPath: WarehouseSubPath = WarehouseSubPath.default;
   protected basePath = environment.apiBase;
 
   constructor(
@@ -187,7 +190,8 @@ export class WarehouseApi {
    * @param onlyCount return only count in result items (default true).
    */
   public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
-    return this.warehouseQueryGet('unit/aggregate', query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
+    const target = this.subPath === WarehouseSubPath.sample ? 'aggregate' : 'unit/aggregate';
+    return this.warehouseQueryGet(target, query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }
 
   /**

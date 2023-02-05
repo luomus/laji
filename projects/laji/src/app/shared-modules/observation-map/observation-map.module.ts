@@ -4,15 +4,20 @@ import { ObservationMapComponent } from './observation-map/observation-map.compo
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { SharedModule } from '../../shared/shared.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
+import { DatatableModule } from '../datatable/datatable.module';
+import { ObservationMapTableComponent } from './observation-map/observation-map-table/observation-map-table.component';
+import { LajiLegendModule } from '../legend/legend.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LajiMapModule,
-    SharedModule,
-    LajiUiModule
-  ],
-  declarations: [ObservationMapComponent],
-  exports: [ObservationMapComponent]
+    declarations: [ObservationMapComponent, ObservationMapTableComponent],
+    exports: [ObservationMapComponent],
+    imports: [
+        CommonModule,
+        LajiMapModule,
+        SharedModule,
+        LajiUiModule,
+        DatatableModule,
+        LajiLegendModule
+    ]
 })
 export class ObservationMapModule { }

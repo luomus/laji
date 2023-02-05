@@ -1,4 +1,5 @@
-import { schemaJSONPointer as schemaJSONPointerFunc, createTmpIdTree, removeLajiFormIds } from 'laji-form/lib/utils';
+import { schemaJSONPointer as schemaJSONPointerFunc, removeLajiFormIds } from 'laji-form/lib/utils';
+import { createTmpIdTree } from 'laji-form/lib/services/id-service';
 
 export class LajiFormUtil {
   public static schemaJSONPointer(schema: any, path: string): string {

@@ -31,6 +31,26 @@ import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
 import { ObservationTableSettingsComponent } from './observation-table-settings.component';
 
+const replaceColSortLang = (sort: string, lang: string) => (
+  (sort || '').replace(/%longLang%/g, {
+    fi: 'Finnish',
+    sv: 'Swedish',
+    en: 'English'
+  }[lang] || 'Finnish')
+);
+
+export const getSortsFromCols = (event: any, cols: ObservationTableColumn[], lang: string) => (
+  event.sorts.map(sort => {
+    const col = cols.filter(column => column.prop ? column.prop === sort.prop : column.name === sort.prop)[0];
+    if (!col) {
+      return '';
+    }
+    const prop = col.prop || col.name;
+    const sortBy: string = replaceColSortLang(col.sortBy || '' + prop, lang);
+    return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
+  })
+);
+
 @Component({
   selector: 'laji-observation-table',
   templateUrl: './observation-table.component.html',
@@ -99,12 +119,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
     pageSize: 0
   };
   loading: boolean;
-
-  private langMap = {
-    fi: 'Finnish',
-    sv: 'Swedish',
-    en: 'English'
-  };
 
   columns: ObservationTableColumn[] = [];
   allColumns: ObservationTableColumn[];
@@ -199,7 +213,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       const column = this.columnLookup[name];
       if (column.aggregate !== false) {
         this.aggregateBy.push((column.aggregateBy || column.name)
-          + (this.columnLookup[name].sortBy ? ',' + this.setLangParams(this.columnLookup[name].sortBy) : ''));
+          + (this.columnLookup[name].sortBy ? ',' + replaceColSortLang(this.columnLookup[name].sortBy, this.lang) : ''));
       }
       return this.columnLookup[name];
     });
@@ -243,15 +257,7 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   }
 
   onSort(event) {
-    this.orderBy = event.sorts.map(sort => {
-      const col = this.columns.filter(column => column.prop ? column.prop === sort.prop : column.name === sort.prop)[0];
-      if (!col) {
-        return '';
-      }
-      const prop = col.prop || col.name;
-      const sortBy: string =  this.setLangParams(col.sortBy || '' + prop);
-      return sortBy.split(',').map(val => val + ' ' + sort.dir.toUpperCase()).join(',');
-    });
+    this.orderBy = getSortsFromCols(event, this.columns, this.lang);
     this.fetchPage(this.page);
   }
 
@@ -312,11 +318,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
       selects.push('document.quality,gathering.quality,unit.quality');
     }
     return selects;
-  }
-
-  private setLangParams(value: string) {
-    return (value || '')
-      .replace(/%longLang%/g, this.langMap[this.lang] || 'Finnish');
   }
 
   download(type: string) {
