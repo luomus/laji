@@ -132,6 +132,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set clickBeforeZoomAndPan(clickBeforeZoomAndPan: boolean) {
     this.mapOptions = {...this.mapOptions, clickBeforeZoomAndPan};
   }
+  @Input() set viewLocked(viewLocked: boolean) {
+    this.mapOptions = {...this.mapOptions, viewLocked};
+  }
   @Input() ready = true;
   /**
    * height < 0: fill remaining height in window
@@ -154,6 +157,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     'document.linkings.collectionQuality',
     'gathering.interpretations.coordinateAccuracy'
   ];
+  @Input() noClick = false;
 
   @Output() create = new EventEmitter();
 
@@ -551,6 +555,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private onFeatureClick(e: any, d: any) {
+    if (this.noClick) {
+      return;
+    }
     if (d.feature.geometry.type === 'Point') {
       this.onDataClick({
         type: 'wgs84',
