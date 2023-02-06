@@ -110,8 +110,9 @@ export class TaxonAutocompleteService {
         if (bolded) {
           continue;
         }
-        const startRegexp = new RegExp(`^(${w})`, 'i');
-        const endRegexp = new RegExp(`(${w})$`, 'i');
+        const escapedWord = escapeRegexp(w);
+        const startRegexp = new RegExp(`^(${escapedWord})`, 'i');
+        const endRegexp = new RegExp(`(${escapedWord})$`, 'i');
         for (const regexp of [startRegexp, endRegexp]) {
           const match = _w.match(regexp);
           if (match) {
@@ -122,6 +123,11 @@ export class TaxonAutocompleteService {
       }
     });
     return boldedWords.reduce((joined, [w]) => joined.concat(' ', w), '');
+
+    // https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function escapeRegexp(regexpString: string) {
+      return regexpString.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
   }
 
   private capitalizeFirstLetter(string: string) {
