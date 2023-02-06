@@ -22,7 +22,6 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-import L from 'leaflet';
 
 @Component({
   selector: 'laji-map',
