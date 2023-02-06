@@ -1,15 +1,16 @@
-import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inject, PLATFORM_ID } from '@angular/core';
+import { Directive, ElementRef, Renderer2, OnDestroy, AfterViewInit, Input, Inject, PLATFORM_ID, OnChanges } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface IFillHeightOptions {
   disabled?: boolean;
   minHeight?: number;
+  height?: number; // sets height to a constant value effectively disabling the fillHeight functionality
 }
 
 @Directive({
   selector: '[luFillHeight]'
 })
-export class FillHeightDirective implements OnDestroy, AfterViewInit {
+export class FillHeightDirective implements OnDestroy, AfterViewInit, OnChanges {
   @Input('luFillHeight') options: IFillHeightOptions;
 
   private destroyLoadListener: () => void;
@@ -21,11 +22,16 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    if (this.options.disabled) { return; }
     if (isPlatformBrowser(this.platformId) && document.readyState === 'complete') {
       this.onLoad();
     } else {
       this.destroyLoadListener = this.renderer.listen('window', 'load', this.onLoad.bind(this));
+    }
+  }
+
+  ngOnChanges() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateHeight();
     }
   }
 
@@ -41,11 +47,15 @@ export class FillHeightDirective implements OnDestroy, AfterViewInit {
     this.updateHeight();
   }
 
-  private updateHeight() {
+  updateHeight() {
+    if (this.options.disabled) { return; }
     const boundingRect = this.el.nativeElement.getBoundingClientRect();
     let h = window.innerHeight - boundingRect.top;
     if (this.options.minHeight && h < this.options.minHeight) {
       h = this.options.minHeight;
+    }
+    if (this.options.height) {
+      h = this.options.height;
     }
     this.renderer.setStyle(this.el.nativeElement, 'height', h.toString() + 'px');
     try {

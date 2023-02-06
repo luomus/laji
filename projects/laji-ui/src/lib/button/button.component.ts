@@ -5,8 +5,9 @@ import {
   Output,
   EventEmitter,
   HostListener,
-  OnChanges, SimpleChanges, OnInit
+  OnChanges, SimpleChanges, OnInit, Inject, PLATFORM_ID
 } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
 
 export type ButtonRole = 'primary' | 'secondary' | 'neutral' | 'success' | 'warning' | 'danger' | 'other' | 'edit' ;
 
@@ -38,9 +39,17 @@ export class ButtonComponent implements OnChanges, OnInit {
   pressed = false;
   classes = {};
 
+  isServer = false;
+
   @Input() set anchor(url: string|string[]) {
     this.routerLink = url;
     this.useHref = typeof url === 'string' && (url.startsWith('http') || url.includes('?'));
+  }
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isServer = isPlatformServer(this.platformId);
   }
 
   @HostListener('click', ['$event'])

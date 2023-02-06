@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { IGlobalAudio } from '../../../../kerttu-global-shared/models';
 
 @Pipe({
-  name: 'cornellAudioDate'
+  name: 'audioDate'
 })
-export class CornellAudioDatePipe implements PipeTransform {
+export class AudioDatePipe implements PipeTransform {
   constructor(private datePipe: DatePipe) {}
 
-  transform(value: {year?: number; month?: number; day?: number}): string {
+  transform(value: IGlobalAudio): string {
     const formatStringParts = [];
     if (value.day) {
       formatStringParts.push('d');

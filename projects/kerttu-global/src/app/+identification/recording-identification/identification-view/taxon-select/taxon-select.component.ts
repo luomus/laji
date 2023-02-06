@@ -10,7 +10,7 @@ import {
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies } from '../../../../kerttu-global-shared/models';
+import { IGlobalSpecies, IGlobalSpeciesFilters } from '../../../../kerttu-global-shared/models';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
   autocompleteDisplayName: string;
@@ -33,6 +33,9 @@ export class TaxonSelectComponent {
   value? = '';
   loading = false;
 
+  continent: number|null = null;
+  filters$: Observable<IGlobalSpeciesFilters>;
+
   private tokenMinLength = 3;
 
   constructor(
@@ -40,6 +43,8 @@ export class TaxonSelectComponent {
     private kerttuGlobalApi: KerttuGlobalApi,
     private userService: UserService
   ) {
+    this.filters$ = this.kerttuGlobalApi.getSpeciesFilters();
+
     this.dataSource = Observable.create((observer: any) => {
       observer.next(this.value);
     });
@@ -76,7 +81,11 @@ export class TaxonSelectComponent {
     this.cdr.markForCheck();
 
     return this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), {
-      searchQuery: token, pageSize: this.limit, orderBy: ['searchQuery ASC']
+      searchQuery: token,
+      pageSize: this.limit,
+      orderBy: ['searchQuery ASC'],
+      continent: this.continent,
+      includeSpeciesWithoutAudio: true
     }).pipe(
       map(result => (result.results)),
       map(result => {

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CornellAudioInfoComponent } from './cornell-audio-info.component';
+import { AudioInfoComponent } from './audio-info.component';
 
-describe('CornellAudioInfoComponent', () => {
-  let component: CornellAudioInfoComponent;
-  let fixture: ComponentFixture<CornellAudioInfoComponent>;
+describe('AudioInfoComponent', () => {
+  let component: AudioInfoComponent;
+  let fixture: ComponentFixture<AudioInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CornellAudioInfoComponent ]
+      declarations: [ AudioInfoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CornellAudioInfoComponent);
+    fixture = TestBed.createComponent(AudioInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

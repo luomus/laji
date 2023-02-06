@@ -1,14 +1,14 @@
-<h1>{{ 'identification.siteSelection' | translate }}</h1>
+<h1>{{ 'siteSelection.title' | translate }}</h1>
 <p>
-  {{ 'identification.siteSelection.description' | translate }}
+  {{ 'siteSelection.description' | translate }}
 </p>
 <div class="mb-2">
   <button class="btn" [ngClass]="{'btn-default': !drawActive, 'btn-primary': drawActive}" (click)="selectByDrawingClick()">
-    {{ 'identification.siteSelection.draw' | translate }}
+    {{ 'siteSelection.draw' | translate }}
   </button>
   <div class="pull-right">
     <button class="btn btn-success" [disabled]="selectedSites?.length < 1" (click)="onConfirm()">
-      {{ 'identification.siteSelection.confirm' | translate }}
+      {{ 'siteSelection.confirm' | translate }}
     </button>
   </div>
 </div>

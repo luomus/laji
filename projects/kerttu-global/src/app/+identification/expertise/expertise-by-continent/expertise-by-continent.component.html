@@ -1,17 +1,21 @@
 <laji-spinner [spinning]="!continents?.length" [hideContentWhileLoading]="true">
   <table class="mt-0 mb-0">
     <tr *ngFor="let continent of continents">
-      <th>{{ continent.value }}</th>
+      <th>{{ 'continents.' + continent.value | translate }}</th>
       <td>
-        <laji-metadata-select
+        <select
           [(ngModel)]="skillLevelByContinent[continent.id]"
-          [multiple]="false"
-          [useFilter]="false"
-          [alt]="'MA.birdSongRecognitionSkillLevelEnum'"
-          [selectStyle]="basicSelectStyle"
+          class="form-control"
           [disabled]="disabled || !birdSongRecognitionSkillLevels?.length"
           (ngModelChange)="selectChange()"
-        ></laji-metadata-select>
+        >
+          <option
+            *ngFor="let option of birdSongRecognitionSkillLevelOptions"
+            [value]="option.id"
+          >
+            {{ option.label | translate }}
+          </option>
+        </select>
       </td>
     </tr>
   </table>

@@ -1,4 +1,4 @@
-<h1>{{ 'theme.kerttu.expertise' | translate }}</h1>
+<h1>{{ 'expertise.title' | translate }}</h1>
 <div class="row mb-5">
   <div class="col-sm-12">
     <label for="birdSongRecognitionSkillLevels">{{ 'expertise.birdSongRecognitionSkillLevels' | translate }}</label>
@@ -13,17 +13,22 @@
 <div class="row mb-4">
   <div class="col-sm-12">
     <label for="birdwatchingActivityLevel">
-      {{ 'theme.kerttu.expertise.birdwatchingActivityLevel' | translate }}
+      {{ 'expertise.birdwatchingActivityLevel' | translate }}
     </label>
-    <laji-metadata-select
+    <select
       id="birdwatchingActivityLevel"
       [(ngModel)]="birdwatchingActivityLevel"
-      [multiple]="false"
-      [useFilter]="false"
-      [alt]="'MA.birdwatchingActivityLevelEnum'"
-      [selectStyle]="basicSelectStyle"
+      class="form-control"
       [disabled]="birdwatchingActivityLevel === undefined || saving"
-    ></laji-metadata-select>
+    >
+      <option value="">{{ 'select' | translate }}</option>
+      <option
+        *ngFor="let option of birdwatchingActivityLevelOptions"
+        [value]="option.id"
+      >
+        {{ option.label | translate }}
+      </option>
+    </select>
   </div>
 </div>
 <button

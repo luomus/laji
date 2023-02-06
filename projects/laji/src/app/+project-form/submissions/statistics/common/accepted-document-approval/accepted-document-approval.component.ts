@@ -92,7 +92,6 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
       return;
     }
     // Map is hidden during initialization since admin check is done async, so we have to initialize the view manually.
-    this.lajiMap.map.map.invalidateSize();
     this.lajiMap.map._initializeView();
   }
 
