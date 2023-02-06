@@ -234,10 +234,6 @@ export class SearchQueryService implements SearchQueryInterface {
             : 0);
         return withoutCoordinatesIntersection;
       });
-    } else if (result.polygonId) {
-      const [withoutCoordinatesIntersection, coordinatesIntersection] = detachCoordinatesIntersection(result.polygonId);
-      result.polygonId = withoutCoordinatesIntersection;
-      result._coordinatesIntersection = coordinatesIntersection ?? 0;
     }
     return result;
   }
@@ -288,7 +284,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQuery(result, query: WarehouseQueryInterface) {
-    ['coordinates', 'polygonId'].forEach(key => {
+    ['coordinates'].forEach(key => {
       if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
         result[key] += ':' + query._coordinatesIntersection / 100;
       }
