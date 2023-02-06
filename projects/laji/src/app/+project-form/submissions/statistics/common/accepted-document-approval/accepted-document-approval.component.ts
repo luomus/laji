@@ -39,8 +39,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
 
   @Output() namedPlaceChange = new EventEmitter();
 
-  @ViewChild(LajiMapComponent, { static: true })
-  lajiMap: LajiMapComponent;
+  @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
+
   lajiMapOptions: LajiMapOptions;
   data: any;
   placesDiff: false | any = false;
@@ -88,11 +88,10 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   updateMapZoom() {
-    if (!this.isAdmin || !this.placesDiff || !this.lajiMap.map) {
+    if (!this.isAdmin || !this.placesDiff || !this.lajiMap || !this.lajiMap.map) {
       return;
     }
-    // Map is hidden during initialization since admin check is done async, so we have to initialize the view manually.
-    this.lajiMap.map._initializeView();
+    this.lajiMap.map.zoomToData({paddingInMeters: 100});
   }
 
   private initMapOptions() {
