@@ -18,7 +18,7 @@ export const convertYkjToGeoJsonFeature = (origLat: string | number, origLng: st
       [latStart, lonStart],
     ] as [number, number][]).map((latLng) => convertYkjToWgs(latLng).reverse())],
   };
-  (polygon as any).coordinateVerbatim = origLat + ':' + origLng  // 'any' conversion because 'coordinateVerbatim' isn't in GeoJSON.
+  (polygon as any).coordinateVerbatim = origLat + ':' + origLng;  // 'any' conversion because 'coordinateVerbatim' isn't in GeoJSON.
   return {
     type: 'Feature',
     properties,
@@ -30,7 +30,7 @@ export const getFeatureFromGeometry = <T extends G.Geometry>(geometry: T, proper
   {
     type: 'Feature',
     properties,
-    geometry: geometry
+    geometry
   }
 );
 
@@ -81,7 +81,7 @@ function convertLajiEtlCoordinatesToGeometry(coordinate: string[] | string): G.G
   } else if (system === 'YKJ' && parts.length === 2) {
     return convertYkjToGeoJsonFeature(coords[0], parts[1]).geometry;
   }
-  throw new Error("Invalid Laji ETL coordinates " + coordinate);
+  throw new Error('Invalid Laji ETL coordinates ' + coordinate);
 };
 
 export { convertLajiEtlCoordinatesToGeometry };
