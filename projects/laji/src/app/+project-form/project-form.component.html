@@ -71,9 +71,9 @@
 <ng-template #badge let-badge>
   <ng-container *ngIf="formPermissions$ | async as formPermissions">
       <span
-        *ngIf="formPermissions$[badge.count]"
+        *ngIf="formPermissions?.[badge.count]"
         class="badge pull-right">
-          {{ formPermissions$[badge.count].length }}
+          {{ formPermissions[badge.count].length }}
       </span>
   </ng-container>
 </ng-template>
