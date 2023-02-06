@@ -73,11 +73,14 @@
     </div>
     <div class="map-container">
       <laji-observation-map
+        [routerLink]="['/observation/map'] | localize"
         [settingsKey]="'frontMap'"
         [height]="438"
         [showControls]="false"
         [initWithWorldMap]="false"
-        [clickBeforeZoomAndPan]="true"
+        [clickBeforeZoomAndPan]="false"
+        [viewLocked]="true"
+        [noClick]="true"
         [draw]="false"
         [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
         [hideLegend]="true"
