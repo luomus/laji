@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { AtlasActivityCategory, AtlasActivityCategoryElement, AtlasApiService, AtlasSocietyStatsResponseElement } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasSocietyStatsResponseElement } from '../../core/atlas-api.service';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -106,6 +106,16 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
           });
           row.targetPercentageString = Math.round(row.targetPercentage) + '%';
           rows.push(row);
+        });
+        const totalSquares = societies.reduce((p, c) => p += c.totalSquares, 0);
+        const targetSquares = societies.reduce((p, c) => p += c.targetSquares, 0);
+        rows.push({
+          activityCategories: undefined,
+          birdAssociationArea: undefined,
+          targetPercentage: undefined,
+          targetPercentageString: Math.round(totalSquares/targetSquares) + '%',
+          totalSquares,
+          targetSquares
         });
         return rows;
       })

@@ -13,7 +13,7 @@
 </div>
 
 <ng-template #societyName let-row="row">
-  <a [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
+  <a *ngIf="row.birdAssociationArea" [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
 </ng-template>
 
 <ng-template #alignRight let-value="value">

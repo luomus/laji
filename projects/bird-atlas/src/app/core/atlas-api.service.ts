@@ -79,6 +79,7 @@ export interface AtlasActivityCategoryElement {
 export interface ActivityCategoryStats {
   targetPercentage: number;
   totalSquares: number;
+  targetSquares: number;
   activityCategories: ActivityCategoryStatsObject;
 }
 
