@@ -659,6 +659,24 @@
     [alt]="'MX.typeOfOccurrenceEnum'"
     (update)="updateTypeOfOccurrence($event)"
   ></laji-three-state-multi-switch>
+  <laji-metadata-select
+    [(ngModel)]="query.taxonRankId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [useFilter]="false"
+    name="atlasClass"
+    [placeholder]="'MY.taxonRank' | label"
+    [alt]="'MX.taxonRankEnum'"></laji-metadata-select>
+  <laji-select
+    [selected]="[query.higherTaxon]"
+    (selectedChange)="indirectQueryChange('higherTaxon', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.higherTaxon' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.higherTaxonTrue' | translate)},
+        {id: false, value: ('observation.form.higherTaxonFalse' | translate)}
+      ]"></laji-select>
   <div>
     <div>
       <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>

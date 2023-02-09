@@ -85,7 +85,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'atlasCode',
     'atlasClass',
     'identificationBasis',
-    'samplingMethod'
+    'samplingMethod',
+    'taxonRankId'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -121,7 +122,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'useIdentificationAnnotations',
     'includeSubTaxa',
     'annotated',
-    'onlyNonStateLands'
+    'onlyNonStateLands',
+    'higherTaxon'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -138,7 +140,6 @@ export class SearchQueryService implements SearchQueryInterface {
 
   // noinspection JSUnusedLocalSymbols
   private readonly string: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
-    'taxonRankId',
     'xValue',
     'ykj10kmCenter',
     'qualityIssues',
