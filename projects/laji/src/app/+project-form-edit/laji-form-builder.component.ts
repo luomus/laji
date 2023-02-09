@@ -51,24 +51,29 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.apiClient.lang = this.translate.currentLang;
       this.apiClient.personToken = this.userService.getToken();
-      this.lajiFormBuilder = new LajiFormBuilder({
-        id: this.id,
-        rootElem: this.lajiFormBuilderRoot.nativeElement,
-        theme: lajiFormBuilderBs3Theme,
-        apiClient: this.apiClient,
-        lang: this.translate.currentLang as Lang,
-        onLangChange: this.onLangChange.bind(this),
-        primaryDataBankFormID: Global.forms.databankPrimary,
-        secondaryDataBankFormID: Global.forms.databankSecondary,
-        onChange: this.onChange.bind(this),
-        onRemountLajiForm: this.onRemountLajiForm.bind(this),
-        notifier: {
-          success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
-          info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
-          warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
-          error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
-        }
-      });
+      this.updateLajiFormBuilder();
+    });
+  }
+
+  updateLajiFormBuilder() {
+    this.lajiFormBuilder = new LajiFormBuilder({
+      id: this.id,
+      rootElem: this.lajiFormBuilderRoot.nativeElement,
+      theme: lajiFormBuilderBs3Theme,
+      apiClient: this.apiClient,
+      lang: this.translate.currentLang as Lang,
+      onLangChange: this.onLangChange.bind(this),
+      primaryDataBankFormID: Global.forms.databankPrimary,
+      secondaryDataBankFormID: Global.forms.databankSecondary,
+      onChange: this.onChange.bind(this),
+      onRemountLajiForm: this.onRemountLajiForm.bind(this),
+      onSelected: this.onSelected.bind(this),
+      notifier: {
+        success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+        info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+        warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+        error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
+      }
     });
   }
 
@@ -98,5 +103,12 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   onRemountLajiForm() {
     this.projectFormService.remountLajiForm();
+  }
+
+  onSelected(id: string) {
+    this.id = id;
+    of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
+      this.updateLajiFormBuilder();
+    });
   }
 }
