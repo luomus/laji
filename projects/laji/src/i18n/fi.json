@@ -1014,6 +1014,8 @@
   "np.template": "Luo esitäytetty lomake",
   "np.title": "Nimetyt paikat",
   "observation.active": "Rajauksia",
+  "observation.active.identificationBasis": "Määritysperuste",
+  "observation.active.samplingMethod": "Keruumenetelmä",
   "observation.active.administrativeStatusId": "Hallinnollinen asema",
   "observation.active.annotated": "Kommentoitu",
   "observation.active.anyHabitat": "Elinympäristö",

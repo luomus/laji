@@ -83,7 +83,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'plantStatusCode',
     'sourceOfCoordinates',
     'atlasCode',
-    'atlasClass'
+    'atlasClass',
+    'identificationBasis',
+    'samplingMethod'
   ];
 
   // noinspection JSUnusedLocalSymbols

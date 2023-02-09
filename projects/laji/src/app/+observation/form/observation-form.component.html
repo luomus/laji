@@ -436,6 +436,26 @@
       [alt]="'MY.plantStatusCodeEnum'"></laji-metadata-select>
   </div>
   <div>
+    <laji-metadata-select
+      [(ngModel)]="query.identificationBasis"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.identificationBasis' | label"
+      [alt]="'MY.identificationBasisEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.samplingMethod"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.samplingMethod' | label"
+      [alt]="'MY.samplingMethods'"></laji-metadata-select>
+  </div>
+  <div>
     <div>
       <label>{{ 'observation.form.count' | translate }}</label>
       <laji-info>{{ 'observation.info.count' | translate }}</laji-info>
