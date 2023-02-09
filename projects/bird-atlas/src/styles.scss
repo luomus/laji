@@ -27,3 +27,12 @@ ngx-datatable.material.ngx-datatable {
     margin-left: 4px;
   }
 }
+
+.fade {
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+  transition: unset;
+  transform: unset;
+}

@@ -87,6 +87,27 @@ export interface AtlasSocietyStatsResponseElement extends ActivityCategoryStats 
   birdAssociationArea: KeyValueObject<string, string>;
 }
 
+export interface LappiStatsResponseGridsElement {
+  id: string;
+  name: string;
+  coordinates: string;
+  atlasClassSum: number;
+  activityCategory: KeyValueObject<string, string>;
+}
+
+export interface LappiStatsResponseElement {
+  targetMet: boolean;
+  targetPercentage: number;
+  targetSquares: number;
+  totalSquares: number;
+  grid: string;
+  latMin: number;
+  lonMin: number;
+  latMax: number;
+  lonMax: number;
+  grids: LappiStatsResponseGridsElement[];
+}
+
 const BASE_URL = environment.atlasApiBasePath;
 
 @Injectable()
@@ -109,6 +130,12 @@ export class AtlasApiService {
   getBirdSociety(id: string): Observable<BirdSociety> {
     const url = `${BASE_URL}/grid/birdAssociation/${id}`;
     return <Observable<BirdSociety>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(86400000) // 1 day
+  getLappiStats(): Observable<LappiStatsResponseElement[]> {
+    const url = `${BASE_URL}/birdAssociation/stats/lappi`;
+    return <Observable<LappiStatsResponseElement[]>>this.http.get(url);
   }
 
   @cacheReturnObservable(30000) // 30 seconds

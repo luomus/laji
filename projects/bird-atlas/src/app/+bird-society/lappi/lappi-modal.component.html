@@ -1,0 +1,6 @@
+<div class="lappi-modal-container">
+  <ngx-datatable class="material" [rows]="rows" [columns]="cols"></ngx-datatable>
+</div>
+<ng-template #YKJ let-row="row">
+  <a [routerLink]="'/grid/'+ row.coordinates" (click)="onLinkClick()">{{ row.coordinates }}</a>
+</ng-template>
