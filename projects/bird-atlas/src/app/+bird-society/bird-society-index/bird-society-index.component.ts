@@ -90,7 +90,7 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
       },
       {
         prop: 'targetPercentageString',
-        name: 'Tavoitteesta saavutettu %',
+        name: 'Tavoitteesta saavutettu',
         resizeable: false,
         sortable: true,
         cellTemplate: this.alignRightTemplate

@@ -1,4 +1,4 @@
-<div class="container" *ngIf="rows$ | async; let rows; else loading">
+<div class="container mb-8" *ngIf="rows$ | async; let rows; else loading">
   <div class="d-flex justify-end mb-3">
     <button class="btn btn-default" (click)="onDownloadCsv(rows)">Lataa .csv</button>
   </div>
@@ -10,8 +10,13 @@
     [scrollbarH]="true"
     [messages]="{ emptyMessage: '' }"
   ></ngx-datatable>
-  <img class="d-block" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
-  <a [routerLink]="['lappi']">Lappi</a>
+  <h2>Pohjois lapin suurruudut</h2>
+  <a [routerLink]="['lappi']">
+    <img class="d-block lappi-img" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
+  </a>
+  <div>
+    Pääset pohjois lapin sivulle, klikkaamalla kuvaa. TBD mitä tähän laitetaan?
+  </div>
 </div>
 
 <ng-template #societyName let-row="row">
