@@ -7,7 +7,7 @@ import { PlatformService } from '../../root/platform.service';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
-  selector: 'input[type=text], input[type=checkbox], input[type=radio], button'
+  selector: 'input, button'
 })
 export class SsrDisableDirective implements OnInit {
 
