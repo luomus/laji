@@ -3,7 +3,7 @@
     [includedOptions]="includedOptions"
     [excludedOptions]="excludedOptions"
     [optionsTree$]="groupsTree$"
-    [options$]="groups$"
+    [options]="groups$ | async"
     [modalButtonLabel]="modalButtonLabel"
     [modalTitle]="modalTitle"
     [browseTitle]="browseTitle"

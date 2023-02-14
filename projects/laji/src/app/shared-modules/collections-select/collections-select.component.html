@@ -5,7 +5,7 @@
       [includedOptions]="includedOptions"
       [excludedOptions]="excludedOptions"
       [optionsTree$]="collectionsTree$"
-      [options$]="collections$"
+      [options]="collections$ | async"
       [modalButtonLabel]="modalButtonLabel"
       [modalTitle]="modalTitle"
       [browseTitle]="browseTitle"

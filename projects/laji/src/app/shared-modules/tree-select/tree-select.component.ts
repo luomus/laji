@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output, OnInit, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
@@ -30,11 +30,11 @@ export interface TreeOptionsChangeEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TreeSelectComponent implements OnInit {
+export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
-  @Input() options$: Observable<SelectedOption[]>;
+  @Input() options: SelectedOption[];
   @Input() modalButtonLabel: string;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
@@ -49,20 +49,10 @@ export class TreeSelectComponent implements OnInit {
 
   lang: string;
   modalRef: BsModalRef;
-  options: SelectedOption[];
 
   constructor(
-    private modalService: BsModalService,
-    private cd: ChangeDetectorRef
+    private modalService: BsModalService
   ) {}
-
-  ngOnInit() {
-    this.options$.subscribe(data => {
-      this.options = data;
-
-      this.cd.markForCheck();
-    });
-  }
 
   openModal() {
     const initialState = {
