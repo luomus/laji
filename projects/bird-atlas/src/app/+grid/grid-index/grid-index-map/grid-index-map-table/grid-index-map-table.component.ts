@@ -35,7 +35,7 @@ export class GridIndexMapTableComponent implements OnChanges {
   legend: AugmentedLegend = legends['activityCategory'];
 
   ngOnChanges() {
-    Object.values(this.activityCategoryStats.activityCategories).forEach((s, i) => {
+    Object.values(this.activityCategoryStats).forEach((s, i) => {
       this.legend[i].countString = s.squareSum + ` (${Math.round(s.squarePercentage)}%)`;
     });
   }

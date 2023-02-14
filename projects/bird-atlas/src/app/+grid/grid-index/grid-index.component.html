@@ -15,7 +15,7 @@
     <lu-tab [heading]="'ba.grid-index.tabs.table' | translate">
       <ba-grid-index-table
         *ngIf="loadedElementsStore.isLoaded('table')"
-        [atlasGrid]="grid.grid"
+        [atlasGrid]="grid.gridSquares"
         (selectYKJ)="onSelectYKJ($event)"
       ></ba-grid-index-table>
     </lu-tab>

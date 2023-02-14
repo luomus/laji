@@ -65,6 +65,7 @@ export class GridIndexTableComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.atlasGrid) {
+      if (!this.atlasGrid) { return; }
       this.rows = changes.atlasGrid.currentValue;
       this.search$.next('');
     }

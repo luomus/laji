@@ -62,12 +62,11 @@ export interface AtlasTaxon {
 export type ActivityCategoryStatsObject = Record<AtlasActivityCategory, AtlasActivityCategoryElement>;
 
 export interface AtlasGridResponse {
-  grid: AtlasGridSquare;
-  stats: {
-    targetPercentage: number;
-    totalSquares: number;
-    activityCategories: ActivityCategoryStats;
-  };
+  activityCategories: ActivityCategoryStatsObject;
+  gridSquares: AtlasGridSquare[];
+  targetPercentage: number;
+  totalSquares: number;
+  targetSquares: number;
 }
 
 export interface AtlasActivityCategoryElement {

@@ -101,7 +101,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.atlasGrid) {
       const change = changes.atlasGrid;
-      this.mapData$.next(this.getMapData(change.currentValue.grid));
+      this.mapData$.next(this.getMapData(change.currentValue.gridSquares));
     }
   }
 
