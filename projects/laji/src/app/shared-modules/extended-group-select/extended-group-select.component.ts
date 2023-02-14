@@ -1,5 +1,5 @@
 /* tslint:disable:no-use-before-declare */
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -12,6 +12,10 @@ import { Util } from '../../shared/service/util.service';
 
 export interface InformalGroupEvent {
   [key: string]: string[];
+}
+interface SelectedOptions {
+  includedOptions: string[];
+  excludedOptions: string[];
 }
 
 @Directive()
@@ -28,37 +32,38 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<InformalGroupEvent>();
 
-  lang: string;
-  includedOptions: string[] = [];
-  excludedOptions: string[] = [];
   redList = false;
 
   groupsTree$: Observable<TreeOptionsNode[]>;
   groups$: Observable<SelectedOption[]>;
 
-  private selectedGroups$ = new BehaviorSubject([]);
+  selectedOptions$: Observable<SelectedOptions>;
+  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
+    includedOptions: [],
+    excludedOptions: []
+  });
 
   protected constructor(
     protected cd: ChangeDetectorRef,
     protected logger: Logger,
     protected translate: TranslateService
-  ) {}
+  ) {
+    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
+      distinctUntilChanged((a, b) =>
+        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
+      )
+    );
+  }
 
   ngOnInit() {
     const lang = this.translate.currentLang;
-    this.groupsTree$ = this.initGroupTree(lang).pipe(
-      shareReplay(1)
-    );
+    this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
     this.groups$ = this.initSelectionGroups(lang);
   }
 
   ngOnChanges() {
     const [ includedOptions, excludedOptions ] = this.getOptions(this.query);
-    if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
-      this.includedOptions = includedOptions;
-      this.excludedOptions = excludedOptions;
-      this.selectedGroups$.next(this.includedOptions.concat(this.excludedOptions));
-    }
+    this.selectedOptionsSubject.next({ includedOptions, excludedOptions });
   }
 
   abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
@@ -106,7 +111,11 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   initSelectionGroups(lang: string): Observable<SelectedOption[]> {
-    return this.selectedGroups$.pipe(switchMap(selectedGroups => {
+    return this.selectedOptions$.pipe(switchMap(selected => {
+      const includedOptions = selected.includedOptions;
+      const excludedOptions = selected.excludedOptions;
+      const selectedGroups = includedOptions.concat(excludedOptions);
+
       if (selectedGroups.length === 0) {
         return of([]);
       } else {
@@ -115,13 +124,13 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
           map(data => {
             const toReturn: SelectedOption[] = [];
             data.forEach(item => {
-              if (this.includedOptions.includes(item.id)) {
+              if (includedOptions.includes(item.id)) {
                 toReturn.push({
                   id: item.id,
                   value: item.name,
                   type: 'included'
                 });
-              } else if (this.excludedOptions.includes(item.id)) {
+              } else if (excludedOptions.includes(item.id)) {
                 toReturn.push({
                   id: item.id,
                   value: item.name,
