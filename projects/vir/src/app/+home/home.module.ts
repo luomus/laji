@@ -7,6 +7,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { NavigationThumbnailModule } from '../../../../laji/src/app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
+import { TechnicalNewsModule } from 'projects/laji/src/app/shared-modules/technical-news/technical-news.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { NavigationThumbnailModule } from '../../../../laji/src/app/shared-modul
     LajiUiModule,
     TranslateModule,
     NavigationThumbnailModule,
-    SharedModule
+    SharedModule,
+    TechnicalNewsModule
   ]
 })
 export class HomeModule { }
