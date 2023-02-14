@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from 
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
+import { Util } from '../../shared/service/util.service';
 
 
 export interface SelectedOption {
@@ -83,10 +84,12 @@ export class TreeSelectComponent {
         }
       });
 
-      this.selectedOptionsChange.emit({
-        selectedId: includeToReturn,
-        selectedIdNot: excludeToReturn,
-      });
+      if (!Util.equalsArray(this.includedOptions, includeToReturn) || !Util.equalsArray(this.excludedOptions, excludeToReturn)) {
+        this.selectedOptionsChange.emit({
+          selectedId: includeToReturn,
+          selectedIdNot: excludeToReturn,
+        });
+      }
     });
   }
 
