@@ -44,6 +44,38 @@ export class DateFormComponent implements OnDestroy {
     this.onFormQueryChange();
   }
 
+  get loadedSameOrAfter() {
+    return this.query.loadedSameOrAfter;
+  }
+  set loadedSameOrAfter(v: string | undefined) {
+    this.query.loadedSameOrAfter = v;
+    this.queryChange.emit();
+  }
+
+  get loadedSameOrBefore() {
+    return this.query.loadedSameOrBefore;
+  }
+  set loadedSameOrBefore(v: string | undefined) {
+    this.query.loadedSameOrBefore = v;
+    this.queryChange.emit();
+  }
+
+  get firstLoadedSameOrAfter() {
+    return this.query.firstLoadedSameOrAfter;
+  }
+  set firstLoadedSameOrAfter(v: string | undefined) {
+    this.query.firstLoadedSameOrAfter = v;
+    this.queryChange.emit();
+  }
+
+  get firstLoadedSameOrBefore() {
+    return this.query.firstLoadedSameOrBefore;
+  }
+  set firstLoadedSameOrBefore(v: string | undefined) {
+    this.query.firstLoadedSameOrBefore = v;
+    this.queryChange.emit();
+  }
+
   get xDaysAgo() {
     return isRelativeDate(this.formQuery.timeStart) ? Math.abs(parseInt(this.formQuery.timeStart, 10)) : undefined;
   }
@@ -57,10 +89,6 @@ export class DateFormComponent implements OnDestroy {
 
   onFormQueryChange() {
     this.formQueryChange.emit();
-  }
-
-  onQueryChange() {
-    this.queryChange.emit();
   }
 
   updateSearchQuery(field, value) {
