@@ -1132,7 +1132,6 @@
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
   "observation.active.alive": "Elossa",
-  "observation.form.alive": "Elossa",
   "observation.form.alive.true": "On elossa",
   "observation.form.alive.false": "Ei ole elossa",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
