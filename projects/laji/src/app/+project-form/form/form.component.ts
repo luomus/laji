@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {map, switchMap, take} from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
