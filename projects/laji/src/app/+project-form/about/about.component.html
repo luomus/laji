@@ -1,6 +1,6 @@
 <laji-technical-news></laji-technical-news>
 
-<div *ngIf="aboutData$ | async as data" lajiFormOption="mobile dataset about collectionID options.disableRequestDescription">
+<div *ngIf="aboutData$ | async as data" lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
     <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
       <laji-project-form-header [form]="data.form"

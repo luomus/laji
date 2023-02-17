@@ -108,7 +108,7 @@ export class FormComponent implements OnInit {
       if (this.router.url.match(/\/link$/)) {
         route.push('link');
       }
-      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(rootRoute =>
+      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(rootRoute =>
         this.router.navigate(route, {relativeTo: rootRoute.parent, replaceUrl: true})
       );
       return true;

@@ -49,10 +49,10 @@ export class ProjectFormService {
   public remountLajiForm$ = new Subject<void>();
 
   getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
-    return this.getFormID(route).pipe(switchMap(formID => this.getForm(formID)));
+    return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
   }
 
-  getForm(id: string): Observable<Form.SchemaForm> {
+  getForm$(id: string): Observable<Form.SchemaForm> {
     if (this.currentFormID === id) {
       return this.form$;
     }
@@ -89,18 +89,18 @@ export class ProjectFormService {
     );
   }
 
-  getProjectRootRoute(route: ActivatedRoute): Observable<ActivatedRoute> {
+  getProjectRootRoute$(route: ActivatedRoute): Observable<ActivatedRoute> {
     return route.params.pipe(switchMap(params => {
       const formID = params['projectID'];
       if (!formID) {
-        return this.getProjectRootRoute(route.parent);
+        return this.getProjectRootRoute$(route.parent);
       }
       return of(route);
     }));
   }
 
   getFormID(route: ActivatedRoute): Observable<string> {
-    return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
+    return this.getProjectRootRoute$(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
   getExcelFormIDs(projectForm: ProjectForm): string[] {

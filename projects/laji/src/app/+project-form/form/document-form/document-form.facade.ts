@@ -118,7 +118,7 @@ export class DocumentFormFacade {
     const isSane = filter(<T>(f: T | FormError): f is T => !isFormError(f));
 
     const form$: Observable<Form.SchemaForm | FormError> = combineLatest([formID$, template$]).pipe(
-      switchMap(([formID, template]) => this.projectFormService.getForm(formID).pipe(
+      switchMap(([formID, template]) => this.projectFormService.getForm$(formID).pipe(
         switchMap(form => template && !form.options?.allowTemplate
           ? of(FormError.templateDisallowed)
           : this.formPermissionService.getRights(form).pipe(map(rights =>

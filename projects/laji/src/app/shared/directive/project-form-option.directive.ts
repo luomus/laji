@@ -35,10 +35,10 @@ export class ProjectFormOptionDirective {
   }
 }
 
-function singleFormOptionToClassName(o: string) {
+function singleFormOptionToClassName(o: string): string {
   return `laji-form-option-${o.replace(/\./g, '-')}`;
 }
 
-export function formOptionToClassName(o: string) {
+export function formOptionToClassName(o: string): string {
   return o.split(' ').map(singleFormOptionToClassName).join(' ');
 }

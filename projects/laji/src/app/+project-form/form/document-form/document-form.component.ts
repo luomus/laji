@@ -109,7 +109,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.browserService.goBack(() => {
-      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
+      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
         const page = this.vm.form.options?.resultServiceType
           ? 'stats'
           : this.vm.form.options?.mobile
