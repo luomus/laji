@@ -37,6 +37,8 @@ export class CheckLangService {
       }
     });
 
-    this.translationChecklist[index].groups.push({ id, values: tmpArray });
+    const hasTranslatedContent = !(tmpArray.indexOf(false) === -1);
+
+    this.translationChecklist[index].groups.push({ id, values: tmpArray, hasTranslatedContent });
   }
 }
