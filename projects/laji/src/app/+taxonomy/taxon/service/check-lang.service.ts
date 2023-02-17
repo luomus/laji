@@ -28,16 +28,16 @@ export class CheckLangService {
   checkVariableTranslations(item: any, id: string, index: number): void {
     this.currentLang = this.translate.currentLang;
     const tmpArray = [];
+    let hasTranslatedContent = false;
 
     item.variables.forEach(text => {
       if (!text.content[this.currentLang]) {
         tmpArray.push(true); // true, i.e. no content in the currently used language
       } else {
         tmpArray.push(false); // false, i.e. has content in the currently used language
+        if (!hasTranslatedContent) { hasTranslatedContent = true; }
       }
     });
-
-    const hasTranslatedContent = !(tmpArray.indexOf(false) === -1);
 
     this.translationChecklist[index].groups.push({ id, values: tmpArray, hasTranslatedContent });
   }
