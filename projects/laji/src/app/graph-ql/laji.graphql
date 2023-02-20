@@ -1617,6 +1617,7 @@ type Query {
   units(
       administrativeStatusId: [String!],
       aggregateBy: String,
+      alive: Boolean,
       annotated: Boolean,
       anyHabitat: [String!],
       area: [String!],
