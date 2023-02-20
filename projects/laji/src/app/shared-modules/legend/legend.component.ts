@@ -13,6 +13,8 @@ export class LegendComponent<T extends string> implements OnChanges {
   @Input() displayObservationAccuracy = false;
   @Output() modeChange = new EventEmitter<T>();
 
+  hidden = false;
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.visualization?.currentValue) {
       this.mode = <T>Object.keys(this.visualization)[0];
