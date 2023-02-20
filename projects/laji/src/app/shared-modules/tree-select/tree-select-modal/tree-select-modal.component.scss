@@ -1,9 +1,22 @@
 .scrollable-selection-list {
-  max-height: calc(50vh + 20px);
   padding: 10px;
+  flex: 1;
   overflow: auto;
 }
 .vertical-align {
   display: flex;
   align-items: center;
+}
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.flex-container .row {
+  flex-direction: row;
+
+  > * {
+    flex: 0 0 auto;
+  }
 }

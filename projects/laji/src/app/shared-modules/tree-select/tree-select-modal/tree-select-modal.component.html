@@ -9,13 +9,14 @@
   </div>
   <button type="button" class="close" (click)="confirm()">&times;</button>
 </div>
-<div class="modal-body">
-  <div class="container-flex">
+<div class="modal-body flex-container">
+  <div class="flex-container">
     <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
-      <div class="row">
-        <div class="col-md-8">
+      <div class="row flex-container">
+        <div class="col-md-8 flex-container">
           <h5>{{browseTitle}}</h5>
           <laji-tree-selector
+            class="flex-container"
             [selectedOptions]="selectedOptions"
             [optionsTree]="optionsTree"
             [multiselect]="true"
@@ -26,7 +27,7 @@
             (emitSelect)="changeSelected($event)" #treeSelector>
           </laji-tree-selector>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 flex-container">
           <h5>{{selectedTitle}}</h5>
           <div class="scrollable-selection-list">
             <laji-selected-tree-nodes

@@ -14,9 +14,9 @@
   filter: brightness(1.1)
 }
 .scrollable-tree {
-  height: 75vh;
   padding: 10px;
-  overflow: hidden;
+  flex: 1;
+  overflow: auto;
 }
 .quality-image {
   float: left;
