@@ -129,7 +129,7 @@ describe('Project form when logged in', () => {
       });
 
       it('change filters places', async (done) => {
-        const namedPlacesListCount = projectFormPage.namedPlacesView.$$listItems.count();
+        const namedPlacesListCount = await projectFormPage.namedPlacesView.$$listItems.count();
         expect(await projectFormPage.namedPlacesView.municipalityFilter.$select.isDisplayed()).toBe(true, 'not displayed');
         await projectFormPage.namedPlacesView.municipalityFilter.selectByIdx(1);
         expect(await projectFormPage.namedPlacesView.$$listItems.count()).not.toBe(namedPlacesListCount);
@@ -149,7 +149,7 @@ describe('Project form when logged in', () => {
       });
 
       it('change filters places', async (done) => {
-        const namedPlacesListCount = projectFormPage.namedPlacesView.$$listItems.count();
+        const namedPlacesListCount = await projectFormPage.namedPlacesView.$$listItems.count();
         expect(await projectFormPage.namedPlacesView.birdAssociationAreaFilter.$select.isDisplayed()).toBe(true, 'not displayed');
         await projectFormPage.namedPlacesView.birdAssociationAreaFilter.selectByIdx(1);
         expect(await projectFormPage.namedPlacesView.$$listItems.count()).not.toBe(namedPlacesListCount);
