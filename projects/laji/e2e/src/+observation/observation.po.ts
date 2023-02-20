@@ -170,7 +170,7 @@ export class ObservationPage {
   }
 
   async hasPolygonFilter() {
-    return !!(await this.getPolygonFilter())?.match(/^\d+:(0|1)(\.\d)?$/);
+    return !!(await this.getPolygonFilter())?.match(/^\d+$/);
   }
 
   async getPolygonIntersect() {
