@@ -767,6 +767,25 @@ body > .ui-select-bootstrap.open {
 @media only screen and (min-width : 768px) {
   .modal-dialog {
     margin: 60px auto 30px auto;
+    height: calc(100% - 90px);
+
+    .modal-content {
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      > *:not(.modal-header, .modal-body, .modal-footer) {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .modal-body {
+        flex: 1;
+        overflow: scroll;
+      }
+    }
   }
 }
 
