@@ -40,6 +40,8 @@ export class TabsComponent implements AfterContentInit, OnDestroy {
     return this._tabComponents;
   }
 
+  @Input() class: string;
+
   @Output() selectedChange = new EventEmitter<number>();
 
   private _selectedIndex = 0;

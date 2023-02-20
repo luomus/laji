@@ -2,13 +2,13 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Form } from '../../shared/model/Form';
 import ResultServiceType = Form.ResultServiceType;
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'laji-result-service',
   template: `
-    <div [ngSwitch]="(form$ | async).options?.resultServiceType">
+    <div [ngSwitch]="(form$ | async).options?.resultServiceType" lajiFormOption="options.resultServiceType">
       <div *ngSwitchCase="ResultServiceType.winterbirdCount">
         <laji-wbc-result [form]="form$ | async"></laji-wbc-result>
       </div>

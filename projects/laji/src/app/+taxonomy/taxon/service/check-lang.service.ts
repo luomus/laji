@@ -1,77 +1,44 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { TaxonomyDescription } from '../../../shared/model/Taxonomy';
 
 @Injectable()
 export class CheckLangService {
 
   static readonly lang = ['en', 'fi', 'sv'];
   public currentLang: any;
-  public value: any;
-  public count: number;
-  public checktranslation: any[];
-  public ylestaIndex: number;
-  public infoIndex: number;
+  public translationChecklist: any[];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) { }
 
- public checkValue(info: any): any {
-  this.checktranslation = [];
-    info.forEach((item, index) => {
-      this.checktranslation.push({id: item.id, groups: [], totalVisible: undefined});
+  // creates a list of groups, where each variable is given a value depending on whether it has content in the used language
+  // true value means that the variable doesn't have content in the currently used language
+  public createTranslationChecklist(taxonDescription: TaxonomyDescription[]): any {
+    this.translationChecklist = [];
+    taxonDescription.forEach((item, index) => {
+      this.translationChecklist.push({ id: item.id, groups: [] });
       (item.groups || []).forEach(group => {
-        this.translationExist(group, group.group, index);
+        this.checkVariableTranslations(group, group.group, index);
       });
     });
 
-    this.checkGeneralGroup(this.checktranslation);
-
-    return this.checktranslation;
+    return this.translationChecklist;
   }
 
-  translationExist(item: any, id: string, index: number): boolean {
+  checkVariableTranslations(item: any, id: string, index: number): void {
     this.currentLang = this.translate.currentLang;
     const tmpArray = [];
+    let hasTranslatedContent = false;
 
     item.variables.forEach(text => {
       if (!text.content[this.currentLang]) {
-        tmpArray.push(true);
+        tmpArray.push(true); // true, i.e. no content in the currently used language
       } else {
-        tmpArray.push(false);
+        tmpArray.push(false); // false, i.e. has content in the currently used language
+        if (!hasTranslatedContent) { hasTranslatedContent = true; }
       }
     });
 
-    this.checktranslation[index].groups.push({id, values: tmpArray, checkYlesta: false});
-
-    if (tmpArray.filter(x => x === false).length > 0) {
-      return this.checktranslation[index].totalVisible = true;
-    } else {
-      return this.checktranslation[index].totalVisible = false;
-    }
-
+    this.translationChecklist[index].groups.push({ id, values: tmpArray, hasTranslatedContent });
   }
-
-  checkGeneralGroup(data: any): any {
-
-    data.forEach((item, i) => {
-      this.ylestaIndex = undefined;
-      this.infoIndex = undefined;
-      item.groups.forEach((element, index) => {
-        if (element.id === 'MX.SDVG8') {
-          this.ylestaIndex = index;
-        }
-        if (element.id === 'MX.SDVG1') {
-          this.infoIndex = index;
-        }
-      });
-
-      if (this.ylestaIndex >= 0 && this.infoIndex >= 0) {
-        if (data[i].groups[this.ylestaIndex].values.includes(false) && data[i].groups[this.infoIndex].values.includes(true)) {
-          data[i].groups[this.infoIndex].checkYlesta = true;
-        }
-      }
-    });
-
-  }
-
-
 }

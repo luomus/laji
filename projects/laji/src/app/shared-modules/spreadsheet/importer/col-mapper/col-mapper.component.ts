@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { IFormField, VALUE_IGNORE } from '../../model/excel';
+import { DELETE_FIELD, IFormField, VALUE_IGNORE } from '../../model/excel';
 
 @Component({
   selector: 'laji-col-mapper',
@@ -84,8 +84,11 @@ export class ColMapperComponent implements OnChanges {
     );
   }
 
-  getMissingRequiredLabels() {
+  getMissingRequiredLabels(): string[] {
     const fields = Object.values(this.colMapping);
+    if (fields.includes(DELETE_FIELD)) {
+      return [];
+    }
     const requiredFields = this.allFields.filter(key => this.fields[key].required);
     return requiredFields.filter(field => !fields.includes(field)).map(key => this.fields[key].fullLabel);
   }

@@ -1,16 +1,22 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { CollectionService } from '../../shared/service/collection.service';
-import { Observable, zip } from 'rxjs';
+import { BehaviorSubject, Observable, zip} from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
+import { Util } from '../../shared/service/util.service';
+
+interface SelectedOptions {
+  includedOptions: string[];
+  excludedOptions: string[];
+}
 
 @Component({
   selector: 'laji-collections-select',
   templateUrl: './collections-select.component.html',
   styleUrls: ['./collections-select.component.scss']
 })
-export class CollectionsSelectComponent implements OnChanges {
+export class CollectionsSelectComponent implements OnInit, OnChanges {
   @Input() title: string;
   @Input() query: Record<string, any>;
   @Input() info: string;
@@ -28,18 +34,38 @@ export class CollectionsSelectComponent implements OnChanges {
     collectionIdNot?: string[];
   }>();
 
-  collectionsTree$: Observable<TreeOptionsNode[]> = null;
-  collections$: Observable<SelectedOption[]> = null;
+  collectionsTree$: Observable<TreeOptionsNode[]>;
+  collections$: Observable<SelectedOption[]>;
 
-  lang: string;
-  includedOptions: string[] = [];
-  excludedOptions: string[] = [];
+  selectedOptions$: Observable<SelectedOptions>;
+  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
+    includedOptions: [],
+    excludedOptions: []
+  });
+
+  private filterQuery$: Record<string, any>|undefined;
+  private filterQuerySubject = new BehaviorSubject<Record<string, any>|undefined>(undefined);
 
   constructor(
     private collectionService: CollectionService,
     private translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
+      distinctUntilChanged((a, b) =>
+        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
+      )
+    );
+    this.filterQuery$ = this.filterQuerySubject.asObservable().pipe(
+      distinctUntilChanged((a, b) =>
+        JSON.stringify(a) === JSON.stringify(b)
+      )
+    );
+  }
+
+  ngOnInit() {
+    const lang = this.translate.currentLang;
+    this.collections$ = this.initCollections(lang);
+    this.collectionsTree$ = this.initCollectionsTree();
   }
 
   ngOnChanges() {
@@ -47,11 +73,13 @@ export class CollectionsSelectComponent implements OnChanges {
       this.open = true;
     }
 
-    this.includedOptions = this.query?.collectionId || [];
-    this.excludedOptions = this.query?.collectionIdNot || [];
+    this.selectedOptionsSubject.next({
+      includedOptions: this.query?.collectionId || [],
+      excludedOptions: this.query?.collectionIdNot || []
+    });
 
-    this.collectionsTree$ = this.initCollectionsTree();
-    this.collections$ = this.initCollections();
+    const { collectionId, collectionIdNot, ...query } = this.query;
+    this.filterQuerySubject.next(query);
   }
 
   toggle(event) {
@@ -69,14 +97,19 @@ export class CollectionsSelectComponent implements OnChanges {
   }
 
   initCollectionsTree() {
-    const { collectionId, collectionIdNot, ...query } = this.query;
+    const tree$ = this.collectionService.getCollectionsTree$().pipe(shareReplay(1));
+    const aggregate$ = this.collectionService.getCollectionsAggregate$().pipe(shareReplay(1));
 
-    return zip(
-      this.collectionService.getCollectionsTree$(),
-      this.collectionService.getCollectionsAggregate$(),
-      this.collectionService.getCollectionsAggregate$(query)
-    ).pipe(
-      map(([ tree, allAgregates, filteredAggragates ]) => this.buildCollectionTree(tree, allAgregates, filteredAggragates))
+    return this.filterQuery$.pipe(
+      switchMap(query =>
+        zip(
+          tree$,
+          aggregate$,
+          this.collectionService.getCollectionsAggregate$(query)
+        ).pipe(
+          map(([ tree, allAgregates, filteredAggragates ]) => this.buildCollectionTree(tree, allAgregates, filteredAggragates))
+        )
+      )
     );
   }
 
@@ -138,25 +171,29 @@ export class CollectionsSelectComponent implements OnChanges {
     return undefined;
   }
 
-  initCollections(): Observable<SelectedOption[]> {
-    return this.collectionService.getAll$(this.lang, false).pipe(
-      map(data => {
-        const toReturn: SelectedOption[] = [];
-        data.forEach(item => {
-          if (this.includedOptions.includes(item.id)) {
-            toReturn.push({
-              ...item,
-              type: 'included'
-            });
-          } else if (this.excludedOptions.includes(item.id)) {
-            toReturn.push({
-              ...item,
-              type: 'excluded'
-            });
-          }
-        });
-        return toReturn;
-      })
+  initCollections(lang: string): Observable<SelectedOption[]> {
+    const allCollections$ = this.collectionService.getAll$(lang, false).pipe(shareReplay(1));
+
+    return this.selectedOptions$.pipe(
+      switchMap(selected => allCollections$.pipe(
+        map(data => {
+          const toReturn: SelectedOption[] = [];
+          data.forEach(item => {
+            if (selected.includedOptions.includes(item.id)) {
+              toReturn.push({
+                ...item,
+                type: 'included'
+              });
+            } else if (selected.excludedOptions.includes(item.id)) {
+              toReturn.push({
+                ...item,
+                type: 'excluded'
+              });
+            }
+          });
+          return toReturn;
+        })
+      ))
     );
   }
 }

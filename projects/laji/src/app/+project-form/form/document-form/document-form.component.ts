@@ -4,7 +4,6 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { BrowserService } from '../../../shared/service/browser.service';
-import { ProjectFormService } from '../../project-form.service';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -16,6 +15,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
 import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
 import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewModel, ViewModel } from './document-form.facade';
+import { ProjectFormService } from '../../../shared/service/project-form.service';
 
 @Component({
   selector: 'laji-document-form',
@@ -109,7 +109,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       return;
     }
     this.browserService.goBack(() => {
-      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(projectRoute => {
+      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(projectRoute => {
         const page = this.vm.form.options?.resultServiceType
           ? 'stats'
           : this.vm.form.options?.mobile

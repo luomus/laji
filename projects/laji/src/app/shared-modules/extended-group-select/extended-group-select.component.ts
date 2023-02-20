@@ -1,20 +1,25 @@
 /* tslint:disable:no-use-before-declare */
-import { map } from 'rxjs/operators';
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, Output, Directive, OnInit } from '@angular/core';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
+import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../../shared/model/Group';
 import { PagedResult } from '../../shared/model/PagedResult';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
+import { Util } from '../../shared/service/util.service';
 
 export interface InformalGroupEvent {
   [key: string]: string[];
 }
+interface SelectedOptions {
+  includedOptions: string[];
+  excludedOptions: string[];
+}
 
 @Directive()
-export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnChanges {
+export abstract class ExtendedGroupSelectComponent<T extends Group> implements OnInit, OnChanges {
   @Input() query: Record<string, any>;
   @Input() modalButtonLabel = '';
   @Input() modalTitle = '';
@@ -27,34 +32,38 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() select = new EventEmitter<InformalGroupEvent>();
 
-  lang: string;
-  includedOptions: string[] = [];
-  excludedOptions: string[] = [];
   redList = false;
 
-  public groups: InformalTaxonGroup[] = [];
-  public activeGroup: InformalTaxonGroup;
-  public open = false;
-  public currentValue: string;
-  public label = '';
-  protected subLabel: any;
+  groupsTree$: Observable<TreeOptionsNode[]>;
+  groups$: Observable<SelectedOption[]>;
 
-  groupsTree$: Observable<TreeOptionsNode[]> = null;
-  groups$: Observable<SelectedOption[]> = null;
+  selectedOptions$: Observable<SelectedOptions>;
+  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
+    includedOptions: [],
+    excludedOptions: []
+  });
 
   protected constructor(
     protected cd: ChangeDetectorRef,
     protected logger: Logger,
     protected translate: TranslateService
   ) {
-    this.lang = this.translate.currentLang;
+    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
+      distinctUntilChanged((a, b) =>
+        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
+      )
+    );
+  }
+
+  ngOnInit() {
+    const lang = this.translate.currentLang;
+    this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
+    this.groups$ = this.initSelectionGroups(lang);
   }
 
   ngOnChanges() {
-    [ this.includedOptions, this.excludedOptions ] = this.getOptions(this.query);
-
-    this.groupsTree$ = this.initGroupTree();
-    this.groups$ = this.initSelectionGroups();
+    const [ includedOptions, excludedOptions ] = this.getOptions(this.query);
+    this.selectedOptionsSubject.next({ includedOptions, excludedOptions });
   }
 
   abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
@@ -63,8 +72,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   abstract getOptions(query: Record<string, any>): string[][];
   abstract prepareEmit(includedOptions: string[], excludedOptions?: string[]): InformalGroupEvent;
 
-  initGroupTree(): Observable<TreeOptionsNode[]> {
-    return this.getTree(this.lang).pipe(
+  initGroupTree(lang: string): Observable<TreeOptionsNode[]> {
+    return this.getTree(lang).pipe(
       map((data) => data.results),
       map((trees) => this.buildGroupTree(trees))
     );
@@ -101,37 +110,42 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     }
   }
 
-  initSelectionGroups(): Observable<SelectedOption[]> {
-    const selectedGroups = this.includedOptions.concat(this.excludedOptions);
+  initSelectionGroups(lang: string): Observable<SelectedOption[]> {
+    return this.selectedOptions$.pipe(switchMap(selected => {
+      const includedOptions = selected.includedOptions;
+      const excludedOptions = selected.excludedOptions;
+      const selectedGroups = includedOptions.concat(excludedOptions);
 
-    return this.findByIds(selectedGroups, this.lang).pipe(
-      map(data => data.results),
-      map(data => {
-        const toReturn: SelectedOption[] = [];
-        data.forEach(item => {
-          if (this.includedOptions.includes(item.id)) {
-            toReturn.push({
-              id: item.id,
-              value: item.name,
-              type: 'included'
+      if (selectedGroups.length === 0) {
+        return of([]);
+      } else {
+        return this.findByIds(selectedGroups, lang).pipe(
+          map(data => data.results),
+          map(data => {
+            const toReturn: SelectedOption[] = [];
+            data.forEach(item => {
+              if (includedOptions.includes(item.id)) {
+                toReturn.push({
+                  id: item.id,
+                  value: item.name,
+                  type: 'included'
+                });
+              } else if (excludedOptions.includes(item.id)) {
+                toReturn.push({
+                  id: item.id,
+                  value: item.name,
+                  type: 'excluded'
+                });
+              }
             });
-          } else if (this.excludedOptions.includes(item.id)) {
-            toReturn.push({
-              id: item.id,
-              value: item.name,
-              type: 'excluded'
-            });
-          }
-        });
-        return toReturn;
-      })
-    );
+            return toReturn;
+          })
+        );
+      }
+    }));
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
-    this.includedOptions = $event.selectedId;
-    this.excludedOptions = $event.selectedIdNot;
-
-    this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
+    this.select.emit(this.prepareEmit($event.selectedId, $event.selectedIdNot));
   }
 }

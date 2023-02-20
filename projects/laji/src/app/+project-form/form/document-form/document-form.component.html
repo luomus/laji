@@ -23,7 +23,8 @@
   <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
     <laji-project-form-header *ngIf="!vm.form.options?.mobile"
                               [form]="vm.form"
-                              [description]="vm.form.description">
+                              [description]="vm.form.description"
+                              lajiFormOption="description logo title options.hideTES">
     <laji-own-submissions *ngIf="vm.namedPlace && vm.form.options?.displayOwnSubmissions"
            [actions]="vm.isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
            [columns]="['dateObserved', 'observer', 'dateEdited']"

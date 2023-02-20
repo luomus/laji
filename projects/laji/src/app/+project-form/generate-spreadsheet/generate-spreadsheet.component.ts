@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { map } from 'rxjs/operators';
 
 @Component({
