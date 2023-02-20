@@ -155,7 +155,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId',
     'taxonAdminFiltersOperator',
     'collectionAndRecordQuality',
-    'featureType'
+    'featureType',
+    'polygonId'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -286,7 +287,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQuery(result, query: WarehouseQueryInterface) {
-    ['coordinates', 'polygonId'].forEach(key => {
+    ['coordinates'].forEach(key => {
       if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
         result[key] += ':' + query._coordinatesIntersection / 100;
       }

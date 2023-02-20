@@ -25,3 +25,5 @@ export type LajiMapDataOptions = LajiMap.DataOptions;
 export type LajiMapTileLayersOptions = LajiMap.TileLayersOptions;
 
 export type LajiMapDrawEvent = LajiMap.LajiMapEvent;
+
+export const Rectangle = L.Rectangle;

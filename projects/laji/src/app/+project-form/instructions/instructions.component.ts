@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute } from '@angular/router';
 import { MultiLanguage } from '../../../../../laji-api-client/src/lib/models';
 
 @Component({
   template: `
-    <laji-info-page [page]="instructions$ | async | multiLang: true:undefined:'%value%'"></laji-info-page>`,
+    <laji-info-page [page]="instructions$ | async | multiLang: true:undefined:'%value%'" lajiFormOption="options.instructions"></laji-info-page>`,
   selector: 'laji-instructions'
 })
 export class InstructionsComponent implements OnInit {

@@ -5,9 +5,10 @@
                   [open]="(showNav$ | async)"
                   [noPrint]="isPrintPage$ | async"
                   [staticWidth]="300"
-                  (toggled)="navBarToggled($event)">
+                  (toggled)="navBarToggled($event)"
+                  [class]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
         <nav>
-          <h5>
+          <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
             <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>
             <small *ngIf="vm.form.options?.secondaryCopy"><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
           </h5>
@@ -57,7 +58,8 @@
                    [link]="link.link | localize"
                    routerLinkActive [linkParams]="link.linkParams"
                    [active]="link.active"
-                   (clicked)="clickedSidebarLink()">
+                   (clicked)="clickedSidebarLink()"
+                   [lajiFormOption]="link.lajiFormOption">
     {{ link.label | translate }}
     <ng-container [ngSwitch]="link.content?.template">
       <ng-container *ngSwitchCase="'badge'">

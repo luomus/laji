@@ -14,7 +14,7 @@ import { DialogService } from '../../../../shared/service/dialog.service';
 import { UserService } from '../../../../shared/service/user.service';
 import { FooterService } from '../../../../shared/service/footer.service';
 import { NamedPlaceQuery } from '../../../../shared/api/NamedPlaceApi';
-import { ProjectFormService } from '../../../project-form.service';
+import { ProjectFormService } from '../../../../shared/service/project-form.service';
 import { NpInfoComponent } from '../np-info/np-info.component';
 import { FormService } from '../../../../shared/service/form.service';
 
@@ -30,9 +30,6 @@ interface DerivedFromInput {
   tags?: string[];
   activeNP?: NamedPlace;
   description?: string;
-  filterByBirdAssociationArea: boolean;
-  filterByMunicipality: boolean;
-  filterByTags: boolean;
   allowEdit: boolean;
   mapOptionsData: any;
   showMap: boolean;
@@ -187,9 +184,6 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           tags,
           activeNP,
           description: documentForm.options?.namedPlaceOptions?.chooseDescription ?? 'np.defaultDescription',
-          filterByBirdAssociationArea: documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea,
-          filterByMunicipality: documentForm?.options?.namedPlaceOptions?.filterByMunicipality,
-          filterByTags: documentForm?.options?.namedPlaceOptions?.filterByTags,
           allowEdit: (documentForm?.options?.namedPlaceOptions?.allowAddingPublic || formRights.admin) && !this.readonly,
           mapOptionsData: NamedPlaceComponent.getMapOptions(documentForm),
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab

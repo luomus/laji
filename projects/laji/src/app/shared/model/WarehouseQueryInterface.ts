@@ -248,6 +248,7 @@ export interface WarehouseQueryInterface {
   identificationBasis?: Array<string>;
   samplingMethod?: Array<string>;
   higherTaxon?: boolean;
+  polygonId?: string;
 }
 
 
