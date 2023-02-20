@@ -3,7 +3,7 @@
     {{modalButtonLabel}}
   </lu-button>
   <ng-container *ngIf='includedOptions?.length !== 0 || excludedOptions?.length !== 0'>
-    <ng-container *ngIf='options; else loading'>
+    <ng-container *ngIf='options?.length > 0; else loading'>
       <laji-selected-tree-nodes
         [selectedOptions]='options'
         [includedTitle]="includedTitle"

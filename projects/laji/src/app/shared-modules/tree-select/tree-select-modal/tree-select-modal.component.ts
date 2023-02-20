@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TreeOptionsNode, SelectedOption } from '../tree-select.component';
 import { TreeSelectorComponent } from '../tree-selector/tree-selector.component';
 
@@ -12,7 +12,7 @@ import { TreeSelectorComponent } from '../tree-selector/tree-selector.component'
 })
 
 export class TreeSelectModalComponent {
-  @Input() selectedOptions$: SelectedOption[];
+  @Input() selectedOptions: SelectedOption[];
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
   @Input() modalTitle: string;
   @Input() browseTitle: string;
@@ -25,8 +25,6 @@ export class TreeSelectModalComponent {
   @Input() includeLink: boolean;
   @ViewChild('treeSelector') treeSelectorComponent: TreeSelectorComponent;
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
-
-  selectedOptions: SelectedOption[];
 
   constructor(
     private modalRef: BsModalRef,
