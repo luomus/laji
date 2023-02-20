@@ -20,15 +20,16 @@
 
   <ng-template #contentTemplate let-isModal="isModal">
     <div class="np-info">
-      <div class="d-flex flex-row justify-between items-end mb-4 np-info-header">
+      <div class="d-flex flex-row justify-between items-end mb-4 np-info-header"
+           lajiFormOption="options.namedPlaceOptions.allowAddingPublic options.printType options.namedPlaceOptions.printLabel">
         <h3 [tooltip]="'MNP.name' | label">{{ namedPlace?.name }}</h3>
-        <div *ngIf="documentForm.options?.printType || (allowEdit && editButtonVisible)">
+        <div *ngIf="documentForm.options?.printType || (allowEdit && editButtonVisible)" lajiFormOption="options.printType options.namedPlaceOptions.printLabel">
           <span *ngIf="documentForm.options?.printType">
             <a class="btn btn-sm btn-default"
                 target="_blank"
                 [routerLink]="['./', namedPlace.id, 'print'] | localize">{{ documentForm.options?.namedPlaceOptions?.printLabel || 'np.print' | translate }}</a>
           </span>
-          <ng-container *ngIf="allowEdit && editButtonVisible">
+          <ng-container *ngIf="allowEdit && editButtonVisible" lajiFormOption="options.namedPlaceOptions.allowAddingPublic">
             <lu-button (click)="editClick()" id="np-edit">{{ 'np.edit' | translate }}</lu-button>
             <div class="d-inline-block">
               <lu-button (click)="deleteClick()" [disabled]="!canDelete" id="np-delete">{{ 'np.delete' | translate }}</lu-button>
@@ -40,11 +41,14 @@
       <fieldset>
         <laji-np-info-map [visible]="(isModal && modalIsVisible) || $any(infoBox)?.nativeElement?.offsetParent !== null"
                           [namedPlace]="namedPlace"></laji-np-info-map>
-        <ng-container *ngFor="let i of listItems">
+        <div *ngFor="let i of listItems" lajiFormOption="options.namedPlaceOptions.infoFields">
           <laji-np-info-row class="d-block mb-3" [title]="i.title" [value]="i.value" [pipe]="i.pipe"></laji-np-info-row>
-        </ng-container>
+        </div>
         <ng-container *ngIf="namedPlace?.prepopulatedDocument?.gatheringEvent?.dateBegin">
-          <laji-np-info-row class="d-block mb-3" [title]="documentForm.options?.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate" [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
+          <laji-np-info-row class="d-block mb-3"
+                            [title]="documentForm.options?.namedPlaceOptions?.lastCensusLabel || 'lastCensus' | translate"
+                            lajiFormOption="documentForm.options.namedPlaceOptions.lastCensusLabel"
+                            [value]="namedPlace.prepopulatedDocument.gatheringEvent.dateBegin"></laji-np-info-row>
         </ng-container>
         <div *lajiLoggedIn="false" style="margin-top: 20px;">
           <strong>
@@ -56,17 +60,22 @@
             </ng-template>
           </strong>
         </div>
-        <div *lajiLoggedIn="true" class="button-container" [ngSwitch]="useButton">
+        <div *lajiLoggedIn="true" class="button-container" [ngSwitch]="useButton"
+             lajiFormOption="options.namedPlaceOptions.reservationUntil options.namedPlaceOptions.useLabel options.namedPlaceOptions.releaseLabel options.namedPlaceOptions.reservableLabel">
           <ng-container *ngSwitchCase="'usable'">
             <div class="row-container">
-              <lu-button [role]="'primary'" (click)="useClick()" [disabled]="useDisabled">{{ useLabel || documentForm.options?.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</lu-button>
+              <lu-button [role]="'primary'"
+                         (click)="useClick()"
+                         [disabled]="useDisabled"
+                         lajiFormOption="options.namedPlaceOptions.useLabel"
+              >{{ useLabel || documentForm.options?.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</lu-button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByYou'">
             <div class="row-container">
-              <lu-button [disabled]="loading" (click)="useClick()">
+              <lu-button [disabled]="loading" (click)="useClick()" lajiFormOption="options.namedPlaceOptions.useLabel">
                 {{ documentForm.options?.namedPlaceOptions?.useLabel || 'np.defaultUse' | translate }}</lu-button>
-              <lu-button [disabled]="loading" (click)="releaseButtonClick.emit(namedPlace)">
+              <lu-button [disabled]="loading" (click)="releaseButtonClick.emit(namedPlace)" lajiFormOption="options.namedPlaceOptions.releaseLabel">
                 {{ documentForm.options?.namedPlaceOptions?.releaseLabel || 'np.release' | translate }}</lu-button>
             </div>
           </ng-container>
@@ -77,13 +86,13 @@
           </ng-container>
           <ng-container *ngSwitchCase="'reservable'">
             <div class="row-container">
-              <lu-button [disabled]="loading" (click)="reserveButtonClick.emit(namedPlace)">
+              <lu-button [disabled]="loading" (click)="reserveButtonClick.emit(namedPlace)" lajiFormOption="options.namedPlaceOptions.reservableLabel">
                 {{ documentForm.options?.namedPlaceOptions?.reservableLabel || 'np.reserve' | translate }}</lu-button>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="'reservedByOther'">
             <div class="row-container">
-              <lu-button [disabled]="true">
+              <lu-button [disabled]="true" lajiFormOption="options.namedPlaceOptions.reservedLabel">
                 {{ documentForm.options?.namedPlaceOptions?.reservedLabel || 'np.reserved' | translate }}</lu-button>
               <ng-container *ngIf="formRights.admin">
                 <div class="key">
@@ -92,19 +101,22 @@
                 <div class="value">
                   {{ namedPlace.reserve.reserver | label }}
                 </div>
-                <lu-button [disabled]="loading" (click)="releaseButtonClick.emit(namedPlace)">
+                <lu-button [disabled]="loading" (click)="releaseButtonClick.emit(namedPlace)" lajiFormOption="options.namedPlaceOptions.releaseLabel">
                   {{ documentForm.options?.namedPlaceOptions?.releaseLabel || 'np.release' | translate }} (admin)</lu-button>
               </ng-container>
             </div>
           </ng-container>
         </div>
-        <div *ngIf="formRights.admin && documentForm.options?.namedPlaceOptions?.adminShowCopyLink" class="button-container">
+        <div *ngIf="formRights.admin && documentForm.options?.namedPlaceOptions?.adminShowCopyLink"
+             lajiFormOption="options.namedPlaceOptions.adminShowCopyLink"
+             class="button-container">
           <div class="row-container">
             <lu-button (click)="copyLink()">{{ 'np.copyAddress' | translate }}</lu-button>
           </div>
 	      </div>
       </fieldset>
-      <div class="own-submissions-container" *lajiLoggedIn="true">
+      <div class="own-submissions-container" *lajiLoggedIn="true"
+      lajiFormOption="options.namedPlaceOptions.earlierLabel options.namedPlaceOptions.myEarlierLabel">
         <strong>{{
 		        formRights.admin
 		          ? documentForm.options?.namedPlaceOptions?.earlierLabel || ('np.earlier' | translate)
@@ -114,6 +126,7 @@
           [actions]="formRights.admin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
           [columns]="['dateObserved', 'observer', 'dateEdited']"
           [columnNameMapping]="documentForm?.options?.namedPlaceOptions?.listColumnNameMapping"
+          lajiFormOption="options.namedPlaceOptions.listColumnNameMapping"
           [collectionID]="documentForm.collectionID"
           [formID]="documentForm.id"
           [namedPlace]="namedPlace.id"

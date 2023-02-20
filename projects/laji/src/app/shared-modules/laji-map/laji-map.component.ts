@@ -22,7 +22,6 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-import L from 'leaflet';
 
 @Component({
   selector: 'laji-map',
@@ -204,7 +203,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   drawToMap(type: string) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
-    } else if (['Rectangle'].includes(type)) {
+    } else if (type === 'CoordinatesImport') {
+      this.map.openDrawUploadDialog();
+    } else if (['Rectangle', 'Polygon'].includes(type)) {
       this.map.triggerDrawing(type);
     }
   }

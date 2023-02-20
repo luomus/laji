@@ -6,7 +6,7 @@ import { filter, map, mergeMap, startWith, switchMap, take } from 'rxjs/operator
 import { combineLatest, merge, Observable, of, Subscription, Subject, BehaviorSubject, forkJoin } from 'rxjs';
 import { UserService } from '../shared/service/user.service'; import { Document } from '../shared/model/Document';
 import { DocumentViewerFacade } from '../shared-modules/document-viewer/document-viewer.facade';
-import { ProjectForm, ProjectFormService } from './project-form.service';
+import { ProjectForm, ProjectFormService } from '../shared/service/project-form.service';
 import { FormPermissionService, Rights } from '../shared/service/form-permission.service';
 import { FormPermission } from '../shared/model/FormPermission';
 import { BrowserService } from '../shared/service/browser.service';
@@ -14,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import ResultServiceType = Form.ResultServiceType;
+import { formOptionToClassName } from '../shared/directive/project-form-option.directive';
 
 interface ViewModel {
   navLinks: NavLink[];
@@ -41,6 +42,7 @@ interface NavLink {
   children?: NavLink[];
   content?: BadgeTemplate;
   active?: boolean;
+  lajiFormOption?: string;
 }
 
 interface BadgeTemplate {
@@ -77,6 +79,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
   isViewModel = isViewModel;
   isNotFoundViewModel = isNotFoundViewModel;
+
+  formOptionToClassName = formOptionToClassName;
 
   private titleSubscription: Subscription;
 
@@ -133,7 +137,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       || !_form.options?.useNamedPlaces && rights.edit
     ).map(_form => ({
       link:  [`form${(_form === form && !_subForms.length) ? '' : `/${_form.id}`}`],
-      label: _form.options?.sidebarFormLabel || 'nafi.form'
+      label: _form.options?.sidebarFormLabel || 'nafi.form',
+      lajiFormOption: 'options.sidebarFormLabel'
     }));
   }
 
@@ -235,29 +240,35 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       },
       rights.edit && form.options?.instructions && {
         link: ['instructions'],
-        label: 'instructions'
+        label: 'instructions',
+        lajiFormOption: 'options.instructions'
       },
       form.options?.resultServiceType && {
         link: ['stats'],
         label: 'nafi.stats',
-        children: ProjectFormComponent.getResultServiceRoutes(form.options?.resultServiceType, queryParams)
+        children: ProjectFormComponent.getResultServiceRoutes(form.options?.resultServiceType, queryParams),
+        lajiFormOption: 'options.resultServiceType'
       },
       ...ProjectFormComponent.getFormRoutes(form, subForms, rights),
       rights.edit && allowExcel && {
         link: ['import'],
         label: 'excel.import',
+        lajiFormOption: 'options.allowExcel'
       },
       rights.edit && allowExcel && {
         link: ['generate'],
-        label: 'excel.generate'
+        label: 'excel.generate',
+        lajiFormOption: 'options.allowExcel'
       },
       rights.edit && !form.options?.secondaryCopy && {
         link: ['submissions'],
-        label: this.projectFormService.getSubmissionsPageTitle(form, rights.admin)
+        label: this.projectFormService.getSubmissionsPageTitle(form, rights.admin),
+        lajiFormOption: 'options.secondaryCopy'
       },
       rights.edit && form.options?.allowTemplate && {
         link: ['templates'],
-        label: 'haseka.templates.title'
+        label: 'haseka.templates.title',
+        lajiFormOption: 'options.allowTemplate'
       },
       (rights.admin || rights.ictAdmin) && form.options?.hasAdmins && {
         link: ['admin'],
@@ -295,7 +306,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             link: ['admin', 'participants'],
             label: 'form.permission.nav.participants'
           },
-        ]
+        ],
+        lajiFormOption: 'options.hasAdmins'
       }
     ].filter(n => n);
   }

@@ -1658,6 +1658,8 @@ type Query {
       hasUnitAudio: Boolean,
       hasUnitImages: Boolean,
       hasUnitMedia: Boolean,
+      higherTaxon: Boolean,
+      identificationBasis: [String!],
       includeNonValidTaxa: Boolean,
       includeSubCollections: Boolean,
       includeSubTaxa: Boolean,
@@ -1690,6 +1692,7 @@ type Query {
       recordQuality: [String!],
       redListStatusId: [String!],
       reliable: Boolean,
+      samplingMethod: [String!],
       season: String,
       secured: Boolean,
       secureLevel: [String!],
@@ -1702,7 +1705,7 @@ type Query {
       taxonAdminFiltersOperator: String,
       taxonCensus: [String!],
       taxonId: [String!],
-      taxonRankId: String,
+      taxonRankId: [String!],
       teamMemberId: [String!],
       teamMember: [String!],
       time: [String!],
@@ -1724,6 +1727,7 @@ type Query {
       ykj1km: String,
       ykj50kmCenter: String,
       ykj50km: String,
+      polygonId: String,
 	): UnitResponse
   warehouseLabels(id: ID): [WarehouseLabel!]
 }

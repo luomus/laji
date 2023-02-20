@@ -21,7 +21,7 @@ export class LabelPageComponent implements AfterViewInit {
   rows = '';
   backStyle: IPageStyle;
   private _setup: ISetup;
-  private _dim: IPageLayout;
+  _dim: IPageLayout;
 
   @Input() set setup(val: ISetup) {
     this._setup = val;
@@ -46,11 +46,15 @@ export class LabelPageComponent implements AfterViewInit {
     }, 300);
   }
 
-  shouldPrintBorderVertical(idx: number): boolean {
+  shouldPrintBorderVertical(idx: number, backside = false): boolean {
     if (!this._dim) {
       return false;
     }
-    return idx < this._dim.rows;
+    if (!backside) {
+      return idx < this._dim.rows;
+    } else {
+      return idx >= (this._dim.cols - 1) * this._dim.rows;
+    }
   }
 
   shouldPrintBorderHorizontal(idx: number): boolean {

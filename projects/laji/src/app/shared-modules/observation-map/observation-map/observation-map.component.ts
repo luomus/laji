@@ -34,7 +34,7 @@ import {
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { LeafletEvent, PathOptions } from 'leaflet';
-import { Feature, GeoJsonProperties, Geometry, FeatureCollection } from 'geojson';
+import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
 
@@ -49,19 +49,12 @@ interface AggregateQueryResponse {
 }
 
 // Given coordinates in warehouse query format
-// Returns a featureCollection visualizing that set of coordinates
-const getFeatureCollectionFromQueryCoordinates$ = (coordinates: any): Observable<any> => (
+// Returns features visualizing that set of coordinates
+const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Feature<Polygon>[]> => (
   ObservableOf(coordinates
     ? coordinates.map(
-      (coord: any) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
+      (coord: string) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
-  ).pipe(
-    map(
-      features => ({
-        type: 'FeatureCollection',
-        features
-      })
-    )
   )
 );
 
@@ -74,7 +67,11 @@ const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
     html: `<span>${feature.properties.count}</span>`
   });
   icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
-    iconDomElem.style['background-color'] = po2.color + 'A0';
+    const opacityAsHexCode = po2.opacity < 1 ? po2.opacity
+      .toString(16) // Convert to hex.
+      .padEnd(4, '0') // Pad with zeros to fix length.
+      .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
+    iconDomElem.style['background-color'] = po2.color + opacityAsHexCode;
     iconDomElem.style['height'] = '30px';
     iconDomElem.style['width'] = '30px';
     iconDomElem.style['border-radius'] = '100%';
@@ -104,7 +101,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() visible = false;
   @Input() query: any;
-  @Input() opacity = .5;
   // Zoom levels from lowest to highest when to move to more accurate grid.
   @Input() zoomThresholds: number[] = [4, 8, 10, 12, 14];
   // When active zoom threshold level (index in 'zoomThresholds') is below this, the viewport coordinates are added to the query.
@@ -129,6 +125,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set clickBeforeZoomAndPan(clickBeforeZoomAndPan: boolean) {
     this.mapOptions = {...this.mapOptions, clickBeforeZoomAndPan};
   }
+  @Input() set viewLocked(viewLocked: boolean) {
+    this.mapOptions = {...this.mapOptions, viewLocked};
+  }
   @Input() ready = true;
   /**
    * height < 0: fill remaining height in window
@@ -151,6 +150,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     'document.linkings.collectionQuality',
     'gathering.interpretations.coordinateAccuracy'
   ];
+  @Input() noClick = false;
 
   @Output() create = new EventEmitter();
 
@@ -169,13 +169,15 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     featureCollection: {type: 'FeatureCollection', features: []},
     getFeatureStyle: () => ({
       weight: 2,
-      opacity: 1,
-      fillOpacity: 0,
       color: this.selectColor
-    })
+    }),
+    maxFillOpacity: 0
   };
 
   private activeColor = '#6ca31d';
+
+  private opacity = 0.627;
+  private dataVisible = true;
 
   private previousQueryHash = '';
   private boxFeatureCollectionCache = new BoxCache<FeatureCollection>();
@@ -209,7 +211,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       clickBeforeZoomAndPan: true
     };
     if ((environment as any).observationMapOptions) {
-      Object.assign(this.mapOptions, ...(environment as any).observationMapOptions);
+      Object.assign(this.mapOptions, (environment as any).observationMapOptions);
     }
   }
 
@@ -473,10 +475,23 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return query;
   }
 
+  private getFeaturesFromQueryPolygonId(polygonId: string): Observable<Feature[]>{
+    return polygonId
+      ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
+          map(featureCollection => (featureCollection as any).features)
+      )
+      : ObservableOf([]);
+  }
+
   private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
-    return getFeatureCollectionFromQueryCoordinates$(
-      query.coordinates
-    ).pipe(
+    return forkJoin([
+      getFeaturesFromQueryCoordinates$(query.coordinates),
+      this.getFeaturesFromQueryPolygonId(query.polygonId)
+    ]).pipe(
+      map(([f1, f2]) => ({
+        type: 'FeatureCollection' as const,
+        features: [...f1, ...f2]
+      })),
       tap(featureCollection => {
         this.drawData = {...this.drawData, featureCollection};
       }),
@@ -527,11 +542,28 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       },
       marker: {
         icon: getPointIcon
-      }
+      },
+      label: this.translate.instant('observation.map.dataOpacityControl.label'),
+      visible: this.dataVisible,
+      opacity: this.opacity,
+      maxFillOpacity: 0.8,
+      onOpacityChange: this.onOpacityChange.bind(this),
+      onVisibleChange: this.onDataVisibleChange.bind(this)
     };
   }
 
+  private onOpacityChange(opacity: number) {
+    this.opacity = opacity;
+  }
+
+  private onDataVisibleChange(visible: boolean) {
+    this.dataVisible = visible;
+  }
+
   private onFeatureClick(e: any, d: any) {
+    if (this.noClick) {
+      return;
+    }
     if (d.feature.geometry.type === 'Point') {
       this.onDataClick({
         type: 'wgs84',

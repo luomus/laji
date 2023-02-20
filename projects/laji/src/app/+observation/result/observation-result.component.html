@@ -76,10 +76,9 @@
     <laji-observation-map
       *ngIf="loadedTabs.isLoaded('map')"
       [ready]="!loadingUnits"
-      [opacity]="0.5"
       [height]="-1"
       [query]="query"
-      [draw]="{rectangle: true, marker: false, polygon: false, polyline: false, circle: false, single: true}"
+      [draw]="{rectangle: true, marker: false, polygon: true, polyline: false, circle: false, single: true}"
       [initWithWorldMap]="true"
       (create)="pickLocation($event)"
     ></laji-observation-map>

@@ -88,6 +88,8 @@ export class BaseDataService {
   private readonly query: QueryRef<IBaseData>;
   private readonly baseDataSub = new ReplaySubject<IBaseData>(1);
   private readonly baseData$ = this.baseDataSub.asObservable();
+  private readonly labelMapSub = new ReplaySubject<Record<string, string>>(1);
+  private readonly labelMap$ = this.labelMapSub.asObservable();
 
   constructor(
     private graphQLService: GraphQLService,
@@ -106,11 +108,43 @@ export class BaseDataService {
     this.query.valueChanges.pipe(
       map(({data}) => data)
     ).subscribe(data => this.baseDataSub.next(data));
+
+    this.baseData$.subscribe(data => {
+      this.labelMapSub.next(this.dataToLabelMap(data));
+    });
   }
 
   getBaseData(): Observable<IBaseData> {
     return this.baseData$.pipe(
       filter(data => !!data)
     );
+  }
+
+  getLabelMap(): Observable<Record<string, string>> {
+    return this.labelMap$.pipe(
+      filter(data => !!data)
+    );
+  }
+
+  private dataToLabelMap(data: IBaseData): Record<string, string>|undefined {
+    if (!data) {
+      return undefined;
+    }
+
+    const labelMap: Record<string, string> = {};
+    (data.classes || []).forEach((meta) => {
+      labelMap[meta.id] = meta.label;
+    });
+    (data.properties || []).forEach((meta) => {
+      labelMap[meta.id] = meta.label;
+    });
+    (data.alts || []).forEach((meta) => {
+      if (meta.options) {
+        meta.options.forEach((option) => {
+          labelMap[option.id] = option.label;
+        });
+      }
+    });
+    return labelMap;
   }
 }
