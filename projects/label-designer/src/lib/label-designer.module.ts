@@ -41,6 +41,7 @@ import { LabelMakerFacade } from './label-designer/label-maker.facade';
 import { FieldKeyPipe } from './pipe/field-key.pipe';
 import { IsNumericPipe } from './pipe/is-numeric.pipe';
 import { LabelQRCodeComponent } from './label-qrcode/label-qrcode.component';
+import { LabelBacksideSortPipe } from './pipe/label-backside-sort-pipe';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { LabelQRCodeComponent } from './label-qrcode/label-qrcode.component';
     SeparatorPipe,
     FieldKeyPipe,
     IsNumericPipe,
-    LabelQRCodeComponent
+    LabelQRCodeComponent,
+    LabelBacksideSortPipe
   ],
   imports: [
     CommonModule,
