@@ -17,6 +17,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { catchError, map } from 'rxjs/operators';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
+import G from 'geojson';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -151,7 +152,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   pickLocation(events: LajiMapDrawEvent[]) {
     const query = {...this.query};
     events.forEach(e => {
-      let geometry: any, layer: any;
+      let geometry: G.Geometry, layer: any;
       if (e.type === 'create') {
         geometry = e.feature.geometry;
         layer = e.layer;
@@ -167,7 +168,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
         return;
       }
 
-      const {coordinateVerbatim} = geometry as any;
+      const {coordinateVerbatim} = (geometry as any);
       if (coordinateVerbatim) {
         query.coordinates = [coordinateVerbatim + ':YKJ'];
         query.polygonId = undefined;
@@ -191,7 +192,7 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.queryChange.emit(query);
   }
 
-  registerPolygon$(polygon: any) {
+  registerPolygon$(polygon: G.Polygon) {
     return this.warehouseApi.registerPolygon(polygon, this.userService.getToken(), 'WGS84').pipe(
       map((response: any) => '' + response.id),
       catchError(e => {

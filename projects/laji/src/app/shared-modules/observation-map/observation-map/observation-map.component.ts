@@ -34,10 +34,9 @@ import {
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
 import L, { LeafletEvent, PathOptions } from 'leaflet';
-import { Feature, GeoJsonProperties, Geometry, FeatureCollection } from 'geojson';
+import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
-import G from 'geojson';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -51,10 +50,10 @@ interface AggregateQueryResponse {
 
 // Given coordinates in warehouse query format
 // Returns features visualizing that set of coordinates
-const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<G.Feature<G.Polygon>[]> => (
+const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Feature<Polygon>[]> => (
   ObservableOf(coordinates
     ? coordinates.map(
-      (coord) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
+      (coord: string) => getFeatureFromGeometry(convertLajiEtlCoordinatesToGeometry(coord))
     ) : []
   )
 );
@@ -472,7 +471,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     return query;
   }
 
-  private getFeaturesFromQueryPolygonId(polygonId: string): Observable<G.Feature[]>{
+  private getFeaturesFromQueryPolygonId(polygonId: string): Observable<Feature[]>{
     return polygonId
       ? this.warehouseService.getPolygonFeatureCollection(polygonId.split(':')[0]).pipe(
           map(featureCollection => (featureCollection as any).features)

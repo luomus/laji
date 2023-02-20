@@ -34,6 +34,7 @@ import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';
 import { geoJSONToWKT } from 'laji-map/lib/utils';
+import G from 'geojson';
 
 /* eslint-disable no-unused-vars member-ordering */
 
@@ -483,7 +484,7 @@ export class WarehouseApi {
     return this.http.get(path, {params: queryParameters});
   }
 
-  public registerPolygon(polygon: any, personToken: string, crs: string) {
+  public registerPolygon(polygon: G.Polygon, personToken: string, crs: string) {
     const wkt = geoJSONToWKT(polygon);
     const path = this.basePath + '/warehouse/polygon';
 
