@@ -1,4 +1,5 @@
 @import '@swimlane/ngx-datatable/themes/material.scss';
+@import 'laji-form-builder/lib/client/styles.css';
 
 @import 'styles';
 @import 'bs_overwrites';
@@ -1407,4 +1408,8 @@ span.simple-option {
   typeahead-container ul{
     min-width: 250px !important;
   }
+}
+
+.ljb-picker-highlighter {
+  z-index: 1070 !important;
 }

@@ -1,12 +1,12 @@
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../shared/service/form.service';
+import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Form } from '../shared/model/Form';
-import { combineLatest, Observable, of } from 'rxjs';
-import { NamedPlacesService } from '../shared/service/named-places.service';
-import { NamedPlace } from '../shared/model/NamedPlace';
+import { Form } from '../model/Form';
+import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { NamedPlacesService } from './named-places.service';
+import { NamedPlace } from '../model/NamedPlace';
 
 export interface ProjectForm {
   form: Form.SchemaForm;
@@ -31,7 +31,7 @@ export interface NamedPlacesRouteData extends NamedPlacesQueryModel {
   namedPlace?: NamedPlace;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ProjectFormService {
   constructor(
     private formService: FormService,
@@ -39,8 +39,40 @@ export class ProjectFormService {
     private namedPlacesService: NamedPlacesService
   ) { }
 
-  getFormFromRoute$(route: ActivatedRoute) {
-    return this.getFormID(route).pipe(switchMap(formID => this.formService.getForm(formID, this.translate.currentLang)));
+  private currentFormID: string;
+  private form$: ReplaySubject<Form.SchemaForm>;
+
+  /**
+   * LajiFormBuilder can change the language of the form, without changing the lang of the whole page.
+   */
+  public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
+  public remountLajiForm$ = new Subject<void>();
+
+  getFormFromRoute$(route: ActivatedRoute): Observable<Form.SchemaForm> {
+    return this.getFormID(route).pipe(switchMap(formID => this.getForm$(formID)));
+  }
+
+  getForm$(id: string): Observable<Form.SchemaForm> {
+    if (this.currentFormID === id) {
+      return this.form$;
+    }
+    this.currentFormID = id;
+    this.form$?.complete();
+    this.form$ = new ReplaySubject<Form.SchemaForm>(1);
+    this.formService.getForm(id).pipe(take(1)).subscribe(form => {
+      this.form$.next(form);
+    });
+    return this.form$;
+  }
+
+  updateLocalForm(form: Form.SchemaForm) {
+    const {id} = form;
+    if (this.currentFormID !== id) {
+      this.currentFormID = id;
+      this.form$?.complete();
+      this.form$ = new ReplaySubject<Form.SchemaForm>(1);
+    }
+    this.form$.next(form);
   }
 
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {
@@ -57,18 +89,18 @@ export class ProjectFormService {
     );
   }
 
-  getProjectRootRoute(route: ActivatedRoute): Observable<ActivatedRoute> {
+  getProjectRootRoute$(route: ActivatedRoute): Observable<ActivatedRoute> {
     return route.params.pipe(switchMap(params => {
       const formID = params['projectID'];
       if (!formID) {
-        return this.getProjectRootRoute(route.parent);
+        return this.getProjectRootRoute$(route.parent);
       }
       return of(route);
     }));
   }
 
   getFormID(route: ActivatedRoute): Observable<string> {
-    return this.getProjectRootRoute(route).pipe(map(_route => _route.snapshot.params['projectID']));
+    return this.getProjectRootRoute$(route).pipe(map(_route => _route.snapshot.params['projectID']));
   }
 
   getExcelFormIDs(projectForm: ProjectForm): string[] {
@@ -117,5 +149,13 @@ export class ProjectFormService {
 
   getPlaceForm$(documentForm: Form.SchemaForm) {
     return this.formService.getPlaceForm(documentForm);
+  }
+
+  updateLocalLang(lang: string) {
+    this.localLang$.next(lang);
+  }
+
+  remountLajiForm() {
+    this.remountLajiForm$.next();
   }
 }

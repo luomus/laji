@@ -79,9 +79,9 @@ import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
 import { PluckPipe } from './pipe/pluck.pipe';
 import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
+import { ProjectFormOptionDirective } from './directive/project-form-option.directive';
 import { TypeGuardPipe } from './pipe/type-guard.pipe';
 import { PdfButtonComponent } from './pdf-button/pdf-button.component';
-
 
 @NgModule({
     declarations: [
@@ -120,6 +120,7 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
         CheckboxValuePipe,
         PluckPipe,
         TranslatableIucnPipe,
+        ProjectFormOptionDirective,
         TypeGuardPipe,
         PdfButtonComponent
     ],
@@ -161,6 +162,7 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
         CheckboxValuePipe,
         PluckPipe,
         TranslatableIucnPipe,
+        ProjectFormOptionDirective,
         TypeGuardPipe,
         PdfButtonComponent
     ]

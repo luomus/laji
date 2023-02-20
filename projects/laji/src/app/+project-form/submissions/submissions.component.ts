@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormPermissionService, Rights } from '../../shared/service/form-permission.service';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 
 interface ViewModel {
   collectionID: string;
