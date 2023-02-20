@@ -6,6 +6,8 @@ export const LEVEL_TAXON_CENSUS = 'taxonCensus';
 export const VALUE_IGNORE = '__IGNORE__';
 export const VALUE_AS_IS = '__VALUE_AS_IS__';
 
+export const DELETE_FIELD = 'delete';
+
 export enum FieldMap {
   ignore = <any>VALUE_IGNORE
 }
