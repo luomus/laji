@@ -79,8 +79,8 @@ export class ObservationPage {
   };
 
   public timePanel = new LUPanel('.laji-panel-time');
-  public dateBegin = new DatePicker('.observation-time-container laji-datepicker[name="timeStart"]');
-  public dateEnd = new DatePicker('.observation-time-container laji-datepicker[name="timeEnd"]');
+  public dateBegin = new DatePicker('.observation-time-container laji-datepicker.time-start');
+  public dateEnd = new DatePicker('.observation-time-container laji-datepicker.time-end');
   public $today = $('.btn-today');
   public $week = $('.btn-week');
   public $year = $('.btn-year');

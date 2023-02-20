@@ -3,8 +3,8 @@
     <label>{{ 'observation.form.time' | translate }}</label>
     <laji-info>{{ 'observation.info.time' | translate }}</laji-info>
   </div>
-  <laji-datepicker [(ngModel)]="datepickerTimeStart" ></laji-datepicker>
-  <laji-datepicker [(ngModel)]="datepickerTimeEnd" [toLastOfYear]="true"></laji-datepicker>
+  <laji-datepicker [(ngModel)]="datepickerTimeStart" class="time-start"></laji-datepicker>
+  <laji-datepicker [(ngModel)]="datepickerTimeEnd" [toLastOfYear]="true" class="time-end"></laji-datepicker>
   <div class="btn-group btn-group-xs mt-1">
     <button type="button" class="btn btn-default btn-today" (click)="onUpdateTime(1)">{{ 'observations.form.1d' | translate }}</button>
     <button type="button" class="btn btn-default btn-week" (click)="onUpdateTime(7)">{{ 'observations.form.7d' | translate }}</button>
