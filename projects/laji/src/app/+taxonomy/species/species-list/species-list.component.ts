@@ -319,7 +319,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       typeOfOccurrenceIdNot: query.typesOfOccurrenceNotFilters,
       invasive: query.invasiveSpeciesFilter,
       primaryHabitat: query.primaryHabitat,
-      anyHabitat: query.anyHabitat
+      anyHabitat: query.anyHabitat,
+      taxonRankId: query.taxonRanks
     });
 
     this.router.navigate(
