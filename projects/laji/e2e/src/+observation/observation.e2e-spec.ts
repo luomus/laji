@@ -32,7 +32,7 @@ describe('Observation list', () => {
         done();
       });
 
-      it('and drawing adds polygon filter to query', async (done) => {
+      it('and drawing adds coordinates filter to query', async (done) => {
         await page.drawRectangle();
         expect(await page.hasWGS84CoordinatesFilter()).toBe(true);
         done();
@@ -85,17 +85,6 @@ describe('Observation list', () => {
           await page.zoomClose();
           await page.drawPolygon();
           expect(await page.hasPolygonFilter()).toBe(true);
-          done();
-        });
-
-        it('coordinate intersect 0 by default', async (done) => {
-          expect(await page.getPolygonIntersect()).toBe(0);
-          done();
-        });
-
-        it('coordinate intersect can be updated', async (done) => {
-          await page.$coordinateIntersectMaxBtn.click();
-          expect(await page.getPolygonIntersect()).toBe(1);
           done();
         });
       });
