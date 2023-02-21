@@ -58,7 +58,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
   @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
-  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
+  @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
   @Input() onlyTemplates = false;
@@ -96,6 +96,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     observer: 'gatheringEvent.leg',
     namedPlaceName: 'namedPlaceID,gatherings.namedPlaceID',
     taxon: 'gatherings.units.identifications.taxonID',
+    publicityRestrictions: 'publicityRestrictions'
   };
 
   templateForm: TemplateForm = {
@@ -400,6 +401,12 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               formID: document.formID,
               form: form.title || document.formID,
               id: document.id,
+              publicityRestrictions:
+                document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPublic ?
+                  this.translate.instant('haseka.submissions.publicityRestrictions.public') :
+                    document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ?
+                      this.translate.instant('haseka.submissions.publicityRestrictions.private') :
+                        this.translate.instant('haseka.submissions.publicityRestrictions.protected'),
               locked: !!document.locked,
               index: idx,
               _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
