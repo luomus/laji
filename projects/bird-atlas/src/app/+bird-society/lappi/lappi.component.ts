@@ -1,18 +1,21 @@
-import { Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService } from '../../core/atlas-api.service';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { map } from 'rxjs/operators';
 import { LappiModalComponent } from './lappi-modal.component';
 import { Subscription } from 'rxjs';
+import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ba-society-lappi',
   template: `
 <div *ngIf="lappiStats$ | async; let stats; else loading" class="container">
+  <h1>Pohjois-Lapin suurruudut</h1>
   <img class="d-block mb-4" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   <ngx-datatable
-    class="material"
+    class="material mb-8"
     [rows]="stats"
     [columns]="cols"
     [selectionType]="'single'"
@@ -22,33 +25,58 @@ import { Subscription } from 'rxjs';
 <ng-template #loading>
   <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 </ng-template>
+<ng-template #linkCell>
+  <span class="glyphicon glyphicon-triangle-right"></span>
+</ng-template>
+<ng-template #percentageCell let-value="value">
+  {{ round(value) }}%
+</ng-template>
   `,
   styleUrls: ['./lappi.component.scss']
 })
-export class LappiSocietyComponent implements OnDestroy {
+export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('linkCell') linkCellTemplate: TemplateRef<any>;
+  @ViewChild('percentageCell') percentageCellTemplate: TemplateRef<any>;
+
   lappiStats$ = this.atlasApi.getLappiStats().pipe(
     map(a => a.map((e, i) => (
       {
         ...e,
         index: i,
         ykjString: `${e.latMin}:${e.lonMin}-${e.latMax}:${e.lonMax}`,
-        targetPercentage: `${Math.round(e.targetPercentage)}%`
+        targetMetString: e.targetMet ? 'saavutettu' : 'vajaa'
       }
     )))
   );
   cols: TableColumn[];
+  round = Math.round;
 
   private bsModalRef: BsModalRef;
   private hideModalSubscription: Subscription;
 
-  constructor(private atlasApi: AtlasApiService, private modalService: BsModalService) {
+  constructor(
+    private atlasApi: AtlasApiService,
+    private modalService: BsModalService,
+    private headerService: HeaderService,
+    private translate: TranslateService
+  ) {}
+
+  ngAfterViewInit(): void {
     this.cols = [
+      {
+        prop: 'index',
+        name: '',
+        resizeable: false,
+        sortable: false,
+        maxWidth: 50,
+        cellTemplate: this.linkCellTemplate
+      },
       {
         prop: 'index',
         name: 'Ruutu',
         resizeable: false,
         sortable: true,
-        maxWidth: 75
+        maxWidth: 50
       },
       {
         prop: 'grid',
@@ -57,7 +85,7 @@ export class LappiSocietyComponent implements OnDestroy {
         sortable: true
       },
       {
-        prop: 'targetSquares',
+        prop: 'targetMetString',
         name: 'Tavoite',
         resizeable: false,
         sortable: true,
@@ -68,9 +96,13 @@ export class LappiSocietyComponent implements OnDestroy {
         name: 'Tyydyttävästi selvitetyt ruudut',
         resizeable: false,
         sortable: true,
-        minWidth: 200
+        minWidth: 200,
+        cellTemplate: this.percentageCellTemplate
       },
     ];
+    this.headerService.setHeaders({
+      title: `Pohjois-Lapin suurruudut | ${this.translate.instant('ba.header.title')}`
+    });
   }
 
   onTableRowSelect(e) {

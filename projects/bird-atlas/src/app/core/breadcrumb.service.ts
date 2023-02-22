@@ -50,7 +50,7 @@ export class BreadcrumbService implements OnDestroy {
       link: ['society']
     },
     [BreadcrumbId.Lappi]: {
-      translateId: 'Lappi',
+      translateId: 'ba.breadcrumbs.pohjoisLappi',
       link: ['lappi']
     }
   };

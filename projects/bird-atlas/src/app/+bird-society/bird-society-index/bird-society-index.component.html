@@ -1,4 +1,5 @@
 <div class="container mb-8" *ngIf="rows$ | async; let rows; else loading">
+  <h1>Paikallisyhdistykset ja kartoitustilanne</h1>
   <div class="d-flex justify-end mb-3">
     <button class="btn btn-default" (click)="onDownloadCsv(rows)">Lataa .csv</button>
   </div>
@@ -9,22 +10,29 @@
     [columns]="cols"
     [scrollbarH]="true"
     [messages]="{ emptyMessage: '' }"
+    [rowClass]="selectRowClass"
   ></ngx-datatable>
-  <h2>Pohjois-lapin suurruudut</h2>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että eteläisen Suomen (YKJ 739 asti) kaikki kaikki atlasruudut tutkitaan vähintään tyydyttävästi.</p>
+  <h2>Pohjois-Lapin suurruudut</h2>
   <a [routerLink]="['lappi']">
     <img class="d-block lappi-img" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   </a>
-  <div>
-    Pääset pohjois-lapin sivulle, klikkaamalla kuvaa. TBD mitä tähän laitetaan?
-  </div>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen suurruudun atlasruuduista vähintään 75% tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
 </div>
 
 <ng-template #societyName let-row="row">
-  <a *ngIf="row.birdAssociationArea" [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
+  <a *ngIf="row.birdAssociationArea?.key else noLinkSocietyName" [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
+  <ng-template #noLinkSocietyName>
+    {{ row.birdAssociationArea?.value }}
+  </ng-template>
 </ng-template>
 
 <ng-template #alignRight let-value="value">
   <div style="text-align: right;">{{ value }}</div>
+</ng-template>
+
+<ng-template #activityCategoryCell let-cat="value">
+  <div style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }}%)</span></div>
 </ng-template>
 
 <ng-template #loading>
