@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { CollectionService } from '../../shared/service/collection.service';
-import { BehaviorSubject, Observable, zip} from 'rxjs';
+import { BehaviorSubject, Observable, zip } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 import { Util } from '../../shared/service/util.service';
 
@@ -37,8 +37,11 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   collectionsTree$: Observable<TreeOptionsNode[]>;
   collections$: Observable<SelectedOption[]>;
 
-  selectedOptions$: Observable<SelectedOptions>;
-  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
+  includedOptions: string[] = [];
+  excludedOptions: string[] = [];
+
+  selectedOptionsChange$: Observable<SelectedOptions>;
+  private selectedOptionsChangeSubject = new BehaviorSubject<SelectedOptions>({
     includedOptions: [],
     excludedOptions: []
   });
@@ -50,11 +53,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     private collectionService: CollectionService,
     private translate: TranslateService
   ) {
-    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
-      distinctUntilChanged((a, b) =>
-        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
-      )
-    );
+    this.selectedOptionsChange$ = this.selectedOptionsChangeSubject.asObservable();
     this.filterQuery$ = this.filterQuerySubject.asObservable().pipe(
       distinctUntilChanged((a, b) =>
         JSON.stringify(a) === JSON.stringify(b)
@@ -73,10 +72,13 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
       this.open = true;
     }
 
-    this.selectedOptionsSubject.next({
-      includedOptions: this.query?.collectionId || [],
-      excludedOptions: this.query?.collectionIdNot || []
-    });
+    const includedOptions = this.query?.collectionId || [];
+    const excludedOptions = this.query?.collectionIdNot || [];
+    if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
+      this.includedOptions = includedOptions;
+      this.excludedOptions = excludedOptions;
+      this.selectedOptionsChangeSubject.next({ includedOptions, excludedOptions });
+    }
 
     const { collectionId, collectionIdNot, ...query } = this.query;
     this.filterQuerySubject.next(query);
@@ -90,9 +92,12 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
+    this.includedOptions = $event.selectedId;
+    this.excludedOptions = $event.selectedIdNot;
+
     this.collectionIdChange.emit({
-      collectionId: $event.selectedId,
-      collectionIdNot: $event.selectedIdNot
+      collectionId: this.includedOptions,
+      collectionIdNot: this.excludedOptions
     });
   }
 
@@ -174,7 +179,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   initCollections(lang: string): Observable<SelectedOption[]> {
     const allCollections$ = this.collectionService.getAll$(lang, false).pipe(shareReplay(1));
 
-    return this.selectedOptions$.pipe(
+    return this.selectedOptionsChange$.pipe(
       switchMap(selected => allCollections$.pipe(
         map(data => {
           const toReturn: SelectedOption[] = [];

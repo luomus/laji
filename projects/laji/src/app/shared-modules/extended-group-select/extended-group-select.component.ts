@@ -37,8 +37,11 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   groupsTree$: Observable<TreeOptionsNode[]>;
   groups$: Observable<SelectedOption[]>;
 
-  selectedOptions$: Observable<SelectedOptions>;
-  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
+  includedOptions: string[] = [];
+  excludedOptions: string[] = [];
+
+  selectedOptionsChange$: Observable<SelectedOptions>;
+  private selectedOptionsChangeSubject = new BehaviorSubject<SelectedOptions>({
     includedOptions: [],
     excludedOptions: []
   });
@@ -48,11 +51,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     protected logger: Logger,
     protected translate: TranslateService
   ) {
-    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
-      distinctUntilChanged((a, b) =>
-        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
-      )
-    );
+    this.selectedOptionsChange$ = this.selectedOptionsChangeSubject.asObservable();
   }
 
   ngOnInit() {
@@ -63,7 +62,11 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
 
   ngOnChanges() {
     const [ includedOptions, excludedOptions ] = this.getOptions(this.query);
-    this.selectedOptionsSubject.next({ includedOptions, excludedOptions });
+    if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
+      this.includedOptions = includedOptions;
+      this.excludedOptions = excludedOptions;
+      this.selectedOptionsChangeSubject.next({ includedOptions, excludedOptions });
+    }
   }
 
   abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
@@ -111,7 +114,7 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   initSelectionGroups(lang: string): Observable<SelectedOption[]> {
-    return this.selectedOptions$.pipe(switchMap(selected => {
+    return this.selectedOptionsChange$.pipe(switchMap(selected => {
       const includedOptions = selected.includedOptions;
       const excludedOptions = selected.excludedOptions;
       const selectedGroups = includedOptions.concat(excludedOptions);
@@ -146,6 +149,8 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
-    this.select.emit(this.prepareEmit($event.selectedId, $event.selectedIdNot));
+    this.includedOptions = $event.selectedId;
+    this.excludedOptions = $event.selectedIdNot;
+    this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
   }
 }

@@ -2,8 +2,8 @@
   <strong *ngIf="title !== undefined && title !== ''" class="lj-title link" (click)="toggle($event)">{{ title }}<laji-info *ngIf="info" [html]="info"></laji-info></strong>
   <div *ngIf="open">
     <laji-tree-select
-      [includedOptions]="(selectedOptions$ | async).includedOptions"
-      [excludedOptions]="(selectedOptions$ | async).excludedOptions"
+      [includedOptions]="includedOptions"
+      [excludedOptions]="excludedOptions"
       [optionsTree$]="collectionsTree$"
       [options]="collections$ | async"
       [modalButtonLabel]="modalButtonLabel"
