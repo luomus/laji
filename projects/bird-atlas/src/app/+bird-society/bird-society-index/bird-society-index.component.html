@@ -32,7 +32,7 @@
 </ng-template>
 
 <ng-template #activityCategoryCell let-cat="value">
-  <div style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }}%)</span></div>
+  <div *ngIf="cat" style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }}%)</span></div>
 </ng-template>
 
 <ng-template #loading>
