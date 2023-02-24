@@ -59,7 +59,7 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
       },
       {
         prop: '1',
-        name: 'Satunnaista',
+        name: 'Satunnainen',
         resizeable: false,
         sortable: true,
         width: 100,
@@ -151,11 +151,11 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
     const _rows = [
       [
         'Lintuyhdistys',
-        'Ei havaintoja', 'Satunnaista', 'Välttävä',
+        'Ei havaintoja', 'Satunnainen', 'Välttävä',
         'Tyydyttävä', 'Hyvä', 'Erinomainen',
         'Yhteensä',
         'Tavoitteesta saavutettu %',
-        'Ei havaintoja %', 'Satunnaista %', 'Välttävä %',
+        'Ei havaintoja %', 'Satunnainen %', 'Välttävä %',
         'Tyydyttävä %', 'Hyvä %', 'Erinomainen %',
       ],
       ...rows.map(row => [

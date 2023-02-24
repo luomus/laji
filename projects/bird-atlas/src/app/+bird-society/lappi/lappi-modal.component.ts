@@ -8,6 +8,7 @@ import { TableColumn } from '@swimlane/ngx-datatable';
 })
 export class LappiModalComponent implements AfterViewInit {
   @ViewChild('YKJ') ykjTemplate: TemplateRef<any>;
+  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
 
   rows: LappiStatsResponseGridsElement[] = [];
   cols: TableColumn[];
@@ -33,7 +34,8 @@ export class LappiModalComponent implements AfterViewInit {
         name: 'Pesimävarmuussumma',
         resizeable: false,
         sortable: true,
-        maxWidth: 75
+        maxWidth: 150,
+        cellTemplate: this.alignRightTemplate
       },
       {
         prop: 'activityCategory.value',
@@ -45,6 +47,10 @@ export class LappiModalComponent implements AfterViewInit {
   }
 
   onLinkClick() {
+    this.hideModal.next();
+  }
+
+  onCloseModal() {
     this.hideModal.next();
   }
 }

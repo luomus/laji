@@ -17,11 +17,11 @@
   <a [routerLink]="['lappi']">
     <img class="d-block lappi-img" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   </a>
-  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen suurruudun atlasruuduista vähintään 75% tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
 </div>
 
 <ng-template #societyName let-row="row">
-  <a *ngIf="row.birdAssociationArea?.key else noLinkSocietyName" [routerLink]="row.birdAssociationArea.key">{{ row.birdAssociationArea.value }}</a>
+  <a *ngIf="row.birdAssociationArea?.key else noLinkSocietyName" [routerLink]="row.birdAssociationArea.key" [title]="row.birdAssociationArea.value">{{ row.birdAssociationArea.value }}</a>
   <ng-template #noLinkSocietyName>
     {{ row.birdAssociationArea?.value }}
   </ng-template>
@@ -32,7 +32,7 @@
 </ng-template>
 
 <ng-template #activityCategoryCell let-cat="value">
-  <div *ngIf="cat" style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }}%)</span></div>
+  <div *ngIf="cat" style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }} %)</span></div>
 </ng-template>
 
 <ng-template #loading>

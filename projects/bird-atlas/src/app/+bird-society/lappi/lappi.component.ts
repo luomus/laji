@@ -28,21 +28,25 @@ import { TranslateService } from '@ngx-translate/core';
 <ng-template #linkCell>
   <span class="glyphicon glyphicon-triangle-right"></span>
 </ng-template>
+<ng-template #ykjCell let-row="row">
+  {{ row.latMin + ':' + row.lonMin + '–' + row.latMax + ':' + row.lonMax }}
+</ng-template>
 <ng-template #percentageCell let-value="value">
-  {{ round(value) }}%
+  <div style="text-align: right;">{{ round(value) }} %</div>
 </ng-template>
   `,
   styleUrls: ['./lappi.component.scss']
 })
 export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
   @ViewChild('linkCell') linkCellTemplate: TemplateRef<any>;
+  @ViewChild('ykjCell') ykjCellTemplate: TemplateRef<any>;
   @ViewChild('percentageCell') percentageCellTemplate: TemplateRef<any>;
 
   lappiStats$ = this.atlasApi.getLappiStats().pipe(
     map(a => a.map((e, i) => (
       {
         ...e,
-        index: i,
+        index: i + 1,
         ykjString: `${e.latMin}:${e.lonMin}-${e.latMax}:${e.lonMax}`,
         targetMetString: e.targetMet ? 'saavutettu' : 'vajaa'
       }
@@ -73,16 +77,17 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
       },
       {
         prop: 'index',
-        name: 'Ruutu',
+        name: 'Suurruutu',
         resizeable: false,
         sortable: true,
-        maxWidth: 50
+        maxWidth: 75
       },
       {
         prop: 'grid',
         name: 'YKJ',
         resizeable: false,
-        sortable: true
+        sortable: true,
+        cellTemplate: this.ykjCellTemplate
       },
       {
         prop: 'targetMetString',
@@ -96,7 +101,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
         name: 'Tyydyttävästi selvitetyt ruudut',
         resizeable: false,
         sortable: true,
-        minWidth: 200,
+        minWidth: 190,
         cellTemplate: this.percentageCellTemplate
       },
     ];
