@@ -2,14 +2,9 @@ import { Component, EventEmitter, Input, OnInit, OnChanges, Output } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { CollectionService } from '../../shared/service/collection.service';
-import { BehaviorSubject, Observable, zip } from 'rxjs';
+import { BehaviorSubject, Observable, zip, of } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent, TreeOptionsNode } from '../tree-select/tree-select.component';
 import { Util } from '../../shared/service/util.service';
-
-interface SelectedOptions {
-  includedOptions: string[];
-  excludedOptions: string[];
-}
 
 @Component({
   selector: 'laji-collections-select',
@@ -40,12 +35,6 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   includedOptions: string[] = [];
   excludedOptions: string[] = [];
 
-  selectedOptionsChange$: Observable<SelectedOptions>;
-  private selectedOptionsChangeSubject = new BehaviorSubject<SelectedOptions>({
-    includedOptions: [],
-    excludedOptions: []
-  });
-
   private filterQuery$: Record<string, any>|undefined;
   private filterQuerySubject = new BehaviorSubject<Record<string, any>|undefined>(undefined);
 
@@ -53,7 +42,6 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     private collectionService: CollectionService,
     private translate: TranslateService
   ) {
-    this.selectedOptionsChange$ = this.selectedOptionsChangeSubject.asObservable();
     this.filterQuery$ = this.filterQuerySubject.asObservable().pipe(
       distinctUntilChanged((a, b) =>
         JSON.stringify(a) === JSON.stringify(b)
@@ -62,8 +50,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    const lang = this.translate.currentLang;
-    this.collections$ = this.initCollections(lang);
+    this.collections$ = this.initCollections(this.translate.currentLang, this.includedOptions, this.excludedOptions);
     this.collectionsTree$ = this.initCollectionsTree();
   }
 
@@ -77,7 +64,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
       this.includedOptions = includedOptions;
       this.excludedOptions = excludedOptions;
-      this.selectedOptionsChangeSubject.next({ includedOptions, excludedOptions });
+      this.collections$ = this.initCollections(this.translate.currentLang, this.includedOptions, this.excludedOptions);
     }
 
     const { collectionId, collectionIdNot, ...query } = this.query;
@@ -176,29 +163,31 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
     return undefined;
   }
 
-  initCollections(lang: string): Observable<SelectedOption[]> {
+  initCollections(lang: string, includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
+    if (includedOptions.length === 0 && excludedOptions.length === 0) {
+      return of([]);
+    }
+
     const allCollections$ = this.collectionService.getAll$(lang, false).pipe(shareReplay(1));
 
-    return this.selectedOptionsChange$.pipe(
-      switchMap(selected => allCollections$.pipe(
-        map(data => {
-          const toReturn: SelectedOption[] = [];
-          data.forEach(item => {
-            if (selected.includedOptions.includes(item.id)) {
-              toReturn.push({
-                ...item,
-                type: 'included'
-              });
-            } else if (selected.excludedOptions.includes(item.id)) {
-              toReturn.push({
-                ...item,
-                type: 'excluded'
-              });
-            }
-          });
-          return toReturn;
-        })
-      ))
+    return allCollections$.pipe(
+      map(data => {
+        const toReturn: SelectedOption[] = [];
+        data.forEach(item => {
+          if (includedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'included'
+            });
+          } else if (excludedOptions.includes(item.id)) {
+            toReturn.push({
+              ...item,
+              type: 'excluded'
+            });
+          }
+        });
+        return toReturn;
+      })
     );
   }
 }
