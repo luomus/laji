@@ -117,6 +117,8 @@
   "on": "on",
   "profile.accountSettings": "My account",
   "profile.missing": "User not found.",
+  "results.allSpecies": "All species",
+  "results.ownSpecies": "Own species",
   "results.annotationCountMap": "Annotation count map",
   "results.annotationCounts": "Total annotation counts",
   "results.annotations": "annotations",
