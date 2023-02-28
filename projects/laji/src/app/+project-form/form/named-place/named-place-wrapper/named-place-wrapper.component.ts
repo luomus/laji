@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../project-form.service';
+import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
@@ -20,6 +20,7 @@ import { take } from 'rxjs/operators';
                          (use)="use($event)"
                          (edit)="edit($event)"
                          (create)="create()"
+                         lajiFormOption="options.useNamedPlaces options.namedPlaceOptions"
       ></laji-named-places>
     </ng-container>
     <ng-template #spinner>

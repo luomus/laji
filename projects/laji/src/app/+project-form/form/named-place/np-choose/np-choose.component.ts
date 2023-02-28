@@ -15,6 +15,7 @@ import { LoadedElementsStore } from '../../../../../../../laji-ui/src/lib/tabs/t
 import { Rights } from '../../../../shared/service/form-permission.service';
 import { PlatformService } from '../../../../root/platform.service';
 import { Form } from '../../../../shared/model/Form';
+import { formOptionToClassName } from '../../../../shared/directive/project-form-option.directive';
 
 @Component({
   selector: 'laji-np-choose',
@@ -44,6 +45,8 @@ export class NpChooseComponent implements OnInit, OnChanges {
   private seasonEnd;
 
   _activeNP;
+
+  formOptionToClassName = formOptionToClassName;
 
   constructor(
     private platformService: PlatformService

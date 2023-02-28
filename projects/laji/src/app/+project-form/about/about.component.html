@@ -1,13 +1,15 @@
 <laji-technical-news></laji-technical-news>
 
-<ng-container *ngIf="aboutData$ | async as data">
+<div *ngIf="aboutData$ | async as data" lajiFormOption="options.mobile options.dataset options.about collectionID options.disableRequestDescription">
   <ng-container *ngIf="!data.form.options?.mobile; else mobile">
     <ng-container *ngIf="!data.form.options?.dataset; else datasetIntro">
       <laji-project-form-header [form]="data.form"
                                 [displayInstructions]="false"
+                                lajiFormOption="logo title options.hideTES"
       ></laji-project-form-header>
       <laji-info-page *ngIf="(data.form.options?.about | multiLang)"
                       [page]="data.form.options?.about | multiLang: true:undefined:'%value%'"
+                      lajiFormOption="options.about"
       ></laji-info-page>
     </ng-container>
     <ng-template #datasetIntro>
@@ -15,11 +17,12 @@
     </ng-template>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <laji-request *ngIf="data.form.collectionID && data.rights === Rights.NotAllowed"
-                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription">
+                    [collectionId]="data.form.collectionID" [disableDescription]="data.form.options?.disableRequestDescription"
+                    lajiFormOption="options.disableRequestDescription">
       </laji-request>
     </ng-container>
   </ng-container>
-</ng-container>
+</div>
 
 <ng-template #loginButton>
   <lu-button (click)="login()" role="primary" class="login-button">{{ 'project-form.about.login' | translate }}</lu-button>
@@ -28,7 +31,7 @@
 <ng-template #mobile>
   <ng-container *ngIf="aboutData$ | async as data">
     <laji-project-form-terms [modal]="true" dismissLabel="haseka.terms.mobileFormDismiss"></laji-project-form-terms>
-    <laji-project-form-header [form]="data.form" [description]="data.form.description"></laji-project-form-header>
+    <laji-project-form-header [form]="data.form" [description]="data.form.description" lajiFormOption="description logo title options.hideTES"></laji-project-form-header>
     <ng-container *ngIf="data.loggedIn; else loginButton">
       <button type="button"
               class="btn btn-md btn-primary btn-block use-button"
@@ -42,7 +45,7 @@
                         (showViewer)="showDocumentViewer($event)"
     ></laji-haseka-latest>
     <br />
-    <ng-container *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos">
+    <div *ngIf="data.form.options?.footer?.footerDescription || data.form.options?.footer?.footerLogos" lajiFormOption="options.footer.footerDescription options.footer.footerLogos">
       <ng-container *ngIf="data.form.options.footer.footerDescription">
         {{ data.form.options.footer.footerDescription }}
       </ng-container>
@@ -55,6 +58,6 @@
           </li>
         </ng-container>
       </ul>
-    </ng-container>
+    </div>
   </ng-container>
 </ng-template>

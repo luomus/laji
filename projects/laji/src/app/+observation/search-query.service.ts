@@ -83,7 +83,10 @@ export class SearchQueryService implements SearchQueryInterface {
     'plantStatusCode',
     'sourceOfCoordinates',
     'atlasCode',
-    'atlasClass'
+    'atlasClass',
+    'identificationBasis',
+    'samplingMethod',
+    'taxonRankId'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -119,7 +122,9 @@ export class SearchQueryService implements SearchQueryInterface {
     'useIdentificationAnnotations',
     'includeSubTaxa',
     'annotated',
-    'onlyNonStateLands'
+    'onlyNonStateLands',
+    'alive',
+    'higherTaxon'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -136,7 +141,6 @@ export class SearchQueryService implements SearchQueryInterface {
 
   // noinspection JSUnusedLocalSymbols
   private readonly string: Array<keyof WarehouseQueryInterface|'xValue'|'annotatedBefore'|'annotatedLaterThan'> = [
-    'taxonRankId',
     'xValue',
     'ykj10kmCenter',
     'qualityIssues',
@@ -152,7 +156,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'formId',
     'taxonAdminFiltersOperator',
     'collectionAndRecordQuality',
-    'featureType'
+    'featureType',
+    'polygonId'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -283,7 +288,7 @@ export class SearchQueryService implements SearchQueryInterface {
   }
 
   public getQuery(result, query: WarehouseQueryInterface) {
-    ['coordinates', 'polygonId'].forEach(key => {
+    ['coordinates'].forEach(key => {
       if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
         result[key] += ':' + query._coordinatesIntersection / 100;
       }

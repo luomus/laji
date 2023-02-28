@@ -28,3 +28,14 @@ ul {
   align-self: center;
   border: 1px solid $neutral-6;
 }
+
+.hide-button {
+  font-size: $fs-1;
+  font-weight: 600;
+  color: $neutral-7;
+  background: none;
+  border: none;
+  &:hover {
+    color: $neutral-5;
+  }
+}

@@ -226,6 +226,18 @@
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
+    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+      <button type="button" class="btn btn-default btn-small obs-form-draw-btn draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
+        <i class="lji-icon lji-polygon"></i>
+      </button>
+      {{ 'observation.form.map.polygon' | translate }}
+    </div>
+    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+      <button type="button" class="btn btn-default btn-small obs-form-draw-btn" (click)="mapDraw.emit('CoordinatesImport')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
+        <i class="glyphicon glyphicon-floppy-open"></i>
+      </button>
+      {{ 'observation.form.map.coordinatesImport' | translate }}
+    </div>
     <div>
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn enter-ykj-grid" (click)="mapDraw.emit('Coordinates')">
         YKJ
@@ -370,6 +382,18 @@
       name="lifeStage"></laji-metadata-select>
   </div>
   <div>
+    <laji-select
+      [selected]="[query.alive]"
+      (selectedChange)="indirectQueryChange('alive', $event[0])"
+      [multiple]="false"
+      [useFilter]="false"
+      [title]="'MY.alive' | label"
+      [options]="[
+        {id: true, value: ('observation.form.alive.true' | translate)},
+        {id: false, value: ('observation.form.alive.false' | translate)}
+      ]"></laji-select>
+  </div>
+  <div>
     <laji-metadata-select
       [(ngModel)]="query.recordBasis"
       (ngModelChange)="onQueryChange()"
@@ -434,6 +458,26 @@
       name="plantStatusCode"
       [placeholder]="'observation.form.plantStatusCode' | translate"
       [alt]="'MY.plantStatusCodeEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.identificationBasis"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.identificationBasis' | label"
+      [alt]="'MY.identificationBasisEnum'"></laji-metadata-select>
+  </div>
+  <div>
+    <laji-metadata-select
+      [(ngModel)]="query.samplingMethod"
+      (ngModelChange)="onQueryChange()"
+      [multiple]="true"
+      [useFilter]="false"
+      name="atlasClass"
+      [placeholder]="'MY.samplingMethod' | label"
+      [alt]="'MY.samplingMethods'"></laji-metadata-select>
   </div>
   <div>
     <div>
@@ -623,6 +667,24 @@
 
 <!-- Fetures of spcies -->
 <section class="laji-panel" laji-panel [title]="'observation.form.speciesFeatures' | translate" [autoToggle]="true" [open]="visible['features']">
+  <laji-metadata-select
+    [(ngModel)]="query.taxonRankId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [useFilter]="false"
+    name="atlasClass"
+    [placeholder]="'MY.taxonRank' | label"
+    [alt]="'MX.taxonRankEnum'"></laji-metadata-select>
+  <laji-select
+    [selected]="[query.higherTaxon]"
+    (selectedChange)="indirectQueryChange('higherTaxon', $event[0])"
+    [multiple]="false"
+    [useFilter]="false"
+    [title]="'observation.form.higherTaxon' | translate"
+    [options]="[
+        {id: true, value: ('observation.form.higherTaxonTrue' | translate)},
+        {id: false, value: ('observation.form.higherTaxonFalse' | translate)}
+      ]"></laji-select>
   <laji-habitat-select
     [query]="query"
     [info]="'observation.info.habitat' | translate"

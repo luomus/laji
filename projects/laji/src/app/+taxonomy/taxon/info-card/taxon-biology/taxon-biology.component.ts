@@ -17,7 +17,7 @@ export class TaxonBiologyComponent implements OnChanges {
   translationKo: any;
   ylesta: any;
   ylestaTitle: any;
-  groupHasTranslation: any[];
+  groupTranslationChecklist: any[];
   ylestaHasTranslation: any;
 
   hasAuthorData = true;
@@ -32,14 +32,14 @@ export class TaxonBiologyComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.ylesta = [{text: undefined, visible: undefined}];
     this.ylestaTitle = undefined;
-    this.groupHasTranslation = [];
+    this.groupTranslationChecklist = [];
     this.ylestaHasTranslation = [];
     this.activeDescriptionContent = {};
     this.currentLang = this.translation.currentLang;
     if (changes.taxonDescription || changes.context) {
       this.activeDescription = 0;
       if (this.taxonDescription && this.context) {
-        this.groupHasTranslation = this.checklang.checkValue(this.taxonDescription);
+        this.groupTranslationChecklist = this.checklang.createTranslationChecklist(this.taxonDescription);
         this.taxonDescription.forEach((description, idx) => {
           if (description.id === this.context) {
             this.activeDescription = idx;
@@ -50,7 +50,7 @@ export class TaxonBiologyComponent implements OnChanges {
               this.ylestaTitle = gruppo.title;
               this.ylesta[0].text = gruppo.variables;
 
-              this.ylestaHasTranslation = this.groupHasTranslation[idx].groups.filter(el =>
+              this.ylestaHasTranslation = this.groupTranslationChecklist[idx].groups.filter(el =>
                 el.id === 'MX.SDVG8'
               );
               this.ylesta[0].visible = this.ylestaHasTranslation.length > 0 ? this.ylestaHasTranslation[0].values : [];

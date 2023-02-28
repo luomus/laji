@@ -2,6 +2,7 @@
   <ng-container *ngIf="(asyncData$) | async as data; else spinner">
     <laji-project-form-header [form]="data.documentForm"
                               [description]="data.description"
+                               lajiFormOption="options.namedPlaceOptions.createDescription options.namedPlaceOptions.editDescription"
                               class="no-flex"></laji-project-form-header>
     <laji-form
       [form]="data.placeForm"

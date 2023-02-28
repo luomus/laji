@@ -5,17 +5,6 @@
     <p>{{ 'saveObservations.desc' | translate }}</p>
     <h2>{{ 'saveObservations.chooseSystem' | translate }}</h2>
     <div class="d-flex flex-row my-6 flex-nowrap sm:flex-wrap">
-      <div class="report-type-container d-flex flex-col justify-between m-2">
-        <div>
-          <h3>{{ 'saveObservations.easy' | translate }}</h3>
-          <ul>
-            <li>{{ 'saveObservations.easy.1' | translate }}</li>
-            <li>{{ 'saveObservations.easy.2' | translate }}</li>
-            <li>{{ 'saveObservations.easy.3' | translate }}</li>
-          </ul>
-        </div>
-        <div><a href="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
-      </div>
       <div class="report-type-container d-flex flex-col justify-between xs:basis-0 basis-3 m-2">
         <div>
           <a class="d-block mb-4 inaturalist-link" href="https://inaturalist.laji.fi/" target="_blank">
@@ -45,7 +34,18 @@
             <li>{{ 'saveObservations.vihko.3' | translate }}</li>
           </ul>
         </div>
-        <div><button [routerLink]="['/vihko'] | localize" class="btn btn-default">{{ 'saveObservations.vihko.report' | translate }}</button></div>
+        <div><button [routerLink]="['/vihko'] | localize" class="btn btn-primary">{{ 'saveObservations.vihko.report' | translate }}</button></div>
+      </div>
+      <div class="report-type-container d-flex flex-col justify-between m-2">
+        <div>
+          <h3>{{ 'saveObservations.easy' | translate }}</h3>
+          <ul>
+            <li>{{ 'saveObservations.easy.1' | translate }}</li>
+            <li>{{ 'saveObservations.easy.2' | translate }}</li>
+            <li>{{ 'saveObservations.easy.3' | translate }}</li>
+          </ul>
+        </div>
+        <div><a href="https://loydos.luomus.fi/loydos/forms/luontohavainto?language=fi" target="_blank" class="btn btn-primary">{{ 'saveObservations.easy.report' | translate }}</a></div>
       </div>
     </div>
   </section>
@@ -83,5 +83,10 @@
         <laji-survey-box class="d-block mr-3" [form]="form"></laji-survey-box>
       </ng-container>
     </div>
+  </section>
+
+  <section>
+    <h2>{{ 'saveObservations.dataBank' | translate }}</h2>
+    <span [innerHTML]="'saveObservations.dataBank.desc' | translate"></span>
   </section>
 </div>
