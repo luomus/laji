@@ -9,12 +9,29 @@ interface DatatableRow extends AtlasSocietyStatsResponseElement {
   targetPercentageString: string;
 }
 
+type Comparator = (a: any, b: any, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => number;
+export const sortEmptyBirdAssociationToTop = (comparator: Comparator) => (
+  (a: any, b: any, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => {
+    if (!rowA.birdAssociationArea.key) { return dir === 'asc' ? -1 : 1; }
+    if (!rowB.birdAssociationArea.key) { return dir === 'asc' ? 1 : -1; }
+    return comparator(a, b, rowA, rowB, dir);
+  }
+);
+
 const createActivityCategoryComparator = (activityCategory: AtlasActivityCategory) => (
   (a: any, b: any, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => {
     const valA = rowA.activityCategories?.[activityCategory]?.squareSum ?? 0;
     const valB = rowB.activityCategories?.[activityCategory]?.squareSum ?? 0;
     return valB - valA;
   }
+);
+
+const numberComparator = (a: number, b: number, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => (
+  b - a
+);
+
+const stringComparator = (a: string, b: string, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => (
+  a < b ? -1 : 1
 );
 
 const targetPercentageComparator = (a: any, b: any, rowA: DatatableRow, rowB: DatatableRow, dir: 'asc' | 'desc') => {
@@ -46,7 +63,10 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         resizeable: false,
         sortable: true,
         width: 300,
-        cellTemplate: this.societyNameTemplate
+        cellTemplate: this.societyNameTemplate,
+        comparator: sortEmptyBirdAssociationToTop(
+          stringComparator
+        )
       },
       {
         prop: '0',
@@ -55,7 +75,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum0')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum0')
+        )
       },
       {
         prop: '1',
@@ -64,7 +86,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum1')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum1')
+        )
       },
       {
         prop: '2',
@@ -73,7 +97,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum2')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum2')
+        )
       },
       {
         prop: '3',
@@ -82,7 +108,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum3')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum3')
+        )
       },
       {
         prop: '4',
@@ -91,7 +119,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum4')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum4')
+        )
       },
       {
         prop: '5',
@@ -100,7 +130,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         sortable: true,
         width: 100,
         cellTemplate: this.activityCategoryCellTemplate,
-        comparator: createActivityCategoryComparator('MY.atlasActivityCategoryEnum5')
+        comparator: sortEmptyBirdAssociationToTop(
+          createActivityCategoryComparator('MY.atlasActivityCategoryEnum5')
+        )
       },
       {
         prop: 'totalSquares',
@@ -108,7 +140,10 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         resizeable: false,
         sortable: true,
         width: 75,
-        cellTemplate: this.alignRightTemplate
+        cellTemplate: this.alignRightTemplate,
+        comparator: sortEmptyBirdAssociationToTop(
+          numberComparator
+        )
       },
       {
         prop: 'targetPercentageString',
@@ -116,7 +151,9 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
         resizeable: false,
         sortable: true,
         cellTemplate: this.alignRightTemplate,
-        comparator: targetPercentageComparator
+        comparator: sortEmptyBirdAssociationToTop(
+          targetPercentageComparator
+        )
       }
     ];
     this.rows$ = this.atlasApi.getBirdSocietyStats().pipe(
