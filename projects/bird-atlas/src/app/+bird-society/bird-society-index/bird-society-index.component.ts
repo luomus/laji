@@ -128,7 +128,7 @@ export class BirdSocietyIndexComponent implements AfterViewInit {
             // row[i] = v.squareSum + ` (${Math.round(v.squarePercentage)}%)`;
             row[i] = v;
           });
-          row.targetPercentageString = Math.round(row.targetPercentage) + '%';
+          row.targetPercentageString = Math.round(row.targetPercentage) + ' %';
           rows.push(row);
         });
         return rows;

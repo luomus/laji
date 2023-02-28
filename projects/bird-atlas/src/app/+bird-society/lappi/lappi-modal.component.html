@@ -1,8 +1,14 @@
-<div class="d-flex justify-end">
+<div class="d-flex justify-between">
+  <h2 class="ml-5">Suurruutu {{ index }}</h2>
   <button class="btn btn-default close-btn m-4" (click)="onCloseModal()"><span class="glyphicon glyphicon-remove"></span></button>
 </div>
 <div class="lappi-modal-container">
-  <ngx-datatable class="material" [rows]="rows" [columns]="cols"></ngx-datatable>
+  <ngx-datatable
+    class="material"
+    [rows]="rows"
+    [columns]="cols"
+    [sorts]="[{ prop: 'coordinates', dir: 'asc' }]"
+  ></ngx-datatable>
 </div>
 <ng-template #YKJ let-row="row">
   <a [routerLink]="'/grid/'+ row.coordinates" (click)="onLinkClick()">{{ row.coordinates }}</a>

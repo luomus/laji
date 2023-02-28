@@ -10,31 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'ba-society-lappi',
-  template: `
-<div *ngIf="lappiStats$ | async; let stats; else loading" class="container">
-  <h1>Pohjois-Lapin suurruudut</h1>
-  <img class="d-block mb-4" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
-  <ngx-datatable
-    class="material mb-8"
-    [rows]="stats"
-    [columns]="cols"
-    [selectionType]="'single'"
-    (select)="onTableRowSelect($event)"
-  ></ngx-datatable>
-</div>
-<ng-template #loading>
-  <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
-</ng-template>
-<ng-template #linkCell>
-  <span class="glyphicon glyphicon-triangle-right"></span>
-</ng-template>
-<ng-template #ykjCell let-row="row">
-  {{ row.latMin + ':' + row.lonMin + '–' + row.latMax + ':' + row.lonMax }}
-</ng-template>
-<ng-template #percentageCell let-value="value">
-  <div style="text-align: right;">{{ round(value) }} %</div>
-</ng-template>
-  `,
+  templateUrl: './lappi.component.html',
   styleUrls: ['./lappi.component.scss']
 })
 export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
@@ -114,6 +90,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
     this.hideModalSubscription?.unsubscribe();
     this.bsModalRef = this.modalService.show(LappiModalComponent, {class: 'modal-lg'});
     this.bsModalRef.content.rows = e.selected[0].grids;
+    this.bsModalRef.content.index = e.selected[0].index;
     this.hideModalSubscription = this.bsModalRef.content.hideModal.subscribe(() => {
       this.bsModalRef.hide();
       this.hideModalSubscription?.unsubscribe();

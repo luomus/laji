@@ -1,5 +1,6 @@
 <div class="container mb-8" *ngIf="rows$ | async; let rows; else loading">
   <h1>Paikallisyhdistykset ja kartoitustilanne</h1>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että eteläisen Suomen (YKJ 739 asti) kaikki kaikki atlasruudut tutkitaan vähintään tyydyttävästi.</p>
   <div class="d-flex justify-end mb-3">
     <button class="btn btn-default" (click)="onDownloadCsv(rows)">Lataa .csv</button>
   </div>
@@ -12,12 +13,11 @@
     [messages]="{ emptyMessage: '' }"
     [rowClass]="selectRowClass"
   ></ngx-datatable>
-  <p class="my-4">Lintuatlaksessa tavoitteena on, että eteläisen Suomen (YKJ 739 asti) kaikki kaikki atlasruudut tutkitaan vähintään tyydyttävästi.</p>
   <h2>Pohjois-Lapin suurruudut</h2>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
   <a [routerLink]="['lappi']">
     <img class="d-block lappi-img" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   </a>
-  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
 </div>
 
 <ng-template #societyName let-row="row">

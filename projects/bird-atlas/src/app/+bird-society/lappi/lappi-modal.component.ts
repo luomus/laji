@@ -12,6 +12,7 @@ export class LappiModalComponent implements AfterViewInit {
 
   rows: LappiStatsResponseGridsElement[] = [];
   cols: TableColumn[];
+  index: number;
   hideModal = new EventEmitter<null>();
 
   ngAfterViewInit() {
