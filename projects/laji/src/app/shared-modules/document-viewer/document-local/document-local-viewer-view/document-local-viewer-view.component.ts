@@ -1,16 +1,16 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
 import { ViewerMapComponent } from '../../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
-import { Subscription } from 'rxjs';
-import { UserService } from '../../../../shared/service/user.service';
+import { DocumentPermissionService, DocumentRights } from '../../service/document-permission.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'laji-document-local-viewer-view',
   templateUrl: './document-local-viewer-view.component.html',
   styleUrls: ['./document-local-viewer-view.component.css']
 })
-export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnChanges {
+export class DocumentLocalViewerViewComponent implements OnChanges {
   @ViewChild(ViewerMapComponent) map: ViewerMapComponent;
 
   @Input() document: Document;
@@ -23,31 +23,20 @@ export class DocumentLocalViewerViewComponent implements OnInit, OnDestroy, OnCh
   @Output() documentDeleted = new EventEmitter();
 
   publicity = Document.PublicityRestrictionsEnum;
-
-  personID: string;
   active = 0;
+
+  rights$: Observable<DocumentRights>;
+
   @SessionStorage() showFacts = false;
 
-  private metaFetch: Subscription;
-
   constructor(
-    private userService: UserService,
+    private documentPermissionService: DocumentPermissionService,
     private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
-    this.metaFetch = this.userService.user$.subscribe(person => {
-        this.personID = person.id;
-        this.cd.detectChanges();
-      });
-  }
-
-  ngOnDestroy() {
-    this.metaFetch.unsubscribe();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.document) {
+      this.rights$ = this.documentPermissionService.getRightsToLocalDocument(this.document);
       this.setActive(0);
       this.cd.markForCheck();
     }

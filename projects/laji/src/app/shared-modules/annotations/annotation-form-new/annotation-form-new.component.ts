@@ -43,7 +43,7 @@ import { TaxonAutocompleteService } from '../../../shared/service/taxon-autocomp
 export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterContentChecked {
   static readonly lang = ['en', 'fi', 'sv'];
 
-  @Input() editors: string[];
+  @Input() isEditor: boolean;
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() annotations: Annotation[];
@@ -62,7 +62,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   taxonAutocomplete: Observable<any>;
   error: any;
   unIdentifyable = false;
-  isEditor: boolean;
   sending = false;
   infoModal = true;
   needsAck: boolean;
@@ -308,7 +307,6 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
 
 
   initAnnotation() {
-    this.isEditor = this.editors && this.personID && this.editors.indexOf(this.personID) > -1;
     this.needsAck = this.annotations && this.annotations[0] && this.annotations[0].type !== Annotation.TypeEnum.TypeAcknowledged;
   }
 

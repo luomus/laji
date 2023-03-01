@@ -11,8 +11,6 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class GatheringComponent implements OnInit, OnDestroy {
 
-  @Input() editors: string[];
-  @Input() personID: string;
   @Input() documentID: string;
   @Input() gathering: any;
   @Input() highlight: string;

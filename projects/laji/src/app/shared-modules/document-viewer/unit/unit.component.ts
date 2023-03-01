@@ -15,8 +15,6 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class UnitComponent implements OnInit {
 
-  @Input() editors: string[];
-  @Input() personID: string;
   @Input() documentID: string;
   @Input() unit: any;
   @Input() highlight: string;
