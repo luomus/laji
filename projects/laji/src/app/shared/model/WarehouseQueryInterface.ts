@@ -250,6 +250,7 @@ export interface WarehouseQueryInterface {
   samplingMethod?: Array<string>;
   higherTaxon?: boolean;
   polygonId?: string;
+  sensitive?: boolean;
 }
 
 

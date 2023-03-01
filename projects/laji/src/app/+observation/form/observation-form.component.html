@@ -723,6 +723,17 @@
       [(value)]="query.finnish">
     </laji-three-state-switch>
   </div>
+  <div>
+    <div>
+      <label>{{ 'observation.form.sensitive' | translate }}</label><br>
+    </div>
+    <laji-three-state-switch
+      (change)="onQueryChange()"
+      [onText]="'yes' | translate"
+      [offText]="'no' | translate"
+      [(value)]="query.sensitive">
+    </laji-three-state-switch>
+  </div>
 </section>
 
 <!-- Invasive species  -->

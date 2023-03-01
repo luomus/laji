@@ -1136,6 +1136,8 @@
   "observation.filters.collection": "Aineisto",
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
+  "observation.form.sensitive": "Sensitiiviset lajit",
+  "observation.form.active.sensitive": "Sensitiiviset lajit",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.alive.false": "Ei ole elossa",
   "observation.form.alive.true": "On elossa",
