@@ -4,7 +4,7 @@ import { Document } from '../../../shared/model/Document';
 import { Person } from '../../../shared/model/Person';
 import { Observable, of } from 'rxjs';
 import { FormPermissionService } from '../../../shared/service/form-permission.service';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
 import { DocumentService } from '../../own-submissions/service/document.service';
@@ -25,14 +25,17 @@ export class DocumentPermissionService {
   ) {}
 
   getRightsToWarehouseDocument(doc?: any): Observable<DocumentRights> {
+    const rights: DocumentRights = { isEditor: false, hasEditRights: false, hasDeleteRights: false };
+
     return this.userService.user$.pipe(
       switchMap(user => {
         if (!user || !doc) {
-          return of({ isEditor: false, hasEditRights: false, hasDeleteRights: false });
+          return of(rights);
         }
 
         const editors = doc.linkings?.editors?.map(editor => IdService.getId(editor.id)).filter(id => !!id) || [];
-        const isEditor = editors.includes(user.id);
+        rights.isEditor = editors.includes(user.id);
+        rights.hasEditRights = rights.isEditor;
 
         const formId = IdService.getId(doc.formId);
         const collectionId = IdService.getId(doc.collectionId);
@@ -40,21 +43,25 @@ export class DocumentPermissionService {
         return this.userIsFormAdmin(user, formId, collectionId, this.userService.getToken()).pipe(
           switchMap(isFormAdmin => {
             if (isFormAdmin) {
-              return of({ isEditor, hasEditRights: true, hasDeleteRights: true });
+              rights.hasEditRights = true;
+              rights.hasDeleteRights = true;
+              return of(rights);
             }
 
             const documentId = IdService.getId(doc.documentId);
 
-            if (!(isEditor || editors.length === 0) || !documentId) {
-              return of({ isEditor, hasEditRights: isEditor, hasDeleteRights: false });
+            if (!(rights.isEditor || editors.length === 0) || !documentId) {
+              return of(rights);
             }
 
             return this.documentService.findById(documentId).pipe(
-              map(localDoc => ({
-                isEditor: isEditor || localDoc.editor === user.id,
-                hasEditRights: isEditor || localDoc.editor === user.id,
-                hasDeleteRights: localDoc.creator === user.id
-              }))
+              map(localDoc => {
+                rights.isEditor = rights.isEditor || localDoc.editor === user.id;
+                rights.hasEditRights = rights.hasEditRights || localDoc.editor === user.id;
+                rights.hasDeleteRights = rights.hasDeleteRights || localDoc.creator === user.id;
+                return rights;
+              }),
+              catchError(() => (of(rights)))
             );
           })
         );
@@ -89,7 +96,7 @@ export class DocumentPermissionService {
 
     return this.formService.getForm(formId).pipe(
       switchMap(form => {
-        if (!form.options?.hasAdmins) {
+        if (!form?.options?.hasAdmins) {
           return of(false);
         }
         return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
