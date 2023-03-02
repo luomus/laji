@@ -30,7 +30,7 @@
        #sidebarRef>
     <div *ngIf="!mobile && !staticWidth" class="dragbar" (mousedown)="onDragStart()"></div>
     <div class="sidebar-content-wrapper"
-         [class]="class"
+         [class]="contentWrapperClass"
          [@sidebarOpen_content]="open ? 'open' : 'closed'"
          [ngClass]="{'static-width': staticWidth}"
          [ngStyle]="{'width': staticWidth ? staticWidth+'px': undefined}"
