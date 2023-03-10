@@ -16,6 +16,10 @@ body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.read-width-16 {
+  max-width: 600px;
+}
+
 .main-view, footer {
   @include base();
 }
