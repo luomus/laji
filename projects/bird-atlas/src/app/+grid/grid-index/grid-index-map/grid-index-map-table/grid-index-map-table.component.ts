@@ -16,12 +16,12 @@ type AugmentedLegend = {
 <table>
   <tr>
     <th>Väri</th>
-    <th>#</th>
+    <th>Ruutuja (%)</th>
     <th>Selvitysaste</th>
   </tr>
   <tr *ngFor="let row of legend">
     <td><span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span></td>
-    <td>{{ row.countString ? row.countString : '-' }}</td>
+    <td style="text-align: right">{{ row.countString ? row.countString : '-' }}</td>
     <td>{{ row.label }}</td>
   </tr>
 </table>
@@ -36,7 +36,7 @@ export class GridIndexMapTableComponent implements OnChanges {
 
   ngOnChanges() {
     Object.values(this.activityCategoryStats).forEach((s, i) => {
-      this.legend[i].countString = s.squareSum + ` (${Math.round(s.squarePercentage)}%)`;
+      this.legend[i].countString = s.squareSum + ` (${Math.round(s.squarePercentage)} %)`;
     });
   }
 }
