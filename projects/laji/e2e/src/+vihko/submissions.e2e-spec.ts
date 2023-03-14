@@ -9,6 +9,7 @@ describe('Vihko own submissions page', () => {
 
   beforeAll(async (done) => {
     await userPage.handleNavigationWithExternalLogin(() => submissionsPage.navigateTo());
+    await submissionsPage.datatable.waitUntilLoaded();
     done();
   });
 

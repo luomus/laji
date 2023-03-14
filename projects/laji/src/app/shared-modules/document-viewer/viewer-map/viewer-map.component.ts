@@ -63,7 +63,6 @@ export class ViewerMapComponent implements OnInit, OnChanges {
 
   onMapLoad() {
     this.setActiveIndex(this.active);
-    this.lajiMap.invalidateSize();
   }
 
   setActiveIndex(idx: number) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ProjectFormService } from '../project-form.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Form } from '../../shared/model/Form';
@@ -108,7 +108,7 @@ export class FormComponent implements OnInit {
       if (this.router.url.match(/\/link$/)) {
         route.push('link');
       }
-      this.projectFormService.getProjectRootRoute(this.route).pipe(take(1)).subscribe(rootRoute =>
+      this.projectFormService.getProjectRootRoute$(this.route).pipe(take(1)).subscribe(rootRoute =>
         this.router.navigate(route, {relativeTo: rootRoute.parent, replaceUrl: true})
       );
       return true;

@@ -117,7 +117,7 @@ describe('Tools page', () => {
     });
 
     it('at least one template shown', async (done) => {
-      await waitForVisibility(page.templatesDatatable.getRow(0).$container);
+      await page.templatesDatatable.waitUntilLoaded();
       expect(await isDisplayed(page.templatesDatatable.getRow(0).$container)).toBe(true);
       done();
     });

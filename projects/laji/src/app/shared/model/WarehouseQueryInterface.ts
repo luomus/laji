@@ -118,7 +118,7 @@ export interface WarehouseQueryInterface {
   target?: Array<string>;
   includeSubTaxa?: boolean;
   useIdentificationAnnotations?: boolean;
-  taxonRankId?: string;
+  taxonRankId?: Array<string>;
   informalTaxonGroupId?: Array<string>;
   informalTaxonGroupIdNot?: Array<string>;
   informalTaxonGroupIdIncludingReported?: Array<string>;
@@ -245,6 +245,11 @@ export interface WarehouseQueryInterface {
   featureType?: string;
   onlyCount?: boolean;
   pessimisticDateRangeHandling?: boolean;
+  alive?: boolean;
+  identificationBasis?: Array<string>;
+  samplingMethod?: Array<string>;
+  higherTaxon?: boolean;
+  polygonId?: string;
 }
 
 

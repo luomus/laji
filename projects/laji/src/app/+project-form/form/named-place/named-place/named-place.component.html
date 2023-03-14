@@ -1,70 +1,70 @@
-<div class="container-fluid" style="width: 100%">
+<div class="container-fluid" style="width: 100%" >
   <div id="container" class="row np-row" *ngIf="(vm$ | async) as data; else spinner ">
     <laji-project-form-header *ngIf="displayHeader"
                               [form]="data.documentForm"
                               [description]="data.description"
-                              class="no-flex"></laji-project-form-header>
+                              class="no-flex"
+                              lajiFormOption="logo title options.hideTES"></laji-project-form-header>
 
     <alert *ngIf="errorMsg" type="danger">{{ errorMsg }}</alert>
 
     <ng-container *lajiLoggedIn="true">
       <div *ngIf='data.namedPlaces' class="choose-label">
-        <span>
+        <span lajiFormOption="options.namedPlaceOptions.createNewButtonPrependingTextLabel">
           {{data.documentForm.options?.namedPlaceOptions?.createNewButtonPrependingTextLabel || 'np.chooseLabel' | translate}}
         </span>
         <ng-container *ngIf="data.allowEdit">
           <span class="choose-or">{{'or' | translate}}</span>
-        <lu-button (click)='onCreateNew()'>
+        <lu-button (click)='onCreateNew()' lajiFormOption="options.namedPlaceOptions.createNewButtonLabel">
           {{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}
         </lu-button>
         </ng-container>
       </div>
     </ng-container>
-
-    <ng-container *ngIf="data.filterByMunicipality">
-      <div class="form-group col-xs-12">
-        <div class="row">
-          <label class="col-xs-12">{{ 'MNP.municipality' | label }}</label>
-          <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
-                            [field]="areaTypes.Municipality"
-                            [allOptionEnabled]='true'
-                            [selectOptionEnabled]='false'
-                            (areaSelect)="onMunicipalityChange($event)"
-                            [value]="[data.municipality]"></laji-area-select>
-          </div>
-      </div>
-    </ng-container>
-    <div *ngIf="data.filterByBirdAssociationArea">
-      <div class="form-group col-xs-12">
-        <div class="row">
-          <div class="col-xs-12">
-            <label>{{ 'MNP.birdAssociationArea' | label }}</label>
-            <laji-info placement="right">
-              <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
-              <br>
-              {{ data.documentForm?.options?.namedPlaceOptions?.birdAssociationAreaHelp }}
-            </laji-info>
-          </div>
-          <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
-                            [field]="areaTypes.BirdAssociationArea"
-                            [allOptionEnabled]="true"
-                            [allOptionLabel]="'area-select.allRoutes'"
-                            [allOptionLast]="true"
-                            (areaSelect)="onBirdAssociationAreaChange($event)"
-                            [value]="[data.birdAssociationArea]"></laji-area-select>
+    <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByMunicipality"
+          lajiFormOption="options.namedPlaceOptions.filterByMunicipality"
+          class="form-group col-xs-12">
+      <div class="row">
+        <label class="col-xs-12">{{ 'MNP.municipality' | label }}</label>
+        <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+                          [field]="areaTypes.Municipality"
+                          [allOptionEnabled]='true'
+                          [selectOptionEnabled]='false'
+                          (areaSelect)="onMunicipalityChange($any($event))"
+                          [value]="[data.municipality]"></laji-area-select>
         </div>
+    </div>
+    <div *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByBirdAssociationArea"
+         lajiFormOption="options.namedPlaceOptions.filterByBirdAssociationArea"
+         class="form-group col-xs-12" >
+      <div class="row">
+        <div class="col-xs-12">
+          <label>{{ 'MNP.birdAssociationArea' | label }}</label>
+          <laji-info placement="right">
+            <strong>{{ 'MNP.birdAssociationArea' | label }}</strong>
+            <br>
+            {{ data.documentForm?.options?.namedPlaceOptions?.birdAssociationAreaHelp }}
+          </laji-info>
+        </div>
+        <laji-area-select class="col-sm-12 col-md-4 col-lg-3"
+                          [field]="areaTypes.BirdAssociationArea"
+                          [allOptionEnabled]="true"
+                          [allOptionLabel]="'area-select.allRoutes'"
+                          [allOptionLast]="true"
+                          (areaSelect)="onBirdAssociationAreaChange($event)"
+                          [value]="[data.birdAssociationArea]"></laji-area-select>
       </div>
     </div>
-    <ng-container *ngIf="data.filterByTags">
-      <laji-metadata-select
-        [alt]="'MNP.tagEnum'"
-        [ngModel]="data.tags"
-        (ngModelChange)="onTagsChange($event)"
-        [multiple]="true"
-        [useFilter]="false"
-        placeholder="np.tag"
-        [open]="true"></laji-metadata-select>
-    </ng-container>
+    <laji-metadata-select
+      *ngIf="data.documentForm?.options?.namedPlaceOptions?.filterByTags"
+      lajiFormOption="options.namedPlaceOptions.filterByTags"
+      [alt]="'MNP.tagEnum'"
+      [ngModel]="data.tags"
+      (ngModelChange)="onTagsChange($event)"
+      [multiple]="true"
+      [useFilter]="false"
+      placeholder="np.tag"
+      [open]="true"></laji-metadata-select>
     <laji-spinner [spinning]="loading" [overlay]="true">
       <div *ngIf="data.namedPlaces && data.documentForm && !errorMsg">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
@@ -77,6 +77,7 @@
                           (activePlaceChange)="onActivePlaceChange($event)"></laji-np-choose>
           <ng-container *lajiLoggedIn="true">
             <lu-button *ngIf="data.allowEdit"
+                       lajiFormOption="options.namedPlaceOptions.createNewButtonLabel"
                        (click)="onCreateNew()">{{ data.documentForm.options?.namedPlaceOptions?.createNewButtonLabel || 'np.createNew' | translate }}</lu-button>
           </ng-container>
         </div>

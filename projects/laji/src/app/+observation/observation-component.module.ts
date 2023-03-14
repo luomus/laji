@@ -40,6 +40,7 @@ import { CollectionsSelectModule } from '../shared-modules/collections-select/co
 import { OwnObservationsFilterComponent } from './form/own-observations-filter/own-observations-filter.component';
 import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-select/extended-group-select.module';
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ import { ConservationFilterComponent } from './form/conservation-filter/conserva
     InfoPageModule,
     SelectModule,
     CollectionsSelectModule,
-    ExtendedGroupSelectModule
+    ExtendedGroupSelectModule,
+    CommonModule
   ],
   declarations: [
     ObservationComponent,

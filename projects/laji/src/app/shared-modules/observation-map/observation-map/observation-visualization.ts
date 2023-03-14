@@ -1,9 +1,7 @@
-import { LajiMapVisualization } from '../../legend/laji-map-visualization';
+import { LajiMapVisualization, LajiMapVisualizationItem } from '../../legend/laji-map-visualization';
 
 const BASE_FEATURE_STYLE = {
   weight: 1,
-  opacity: 1,
-  fillOpacity: .5
 };
 const CURRENT_YEAR = new Date().getFullYear();
 const RECORD_AGE_BREAKPOINTS = [2, 10, 20, 40, Infinity].map(bp => CURRENT_YEAR - bp);
@@ -64,7 +62,9 @@ const getCoordinateAccuracyClassName = (coordinateAccuracy: number): string => {
 
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
-export const lajiMapObservationVisualization: LajiMapVisualization<ObservationVisualizationMode> = {
+type ObservationVisualization = LajiMapVisualization<ObservationVisualizationMode> &
+  Record<ObservationVisualizationMode, {getFeatureStyle: LajiMapVisualizationItem['getFeatureStyle']}>;
+export const lajiMapObservationVisualization: ObservationVisualization = {
   obsCount: {
     label: 'laji-map.legend.mode.obsCount',
     categories: [

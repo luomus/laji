@@ -17,6 +17,7 @@ export class LabelEditorComponent {
 
   _setup: ISetup;
   _magnification = 2;
+  _backSide = false;
   _magnifiedStyle: ILabelStyle;
   init = false;
   minSize = 4;
@@ -24,7 +25,6 @@ export class LabelEditorComponent {
   @Input() grid: number;
   @Input() gridVisible: boolean;
   @Input() active: ILabelItem;
-  @Input() backSide = false;
   @Output() activeChange = new EventEmitter<ILabelItem>();
   @Output() setupChange = new EventEmitter<ISetup>();
   @Output() showSettings = new EventEmitter<ILabelItem>();
@@ -50,6 +50,12 @@ export class LabelEditorComponent {
     this.recalculate();
   }
 
+  @Input()
+  set backSide(backSide: boolean) {
+    this._backSide = backSide;
+    this.recalculate();
+  }
+
   recalculate(): void {
     if (!this._setup) {
       return;
@@ -62,12 +68,17 @@ export class LabelEditorComponent {
         resultStyle[prop] = this._setup.label[prop];
       }
     });
+    if (this._backSide) {
+      const marginLeft = resultStyle['marginLeft.mm'];
+      resultStyle['marginLeft.mm'] = resultStyle['marginRight.mm'];
+      resultStyle['marginRight.mm'] = marginLeft;
+    }
     this._magnifiedStyle = resultStyle;
   }
 
   onItemChange(originalItem: ILabelItem, newItem: ILabelItem): void {
     const result = [];
-    const items: TLabelLocation = this.backSide ? 'backSideLabelItems' : 'labelItems';
+    const items: TLabelLocation = this._backSide ? 'backSideLabelItems' : 'labelItems';
     this._setup[items].forEach(item => {
       result.push(item === originalItem ? newItem : item);
     });

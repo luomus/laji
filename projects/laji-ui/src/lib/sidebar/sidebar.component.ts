@@ -54,6 +54,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() displayNavHeader = false;
   @Input() displayNav = true;
   @Input() noPrint: boolean;
+  @Input() contentWrapperClass: string;
 
   sidebarMinWidth = 50;
 

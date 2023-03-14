@@ -1,6 +1,10 @@
-<div *ngIf="visible" id="container">
-  <lu-tabs *ngIf="!_documentForm.options?.namedPlaceOptions?.hideMapTab else listTemplate" [selectedIndex]="activeIndex" (selectedChange)="setActive($event)">
-    <lu-tab [heading]="_documentForm.options?.namedPlaceOptions?.listLabel || 'np.list' | translate">
+<div *ngIf="visible">
+  <lu-tabs *ngIf="!_documentForm.options?.namedPlaceOptions?.hideMapTab else listTemplate"
+           [tabsListClass]="formOptionToClassName('options.namedPlaceOptions.hideMapTab options.namedPlaceOptions.startWithMap')"
+           [selectedIndex]="activeIndex"
+           (selectedChange)="setActive($event)">
+    <lu-tab [heading]="_documentForm.options?.namedPlaceOptions?.listLabel || 'np.list' | translate"
+            lajiFormOption="options.namedPlaceOptions.listLabel">
       <ng-container *ngTemplateOutlet="listTemplate"></ng-container>
     </lu-tab>
     <lu-tab [heading]="'np.map' | translate">
@@ -10,6 +14,7 @@
                     [activeNP]="findNPIndexById(_activeNP)"
                     [userID]="_userID"
                     [reservable]="!!_documentForm.options?.namedPlaceOptions?.reservationUntil"
+                    lajiFormOption="options.namedPlaceOptions.reservationUntil"
                     [placeForm]="placeForm"
                     [documentForm]="_documentForm"
                     (activePlaceChange)="onActivePlaceChange($event)"></laji-np-map>
@@ -25,8 +30,8 @@
                     [activeNP]="findNPIndexById(_activeNP)"
                     [formRights]="formRights"
                     [visible]="loadedTabs.getNameFromIdx(activeIndex) === 'list'"
-                    (activePlaceChange)="onActivePlaceChange($event)"
-      ></laji-np-list>
+                    (activePlaceChange)="onActivePlaceChange($event)">
+        ></laji-np-list>
     </div>
   </ng-template>
 </div>

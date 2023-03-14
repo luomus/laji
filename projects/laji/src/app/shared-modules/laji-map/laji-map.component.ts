@@ -22,7 +22,6 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
-import L from 'leaflet';
 
 @Component({
   selector: 'laji-map',
@@ -36,7 +35,7 @@ import L from 'leaflet';
   providers: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
+export class LajiMapComponent implements OnDestroy, OnChanges {
   @Input() data: any = [];
   @Input() loading = false;
   @Input() showControls = true;
@@ -67,12 +66,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     private translate: TranslateService,
     private zone: NgZone
   ) {}
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.invalidateSize();
-    }, 100);
-  }
 
   @Input()
   set options(options: Options) {
@@ -190,15 +183,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
     });
   }
 
-  invalidateSize() {
-    try {
-      if (this.map) {
-        this.map.map.invalidateSize();
-      }
-    } catch (e) {
-    }
-  }
-
   setData(data) {
     if (!this.map) {
       this.mapData = data;
@@ -219,7 +203,9 @@ export class LajiMapComponent implements OnDestroy, OnChanges, AfterViewInit {
   drawToMap(type: string) {
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
-    } else if (['Rectangle'].includes(type)) {
+    } else if (type === 'CoordinatesImport') {
+      this.map.openDrawUploadDialog();
+    } else if (['Rectangle', 'Polygon'].includes(type)) {
       this.map.triggerDrawing(type);
     }
   }

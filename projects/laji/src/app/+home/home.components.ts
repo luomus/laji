@@ -20,12 +20,14 @@ import { NewsFacade } from '../+news/news.facade';
 })
 export class HomeComponent implements OnInit {
 
-  mapStartDate;
+  mapStartDate: string;
+  mapQueryParams: Record<string, string>;
   images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
   publications$: Observable<Information>;
 
   formId = Global.forms.whichSpecies;
+
 
   constructor(
     private sourceService: SourceService,
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.newsFacade.loadPage(1);
     this.mapStartDate = HomeDataService.getRecentDate();
+    this.mapQueryParams = {firstLoadedSameOrAfter: this.mapStartDate, countryId: 'ML.206'};
     this.homeData$ = this.homeDataService.getHomeData();
     this.images$ = this.homeData$.pipe(
       map(data => data.identify && data.identify.results || []),

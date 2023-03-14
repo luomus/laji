@@ -8,7 +8,7 @@
   top: 30px;
   right: 7px;
   z-index: 400;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
@@ -27,4 +27,15 @@ ul {
   background-color: $neutral-1;
   align-self: center;
   border: 1px solid $neutral-6;
+}
+
+.hide-button {
+  font-size: $fs-1;
+  font-weight: 600;
+  color: $neutral-7;
+  background: none;
+  border: none;
+  &:hover {
+    color: $neutral-5;
+  }
 }

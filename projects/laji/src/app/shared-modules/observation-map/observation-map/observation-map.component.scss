@@ -123,3 +123,15 @@ ul {
 .accuracy-5 {
   border: 4px dashed #000;
 }
+
+:host ::ng-deep .laji-map-active-pointer {
+  box-shadow: 0px 0px 5px 3px #6ca31d;
+}
+:host ::ng-deep .laji-map-active-pointer:before {
+  content: "🢓";
+  position: absolute;
+  top: -18px;
+  font-size: 26px;
+  color: #6ca31d;
+}
+

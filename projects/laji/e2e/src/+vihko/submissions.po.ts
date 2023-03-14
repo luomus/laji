@@ -1,4 +1,5 @@
 import { browser, $, ElementFinder } from 'protractor';
+import {EC} from '../../helper';
 
 export class SubmissionsPage {
   private $container: ElementFinder;
@@ -17,6 +18,7 @@ export class SubmissionsPage {
   datatable = {
     $container: this.$datatable,
     $$rows: this.$datatable.$$('datatable-row-wrapper'),
+    waitUntilLoaded: () => browser.wait(EC.invisibilityOf(this.$datatable.$('.spinner'))),
     getRow: (idx: number) => {
       const $container = this.$datatable.$$('datatable-row-wrapper').get(idx);
       return {

@@ -7,14 +7,14 @@ import { InformalTaxonGroupApi } from '../api/InformalTaxonGroupApi';
 import { SourceService } from './source.service';
 import { UserService } from './user.service';
 import { LajiApi, LajiApiService } from './laji-api.service';
-import { catchError, map, share, shareReplay, take, tap } from 'rxjs/operators';
+import { catchError, map, share, take, tap } from 'rxjs/operators';
 import { AreaService } from './area.service';
 import { RedListTaxonGroupApi } from '../api/RedListTaxonGroupApi';
 import { Publication } from '../model/Publication';
 import { NamedPlaceApi } from '../api/NamedPlaceApi';
 import { AnnotationService } from '../../shared-modules/document-viewer/service/annotation.service';
 import { CollectionService } from './collection.service';
-import { BaseDataService, IBaseData } from '../../graph-ql/service/base-data.service';
+import { BaseDataService } from '../../graph-ql/service/base-data.service';
 
 @Injectable({providedIn: 'root'})
 export class TriplestoreLabelService {
@@ -23,7 +23,6 @@ export class TriplestoreLabelService {
   static requestCache: any = {};
 
   private guidRegEx: RegExp;
-  private metaData: any;
 
   constructor(private informalTaxonService: InformalTaxonGroupApi,
               private namedPlaceApi: NamedPlaceApi,
@@ -142,35 +141,12 @@ export class TriplestoreLabelService {
           return TriplestoreLabelService.requestCache[key];
       }
     }
-    return this.getAllLabels(lang).pipe(
+    return this.getAllLabels().pipe(
       map(data => data[key])
     );
   }
 
-  private getAllLabels(lang: string): Observable<{[key: string]: string}> {
-    this.metaData = this.baseDataService.getBaseData().pipe(
-        take(1),
-        map((data) => this.dataToLookup(data)),
-        shareReplay(1)
-    );
-    return this.metaData;
-  }
-
-  private dataToLookup(data: IBaseData) {
-    const labelMap: any = {};
-    (data.classes || []).forEach((meta) => {
-      labelMap[meta.id] = meta.label;
-    });
-    (data.properties || []).forEach((meta) => {
-      labelMap[meta.id] = meta.label;
-    });
-    (data.alts || []).forEach((meta) => {
-      if (meta.options) {
-        meta.options.forEach((option) => {
-          labelMap[option.id] = option.label;
-        });
-      }
-    });
-    return labelMap;
+  private getAllLabels(): Observable<{[key: string]: string}> {
+    return this.baseDataService.getLabelMap().pipe(take(1));
   }
 }

@@ -10,6 +10,7 @@ import { Area } from '../../shared/model/Area';
 import { isRelativeDate } from './date-form/date-form.component';
 import { TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { BrowserService } from 'projects/laji/src/app/shared/service/browser.service';
+import { UserService } from '../../shared/service/user.service';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -102,14 +103,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     ],
     sample: ['sampleType', 'sampleMaterial', 'sampleQuality', 'sampleStatus', 'sampleFact'],
     observer: ['teamMember', 'teamMemberId'],
-    individual: ['sex', 'lifeStage', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'atlasCode', 'atlasClass', 'plantStatusCode',
-      'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
+    individual: ['sex', 'lifeStage', 'alive', 'recordBasis', 'wild', 'nativeOccurrence', 'breedingSite', 'atlasCode', 'atlasClass', 'plantStatusCode',
+      'identificationBasis', 'samplingMethod', 'occurrenceCountFinlandMax', 'individualCountMin', 'individualCountMax'],
     quality: ['recordQuality', 'collectionAndRecordQuality', 'unidentified', 'needsCheck', 'annotated', 'qualityIssues', 'effectiveTag', 'collectionQuality'],
     dataset: ['collectionId', 'sourceId'],
     collection: ['collectionId', 'typeSpecimen'],
     conservation: ['administrativeStatusId', 'redListStatusId', 'taxonAdminFiltersOperator'],
     keywords: ['documentId', 'keyword'],
-    features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'invasive', 'finnish'],
+    features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'taxonRankId', 'higherTaxon',
+      'invasive', 'finnish'],
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
     secure: ['secured', 'secureLevel'],
@@ -120,6 +122,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   screenWidthSub: Subscription;
   containerTypeAhead: string;
   collectionAndRecordQualityString: string;
+  isLoggedIn$ = this.userService.isLoggedIn$;
 
   private _query: WarehouseQueryInterface;
 
@@ -139,7 +142,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,
-    private browserService: BrowserService
+    private browserService: BrowserService,
+    private userService: UserService
   ) {
     this.dataSource = new Observable((subscriber: any) => {
       subscriber.next(this.formQuery.taxon);
@@ -552,8 +556,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     // mutating it outside of ObservationFacade causes unpredictable behavior with person tokens
     // because personToken is 'true' in formQuery, but replaced by person token in ObservationFacade
     // therefore we are creating a shallow copy on the next line
-    //const query = {...this.query};
-    const query = this.query;
+    const query = {...this.query};
+    //const query = this.query;
 
     if (isRelativeDate(formQuery.timeStart) && !formQuery.timeEnd) {
       query.time = [formQuery.timeStart];
@@ -600,6 +604,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         }
         query.administrativeStatusId = administrativeStatusId;
       });
+    this.query = query;
   }
 
   private parseDate(start, end) {

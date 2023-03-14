@@ -72,16 +72,21 @@
       </a>
     </div>
     <div class="map-container">
-      <laji-observation-map
-        [settingsKey]="'frontMap'"
-        [height]="438"
-        [showControls]="false"
-        [initWithWorldMap]="false"
-        [clickBeforeZoomAndPan]="true"
-        [draw]="false"
-        [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
-        [hideLegend]="true"
-      ></laji-observation-map>
+      <a [routerLink]="['/observation/map'] | localize" [queryParams]="mapQueryParams">
+        <laji-observation-map
+          [settingsKey]="'frontMap'"
+          [height]="438"
+          [showControls]="false"
+          [initWithWorldMap]="false"
+          [clickBeforeZoomAndPan]="false"
+          [viewLocked]="true"
+          [noClick]="true"
+          [draw]="false"
+          [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
+          [hideLegend]="true"
+          [pointModeBreakpoint]="0"
+        ></laji-observation-map>
+      </a>
       <div>
         <div>
           <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
@@ -89,7 +94,7 @@
           <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count></strong>
           {{ 'observation.results.species' | translate }}
         </div>
-        <a [routerLink]="['/observation/map'] | localize" [queryParams]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206'}">
+        <a [routerLink]="['/observation/map'] | localize" [queryParams]="mapQueryParams">
           {{ 'home.map.latest' | translate }}
         </a>
       </div>
