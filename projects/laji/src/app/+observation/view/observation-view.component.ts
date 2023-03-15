@@ -14,6 +14,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
+import { Util } from '../../shared/service/util.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -84,10 +85,14 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
+  newQuery?: WarehouseQueryInterface;
+
   subQueryUpdate: Subscription;
 
   vm$: Observable<IObservationViewModel>;
   settingsList$: Observable<ISettingResultList>;
+
+  private oldQuery?: WarehouseQueryInterface;
 
   constructor(
     public searchQuery: SearchQueryService,
@@ -128,6 +133,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
             {disableTimeOut: true, closeButton: true}
           );
         }
+        this.oldQuery = Util.clone(query);
+        if (!this.newQuery) {
+          this.newQuery = query;
+        }
       })
     ).subscribe();
   }
@@ -160,8 +169,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.observationFacade.toggleIntro();
   }
 
-  onQueryChange(event: WarehouseQueryInterface) {
-    this.observationFacade.updateQuery$(event).subscribe();
+  setNewQuery(query: WarehouseQueryInterface) {
+    this.newQuery = query;
+  }
+
+  updateQuery(query: WarehouseQueryInterface) {
+    const changed = this.getChangedProperties(this.oldQuery, query);
+    this.newQuery = { ...this.newQuery, ...changed };
+
+    this.observationFacade.updateQuery$(query).subscribe();
   }
 
   filterVisible(event: boolean) {
@@ -174,5 +190,20 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   toggleMobile() {
   this.statusFilterMobile = !this.statusFilterMobile;
+  }
+
+  private getChangedProperties(oldQuery: WarehouseQueryInterface, newQuery: WarehouseQueryInterface): WarehouseQueryInterface {
+    const oldKeys = Object.keys(oldQuery);
+    const newKeys = Object.keys(newQuery);
+    const newUniqueKeys = newKeys.filter(k => !oldKeys.includes(k));
+    const uniqueKeys = oldKeys.concat(newUniqueKeys);
+
+    const changed = {};
+    uniqueKeys.forEach(key => {
+      if (oldQuery[key] !== newQuery[key]) {
+        changed[key] = newQuery[key];
+      }
+    });
+    return changed;
   }
 }

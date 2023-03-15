@@ -26,16 +26,17 @@
       [query]="vm.query"
       [listSettings]="settingsList$ | async"
       (listSettingsChange)="onListSettingsChange($event)"
+      (queryChange)="this.updateQuery($event)"
     ></laji-observation-result>
   </main>
   <div class="nav-header">
-    <button class="btn btn-primary" (click)="onQueryChange(vm.query)">
+    <button class="btn btn-primary" (click)="updateQuery(newQuery)">
       {{ 'observation.search' | translate }}
     </button>
     <laji-observation-active
       [skip]="formType === 'sample' ? skipUrlParameters : []"
       [(query)]="vm.query"
-      (queryChange)="onQueryChange($event)"
+      (queryChange)="updateQuery($event)"
       [queryType]="'observation'"
     ></laji-observation-active>
   </div>
@@ -43,15 +44,17 @@
     <ng-container [ngSwitch]="formType">
       <laji-form-sample
         *ngSwitchCase="'sample'"
-        [query]="vm.query"
+        [query]="newQuery"
         [invasiveStatuses]="invasiveStatuses"
         (mapDraw)="draw($event)"
+        (queryChange)="setNewQuery($event)"
       ></laji-form-sample>
       <laji-observation-form
         *ngSwitchDefault
-        [query]="vm.query"
+        [query]="newQuery"
         [invasiveStatuses]="invasiveStatuses"
         (mapDraw)="draw($event)"
+        (queryChange)="setNewQuery($event)"
       ></laji-observation-form>
     </ng-container>
   </nav>
