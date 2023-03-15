@@ -10,7 +10,7 @@
   </div>
   <h1 class="mt-4">{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
   <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
-  <div role="alert" class="alert alert-info read-width-16" *ngIf="isSensitive(data.taxon.id)">
+  <div role="alert" class="alert alert-info read-width-16" *ngIf="data.taxon.sensitive">
     Tämä laji on määritelty sensitiiviseksi, eikä sen kaikkia havaintoja näytetä atlaskartoilla, tai havainnot voivat tulla näkyviin viiveellä.
     <a href="https://lintuatlas.fi/sensitiiviset/" target="_blank">Lue tarkemmin eri lajien sensitiivisten havaintojen käsittelystä</a>.
   </div>
