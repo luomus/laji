@@ -86,6 +86,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
 
   newQuery?: WarehouseQueryInterface;
+  newQueryHasChanges = false;
 
   subQueryUpdate: Subscription;
 
@@ -171,11 +172,19 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   setNewQuery(query: WarehouseQueryInterface) {
     this.newQuery = query;
+    this.newQueryHasChanges = true;
   }
 
-  updateQuery(query: WarehouseQueryInterface) {
-    const changed = this.getChangedProperties(this.oldQuery, query);
-    this.newQuery = { ...this.newQuery, ...changed };
+  updateQueryWithNewQuery() {
+    this.updateQuery(this.newQuery, false);
+    this.newQueryHasChanges = false;
+  }
+
+  updateQuery(query: WarehouseQueryInterface, updateNewQueryWithChanges = true) {
+    if (updateNewQueryWithChanges) {
+      const changes = this.getChangedProperties(this.oldQuery, query);
+      this.newQuery = { ...this.newQuery, ...changes };
+    }
 
     this.observationFacade.updateQuery$(query).subscribe();
   }
