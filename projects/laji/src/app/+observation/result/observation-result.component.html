@@ -52,7 +52,7 @@
   <button class="btn btn-primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</button>
   <div class="flex-grow"></div>
   <div class="finnish-selector-buttons" *ngIf="visible.finnish">
-    <lu-button [routerLink]="['/observation', activeTab] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
+    <lu-button [routerLink]="(activeTab ? ['/observation', activeTab] : ['/observation']) | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
     <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
       {{ 'search.result.finnish' | translate }}</lu-button>
