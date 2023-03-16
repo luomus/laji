@@ -1,0 +1,15 @@
+<div class="laji-page mb-3">
+  <laji-info-page [page]="{'fi': '7463', 'en': '7465', 'sv': '7467'} | multiLang"></laji-info-page>
+
+  <h4>{{ 'observation.front.sources' | translate }}</h4>
+  <laji-observation-table
+    [height]="'350px'"
+    [pageSize]="100"
+    [query]="query"
+    [showSettingsMenu]="false"
+    [showHeader]="false"
+    [isAggregate]="true"
+    [hideDefaultCountColumn]="false"
+    [selected]="['document.collectionId']"
+  ></laji-observation-table>
+</div>

@@ -41,6 +41,7 @@ import { OwnObservationsFilterComponent } from './form/own-observations-filter/o
 import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-select/extended-group-select.module';
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 import { CommonModule } from '@angular/common';
+import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,8 @@ import { CommonModule } from '@angular/common';
     HorizontalChartComponent,
     DateFormComponent,
     OwnObservationsFilterComponent,
-    ConservationFilterComponent
+    ConservationFilterComponent,
+    ObservationResultFrontComponent
   ],
   exports: [
     ObservationViewComponent

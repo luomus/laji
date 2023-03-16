@@ -231,6 +231,10 @@
     </div>
   </lu-tab>
 </lu-tabs>
+<laji-observation-result-front
+  *ngIf="mode === 'all' && !activeTab"
+  [query]="query"
+></laji-observation-result-front>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
   <laji-main-result [query]="query" [visible]="mode === 'finnish'"></laji-main-result>

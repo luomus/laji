@@ -1137,6 +1137,7 @@
   "observation.filters.collection": "Aineisto",
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
+  "observation.front.sources": "Lajitietokeskuksen havaintolähteet",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.alive.false": "Ei ole elossa",
   "observation.form.alive.true": "On elossa",
