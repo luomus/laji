@@ -28,7 +28,6 @@ export interface VisibleSections {
   download?: boolean;
   downloadList?: boolean;
   annotations?: boolean;
-  info?: boolean;
   own?: boolean;
 }
 
@@ -47,7 +46,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input() formType: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() visible: VisibleSections = {
-    info: true,
     finnish: true,
     countTaxa: true,
     countHits: true,
@@ -164,10 +162,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   empty() {
     this.observationFacade.clearQuery();
     this.form.empty();
-  }
-
-  toggleInfo() {
-    this.observationFacade.toggleIntro();
   }
 
   setNewQuery(query: WarehouseQueryInterface) {

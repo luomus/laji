@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, share, switchMap, take, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
-import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,11 +12,7 @@ import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
 
-interface IPersistentState {
-  showIntro: boolean;
-}
-
-interface IObservationState extends IPersistentState {
+interface IObservationState {
   query: WarehouseQueryInterface;
   filterVisible: boolean;
   settingsMap: any;
@@ -36,12 +31,7 @@ export interface IObservationViewModel extends IObservationState {
   lgScreen: boolean;
 }
 
-const _persistentState: IPersistentState = {
-  showIntro: true
-};
-
 let _state: IObservationState = {
-  ..._persistentState,
   query: {},
   filterVisible: true,
   activeTab: undefined,
@@ -58,9 +48,6 @@ export class ObservationFacade {
   // This value is visible in the query parameters when parameters with person token is used and the query is obscured.
   static PERSON_TOKEN = 'true';
 
-  @LocalStorage('observationState', _persistentState)
-  private persistentState: IPersistentState;
-
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
@@ -69,7 +56,6 @@ export class ObservationFacade {
   readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
   readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
   readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  readonly showIntro$     = this.state$.pipe(map((state) => state.showIntro));
   readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
   readonly countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
   readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
@@ -81,7 +67,6 @@ export class ObservationFacade {
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
     activeTab: this.activeTab$,
-    showIntro: this.showIntro$,
     countUnit: this.countUnit$,
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
@@ -100,7 +85,7 @@ export class ObservationFacade {
     private warehouseApi: WarehouseApi,
     private observationDataService: ObservationDataService
   ) {
-    this.updateState({..._state, ...this.persistentState});
+    this.updateState({..._state});
   }
 
   activeTab(tab: string) {
@@ -147,10 +132,6 @@ export class ObservationFacade {
 
   clearQuery() {
     this.updateQuery$(this.emptyQuery).subscribe();
-  }
-
-  toggleIntro() {
-    this.updatePersistentState({...this.persistentState, showIntro: !_state.showIntro});
   }
 
   taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {
@@ -216,10 +197,5 @@ export class ObservationFacade {
 
   private updateState(state: IObservationState) {
     this.store.next(_state = state);
-  }
-
-  private updatePersistentState(state: IPersistentState) {
-    this.persistentState = state;
-    this.updateState({..._state, ...state});
   }
 }
