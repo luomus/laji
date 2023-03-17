@@ -3,6 +3,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { BreadcrumbId } from '../core/breadcrumb.service';
 import { BirdSocietyIndexComponent } from './bird-society-index/bird-society-index.component';
 import { BirdSocietyInfoComponent } from './bird-society-info/bird-society-info.component';
+import { LappiSocietyComponent } from './lappi/lappi.component';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,13 @@ export const routes: Routes = [
     component: BirdSocietyIndexComponent,
     data: {
       breadcrumbStack: [ BreadcrumbId.Home, BreadcrumbId.BirdSocietyIndex ]
+    }
+  },
+  {
+    path: 'lappi',
+    component: LappiSocietyComponent,
+    data: {
+      breadcrumbStack: [ BreadcrumbId.Home, BreadcrumbId.BirdSocietyIndex, BreadcrumbId.Lappi ]
     }
   },
   {
