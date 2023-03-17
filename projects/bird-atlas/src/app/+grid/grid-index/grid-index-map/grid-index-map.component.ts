@@ -7,12 +7,12 @@ import { PathOptions } from 'leaflet';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { AtlasGridResponse, AtlasGridSquare } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
 import {getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
-  grid: AtlasGrid;
+  grid: AtlasGridSquare[];
   data: DataOptions;
 };
 
@@ -20,13 +20,13 @@ const gridSqToFeature = (square: AtlasGridSquare) => {
   const latLngStr = square.coordinates.split(':');
   return convertYkjToGeoJsonFeature(latLngStr[0], latLngStr[1]);
 };
-const getFeatureCollection = (grid: AtlasGrid) => ({
+const getFeatureCollection = (grid: AtlasGridSquare[]) => ({
   features: [
     ...grid.map(square => <any>gridSqToFeature(square))
   ],
   type: 'FeatureCollection'
 });
-export const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode) => (
+export const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: VisualizationMode) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
     const sq: AtlasGridSquare = grid[opt.featureIdx];
     const o: PathOptions = {
@@ -47,7 +47,7 @@ export const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: Visualiza
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGrid;
+  @Input() atlasGrid: AtlasGridResponse;
   @Output() selectYKJ = new EventEmitter<string>();
 
   @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
@@ -101,11 +101,11 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.atlasGrid) {
       const change = changes.atlasGrid;
-      this.mapData$.next(this.getMapData(change.currentValue));
+      this.mapData$.next(this.getMapData(change.currentValue.gridSquares));
     }
   }
 
-  private getMapData(grid: AtlasGrid): MapData {
+  private getMapData(grid: AtlasGridSquare[]): MapData {
     return {
       grid,
       data: {

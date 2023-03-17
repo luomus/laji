@@ -1697,6 +1697,7 @@ type Query {
       secured: Boolean,
       secureLevel: [String!],
       secureReason: [String!],
+      sensitive: Boolean,
       sex: [String!],
       sourceId: [String!],
       sourceOfCoordinates: [String!],

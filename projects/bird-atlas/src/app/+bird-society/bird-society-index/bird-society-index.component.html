@@ -1,10 +1,40 @@
-<div *ngIf="birdSocieties$ | async; let birdSocieties; else loading" class="container">
-  <ul>
-    <li *ngFor="let birdSociety of birdSocieties">
-      <a [routerLink]="[birdSociety.key]">{{ birdSociety.value }}</a>
-    </li>
-  </ul>
+<div class="container mb-8" *ngIf="rows$ | async; let rows; else loading">
+  <h1>Paikallisyhdistykset ja kartoitustilanne</h1>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että eteläisen Suomen (YKJ 739 asti) kaikki kaikki atlasruudut tutkitaan vähintään tyydyttävästi.</p>
+  <div class="d-flex justify-end mb-3">
+    <button class="btn btn-default" (click)="onDownloadCsv(rows)">Lataa .csv</button>
+  </div>
+  <ngx-datatable
+    class="material"
+    [rowHeight]="35"
+    [rows]="rows"
+    [columns]="cols"
+    [scrollbarH]="true"
+    [messages]="{ emptyMessage: '' }"
+    [rowClass]="selectRowClass"
+    [sorts]="[{ prop: 'birdAssociationArea.value', dir: 'asc' }]"
+  ></ngx-datatable>
+  <h2>Pohjois-Lapin suurruudut</h2>
+  <p class="my-4">Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi. <a [routerLink]="['lappi']">Tarkastele ruutuja tarkemmin</a>.</p>
+  <a [routerLink]="['lappi']">
+    <img class="d-block lappi-img" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
+  </a>
 </div>
+
+<ng-template #societyName let-row="row">
+  <a *ngIf="row.birdAssociationArea?.key else noLinkSocietyName" [routerLink]="row.birdAssociationArea.key" [title]="row.birdAssociationArea.value">{{ row.birdAssociationArea.value }}</a>
+  <ng-template #noLinkSocietyName>
+    {{ row.birdAssociationArea?.value }}
+  </ng-template>
+</ng-template>
+
+<ng-template #alignRight let-value="value">
+  <div style="text-align: right;">{{ value }}</div>
+</ng-template>
+
+<ng-template #activityCategoryCell let-cat="value">
+  <div *ngIf="cat" style="text-align: right;">{{ cat.squareSum }} <span class="de-emphasize">({{ round(cat.squarePercentage) }} %)</span></div>
+</ng-template>
 
 <ng-template #loading>
   <div class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>

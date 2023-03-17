@@ -1,0 +1,19 @@
+@import 'vars';
+
+:host ::ng-deep .ngx-datatable.material.single-selection .datatable-body-row {
+  cursor: pointer;
+}
+
+:host ::ng-deep .ngx-datatable.material.single-selection .datatable-body-row.active,
+:host ::ng-deep .ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group
+{
+  background: $primary-2 !important;
+}
+
+:host ::ng-deep .ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group {
+  background: $primary-3 !important;
+}
+
+.glyphicon-triangle-right {
+  color: $primary-5;
+}

@@ -14,3 +14,11 @@
 .breadcrumb {
   background-color: $neutral-3;
 }
+
+:host ::ng-deep ngx-datatable.material .datatable-body-row.datatable-row-even {
+  background: $neutral-1;
+}
+
+:host ::ng-deep ngx-datatable.material .datatable-body-row.datatable-row-odd {
+  background: $neutral-2;
+}

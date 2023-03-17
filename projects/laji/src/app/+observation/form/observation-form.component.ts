@@ -111,7 +111,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     conservation: ['administrativeStatusId', 'redListStatusId', 'taxonAdminFiltersOperator'],
     keywords: ['documentId', 'keyword'],
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'taxonRankId', 'higherTaxon',
-      'invasive', 'finnish'],
+      'invasive', 'finnish', 'sensitive'],
     invasive: [],
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
     secure: ['secured', 'secureLevel'],

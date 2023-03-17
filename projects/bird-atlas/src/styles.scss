@@ -16,6 +16,10 @@ body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.read-width-16 {
+  max-width: 600px;
+}
+
 .main-view, footer {
   @include base();
 }
@@ -26,4 +30,13 @@ ngx-datatable.material.ngx-datatable {
     color: $neutral-5;
     margin-left: 4px;
   }
+}
+
+.fade {
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+  transition: unset;
+  transform: unset;
 }

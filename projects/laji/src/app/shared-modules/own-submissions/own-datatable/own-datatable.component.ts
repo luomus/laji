@@ -48,6 +48,7 @@ export interface RowDocument {
   formID: string;
   form: string;
   id: string;
+  publicityRestrictions: string;
   locked: boolean;
   index: number;
   _editUrl: string;
@@ -138,7 +139,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     {prop: 'unitCount', mode: 'large'},
     {prop: 'observer', mode: 'large'},
     {prop: 'form', mode: 'large'},
-    {prop: 'id', mode: 'large'}
+    {prop: 'id', mode: 'large'},
+    {prop: 'publicityRestrictions', mode: 'large'}
   ];
   allRows: RowDocument[] = [];
   visibleRows: RowDocument[];
@@ -158,7 +160,7 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   downloadedDocumentId: string;
   fileType = 'csv';
 
-  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id'];
+  _columns = ['dateEdited', 'dateObserved', 'locality', 'taxon', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
   _goToStartAfterViewCheck = false;
   private lastSort: any;
 
