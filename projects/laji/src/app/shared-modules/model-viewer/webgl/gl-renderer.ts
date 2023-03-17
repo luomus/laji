@@ -1,7 +1,6 @@
 import { M4, V3, V4 } from './math-3d';
 import { createShader, createProgram, bufferPositions, bufferNormals, bufferTexCoords, setTexture } from './webgl-utils';
 import { parseObj } from './obj-parser';
-import { testModel } from './test-model';
 import { fragmentShader, vertexShader } from './shaders';
 
 interface Camera {
@@ -16,21 +15,18 @@ interface LightSource {
 
 interface Drawable {
   verts: number[];
-  texCoords?: number[];
-  texture?: any;
   normals: number[];
   transform: M4;
 }
 
-export const glLoadModel = (renderer: GLRenderer) => {
+export const glLoadModel = (renderer: GLRenderer, obj: string) => {
   // load the model
-  const obj: string = testModel;
   const model = parseObj(obj);
 
   // set up the models transform
   let transform = M4.translation(0, -200, -1500);
   transform = M4.mult(transform, M4.yRotation(-Math.PI / 4));
-  transform = M4.mult(transform, M4.scaling(200, 200, 200));
+  transform = M4.mult(transform, M4.scaling(25, 25, 25));
 
   // add the model to the renderer
   renderer.drawables = [
@@ -88,12 +84,10 @@ export class GLRenderer {
   private gl: WebGL2RenderingContext;
   private program: WebGLProgram;
   private positionLocation: number;
-  private texCoordLocation: number;
   private normalLocation: number;
   private worldViewProjectionLocation: WebGLUniformLocation;
   private worldInverseTransposeLocation: WebGLUniformLocation;
   private lightCountLocation: WebGLUniformLocation;
-  private textureLocation: WebGLUniformLocation;
 
   private projectionMatrix = M4.unit();
 
@@ -118,7 +112,7 @@ export class GLRenderer {
     ];
 
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-    this.gl.clearColor(.2, .2, .2, 1.0);
+    this.gl.clearColor(.9, .9, .9, 1.0);
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -126,15 +120,16 @@ export class GLRenderer {
     this.gl.useProgram(this.program);
 
     this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position');
-    this.texCoordLocation = this.gl.getAttribLocation(this.program, 'a_texcoord');
     this.normalLocation = this.gl.getAttribLocation(this.program, 'a_normal');
     this.worldViewProjectionLocation = this.gl.getUniformLocation(this.program, 'u_worldViewProjection');
     this.worldInverseTransposeLocation = this.gl.getUniformLocation(this.program, 'u_worldInverseTranspose');
     this.lightCountLocation = this.gl.getUniformLocation(this.program, 'u_lightCount');
-    this.textureLocation = this.gl.getUniformLocation(this.program, 'u_texture');
   }
 
   render() {
+    // eslint-disable-next-line no-bitwise
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
     if (this.dirty['camera']) {
       this.projectionMatrix = M4.mult(this.camera.projection, M4.inverse(this.camera.transform));
       this.dirty['camera'] = false;
@@ -160,7 +155,6 @@ export class GLRenderer {
       this.gl.bindVertexArray(vertexArr);
       bufferPositions(this.gl, this.positionLocation, this.drawables.reduce((acc, curr) => acc.concat(curr.verts), []));
       bufferNormals(this.gl, this.normalLocation, this.drawables.reduce((acc, curr) => acc.concat(curr.normals), []));
-      bufferTexCoords(this.gl, this.texCoordLocation, this.drawables.reduce((acc, curr) => acc.concat(curr.texCoords), []));
       this.dirty['drawables'] = false;
     }
 
@@ -168,9 +162,6 @@ export class GLRenderer {
     this.drawables.forEach(drawable => {
       this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, drawable.transform));
       this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(drawable.transform)));
-      if (drawable.texture) {
-        setTexture(this.gl, this.textureLocation, drawable.texture);
-      }
       this.gl.drawArrays(this.gl.TRIANGLES, offset / 3, drawable.verts.length);
       offset += drawable.verts.length;
     });

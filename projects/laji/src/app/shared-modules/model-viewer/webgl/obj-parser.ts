@@ -15,7 +15,7 @@ export const parseObj = (obj: string): ModelData => {
   const normals: number[] = [];
 
   for (const line of obj.split('\n')) {
-    const substr = line.split(' ');
+    const substr = line.trim().split(' ');
     switch (substr[0]) {
       case 'v':
         vMap.push([parseFloat(substr[1]), parseFloat(substr[2]), parseFloat(substr[3])]);

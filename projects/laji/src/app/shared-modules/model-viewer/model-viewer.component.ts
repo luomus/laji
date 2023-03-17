@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { ModelViewerService } from './model-viewer.service';
 import { glLoadModel, GLRenderer } from './webgl/gl-renderer';
 import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 
@@ -8,7 +9,6 @@ import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 <canvas #canvas
   width="800"
   height="600"
-  style="background-color: #333333"
   (mousedown)="onMouseDown($event)"
 ></canvas>
   `
@@ -20,15 +20,21 @@ export class ModelViewerComponent implements AfterViewInit {
   private destroyMousemoveListener: () => void;
   private destroyMouseupListener: () => void;
 
-  constructor(private ngRenderer: Renderer2) {}
+  private viewerIsActive = false;
+
+  constructor(private ngRenderer: Renderer2, private mvs: ModelViewerService) {}
 
   ngAfterViewInit(): void {
     this.glr = new GLRenderer(this.canvasElem.nativeElement);
-    glLoadModel(this.glr);
-    this.glr.render();
+    this.mvs.getTestModel().subscribe(d => {
+      glLoadModel(this.glr, d);
+      this.glr.render();
+      this.viewerIsActive = true;
+    });
   }
 
   onMouseDown(mousedownEvent: MouseEvent) {
+    if (!this.viewerIsActive) { return; }
     let mouseX = mousedownEvent.clientX;
     let mouseY = mousedownEvent.clientY;
     this.destroyMousemoveListener = this.ngRenderer.listen(
