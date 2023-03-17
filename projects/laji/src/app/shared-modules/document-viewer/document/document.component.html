@@ -22,8 +22,8 @@
           <div>
             <laji-user-document-tools
               *lajiAuthorities="false"
-            [editors]="editors"
-            [personID]="personID"
+            [hasEditRights]="hasEditRights"
+            [hasDeleteRights]="hasDeleteRights"
             [documentID]="document.documentId"
             [formID]="document.formId"
             (documentDeleted)="onDocumentDeleted($event)"
@@ -129,7 +129,7 @@
     <div class="col-sm-7">
       <ng-container *ngFor="let gathering of document.gatherings; let i=index">
         <laji-gathering (showAllUnits)="toggleShowOnlyHighlighted()" [identifying]="identifying" [openAnnotation]="openAnnotation" [unitCnt]="unitCnt"
-                        [showOnlyHighlighted]="showOnlyHighlighted" [highlightParents]="highlightParents" [showFacts]="showFacts" [editors]="editors" [personID]="personID" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [annotationTags]="annotationTags$ | async" [visible]="active === i"></laji-gathering>
+                        [showOnlyHighlighted]="showOnlyHighlighted" [highlightParents]="highlightParents" [showFacts]="showFacts" [documentID]="documentID" [gathering]="gathering" [highlight]="highlight" [annotationTags]="annotationTags$ | async" [visible]="active === i"></laji-gathering>
       </ng-container>
     </div>
     <div class="col-sm-5">

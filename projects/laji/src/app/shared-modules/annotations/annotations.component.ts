@@ -26,7 +26,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   @Input() rootID: string;
   @Input() targetID: string;
   @Input() documentID: string;
-  @Input() editors: string[];
+  @Input() isEditor: boolean;
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() identifying = false;

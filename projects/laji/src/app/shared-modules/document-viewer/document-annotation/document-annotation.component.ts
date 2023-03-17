@@ -36,6 +36,7 @@ import { TemplateForm } from '../../own-submissions/models/template-form';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { DocumentPermissionService } from '../service/document-permission.service';
 
 @Component({
   selector: 'laji-document-annotation',
@@ -73,8 +74,10 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
   externalViewUrl: string;
   document: any;
   documentID: string;
-  editors: string[];
   personID: string;
+  isEditor = false;
+  hasEditRights = false;
+  hasDeleteRights = false;
   personRoleAnnotation: Annotation.AnnotationRoleEnum;
   activeGathering: any;
   mapData: any = [];
@@ -124,7 +127,8 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     private annotationService: AnnotationService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private deleteDocumentService: DeleteOwnDocumentService
+    private deleteDocumentService: DeleteOwnDocumentService,
+    private documentPermissionService: DocumentPermissionService
   ) { }
 
   ngOnInit() {
@@ -216,15 +220,26 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     if (!this.uri) {
       return;
     }
-    const findDox$ = this.warehouseApi
+    const findDoc$ = this.warehouseApi
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
         map((doc) => doc.document),
         tap((doc) => this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight))
       );
-    findDox$
-      .subscribe(
-        doc => this.parseDoc(doc, doc),
+
+    const docAndRights$ = findDoc$.pipe(
+      switchMap(doc => this.documentPermissionService.getRightsToWarehouseDocument(doc).pipe(
+        map(rights => ({doc, rights}))
+      ))
+    );
+
+    docAndRights$
+      .subscribe(({doc, rights}) => {
+        this.isEditor = rights.isEditor;
+        this.hasEditRights = rights.hasEditRights;
+        this.hasDeleteRights = rights.hasDeleteRights;
+        this.parseDoc(doc, doc);
+      },
         () => this.parseDoc(undefined, false)
       );
   }
@@ -284,11 +299,6 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
         Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
-      }
-      if (doc.linkings && doc.linkings.editors) {
-        this.editors = doc.linkings.editors.map(editor => IdService.getId(editor.id)).filter(val => val);
-      } else {
-        this.editors = [];
       }
       let activeIdx = 0;
       if (doc && doc.gatherings) {
