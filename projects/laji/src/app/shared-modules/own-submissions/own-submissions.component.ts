@@ -402,11 +402,11 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
               form: form.title || document.formID,
               id: document.id,
               publicityRestrictions:
-                document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPublic ?
-                  this.translate.instant('haseka.submissions.publicityRestrictions.public') :
-                    document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate ?
-                      this.translate.instant('haseka.submissions.publicityRestrictions.private') :
-                        this.translate.instant('haseka.submissions.publicityRestrictions.protected'),
+                document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPublic
+                  ? this.translate.instant('haseka.submissions.publicityRestrictions.public')
+                  : document.publicityRestrictions === Document.PublicityRestrictionsEnum.publicityRestrictionsPrivate
+                    ? this.translate.instant('haseka.submissions.publicityRestrictions.private')
+                    : this.translate.instant('haseka.submissions.publicityRestrictions.protected'),
               locked: !!document.locked,
               index: idx,
               _editUrl: this.formService.getEditUrlPath(document.formID, document.id),
