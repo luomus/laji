@@ -32,7 +32,7 @@ export const parseObj = (obj: string): ModelData => {
         const v3i = substr[3].split('/').map(s => parseInt(s, 10));
 
         triangles.push(...vMap[v1i[0] - 1], ...vMap[v2i[0] - 1], ...vMap[v3i[0] - 1]);
-        texcoords.push(...vtMap[v1i[1] - 1], ...vtMap[v2i[1] - 1], ...vtMap[v3i[1] - 1]);
+        if (vtMap.length > 0) { texcoords.push(...vtMap[v1i[1] - 1], ...vtMap[v2i[1] - 1], ...vtMap[v3i[1] - 1]); }
         normals.push(...vnMap[v1i[2] - 1], ...vnMap[v2i[2] - 1], ...vnMap[v3i[2] - 1]);
         break;
       default: break;

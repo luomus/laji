@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { glLoadModel, GLRenderer } from './webgl/gl-renderer';
-import { M4 } from './webgl/math-3d';
-import { cameraOrbit } from './webgl/renderer-utils';
+import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 
 @Component({
   selector: 'laji-model-viewer',
@@ -30,24 +29,21 @@ export class ModelViewerComponent implements AfterViewInit {
   }
 
   onMouseDown(mousedownEvent: MouseEvent) {
-    console.log(mousedownEvent);
-    let x = mousedownEvent.clientX;
-    let y = mousedownEvent.clientY;
+    let mouseX = mousedownEvent.clientX;
+    let mouseY = mousedownEvent.clientY;
     this.destroyMousemoveListener = this.ngRenderer.listen(
       window, 'mousemove', (mousemoveEvent: MouseEvent) => {
-        console.log('Moved: ', mousemoveEvent);
-        const xDiff = mousemoveEvent.clientX - x;
-        const yDiff = mousemoveEvent.clientY - y;
+        const xDiff = mousemoveEvent.clientX - mouseX;
+        const yDiff = mousemoveEvent.clientY - mouseY;
         const amt = 0.01;
-        const oldTransform = this.glr.drawables[0].transform;
-        const newTransform = M4.mult(M4.mult(oldTransform, M4.yRotation(xDiff*amt)), M4.xRotation(yDiff*amt));
+        const newTransform = rotateObjectRelativeToViewport(this.glr.camera.transform, this.glr.drawables[0].transform, yDiff*amt, xDiff*amt);
         this.glr.drawables = [{
           ...this.glr.drawables[0],
           transform: newTransform
         }];
         this.glr.render();
-        x = mousemoveEvent.clientX;
-        y = mousemoveEvent.clientY;
+        mouseX = mousemoveEvent.clientX;
+        mouseY = mousemoveEvent.clientY;
       }
     );
     this.destroyMouseupListener = this.ngRenderer.listen(

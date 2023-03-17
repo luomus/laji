@@ -45,6 +45,11 @@ export const M4 = {
     0, 0, 1, 0,
     0, 0, 0, 1
   ],
+  extractBasis: (m: M4): [V3, V3, V3] => [
+    [m[0], m[1], m[2]],
+    [m[4], m[5], m[6]],
+    [m[8], m[9], m[10]]
+  ],
   add: (a: M4, b: M4) => {},
   scale: (s: M4) => {},
   mult: (a: M4, b: M4): M4 => {
@@ -100,6 +105,15 @@ export const M4 = {
       b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33,
     ];
   },
+  multv: (m: M4, v: V3 | V4): V4 => {
+    const v2: V4 = v.length === 4 ? v : [...v, 0];
+    return [
+      v2[0]*m[0] + v2[1]*m[1] + v2[2]*m[2] + v2[3]*m[3],
+      v2[0]*m[4] + v2[1]*m[5] + v2[2]*m[6] + v2[3]*m[7],
+      v2[0]*m[8] + v2[1]*m[9] + v2[2]*m[10] + v2[3]*m[11],
+      v2[0]*m[12] + v2[1]*m[13] + v2[2]*m[14] + v2[3]*m[15]
+    ];
+  },
   translation: (tx: number, ty: number, tz: number): M4 => [
     1,  0,  0,  0,
     0,  1,  0,  0,
@@ -135,6 +149,21 @@ export const M4 = {
       0, 0, 1, 0,
       0, 0, 0, 1,
    ];
+  },
+  // "Rodrigues' rotation formula": http://www.songho.ca/opengl/gl_rotate.html
+  rotation: (axis: V3, θ: number): M4 => {
+    const [x, y, z] = axis;
+    const c = Math.cos(θ);
+    const s = Math.sin(θ);
+    const x2 = Math.pow(x,2);
+    const y2 = Math.pow(y,2);
+    const z2 = Math.pow(z,2);
+    return [
+      (1-c)*x2+c,    (1-c)*x*y-s*z, (1-c)*x*z+s*y, 0,
+      (1-c)*x*y+s*z, (1-c)*y2+c,    (1-c)*y*z-s*x, 0,
+      (1-c)*x*z-s*y, (1-c)*y*z+s*x, (1-c)*z2+c,    0,
+      0,             0,             0,             1
+    ];
   },
   scaling: (sx: number, sy: number, sz: number): M4 => [
     sx, 0,  0,  0,
