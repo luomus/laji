@@ -14,7 +14,6 @@ import { NpEditFormModule } from './named-place/np-edit-form/np-edit-form.module
 import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.module';
 import { InfoPageModule } from '../../shared-modules/info-page/info-page.module';
 import { NamedPlaceLinkerButtonModule } from './named-place-linker/named-place-linker-button/named-place-linker-button.module';
-import { OwnSubmissionsModule } from '../../shared-modules/own-submissions/own-submissions.module';
 import { ProjectFormHeaderModule } from '../header/project-form-header.module';
 import { LajiFormModule } from '@laji-form/laji-form.module';
 
@@ -35,7 +34,6 @@ import { LajiFormModule } from '@laji-form/laji-form.module';
     InfoPageModule,
     ProjectFormHeaderModule,
     NamedPlaceLinkerButtonModule,
-    OwnSubmissionsModule
   ],
   declarations: [
     FormComponent,
