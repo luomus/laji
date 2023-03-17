@@ -56,9 +56,25 @@ export class SpreadsheetFacade implements OnDestroy {
     mappingFilename: this.mappingFilename$
   });
 
+  canDeactivateStatus = true;
+
   private readonly formSub: Subscription;
 
-  constructor() {}
+  constructor() {
+    // canDeactiveStatus i.e. whether the user can leave the page without confirmation message
+    // depends on the state of the importer, as it is okay to leave if importing is not ongoing
+    this.vm$.pipe(
+      map(vm => {
+        if ([Step.empty, Step.doneOk, Step.doneWithErrors].includes(vm.step)) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    ).subscribe(inWhitelist => {
+      this.canDeactivateStatus = inWhitelist;
+    });
+  }
 
   ngOnDestroy(): void {
     if (this.formSub) {

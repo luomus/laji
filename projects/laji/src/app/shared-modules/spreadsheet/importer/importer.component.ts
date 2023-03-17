@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -130,7 +131,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
     private spreadsheetFacade: SpreadsheetFacade,
     private fileService: FileService,
     private logger: Logger,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private translate: TranslateService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
   }
@@ -588,6 +590,24 @@ export class ImporterComponent implements OnInit, OnDestroy {
 
   closeMapModal() {
     this.modal?.hide();
+  }
+
+  canDeactivate() {
+    if (this.spreadsheetFacade.canDeactivateStatus === true) {
+      return true;
+    } else {
+      return this.dialogService.confirm(
+        this.translate.instant('haseka.form.discardConfirm'),
+        this.translate.instant('haseka.form.leaveConfirm.confirm')
+      );
+    }
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  preventLeave($event) {
+    if (this.spreadsheetFacade.canDeactivateStatus === false) {
+      $event.returnValue = this.spreadsheetFacade.canDeactivateStatus;
+    }
   }
 
   private getMappedValues(row, mapping, fields) {
