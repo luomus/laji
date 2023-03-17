@@ -289,5 +289,6 @@ export class TreeSelectorComponent implements OnInit {
       TREE_ACTIONS.DEACTIVATE(this.treeModel, node, null);
     });
     this.treeModel.collapseAll();
+    this.emitSelect.emit(this.selectedOptions);
   }
 }

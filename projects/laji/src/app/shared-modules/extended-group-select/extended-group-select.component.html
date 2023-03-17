@@ -1,7 +1,7 @@
 <div>
   <laji-tree-select
-    [includedOptions]="(selectedOptions$ | async).includedOptions"
-    [excludedOptions]="(selectedOptions$ | async).excludedOptions"
+    [includedOptions]="includedOptions"
+    [excludedOptions]="excludedOptions"
     [optionsTree$]="groupsTree$"
     [options]="groups$ | async"
     [modalButtonLabel]="modalButtonLabel"
