@@ -13,10 +13,18 @@
 .tree-active-focused {
   filter: brightness(1.1)
 }
-.scrollable-tree {
-  height: 75vh;
-  padding: 10px;
-  overflow: hidden;
+::ng-deep {
+  .scrollable-tree, .scrollable-tree tree-root {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .scrollable-tree tree-root tree-viewport  {
+    flex: 1;
+    overflow: auto;
+    padding: 10px;
+  }
 }
 .quality-image {
   float: left;

@@ -57,7 +57,7 @@ export class TreeSelectComponent {
 
   openModal() {
     const initialState = {
-      selectedOptions: this.options,
+      selectedOptions: (this.options || []),
       optionsTree$: this.optionsTree$,
       modalTitle: this.modalTitle,
       browseTitle: this.browseTitle,

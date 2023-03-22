@@ -24,7 +24,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
 })
 export class GatheringAnnotationComponent implements OnDestroy {
 
-  @Input() editors: string[];
+  @Input() isEditor: boolean;
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;

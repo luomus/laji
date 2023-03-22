@@ -124,7 +124,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated',
     'onlyNonStateLands',
     'alive',
-    'higherTaxon'
+    'higherTaxon',
+    'sensitive'
   ];
 
   // noinspection JSUnusedLocalSymbols

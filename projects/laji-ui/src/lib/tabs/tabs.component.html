@@ -1,4 +1,4 @@
-<ul [ngClass]="'tabs-list' + (class ?  ' ' + class : '')">
+<ul [ngClass]="'tabs-list' + (tabsListClass ?  ' ' + tabsListClass : '')">
   <li *ngFor="let tab of tabComponents; let index = index"
       [ngClass]="{active: index === selectedIndex}"
       [@activeTab]="index === selectedIndex ? 'active' : 'inactive'"

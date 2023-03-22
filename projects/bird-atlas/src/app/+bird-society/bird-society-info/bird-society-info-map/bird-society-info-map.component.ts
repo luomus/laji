@@ -7,12 +7,12 @@ import { PathOptions } from 'leaflet';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasGrid, AtlasGridSquare } from '../../../core/atlas-api.service';
+import { AtlasGridSquare } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
 import { getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
 
 interface MapData {
-  grid: AtlasGrid;
+  grid: AtlasGridSquare[];
   dataOptions: DataOptions;
 };
 
@@ -20,13 +20,13 @@ const gridSqToFeature = (square: AtlasGridSquare) => {
   const latLngStr = square.coordinates.split(':');
   return convertYkjToGeoJsonFeature(latLngStr[0], latLngStr[1]);
 };
-const getFeatureCollection = (grid: AtlasGrid) => ({
+const getFeatureCollection = (grid: AtlasGridSquare[]) => ({
   features: [
     ...grid.map(square => <any>gridSqToFeature(square))
   ],
   type: 'FeatureCollection'
 });
-const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMode, selectedIdx = -1) => (
+const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: VisualizationMode, selectedIdx = -1) => (
   (opt: GetFeatureStyleOptions): PathOptions => {
     const sq: AtlasGridSquare = grid[opt.featureIdx];
     const o: PathOptions = {
@@ -51,7 +51,7 @@ const getGetFeatureStyle = (grid: AtlasGrid, visualizationMode: VisualizationMod
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, OnChanges {
-  @Input() atlasGrid: AtlasGrid;
+  @Input() atlasGrid: AtlasGridSquare[];
   @Input() visualizationMode: VisualizationMode = 'activityCategory';
   @Input() set selectedDataIdx(idx: number) { this.setSelectedDataIdx(idx); };
   get selectedDataIdx() { return this._selectedDataIdx; };
