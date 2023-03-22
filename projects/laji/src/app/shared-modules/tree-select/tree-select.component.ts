@@ -69,7 +69,7 @@ export class TreeSelectComponent {
       includeCount: this.includeCount,
       includeLink: this.includeLink,
     };
-    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg', initialState });
+    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg scrollable-modal', initialState });
     this.modalRef.content.emitConfirm.subscribe(result => {
       const includeToReturn = [];
       const excludeToReturn = [];
