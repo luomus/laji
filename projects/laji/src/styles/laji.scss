@@ -751,7 +751,7 @@ body > .ui-select-bootstrap.open {
 }
 
 /** make modal body scrollable **/
-.modal-dialog {
+.scrollable-modal.modal-dialog {
   height: calc(100% - 20px);
 
   .modal-content {
@@ -790,6 +790,8 @@ body > .ui-select-bootstrap.open {
 @media only screen and (min-width : 768px) {
   .modal-dialog {
     margin: 60px auto 30px auto;
+  }
+  .scrollable-modal.modal-dialog {
     height: calc(100% - 90px);
   }
 }
