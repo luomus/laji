@@ -16,12 +16,17 @@
 @media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
   .species-table-header {
     display: flex;
+    flex-direction: row-reverse;
     align-items: flex-end;
 
-    h2 {
+    .species-table-filter {
       display: inline-block;
       flex: 1;
       max-width: none;
+
+      input {
+        max-width: 200px;
+      }
     }
   }
 }

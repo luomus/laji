@@ -31,8 +31,8 @@
   [data]="userStats$ | async"
 ></bsg-identification-user-table>
 
-<div class="species-table-header mt-9">
-  <h2>{{ 'results.speciesTable.title' | translate }}</h2>
+<h2>{{ 'results.speciesTable.title' | translate }}</h2>
+<div class="species-table-header">
   <div *lajiLoggedIn class="species-table-buttons mb-2">
     <button class="btn btn-default mr-2" (click)="showOwnSpecies = false" [disabled]="!showOwnSpecies">
       {{ 'results.allSpecies' | translate }}
@@ -41,9 +41,19 @@
       {{ 'results.ownSpecies' | translate }}
     </button>
   </div>
+  <div class="species-table-filter">
+    <input
+      type="text"
+      class="form-control input-sm mb-2 d-inline-block"
+      [placeholder]="'results.speciesTable.filter' | translate"
+      [value]="filterSpeciesBy"
+      (keyup)="filterSpeciesByChange(toHtmlInputElement($event.target).value)"
+    >
+  </div>
 </div>
 <bsg-identification-species-table
   [data]="(showOwnSpecies ? ownSpeciesStats$ : speciesStats$) | async"
+  [filterBy]="filterSpeciesBy"
 ></bsg-identification-species-table>
 
 <ng-template #spinner>

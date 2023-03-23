@@ -127,6 +127,7 @@
   "results.pie.group3": "Deux validations ou plus",
   "results.pie.title": "Nombre de validations par espèce",
   "results.sites": "Sites",
+  "results.speciesTable.filter": "Type to filter...",
   "results.speciesTable.title": "Listes d'espèces",
   "results.title": "Résultats",
   "results.total": "Total",

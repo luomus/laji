@@ -1,8 +1,8 @@
-import {Component, OnInit, ChangeDetectionStrategy, ViewChild, Input, TemplateRef} from '@angular/core';
-import {UserNameTemplateComponent} from '../../../kerttu-global-shared/component/user-name-template.component';
-import {IIdentificationSpeciesStat, IIdentificationUserStatResult} from '../../../kerttu-global-shared/models';
-import {DatatableColumn} from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import {TranslateService} from '@ngx-translate/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { IIdentificationSpeciesStat } from '../../../kerttu-global-shared/models';
+import { DatatableColumn } from 'projects/laji/src/app/shared-modules/datatable/model/datatable-column';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'bsg-identification-species-table',
@@ -12,6 +12,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class IdentificationSpeciesTableComponent implements OnInit {
   @Input() data: IIdentificationSpeciesStat[] = [];
+  @Input() filterBy = '';
 
   columns: DatatableColumn[] = [];
 
