@@ -389,12 +389,6 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   private defaultSort(rows: any[]): any[] {
-    const sortedRows = [...rows];
-
-    rows.forEach((row) => {
-      sortedRows[row.preSortIndex] = row;
-    });
-
-    return sortedRows;
+    return [...rows].sort((a: any, b: any) => a.preSortIndex < b.preSortIndex ? -1 : 1);
   }
 }
