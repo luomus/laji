@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { from } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { ModelViewerService } from './model-viewer.service';
 import { glLoadModel, GLRenderer } from './webgl/gl-renderer';
+import { GLB } from './webgl/glb-parser';
 import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 
 @Component({
@@ -26,8 +29,10 @@ export class ModelViewerComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.glr = new GLRenderer(this.canvasElem.nativeElement);
-    this.mvs.getTestModel().subscribe(d => {
-      glLoadModel(this.glr, d);
+    this.mvs.getTestGLB().pipe(
+      switchMap(b => from(GLB.parseBlob(b)))
+    ).subscribe(([bufferData, jsonData]) => {
+      glLoadModel(this.glr, bufferData[0], jsonData);
       this.glr.render();
       this.viewerIsActive = true;
     });
@@ -42,11 +47,8 @@ export class ModelViewerComponent implements AfterViewInit {
         const xDiff = mousemoveEvent.clientX - mouseX;
         const yDiff = mousemoveEvent.clientY - mouseY;
         const amt = 0.01;
-        const newTransform = rotateObjectRelativeToViewport(this.glr.camera.transform, this.glr.drawables[0].transform, yDiff*amt, xDiff*amt);
-        this.glr.drawables = [{
-          ...this.glr.drawables[0],
-          transform: newTransform
-        }];
+        const newTransform = rotateObjectRelativeToViewport(this.glr.camera.transform, this.glr.transform, yDiff*amt, xDiff*amt);
+        this.glr.transform = newTransform;
         this.glr.render();
         mouseX = mousemoveEvent.clientX;
         mouseY = mousemoveEvent.clientY;

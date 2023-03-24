@@ -1,7 +1,7 @@
 import { M4, V3, V4 } from './math-3d';
-import { createShader, createProgram, bufferPositions, bufferNormals, bufferTexCoords, setTexture } from './webgl-utils';
-import { parseObj } from './obj-parser';
+import { createShader, createProgram, bufferPositions, bufferNormals, bufferTexCoords, setTexture, bufferIndices } from './webgl-utils';
 import { fragmentShader, vertexShader } from './shaders';
+import { GLB } from './glb-parser';
 
 interface Camera {
   transform: M4;
@@ -14,28 +14,45 @@ interface LightSource {
 }
 
 interface Drawable {
-  verts: number[];
-  normals: number[];
-  transform: M4;
+  positions: Float32Array;
+  normals: Float32Array;
+  indices: Uint32Array;
 }
 
-export const glLoadModel = (renderer: GLRenderer, obj: string) => {
-  // load the model
-  const model = parseObj(obj);
-
+export const glLoadModel = (renderer: GLRenderer, bufferData: GLB.BufferData[], jsonData: GLB.JSONData) => {
   // set up the models transform
-  let transform = M4.translation(0, -200, -1500);
-  transform = M4.mult(transform, M4.yRotation(-Math.PI / 4));
-  transform = M4.mult(transform, M4.scaling(25, 25, 25));
+  const nodeTranslation: [number, number, number] = jsonData.nodes[0].translation;
+  const nodeRotation: [number, number, number, number] = jsonData.nodes[0].rotation; // quaternion
+  const nodeScale: [number, number, number] = jsonData.nodes[0].scale;
+  const T = M4.translation(nodeTranslation[0], nodeTranslation[0], nodeTranslation[0]);
+  const R = M4.rotationFromQuaternion(...nodeRotation);
+  const S = M4.scaling(...nodeScale);
+  const nodeTransform = M4.mult(
+    T, M4.mult(
+      R, S
+    )
+  );
+  const T2 = M4.translation(0, -200, -1500);
+  const R2 = M4.yRotation(-Math.PI / 4);
+  const S2 = M4.scaling(25, 25, 25);
+  const transform = M4.mult(
+    T2, M4.mult(
+      R2, M4.mult(
+        S2, nodeTransform
+      )
+    )
+  );
 
-  // add the model to the renderer
-  renderer.drawables = [
-    {
-      verts: model.triangles,
-      normals: model.normals,
-      transform
-    }
-  ];
+  // only supports a single mesh and primitive atm
+  const primitive = jsonData.meshes[0].primitives[0];
+
+  renderer.drawable = {
+    positions: <Float32Array>bufferData[primitive.attributes.POSITION].data,
+    normals: <Float32Array>bufferData[primitive.attributes.NORMAL].data,
+    indices: <Uint32Array>bufferData[primitive.indices].data
+  };
+
+  renderer.transform = transform;
 };
 
 const glInitializeProgram = (canvas: HTMLCanvasElement): [WebGL2RenderingContext, WebGLProgram] => {
@@ -66,19 +83,21 @@ export class GLRenderer {
     this._lightSources = l;
     this.dirty['lightSources'] = true;
   }
-  private _drawables: Drawable[] = [];
-  get drawables() {
-    return this._drawables;
+  private _drawable: Drawable;
+  get drawable() {
+    return this._drawable;
   }
-  set drawables(d: Drawable[]) {
-    this._drawables = d;
-    this.dirty['drawables'] = true;
+  set drawable(d: Drawable) {
+    this._drawable = d;
+    this.dirty['drawable'] = true;
   }
+
+  transform: M4 = M4.unit();
 
   private dirty = {
     camera: true,
     lightSources: true,
-    drawables: true
+    drawable: true
   };
 
   private gl: WebGL2RenderingContext;
@@ -101,7 +120,7 @@ export class GLRenderer {
         Math.PI / 2,
         this.gl.canvas.width / this.gl.canvas.height,
         1,
-        2000
+        4000
       )
     };
     this.lightSources = [
@@ -150,20 +169,21 @@ export class GLRenderer {
       this.dirty['lightSources'] = false;
     }
 
-    if (this.dirty['drawables']) {
+    if (!this.drawable) { return; }
+
+    if (this.dirty['drawable']) {
       const vertexArr = this.gl.createVertexArray();
       this.gl.bindVertexArray(vertexArr);
-      bufferPositions(this.gl, this.positionLocation, this.drawables.reduce((acc, curr) => acc.concat(curr.verts), []));
-      bufferNormals(this.gl, this.normalLocation, this.drawables.reduce((acc, curr) => acc.concat(curr.normals), []));
-      this.dirty['drawables'] = false;
+      bufferPositions(this.gl, this.positionLocation, this.drawable.positions);
+      bufferNormals(this.gl, this.normalLocation, this.drawable.normals);
+      bufferIndices(this.gl, this.drawable.indices);
+      this.dirty['drawable'] = false;
     }
 
-    let offset = 0;
-    this.drawables.forEach(drawable => {
-      this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, drawable.transform));
-      this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(drawable.transform)));
-      this.gl.drawArrays(this.gl.TRIANGLES, offset / 3, drawable.verts.length);
-      offset += drawable.verts.length;
-    });
+    this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, this.transform));
+    this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(this.transform)));
+
+    // TODO: if indices buffer doesn't exist, then use drawArrays
+    this.gl.drawElements(this.gl.TRIANGLES, this.drawable.indices.length, this.gl.UNSIGNED_INT, 0);
   }
 }

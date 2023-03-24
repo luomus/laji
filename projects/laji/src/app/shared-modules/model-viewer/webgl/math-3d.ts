@@ -165,6 +165,12 @@ export const M4 = {
       0,             0,             0,             1
     ];
   },
+  rotationFromQuaternion: (qx: number, qy: number, qz: number, qw: number): M4 => ([
+    1 - 2*qy*qy - 2*qz*qz, 2*qx*qy + 2*qz*qw,     2*qx*qz - 2*qy*qw,     0,
+    2*qx*qy - 2*qz*qw,     1 - 2*qx*qx - 2*qz*qz, 2*qy*qz + 2*qx*qw,     0,
+    2*qx*qz + 2*qy*qw,     2*qy*qz - 2*qx*qw,     1 - 2*qx*qx - 2*qy*qy, 0,
+    0,                     0,                     0,                     1
+  ]),
   scaling: (sx: number, sy: number, sz: number): M4 => [
     sx, 0,  0,  0,
     0, sy,  0,  0,

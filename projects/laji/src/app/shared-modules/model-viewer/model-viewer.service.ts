@@ -5,7 +5,10 @@ import { of } from 'rxjs';
 @Injectable()
 export class ModelViewerService {
   constructor(private http: HttpClient) {}
-  getTestModel() {
+  getTestObj() {
     return this.http.get('https://cdn.laji.fi/test-data/european-honey-buzzard.obj', { responseType: 'text' });
+  }
+  getTestGLB() {
+    return this.http.get('https://cdn.laji.fi/test-data/european-honey-buzzard.glb', { responseType: 'blob' });
   }
 }
