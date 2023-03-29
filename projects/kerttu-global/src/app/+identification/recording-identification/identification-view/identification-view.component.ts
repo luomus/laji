@@ -1,21 +1,24 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  Output,
+  ChangeDetectorRef,
+  Component,
   EventEmitter,
   Input,
-  SimpleChanges,
-  OnInit,
   OnChanges,
-  ChangeDetectorRef,
+  OnInit,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {
-  IGlobalSpecies,
+  IGlobalRecording,
   IGlobalRecordingAnnotation,
+  IGlobalRecordingStatusInfo,
+  IGlobalSpecies,
   IGlobalSpeciesAnnotation,
-  SpeciesAnnotationEnum,
-  IGlobalRecording, IGlobalSpeciesWithAnnotation, IGlobalRecordingStatusInfo
+  IGlobalSpeciesWithAnnotation,
+  RecordingTypeEnum,
+  SpeciesAnnotationEnum
 } from '../../../kerttu-global-shared/models';
 import {
   AudioViewerMode,
@@ -25,7 +28,7 @@ import {
 } from '../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 import { map } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../../kerttu-global-shared/service/kerttu-global-api';
-import { Observable, Subscription, forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
@@ -64,6 +67,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   overlappingBirdRectangleColor = '#d9d926';
   nonBirdRectangleColor = '#d98026';
 
+  recordingTypeEnum = RecordingTypeEnum;
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
@@ -89,6 +94,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
+      this.updateSpectrogramConfig();
       this.audioViewerRectangles = [];
       this.updateSelectedSpecies();
     }
@@ -181,10 +187,19 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   }
 
   updateSpectrogramConfig() {
-    this.spectrogramConfig = {
-      ...defaultSpectrogramConfig,
-      sampleRate: this.showWholeFrequencyRange ? defaultAudioSampleRate : lowAudioSampleRate
-    };
+    const isBatRecording = this.recording?.recordingType === RecordingTypeEnum.bat;
+    if (isBatRecording) {
+      this.spectrogramConfig = {
+        ...defaultSpectrogramConfig,
+        sampleRate: 240000,
+        targetWindowLengthInSeconds: 0.004
+      };
+    } else {
+      this.spectrogramConfig = {
+        ...defaultSpectrogramConfig,
+        sampleRate: this.showWholeFrequencyRange ? defaultAudioSampleRate : lowAudioSampleRate
+      };
+    }
   }
 
   private clearDrawMode() {

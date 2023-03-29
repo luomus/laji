@@ -110,6 +110,7 @@ export interface IGlobalRecording extends IAudio {
   site: IGlobalSite;
   locality?: string;
   targetSpecies?: IGlobalSpecies;
+  recordingType: RecordingTypeEnum;
 }
 
 export interface IGlobalRecordingAnnotation {
@@ -196,4 +197,9 @@ export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
   invalidRecordingId = 'InvalidRecordingIdError',
   invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
+}
+
+export enum RecordingTypeEnum {
+  default = 0,
+  bat = 1
 }

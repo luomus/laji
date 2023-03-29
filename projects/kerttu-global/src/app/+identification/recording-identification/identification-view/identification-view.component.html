@@ -52,6 +52,7 @@
     </div>
   </div>
   <laji-audio-viewer
+    *ngIf="recording.recordingType === recordingTypeEnum.default else batAudioViewer"
     [audio]="recording"
     [showZoomControl]="true"
     [showLoopControl]="false"
@@ -91,6 +92,28 @@
       {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
     </span>
   </ng-template>
+  <ng-template #batAudioViewer>
+    <ng-container *lajiRequiresAudioSupport="240000">
+      <laji-audio-viewer
+        [audio]="recording"
+        [showZoomControl]="true"
+        [showLoopControl]="false"
+        [(mode)]="audioViewerMode"
+        [rectangles]="audioViewerRectangles"
+        [focusArea]="{xRange: recording.xRange}"
+        [timePaddingOnZoom]="0"
+        [zoomTime]="!showWholeTimeRange"
+        [highlightFocusArea]="true"
+        [spectrogramHeight]="170"
+        [spectrogramConfig]="spectrogramConfig"
+        [audioInfoTpl]="audioInfo"
+        [customControlsTpl]="batAudioCustomControls"
+        (drawEnd)="drawEnd($event)"
+        (modeChange)="onAudioViewerModeChange()"
+      ></laji-audio-viewer>
+    </ng-container>
+  </ng-template>
+  <ng-template #batAudioCustomControls></ng-template>
 </div>
 <div class="bottom-content">
   <h2 class="mt-3">
@@ -164,6 +187,7 @@
     [buttonsDisabled]="buttonsDisabled || loadingSpecies"
     [birdRectangleColor]="birdRectangleColor"
     [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
+    [spectrogramConfig]="spectrogramConfig"
     [drawActive]="drawBirdActive"
     (drawBoxClick)="onDrawBirdClick($event)"
     (deleteBoxClick)="removeDrawing($event)"
