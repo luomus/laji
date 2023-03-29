@@ -7,6 +7,7 @@
   "audioViewer.iosWarning": "<strong>Please note</strong> If your device has a ring/silent switch, it has to be turned on for this page to work properly.",
   "audioViewer.loop.info": "If you want the recording to play continuously, click the loop icon.",
   "audioViewer.notSupported": "Web Audio API is not supported in this browser!",
+  "audioViewer.sampleRateNotSupported": "Recording cannot be loaded. Sample rate {{sampleRate}} kHz is not supported in this browser.",
   "audioViewer.setDefaultSettings": "Return to default settings",
   "audioViewer.setDefaultSettings.info": "Resets the time buffer to 30s and turns focus frequency off.",
   "audioViewer.targetFrequency": "Focus frequency",

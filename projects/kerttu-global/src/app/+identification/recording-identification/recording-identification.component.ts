@@ -17,7 +17,6 @@ import { Observable, of, Subscription } from 'rxjs';
 import equals from 'deep-equal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
-import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -39,8 +38,6 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   hasError = false;
 
   selectedSites?: number[];
-
-  audioSampleRate = defaultAudioSampleRate;
 
   private originalAnnotation: IGlobalRecordingAnnotation;
 

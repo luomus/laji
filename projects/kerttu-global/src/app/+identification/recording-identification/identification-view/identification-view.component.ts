@@ -33,7 +33,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
-import { defaultAudioSampleRate, lowAudioSampleRate } from '../../../kerttu-global-shared/variables';
+import { defaultAudioSampleRate, defaultBatAudioSampleRate, lowAudioSampleRate } from '../../../kerttu-global-shared/variables';
 
 
 @Component({
@@ -53,6 +53,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
 
+  sampleRate: number;
   spectrogramConfig: ISpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
   audioViewerRectangles: IAudioViewerRectangle[] = [];
@@ -94,6 +95,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
+      this.sampleRate = this.recording.recordingType === RecordingTypeEnum.default ? defaultAudioSampleRate : defaultBatAudioSampleRate;
       this.updateSpectrogramConfig();
       this.audioViewerRectangles = [];
       this.updateSelectedSpecies();
@@ -191,7 +193,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     if (isBatRecording) {
       this.spectrogramConfig = {
         ...defaultSpectrogramConfig,
-        sampleRate: 240000,
+        sampleRate: defaultBatAudioSampleRate,
         targetWindowLengthInSeconds: 0.004
       };
     } else {

@@ -52,3 +52,7 @@
     }
   }
 }
+
+:host ::ng-deep laji-audio-not-supported-error {
+  padding: 20px 40px;
+}

@@ -1,99 +1,99 @@
-<div class="top-content">
-  <div class="top-bar">
-    <div class="pull-right button-container">
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="backToSiteSelectionClick.emit()"
-        >
-          {{ 'identification.backToSiteSelection' | translate }}
-        </button>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="skipClick.emit()"
-        >
-          {{ 'identification.skip' | translate }}
-        </button>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
-          (click)="previousRecordingClick.emit()"
-        >
-          {{ 'identification.previousRecording' | translate }}
-        </button>
-        <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
-      </div>
-      <div>
-        <button
-          class="btn btn-default"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="saveClick.emit()"
-        >
-          {{ 'save' | translate }}
-        </button>
-        <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
-      </div>
-      <div>
-        <button
-          class="btn btn-success"
-          [disabled]="buttonsDisabled || loadingSpecies"
-          (click)="nextRecordingClick.emit()"
-        >
-          {{ 'identification.nextRecording' | translate }}
-        </button>
-        <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
+<ng-container *lajiRequiresAudioSupport="sampleRate">
+  <div class="top-content">
+    <div class="top-bar">
+      <div class="pull-right button-container">
+        <div>
+          <button
+            class="btn btn-default"
+            [disabled]="buttonsDisabled || loadingSpecies"
+            (click)="backToSiteSelectionClick.emit()"
+          >
+            {{ 'identification.backToSiteSelection' | translate }}
+          </button>
+        </div>
+        <div>
+          <button
+            class="btn btn-default"
+            [disabled]="buttonsDisabled || loadingSpecies"
+            (click)="skipClick.emit()"
+          >
+            {{ 'identification.skip' | translate }}
+          </button>
+        </div>
+        <div>
+          <button
+            class="btn btn-default"
+            [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
+            (click)="previousRecordingClick.emit()"
+          >
+            {{ 'identification.previousRecording' | translate }}
+          </button>
+          <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
+        </div>
+        <div>
+          <button
+            class="btn btn-default"
+            [disabled]="buttonsDisabled || loadingSpecies"
+            (click)="saveClick.emit()"
+          >
+            {{ 'save' | translate }}
+          </button>
+          <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
+        </div>
+        <div>
+          <button
+            class="btn btn-success"
+            [disabled]="buttonsDisabled || loadingSpecies"
+            (click)="nextRecordingClick.emit()"
+          >
+            {{ 'identification.nextRecording' | translate }}
+          </button>
+          <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
+        </div>
       </div>
     </div>
-  </div>
-  <laji-audio-viewer
-    *ngIf="recording.recordingType === recordingTypeEnum.default else batAudioViewer"
-    [audio]="recording"
-    [showZoomControl]="true"
-    [showLoopControl]="false"
-    [(mode)]="audioViewerMode"
-    [rectangles]="audioViewerRectangles"
-    [focusArea]="{xRange: recording.xRange}"
-    [timePaddingOnZoom]="0"
-    [zoomTime]="!showWholeTimeRange"
-    [highlightFocusArea]="true"
-    [spectrogramHeight]="170"
-    [spectrogramConfig]="spectrogramConfig"
-    [audioInfoTpl]="audioInfo"
-    [customControlsTpl]="audioCustomControls"
-    (drawEnd)="drawEnd($event)"
-    (modeChange)="onAudioViewerModeChange()"
-  ></laji-audio-viewer>
-  <ng-template #audioCustomControls>
-    <laji-audio-viewer-simple-settings
-      [(showWholeFrequencyRange)]="showWholeFrequencyRange"
-      [(showWholeTimeRange)]="showWholeTimeRange"
-      (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
-      [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
-      [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
-      [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
-      [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
-    ></laji-audio-viewer-simple-settings>
-  </ng-template>
-  <ng-template #audioInfo let-audio="audio">
-    <ng-container *ngIf="audio.targetSpecies">
+    <laji-audio-viewer
+      *ngIf="recording.recordingType === recordingTypeEnum.default else batAudioViewer"
+      [audio]="recording"
+      [showZoomControl]="true"
+      [showLoopControl]="false"
+      [(mode)]="audioViewerMode"
+      [rectangles]="audioViewerRectangles"
+      [focusArea]="{xRange: recording.xRange}"
+      [timePaddingOnZoom]="0"
+      [zoomTime]="!showWholeTimeRange"
+      [highlightFocusArea]="true"
+      [spectrogramHeight]="170"
+      [spectrogramConfig]="spectrogramConfig"
+      [audioInfoTpl]="audioInfo"
+      [customControlsTpl]="audioCustomControls"
+      (drawEnd)="drawEnd($event)"
+      (modeChange)="onAudioViewerModeChange()"
+    ></laji-audio-viewer>
+    <ng-template #audioCustomControls>
+      <laji-audio-viewer-simple-settings
+        [(showWholeFrequencyRange)]="showWholeFrequencyRange"
+        [(showWholeTimeRange)]="showWholeTimeRange"
+        (showWholeFrequencyRangeChange)="updateSpectrogramConfig()"
+        [showWholeFrequencyRangeLabel]="'identification.highFrequencies' | translate"
+        [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
+        [showWholeFrequencyRangeInfo]="'identification.highFrequencies.info' | translate"
+        [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
+      ></laji-audio-viewer-simple-settings>
+    </ng-template>
+    <ng-template #audioInfo let-audio="audio">
+      <ng-container *ngIf="audio.targetSpecies">
+        <span>
+          {{ audio.targetSpecies.commonName }} - <i>{{ audio.targetSpecies.scientificName }}</i>
+        </span>
+        <br>
+      </ng-container>
       <span>
-        {{ audio.targetSpecies.commonName }} - <i>{{ audio.targetSpecies.scientificName }}</i>
+        {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
+        {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
       </span>
-      <br>
-    </ng-container>
-    <span>
-      {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
-      {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
-    </span>
-  </ng-template>
-  <ng-template #batAudioViewer>
-    <ng-container *lajiRequiresAudioSupport="240000">
+    </ng-template>
+    <ng-template #batAudioViewer>
       <laji-audio-viewer
         [audio]="recording"
         [showZoomControl]="true"
@@ -111,114 +111,114 @@
         (drawEnd)="drawEnd($event)"
         (modeChange)="onAudioViewerModeChange()"
       ></laji-audio-viewer>
-    </ng-container>
-  </ng-template>
-  <ng-template #batAudioCustomControls></ng-template>
-</div>
-<div class="bottom-content">
-  <h2 class="mt-3">
-    {{ 'identification.identify' | translate }}
-    <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
-  </h2>
-  <div class="general-annotation-section mb-5">
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
-          </label>
-          <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
+    </ng-template>
+    <ng-template #batAudioCustomControls></ng-template>
+  </div>
+  <div class="bottom-content">
+    <h2 class="mt-3">
+      {{ 'identification.identify' | translate }}
+      <laji-info [html]="'identification.identify.info' | translate" [showOnHover]="true"></laji-info>
+    </h2>
+    <div class="general-annotation-section mb-5">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
+            </label>
+            <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
+            </label>
+            <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
+          </div>
         </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
-          </label>
-          <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translate }}
+            </label>
+            <laji-info [html]="'identification.containsUnknownBirds.info' | translate" [showOnHover]="true"></laji-info>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translate }}
+            </label>
+            <laji-info [html]="'identification.doesNotContainBirds.info' | translate" [showOnHover]="true"></laji-info>
+          </div>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translate }}
-          </label>
-          <laji-info [html]="'identification.containsUnknownBirds.info' | translate" [showOnHover]="true"></laji-info>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translate }}:
+            </label>
+            <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
+          </div>
+          <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
         </div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translate }}
-          </label>
-          <laji-info [html]="'identification.doesNotContainBirds.info' | translate" [showOnHover]="true"></laji-info>
+        <div class="col-sm-6">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translate }}
+            </label>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translate }}:
-          </label>
-          <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
-        </div>
-        <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
-      </div>
-      <div class="col-sm-6">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translate }}
-          </label>
-        </div>
+    <div class="form-group">
+      <h4>
+        {{ 'identification.listSpecies' | translate }}
+        <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
+      </h4>
+      <bsg-taxon-select
+        id="species-select"
+        (taxonSelect)="addToIdentifications($event)"
+      ></bsg-taxon-select>
+    </div>
+    <bsg-identification-table
+      [recording]="recording"
+      [(identifications)]="selectedSpecies"
+      [loading]="loadingSpecies"
+      [buttonsDisabled]="buttonsDisabled || loadingSpecies"
+      [birdRectangleColor]="birdRectangleColor"
+      [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
+      [spectrogramConfig]="spectrogramConfig"
+      [drawActive]="drawBirdActive"
+      (drawBoxClick)="onDrawBirdClick($event)"
+      (deleteBoxClick)="removeDrawing($event)"
+      (identificationsChange)="updateSpectrogramAndAnnotation()"
+    ></bsg-identification-table>
+    <div class="form-group mt-4 mb-4">
+      <label for="drawNonBird" class="d-inline">
+        {{ 'identification.drawNonBird' | translate }}
+      </label>
+      <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
+      <div>
+        <button
+          id="drawNonBird"
+          class="btn"
+          [ngClass]="{
+              'btn-default': !drawNonBirdActive,
+              'btn-primary': drawNonBirdActive
+             }"
+          (click)="toggleDrawNonBird()"
+          [disabled]="buttonsDisabled || loadingSpecies"
+        >
+          {{ 'identification.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
+        </button>
+        <button
+          *ngIf="annotation.nonBirdArea"
+          class="btn btn-default ml-2"
+          (click)="removeDrawing()"
+          [disabled]="buttonsDisabled || loadingSpecies"
+        >
+          {{ 'identification.remove' | translate }}
+        </button>
       </div>
     </div>
   </div>
-  <div class="form-group">
-    <h4>
-      {{ 'identification.listSpecies' | translate }}
-      <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
-    </h4>
-    <bsg-taxon-select
-      id="species-select"
-      (taxonSelect)="addToIdentifications($event)"
-    ></bsg-taxon-select>
-  </div>
-  <bsg-identification-table
-    [recording]="recording"
-    [(identifications)]="selectedSpecies"
-    [loading]="loadingSpecies"
-    [buttonsDisabled]="buttonsDisabled || loadingSpecies"
-    [birdRectangleColor]="birdRectangleColor"
-    [overlappingBirdRectangleColor]="overlappingBirdRectangleColor"
-    [spectrogramConfig]="spectrogramConfig"
-    [drawActive]="drawBirdActive"
-    (drawBoxClick)="onDrawBirdClick($event)"
-    (deleteBoxClick)="removeDrawing($event)"
-    (identificationsChange)="updateSpectrogramAndAnnotation()"
-  ></bsg-identification-table>
-  <div class="form-group mt-4 mb-4">
-    <label for="drawNonBird" class="d-inline">
-      {{ 'identification.drawNonBird' | translate }}
-    </label>
-    <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
-    <div>
-      <button
-        id="drawNonBird"
-        class="btn"
-        [ngClass]="{
-            'btn-default': !drawNonBirdActive,
-            'btn-primary': drawNonBirdActive
-           }"
-        (click)="toggleDrawNonBird()"
-        [disabled]="buttonsDisabled || loadingSpecies"
-      >
-        {{ 'identification.' + (annotation.nonBirdArea ? 'redraw' : 'draw') | translate }}
-      </button>
-      <button
-        *ngIf="annotation.nonBirdArea"
-        class="btn btn-default ml-2"
-        (click)="removeDrawing()"
-        [disabled]="buttonsDisabled || loadingSpecies"
-      >
-        {{ 'identification.remove' | translate }}
-      </button>
-    </div>
-  </div>
-</div>
+</ng-container>

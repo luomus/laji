@@ -26,8 +26,14 @@ export class AudioService {
     private ngZone: NgZone
   ) {}
 
-  public setDefaultSampleRate(sampleRate: number) {
+  public setDefaultSampleRate(sampleRate: number): boolean {
     this.defaultSampleRate = sampleRate;
+    try {
+      this.getAudioContext();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   public setCacheSize(cacheSize: number) {
