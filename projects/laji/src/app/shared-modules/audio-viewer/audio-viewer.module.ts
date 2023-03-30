@@ -19,13 +19,15 @@ import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spec
 import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-viewer.component';
 import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
 import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settings/audio-viewer-simple-settings.component';
+import { AudioViewerBatSettingsComponent } from './audio-viewer-bat-settings/audio-viewer-bat-settings.component';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent,
     AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective, AudioViewerSettingsComponent,
     SpectrogramComponent, SpectrogramChartComponent, SmallAudioViewerComponent,
-    AudioViewerSimpleSettingsComponent
+    AudioViewerSimpleSettingsComponent,
+    AudioViewerBatSettingsComponent
   ],
   providers: [AudioService, SpectrogramService, DatePipe],
   imports: [
@@ -42,6 +44,7 @@ import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settin
     RequiresAudioSupportDirective,
     AudioViewerSettingsComponent,
     AudioViewerSimpleSettingsComponent,
+    AudioViewerBatSettingsComponent,
     SmallAudioViewerComponent
   ]
 })

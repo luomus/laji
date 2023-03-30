@@ -112,7 +112,13 @@
         (modeChange)="onAudioViewerModeChange()"
       ></laji-audio-viewer>
     </ng-template>
-    <ng-template #batAudioCustomControls></ng-template>
+    <ng-template #batAudioCustomControls>
+      <laji-audio-viewer-bat-settings
+        [(showWholeTimeRange)]="showWholeTimeRange"
+        [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
+        [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
+      ></laji-audio-viewer-bat-settings>
+    </ng-template>
   </div>
   <div class="bottom-content">
     <h2 class="mt-3">
