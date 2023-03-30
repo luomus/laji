@@ -51,6 +51,7 @@ export class NpListComponent implements OnDestroy {
   private _visibleTimeout: Timeout;
   private _formRights: Rights;
   private _documentForm: Form.SchemaForm;
+  private _placeForm: Form.SchemaForm;
 
   @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
   @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
@@ -144,17 +145,23 @@ export class NpListComponent implements OnDestroy {
 
   @Input() set formRights(formRights: Rights) {
     this._formRights = formRights;
-    this.initFields();
+    this.initColumns();
   }
 
   @Input() set documentForm(documentForm: Form.SchemaForm) {
     this._documentForm = documentForm;
-    this.initFields();
+    this.initColumns();
   }
 
-  initFields() {
+  @Input() set placeForm(placeForm: Form.SchemaForm) {
+    this._placeForm = placeForm;
+    this.initColumns();
+  }
+
+  initColumns() {
     const documentForm = this._documentForm;
-    if (!this._formRights || !documentForm) {
+    const placeForm = this._placeForm;
+    if (!this._formRights || !documentForm || !placeForm) {
       return;
     }
 
@@ -165,27 +172,42 @@ export class NpListComponent implements OnDestroy {
       && this._fields.indexOf('$.reserve.reserver') === -1) {
       this._fields.push('$.reserve.reserver');
     }
-    const cols: ObservationTableColumn[] = [];
-    for (const path of this._fields) {
-      const {cellTemplate, ...columnMetadata} = this.columnsMetaData[path] || {} as DatatableColumn;
-      const col: DatatableColumn = {
+
+
+    const cols = this._fields.reduce((_cols, path) => {
+
+      const splits = path.split('.');
+      const schema = splits.reduce((_schema: any, split: string) => {
+        split = split.replace(/\[\d+\]/g, ''); // Remove array index pointers (for example "[0]").
+        if (!_schema) {
+          return;
+        }
+        if (split === '$') {
+          return _schema;
+        } else if (split === 'prepopulatedDocument') {
+          return documentForm._schema;
+        } else if (_schema.items) {
+          return _schema.items.properties[split];
+        } else {
+          return _schema.properties[split];
+        }
+
+      }, placeForm.schema) || {};
+      const hardCodedCol: Partial<DatatableColumn> = this.columnsMetaData[path] || {};
+      const col = {
         name: path,
         width: 50,
-        label: path,
-        ...columnMetadata
+        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema.title ?? path,
+        cellTemplate: schema.type === 'string' && schema.oneOf && 'labelIDTpl' || hardCodedCol.cellTemplate,
+        ...hardCodedCol,
       };
-      if (this.listColumnNameMapping && this.listColumnNameMapping[path]) {
-        col.label = this.listColumnNameMapping[path];
+      if (col.cellTemplate) {
+        col.cellTemplate = this[col.cellTemplate];
       }
-      if (cellTemplate) {
-        if (this[cellTemplate]) {
-          col.cellTemplate = this[cellTemplate];
-        } else {
-          console.warn(`Unknown cellTemplate ${cellTemplate} for column ${col.name} (${col.label})`);
-        }
-      }
-      cols.push(col);
-    }
+      _cols.push(col);
+
+      return _cols;
+    }, []);
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
     this.showLegendList = documentForm.options?.namedPlaceOptions?.showLegendList;
