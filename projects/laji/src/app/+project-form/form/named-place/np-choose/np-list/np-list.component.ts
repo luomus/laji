@@ -185,7 +185,7 @@ export class NpListComponent implements OnDestroy {
         if (split === '$') {
           return _schema;
         } else if (split === 'prepopulatedDocument') {
-          return documentForm._schema;
+          return documentForm.schema;
         } else if (_schema.items) {
           return _schema.items.properties[split];
         } else {
