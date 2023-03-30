@@ -107,6 +107,7 @@
   "identification.timeBuffer": "Time buffer",
   "identification.timeBuffer.info": "Add a time buffer to the beginning and to the end of the spectrogram.",
   "identification.title": "Annotate Soundscapes",
+  "identification.allRecordingsAnnotated": "You have identified all the recordings in this site! Thank you very much for your valuable input and improving automated bird sound identification!",
   "instructions": "Instructions",
   "navigation.user": "User settings",
   "navigation.user.login": "Log In | Sign Up",
