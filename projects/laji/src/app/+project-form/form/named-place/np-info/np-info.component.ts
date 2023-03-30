@@ -84,9 +84,16 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
     const listItems = [];
     for (const field of displayed) {
+      let {schema} = placeForm;
+      let schemaPointer = field;
+      if (field.startsWith('$.prepopulatedDocument')) {
+        schema = form.schema;
+        schemaPointer = field.replace('$.prepopulatedDocument', '$');
+      }
+
       const fieldSchema = Util.parseJSONPointer(
-        placeForm.schema,
-        LajiFormUtil.schemaJSONPointer(placeForm.schema, Util.JSONPathToJSONPointer(field))
+        schema,
+        LajiFormUtil.schemaJSONPointer(schema, Util.JSONPathToJSONPointer(schemaPointer))
       );
       if (!fieldSchema) {
         continue;
@@ -99,7 +106,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
       }
 
       let pipe;
-      if (field === 'taxonIDs') {
+      if (field === 'taxonIDs' || (fieldSchema?.type === 'string' && fieldSchema.oneOf)) {
         pipe = 'label';
       } else if (field === 'municipality') {
         pipe = 'area';
