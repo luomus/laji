@@ -19,7 +19,7 @@
       [height]="spectrogramHeight"
       [margin]="spectrogramMargin"
       [pregeneratedSpectrogramUrl]="showPregeneratedSpectrogram ? audio.spectrogramUrl : undefined"
-      (spectrogramReady)="setAudioLoading(false)"
+      (spectrogramLoading)="setAudioLoading($event)"
       (dragStart)="onSpectrogramDragStart()"
       (dragEnd)="onSpectrogramDragEnd($event)"
       (spectrogramClick)="onSpectrogramClick($event)"

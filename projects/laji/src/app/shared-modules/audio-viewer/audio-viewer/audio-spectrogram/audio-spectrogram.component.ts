@@ -49,7 +49,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() height: number;
   @Input() margin: { top: number; bottom: number; left: number; right: number };
 
-  @Output() spectrogramReady = new EventEmitter();
+  @Output() spectrogramLoading = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter();
   @Output() dragEnd = new EventEmitter<number>();
   @Output() spectrogramClick = new EventEmitter<number>();
