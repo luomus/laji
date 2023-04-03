@@ -7,9 +7,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioViewerBatSettingsComponent {
+  @Input() slowDownAudio = false;
   @Input() showWholeTimeRange = false;
   @Input() showWholeTimeRangeLabel = '';
   @Input() showWholeTimeRangeInfo = '';
 
+  @Output() slowDownAudioChange = new EventEmitter<boolean>();
   @Output() showWholeTimeRangeChange = new EventEmitter<boolean>();
 }

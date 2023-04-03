@@ -133,7 +133,7 @@ export class AudioService {
     return this.resumeContext$;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
+  public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
     const audioCtx = this.getAudioContext();
 
     if (this.activePlayer && this.activePlayer !== player) {
@@ -142,14 +142,15 @@ export class AudioService {
 
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
+    source.playbackRate.value = playbackRate;
 
     const gainNode = audioCtx.createGain();
     gainNode.gain.value = 0.5;
     source.connect(gainNode);
 
     if (frequencyRange && (frequencyRange[0] > 0 || frequencyRange[1] < buffer.sampleRate / 2)) {
-      const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
-      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
+      const highpassFilter = this.createFilter('highpass', frequencyRange[0] * playbackRate);
+      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1] * playbackRate);
       gainNode.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(audioCtx.destination);

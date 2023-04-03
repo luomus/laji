@@ -1,4 +1,16 @@
 <div>
+  <label>Slow down</label>
+  <bSwitch
+    [switch-on-text]="'on' | translate"
+    [switch-off-text]="'off' | translate"
+    [switch-on-color]="'primary'"
+    [switch-size]="'small'"
+    [ngModel]="slowDownAudio"
+    (ngModelChange)="slowDownAudioChange.emit($event)"
+    [switch-base-class]="'bootstrap-switch'">
+  </bSwitch>
+</div>
+<div>
   <label>{{ showWholeTimeRangeLabel }}</label>
   <bSwitch
     [switch-on-text]="'on' | translate"

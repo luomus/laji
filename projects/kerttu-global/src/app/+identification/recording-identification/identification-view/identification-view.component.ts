@@ -57,6 +57,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   spectrogramConfig: ISpectrogramConfig;
   audioViewerMode: AudioViewerMode = 'default';
   audioViewerRectangles: IAudioViewerRectangle[] = [];
+
+  slowDownAudio = false;
   showWholeFrequencyRange = false;
   showWholeTimeRange = true;
 

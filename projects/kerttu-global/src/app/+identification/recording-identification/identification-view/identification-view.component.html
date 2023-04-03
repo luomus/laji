@@ -98,6 +98,7 @@
         [audio]="recording"
         [showZoomControl]="true"
         [showLoopControl]="false"
+        [playbackRate]="slowDownAudio ? 0.1 : 1"
         [(mode)]="audioViewerMode"
         [rectangles]="audioViewerRectangles"
         [focusArea]="{xRange: recording.xRange}"
@@ -114,6 +115,7 @@
     </ng-template>
     <ng-template #batAudioCustomControls>
       <laji-audio-viewer-bat-settings
+        [(slowDownAudio)]="slowDownAudio"
         [(showWholeTimeRange)]="showWholeTimeRange"
         [showWholeTimeRangeLabel]="'identification.timeBuffer' | translate"
         [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"

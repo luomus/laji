@@ -42,6 +42,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
+  @Input() playbackRate = 1;
+
   @Input() showControls = true;
   @Input() showZoomControl = false; // zoom control allows the user to zoom into the spectrogram
   @Input() showLoopControl = true; // loop control allows the user to loop the recording
@@ -50,14 +52,13 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
-
   @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
-
-  @Input() mode: AudioViewerMode = 'default';
 
   @Input() spectrogramWidth: number;
   @Input() spectrogramHeight: number;
   @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
+
+  @Input() mode: AudioViewerMode = 'default';
 
   @Input() audioInfoTpl: TemplateRef<any>;
   @Input() customControlsTpl: TemplateRef<any>;
@@ -122,6 +123,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
         changes.spectrogramConfig
       ) {
         this.setDefaultView();
+      } else if (changes.playbackRate) {
+        this.audioPlayer.setPlayBackRate(this.playbackRate || 1);
       } else if (changes.mode) {
         this.audioPlayer.stop();
       }
