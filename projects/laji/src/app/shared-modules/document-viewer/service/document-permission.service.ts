@@ -29,7 +29,7 @@ export class DocumentPermissionService {
 
     return this.userService.user$.pipe(
       switchMap(user => {
-        if (!user || !doc) {
+        if (!user?.id || !doc) {
           return of(rights);
         }
 
@@ -72,7 +72,7 @@ export class DocumentPermissionService {
   getRightsToLocalDocument(doc?: Document): Observable<DocumentRights> {
     return this.userService.user$.pipe(
       switchMap(user => {
-        if (!user || !doc) {
+        if (!user?.id || !doc) {
           return of({ isEditor: false, hasEditRights: false, hasDeleteRights: false });
         }
 
