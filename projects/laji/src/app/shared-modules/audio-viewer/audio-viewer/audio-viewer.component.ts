@@ -17,7 +17,7 @@ import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpec
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
-import {delay} from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -203,15 +203,17 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   }
 
   private setDefaultView() {
+    const minTime = 0;
     const maxTime = this.buffer.duration;
+    const minFreq = this.spectrogramConfig.minFrequency || 0;
     const maxFreq = AudioViewerUtils.getMaxFreq(this.spectrogramConfig.sampleRate);
 
     this.defaultView = {
       xRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.xRange, this.zoomTime ? this.timePaddingOnZoom : undefined, 0, maxTime
+        this.focusArea?.xRange, this.zoomTime ? this.timePaddingOnZoom : undefined, minTime, maxTime
       ),
       yRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, 0, maxFreq
+        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, minFreq, maxFreq
       )
     };
     this.setView(this.defaultView);

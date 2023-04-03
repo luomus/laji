@@ -196,7 +196,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       this.spectrogramConfig = {
         ...defaultSpectrogramConfig,
         sampleRate: defaultBatAudioSampleRate,
-        targetWindowLengthInSeconds: 0.004
+        targetWindowLengthInSeconds: 0.004,
+        minFrequency: 14000
       };
     } else {
       this.spectrogramConfig = {
