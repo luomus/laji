@@ -16,11 +16,11 @@
       [query]="vm.query"
       [listSettings]="settingsList$ | async"
       (listSettingsChange)="onListSettingsChange($event)"
-      (queryChange)="this.updateQuery($event)"
+      (queryChange)="updateQuery($event)"
     ></laji-observation-result>
   </main>
   <div class="nav-header">
-    <button class="btn btn-primary" (click)="updateQueryWithNewQuery()" [disabled]="!newQueryHasChanges">
+    <button class="btn btn-primary" (click)="updateQuery(newQuery)" [disabled]="!newQueryHasChanges">
       {{ 'observation.search' | translate }}
     </button>
     <laji-observation-active

@@ -83,7 +83,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
-  newQuery?: WarehouseQueryInterface;
+  newQuery: WarehouseQueryInterface = {};
   newQueryHasChanges = false;
 
   subQueryUpdate: Subscription;
@@ -91,7 +91,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   vm$: Observable<IObservationViewModel>;
   settingsList$: Observable<ISettingResultList>;
 
-  private oldQuery?: WarehouseQueryInterface;
+  private oldQuery: WarehouseQueryInterface = {};
 
   constructor(
     public searchQuery: SearchQueryService,
@@ -132,10 +132,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
             {disableTimeOut: true, closeButton: true}
           );
         }
-        this.oldQuery = Util.clone(query);
-        if (!this.newQuery) {
-          this.newQuery = query;
-        }
+        this.queryUpdated(query);
       })
     ).subscribe();
   }
@@ -164,22 +161,24 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.form.empty();
   }
 
+  queryUpdated(query: WarehouseQueryInterface) {
+    const changes = this.searchQuery.getDifferenceBetweenQueries(this.oldQuery, query);
+    this.newQuery = { ...this.newQuery, ...changes };
+    this.oldQuery = Util.clone(query);
+    this.updateNewQueryHasChanges();
+  }
+
   setNewQuery(query: WarehouseQueryInterface) {
     this.newQuery = query;
-    this.newQueryHasChanges = true;
+    this.updateNewQueryHasChanges();
   }
 
-  updateQueryWithNewQuery() {
-    this.updateQuery(this.newQuery, false);
-    this.newQueryHasChanges = false;
+  updateNewQueryHasChanges() {
+    const changes = this.searchQuery.getDifferenceBetweenQueries(this.oldQuery, this.newQuery);
+    this.newQueryHasChanges = Object.keys(changes).length > 0;
   }
 
-  updateQuery(query: WarehouseQueryInterface, updateNewQueryWithChanges = true) {
-    if (updateNewQueryWithChanges) {
-      const changes = this.getChangedProperties(this.oldQuery, query);
-      this.newQuery = { ...this.newQuery, ...changes };
-    }
-
+  updateQuery(query: WarehouseQueryInterface) {
     this.observationFacade.updateQuery$(query).subscribe();
   }
 
@@ -193,20 +192,5 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   toggleMobile() {
   this.statusFilterMobile = !this.statusFilterMobile;
-  }
-
-  private getChangedProperties(oldQuery: WarehouseQueryInterface, newQuery: WarehouseQueryInterface): WarehouseQueryInterface {
-    const oldKeys = Object.keys(oldQuery);
-    const newKeys = Object.keys(newQuery);
-    const newUniqueKeys = newKeys.filter(k => !oldKeys.includes(k));
-    const uniqueKeys = oldKeys.concat(newUniqueKeys);
-
-    const changed = {};
-    uniqueKeys.forEach(key => {
-      if (oldQuery[key] !== newQuery[key]) {
-        changed[key] = newQuery[key];
-      }
-    });
-    return changed;
   }
 }

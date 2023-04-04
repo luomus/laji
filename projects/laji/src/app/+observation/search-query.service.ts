@@ -3,6 +3,7 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { Subject } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
+import { Util } from '../shared/service/util.service';
 
 @Injectable({providedIn: 'root'})
 export class SearchQueryService implements SearchQueryInterface {
@@ -343,5 +344,24 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public queryUpdate(data = {}): void {
     this.queryUpdatedSource.next(data);
+  }
+
+  public getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
+    const query1Keys = Object.keys(query1);
+    const query2Keys = Object.keys(query2);
+    const query2UniqueKeys = query2Keys.filter(k => !query1Keys.includes(k));
+    const uniqueKeys = query1Keys.concat(query2UniqueKeys);
+
+    const changed = {};
+    uniqueKeys.forEach(key => {
+      const value1 = query1[key];
+      const value2 = query2[key];
+      const areArrays = Array.isArray(value1) && Array.isArray(value2);
+
+      if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
+        changed[key] = query2[key];
+      }
+    });
+    return changed;
   }
 }
