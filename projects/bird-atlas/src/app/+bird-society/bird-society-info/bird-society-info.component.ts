@@ -24,6 +24,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     'MY.atlasActivityCategoryEnum4': 'limit-success',
     'MY.atlasActivityCategoryEnum5': 'limit-success'
   };
+  displayModeLarge = false;
 
   constructor(
     private atlasApi: AtlasApiService,
