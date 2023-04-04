@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { debounceTime, filter, takeUntil, tap } from 'rxjs/operators';
-import { AtlasApiService, AtlasTaxa } from '../../../core/atlas-api.service';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { PopstateService } from '../../../core/popstate.service';
+import { AtlasTaxon } from '../../../core/atlas-api.service';
 
 @Component({
   selector: 'ba-species-index-list',
@@ -11,10 +11,10 @@ import { PopstateService } from '../../../core/popstate.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpeciesIndexListComponent implements OnInit, OnDestroy {
-  @Input() atlasTaxa: AtlasTaxa;
+  @Input() atlasTaxa: AtlasTaxon[];
 
   searchVal = '';
-  filteredSpecies$ = new BehaviorSubject<AtlasTaxa>(undefined);
+  filteredSpecies$ = new BehaviorSubject<AtlasTaxon[]>(undefined);
 
   private unsubscribe$ = new Subject<void>();
   private search$ = new BehaviorSubject<string>('');

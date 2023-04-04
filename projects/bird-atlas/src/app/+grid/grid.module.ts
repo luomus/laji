@@ -12,6 +12,7 @@ import { GridIndexTableComponent } from './grid-index/grid-index-table/grid-inde
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { MapUtilsModule } from '../shared-modules/map-utils/map-utils.module';
 import { GridSquareModule } from '../shared-modules/grid-square/grid-square.module';
+import { GridIndexMapTableComponent } from './grid-index/grid-index-map/grid-index-map-table/grid-index-map-table.component';
 
 @NgModule({
   imports: [
@@ -25,6 +26,9 @@ import { GridSquareModule } from '../shared-modules/grid-square/grid-square.modu
     MapUtilsModule,
     GridSquareModule
   ],
-  declarations: [GridIndexComponent, GridInfoComponent, GridIndexMapComponent, GridIndexTableComponent]
+  declarations: [
+    GridIndexComponent, GridInfoComponent, GridIndexMapComponent,
+    GridIndexTableComponent, GridIndexMapTableComponent
+  ]
 })
 export class GridModule { }

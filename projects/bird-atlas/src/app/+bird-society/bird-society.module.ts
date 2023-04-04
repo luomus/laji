@@ -12,6 +12,8 @@ import { MapUtilsModule } from '../shared-modules/map-utils/map-utils.module';
 import { GridSquareModule } from '../shared-modules/grid-square/grid-square.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info/bird-society-info-species-table/bird-society-info-species-table.component';
+import { LappiSocietyComponent } from './lappi/lappi.component';
+import { LappiModalComponent } from './lappi/lappi-modal.component';
 
 @NgModule({
   imports: [
@@ -25,6 +27,13 @@ import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info/bird-s
     GridSquareModule,
     LajiUiModule
   ],
-  declarations: [BirdSocietyIndexComponent, BirdSocietyInfoComponent, BirdSocietyInfoMapComponent, BirdSocietyInfoSpeciesTableComponent]
+  declarations: [
+    BirdSocietyIndexComponent,
+    BirdSocietyInfoComponent,
+    BirdSocietyInfoMapComponent,
+    BirdSocietyInfoSpeciesTableComponent,
+    LappiSocietyComponent,
+    LappiModalComponent
+  ]
 })
 export class BirdSocietyModule { }
