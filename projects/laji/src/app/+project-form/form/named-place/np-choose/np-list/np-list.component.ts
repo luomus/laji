@@ -197,9 +197,9 @@ export class NpListComponent implements OnDestroy {
       const col = {
         name: path,
         width: 50,
-        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema.title ?? path,
-        cellTemplate: schema.type === 'string' && schema.oneOf && 'labelIDTpl' || hardCodedCol.cellTemplate,
+        cellTemplate: (schema.type === 'string' && schema.oneOf) ? 'labelIDTpl' : undefined,
         ...hardCodedCol,
+        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema.title ?? path,
       };
       if (col.cellTemplate) {
         col.cellTemplate = this[col.cellTemplate];
