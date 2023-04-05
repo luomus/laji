@@ -251,6 +251,7 @@ export interface WarehouseQueryInterface {
   higherTaxon?: boolean;
   polygonId?: string;
   sensitive?: boolean;
+  primarySpecimen?: boolean;
 }
 
 

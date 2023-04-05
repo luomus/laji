@@ -1,15 +1,34 @@
+<ng-template #primarySpecimenHideFacts>
+  <ng-container *ngIf="!showFacts then primarySpecimen"></ng-container>
+</ng-template>
+<ng-template #primarySpecimen>
+  <ng-container *ngIf="unit.primarySpecimen">
+    <div class="primary-specimen">{{"result.unit.primarySpecimen" | translate}}</div>
+  </ng-container>
+</ng-template>
 <laji-row [title]="'result.unit.id' | translate" *ngIf="showFacts">
-  <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}">{{ unit.unitId }}</a>
-  <ng-template #nonlink><small>({{ unit.unitId }})</small></ng-template>
+  <ng-container>
+    <a *ngIf="showLinks; else nonlink" target="_blank" href="{{ unit.unitId }}" class="tag">{{ unit.unitId }}</a>
+    <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
+  </ng-container>
+  <ng-template #nonlink>
+    <small class="tag">({{ unit.unitId }})</small>
+    <ng-container *ngTemplateOutlet="primarySpecimen"></ng-container>
+  </ng-template>
 </laji-row>
 <laji-row *ngIf="unit.linkings && unit.linkings.originalTaxon; else taxonVerbatim" [title]="'result.unit.taxonVerbatim' | translate">
-  <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks"></laji-taxon-name>
+  <laji-taxon-name [capitalizeName]="true" [taxon]="unit.linkings.originalTaxon" [addLink]="showLinks" class="tag"></laji-taxon-name>
+  <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
 </laji-row>
 <ng-template #taxonVerbatim>
-  <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim"></laji-row>
+  <laji-row *ngIf="unit.taxonVerbatim; else reportedInformalTaxonGroup" [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.taxonVerbatim">
+    <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
+  </laji-row>
 </ng-template>
 <ng-template #reportedInformalTaxonGroup>
-  <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label"></laji-row>
+  <laji-row [title]="'result.unit.taxonVerbatim' | translate" [value]="unit.reportedInformalTaxonGroup | toQName | label">
+    <ng-container *ngTemplateOutlet="primarySpecimenHideFacts"></ng-container>
+  </laji-row>
 </ng-template>
 <laji-row
   *ngIf="unit.linkings && unit.linkings.taxon && ((unit.linkings.originalTaxon && unit.linkings.taxon.id !== unit.linkings.originalTaxon.id) || !unit.linkings.originalTaxon)"

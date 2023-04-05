@@ -1529,6 +1529,7 @@
   "result.unit.linkings.taxon.primaryHabitat": "Ensisijainen biotooppi",
   "result.unit.nativeOccurrence": "Luonnonvarainen esiintymä",
   "result.unit.notes": "Havainnon lisätiedot",
+  "result.unit.primarySpecimen": "Ensisijainen näyte",
   "result.unit.quality.source": "Hav. luotettavuuden lähde",
   "result.unit.quality.taxon": "Havainnon luotettavuus",
   "result.unit.reportedTaxonConfidence": "Havainnoitsijan oman määrityksen varmuus",

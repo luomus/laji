@@ -2,7 +2,7 @@
 FROM node:14
 
 # set working directory & user
-USER node
+# USER node
 WORKDIR /app
 
 # prepare the env (npm will not run script if using root)

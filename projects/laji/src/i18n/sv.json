@@ -1529,6 +1529,7 @@
   "result.unit.linkings.taxon.primaryHabitat": "Primärbiotop",
   "result.unit.nativeOccurrence": "Native förekomst",
   "result.unit.notes": "Ytterligare information om observationen",
+  "result.unit.primarySpecimen": "Primärprov",
   "result.unit.quality.source": "Källa till tillförlitlighet",
   "result.unit.quality.taxon": "Tillförlitlighet",
   "result.unit.reportedTaxonConfidence": "Observations grad av säkerhet enligt observatören",
