@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
@@ -9,7 +8,7 @@ import { ObservationDownloadComponent } from '../download/observation-download.c
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-utils';
-import { EMPTY, Subscription } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
 import { LajiMapDrawEvent, Rectangle } from '@laji-map/laji-map.interface';
@@ -26,7 +25,7 @@ const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations
   styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent implements OnInit, OnChanges {
+export class ObservationResultComponent implements OnChanges {
   private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
@@ -87,7 +86,6 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   hasMonthDayData: boolean;
   hasYearData: boolean;
   hasTaxonData: boolean;
-  metaFetch: Subscription;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
   onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
@@ -128,20 +126,15 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnInit() {}
-
   ngOnChanges() {
-    if (((this.route.snapshot.queryParams['editorOrObserverPersonToken'] === undefined &&
-    this.route.snapshot.queryParams['observerPersonToken'] === undefined &&
-    this.route.snapshot.queryParams['editorPersonToken'] === undefined) || this.route.snapshot.queryParams['editorOrObserverIsNotPersonToken'] ) &&
-    this.selectedTabIdx === 6
-    ) {
+    const queryParams = this.route.snapshot.queryParams;
+
+    const hasQueryParams = Object.keys(queryParams).length > 0;
+    const ownTabVisible = queryParams['editorOrObserverPersonToken'] || queryParams['observerPersonToken'] || queryParams['editorPersonToken'];
+
+    if ((!this.activeTab && hasQueryParams) || (this.activeTab === 'own' && !ownTabVisible)) {
       this.onSelect(0);
     }
-  }
-
-  ngDestroy() {
-    this.metaFetch.unsubscribe();
   }
 
   reloadTabs() {
