@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
-import { ObservationFormComponent } from '../form/observation-form.component';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
@@ -66,7 +65,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input() settingsKeyList = 'resultList';
   _activeTab: string;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
-  @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
   showMobile: any;
   subscription: any;
 
@@ -154,11 +152,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.results.observationMap.drawToMap(type);
     }, 120);
-  }
-
-  empty() {
-    this.observationFacade.clearQuery();
-    this.form.empty();
   }
 
   queryUpdated(query: WarehouseQueryInterface) {

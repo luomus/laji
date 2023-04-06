@@ -48,31 +48,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   @Output() mapDraw = new EventEmitter<string>();
 
   formQuery: ObservationFormQuery;
-  emptyFormQuery: ObservationFormQuery = {
-    taxon: '',
-    timeStart: '',
-    timeEnd: '',
-    informalTaxonGroupId: undefined,
-    informalTaxonGroupIdNot: undefined,
-    includeOnlyValid: undefined,
-    euInvasiveSpeciesList: undefined,
-    controllingRisksOfInvasiveAlienSpeciesGovernment: undefined,
-    quarantinePlantPest: undefined,
-    qualityPlantPest: undefined,
-    otherPlantPest: undefined,
-    otherInvasiveSpeciesList: undefined,
-    nationalInvasiveSpeciesStrategy: undefined,
-    controllingRisksOfInvasiveAlienSpecies: undefined,
-    allInvasiveSpecies: undefined,
-    onlyFromCollectionSystems: undefined,
-    asEditor: false,
-    asObserver: false,
-    asNotEditorOrObserver: false,
-    taxonUseAnnotated: true,
-    taxonIncludeLower: true,
-    coordinatesInSource: false,
-    taxonAdminFiltersOperator: undefined
-  };
 
   showPlace = false;
   mediaStatutes: string[] = [];
@@ -183,10 +158,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     if (this.screenWidthSub) {
       this.screenWidthSub.unsubscribe();
     }
-  }
-
-  empty() {
-    this.formQuery = Util.clone(this.emptyFormQuery);
   }
 
   @Input()
