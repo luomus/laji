@@ -2,6 +2,7 @@
 import { $, browser, ElementFinder, protractor } from 'protractor';
 import { EC, isDisplayed, waitForInvisibility } from '../../helper';
 import { MapPageObject, PointTraveller, SAFE_CLICK_WAIT } from 'laji-map/test-export/test-utils';
+import { ToastPO } from '../shared/toast';
 
 class LUTabPO {
   private className: string;
@@ -93,6 +94,9 @@ export class ObservationPage {
   public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
+  private $searchBtn = $('.observation-search-btn');
+  private toast = new ToastPO();
+
   async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {
     await browser.get(`observation/${sub}?${new URLSearchParams(query || {}).toString()}`);
   }
@@ -111,6 +115,13 @@ export class ObservationPage {
     const browserLog = await browser.manage().logs().get('browser');
     const badRequests = browserLog.filter(entry => entry.message.includes('api/graphql') && entry.message.includes('400'));
     return badRequests.length > 0;
+  }
+
+  async search() {
+    if (await this.toast.$closeBtn.isPresent()) {
+      await this.toast.$closeBtn.click();
+    }
+    await this.$searchBtn.click();
   }
 
   async drawRectangle() {

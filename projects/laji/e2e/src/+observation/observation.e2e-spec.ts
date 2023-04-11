@@ -45,6 +45,7 @@ describe('Observation list', () => {
 
       it('coordinate intersect can be updated', async (done) => {
         await page.$coordinateIntersectMaxBtn.click();
+        await page.search();
         expect(await page.getCoordinateIntersect()).toBe(1);
         done();
       });
@@ -84,6 +85,7 @@ describe('Observation list', () => {
         it('and drawing adds polygon filter to query', async (done) => {
           await page.zoomClose();
           await page.drawPolygon();
+          await page.search();
           expect(await page.hasPolygonFilter()).toBe(true);
           done();
         });
@@ -128,6 +130,7 @@ describe('Observation list', () => {
 
       it('coordinate intersect can be updated', async (done) => {
         await page.$coordinateIntersectMinBtn.click();
+        await page.search();
         expect(await page.getCoordinateIntersect()).toBe(0);
         done();
       });
@@ -138,6 +141,7 @@ describe('Observation list', () => {
     describe('coordinates intersect', () => {
       it('can be some other value than min/max', async (done) => {
         await page.updateCoordinateIntersectControlValue(0.3);
+        await page.search();
         expect(await page.getCoordinateIntersect()).toBe(0.3);
         done();
       });
@@ -154,6 +158,7 @@ describe('Observation list', () => {
 
     it('time start accepts date without zeros and updates query', async (done) => {
       await page.dateBegin.type('1.1.2022');
+      await page.search();
       expect(await page.getTimeStart()).toBe('2022-01-01');
       expect(await page.getTimeEnd()).toBe('');
       done();
@@ -161,6 +166,7 @@ describe('Observation list', () => {
 
     it('time start accepts date with zeros and updates query', async (done) => {
       await page.dateBegin.type('01.01.2022');
+      await page.search();
       expect(await page.getTimeStart()).toBe('2022-01-01');
       expect(await page.getTimeEnd()).toBe('');
       done();
@@ -168,6 +174,7 @@ describe('Observation list', () => {
 
     it('time end updates query', async (done) => {
       await page.dateEnd.type('1.1.2023');
+      await page.search();
       expect(await page.getTimeStart()).toBe('2022-01-01');
       expect(await page.getTimeEnd()).toBe('2023-01-01');
       done();
@@ -197,6 +204,7 @@ describe('Observation list', () => {
 
       it('calendar clicking day selects it', async (done) => {
         await page.dateEnd.calendar.selectToday();
+        await page.search();
         expect(await page.getTimeEnd()).toBe(dateAsISO8601(new Date()));
         done();
       });
@@ -206,6 +214,7 @@ describe('Observation list', () => {
       await page.$today.click();
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
+      await page.search();
       expect(await page.getTimeStart()).toBe(dateAsISO8601(yesterday));
       expect(await page.getTimeEnd()).toBe('');
       done();

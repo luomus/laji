@@ -20,7 +20,7 @@
     ></laji-observation-result>
   </main>
   <div class="nav-header">
-    <button class="btn btn-primary" (click)="updateQuery(newQuery)" [disabled]="!newQueryHasChanges">
+    <button class="btn btn-primary observation-search-btn" (click)="updateQuery(newQuery)" [disabled]="!newQueryHasChanges">
       {{ 'observation.search' | translate }}
     </button>
     <laji-observation-active
