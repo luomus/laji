@@ -154,14 +154,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   queryUpdated(query: WarehouseQueryInterface) {
-    const changes = SearchQueryService.getDifferenceBetweenQueries(this.oldQuery, query);
-    this.newQuery = { ...this.newQuery, ...changes };
     this.oldQuery = Util.clone(query);
-    this.updateNewQueryHasChanges();
+    this.setNewQuery(query);
   }
 
   setNewQuery(query: WarehouseQueryInterface) {
-    this.newQuery = query;
+    this.newQuery = {...query};
     this.updateNewQueryHasChanges();
   }
 

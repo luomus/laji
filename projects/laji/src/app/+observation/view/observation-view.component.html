@@ -25,7 +25,7 @@
     </button>
     <laji-observation-active
       [skip]="formType === 'sample' ? skipUrlParameters : []"
-      [(query)]="vm.query"
+      [(query)]="newQuery"
       (queryChange)="updateQuery($event)"
       [queryType]="'observation'"
     ></laji-observation-active>
