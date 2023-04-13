@@ -73,7 +73,6 @@ export class ObservationFacade {
     settingsMap: this.settingsMap$
   });
 
-  private hashCache: {[key: string]: string} = {};
   private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
@@ -111,11 +110,6 @@ export class ObservationFacade {
             query[key] =  loggedIn ? this.userService.getToken() : undefined;
           }
         });
-        const hash = JSON.stringify(warehouseQuery);
-        if (this.hashCache['query'] === hash) {
-          return;
-        }
-        this.hashCache['query'] = hash;
 
         this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
       })

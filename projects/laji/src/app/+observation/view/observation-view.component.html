@@ -17,6 +17,7 @@
       [listSettings]="settingsList$ | async"
       (listSettingsChange)="onListSettingsChange($event)"
       (queryChange)="updateQuery($event)"
+      (locationSelect)="onLocationSelect($event)"
     ></laji-observation-result>
   </main>
   <div class="nav-header">

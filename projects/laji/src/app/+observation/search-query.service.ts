@@ -373,4 +373,9 @@ export class SearchQueryService implements SearchQueryInterface {
     });
     return changed;
   }
+
+  public static queriesHaveDifferences(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): boolean {
+    const differences = SearchQueryService.getDifferenceBetweenQueries(query1, query2);
+    return Object.keys(differences).length > 0;
+  }
 }

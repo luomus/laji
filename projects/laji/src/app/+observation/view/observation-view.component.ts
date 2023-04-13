@@ -111,14 +111,13 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     return this._activeTab;
   }
 
-
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap((query) => {
-        if (this.results) {
+        if (this.results && SearchQueryService.queriesHaveDifferences(this.oldQuery, query)) {
           this.results.reloadTabs();
         }
         if ((query.coordinates) && !coordinateFilterInfoShown) {
@@ -160,16 +159,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   setNewQuery(query: WarehouseQueryInterface) {
     this.newQuery = {...query};
-    this.updateNewQueryHasChanges();
-  }
-
-  updateNewQueryHasChanges() {
-    const changes = SearchQueryService.getDifferenceBetweenQueries(this.oldQuery, this.newQuery);
-    this.newQueryHasChanges = Object.keys(changes).length > 0;
+    this.newQueryHasChanges = SearchQueryService.queriesHaveDifferences(this.oldQuery, this.newQuery);
   }
 
   updateQuery(query: WarehouseQueryInterface) {
     this.observationFacade.updateQuery$(query).subscribe();
+  }
+
+  onLocationSelect(value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>) {
+    this.setNewQuery({...this.newQuery, ...value});
   }
 
   filterVisible(event: boolean) {
@@ -181,6 +179,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   toggleMobile() {
-  this.statusFilterMobile = !this.statusFilterMobile;
+    this.statusFilterMobile = !this.statusFilterMobile;
   }
 }

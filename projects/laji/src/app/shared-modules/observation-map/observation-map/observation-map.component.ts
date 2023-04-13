@@ -452,6 +452,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateMap() {
+    this.lajiMap?.map?.clearDrawData();
     const bounds = this.activeZoomThresholdBounds;
     const query = this.prepareQuery(bounds);
     const hash = JSON.stringify(query) + this.useFinnishMap;
@@ -461,7 +462,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       drawData: this.getDrawData$(query),
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
-      this.lajiMap?.map?.clearDrawData();
       this.mapData = [drawData, dataOptions];
     });
   }
