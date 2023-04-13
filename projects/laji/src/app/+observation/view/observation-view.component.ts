@@ -92,7 +92,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   private oldQuery: WarehouseQueryInterface = {};
 
   constructor(
-    public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
@@ -155,7 +154,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   queryUpdated(query: WarehouseQueryInterface) {
-    const changes = this.searchQuery.getDifferenceBetweenQueries(this.oldQuery, query);
+    const changes = SearchQueryService.getDifferenceBetweenQueries(this.oldQuery, query);
     this.newQuery = { ...this.newQuery, ...changes };
     this.oldQuery = Util.clone(query);
     this.updateNewQueryHasChanges();
@@ -167,7 +166,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   updateNewQueryHasChanges() {
-    const changes = this.searchQuery.getDifferenceBetweenQueries(this.oldQuery, this.newQuery);
+    const changes = SearchQueryService.getDifferenceBetweenQueries(this.oldQuery, this.newQuery);
     this.newQueryHasChanges = Object.keys(changes).length > 0;
   }
 

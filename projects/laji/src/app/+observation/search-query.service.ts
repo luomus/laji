@@ -346,7 +346,12 @@ export class SearchQueryService implements SearchQueryInterface {
     this.queryUpdatedSource.next(data);
   }
 
-  public getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
+  public static hasValue(value): boolean {
+    const type = typeof value;
+    return (type !== 'undefined' && (type === 'boolean' || type === 'number' || (value && value.length > 0)));
+  }
+
+  public static getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
     const query1Keys = Object.keys(query1);
     const query2Keys = Object.keys(query2);
     const query2UniqueKeys = query2Keys.filter(k => !query1Keys.includes(k));
@@ -356,8 +361,12 @@ export class SearchQueryService implements SearchQueryInterface {
     uniqueKeys.forEach(key => {
       const value1 = query1[key];
       const value2 = query2[key];
-      const areArrays = Array.isArray(value1) && Array.isArray(value2);
 
+      if (!SearchQueryService.hasValue(value1) && !SearchQueryService.hasValue(value2)) {
+        return;
+      }
+
+      const areArrays = Array.isArray(value1) && Array.isArray(value2);
       if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
         changed[key] = query2[key];
       }
