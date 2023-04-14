@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
@@ -129,7 +129,7 @@ export class ObservationResultComponent implements OnChanges {
     );
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     const queryParams = this.route.snapshot.queryParams;
 
     const hasQueryParams = Object.keys(queryParams).length > 0;
@@ -137,6 +137,10 @@ export class ObservationResultComponent implements OnChanges {
 
     if ((!this.activeTab && hasQueryParams) || (this.activeTab === 'own' && !ownTabVisible)) {
       this.onSelect(0);
+    }
+
+    if (changes.query || (!this.newQuery?.coordinates?.length && !this.newQuery?.polygonId)) {
+      this.observationMap?.clearDrawData();
     }
   }
 

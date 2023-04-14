@@ -228,7 +228,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.decorator.lang = this.translate.currentLang;
     if (changes['query'] || changes['ready']) {
       this.boxFeatureCollectionCache.reset();
-      this.lajiMap?.map?.clearDrawData();
       this.updateMap();
     }
   }

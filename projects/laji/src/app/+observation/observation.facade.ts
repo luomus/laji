@@ -12,6 +12,7 @@ import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
 import { SearchQueryService } from './search-query.service';
+import { Util } from '../shared/service/util.service';
 
 interface IObservationState {
   query: WarehouseQueryInterface;
@@ -121,14 +122,16 @@ export class ObservationFacade {
           }
         });
 
+        const newQuery = Util.clone(query);
+
         const hash = JSON.stringify(warehouseQuery);
         if (this.queryHash === hash) {
-          this.updateState({..._state, newQuery: query, newQueryHasChanges: false});
+          this.updateState({..._state, newQuery, newQueryHasChanges: false});
           return;
         }
         this.queryHash = hash;
 
-        this.updateState({..._state, query, newQuery: query, newQueryHasChanges: false, loadingUnits: true, loadingTaxa: true});
+        this.updateState({..._state, query, newQuery, newQueryHasChanges: false, loadingUnits: true, loadingTaxa: true});
       })
     );
   }
