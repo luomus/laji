@@ -60,6 +60,7 @@ export class ObservationResultComponent implements OnChanges {
   @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() query: WarehouseQueryInterface = {};
+  @Input() newQuery: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
   @Input() unitCount: number;
   @Input() speciesCount: number;
@@ -69,8 +70,8 @@ export class ObservationResultComponent implements OnChanges {
   @Input() listSettings: ISettingResultList;
 
   @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() newQueryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
-  @Output() locationSelect = new EventEmitter<Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
   @ViewChild(ObservationDownloadComponent, { static: true }) downloadModal: ObservationDownloadComponent;
@@ -144,7 +145,7 @@ export class ObservationResultComponent implements OnChanges {
   }
 
   pickLocation(events: LajiMapDrawEvent[]) {
-    let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>;
+    const newQuery = this.newQuery;
 
     events.forEach(e => {
       let geometry: G.Geometry, layer: any;
@@ -161,7 +162,7 @@ export class ObservationResultComponent implements OnChanges {
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
         if (e.features.length === 1) {
-          this.locationSelect.emit({ coordinates: this.query.coordinates, polygonId: this.query.polygonId });
+          this.newQueryChange.emit({...newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId});
         } else if (e.features.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple deletable geometries');
         }
@@ -172,32 +173,27 @@ export class ObservationResultComponent implements OnChanges {
 
       const {coordinateVerbatim} = (geometry as any);
       if (coordinateVerbatim) {
-        value = {
-          coordinates: [coordinateVerbatim + ':YKJ'],
-          polygonId: undefined
-        };
+        newQuery.coordinates = [coordinateVerbatim + ':YKJ'];
+        newQuery.polygonId = undefined;
       } else if (geometry.type === 'Polygon') {
         if (layer instanceof Rectangle) {
-          value = {
-            coordinates: [
-              geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +
-              geometry.coordinates[0][0][0] + ':' + geometry.coordinates[0][2][0] + ':WGS84'
-            ],
-            polygonId: undefined
-          };
+          newQuery.coordinates = [
+            geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +
+            geometry.coordinates[0][0][0] + ':' + geometry.coordinates[0][2][0] + ':WGS84'
+          ];
+          newQuery.polygonId = undefined;
         } else {
           this.registerPolygon$(geometry).subscribe(id => {
-            this.locationSelect.emit({ polygonId: id, coordinates: undefined });
+            this.newQueryChange.emit({...newQuery, polygonId: id, coordinates: undefined});
           });
         }
       } else {
-        value = { coordinates: undefined, polygonId: undefined };
+        newQuery.coordinates = undefined;
+        newQuery.polygonId = undefined;
       }
     });
 
-    if (value) {
-      this.locationSelect.emit(value);
-    }
+    this.newQueryChange.emit(newQuery);
   }
 
   registerPolygon$(polygon: G.Polygon) {

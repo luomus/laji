@@ -11,9 +11,12 @@ import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
+import { SearchQueryService } from './search-query.service';
 
 interface IObservationState {
   query: WarehouseQueryInterface;
+  newQuery: WarehouseQueryInterface;
+  newQueryHasChanges: boolean;
   filterVisible: boolean;
   settingsMap: any;
   activeTab?: string;
@@ -33,6 +36,8 @@ export interface IObservationViewModel extends IObservationState {
 
 let _state: IObservationState = {
   query: {},
+  newQuery: {},
+  newQueryHasChanges: false,
   filterVisible: true,
   activeTab: undefined,
   countTaxa: 0,
@@ -51,19 +56,23 @@ export class ObservationFacade {
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
-  readonly lgScreen$      = this.browserService.lgScreen$;
-  readonly query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
-  readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
-  readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
-  readonly countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
-  readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
-  readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly lgScreen$           = this.browserService.lgScreen$;
+  readonly query$              = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
+  readonly newQuery$           = this.state$.pipe(map((state) => state.newQuery), distinctUntilChanged());
+  readonly newQueryHasChanges$ = this.state$.pipe(map((state) => state.newQueryHasChanges));
+  readonly loading$            = this.state$.pipe(map((state) => state.loadingUnits));
+  readonly loadingTaxa$        = this.state$.pipe(map((state) => state.loadingTaxa));
+  readonly activeTab$          = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
+  readonly countUnit$          = this.query$.pipe(switchMap((query) => this.countUnits(query)));
+  readonly countTaxa$          = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
+  readonly filterVisible$      = this.state$.pipe(map((state) => state.filterVisible));
+  readonly settingsMap$        = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
     query: this.query$,
+    newQuery: this.newQuery$,
+    newQueryHasChanges: this.newQueryHasChanges$,
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
     activeTab: this.activeTab$,
@@ -73,6 +82,7 @@ export class ObservationFacade {
     settingsMap: this.settingsMap$
   });
 
+  private queryHash?: string;
   private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
@@ -111,9 +121,21 @@ export class ObservationFacade {
           }
         });
 
-        this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
+        const hash = JSON.stringify(warehouseQuery);
+        if (this.queryHash === hash) {
+          this.updateState({..._state, newQuery: query, newQueryHasChanges: false});
+          return;
+        }
+        this.queryHash = hash;
+
+        this.updateState({..._state, query, newQuery: query, newQueryHasChanges: false, loadingUnits: true, loadingTaxa: true});
       })
     );
+  }
+
+  updateNewQuery(warehouseQuery: WarehouseQueryInterface) {
+    const hasChanges = SearchQueryService.queriesHaveDifferences(_state.query, warehouseQuery);
+    this.updateState({..._state, newQuery: warehouseQuery, newQueryHasChanges: hasChanges});
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { SearchQueryService } from '../search-query.service';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
@@ -13,7 +12,6 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
-import { Util } from '../../shared/service/util.service';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -81,15 +79,10 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
-  newQuery: WarehouseQueryInterface = {};
-  newQueryHasChanges = false;
-
   subQueryUpdate: Subscription;
 
   vm$: Observable<IObservationViewModel>;
   settingsList$: Observable<ISettingResultList>;
-
-  private oldQuery: WarehouseQueryInterface = {};
 
   constructor(
     public translate: TranslateService,
@@ -117,7 +110,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
     this.subQueryUpdate = this.observationFacade.query$.pipe(
       tap((query) => {
-        if (this.results && SearchQueryService.queriesHaveDifferences(this.oldQuery, query)) {
+        if (this.results) {
           this.results.reloadTabs();
         }
         if ((query.coordinates) && !coordinateFilterInfoShown) {
@@ -128,7 +121,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
             {disableTimeOut: true, closeButton: true}
           );
         }
-        this.queryUpdated(query);
       })
     ).subscribe();
   }
@@ -152,22 +144,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 120);
   }
 
-  queryUpdated(query: WarehouseQueryInterface) {
-    this.oldQuery = Util.clone(query);
-    this.setNewQuery(query);
-  }
-
-  setNewQuery(query: WarehouseQueryInterface) {
-    this.newQuery = {...query};
-    this.newQueryHasChanges = SearchQueryService.queriesHaveDifferences(this.oldQuery, this.newQuery);
+  updateNewQuery(query: WarehouseQueryInterface) {
+    this.observationFacade.updateNewQuery({...query});
   }
 
   updateQuery(query: WarehouseQueryInterface) {
     this.observationFacade.updateQuery$(query).subscribe();
-  }
-
-  onLocationSelect(value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>) {
-    this.setNewQuery({...this.newQuery, ...value});
   }
 
   filterVisible(event: boolean) {
