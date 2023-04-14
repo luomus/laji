@@ -13,6 +13,36 @@ describe('Observation list', () => {
     done();
   });
 
+  describe('search button', () => {
+    beforeAll(async (done) => {
+      await page.navigateTo('');
+      done();
+    });
+
+    it('is disabled at start', async (done) => {
+      expect(await page.$searchBtn.getAttribute('disabled')).toBe('true');
+      done();
+    });
+
+    it('does not update filters before it is clicked', async (done) => {
+      await page.$occurrenceCountFinlandMax.sendKeys(2);
+      expect(await page.getOccurrenceCountFinlandMax()).toBe('');
+      done();
+    });
+
+    it('clicking it updates the filters', async (done) => {
+      expect(await page.$searchBtn.getAttribute('disabled')).not.toBe('true');
+      await page.search();
+      expect(await page.getOccurrenceCountFinlandMax()).toBe('2');
+      done();
+    });
+
+    it('and changes tab to list', async (done) => {
+      expect(await page.tabs.list.isActive()).toBe(true);
+      done();
+    });
+  });
+
   describe('place search', () => {
     beforeAll(async (done) => {
       await user.logout();

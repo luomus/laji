@@ -76,8 +76,11 @@ export class ObservationPage {
   private spinners$ = $('laji-observation-result').$$('.spinner');
   public map = new MapPageObject();
   public tabs: Record<string, LUTabPO> = {
+    list: new LUTabPO('list'),
     map: new LUTabPO('map')
   };
+
+  public $occurrenceCountFinlandMax = $('input[name=occurrenceCountFinlandMax]');
 
   public timePanel = new LUPanel('.laji-panel-time');
   public dateBegin = new DatePicker('.observation-time-container laji-datepicker.time-start');
@@ -94,7 +97,7 @@ export class ObservationPage {
   public $coordinateIntersectMinBtn = $('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
-  private $searchBtn = $('.observation-search-btn');
+  public $searchBtn = $('.observation-search-btn');
   private toast = new ToastPO();
 
   async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {
@@ -210,5 +213,10 @@ export class ObservationPage {
 
   async getTimeEnd() {
     return (await this.getTimeFilter()).match(/\/(.+)$/)?.[1] || '';
+  }
+
+  async getOccurrenceCountFinlandMax() {
+    const url = new URL(await browser.getCurrentUrl());
+    return url.searchParams.get('occurrenceCountFinlandMax') || '';
   }
 }
