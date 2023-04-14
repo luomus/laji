@@ -145,14 +145,13 @@ export class ObservationResultComponent implements OnChanges {
   }
 
   pickLocation(events: LajiMapDrawEvent[]) {
-    const newQuery = this.newQuery;
+    let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>;
 
     events.forEach(e => {
       let geometry: G.Geometry, layer: any;
       if (e.type === 'create') {
         geometry = e.feature.geometry;
         layer = e.layer;
-        // return;
       } else if (e.type === 'edit') {
         const keys = Object.keys(e.features);
         if (keys.length > 1) {
@@ -162,7 +161,7 @@ export class ObservationResultComponent implements OnChanges {
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
         if (e.features.length === 1) {
-          this.newQueryChange.emit({...newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId});
+          this.newQueryChange.emit({ ...this.newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId });
         } else if (e.features.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple deletable geometries');
         }
@@ -173,27 +172,32 @@ export class ObservationResultComponent implements OnChanges {
 
       const {coordinateVerbatim} = (geometry as any);
       if (coordinateVerbatim) {
-        newQuery.coordinates = [coordinateVerbatim + ':YKJ'];
-        newQuery.polygonId = undefined;
+        value = {
+          coordinates: [coordinateVerbatim + ':YKJ'],
+          polygonId: undefined
+        };
       } else if (geometry.type === 'Polygon') {
         if (layer instanceof Rectangle) {
-          newQuery.coordinates = [
-            geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +
-            geometry.coordinates[0][0][0] + ':' + geometry.coordinates[0][2][0] + ':WGS84'
-          ];
-          newQuery.polygonId = undefined;
+          value = {
+            coordinates: [
+              geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +
+              geometry.coordinates[0][0][0] + ':' + geometry.coordinates[0][2][0] + ':WGS84'
+            ],
+            polygonId: undefined
+          };
         } else {
           this.registerPolygon$(geometry).subscribe(id => {
-            this.newQueryChange.emit({...newQuery, polygonId: id, coordinates: undefined});
+            this.newQueryChange.emit({ ...this.newQuery, polygonId: id, coordinates: undefined });
           });
         }
       } else {
-        newQuery.coordinates = undefined;
-        newQuery.polygonId = undefined;
+        value = { coordinates: undefined, polygonId: undefined };
       }
     });
 
-    this.newQueryChange.emit(newQuery);
+    if (value) {
+      this.newQueryChange.emit({ ...this.newQuery, ...value });
+    }
   }
 
   registerPolygon$(polygon: G.Polygon) {
