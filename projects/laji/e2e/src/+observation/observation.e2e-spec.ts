@@ -24,14 +24,18 @@ describe('Observation list', () => {
       done();
     });
 
-    it('does not update filters before it is clicked', async (done) => {
+    it('is not disabled when there are new filters', async (done) => {
       await page.$occurrenceCountFinlandMax.sendKeys(2);
+      expect(await page.$searchBtn.getAttribute('disabled')).not.toBe('true');
+      done();
+    });
+
+    it('does not update filters before it is clicked', async (done) => {
       expect(await page.getOccurrenceCountFinlandMax()).toBe('');
       done();
     });
 
     it('clicking it updates the filters', async (done) => {
-      expect(await page.$searchBtn.getAttribute('disabled')).not.toBe('true');
       await page.search();
       expect(await page.getOccurrenceCountFinlandMax()).toBe('2');
       done();
@@ -39,6 +43,30 @@ describe('Observation list', () => {
 
     it('and changes tab to list', async (done) => {
       expect(await page.tabs.list.isActive()).toBe(true);
+      done();
+    });
+  });
+
+  describe('active filters remove', () => {
+    beforeAll(async (done) => {
+      await page.navigateTo('list');
+      done();
+    });
+
+    it('removes a normal filter', async (done) => {
+      await page.$occurrenceCountFinlandMax.sendKeys(2);
+      await page.search();
+      await page.removeFromActiveFilters('occurrenceCountFinlandMax');
+      expect(await page.getOccurrenceCountFinlandMax()).toBe('');
+      done();
+    });
+
+    it('removes a coordinate filter that have not been applied yet', async (done) => {
+      await page.placePanel.open();
+      await page.$drawRectangleBtn.click();
+      await page.drawRectangle();
+      await page.removeFromActiveFilters('coordinates');
+      expect(await page.$searchBtn.getAttribute('disabled')).toBe('true');
       done();
     });
   });

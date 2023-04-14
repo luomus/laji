@@ -98,6 +98,8 @@ export class ObservationPage {
   public $coordinateIntersectMaxBtn = $('.coordinate-intersect-max');
 
   public $searchBtn = $('.observation-search-btn');
+
+  private $activeFiltersBtn = $('.active-filters-btn');
   private toast = new ToastPO();
 
   async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {
@@ -218,5 +220,10 @@ export class ObservationPage {
   async getOccurrenceCountFinlandMax() {
     const url = new URL(await browser.getCurrentUrl());
     return url.searchParams.get('occurrenceCountFinlandMax') || '';
+  }
+
+  async removeFromActiveFilters(field: string) {
+    await this.$activeFiltersBtn.click();
+    await $(`#observation-active-${field}-remove-btn`).click();
   }
 }
