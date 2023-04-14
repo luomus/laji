@@ -135,7 +135,6 @@ export class ObservationFacade {
 
   updateNewQuery(warehouseQuery: WarehouseQueryInterface) {
     const hasChanges = SearchQueryService.queriesHaveDifferences(_state.query, warehouseQuery);
-    console.log(warehouseQuery);
     this.updateState({..._state, newQuery: warehouseQuery, newQueryHasChanges: hasChanges});
   }
 

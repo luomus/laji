@@ -228,6 +228,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.decorator.lang = this.translate.currentLang;
     if (changes['query'] || changes['ready']) {
       this.boxFeatureCollectionCache.reset();
+      this.lajiMap?.map?.clearDrawData();
       this.updateMap();
     }
   }
@@ -452,7 +453,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateMap() {
-    this.lajiMap?.map?.clearDrawData();
     const bounds = this.activeZoomThresholdBounds;
     const query = this.prepareQuery(bounds);
     const hash = JSON.stringify(query) + this.useFinnishMap;
