@@ -34,6 +34,7 @@ describe('Observation list', () => {
 
       it('and drawing adds coordinates filter to query', async (done) => {
         await page.drawRectangle();
+        await page.search();
         expect(await page.hasWGS84CoordinatesFilter()).toBe(true);
         done();
       });
@@ -119,6 +120,7 @@ describe('Observation list', () => {
       it('and entering YKJ rectangle filter to query', async (done) => {
         await control.enterLatLng(666, 333);
         await control.$getSubmit().click();
+        await page.search();
         expect(await page.hasYKjCoordinatesFilter()).toBe(true);
         done();
       });
