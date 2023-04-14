@@ -55,7 +55,7 @@ export class IfWidthAboveBreakpointDirective implements OnDestroy {
     }
 
     this.breakpointSubscription = this.breakpointObserver
-      .observe([`(min-width: ${breakpoints[this.breakpoint]}px`])
+      .observe([`(min-width: ${breakpoints[this.breakpoint]}px)`])
       .subscribe((state: BreakpointState) => {
         this.matchesBreakpoint = state.matches;
 
