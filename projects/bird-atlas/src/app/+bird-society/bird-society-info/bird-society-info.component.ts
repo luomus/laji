@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
-import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasTaxon, BirdSociety, BirdSocietyTaxaResponseElem } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { PopstateService } from '../../core/popstate.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
@@ -16,6 +16,9 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
   loading = true;
   selectedDataIdx: number;
   visualizationMode: VisualizationMode = 'activityCategory';
+  taxonVisualizationId: string | undefined;
+  taxonVisualization: BirdSocietyTaxaResponseElem[] | undefined;
+  taxonVisualizationLoading = false;
   activityCategoryClass = {
     'MY.atlasActivityCategoryEnum0': 'limit-neutral',
     'MY.atlasActivityCategoryEnum1': 'limit-danger',
@@ -76,6 +79,23 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
 
   onVisualizationChange(visualization: VisualizationMode) {
     this.visualizationMode = visualization;
+  }
+
+  onTableRowClick(taxon: AtlasTaxon | null) {
+    if (taxon === null) {
+      this.taxonVisualizationId = undefined;
+      this.taxonVisualization = undefined;
+      return;
+    }
+    if (this.taxonVisualizationId === taxon.id) { return; }
+    this.taxonVisualizationId = taxon.id;
+    this.taxonVisualizationLoading = true;
+    this.atlasApi.getBirdSocietyTaxa(this.birdSociety.birdAssociationArea.key, taxon.id).subscribe(r => {
+      this.taxonVisualization = r;
+      this.taxonVisualizationLoading = false;
+      this.cdr.markForCheck();
+    });
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {

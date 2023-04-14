@@ -3,13 +3,15 @@ import {
   NgZone, OnChanges, OnDestroy, Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { LajiMap, DataOptions, TileLayersOptions, Lang, GetFeatureStyleOptions } from 'laji-map';
+import L, { LatLngTuple } from 'leaflet';
 import { PathOptions } from 'leaflet';
 import { convertYkjToGeoJsonFeature } from 'projects/laji/src/app/root/coordinate-utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { AtlasGridSquare } from '../../../core/atlas-api.service';
+import { AtlasClass, AtlasGridSquare, BirdSocietyTaxaResponseElem } from '../../../core/atlas-api.service';
 import { PopstateService } from '../../../core/popstate.service';
 import { getFeatureColor, VisualizationMode } from '../../../shared-modules/map-utils/visualization-mode';
+import { convertYkjToWgs } from 'projects/laji/src/app/root/coordinate-utils';
 
 interface MapData {
   grid: AtlasGridSquare[];
@@ -44,6 +46,14 @@ const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: Visualiz
   }
 );
 
+// radii for the taxon visualization
+const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColor: string}> = {
+  'MY.atlasClassEnumA': { radius: 100,  fillColor: '#7cf00a' },
+  'MY.atlasClassEnumB': { radius: 133, fillColor: '#F0FFBC' },
+  'MY.atlasClassEnumC': { radius: 166, fillColor: '#01E635' },
+  'MY.atlasClassEnumD': { radius: 200, fillColor: '#006262' }
+};
+
 @Component({
   selector: 'ba-bird-society-info-map',
   templateUrl: './bird-society-info-map.component.html',
@@ -55,6 +65,8 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   @Input() visualizationMode: VisualizationMode = 'activityCategory';
   @Input() set selectedDataIdx(idx: number) { this.setSelectedDataIdx(idx); };
   get selectedDataIdx() { return this._selectedDataIdx; };
+  @Input() taxonVisualization: BirdSocietyTaxaResponseElem[] | undefined;
+
   @Output() selectDataIdx = new EventEmitter<number>();
 
   @ViewChild('lajiMap', { static: false }) lajiMapElem: ElementRef;
@@ -62,6 +74,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
   private map: any;
   private mapData$ = new BehaviorSubject<MapData>(undefined);
   private mapInitialized = false;
+  private taxonVisualizationMarkers: L.Circle<any>[] = [];
   private _selectedDataIdx = -1;
   private unsubscribe$ = new Subject<void>();
 
@@ -103,6 +116,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         }
         this.mapInitialized = true;
       }
+      this.leafletTaxonVisualization();
     });
   }
 
@@ -124,6 +138,37 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
     if (changes.visualizationMode?.currentValue) {
       this.triggerFeatureStyleUpdate();
     }
+    if (changes.taxonVisualization) {
+      this.leafletTaxonVisualization();
+    }
+  }
+
+  private leafletTaxonVisualization() {
+    this.clearCustomMarkers();
+    if (!this.taxonVisualization) { return; }
+    this.taxonVisualization.forEach((square, idx) => {
+      if (square.atlasClass === undefined) { return; }
+      // transform coordinates such that the point lies in the center of the square
+      const ykj = <[string, string]>square.coordinates.split(':').map(c => c += '5000');
+      const latlng: LatLngTuple = convertYkjToWgs(ykj);
+      const style = atlasClassStyleLookup[<AtlasClass>square.atlasClass.key];
+      const radius = style.radius * 20;
+      const circle = L.circle(latlng, radius, {
+        fill: true, stroke: true, fillOpacity: 1, fillColor: style.fillColor,
+        color: '#000000', weight: 2
+      });
+      this.taxonVisualizationMarkers.push(circle);
+      circle.addEventListener('click', () => this.selectDataIdx.emit(idx));
+      circle.addTo(this.map.map);
+    });
+  }
+
+  private clearCustomMarkers() {
+    this.taxonVisualizationMarkers.forEach(marker => {
+      marker.removeFrom(this.map.map);
+      marker.clearAllEventListeners();
+    });
+    this.taxonVisualizationMarkers = [];
   }
 
   private setSelectedDataIdx(idx: number) {

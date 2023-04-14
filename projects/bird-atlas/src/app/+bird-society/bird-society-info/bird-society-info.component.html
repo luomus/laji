@@ -1,12 +1,19 @@
 <div *ngIf="loading" class="container"><laji-spinner class="d-block m-6"></laji-spinner></div>
 <div *ngIf="!loading" [ngClass]="displayModeLarge ? 'container-fluid' : 'container'">
-  <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
+  <div class="d-flex justify-between">
+    <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
+    <div><button class="btn btn-default" (click)="displayModeLarge = !displayModeLarge">
+      <i *ngIf="displayModeLarge" class="glyphicon glyphicon-resize-small"></i>
+      <i *ngIf="!displayModeLarge" class="glyphicon glyphicon-resize-full"></i>
+    </button></div>
+  </div>
   <div class="d-flex flex-row flex-wrap">
     <div class="map-panel flex-grow d-flex flex-col" [luFillHeight]="{ minHeight: 500 }">
       <ba-bird-society-info-map
         [atlasGrid]="birdSociety?.gridSquares"
         [selectedDataIdx]="selectedDataIdx"
         [visualizationMode]="visualizationMode"
+        [taxonVisualization]="taxonVisualization"
         [style]="displayModeLarge ? 'height: 100%' : 'height: 500px'"
         (selectDataIdx)="onSelectDataIdx($event)"
         class="mr-5"
@@ -20,6 +27,8 @@
       <ng-container *ngIf="selectedDataIdx >= 0 else society">
         <ng-container *ngTemplateOutlet="square"></ng-container>
       </ng-container>
+    <ng-container *ngIf="taxonVisualizationLoading"><laji-spinner class="d-block m-4"></laji-spinner></ng-container>
+    <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
     </div>
   </div>
 </div>

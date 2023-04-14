@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../env/environment';
 import { cacheReturnObservable, Lang } from './api.service';
+import { Taxon } from 'projects/laji-api-client/src/public-api';
 
 export type AtlasMap = string;
 export type AtlasActivityCategory =
@@ -13,6 +14,9 @@ export type AtlasActivityCategory =
   | 'MY.atlasActivityCategoryEnum3'
   | 'MY.atlasActivityCategoryEnum4'
   | 'MY.atlasActivityCategoryEnum5';
+
+export type AtlasClass = 'MY.atlasClassEnumA' | 'MY.atlasClassEnumB' | 'MY.atlasClassEnumC' | 'MY.atlasClassEnumD';
+
 export interface KeyValueObject<K, T> {
   key: K;
   value: T;
@@ -28,7 +32,7 @@ export interface AtlasGridSquare {
   level5: number;
   name: string;
   data?: {
-    atlasClass: KeyValueObject<string, string>;
+    atlasClass: KeyValueObject<AtlasClass, string>;
     atlasCode: KeyValueObject<string, string>;
     speciesId: string;
     speciesName: string;
@@ -47,6 +51,7 @@ export interface BirdSociety {
     squareSum: number;
     squarePercentage: number;
   }>;
+  taxa: AtlasTaxon[];
 }
 
 interface VernacularName {fi: string; sv: string; en: string};
@@ -55,6 +60,8 @@ export interface AtlasTaxon {
   intellectualRights: string;
   scientificName: string;
   vernacularName: VernacularName;
+  taxonomicOrder?: number;
+  sensitive?: boolean;
   next?: AtlasTaxon;
   prev?: AtlasTaxon;
 }
@@ -107,6 +114,14 @@ export interface LappiStatsResponseElement {
   grids: LappiStatsResponseGridsElement[];
 }
 
+
+export interface BirdSocietyTaxaResponseElem {
+  coordinates: string;
+  atlasClassSum: number;
+  activityCategory: KeyValueObject<AtlasActivityCategory, string>;
+  atlasClass?: KeyValueObject<AtlasClass, string>;
+}
+
 const BASE_URL = environment.atlasApiBasePath;
 
 @Injectable()
@@ -129,6 +144,12 @@ export class AtlasApiService {
   getBirdSociety(id: string): Observable<BirdSociety> {
     const url = `${BASE_URL}/grid/birdAssociation/${id}`;
     return <Observable<BirdSociety>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(86400000) // 1 day
+  getBirdSocietyTaxa(societyId: string, taxonId: string): Observable<BirdSocietyTaxaResponseElem[]> {
+    const url = `${BASE_URL}/grid/birdAssociation/${societyId}/taxon/${taxonId}`;
+    return <Observable<BirdSocietyTaxaResponseElem[]>>this.http.get(url);
   }
 
   @cacheReturnObservable(86400000) // 1 day

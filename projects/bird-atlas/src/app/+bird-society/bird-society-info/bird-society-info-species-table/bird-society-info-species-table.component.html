@@ -1,0 +1,14 @@
+  <ngx-datatable
+    class="material"
+    [rowHeight]="35"
+    [rows]="rows"
+    [columns]="cols"
+    [scrollbarH]="true"
+    [scrollbarV]="true"
+    [messages]="{ emptyMessage: '' }"
+    [luFillHeight]="{ minHeight: 300 }"
+    selectionType="single"
+    [selected]="selected"
+    [selectCheck]="selectCheck"
+    (activate)="onActivate($event)"
+  ></ngx-datatable>
