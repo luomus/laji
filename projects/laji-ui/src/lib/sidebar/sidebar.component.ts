@@ -230,4 +230,16 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     }
     return width;
   }
+
+  showOnMobile() {
+    if (this.mobile) {
+      this.open = true;
+    }
+  }
+
+  hideOnMobile() {
+    if (this.mobile) {
+      this.open = false;
+    }
+  }
 }

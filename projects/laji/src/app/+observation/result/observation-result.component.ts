@@ -17,6 +17,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
+import { Util } from '../../shared/service/util.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -161,7 +162,9 @@ export class ObservationResultComponent implements OnChanges {
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
         if (e.features.length === 1) {
-          this.newQueryChange.emit({ ...this.newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId });
+          if (!Util.equalsArray(this.newQuery.coordinates, this.query.coordinates) || this.newQuery.polygonId !== this.query.polygonId) {
+            this.newQueryChange.emit({ ...this.newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId });
+          }
         } else if (e.features.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple deletable geometries');
         }

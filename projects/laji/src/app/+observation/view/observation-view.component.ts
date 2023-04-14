@@ -12,6 +12,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
+import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -62,6 +63,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
   @Input() settingsKeyList = 'resultList';
   _activeTab: string;
+  @ViewChild(SidebarComponent) sidebar: SidebarComponent;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
   showMobile: any;
   subscription: any;
@@ -136,6 +138,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   draw(type: string) {
+    this.sidebar.hideOnMobile();
     if (this.activeTab !== 'map') {
       this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }
@@ -144,11 +147,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 120);
   }
 
-  updateNewQuery(query: WarehouseQueryInterface) {
+  updateNewQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
+    if (showSidebarOnMobile) {
+      this.sidebar.showOnMobile();
+    }
     this.observationFacade.updateNewQuery({...query});
   }
 
   updateQuery(query: WarehouseQueryInterface) {
+    this.sidebar.hideOnMobile();
     this.observationFacade.updateQuery$(query).subscribe();
   }
 
