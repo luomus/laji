@@ -166,7 +166,9 @@ export class ObservationResultComponent implements OnChanges {
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
         if (e.features.length === 1) {
-          if (!Util.equalsArray(this.newQuery.coordinates, this.query.coordinates) || this.newQuery.polygonId !== this.query.polygonId) {
+          const newCoordinates = this.newQuery.coordinates || [];
+          const oldCoordinates = this.query.coordinates || [];
+          if (!Util.equalsArray(newCoordinates, oldCoordinates) || this.newQuery.polygonId !== this.query.polygonId) {
             this.newQueryChange.emit({ ...this.newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId });
           }
         } else if (e.features.length > 1) {
