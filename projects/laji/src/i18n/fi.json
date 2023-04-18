@@ -1711,7 +1711,7 @@
   "taxonomy.map.finland": "Havainnot Suomesta",
   "taxonomy.map.info": "Havainnot, joiden koordinaatit ovat Suomessa, joiden laatuluokitus on neutraali tai varmistettu, ja joita ei ole merkitty tarkistusta vaativiksi.",
   "taxonomy.map.summary": "Yhteenvetokartta",
-  "taxonomy.map.totalObservations": "Suomessa yhteensä",
+  "taxonomy.map.totalObservations": "Suomesta yhteensä",
   "taxonomy.map.totalObservationsNumber": " havaintoa",
   "taxonomy.misappliedNames": "Väärinkäytetyt nimet",
   "taxonomy.multimedia.copyrightOwner": "Tekijänoikeuksien haltija",
