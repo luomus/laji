@@ -15,9 +15,9 @@ import { SearchQueryService } from './search-query.service';
 import { Util } from '../shared/service/util.service';
 
 interface IObservationState {
-  query: WarehouseQueryInterface;
-  newQuery: WarehouseQueryInterface;
-  newQueryHasChanges: boolean;
+  activeQuery: WarehouseQueryInterface;
+  tmpQuery: WarehouseQueryInterface;
+  tmpQueryHasChanges: boolean;
   filterVisible: boolean;
   settingsMap: any;
   activeTab?: string;
@@ -36,9 +36,9 @@ export interface IObservationViewModel extends IObservationState {
 }
 
 let _state: IObservationState = {
-  query: {},
-  newQuery: {},
-  newQueryHasChanges: false,
+  activeQuery: {},
+  tmpQuery: {},
+  tmpQueryHasChanges: false,
   filterVisible: true,
   activeTab: undefined,
   countTaxa: 0,
@@ -58,22 +58,22 @@ export class ObservationFacade {
   state$ = this.store.asObservable();
 
   readonly lgScreen$           = this.browserService.lgScreen$;
-  readonly query$              = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  readonly newQuery$           = this.state$.pipe(map((state) => state.newQuery), distinctUntilChanged());
-  readonly newQueryHasChanges$ = this.state$.pipe(map((state) => state.newQueryHasChanges));
+  readonly activeQuery$              = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
+  readonly tmpQuery$           = this.state$.pipe(map((state) => state.tmpQuery), distinctUntilChanged());
+  readonly tmpQueryHasChanges$ = this.state$.pipe(map((state) => state.tmpQueryHasChanges));
   readonly loading$            = this.state$.pipe(map((state) => state.loadingUnits));
   readonly loadingTaxa$        = this.state$.pipe(map((state) => state.loadingTaxa));
   readonly activeTab$          = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  readonly countUnit$          = this.query$.pipe(switchMap((query) => this.countUnits(query)));
-  readonly countTaxa$          = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
+  readonly countUnit$          = this.activeQuery$.pipe(switchMap((query) => this.countUnits(query)));
+  readonly countTaxa$          = this.activeQuery$.pipe(switchMap((query) => this.countTaxa(query)));
   readonly filterVisible$      = this.state$.pipe(map((state) => state.filterVisible));
   readonly settingsMap$        = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
-    query: this.query$,
-    newQuery: this.newQuery$,
-    newQueryHasChanges: this.newQueryHasChanges$,
+    activeQuery: this.activeQuery$,
+    tmpQuery: this.tmpQuery$,
+    tmpQueryHasChanges: this.tmpQueryHasChanges$,
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
     activeTab: this.activeTab$,
@@ -83,7 +83,7 @@ export class ObservationFacade {
     settingsMap: this.settingsMap$
   });
 
-  private queryHash?: string;
+  private activeQueryHash?: string;
   private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
@@ -110,7 +110,7 @@ export class ObservationFacade {
     }
   }
 
-  updateQuery$(warehouseQuery: WarehouseQueryInterface): Observable<any> {
+  updateActiveQuery$(warehouseQuery: WarehouseQueryInterface): Observable<any> {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       tap(loggedIn => {
@@ -122,24 +122,24 @@ export class ObservationFacade {
           }
         });
 
-        const newQuery = Util.clone(query);
-        const nextState = {..._state, newQuery, newQueryHasChanges: false};
+        const tmpQuery = Util.clone(query);
+        const nextState = {..._state, tmpQuery, tmpQueryHasChanges: false};
 
         const hash = JSON.stringify(warehouseQuery);
-        if (this.queryHash === hash) {
+        if (this.activeQueryHash === hash) {
           this.updateState(nextState);
           return;
         }
-        this.queryHash = hash;
+        this.activeQueryHash = hash;
 
-        this.updateState({...nextState, query, loadingUnits: true, loadingTaxa: true});
+        this.updateState({...nextState, activeQuery: query, loadingUnits: true, loadingTaxa: true});
       })
     );
   }
 
-  updateNewQuery(warehouseQuery: WarehouseQueryInterface) {
-    const hasChanges = SearchQueryService.queriesHaveDifferences(_state.query, warehouseQuery);
-    this.updateState({..._state, newQuery: warehouseQuery, newQueryHasChanges: hasChanges});
+  updateTmpQuery(warehouseQuery: WarehouseQueryInterface) {
+    const hasChanges = SearchQueryService.queriesHaveDifferences(_state.activeQuery, warehouseQuery);
+    this.updateState({..._state, tmpQuery: warehouseQuery, tmpQueryHasChanges: hasChanges});
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {
@@ -151,7 +151,7 @@ export class ObservationFacade {
   }
 
   clearQuery() {
-    this.updateQuery$(this.emptyQuery).subscribe();
+    this.updateActiveQuery$(this.emptyQuery).subscribe();
   }
 
   taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {

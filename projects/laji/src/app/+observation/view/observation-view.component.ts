@@ -110,7 +110,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.vm$ = this.observationFacade.vm$;
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
-    this.subQueryUpdate = this.observationFacade.query$.pipe(
+    this.subQueryUpdate = this.observationFacade.activeQuery$.pipe(
       tap((query) => {
         if (this.results) {
           this.results.reloadTabs();
@@ -147,16 +147,16 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 120);
   }
 
-  updateNewQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
+  updateTmpQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
     if (showSidebarOnMobile) {
       this.sidebar.showOnMobile();
     }
-    this.observationFacade.updateNewQuery({...query});
+    this.observationFacade.updateTmpQuery({...query});
   }
 
-  updateQuery(query: WarehouseQueryInterface) {
+  updateActiveQuery(query: WarehouseQueryInterface) {
     this.sidebar.hideOnMobile();
-    this.observationFacade.updateQuery$(query).subscribe();
+    this.observationFacade.updateActiveQuery$(query).subscribe();
   }
 
   filterVisible(event: boolean) {

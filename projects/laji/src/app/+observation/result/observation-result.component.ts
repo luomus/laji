@@ -60,8 +60,8 @@ export class ObservationResultComponent implements OnChanges {
   ];
   @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
-  @Input() query: WarehouseQueryInterface = {};
-  @Input() newQuery: WarehouseQueryInterface = {};
+  @Input() activeQuery: WarehouseQueryInterface = {};
+  @Input() tmpQuery: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
   @Input() unitCount: number;
   @Input() speciesCount: number;
@@ -70,8 +70,8 @@ export class ObservationResultComponent implements OnChanges {
   @Input() lang: string;
   @Input() listSettings: ISettingResultList;
 
-  @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
-  @Output() newQueryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() activeQueryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() tmpQueryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
@@ -124,7 +124,7 @@ export class ObservationResultComponent implements OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.basePath, tabName]), {
         // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
-        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+        queryParams: this.searchQueryService.getQueryObject(this.activeQuery, ['selected', 'pageSize', 'page'])
       }
     );
   }
@@ -139,7 +139,7 @@ export class ObservationResultComponent implements OnChanges {
       this.onSelect(0);
     }
 
-    if (changes.query || (!this.newQuery?.coordinates?.length && !this.newQuery?.polygonId)) {
+    if (changes.activeQuery || (!this.tmpQuery?.coordinates?.length && !this.tmpQuery?.polygonId)) {
       this.observationMap?.clearDrawData();
     }
   }
@@ -166,10 +166,10 @@ export class ObservationResultComponent implements OnChanges {
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
         if (e.features.length === 1) {
-          const newCoordinates = this.newQuery.coordinates || [];
-          const oldCoordinates = this.query.coordinates || [];
-          if (!Util.equalsArray(newCoordinates, oldCoordinates) || this.newQuery.polygonId !== this.query.polygonId) {
-            this.newQueryChange.emit({ ...this.newQuery, coordinates: this.query.coordinates, polygonId: this.query.polygonId });
+          const newCoordinates = this.tmpQuery.coordinates || [];
+          const oldCoordinates = this.activeQuery.coordinates || [];
+          if (!Util.equalsArray(newCoordinates, oldCoordinates) || this.tmpQuery.polygonId !== this.activeQuery.polygonId) {
+            this.tmpQueryChange.emit({ ...this.tmpQuery, coordinates: this.activeQuery.coordinates, polygonId: this.activeQuery.polygonId });
           }
         } else if (e.features.length > 1) {
           throw new Error('Something wrong with map, there should never be multiple deletable geometries');
@@ -196,7 +196,7 @@ export class ObservationResultComponent implements OnChanges {
           };
         } else {
           this.registerPolygon$(geometry).subscribe(id => {
-            this.newQueryChange.emit({ ...this.newQuery, polygonId: id, coordinates: undefined });
+            this.tmpQueryChange.emit({ ...this.tmpQuery, polygonId: id, coordinates: undefined });
           });
         }
       } else {
@@ -205,7 +205,7 @@ export class ObservationResultComponent implements OnChanges {
     });
 
     if (value) {
-      this.newQueryChange.emit({ ...this.newQuery, ...value });
+      this.tmpQueryChange.emit({ ...this.tmpQuery, ...value });
     }
   }
 

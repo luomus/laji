@@ -37,7 +37,7 @@ export abstract class AbstractObservation {
     );
     this.qpUpdate.pipe(take(1)).subscribe(() => { // avoid query params being overwritten
       this.subscription.add(
-        this.observationFacade.query$.subscribe(query => {
+        this.observationFacade.activeQuery$.subscribe(query => {
           this.onQueryChange(query);
           this.updateUrlQueryParamsFromQuery(query);
         })
@@ -72,7 +72,7 @@ export abstract class AbstractObservation {
     if (queryParams['target']) {
       query.target = [queryParams['target']];
     }
-    return this.observationFacade.updateQuery$(query);
+    return this.observationFacade.updateActiveQuery$(query);
   }
 
   protected onQueryChange(query: WarehouseQueryInterface) { }
