@@ -21,6 +21,7 @@ import { ObservationTableColumn } from '../../../../../shared-modules/observatio
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { DatatableComponent } from '../../../../../shared-modules/datatable/datatable/datatable.component';
 import { SelectionType, SortType } from '@swimlane/ngx-datatable';
+import { NpInfoComponent } from '../../np-info/np-info.component';
 
 @Component({
   selector: 'laji-np-list',
@@ -176,30 +177,15 @@ export class NpListComponent implements OnDestroy {
 
     const cols = this._fields.reduce((_cols, path) => {
 
-      const splits = path.split('.');
-      const schema = splits.reduce((_schema: any, split: string) => {
-        split = split.replace(/\[\d+\]/g, ''); // Remove array index pointers (for example "[0]").
-        if (!_schema) {
-          return;
-        }
-        if (split === '$') {
-          return _schema;
-        } else if (split === 'prepopulatedDocument') {
-          return documentForm.schema;
-        } else if (_schema.items) {
-          return _schema.items.properties[split];
-        } else {
-          return _schema.properties[split];
-        }
-
-      }, placeForm.schema) || {};
+      const schema = NpInfoComponent.getSchemaFromNPJsonPathPointer(placeForm, documentForm, path);
+      const isEnumType = schema?.type === 'string' && schema.oneOf;
       const hardCodedCol: Partial<DatatableColumn> = this.columnsMetaData[path] || {};
       const col = {
         name: path,
         width: 50,
-        cellTemplate: (schema.type === 'string' && schema.oneOf) ? 'labelIDTpl' : undefined,
+        cellTemplate: isEnumType ? 'labelIDTpl' : undefined,
         ...hardCodedCol,
-        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema.title ?? path,
+        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema?.title ?? path,
       };
       if (col.cellTemplate) {
         col.cellTemplate = this[col.cellTemplate];
