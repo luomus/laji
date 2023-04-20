@@ -165,14 +165,15 @@ export class ObservationResultComponent implements OnChanges {
         geometry = e.features[keys[0]].geometry;
         layer = e.layers[keys[0]];
       } else if (e.type === 'delete') {
+        if (e.features.length > 1) {
+          throw new Error('Something wrong with map, there should never be multiple deletable geometries');
+        }
         if (e.features.length === 1) {
           const newCoordinates = this.tmpQuery.coordinates || [];
           const oldCoordinates = this.activeQuery.coordinates || [];
           if (!Util.equalsArray(newCoordinates, oldCoordinates) || this.tmpQuery.polygonId !== this.activeQuery.polygonId) {
             this.tmpQueryChange.emit({ ...this.tmpQuery, coordinates: this.activeQuery.coordinates, polygonId: this.activeQuery.polygonId });
           }
-        } else if (e.features.length > 1) {
-          throw new Error('Something wrong with map, there should never be multiple deletable geometries');
         }
         return;
       } else {
