@@ -58,7 +58,7 @@ export class ObservationFacade {
   state$ = this.store.asObservable();
 
   readonly lgScreen$           = this.browserService.lgScreen$;
-  readonly activeQuery$              = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
+  readonly activeQuery$        = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
   readonly tmpQuery$           = this.state$.pipe(map((state) => state.tmpQuery), distinctUntilChanged());
   readonly tmpQueryHasChanges$ = this.state$.pipe(map((state) => state.tmpQueryHasChanges));
   readonly loading$            = this.state$.pipe(map((state) => state.loadingUnits));
