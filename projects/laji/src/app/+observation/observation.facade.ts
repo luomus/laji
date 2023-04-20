@@ -123,15 +123,16 @@ export class ObservationFacade {
         });
 
         const newQuery = Util.clone(query);
+        const nextState = {..._state, newQuery, newQueryHasChanges: false};
 
         const hash = JSON.stringify(warehouseQuery);
         if (this.queryHash === hash) {
-          this.updateState({..._state, newQuery, newQueryHasChanges: false});
+          this.updateState(nextState);
           return;
         }
         this.queryHash = hash;
 
-        this.updateState({..._state, query, newQuery, newQueryHasChanges: false, loadingUnits: true, loadingTaxa: true});
+        this.updateState({...nextState, query, loadingUnits: true, loadingTaxa: true});
       })
     );
   }

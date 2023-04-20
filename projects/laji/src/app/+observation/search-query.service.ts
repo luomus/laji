@@ -346,32 +346,35 @@ export class SearchQueryService implements SearchQueryInterface {
     this.queryUpdatedSource.next(data);
   }
 
-  public static hasValue(value): boolean {
+  public static hasValue(value?: boolean|number|string|string[]): boolean {
     const type = typeof value;
-    return (type !== 'undefined' && (type === 'boolean' || type === 'number' || (value && value.length > 0)));
+    if (type === 'undefined') {
+      return false;
+    } else if (type === 'boolean' || type === 'number') {
+      return true;
+    }
+    value = value as string|string[];
+    return value.length > 0;
   }
 
   public static getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
     const query1Keys = Object.keys(query1);
     const query2Keys = Object.keys(query2);
-    const query2UniqueKeys = query2Keys.filter(k => !query1Keys.includes(k));
-    const uniqueKeys = query1Keys.concat(query2UniqueKeys);
+    const uniqueKeys = Array.from(new Set(query1Keys.concat(query2Keys)));
 
-    const changed = {};
-    uniqueKeys.forEach(key => {
+    return uniqueKeys.reduce((changed: WarehouseQueryInterface, key: string) => {
       const value1 = query1[key];
       const value2 = query2[key];
 
-      if (!SearchQueryService.hasValue(value1) && !SearchQueryService.hasValue(value2)) {
-        return;
+      if (SearchQueryService.hasValue(value1) || SearchQueryService.hasValue(value2)) {
+        const areArrays = Array.isArray(value1) && Array.isArray(value2);
+        if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
+          changed[key] = query2[key];
+        }
       }
 
-      const areArrays = Array.isArray(value1) && Array.isArray(value2);
-      if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
-        changed[key] = query2[key];
-      }
-    });
-    return changed;
+      return changed;
+    }, {});
   }
 
   public static queriesHaveDifferences(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): boolean {
