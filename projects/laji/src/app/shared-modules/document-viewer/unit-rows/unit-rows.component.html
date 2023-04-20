@@ -3,7 +3,7 @@
 </ng-template>
 <ng-template #primarySpecimen>
   <ng-container *ngIf="unit.primarySpecimen">
-    <div class="primary-specimen">{{"result.unit.primarySpecimen" | translate}}</div>
+    <div class="primary-specimen">{{ "result.unit.primarySpecimen" | translate }}</div>
   </ng-container>
 </ng-template>
 <laji-row [title]="'result.unit.id' | translate" *ngIf="showFacts">
