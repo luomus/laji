@@ -354,7 +354,7 @@ export class SearchQueryService implements SearchQueryInterface {
       return true;
     }
     value = value as string|string[];
-    return value.length > 0;
+    return value?.length > 0;
   }
 
   public static getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
