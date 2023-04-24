@@ -461,7 +461,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       drawData: this.getDrawData$(query),
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
-      this.lajiMap?.map?.clearDrawData();
       this.mapData = [drawData, dataOptions];
     });
   }

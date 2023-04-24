@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild,
-OnInit, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ObservationMapComponent } from '../../shared-modules/observation-map/observation-map/observation-map.component';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList, UserService } from '../../shared/service/user.service';
@@ -9,7 +8,7 @@ import { ObservationDownloadComponent } from '../download/observation-download.c
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { SearchQueryService } from '../search-query.service';
 import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-utils';
-import { EMPTY, Subscription } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
 import { LajiMapDrawEvent, Rectangle } from '@laji-map/laji-map.interface';
@@ -18,6 +17,7 @@ import { catchError, map } from 'rxjs/operators';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import G from 'geojson';
+import { Util } from '../../shared/service/util.service';
 
 const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations', 'own'];
 @Component({
@@ -26,7 +26,7 @@ const tabOrder = ['list', 'map', 'images', 'species', 'statistics', 'annotations
   styleUrls: ['./observation-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ObservationResultComponent implements OnInit, OnChanges {
+export class ObservationResultComponent implements OnChanges {
   private _visible: VisibleSections = {
     finnish: true,
     countTaxa: true,
@@ -60,7 +60,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   ];
   @Input() resultBase: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
-  @Input() query: WarehouseQueryInterface = {};
+  @Input() activeQuery: WarehouseQueryInterface = {};
+  @Input() tmpQuery: WarehouseQueryInterface = {};
   @Input() lgScreen = true;
   @Input() unitCount: number;
   @Input() speciesCount: number;
@@ -69,7 +70,8 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   @Input() lang: string;
   @Input() listSettings: ISettingResultList;
 
-  @Output() queryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() activeQueryChange = new EventEmitter<WarehouseQueryInterface>();
+  @Output() tmpQueryChange = new EventEmitter<WarehouseQueryInterface>();
   @Output() listSettingsChange = new EventEmitter<ISettingResultList>();
 
   @ViewChild(ObservationMapComponent) observationMap: ObservationMapComponent;
@@ -87,7 +89,6 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   hasMonthDayData: boolean;
   hasYearData: boolean;
   hasTaxonData: boolean;
-  metaFetch: Subscription;
 
   selectedTabIdx = 0; // stores which tab index was provided by @Input active
   onlyCount = this.storage.retrieve('onlycount') === null ? true : this.storage.retrieve('onlycount');
@@ -123,25 +124,24 @@ export class ObservationResultComponent implements OnInit, OnChanges {
     this.router.navigate(
       this.localizeRouterService.translateRoute([this.basePath, tabName]), {
         // Query object should not be but directly to the request params! It can include person token and we don't want that to be visible!
-        queryParams: this.searchQueryService.getQueryObject(this.query, ['selected', 'pageSize', 'page'])
+        queryParams: this.searchQueryService.getQueryObject(this.activeQuery, ['selected', 'pageSize', 'page'])
       }
     );
   }
 
-  ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges) {
+    const queryParams = this.route.snapshot.queryParams;
 
-  ngOnChanges() {
-    if (((this.route.snapshot.queryParams['editorOrObserverPersonToken'] === undefined &&
-    this.route.snapshot.queryParams['observerPersonToken'] === undefined &&
-    this.route.snapshot.queryParams['editorPersonToken'] === undefined) || this.route.snapshot.queryParams['editorOrObserverIsNotPersonToken'] ) &&
-    this.selectedTabIdx === 6
-    ) {
+    const hasQueryParams = Object.keys(queryParams).length > 0;
+    const ownTabVisible = queryParams['editorOrObserverPersonToken'] || queryParams['observerPersonToken'] || queryParams['editorPersonToken'];
+
+    if ((!this.activeTab && hasQueryParams) || (this.activeTab === 'own' && !ownTabVisible)) {
       this.onSelect(0);
     }
-  }
 
-  ngDestroy() {
-    this.metaFetch.unsubscribe();
+    if (changes.activeQuery || (!this.tmpQuery?.coordinates?.length && !this.tmpQuery?.polygonId)) {
+      this.observationMap?.clearDrawData();
+    }
   }
 
   reloadTabs() {
@@ -150,13 +150,13 @@ export class ObservationResultComponent implements OnInit, OnChanges {
   }
 
   pickLocation(events: LajiMapDrawEvent[]) {
-    const query = {...this.query};
+    let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>;
+
     events.forEach(e => {
       let geometry: G.Geometry, layer: any;
       if (e.type === 'create') {
         geometry = e.feature.geometry;
         layer = e.layer;
-        // return;
       } else if (e.type === 'edit') {
         const keys = Object.keys(e.features);
         if (keys.length > 1) {
@@ -164,32 +164,50 @@ export class ObservationResultComponent implements OnInit, OnChanges {
         }
         geometry = e.features[keys[0]].geometry;
         layer = e.layers[keys[0]];
+      } else if (e.type === 'delete') {
+        if (e.features.length > 1) {
+          throw new Error('Something wrong with map, there should never be multiple deletable geometries');
+        }
+        if (e.features.length === 1) {
+          const newCoordinates = this.tmpQuery.coordinates || [];
+          const oldCoordinates = this.activeQuery.coordinates || [];
+          if (!Util.equalsArray(newCoordinates, oldCoordinates) || this.tmpQuery.polygonId !== this.activeQuery.polygonId) {
+            this.tmpQueryChange.emit({ ...this.tmpQuery, coordinates: this.activeQuery.coordinates, polygonId: this.activeQuery.polygonId });
+          }
+        }
+        return;
       } else {
         return;
       }
 
       const {coordinateVerbatim} = (geometry as any);
       if (coordinateVerbatim) {
-        query.coordinates = [coordinateVerbatim + ':YKJ'];
-        query.polygonId = undefined;
+        value = {
+          coordinates: [coordinateVerbatim + ':YKJ'],
+          polygonId: undefined
+        };
       } else if (geometry.type === 'Polygon') {
         if (layer instanceof Rectangle) {
-          query.coordinates = [
-            geometry.coordinates[0][0][1] + ':' +  geometry.coordinates[0][2][1] + ':' +
-            geometry.coordinates[0][0][0] + ':' +  geometry.coordinates[0][2][0] + ':WGS84'
-          ];
-          query.polygonId = undefined;
+          value = {
+            coordinates: [
+              geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +
+              geometry.coordinates[0][0][0] + ':' + geometry.coordinates[0][2][0] + ':WGS84'
+            ],
+            polygonId: undefined
+          };
         } else {
           this.registerPolygon$(geometry).subscribe(id => {
-            this.queryChange.emit({...this.query, polygonId: id, coordinates: undefined});
+            this.tmpQueryChange.emit({ ...this.tmpQuery, polygonId: id, coordinates: undefined });
           });
         }
       } else {
-        query.coordinates = undefined;
-        query.polygonId = undefined;
+        value = { coordinates: undefined, polygonId: undefined };
       }
     });
-    this.queryChange.emit(query);
+
+    if (value) {
+      this.tmpQueryChange.emit({ ...this.tmpQuery, ...value });
+    }
   }
 
   registerPolygon$(polygon: G.Polygon) {

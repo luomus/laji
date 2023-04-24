@@ -1,10 +1,6 @@
 @import '../../../styles/variables';
 @import 'projects/laji-ui/src/lib/vars';
 
-:host ::ng-deep laji-observation-active .open-select {
-  border-bottom: 3px solid rgba(0,0,0,0)
-}
-
 .top-section {
   padding: 15px;
   > * {
