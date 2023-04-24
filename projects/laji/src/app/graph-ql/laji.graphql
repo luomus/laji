@@ -771,6 +771,7 @@ type DwUnit {
   mediaCount: Int
   notes: String
   quality: DwUnitQuality
+  primarySpecimen: Boolean
   recordBasis: String
   referencePublication: String
   reportedInformalTaxonGroup: String
@@ -1686,6 +1687,7 @@ type Query {
       pageSize: Int,
       plantStatusCode: [String!],
       primaryHabitat: [String!],
+      primarySpecimen: Boolean,
       provinceId: [String!],
       qualityIssues: [String!],
       recordBasis: [String!],
@@ -2125,6 +2127,8 @@ type Unit {
   preservation: [String!]
   "Origin or source of the garden accession"
   provenance: String
+
+  primarySpecimen: Boolean
   """
 
   PUBLIC: all data can be published; PROTECTED: exact locality is hidden

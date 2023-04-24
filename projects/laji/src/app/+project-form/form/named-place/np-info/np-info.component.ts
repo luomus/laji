@@ -72,6 +72,20 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   useLocalDocumentViewer = false;
   canDelete: boolean;
 
+  public static getSchemaFromNPJsonPathPointer(placeForm: Form.SchemaForm, docForm: Form.SchemaForm, path: string) {
+    let {schema} = placeForm;
+    let schemaPointer = path;
+    if (path.startsWith('$.prepopulatedDocument')) {
+      schema = docForm.schema;
+      schemaPointer = path.replace('$.prepopulatedDocument', '$');
+    }
+
+    return Util.parseJSONPointer(
+      schema,
+      LajiFormUtil.schemaJSONPointer(schema, Util.JSONPathToJSONPointer(schemaPointer))
+    );
+  }
+
   public static getListItems(placeForm: any, np: NamedPlace, form: Form.SchemaForm): any[] {
     // TODO remove coupling between uiSchema and infoFields.
     let displayed = form.options?.namedPlaceOptions?.infoFields || [];
@@ -84,10 +98,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
     const listItems = [];
     for (const field of displayed) {
-      const fieldSchema = Util.parseJSONPointer(
-        placeForm.schema,
-        LajiFormUtil.schemaJSONPointer(placeForm.schema, Util.JSONPathToJSONPointer(field))
-      );
+      const fieldSchema = NpInfoComponent.getSchemaFromNPJsonPathPointer(placeForm, form, field);
       if (!fieldSchema) {
         continue;
       }
@@ -98,8 +109,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
         value = _value;
       }
 
+      const isEnumType = fieldSchema?.type === 'string' && fieldSchema.oneOf;
       let pipe;
-      if (field === 'taxonIDs') {
+      if (field === 'taxonIDs' || isEnumType) {
         pipe = 'label';
       } else if (field === 'municipality') {
         pipe = 'area';

@@ -7,9 +7,10 @@ import {
   IIdentificationUserStatResult,
   IIdentificationSpeciesStat
 } from '../../kerttu-global-shared/models';
-import { map, share } from 'rxjs/operators';
+import { map, share, shareReplay, switchMap } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
+import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-element.service';
 
 @Component({
   selector: 'bsg-identification-results',
@@ -22,8 +23,14 @@ export class IdentificationResultsComponent implements OnInit {
   siteStats$: Observable<IIdentificationSiteStat[]>;
   userStats$: Observable<IIdentificationUserStatResult>;
   speciesStats$: Observable<IIdentificationSpeciesStat[]>;
+  ownSpeciesStats$: Observable<IIdentificationSpeciesStat[]>;
   generalStats$: Observable<IIdentificationStat>;
   userId$: Observable<string>;
+
+  showOwnSpecies = false;
+  filterSpeciesBy = '';
+
+  toHtmlInputElement = toHtmlInputElement;
 
   constructor(
     private userService: UserService,
@@ -31,7 +38,8 @@ export class IdentificationResultsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sites$ = this.kerttuGlobalApi.getSites(this.userService.getToken()).pipe(
+    this.sites$ = this.userService.isLoggedIn$.pipe(
+      switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
       map(result => result.results)
     );
     this.siteStats$ = this.kerttuGlobalApi.getIdentificationSiteStats().pipe(
@@ -41,9 +49,19 @@ export class IdentificationResultsComponent implements OnInit {
       share()
     );
     this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats().pipe(
-      map(result => result.results)
+      map(result => result.results),
+      shareReplay(1)
+    );
+    this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.userService.getToken())),
+      map(result => result.results),
+      shareReplay(1)
     );
     this.generalStats$ = this.userStats$.pipe(map(stats => this.generalStatsFromUserStats(stats)));
+  }
+
+  filterSpeciesByChange(value?: string) {
+    this.filterSpeciesBy = value || '';
   }
 
   private generalStatsFromUserStats(data: IIdentificationUserStatResult): IIdentificationStat {

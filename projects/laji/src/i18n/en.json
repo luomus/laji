@@ -1529,6 +1529,7 @@
   "result.unit.linkings.taxon.primaryHabitat": "Primary habitat",
   "result.unit.nativeOccurrence": "Native occurrence",
   "result.unit.notes": "Havainnon lisätiedot",
+  "result.unit.primarySpecimen": "Primary specimen",
   "result.unit.quality.source": "Reliability Source",
   "result.unit.quality.taxon": "Observation Reliability",
   "result.unit.reportedTaxonConfidence": "The stated certainty of the observation",

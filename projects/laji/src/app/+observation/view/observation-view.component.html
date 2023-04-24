@@ -1,16 +1,6 @@
-<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate" [luFillHeight]="{}">
+<lu-sidebar [position]="'right'" [staticWidth]="300" *ngIf="vm$ | async; let vm" [menuTitle]="'observation.form.menuTitle' | translate" [luFillHeight]="{}" [displayNavHeader]="true">
   <main>
     <laji-technical-news></laji-technical-news>
-    <ng-container *lajiBrowserOnly>
-      <ng-container *ngIf="visible.info">
-        <div class="toggle-intro" *ngIf="!vm.showIntro">
-          <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
-        </div>
-        <alert *ngIf="vm.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-          <div [innerHtml]="'observation.intro' | translate"></div>
-        </alert>
-      </ng-container>
-    </ng-container>
     <laji-observation-result
       [resultBase]="formType"
       [visible]="visible"
@@ -23,28 +13,40 @@
       [speciesCount]="vm.countTaxa"
       [unitCount]="vm.countUnit"
       [active]="activeTab"
-      [query]="vm.query"
-      (queryChange)="onQueryChange($event)"
+      [activeQuery]="vm.activeQuery"
+      [tmpQuery]="vm.tmpQuery"
       [listSettings]="settingsList$ | async"
       (listSettingsChange)="onListSettingsChange($event)"
+      (activeQueryChange)="updateActiveQuery($event)"
+      (tmpQueryChange)="updateTmpQuery($event, true)"
     ></laji-observation-result>
   </main>
+  <div class="nav-header">
+    <button class="btn btn-primary observation-search-btn" (click)="updateActiveQuery(vm.tmpQuery)" [disabled]="!vm.tmpQueryHasChanges">
+      {{ 'observation.search' | translate }}
+    </button>
+    <laji-observation-active
+      [skip]="formType === 'sample' ? skipUrlParameters : []"
+      [query]="vm.tmpQuery"
+      (queryChange)="updateActiveQuery($event)"
+      [queryType]="'observation'"
+    ></laji-observation-active>
+  </div>
   <nav>
     <ng-container [ngSwitch]="formType">
       <laji-form-sample
         *ngSwitchCase="'sample'"
-        [query]="vm.query"
-        [skipActiveFilters]="skipUrlParameters"
+        [query]="vm.tmpQuery"
         [invasiveStatuses]="invasiveStatuses"
-        (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
+        (queryChange)="updateTmpQuery($event)"
       ></laji-form-sample>
       <laji-observation-form
         *ngSwitchDefault
-        [query]="vm.query"
+        [query]="vm.tmpQuery"
         [invasiveStatuses]="invasiveStatuses"
-        (queryChange)="onQueryChange($event)"
         (mapDraw)="draw($event)"
+        (queryChange)="updateTmpQuery($event)"
       ></laji-observation-form>
     </ng-container>
   </nav>

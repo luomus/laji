@@ -1,4 +1,7 @@
 .env
+.env.bsg
 !get-from-crowdin.sh
 !send-to-crowdin.sh
 !electron-builds.sh
+!get-from-bsg-crowdin.sh
+!send-to-bsg-crowdin.sh
