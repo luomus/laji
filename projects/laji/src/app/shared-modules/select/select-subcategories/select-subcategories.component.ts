@@ -248,7 +248,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
   }
 
   private rebuiltParamSubCategory(urlString) {
-    const rebuilt = urlString.slice(0, -1).split(';');
+    const rebuilt = urlString.charAt(urlString.length - 1) === ';' ? urlString.slice(0, -1).split(';') : urlString.split(';');
     const finalRebuilt = [];
 
     rebuilt.forEach((element) => {
