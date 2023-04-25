@@ -98,6 +98,21 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  onResize() {
+    this.displayModeLarge = !this.displayModeLarge;
+    try {
+      const event = new Event('resize');
+      window.dispatchEvent(event);
+    } catch (error) {
+      const event = window.document.createEvent('UIEvents');
+      // @ts-ignore
+      event.initUIEvent('resize', true, false, window, 0);
+      window.dispatchEvent(event);
+    }
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+  }
+
   ngOnDestroy(): void {
     this.popstateService.setPathData({selectedDataIdx: this.selectedDataIdx});
   }

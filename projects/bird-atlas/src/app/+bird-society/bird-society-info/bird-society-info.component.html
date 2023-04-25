@@ -2,13 +2,13 @@
 <div *ngIf="!loading" [ngClass]="displayModeLarge ? 'container-fluid' : 'container'">
   <div class="d-flex justify-between">
     <h1>{{ birdSociety?.birdAssociationArea.value }}</h1>
-    <div><button class="btn btn-default" (click)="displayModeLarge = !displayModeLarge">
+    <div><button class="btn btn-default" (click)="onResize()">
       <i *ngIf="displayModeLarge" class="glyphicon glyphicon-resize-small"></i>
       <i *ngIf="!displayModeLarge" class="glyphicon glyphicon-resize-full"></i>
     </button></div>
   </div>
   <div class="d-flex flex-row flex-wrap">
-    <div class="map-panel flex-grow d-flex flex-col" [luFillHeight]="{ minHeight: 500 }">
+    <div class="map-panel flex-grow d-flex flex-col">
       <ba-bird-society-info-map
         [atlasGrid]="birdSociety?.gridSquares"
         [selectedDataIdx]="selectedDataIdx"
