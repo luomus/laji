@@ -1,8 +1,8 @@
 /* tslint:disable:no-use-before-declare */
-import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { ChangeDetectorRef, EventEmitter, Input, OnInit, OnChanges, Output, Directive } from '@angular/core';
 import { InformalTaxonGroup } from '../../shared/model/InformalTaxonGroup';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Group } from '../../shared/model/Group';
@@ -12,10 +12,6 @@ import { Util } from '../../shared/service/util.service';
 
 export interface InformalGroupEvent {
   [key: string]: string[];
-}
-interface SelectedOptions {
-  includedOptions: string[];
-  excludedOptions: string[];
 }
 
 @Directive()
@@ -37,33 +33,28 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
   groupsTree$: Observable<TreeOptionsNode[]>;
   groups$: Observable<SelectedOption[]>;
 
-  selectedOptions$: Observable<SelectedOptions>;
-  private selectedOptionsSubject = new BehaviorSubject<SelectedOptions>({
-    includedOptions: [],
-    excludedOptions: []
-  });
+  includedOptions: string[] = [];
+  excludedOptions: string[] = [];
 
   protected constructor(
     protected cd: ChangeDetectorRef,
     protected logger: Logger,
     protected translate: TranslateService
-  ) {
-    this.selectedOptions$ = this.selectedOptionsSubject.asObservable().pipe(
-      distinctUntilChanged((a, b) =>
-        Util.equalsArray(a.includedOptions, b.includedOptions) && Util.equalsArray(a.excludedOptions, b.excludedOptions)
-      )
-    );
-  }
+  ) {}
 
   ngOnInit() {
     const lang = this.translate.currentLang;
     this.groupsTree$ = this.initGroupTree(lang).pipe(shareReplay(1));
-    this.groups$ = this.initSelectionGroups(lang);
+    this.groups$ = this.initSelectionGroups(lang, this.includedOptions, this.excludedOptions);
   }
 
   ngOnChanges() {
     const [ includedOptions, excludedOptions ] = this.getOptions(this.query);
-    this.selectedOptionsSubject.next({ includedOptions, excludedOptions });
+    if (!Util.equalsArray(this.includedOptions, includedOptions) || !Util.equalsArray(this.excludedOptions, excludedOptions)) {
+      this.includedOptions = includedOptions;
+      this.excludedOptions = excludedOptions;
+      this.groups$ = this.initSelectionGroups(this.translate.currentLang, this.includedOptions, this.excludedOptions);
+    }
   }
 
   abstract findByIds(groupIds, lang): Observable<PagedResult<T>>;
@@ -110,42 +101,40 @@ export abstract class ExtendedGroupSelectComponent<T extends Group> implements O
     }
   }
 
-  initSelectionGroups(lang: string): Observable<SelectedOption[]> {
-    return this.selectedOptions$.pipe(switchMap(selected => {
-      const includedOptions = selected.includedOptions;
-      const excludedOptions = selected.excludedOptions;
-      const selectedGroups = includedOptions.concat(excludedOptions);
+  initSelectionGroups(lang: string, includedOptions: string[], excludedOptions: string[]): Observable<SelectedOption[]> {
+    const selectedGroups = includedOptions.concat(excludedOptions);
 
-      if (selectedGroups.length === 0) {
-        return of([]);
-      } else {
-        return this.findByIds(selectedGroups, lang).pipe(
-          map(data => data.results),
-          map(data => {
-            const toReturn: SelectedOption[] = [];
-            data.forEach(item => {
-              if (includedOptions.includes(item.id)) {
-                toReturn.push({
-                  id: item.id,
-                  value: item.name,
-                  type: 'included'
-                });
-              } else if (excludedOptions.includes(item.id)) {
-                toReturn.push({
-                  id: item.id,
-                  value: item.name,
-                  type: 'excluded'
-                });
-              }
-            });
-            return toReturn;
-          })
-        );
-      }
-    }));
+    if (selectedGroups.length === 0) {
+      return of([]);
+    } else {
+      return this.findByIds(selectedGroups, lang).pipe(
+        map(data => data.results),
+        map(data => {
+          const toReturn: SelectedOption[] = [];
+          data.forEach(item => {
+            if (includedOptions.includes(item.id)) {
+              toReturn.push({
+                id: item.id,
+                value: item.name,
+                type: 'included'
+              });
+            } else if (excludedOptions.includes(item.id)) {
+              toReturn.push({
+                id: item.id,
+                value: item.name,
+                type: 'excluded'
+              });
+            }
+          });
+          return toReturn;
+        })
+      );
+    }
   }
 
   selectedOptionsChange($event: TreeOptionsChangeEvent) {
-    this.select.emit(this.prepareEmit($event.selectedId, $event.selectedIdNot));
+    this.includedOptions = $event.selectedId;
+    this.excludedOptions = $event.selectedIdNot;
+    this.select.emit(this.prepareEmit(this.includedOptions, this.excludedOptions));
   }
 }

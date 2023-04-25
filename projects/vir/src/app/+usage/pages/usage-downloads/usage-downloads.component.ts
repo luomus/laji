@@ -36,7 +36,7 @@ export class UsageDownloadsComponent {
     this.apiKeys$ = this.virDownloadRequestsService.findApiKeys().pipe(
       map(downloads => col ? downloads.filter(d => d?.collectionSearch.includes(col)) : downloads),
       map(downloads => downloads.sort((a, b) => moment(b.requested).diff(moment(a.requested)))),
-      map(res => res.map(a => ({...a, collectionIds: a.collections.map(c => c.id)})))
+      map(res => res.map(a => ({...a, collectionIds: a.collections?.map(c => c.id) || []})))
     );
   }
 

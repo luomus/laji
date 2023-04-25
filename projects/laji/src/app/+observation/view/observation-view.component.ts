@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { SearchQueryService } from '../search-query.service';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
-import { ObservationFormComponent } from '../form/observation-form.component';
 import { IObservationViewModel, ObservationFacade } from '../observation.facade';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
@@ -14,6 +12,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
+import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -27,7 +26,6 @@ export interface VisibleSections {
   download?: boolean;
   downloadList?: boolean;
   annotations?: boolean;
-  info?: boolean;
   own?: boolean;
 }
 
@@ -46,7 +44,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @Input() formType: 'unit'|'sample' = 'unit';
   @Input() basePath = '/observation';
   @Input() visible: VisibleSections = {
-    info: true,
     finnish: true,
     countTaxa: true,
     countHits: true,
@@ -66,8 +63,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
   @Input() settingsKeyList = 'resultList';
   _activeTab: string;
+  @ViewChild(SidebarComponent) sidebar: SidebarComponent;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
-  @ViewChild(ObservationFormComponent) form: ObservationFormComponent;
   showMobile: any;
   subscription: any;
 
@@ -90,7 +87,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   settingsList$: Observable<ISettingResultList>;
 
   constructor(
-    public searchQuery: SearchQueryService,
     public translate: TranslateService,
     private observationFacade: ObservationFacade,
     private browserService: BrowserService,
@@ -110,12 +106,11 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     return this._activeTab;
   }
 
-
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
     this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
-    this.subQueryUpdate = this.observationFacade.query$.pipe(
+    this.subQueryUpdate = this.observationFacade.activeQuery$.pipe(
       tap((query) => {
         if (this.results) {
           this.results.reloadTabs();
@@ -143,6 +138,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   draw(type: string) {
+    this.sidebar.hideOnMobile();
     if (this.activeTab !== 'map') {
       this.route.navigate(this.localizeRouterService.translateRoute([this.basePath + '/map']), { queryParamsHandling: 'preserve' });
     }
@@ -151,17 +147,16 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     }, 120);
   }
 
-  empty() {
-    this.observationFacade.clearQuery();
-    this.form.empty();
+  updateTmpQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
+    if (showSidebarOnMobile) {
+      this.sidebar.showOnMobile();
+    }
+    this.observationFacade.updateTmpQuery({...query});
   }
 
-  toggleInfo() {
-    this.observationFacade.toggleIntro();
-  }
-
-  onQueryChange(event: WarehouseQueryInterface) {
-    this.observationFacade.updateQuery$(event).subscribe();
+  updateActiveQuery(query: WarehouseQueryInterface) {
+    this.sidebar.hideOnMobile();
+    this.observationFacade.updateActiveQuery$(query).subscribe();
   }
 
   filterVisible(event: boolean) {
@@ -173,6 +168,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   toggleMobile() {
-  this.statusFilterMobile = !this.statusFilterMobile;
+    this.statusFilterMobile = !this.statusFilterMobile;
   }
 }

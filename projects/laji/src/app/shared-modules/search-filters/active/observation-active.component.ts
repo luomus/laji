@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
+import { SearchQueryService } from '../../../+observation/search-query.service';
 
 export const createActiveFiltersList = (query: Record<string, any>, skip: string[] = []) => {
   const keys = Object.keys(query);
@@ -13,8 +14,7 @@ export const createActiveFiltersList = (query: Record<string, any>, skip: string
     if (skip.indexOf(i) > -1 || i.substr(0, 1) === '_') {
       return result;
     }
-    const type = typeof query[i];
-    if (type !== 'undefined' && (type === 'boolean' || type === 'number' || (query[i] && query[i].length > 0))) {
+    if (SearchQueryService.hasValue(query[i])) {
       // show only one filter in some cases
       if (doubleKeys[i]) {
         if (doubles[doubleKeys[i]]) {

@@ -12,7 +12,12 @@ import { PlatformService } from '../../../root/platform.service';
 import { DatatableUtil } from '../service/datatable-util.service';
 import { Util } from '../../../shared/service/util.service';
 
-interface Settings {[key: string]: DatatableColumn }
+interface Settings { [key: string]: DatatableColumn }
+
+interface DatatableRow {
+  [key: string]: any;
+  preSortIndex?: number;
+}
 
 @Component({
   selector: 'laji-datatable',
@@ -38,7 +43,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   @Input() showRowAsLink = true;
   @Input() rowHeight: number | 'auto' | ((row?: any) => number) = 35;
   @Input() sorts: DatatableSort[] = [];
-  @Input() getRowClass: (row: any) => any;
+  @Input() getRowClass: (row: DatatableRow) => any;
   @Input() selectionType: SelectionType;
   @Input() summaryRow = false;
   @Input() striped = true;
@@ -57,13 +62,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
   filterByChange: Subscription;
 
-  _originalRows: any[];
-  _rows: any[];
+  _originalRows: DatatableRow[];
+  _rows: DatatableRow[];
   _page: number;
   _count: number;
   _offset: number;
   _columns: DatatableColumn[] = []; // This needs to be initialized so that the data table would do initial sort!
-  @Input() selected: any[] = [];
+  @Input() selected: DatatableRow[] = [];
 
   initialized = false;
   sortLoading = false;
@@ -117,7 +122,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this._count = typeof cnt === 'number' ? cnt  : 0;
   }
 
-  @Input() set rows(rows: any[]) {
+  @Input() set rows(rows: DatatableRow[]) {
     this._originalRows = rows || [];
 
     // record the original indexes of each row element so that when the table is sorted
@@ -330,7 +335,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     }
   }
 
-  private sort(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
+  private sort(sorts: DatatableSort[], rows: DatatableRow[]): Observable<DatatableRow[]> {
     return this.setSortValues(sorts, rows)
       .pipe(map(() => {
         if (sorts.length > 0) {
@@ -342,7 +347,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     );
   }
 
-  private setSortValues(sorts: DatatableSort[], rows: any[]): Observable<any[]> {
+  private setSortValues(sorts: DatatableSort[], rows: DatatableRow[]): Observable<any[]> {
     const observables = sorts.reduce((arr, sort) => {
       const template = this.sortTemplates[sort.prop];
       rows.forEach((row) => {
@@ -371,7 +376,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     return (observables.length > 0 ? forkJoin(observables) : of([]));
   }
 
-  private customSort(sorts: DatatableSort[], rows: any[]): any[] {
+  private customSort(sorts: DatatableSort[], rows: DatatableRow[]): DatatableRow[] {
     return [...rows].sort((a: any, b: any) => {
       for (const sort of sorts) {
         const dir = sort.dir === 'asc' ? 1 : -1;
@@ -388,13 +393,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     });
   }
 
-  private defaultSort(rows: any[]): any[] {
-    const sortedRows = [...rows];
-
-    rows.forEach((row) => {
-      sortedRows[row.preSortIndex] = row;
-    });
-
-    return sortedRows;
+  private defaultSort(rows: DatatableRow[]): DatatableRow[] {
+    return [...rows].sort((a: any, b: any) => a.preSortIndex < b.preSortIndex ? -1 : 1);
   }
 }
