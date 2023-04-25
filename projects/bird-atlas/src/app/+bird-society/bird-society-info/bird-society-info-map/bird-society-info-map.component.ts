@@ -129,7 +129,7 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
           getFeatureStyle: getGetFeatureStyle(changes.atlasGrid.currentValue, this.visualizationMode, this.selectedDataIdx),
           on: {
             click: (e, d) => {
-              this.selectDataIdx.emit(d.idx);
+              this.selectDataIdx.emit(d.idx ?? d.dataIdx);
             }
           }
         }
