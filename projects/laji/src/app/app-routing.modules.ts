@@ -10,6 +10,7 @@ import { CheckLoginGuard } from './shared/guards/check-login.guard';
 import { NgModule } from '@angular/core';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { Global } from '../environments/global';
+import { environment } from '../environments/environment';
 
 const baseRoutes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./+home/home.module').then(m => m.HomeModule)},
@@ -40,6 +41,16 @@ const baseRoutes: Routes = [
   {path: 'project-edit', loadChildren: () => import('./+project-form-edit/project-form-edit.module').then(m => m.ProjectFormEditModule)},
   {path: 'citation', loadChildren: () => import('./+citable-download/citable-download.module').then(m => m.CitableDownloadModule), data: {preload: false}}
 ];
+
+if (environment.type === Global.type.embedded) {
+  baseRoutes.push(
+    {
+      path: 'observation-map',
+      loadChildren: () => import('./+embedded-observation-map/embedded-observation-map.module').then(m => m.EmbeddedObservationMapModule),
+      data: {preload: false}
+    }
+  );
+}
 
 const rootRouting = {
   talvilintu: '/project/MHL.3',
