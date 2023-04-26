@@ -509,6 +509,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   getFeatureStyle(params: GetFeatureStyleOptions) {
     const style = this.visualization[this.visualizationMode].getFeatureStyle(params);
 
+    if (this.noClick) {
+      return style;
+    }
+
     const {active, hovered} = params;
     const isActiveBox = params.feature.geometry.type !== 'Point' && active;
     // Active point is styled with classname, boxes receive color in the style object.
