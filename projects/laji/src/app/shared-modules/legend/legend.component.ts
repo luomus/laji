@@ -17,7 +17,10 @@ export class LegendComponent<T extends string> implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.visualization?.currentValue) {
-      this.mode = <T>Object.keys(this.visualization)[0];
+      const modes = Object.keys(this.visualization);
+      if (!modes.includes(this.mode)) {
+        this.mode = <T>modes[0];
+      }
     }
   }
 

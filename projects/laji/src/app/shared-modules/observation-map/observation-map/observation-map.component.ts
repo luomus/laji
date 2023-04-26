@@ -23,7 +23,7 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapControlsOptions, LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
 import { combineColors } from 'laji-map/lib/utils';
@@ -120,7 +120,12 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.mapOptions = {...this.mapOptions, center};
   }
   @Input() set showControls(show: boolean) {
-    this.mapOptions = {...this.mapOptions, controls: show ? { draw: false } : false};
+    this._showControls = show;
+    this.setControls(this._controls, this._showControls);
+  }
+  @Input() set controls(controls: LajiMapControlsOptions) {
+    this._controls = controls;
+    this.setControls(this._controls, this._showControls);
   }
   @Input() set clickBeforeZoomAndPan(clickBeforeZoomAndPan: boolean) {
     this.mapOptions = {...this.mapOptions, clickBeforeZoomAndPan};
@@ -152,11 +157,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   ];
   @Input() noClick = false;
   @Input() pointModeBreakpoint = 5000;
+  @Input() visualizationMode: ObservationVisualizationMode = 'obsCount';
 
   @Output() create = new EventEmitter();
 
   visualization = lajiMapObservationVisualization;
-  visualizationMode: ObservationVisualizationMode = 'obsCount';
   mapData: any[] = [];
   loading = false;
   showingIndividualPoints = false;
@@ -192,6 +197,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   private dataFetchSubscription: Subscription;
   private mapMoveSubscription: Subscription;
   private activeGeometryHash: string;
+
+  private _showControls = true;
+  private _controls: LajiMapControlsOptions = {};
 
   constructor(
     private warehouseService: WarehouseApi,
@@ -608,5 +616,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         return of(null);
       })
     );
+  }
+
+  private setControls(controls: LajiMapControlsOptions, showControls = true) {
+    this.mapOptions = {...this.mapOptions, controls: showControls ? { draw: false, ...controls } : false};
   }
 }

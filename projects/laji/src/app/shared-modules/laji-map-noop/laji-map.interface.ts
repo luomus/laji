@@ -5,6 +5,7 @@ export const LajiMapOverlayName: any = {};
 export const LajiMapLang: any = {};
 
 export type LajiMapOptions = any;
+export type LajiMapControlsOptions = any;
 export type LajiMapLang = any;
 export type LajiMapLineTransectGeometry = any;
 export type LajiMapDataOptions = any;

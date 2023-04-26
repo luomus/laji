@@ -4,6 +4,8 @@ import * as L from 'leaflet';
 
 export type LajiMapOptions = LajiMap.Options;
 
+export type LajiMapControlsOptions = LajiMap.ControlsOptions;
+
 export const LajiMapTileLayerName = {
   ...LajiMap.TileLayerName
 };
