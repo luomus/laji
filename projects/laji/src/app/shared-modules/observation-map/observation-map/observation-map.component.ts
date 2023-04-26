@@ -133,6 +133,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() set viewLocked(viewLocked: boolean) {
     this.mapOptions = {...this.mapOptions, viewLocked};
   }
+  @Input() set zoom(zoom: number) {
+    this.mapOptions = {...this.mapOptions, zoom};
+  }
   @Input() ready = true;
   /**
    * height < 0: fill remaining height in window
