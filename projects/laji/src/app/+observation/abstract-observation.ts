@@ -69,9 +69,6 @@ export abstract class AbstractObservation {
 
   private updateQueryFromQueryParams$(queryParams): Observable<any> {
     const query = this.searchQuery.getQueryFromUrlQueryParams(queryParams);
-    if (queryParams['target']) {
-      query.target = [queryParams['target']];
-    }
     return this.observationFacade.updateActiveQuery$(query);
   }
 
