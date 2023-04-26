@@ -4,6 +4,7 @@ import { switchMap } from 'rxjs/operators';
 import { ModelViewerService } from './model-viewer.service';
 import { glLoadModel, GLRenderer } from './webgl/gl-renderer';
 import { GLB } from './webgl/glb-parser';
+import { M4, V3 } from './webgl/math-3d';
 import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 
 // https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
@@ -31,6 +32,7 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
 <canvas #canvas
   (mousedown)="onMouseDown($event)"
   (touchstart)="onTouchstart($event)"
+  (wheel)="onWheel($event)"
 ></canvas>
   `,
   styleUrls: ['./model-viewer.component.scss']
@@ -118,5 +120,15 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
         this.destroyTouchendListener();
       }
     );
+  }
+
+  onWheel(event: WheelEvent) {
+    event.preventDefault();
+    const c = M4.extractTranslation(this.glr.camera.transform);
+    const m = M4.extractTranslation(this.glr.transform);
+    const cm = V3.sub(m, c);
+    const cm2 = V3.scale(cm, -1 * event.deltaY * .001);
+    this.glr.camera = {...this.glr.camera, transform: M4.mult(this.glr.camera.transform, M4.translation(cm2[0], cm2[1], cm2[2]))};
+    this.glr.render();
   }
 }

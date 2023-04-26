@@ -32,9 +32,9 @@ export const glLoadModel = (renderer: GLRenderer, bufferData: GLB.BufferData[], 
       R, S
     )
   );
-  const T2 = M4.translation(0, -200, -1500);
+  const T2 = M4.translation(0, 0, 0);
   const R2 = M4.yRotation(-Math.PI / 4);
-  const S2 = M4.scaling(25, 25, 25);
+  const S2 = M4.scaling(1, 1, 1);
   const transform = M4.mult(
     T2, M4.mult(
       R2, M4.mult(
@@ -115,7 +115,7 @@ export class GLRenderer {
 
     // set up default camera and lighting
     this.camera = {
-      transform: M4.unit(),
+      transform: M4.translation(0, 0, 50),
       projection: M4.perspective(
         Math.PI / 2,
         this.gl.canvas.width / this.gl.canvas.height,

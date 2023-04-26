@@ -31,6 +31,11 @@ export const V3 = {
     a[1] + b[1],
     a[2] + b[2]
   ],
+  sub: (a: V3, b: V3): V3 => [
+    a[0] - b[0],
+    a[1] - b[1],
+    a[2] - b[2]
+  ],
   cross: (a: V3, b: V3): V3 => [
     a[1] * b[2] - a[2] * b[1],
     a[2] * b[0] - a[0] * b[2],
@@ -49,6 +54,9 @@ export const M4 = {
     [m[0], m[1], m[2]],
     [m[4], m[5], m[6]],
     [m[8], m[9], m[10]]
+  ],
+  extractTranslation: (m: M4): V3 => [
+    m[12], m[13], m[14]
   ],
   add: (a: M4, b: M4) => {},
   scale: (s: M4) => {},
