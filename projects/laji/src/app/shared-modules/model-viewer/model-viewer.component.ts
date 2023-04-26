@@ -30,6 +30,7 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
   template: `
 <canvas #canvas
   (mousedown)="onMouseDown($event)"
+  (touchstart)="onTouchstart($event)"
 ></canvas>
   `,
   styleUrls: ['./model-viewer.component.scss']
@@ -40,6 +41,8 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   private glr: GLRenderer;
   private destroyMousemoveListener: () => void;
   private destroyMouseupListener: () => void;
+  private destroyTouchmoveListener: () => void;
+  private destroyTouchendListener: () => void;
   private resizeObserver: ResizeObserver;
 
   private viewerIsActive = false;
@@ -89,6 +92,30 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
       window, 'mouseup', (mouseupEvent: MouseEvent) => {
         this.destroyMousemoveListener();
         this.destroyMouseupListener();
+      }
+    );
+  }
+
+  onTouchstart(touchstartEvent: TouchEvent) {
+    if (!this.viewerIsActive) { return; }
+    let touchX = touchstartEvent.targetTouches[0].clientX;
+    let touchY = touchstartEvent.targetTouches[0].clientY;
+    this.destroyTouchmoveListener = this.ngRenderer.listen(
+      window, 'touchmove', (touchmoveEvent: TouchEvent) => {
+        const xDiff = touchmoveEvent.targetTouches[0].clientX - touchX;
+        const yDiff = touchmoveEvent.targetTouches[0].clientY - touchY;
+        const amt = 0.01;
+        const newTransform = rotateObjectRelativeToViewport(this.glr.camera.transform, this.glr.transform, yDiff*amt, xDiff*amt);
+        this.glr.transform = newTransform;
+        this.glr.render();
+        touchX = touchmoveEvent.targetTouches[0].clientX;
+        touchY = touchmoveEvent.targetTouches[0].clientY;
+      }
+    );
+    this.destroyTouchendListener = this.ngRenderer.listen(
+      window, 'touchend', (touchendEvent: TouchEvent) => {
+        this.destroyTouchmoveListener();
+        this.destroyTouchendListener();
       }
     );
   }
