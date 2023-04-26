@@ -145,6 +145,11 @@ export class GLRenderer {
     this.lightCountLocation = this.gl.getUniformLocation(this.program, 'u_lightCount');
   }
 
+  updateSize() {
+    this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    this.render();
+  }
+
   render() {
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);

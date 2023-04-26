@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ModelViewerService } from './model-viewer.service';
@@ -6,22 +6,41 @@ import { glLoadModel, GLRenderer } from './webgl/gl-renderer';
 import { GLB } from './webgl/glb-parser';
 import { rotateObjectRelativeToViewport } from './webgl/renderer-utils';
 
+// https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+const resizeCanvasToDisplaySize = (canvas: any): boolean => {
+  // Lookup the size the browser is displaying the canvas in CSS pixels.
+  const displayWidth  = canvas.clientWidth;
+  const displayHeight = canvas.clientHeight;
+
+  // Check if the canvas is not the same size.
+  const needResize = canvas.width  !== displayWidth ||
+                     canvas.height !== displayHeight;
+
+  if (needResize) {
+    // Make the canvas the same size
+    canvas.width  = displayWidth;
+    canvas.height = displayHeight;
+  }
+
+  return needResize;
+};
+
 @Component({
   selector: 'laji-model-viewer',
   template: `
 <canvas #canvas
-  width="800"
-  height="600"
   (mousedown)="onMouseDown($event)"
 ></canvas>
-  `
+  `,
+  styleUrls: ['./model-viewer.component.scss']
 })
-export class ModelViewerComponent implements AfterViewInit {
+export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasElem: ElementRef;
 
   private glr: GLRenderer;
   private destroyMousemoveListener: () => void;
   private destroyMouseupListener: () => void;
+  private resizeObserver: ResizeObserver;
 
   private viewerIsActive = false;
 
@@ -36,6 +55,18 @@ export class ModelViewerComponent implements AfterViewInit {
       this.glr.render();
       this.viewerIsActive = true;
     });
+    this.resizeObserver = new ResizeObserver(this.onCanvasResize.bind(this));
+    this.resizeObserver.observe(this.canvasElem.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver.disconnect();
+  }
+
+  onCanvasResize(event: any) {
+    if (resizeCanvasToDisplaySize(this.canvasElem.nativeElement)) {
+      this.glr.updateSize();
+    }
   }
 
   onMouseDown(mousedownEvent: MouseEvent) {
