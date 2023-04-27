@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   NgZone,
   OnChanges,
@@ -58,6 +59,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() spectrogramHeight: number;
   @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
 
+  @Input() adaptToContainerHeight = false;
+
   @Input() mode: AudioViewerMode = 'default';
 
   @Input() audioInfoTpl: TemplateRef<any>;
@@ -76,6 +79,10 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() modeChange = new EventEmitter<AudioViewerMode>();
+
+  @HostBinding('class.audio-viewer-responsive') get audioViewerResponsiveClass() {
+    return this.adaptToContainerHeight;
+  }
 
   private audioSub: Subscription;
   private clicks = 0;

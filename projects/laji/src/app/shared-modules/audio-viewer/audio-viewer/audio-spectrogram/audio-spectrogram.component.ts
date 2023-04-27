@@ -9,7 +9,8 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  HostBinding
 } from '@angular/core';
 
 import { AudioViewerMode, IAudioViewerArea, IAudioViewerRectangle, ISpectrogramConfig } from '../../models';
@@ -48,6 +49,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   @Input() width: number;
   @Input() height: number;
   @Input() margin: { top: number; bottom: number; left: number; right: number };
+  @Input() adaptToContainerHeight = false;
 
   @Output() spectrogramLoading = new EventEmitter<boolean>();
   @Output() dragStart = new EventEmitter();
@@ -60,6 +62,10 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
   _width: number;
   _height: number;
   _margin: { top: number; bottom: number; left: number; right: number };
+
+  @HostBinding('class.audio-spectrogram-responsive') get audioSpectrogramResponsiveClass() {
+    return this.adaptToContainerHeight;
+  }
 
   private defaultMargin = { top: 10, bottom: 40, left: 50, right: 10 };
   private defaultMarginWithoutLabels = { top: 10, bottom: 20, left: 30, right: 10 };
@@ -109,8 +115,10 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
         : 0;
     this._height = this.height
       ? this.height
-      : this.config
-        ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
-        : 0;
+      : this.adaptToContainerHeight && this.containerRef
+        ? Math.max(this.containerRef.nativeElement.offsetHeight - this._margin.top - this._margin.bottom, 0)
+        : this.config
+          ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
+          : 0;
   }
 }

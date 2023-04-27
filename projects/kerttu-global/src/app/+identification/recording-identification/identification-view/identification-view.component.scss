@@ -1,15 +1,22 @@
 @import 'vars';
 
-.top-content {
-  .top-bar {
-    overflow: auto;
+.top-bar {
+  overflow: auto;
 
-    .button-container {
-      div {
-        display: inline-block;
-        margin-left: 0.5em;
-      }
+  .button-container {
+    div {
+      display: inline-block;
+      margin-left: 0.5em;
     }
+  }
+}
+
+.top-content {
+  display: flex;
+  flex-direction: column;
+
+  laji-audio-viewer {
+    flex: 1 1 100%;
   }
 
   laji-audio-viewer-simple-settings, laji-audio-viewer-bat-settings {
@@ -36,11 +43,18 @@
     height: calc(100vh - 50px);
     margin: -20px -40px;
 
+    .top-bar {
+      flex: 0 0 auto;
+      padding: $sp-3 40px 0;
+      background-color: #dde1e3;
+      z-index: 1;
+    }
+
     .top-content {
       flex: 0 0 auto;
-      padding: $sp-3 40px $sp-3;
+      padding: 0 40px $sp-3;
       background-color: #dde1e3;
-      box-shadow: 0 2px 6px 0 $neutral-5;
+      box-shadow: 0 4px 2px -2px $neutral-5;
       z-index: 1;
     }
 

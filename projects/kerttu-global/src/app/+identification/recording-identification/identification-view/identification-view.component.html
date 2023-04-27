@@ -1,57 +1,57 @@
 <ng-container *lajiRequiresAudioSupport="sampleRate">
-  <div class="top-content">
-    <div class="top-bar">
-      <div class="pull-right button-container">
-        <div>
-          <button
-            class="btn btn-default"
-            [disabled]="buttonsDisabled || loadingSpecies"
-            (click)="backToSiteSelectionClick.emit()"
-          >
-            {{ 'identification.backToSiteSelection' | translate }}
-          </button>
-        </div>
-        <div>
-          <button
-            class="btn btn-default"
-            [disabled]="buttonsDisabled || loadingSpecies"
-            (click)="skipClick.emit()"
-          >
-            {{ 'identification.skip' | translate }}
-          </button>
-        </div>
-        <div>
-          <button
-            class="btn btn-default"
-            [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
-            (click)="previousRecordingClick.emit()"
-          >
-            {{ 'identification.previousRecording' | translate }}
-          </button>
-          <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
-        </div>
-        <div>
-          <button
-            class="btn btn-default"
-            [disabled]="buttonsDisabled || loadingSpecies"
-            (click)="saveClick.emit()"
-          >
-            {{ 'save' | translate }}
-          </button>
-          <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
-        </div>
-        <div>
-          <button
-            class="btn btn-success"
-            [disabled]="buttonsDisabled || loadingSpecies"
-            (click)="nextRecordingClick.emit()"
-          >
-            {{ 'identification.nextRecording' | translate }}
-          </button>
-          <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
-        </div>
+  <div class="top-bar">
+    <div class="pull-right button-container">
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="backToSiteSelectionClick.emit()"
+        >
+          {{ 'identification.backToSiteSelection' | translate }}
+        </button>
+      </div>
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="skipClick.emit()"
+        >
+          {{ 'identification.skip' | translate }}
+        </button>
+      </div>
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
+          (click)="previousRecordingClick.emit()"
+        >
+          {{ 'identification.previousRecording' | translate }}
+        </button>
+        <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
+      </div>
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="saveClick.emit()"
+        >
+          {{ 'save' | translate }}
+        </button>
+        <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
+      </div>
+      <div>
+        <button
+          class="btn btn-success"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="nextRecordingClick.emit()"
+        >
+          {{ 'identification.nextRecording' | translate }}
+        </button>
+        <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
       </div>
     </div>
+  </div>
+  <div class="top-content" style="height: 265px">
     <laji-audio-viewer
       *ngIf="recording.recordingType === recordingTypeEnum.default else batAudioViewer"
       [audio]="recording"
@@ -63,7 +63,7 @@
       [timePaddingOnZoom]="0"
       [zoomTime]="!showWholeTimeRange"
       [highlightFocusArea]="true"
-      [spectrogramHeight]="170"
+      [adaptToContainerHeight]="true"
       [spectrogramConfig]="spectrogramConfig"
       [audioInfoTpl]="audioInfo"
       [customControlsTpl]="audioCustomControls"
@@ -105,7 +105,7 @@
         [timePaddingOnZoom]="0"
         [zoomTime]="!showWholeTimeRange"
         [highlightFocusArea]="true"
-        [spectrogramHeight]="170"
+        [adaptToContainerHeight]="true"
         [spectrogramConfig]="spectrogramConfig"
         [audioInfoTpl]="audioInfo"
         [customControlsTpl]="batAudioCustomControls"
