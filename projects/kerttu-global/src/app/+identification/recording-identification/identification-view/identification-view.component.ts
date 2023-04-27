@@ -2,11 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -34,6 +38,8 @@ import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-g
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
 import { defaultAudioSampleRate, defaultBatAudioSampleRate, lowAudioSampleRate } from '../../../kerttu-global-shared/variables';
+import { DOCUMENT } from '@angular/common';
+import { AudioViewerComponent } from '../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 
 
 @Component({
@@ -42,7 +48,9 @@ import { defaultAudioSampleRate, defaultBatAudioSampleRate, lowAudioSampleRate }
   styleUrls: ['./identification-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationViewComponent implements OnInit, OnChanges {
+export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy {
+  @ViewChild('topContent') topContent: ElementRef;
+  @ViewChild(AudioViewerComponent) audioViewer: AudioViewerComponent;
   @ViewChild(IdentificationTableComponent) identificationTable: IdentificationTableComponent;
 
   @Input() recording: IGlobalRecording;
@@ -72,6 +80,8 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
 
   recordingTypeEnum = RecordingTypeEnum;
 
+  topContentHeight = 265;
+
   @Output() nextRecordingClick = new EventEmitter();
   @Output() previousRecordingClick = new EventEmitter();
   @Output() saveClick = new EventEmitter();
@@ -82,13 +92,21 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
   private selectedSpeciesSub: Subscription;
   private nonBirdLabel = '';
 
+  private topContentMinHeight = 180;
+  private dragging = false;
+
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     private kerttuGlobalApi: KerttuGlobalApi,
     private translate: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2
   ) {
     this.updateSpectrogramConfig();
   }
+
+  destroyDragMoveListener?: () => void;
+  destroyDragEndListener?: () => void;
 
   ngOnInit() {
     this.nonBirdLabel = this.translate.instant('identification.nonBird');
@@ -102,6 +120,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
       this.audioViewerRectangles = [];
       this.updateSelectedSpecies();
     }
+  }
+
+  ngOnDestroy() {
+    this.destroyDragListeners();
   }
 
   addToIdentifications(species: IGlobalSpecies) {
@@ -207,6 +229,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     }
   }
 
+  onDragStart() {
+    this.dragging = true;
+    this.destroyDragListeners();
+    this.destroyDragMoveListener = this.renderer.listen(this.document, 'mousemove', this.onDrag.bind(this));
+    this.destroyDragEndListener = this.renderer.listen(this.document, 'mouseup', this.onDragEnd.bind(this));
+  }
+
   private clearDrawMode() {
     this.drawBirdActive = false;
     this.drawNonBirdActive = false;
@@ -265,5 +294,23 @@ export class IdentificationViewComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.identificationTable.scrollDrawButtonIntoView(idx);
     }, 0);
+  }
+
+  private onDrag(mousemove: MouseEvent) {
+    const topOffset = this.topContent.nativeElement.getBoundingClientRect().top + this.document.body.scrollTop;
+    const height = mousemove.clientY - topOffset;
+    this.topContentHeight = Math.max(this.topContentMinHeight, height);
+    this.audioViewer.resize();
+  }
+
+  private onDragEnd() {
+    this.dragging = false;
+    this.destroyDragListeners();
+    this.audioViewer.resize();
+  }
+
+  private destroyDragListeners() {
+    this.destroyDragMoveListener?.();
+    this.destroyDragEndListener?.();
   }
 }

@@ -10,7 +10,8 @@ import {
   OnDestroy,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
@@ -19,6 +20,7 @@ import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
 import { delay } from 'rxjs/operators';
+import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram.component';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -79,6 +81,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() modeChange = new EventEmitter<AudioViewerMode>();
+
+  @ViewChild(AudioSpectrogramComponent) spectrogramComponent: AudioSpectrogramComponent;
 
   @HostBinding('class.audio-viewer-responsive') get audioViewerResponsiveClass() {
     return this.adaptToContainerHeight;
@@ -196,6 +200,10 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   setView(view: IAudioViewerArea) {
     this.view = view;
     this.audioPlayer.setPlayArea(this.getPlayArea());
+  }
+
+  resize() {
+    this.spectrogramComponent.resize();
   }
 
   private clear() {

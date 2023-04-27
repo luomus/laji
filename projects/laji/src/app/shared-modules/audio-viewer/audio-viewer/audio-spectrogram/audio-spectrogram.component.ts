@@ -76,8 +76,13 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
     this.onResize();
   }
 
+  resize() {
+    this.onResize();
+    this.cdr.markForCheck();
+  }
+
   @HostListener('window:resize')
-  onResize() {
+  private onResize() {
     this.updateMargin();
     this.updateWidthAndHeight();
   }

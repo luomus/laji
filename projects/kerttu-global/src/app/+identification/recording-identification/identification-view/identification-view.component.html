@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div class="top-content" style="height: 265px">
+  <div class="top-content" [style.height]="topContentHeight + 'px'" #topContent>
     <laji-audio-viewer
       *ngIf="recording.recordingType === recordingTypeEnum.default else batAudioViewer"
       [audio]="recording"
@@ -121,6 +121,7 @@
         [showWholeTimeRangeInfo]="'identification.timeBuffer.info' | translate"
       ></laji-audio-viewer-bat-settings>
     </ng-template>
+    <div *lajiIfWidthAboveBreakpoint="'sm'" class="dragbar" (mousedown)="onDragStart()"></div>
   </div>
   <div class="bottom-content">
     <h2 class="mt-3">
