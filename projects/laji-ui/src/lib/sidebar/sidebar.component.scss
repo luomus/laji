@@ -10,6 +10,7 @@ $mobileBreakpoint: 768px;
 }
 
 .sidebar {
+  display: flex;
   flex-shrink: 0;
   position: relative;
   background-color: $neutral-3;
@@ -54,11 +55,24 @@ $mobileBreakpoint: 768px;
 }
 
 .sidebar-content-wrapper {
+  display: flex;
+  flex-flow: column;
   min-width: max-content;
-  padding: 10px 20px;
   &.static-width {
     min-width: unset;
   }
+}
+
+.sidebar-content {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  padding: 10px 20px;
+}
+
+.sidebar-header {
+  flex: 0 1 auto;
+  padding: 10px 20px;
+  border-bottom: 1px solid $neutral-4;
 }
 
 .mobile .sidebar-content-wrapper.static-width {

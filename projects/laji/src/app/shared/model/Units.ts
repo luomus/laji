@@ -162,6 +162,8 @@ export interface Units {
      */
     preservation?: Units.PreservationEnum;
 
+    primarySpecimen?: boolean;
+
     /**
      * Source of the accession
      */
