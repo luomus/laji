@@ -24,7 +24,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
       sortable: true
     }, {
       prop: 'scientificName',
-      name: 'Tieteellinen Nimi',
+      name: 'Tieteellinen nimi',
       resizeable: false,
       sortable: true
     }];
