@@ -14,6 +14,7 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info/bird-society-info-species-table/bird-society-info-species-table.component';
 import { LappiSocietyComponent } from './lappi/lappi.component';
 import { LappiModalComponent } from './lappi/lappi-modal.component';
+import { BirdSocietySpeciesLegendComponent } from './bird-society-info/bird-society-species-legend/bird-society-species-legend';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { LappiModalComponent } from './lappi/lappi-modal.component';
     BirdSocietyInfoMapComponent,
     BirdSocietyInfoSpeciesTableComponent,
     LappiSocietyComponent,
-    LappiModalComponent
+    LappiModalComponent,
+    BirdSocietySpeciesLegendComponent
   ]
 })
 export class BirdSocietyModule { }

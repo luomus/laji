@@ -30,6 +30,8 @@
 
 .legend-container > * {
   flex-basis: 50%;
+  max-width: 200px;
+  margin-bottom: $sp-6;
 }
 
 ba-bird-society-info-map {
