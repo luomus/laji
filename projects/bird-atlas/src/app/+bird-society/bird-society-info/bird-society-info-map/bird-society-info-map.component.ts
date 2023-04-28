@@ -47,7 +47,7 @@ const getGetFeatureStyle = (grid: AtlasGridSquare[], visualizationMode: Visualiz
 );
 
 // radii for the taxon visualization
-const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColor: string}> = {
+export const atlasClassStyleLookup: Record<AtlasClass, {radius: number; fillColor: string}> = {
   'MY.atlasClassEnumA': { radius: 100,  fillColor: '#7cf00a' },
   'MY.atlasClassEnumB': { radius: 133, fillColor: '#F0FFBC' },
   'MY.atlasClassEnumC': { radius: 166, fillColor: '#01E635' },
