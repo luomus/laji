@@ -23,7 +23,14 @@ import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapControlsOptions, LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import {
+  LajiMapControlsOptions,
+  LajiMapDataOptions,
+  LajiMapOptions,
+  LajiMapOverlayName,
+  LajiMapTileLayerName,
+  LajiMapTileLayersOptions
+} from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
 import { combineColors } from 'laji-map/lib/utils';
@@ -88,6 +95,8 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
 ];
 
+const defaultAvailableOverlayNameBlacklist = [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset, LajiMapOverlayName.barentsRegion];
+
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
@@ -135,6 +144,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
   @Input() set zoom(zoom: number) {
     this.mapOptions = {...this.mapOptions, zoom};
+  }
+  @Input() set tileLayers(tileLayers: LajiMapTileLayersOptions) {
+    const availableOverlayNameBlacklist = defaultAvailableOverlayNameBlacklist.filter(value => !tileLayers?.layers?.[value]);
+    this.mapOptions = {...this.mapOptions, tileLayers, availableOverlayNameBlacklist};
   }
   @Input() ready = true;
   /**

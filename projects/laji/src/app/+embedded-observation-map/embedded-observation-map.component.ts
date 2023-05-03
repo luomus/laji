@@ -4,12 +4,22 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQueryService } from '../+observation/search-query.service';
 import { Observable } from 'rxjs';
+import { LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
 
 interface EmbeddedObservationMapOptions {
   query: WarehouseQueryInterface;
   center: [number, number];
   zoom: number;
+  tileLayers: LajiMapTileLayersOptions;
 }
+
+const defaultTileLayers: LajiMapTileLayersOptions = {
+  active: 'world',
+  layers: {
+    [LajiMapTileLayerName.openStreetMap]: true,
+    [LajiMapOverlayName.barentsRegion]: true
+  }
+};
 
 @Component({
   template: `
@@ -24,6 +34,7 @@ interface EmbeddedObservationMapOptions {
         [noClick]="true"
         [center]="options.center"
         [zoom]="options.zoom"
+        [tileLayers]="options.tileLayers"
       ></laji-observation-map>
     </ng-container>
   `,
@@ -47,7 +58,7 @@ export class EmbeddedObservationMapComponent implements OnInit {
     );
   }
 
-  private getMapOptionsFromUrlQueryParams(params): Pick<EmbeddedObservationMapOptions, 'center'|'zoom'> {
+  private getMapOptionsFromUrlQueryParams(params): Pick<EmbeddedObservationMapOptions, 'center'|'zoom'|'tileLayers'> {
     let center: [number, number] = [64.8, 25];
     if (params['center']) {
       const parsedCenter = params['center'].split(',').map(value => parseFloat(value)).filter(value => !!value);
@@ -64,7 +75,7 @@ export class EmbeddedObservationMapComponent implements OnInit {
       }
     }
 
-    return { center, zoom };
+    return { center, zoom, tileLayers: defaultTileLayers };
   }
 }
 
