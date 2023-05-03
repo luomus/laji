@@ -9,10 +9,11 @@ import { atlasClassStyleLookup } from '../bird-society-info-map/bird-society-inf
 })
 export class BirdSocietySpeciesLegendComponent {
   legend = [
-    {
+    // Epätodennäköinen is filtered out
+/*     {
       label: 'Epätodennäköinen',
       color: atlasClassStyleLookup['MY.atlasClassEnumA'].fillColor
-    },
+    }, */
     {
       label: 'Mahdollinen',
       color: atlasClassStyleLookup['MY.atlasClassEnumB'].fillColor

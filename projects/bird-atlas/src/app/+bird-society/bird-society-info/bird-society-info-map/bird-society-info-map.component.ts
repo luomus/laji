@@ -157,9 +157,12 @@ export class BirdSocietyInfoMapComponent implements AfterViewInit, OnDestroy, On
         fill: true, stroke: true, fillOpacity: 1, fillColor: style.fillColor,
         color: '#000000', weight: 2
       });
-      this.taxonVisualizationMarkers.push(circle);
-      circle.addEventListener('click', () => this.selectDataIdx.emit(idx));
-      circle.addTo(this.map.map);
+      // don't include "epätodennäköinen"
+      if (square.atlasClass.key !== 'MY.atlasClassEnumA') {
+        this.taxonVisualizationMarkers.push(circle);
+        circle.addEventListener('click', () => this.selectDataIdx.emit(idx));
+        circle.addTo(this.map.map);
+      }
     });
   }
 
