@@ -9,6 +9,8 @@ import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, 
 import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
 import { PlatformService } from '../../root/platform.service';
 
+const defaultAvailableOverlayNameBlacklist = [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset, LajiMapOverlayName.barentsRegion];
+
 @Component({
   selector: 'laji-map-front',
   templateUrl: './front.component.html',
@@ -24,7 +26,7 @@ export class FrontComponent implements OnInit, OnDestroy {
     center: [64.209802, 24.912872],
     zoom: 3,
     tileLayerName: LajiMapTileLayerName.maastokartta,
-    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset],
+    availableOverlayNameBlacklist : defaultAvailableOverlayNameBlacklist,
     controls: {
       draw: {
         marker: true,
@@ -87,7 +89,8 @@ export class FrontComponent implements OnInit, OnDestroy {
     const projection = world === 'true'
       ? 'world'
       : 'finnish';
-    options = {...options, tileLayers: {layers: _layers, active: projection}};
+    const availableOverlayNameBlacklist = defaultAvailableOverlayNameBlacklist.filter(l => !_layers[l]);
+    options = {...options, tileLayers: {layers: _layers, active: projection}, availableOverlayNameBlacklist};
     this.mapOptions = {...this.mapOptions, ...options, draw: this.drawData};
     this.printMode = print === 'true' ? true : false;
   }
