@@ -1140,6 +1140,7 @@
   "observation.filters.collection": "Aineisto",
   "observation.filters.other": "Muut",
   "observation.filters.unit": "Näyte",
+  "observation.form.searchButtonInfo": "Hakutoiminto toimii uudella tavalla: paina Hae-nappia oikeassa ylänurkassa kun olet asettanut hakurajaukset.",
   "observation.form.active.sensitive": "Sensitiiviset lajit",
   "observation.form.administrativeStatus": "Hallinnollinen asema",
   "observation.form.alive.false": "Ei ole elossa",
