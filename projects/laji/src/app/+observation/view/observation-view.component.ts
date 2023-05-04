@@ -180,22 +180,24 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   private toggleSearchButtonInfoToast(show: boolean) {
-    if (show) {
-      if (!searchButtonInfoDismissed && this.searchButtonInfoToast === undefined) {
-        this.searchButtonInfoToast = this.toastsService.showInfo(
-          this.translate.instant('observation.form.searchButtonInfo'),
-          undefined,
-          {
-            disableTimeOut: true,
-            closeButton: true,
-            positionClass: 'toast-center-center'
-          }
-        );
-        this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast.onHidden.subscribe(() => {
-          searchButtonInfoDismissed = true;
-        });
-      }
-    } else if (this.searchButtonInfoToast !== undefined) {
+    if (searchButtonInfoDismissed) {
+      return;
+    }
+
+    if (show && !this.searchButtonInfoToast) {
+      this.searchButtonInfoToast = this.toastsService.showInfo(
+        this.translate.instant('observation.form.searchButtonInfo'),
+        undefined,
+        {
+          disableTimeOut: true,
+          closeButton: true,
+          positionClass: 'toast-center-center'
+        }
+      );
+      this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast.onHidden.subscribe(() => {
+        searchButtonInfoDismissed = true;
+      });
+    } else if (!show && this.searchButtonInfoToast) {
       this.searchButtonInfoToastOnHiddenSub.unsubscribe();
       this.toastsService.clear(this.searchButtonInfoToast.toastId);
       this.searchButtonInfoToast = undefined;
