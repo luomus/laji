@@ -58,6 +58,7 @@ $mobileBreakpoint: 768px;
   display: flex;
   flex-flow: column;
   min-width: max-content;
+  width: 100%;
   &.static-width {
     min-width: unset;
   }
