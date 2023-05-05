@@ -4,8 +4,8 @@ export class ToastPO {
   private $$closeBtns = $$('.toast-close-button');
 
   async closeAll() {
-    this.$$closeBtns.each(($btn) => {
-      $btn.click();
+    await this.$$closeBtns.each(async ($btn) => {
+      await $btn.click();
     });
   }
 }
