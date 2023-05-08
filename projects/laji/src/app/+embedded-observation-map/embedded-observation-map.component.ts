@@ -4,22 +4,16 @@ import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { SearchQueryService } from '../+observation/search-query.service';
 import { Observable } from 'rxjs';
-import { LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { ObservationVisualizationMode } from '../shared-modules/observation-map/observation-map/observation-visualization';
 
 interface EmbeddedObservationMapOptions {
   query: WarehouseQueryInterface;
+  visualizationMode: ObservationVisualizationMode;
   center: [number, number];
   zoom: number;
   tileLayers: LajiMapTileLayersOptions;
 }
-
-const defaultTileLayers: LajiMapTileLayersOptions = {
-  active: 'world',
-  layers: {
-    [LajiMapTileLayerName.openStreetMap]: true,
-    [LajiMapOverlayName.barentsRegion]: true
-  }
-};
 
 @Component({
   template: `
@@ -29,7 +23,7 @@ const defaultTileLayers: LajiMapTileLayersOptions = {
         [query]="options.query"
         [initWithWorldMap]="true"
         [controls]="{layer: false}"
-        [visualizationMode]="'recordAge'"
+        [visualizationMode]="options.visualizationMode"
         [settingsKey]="'embeddedObservationMap'"
         [noClick]="true"
         [center]="options.center"
@@ -58,24 +52,27 @@ export class EmbeddedObservationMapComponent implements OnInit {
     );
   }
 
-  private getMapOptionsFromUrlQueryParams(params): Pick<EmbeddedObservationMapOptions, 'center'|'zoom'|'tileLayers'> {
-    let center: [number, number] = [64.8, 25];
-    if (params['center']) {
-      const parsedCenter = params['center'].split(',').map(value => parseFloat(value)).filter(value => !!value);
-      if (parsedCenter.length === 2) {
-        center = parsedCenter;
-      }
+  private getMapOptionsFromUrlQueryParams(params): Pick<EmbeddedObservationMapOptions, 'visualizationMode'|'center'|'zoom'|'tileLayers'> {
+    const { visualizationMode = 'obsCount', center = '', zoom = '', world = 'true', layers = 'openStreetMap', overlayNames = '' } = params;
+
+    const parsedCenter = center.split(',').map(value => parseFloat(value)).filter(value => !!value);
+    const _center: [number, number] = parsedCenter.length === 2 ? parsedCenter : [64.8, 25];
+
+    const _zoom = parseFloat(zoom) || 1.6;
+
+    let tileLayers;
+    if (world || layers || overlayNames) {
+      const active = world === 'true' ? 'world' : 'finnish';
+      const _layers = (`${layers},${overlayNames}`.split(',') as string[])
+        .filter(s => s)
+        .reduce<LajiMapTileLayersOptions['layers']>(
+          (lrs, layerName) => ({ ...lrs, [layerName]: true }),
+          {} as LajiMapTileLayersOptions['layers']
+        );
+      tileLayers = { active, layers: _layers };
     }
 
-    let zoom = 1.6;
-    if (params['zoom']) {
-      const parsedZoom = parseFloat(params['zoom']);
-      if (parsedZoom) {
-        zoom = parsedZoom;
-      }
-    }
-
-    return { center, zoom, tileLayers: defaultTileLayers };
+    return { visualizationMode, center: _center, zoom: _zoom, tileLayers };
   }
 }
 
