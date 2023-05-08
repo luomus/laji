@@ -29,6 +29,7 @@ interface EmbeddedObservationMapOptions {
         [center]="options.center"
         [zoom]="options.zoom"
         [tileLayers]="options.tileLayers"
+        [availableOverlayNameBlacklist]="[]"
       ></laji-observation-map>
     </ng-container>
   `,

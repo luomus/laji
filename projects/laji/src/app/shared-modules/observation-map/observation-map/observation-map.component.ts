@@ -95,8 +95,6 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
 ];
 
-const defaultAvailableOverlayNameBlacklist = [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset, LajiMapOverlayName.barentsRegion];
-
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
@@ -146,8 +144,10 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.mapOptions = {...this.mapOptions, zoom};
   }
   @Input() set tileLayers(tileLayers: LajiMapTileLayersOptions) {
-    const availableOverlayNameBlacklist = defaultAvailableOverlayNameBlacklist.filter(value => !tileLayers?.layers?.[value]);
-    this.mapOptions = {...this.mapOptions, tileLayers, availableOverlayNameBlacklist};
+    this.mapOptions = {...this.mapOptions, tileLayers};
+  }
+  @Input() set availableOverlayNameBlacklist(availableOverlayNameBlacklist: LajiMapOverlayName[]) {
+    this.mapOptions = {...this.mapOptions, availableOverlayNameBlacklist};
   }
   @Input() ready = true;
   /**

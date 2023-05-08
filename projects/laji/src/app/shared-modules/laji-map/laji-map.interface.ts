@@ -14,6 +14,8 @@ export const LajiMapOverlayName = {
   ...LajiMap.OverlayName
 };
 
+export type LajiMapOverlayName = LajiMap.OverlayName;
+
 export const LajiMapLang = {
   ...LajiMap.Lang
 };
