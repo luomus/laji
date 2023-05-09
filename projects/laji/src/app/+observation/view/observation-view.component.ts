@@ -30,10 +30,6 @@ export interface VisibleSections {
   own?: boolean;
 }
 
-
-// The info should be shown only once per browser session, so we initialize it here for the whole runtime.
-let coordinateFilterInfoShown = false;
-
 @Component({
   selector: 'laji-observation-view',
   templateUrl: './observation-view.component.html',
@@ -120,14 +116,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         tap((query) => {
           if (this.results) {
             this.results.reloadTabs();
-          }
-          if ((query.coordinates) && !coordinateFilterInfoShown) {
-            coordinateFilterInfoShown = true;
-            this.toastsService.showInfo(
-              this.translate.instant('observation.form.coordinatesInfo'),
-              undefined,
-              {disableTimeOut: true, closeButton: true}
-            );
           }
         })
       ).subscribe()
