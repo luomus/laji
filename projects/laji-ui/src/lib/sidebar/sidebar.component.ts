@@ -234,12 +234,14 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   showOnMobile() {
     if (this.mobile) {
       this.open = true;
+      this.cdr.detectChanges();
     }
   }
 
   hideOnMobile() {
     if (this.mobile) {
       this.open = false;
+      this.cdr.detectChanges();
     }
   }
 }
