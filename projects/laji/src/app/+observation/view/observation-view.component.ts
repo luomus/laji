@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
@@ -29,11 +29,6 @@ export interface VisibleSections {
   annotations?: boolean;
   own?: boolean;
 }
-
-
-// The info should be shown only once per browser session, so we initialize it here for the whole runtime.
-let coordinateFilterInfoShown = false;
-let searchButtonInfoDismissed = false;
 
 @Component({
   selector: 'laji-observation-view',
@@ -122,20 +117,17 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
           if (this.results) {
             this.results.reloadTabs();
           }
-          if ((query.coordinates) && !coordinateFilterInfoShown) {
-            coordinateFilterInfoShown = true;
-            this.toastsService.showInfo(
-              this.translate.instant('observation.form.coordinatesInfo'),
-              undefined,
-              {disableTimeOut: true, closeButton: true}
-            );
-          }
         })
       ).subscribe()
     );
     this.mainSubscription.add(
-      this.observationFacade.tmpQueryHasChanges$.subscribe(hasChanges => {
-        this.toggleSearchButtonInfoToast(hasChanges);
+      combineLatest([
+        this.observationFacade.showSearchButtonInfo$,
+        this.observationFacade.tmpQueryHasChanges$]
+      ).subscribe(([show, hasChanges]) => {
+        if (show && hasChanges) {
+          this.showSearchButtonInfoToast();
+        }
       })
     );
   }
@@ -179,12 +171,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.statusFilterMobile = !this.statusFilterMobile;
   }
 
-  private toggleSearchButtonInfoToast(show: boolean) {
-    if (searchButtonInfoDismissed) {
-      return;
-    }
-
-    if (show && !this.searchButtonInfoToast) {
+  private showSearchButtonInfoToast() {
+    if (!this.searchButtonInfoToast) {
       this.searchButtonInfoToast = this.toastsService.showInfo(
         this.translate.instant('observation.form.searchButtonInfo'),
         undefined,
@@ -195,12 +183,8 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
         }
       );
       this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast.onHidden.subscribe(() => {
-        searchButtonInfoDismissed = true;
+        this.observationFacade.hideSearchButtonInfo();
       });
-    } else if (!show && this.searchButtonInfoToast) {
-      this.searchButtonInfoToastOnHiddenSub.unsubscribe();
-      this.toastsService.clear(this.searchButtonInfoToast.toastId);
-      this.searchButtonInfoToast = undefined;
     }
   }
 }
