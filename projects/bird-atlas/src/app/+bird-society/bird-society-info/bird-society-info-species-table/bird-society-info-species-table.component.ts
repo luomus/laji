@@ -2,6 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 
+type AugmentedAtlasTaxon = AtlasTaxon & {
+  classCounts: {
+    // the classCounts object contains keys like 'MY.atlasClassEnumD': number;
+    // which does not work with ngxDataTable row props
+    certain: number;
+    all: number;
+  };
+};
+
 @Component({
   selector: 'ba-bird-society-info-species-table',
   templateUrl: 'bird-society-info-species-table.component.html',
@@ -12,7 +21,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
   @Input() taxa: AtlasTaxon[];
   @Output() rowClick = new EventEmitter<AtlasTaxon | null>();
 
-  rows: AtlasTaxon[];
+  rows: AugmentedAtlasTaxon[];
   cols: TableColumn[];
   selected: AtlasTaxon[] = [];
 
@@ -27,11 +36,21 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
       name: 'Tieteellinen nimi',
       resizeable: false,
       sortable: true
+    }, {
+      prop: 'classCounts.certain',
+      name: 'Varmat',
+      resizeable: false,
+      sortable: true
+    }, {
+      prop: 'classCounts.all',
+      name: 'Kaikki',
+      resizeable: false,
+      sortable: true
     }];
   }
 
   ngOnChanges() {
-    this.rows = this.taxa;
+    this.rows = this.taxa.map(t => (<AugmentedAtlasTaxon>{...t, classCounts: {certain: t.classCounts['MY.atlasClassEnumD'], all: t.classCounts.all}}));
   }
 
   selectCheck(row: AtlasTaxon) {
@@ -45,5 +64,15 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
       return;
     }
     this.rowClick.emit(null);
+  }
+
+  onDownloadCsv() {
+    const _rows: string[][] = [
+      ['Nimi', 'Tieteellinen nimi', 'Varmat', 'Kaikki'],
+      ...this.rows.map(r => [r.vernacularName.fi, r.scientificName, `"${r.classCounts.certain}"`, `"${r.classCounts.all}"`])
+    ];
+    const csvContent = 'data:text/csv;charset=utf-8,' + _rows.map(e => e.join(',')).join('\n');
+    const encodedUri = encodeURI(csvContent);
+    window.open(encodedUri);
   }
 }

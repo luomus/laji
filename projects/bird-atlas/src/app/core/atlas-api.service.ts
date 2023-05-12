@@ -64,6 +64,12 @@ export interface AtlasTaxon {
   sensitive?: boolean;
   next?: AtlasTaxon;
   prev?: AtlasTaxon;
+  classCounts?: {
+    'MY.atlasClassEnumB': number;
+    'MY.atlasClassEnumC': number;
+    'MY.atlasClassEnumD': number;
+    all: number;
+  };
 }
 
 export type ActivityCategoryStatsObject = Record<AtlasActivityCategory, AtlasActivityCategoryElement>;
