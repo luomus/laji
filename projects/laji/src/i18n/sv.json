@@ -1261,7 +1261,7 @@
   "observation.form.sampleDataset": "Taksonomiska dataseten",
   "observation.form.sampleId": "Preparation/sample id",
   "observation.form.search": "Sök",
-  "observation.form.searchButtonInfo": "Hakutoiminto toimii uudella tavalla: paina Hae-nappia oikeassa ylänurkassa kun olet asettanut hakurajaukset.",
+  "observation.form.searchButtonInfo": "Sökfunktionen fungerar på ett nytt sätt: tryck på knappen Sök i det övre högra hörnet när du har ställt in sökgränserna.",
   "observation.form.season": "Observations årstid",
   "observation.form.secured": "Döljande",
   "observation.form.secured.false": "Endast icke dold",

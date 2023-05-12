@@ -1261,7 +1261,7 @@
   "observation.form.sampleDataset": "Taxonomic datasets",
   "observation.form.sampleId": "Preparation/Sample ID",
   "observation.form.search": "Search",
-  "observation.form.searchButtonInfo": "Hakutoiminto toimii uudella tavalla: paina Hae-nappia oikeassa ylänurkassa kun olet asettanut hakurajaukset.",
+  "observation.form.searchButtonInfo": "The search function works in a new way: press the Search button in the upper right corner when you have set the search filters.",
   "observation.form.season": "Season",
   "observation.form.secured": "Concealment",
   "observation.form.secured.false": "Only non-concealed",
