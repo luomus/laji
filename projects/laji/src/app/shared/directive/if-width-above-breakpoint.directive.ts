@@ -34,6 +34,14 @@ export class IfWidthAboveBreakpointDirective implements OnDestroy {
     }
   }
 
+  @Input()
+  set lajiIfWidthAboveBreakpointServerSide(template: TemplateRef<any>) {
+    if (this.platformService.isServer) {
+      this.view.clear();
+      this.view.createEmbeddedView(template);
+    }
+  }
+
   private breakpoint?: Breakpoint;
   private matchesBreakpoint?: boolean;
   private elseTemplate?: TemplateRef<any>;
