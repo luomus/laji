@@ -15,3 +15,7 @@
     [selectCheck]="selectCheck"
     (activate)="onActivate($event)"
   ></ngx-datatable>
+
+<ng-template #alignRight let-value="value">
+  <div style="text-align: right;">{{ value }}</div>
+</ng-template>

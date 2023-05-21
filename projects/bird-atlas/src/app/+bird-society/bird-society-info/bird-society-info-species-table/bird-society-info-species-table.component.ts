@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
 import { TableColumn } from '@swimlane/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 
@@ -17,7 +17,9 @@ type AugmentedAtlasTaxon = AtlasTaxon & {
   styleUrls: ['bird-society-info-species-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
+export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterViewInit {
+  @ViewChild('alignRight') alignRightTemplate: TemplateRef<any>;
+
   @Input() taxa: AtlasTaxon[];
   @Output() rowClick = new EventEmitter<AtlasTaxon | null>();
 
@@ -25,7 +27,9 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
   cols: TableColumn[];
   selected: AtlasTaxon[] = [];
 
-  constructor() {
+  constructor() {}
+
+  ngAfterViewInit(): void {
     this.cols = [{
       prop: 'vernacularName.fi',
       name: 'Nimi',
@@ -40,12 +44,16 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges {
       prop: 'classCounts.certain',
       name: 'Varmat',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      maxWidth: 60,
+      cellTemplate: this.alignRightTemplate
     }, {
       prop: 'classCounts.all',
       name: 'Kaikki',
       resizeable: false,
-      sortable: true
+      sortable: true,
+      maxWidth: 60,
+      cellTemplate: this.alignRightTemplate
     }];
   }
 
