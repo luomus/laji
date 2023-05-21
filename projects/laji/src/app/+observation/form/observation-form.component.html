@@ -180,6 +180,13 @@
     name="elyCentreId"
     [field]="areaType.ElyCentre"></laji-metadata-select>
   <laji-metadata-select
+    [(ngModel)]="query.birdAssociationAreaId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.birdSociety'"
+    name="birdAssociationAreaId"
+    [field]="areaType.BirdAssociationArea"></laji-metadata-select>
+  <laji-metadata-select
     [info]="'observation.info.municipality' | translate"
     [(ngModel)]="query.finnishMunicipalityId"
     (ngModelChange)="onQueryChange()"
