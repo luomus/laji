@@ -485,6 +485,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
   disableSend(): boolean {
     this.alertNotSpamVerified = false;
 
+    const checkTypeTagPasses = this.checkTypeTag();
     if (
     ((
       (this.annotation.notes === '' || this.annotation.notes === undefined) &&
@@ -499,7 +500,7 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     ((((this.personRoleAnnotation === this.annotationRole.expert) && !this.expert) || (this.personRoleAnnotation === this.annotationRole.basic && this.expert)) &&
     ((this.annotation.addedTags.length === 0 || (this.annotation.addedTags.length === 1 && (this.annotation.addedTags.indexOf('MMAN.5') !== -1 ||
     this.annotation.addedTags.indexOf('MMAN.8') !== -1 || this.annotation.addedTags.indexOf('MMAN.9') !== -1)
-    || (!this.checkTypeTag('check'))) || (this.annotation.addedTags.length > 1 && !this.checkTypeTag('check'))) &&
+    || (!checkTypeTagPasses)) || (this.annotation.addedTags.length > 1 && !checkTypeTagPasses)) &&
     (this.annotation.identification.taxon === '' || this.annotation.identification.taxon === undefined) &&
     (this.annotation.notes === '' || this.annotation.notes === undefined)))
     ) {
@@ -508,10 +509,10 @@ export class AnnotationFormNewComponent implements OnInit , OnChanges, AfterCont
     return false;
   }
 
-  checkTypeTag(type) {
+  checkTypeTag() {
     let count = 0;
     this.annotation.addedTags.forEach(tag => {
-      if (this.annotationTagsObservation[tag].type === type) {
+      if (this.annotationTagsObservation[tag].type === 'check') {
         count++;
       }
     });
