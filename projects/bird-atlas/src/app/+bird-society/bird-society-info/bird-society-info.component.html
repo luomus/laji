@@ -21,7 +21,7 @@
       <div class="d-flex flex-row flex-wrap my-4 legend-container">
         <ba-visualization-legend [visualization]="visualizationMode"></ba-visualization-legend>
         <ba-visualization-selector [visualization]="visualizationMode" (visualizationChange)="onVisualizationChange($event)"></ba-visualization-selector>
-        <ba-bird-society-species-legend *ngIf="taxonVisualizationId"></ba-bird-society-species-legend>
+        <ba-bird-society-species-legend *ngIf="selectedTaxon"></ba-bird-society-species-legend>
       </div>
     </div>
     <div class="info-panel">
@@ -29,6 +29,7 @@
         <ng-container *ngTemplateOutlet="square"></ng-container>
       </ng-container>
     <ng-container *ngIf="taxonVisualizationLoading"><laji-spinner class="d-block m-4"></laji-spinner></ng-container>
+    <button *ngIf="selectedTaxon" class="pill" (click)="onTaxonDeselect()" role="button">{{ selectedTaxon.vernacularName.fi }} <span class="glyphicon glyphicon-remove"></span></button> 
     <ba-bird-society-info-species-table class="d-block my-4" [taxa]="birdSociety.taxa" (rowClick)="onTableRowClick($event)"></ba-bird-society-info-species-table>
     </div>
   </div>

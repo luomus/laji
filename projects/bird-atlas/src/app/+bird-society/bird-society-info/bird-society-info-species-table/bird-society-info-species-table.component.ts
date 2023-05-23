@@ -27,7 +27,7 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
   cols: TableColumn[];
   selected: AtlasTaxon[] = [];
 
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     this.cols = [{
@@ -63,6 +63,11 @@ export class BirdSocietyInfoSpeciesTableComponent implements OnChanges, AfterVie
 
   selectCheck(row: AtlasTaxon) {
     return this.selected.indexOf(row) === -1;
+  }
+
+  setSelected(selected: AtlasTaxon[]) {
+    this.selected = selected;
+    this.cdr.markForCheck();
   }
 
   onActivate(e: any) {

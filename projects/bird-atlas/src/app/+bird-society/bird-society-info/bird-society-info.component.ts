@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { AtlasApiService, AtlasTaxon, BirdSociety, BirdSocietyTaxaResponseElem } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { PopstateService } from '../../core/popstate.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
+import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info-species-table/bird-society-info-species-table.component';
 
 @Component({
   templateUrl: 'bird-society-info.component.html',
@@ -12,11 +13,13 @@ import { VisualizationMode } from '../../shared-modules/map-utils/visualization-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
+  @ViewChild(BirdSocietyInfoSpeciesTableComponent) table: BirdSocietyInfoSpeciesTableComponent;
+
   birdSociety: BirdSociety;
   loading = true;
   selectedDataIdx: number;
   visualizationMode: VisualizationMode = 'activityCategory';
-  taxonVisualizationId: string | undefined;
+  selectedTaxon: AtlasTaxon | undefined;
   taxonVisualization: BirdSocietyTaxaResponseElem[] | undefined;
   taxonVisualizationLoading = false;
   activityCategoryClass = {
@@ -81,14 +84,21 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     this.visualizationMode = visualization;
   }
 
+  onTaxonDeselect() {
+    this.selectedTaxon = undefined;
+    this.taxonVisualization = undefined;
+    this.table.setSelected([]);
+    this.cdr.markForCheck();
+  }
+
   onTableRowClick(taxon: AtlasTaxon | null) {
     if (taxon === null) {
-      this.taxonVisualizationId = undefined;
+      this.selectedTaxon = undefined;
       this.taxonVisualization = undefined;
       return;
     }
-    if (this.taxonVisualizationId === taxon.id) { return; }
-    this.taxonVisualizationId = taxon.id;
+    if (this.selectedTaxon?.id === taxon.id) { return; }
+    this.selectedTaxon = taxon;
     this.taxonVisualizationLoading = true;
     this.atlasApi.getBirdSocietyTaxa(this.birdSociety.birdAssociationArea.key, taxon.id).subscribe(r => {
       this.taxonVisualization = r;
