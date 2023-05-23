@@ -1,10 +1,15 @@
   <div class="d-flex justify-end mb-3">
+    <input class="form-control d-block mr-5"
+      #textfield
+      type='text'
+      placeholder="{{'haseka.submissions.filter' | translate}}"
+      (keyup)="onSearchKeyUp($event)">
     <button class="btn btn-default" (click)="onDownloadCsv()">Lataa .csv</button>
   </div>
   <ngx-datatable
     class="material"
     [rowHeight]="35"
-    [rows]="rows"
+    [rows]="filteredRows$ | async"
     [columns]="cols"
     [scrollbarH]="true"
     [scrollbarV]="true"
