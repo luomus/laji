@@ -238,7 +238,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
           const splitParamGlobal = param.split(',');
           this.loopInsideOptions(this.subCategories, this.options, splitParamGlobal, false);
         } else {
-          const splitParamCategories = this.rebuiltParamSubCategory(param);
+          const splitParamCategories = this.arrFromUrlString(param);
           this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
         }
       } else {
@@ -247,8 +247,8 @@ export class SelectSubcategoriesComponent implements OnChanges {
     }
   }
 
-  private rebuiltParamSubCategory(urlString) {
-    const rebuilt = urlString.charAt(urlString.length - 1) === ';' ? urlString.slice(0, -1).split(';') : urlString.split(';');
+  private arrFromUrlString(urlString: string): string[] {
+    const rebuilt = urlString.split(';').filter(s => s.length > 0);
     const finalRebuilt = [];
 
     rebuilt.forEach((element) => {
