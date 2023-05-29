@@ -1,7 +1,12 @@
 <div class="laji-page mb-4">
-  <laji-info-page *lajiIfWidthAboveBreakpoint="'sm' else mobileInstructions" [page]="{'fi': '7463', 'en': '7465', 'sv': '7467'} | multiLang"></laji-info-page>
+  <ng-container *lajiIfWidthAboveBreakpoint="'sm' else mobileInstructions; serverSide: loading">
+    <laji-info-page [page]="{'fi': '7463', 'en': '7465', 'sv': '7467'} | multiLang"></laji-info-page>
+  </ng-container>
   <ng-template #mobileInstructions>
     <laji-info-page [page]="{'fi': '7579', 'en': '7581', 'sv': '7583'} | multiLang"></laji-info-page>
+  </ng-template>
+  <ng-template #loading>
+    <laji-info-page-loading></laji-info-page-loading>
   </ng-template>
 
   <h4>{{ 'observation.front.sources' | translate }}</h4>
