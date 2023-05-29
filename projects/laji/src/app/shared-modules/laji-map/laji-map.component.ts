@@ -23,8 +23,6 @@ import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
 
-const LAJIMAP_SUPPORTED_LANGUAGES = ['fi', 'sv', 'en'];
-
 @Component({
   selector: 'laji-map',
   template: `
@@ -132,7 +130,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     const lang = this.translate.currentLang;
-    if (LAJIMAP_SUPPORTED_LANGUAGES.includes(lang)) {
+    if (Global.lajiMapSupportedLanguages.includes(lang)) {
       this.lang = lang;
     }
 
