@@ -37,10 +37,9 @@ export class DocumentPermissionService {
         rights.isEditor = editors.includes(user.id);
         rights.hasEditRights = rights.isEditor;
 
-        const formId = IdService.getId(doc.formId);
         const collectionId = IdService.getId(doc.collectionId);
 
-        return this.userIsFormAdmin(user, formId, collectionId, this.userService.getToken()).pipe(
+        return this.userIsFormAdmin(user, collectionId, this.userService.getToken()).pipe(
           switchMap(isFormAdmin => {
             if (isFormAdmin) {
               rights.hasEditRights = true;
@@ -76,7 +75,7 @@ export class DocumentPermissionService {
           return of({ isEditor: false, hasEditRights: false, hasDeleteRights: false });
         }
 
-        const isFormAdmin$ = this.userIsFormAdmin(user, doc.formID, doc.collectionID, this.userService.getToken());
+        const isFormAdmin$ = this.userIsFormAdmin(user, doc.collectionID, this.userService.getToken());
 
         return isFormAdmin$.pipe(
           map(isFormAdmin => ({
@@ -89,20 +88,13 @@ export class DocumentPermissionService {
     );
   }
 
-  private userIsFormAdmin(user: Person, formId?: string, collectionId?: string, personToken?: string): Observable<boolean> {
-    if (!formId || !collectionId) {
+  private userIsFormAdmin(user: Person, collectionId?: string, personToken?: string): Observable<boolean> {
+    if (!collectionId) {
       return of(false);
     }
 
-    return this.formService.getForm(formId).pipe(
-      switchMap(form => {
-        if (!form?.options?.hasAdmins) {
-          return of(false);
-        }
-        return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
-          map(formPermission => this.formPermissionService.isAdmin(formPermission, user))
-        );
-      })
+    return this.formPermissionService.getFormPermission(collectionId, personToken).pipe(
+      map(formPermission => this.formPermissionService.isAdmin(formPermission, user))
     );
   }
 }

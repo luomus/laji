@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { FormPermissionApi } from '../api/FormPermissionApi';
-import { Observable, of, of as ObservableOf } from 'rxjs';
+import { Observable, of, of as ObservableOf, throwError } from 'rxjs';
 import { FormPermission } from '../model/FormPermission';
 import { Person } from '../model/Person';
 import { Form } from '../model/Form';
@@ -10,6 +10,7 @@ import { FormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../root/platform.service';
 import RestrictAccess = Form.RestrictAccess;
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rights {
   edit: boolean;
@@ -69,8 +70,13 @@ export class FormPermissionService {
     if (cached) {
       return ObservableOf(cached);
     }
-    return this.formPermissionApi
-      .findByCollectionID(collectionID, personToken).pipe(
+    return this.formPermissionApi.findByCollectionID(collectionID, personToken).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 404) {
+          return of({ id: undefined, collectionID, admins: [], editors: [], permissionRequests: [] });
+        }
+        return throwError(err);
+      }),
       tap(data => {
         if (data.collectionID) {
           FormPermissionService.formPermissions[data.collectionID] = data;
