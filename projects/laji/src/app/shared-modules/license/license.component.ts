@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IdService } from '../../shared/service/id.service';
-import { Logger } from '../../shared/logger/logger.service';
 
 interface ILicense {
   link?: string;
@@ -122,10 +121,6 @@ export class LicenseComponent {
   _sort: string;
   _license: ILicense;
 
-  constructor(
-    private logger: Logger
-  ) { }
-
   @Input()
   set type(type: string) {
     if (!type) {
@@ -133,7 +128,6 @@ export class LicenseComponent {
     }
     type = IdService.getId(type).replace(/^MY\./, 'MZ.');
     if (!LICENSES[type]) {
-      this.logger.error('Unknown license!', type);
       type = 'MZ.intellectualRightsARR';
     }
     this._type = type;

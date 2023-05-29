@@ -58,7 +58,7 @@
   "identification.allContinents": "Filtrer par continent",
   "identification.backToSiteSelection": "Retour à la sélection de sites",
   "identification.boxes": "Boîtes",
-  "identification.boxes.info": "It's recommended to label sounds with boxes if it is easy i.e. recording has clear vocalizations. It is not mandatory. Don't get stuck with labelling all distant or overlapping sounds.",
+  "identification.boxes.info": "Il est recommandé d'étiqueter les sons avec des cases si c'est facile, c'est-à-dire que l'enregistrement a des vocalisations claires. Il n'est pas obligatoire, ne vous laissez pas coincer avec l'étiquetage de tous les sons éloignés ou qui se chevauchent.",
   "identification.boxes.new": "Dessiner une nouvelle boîte",
   "identification.boxes.overlapsWithOthers": "Chevauchement avec d'autres espèces",
   "identification.containsBirdsNotOnList": "L'enregistrement contient des oiseaux qui ne sont pas sur la liste",

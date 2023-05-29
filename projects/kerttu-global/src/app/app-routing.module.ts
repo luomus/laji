@@ -7,7 +7,9 @@ import { catchError, flatMap } from 'rxjs/operators';
 import { LocalizeGuard } from '../../../laji/src/app/locale/localize.guard';
 import { NotFoundComponent } from '../../../laji/src/app/shared/not-found/not-found.component';
 import { CheckLoginGuard } from '../../../laji/src/app/shared/guards/check-login.guard';
-import { OnlyLoggedIn } from 'projects/laji/src/app/shared/route/only-logged-in';
+import { LocaleEsComponent } from './locale/locale-es.component';
+import { LocaleFrComponent } from './locale/locale-fr.component';
+import { LocaleZhComponent } from './locale/locale-zh.component';
 
 @Injectable()
 export class PreloadSelectedModulesList implements PreloadingStrategy {
@@ -42,10 +44,21 @@ const routes: Routes = [
 ];
 
 const routesWithLang: Routes = [
-  {path: '', children: [
+  {path: 'es', data: {lang: 'es'}, children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
-    ], component: LocaleEnComponent, canActivate: [LocalizeGuard], data: {lang: 'en'}}
+    ], component: LocaleEsComponent, canActivate: [LocalizeGuard]},
+  {path: 'fr', data: {lang: 'fr'}, children: [
+      ...routes,
+      {path: '**', component: NotFoundComponent}
+    ], component: LocaleFrComponent, canActivate: [LocalizeGuard]},
+  {path: 'zh', data: {lang: 'zh'}, children: [
+      ...routes,
+      {path: '**', component: NotFoundComponent}
+    ], component: LocaleZhComponent, canActivate: [LocalizeGuard]},
+  {path: '', data: {lang: 'en'}, children: [
+      ...routes,
+    ], component: LocaleEnComponent, canActivate: [LocalizeGuard]}
 ];
 
 const allRoutes: Routes = [

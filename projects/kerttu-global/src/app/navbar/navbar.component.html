@@ -43,6 +43,37 @@
             </small>
           </a>
         </li>
+        <li dropdown>
+          <a dropdownToggle class="link language-toggle" tabindex="0" role="button" luKeyboardClickable>
+            <i class="glyphicon glyphicon-globe"></i>
+            <span *ngIf="'en' === translate.currentLang">
+              EN
+            </span>
+            <span *ngIf="'es' === translate.currentLang">
+              ES
+            </span>
+            <span *ngIf="'fr' === translate.currentLang">
+              FR
+            </span>
+            <span *ngIf="'zh' === translate.currentLang">
+              ZH
+            </span>
+          </a>
+          <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+            <li *ngIf="'en' !== translate.currentLang" role="menuitem">
+              <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">English</a>
+            </li>
+            <li *ngIf="'es' !== translate.currentLang" role="menuitem">
+              <a rel="alternate" hreflang="es" class="navbar-link link" [routerLink]="[] | localize:'es'" queryParamsHandling="preserve">Español</a>
+            </li>
+            <li *ngIf="'fr' !== translate.currentLang" role="menuitem">
+              <a rel="alternate" hreflang="fr" class="navbar-link link" [routerLink]="[] | localize:'fr'" queryParamsHandling="preserve">Français</a>
+            </li>
+            <li *ngIf="'zh' !== translate.currentLang" role="menuitem">
+              <a rel="alternate" hreflang="zh" class="navbar-link link" [routerLink]="[] | localize:'zh'" queryParamsHandling="preserve">中文</a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

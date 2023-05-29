@@ -1,5 +1,11 @@
-import { $ } from 'protractor';
+import { $$ } from 'protractor';
 
 export class ToastPO {
-  public $closeBtn = $('.toast-close-button');
+  private $$closeBtns = $$('.toast-close-button');
+
+  async closeAll() {
+    await this.$$closeBtns.each(async ($btn) => {
+      await $btn.click();
+    });
+  }
 }
