@@ -57,7 +57,7 @@ export class TreeSelectComponent {
 
   openModal() {
     const initialState = {
-      selectedOptions: this.options,
+      selectedOptions: (this.options || []),
       optionsTree$: this.optionsTree$,
       modalTitle: this.modalTitle,
       browseTitle: this.browseTitle,
@@ -69,7 +69,7 @@ export class TreeSelectComponent {
       includeCount: this.includeCount,
       includeLink: this.includeLink,
     };
-    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg', initialState });
+    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg scrollable-modal', initialState });
     this.modalRef.content.emitConfirm.subscribe(result => {
       const includeToReturn = [];
       const excludeToReturn = [];

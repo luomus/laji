@@ -51,9 +51,10 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   @Input() position: 'left' | 'right' = 'left';
   @Input() staticWidth: number;
   @Input() menuTitle: string;
+  @Input() displayNavHeader = false;
   @Input() displayNav = true;
   @Input() noPrint: boolean;
-  @Input() class: string;
+  @Input() contentWrapperClass: string;
 
   sidebarMinWidth = 50;
 
@@ -78,7 +79,6 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   @ViewChild('sidebarRef') sidebarRef: ElementRef;
   @ViewChild('contentRef') contentRef: ElementRef;
-  @ViewChild('navWrapper') navWrapperRef: ElementRef;
   @ContentChildren(SidebarLinkComponent) sidebarLinks: QueryList<SidebarLinkComponent>;
 
   destroyResizeListener: () => void;
@@ -229,5 +229,17 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
       width = Math.abs(this.sidebarRef.nativeElement.offsetLeft + this.sidebarRef.nativeElement.clientWidth - mouseX);
     }
     return width;
+  }
+
+  showOnMobile() {
+    if (this.mobile) {
+      this.open = true;
+    }
+  }
+
+  hideOnMobile() {
+    if (this.mobile) {
+      this.open = false;
+    }
   }
 }

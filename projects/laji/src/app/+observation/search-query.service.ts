@@ -3,6 +3,7 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { Subject } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
 import { SearchQueryInterface } from '../shared-modules/search-filters/search-query.interface';
+import { Util } from '../shared/service/util.service';
 
 @Injectable({providedIn: 'root'})
 export class SearchQueryService implements SearchQueryInterface {
@@ -124,7 +125,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'annotated',
     'onlyNonStateLands',
     'alive',
-    'higherTaxon'
+    'higherTaxon',
+    'sensitive'
   ];
 
   // noinspection JSUnusedLocalSymbols
@@ -342,5 +344,41 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public queryUpdate(data = {}): void {
     this.queryUpdatedSource.next(data);
+  }
+
+  public static hasValue(value?: boolean|number|string|string[]): boolean {
+    const type = typeof value;
+    if (type === 'undefined') {
+      return false;
+    } else if (type === 'boolean' || type === 'number') {
+      return true;
+    }
+    value = value as string|string[];
+    return value?.length > 0;
+  }
+
+  public static getDifferenceBetweenQueries(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): WarehouseQueryInterface {
+    const query1Keys = Object.keys(query1);
+    const query2Keys = Object.keys(query2);
+    const uniqueKeys = Array.from(new Set(query1Keys.concat(query2Keys)));
+
+    return uniqueKeys.reduce((changed: WarehouseQueryInterface, key: string) => {
+      const value1 = query1[key];
+      const value2 = query2[key];
+
+      if (SearchQueryService.hasValue(value1) || SearchQueryService.hasValue(value2)) {
+        const areArrays = Array.isArray(value1) && Array.isArray(value2);
+        if (!(value1 === value2 || (areArrays && Util.equalsArray(value1, value2)))) {
+          changed[key] = query2[key];
+        }
+      }
+
+      return changed;
+    }, {});
+  }
+
+  public static queriesHaveDifferences(query1: WarehouseQueryInterface, query2: WarehouseQueryInterface): boolean {
+    const differences = SearchQueryService.getDifferenceBetweenQueries(query1, query2);
+    return Object.keys(differences).length > 0;
   }
 }

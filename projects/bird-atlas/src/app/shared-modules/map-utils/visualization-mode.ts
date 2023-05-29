@@ -2,9 +2,8 @@ import { AtlasActivityCategory, AtlasGridSquare } from '../../core/atlas-api.ser
 
 export type VisualizationMode = 'activityCategory' | 'speciesCount';
 
-// Performance optimization: precomputing gradients
-export const activityCategoryGradient = ['ffffff', 'ffff47', 'ffc000', '38ff8e', '479ab8', '282e57'];
-export const speciesCountGradient = ['ffffff', 'ffff47', '39db7f', '282e57'];
+export const activityCategoryGradient = ['ffffff','ffff47','ffc000','38ff8e','479ab8','282e57'];
+export const speciesCountGradient = ['ffff47','ffc000','5fed28','24bf67','479ab8','282e57'];
 
 export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
   'MY.atlasActivityCategoryEnum0': activityCategoryGradient[0],
@@ -15,10 +14,12 @@ export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string
   'MY.atlasActivityCategoryEnum5': activityCategoryGradient[5]
 }[ac]);
 export const getSpeciesCountColor = (speciesCount: number): string => {
-  if (speciesCount < 50) { return speciesCountGradient[0]; }
-  if (speciesCount < 100) { return speciesCountGradient[1]; }
-  if (speciesCount < 150) { return speciesCountGradient[2]; }
-  return speciesCountGradient[3];
+  if (speciesCount < 25) { return speciesCountGradient[0]; }
+  if (speciesCount < 50) { return speciesCountGradient[1]; }
+  if (speciesCount < 75) { return speciesCountGradient[2]; }
+  if (speciesCount < 100) { return speciesCountGradient[3]; }
+  if (speciesCount < 125) { return speciesCountGradient[4]; }
+  return speciesCountGradient[5];
 };
 export const getFeatureColor = (gridSq: AtlasGridSquare, visualizationMode: VisualizationMode): string => (
   visualizationMode === 'activityCategory'

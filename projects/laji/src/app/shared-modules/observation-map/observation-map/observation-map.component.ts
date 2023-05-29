@@ -151,6 +151,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     'gathering.interpretations.coordinateAccuracy'
   ];
   @Input() noClick = false;
+  @Input() pointModeBreakpoint = 5000;
 
   @Output() create = new EventEmitter();
 
@@ -186,7 +187,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private boxGeometryPageSize = 10000;
   private pointGeometryPageSize = 10000;
-  private pointModeBreakpoint = 5000;
   private activeZoomThresholdLevel = 0;
   private activeZoomThresholdBounds?: any;
   private dataFetchSubscription: Subscription;
@@ -461,7 +461,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       drawData: this.getDrawData$(query),
       dataOptions: this.getDataOptions$(query, bounds)
     }).subscribe(({drawData, dataOptions}) => {
-      this.lajiMap?.map?.clearDrawData();
       this.mapData = [drawData, dataOptions];
     });
   }

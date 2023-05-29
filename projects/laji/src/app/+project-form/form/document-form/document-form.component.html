@@ -25,17 +25,6 @@
                               [form]="vm.form"
                               [description]="vm.form.description"
                               lajiFormOption="description logo title options.hideTES">
-    <laji-own-submissions *ngIf="vm.namedPlace && vm.form.options?.displayOwnSubmissions"
-           [actions]="vm.isAdmin ? ['edit', 'view', 'delete'] : ['edit', 'view']"
-           [columns]="['dateObserved', 'observer', 'dateEdited']"
-           [columnNameMapping]="vm.form.options?.namedPlaceOptions?.listColumnNameMapping"
-           [collectionID]="vm.form.collectionID"
-           [formID]="vm.form.id"
-           [namedPlace]="vm.namedPlace?.id"
-           [showDownloadAll]="false"
-           [header]="vm.form.options?.formOwnSubmissionsLabel || vm.namedPlace ? 'np.formOwnSubmissions' : (vm.isAdmin ? 'haseka.ownSubmissions.allTitle' : 'haseka.mobile.ownSubmissions')"
-           [forceLocalDocument]="vm.form.options?.documentsViewableForAll"
-           [admin]="vm.isAdmin"></laji-own-submissions>
     </laji-project-form-header>
     <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
     <alert [type]="'danger'" *ngIf="vm.formData?.locked">

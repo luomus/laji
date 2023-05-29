@@ -64,7 +64,8 @@ export class PopstateService {
       ...data
     };
   }
-  getPathData() {
+
+  getPathData(): any {
     return (this.lastNavigationWasPopstate && this.urlToPathData[this.urlBeforeNavigation])
       ? this.urlToPathData[this.urlBeforeNavigation]
       : {};

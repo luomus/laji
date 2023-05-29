@@ -1,5 +1,5 @@
 <div>
-  <lu-button role='secondary' (click)='openModal()'>
+  <lu-button role='secondary' (click)='openModal()' [disabled]="(includedOptions?.length !== 0 || excludedOptions?.length !== 0) && !options?.length">
     {{modalButtonLabel}}
   </lu-button>
   <ng-container *ngIf='includedOptions?.length !== 0 || excludedOptions?.length !== 0'>

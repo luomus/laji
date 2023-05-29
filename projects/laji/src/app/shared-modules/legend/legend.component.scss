@@ -29,13 +29,18 @@ ul {
   border: 1px solid $neutral-6;
 }
 
-.hide-button {
-  font-size: $fs-1;
-  font-weight: 600;
-  color: $neutral-7;
+.hide-btn {
   background: none;
   border: none;
-  &:hover {
-    color: $neutral-5;
+  padding: 0;
+  margin-left: $sp-3;
+  margin-bottom: 4px;
+  color: $danger-5;
+  font-size: $fs-3;
+  &.glyphicon-remove-sign{
+    color: $danger-5;
+  }
+  &.glyphicon-plus-sign{
+    color: $neutral-6;
   }
 }

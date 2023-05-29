@@ -10,6 +10,10 @@
   </div>
   <h1 class="mt-4">{{ capitalize(data.taxon.vernacularName | multiLang) }} <i>({{ data.taxon.scientificName }})</i></h1>
   <h3>{{ getForeignVernacularNames(data.taxon) }}</h3>
+  <div role="alert" class="alert alert-info read-width-16" *ngIf="data.taxon.sensitive">
+    Tämä laji on määritelty sensitiiviseksi, eikä sen kaikkia havaintoja näytetä atlaskartoilla, tai havainnot voivat tulla näkyviin viiveellä.
+    <a href="https://lintuatlas.fi/sensitiiviset/" target="_blank">Lue tarkemmin eri lajien sensitiivisten havaintojen käsittelystä</a>.
+  </div>
   <div class="map-container" [innerHtml]="data.map"></div>
   <a class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
   <a class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'" target="_blank" rel="noopener noreferrer">

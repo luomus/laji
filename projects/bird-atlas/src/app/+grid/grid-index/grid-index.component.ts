@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AtlasApiService, AtlasGrid } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasGridResponse } from '../../core/atlas-api.service';
 import { LoadedElementsStore } from 'projects/laji-ui/src/lib/tabs/tab-utils';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { PopstateService } from '../../core/popstate.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GridIndexComponent implements OnInit {
-  grid$: Observable<AtlasGrid>;
+  grid$: Observable<AtlasGridResponse>;
   loadedElementsStore = new LoadedElementsStore(['map', 'table']);
 
   constructor(

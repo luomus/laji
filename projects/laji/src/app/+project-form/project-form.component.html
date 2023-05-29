@@ -6,7 +6,7 @@
                   [noPrint]="isPrintPage$ | async"
                   [staticWidth]="300"
                   (toggled)="navBarToggled($event)"
-                  [class]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
+                  [contentWrapperClass]="formOptionToClassName('options.simple options.mobile options.instructions options.resultServiceType options.allowExcel options.secondaryCopy options.allowTemplate options.hasAdmins')">
         <nav>
           <h5 lajiFormOption="title shortTitle collectionID options.shortTitleFromCollectionName options.secondaryCopy">
             <span [innerHTML]="vm.form.options?.shortTitleFromCollectionName && (vm.form.collectionID | label) || vm.form.shortTitle || vm.form.title"></span>

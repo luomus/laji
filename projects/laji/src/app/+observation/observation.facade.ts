@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, share, switchMap, take, tap } from 'rxjs/operators';
 import { hotObjectObserver } from '../shared/observable/hot-object-observer';
-import { LocalStorage } from 'ngx-webstorage';
 import { BrowserService } from '../shared/service/browser.service';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,16 +11,21 @@ import { Autocomplete } from '../shared/model/Autocomplete';
 import { FooterService } from '../shared/service/footer.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
+import { SearchQueryService } from './search-query.service';
+import { Util } from '../shared/service/util.service';
+import { LocalStorage } from 'ngx-webstorage';
 
 interface IPersistentState {
-  showIntro: boolean;
+  showSearchButtonInfo: boolean;
 }
 
 interface IObservationState extends IPersistentState {
-  query: WarehouseQueryInterface;
+  activeQuery: WarehouseQueryInterface;
+  tmpQuery: WarehouseQueryInterface;
+  tmpQueryHasChanges: boolean;
   filterVisible: boolean;
   settingsMap: any;
-  activeTab: string;
+  activeTab?: string;
   countTaxa: number;
   countUnit: number;
   loadingTaxa: boolean;
@@ -37,14 +41,16 @@ export interface IObservationViewModel extends IObservationState {
 }
 
 const _persistentState: IPersistentState = {
-  showIntro: true
+  showSearchButtonInfo: true
 };
 
 let _state: IObservationState = {
   ..._persistentState,
-  query: {},
+  activeQuery: {},
+  tmpQuery: {},
+  tmpQueryHasChanges: false,
   filterVisible: true,
-  activeTab: 'map',
+  activeTab: undefined,
   countTaxa: 0,
   countUnit: 0,
   loadingTaxa: false,
@@ -64,31 +70,35 @@ export class ObservationFacade {
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
-  readonly lgScreen$      = this.browserService.lgScreen$;
-  readonly query$         = this.state$.pipe(map((state) => state.query), distinctUntilChanged());
-  readonly loading$       = this.state$.pipe(map((state) => state.loadingUnits));
-  readonly loadingTaxa$   = this.state$.pipe(map((state) => state.loadingTaxa));
-  readonly activeTab$     = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  readonly showIntro$     = this.state$.pipe(map((state) => state.showIntro));
-  readonly countUnit$     = this.query$.pipe(switchMap((query) => this.countUnits(query)));
-  readonly countTaxa$     = this.query$.pipe(switchMap((query) => this.countTaxa(query)));
-  readonly filterVisible$ = this.state$.pipe(map((state) => state.filterVisible));
-  readonly settingsMap$   = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly lgScreen$             = this.browserService.lgScreen$;
+  readonly activeQuery$          = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
+  readonly tmpQuery$             = this.state$.pipe(map((state) => state.tmpQuery), distinctUntilChanged());
+  readonly tmpQueryHasChanges$   = this.state$.pipe(map((state) => state.tmpQueryHasChanges));
+  readonly loading$              = this.state$.pipe(map((state) => state.loadingUnits));
+  readonly loadingTaxa$          = this.state$.pipe(map((state) => state.loadingTaxa));
+  readonly activeTab$            = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
+  readonly countUnit$            = this.activeQuery$.pipe(switchMap((query) => this.countUnits(query)));
+  readonly countTaxa$            = this.activeQuery$.pipe(switchMap((query) => this.countTaxa(query)));
+  readonly filterVisible$        = this.state$.pipe(map((state) => state.filterVisible));
+  readonly settingsMap$          = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly showSearchButtonInfo$ = this.state$.pipe(map((state) => state.showSearchButtonInfo));
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
-    query: this.query$,
+    activeQuery: this.activeQuery$,
+    tmpQuery: this.tmpQuery$,
+    tmpQueryHasChanges: this.tmpQueryHasChanges$,
     loadingUnits: this.loading$,
     loadingTaxa: this.loadingTaxa$,
     activeTab: this.activeTab$,
-    showIntro: this.showIntro$,
     countUnit: this.countUnit$,
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
-    settingsMap: this.settingsMap$
+    settingsMap: this.settingsMap$,
+    showSearchButtonInfo: this.showSearchButtonInfo$
   });
 
-  private hashCache: {[key: string]: string} = {};
+  private activeQueryHash?: string;
   private _emptyQuery: WarehouseQueryInterface = {};
 
   constructor(
@@ -115,7 +125,7 @@ export class ObservationFacade {
     }
   }
 
-  updateQuery$(warehouseQuery: WarehouseQueryInterface): Observable<any> {
+  updateActiveQuery$(warehouseQuery: WarehouseQueryInterface): Observable<any> {
     return this.userService.isLoggedIn$.pipe(
       take(1),
       tap(loggedIn => {
@@ -126,15 +136,25 @@ export class ObservationFacade {
             query[key] =  loggedIn ? this.userService.getToken() : undefined;
           }
         });
+
+        const tmpQuery = Util.clone(query);
+        const nextState = {..._state, tmpQuery, tmpQueryHasChanges: false};
+
         const hash = JSON.stringify(warehouseQuery);
-        if (this.hashCache['query'] === hash) {
+        if (this.activeQueryHash === hash) {
+          this.updateState(nextState);
           return;
         }
-        this.hashCache['query'] = hash;
+        this.activeQueryHash = hash;
 
-        this.updateState({..._state, query, loadingUnits: true, loadingTaxa: true});
+        this.updateState({...nextState, activeQuery: query, loadingUnits: true, loadingTaxa: true});
       })
     );
+  }
+
+  updateTmpQuery(warehouseQuery: WarehouseQueryInterface) {
+    const hasChanges = SearchQueryService.queriesHaveDifferences(_state.activeQuery, warehouseQuery);
+    this.updateState({..._state, tmpQuery: warehouseQuery, tmpQueryHasChanges: hasChanges});
   }
 
   set emptyQuery(query: WarehouseQueryInterface) {
@@ -146,11 +166,11 @@ export class ObservationFacade {
   }
 
   clearQuery() {
-    this.updateQuery$(this.emptyQuery).subscribe();
+    this.updateActiveQuery$(this.emptyQuery).subscribe();
   }
 
-  toggleIntro() {
-    this.updatePersistentState({...this.persistentState, showIntro: !_state.showIntro});
+  hideSearchButtonInfo() {
+    this.updatePersistentState({...this.persistentState, showSearchButtonInfo: false});
   }
 
   taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {
