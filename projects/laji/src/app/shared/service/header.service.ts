@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { Meta, Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { LANGUAGES, LocalizeRouterService } from '../../locale/localize-router.service';
 
 const MAIN_TITLE = (() => {
   switch (environment.type) {
@@ -248,7 +248,7 @@ export class HeaderService implements OnDestroy {
       this.inferredHeaders.canonicalUrl = {href: canonicalUrl, rel: 'canonical'};
       this.inferredHeaders['og:url'] = canonicalUrl;
 
-      this.inferredHeaders.alternativeLinks = this.localizeRouterService.locales.map(
+      this.inferredHeaders.alternativeLinks = LANGUAGES.map(
         lang => ({
           href: environment.base + this.localizeRouterService.translateRoute(newRoute, lang),
           hreflang: lang,
