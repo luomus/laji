@@ -11,6 +11,7 @@ import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
 import { IGlobalSpecies, IGlobalSpeciesFilters } from '../../../../kerttu-global-shared/models';
+import { TranslateService } from '@ngx-translate/core';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
   autocompleteDisplayName: string;
@@ -41,7 +42,8 @@ export class TaxonSelectComponent {
   constructor(
     private cdr: ChangeDetectorRef,
     private kerttuGlobalApi: KerttuGlobalApi,
-    private userService: UserService
+    private userService: UserService,
+    private translate: TranslateService
   ) {
     this.filters$ = this.kerttuGlobalApi.getSpeciesFilters();
 
@@ -80,13 +82,17 @@ export class TaxonSelectComponent {
     this.loading = true;
     this.cdr.markForCheck();
 
-    return this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), {
-      searchQuery: token,
-      pageSize: this.limit,
-      orderBy: ['searchQuery ASC'],
-      continent: this.continent,
-      includeSpeciesWithoutAudio: true
-    }).pipe(
+    return this.kerttuGlobalApi.getSpeciesList(
+      this.userService.getToken(),
+      this.translate.currentLang,
+      {
+        searchQuery: token,
+        pageSize: this.limit,
+        orderBy: ['searchQuery ASC'],
+        continent: this.continent,
+        includeSpeciesWithoutAudio: true
+      }
+    ).pipe(
       map(result => (result.results)),
       map(result => {
         result.forEach(res => {

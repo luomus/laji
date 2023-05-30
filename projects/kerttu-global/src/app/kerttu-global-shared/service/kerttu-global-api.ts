@@ -44,19 +44,19 @@ export class KerttuGlobalApi {
     return error.message || error.body?.message;
   }
 
-  public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
+  public getSpeciesList(personToken: string, lang: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
     const path = this.basePath + '/species';
 
-    let params = new HttpParams().set('personToken', personToken);
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang);
     params = this.queryToParams(query, params);
 
     return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
-  public getSpecies(speciesId: number, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
+  public getSpecies(speciesId: number, lang: string, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
     const path = this.basePath + '/species/' + speciesId;
 
-    let params = new HttpParams();
+    let params = new HttpParams().set('lang', lang);
     if (includeValidationCount != null) {
       params = params.set('includeValidationCount', includeValidationCount);
     }

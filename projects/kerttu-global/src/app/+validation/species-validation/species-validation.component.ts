@@ -79,7 +79,7 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
     this.species$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId))
+      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId, this.translate.currentLang))
     );
     this.recordings$ = this.speciesId$.pipe(
       switchMap(speciesId => this.kerttuGlobalApi.getRecordings(speciesId).pipe(
