@@ -44,19 +44,19 @@ export class KerttuGlobalApi {
     return error.message || error.body?.message;
   }
 
-  public getSpeciesList(personToken: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
+  public getSpeciesList(personToken: string, lang: string, query: IGlobalSpeciesQuery): Observable<IGlobalSpeciesListResult> {
     const path = this.basePath + '/species';
 
-    let params = new HttpParams().set('personToken', personToken);
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang);
     params = this.queryToParams(query, params);
 
     return this.httpClient.get<IGlobalSpeciesListResult>(path, { params });
   }
 
-  public getSpecies(speciesId: number, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
+  public getSpecies(speciesId: number, lang: string, includeValidationCount?: boolean): Observable<IGlobalSpecies> {
     const path = this.basePath + '/species/' + speciesId;
 
-    let params = new HttpParams();
+    let params = new HttpParams().set('lang', lang);
     if (includeValidationCount != null) {
       params = params.set('includeValidationCount', includeValidationCount);
     }
@@ -168,15 +168,16 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IIdentificationUserStatResult>(path);
   }
 
-  public getIdentificationSpeciesStats(): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationSpeciesStats(lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/species';
+    const params = new HttpParams().set('lang', lang);
 
-    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path);
+    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  public getIdentificationOwnSpeciesStats(personToken: string): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationOwnSpeciesStats(personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/ownSpecies';
-    const params = new HttpParams().set('personToken', personToken);
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);;
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
