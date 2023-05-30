@@ -21,7 +21,7 @@ export class LineTransectPrintComponent implements OnChanges {
   public lajiMapOptions: LajiMapOptions;
   public biotopes: {[distRow: number]: string[]};
   public pages: number[][] = [];
-  public total: number;
+  public totalNbrOfPages: number;
   public routeLength: number;
   public neDistance: any = 0;
   public ykjGrid: string;
@@ -161,7 +161,7 @@ export class LineTransectPrintComponent implements OnChanges {
     }
     setTimeout(() => {
       this.pages = pages;
-      this.total = pages.length;
+      this.totalNbrOfPages = pages.length + 2;
       this.routeLength = total;
       this.cdr.markForCheck();
     }, 1);
