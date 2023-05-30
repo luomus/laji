@@ -34,6 +34,8 @@ export class LineTransectPrintComponent implements OnChanges {
     sw: {lat: 0, lng: 0}
   };
 
+  public pageHeight = 297;
+
   private pageSize = 10;
 
   constructor(
