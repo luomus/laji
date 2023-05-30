@@ -52,12 +52,12 @@
             <span *ngIf="'es' === translate.currentLang">
               ES
             </span>
-            <span *ngIf="'fr' === translate.currentLang">
+            <!--span *ngIf="'fr' === translate.currentLang">
               FR
             </span>
             <span *ngIf="'zh' === translate.currentLang">
               ZH
-            </span>
+            </span-->
           </a>
           <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
             <li *ngIf="'en' !== translate.currentLang" role="menuitem">
@@ -66,12 +66,12 @@
             <li *ngIf="'es' !== translate.currentLang" role="menuitem">
               <a rel="alternate" hreflang="es" class="navbar-link link" [routerLink]="[] | localize:'es'" queryParamsHandling="preserve">Español</a>
             </li>
-            <li *ngIf="'fr' !== translate.currentLang" role="menuitem">
+            <!--li *ngIf="'fr' !== translate.currentLang" role="menuitem">
               <a rel="alternate" hreflang="fr" class="navbar-link link" [routerLink]="[] | localize:'fr'" queryParamsHandling="preserve">Français</a>
             </li>
             <li *ngIf="'zh' !== translate.currentLang" role="menuitem">
               <a rel="alternate" hreflang="zh" class="navbar-link link" [routerLink]="[] | localize:'zh'" queryParamsHandling="preserve">中文</a>
-            </li>
+            </li-->
           </ul>
         </li>
       </ul>
