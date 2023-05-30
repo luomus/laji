@@ -168,15 +168,16 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IIdentificationUserStatResult>(path);
   }
 
-  public getIdentificationSpeciesStats(): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationSpeciesStats(lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/species';
+    const params = new HttpParams().set('lang', lang);
 
-    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path);
+    return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  public getIdentificationOwnSpeciesStats(personToken: string): Observable<IListResult<IIdentificationSpeciesStat>> {
+  public getIdentificationOwnSpeciesStats(personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/ownSpecies';
-    const params = new HttpParams().set('personToken', personToken);
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);;
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
