@@ -78,7 +78,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
       if (this.selectedSites?.length > 0) {
         this.loading = true;
-        this.kerttuGlobalApi.getRecording(this.userService.getToken(), siteIds).subscribe((result) => {
+        this.kerttuGlobalApi.getRecording(this.userService.getToken(), this.translate.currentLang, siteIds).subscribe((result) => {
           this.onGetRecordingSuccess(result);
         }, (err) => {
           this.handleError(err);
@@ -128,7 +128,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
       switchMap(() => this.kerttuGlobalApi.getNextRecording(
-        this.userService.getToken(), this.recording.id, this.selectedSites, skipCurrent
+        this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites, skipCurrent
       ))
     ).subscribe(result => {
       this.onGetRecordingSuccess(result);
@@ -141,7 +141,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.loading = true;
-        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.recording.id, this.selectedSites).subscribe(result => {
+        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites).subscribe(result => {
           this.onGetRecordingSuccess(result);
         }, (err) => {
           this.handleError(err);
