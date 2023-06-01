@@ -47,8 +47,40 @@ const constructEmptyScene = (canvasWidth: number, canvasHeight: number): Scene =
   }]
 });
 
+const entityFromGLB = (bufferData: GLB.BufferData[], jsonData: GLB.JSONData): Entity => {
+  // set up the models transform
+  const nodeTranslation: [number, number, number] = jsonData.nodes[0].translation;
+  const nodeRotation: [number, number, number, number] = jsonData.nodes[0].rotation; // quaternion
+  const nodeScale: [number, number, number] = jsonData.nodes[0].scale;
+  const T = M4.translation(nodeTranslation[0], nodeTranslation[0], nodeTranslation[0]);
+  const R = M4.rotationFromQuaternion(...nodeRotation);
+  const S = M4.scaling(...nodeScale);
+  const nodeTransform = M4.mult(
+    T, M4.mult(
+      R, S
+    )
+  );
+  const transform = nodeTransform;
+
+  // only supports a single mesh and primitive atm
+  const primitive = jsonData.meshes[0].primitives[0];
+
+  const mesh: Mesh = {
+    positions: <Float32Array>bufferData[primitive.attributes.POSITION].data,
+    normals: <Float32Array>bufferData[primitive.attributes.NORMAL].data,
+    indices: <Uint32Array>bufferData[primitive.indices].data
+  };
+
+  return {
+    mesh,
+    transform
+  };
+};
+
 export class MiniRenderer {
   scene: Scene;
+
+  private projectionMatrix: M4;
 
   private gl: WebGL2RenderingContext;
   private program: WebGLProgram;
@@ -76,6 +108,9 @@ export class MiniRenderer {
     this.worldViewProjectionLocation = <WebGLUniformLocation>this.gl.getUniformLocation(this.program, 'u_worldViewProjection');
     this.worldInverseTransposeLocation = <WebGLUniformLocation>this.gl.getUniformLocation(this.program, 'u_worldInverseTranspose');
     this.lightCountLocation = <WebGLUniformLocation>this.gl.getUniformLocation(this.program, 'u_lightCount');
+
+    this.refreshCamera();
+    this.refreshLights();
   }
 
   updateViewportSize() {
@@ -84,43 +119,22 @@ export class MiniRenderer {
   }
 
   loadModel(bufferData: GLB.BufferData[], jsonData: GLB.JSONData) {
-    // set up the models transform
-    const nodeTranslation: [number, number, number] = jsonData.nodes[0].translation;
-    const nodeRotation: [number, number, number, number] = jsonData.nodes[0].rotation; // quaternion
-    const nodeScale: [number, number, number] = jsonData.nodes[0].scale;
-    const T = M4.translation(nodeTranslation[0], nodeTranslation[0], nodeTranslation[0]);
-    const R = M4.rotationFromQuaternion(...nodeRotation);
-    const S = M4.scaling(...nodeScale);
-    const nodeTransform = M4.mult(
-      T, M4.mult(
-        R, S
-      )
-    );
-    const transform = nodeTransform;
-
-    // only supports a single mesh and primitive atm
-    const primitive = jsonData.meshes[0].primitives[0];
-
-    const mesh: Mesh = {
-      positions: <Float32Array>bufferData[primitive.attributes.POSITION].data,
-      normals: <Float32Array>bufferData[primitive.attributes.NORMAL].data,
-      indices: <Uint32Array>bufferData[primitive.indices].data
-    };
-
-    this.scene.entity = {
-      mesh,
-      transform
-    };
+    this.scene.entity = entityFromGLB(bufferData, jsonData);
   }
 
   render() {
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
-    // PROJECTION MATRIX
-    const projectionMatrix = M4.mult(this.scene.camera.projection, M4.inverse(this.scene.camera.transform));
+    // TODO: if indices buffer doesn't exist, then use drawArrays
+    this.gl.drawElements(this.gl.TRIANGLES, this.scene.entity.mesh.indices.length, this.gl.UNSIGNED_INT, 0);
+  }
 
-    // LIGHT SOURCES
+  refreshCamera() {
+    this.projectionMatrix = M4.mult(this.scene.camera.projection, M4.inverse(this.scene.camera.transform));
+  }
+
+  refreshLights() {
     this.gl.uniform1i(this.lightCountLocation, this.scene.directionLights.length);
     this.scene.directionLights.forEach((dirLight, idx) => {
       this.gl.uniform3fv(
@@ -132,8 +146,9 @@ export class MiniRenderer {
         dirLight.color
       );
     });
+  }
 
-    // ENTITIES
+  refreshEntity() {
     if (!this.scene.entity) { return; }
 
     const vertexArr = this.gl.createVertexArray();
@@ -142,11 +157,7 @@ export class MiniRenderer {
     bufferNormals(this.gl, this.normalLocation, this.scene.entity.mesh.normals);
     bufferIndices(this.gl, this.scene.entity.mesh.indices);
 
-    this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(projectionMatrix, this.scene.entity.transform));
+    this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, this.scene.entity.transform));
     this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(this.scene.entity.transform)));
-
-    // TODO: if indices buffer doesn't exist, then use drawArrays
-    this.gl.drawElements(this.gl.TRIANGLES, this.scene.entity.mesh.indices.length, this.gl.UNSIGNED_INT, 0);
   }
 }
-

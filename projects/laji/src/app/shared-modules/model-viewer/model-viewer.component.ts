@@ -57,6 +57,7 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
       switchMap(b => from(GLB.parseBlob(b)))
     ).subscribe(([bufferData, jsonData]) => {
       this.glr.loadModel(bufferData[0], jsonData);
+      this.glr.refreshEntity();
       this.glr.render();
       this.viewerIsActive = true;
     });
@@ -86,6 +87,7 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
         const amt = 0.01;
         const newTransform = rotateObjectRelativeToViewport(this.glr.scene.camera.transform, this.glr.scene.entity.transform, yDiff*amt, xDiff*amt);
         this.glr.scene.entity.transform = newTransform;
+        this.glr.refreshEntity();
         this.glr.render();
         mouseX = mousemoveEvent.clientX;
         mouseY = mousemoveEvent.clientY;
@@ -111,6 +113,7 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
         const amt = 0.01;
         const newTransform = rotateObjectRelativeToViewport(this.glr.scene.camera.transform, this.glr.scene.entity.transform, yDiff*amt, xDiff*amt);
         this.glr.scene.entity.transform = newTransform;
+        this.glr.refreshEntity();
         this.glr.render();
         touchX = touchmoveEvent.targetTouches[0].clientX;
         touchY = touchmoveEvent.targetTouches[0].clientY;
@@ -131,6 +134,8 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
     const cm = V3.sub(m, c);
     const cm2 = V3.scale(cm, -1 * event.deltaY * .001);
     this.glr.scene.camera.transform = M4.mult(this.glr.scene.camera.transform, M4.translation(cm2[0], cm2[1], cm2[2]));
+    this.glr.refreshCamera();
+    this.glr.refreshEntity();
     this.glr.render();
   }
 }
