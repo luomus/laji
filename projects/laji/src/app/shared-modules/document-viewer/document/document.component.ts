@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { HistoryService } from '../../../shared/service/history.service';
+import { DocumentPermissionService } from '../service/document-permission.service';
 
 
 @Component({
@@ -57,8 +58,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   externalViewUrl: string;
   document: any;
   documentID: string;
-  editors: string[];
-  personID: string;
+  hasEditRights: boolean;
+  hasDeleteRights: boolean;
   activeGathering: any;
   mapData: any = [];
   hasMapData = false;
@@ -75,7 +76,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
   private _highlight: string;
   private readonly recheckIterval = 10000; // check every 10sec if document not found
   private interval: Subscription;
-  private metaFetch: Subscription;
   subscriptParent: Subscription;
   subscriptDocumentTools: Subscription;
   annotationResolving: boolean;
@@ -99,15 +99,12 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private deleteDocumentService: DeleteOwnDocumentService,
-    private historyService: HistoryService
+    private historyService: HistoryService,
+    private documentPermissionService: DocumentPermissionService
   ) { }
 
   ngOnInit() {
     this.annotationTags$ = this.annotationService.getAllTags(this.translate.currentLang);
-    this.metaFetch = this.userService.user$.subscribe(person => {
-      this.personID = person.id;
-      this.cd.markForCheck();
-    });
 
     this.childComunicationsubscription = this.childComunication.childEventListner().subscribe(info => {
       this.childEvent = info;
@@ -148,10 +145,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
       this.interval.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
     }
-    if (this.metaFetch) {
-      this.metaFetch.unsubscribe();
-      this.childComunicationsubscription.unsubscribe();
-    }
     if (this.subscriptDocumentTools) {
       this.subscriptDocumentTools.unsubscribe();
       this.childComunicationsubscription.unsubscribe();
@@ -171,7 +164,8 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (!this.uri) {
       return;
     }
-    const findDox$ = this.warehouseApi
+
+    const findDoc$ = this.warehouseApi
       .warehouseQuerySingleGet(this.uri, this.own ? {editorOrObserverPersonToken: this.userService.getToken()} : undefined).pipe(
         catchError((errors) => this.own ? this.warehouseApi.warehouseQuerySingleGet(this.uri) : observableThrowError(errors)),
         map(doc => doc.document),
@@ -180,9 +174,19 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
           this.showOnlyHighlighted = this.shouldOnlyShowHighlighted(doc, this.highlight);
         })
       );
-    findDox$
-      .subscribe(
-        doc => this.parseDoc(doc, doc),
+
+    const docAndRights$ = findDoc$.pipe(
+      switchMap(doc => this.documentPermissionService.getRightsToWarehouseDocument(doc).pipe(
+        map(rights => ({doc, rights}))
+      ))
+    );
+
+    docAndRights$
+      .subscribe(({doc, rights}) => {
+          this.hasEditRights = rights.hasEditRights;
+          this.hasDeleteRights = rights.hasDeleteRights;
+          this.parseDoc(doc, doc);
+        },
         () => this.parseDoc(undefined, false)
       );
   }
@@ -266,11 +270,6 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
         Global.externalViewers[doc.sourceId].replace('%uri%', doc.documentId) : '';
       if (doc.documentId) {
         this.documentID = IdService.getId(doc.documentId);
-      }
-      if (doc.linkings && doc.linkings.editors) {
-        this.editors = doc.linkings.editors.map(editor => IdService.getId(editor.id)).filter(val => val);
-      } else {
-        this.editors = [];
       }
       let activeGatheringIdx = 0;
       if (doc && doc.gatherings) {

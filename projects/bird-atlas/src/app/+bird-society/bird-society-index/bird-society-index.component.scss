@@ -1,0 +1,17 @@
+@import 'vars';
+
+.lappi-img {
+  max-width: 600px;
+}
+
+:host ::ng-deep ngx-datatable.material datatable-body-row.datatable-body-row.aggregate-row {
+  background: $info-2;
+}
+
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row.aggregate-row .datatable-body-cell {
+  color: $info-8;
+}
+
+:host ::ng-deep .ngx-datatable.material .de-emphasize {
+  color: $neutral-6;
+}

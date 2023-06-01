@@ -82,6 +82,8 @@ import { TranslatableIucnPipe } from './pipe/translatable-iucn.pipe';
 import { ProjectFormOptionDirective } from './directive/project-form-option.directive';
 import { TypeGuardPipe } from './pipe/type-guard.pipe';
 import { PdfButtonComponent } from './pdf-button/pdf-button.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
 
 @NgModule({
     declarations: [
@@ -122,7 +124,8 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
         TranslatableIucnPipe,
         ProjectFormOptionDirective,
         TypeGuardPipe,
-        PdfButtonComponent
+        PdfButtonComponent,
+        IfWidthAboveBreakpointDirective
     ],
     imports: [
         FormsModule,
@@ -138,7 +141,8 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
         LajiUiModule,
         TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
         UtilitiesModule,
-        InfoModule
+        InfoModule,
+        LayoutModule
     ],
     providers: [],
     exports: [
@@ -164,7 +168,8 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
         TranslatableIucnPipe,
         ProjectFormOptionDirective,
         TypeGuardPipe,
-        PdfButtonComponent
+        PdfButtonComponent,
+        IfWidthAboveBreakpointDirective
     ]
 })
 export class SharedModule {

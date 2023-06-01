@@ -7,3 +7,13 @@
     display: inline-block;
     margin-right: 5px;
 }
+
+.primary-specimen {
+  display: inline-block;
+  background-color: yellowgreen;
+  color: white;
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-left: 5px;
+}

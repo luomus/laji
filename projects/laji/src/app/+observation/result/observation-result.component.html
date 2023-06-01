@@ -33,7 +33,7 @@
           <laji-observation-count
             *ngIf="visible.countHits"
             [overrideInQuery]="{countryId: ['ML.206']}"
-            [query]="query"></laji-observation-count>
+            [query]="activeQuery"></laji-observation-count>
         </strong>
         {{ 'observation.results.observation' | translate }}
       </div>
@@ -42,7 +42,7 @@
           <laji-observation-count
             *ngIf="visible.countTaxa"
             [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
-            [query]="query"
+            [query]="activeQuery"
             [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
           {{ 'observation.results.species' | translate }}
         </strong>
@@ -52,16 +52,16 @@
   <button class="btn btn-primary" *ngIf="visible.download" (click)="openDownloadModal()">{{ 'search.result.load' | translate }}</button>
   <div class="flex-grow"></div>
   <div class="finnish-selector-buttons" *ngIf="visible.finnish">
-    <lu-button [routerLink]="['/observation', activeTab] | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
+    <lu-button [routerLink]="(activeTab ? ['/observation', activeTab] : ['/observation']) | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode !== 'finnish'">
       {{ 'search.result.all' | translate }}</lu-button>
-    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="query | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
+    <lu-button [routerLink]="'/observation/finnish' | localize" [queryParams]="activeQuery | toSafeQuery:skipUrlParameters" [disabled]="mode === 'finnish'">
       {{ 'search.result.finnish' | translate }}</lu-button>
   </div>
 </div>
 
 <lu-tabs *ngIf="loadedModes.isLoaded('all')" [hidden]="mode !== 'all'" [selectedIndex]="selectedTabIdx"
          (selectedChange)="onSelect($event)">
-  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate">
+  <lu-tab *ngIf="visible.list" [heading]="'search.result.list' | translate" headerClass="obs-filter-list">
     <laji-observation-result-list
       *ngIf="loadedTabs.isLoaded('list')"
       [resultBase]="resultBase"
@@ -69,7 +69,7 @@
       [settings]="listSettings"
       (settingsChange)="listSettingsChange.emit($event)"
       [visible]="activeTab === 'list'"
-      [query]="query"
+      [query]="activeQuery"
     ></laji-observation-result-list>
   </lu-tab>
   <lu-tab *ngIf="visible.map" [heading]="'search.result.map' | translate" headerClass="obs-filter-map">
@@ -77,7 +77,7 @@
       *ngIf="loadedTabs.isLoaded('map')"
       [ready]="!loadingUnits"
       [height]="-1"
-      [query]="query"
+      [query]="activeQuery"
       [draw]="{rectangle: true, marker: false, polygon: true, polyline: false, circle: false, single: true}"
       [initWithWorldMap]="true"
       (create)="pickLocation($event)"
@@ -91,7 +91,7 @@
         [showPopover]="true"
         [showViewSwitch]="true"
         [shortcut]="false"
-        [query]="query">
+        [query]="activeQuery">
       </laji-gallery>
     </div>
   </lu-tab>
@@ -105,7 +105,7 @@
             [visible]="activeTab === 'species'"
             [pageSize]="100"
             [height]="'calc(80vh - 40px)'"
-            [query]="query"
+            [query]="activeQuery"
             [showSettingsMenu]="false"
             [showRowAsLink]="false"
             [isAggregate]="true"
@@ -148,8 +148,8 @@
           ></laji-observation-chart>-->
             <laji-horizontal-chart
               [lang]="lang"
-              [query]="query"
-              (queryChange)="queryChange.emit($event)"
+              [query]="activeQuery"
+              (queryChange)="activeQueryChange.emit($event)"
               [height]="300"
               [showLegend]="true"
               [visible]="true"
@@ -171,7 +171,7 @@
               {{ 'taxonomy.observations.yearChart.disclaimer' | translate }}
             </p>
             <laji-observation-year-chart
-              [query]="query"
+              [query]="activeQuery"
               [enableOnlyCount]="false"
               (hasData)="hasYearData = $event"
             ></laji-observation-year-chart>
@@ -184,7 +184,7 @@
                 [autoToggle]="true"
           >
             <laji-observation-month-day-chart
-              [query]="query"
+              [query]="activeQuery"
               [enableOnlyCount]="false"
               (hasData)="hasMonthDayData = $event"
             ></laji-observation-month-day-chart>
@@ -193,7 +193,7 @@
       </div>
       <div class="form-group spacer">
         <div class="col-lg-12">
-          <laji-observation-filters [visible]="activeTab === 'statistics'" [query]="query" [onlyCount]="onlyCount" (queryChange)="queryChange.emit($event)"></laji-observation-filters>
+          <laji-observation-filters [visible]="activeTab === 'statistics'" [query]="activeQuery" [onlyCount]="onlyCount" (queryChange)="activeQueryChange.emit($event)"></laji-observation-filters>
         </div>
       </div>
       <div class="lu">
@@ -210,18 +210,18 @@
     </ng-container>
   </lu-tab>
   <lu-tab *ngIf="visible.annotations" [heading]="'search.result.annotation' | translate">
-    <laji-annotations [query]="query"
+    <laji-annotations [query]="activeQuery"
         *ngIf="loadedTabs.isLoaded('annotations')"
     ></laji-annotations>
   </lu-tab>
-  <lu-tab *ngIf="visible.own && (query.editorPersonToken || query.observerPersonToken || query.editorOrObserverPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
+  <lu-tab *ngIf="visible.own && (activeQuery.editorPersonToken || activeQuery.observerPersonToken || activeQuery.editorOrObserverPersonToken)" [heading]="'haseka.ownSubmissions.title' | translate">
     <div>
       <laji-observation-table-own-documents
       [visible]="true"
       [pageSize]="100"
       [height]="'calc(80vh - 40px)'"
       [overrideInQuery]="{collectionIdNot: ['HR.3211']}"
-      [query]="query"
+      [query]="activeQuery"
       [showSettingsMenu]="false"
       [showRowAsLink]="false"
       [isAggregate]="true"
@@ -231,9 +231,13 @@
     </div>
   </lu-tab>
 </lu-tabs>
+<laji-observation-result-front
+  *ngIf="mode === 'all' && !activeTab"
+  [query]="activeQuery"
+></laji-observation-result-front>
 
 <div [hidden]="mode !== 'finnish'" *ngIf="loadedModes.isLoaded('finnish') && visible.finnish">
-  <laji-main-result [query]="query" [visible]="mode === 'finnish'"></laji-main-result>
+  <laji-main-result [query]="activeQuery" [visible]="mode === 'finnish'"></laji-main-result>
 </div>
 
 <laji-observation-download
@@ -241,5 +245,5 @@
   (settingsChange)="listSettingsChange.emit($event)"
   [speciesCount]="speciesCount"
   [unitCount]="unitCount"
-  [query]="query"
+  [query]="activeQuery"
 ></laji-observation-download>

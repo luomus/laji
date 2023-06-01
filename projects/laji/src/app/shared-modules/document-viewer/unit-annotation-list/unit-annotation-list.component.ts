@@ -12,7 +12,7 @@ import { AnnotationTag } from '../../../shared/model/AnnotationTag';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UnitAnnotationListComponent implements OnInit, OnDestroy {
-  @Input() editors: string[];
+  @Input() isEditor: boolean;
   @Input() personID: string;
   @Input() personRoleAnnotation: Annotation.AnnotationRoleEnum;
   @Input() documentID: string;

@@ -1,4 +1,3 @@
-<laji-observation-active [(query)]="query" (queryChange)="onQueryChange()" [queryType]="'observation'"></laji-observation-active>
 <div *lajiForTypes="['vir']">
   <a class="btn btn-default btn-sm"
     [routerLink]="['/observation/map'] | localize"
@@ -706,7 +705,7 @@
       <label>{{ 'observation.form.invasive' | translate }}</label><laji-info>{{ 'observation.info.invasive' | translate }}</laji-info><br>
     </div>
     <laji-three-state-switch
-      (change)="onQueryChange()"
+      (update)="onQueryChange()"
       [onText]="'yes' | translate"
       [offText]="'no' | translate"
       [(value)]="query.invasive">
@@ -721,6 +720,17 @@
       [onText]="'yes' | translate"
       [offText]="'no' | translate"
       [(value)]="query.finnish">
+    </laji-three-state-switch>
+  </div>
+  <div>
+    <div>
+      <label>{{ 'observation.form.sensitive' | translate }}</label><br>
+    </div>
+    <laji-three-state-switch
+      (update)="onQueryChange()"
+      [onText]="'yes' | translate"
+      [offText]="'no' | translate"
+      [(value)]="query.sensitive">
     </laji-three-state-switch>
   </div>
 </section>

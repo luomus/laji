@@ -21,6 +21,7 @@ import { ObservationTableColumn } from '../../../../../shared-modules/observatio
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { DatatableComponent } from '../../../../../shared-modules/datatable/datatable/datatable.component';
 import { SelectionType, SortType } from '@swimlane/ngx-datatable';
+import { NpInfoComponent } from '../../np-info/np-info.component';
 
 @Component({
   selector: 'laji-np-list',
@@ -51,6 +52,7 @@ export class NpListComponent implements OnDestroy {
   private _visibleTimeout: Timeout;
   private _formRights: Rights;
   private _documentForm: Form.SchemaForm;
+  private _placeForm: Form.SchemaForm;
 
   @ViewChild('label', { static: true }) labelIDTpl: TemplateRef<any>;
   @ViewChild('status', { static: true }) statusTpl: TemplateRef<any>;
@@ -144,17 +146,23 @@ export class NpListComponent implements OnDestroy {
 
   @Input() set formRights(formRights: Rights) {
     this._formRights = formRights;
-    this.initFields();
+    this.initColumns();
   }
 
   @Input() set documentForm(documentForm: Form.SchemaForm) {
     this._documentForm = documentForm;
-    this.initFields();
+    this.initColumns();
   }
 
-  initFields() {
+  @Input() set placeForm(placeForm: Form.SchemaForm) {
+    this._placeForm = placeForm;
+    this.initColumns();
+  }
+
+  initColumns() {
     const documentForm = this._documentForm;
-    if (!this._formRights || !documentForm) {
+    const placeForm = this._placeForm;
+    if (!this._formRights || !documentForm || !placeForm) {
       return;
     }
 
@@ -165,27 +173,27 @@ export class NpListComponent implements OnDestroy {
       && this._fields.indexOf('$.reserve.reserver') === -1) {
       this._fields.push('$.reserve.reserver');
     }
-    const cols: ObservationTableColumn[] = [];
-    for (const path of this._fields) {
-      const {cellTemplate, ...columnMetadata} = this.columnsMetaData[path] || {} as DatatableColumn;
-      const col: DatatableColumn = {
+
+
+    const cols = this._fields.reduce((_cols, path) => {
+
+      const schema = NpInfoComponent.getSchemaFromNPJsonPathPointer(placeForm, documentForm, path);
+      const isEnumType = schema?.type === 'string' && schema.oneOf;
+      const hardCodedCol: Partial<DatatableColumn> = this.columnsMetaData[path] || {};
+      const col = {
         name: path,
         width: 50,
-        label: path,
-        ...columnMetadata
+        cellTemplate: isEnumType ? 'labelIDTpl' : undefined,
+        ...hardCodedCol,
+        label: this.listColumnNameMapping?.[path] ?? hardCodedCol.label ?? schema?.title ?? path,
       };
-      if (this.listColumnNameMapping && this.listColumnNameMapping[path]) {
-        col.label = this.listColumnNameMapping[path];
+      if (col.cellTemplate) {
+        col.cellTemplate = this[col.cellTemplate];
       }
-      if (cellTemplate) {
-        if (this[cellTemplate]) {
-          col.cellTemplate = this[cellTemplate];
-        } else {
-          console.warn(`Unknown cellTemplate ${cellTemplate} for column ${col.name} (${col.label})`);
-        }
-      }
-      cols.push(col);
-    }
+      _cols.push(col);
+
+      return _cols;
+    }, []);
     this.sorts = cols[0] ? [{prop: cols[0].name, dir: 'asc'}] : [];
     this.columns = cols;
     this.showLegendList = documentForm.options?.namedPlaceOptions?.showLegendList;
