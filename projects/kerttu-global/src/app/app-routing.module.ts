@@ -48,11 +48,11 @@ const routesWithLang: Routes = [
       ...routes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleEsComponent, canActivate: [LocalizeGuard]},
-  /*{path: 'fr', data: {lang: 'fr'}, children: [
+  {path: 'fr', data: {lang: 'fr'}, children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleFrComponent, canActivate: [LocalizeGuard]},
-  {path: 'zh', data: {lang: 'zh'}, children: [
+  /*{path: 'zh', data: {lang: 'zh'}, children: [
       ...routes,
       {path: '**', component: NotFoundComponent}
     ], component: LocaleZhComponent, canActivate: [LocalizeGuard]},*/

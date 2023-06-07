@@ -16,6 +16,6 @@ export const environment = {
   protaxApi: 'https://protax-api.rahtiapp.fi',
   geoserver: 'https://geoserver.laji.fi',
   defaultLang: 'en',
-  languages: ['en', 'es'],
+  languages: ['en', 'es', 'fr'],
   displayDevRibbon: false
 };
