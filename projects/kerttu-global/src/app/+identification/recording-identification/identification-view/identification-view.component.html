@@ -47,7 +47,7 @@
         >
           {{ 'identification.nextRecording' | translate }}
         </button>
-        <laji-info [html]="'identification.nextRecording.info' | translate" [showOnHover]="true"></laji-info>
+        <laji-info [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.nextRecordingInsect.info' : 'identification.nextRecording.info') | translate" [showOnHover]="true"></laji-info>
       </div>
     </div>
   </div>
@@ -128,15 +128,15 @@
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ 'identification.containsUnknownBirds' | translate }}
+              <input type="checkbox" [(ngModel)]="annotation.containsUnknownBirds" (change)="updateAnnotation()">{{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.containsUnknownInsects' : 'identification.containsUnknownBirds') | translate }}
             </label>
-            <laji-info [html]="'identification.containsUnknownBirds.info' | translate" [showOnHover]="true"></laji-info>
+            <laji-info [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.containsUnknownInsects.info' : 'identification.containsUnknownBirds.info') | translate" [showOnHover]="true"></laji-info>
           </div>
           <div class="checkbox">
             <label>
-              <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ 'identification.doesNotContainBirds' | translate }}
+              <input type="checkbox" [(ngModel)]="annotation.doesNotContainBirds" (change)="updateAnnotation()">{{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.doesNotContainInsects' : 'identification.doesNotContainBirds') | translate }}
             </label>
-            <laji-info [html]="'identification.doesNotContainBirds.info' | translate" [showOnHover]="true"></laji-info>
+            <laji-info [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.doesNotContainInsects.info' : 'identification.doesNotContainBirds.info') | translate" [showOnHover]="true"></laji-info>
           </div>
         </div>
       </div>
@@ -144,16 +144,16 @@
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translate }}:
+              <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.containsInsectsNotOnList' : 'identification.containsBirdsNotOnList') | translate }}:
             </label>
-            <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
+            <laji-info [placement]="'right'" [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.containsInsectsNotOnList.info' : 'identification.containsBirdsNotOnList.info') | translate" [showOnHover]="true"></laji-info>
           </div>
           <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
         </div>
         <div class="col-sm-6">
           <div class="checkbox">
             <label>
-              <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ 'identification.hasBoxesForAllBirdSounds' | translate }}
+              <input type="checkbox" [(ngModel)]="annotation.hasBoxesForAllBirdSounds" (change)="updateAnnotation()">{{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.hasBoxesForAllInsectSounds' : 'identification.hasBoxesForAllInsectSounds') | translate }}
             </label>
           </div>
         </div>
@@ -161,7 +161,7 @@
     </div>
     <div class="form-group">
       <h4>
-        {{ 'identification.listSpecies' | translate }}
+        {{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.listInsectSpecies' : 'identification.listSpecies') | translate }}
         <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
       </h4>
       <bsg-taxon-select
@@ -184,9 +184,9 @@
     ></bsg-identification-table>
     <div class="form-group mt-4 mb-4">
       <label for="drawNonBird" class="d-inline">
-        {{ 'identification.drawNonBird' | translate }}
+        {{ (recording.taxonType === taxonTypeEnum.insect ? 'identification.drawNonInsect' : 'identification.drawNonBird') | translate }}
       </label>
-      <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
+      <laji-info [placement]="'right'" [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.drawNonInsect.info' : 'identification.drawNonBird.info') | translate" [showOnHover]="true"></laji-info>
       <div>
         <button
           id="drawNonBird"
