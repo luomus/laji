@@ -24,6 +24,7 @@ export interface IGlobalSpeciesQuery {
   pageSize?: number;
   orderBy?: string[];
   includeSpeciesWithoutAudio?: boolean;
+  taxonType?: TaxonTypeEnum;
 }
 
 export interface IGlobalSpecies {

@@ -166,6 +166,7 @@
       </h4>
       <bsg-taxon-select
         id="species-select"
+        [taxonType]="recording.taxonType"
         (taxonSelect)="addToIdentifications($event)"
       ></bsg-taxon-select>
     </div>

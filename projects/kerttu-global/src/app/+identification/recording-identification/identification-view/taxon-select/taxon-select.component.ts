@@ -1,4 +1,4 @@
-import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, share, shareReplay, switchMap, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +10,7 @@ import {
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
-import { IGlobalSpecies, IGlobalSpeciesFilters } from '../../../../kerttu-global-shared/models';
+import { IGlobalSpecies, IGlobalSpeciesFilters, TaxonTypeEnum } from '../../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
 
 interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
@@ -25,6 +25,7 @@ interface IGlobalSpeciesWithAutocompleteInfo extends IGlobalSpecies {
 })
 export class TaxonSelectComponent {
 
+  @Input() taxonType = TaxonTypeEnum.bird;
   @Input() limit = 10;
   @Input() placeholder = '';
 
@@ -37,6 +38,8 @@ export class TaxonSelectComponent {
   continent: number|null = null;
   filters$: Observable<IGlobalSpeciesFilters>;
 
+  taxonTypeEnum = TaxonTypeEnum;
+
   private tokenMinLength = 3;
 
   constructor(
@@ -47,18 +50,11 @@ export class TaxonSelectComponent {
   ) {
     this.filters$ = this.kerttuGlobalApi.getSpeciesFilters();
 
-    this.dataSource = Observable.create((observer: any) => {
+    this.dataSource = new Observable<string>((observer: any) => {
       observer.next(this.value);
-    });
-    this.dataSource = this.dataSource.pipe(
-      distinctUntilChanged(),
+    }).pipe(
       switchMap((token: string) => this.getTaxa(token)),
-      switchMap((data) => {
-        if (this.value) {
-          return ObservableOf(data);
-        }
-        return ObservableOf([]);
-      })
+      switchMap((data) => ObservableOf(data))
     );
   }
 
@@ -75,7 +71,7 @@ export class TaxonSelectComponent {
   }
 
   private getTaxa(token: string): Observable<IGlobalSpeciesWithAutocompleteInfo[]> {
-    if (!token || token.length < this.tokenMinLength) {
+    if (this.taxonType !== TaxonTypeEnum.insect && (!token || token.length < this.tokenMinLength)) {
       return of([]);
     }
 
@@ -86,6 +82,7 @@ export class TaxonSelectComponent {
       this.userService.getToken(),
       this.translate.currentLang,
       {
+        taxonType: this.taxonType,
         searchQuery: token,
         pageSize: this.limit,
         orderBy: ['searchQuery ASC'],
@@ -96,7 +93,12 @@ export class TaxonSelectComponent {
       map(result => (result.results)),
       map(result => {
         result.forEach(res => {
-          res['autocompleteDisplayName'] = this.addBold(res.commonName, this.value) + ' - <i>' + this.addBold(res.scientificName, this.value) + '</i>';
+          let autocompleteDisplayName = '';
+          if (res.commonName) {
+            autocompleteDisplayName += this.addBold(res.commonName, this.value) + ' - ';
+          }
+          autocompleteDisplayName += '<i>' + this.addBold(res.scientificName, this.value) + '</i>';
+          res['autocompleteDisplayName'] = autocompleteDisplayName;
         });
         return result;
       }),

@@ -1,7 +1,7 @@
 <ng-template #headingTemplate>
   <div class="identification-heading">
     <strong class="panel-title">
-      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container>{{ identification.commonName }} - {{ identification.scientificName }}
+      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container><ng-container *ngIf="identification.commonName">{{ identification.commonName }} - </ng-container>{{ identification.scientificName }}
     </strong>
     <div class="pull-right">
       <div class="d-inline mr-3" *ngIf="identification.hasAudio">
