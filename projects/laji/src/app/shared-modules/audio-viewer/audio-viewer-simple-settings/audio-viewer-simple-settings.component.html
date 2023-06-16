@@ -11,7 +11,7 @@
   </bSwitch>
   <laji-info *ngIf="showWholeTimeRangeInfo" [placement]="'right'" [html]="showWholeTimeRangeInfo" [showOnHover]="true"></laji-info>
 </div>
-<div>
+<div *ngIf="showFrequencyRangeSwitch">
   <label>{{ showWholeFrequencyRangeLabel }}</label>
   <bSwitch
     [switch-on-text]="'on' | translate"

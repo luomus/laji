@@ -21,8 +21,8 @@ import {
   IGlobalSpecies,
   IGlobalSpeciesAnnotation,
   IGlobalSpeciesWithAnnotation,
-  RecordingTypeEnum,
-  SpeciesAnnotationEnum
+  SpeciesAnnotationEnum,
+  TaxonTypeEnum
 } from '../../../kerttu-global-shared/models';
 import {
   AudioViewerMode,
@@ -37,7 +37,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { KerttuGlobalUtil } from '../../../kerttu-global-shared/service/kerttu-global-util.service';
 import { IdentificationTableComponent } from './identification-table/identification-table.component';
 import { defaultSpectrogramConfig } from '../../../../../../laji/src/app/shared-modules/audio-viewer/variables';
-import { defaultAudioSampleRate, defaultBatAudioSampleRate, lowAudioSampleRate } from '../../../kerttu-global-shared/variables';
+import {
+  defaultAudioSampleRate,
+  defaultBatAudioSampleRate,
+  defaultInsectAudioSampleRate,
+  lowAudioSampleRate
+} from '../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
 import { AudioViewerComponent } from '../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
 
@@ -78,7 +83,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   overlappingBirdRectangleColor = '#d9d926';
   nonBirdRectangleColor = '#d98026';
 
-  recordingTypeEnum = RecordingTypeEnum;
+  taxonTypeEnum = TaxonTypeEnum;
 
   topContentHeight = 265;
 
@@ -115,7 +120,9 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.sampleRate = this.recording.recordingType === RecordingTypeEnum.default ? defaultAudioSampleRate : defaultBatAudioSampleRate;
+      this.sampleRate = this.recording.taxonType === TaxonTypeEnum.bird ? defaultAudioSampleRate :
+        this.recording.taxonType === TaxonTypeEnum.bat ? defaultBatAudioSampleRate :
+          defaultInsectAudioSampleRate;
       this.updateSpectrogramConfig();
       this.audioViewerRectangles = [];
       this.updateSelectedSpecies();
@@ -213,13 +220,17 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   }
 
   updateSpectrogramConfig() {
-    const isBatRecording = this.recording?.recordingType === RecordingTypeEnum.bat;
-    if (isBatRecording) {
+    if (this.recording?.taxonType === TaxonTypeEnum.bat) {
       this.spectrogramConfig = {
         ...defaultSpectrogramConfig,
         sampleRate: defaultBatAudioSampleRate,
         targetWindowLengthInSeconds: 0.004,
         minFrequency: 14000
+      };
+    } else if (this.recording?.taxonType === TaxonTypeEnum.insect) {
+      this.spectrogramConfig = {
+        ...defaultSpectrogramConfig,
+        sampleRate: defaultInsectAudioSampleRate
       };
     } else {
       this.spectrogramConfig = {
