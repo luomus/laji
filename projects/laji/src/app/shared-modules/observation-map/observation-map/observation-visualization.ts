@@ -6,7 +6,7 @@ const BASE_FEATURE_STYLE = {
 const CURRENT_YEAR = new Date().getFullYear();
 const RECORD_AGE_BREAKPOINTS = [2, 10, 20, 40, Infinity].map(bp => CURRENT_YEAR - bp);
 
-const getObsCountColor = (count: number): string => {
+export const getObsCountColor = (count: number): string => {
   const idx = [10, 100, 1000, 10000, Infinity].findIndex(bp => count <= bp);
   return lajiMapObservationVisualization.obsCount.categories[idx].color;
 };
@@ -63,7 +63,12 @@ const getCoordinateAccuracyClassName = (coordinateAccuracy: number): string => {
 const visualizationModes = ['obsCount', 'recordQuality', 'redlistStatus', 'individualCount', 'recordAge'] as const;
 export type ObservationVisualizationMode = typeof visualizationModes[number];
 type ObservationVisualization = LajiMapVisualization<ObservationVisualizationMode> &
-  Record<ObservationVisualizationMode, {getFeatureStyle: LajiMapVisualizationItem['getFeatureStyle']}>;
+  Record<ObservationVisualizationMode,
+  {
+    getFeatureStyle: LajiMapVisualizationItem['getFeatureStyle'];
+    getClusterStyle: LajiMapVisualizationItem['getClusterStyle'];
+  }>;
+
 export const lajiMapObservationVisualization: ObservationVisualization = {
   obsCount: {
     label: 'laji-map.legend.mode.obsCount',
@@ -93,7 +98,18 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       ...BASE_FEATURE_STYLE,
       color: getObsCountColor(options.feature.properties.count),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-    })
+    }),
+    getClusterStyle(childCount, featureIdxs, cluster, features) {
+      const clusterFeatures = featureIdxs.map(i => features[i]);
+      return {
+        ...BASE_FEATURE_STYLE,
+        color: getObsCountColor(clusterFeatures[0].properties.count),
+      };
+    },
+    getClusterClassName(childCount, featureIdxs, cluster, features) {
+      const clusterFeatures = featureIdxs.map(i => features[i]);
+      return getCoordinateAccuracyClassName(clusterFeatures[0].properties['gathering.interpretations.coordinateAccuracy']);
+    },
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
@@ -123,7 +139,10 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       ...BASE_FEATURE_STYLE,
       color: getRecordQualityColor(options.feature.properties.recordQualityMax),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-    })
+    }),
+    getClusterStyle(childCount, featureIdxs, cluster) {
+      return {...BASE_FEATURE_STYLE};
+    },
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
@@ -153,7 +172,10 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       ...BASE_FEATURE_STYLE,
       color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-    })
+    }),
+    getClusterStyle(childCount, featureIdxs, cluster) {
+      return {...BASE_FEATURE_STYLE};
+    },
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
@@ -187,7 +209,10 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       ...BASE_FEATURE_STYLE,
       color: getIndividualCountColor(options.feature.properties.individualCountSum),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-    })
+    }),
+    getClusterStyle(childCount, featureIdxs, cluster) {
+      return {...BASE_FEATURE_STYLE};
+    },
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -217,6 +242,9 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       ...BASE_FEATURE_STYLE,
       color: getRecordAgeColor(options.feature.properties.newestRecord),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
-    })
+    }),
+    getClusterStyle(childCount, featureIdxs, cluster) {
+      return {...BASE_FEATURE_STYLE};
+    },
   }
 };

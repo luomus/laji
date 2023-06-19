@@ -30,13 +30,15 @@ import { combineColors } from 'laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
+  getObsCountColor,
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L, { LeafletEvent, PathOptions } from 'leaflet';
+import L, { LeafletEvent, MarkerCluster, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
+import { P } from '@angular/cdk/keycodes';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -60,22 +62,33 @@ const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Fea
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
-const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
-  let classNames = classNamesAsArr(po.className);
-  const icon: any = L.divIcon({
+const getClusterIcon = (cluster: MarkerCluster): L.DivIcon => {
+  let classNames = ['coordinate-accuracy-cluster'];
+  const count = cluster.getAllChildMarkers().reduce((prev, marker) => prev + marker.feature.properties.count, 0);
+  const icon: L.DivIcon = L.divIcon({
     className: classNames.join(' '),
-    html: `<span>${feature.properties.count}</span>`
+    html: `<span>${count}</span>`
   });
-  icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
-    const opacityAsHexCode = po2.opacity < 1 ? po2.opacity
+
+  // monkey patch the create icon function
+  const oldCreateFn = icon.createIcon;
+  icon.createIcon = (oldIcon: any) => {
+    const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
+    iconDomElem.style['background-color'] = getObsCountColor(count);
+    return iconDomElem;
+  };
+
+  // setStyle is only called for point markers (not clusters of multiple markers)
+  // therefore the clusters get the original styles described above,
+  // and the point markers get the updated styles described below
+  (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
+    iconDomElem.classList.remove('coordinate-accuracy-cluster');
+    const opacityAsHexCode = po.opacity < 1 ? po.opacity
       .toString(16) // Convert to hex.
       .padEnd(4, '0') // Pad with zeros to fix length.
       .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
-    iconDomElem.style['background-color'] = po2.color + opacityAsHexCode;
-    iconDomElem.style['height'] = '30px';
-    iconDomElem.style['width'] = '30px';
-    iconDomElem.style['border-radius'] = '100%';
-    const newClassNames = classNamesAsArr(po2.className);
+    iconDomElem.style['background-color'] = po.color + opacityAsHexCode;
+    const newClassNames = classNamesAsArr(po.className);
     classNames.forEach(c => iconDomElem.classList.remove(c));
     newClassNames.forEach(c => iconDomElem.classList.add(c));
     classNames = newClassNames;
@@ -539,8 +552,11 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       on: {
         click: this.onFeatureClick.bind(this)
       },
-      marker: {
-        icon: getPointIcon
+      cluster: {
+        singleMarkerMode: true,
+        maxClusterRadius: 15,
+        iconCreateFunction: getClusterIcon,
+        showCoverageOnHover: false
       },
       label: this.translate.instant('observation.map.dataOpacityControl.label'),
       visible: this.dataVisible,

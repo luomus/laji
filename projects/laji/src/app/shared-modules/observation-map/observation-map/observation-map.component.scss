@@ -69,6 +69,17 @@ $blur: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 30px !important;
+  width: 30px !important;
+  border-radius: 100% !important;
+}
+
+:host ::ng-deep .coordinate-accuracy-cluster {
+  @include coordinateAccuracy();
+  box-shadow: 1px 0 4px 0 rgba(#000, .6);
+  height: 26px !important;
+  width: 26px !important;
+  border-radius: 0 !important;
 }
 
 :host ::ng-deep .coordinate-accuracy-0 {
