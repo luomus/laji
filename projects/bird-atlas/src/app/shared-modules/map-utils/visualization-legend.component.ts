@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { activityCategoryGradient, speciesCountGradient, VisualizationMode, visualizationModeTitles } from './visualization-mode';
 
 const speciesCountLegendLabels = [
-  '1-24 lajia',
+  '0-24 lajia',
   '25-49 lajia',
   '50-74 lajia',
   '75-99 lajia',
