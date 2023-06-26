@@ -24,7 +24,7 @@ export class FrontComponent implements OnInit, OnDestroy {
     center: [64.209802, 24.912872],
     zoom: 3,
     tileLayerName: LajiMapTileLayerName.maastokartta,
-    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset],
+    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset, LajiMapOverlayName.barentsRegion],
     controls: {
       draw: {
         marker: true,

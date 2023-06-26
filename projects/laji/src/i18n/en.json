@@ -1445,6 +1445,7 @@
   "result.gathering.abundanceUnit": "Määrän yksikkö",
   "result.gathering.biogeographicalProvince": "Biogeographical Province",
   "result.gathering.biogeographicalProvinceOccurrence": "Occurences by biogeographical province",
+  "result.gathering.birdSociety": "Ornithological Society",
   "result.gathering.conversions.dayOfYearBegin": "Begin day of year",
   "result.gathering.conversions.dayOfYearEnd": "End day of year",
   "result.gathering.conversions.euref": "ETRS-TM35FIN",

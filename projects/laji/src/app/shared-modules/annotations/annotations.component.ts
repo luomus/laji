@@ -103,6 +103,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.subscribeRefreshedAnnotations?.unsubscribe();
     this.subscribeRefreshedAnnotations1.unsubscribe();
   }
 

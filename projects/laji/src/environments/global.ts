@@ -214,6 +214,11 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
       quality: 'MMAN.typeAdmin',
       type: 'admin'
     },
+    'MMAN.53': {
+      value: 'MMAN.53',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
     /*'MMAN.52': {
       value: 'MMAN.52',
       quality: 'MMAN.typePositiveQuality',

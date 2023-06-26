@@ -1445,6 +1445,7 @@
   "result.gathering.abundanceUnit": "Määrän yksikkö",
   "result.gathering.biogeographicalProvince": "Eliömaakunta",
   "result.gathering.biogeographicalProvinceOccurrence": "Esiintyminen eliömaakunnittain",
+  "result.gathering.birdSociety": "Lintuyhdistys",
   "result.gathering.conversions.dayOfYearBegin": "Alkupäivän numero",
   "result.gathering.conversions.dayOfYearEnd": "Loppupäivän numero",
   "result.gathering.conversions.euref": "ETRS-TM35FIN",
