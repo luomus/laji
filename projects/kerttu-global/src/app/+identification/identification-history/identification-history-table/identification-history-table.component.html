@@ -1,0 +1,15 @@
+<laji-datatable
+  [loading]="loading"
+  [columns]="columns"
+  [rows]="data?.results || []"
+  [clientSideSorting]="true"
+  [virtualScrolling]="true"
+  [summaryRow]="true"
+  [showRowAsLink]="false"
+  [height]="'calc(80vh - 50px)'"
+  [page]="data.currentPage"
+  [pageSize]="data.pageSize"
+  [count]="data.total"
+  (pageChange)="pageChange.emit($event.page)"
+  (sortChange)="sortChange.emit($event.sorts)"
+></laji-datatable>

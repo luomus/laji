@@ -19,11 +19,12 @@ import {
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationUserStatResult,
-  IIdentificationSpeciesStat
+  IIdentificationSpeciesStat, IGlobalAnnotationResponse, IGlobalAnnotationQuery
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { WINDOW } from '@ng-toolkit/universal';
+import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
 
 @Injectable({
   providedIn: 'root'
@@ -183,7 +184,15 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
+  public getAnnotations(personToken: string, query: IGlobalAnnotationQuery): Observable<PagedResult<IGlobalAnnotationResponse>> {
+    const path = this.basePath + '/identification/annotations';
+    let params = new HttpParams().set('personToken', personToken);
+    params = this.queryToParams(query, params);
+
+    return this.httpClient.get<PagedResult<IGlobalAnnotationResponse>>(path, { params });
+  }
+
+  private queryToParams(query: Record<string, any>, params: HttpParams) {
     Object.keys(query).forEach(key => {
       const value = query[key];
       if (value == null || (Array.isArray(value) && value.length === 0)) {

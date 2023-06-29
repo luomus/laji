@@ -1,0 +1,7 @@
+<h1>{{ 'identification.history' | translate }}</h1>
+<bsg-identification-history-table
+  [data]="data$ | async"
+  [loading]="loading"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
+></bsg-identification-history-table>

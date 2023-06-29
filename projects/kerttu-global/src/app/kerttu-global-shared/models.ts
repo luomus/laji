@@ -184,6 +184,17 @@ export interface IIdentificationSpeciesStat extends IGlobalSpecies {
   drawnBoxesCount: number;
 }
 
+export interface IGlobalAnnotationQuery {
+  page?: number;
+  pageSize?: number;
+  orderBy?: string[];
+}
+
+export interface IGlobalAnnotationResponse {
+  annotation: IGlobalRecordingAnnotation;
+  recording: IGlobalRecording;
+}
+
 export enum CommentType {
   replace = 0,
   reframe = 1
