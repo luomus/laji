@@ -6,8 +6,7 @@ export interface LajiMapVisualizationItem {
   label: string;
   categories: LajiMapVisualizationCategory[];
   getFeatureStyle?: (opt: GetFeatureStyleOptions) => PathOptions;
-  getClusterStyle?: (childCount: number, featureIdxs: number[], cluster: MarkerCluster, features?: Feature[]) => PathOptions;
-  getClusterClassName?: (childCount: number, featureIdxs: number[], cluster: MarkerCluster, features?: Feature[]) => string;
+  getClusterColor?: (childMarkers: L.Marker[]) => string;
 }
 
 export interface LajiMapVisualizationCategory { color: string; label?: string };

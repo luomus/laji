@@ -6,7 +6,7 @@ const BASE_FEATURE_STYLE = {
 const CURRENT_YEAR = new Date().getFullYear();
 const RECORD_AGE_BREAKPOINTS = [2, 10, 20, 40, Infinity].map(bp => CURRENT_YEAR - bp);
 
-export const getObsCountColor = (count: number): string => {
+const getObsCountColor = (count: number): string => {
   const idx = [10, 100, 1000, 10000, Infinity].findIndex(bp => count <= bp);
   return lajiMapObservationVisualization.obsCount.categories[idx].color;
 };
@@ -19,6 +19,7 @@ const recordQualityMap: Record<string, RecordQuality> = {
   UNCERTAIN: RecordQuality.Uncertain,
   ERRONEOUS: RecordQuality.Erroneous
 };
+const recordQualityMapRev = ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED', 'NEUTRAL', 'UNCERTAIN', 'ERRONEOUS'];
 const getRecordQualityColor = (recordQuality: string | undefined): string => {
   const cats = lajiMapObservationVisualization.recordQuality.categories;
   if (!recordQuality) { return cats[RecordQuality.Neutral].color; }
@@ -33,6 +34,9 @@ const redlistStatusMap = {
   'http://tun.fi/MX.iucnGroup4': RedlistStatusGroup.Group4,
   'http://tun.fi/MX.iucnGroup5': RedlistStatusGroup.Group5
 };
+const redlistStatusMapRev = [
+  'http://tun.fi/MX.iucnGroup1','http://tun.fi/MX.iucnGroup2','http://tun.fi/MX.iucnGroup3','http://tun.fi/MX.iucnGroup4','http://tun.fi/MX.iucnGroup5'
+];
 const getRedlistStatusColor = (redlistStatus: string | undefined): string => {
   if (!redlistStatus) { return '#ffffff'; }
   return lajiMapObservationVisualization.redlistStatus.categories[redlistStatusMap[redlistStatus]].color;
@@ -65,8 +69,7 @@ export type ObservationVisualizationMode = typeof visualizationModes[number];
 type ObservationVisualization = LajiMapVisualization<ObservationVisualizationMode> &
   Record<ObservationVisualizationMode,
   {
-    getFeatureStyle: LajiMapVisualizationItem['getFeatureStyle'];
-    getClusterStyle: LajiMapVisualizationItem['getClusterStyle'];
+    getClusterColor: LajiMapVisualizationItem['getClusterColor'];
   }>;
 
 export const lajiMapObservationVisualization: ObservationVisualization = {
@@ -99,17 +102,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       color: getObsCountColor(options.feature.properties.count),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterStyle(childCount, featureIdxs, cluster, features) {
-      const clusterFeatures = featureIdxs.map(i => features[i]);
-      return {
-        ...BASE_FEATURE_STYLE,
-        color: getObsCountColor(clusterFeatures[0].properties.count),
-      };
-    },
-    getClusterClassName(childCount, featureIdxs, cluster, features) {
-      const clusterFeatures = featureIdxs.map(i => features[i]);
-      return getCoordinateAccuracyClassName(clusterFeatures[0].properties['gathering.interpretations.coordinateAccuracy']);
-    },
+    getClusterColor: (markers) => getObsCountColor(markers.reduce((prev, marker) => prev + marker.feature.properties.count, 0))
   },
   recordQuality: {
     label: 'laji-map.legend.mode.recordQuality',
@@ -140,9 +133,19 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       color: getRecordQualityColor(options.feature.properties.recordQualityMax),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterStyle(childCount, featureIdxs, cluster) {
-      return {...BASE_FEATURE_STYLE};
-    },
+    // display the best (smallest) record quality
+    getClusterColor: (markers) => getRecordQualityColor(
+      recordQualityMapRev[
+        markers.reduce(
+          (min, curr) => {
+            console.log(curr.feature.properties.recordQualityMax);
+            const n = recordQualityMap[curr.feature.properties.recordQualityMax];
+            return min < n ? min : n;
+          },
+          Infinity
+        )
+      ]
+    )
   },
   redlistStatus: {
     label: 'laji-map.legend.mode.redlistStatus',
@@ -173,9 +176,19 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       color: getRedlistStatusColor(options.feature.properties.redListStatusMax),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterStyle(childCount, featureIdxs, cluster) {
-      return {...BASE_FEATURE_STYLE};
-    },
+    // display the worst (largest) redlist status group
+    // defaults to 0
+    getClusterColor: (markers) => getRedlistStatusColor(
+      redlistStatusMapRev[
+        markers.reduce(
+          (max, curr) => {
+            const n = redlistStatusMap[curr.feature.properties.redListStatusMax];
+            return n > max ? n : max;
+          },
+          0
+        )
+      ]
+    )
   },
   individualCount: {
     label: 'laji-map.legend.mode.individualCount',
@@ -210,9 +223,7 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       color: getIndividualCountColor(options.feature.properties.individualCountSum),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterStyle(childCount, featureIdxs, cluster) {
-      return {...BASE_FEATURE_STYLE};
-    },
+    getClusterColor: (markers) => getIndividualCountColor(markers.reduce((prev, marker) => prev + marker.feature.properties.individualCountSum, 0))
   },
   recordAge: {
     label: 'laji-map.legend.mode.recordAge',
@@ -243,8 +254,12 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       color: getRecordAgeColor(options.feature.properties.newestRecord),
       className: getCoordinateAccuracyClassName(options.feature.properties['gathering.interpretations.coordinateAccuracy'])
     }),
-    getClusterStyle(childCount, featureIdxs, cluster) {
-      return {...BASE_FEATURE_STYLE};
-    },
+    getClusterColor: (markers) =>
+      // display color based on the newest record
+      getRecordAgeColor(markers.reduce((p, curr) => {
+        const nr = curr.feature.properties.newestRecord;
+        return sliceYear(p) < sliceYear(nr) ? nr : p;
+      }, '')
+    )
   }
 };

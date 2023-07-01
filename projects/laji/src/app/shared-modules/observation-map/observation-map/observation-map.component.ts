@@ -30,7 +30,6 @@ import { combineColors } from 'laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
-  getObsCountColor,
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
@@ -38,7 +37,6 @@ import L, { LeafletEvent, MarkerCluster, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
-import { P } from '@angular/cdk/keycodes';
 
 interface AggregateQueryResponse {
   cacheTimestamp: number;
@@ -61,40 +59,10 @@ const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Fea
 );
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
-
-const getClusterIcon = (cluster: MarkerCluster): L.DivIcon => {
-  let classNames = ['coordinate-accuracy-cluster'];
-  const count = cluster.getAllChildMarkers().reduce((prev, marker) => prev + marker.feature.properties.count, 0);
-  const icon: L.DivIcon = L.divIcon({
-    className: classNames.join(' '),
-    html: `<span>${count}</span>`
-  });
-
-  // monkey patch the create icon function
-  const oldCreateFn = icon.createIcon;
-  icon.createIcon = (oldIcon: any) => {
-    const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
-    iconDomElem.style['background-color'] = getObsCountColor(count);
-    return iconDomElem;
-  };
-
-  // setStyle is only called for point markers (not clusters of multiple markers)
-  // therefore the clusters get the original styles described above,
-  // and the point markers get the updated styles described below
-  (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
-    iconDomElem.classList.remove('coordinate-accuracy-cluster');
-    const opacityAsHexCode = po.opacity < 1 ? po.opacity
-      .toString(16) // Convert to hex.
-      .padEnd(4, '0') // Pad with zeros to fix length.
-      .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
-    iconDomElem.style['background-color'] = po.color + opacityAsHexCode;
-    const newClassNames = classNamesAsArr(po.className);
-    classNames.forEach(c => iconDomElem.classList.remove(c));
-    newClassNames.forEach(c => iconDomElem.classList.add(c));
-    classNames = newClassNames;
-  };
-  return icon;
-};
+const opacityAsHexCode = (opacity: number) => opacity < 1 ? opacity
+  .toString(16) // Convert to hex.
+  .padEnd(4, '0') // Pad with zeros to fix length.
+  .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
 
 const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
@@ -317,6 +285,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       if (!dataOptions) { return; }
       // Force LajiMap to redraw the occurrence data with the updated this.getFeatureStyle(), which uses the updated this.visualizationMode.
       this.lajiMap.map.redrawDataItem(dataIdx);
+      this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
     }
   }
 
@@ -555,7 +524,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       cluster: {
         singleMarkerMode: true,
         maxClusterRadius: 15,
-        iconCreateFunction: getClusterIcon,
+        iconCreateFunction: this.getClusterIcon.bind(this),
         showCoverageOnHover: false
       },
       label: this.translate.instant('observation.map.dataOpacityControl.label'),
@@ -569,6 +538,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private onOpacityChange(opacity: number) {
     this.opacity = opacity;
+    this.lajiMap.map.getData()[1].groupContainer.refreshClusters();
   }
 
   private onDataVisibleChange(visible: boolean) {
@@ -624,5 +594,36 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         return of(null);
       })
     );
+  }
+
+  private getClusterIcon(cluster: MarkerCluster): L.DivIcon {
+    let classNames = ['coordinate-accuracy-cluster'];
+    const childMarkers = cluster.getAllChildMarkers();
+    const count = childMarkers.reduce((prev, marker) => prev + marker.feature.properties.count, 0);
+    const icon: L.DivIcon = L.divIcon({
+      className: classNames.join(' '),
+      html: `<span>${count}</span>`
+    });
+
+    // monkey patch the create icon function
+    const oldCreateFn = icon.createIcon;
+    icon.createIcon = (oldIcon: any) => {
+      const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
+      iconDomElem.style['background-color'] = this.visualization[this.visualizationMode].getClusterColor(childMarkers) + opacityAsHexCode(this.opacity);
+      return iconDomElem;
+    };
+
+    // setStyle is only called for point markers (not clusters of multiple markers)
+    // therefore the clusters get the original styles described above,
+    // and the point markers get the updated styles described below
+    (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
+      iconDomElem.classList.remove('coordinate-accuracy-cluster');
+      iconDomElem.style['background-color'] = po.color + opacityAsHexCode(po.opacity);
+      const newClassNames = classNamesAsArr(po.className);
+      classNames.forEach(c => iconDomElem.classList.remove(c));
+      newClassNames.forEach(c => iconDomElem.classList.add(c));
+      classNames = newClassNames;
+    };
+    return icon;
   }
 }
