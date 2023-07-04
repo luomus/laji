@@ -227,5 +227,7 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
   },
   limit: {
     simpleDownload: 10000
-  }
+  },
+  lajiMapSupportedLanguages: ['fi', 'en', 'sv'],
+  lajiAuthSupportedLanguages: ['fi', 'en', 'sv']
 };
