@@ -79,10 +79,10 @@ export class SpeciesValidationComponent implements OnInit, OnDestroy {
       this.cd.markForCheck();
     });
     this.species$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(speciesId))
+      switchMap(speciesId => this.kerttuGlobalApi.getSpecies(this.translate.currentLang, speciesId))
     );
     this.recordings$ = this.speciesId$.pipe(
-      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(speciesId).pipe(
+      switchMap(speciesId => this.kerttuGlobalApi.getRecordings(this.translate.currentLang, speciesId).pipe(
         map(data => data.results),
         tap(recordings => {
           this.audioService.setCacheSize(recordings.length);

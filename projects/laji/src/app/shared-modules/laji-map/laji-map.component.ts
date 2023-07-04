@@ -1,6 +1,5 @@
 import { take } from 'rxjs/operators';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -22,6 +21,7 @@ import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
+import { DEFAULT_LANG } from '../../locale/localize-router.service';
 
 @Component({
   selector: 'laji-map',
@@ -129,7 +129,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.lang = this.translate.currentLang;
+    const lang = this.translate.currentLang;
+    if (Global.lajiMapSupportedLanguages.includes(lang)) {
+      this.lang = lang;
+    }
+
     if (changes.data) {
       this.setData(this.data);
     }
@@ -142,7 +146,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
           this.map.destroy();
         }
         const options: any = {
-          lang: (this.lang || 'fi') as Lang,
+          lang: (this.lang || DEFAULT_LANG) as Lang,
           ...this._options,
           ...(this.userSettings || {}),
           rootElem: this.elemRef.nativeElement,

@@ -3,6 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../../../laji/src/app/shared/service/user.service';
 import { Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bsg-navbar',
@@ -17,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     public userService: UserService,
+    public translate: TranslateService,
     private router: Router,
     private changeDetector: ChangeDetectorRef
   ) { }
