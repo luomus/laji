@@ -51,13 +51,13 @@ export class DocumentService {
   }
 
   deleteDocument(id: string) {
-    return this.documentApi.delete(id, this.userService.getToken()).pipe(
-      mergeMap(() => this.userService.user$),
-      tap(person => {
+    const isTmpDoc = id.match(/^T:\d+$/);
+    const del$ = isTmpDoc
+      ? this.userService.user$.pipe(tap(person => {
         this.documentStorage.removeItem(id, person);
-        delete this.cache[this.getCacheKey(id)];
-      })
-    );
+      }))
+      : this.documentApi.delete(id, this.userService.getToken());
+    return del$.pipe(tap(() => delete this.cache[this.getCacheKey(id)]));
   }
 
   saveTemplate(templateData: TemplateForm): Observable<Document> {
