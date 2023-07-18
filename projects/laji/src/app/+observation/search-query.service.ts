@@ -14,7 +14,9 @@ export class SearchQueryService implements SearchQueryInterface {
   public query: WarehouseQueryInterface = {};
 
   private readonly separator = {
-    teamMember: ';'
+    teamMember: ';',
+    anyHabitat: ';',
+    primaryHabitat: ';',
   };
 
   // noinspection JSUnusedLocalSymbols
