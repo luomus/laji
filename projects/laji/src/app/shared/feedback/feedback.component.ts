@@ -61,33 +61,43 @@ export class FeedbackComponent {
       return;
     }
     const meta = this.getMeta();
-    this.userService.user$.pipe(
-      take(1),
-      switchMap(user => this.lajiApi.post(
+    const onSendEnd = {
+      next: () => {
+        this.feedback = {
+          subject: '',
+          other: '',
+          message: '',
+          meta: '',
+          email: ''
+        };
+        this.closeModal();
+        this.sendMessage('showSuccess', 'feedback.success');
+      },
+      error: () => {
+        this.sendMessage('showError', 'feedback.failure');
+      }
+    }
+
+    const send = (user) =>  {
+      return this.lajiApi.post(
         LajiApi.Endpoints.feedback,
         {
           subject,
           message: this.feedback.message + '\n\n---\n' + this.feedback.email,
           meta
         },
-        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
-      ))
-      .subscribe(
-        () => {
-          this.feedback = {
-            subject: '',
-            other: '',
-            message: '',
-            meta: '',
-            email: ''
-          };
-          this.closeModal();
-          this.sendMessage('showSuccess', 'feedback.success');
-        },
-        () => {
-          this.sendMessage('showError', 'feedback.failure');
-        }
+        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined}
       );
+    }
+
+    if (!this.userService.getToken()) {
+      send(undefined).subscribe(onSendEnd);
+    } else {
+      this.userService.user$.pipe(
+        take(1),
+        switchMap(user => send(user))
+      ).subscribe(onSendEnd);
+    }
   }
 
   private getMeta(): string {
