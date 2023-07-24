@@ -108,7 +108,7 @@ export class DatePickerComponent implements ControlValueAccessor {
         return this.updateValue(momentValue.format(FORMAT));
       }
 
-      this.validDate = false
+      this.validDate = false;
       return this.onInputValueChange(this.viewValue);
     }
 
