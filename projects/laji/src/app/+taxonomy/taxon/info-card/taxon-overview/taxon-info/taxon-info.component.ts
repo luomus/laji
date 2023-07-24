@@ -28,7 +28,7 @@ export class TaxonInfoComponent implements OnChanges, OnDestroy {
   }
 
   initLangTaxonNames() {
-    this.availableVernacularNames = []
+    this.availableVernacularNames = [];
     this.availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
 
     this.langs.forEach(value => {
