@@ -91,26 +91,25 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   onInputValueChange(viewFormatValue: string) {
-    const viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
+    if (viewFormatValue) {
+      // First try formatting with default view format.
+      let viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
 
-    if (this.validDate && viewFormatValue && !viewFormMoment.isValid()) {
-      this.validDate = false;
-      return this.onInputValueChange(this.viewValue); // Restore prev value that is valid.
-    } else {
-      this.validDate = true;
-    }
+      if (viewFormMoment.isValid()) {
+        this.validDate = true;
+        return this.updateValue(viewFormMoment.format(FORMAT));
+      }
 
+      // Try formatting a value that is just a year.
+      viewFormMoment = moment(viewFormatValue, 'YYYY', true);
+      if (viewFormMoment.isValid()) {
+        this.validDate = true;
+        const momentValue = this.toLastOfYear ? viewFormMoment.endOf('year') : viewFormMoment.startOf('year');
+        return this.updateValue(momentValue.format(FORMAT));
+      }
 
-    // First try formatting with default view format.
-    if (viewFormMoment.isValid()) {
-      return this.updateValue(viewFormMoment.format(FORMAT));
-    }
-
-    // Try formatting a value that is just a year.
-    const yearMoment = moment(viewFormatValue, 'YYYY', true);
-    if (yearMoment.isValid()) {
-      const momentValue = this.toLastOfYear ? yearMoment.endOf('year') : yearMoment.startOf('year');
-      return this.updateValue(momentValue.format(FORMAT));
+      this.validDate = false
+      return this.onInputValueChange(this.viewValue);
     }
 
     this.updateValue('');
