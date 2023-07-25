@@ -290,7 +290,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this.sorts = this.updateSorts(event);
     this.sortRows(this.sorts);
     this.changeDetectorRef.detectChanges();
-    event.sorts = this.sorts
+    event.sorts = this.sorts;
     this.sortChange.emit(event);
   }
 
@@ -298,21 +298,20 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   //underlying ngx-datatable uses external sorting
   private updateSorts(event) {
     if (!event.newValue) {
-      return this.sorts.filter(sort => sort.prop !== event.column.name)
+      return this.sorts.filter(sort => sort.prop !== event.column.name);
     }
 
-    const idx = this.sorts.findIndex(sort => sort.prop === event.column.name)
-    console.log(idx)
+    const idx = this.sorts.findIndex(sort => sort.prop === event.column.name);
     if (idx > -1) {
       return this.sorts.map(sort => {
         if (sort.prop === event.column.name) {
           return {
             prop: sort.prop,
             dir: event.newValue
-          }
+          };
         }
 
-        return sort
+        return sort;
       })
     }
 
@@ -322,7 +321,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         dir: event.newValue
       },
       ...this.sorts
-    ]
+    ];
   }
 
   private updateFilteredRows() {
