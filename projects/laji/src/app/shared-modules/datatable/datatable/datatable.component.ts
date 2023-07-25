@@ -287,10 +287,42 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   onSort(event) {
-    this.sorts = event.sorts;
-    this.sortRows(event.sorts);
+    this.sorts = this.updateSorts(event);
+    this.sortRows(this.sorts);
     this.changeDetectorRef.detectChanges();
+    event.sorts = this.sorts
     this.sortChange.emit(event);
+  }
+
+  //This changes the sorting so that the last column added to sorting gets priority, but probably only as long as the
+  //underlying ngx-datatable uses external sorting
+  private updateSorts(event) {
+    if (!event.newValue) {
+      return this.sorts.filter(sort => sort.prop !== event.column.name)
+    }
+
+    const idx = this.sorts.findIndex(sort => sort.prop === event.column.name)
+    console.log(idx)
+    if (idx > -1) {
+      return this.sorts.map(sort => {
+        if (sort.prop === event.column.name) {
+          return {
+            prop: sort.prop,
+            dir: event.newValue
+          }
+        }
+
+        return sort
+      })
+    }
+
+    return [
+      {
+        prop: event.column.name,
+        dir: event.newValue
+      },
+      ...this.sorts
+    ]
   }
 
   private updateFilteredRows() {
