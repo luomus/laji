@@ -13,7 +13,7 @@
             <small *ngIf="vm.form.options?.secondaryCopy"><br>{{ 'datasets.secondary.subtitle' | translate }}</small>
           </h5>
           <ng-container *ngTemplateOutlet="sidebarLinks; context:{ $implicit: vm.navLinks}"></ng-container>
-          <laji-haseka-latest [formID]="vm.form.id"
+          <laji-haseka-latest [formID]="vm.formIDs"
                               [tmpOnly]="false"
                               (showViewer)="showDocumentViewer($event)"
                               [showFormNames]="false"

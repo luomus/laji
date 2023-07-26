@@ -13,7 +13,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 })
 export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
-  @Input() formID: string;
+  @Input() formID: string | string[];
   @Input() showFormNames = true;
   @Input() complainLocality: boolean;
   @Input() staticWidth: number = undefined;

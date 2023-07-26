@@ -1,5 +1,5 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, Subscription, zip } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { Document } from '../../shared/model/Document';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
@@ -50,7 +50,7 @@ export class LatestDocumentsFacade implements OnDestroy {
   private updateSubKey: string | undefined;
   private remoteRefresh;
 
-  private formID: string | undefined;
+  private formID: string[] | undefined;
 
   constructor(
     private documentApi: DocumentApi,
@@ -72,8 +72,8 @@ export class LatestDocumentsFacade implements OnDestroy {
     }
   }
 
-  setFormID(formID?: string): void {
-    this.formID = formID;
+  setFormID(formID?: string | string[]): void {
+    this.formID = Array.isArray(formID) ? formID : [formID];
     this.update();
   }
 
@@ -102,7 +102,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     this.userService.user$.pipe(
       take(1),
       mergeMap(p => this.documentStorage.getAll(p, 'onlyTmp').pipe(
-        map(tmps => this.formID ? tmps.filter(tmp => tmp.formID === this.formID) : tmps),
+        map(tmps => this.formID ? tmps.filter(tmp => this.formID.includes[tmp.formID]) : tmps),
         mergeMap(tmps => this.getAllForms().pipe(
           map(forms => tmps.map(tmp => ({
             document: tmp,
@@ -120,7 +120,18 @@ export class LatestDocumentsFacade implements OnDestroy {
     }
     this.updateSubKey = this.getSubKey();
     this.updateState({..._state, loading: true});
-    this.updateSub = this.documentApi.findAll(this.userService.getToken(), '1', '10', {formID: this.formID}).pipe(
+    this.updateSub = (!this.formID ? this.documentApi.findAll(this.userService.getToken(), '1', '10') : zip(...this.formID.map(formID => {
+      return this.documentApi.findAll(this.userService.getToken(), '1', '10', { formID });
+    })).pipe(
+        map(docRes => {
+          const mergedDocks = [];
+          docRes.forEach(docs => mergedDocks.push(...docs.results));
+          mergedDocks.sort(doc => doc.id);
+          return mergedDocks.slice(0, 10);
+        }),
+        map(docRes => ({results: docRes}))
+    )
+    ).pipe(
       map(docRes => docRes.results),
       mergeMap(documents => this.checkForLocalData(documents)),
       catchError((e) => {
@@ -134,7 +145,7 @@ export class LatestDocumentsFacade implements OnDestroy {
   }
 
   getSubKey() {
-    return this.formID;
+    return this.formID?.[0];
   }
 
   private getAllForms(): Observable<{[id: string]: Form.List}> {
