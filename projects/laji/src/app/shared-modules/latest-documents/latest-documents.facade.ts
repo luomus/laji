@@ -120,7 +120,7 @@ export class LatestDocumentsFacade implements OnDestroy {
     }
     this.updateSubKey = this.getSubKey();
     this.updateState({..._state, loading: true});
-    this.updateSub = (!this.formID ? this.documentApi.findAll(this.userService.getToken(), '1', '10') : zip(...this.formID.map(formID => 
+    this.updateSub = (!this.formID ? this.documentApi.findAll(this.userService.getToken(), '1', '10') : zip(...this.formID.map(formID =>
       this.documentApi.findAll(this.userService.getToken(), '1', '10', { formID })
     )).pipe(
         map(docRes => {
