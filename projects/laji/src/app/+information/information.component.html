@@ -1,8 +1,10 @@
+TEST
 <ng-container *ngIf="information$ | async; let information">
   <lu-sidebar position="right" [staticWidth]="280" [displayNav]="!!information.children">
     <main class="d-flex">
       <div class="d-flex justify-center flex-grow">
         <div class="mt-4 mb-8 mx-4 d-flex flex-col flex-nowrap width-0 information-container">
+          <laji-technical-news></laji-technical-news>
           <ol class="breadcrumb">
             <ng-container *ngFor="let parent of information.parents; let i = index">
               <li *ngIf="i !== 0">
