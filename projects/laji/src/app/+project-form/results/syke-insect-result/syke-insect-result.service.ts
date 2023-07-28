@@ -270,7 +270,6 @@ export class SykeInsectResultService {
     });
 
     result.forEach(item => {
-      if (!item['unit.linkings.taxon.scientificName']) {console.log(item['unit.linkings.taxon.nameFinnish']);}
       const existing = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].filter(
         (v) => (v['id'] === item['unit.linkings.taxon.id'])
       );
