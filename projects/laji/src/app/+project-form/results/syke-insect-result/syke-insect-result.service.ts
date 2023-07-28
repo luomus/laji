@@ -175,15 +175,19 @@ export class SykeInsectResultService {
   getUnitStats(year: number|undefined, season: string, routeId: string, onlySections: boolean, collectionId?: string) {
     const aggregate = year === undefined
       ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day',
-        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName']
+        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
+        'unit.linkings.taxon.id']
       : season
         ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection',
-          'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName']
+          'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
+          'unit.linkings.taxon.id']
         : !onlySections
       ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month', 'gathering.conversions.day',
-        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName']
+        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
+        'unit.linkings.taxon.id']
           : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection',
-        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'];
+        'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
+        'unit.linkings.taxon.id'];
     const query = {...this.getFilterParams(year, season, undefined, collectionId), namedPlaceId: [routeId]};
     return this.getList(
       this.warehouseApi.warehouseQueryUnitStatisticsGet(
@@ -199,13 +203,14 @@ export class SykeInsectResultService {
       map(result => this.mergeElementsByProperties(collectionId, result, onlySections, year, season, year === undefined
         ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month',
           'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish',
-          'unit.linkings.taxon.cursiveName']
+          'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.id']
         : (!onlySections
           ? ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.conversions.year', 'gathering.conversions.month',
             'gathering.conversions.day', 'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish',
-            'unit.linkings.taxon.cursiveName']
+            'unit.linkings.taxon.cursiveName', 'unit.linkings.taxon.id']
           : ['unit.linkings.taxon.taxonSets', 'unit.linkings.taxon.scientificName', 'gathering.gatheringSection',
-            'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName'])))
+            'unit.linkings.taxon.nameFinnish', 'unit.linkings.taxon.nameEnglish', 'unit.linkings.taxon.nameSwedish', 'unit.linkings.taxon.cursiveName',
+            'unit.linkings.taxon.id'])))
     );
   }
 
@@ -265,8 +270,9 @@ export class SykeInsectResultService {
     });
 
     result.forEach(item => {
+      if (!item['unit.linkings.taxon.scientificName']) {console.log(item['unit.linkings.taxon.nameFinnish']);}
       const existing = arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].filter(
-        (v) => (v['scientificName'] === item['unit.linkings.taxon.scientificName'])
+        (v) => (v['id'] === item['unit.linkings.taxon.id'])
       );
       const property = season
         ? filters[2].substring(filters[2].lastIndexOf('.') + 1) + '_' + (item[filters[2]] !== '' ? item[filters[2]] : 'undefined')
@@ -289,6 +295,7 @@ export class SykeInsectResultService {
       } else {
         arrayMerged[0]['dataSets'][item['unit.linkings.taxon.taxonSets']].push(
           {
+            id: item['unit.linkings.taxon.id'],
             scientificName: item['unit.linkings.taxon.scientificName'],
             vernacularName: {
               fi: item['unit.linkings.taxon.nameFinnish'],
