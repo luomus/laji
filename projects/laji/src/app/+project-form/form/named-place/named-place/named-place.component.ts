@@ -1,4 +1,4 @@
-import { catchError, map, pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, pairwise, startWith, switchMap, take, tap, share } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
@@ -189,6 +189,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
         }
       )),
+      share()
     );
 
     this.updateFromInput = this.vm$.pipe(
@@ -305,7 +306,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
   }
 
   getNamedPlaces$(documentForm: Form.SchemaForm, municipality: string, birdAssociationArea: string, tags: string[]): Observable<any> {
-    const selected = (documentForm.options?.namedPlaceOptions?.listColumns || ['$.name'])
+    const selected = (documentForm.options?.namedPlaceOptions?.listColumns || ['$.name'])
       .map(field => field.replace('$.', '').replace(/\.length$/, ''));
     if (!documentForm.options?.namedPlaceOptions?.hideMapTab) {
       selected.push('geometry');
