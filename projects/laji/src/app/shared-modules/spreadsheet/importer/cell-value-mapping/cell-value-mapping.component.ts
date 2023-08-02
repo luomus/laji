@@ -88,7 +88,12 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
       this.analyseNextColumn();
       return;
     }
-    this.allMapped = false;
+
+    if (this.field.required) {
+      this.allMapped = false;
+    } else {
+      this.allMapped = true;
+    }
     this.currentKey = current;
     this.valueMap[this.field.key] = {};
   }
