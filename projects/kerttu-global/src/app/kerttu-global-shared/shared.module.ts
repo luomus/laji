@@ -5,6 +5,8 @@ import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { SpeciesListFiltersComponent } from './component/species-list-filters/species-list-filters.component';
 import { SearchInputComponent } from './component/species-list-filters/search-input/search-input.component';
 import { UserNameTemplateComponent } from './component/user-name-template.component';
+import { SpeciesNamePipe } from './pipe/species-name.pipe';
+import { SpeciesNameComponent } from './component/species-name.component';
 
 @NgModule({
   imports: [
@@ -15,11 +17,15 @@ import { UserNameTemplateComponent } from './component/user-name-template.compon
   declarations: [
     SpeciesListFiltersComponent,
     SearchInputComponent,
-    UserNameTemplateComponent
+    UserNameTemplateComponent,
+    SpeciesNamePipe,
+    SpeciesNameComponent
   ],
   exports: [
     SpeciesListFiltersComponent,
-    UserNameTemplateComponent
+    UserNameTemplateComponent,
+    SpeciesNamePipe,
+    SpeciesNameComponent
   ]
 })
 export class KerttuGlobalSharedModule { }

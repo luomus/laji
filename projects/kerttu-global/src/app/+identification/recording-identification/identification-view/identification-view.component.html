@@ -93,7 +93,7 @@
     <ng-template #audioInfo let-audio="audio">
       <ng-container *ngIf="audio.targetSpecies">
         <span>
-          <ng-container *ngIf="audio.targetSpecies.commonName">{{ audio.targetSpecies.commonName }} - </ng-container><i>{{ audio.targetSpecies.scientificName }}</i>
+          <bsg-species-name [species]="audio.targetSpecies"></bsg-species-name>
         </span>
         <br>
       </ng-container>

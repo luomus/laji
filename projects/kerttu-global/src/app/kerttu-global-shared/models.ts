@@ -191,8 +191,9 @@ export interface IGlobalAnnotationQuery {
 }
 
 export interface IGlobalAnnotationResponse {
-  annotation: IGlobalRecordingAnnotation;
-  recording: IGlobalRecording;
+  created: string;
+  site: IGlobalSite;
+  species: IGlobalSpecies[];
 }
 
 export enum CommentType {
