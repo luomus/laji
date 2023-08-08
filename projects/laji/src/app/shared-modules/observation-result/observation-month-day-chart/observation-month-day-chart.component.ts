@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Chart, ChartOptions } from 'chart.js';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
-import { ChartData, ObservationMonthDayChartFacade } from './observation-month-day-chart.facade';
+import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -120,18 +120,13 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
 
   private getMonthChartLabels(monthIdx: number): string[] {
     const days = [];
-    for (let i = 0; i < this.getNbrOfDaysInMonth(monthIdx); i++) {
+    for (let i = 0; i < getNbrOfDaysInMonth(monthIdx); i++) {
       days[i] = i + 1;
     }
     return days;
   }
 
-
   private getMonthLabel(month: number): string {
     return this.translate.instant('m-' + (month < 10 ? '0' : '') + month);
-  }
-
-  private getNbrOfDaysInMonth(monthIdx: number): number {
-    return new Date(2000, monthIdx, 0).getDate();
   }
 }

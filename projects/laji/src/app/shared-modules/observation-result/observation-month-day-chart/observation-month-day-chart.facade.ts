@@ -14,7 +14,7 @@ export interface ChartData {
   monthChartDataArr: ChartDataElement[][];
 }
 
-const getNbrOfDaysInMonth = (monthIdx: number): number => (
+export const getNbrOfDaysInMonth = (monthIdx: number): number => (
   new Date(2000, monthIdx, 0).getDate()
 );
 
