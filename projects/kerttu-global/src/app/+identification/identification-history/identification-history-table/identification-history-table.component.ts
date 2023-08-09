@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { PagedResult } from '../../../../../../laji/src/app/shared/model/PagedResult';
 import { IGlobalAnnotationResponse } from '../../../kerttu-global-shared/models';
 import { DatatableColumn, DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
@@ -9,7 +9,7 @@ import { DatatableColumn, DatatableSort } from '../../../../../../laji/src/app/s
   styleUrls: ['./identification-history-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
+export class IdentificationHistoryTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate: TemplateRef<any>;
 
   @Input() data: PagedResult<IGlobalAnnotationResponse>;
@@ -25,25 +25,21 @@ export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
     this.columns = [
       {
         name: 'created',
-        label: 'created',
+        label: 'annotation.created',
         cellTemplate: 'date',
         width: 70
       },
       {
         name: 'recording.site.name',
-        label: 'site.name',
+        label: 'annotation.site',
         width: 70
       },
       {
         name: 'species',
-        label: 'species',
+        label: 'annotation.species',
         cellTemplate: this.speciesListTemplate,
-        width: 300
+        width: 500
       }
     ];
-  }
-
-  ngOnChanges() {
-
   }
 }
