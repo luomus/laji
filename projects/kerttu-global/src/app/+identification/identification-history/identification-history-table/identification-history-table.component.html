@@ -5,13 +5,13 @@
   [clientSideSorting]="true"
   [virtualScrolling]="true"
   [summaryRow]="true"
-  [showRowAsLink]="false"
   [height]="'calc(80vh - 50px)'"
-  [page]="data.currentPage"
-  [pageSize]="data.pageSize"
-  [count]="data.total"
+  [page]="data?.currentPage"
+  [pageSize]="data?.pageSize"
+  [count]="data?.total"
   (pageChange)="pageChange.emit($event.page)"
   (sortChange)="sortChange.emit($event.sorts)"
+  (rowSelect)="rowSelect.emit($event.row)"
 ></laji-datatable>
 
 <ng-template let-value="value" #speciesListTpl>

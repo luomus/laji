@@ -19,16 +19,18 @@ export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
+  @Output() rowSelect = new EventEmitter<IGlobalAnnotationResponse>();
 
   ngOnInit() {
     this.columns = [
       {
         name: 'created',
         label: 'created',
-        cellTemplate: 'date'
+        cellTemplate: 'date',
+        width: 70
       },
       {
-        name: 'site',
+        name: 'recording.site.name',
         label: 'site.name',
         width: 70
       },
@@ -36,12 +38,12 @@ export class IdentificationHistoryTableComponent implements OnInit, OnChanges {
         name: 'species',
         label: 'species',
         cellTemplate: this.speciesListTemplate,
-        width: 150
+        width: 300
       }
     ];
   }
 
   ngOnChanges() {
-    console.log(this.data);
+
   }
 }

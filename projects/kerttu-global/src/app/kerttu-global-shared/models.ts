@@ -192,7 +192,7 @@ export interface IGlobalAnnotationQuery {
 
 export interface IGlobalAnnotationResponse {
   created: string;
-  site: IGlobalSite;
+  recording: IGlobalRecording;
   species: IGlobalSpecies[];
 }
 

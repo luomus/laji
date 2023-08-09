@@ -66,10 +66,12 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     });
 
     this.siteIdsSub = this.route.queryParams.pipe(
-      map(data => (
-        data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id))
-      ),
-    ).subscribe(siteIds => {
+      map(data => {
+        const siteIds = (data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id));
+        const recordingId = [(data['recordingId'] || '')].map(id => parseInt(id, 10)).filter(id => !isNaN(id))?.[0];
+        return { siteIds, recordingId };
+      })
+    ).subscribe(({ siteIds, recordingId }) => {
       this.selectedSites = siteIds;
 
       this.hasUnsavedChanges = false;
@@ -78,7 +80,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
       if (this.selectedSites?.length > 0) {
         this.loading = true;
-        this.kerttuGlobalApi.getRecording(this.userService.getToken(), this.translate.currentLang, siteIds).subscribe((result) => {
+        this.kerttuGlobalApi.getRecording(this.userService.getToken(), this.translate.currentLang, siteIds, recordingId).subscribe((result) => {
           this.onGetRecordingSuccess(result);
         }, (err) => {
           this.handleError(err);

@@ -6,6 +6,8 @@ import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-globa
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 import { switchMap, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
 
 @Component({
   selector: 'bsg-identification-history',
@@ -22,7 +24,9 @@ export class IdentificationHistoryComponent {
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router,
+    private localizeRouterService: LocalizeRouterService
   ) {
     this.data$ = this.queryChange.pipe(
       tap(() => this.loading = true),
@@ -38,6 +42,13 @@ export class IdentificationHistoryComponent {
   onSortChange(sorts: DatatableSort[]) {
     // const orderBy = sorts.map(sort => sort.prop + ' ' + sort.dir.toUpperCase());
     // this.changeQuery(this.query, 1, orderBy);
+  }
+
+  onRowSelect(row: IGlobalAnnotationResponse) {
+    this.router.navigate(
+      this.localizeRouterService.translateRoute(['/identification/recordings']),
+      { queryParams: { siteId: row.recording.site.id, recordingId: row.recording.id } }
+    );
   }
 
   private setNewQuery(newQuery: IGlobalAnnotationQuery) {
