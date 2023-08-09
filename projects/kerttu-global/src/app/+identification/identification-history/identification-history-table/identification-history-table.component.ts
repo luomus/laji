@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { PagedResult } from '../../../../../../laji/src/app/shared/model/PagedResult';
-import { IGlobalAnnotationResponse } from '../../../kerttu-global-shared/models';
+import { AnnotationStatusEnum, IGlobalAnnotationResponse } from '../../../kerttu-global-shared/models';
 import { DatatableColumn, DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
 
 @Component({
@@ -11,11 +11,14 @@ import { DatatableColumn, DatatableSort } from '../../../../../../laji/src/app/s
 })
 export class IdentificationHistoryTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate: TemplateRef<any>;
+  @ViewChild('statusTpl', { static: true }) public statusTemplate: TemplateRef<any>;
 
   @Input() data: PagedResult<IGlobalAnnotationResponse>;
   @Input() loading = false;
 
   columns: DatatableColumn[] = [];
+
+  annotationStatusEnum = AnnotationStatusEnum;
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
@@ -39,6 +42,12 @@ export class IdentificationHistoryTableComponent implements OnInit {
         label: 'annotation.species',
         cellTemplate: this.speciesListTemplate,
         width: 500
+      },
+      {
+        name: 'status',
+        label: 'annotation.status',
+        cellTemplate: this.statusTemplate,
+        width: 50
       }
     ];
   }

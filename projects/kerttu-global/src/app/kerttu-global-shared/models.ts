@@ -194,6 +194,7 @@ export interface IGlobalAnnotationResponse {
   created: string;
   recording: IGlobalRecording;
   species: IGlobalSpecies[];
+  status: AnnotationStatusEnum;
 }
 
 export enum CommentType {
@@ -216,4 +217,10 @@ export enum TaxonTypeEnum {
   bird = 0,
   bat = 1,
   insect = 2
+}
+
+export enum AnnotationStatusEnum {
+  skipped = -1,
+  notReady = 0,
+  ready = 1
 }

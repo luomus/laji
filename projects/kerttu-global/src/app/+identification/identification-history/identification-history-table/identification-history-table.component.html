@@ -19,3 +19,9 @@
     </ng-container>
   </span>
 </ng-template>
+
+<ng-template let-value="value" #statusTpl>
+  <span [title]="('annotation.status.' + annotationStatusEnum[value]) | translate">
+    {{ ('annotation.status.' + annotationStatusEnum[value]) | translate }}
+  </span>
+</ng-template>
