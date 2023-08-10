@@ -5,7 +5,7 @@ import { IIdentificationHistoryQuery, IIdentificationHistoryResponse } from '../
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -51,14 +51,18 @@ export class IdentificationHistoryComponent {
 
   onRowSelect(row: IIdentificationHistoryResponse) {
     const initialState = {
-      siteId: row.recording.site.id,
       recordingId: row.recording.id
     };
 
     this.modalRef = this.modalService.show(
       IdentificationHistoryEditModalComponent,
-      { class: 'modal-xl scrollable-modal', initialState }
+      { class: 'modal-xl scrollable-modal', initialState, backdrop: true, ignoreBackdropClick: true }
     );
+    this.modalRef.content.modalClose.pipe(take(1)).subscribe(hasChanges => {
+      if (hasChanges) {
+        this.setNewQuery({ ...this.query });
+      }
+    });
   }
 
   private setNewQuery(newQuery: IIdentificationHistoryQuery) {

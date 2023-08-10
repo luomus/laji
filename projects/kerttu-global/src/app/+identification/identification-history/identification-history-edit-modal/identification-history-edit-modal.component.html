@@ -1,18 +1,19 @@
 <div class="modal-content">
   <div class="modal-body">
     <div class="laji-page">
-      <laji-spinner [spinning]="!data" [overlay]="true">
+      <laji-spinner [spinning]="!recording" [overlay]="true">
         <bsg-identification-view
-          *ngIf="data"
+          *ngIf="recording"
           [showTopBar]="false"
-          [recording]="data.recording"
-          [annotation]="data.annotation"
-          [statusInfo]="data.statusInfo"
+          [recording]="recording"
+          [(annotation)]="annotation"
+          [buttonsDisabled]="buttonsDisabled"
         ></bsg-identification-view>
       </laji-spinner>
     </div>
   </div>
   <div class="modal-footer">
-    Footer
+    <button class="btn btn-default" [disabled]="buttonsDisabled" (click)="close()">Cancel</button>
+    <button class="btn btn-success" [disabled]="buttonsDisabled" (click)="saveAnnotation()">Save</button>
   </div>
 </div>
