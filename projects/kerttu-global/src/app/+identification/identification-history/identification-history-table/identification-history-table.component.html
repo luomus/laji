@@ -7,6 +7,7 @@
   [page]="data?.currentPage"
   [pageSize]="data?.pageSize"
   [count]="data?.total"
+  [getRowClass]="getRowClass"
   (pageChange)="pageChange.emit($event.page)"
   (sortChange)="sortChange.emit($event.sorts)"
   (rowSelect)="rowSelect.emit($event.row)"

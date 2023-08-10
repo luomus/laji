@@ -52,4 +52,16 @@ export class IdentificationHistoryTableComponent implements OnInit {
       }
     ];
   }
+
+  getRowClass(row: IIdentificationHistoryResponse): string {
+    const rowClasses = ['link'];
+
+    if (row.annotation.status === AnnotationStatusEnum.skipped) {
+      rowClasses.push('red-row');
+    } else if (row.annotation.status === AnnotationStatusEnum.notReady) {
+      rowClasses.push('yellow-row');
+    }
+
+    return rowClasses.join(' ');
+  }
 }
