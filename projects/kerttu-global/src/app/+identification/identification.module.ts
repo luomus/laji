@@ -28,6 +28,7 @@ import { IdentificationPanelComponent } from './recording-identification/identif
 import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
 import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
 import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
+import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { IdentificationHistoryTableComponent } from './identification-history/id
     IdentificationSpeciesTableComponent,
     IdentificationHistoryComponent,
     IdentificationHistoryTableComponent,
+    IdentificationHistoryEditModalComponent,
   ]
 })
 export class IdentificationModule { }

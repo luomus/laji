@@ -62,6 +62,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   @Input() annotation: IGlobalRecordingAnnotation;
   @Input() statusInfo: IGlobalRecordingStatusInfo;
   @Input() buttonsDisabled = false;
+  @Input() showTopBar = true;
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;

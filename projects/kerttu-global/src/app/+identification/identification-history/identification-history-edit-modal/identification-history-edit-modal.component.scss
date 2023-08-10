@@ -1,0 +1,10 @@
+.modal-body, .laji-page, laji-spinner, bsg-identification-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal-body {
+  padding: 0;
+}

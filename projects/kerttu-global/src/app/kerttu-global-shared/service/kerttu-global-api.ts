@@ -19,7 +19,9 @@ import {
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationUserStatResult,
-  IIdentificationSpeciesStat, IGlobalAnnotationResponse, IGlobalAnnotationQuery
+  IIdentificationSpeciesStat,
+  IIdentificationHistoryResponse,
+  IIdentificationHistoryQuery
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -184,12 +186,12 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  public getAnnotations(personToken: string, query: IGlobalAnnotationQuery): Observable<PagedResult<IGlobalAnnotationResponse>> {
-    const path = this.basePath + '/identification/annotations';
+  public getIdentificationHistory(personToken: string, query: IIdentificationHistoryQuery): Observable<PagedResult<IIdentificationHistoryResponse>> {
+    const path = this.basePath + '/identification/history';
     let params = new HttpParams().set('personToken', personToken);
     params = this.queryToParams(query, params);
 
-    return this.httpClient.get<PagedResult<IGlobalAnnotationResponse>>(path, { params });
+    return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
   }
 
   private queryToParams(query: Record<string, any>, params: HttpParams) {

@@ -13,7 +13,6 @@ import { AudioService } from './service/audio.service';
 import { SpectrogramService } from './service/spectrogram.service';
 import { RequiresAudioSupportDirective } from './directive/requires-audio-support.directive';
 import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-viewer-settings.component';
-import { DatePipe } from '@angular/common';
 import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
 import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-viewer.component';
@@ -29,7 +28,7 @@ import { AudioViewerBatSettingsComponent } from './audio-viewer-bat-settings/aud
     AudioViewerSimpleSettingsComponent,
     AudioViewerBatSettingsComponent
   ],
-  providers: [AudioService, SpectrogramService, DatePipe],
+  providers: [AudioService, SpectrogramService],
   imports: [
     CommonModule,
     SharedModule,

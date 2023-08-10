@@ -1,0 +1,18 @@
+<div class="modal-content">
+  <div class="modal-body">
+    <div class="laji-page">
+      <laji-spinner [spinning]="!data" [overlay]="true">
+        <bsg-identification-view
+          *ngIf="data"
+          [showTopBar]="false"
+          [recording]="data.recording"
+          [annotation]="data.annotation"
+          [statusInfo]="data.statusInfo"
+        ></bsg-identification-view>
+      </laji-spinner>
+    </div>
+  </div>
+  <div class="modal-footer">
+    Footer
+  </div>
+</div>

@@ -184,17 +184,22 @@ export interface IIdentificationSpeciesStat extends IGlobalSpecies {
   drawnBoxesCount: number;
 }
 
-export interface IGlobalAnnotationQuery {
+export interface IIdentificationHistoryQuery {
   page?: number;
   pageSize?: number;
   orderBy?: string[];
 }
 
-export interface IGlobalAnnotationResponse {
-  created: string;
-  recording: IGlobalRecording;
-  species: IGlobalSpecies[];
-  status: AnnotationStatusEnum;
+export interface IIdentificationHistoryResponse {
+  recording: {
+    id: number;
+    site: IGlobalSite;
+  };
+  annotation: {
+    created: string;
+    species: IGlobalSpecies[];
+    status: AnnotationStatusEnum;
+  };
 }
 
 export enum CommentType {
