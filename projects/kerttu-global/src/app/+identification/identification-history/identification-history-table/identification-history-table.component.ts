@@ -41,7 +41,8 @@ export class IdentificationHistoryTableComponent implements OnInit {
         name: 'species',
         label: 'annotation.species',
         cellTemplate: this.speciesListTemplate,
-        width: 500
+        width: 500,
+        sortable: false
       },
       {
         name: 'status',

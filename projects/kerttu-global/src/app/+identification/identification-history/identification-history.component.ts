@@ -40,9 +40,8 @@ export class IdentificationHistoryComponent {
   }
 
   onSortChange(sorts: DatatableSort[]) {
-    console.log(sorts);
-    // const orderBy = sorts.map(sort => sort.prop + ' ' + sort.dir.toUpperCase());
-    // this.changeQuery(this.query, 1, orderBy);
+    const orderBy = sorts.map(sort => sort.prop + ' ' + sort.dir.toUpperCase());
+    this.setNewQuery({ ...this.query, page: 1, orderBy });
   }
 
   onRowSelect(row: IGlobalAnnotationResponse) {
