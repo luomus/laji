@@ -9,6 +9,11 @@
   padding: 0;
 }
 
-.modal-footer {
-  text-align: right;
+.modal-header {
+  background-color: #dde1e3;
+  border-bottom: 1px solid #cfd5d7;
+
+  .btn + .btn {
+    margin-left: 5px;
+  }
 }

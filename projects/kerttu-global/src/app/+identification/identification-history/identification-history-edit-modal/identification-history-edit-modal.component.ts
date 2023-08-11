@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
@@ -11,6 +11,8 @@ import { AudioService } from '../../../../../../laji/src/app/shared-modules/audi
 import { SpectrogramService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
+import { Observable, Subscription } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'bsg-identification-history-edit-modal',
@@ -19,15 +21,21 @@ import { DialogService } from '../../../../../../laji/src/app/shared/service/dia
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [AudioService, SpectrogramService]
 })
-export class IdentificationHistoryEditModalComponent implements OnInit {
-  @Input() recordingId!: number;
+export class IdentificationHistoryEditModalComponent implements OnInit, OnDestroy {
+  @Input() index!: number;
+  @Input() recordingId$!: Observable<number>;
+  @Input() lastIndex!: number;
 
   recording: IGlobalRecording;
   annotation: IGlobalRecordingAnnotation;
 
-  buttonsDisabled = false;
+  saving = false;
+  loading = false;
 
   @Output() modalClose = new EventEmitter<boolean>();
+  @Output() indexChange = new EventEmitter<number>();
+
+  private recordingSub?: Subscription;
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -38,18 +46,26 @@ export class IdentificationHistoryEditModalComponent implements OnInit {
     private dialogService: DialogService
   ) { }
 
-  ngOnInit(): void {
-    this.kerttuGlobalApi.getOldRecording(
-      this.userService.getToken(), this.translate.currentLang, this.recordingId
+  ngOnInit() {
+    this.recordingSub = this.recordingId$.pipe(
+      tap(() => this.loading = true),
+      switchMap(recordingId => this.kerttuGlobalApi.getOldRecording(
+        this.userService.getToken(), this.translate.currentLang, recordingId
+      ))
     ).subscribe((result) => {
       this.recording = result.recording;
       this.annotation = result.annotation;
+      this.loading = false;
       this.cdr.markForCheck();
     });
   }
 
+  ngOnDestroy() {
+    this.recordingSub?.unsubscribe();
+  }
+
   saveAnnotation() {
-    this.buttonsDisabled = true;
+    this.saving = true;
     this.kerttuGlobalApi.saveOldRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe({
       next: () => {
         this.close(true);
@@ -61,7 +77,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit {
         } else {
           this.dialogService.alert(this.translate.instant('expertise.error'));
         }
-        this.buttonsDisabled = false;
+        this.saving = false;
         this.cdr.markForCheck();
       }
     });
@@ -70,5 +86,15 @@ export class IdentificationHistoryEditModalComponent implements OnInit {
   close(hasChanges = false) {
     this.modalClose.emit(hasChanges);
     this.modalRef.hide();
+  }
+
+  nextClick() {
+    this.index++;
+    this.indexChange.emit(this.index);
+  }
+
+  previousClick() {
+    this.index--;
+    this.indexChange.emit(this.index);
   }
 }

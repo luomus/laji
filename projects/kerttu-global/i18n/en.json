@@ -234,5 +234,7 @@
   "versionNav.next": "Next",
   "versionNav.previous": "Previous",
   "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
-  "yes": "yes"
+  "yes": "yes",
+  "previous": "Previous",
+  "next": "Next"
 }

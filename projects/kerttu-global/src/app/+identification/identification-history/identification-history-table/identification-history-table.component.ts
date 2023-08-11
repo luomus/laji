@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { PagedResult } from '../../../../../../laji/src/app/shared/model/PagedResult';
-import { AnnotationStatusEnum, IIdentificationHistoryResponse } from '../../../kerttu-global-shared/models';
+import { AnnotationStatusEnum } from '../../../kerttu-global-shared/models';
 import { DatatableColumn, DatatableSort } from '../../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
+import { IIdentificationHistoryResponseWithIndex } from '../identification-history.component';
 
 @Component({
   selector: 'bsg-identification-history-table',
@@ -13,7 +14,7 @@ export class IdentificationHistoryTableComponent implements OnInit {
   @ViewChild('speciesListTpl', { static: true }) public speciesListTemplate: TemplateRef<any>;
   @ViewChild('statusTpl', { static: true }) public statusTemplate: TemplateRef<any>;
 
-  @Input() data: PagedResult<IIdentificationHistoryResponse>;
+  @Input() data: PagedResult<IIdentificationHistoryResponseWithIndex>;
   @Input() loading = false;
 
   columns: DatatableColumn[] = [];
@@ -22,7 +23,7 @@ export class IdentificationHistoryTableComponent implements OnInit {
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<DatatableSort[]>();
-  @Output() rowSelect = new EventEmitter<IIdentificationHistoryResponse>();
+  @Output() rowSelect = new EventEmitter<IIdentificationHistoryResponseWithIndex>();
 
   ngOnInit() {
     this.columns = [
@@ -53,7 +54,7 @@ export class IdentificationHistoryTableComponent implements OnInit {
     ];
   }
 
-  getRowClass(row: IIdentificationHistoryResponse): string {
+  getRowClass(row: IIdentificationHistoryResponseWithIndex): string {
     const rowClasses = ['link'];
 
     if (row.annotation.status === AnnotationStatusEnum.skipped) {

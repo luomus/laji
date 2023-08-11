@@ -1,15 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
 import { IIdentificationHistoryQuery, IIdentificationHistoryResponse } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
+
+export interface IIdentificationHistoryResponseWithIndex extends IIdentificationHistoryResponse {
+  index: number;
+}
 
 @Component({
   selector: 'bsg-identification-history',
@@ -18,13 +22,15 @@ import { IdentificationHistoryEditModalComponent } from './identification-histor
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationHistoryComponent {
-  data$: Observable<PagedResult<IIdentificationHistoryResponse>>;
+  data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
+
+  private results?: IIdentificationHistoryResponseWithIndex[];
 
   private query: IIdentificationHistoryQuery = { page: 1 };
   private queryChange = new BehaviorSubject<IIdentificationHistoryQuery>(this.query);
 
-  private modalRef?: BsModalRef;
+  private modalSub?: Subscription;
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -36,6 +42,11 @@ export class IdentificationHistoryComponent {
     this.data$ = this.queryChange.pipe(
       tap(() => this.loading = true),
       switchMap(query => this.kerttuGlobalApi.getIdentificationHistory(this.userService.getToken(), query)),
+      map(data => {
+        data.results = data.results.map((row, index) => ({ ...row, index }));
+        return data as PagedResult<IIdentificationHistoryResponseWithIndex>;
+      }),
+      tap((data) => this.results = data.results),
       tap(() => this.loading = false)
     );
   }
@@ -49,20 +60,35 @@ export class IdentificationHistoryComponent {
     this.setNewQuery({ ...this.query, page: 1, orderBy });
   }
 
-  onRowSelect(row: IIdentificationHistoryResponse) {
+  onRowSelect(row: IIdentificationHistoryResponseWithIndex) {
+    const recordingIdSubject = new BehaviorSubject(row.recording.id);
+    const recordingId$ = recordingIdSubject.asObservable();
+
     const initialState = {
-      recordingId: row.recording.id
+      index: row.index,
+      recordingId$,
+      lastIndex: this.results.length - 1
     };
 
-    this.modalRef = this.modalService.show(
+    const modalRef = this.modalService.show(
       IdentificationHistoryEditModalComponent,
       { class: 'modal-xl scrollable-modal', initialState, backdrop: true, ignoreBackdropClick: true }
     );
-    this.modalRef.content.modalClose.pipe(take(1)).subscribe(hasChanges => {
-      if (hasChanges) {
-        this.setNewQuery({ ...this.query });
-      }
-    });
+
+    this.modalSub = new Subscription();
+    this.modalSub.add(
+      modalRef.content.modalClose.subscribe(hasChanges => {
+        if (hasChanges) {
+          this.setNewQuery({ ...this.query });
+        }
+        this.modalSub?.unsubscribe();
+      })
+    );
+    this.modalSub.add(
+      modalRef.content.indexChange.subscribe((idx) => {
+        recordingIdSubject.next(this.results[idx].recording.id);
+      })
+    );
   }
 
   private setNewQuery(newQuery: IIdentificationHistoryQuery) {

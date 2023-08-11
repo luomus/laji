@@ -1,19 +1,27 @@
 <div class="modal-content">
+  <div class="modal-header">
+    <button class="btn btn-default" [disabled]="saving || index === 0" (click)="previousClick()">
+      <i class="glyphicon glyphicon-arrow-left"></i> {{ 'previous' | translate }}
+    </button>
+    <button class="btn btn-default" [disabled]="saving || index === lastIndex" (click)="nextClick()">
+      {{ 'next' | translate }} <i class="glyphicon glyphicon-arrow-right"></i>
+    </button>
+    <div class="pull-right">
+      <button class="btn btn-default" [disabled]="saving" (click)="close()">{{ 'cancel' | translate }}</button>
+      <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
+    </div>
+  </div>
   <div class="modal-body">
     <div class="laji-page">
-      <laji-spinner [spinning]="!recording" [overlay]="true">
+      <laji-spinner [spinning]="loading" [overlay]="true">
         <bsg-identification-view
           *ngIf="recording"
           [showTopBar]="false"
           [recording]="recording"
           [(annotation)]="annotation"
-          [buttonsDisabled]="buttonsDisabled"
+          [buttonsDisabled]="saving || loading"
         ></bsg-identification-view>
       </laji-spinner>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-default" [disabled]="buttonsDisabled" (click)="close()">Cancel</button>
-    <button class="btn btn-success" [disabled]="buttonsDisabled" (click)="saveAnnotation()">Save</button>
   </div>
 </div>
