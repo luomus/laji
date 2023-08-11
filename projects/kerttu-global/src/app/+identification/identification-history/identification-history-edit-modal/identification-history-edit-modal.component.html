@@ -7,7 +7,7 @@
       {{ 'next' | translate }} <i class="glyphicon glyphicon-arrow-right"></i>
     </button>
     <div class="pull-right">
-      <button class="btn btn-default" [disabled]="saving" (click)="close()">{{ 'cancel' | translate }}</button>
+      <button class="btn btn-default" [disabled]="saving" (click)="close()">{{ 'close' | translate }}</button>
       <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
     </div>
   </div>
@@ -20,6 +20,7 @@
           [recording]="recording"
           [(annotation)]="annotation"
           [buttonsDisabled]="saving || loading"
+          (annotationChange)="onAnnotationChange()"
         ></bsg-identification-view>
       </laji-spinner>
     </div>

@@ -236,5 +236,6 @@
   "versionNav.version": "Version {{version}}/{{total}} saved by {{user}}",
   "yes": "yes",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "close": "Close"
 }

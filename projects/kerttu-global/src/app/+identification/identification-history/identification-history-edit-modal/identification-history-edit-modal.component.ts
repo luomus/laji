@@ -11,8 +11,10 @@ import { AudioService } from '../../../../../../laji/src/app/shared-modules/audi
 import { SpectrogramService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
+import equals from 'deep-equal';
 
 @Component({
   selector: 'bsg-identification-history-edit-modal',
@@ -35,6 +37,10 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
   @Output() modalClose = new EventEmitter<boolean>();
   @Output() indexChange = new EventEmitter<number>();
 
+  private originalAnnotation?: IGlobalRecordingAnnotation;
+  private hasUnsavedChanges = false;
+  private hasChanges = false;
+
   private recordingSub?: Subscription;
 
   constructor(
@@ -48,13 +54,17 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
 
   ngOnInit() {
     this.recordingSub = this.recordingId$.pipe(
-      tap(() => this.loading = true),
+      tap(() => {
+        this.hasUnsavedChanges = false;
+        this.loading = true;
+      }),
       switchMap(recordingId => this.kerttuGlobalApi.getOldRecording(
         this.userService.getToken(), this.translate.currentLang, recordingId
       ))
     ).subscribe((result) => {
       this.recording = result.recording;
       this.annotation = result.annotation;
+      this.originalAnnotation = Util.clone(this.annotation);
       this.loading = false;
       this.cdr.markForCheck();
     });
@@ -64,11 +74,22 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     this.recordingSub?.unsubscribe();
   }
 
+  canDeactivate(): Observable<boolean> {
+    if (!this.hasUnsavedChanges) {
+      return of(true);
+    }
+    return this.dialogService.confirm(this.translate.instant('identification.leaveConfirm'));
+  }
+
   saveAnnotation() {
     this.saving = true;
     this.kerttuGlobalApi.saveOldRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe({
       next: () => {
-        this.close(true);
+        this.originalAnnotation = Util.clone(this.annotation);
+        this.hasUnsavedChanges = false;
+        this.hasChanges = true;
+        this.saving = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         const msg = KerttuGlobalApi.getErrorMessage(err);
@@ -83,18 +104,37 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     });
   }
 
-  close(hasChanges = false) {
-    this.modalClose.emit(hasChanges);
-    this.modalRef.hide();
+  close() {
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.modalClose.emit(this.hasChanges);
+        this.modalRef.hide();
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   nextClick() {
-    this.index++;
-    this.indexChange.emit(this.index);
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.index++;
+        this.indexChange.emit(this.index);
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   previousClick() {
-    this.index--;
-    this.indexChange.emit(this.index);
+    this.canDeactivate().subscribe(canDeactivate => {
+      if (canDeactivate) {
+        this.index--;
+        this.indexChange.emit(this.index);
+        this.cdr.markForCheck();
+     }
+    });
+  }
+
+  onAnnotationChange() {
+    this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 }
