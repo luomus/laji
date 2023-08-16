@@ -1,4 +1,10 @@
 <h1>{{ 'identification.history' | translate }}</h1>
+<div class="row mb-2">
+  <div class="col-sm-3">
+    <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
+    <bsg-search-input [(searchQuery)]="query.speciesSearchQuery" (searchQueryChange)="setNewQuery(query)" id="search"></bsg-search-input>
+  </div>
+</div>
 <bsg-identification-history-table
   [data]="data$ | async"
   [loading]="loading"

@@ -23,6 +23,7 @@ import { SpeciesNameComponent } from './component/species-name.component';
   ],
   exports: [
     SpeciesListFiltersComponent,
+    SearchInputComponent,
     UserNameTemplateComponent,
     SpeciesNamePipe,
     SpeciesNameComponent

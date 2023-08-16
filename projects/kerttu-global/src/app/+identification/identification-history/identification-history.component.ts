@@ -22,14 +22,12 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationHistoryComponent {
+  query: IIdentificationHistoryQuery = { page: 1 };
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
   private results?: IIdentificationHistoryResponseWithIndex[];
-
-  private query: IIdentificationHistoryQuery = { page: 1 };
   private queryChange = new BehaviorSubject<IIdentificationHistoryQuery>(this.query);
-
   private modalSub?: Subscription;
 
   constructor(
@@ -91,7 +89,7 @@ export class IdentificationHistoryComponent {
     );
   }
 
-  private setNewQuery(newQuery: IIdentificationHistoryQuery) {
+  setNewQuery(newQuery: IIdentificationHistoryQuery) {
     this.query = newQuery;
     this.queryChange.next(newQuery);
   }
