@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class SaveObservationsComponent implements OnInit {
   citizenScienceForms$: Observable<Form.List[]>;
   birdMonitoringForms$: Observable<Form.List[]>;
+  completeListForms$: Observable<Form.List[]>;
   researchProjectForms$: Observable<Form.List[]>;
 
   constructor(
@@ -24,6 +25,7 @@ export class SaveObservationsComponent implements OnInit {
   ngOnInit() {
     this.citizenScienceForms$ = this.facade.citizenScienceForms$;
     this.birdMonitoringForms$ = this.facade.birdMonitoringForms$;
+    this.completeListForms$ = this.facade.completeListForms$;
     this.researchProjectForms$ = this.facade.researchProjectForms$;
     // Fixes https://www.pivotaltracker.com/story/show/174379048
     setTimeout(() => this.cdr.markForCheck());

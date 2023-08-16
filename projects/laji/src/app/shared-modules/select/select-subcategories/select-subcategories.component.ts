@@ -238,25 +238,25 @@ export class SelectSubcategoriesComponent implements OnChanges {
           const splitParamGlobal = param.split(',');
           this.loopInsideOptions(this.subCategories, this.options, splitParamGlobal, false);
         } else {
-          const splitParamCategories = this.rebuiltParamSubCategory(param);
+          const splitParamCategories = arrFromUrlString(param);
           this.loopInsideOptions(this.subCategories, this.options, splitParamCategories, true);
         }
       } else {
         this.unselectedOptions = this.unselectedOptions ? this.unselectedOptions : {};
       }
     }
-  }
 
-  private rebuiltParamSubCategory(urlString) {
-    const rebuilt = urlString.slice(0, -1).split(';');
-    const finalRebuilt = [];
+    function arrFromUrlString(urlString: string): string[] {
+      const rebuilt = urlString.split(';').filter(s => s.length > 0);
+      const finalRebuilt = [];
 
-    rebuilt.forEach((element) => {
-      const subSplit = element.split(':');
-      finalRebuilt[subSplit[0]] = subSplit[1].split(',');
-    });
+      rebuilt.forEach((element) => {
+        const subSplit = element.split(':');
+        finalRebuilt[subSplit[0]] = subSplit[1].split(',');
+      });
 
-    return finalRebuilt;
+      return finalRebuilt;
+    }
   }
 
   private loopInsideOptions(subCategories, options, splitParam, excludeGlobal = false) {

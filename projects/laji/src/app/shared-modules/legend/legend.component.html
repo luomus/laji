@@ -9,7 +9,7 @@
         <li *ngFor="let l of getModes()"><a (click)="switchMode(l)">{{ 'laji-map.legend.mode.' + l | translate}}</a></li>
       </ul>
     </div>
-    <button class="hide-button ml-3" (click)="hidden = !hidden">{{ hidden ? '[ + ]' : '[ - ]'}}</button>
+    <button [class]="hidden ? 'hide-btn glyphicon glyphicon-plus-sign' : 'hide-btn glyphicon glyphicon-remove-sign'" (click)="hidden = !hidden"></button>
   </div>
   <ng-template #singleMode>
     <div>{{ visualization[mode].label | translate}} </div>

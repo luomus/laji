@@ -13,8 +13,13 @@ import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { ObservationDataService } from './observation-data.service';
 import { SearchQueryService } from './search-query.service';
 import { Util } from '../shared/service/util.service';
+import { LocalStorage } from 'ngx-webstorage';
 
-interface IObservationState {
+interface IPersistentState {
+  showSearchButtonInfo: boolean;
+}
+
+interface IObservationState extends IPersistentState {
   activeQuery: WarehouseQueryInterface;
   tmpQuery: WarehouseQueryInterface;
   tmpQueryHasChanges: boolean;
@@ -35,7 +40,12 @@ export interface IObservationViewModel extends IObservationState {
   lgScreen: boolean;
 }
 
+const _persistentState: IPersistentState = {
+  showSearchButtonInfo: true
+};
+
 let _state: IObservationState = {
+  ..._persistentState,
   activeQuery: {},
   tmpQuery: {},
   tmpQueryHasChanges: false,
@@ -54,20 +64,24 @@ export class ObservationFacade {
   // This value is visible in the query parameters when parameters with person token is used and the query is obscured.
   static PERSON_TOKEN = 'true';
 
+  @LocalStorage('observationState', _persistentState)
+  private persistentState: IPersistentState;
+
   private store  = new BehaviorSubject<IObservationState>(_state);
   state$ = this.store.asObservable();
 
-  readonly lgScreen$           = this.browserService.lgScreen$;
-  readonly activeQuery$        = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
-  readonly tmpQuery$           = this.state$.pipe(map((state) => state.tmpQuery), distinctUntilChanged());
-  readonly tmpQueryHasChanges$ = this.state$.pipe(map((state) => state.tmpQueryHasChanges));
-  readonly loading$            = this.state$.pipe(map((state) => state.loadingUnits));
-  readonly loadingTaxa$        = this.state$.pipe(map((state) => state.loadingTaxa));
-  readonly activeTab$          = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
-  readonly countUnit$          = this.activeQuery$.pipe(switchMap((query) => this.countUnits(query)));
-  readonly countTaxa$          = this.activeQuery$.pipe(switchMap((query) => this.countTaxa(query)));
-  readonly filterVisible$      = this.state$.pipe(map((state) => state.filterVisible));
-  readonly settingsMap$        = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly lgScreen$             = this.browserService.lgScreen$;
+  readonly activeQuery$          = this.state$.pipe(map((state) => state.activeQuery), distinctUntilChanged());
+  readonly tmpQuery$             = this.state$.pipe(map((state) => state.tmpQuery), distinctUntilChanged());
+  readonly tmpQueryHasChanges$   = this.state$.pipe(map((state) => state.tmpQueryHasChanges));
+  readonly loading$              = this.state$.pipe(map((state) => state.loadingUnits));
+  readonly loadingTaxa$          = this.state$.pipe(map((state) => state.loadingTaxa));
+  readonly activeTab$            = this.state$.pipe(map((state) => state.activeTab), distinctUntilChanged());
+  readonly countUnit$            = this.activeQuery$.pipe(switchMap((query) => this.countUnits(query)));
+  readonly countTaxa$            = this.activeQuery$.pipe(switchMap((query) => this.countTaxa(query)));
+  readonly filterVisible$        = this.state$.pipe(map((state) => state.filterVisible));
+  readonly settingsMap$          = this.state$.pipe(map((state) => state.settingsMap), distinctUntilChanged());
+  readonly showSearchButtonInfo$ = this.state$.pipe(map((state) => state.showSearchButtonInfo));
 
   vm$: Observable<IObservationViewModel> = hotObjectObserver<IObservationViewModel>({
     lgScreen: this.lgScreen$,
@@ -80,7 +94,8 @@ export class ObservationFacade {
     countUnit: this.countUnit$,
     countTaxa: this.countTaxa$,
     filterVisible: this.filterVisible$,
-    settingsMap: this.settingsMap$
+    settingsMap: this.settingsMap$,
+    showSearchButtonInfo: this.showSearchButtonInfo$
   });
 
   private activeQueryHash?: string;
@@ -95,7 +110,7 @@ export class ObservationFacade {
     private warehouseApi: WarehouseApi,
     private observationDataService: ObservationDataService
   ) {
-    this.updateState({..._state});
+    this.updateState({..._state, ...this.persistentState});
   }
 
   activeTab(tab: string) {
@@ -152,6 +167,10 @@ export class ObservationFacade {
 
   clearQuery() {
     this.updateActiveQuery$(this.emptyQuery).subscribe();
+  }
+
+  hideSearchButtonInfo() {
+    this.updatePersistentState({...this.persistentState, showSearchButtonInfo: false});
   }
 
   taxaAutocomplete(token: string, informalTaxonGroupId: string[], limit: number): Observable<ITaxonAutocomplete[]> {
@@ -217,5 +236,10 @@ export class ObservationFacade {
 
   private updateState(state: IObservationState) {
     this.store.next(_state = state);
+  }
+
+  private updatePersistentState(state: IPersistentState) {
+    this.persistentState = state;
+    this.updateState({..._state, ...state});
   }
 }

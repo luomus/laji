@@ -6,7 +6,7 @@
         <label>{{ 'speciesList.filters.continent' | translate }}</label>
         <select class="form-control input-sm" [ngModel]="query.continent" (ngModelChange)="selectChange('continent', $event)">
           <option [value]=""></option>
-          <option *ngFor="let continent of filters?.continent" [value]="continent.id">{{ continent.name }}</option>
+          <option *ngFor="let continent of filters?.continent" [value]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
         </select>
       </div>
     </div>

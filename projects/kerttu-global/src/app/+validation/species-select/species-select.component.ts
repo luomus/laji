@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-router.service';
 import { SpeciesListQueryService } from '../service/species-list-query.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bsg-species-select',
@@ -43,7 +44,8 @@ export class SpeciesSelectComponent implements OnInit, OnDestroy {
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private cd: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService
   ) {
     this.speciesFilters$ = this.kerttuGlobalApi.getSpeciesFilters();
   }
@@ -68,7 +70,11 @@ export class SpeciesSelectComponent implements OnInit, OnDestroy {
     }
     this.loading = true;
     this.speciesListSub = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getSpeciesList(this.userService.getToken(), this.queryService.query))
+      switchMap(() => this.kerttuGlobalApi.getSpeciesList(
+        this.userService.getToken(),
+        this.translate.currentLang,
+        this.queryService.query
+      ))
     ).subscribe(data => {
       this.speciesList = data;
       this.loading = false;

@@ -234,12 +234,17 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
   showOnMobile() {
     if (this.mobile) {
       this.open = true;
+      this.cdr.detectChanges();
     }
   }
 
   hideOnMobile() {
     if (this.mobile) {
       this.open = false;
+      // The additional change detection check is not necessary on
+      // desktop browsers, however it is necessary on Firefox Android
+      // for some unknown reason.
+      this.cdr.detectChanges();
     }
   }
 }

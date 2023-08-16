@@ -123,9 +123,7 @@ export class ObservationPage {
   }
 
   async search() {
-    if (await this.toast.$closeBtn.isPresent()) {
-      await this.toast.$closeBtn.click();
-    }
+    await this.toast.closeAll();
     await this.$searchBtn.click();
   }
 

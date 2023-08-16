@@ -19,7 +19,7 @@ import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorag
 import { Location } from '@angular/common';
 import { Logger } from '../logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalizeRouterService } from '../../locale/localize-router.service';
+import { DEFAULT_LANG, LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { BrowserService } from './browser.service';
@@ -27,6 +27,7 @@ import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { PERSON_TOKEN } from './laji-api-worker-common';
 import { Profile } from '../model/Profile';
+import { Global } from '../../../environments/global';
 
 export interface ISettingResultList {
   aggregateBy?: string[];
@@ -89,7 +90,11 @@ export class UserService {
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
 
-  static getLoginUrl(next = '', lang = 'fi', base = '') {
+  static getLoginUrl(next = '', lang = DEFAULT_LANG, base = '') {
+    if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
+      lang = DEFAULT_LANG;
+    }
+
     let url = (base || environment.loginUrl);
     url += url.includes('?') ? '&' : '?';
 

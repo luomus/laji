@@ -11,6 +11,7 @@ import { map, share, shareReplay, switchMap } from 'rxjs/operators';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { toHtmlInputElement } from 'projects/laji/src/app/shared/service/html-element.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bsg-identification-results',
@@ -34,7 +35,8 @@ export class IdentificationResultsComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private kerttuGlobalApi: KerttuGlobalApi
+    private kerttuGlobalApi: KerttuGlobalApi,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -48,12 +50,12 @@ export class IdentificationResultsComponent implements OnInit {
     this.userStats$ = this.kerttuGlobalApi.getIdentificationUserStats().pipe(
       share()
     );
-    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats().pipe(
+    this.speciesStats$ = this.kerttuGlobalApi.getIdentificationSpeciesStats(this.translate.currentLang).pipe(
       map(result => result.results),
       shareReplay(1)
     );
     this.ownSpeciesStats$ = this.userService.isLoggedIn$.pipe(
-      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.userService.getToken())),
+      switchMap(() => this.kerttuGlobalApi.getIdentificationOwnSpeciesStats(this.userService.getToken(), this.translate.currentLang)),
       map(result => result.results),
       shareReplay(1)
     );

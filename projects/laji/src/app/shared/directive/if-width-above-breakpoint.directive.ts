@@ -4,6 +4,7 @@ import {
   BreakpointState
 } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
+import { PlatformService } from '../../root/platform.service';
 
 type Breakpoint = 'xs'|'sm'|'md'|'lg';
 const breakpoints = {
@@ -33,6 +34,14 @@ export class IfWidthAboveBreakpointDirective implements OnDestroy {
     }
   }
 
+  @Input()
+  set lajiIfWidthAboveBreakpointServerSide(template: TemplateRef<any>) {
+    if (this.platformService.isServer) {
+      this.view.clear();
+      this.view.createEmbeddedView(template);
+    }
+  }
+
   private breakpoint?: Breakpoint;
   private matchesBreakpoint?: boolean;
   private elseTemplate?: TemplateRef<any>;
@@ -41,7 +50,8 @@ export class IfWidthAboveBreakpointDirective implements OnDestroy {
   constructor(
     private view: ViewContainerRef,
     private template: TemplateRef<any>,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private platformService: PlatformService
   ) {}
 
   ngOnDestroy() {
@@ -50,7 +60,7 @@ export class IfWidthAboveBreakpointDirective implements OnDestroy {
 
   private initBreakPointSubscription() {
     this.breakpointSubscription?.unsubscribe();
-    if (!this.breakpoint) {
+    if (!this.breakpoint || this.platformService.isServer) {
       return;
     }
 
