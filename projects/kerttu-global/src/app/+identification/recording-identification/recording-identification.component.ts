@@ -72,9 +72,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
 
-      this.hasUnsavedChanges = false;
-      this.allRecordingsAnnotated = false;
-      this.hasError = false;
+      this.clearIdentificationState();
 
       if (this.selectedSites?.length > 0) {
         this.loading = true;
@@ -227,5 +225,15 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     }
 
     this.cdr.markForCheck();
+  }
+
+  private clearIdentificationState() {
+    this.recording = undefined;
+    this.annotation = undefined;
+    this.statusInfo = undefined;
+
+    this.hasUnsavedChanges = false;
+    this.allRecordingsAnnotated = false;
+    this.hasError = false;
   }
 }

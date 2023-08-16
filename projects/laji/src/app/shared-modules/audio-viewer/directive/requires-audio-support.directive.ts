@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Directive, TemplateRef, ViewContainerRef, Input } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, Input } from '@angular/core';
 import { PlatformService } from '../../../root/platform.service';
 import { AudioNotSupportedErrorComponent } from './audio-not-supported-error.component';
 import { AudioIosWarningComponent } from './audio-ios-warning.component';
@@ -10,25 +10,24 @@ export class RequiresAudioSupportDirective {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private resolver: ComponentFactoryResolver,
     private platformService: PlatformService,
     private audioService: AudioService,
     private translate: TranslateService
   ) { }
 
   @Input() set lajiRequiresAudioSupport(sampleRate: number) {
+    this.viewContainer.clear();
+
     const webAudioApiSupported = this.platformService.webAudioApiIsSupported;
     if (webAudioApiSupported && this.audioService.setDefaultSampleRate(sampleRate)) {
       if (this.platformService.isIOS) {
-        const factory = this.resolver.resolveComponentFactory(AudioIosWarningComponent);
-        this.viewContainer.createComponent(factory);
+        this.viewContainer.createComponent(AudioIosWarningComponent);
       }
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       const errorMessageKey = !webAudioApiSupported ? 'audioViewer.notSupported' : 'audioViewer.sampleRateNotSupported';
       const errorMessage = this.translate.instant(errorMessageKey, { sampleRate: sampleRate / 1000 });
-      const factory = this.resolver.resolveComponentFactory(AudioNotSupportedErrorComponent);
-      const componentRef = this.viewContainer.createComponent(factory);
+      const componentRef = this.viewContainer.createComponent(AudioNotSupportedErrorComponent);
       componentRef.instance.errorMsg = errorMessage;
     }
   }
