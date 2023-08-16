@@ -14,7 +14,7 @@ export class TaxonInfoComponent implements OnChanges, OnDestroy {
 
   langs = ['fi', 'sv', 'en', 'se', 'ru'];
   availableVernacularNames: Array<Record<string, string>>;
-  availableTaxonNames: {vernacularNames: Array<Record<string, string>>, colloquialVernacularNames: Array<Record<string, string>>};
+  availableTaxonNames: {vernacularNames: Array<Record<string, string>>; colloquialVernacularNames: Array<Record<string, string>>};
 
   constructor(
     public translate: TranslateService
