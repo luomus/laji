@@ -146,3 +146,11 @@ ul {
   color: #6ca31d;
 }
 
+.accuracy-legend-box {
+  width: 15px;
+  height: 15px;
+  background-color: $neutral-1;
+  border: 1px solid $neutral-6;
+  align-self: flex-start;
+  margin-top: 2px;
+}
