@@ -34,6 +34,12 @@ export class IdentificationHistoryTableComponent implements OnInit {
         width: 70
       },
       {
+        name: 'annotation.edited',
+        label: 'history.edited',
+        cellTemplate: 'date',
+        width: 70
+      },
+      {
         name: 'recording.site.name',
         label: 'history.site',
         width: 70
