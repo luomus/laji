@@ -1,4 +1,4 @@
-import { catchError, map, pairwise, startWith, switchMap, take, tap, share } from 'rxjs/operators';
+import { catchError, map, pairwise, startWith, switchMap, take, tap, shareReplay } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription, throwError } from 'rxjs';
 import { NpChooseComponent } from '../np-choose/np-choose.component';
@@ -189,7 +189,7 @@ export class NamedPlaceComponent implements OnInit, OnDestroy {
           showMap: !documentForm.options?.namedPlaceOptions?.hideMapTab
         }
       )),
-      share()
+      shareReplay(1)
     );
 
     this.updateFromInput = this.vm$.pipe(
