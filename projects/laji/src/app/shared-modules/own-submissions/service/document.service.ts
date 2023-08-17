@@ -6,7 +6,7 @@ import { Util } from '../../../shared/service/util.service';
 import { Observable, of } from 'rxjs';
 import { TemplateForm } from '../models/template-form';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { mergeMap, switchMap, shareReplay, tap } from 'rxjs/operators';
+import { mergeMap, switchMap, shareReplay, tap, take } from 'rxjs/operators';
 import { Rights } from '../../../shared/service/form-permission.service';
 import { Person } from '../../../shared/model/Person';
 import { JSONPath } from 'jsonpath-plus';
@@ -53,7 +53,7 @@ export class DocumentService {
   deleteDocument(id: string) {
     const isTmpDoc = FormService.isTmpId(id);
     const del$ = isTmpDoc
-      ? this.userService.user$.pipe(tap(person => {
+      ? this.userService.user$.pipe(take(1), tap(person => {
         this.documentStorage.removeItem(id, person);
       }))
       : this.documentApi.delete(id, this.userService.getToken());
