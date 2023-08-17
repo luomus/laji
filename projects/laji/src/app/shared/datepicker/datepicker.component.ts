@@ -90,6 +90,12 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.el = viewContainerRef.element.nativeElement;
   }
 
+  keyEvent(e, value) {
+    if (e.keyCode === 13) {
+      this.onInputValueChange(value);
+    }
+  }
+
   onInputValueChange(viewFormatValue: string) {
     if (viewFormatValue) {
       // First try formatting with default view format.
