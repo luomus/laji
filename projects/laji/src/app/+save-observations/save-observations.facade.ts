@@ -9,6 +9,7 @@ import { Global } from '../../environments/global';
 interface State {
   citizenScienceForms: Form.List[];
   birdMonitoringForms: Form.List[];
+  completeListForms: Form.List[];
   researchProjectForms: Form.List[];
 }
 
@@ -17,11 +18,13 @@ export class SaveObservationsFacade {
   private store$ = new BehaviorSubject<State>({
     citizenScienceForms: [],
     birdMonitoringForms: [],
+    completeListForms: [],
     researchProjectForms: []
   });
 
   citizenScienceForms$ = this.store$.asObservable().pipe(map(state => state.citizenScienceForms), distinctUntilChanged());
   birdMonitoringForms$ = this.store$.asObservable().pipe(map(state => state.birdMonitoringForms), distinctUntilChanged());
+  completeListForms$ = this.store$.asObservable().pipe(map(state => state.completeListForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
   constructor(private formService: FormService, private translate: TranslateService) {
@@ -32,7 +35,8 @@ export class SaveObservationsFacade {
     this.store$.next({
       citizenScienceForms: forms[0],
       birdMonitoringForms: forms[1],
-      researchProjectForms: forms[2]
+      completeListForms: forms[2],
+      researchProjectForms: forms[3]
     });
   }
 
@@ -41,6 +45,7 @@ export class SaveObservationsFacade {
       map((forms) => {
         const citizen = [];
         const birdMon = [];
+        const complete = [];
         const surveys = [];
 
         forms.sort((a, b) =>
@@ -53,13 +58,16 @@ export class SaveObservationsFacade {
             case 'MHL.categoryBirdMonitoringSchemes':
               birdMon.push(form);
               break;
+            case 'MHL.categoryBiomonCompleteLists':
+              complete.push(form);
+              break;
             case 'MHL.categorySurvey':
               surveys.push(form);
               break;
           }
         });
 
-        return [citizen, birdMon, surveys].map(_forms =>
+        return [citizen, birdMon, complete, surveys].map(_forms =>
           !_forms.length || !Global.formCategoryOrder[_forms[0].category]
             ? _forms
             : _forms.sort((a, b) => {
