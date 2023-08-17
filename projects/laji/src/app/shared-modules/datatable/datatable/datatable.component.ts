@@ -290,8 +290,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
     this.sorts = this.updateSorts(event);
     this.sortRows(this.sorts);
     this.changeDetectorRef.detectChanges();
-    event.sorts = this.sorts;
-    this.sortChange.emit(event);
+    this.sortChange.emit({
+      ...event,
+      sorts: this.sorts
+    });
   }
 
   //This changes the sorting so that the last column added to sorting gets priority, but probably only as long as the
