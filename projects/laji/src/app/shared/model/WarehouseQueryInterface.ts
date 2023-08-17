@@ -127,7 +127,7 @@ export interface WarehouseQueryInterface {
   finnish?: boolean;
   invasive?: boolean;
   countryId?: Array<string>;
-  finnishMunicipalityId?: Array<string>;
+  finnishMunicipalityId?: string | Array<string>;
   biogeographicalProvinceId?: Array<string>;
   elyCentreId?: Array<string>;
   provinceId?: Array<string>;

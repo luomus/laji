@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { NavigationThumbnailModule } from '../../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
@@ -45,6 +46,11 @@ import { SykeInsectResultFiltersComponent } from './syke-insect-result/syke-inse
 import { SykeInsectRouteComponent } from './syke-insect-result/syke-insect-route/syke-insect-route.component';
 import { SykeInsectRouteTableComponent } from './syke-insect-result/syke-insect-route-table/syke-insect-route-table.component';
 import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-all-results/syke-insect-all-results.component';
+import { InvasiveSpeciesControlResultComponent } from './invasive-species-control-result/invasive-species-control-result.component';
+import { InvasiveSpeciesControlResultStatisticsComponent } from './invasive-species-control-result/invasive-species-control-result-statistics/invasive-species-control-result-statistics.component';
+import { InvasiveSpeciesControlResultMapComponent } from './invasive-species-control-result/invasive-species-control-result-map/invasive-species-control-result-map.component';
+import { ProjectFormHeaderModule } from '../header/project-form-header.module';
+import {TaxonSelectModule} from '../../shared-modules/taxon-select/taxon-select.module';
 
 @NgModule({
   imports: [
@@ -61,7 +67,9 @@ import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-
     TranslateModule,
     CommonModule,
     SharedModule,
-    LajiUiModule
+    LajiUiModule,
+    ProjectFormHeaderModule,
+    TaxonSelectModule
   ],
   declarations: [
     ResultsComponent,
@@ -90,7 +98,10 @@ import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-
     SykeInsectResultFiltersComponent,
     SykeInsectRouteComponent,
     SykeInsectRouteTableComponent,
-    SykeInsectAllResultsComponent
+    SykeInsectAllResultsComponent,
+    InvasiveSpeciesControlResultComponent,
+    InvasiveSpeciesControlResultStatisticsComponent,
+    InvasiveSpeciesControlResultMapComponent
   ],
   providers: [
     WbcResultService,

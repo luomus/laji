@@ -1,0 +1,21 @@
+<div>
+  <label for="municipality">{{ 'invasiveSpeciesControl.stats.statistics.table.municipality.label' | translate }}</label>
+  <laji-area-select #municipality
+                   [field]="areaTypes.Municipality"
+                    [allOptionEnabled]='true'
+                    [selectOptionEnabled]='false'
+                    (areaSelect)="onMunicipalityChange($event)"
+                    [value]="[(municipality$ | async) || 'all']"></laji-area-select>
+</div>
+<div class="mt-5">
+  <label for="taxon">{{ 'invasiveSpeciesControl.stats.statistics.table.taxon.label' | translate }}</label>
+  <laji-taxon-select [searchParams]="{onlyInvasive: true}"
+                     [taxonId]="taxon$ | async"
+                     (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
+</div>
+<div class="mt-5">
+  <laji-datatable [rows]="rows$ | async"
+                  [loading]="loading$ | async"
+                  [columns]="columns">
+  </laji-datatable>
+</div>
