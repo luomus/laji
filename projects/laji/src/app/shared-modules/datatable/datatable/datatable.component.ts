@@ -300,13 +300,13 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   //underlying ngx-datatable uses external sorting
   private updateSorts(event) {
     if (!event.newValue) {
-      return this.sorts.filter(sort => sort.prop !== event.column.name);
+      return this.sorts.filter(sort => sort.prop !== event.column.prop);
     }
 
-    const idx = this.sorts.findIndex(sort => sort.prop === event.column.name);
+    const idx = this.sorts.findIndex(sort => sort.prop === event.column.prop);
     if (idx > -1) {
       return this.sorts.map(sort => {
-        if (sort.prop === event.column.name) {
+        if (sort.prop === event.column.prop) {
           return {
             prop: sort.prop,
             dir: event.newValue
@@ -319,7 +319,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
 
     return [
       {
-        prop: event.column.name,
+        prop: event.column.prop,
         dir: event.newValue
       },
       ...this.sorts
