@@ -314,7 +314,7 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         }
 
         return sort;
-      })
+      });
     }
 
     return [
