@@ -51,7 +51,7 @@ export class DocumentService {
   }
 
   deleteDocument(id: string) {
-    const isTmpDoc = id.match(/^T:\d+$/);
+    const isTmpDoc = FormService.isTmpId(id);
     const del$ = isTmpDoc
       ? this.userService.user$.pipe(tap(person => {
         this.documentStorage.removeItem(id, person);
