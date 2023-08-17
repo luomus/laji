@@ -32,11 +32,11 @@ export class TaxonInfoComponent implements OnChanges, OnDestroy {
     this.availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
 
     this.langs.forEach(value => {
-      if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
+      if (this.taxon?.vernacularName?.[value]) {
         this.availableVernacularNames.push({lang: value});
         this.availableTaxonNames.vernacularNames.push({lang: value});
       }
-      if (this.taxon.colloquialVernacularName?.hasOwnProperty(value) && this.taxon.colloquialVernacularName[value] !== '') {
+      if (this.taxon?.colloquialVernacularName?.[value]) {
         this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
       }
     });
