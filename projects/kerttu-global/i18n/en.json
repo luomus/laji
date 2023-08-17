@@ -15,6 +15,7 @@
   "audioViewer.time": "Time",
   "audioViewer.timeBuffer": "Time buffer",
   "audioViewer.timeBuffer.info": "By modifying the time buffer you can adjust time window around the candidate. Increase the buffer if you wish to see and hear a longer span of the recording. Modifying the buffer simultaneously adjusts the letter's time window.",
+  "audioViewer.slowDown": "Slow down",
   "cancel": "Cancel",
   "continents.Africa": "Africa",
   "continents.Asia": "Asia",
