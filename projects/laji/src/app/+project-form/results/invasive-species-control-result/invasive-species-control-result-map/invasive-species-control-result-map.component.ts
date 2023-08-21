@@ -70,7 +70,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
 
   visualization: LajiMapVisualization<'invasiveControlEffectiveness'> = {
     invasiveControlEffectiveness: {
-      label: 'laji-map.legend.mode.obsCount',
+      label: 'invasiveSpeciesControl.stats.map.legend.title',
       categories: Object.keys(effectivenessToVisCategory).reduce((_categories, effectiveness) => ([
         ..._categories,
         effectivenessToVisCategory[effectiveness]
