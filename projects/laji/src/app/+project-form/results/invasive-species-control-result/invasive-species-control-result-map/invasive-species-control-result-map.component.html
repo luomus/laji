@@ -2,9 +2,11 @@
   <label>{{ 'invasiveSpeciesControl.stats.statistics.table.taxon.label' | translate }}</label>
   <laji-taxon-select [searchParams]="{onlyInvasive: true}"
                      [taxonId]="taxon$ | async"
-                     (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
+                     (taxonIdChange)="onTaxonChange($event)"
+
+                     [allowInvalid]="false"></laji-taxon-select>
   <label>{{ 'invasiveSpeciesControl.stats.map.year.label' | translate }}</label>
-  <laji-year-slider [year]="year$ | async"
+  <laji-year-slider [year]="(year$ | async) || 'all'"
                     [yearInfo]="years$ | async"
                     (rangeChange)="onYearChange($event)"></laji-year-slider>
 </div>

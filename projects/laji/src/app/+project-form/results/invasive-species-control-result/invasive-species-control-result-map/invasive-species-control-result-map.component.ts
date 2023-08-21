@@ -23,6 +23,15 @@ interface QueryResult {
   }[];
 }
 
+interface InvasiveControlYearsQueryResult {
+  results: {
+    aggregateBy: {
+      'gathering.conversions.year': string
+    };
+    count: number;
+  }[];
+}
+
 
 const effectivenessToVisCategory: Record<InvasiveControlEffectiveness, {color: string; label: string}> = {
   FULL: {
@@ -113,21 +122,19 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
     );
 
     this.years$ = this.taxon$.pipe(switchMap(taxon =>
-      this.warehouseApi.warehouseQueryAggregateGet({taxonId: taxon},
-        ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year']
-      ).pipe(map((response: InvasiveControlEffectivenessStatisticsQueryResult) => {
-        const byYear = response.results.reduce((_byYear, item) => {
-          const year = item.aggregateBy['gathering.conversions.year'];
-          if (!_byYear[year]) {
-            _byYear[year] = {year, count: 0};
-          }
-          _byYear[year].count += item.count;
-          return _byYear;
-        }, {} as Record<string, YearInfoItem>);
-        return Object.keys(byYear).reduce((yearInfos, year) => {
-          yearInfos.push(byYear[year]);
-          return yearInfos;
-        }, [] as YearInfoItem[]);
+      this.warehouseApi.warehouseQueryAggregateGet({
+        taxonId: taxon,
+        hasValue: 'unit.interpretations.invasiveControlEffectiveness,document.namedPlace.wgs84CenterPoint.lat'
+      },
+        ['gathering.conversions.year'],
+        ['gathering.conversions.year']
+      ).pipe(map((response: InvasiveControlYearsQueryResult) => {
+        let total = 0;
+        const years = response.results.map(item => {
+          total += item.count;
+          return {year: item.aggregateBy['gathering.conversions.year'], count: item.count};
+        });
+        return [{year: 'all', count: total}, ...years];
       }))
     ));
   }
@@ -153,6 +160,6 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   }
 
   onYearChange(year: string) {
-    this.yearChange.emit(year);
+    this.yearChange.emit(year === 'null' ? undefined : year);
   }
 }
