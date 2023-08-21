@@ -26,7 +26,7 @@ interface QueryResult {
 interface InvasiveControlYearsQueryResult {
   results: {
     aggregateBy: {
-      'gathering.conversions.year': string
+      'gathering.conversions.year': string;
     };
     count: number;
   }[];
