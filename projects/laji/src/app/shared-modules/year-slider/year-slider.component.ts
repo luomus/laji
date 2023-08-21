@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+export interface YearInfoItem {
+  count: number;
+  year: string;
+}
+
 @Component({
   selector: 'laji-year-slider',
   templateUrl: './year-slider.component.html',
@@ -8,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class YearSliderComponent implements OnInit {
   @Input() year: string;
-  @Input() yearInfo: any[];
+  @Input() yearInfo: YearInfoItem[];
   @Input() showCounts = true;
 
   pcsString: string;

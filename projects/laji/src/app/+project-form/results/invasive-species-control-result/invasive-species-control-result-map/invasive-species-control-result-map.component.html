@@ -1,1 +1,18 @@
-<p>invasive-species-control-result-map works!</p>
+<div class="mt-5">
+  <label>{{ 'invasiveSpeciesControl.stats.statistics.table.taxon.label' | translate }}</label>
+  <laji-taxon-select [searchParams]="{onlyInvasive: true}"
+                     [taxonId]="taxon$ | async"
+                     (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
+  <label>{{ 'invasiveSpeciesControl.stats.map.year.label' | translate }}</label>
+  <laji-year-slider [year]="year$ | async"
+                    [yearInfo]="years$ | async"
+                    (rangeChange)="onYearChange($event)"></laji-year-slider>
+</div>
+<div [style.position]="'relative'">
+<laji-map [ngStyle]="{display: 'block', height: '80vh'}"
+          [loading]="loading"
+          [options]="{controls: true}"
+          [data]="mapData$ | async"></laji-map>
+<laji-legend [visualization]="visualization"
+             [mode]="'invasiveControlEffectiveness'"></laji-legend>
+</div>

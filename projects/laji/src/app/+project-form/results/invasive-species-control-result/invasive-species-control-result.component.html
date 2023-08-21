@@ -14,16 +14,19 @@
   ></laji-navigation-thumbnail>
 </div>
 <ng-container *ngIf="state$ | async as state">
-  <div [ngSwitch]="state.tab">
-    <div *ngSwitchCase="Tabs.statistics">
-      <laji-invasive-species-control-result-statistics
-        [municipality]="state.municipality"
-        [taxon]="state.taxon"
-        (municipalityChange)="onMunicipalityChange($event)"
-        (taxonChange)="onTaxonChange($event)"></laji-invasive-species-control-result-statistics>
-    </div>
-    <div *ngSwitchCase="Tabs.map">
-      <laji-invasive-species-control-result-map></laji-invasive-species-control-result-map>
-    </div>
+  <div *ngIf="isStatisticsState(state)">
+    <laji-invasive-species-control-result-statistics
+      [taxon]="state.taxon"
+      [municipality]="state.municipality"
+      (taxonChange)="onTaxonChange($event)"
+      (municipalityChange)="onMunicipalityChange($event)"></laji-invasive-species-control-result-statistics>
+  </div>
+  <div *ngIf="isMapState(state)">
+    <laji-invasive-species-control-result-map
+      [taxon]="state.taxon"
+      [year]="state.year"
+      (taxonChange)="onTaxonChange($event)"
+      (yearChange)="onYearChange($event)"
+      ></laji-invasive-species-control-result-map>
   </div>
 </ng-container>

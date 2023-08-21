@@ -2115,5 +2115,11 @@
   "invasiveSpeciesControl.stats.statistics.table.cols.partial": "Torjuttu osittain",
   "invasiveSpeciesControl.stats.statistics.table.cols.noEffect": "Ei torjuttu",
   "invasiveSpeciesControl.stats.statistics.table.municipality.label": "Valitse kunta",
-  "invasiveSpeciesControl.stats.statistics.table.taxon.label": "Valitse laji"
+  "invasiveSpeciesControl.stats.statistics.table.taxon.label": "Valitse laji",
+  "invasiveSpeciesControl.stats.map.dataLayerLabel": "Torjuntadata",
+  "invasiveSpeciesControl.stats.map.legend.title": "Torjunnan taso",
+  "invasiveSpeciesControl.stats.map.legend.full": "Torjuttu kokonaan",
+  "invasiveSpeciesControl.stats.map.legend.partial": "Torjuttu osittain",
+  "invasiveSpeciesControl.stats.map.legend.noEffect": "Ei torjuttu",
+  "invasiveSpeciesControl.stats.map.year.label": "Valitse vuosi"
 }

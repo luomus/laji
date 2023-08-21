@@ -4,7 +4,7 @@ import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
-interface QueryResult {
+export interface InvasiveControlEffectivenessStatisticsQueryResult {
   results: {
     aggregateBy: {
     'gathering.conversions.year': string;
@@ -60,13 +60,13 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
       {finnishMunicipalityId: municipality, taxonId: taxon},
       ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year']
     )));
-    this.rows$ = query$.pipe(map((response: QueryResult) => {
-      const byYear = response.results.reduce((acc, item) => {
+    this.rows$ = query$.pipe(map((response: InvasiveControlEffectivenessStatisticsQueryResult) => {
+      const byYear = response.results.reduce((_byYear, item) => {
         const year = item.aggregateBy['gathering.conversions.year'];
-        if (!acc[year]) {
-          acc[year] = {year: +year, visits: 0, full: 0, partial: 0, noEffect: 0};
+        if (!_byYear[year]) {
+          _byYear[year] = {year: +year, visits: 0, full: 0, partial: 0, noEffect: 0};
         }
-        const entry = acc[year];
+        const entry = _byYear[year];
         switch (item.aggregateBy['unit.interpretations.invasiveControlEffectiveness']) {
         case 'FULL':
           entry.full++;
@@ -79,7 +79,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
           break;
         }
         entry.visits += item.count;
-        return acc;
+        return _byYear;
       }, {});
       return Object.keys(byYear).reduce((rows, year) => {
         rows.push(byYear[year]);

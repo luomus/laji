@@ -133,7 +133,7 @@ export interface WarehouseQueryInterface {
   provinceId?: Array<string>;
   area?: Array<string>;
   season?: string;
-  time?: Array<string>;
+  time?: string | Array<string>;
   firstLoadedSameOrAfter?: string;
   firstLoadedSameOrBefore?: string;
   yearMonth?: Array<string>;
@@ -252,6 +252,7 @@ export interface WarehouseQueryInterface {
   polygonId?: string;
   sensitive?: boolean;
   primarySpecimen?: boolean;
+  hasValue?: string;
 }
 
 

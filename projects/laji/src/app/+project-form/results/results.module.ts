@@ -50,7 +50,10 @@ import { InvasiveSpeciesControlResultComponent } from './invasive-species-contro
 import { InvasiveSpeciesControlResultStatisticsComponent } from './invasive-species-control-result/invasive-species-control-result-statistics/invasive-species-control-result-statistics.component';
 import { InvasiveSpeciesControlResultMapComponent } from './invasive-species-control-result/invasive-species-control-result-map/invasive-species-control-result-map.component';
 import { ProjectFormHeaderModule } from '../header/project-form-header.module';
-import {TaxonSelectModule} from '../../shared-modules/taxon-select/taxon-select.module';
+import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
+import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
 
 @NgModule({
   imports: [
@@ -69,7 +72,10 @@ import {TaxonSelectModule} from '../../shared-modules/taxon-select/taxon-select.
     SharedModule,
     LajiUiModule,
     ProjectFormHeaderModule,
-    TaxonSelectModule
+    TaxonSelectModule,
+    LajiMapModule,
+    LajiLegendModule,
+    YearSliderModule
   ],
   declarations: [
     ResultsComponent,

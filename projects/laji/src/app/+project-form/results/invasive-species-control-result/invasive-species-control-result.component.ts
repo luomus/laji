@@ -15,8 +15,8 @@ interface StatisticsState {
 }
 
 interface MapState {
-  tab: Tabs.statistics;
-  municipality: string;
+  tab: Tabs.map;
+  year: string;
   taxon: string;
 }
 
@@ -34,6 +34,8 @@ export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy 
 
   Tabs = Tabs; // eslint-disable-line @typescript-eslint/naming-convention
   state$: Observable<State>;
+  isStatisticsState = (state: State): state is StatisticsState => state.tab === Tabs.statistics;
+  isMapState = (state: State): state is MapState => state.tab === Tabs.map;
 
   private defaultTabSubscription: Subscription;
 
@@ -56,7 +58,12 @@ export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy 
   }
 
   updateState(query: any) {
-    this.router.navigate([], {queryParams: {...this.route.snapshot.queryParams, ...query}});
+    const currentState = this.route.snapshot.queryParams;
+    let nextState = {...currentState, ...query};
+    if (currentState.tab !== nextState.tab) { // Clear filters from state if tab changes.
+      nextState = {tab: nextState.tab};
+    }
+    this.router.navigate([], {queryParams: nextState});
   }
 
   onMunicipalityChange(municipality: string) {
@@ -65,5 +72,9 @@ export class InvasiveSpeciesControlResultComponent implements OnInit, OnDestroy 
 
   onTaxonChange(taxon: string) {
     this.updateState({taxon});
+  }
+
+  onYearChange(year: string) {
+    this.updateState({year});
   }
 }
