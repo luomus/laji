@@ -1,10 +1,13 @@
 <div class="mt-5">
   <label>{{ 'invasiveSpeciesControl.stats.statistics.table.taxon.label' | translate }}</label>
-  <laji-taxon-select [searchParams]="{onlyInvasive: true}"
-                     [taxonId]="taxon$ | async"
-                     (taxonIdChange)="onTaxonChange($event)"
-
-                     [allowInvalid]="false"></laji-taxon-select>
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+      <laji-taxon-select [searchParams]="{onlyInvasive: true}"
+                         [taxonId]="taxon$ | async"
+                         (taxonIdChange)="onTaxonChange($event)"
+                         [allowInvalid]="false"></laji-taxon-select>
+    </div>
+  </div>
   <label>{{ 'invasiveSpeciesControl.stats.map.year.label' | translate }}</label>
   <laji-year-slider [year]="(year$ | async) || 'all'"
                     [yearInfo]="years$ | async"
