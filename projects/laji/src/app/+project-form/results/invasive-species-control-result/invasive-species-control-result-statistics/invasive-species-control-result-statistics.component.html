@@ -1,17 +1,25 @@
 <div>
-  <label>{{ 'invasiveSpeciesControl.stats.statistics.table.municipality.label' | translate }}</label>
-  <laji-area-select #municipality
-                   [field]="areaTypes.Municipality"
-                    [allOptionEnabled]='true'
-                    [selectOptionEnabled]='false'
-                    (areaSelect)="onMunicipalityChange($event)"
-                    [value]="[(municipality$ | async) || 'all']"></laji-area-select>
-</div>
-<div class="mt-5">
   <label>{{ 'invasiveSpeciesControl.stats.statistics.table.taxon.label' | translate }}</label>
-  <laji-taxon-select [searchParams]="{onlyInvasive: true}"
-                     [taxonId]="taxon$ | async"
-                     (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+      <laji-taxon-select [searchParams]="{onlyInvasive: true}"
+                         [taxonId]="taxon$ | async"
+                         (taxonIdChange)="onTaxonChange($event)"></laji-taxon-select>
+    </div>
+  </div>
+</div>
+<div>
+  <label>{{ 'invasiveSpeciesControl.stats.statistics.table.municipality.label' | translate }}</label>
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+      <laji-area-select #municipality
+                        [field]="areaTypes.Municipality"
+                        [allOptionEnabled]='true'
+                        [selectOptionEnabled]='false'
+                        (areaSelect)="onMunicipalityChange($event)"
+                        [value]="[(municipality$ | async) || 'all']"></laji-area-select>
+    </div>
+  </div>
 </div>
 <div class="mt-5">
   <laji-datatable [rows]="rows$ | async"
