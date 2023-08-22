@@ -160,6 +160,6 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   }
 
   onYearChange(year: string) {
-    this.yearChange.emit(year === 'null' ? undefined : year);
+    this.yearChange.emit(year === 'all' ? undefined : year);
   }
 }
