@@ -36,6 +36,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { ENTER } from '@angular/cdk/keycodes';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -91,7 +92,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   keyEvent(e, value) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === ENTER) {
       this.onInputValueChange(value);
     }
   }
