@@ -13,10 +13,10 @@
       <ng-template #identificationView>
         <laji-spinner [spinning]="loading" [overlay]="true">
           <bsg-identification-view
-            *ngIf="recording && annotation && statusInfo"
+            *ngIf="recording && annotation"
             [recording]="recording"
             [(annotation)]="annotation"
-            [statusInfo]="statusInfo"
+            [hasPreviousRecording]="recordingService.hasPreviousRecording()"
             [buttonsDisabled]="loading"
             (nextRecordingClick)="getNextRecording()"
             (previousRecordingClick)="getPreviousRecording()"

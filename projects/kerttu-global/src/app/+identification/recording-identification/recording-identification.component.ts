@@ -2,8 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, HostList
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
-  IGlobalRecordingStatusInfo,
-  IGlobalRecordingResponse,
+  IGlobalRecordingWithAnnotation,
   KerttuGlobalErrorEnum,
   IGlobalSite
 } from '../../kerttu-global-shared/models';
@@ -17,19 +16,19 @@ import { Observable, of, Subscription } from 'rxjs';
 import equals from 'deep-equal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
+import { RecordingService } from '../service/recording.service';
 
 @Component({
   selector: 'bsg-recording-identification',
   templateUrl: './recording-identification.component.html',
   styleUrls: ['./recording-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   sites$: Observable<IGlobalSite[]>;
 
   recording: IGlobalRecording;
   annotation: IGlobalRecordingAnnotation;
-  statusInfo: IGlobalRecordingStatusInfo;
 
   expertiseMissing?: boolean;
   loading = false;
@@ -45,6 +44,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   private siteIdsSub: Subscription;
 
   constructor(
+    public recordingService: RecordingService,
     private kerttuGlobalApi: KerttuGlobalApi,
     private personService: PersonApi,
     private userService: UserService,
@@ -75,9 +75,11 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
       this.clearIdentificationState();
 
       if (this.selectedSites?.length > 0) {
+        this.recordingService.setSelectedSites(this.selectedSites);
+
         this.loading = true;
-        this.kerttuGlobalApi.getRecording(this.userService.getToken(), this.translate.currentLang, siteIds).subscribe((result) => {
-          this.onGetRecordingSuccess(result);
+        this.recordingService.getCurrentRecording().subscribe((result) => {
+          this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
         });
@@ -124,12 +126,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   getNextRecording(skipCurrent = false) {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
-      switchMap(() => this.kerttuGlobalApi.getNextRecording(
-        this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites, skipCurrent
-      ))
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, false, skipCurrent).pipe(
+      switchMap(() => this.recordingService.getNextRecording())
     ).subscribe(result => {
-      this.onGetRecordingSuccess(result);
+      this.onGetRecordingsSuccess(result);
     }, (err) => {
       this.handleError(err);
     });
@@ -139,8 +139,8 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.loading = true;
-        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites).subscribe(result => {
-          this.onGetRecordingSuccess(result);
+        this.recordingService.getPreviousRecording().subscribe(result => {
+          this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
         });
@@ -197,13 +197,12 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onGetRecordingSuccess(data: IGlobalRecordingResponse) {
+  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
     this.loading = false;
 
     if (data.recording) {
       this.recording = data.recording;
       this.annotation = data.annotation || {};
-      this.statusInfo = data.statusInfo;
 
       this.originalAnnotation = Util.clone(this.annotation);
       this.hasUnsavedChanges = false;
@@ -230,7 +229,6 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   private clearIdentificationState() {
     this.recording = undefined;
     this.annotation = undefined;
-    this.statusInfo = undefined;
 
     this.hasUnsavedChanges = false;
     this.allRecordingsAnnotated = false;

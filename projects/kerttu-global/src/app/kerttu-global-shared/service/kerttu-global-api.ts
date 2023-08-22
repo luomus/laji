@@ -14,14 +14,14 @@ import {
   IGlobalTemplateVersion,
   IGlobalSpeciesListResult,
   KerttuGlobalErrorEnum,
-  IGlobalRecordingResponse,
   IGlobalRecordingAnnotation,
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationUserStatResult,
   IIdentificationSpeciesStat,
   IIdentificationHistoryResponse,
-  IIdentificationHistoryQuery
+  IIdentificationHistoryQuery,
+  IGlobalRecordingWithAnnotation
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -122,33 +122,23 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
 
-  public getRecording(personToken: string, lang: string, siteIds: number[]): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording';
+  public getNewIdentificationRecording(personToken: string, lang: string, siteIds: number[]): Observable<IGlobalRecordingWithAnnotation> {
+    const path = this.basePath + '/identification/recordings/new';
     const params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
 
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
-  public getNextRecording(personToken: string, lang: string, recordingId: number, siteIds: number[], skipCurrent = false): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording/next/' + recordingId;
-    let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
-    if (skipCurrent) {
-      params = params.set('skipCurrent', skipCurrent);
-    }
+  public getIdentificationRecording(personToken: string, lang: string, recordingId: number): Observable<IGlobalRecordingWithAnnotation> {
+    const path = this.basePath + '/identification/recordings/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
-  public getPreviousRecording(personToken: string, lang: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording/previous/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
-
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
-  }
-
-  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
-    const path = this.basePath + '/identification/recording/annotation/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken);
+  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation, isDraft = false, skipRecording = false) {
+    const path = this.basePath + '/identification/recordings/' + recordingId + '/annotation';
+    const params = new HttpParams().set('personToken', personToken).set('isDraft', isDraft).set('skipRecording', skipRecording);
 
     return this.httpClient.post(path, annotation, { params });
   }
@@ -194,11 +184,11 @@ export class KerttuGlobalApi {
     return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
   }
 
-  public getOldRecording(personToken: string, lang: string, recordingId: number): Observable<IGlobalRecordingResponse> {
+  public getOldRecording(personToken: string, lang: string, recordingId: number): Observable<IGlobalRecordingWithAnnotation> {
     const path = this.basePath + '/identification/history/' + recordingId;
     const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
   public saveOldRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {

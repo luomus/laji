@@ -22,7 +22,7 @@
       <div>
         <button
           class="btn btn-default"
-          [disabled]="!statusInfo.hasPreviousRecording || buttonsDisabled || loadingSpecies"
+          [disabled]="!hasPreviousRecording || buttonsDisabled || loadingSpecies"
           (click)="previousRecordingClick.emit()"
         >
           {{ 'identification.previousRecording' | translate }}

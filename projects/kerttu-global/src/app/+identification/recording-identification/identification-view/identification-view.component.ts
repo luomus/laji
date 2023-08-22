@@ -17,7 +17,6 @@ import {
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
-  IGlobalRecordingStatusInfo,
   IGlobalSpecies,
   IGlobalSpeciesAnnotation,
   IGlobalSpeciesWithAnnotation,
@@ -60,7 +59,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   @Input() recording: IGlobalRecording;
   @Input() annotation: IGlobalRecordingAnnotation;
-  @Input() statusInfo: IGlobalRecordingStatusInfo;
+  @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
   @Input() showTopBar = true;
 

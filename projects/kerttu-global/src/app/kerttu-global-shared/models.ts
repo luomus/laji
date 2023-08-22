@@ -138,14 +138,9 @@ export interface IGlobalSpeciesAnnotationBox {
   overlapsWithOtherSpecies?: boolean;
 }
 
-export interface IGlobalRecordingStatusInfo {
-  hasPreviousRecording: boolean;
-}
-
-export interface IGlobalRecordingResponse {
-  statusInfo: IGlobalRecordingStatusInfo;
-  annotation: IGlobalRecordingAnnotation;
+export interface IGlobalRecordingWithAnnotation {
   recording: IGlobalRecording;
+  annotation: IGlobalRecordingAnnotation;
 }
 
 export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {

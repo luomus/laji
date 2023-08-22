@@ -29,6 +29,7 @@ import { IdentificationSpeciesTableComponent } from './identification-results/id
 import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
 import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
 import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
+import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 
 @NgModule({
   imports: [
@@ -64,6 +65,9 @@ import { IdentificationHistoryEditModalComponent } from './identification-histor
     IdentificationHistoryComponent,
     IdentificationHistoryTableComponent,
     IdentificationHistoryEditModalComponent,
+  ],
+  providers: [
+    AudioService
   ]
 })
 export class IdentificationModule { }
