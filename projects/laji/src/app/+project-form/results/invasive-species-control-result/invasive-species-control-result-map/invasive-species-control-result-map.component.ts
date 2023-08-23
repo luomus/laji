@@ -9,7 +9,7 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
 
-type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT';
+type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT' | 'NOT_FOUND';
 
 interface QueryResult {
   results: {
@@ -32,7 +32,7 @@ interface InvasiveControlYearsQueryResult {
 }
 
 
-const effectivenessToVisCategory: Record<InvasiveControlEffectiveness, {color: string; label: string}> = {
+const effectivenessToVisCategory: Record<Exclude<InvasiveControlEffectiveness, 'NOT_FOUND'>, {color: string; label: string}> = {
   FULL: {
     color: '#00ff00',
     label: 'invasiveSpeciesControl.stats.map.legend.full'
@@ -152,8 +152,13 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   }
 
   getFeatureStyle({feature}: GetFeatureStyleOptions) {
+    let {effectiveness} = feature.properties;
+    if (effectiveness === 'NOT_FOUND') { // Same colour as full since it means that the species was not present = good thing.
+      effectiveness = 'FULL';
+    }
+
     return {
-      color: effectivenessToVisCategory[feature.properties.effectiveness].color
+      color: effectivenessToVisCategory[effectiveness].color
     };
   }
 
