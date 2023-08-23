@@ -84,6 +84,9 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         return _byYear;
       }, {});
       return Object.keys(byYear).reduce((rows, year) => {
+        if (!year) { // There can be year "" for unknown reason. We agreed that it should be simply filtered out.
+          return rows;
+        }
         rows.push(byYear[year]);
         return rows;
       }, []);
