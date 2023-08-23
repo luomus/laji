@@ -89,7 +89,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         }
         rows.push(byYear[year]);
         return rows;
-      }, []);
+      }, []).sort((a, b) => b.year - a.year);
     }), share());
     this.loading$ = this.rows$.pipe(map(() => false)).pipe(startWith(true));
   }
