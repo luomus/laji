@@ -135,7 +135,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
         const years = response.results.map(item => {
           total += item.count;
           return {year: item.aggregateBy['gathering.conversions.year'], count: item.count};
-        });
+        }).sort((a, b) => +b.year - +a.year);
         return [{year: 'all', count: total}, ...years];
       }))
     ));
