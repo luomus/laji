@@ -15,5 +15,9 @@ export class AudioCacheLoaderService {
   loadAudioToCache(audio: IAudio) {
     return this.audioService.getAudioBuffer(audio.url, audio.duration);
   }
+
+  removeAudioFromCache(audio: IAudio) {
+    this.audioService.removeFromCache(audio.url);
+  }
 }
 

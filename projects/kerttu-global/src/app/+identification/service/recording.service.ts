@@ -162,7 +162,10 @@ export class RecordingService {
       this.previous.includes(recordingId) || this.current === recordingId || this.next.includes(recordingId)
     ));
     for (const unusedId of unusedIds) {
-      delete this.dataByRecordingId[unusedId];
+      if (this.dataByRecordingId[unusedId]) {
+        this.audioCacheLoader.removeAudioFromCache(this.dataByRecordingId[unusedId].recording);
+        delete this.dataByRecordingId[unusedId];
+      }
     }
   }
 }

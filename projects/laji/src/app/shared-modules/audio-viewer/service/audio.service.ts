@@ -40,6 +40,11 @@ export class AudioService {
     this.cacheSize = cacheSize;
   }
 
+  public removeFromCache(url: string) {
+    delete this.buffer$[url];
+    delete this.buffer[url];
+  }
+
   public getAudioBuffer(url: string, actualDuration?: number): Observable<AudioBuffer> {
     const audioCtx = this.getAudioContext();
 
@@ -222,8 +227,7 @@ export class AudioService {
       const removed = times.indexOf(Math.min(...times));
       const removedKey = keys[removed];
 
-      delete this.buffer$[removedKey];
-      delete this.buffer[removedKey];
+      this.removeFromCache(removedKey);
 
       keys.splice(removed, 1);
     }
