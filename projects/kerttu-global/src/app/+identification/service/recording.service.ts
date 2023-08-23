@@ -3,14 +3,13 @@ import { IGlobalRecordingWithAnnotation } from '../../kerttu-global-shared/model
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { switchMap, tap, share, take, map } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
+import { AudioCacheLoaderService } from './audio-cache-loader.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class RecordingService {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
@@ -19,27 +18,24 @@ export class RecordingService {
 
   @LocalStorage('previous_recordings') private previous: number[];
   @LocalStorage('current_recording') private current: number|null;
-  private next: number[];
+  private next: number[] = [];
 
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
+
+  private preloadNextRecordingIsActive = false;
+  private preloadNextRecordingSubject = new Subject<number>();
+  private preloadNextRecording$: Observable<IGlobalRecordingWithAnnotation>;
+  private preloadNextRecordingSub: Subscription;
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
     private userService: UserService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private audioCacheLoader: AudioCacheLoaderService
   ) {
-    if (!this.selectedSites) {
-      this.selectedSites = [];
-    }
-    if (!this.previous) {
-      this.previous = [];
-    }
-    if (this.current === undefined) {
-      this.current = null;
-    }
-    if (!this.next) {
-      this.next = [];
-    }
+    this.audioCacheLoader.setCacheSize(this.previousLimit + this.nextLimit + 1);
+    this.initLocalStorageValues();
+    this.initPreloadNextRecordings();
   }
 
   setSelectedSites(selectedSites: number[]) {
@@ -47,7 +43,7 @@ export class RecordingService {
       this.previous = [];
       this.current = null;
       this.next = [];
-      this.clearUnusedData();
+      this.pruneCache();
     }
     this.selectedSites = selectedSites;
   }
@@ -57,28 +53,24 @@ export class RecordingService {
   }
 
   getCurrentRecording(): Observable<IGlobalRecordingWithAnnotation> {
-    if (this.current !== null) {
+    if (this.current != null) {
+      let data$: Observable<IGlobalRecordingWithAnnotation>;
+
       if (this.dataByRecordingId[this.current]) {
-        return of(this.dataByRecordingId[this.current]);
+        data$ = of(this.dataByRecordingId[this.current]);
+      } else {
+        data$ = this.kerttuGlobalApi.getIdentificationRecording(this.userService.getToken(), this.translate.currentLang, this.current).pipe(
+          tap(result => {
+            this.dataByRecordingId[result.recording.id] = result;
+          })
+        );
       }
-      return this.kerttuGlobalApi.getIdentificationRecording(this.userService.getToken(), this.translate.currentLang, this.current).pipe(
-        tap(result => {
-          this.dataByRecordingId[result.recording.id] = result;
-        })
-      );
+
+      return data$.pipe(tap(() => this.startPreloadingRecordings()));
     }
 
-    const previousId = this.previous[this.previous.length - 1];
-    return this.kerttuGlobalApi.getNewIdentificationRecording(
-      this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId
-    ).pipe(
-      tap(result => {
-        if (result.recording) {
-          this.current = result.recording.id;
-          this.dataByRecordingId[this.current] = result;
-        }
-      })
-    );
+    this.startPreloadingRecordings();
+    return this.preloadNextRecording$.pipe(take(1));
   }
 
   getPreviousRecording(): Observable<IGlobalRecordingWithAnnotation> {
@@ -89,7 +81,7 @@ export class RecordingService {
     this.current = this.previous[this.previous.length - 1];
     this.previous = this.previous.slice(0, this.previous.length - 1);
 
-    this.clearUnusedData();
+    this.pruneCache();
 
     return this.getCurrentRecording();
   }
@@ -102,12 +94,69 @@ export class RecordingService {
     this.current = this.next[0];
     this.next = this.next.slice(1);
 
-    this.clearUnusedData();
+    this.pruneCache();
 
     return this.getCurrentRecording();
   }
 
-  private clearUnusedData() {
+  private initLocalStorageValues() {
+    if (!this.selectedSites) {
+      this.selectedSites = [];
+    }
+    if (!this.previous) {
+      this.previous = [];
+    }
+    if (this.current === undefined) {
+      this.current = null;
+    }
+  }
+
+  private initPreloadNextRecordings() {
+    this.preloadNextRecording$ = this.preloadNextRecordingSubject.pipe(
+      switchMap(previousId => {
+        const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
+        return this.kerttuGlobalApi.getNewIdentificationRecording(
+          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds
+        );
+      }),
+      tap(result => {
+        if (result.recording) {
+          const recordingId = result.recording.id;
+          if (this.current == null) {
+            this.current = recordingId;
+          } else {
+            this.next.push(recordingId);
+          }
+          this.dataByRecordingId[recordingId] = result;
+
+          this.audioCacheLoader.loadAudioToCache(result.recording).subscribe(() => {
+            if (this.next.length < this.nextLimit) {
+              this.preloadNextRecordingSubject.next(recordingId);
+            } else {
+              this.preloadNextRecordingIsActive = false;
+            }
+          });
+          return;
+        } else {
+          this.preloadNextRecordingIsActive = false;
+        }
+      }),
+      share()
+    );
+
+    this.preloadNextRecordingSub = this.preloadNextRecording$.subscribe();
+  }
+
+  private startPreloadingRecordings() {
+    if (!this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
+      const previousRecordingId = this.current == null ? this.previous[this.previous.length - 1] :
+        (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
+      this.preloadNextRecordingSubject.next(previousRecordingId);
+      this.preloadNextRecordingIsActive = true;
+    }
+  }
+
+  private pruneCache() {
     const recordingIds = Object.keys(this.dataByRecordingId).map(recordingId => parseInt(recordingId, 10));
     const unusedIds = recordingIds.filter(recordingId => !(
       this.previous.includes(recordingId) || this.current === recordingId || this.next.includes(recordingId)
