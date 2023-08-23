@@ -185,7 +185,7 @@
           >
             <laji-observation-month-day-chart
               [query]="activeQuery"
-              [enableOnlyCount]="false"
+              [useIndividualCount]="!onlyCount"
               (hasData)="hasMonthDayData = $event"
             ></laji-observation-month-day-chart>
           </div>
