@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap, share } from 'rxjs/operators';
 
 export interface InvasiveControlEffectivenessStatisticsQueryResult {
   results: {
@@ -90,7 +90,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         rows.push(byYear[year]);
         return rows;
       }, []);
-    }));
+    }), share());
     this.loading$ = this.rows$.pipe(map(() => false)).pipe(startWith(true));
   }
 
