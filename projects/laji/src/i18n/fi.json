@@ -1288,6 +1288,7 @@
   "observation.form.unidentified.title": "Määritysapu",
   "observation.form.unit": "Yksilö",
   "observation.form.virFilterShortcut": "Aseta Virva-viranomaisrajaukset",
+  "observation.form.birdAtlasShortcut": "Lintuatlashavainnot",
   "observation.form.virva-info": "Viranomaiskäyttöön määritellyt oletusrajaukset. Voit tarkastella ja halutessasi myös muuttaa oletusrajauksia kohdissa: Aika, Paikka, Laatu, Uhanalaisuus ja asema. Lisäksi voit rajata hakua muuten.",
   "observation.form.zeroObservations": "Myös nollahavainnot",
   "observation.front.sources": "Lajitietokeskuksen havaintolähteet",

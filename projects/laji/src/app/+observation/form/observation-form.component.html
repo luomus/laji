@@ -838,6 +838,13 @@
   <div>
     <a class="btn btn-default btn-sm"
       [routerLink]="['/observation/map'] | localize"
+      [queryParams]="birdAtlasFilterShortcutQueryParams">
+    {{ 'observation.form.birdAtlasShortcut' | translate }}
+    </a>
+  </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
       [queryParams]="{ countryId: 'ML.206' }">
     {{ 'observation.form.onlyFinShortcut' | translate }}
     </a>
