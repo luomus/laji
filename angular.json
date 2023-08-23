@@ -784,7 +784,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/laji-ui/tsconfig.lib.prod.json"
+              "tsConfig": "projects/laji-ui/tsconfig.lib.json"
             }
           }
         },
@@ -820,7 +820,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/laji-api-client/tsconfig.lib.prod.json"
+              "tsConfig": "projects/laji-api-client/tsconfig.lib.json"
             }
           }
         },
