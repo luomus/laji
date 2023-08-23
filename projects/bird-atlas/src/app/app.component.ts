@@ -27,7 +27,7 @@ import { tap } from 'rxjs/operators';
       <laji-technical-news-dumb [news]="news$ | async" [absoluteLink]="'http://laji.fi/'" class="container"></laji-technical-news-dumb>
       <router-outlet></router-outlet>
     </div>
-    <ba-footer *ngIf="showFooter$ | async"></ba-footer>
+    <ba-footer [displayFull]="showFooter$ | async"></ba-footer>
   `,
   styleUrls: [
     './app.component.scss'

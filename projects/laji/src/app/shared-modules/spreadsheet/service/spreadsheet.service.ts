@@ -282,9 +282,9 @@ export class SpreadsheetService {
 
     if (!system) {
       return `${N} ${E}`;
-    } else if (system === ykj) {
+    } else if (system.toLowerCase() === ykj.toLowerCase()) {
       return `${N}:${E}${suffix}`;
-    } else if (system === etrs) {
+    } else if (system.toLowerCase() === etrs.toLowerCase()) {
       return `+${N}+${E}/CRSEPSG:3067`;
     }
     return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;

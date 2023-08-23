@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 
@@ -8,34 +8,37 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
   styleUrls: ['./taxon-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonInfoComponent implements OnInit, OnDestroy {
+export class TaxonInfoComponent implements OnChanges, OnDestroy {
 
   @Input() taxon: Taxonomy;
 
   langs = ['fi', 'sv', 'en', 'se', 'ru'];
-  availableVernacularNames = [];
-  availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
+  availableVernacularNames: Array<Record<string, string>>;
+  availableTaxonNames: {vernacularNames: Array<Record<string, string>>; colloquialVernacularNames: Array<Record<string, string>>};
 
   constructor(
     public translate: TranslateService
     ) { }
 
-  ngOnInit() {
-      this.initLangTaxonNames();
+  ngOnChanges() {
+    this.initLangTaxonNames();
   }
 
   ngOnDestroy() {
   }
 
   initLangTaxonNames() {
-   this.langs.forEach(value => {
-    if (this.taxon.vernacularName?.hasOwnProperty(value) && this.taxon.vernacularName[value] !== '') {
-      this.availableVernacularNames.push({lang: value});
-      this.availableTaxonNames.vernacularNames.push({lang: value});
+    this.availableVernacularNames = [];
+    this.availableTaxonNames = {vernacularNames: [], colloquialVernacularNames: []};
+
+    this.langs.forEach(value => {
+      if (this.taxon?.vernacularName?.[value]) {
+        this.availableVernacularNames.push({lang: value});
+        this.availableTaxonNames.vernacularNames.push({lang: value});
+      }
+      if (this.taxon?.colloquialVernacularName?.[value]) {
+        this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
+      }
+    });
     }
-    if (this.taxon.colloquialVernacularName?.hasOwnProperty(value) && this.taxon.colloquialVernacularName[value] !== '') {
-      this.availableTaxonNames.colloquialVernacularNames.push({lang: value});
-    }
-   });
   }
-}
