@@ -122,9 +122,18 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
 
-  public getNewIdentificationRecording(personToken: string, lang: string, siteIds: number[]): Observable<IGlobalRecordingWithAnnotation> {
+  public getNewIdentificationRecording(
+    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number, excludeRecordingIds?: number[]
+  ): Observable<IGlobalRecordingWithAnnotation> {
     const path = this.basePath + '/identification/recordings/new';
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
+    let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
+
+    if (previousRecordingId != null) {
+      params = params.set('previousRecording', '' + previousRecordingId);
+    }
+    if (excludeRecordingIds) {
+      params = params.set('excludeRecordings', '' + excludeRecordingIds);
+    }
 
     return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
@@ -171,7 +180,7 @@ export class KerttuGlobalApi {
 
   public getIdentificationOwnSpeciesStats(personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/ownSpecies';
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang);;
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
