@@ -2,8 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": [],
-    "target": "es2020"
+    "types": []
   },
   "files": [
     "src/main.ts",
