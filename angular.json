@@ -387,7 +387,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/label-designer/tsconfig.lib.prod.json"
+              "tsConfig": "projects/label-designer/tsconfig.lib.json"
             }
           }
         },
