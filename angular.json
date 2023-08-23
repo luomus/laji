@@ -380,7 +380,7 @@
       "prefix": "ll",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/label-designer/tsconfig.lib.json",
             "project": "projects/label-designer/ng-package.json"
@@ -777,7 +777,7 @@
       "prefix": "lu",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/laji-ui/tsconfig.lib.json",
             "project": "projects/laji-ui/ng-package.json"
@@ -813,7 +813,7 @@
       "prefix": "la",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/laji-api-client/tsconfig.lib.json",
             "project": "projects/laji-api-client/ng-package.json"
