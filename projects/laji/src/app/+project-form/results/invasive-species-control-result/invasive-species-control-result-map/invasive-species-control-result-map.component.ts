@@ -8,7 +8,6 @@ import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/y
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
-import { InvasiveControlEffectivenessStatisticsQueryResult } from '../invasive-species-control-result-statistics/invasive-species-control-result-statistics.component';
 
 type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT';
 
@@ -90,7 +89,9 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
         'document.namedPlace.wgs84CenterPoint.lat',
         'document.namedPlace.wgs84CenterPoint.lon',
         'unit.interpretations.invasiveControlEffectiveness'
-      ]
+      ],
+      undefined,
+      10000
     )));
 
     this.mapData$ = query$.pipe(
@@ -127,7 +128,8 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
         hasValue: 'unit.interpretations.invasiveControlEffectiveness,document.namedPlace.wgs84CenterPoint.lat'
       },
         ['gathering.conversions.year'],
-        ['gathering.conversions.year']
+        ['gathering.conversions.year'],
+        10000
       ).pipe(map((response: InvasiveControlYearsQueryResult) => {
         let total = 0;
         const years = response.results.map(item => {

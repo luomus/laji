@@ -58,7 +58,9 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   ngOnInit(): void {
     const query$ = combineLatest(this.municipality$, this.taxon$).pipe(switchMap(([municipality, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
       {finnishMunicipalityId: municipality, taxonId: taxon},
-      ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year']
+      ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year'],
+      undefined,
+      10000
     )));
     this.rows$ = query$.pipe(map((response: InvasiveControlEffectivenessStatisticsQueryResult) => {
       const byYear = response.results.reduce((_byYear, item) => {
