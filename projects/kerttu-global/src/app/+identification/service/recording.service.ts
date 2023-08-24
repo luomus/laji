@@ -53,7 +53,7 @@ export class RecordingService {
   }
 
   getCurrentRecording(): Observable<IGlobalRecordingWithAnnotation> {
-    if (this.current != null) {
+    if (this.current !== null) {
       let data$: Observable<IGlobalRecordingWithAnnotation>;
 
       if (this.dataByRecordingId[this.current]) {
@@ -78,7 +78,7 @@ export class RecordingService {
     if (this.next.length > this.nextLimit) {
       this.next = this.next.slice(0, this.next.length - 1);
     }
-    this.current = this.previous[this.previous.length - 1];
+    this.current = this.undefinedToNull(this.previous[this.previous.length - 1]);
     this.previous = this.previous.slice(0, this.previous.length - 1);
 
     this.pruneCache();
@@ -91,10 +91,15 @@ export class RecordingService {
     if (this.previous.length > this.previousLimit) {
       this.previous = this.previous.slice(1);
     }
-    this.current = this.next[0];
+    const nextValue = this.next[0];
+    this.current = this.undefinedToNull(nextValue);
     this.next = this.next.slice(1);
 
     this.pruneCache();
+
+    if (nextValue === null) {
+      return of({ recording: null, annotation: null });
+    }
 
     return this.getCurrentRecording();
   }
@@ -120,13 +125,14 @@ export class RecordingService {
         );
       }),
       tap(result => {
+        const recordingId = this.undefinedToNull(result.recording?.id);
+        if (this.current === null) {
+          this.current = recordingId;
+        } else {
+          this.next.push(recordingId);
+        }
+
         if (result.recording) {
-          const recordingId = result.recording.id;
-          if (this.current == null) {
-            this.current = recordingId;
-          } else {
-            this.next.push(recordingId);
-          }
           this.dataByRecordingId[recordingId] = result;
 
           this.audioCacheLoader.loadAudioToCache(result.recording).subscribe(() => {
@@ -136,7 +142,6 @@ export class RecordingService {
               this.preloadNextRecordingIsActive = false;
             }
           });
-          return;
         } else {
           this.preloadNextRecordingIsActive = false;
         }
@@ -149,7 +154,7 @@ export class RecordingService {
 
   private startPreloadingRecordings() {
     if (!this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
-      const previousRecordingId = this.current == null ? this.previous[this.previous.length - 1] :
+      const previousRecordingId = this.current === null ? this.previous[this.previous.length - 1] :
         (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
       this.preloadNextRecordingSubject.next(previousRecordingId);
       this.preloadNextRecordingIsActive = true;
@@ -167,5 +172,9 @@ export class RecordingService {
         delete this.dataByRecordingId[unusedId];
       }
     }
+  }
+
+  private undefinedToNull(value?: number) {
+    return value === undefined ? null : value;
   }
 }
