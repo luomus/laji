@@ -120,9 +120,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   ngOnChanges(changes: SimpleChanges) {
     this.clearDrawMode();
     if (changes.recording) {
-      this.sampleRate = this.recording.taxonType === TaxonTypeEnum.bird ? defaultAudioSampleRate :
-        this.recording.taxonType === TaxonTypeEnum.bat ? defaultBatAudioSampleRate :
-          defaultInsectAudioSampleRate;
+      this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(this.recording.taxonType);
       this.updateSpectrogramConfig();
       this.audioViewerRectangles = [];
       this.updateSelectedSpecies();

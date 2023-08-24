@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { from, Observable, of } from 'rxjs';
+import { EMPTY, from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { WINDOW } from '@ng-toolkit/universal';
 import { AudioPlayer } from './audio-player';
@@ -45,8 +45,8 @@ export class AudioService {
     delete this.buffer[url];
   }
 
-  public getAudioBuffer(url: string, actualDuration?: number): Observable<AudioBuffer> {
-    const audioCtx = this.getAudioContext();
+  public getAudioBuffer(url: string, actualDuration?: number, sampleRate = this.defaultSampleRate): Observable<AudioBuffer> {
+    const audioCtx = this.getNewOfflineAudioContext(sampleRate);
 
     if (this.buffer[url]) {
       this.buffer[url]['time'] = Date.now();
@@ -241,5 +241,9 @@ export class AudioService {
       });
     }
     return this.audioContext;
+  }
+
+  private getNewOfflineAudioContext(sampleRate: number): OfflineAudioContext {
+    return new (this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'])(1, 1, sampleRate);
   }
 }
