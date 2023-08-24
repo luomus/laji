@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Form } from '../../../shared/model/Form';
 
+export type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT' | 'NOT_FOUND';
+
 enum Tabs {
   statistics = 'statistics',
   map = 'map'

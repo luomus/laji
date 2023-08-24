@@ -3,12 +3,13 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap, share } from 'rxjs/operators';
+import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 export interface InvasiveControlEffectivenessStatisticsQueryResult {
   results: {
     aggregateBy: {
     'gathering.conversions.year': string;
-      'unit.interpretations.invasiveControlEffectiveness': 'FULL' | 'PARTIAL' | 'NO_EFFECT';
+      'unit.interpretations.invasiveControlEffectiveness': InvasiveControlEffectiveness;
     };
     count: number;
   }[];
@@ -48,7 +49,8 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
     {name: 'visits', label: 'invasiveSpeciesControl.stats.statistics.table.cols.visits'},
     {name: 'full', label: 'invasiveSpeciesControl.stats.statistics.table.cols.full'},
     {name: 'partial', label: 'invasiveSpeciesControl.stats.statistics.table.cols.partial'},
-    {name: 'noEffect', label: 'invasiveSpeciesControl.stats.statistics.table.cols.noEffect'}
+    {name: 'noEffect', label: 'invasiveSpeciesControl.stats.statistics.table.cols.noEffect'},
+    {name: 'notFound', label: 'invasiveSpeciesControl.stats.statistics.table.cols.notFound'}
   ];
 
   constructor(
@@ -66,18 +68,21 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
       const byYear = response.results.reduce((_byYear, item) => {
         const year = item.aggregateBy['gathering.conversions.year'];
         if (!_byYear[year]) {
-          _byYear[year] = {year: +year, visits: 0, full: 0, partial: 0, noEffect: 0};
+          _byYear[year] = {year: +year, visits: 0, full: 0, partial: 0, noEffect: 0, notFound: 0};
         }
         const entry = _byYear[year];
         switch (item.aggregateBy['unit.interpretations.invasiveControlEffectiveness']) {
         case 'FULL':
-          entry.full++;
+          entry.full += item.count;
           break;
         case 'PARTIAL':
-          entry.partial++;
+          entry.partial += item.count;
           break;
-        case 'PARTIAL':
-          entry.noEffect++;
+        case 'NO_EFFECT':
+          entry.noEffect += item.count;
+          break;
+        case 'NOT_FOUND':
+          entry.notFound += item.count;
           break;
         }
         entry.visits += item.count;

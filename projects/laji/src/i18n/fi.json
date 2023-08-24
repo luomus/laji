@@ -2114,6 +2114,7 @@
   "invasiveSpeciesControl.stats.statistics.table.cols.full": "Torjuttu kokonaan",
   "invasiveSpeciesControl.stats.statistics.table.cols.partial": "Torjuttu osittain",
   "invasiveSpeciesControl.stats.statistics.table.cols.noEffect": "Ei torjuttu",
+  "invasiveSpeciesControl.stats.statistics.table.cols.notFound": "Ei tiedossa",
   "invasiveSpeciesControl.stats.statistics.table.municipality.label": "Rajaa kunnalla",
   "invasiveSpeciesControl.stats.statistics.table.taxon.label": "Raja lajilla",
   "invasiveSpeciesControl.stats.map.dataLayerLabel": "Torjuntadata",
