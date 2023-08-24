@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { IGlobalRecordingWithAnnotation } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject, Subscription } from 'rxjs';
-import { switchMap, tap, share, take, map } from 'rxjs/operators';
+import { switchMap, tap, share, take } from 'rxjs/operators';
 import { LocalStorage } from 'ngx-webstorage';
 import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { AudioCacheLoaderService } from './audio-cache-loader.service';
 
 @Injectable()
-export class RecordingService {
+export class RecordingService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
 
@@ -26,6 +26,7 @@ export class RecordingService {
   private preloadNextRecordingSubject = new Subject<number>();
   private preloadNextRecording$: Observable<IGlobalRecordingWithAnnotation>;
   private preloadNextRecordingSub: Subscription;
+  private preloadAudioSub?: Subscription;
 
   constructor(
     private kerttuGlobalApi: KerttuGlobalApi,
@@ -36,6 +37,11 @@ export class RecordingService {
     this.audioCacheLoader.setCacheSize(this.previousLimit + this.nextLimit + 1);
     this.initLocalStorageValues();
     this.initPreloadNextRecordings();
+  }
+
+  ngOnDestroy() {
+    this.preloadNextRecordingSub.unsubscribe();
+    this.preloadAudioSub?.unsubscribe();
   }
 
   setSelectedSites(selectedSites: number[]) {
@@ -135,7 +141,7 @@ export class RecordingService {
         if (result.recording) {
           this.dataByRecordingId[recordingId] = result;
 
-          this.audioCacheLoader.loadAudioToCache(result.recording).subscribe(() => {
+          this.preloadAudioSub = this.audioCacheLoader.loadAudioToCache(result.recording).subscribe(() => {
             if (this.next.length < this.nextLimit) {
               this.preloadNextRecordingSubject.next(recordingId);
             } else {
