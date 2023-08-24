@@ -58,7 +58,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
         this.hasUnsavedChanges = false;
         this.loading = true;
       }),
-      switchMap(recordingId => this.kerttuGlobalApi.getOldRecording(
+      switchMap(recordingId => this.kerttuGlobalApi.getIdentificationRecording(
         this.userService.getToken(), this.translate.currentLang, recordingId
       ))
     ).subscribe((result) => {
@@ -83,7 +83,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
 
   saveAnnotation() {
     this.saving = true;
-    this.kerttuGlobalApi.saveOldRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe({
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe({
       next: () => {
         this.originalAnnotation = Util.clone(this.annotation);
         this.hasUnsavedChanges = false;

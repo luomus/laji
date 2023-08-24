@@ -193,20 +193,6 @@ export class KerttuGlobalApi {
     return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
   }
 
-  public getOldRecording(personToken: string, lang: string, recordingId: number): Observable<IGlobalRecordingWithAnnotation> {
-    const path = this.basePath + '/identification/history/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
-
-    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
-  }
-
-  public saveOldRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
-    const path = this.basePath + '/identification/history/annotation/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken);
-
-    return this.httpClient.post(path, annotation, { params });
-  }
-
   private queryToParams(query: Record<string, any>, params: HttpParams) {
     Object.keys(query).forEach(key => {
       const value = query[key];
