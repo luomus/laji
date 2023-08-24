@@ -3,12 +3,13 @@ import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { Area } from 'projects/laji/src/app/shared/model/Area';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap, share } from 'rxjs/operators';
+import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 export interface InvasiveControlEffectivenessStatisticsQueryResult {
   results: {
     aggregateBy: {
     'gathering.conversions.year': string;
-      'unit.interpretations.invasiveControlEffectiveness': 'FULL' | 'PARTIAL' | 'NO_EFFECT';
+      'unit.interpretations.invasiveControlEffectiveness': InvasiveControlEffectiveness;
     };
     count: number;
   }[];
@@ -71,12 +72,13 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         const entry = _byYear[year];
         switch (item.aggregateBy['unit.interpretations.invasiveControlEffectiveness']) {
         case 'FULL':
+        case 'NOT_FOUND':
           entry.full++;
           break;
         case 'PARTIAL':
           entry.partial++;
           break;
-        case 'PARTIAL':
+        case 'NO_EFFECT':
           entry.noEffect++;
           break;
         }

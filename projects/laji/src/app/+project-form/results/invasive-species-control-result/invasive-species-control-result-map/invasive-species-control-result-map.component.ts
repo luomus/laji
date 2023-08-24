@@ -8,8 +8,7 @@ import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/y
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, tap, switchMap } from 'rxjs/operators';
-
-type InvasiveControlEffectiveness = 'FULL' | 'PARTIAL' | 'NO_EFFECT' | 'NOT_FOUND';
+import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 interface QueryResult {
   results: {
