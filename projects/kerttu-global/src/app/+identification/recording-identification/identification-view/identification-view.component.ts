@@ -122,8 +122,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     if (changes.recording) {
       this.sampleRate = KerttuGlobalUtil.getDefaultSampleRate(this.recording.taxonType);
       this.updateSpectrogramConfig();
-      this.audioViewerRectangles = [];
-      this.updateSelectedSpecies();
+      this.updateSelectedSpeciesAndSpectrogramRectangles();
     }
   }
 
@@ -251,12 +250,13 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.audioViewerMode = 'default';
   }
 
-  private updateSelectedSpecies() {
+  private updateSelectedSpeciesAndSpectrogramRectangles() {
     if (this.selectedSpeciesSub) {
       this.selectedSpeciesSub.unsubscribe();
     }
 
     this.selectedSpecies = [];
+    this.updateSpectrogramRectangles();
 
     const speciesAnnotations = this.annotation?.speciesAnnotations;
 
