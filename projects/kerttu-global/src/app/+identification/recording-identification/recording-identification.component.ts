@@ -160,7 +160,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   save() {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, true).subscribe(() => {
       this.loading = false;
       this.originalAnnotation = Util.clone(this.annotation);
       this.hasUnsavedChanges = false;
