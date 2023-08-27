@@ -69,6 +69,8 @@ const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
 ];
 
+const ACTIVE_COLOR = '#6ca31d';
+
 @Component({
   selector: 'laji-observation-map',
   templateUrl: './observation-map.component.html',
@@ -155,8 +157,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }),
     maxFillOpacity: 0
   };
-
-  private activeColor = '#6ca31d';
 
   private opacity = 0.627;
   private dataVisible = true;
@@ -284,8 +284,9 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       const dataOptions = this.lajiMap.map.getData()[dataIdx];
       if (!dataOptions) { return; }
       // Force LajiMap to redraw the occurrence data with the updated this.getFeatureStyle(), which uses the updated this.visualizationMode.
-      this.lajiMap.map.redrawDataItem(dataIdx);
-      this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
+      //this.lajiMap.map.redrawDataItem(dataIdx);
+      //this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
+      this.lajiMap.setData(this.lajiMap.data); // HACK: force redraw
     }
   }
 
@@ -488,7 +489,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     // Active point is styled with classname, boxes receive color in the style object.
     // This is because the Leaflet Path objects don't support updating the class name.
     const baseColor = isActiveBox
-      ? this.activeColor
+      ? ACTIVE_COLOR
       : style.color;
     const maxColorChangeDecimal = 100;
     const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
@@ -496,8 +497,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     const _style = {...style, color, className};
     if (isActiveBox) {
       _style.weight = 3;
-      _style.color = color;
-      _style.fillColor = combineColors(style.color, this.activeColor, maxColorChangeDecimal); // Slide color towards active color.
+      _style.fillColor = combineColors(style.color, ACTIVE_COLOR, maxColorChangeDecimal); // Slide color towards active color.
     }
     return _style;
   }
@@ -618,7 +618,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     // and the point markers get the updated styles described below
     (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
       iconDomElem.classList.remove('coordinate-accuracy-cluster');
-      iconDomElem.style['background-color'] = po.color + opacityAsHexCode(po.opacity);
+      iconDomElem.style['background-color'] = po.color + opacityAsHexCode(this.opacity);
       const newClassNames = classNamesAsArr(po.className);
       classNames.forEach(c => iconDomElem.classList.remove(c));
       newClassNames.forEach(c => iconDomElem.classList.add(c));

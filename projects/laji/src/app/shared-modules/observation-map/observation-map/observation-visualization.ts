@@ -138,7 +138,6 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       recordQualityMapRev[
         markers.reduce(
           (min, curr) => {
-            console.log(curr.feature.properties.recordQualityMax);
             const n = recordQualityMap[curr.feature.properties.recordQualityMax];
             return min < n ? min : n;
           },
