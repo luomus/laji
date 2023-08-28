@@ -204,7 +204,6 @@ export class ObservationFacade {
     return this.observationDataService.getData(query).pipe(
       map(data => data.count),
       tap(countUnit => this.updateState({..._state, loadingUnits: false, countUnit})),
-      catchError(() => this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit'))
     );
   }
 
