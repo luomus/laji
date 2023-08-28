@@ -10,7 +10,7 @@ import { PlatformService } from '../root/platform.service';
 export interface IObservationData {
   count: number;
   speciesCount: number;
-  secureCount: number;
+  securedCount: number;
 }
 
 const overrideType = {
@@ -69,7 +69,7 @@ export class ObservationDataService {
     return {
       count: null,
       speciesCount: null,
-      secureCount: null
+      securedCount: null
     };
   }
 }

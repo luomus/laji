@@ -185,7 +185,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   updateCount() {
     this.observationDataService.getData(this._originalQuery).pipe(
-      map(data => data.secureCount)
+      map(data => data.securedCount)
     ).subscribe(total => {
       this.privateCount = total;
       this.cd.markForCheck();
