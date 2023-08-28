@@ -173,23 +173,27 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.days = [];
     const selectedDate = moment(this.value, FORMAT);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
-      const today = moment().isSame(iteratedDate.format(), 'day');
-      const selected = selectedDate.isSame(iteratedDate, 'day');
+      if (i > 0) {
+        const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
+        const today = moment().isSame(iteratedDate.format(), 'day');
+        const selected = selectedDate.isSame(iteratedDate, 'day');
 
-      this.days.push(i > 0 ? {
-        day: '' + iteratedDate.format('DD'),
-        month: '' + iteratedDate.format('MM'),
-        year,
-        today,
-        selected
-      } : {
-        day: null,
-        month: null,
-        year: null,
-        today: false,
-        selected: false
-      });
+        this.days.push({
+          day: '' + iteratedDate.format('DD'),
+          month: '' + iteratedDate.format('MM'),
+          year,
+          today,
+          selected
+        });
+      } else {
+        this.days.push({
+          day: null,
+          month: null,
+          year: null,
+          today: false,
+          selected: false
+        });
+      }
     }
   }
 
