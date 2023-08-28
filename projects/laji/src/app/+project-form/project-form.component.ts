@@ -19,7 +19,6 @@ import { formOptionToClassName } from '../shared/directive/project-form-option.d
 interface ViewModel {
   navLinks: NavLink[];
   form: Form.SchemaForm;
-  formIDs: string[];
   disabled: boolean;
   datasetsBreadcrumb?: Breadcrumb[];
 }
@@ -161,7 +160,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
           map(([projectForm, rights, queryParams]) => ({
               form: projectForm.form,
-              formIDs: [projectForm.form.id, ...projectForm.subForms.map(subForm => subForm.id)],
               navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
                 ? this.getNavLinks(projectForm, rights, queryParams)
                 : undefined,
