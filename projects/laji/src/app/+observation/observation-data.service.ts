@@ -4,23 +4,15 @@ import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { DocumentNode } from 'graphql';
-import { GraphQLService } from '../graph-ql/service/graph-ql.service';
-import { HistoryService } from '../shared/service/history.service';
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { PlatformService } from '../root/platform.service';
 
 export interface IObservationData {
-  units: {
-    total: number;
-  };
-  species: {
-    total: number;
-  };
-  private: {
-    total: number;
-  };
+  count: number;
+  speciesCount: number;
+  secureCount: number;
 }
 
 const overrideType = {
@@ -33,10 +25,9 @@ const overrideType = {
 export class ObservationDataService {
 
   constructor(
-    private graphQLService: GraphQLService,
-    private historyService: HistoryService,
     private searchQueryService: SearchQueryService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private warehouseService: WarehouseApi
   ) { }
 
   getData(query: WarehouseQueryInterface): Observable<IObservationData> {
@@ -45,21 +36,17 @@ export class ObservationDataService {
     }
     query = this.searchQueryService.getQuery({
       ...query,
+      onlyCount: false,
+      taxonCounts: true,
       cache: typeof query.cache === 'undefined' ? WarehouseApi.isEmptyQuery(query) : query.cache
     }, query);
 
-    return this.graphQLService.query<IObservationData>({
-      query: this.getGraphQuery(query),
-      variables: query,
-      // On first load we want to use the cached data from the server. On following loads we want to load the each time.
-      fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
-      errorPolicy: 'all'
-    }).pipe(
-      map(({data}) => data),
+    return this.warehouseService.warehouseQueryAggregateGet(query).pipe(
+      map((data) => data.results?.[0]),
       map(res => {
-        ['units', 'species', 'private'].forEach(key => {
+        ['count', 'speciesCount', 'securedCount'].forEach(key => {
           if (!res[key]) {
-            res[key] = {total: null};
+            res[key] = null;
           }
         });
         return res;
@@ -70,9 +57,9 @@ export class ObservationDataService {
 
   private empty() {
     return {
-      units: {total: null},
-      species: {total: null},
-      private: {total: null}
+      count: null,
+      speciesCount: null,
+      secureCount: null
     };
   }
 
