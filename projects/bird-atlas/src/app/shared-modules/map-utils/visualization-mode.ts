@@ -4,6 +4,10 @@ export type VisualizationMode = 'activityCategory' | 'speciesCount';
 
 export const activityCategoryGradient = ['ffffff','ffff47','ffc000','38ff8e','479ab8','282e57'];
 export const speciesCountGradient = ['ffff47','ffc000','5fed28','24bf67','479ab8','282e57'];
+export const visualizationModeTitles: Record<VisualizationMode, string> = {
+  activityCategory: 'Selvitysasteet',
+  speciesCount: 'Lajimäärä',
+};
 
 export const getAtlasActivityCategoryColor = (ac: AtlasActivityCategory): string => ({
   'MY.atlasActivityCategoryEnum0': activityCategoryGradient[0],

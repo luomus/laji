@@ -190,7 +190,7 @@ export class WarehouseApi {
    * @param geoJSON returns data as geojson.
    * @param onlyCount return only count in result items (default true).
    */
-  public warehouseQueryAggregateGet(query: WarehouseQueryInterface, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
+  public warehouseQueryAggregateGet(query: WarehouseQueryInterface = {}, aggregateBy?: Array<string>, orderBy?: Array<string>, pageSize?: number, page?: number, geoJSON?: boolean, onlyCount?: boolean): Observable<PagedResult<any>|any> {
     const target = this.subPath === WarehouseSubPath.sample ? 'aggregate' : 'unit/aggregate';
     return this.warehouseQueryGet(target, query, aggregateBy, orderBy, pageSize, page, geoJSON, onlyCount);
   }

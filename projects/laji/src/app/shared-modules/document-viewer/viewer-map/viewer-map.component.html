@@ -2,7 +2,7 @@
   <div style="max-width: 500px; height: 300px; margin-top:20px;">
     <laji-map [options]="mapOptions" (loaded)="onMapLoad()"></laji-map>
   </div>
-  <ng-container *ngIf="data && !hideCoordinates">
+  <ng-container *ngIf="data?.[active] && !hideCoordinates">
     <laji-viewer-coordinates
       [sourceOfCoordinates]="data[active].sourceOfCoordinates"
       [coordinateAccuracy]="data[active].coordinateAccuracy"

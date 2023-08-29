@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
-import { AtlasApiService, BirdSociety } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasTaxon, BirdSociety, BirdSocietyTaxaResponseElem } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 import { PopstateService } from '../../core/popstate.service';
 import { VisualizationMode } from '../../shared-modules/map-utils/visualization-mode';
+import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info-species-table/bird-society-info-species-table.component';
 
 @Component({
   templateUrl: 'bird-society-info.component.html',
@@ -12,10 +13,15 @@ import { VisualizationMode } from '../../shared-modules/map-utils/visualization-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
+  @ViewChild(BirdSocietyInfoSpeciesTableComponent) table: BirdSocietyInfoSpeciesTableComponent;
+
   birdSociety: BirdSociety;
   loading = true;
   selectedDataIdx: number;
   visualizationMode: VisualizationMode = 'activityCategory';
+  selectedTaxon: AtlasTaxon | undefined;
+  taxonVisualization: BirdSocietyTaxaResponseElem[] | undefined;
+  taxonVisualizationLoading = false;
   activityCategoryClass = {
     'MY.atlasActivityCategoryEnum0': 'limit-neutral',
     'MY.atlasActivityCategoryEnum1': 'limit-danger',
@@ -24,6 +30,7 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
     'MY.atlasActivityCategoryEnum4': 'limit-success',
     'MY.atlasActivityCategoryEnum5': 'limit-success'
   };
+  displayModeLarge = false;
 
   constructor(
     private atlasApi: AtlasApiService,
@@ -75,6 +82,45 @@ export class BirdSocietyInfoComponent implements OnInit, OnDestroy {
 
   onVisualizationChange(visualization: VisualizationMode) {
     this.visualizationMode = visualization;
+  }
+
+  onTaxonDeselect() {
+    this.selectedTaxon = undefined;
+    this.taxonVisualization = undefined;
+    this.table.setSelected([]);
+    this.cdr.markForCheck();
+  }
+
+  onTableRowClick(taxon: AtlasTaxon | null) {
+    if (taxon === null) {
+      this.selectedTaxon = undefined;
+      this.taxonVisualization = undefined;
+      return;
+    }
+    if (this.selectedTaxon?.id === taxon.id) { return; }
+    this.selectedTaxon = taxon;
+    this.taxonVisualizationLoading = true;
+    this.atlasApi.getBirdSocietyTaxa(this.birdSociety.birdAssociationArea.key, taxon.id).subscribe(r => {
+      this.taxonVisualization = r;
+      this.taxonVisualizationLoading = false;
+      this.cdr.markForCheck();
+    });
+    this.cdr.markForCheck();
+  }
+
+  onResize() {
+    this.displayModeLarge = !this.displayModeLarge;
+    try {
+      const event = new Event('resize');
+      window.dispatchEvent(event);
+    } catch (error) {
+      const event = window.document.createEvent('UIEvents');
+      // @ts-ignore
+      event.initUIEvent('resize', true, false, window, 0);
+      window.dispatchEvent(event);
+    }
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
