@@ -22,13 +22,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
-import { PathOptions } from 'leaflet';
+import { PathOptions, DivIcon } from '@laji-map/laji-map.interface';
 import { Feature } from 'geojson';
 import L from 'leaflet';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
-export const getPointIconAsCircle = (po: PathOptions, feature: Feature): L.DivIcon => {
+export const getPointIconAsCircle = (po: PathOptions, feature: Feature): DivIcon => {
   let classNames = classNamesAsArr(po.className);
   const icon: any = L.divIcon({
     className: ['laji-circle-marker-icon', ...classNames].join(' '),
