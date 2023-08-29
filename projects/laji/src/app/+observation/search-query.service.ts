@@ -87,8 +87,7 @@ export class SearchQueryService implements SearchQueryInterface {
     'atlasClass',
     'identificationBasis',
     'samplingMethod',
-    'taxonRankId',
-    'hasValue'
+    'taxonRankId'
   ];
 
   // noinspection JSUnusedLocalSymbols
