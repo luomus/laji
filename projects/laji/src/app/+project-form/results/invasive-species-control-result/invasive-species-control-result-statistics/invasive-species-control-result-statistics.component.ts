@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { Area } from 'projects/laji/src/app/shared/model/Area';
-import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { map, startWith, switchMap, share } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import { map, switchMap, share, tap } from 'rxjs/operators';
 import { InvasiveControlEffectiveness } from '../invasive-species-control-result.component';
 
 export interface InvasiveControlEffectivenessStatisticsQueryResult {
@@ -42,7 +42,7 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   areaTypes = Area.AreaType;
 
   rows$: Observable<Row[]>;
-  loading$: Observable<boolean>;
+  loading$ = new BehaviorSubject(true);
 
   columns = [
     {name: 'year', label: 'invasiveSpeciesControl.stats.statistics.table.cols.year'},
@@ -58,7 +58,9 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const query$ = combineLatest(this.municipality$, this.taxon$).pipe(switchMap(([municipality, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
+    const query$ = combineLatest(this.municipality$, this.taxon$).pipe(
+      tap(() => {this.loading$.next(true);}),
+      switchMap(([municipality, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
       {finnishMunicipalityId: municipality, taxonId: taxon},
       ['unit.interpretations.invasiveControlEffectiveness','gathering.conversions.year'],
       undefined,
@@ -95,8 +97,9 @@ export class InvasiveSpeciesControlResultStatisticsComponent implements OnInit {
         rows.push(byYear[year]);
         return rows;
       }, []).sort((a, b) => b.year - a.year);
-    }), share());
-    this.loading$ = this.rows$.pipe(map(() => false)).pipe(startWith(true));
+    }),
+    tap(() => {this.loading$.next(false);}),
+    share());
   }
 
   onMunicipalityChange(municipality: string) {
