@@ -1,6 +1,4 @@
 import { AtlasActivityCategory, AtlasGridSquare } from '../../core/atlas-api.service';
-import L, { PathOptions } from 'leaflet';
-import { Feature } from 'geojson';
 
 export type VisualizationMode = 'activityCategory' | 'speciesCount';
 
