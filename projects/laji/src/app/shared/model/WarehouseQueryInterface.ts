@@ -127,13 +127,13 @@ export interface WarehouseQueryInterface {
   finnish?: boolean;
   invasive?: boolean;
   countryId?: Array<string>;
-  finnishMunicipalityId?: Array<string>;
+  finnishMunicipalityId?: string | Array<string>;
   biogeographicalProvinceId?: Array<string>;
   elyCentreId?: Array<string>;
   provinceId?: Array<string>;
   area?: Array<string>;
   season?: string;
-  time?: Array<string>;
+  time?: string | Array<string>;
   firstLoadedSameOrAfter?: string;
   firstLoadedSameOrBefore?: string;
   yearMonth?: Array<string>;
@@ -252,6 +252,7 @@ export interface WarehouseQueryInterface {
   polygonId?: string;
   sensitive?: boolean;
   primarySpecimen?: boolean;
+  hasValue?: string;
 }
 
 

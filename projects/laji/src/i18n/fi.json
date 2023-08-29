@@ -2107,5 +2107,21 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "invasiveSpeciesControl.stats.statistics.title": "Tilastot",
+  "invasiveSpeciesControl.stats.map.title": "Kartta",
+  "invasiveSpeciesControl.stats.statistics.table.cols.year": "Vuosi",
+  "invasiveSpeciesControl.stats.statistics.table.cols.visits": "Käyntien lkm",
+  "invasiveSpeciesControl.stats.statistics.table.cols.full": "Torjuttu kokonaan",
+  "invasiveSpeciesControl.stats.statistics.table.cols.partial": "Torjuttu osittain",
+  "invasiveSpeciesControl.stats.statistics.table.cols.noEffect": "Ei torjuttu",
+  "invasiveSpeciesControl.stats.statistics.table.cols.notFound": "Ei tiedossa",
+  "invasiveSpeciesControl.stats.statistics.table.municipality.label": "Rajaa kunnalla",
+  "invasiveSpeciesControl.stats.statistics.table.taxon.label": "Raja lajilla",
+  "invasiveSpeciesControl.stats.map.dataLayerLabel": "Torjuntadata",
+  "invasiveSpeciesControl.stats.map.legend.title": "Torjunnan taso",
+  "invasiveSpeciesControl.stats.map.legend.full": "Torjuttu kokonaan",
+  "invasiveSpeciesControl.stats.map.legend.partial": "Torjuttu osittain",
+  "invasiveSpeciesControl.stats.map.legend.noEffect": "Ei torjuttu",
+  "invasiveSpeciesControl.stats.map.year.label": "Rajaa vuodella"
 }
