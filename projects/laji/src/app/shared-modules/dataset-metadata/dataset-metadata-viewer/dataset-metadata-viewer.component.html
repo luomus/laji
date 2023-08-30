@@ -139,9 +139,11 @@
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
           container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.typeSpecimen" [title]="'collection.count.typeSpecimen' | translate">
@@ -153,9 +155,11 @@
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
           container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
@@ -167,9 +171,11 @@
           [queryParams]="{collectionId: collection.id}"
           container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
       </div>
