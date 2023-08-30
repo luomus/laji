@@ -133,6 +133,8 @@
   "collection.isPartOf": "Är del av",
   "collection.language": "Datasets språk",
   "collection.longName": "Datasets namn",
+  "collection.metadata.info": "Collection metadata info placeholder",
+  "collection.metadata.info.title": "Metadatan lisätiedot",
   "collection.metadataCreator": "Skaparen av denna metadata",
   "collection.metadataStatus": "Status för denna metadata",
   "collection.methods": "Datasets insamlingsmetoder",
