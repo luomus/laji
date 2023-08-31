@@ -71,8 +71,10 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
     if (collectionId) {
       const url = this.router.createUrlTree(this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata', collectionId])).toString();
       this.location.replaceState(url);
+      this.route.params['collectionId'] = collectionId;
     } else {
       this.location.replaceState('theme/dataset-metadata');
+      this.route.params['collectionId'] = undefined;
     }
   }
 
