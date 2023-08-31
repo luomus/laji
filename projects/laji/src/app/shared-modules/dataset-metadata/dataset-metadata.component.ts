@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { zip, Observable } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 const mobileBreakpoint = 768;
 
@@ -24,6 +25,7 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private localizeRouterService: LocalizeRouterService,
     private location: Location,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -67,12 +69,10 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
 
   changeUrl(collectionId) {
     if (collectionId) {
-      const url = this.router.createUrlTree(['theme', 'dataset-metadata', collectionId]).toString();
-      this.location.go(url);
-      this.route.params['collectionId'] = collectionId;
+      const url = this.router.createUrlTree(this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata', collectionId])).toString();
+      this.location.replaceState(url);
     } else {
-      this.location.go('theme/dataset-metadata');
-      this.route.params['collectionId'] = undefined;
+      this.location.replaceState('theme/dataset-metadata');
     }
   }
 
