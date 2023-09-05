@@ -77,10 +77,10 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   changeUrl(collectionId) {
-    let url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata']);
+    const url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata']);
 
     if (collectionId) {
-      url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata', collectionId]);
+      url.push(collectionId);
     }
 
     this.router.navigate(url);
