@@ -65,20 +65,22 @@ $blur: 1px;
   position: relative; // fixes the height of the spinner inside child laji-datatable
 }
 
-:host ::ng-deep .coordinate-accuracy-1 {
-  border: 1px solid $neutral-6;
-}
-:host ::ng-deep .coordinate-accuracy-2 {
-  border: 2px dotted $neutral-7;
-}
-:host ::ng-deep .coordinate-accuracy-3 {
-  border: 3px dashed $neutral-8;
-}
-:host ::ng-deep .coordinate-accuracy-4 {
-  border: 4px dashed $neutral-9;
-}
-:host ::ng-deep .coordinate-accuracy-5 {
-  border: 5px dashed #000;
+:host ::ng-deep .leaflet-marker-icon {
+  &.coordinate-accuracy-1 {
+    border: 1px solid $neutral-6;
+  }
+  &.coordinate-accuracy-2 {
+    border: 2px dotted $neutral-7;
+  }
+  &.coordinate-accuracy-3 {
+    border: 3px dashed $neutral-8;
+  }
+  &.coordinate-accuracy-4 {
+    border: 4px dashed $neutral-9;
+  }
+  &.coordinate-accuracy-5 {
+    border: 5px dashed #000;
+  }
 }
 
 ul {
