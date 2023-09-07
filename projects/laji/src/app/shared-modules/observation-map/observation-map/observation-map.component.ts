@@ -531,6 +531,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       visible: this.dataVisible,
       opacity: this.opacity,
       maxFillOpacity: 0.8,
+      controlFillOpacity: true,
       onOpacityChange: this.onOpacityChange.bind(this),
       onVisibleChange: this.onDataVisibleChange.bind(this)
     };
