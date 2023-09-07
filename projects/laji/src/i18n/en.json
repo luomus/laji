@@ -133,6 +133,8 @@
   "collection.isPartOf": "Is part of",
   "collection.language": "Collection language",
   "collection.longName": "Collection Name",
+  "collection.metadata.info": "Collection metadata info placeholder",
+  "collection.metadata.info.title": "Metadatan lisätiedot",
   "collection.metadataCreator": "Metadata creator",
   "collection.metadataStatus": "Status of this metadata",
   "collection.methods": "Collection methods",
