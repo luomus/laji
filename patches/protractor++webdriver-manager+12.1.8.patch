@@ -1,7 +1,3 @@
-diff --git a/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/.chrome_xml.js.swp b/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/.chrome_xml.js.swp
-new file mode 100644
-index 0000000..fc72acb
-Binary files /dev/null and b/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/.chrome_xml.js.swp differ
 diff --git a/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js b/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js
 index 6dfbea5..ff8db00 100644
 --- a/node_modules/protractor/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js
@@ -54,12 +50,8 @@ index 6dfbea5..ff8db00 100644
      /**
       * Gets a specific item from the XML.
       */
-diff --git a/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/.update.js.swp b/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/.update.js.swp
-new file mode 100644
-index 0000000..c81f42a
-Binary files /dev/null and b/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/.update.js.swp differ
 diff --git a/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/update.js b/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/update.js
-index b98cdce..c343ce2 100644
+index b98cdce..7436438 100644
 --- a/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/update.js
 +++ b/node_modules/protractor/node_modules/webdriver-manager/built/lib/cmds/update.js
 @@ -237,7 +237,11 @@ function unzip(binary, outputDir, fileName) {
@@ -67,7 +59,7 @@ index b98cdce..c343ce2 100644
      }
      // rename
 +  if (fileName.indexOf('chromedriver_') != -1) {
-+    fs.renameSync(path.resolve(outputDir, 'chromedriver-win32', binary.zipContentName()), mv)
++    fs.renameSync(path.resolve(outputDir, 'chromedriver-linux64', binary.zipContentName()), mv)
 +  } else {
      fs.renameSync(path.resolve(outputDir, binary.zipContentName()), mv);
 +  }
@@ -11723,12 +11715,10 @@ index 0000000..302d839
 Binary files /dev/null and b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver-linux64/chromedriver differ
 diff --git a/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90 b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90
 new file mode 100755
-index 0000000..8da9ce4
-Binary files /dev/null and b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90 differ
+index 0000000..e69de29
 diff --git a/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90.zip b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90.zip
 new file mode 100644
-index 0000000..c2987c3
-Binary files /dev/null and b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_114.0.5735.90.zip differ
+index 0000000..e69de29
 diff --git a/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_116.0.5845.96.zip b/node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_116.0.5845.96.zip
 new file mode 100644
 index 0000000..8cbe004
