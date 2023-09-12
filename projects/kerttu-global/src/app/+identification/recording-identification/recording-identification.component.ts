@@ -171,7 +171,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   onAnnotationChange() {
-    this.recordingLoaderService.setAnnotation(this.annotation);
+    this.recordingLoaderService.setCurrentAnnotation(this.annotation);
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 

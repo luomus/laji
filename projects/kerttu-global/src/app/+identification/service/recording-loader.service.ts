@@ -110,7 +110,7 @@ export class RecordingLoaderService implements OnDestroy {
     return this.getCurrentRecording();
   }
 
-  setAnnotation(annotation: IGlobalRecordingAnnotation) {
+  setCurrentAnnotation(annotation: IGlobalRecordingAnnotation) {
     this.dataByRecordingId[this.current].annotation = annotation;
   }
 
