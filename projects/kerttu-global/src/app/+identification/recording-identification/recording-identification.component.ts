@@ -16,7 +16,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import equals from 'deep-equal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
-import { RecordingService } from '../service/recording.service';
+import { RecordingLoaderService } from '../service/recording-loader.service';
 
 @Component({
   selector: 'bsg-recording-identification',
@@ -44,7 +44,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   private siteIdsSub: Subscription;
 
   constructor(
-    public recordingService: RecordingService,
+    public recordingLoaderService: RecordingLoaderService,
     private kerttuGlobalApi: KerttuGlobalApi,
     private personService: PersonApi,
     private userService: UserService,
@@ -75,10 +75,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
       this.clearIdentificationState();
 
       if (this.selectedSites?.length > 0) {
-        this.recordingService.setSelectedSites(this.selectedSites);
+        this.recordingLoaderService.setSelectedSites(this.selectedSites);
 
         this.loading = true;
-        this.recordingService.getCurrentRecording().subscribe((result) => {
+        this.recordingLoaderService.getCurrentRecording().subscribe((result) => {
           this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
@@ -127,7 +127,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   getNextRecording(skipCurrent = false) {
     this.loading = true;
     this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, false, skipCurrent).pipe(
-      switchMap(() => this.recordingService.getNextRecording())
+      switchMap(() => this.recordingLoaderService.getNextRecording())
     ).subscribe(result => {
       this.onGetRecordingsSuccess(result);
     }, (err) => {
@@ -139,7 +139,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.loading = true;
-        this.recordingService.getPreviousRecording().subscribe(result => {
+        this.recordingLoaderService.getPreviousRecording().subscribe(result => {
           this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
@@ -171,6 +171,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   onAnnotationChange() {
+    this.recordingLoaderService.setAnnotation(this.annotation);
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 

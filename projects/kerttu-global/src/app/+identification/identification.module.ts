@@ -31,7 +31,7 @@ import { IdentificationHistoryTableComponent } from './identification-history/id
 import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
 import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { AudioCacheLoaderService } from './service/audio-cache-loader.service';
-import { RecordingService } from './service/recording.service';
+import { RecordingLoaderService } from './service/recording-loader.service';
 
 @NgModule({
   imports: [
@@ -71,7 +71,7 @@ import { RecordingService } from './service/recording.service';
   providers: [
     AudioService,
     AudioCacheLoaderService,
-    RecordingService
+    RecordingLoaderService
   ]
 })
 export class IdentificationModule { }

@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { IGlobalRecordingWithAnnotation } from '../../kerttu-global-shared/models';
+import { IGlobalRecordingAnnotation, IGlobalRecordingWithAnnotation } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,7 +10,7 @@ import { Util } from '../../../../../laji/src/app/shared/service/util.service';
 import { AudioCacheLoaderService } from './audio-cache-loader.service';
 
 @Injectable()
-export class RecordingService implements OnDestroy {
+export class RecordingLoaderService implements OnDestroy {
   private previousLimit = 1; // how many previous recordings are kept in memory
   private nextLimit = 5; // how many next recordings are loaded to memory
 
@@ -108,6 +108,10 @@ export class RecordingService implements OnDestroy {
     }
 
     return this.getCurrentRecording();
+  }
+
+  setAnnotation(annotation: IGlobalRecordingAnnotation) {
+    this.dataByRecordingId[this.current].annotation = annotation;
   }
 
   private initLocalStorageValues() {

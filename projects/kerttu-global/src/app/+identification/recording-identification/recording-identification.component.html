@@ -16,7 +16,7 @@
             *ngIf="recording && annotation"
             [recording]="recording"
             [(annotation)]="annotation"
-            [hasPreviousRecording]="recordingService.hasPreviousRecording()"
+            [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
             [buttonsDisabled]="loading"
             (nextRecordingClick)="getNextRecording()"
             (previousRecordingClick)="getPreviousRecording()"
