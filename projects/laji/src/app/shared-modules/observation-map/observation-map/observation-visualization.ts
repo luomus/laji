@@ -258,7 +258,6 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
       getRecordAgeColor(markers.reduce((p, curr) => {
         const nr = curr.feature.properties.newestRecord;
         return sliceYear(p) < sliceYear(nr) ? nr : p;
-      }, '')
-    )
+      }, '01-01-0001'))
   }
 };
