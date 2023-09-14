@@ -232,6 +232,12 @@
     "@types/leaflet-draw": "0.4.14",
     "typescript": "3.4.5"
   },
+  "overrides": {
+    "@ng-toolkit/universal": {
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core"
+    }
+  },
   "keywords": [
     "laji.fi"
   ],
