@@ -1,6 +1,6 @@
 {
   "name": "label-designer",
-  "version": "4.0.10",
+  "version": "4.0.12",
   "author": "Ville-Matti Riihikoski",
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
@@ -28,6 +28,6 @@
     "jszip": ">=3.2.0",
     "file-saver": ">=2.0.0",
     "ngx-webstorage": ">=5.0.0",
-    "xlsx": "0.13.2"
+    "xlsx": "^0.13.2"
   }
 }
