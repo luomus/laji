@@ -105,7 +105,7 @@
     "@swimlane/ngx-datatable": "^20.0.0",
     "@types/deep-diff": "^1.0.1",
     "angularx-qrcode": "^15.0.1",
-    "apollo-angular": "^2.6.0",
+    "apollo-angular": "^5.0.1",
     "chart.js": "^2.9.4",
     "chartjs-chart-treemap": "^0.2.3",
     "chartjs-plugin-datalabels": "^0.7.0",
