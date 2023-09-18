@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -50,7 +50,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     AppComponentModule,
     LocaleModule,
     BrowserAnimationsModule,
-    BrowserModule.withServerTransition({appId: 'laji-app'}),
+    BrowserModule,
+    {provide: APP_ID, useValue: 'laji-app'},
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,

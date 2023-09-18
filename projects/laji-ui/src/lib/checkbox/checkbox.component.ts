@@ -1,6 +1,4 @@
-import {
-  Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, OnDestroy
-} from '@angular/core';
+import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -9,7 +7,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./checkbox.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxComponent implements OnDestroy{
+export class CheckboxComponent {
   private unsubscribe$ = new Subject();
   @ViewChild('checkbox', {static: true}) checkbox: ElementRef;
   isChecked = false;
