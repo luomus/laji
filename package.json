@@ -95,7 +95,7 @@
     "@angular/router": "^16.2.5",
     "@apollo/client": "^3.6.9",
     "@circlon/angular-tree-component": "^11.0.4",
-    "@ng-select/ng-select": "^10.0.4",
+    "@ng-select/ng-select": "^11.1.1",
     "@ng-toolkit/universal": "^8.1.0",
     "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^16.2.0",
