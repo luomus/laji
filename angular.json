@@ -281,7 +281,8 @@
               ]
             },
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -295,7 +296,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "beta": {
               "outputHashing": "media",
@@ -308,14 +310,16 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.beta.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "dev": {
               "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true
+              "extractLicenses": true,
+              "buildOptimizer": true
             },
             "embedded": {
               "outputHashing": "media",
@@ -328,7 +332,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.embedded.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "local": {
               "outputHashing": "media",
@@ -341,7 +346,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.local.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
