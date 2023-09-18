@@ -1,7 +1,7 @@
 import {Apollo} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
 import {InMemoryCache, NormalizedCacheObject} from '@apollo/client/core';
-import { NgModule } from '@angular/core';
+import { NgModule,  makeStateKey, TransferState } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AcceptLanguageInterceptor } from './accept-language.interceptor';
@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { concatMap, filter } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { GraphQLService } from './service/graph-ql.service';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { PlatformService } from '../root/platform.service';
 
 const GRAPH_QL_STATE_KEY = makeStateKey<any>('graphql.state');
