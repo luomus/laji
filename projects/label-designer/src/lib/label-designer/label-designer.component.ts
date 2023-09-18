@@ -56,7 +56,7 @@ export class LabelDesignerComponent implements OnInit, OnDestroy {
   /**
    * @internal
    */
-  version = '4.0.13';
+  version = '4.0.14';
 
   /**
    * @internal
