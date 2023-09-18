@@ -64,7 +64,7 @@
     "e2e:headful": "HEADLESS=false THREADS=1 protractor projects/laji/e2e/protractor.conf.js",
     "e2e:debug": "HEADLESS=false node --inspect-brk node_modules/protractor/bin/protractor projects/laji/e2e/protractor.conf.js",
     "e2e:ci": "ng e2e",
-    "postinstall": "patch-package && node ./scripts/remove-extras.js && ngcc",
+    "postinstall": "patch-package && node ./scripts/remove-extras.js",
     "package:label-designer": "npm run build:label-designer-electron && npm run prepare:package:label-designer",
     "package:label-designer-element": "npm run build:label-designer-element && cat ./dist/label-designer-element/runtime.js ./dist/label-designer-element/polyfills.js ./dist/label-designer-element/scripts.js ./dist/label-designer-element/main.js > ./dist/label-designer.js",
     "package:label-designer-linux": "electron-packager ./dist \"Label Designer\" --out=release-builds --platform=linux --arch=x64 --asar --executableName=LabelDesigner --overwrite --prune",
