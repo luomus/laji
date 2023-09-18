@@ -211,7 +211,6 @@
     "redlock": "^4.2.0",
     "regexp-replace-loader": "^1.0.1",
     "rimraf": "3.0.2",
-    "string-replace-loader": "^2.3.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typescript": "~4.9.5",
