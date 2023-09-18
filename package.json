@@ -151,7 +151,7 @@
     "ts-loader": "8.0.7",
     "vm": "^0.1.0",
     "xlsx": "^0.17.5",
-    "zone.js": "^0.11.8"
+    "zone.js": "^0.13.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.9",
