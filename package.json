@@ -99,7 +99,7 @@
     "@ng-toolkit/universal": "^8.1.0",
     "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^16.2.0",
-    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/core": "^15.0.0",
     "@swimlane/ngx-charts": "^17.0.1",
     "@swimlane/ngx-datatable": "^20.0.0",
     "@types/deep-diff": "^1.0.1",
