@@ -109,7 +109,6 @@
     "chart.js": "^2.9.4",
     "chartjs-chart-treemap": "^0.2.3",
     "chartjs-plugin-datalabels": "^0.7.0",
-    "chartjs-plugin-piechart-outlabels": "^0.1.4",
     "core-js": "^3.24.1",
     "cors": "~2.8.5",
     "d3-axis": "^1.0.12",
