@@ -5,7 +5,7 @@ import { ObservationResultModule } from '../../shared-modules/observation-result
 import { DownloadModalModule } from '../../shared-modules/download-modal/download-modal.module';
 import { ChartModule } from '../../shared-modules/chart/chart.module';
 import { YkjModule } from '../../shared-modules/ykj/ykj.module';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { ResultsComponent } from './results.component';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { WbcRoutesMapComponent } from './wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';

@@ -19,7 +19,7 @@ import { SpeciesComponent } from './species/species.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './species/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SpeciesBrowseObservationsComponent } from './species/species-browse-observations/species-browse-observations.component';
