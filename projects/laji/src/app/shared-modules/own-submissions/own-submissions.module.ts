@@ -5,7 +5,7 @@ import { OwnSubmissionsComponent } from './own-submissions.component';
 import { YearSliderComponent } from './year-slider/year-slider.component';
 import { OwnDatatableComponent } from './own-datatable/own-datatable.component';
 import { FilterColumnsPipe } from './own-datatable/filter-columns.pipe';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { RouterModule } from '@angular/router';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';

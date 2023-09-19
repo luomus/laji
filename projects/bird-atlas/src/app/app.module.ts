@@ -20,7 +20,7 @@ import { TechnicalNewsDumbModule } from 'projects/laji/src/app/shared-modules/te
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 
 @NgModule({
   imports: [

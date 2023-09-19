@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { IVirUser, VirOrganisationService } from '../../../service/vir-organisation.service';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, switchMap, tap, take } from 'rxjs/operators';
-import { SelectionType } from '@swimlane/ngx-datatable';
+import { SelectionType } from '@achimha/ngx-datatable';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Person } from 'projects/laji-api-client/src/lib/models/person';
 import { FormBuilder, Validators } from '@angular/forms';

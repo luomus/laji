@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { GridIndexComponent } from './grid-index/grid-index.component';
 import { GridInfoComponent } from './grid-info/grid-info.component';
 import { routing } from './grid.routes';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spinner.module';
 import { GridIndexMapComponent } from './grid-index/grid-index-map/grid-index-map.component';
 import { GridIndexTableComponent } from './grid-index/grid-index-table/grid-index-table.component';

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService } from '../../core/atlas-api.service';
-import { TableColumn } from '@swimlane/ngx-datatable';
+import { TableColumn } from '@achimha/ngx-datatable';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { map } from 'rxjs/operators';
 import { LappiModalComponent } from './lappi-modal.component';
