@@ -1,12 +1,5 @@
-import { catchError, distinctUntilChanged, map, share, shareReplay, switchMap, tap } from 'rxjs/operators';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ChangeDetectorRef
-} from '@angular/core';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, of, of as ObservableOf } from 'rxjs';
 import { KerttuGlobalApi } from '../../../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../../../laji/src/app/shared/service/user.service';
@@ -40,7 +33,8 @@ export class TaxonSelectComponent {
 
   taxonTypeEnum = TaxonTypeEnum;
 
-  private tokenMinLength = 3;
+  private tokenMinLengthBird = 3;
+  private tokenMinLengthOther = 1;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -71,7 +65,8 @@ export class TaxonSelectComponent {
   }
 
   private getTaxa(token: string): Observable<IGlobalSpeciesWithAutocompleteInfo[]> {
-    if (this.taxonType !== TaxonTypeEnum.insect && (!token || token.length < this.tokenMinLength)) {
+    const tokenMinLength = this.taxonType === TaxonTypeEnum.bird ? this.tokenMinLengthBird : this.tokenMinLengthOther;
+    if (!token || token.length < tokenMinLength) {
       return of([]);
     }
 

@@ -54,6 +54,7 @@ export class AudioService {
     }
 
     if (!this.buffer$[url]) {
+      const isWav = url.endsWith('.wav');
       this.buffer$[url] = (this.httpClient.get(url, {responseType: 'arraybuffer'}))
         .pipe(
           switchMap((response: ArrayBuffer) => {
@@ -71,7 +72,7 @@ export class AudioService {
               return audioCtx.decodeAudioData(response);
             }
           }),
-          map((buffer: AudioBuffer) => this.removeEmptySamplesAtStart(buffer, actualDuration)),
+          map((buffer: AudioBuffer) => isWav ? buffer : this.removeEmptySamplesAtStart(buffer, actualDuration)),
           map(buffer => this.normaliseAudio(buffer)),
           tap(buffer => {
             this.buffer[url] = {
