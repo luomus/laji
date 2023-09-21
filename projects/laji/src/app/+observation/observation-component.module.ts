@@ -4,7 +4,7 @@ import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { ObservationViewComponent } from './view/observation-view.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+// import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
@@ -47,7 +47,7 @@ import { ObservationResultFrontComponent } from './result-front/observation-resu
   imports: [
     routing,
     SharedModule,
-    TypeaheadModule,
+    // TypeaheadModule,
     DocumentViewerModule,
     YkjModule,
     NgxDatatableModule,

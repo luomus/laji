@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+// import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TaxonSelectComponent } from './taxon-select.component';
 import { FormsModule } from '@angular/forms';
 
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    TypeaheadModule
+    // TypeaheadModule
   ],
   exports: [
     TaxonSelectComponent

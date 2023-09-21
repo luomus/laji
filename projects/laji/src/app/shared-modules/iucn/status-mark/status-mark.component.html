@@ -6,10 +6,8 @@
 </ng-container>
 <ng-template #withTooltip>
   <span *ngIf="re"
-        [tooltip]="'MKV.possiblyRE' | translate"
         class="possible-re"
   >●</span>
   <span *ngIf="mark"
-        [tooltip]="_evaluation.externalPopulationImpactOnRedListStatus | translate"
   >{{ mark }}</span>
 </ng-template>

@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DownloadComponent } from './download.component';
 import { SpinnerModule } from '../spinner/spinner.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
+// import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
+// import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { SelectModule } from '../select/select.module';
 import { ApikeyModalComponent } from './apikey-modal/apikey-modal.component';
@@ -18,7 +18,7 @@ import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.mo
   declarations: [DownloadComponent, ApikeyModalComponent, ReasonComponent],
   imports: [
     SpinnerModule,
-    ModalModule,
+    // ModalModule,
     TranslateModule,
     FormsModule,
     CommonModule,
@@ -26,7 +26,7 @@ import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.mo
     SharedModule,
     LajiUiModule,
     SelectModule,
-    TooltipModule,
+    // TooltipModule,
     CopyToClipboardModule
   ],
   exports: [DownloadComponent, ApikeyModalComponent]

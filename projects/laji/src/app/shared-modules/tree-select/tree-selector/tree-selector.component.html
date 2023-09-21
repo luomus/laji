@@ -15,7 +15,7 @@
              [class.node-content-wrapper-focused]="node.isFocused"
              (click)="node.mouseAction('click', $event)">
           <ng-container *ngIf="includeQualityIcon && node.data.quality">
-            <img class="quality-image" [src]="node.data.quality | qualityUrl" [tooltip]="node.data.quality | label">
+            <img class="quality-image" [src]="node.data.quality | qualityUrl">
           </ng-container>
           <ng-container *ngIf="includeCheckbox">
             <laji-checkbox [checkboxType]="checkboxType" [value]="getCheckboxValue(node.data.id)"></laji-checkbox>
@@ -30,7 +30,7 @@
           <span *ngIf="includeLink">
               <a
                 id="selectionLink"
-                [tooltip]="'openCollectionPage' | translate"
+
                 container="body"
                 target="_blank" [href]="node.data.id | toFullUri">
                 <i

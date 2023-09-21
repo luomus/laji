@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaxonAutocompleteComponent } from './taxon-autocomplete.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+// import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    TypeaheadModule
+    // TypeaheadModule
   ],
   declarations: [
     TaxonAutocompleteComponent,

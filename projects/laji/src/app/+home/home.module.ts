@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
+// import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { SharedModule } from '../shared/shared.module';
 import { routing } from './home.routes';
 import { HomeComponent } from './home.components';
@@ -13,7 +13,7 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 
 @NgModule({
-  imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule],
+  imports: [routing, SharedModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
 })
 export class HomeModule {

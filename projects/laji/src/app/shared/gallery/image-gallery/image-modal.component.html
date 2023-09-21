@@ -14,8 +14,6 @@
     <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" role="button" luKeyboardClickable>
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-             [popover]="info"
-             [popoverContext]="{$implicit: img}"
              placement="bottom"
              triggers="mouseenter:mouseleave"
              class="ng-thumb compact"
@@ -35,8 +33,6 @@
     <div class="image-container annotation">
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-             [popover]="info"
-             [popoverContext]="{$implicit: img}"
              tabindex="0" luKeyboardClickable
              placement="bottom"
              triggers="mouseenter:mouseleave"

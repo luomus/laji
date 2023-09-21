@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { AlertModule } from 'ngx-bootstrap/alert';
+// import { AlertModule } from 'ngx-bootstrap/alert';
 import { DocumentViewerModule } from '../shared-modules/document-viewer/document-viewer.module';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { OwnSubmissionsModule } from '../shared-modules/own-submissions/own-submissions.module';
@@ -22,7 +22,7 @@ import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-
     routing,
     SharedModule,
     RouterModule,
-    AlertModule,
+    // AlertModule,
     DocumentViewerModule,
     LajiMapModule,
     OwnSubmissionsModule,
