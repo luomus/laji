@@ -284,9 +284,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       const dataOptions = this.lajiMap.map.getData()[dataIdx];
       if (!dataOptions) { return; }
       // Force LajiMap to redraw the occurrence data with the updated this.getFeatureStyle(), which uses the updated this.visualizationMode.
-      //this.lajiMap.map.redrawDataItem(dataIdx);
-      //this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
-      this.lajiMap.setData(this.lajiMap.data); // HACK: force redraw
+      this.lajiMap.map.redrawDataItem(dataIdx);
+      this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
     }
   }
 
@@ -539,7 +538,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
 
   private onOpacityChange(opacity: number) {
     this.opacity = opacity;
-    this.lajiMap.map.getData()[1].groupContainer.refreshClusters();
   }
 
   private onDataVisibleChange(visible: boolean) {
