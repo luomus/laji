@@ -22,7 +22,7 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { getPointIconAsCircle, LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';

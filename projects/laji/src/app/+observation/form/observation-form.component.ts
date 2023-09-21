@@ -114,6 +114,14 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     coordinateAccuracyMax: 1000
   };
 
+  birdAtlasFilterShortcutQueryParams = {
+    informalTaxonGroupId: 'MVL.1',
+    countryId: 'ML.206',
+    time: '2022-01-01%2F2025-12-31',
+    recordQuality: 'COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED',
+    atlasClass: 'MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'
+  };
+
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,

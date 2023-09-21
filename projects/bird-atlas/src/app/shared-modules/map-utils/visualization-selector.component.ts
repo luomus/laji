@@ -4,6 +4,7 @@ import { VisualizationMode } from './visualization-mode';
 @Component({
   selector: 'ba-visualization-selector',
   template: `
+    <h6>Visualisointi</h6>
     <div class="radio">
         <label>
           <input type="radio" name="optradio" [(ngModel)]="visualization" value="activityCategory">
