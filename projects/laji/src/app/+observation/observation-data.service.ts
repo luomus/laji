@@ -6,9 +6,10 @@ import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface
 import { SearchQueryService } from './search-query.service';
 import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { PlatformService } from '../root/platform.service';
+import deepEqual from 'deep-equal';
 
 export interface IObservationData {
-  count: number;
+  unitsCount: number;
   speciesCount: number;
   securedCount: number;
 }
@@ -22,7 +23,7 @@ const overrideType = {
 })
 export class ObservationDataService {
   cacheCount$: Observable<IObservationData>;
-  lastQuery: string;
+  lastQuery: WarehouseQueryInterface;
 
   constructor(
     private searchQueryService: SearchQueryService,
@@ -34,9 +35,9 @@ export class ObservationDataService {
     if (this.platformService.isServer) {
       return of(this.empty());
     }
-    const newQuery = JSON.stringify(query);
+    const newQuery = query;
 
-    if (newQuery === this.lastQuery) {
+    if (deepEqual(newQuery, this.lastQuery)) {
       return this.cacheCount$;
     }
 
@@ -52,12 +53,17 @@ export class ObservationDataService {
       map((data) => data.results?.[0]),
       map(res => {
         ['count', 'speciesCount', 'securedCount'].forEach(key => {
-          if (!res[key]) {
+          if (res[key] === undefined) {
             res[key] = null;
           }
         });
         return res;
       }),
+      map(res => ({
+        unitsCount: res.count,
+        speciesCount: res.speciesCount,
+        securedCount: res.securedCount
+      })),
       startWith(this.empty()),
       shareReplay(1)
     );
@@ -67,7 +73,7 @@ export class ObservationDataService {
 
   private empty() {
     return {
-      count: null,
+      unitsCount: null,
       speciesCount: null,
       securedCount: null
     };

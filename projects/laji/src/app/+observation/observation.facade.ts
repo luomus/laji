@@ -202,7 +202,7 @@ export class ObservationFacade {
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
-      map(data => data.count),
+      map(data => data.unitsCount),
       tap(countUnit => this.updateState({..._state, loadingUnits: false, countUnit})),
     );
   }
