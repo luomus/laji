@@ -44,7 +44,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     GraphQLModule,
     BrowserAnimationsModule,
     BrowserModule,
-    {provide: APP_ID, useValue: 'laji-app'},
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
@@ -72,6 +71,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     LajiUiModule
   ],
   providers: [
+    {provide: APP_ID, useValue: 'laji-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},
