@@ -1,7 +1,7 @@
 <lu-button class="no-print" [class.fixed-icon]="fixed" (click)="openModal()" *ngIf="iconOnly; else label">
-  <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"
+  <i class="fa fa-envelope-o" placement="left" 
      container="body"
-     [adaptivePosition]="false"></i>
+     ></i>
 </lu-button>
 <ng-template #label>
   <a class="link" (click)="openModal()">
@@ -28,9 +28,6 @@
         </ng-container>
       </div>
     </div>
-    <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-      {{ 'feedback.invalid' | translate }}
-    </alert>
     <div class="row email" *ngIf="!(userService.isLoggedIn$ | async)">
       <div class="col-sm-12">
         <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">

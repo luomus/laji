@@ -3,7 +3,7 @@
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
 
-  <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
+  <div class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
@@ -22,7 +22,7 @@
     <div class="np-info">
       <div class="d-flex flex-row justify-between items-end mb-4 np-info-header"
            lajiFormOption="options.namedPlaceOptions.allowAddingPublic options.printType options.namedPlaceOptions.printLabel">
-        <h3 [tooltip]="'MNP.name' | label">{{ namedPlace?.name }}</h3>
+        <h3 >{{ namedPlace?.name }}</h3>
         <div *ngIf="documentForm.options?.printType || (allowEdit && editButtonVisible)" lajiFormOption="options.printType options.namedPlaceOptions.printLabel">
           <span *ngIf="documentForm.options?.printType">
             <a class="btn btn-sm btn-default"
@@ -33,7 +33,7 @@
             <lu-button (click)="editClick()" id="np-edit">{{ 'np.edit' | translate }}</lu-button>
             <div class="d-inline-block">
               <lu-button (click)="deleteClick()" [disabled]="!canDelete" id="np-delete">{{ 'np.delete' | translate }}</lu-button>
-              <laji-info *ngIf="!canDelete" [noShow]="true" [tooltip]="'np.delete.disabled.hasDocs' | translate"></laji-info>
+              <laji-info *ngIf="!canDelete" [noShow]="true" ></laji-info>
             </div>
           </ng-container>
         </div>

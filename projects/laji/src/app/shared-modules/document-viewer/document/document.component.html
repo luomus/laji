@@ -15,7 +15,7 @@
              [routerLink]="['/view/print'] | localize"
              [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
              target="_blank"
-             [tooltip]="'haseka.submissions.toPrint' | translate">
+             >
             {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
@@ -61,12 +61,12 @@
           <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
              *ngIf="externalViewUrl"
              href="{{externalViewUrl}}" rel="noopener" target="_blank"
-              [tooltip]="'information.more' | translate"
+              
               placement="left">
             <i class="glyphicon glyphicon-new-window small"></i>
           </a>
           <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                  [popover]="docMeta"
+                  
                   triggers="click:mouseleave mouseenter:mouseleave"
                   placement="left"><i class="glyphicon glyphicon-user"></i>
           </button>
@@ -75,38 +75,6 @@
             {{ showFacts ? ('viewer.hideFacts' | translate) : ('viewer.showFacts' | translate) }}
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
-          <div style="margin-top: 35px;">
-            <alert [type]="document.secured ?  'warning' : 'info'">
-              <span *ngIf="document.partial">
-                {{ 'viewer.secured.partial' | translate }}
-              </span>
-              <span *ngIf="!document.secured; else isSecured">
-                {{ 'viewer.secured.none' | translate }}
-              </span>
-              <ng-template #isSecured>
-                <span *ngIf="document.public">
-                  {{ 'viewer.secured.secured' | translate }}
-                </span>
-                <span *ngIf="!document.public">
-                  {{ 'viewer.secured.own1' | translate }}
-                  <ng-container *lajiForTypes="['vir']; exclude: true">
-                    (<a [routerLink]="['/view'] | localize"
-                        [queryParams]="{uri: document.documentId,highlight: highlight}"
-                        target="_blank">{{ 'viewer.secured.own2' | translate }}</a>).
-                  </ng-container>
-                </span>
-              </ng-template>
-              <div *ngIf="document.secured">
-                <laji-secure-info
-                  [secureLevel]="document.secureLevel"
-                  [secureReasons]="document.secureReasons"
-                ></laji-secure-info>
-                <ng-container *ngIf="document.secureReasons | includes:'DEFAULT_TAXON_CONSERVATION'">
-                  <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
-                </ng-container>
-              </div>
-            </alert>
-          </div>
         </div>
       </div>
       <div class="row" *ngIf="document.media">

@@ -1,9 +1,6 @@
 <div class="toggle-intro" *ngIf="!showWbcRouteTableInfo">
   <i (click)="toggleInfo()" class="link glyphicon glyphicon-info-sign"></i>
 </div>
-<alert *ngIf="showWbcRouteTableInfo" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-  <p>{{ 'wbc.stats.route.table.info' | translate }}</p>
-</alert>
 
 <div class="download-row">
   <laji-download

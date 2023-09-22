@@ -104,13 +104,13 @@
           <label>
             <input type="checkbox" [(ngModel)]="annotation.isLowQuality" (change)="updateAnnotation()"/>{{ 'identification.isLowQuality' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
+          <laji-info  [html]="'identification.isLowQuality.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <div class="checkbox">
           <label>
             <input type="checkbox" [(ngModel)]="annotation.containsHumanSpeech" (change)="updateAnnotation()">{{ 'identification.containsHumanSpeech' | translate }}
           </label>
-          <laji-info [placement]="'right'" [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
+          <laji-info  [html]="'identification.containsHumanSpeech.info' | translate" [showOnHover]="true"></laji-info>
         </div>
       </div>
       <div class="col-sm-6">
@@ -134,7 +134,7 @@
           <label>
             <input type="checkbox" [(ngModel)]="annotation.containsBirdsNotOnList" (change)="updateAnnotation()">{{ 'identification.containsBirdsNotOnList' | translate }}:
           </label>
-          <laji-info [placement]="'right'" [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
+          <laji-info  [html]="'identification.containsBirdsNotOnList.info' | translate" [showOnHover]="true"></laji-info>
         </div>
         <input class="form-control input-sm" type="text" [(ngModel)]="annotation.birdsNotOnList" [disabled]="!annotation.containsBirdsNotOnList" maxlength="100">
       </div>
@@ -150,7 +150,7 @@
   <div class="form-group">
     <h4>
       {{ 'identification.listSpecies' | translate }}
-      <laji-info [placement]="'right'" [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
+      <laji-info  [html]="'identification.listSpecies.info' | translate" [showOnHover]="true"></laji-info>
     </h4>
     <bsg-taxon-select
       id="species-select"
@@ -173,7 +173,7 @@
     <label for="drawNonBird" class="d-inline">
       {{ 'identification.drawNonBird' | translate }}
     </label>
-    <laji-info [placement]="'right'" [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
+    <laji-info  [html]="'identification.drawNonBird.info' | translate" [showOnHover]="true"></laji-info>
     <div>
       <button
         id="drawNonBird"

@@ -2,28 +2,6 @@
   <div class="active item carousel-item" *lajiServerOnly>
     <div [ngTemplateOutlet]="page1"></div>
   </div>
-  <carousel [interval]="0" *lajiBrowserOnly>
-    <slide>
-      <div [ngTemplateOutlet]="page1"></div>
-    </slide>
-    <slide>
-      <div class="carousel-caption">
-        <div class="row hidden-xs">
-          <div class="col-sm-12">
-            <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
-          </div>
-        </div>
-        <div class="row text-container">
-          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
-            <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimens?.total"></laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.digitized' | translate" colClass="col-sm-4">
-            <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimensWithImage?.total"></laji-observation-count>
-          </laji-stat-item>
-        </div>
-      </div>
-    </slide>
-  </carousel>
 </div>
 <ng-template #page1>
   <div class="carousel-caption">

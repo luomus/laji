@@ -30,27 +30,27 @@
 </laji-row>
 <laji-row *ngIf="gathering.interpretations" [title]="'result.gathering.conversions.wgs84CenterPoint' | translate" [noTitleSpace]="false" ngPreserveWhitespaces>
   <ul class="separated-list">
-    <li *ngIf="gathering.higherGeography" [tooltip]="'MY.higherGeography' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="gathering.higherGeography"  >
       {{ gathering.higherGeography }}</li>
-    <li *ngIf="gathering.interpretations?.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="gathering.interpretations?.country"  >
       {{ gathering.interpretations.country | toQName | area }}</li>
-    <li *ngIf="!gathering.interpretations?.country && gathering.country" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="!gathering.interpretations?.country && gathering.country"  >
       {{ gathering.country }}</li>
-    <li *ngIf="gathering.province" [tooltip]="'MY.province' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="gathering.province"  >
       {{ gathering.province }}</li>
-    <li *ngIf="gathering.interpretations?.biogeographicalProvince" [tooltip]="'MY.biologicalProvince' | label" [isDisabled]="hideTooltips">{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
+    <li *ngIf="gathering.interpretations?.biogeographicalProvince"  >{{ gathering.interpretations.biogeographicalProvince | toQName | area }}
       ({{ gathering.interpretations.biogeographicalProvince | toQName | area:'provinceCode' }})</li>
-    <li [tooltip]="'MY.biologicalProvince' | label"
-        [isDisabled]="hideTooltips"
+    <li 
+        
         *ngIf="!gathering.interpretations?.biogeographicalProvince && gathering.biogeographicalProvince">
       {{ gathering.biogeographicalProvince }}</li>
-    <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="gathering.interpretations?.finnishMunicipalities; else municipality"  >
       {{ gathering.interpretations.finnishMunicipalities | toQName | area | values }}</li>
     <ng-template #municipality>
-      <li *ngIf="gathering.municipality" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+      <li *ngIf="gathering.municipality"  >
         {{ gathering.municipality }}</li>
     </ng-template>
-    <li *ngIf="gathering.locality" [tooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
+    <li *ngIf="gathering.locality"  >
       {{ gathering.locality }}</li>
   </ul>
 </laji-row>

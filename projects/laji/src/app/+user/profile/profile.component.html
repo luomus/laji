@@ -36,20 +36,20 @@
                 <textarea class="form-control" [(ngModel)]="currentProfile.profileDescription"></textarea>
               </div>
               <div class="profile-edit-row">
-                {{ 'MA.personalCollectionIdentifier' | label }}<laji-info [placement]="'right'">{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
+                {{ 'MA.personalCollectionIdentifier' | label }}<laji-info >{{ 'profile.info.personalCollectionIdentifier' | translate }}</laji-info>
                 <input class="form-control" [(ngModel)]="currentProfile.personalCollectionIdentifier">
               </div>
               <h4>{{ 'profile.defaultMediaMetadata.title' | translate }}</h4>
               <div class="profile-edit-row">
-                {{ 'MM.capturerVerbatim' | label }}<laji-info [placement]="'right'">{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
+                {{ 'MM.capturerVerbatim' | label }}<laji-info >{{ 'profile.info.capturerVerbatim' | translate }}</laji-info>
                 <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.capturerVerbatim">
               </div>
               <div class="profile-edit-row">
-                {{ 'MZ.intellectualOwner' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
+                {{ 'MZ.intellectualOwner' | label }}<laji-info >{{ 'profile.info.intellectualOwner' | translate }}</laji-info>
                 <input class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualOwner">
               </div>
               <div class="profile-edit-row">
-                {{ 'MZ.intellectualRights' | label }}<laji-info [placement]="'right'">{{ 'profile.info.intellectualRights' | translate }}</laji-info>
+                {{ 'MZ.intellectualRights' | label }}<laji-info >{{ 'profile.info.intellectualRights' | translate }}</laji-info>
                 <select class="form-control" [(ngModel)]="currentProfile.settings.defaultMediaMetadata.intellectualRights">
                   <option *ngFor="let c of intellectualRightsArray" [ngValue]="c">{{ c | label }}</option>
                 </select>

@@ -27,7 +27,7 @@
             <li class="d-none xs:d-block" [routerLinkActive]="['active']">
               <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
             </li>
-            <li class="d-block xs:d-none" dropdown #taxonMenu="bs-dropdown">
+            <li class="d-block xs:d-none" dropdown>
               <a dropdownToggle class="link user">
                 {{ 'navigation.taxonomy' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -47,7 +47,7 @@
             <li class="d-none xs:d-block" [routerLinkActive]="['active']">
               <a [routerLink]="['/usage'] | localize">{{ 'navigation.usage' | translate }}</a>
             </li>
-            <li class="d-block xs:d-none" dropdown #usageMenu="bs-dropdown">
+            <li class="d-block xs:d-none" dropdown>
               <a dropdownToggle class="link user">
                 {{ 'navigation.usage' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -80,7 +80,7 @@
             </li>
             <ng-container *lajiBrowserOnly>
               <ng-container>
-                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
+                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown>
                   <a dropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>

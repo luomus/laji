@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "audioViewer.audioError" | translate }}</alert>
+
   <div class="spectrogram-container">
     <laji-audio-spectrogram
       [buffer]="buffer"
@@ -13,7 +13,7 @@
       [axisFontSize]="axisFontSize"
       [rectangles]="rectangles"
       [currentTime]="audioPlayer.currentTime"
-      [config]="spectrogramConfig"
+      [config]="spectogramConfig"
       [mode]="mode"
       [width]="spectrogramWidth"
       [height]="spectrogramHeight"
@@ -41,7 +41,7 @@
       <lu-button [role]="audioPlayer.loop ? 'primary' : 'secondary'" (click)="audioPlayer.loop = !audioPlayer.loop" [disabled]="loading">
         <span class="fa fa-refresh"></span>
       </lu-button>
-      <laji-info [placement]="'right'" [html]="'audioViewer.loop.info' | translate" [showOnHover]="true"></laji-info>
+      <laji-info  [html]="'audioViewer.loop.info' | translate" [showOnHover]="true"></laji-info>
     </div>
     <ng-container *ngIf="customControlsTpl">
       <ng-template [ngTemplateOutlet]="customControlsTpl"></ng-template>
@@ -51,7 +51,7 @@
         <lu-button [role]="mode === 'zoom' ? 'primary' : 'secondary'" (click)="toggleZoomMode()">
           {{ 'audioViewer.changeView' | translate }}
         </lu-button>
-        <laji-info [placement]="'right'" [html]="'audioViewer.changeView.info' | translate" [showOnHover]="true"></laji-info>
+        <laji-info  [html]="'audioViewer.changeView.info' | translate" [showOnHover]="true"></laji-info>
       </div>
       <lu-button [role]="'secondary'" (click)="clearZoomArea()" *ngIf="view !== defaultView">
         {{ 'audioViewer.defaultView' | translate }}

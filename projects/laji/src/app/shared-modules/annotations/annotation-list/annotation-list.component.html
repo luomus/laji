@@ -8,7 +8,7 @@
               type="button"
               class="btn alert-info btn-xs"
               (click)="toggleAnnotation(i)"
-              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.showDeletedComment' | translate) : ('annotation.showInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.showDeletedComment' | translate) : '')"
+              
               placement="right"
               >
               <i class="glyphicon glyphicon-eye-open"></i>
@@ -21,7 +21,7 @@
               type="button"
               class="btn btn-danger btn-xs"
               (click)="remove.emit(annotation)"
-              [tooltip]="'annotation.deleteComment' | translate"
+              
               placement="right"
               *ngIf="(annotation.annotationByPerson | toQName) === personID && !annotation.deleted && showItem[i]"
               >
@@ -31,7 +31,7 @@
               type="button"
               class="btn alert-info btn-xs"
               (click)="toggleAnnotation(i)"
-              [tooltip]="!annotation.valid ? (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : ('annotation.hideInvalidComment' | translate)  ) : (annotation.deleted ? ('annotation.hideDeletedComment' | translate) : '')"
+              
               placement="right"
               *ngIf="((annotation.deleted || !annotation.valid ) && showItem[i])"
             >

@@ -4,13 +4,10 @@
   </div>
   <ng-container *ngIf="vihkoSettings.showIntro">
     <ng-container *ngIf="!modal; else showModal">
-      <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
-        <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
-      </alert>
     </ng-container>
 
     <ng-template #showModal>
-      <div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+      <div class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md">
           <div class="modal-content">
             <div class="modal-header">

@@ -46,7 +46,7 @@
           {{ aggr[taxon.id]?.newestRecord | amDateFormat:'DD.MM.YYYY' }}&nbsp;<a
             placement="right"
             container="body"
-            [tooltip]="'result.showViewer' | translate"
+            
             class="btn btn-primary btn-xs"
             (click)="showLatestDocument(taxon.id)"><i class="glyphicon glyphicon-eye-open"></i></a>
         </span>

@@ -16,7 +16,7 @@
                [routerLink]="['/view/print'] | localize"
                [queryParams]="{id: document.id, showFacts: showFacts}"
                target="_blank"
-               [tooltip]="'haseka.submissions.toPrint' | translate">
+               >
               {{ 'print' | translate }}
               <img src="/static/images/icons/pdf_16x16.png">
             </a>
@@ -46,7 +46,7 @@
               <laji-row [title]="'MZ.dateEdited' | label" [value]="document.dateEdited | amDateFormat:'DD.MM.YYYY'"></laji-row>
             </ng-template>
             <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                    [popover]="docMeta"
+                    
                     placement="left"
                     triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
             </button>
@@ -56,11 +56,6 @@
               <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
             </button>
             <div style="margin-top: 35px;">
-              <alert [type]="'warning'" *ngIf="document.publicityRestrictions !== publicity.publicityRestrictionsPublic">
-                <span>
-                  {{ 'viewer.notPublished' | translate }}
-                </span>
-              </alert>
             </div>
           </div>
         </div>

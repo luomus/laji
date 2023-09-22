@@ -134,7 +134,7 @@
           {{ collectionCounts.specimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
           container="body"
@@ -148,7 +148,7 @@
           {{ collectionCounts.typeSpecimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
           container="body"
@@ -162,7 +162,7 @@
           {{ collectionCounts.observation }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id}"
           container="body"

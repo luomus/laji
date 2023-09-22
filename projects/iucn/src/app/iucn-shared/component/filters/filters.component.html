@@ -29,7 +29,7 @@
       <div class="input-group">
         <select iucn-dropdown [placeholder]="''" [value]="query?.habitat" (valueChange)="habitatChange($event)" [options]="habitats$ | async"></select>
         <span class="input-group-addon" *ngIf="type !== 'regional'">
-          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" [tooltip]="'iucn.results.onlyPrimary' | translate">
+          <input type="checkbox" [checked]="query?.onlyPrimaryHabitat" (change)="change('onlyPrimaryHabitat', !query.onlyPrimaryHabitat)" >
         </span>
       </div>
     </div>
@@ -54,7 +54,7 @@
                     [placeholder]="''"
                     [options]="reasons"></select>
             <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" [tooltip]="'iucn.results.onlyPrimary' | translate">
+            <input type="checkbox" [checked]="query?.onlyPrimaryReason" (change)="change('onlyPrimaryReason', !query.onlyPrimaryReason)" >
           </span>
           </div>
         </div>
@@ -67,7 +67,7 @@
                     [placeholder]="''"
                     [options]="reasons"></select>
             <span class="input-group-addon">
-            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" [tooltip]="'iucn.results.onlyPrimary' | translate">
+            <input type="checkbox" [checked]="query?.onlyPrimaryThreat" (change)="change('onlyPrimaryThreat', !query.onlyPrimaryThreat)" >
           </span>
           </div>
         </div>
