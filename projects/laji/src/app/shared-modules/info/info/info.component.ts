@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { PlatformService } from '../../../root/platform.service';
 
 @Component({

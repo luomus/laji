@@ -18,7 +18,6 @@ import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subscription, forkJoin, of as ObservableOf } from 'rxjs';
 import { DatatableOwnSubmissionsComponent } from '../../datatable/datatable-own-submissions/datatable-own-submissions.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -152,7 +151,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   constructor(
     private resultService: ObservationResultService,
     private changeDetectorRef: ChangeDetectorRef,
-    private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,

@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, 
 import { QualityService } from '../../service/quality.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PagedResult } from '../../../shared/model/PagedResult';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { AnnotationTableColumn } from '../model/annotation-table-column';
 import { DocumentViewerFacade } from '../../../shared-modules/document-viewer/document-viewer.facade';
@@ -17,8 +16,6 @@ export class AnnotationTableComponent implements OnInit, OnChanges {
   @Input() group = '';
   @Input() timeStart = '';
   @Input() timeEnd = '';
-
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
 
   page = 1;
   orderBy: string[] = [];

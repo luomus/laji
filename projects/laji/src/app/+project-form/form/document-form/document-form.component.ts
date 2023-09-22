@@ -7,7 +7,6 @@ import { BrowserService } from '../../../shared/service/browser.service';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +27,6 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
 
   @Input() formID: string;
   @Input() documentID: string;
@@ -186,7 +184,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       });
     } else {
       this.documentForTemplate = document;
-      this.templateModal.show();
     }
   }
 
@@ -211,7 +208,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
         () => {
           this.toastsService.showSuccess(this.translate.instant('template.success'));
           setTimeout(() => {
-            this.templateModal.hide();
             this.router.navigate(this.localizeRouterService.translateRoute(['/vihko/templates']));
           }, 200);
           this.templateForm = {

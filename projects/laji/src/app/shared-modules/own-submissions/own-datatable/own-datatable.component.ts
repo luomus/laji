@@ -21,7 +21,6 @@ import { FormService } from '../../../shared/service/form.service';
 import { Router } from '@angular/router';
 import { DocumentExportService } from '../service/document-export.service';
 import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { DocumentService } from '../service/document.service';
 import { TemplateForm } from '../models/template-form';
@@ -165,9 +164,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   private lastSort: any;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
 
   labelFilter$: Observable<LabelFilter>;
   forms$: Observable<{[id: string]: Form.List}>;
@@ -306,7 +302,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     if (row.id) {
       this.deleteRow = row;
       this.deleting = false;
-      this.deleteModal.show();
     } else {
       this.translate.get('delete.noId')
         .subscribe((value) => this.toastService.showError(value));
@@ -320,7 +315,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     ];
     this.updateFilteredRows(false);
     this.cd.markForCheck();
-    this.deleteModal.hide();
     this.delete.emit(this.deleteRow.id);
   }
 
@@ -329,11 +323,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
       return;
     }
     this.templateDocumentID = row.id;
-    this.templateModal.show();
   }
 
   saveTemplate() {
-    this.templateModal.hide();
     if (!this.templateDocumentID) {
       this.translate.get('template.missingDocument')
         .subscribe((value) => this.toastService.showError(value));
@@ -347,7 +339,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   openChooseFileTypeModal(docId?: string) {
     this.downloadedDocumentId = docId;
-    this.modal.show();
   }
 
   toggleExpandRow(row: RowDocument) {

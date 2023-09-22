@@ -19,7 +19,6 @@ import { IUserSettings, UserService } from '../../../../shared/service/user.serv
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import { Profile } from '../../../../shared/model/Profile';
@@ -100,7 +99,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private reloadSub: Subscription;
 
 
-  @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
 
   ngOnInit() {
@@ -161,7 +159,6 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
 
   reload() {
     this.createNewLajiForm();
-    this.errorModal.hide();
   }
 
   leave() {
@@ -199,11 +196,9 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       ? this.reactCrashModalData
       : this.saveErrorModalData;
     this.cd.markForCheck();
-    this.errorModal.show();
   }
 
   dismissErrorModal() {
-    this.errorModal.hide();
   }
 
   private mountLajiForm() {

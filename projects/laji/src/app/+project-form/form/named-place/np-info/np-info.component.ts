@@ -12,7 +12,6 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
@@ -56,9 +55,7 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
 
-  @ViewChild('infoModal', { static: true }) public modal: ModalDirective;
   @ViewChild('infoBox', { static: true }) infoBox;
-  @ViewChild('documentModal') public documentModal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -144,11 +141,6 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.modal.onShown.subscribe(() => { this.modalIsVisible = true; this.cdRef.markForCheck(); });
-    this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; this.cdRef.markForCheck(); });
-    if (this.windowReadyForModal()) {
-      this.modal.show();
-    }
     this.viewIsInitialized = true;
   }
 
@@ -167,27 +159,19 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   npClick() {
-    if (this.viewIsInitialized && this.windowReadyForModal()) {
-      this.modal.show();
-    }
   }
 
   hide() {
-    if (this.modal.isShown) {
-      this.modal.hide();
-    }
   }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
     if (this.infoBox.nativeElement.offsetParent !== null) {
       if (this.modalIsVisible) {
-        this.modal.hide();
       }
       this.resizeCanOpenModal = true;
     } else if (this.viewIsInitialized && this.resizeCanOpenModal) {
       this.resizeCanOpenModal = false;
-      this.modal.show();
     }
   }
 

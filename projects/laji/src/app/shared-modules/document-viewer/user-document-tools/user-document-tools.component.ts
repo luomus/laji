@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, Output, ViewChild, HostListener, EventEmitter, ChangeDetectorRef, OnInit, TemplateRef } from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -51,7 +50,6 @@ export class UserDocumentToolsComponent implements OnInit {
     private formService: FormService,
     private documentToolsService: DocumentToolsService,
     private translate: TranslateService,
-    private modalService: BsModalService,
     private cd: ChangeDetectorRef,
     private router: Router,
     private documentApi: DocumentApi,
@@ -76,23 +74,14 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modalService.onHide.subscribe((e) => {
-      if (!this.router.url.includes('view')) {
-        this.modalIsOpen = false;
-        this.documentToolsService.emitChildEvent(false);
-        this.cd.detectChanges();
-      }
-    });
   }
 
   makeTemplate() {
-    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
     this.modalIsOpen = true;
   }
 
   makeDelete() {
-    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm tools', backdrop: true});
     this.documentToolsService.emitChildEvent(true);
     this.modalIsOpen = true;
   }

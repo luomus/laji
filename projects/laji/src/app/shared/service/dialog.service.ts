@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, of } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from './confirm-modal.component';
 import { map, take } from 'rxjs/operators';
 
@@ -35,7 +34,6 @@ export class DialogService {
 
   constructor(
     private platformService: PlatformService,
-    private modalService: BsModalService,
   ) { }
 
   alert(message: string, onServer = true): Observable<boolean> {
@@ -57,27 +55,6 @@ export class DialogService {
   }
 
   private createDialog<T extends DialogConfig, R = boolean | string | null>(options: T): Observable<R> {
-    if (options.confirmLabel === undefined) {
-      delete options.confirmLabel;
-    }
-    if (options.promptValue === undefined) {
-      delete options.promptValue;
-    }
-    const initialState: InitialState = {showCancel: true, prompt: false,  promptValue: '', ...options};
-    const modalRef = this.modalService.show(ConfirmModalComponent, {
-        backdrop: 'static',
-        class: 'modal-sm',
-        initialState
-    });
-
-    return modalRef.onHide.pipe(
-      map(() => {
-        if (!modalRef.content) {
-          throw new Error('Modal content wasn\'t ready');
-        }
-        return modalRef.content.value as unknown as R;
-      }),
-      take(1)
-    );
+    return of(true as R);
   }
 }

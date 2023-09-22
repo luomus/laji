@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { DocumentViewerFacade, IViewerState } from '../document-viewer.facade';
 import { Observable, Subscription } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { tap } from 'rxjs/operators';
 import { Document } from '../../../shared/model/Document';
 
@@ -18,28 +17,17 @@ export class ViewerModalComponent implements OnDestroy {
   @ViewChild('documentModal', { static: false }) public modal: TemplateRef<any>;
   readonly vm$: Observable<IViewerState>;
 
-  private modalRef: BsModalRef;
   private subHidden: Subscription;
   private open: boolean;
   private annotationOpen: boolean;
 
   constructor(
     private viewerFacade: DocumentViewerFacade,
-    private modalService: BsModalService
   ) {
     this.vm$ = this.viewerFacade.vm$.pipe(
       tap(vm => {
         if (vm.showModal === this.open && vm.openAnnotation === this.annotationOpen) {
           return;
-        }
-        if (vm.showModal && !this.open) {
-          this.modalRef = this.modalService.show(this.modal, { keyboard: false });
-          this.subHidden = this.modalRef.onHidden.subscribe(() => this.onModalHide());
-        } else if (!vm.showModal && this.modalRef) {
-          this.modalRef.hide();
-        }
-        if (this.modalRef) {
-          this.modalRef.setClass(vm.openAnnotation ? 'modal-xl' : 'modal-lg');
         }
 
         this.open = vm.showModal;

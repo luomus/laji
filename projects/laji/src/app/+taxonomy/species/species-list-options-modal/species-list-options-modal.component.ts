@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
@@ -10,7 +9,6 @@ import { TaxonomyColumns } from '../service/taxonomy-columns';
   styleUrls: ['./species-list-options-modal.component.css']
 })
 export class SpeciesListOptionsModalComponent {
-  @ViewChild('settingsModal', { static: true }) modalRef: ModalDirective;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() requiredFields: string[] = [];
@@ -35,8 +33,6 @@ export class SpeciesListOptionsModalComponent {
 
   openModal() {
     this.columnSelector.columns = [...this.searchQuery.listOptions.selected];
-
-    this.modalRef.show();
   }
 
   closeOkModal() {
@@ -44,7 +40,5 @@ export class SpeciesListOptionsModalComponent {
       this.searchQuery.listOptions.selected = [...this.columnSelector.columns];
       this.settingsChange.emit();
     }
-
-    this.modalRef.hide();
   }
 }

@@ -12,7 +12,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
@@ -71,8 +70,6 @@ const BAR_CHART_OPTIONS: ChartOptions<any> = {
 })
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();
-
-  @ViewChild('modal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() useIndividualCount = false;
   @Output() hasData = new EventEmitter<boolean>();
@@ -111,7 +108,6 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   onYearChartBarClick({ index }) {
     this.activeMonthIdx = index;
     this.monthChartLabels = this.getMonthChartLabels(index);
-    this.modal.show();
   }
 
   private getYearChartLabels(): string[] {

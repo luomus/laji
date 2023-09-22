@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { Util } from '../../shared/service/util.service';
@@ -49,10 +48,8 @@ export class TreeSelectComponent {
   @Output() selectedOptionsChange = new EventEmitter<TreeOptionsChangeEvent>();
 
   lang: string;
-  modalRef: BsModalRef;
 
   constructor(
-    private modalService: BsModalService
   ) {}
 
   openModal() {
@@ -69,28 +66,6 @@ export class TreeSelectComponent {
       includeCount: this.includeCount,
       includeLink: this.includeLink,
     };
-    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg scrollable-modal', initialState });
-    this.modalRef.content.emitConfirm.subscribe(result => {
-      const includeToReturn = [];
-      const excludeToReturn = [];
-
-      this.options = result;
-
-      result.forEach(option => {
-        if (option.type === 'included') {
-          includeToReturn.push(option.id);
-        } else if (option.type === 'excluded') {
-          excludeToReturn.push(option.id);
-        }
-      });
-
-      if (!Util.equalsArray(this.includedOptions, includeToReturn) || !Util.equalsArray(this.excludedOptions, excludeToReturn)) {
-        this.selectedOptionsChange.emit({
-          selectedId: includeToReturn,
-          selectedIdNot: excludeToReturn,
-        });
-      }
-    });
   }
 
   deselect(id: string) {

@@ -20,7 +20,6 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription, Observable } from 'rxjs';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportFileType, ExportService } from '../../shared/service/export.service';
@@ -96,7 +95,6 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   private _originalSelected: string[];
   private _settings: ISettingResultList;
-  private modalRef: BsModalRef;
   private cntSub: Subscription;
   private _query: WarehouseQueryInterface;
   private _originalQuery: WarehouseQueryInterface;
@@ -118,7 +116,6 @@ export class ObservationDownloadComponent implements OnDestroy {
               private cd: ChangeDetectorRef,
               private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
               private exportService: ExportService,
-              private modalService: BsModalService,
               private observationDataService: ObservationDataService,
               private downloadService: DownloadService,
               private geoConvertService: GeoConvertService,
@@ -138,13 +135,9 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   openModal() {
-    this.modalRef = this.modalService.show(this.downloadModal, {class: 'modal-lg'});
   }
 
   closeModal() {
-    if (this.modalRef) {
-      this.modalRef.hide();
-    }
   }
 
   @Input() set settings(settings: ISettingResultList) {
@@ -317,9 +310,6 @@ export class ObservationDownloadComponent implements OnDestroy {
         this.downloadLoading = false;
         this.downloadProgressPercent = undefined;
         // see https://github.com/valor-software/ngx-bootstrap/issues/2618
-        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
-          this.modalService.hide(i);
-        }
         this.cd.markForCheck();
       },
       (err) => {

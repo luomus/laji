@@ -8,7 +8,6 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 export interface ApiKeyRequest {
   reason: string;
@@ -44,24 +43,18 @@ export class ApikeyModalComponent implements OnChanges {
   termsAccepted = false;
   expiration = 90;
 
-  private modalRef: BsModalRef;
-
   @Output() request = new EventEmitter<ApiKeyRequest>();
 
-  constructor(private modalService: BsModalService, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges() {
     this.updateDisableRequestBtn();
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {backdrop: false, class: 'modal-sm'});
   }
 
   onClose() {
-    if (this.modalRef) {
-      this.modalRef.hide();
-    }
   }
 
   onRadioInput(event, value: number) {

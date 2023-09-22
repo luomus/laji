@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { IColumnGroup, IGenericColumn } from '../../datatable/service/table-column.service';
@@ -79,8 +78,6 @@ import { DatatableColumn } from '../../datatable/model/datatable-column';
 export class OwnObservationTableSettingsComponent<T extends IGenericColumn<DatatableColumn> = IGenericColumn<DatatableColumn>> {
 
 
-  @ViewChild('settingsModalOwn', { static: true }) settingsModal: TemplateRef<any>;
-
   @Input() isAggregate = true;
   @Input() showPageSize = true;
   @Input() pageSize: number;
@@ -94,27 +91,17 @@ export class OwnObservationTableSettingsComponent<T extends IGenericColumn<Datat
   @Output() resetColumns = new EventEmitter<void>();
   @Output() settingsClose = new EventEmitter<boolean>();
 
-  private modal: BsModalRef;
   private response = false;
 
   constructor(
-    private modalService: BsModalService
   ) { }
 
 
   openModal() {
     this.response = false;
-    this.modal = this.modalService.show(this.settingsModal, {class: 'modal-lg'});
-    this.modalService.onHide.pipe(take(1)).subscribe(() => {
-      this.settingsClose.emit(this.response);
-    });
   }
 
   closeModal(ok = false) {
-    if (this.modal) {
-      this.response = ok;
-      this.modal.hide();
-    }
   }
 
 }

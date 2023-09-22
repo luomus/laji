@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   OnInit, ViewChild, ElementRef, AfterViewInit
 } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   template: `
@@ -38,7 +37,7 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
 
   @ViewChild('confirm') confirmElem!: ElementRef;
 
-  constructor(private modalRef: BsModalRef) { }
+  constructor() { }
 
   ngOnInit() {
     this.value = this.prompt ? null : false;
@@ -50,11 +49,9 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
 
   onConfirm() {
     this.value = this.prompt ? this.promptValue : true;
-    this.modalRef.hide();
   }
 
   onCancel() {
-    this.modalRef.hide();
   }
 
   onPromptChange(value: string) {

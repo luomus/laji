@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeOptionsNode, SelectedOption } from '../tree-select.component';
 import { TreeSelectorComponent } from '../tree-selector/tree-selector.component';
@@ -27,7 +26,6 @@ export class TreeSelectModalComponent {
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 
   constructor(
-    private modalRef: BsModalRef,
   ) { }
 
   deselect(id: string) {
@@ -35,7 +33,6 @@ export class TreeSelectModalComponent {
   }
 
   close() {
-    this.modalRef.hide();
   }
 
   clear() {
@@ -47,8 +44,6 @@ export class TreeSelectModalComponent {
   }
 
   confirm() {
-    this.modalRef.hide();
-
     this.emitConfirm.emit(this.selectedOptions);
   }
 }

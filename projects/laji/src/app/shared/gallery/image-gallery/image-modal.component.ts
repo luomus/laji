@@ -14,7 +14,6 @@ import {
   OnChanges
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -85,7 +84,6 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
-  private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
   private _isShown = false;
   index: number;
@@ -94,10 +92,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(_viewContainerRef: ViewContainerRef,
               _renderer: Renderer2,
-              _elementRef: ElementRef,
-              cis: ComponentLoaderFactory) {
-    this._overlay = cis
-      .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
+              _elementRef: ElementRef) {
   }
 
   ngOnInit() {
@@ -122,7 +117,6 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     if (this.showModalSub) { this.showModalSub.unsubscribe(); }
-    this._overlay.dispose();
   }
 
   openMainPic(url, index) {
@@ -145,22 +139,6 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this._overlay
-      .attach(ImageModalOverlayComponent)
-      .to('body')
-      .show({isAnimated: false});
-    this._isShown = true;
-    this.overlay = this._overlay._componentRef;
-    this.overlay.instance.modalImages = this.modalImages;
-    this.overlay.instance.showImage(index);
-    if (this.showModalSub) { this.showModalSub.unsubscribe(); }
-    this.showModalSub = this.overlay.instance.showModal.subscribe(state => {
-      if (state === false) {
-        this.closeImage();
-      }
-      this.showModal.emit(state);
-    });
-    this.overlay.instance.showLinkToSpeciesCard = this.showLinkToSpeciesCard;
   }
 
   closeImage() {
@@ -168,7 +146,6 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this._isShown = false;
-    this._overlay.hide();
   }
 
   setView(viewType) {
