@@ -7,7 +7,7 @@ import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
-import { Chart, ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Chart, ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as chartJs from 'chart.js';
@@ -51,7 +51,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @ViewChild('myCanvas') canvas: ElementRef;
   context: CanvasRenderingContext2D;
   public gradient: any;
-  public lineChartData: ChartDataSets[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
+  public lineChartData: ChartDataset[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
   public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {
     responsive: true,

@@ -13,14 +13,14 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Chart, ChartOptions } from 'chart.js';
+import { ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const BAR_CHART_OPTIONS: ChartOptions = {
+const BAR_CHART_OPTIONS: ChartOptions<any> = {
   responsive: true,
   maintainAspectRatio: false,
   tooltips: {
@@ -55,6 +55,10 @@ const BAR_CHART_OPTIONS: ChartOptions = {
     datalabels: {
       display: false
     },
+    tooltip: {
+      enabled: true,
+      position: 'cursor'
+    }
   }
 };
 
@@ -87,7 +91,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   ) { }
 
   ngOnInit() {
-    Chart.Tooltip.positioners.cursor = (_, coords) => coords;
+    (Tooltip.positioners as any).cursor = (_, coords) => coords;
     this.facade.chartData$.pipe(takeUntil(this.unsubscribe$)).subscribe(chartData => {
       this.chartData = chartData;
       this.cdr.markForCheck();

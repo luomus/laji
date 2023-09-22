@@ -12,11 +12,10 @@ import {
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { Chart, ChartDataSets } from 'chart.js';
+import { Chart, ChartDataset, CommonElementOptions, Tooltip } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-import { Color } from 'ng2-charts';
 
 
 @Component({
@@ -28,9 +27,9 @@ import { Color } from 'ng2-charts';
 export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnInit {
   @Input() query: any;
   @Input() enableOnlyCount = true;
-  newData: ChartDataSets[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
+  newData: ChartDataset[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
-  _colors: Color[] = [
+  _colors: Pick<CommonElementOptions, 'backgroundColor'>[] = [
     {backgroundColor: '#bd869e'},
     {backgroundColor: '#50abcc'},
     {backgroundColor: '#50abcc'},
@@ -75,7 +74,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   }
 
   ngOnInit() {
-      Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+      (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
         return coordinates;
       };
       this.localSt.observe('onlycount')
@@ -102,10 +101,10 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.barChartOptionsYear = {
       responsive: true,
       maintainAspectRatio: false,
-      tooltips: {
-      enabled: true,
-      position: 'cursor'
-      },
+        tooltips: {
+          enabled: true,
+          position: 'cursor'
+        },
       scales: {
         xAxes: [{
           gridLines: {
@@ -128,6 +127,10 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         datalabels: {
           display: false
         },
+        tooltip: {
+          enabled: true,
+          position: 'cursor'
+        }
       },
       animation: {
         duration: 700
