@@ -13,7 +13,7 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 })
 export class UsersLatestComponent implements OnInit, OnDestroy {
   @Input() tmpOnly = false;
-  @Input() formID: string;
+  @Input() collectionID: string;
   @Input() showFormNames = true;
   @Input() complainLocality: boolean;
   @Input() staticWidth: number = undefined;
@@ -34,7 +34,7 @@ export class UsersLatestComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.latestFacade.setFormID(this.formID);
+    this.latestFacade.setCollectionID(this.collectionID);
 
     this.subscriptionDeleteOwnDocument = this.deleteOwnDocument.childEventListner().subscribe(id => {
       if (id !== null) {
