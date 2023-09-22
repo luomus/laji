@@ -33,7 +33,7 @@ import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import { LeafletEvent } from 'leaflet';
+import L, { LeafletEvent, MarkerCluster, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
@@ -58,10 +58,18 @@ const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Fea
   )
 );
 
+const classNamesAsArr = (c?: string) => c?.split(' ') || [];
+const opacityAsHexCode = (opacity: number) => opacity < 1 ? opacity
+  .toString(16) // Convert to hex.
+  .padEnd(4, '0') // Pad with zeros to fix length.
+  .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
+
 const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
   ['gathering.conversions.wgs84Grid005.lat', 'gathering.conversions.wgs84Grid01.lon']
 ];
+
+const ACTIVE_COLOR = '#6ca31d';
 
 @Component({
   selector: 'laji-observation-map',
@@ -149,8 +157,6 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }),
     maxFillOpacity: 0
   };
-
-  private activeColor = '#6ca31d';
 
   private opacity = 0.627;
   private dataVisible = true;
@@ -279,6 +285,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       if (!dataOptions) { return; }
       // Force LajiMap to redraw the occurrence data with the updated this.getFeatureStyle(), which uses the updated this.visualizationMode.
       this.lajiMap.map.redrawDataItem(dataIdx);
+      this.lajiMap.map.getData()[dataIdx].groupContainer.refreshClusters();
     }
   }
 
@@ -481,7 +488,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     // Active point is styled with classname, boxes receive color in the style object.
     // This is because the Leaflet Path objects don't support updating the class name.
     const baseColor = isActiveBox
-      ? this.activeColor
+      ? ACTIVE_COLOR
       : style.color;
     const maxColorChangeDecimal = 100;
     const color = combineColors(baseColor, ...(hovered ? ['#fff'] : []), maxColorChangeDecimal); // Highlight hovered item.
@@ -489,8 +496,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     const _style = {...style, color, className};
     if (isActiveBox) {
       _style.weight = 3;
-      _style.color = color;
-      _style.fillColor = combineColors(style.color, this.activeColor, maxColorChangeDecimal); // Slide color towards active color.
+      _style.fillColor = combineColors(style.color, ACTIVE_COLOR, maxColorChangeDecimal); // Slide color towards active color.
     }
     return _style;
   }
@@ -514,13 +520,17 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       on: {
         click: this.onFeatureClick.bind(this)
       },
-      marker: {
-        icon: getPointIconAsCircle
+      cluster: {
+        singleMarkerMode: true,
+        maxClusterRadius: 15,
+        iconCreateFunction: this.getClusterIcon.bind(this),
+        showCoverageOnHover: false
       },
       label: this.translate.instant('observation.map.dataOpacityControl.label'),
       visible: this.dataVisible,
       opacity: this.opacity,
       maxFillOpacity: 0.8,
+      controlFillOpacity: true,
       onOpacityChange: this.onOpacityChange.bind(this),
       onVisibleChange: this.onDataVisibleChange.bind(this)
     };
@@ -583,5 +593,36 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         return of(null);
       })
     );
+  }
+
+  private getClusterIcon(cluster: MarkerCluster): L.DivIcon {
+    let classNames = ['coordinate-accuracy-cluster'];
+    const childMarkers = cluster.getAllChildMarkers();
+    const count = childMarkers.reduce((prev, marker) => prev + marker.feature.properties.count, 0);
+    const icon: L.DivIcon = L.divIcon({
+      className: classNames.join(' '),
+      html: `<span>${count}</span>`
+    });
+
+    // monkey patch the create icon function
+    const oldCreateFn = icon.createIcon;
+    icon.createIcon = (oldIcon: any) => {
+      const iconDomElem = oldCreateFn.bind(icon)(oldIcon);
+      iconDomElem.style['background-color'] = this.visualization[this.visualizationMode].getClusterColor(childMarkers) + opacityAsHexCode(this.opacity);
+      return iconDomElem;
+    };
+
+    // setStyle is only called for point markers (not clusters of multiple markers)
+    // therefore the clusters get the original styles described above,
+    // and the point markers get the updated styles described below
+    (<any>icon).setStyle = (iconDomElem: HTMLElement, po: PathOptions) => {
+      iconDomElem.classList.remove('coordinate-accuracy-cluster');
+      iconDomElem.style['background-color'] = po.color + opacityAsHexCode(this.opacity);
+      const newClassNames = classNamesAsArr(po.className);
+      classNames.forEach(c => iconDomElem.classList.remove(c));
+      newClassNames.forEach(c => iconDomElem.classList.add(c));
+      classNames = newClassNames;
+    };
+    return icon;
   }
 }
