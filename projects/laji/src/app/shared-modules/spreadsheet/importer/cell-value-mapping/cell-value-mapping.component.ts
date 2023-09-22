@@ -68,7 +68,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     const invalidValues = {};
     const analyzed = {};
     this.data.map(row => {
-      if (!row[current] || analyzed[row[current]]) {
+      if (row[current] === undefined || analyzed[row[current]]) {
         return;
       }
       analyzed[row[current]] = true;
