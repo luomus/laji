@@ -46,7 +46,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
 @NgModule({
   imports: [
     BrowserModule,
-    {provide: APP_ID, useValue: 'laji-app'},
     AppComponentModule,
     LocaleModule,
     GraphQLModule,
@@ -78,6 +77,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
+    {provide: APP_ID, useValue: 'laji-app'},
     {provide: HTTP_INTERCEPTORS, useClass: TimeoutInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LajiApiInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: TransferHttpCacheInterceptor, multi: true},
