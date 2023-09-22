@@ -1,17 +1,17 @@
 import LajiFormBuilder from 'laji-form-builder';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import lajiFormBuilderBs3Theme from 'laji-form-builder/lib/client/themes/bs3';
-import { FormApiClient } from '../shared/api/FormApiClient';
+import { FormApiClient } from '../../shared/api/FormApiClient';
 import { TranslateService } from '@ngx-translate/core';
-import { Form } from '../shared/model/Form';
+import { Form } from '../../shared/model/Form';
 import SchemaForm = Form.SchemaForm;
-import { ToastsService } from '../shared/service/toasts.service';
-import { ProjectFormService } from '../shared/service/project-form.service';
+import { ToastsService } from '../../shared/service/toasts.service';
+import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { Global } from '../../environments/global';
+import { Global } from '../../../environments/global';
 import { Lang } from 'laji-form-builder/lib/model';
-import { UserService } from '../shared/service/user.service';
+import { UserService } from '../../shared/service/user.service';
 
 @Component({
   selector: 'laji-form-builder',

@@ -69,30 +69,43 @@ $blur: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 30px !important;
+  width: 30px !important;
+  border-radius: 100% !important;
 }
 
-:host ::ng-deep .coordinate-accuracy-0 {
+:host ::ng-deep .coordinate-accuracy-cluster {
   @include coordinateAccuracy();
+  box-shadow: 1px 0 4px 0 rgba(#000, .6);
+  height: 26px !important;
+  width: 26px !important;
+  border-radius: 0 !important;
 }
-:host ::ng-deep .coordinate-accuracy-1 {
-  border: 1px solid $neutral-6;
-  @include coordinateAccuracy();
-}
-:host ::ng-deep .coordinate-accuracy-2 {
-  border: 2px dotted $neutral-7;
-  @include coordinateAccuracy();
-}
-:host ::ng-deep .coordinate-accuracy-3 {
-  border: 3px dashed $neutral-8;
-  @include coordinateAccuracy();
-}
-:host ::ng-deep .coordinate-accuracy-4 {
-  border: 4px dashed $neutral-9;
-  @include coordinateAccuracy();
-}
-:host ::ng-deep .coordinate-accuracy-5 {
-  border: 5px dashed #000;
-  @include coordinateAccuracy();
+
+:host ::ng-deep .leaflet-marker-icon {
+  &.coordinate-accuracy-0 {
+    @include coordinateAccuracy();
+  }
+  &.coordinate-accuracy-1 {
+    border: 1px solid $neutral-6;
+    @include coordinateAccuracy();
+  }
+  &.coordinate-accuracy-2 {
+    border: 2px dotted $neutral-7;
+    @include coordinateAccuracy();
+  }
+  &.coordinate-accuracy-3 {
+    border: 3px dashed $neutral-8;
+    @include coordinateAccuracy();
+  }
+  &.coordinate-accuracy-4 {
+    border: 4px dashed $neutral-9;
+    @include coordinateAccuracy();
+  }
+  &.coordinate-accuracy-5 {
+    border: 5px dashed #000;
+    @include coordinateAccuracy();
+  }
 }
 
 ul {
@@ -135,3 +148,11 @@ ul {
   color: #6ca31d;
 }
 
+.accuracy-legend-box {
+  width: 15px;
+  height: 15px;
+  background-color: $neutral-1;
+  border: 1px solid $neutral-6;
+  align-self: flex-start;
+  margin-top: 2px;
+}

@@ -1,42 +1,40 @@
-<ng-container *ngIf="barChartData && barChartData.length > 0">
+<ng-container *ngIf="chartData?.yearChartData?.length > 0">
   <p>{{ 'taxonomy.observation.yearChart.filter' | translate }}</p>
   <div class="info-card-chart">
-            <div class="chart-container">
-              <laji-chart
-                      [datasets]="barChartData"
-                      [labels]="barChartLabels"
-                      [options]="barChartOptions"
-                      [legend]="true"
-                      chartType="bar"
-                      (barClick)="barClicked($event)"
-              ></laji-chart>
-            </div>
+    <div class="chart-container">
+      <laji-chart
+        [datasets]="chartData.yearChartData"
+        [labels]="yearChartLabels"
+        [options]="barChartOptions"
+        [legend]="true"
+        chartType="bar"
+        (barClick)="onYearChartBarClick($event)"
+      ></laji-chart>
+    </div>
   </div>
 </ng-container>
 
-<div class="modal fade" bsModal #dayChartModal="bs-modal"
-     (onHidden)="onHideDayChart()"
+<div class="modal fade" bsModal #modal="bs-modal"
      tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" (click)="dayChartModal.hide()">
+        <button type="button" class="close" (click)="modal.hide()">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
-        <h4 class="modal-title">{{ monthFormatting(activeMonth + 1) | capitalize }}</h4>
+        <h4 class="modal-title">{{ monthFormatting(activeMonthIdx + 1) | capitalize }}</h4>
       </div>
-      <div class="modal-body" *ngIf="dayChartModalVisible">
+      <div class="modal-body" *ngIf="chartData?.monthChartDataArr?.[activeMonthIdx]?.length > 0">
         <div class="info-card-chart day-chart">
           <laji-chart
-                  [datasets]="daybarChartData[activeMonth]"
-                  [labels]="barChartLabelsDay"
-                  [options]="barChartOptions"
-                  [legend]="true"
-                  chartType="bar"
+            [datasets]="chartData.monthChartDataArr[activeMonthIdx]"
+            [labels]="monthChartLabels"
+            [options]="barChartOptions"
+            [legend]="true"
+            chartType="bar"
           ></laji-chart>
         </div>
       </div>
     </div>
   </div>
 </div>
-

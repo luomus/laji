@@ -14,7 +14,9 @@ export class SearchQueryService implements SearchQueryInterface {
   public query: WarehouseQueryInterface = {};
 
   private readonly separator = {
-    teamMember: ';'
+    teamMember: ';',
+    anyHabitat: ';',
+    primaryHabitat: ';',
   };
 
   // noinspection JSUnusedLocalSymbols
@@ -87,7 +89,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'atlasClass',
     'identificationBasis',
     'samplingMethod',
-    'taxonRankId'
+    'taxonRankId',
+    'hasValue'
   ];
 
   // noinspection JSUnusedLocalSymbols

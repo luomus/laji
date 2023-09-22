@@ -16,39 +16,41 @@
         <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
       </alert>
       <ng-template #simpleDownloadTpl>
-        <p [innerHTML]="'result.load.introSimple' | translate"></p>
-        <div class="action-group">
-          <laji-download
-            *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
-            role="primary"
-            [showBackdrop]="false"
-            (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading"
-            [progressPercent]="downloadProgressPercent"
-            [formats]="formats"
-          >
-            <i class="glyphicon glyphicon-download-alt"></i>
-            {{ 'haseka.submissions.download' | translate }}
-          </laji-download>
-          <laji-download
-            *lajiForTypes="['vir']"
-            role="primary"
-            [showReason]="true"
-            [showBackdrop]="false"
-            [(reasonEnum)]="reasonEnum"
-            [(reason)]="reason"
-            (download)="simpleDownload($event)"
-            [downloadLoading]="downloadLoading"
-            [progressPercent]="downloadProgressPercent"
-            [formats]="formats"
-          >
-            <i class="glyphicon glyphicon-download-alt"></i>
-            {{ 'haseka.submissions.download' | translate }}
-          </laji-download>
-          <button class="btn btn-default" style="margin-left: 15px" (click)="openColumnSelectModal()">
-            <i class="glyphicon glyphicon-cog"></i>
-            {{ 'iucn.results.selectColumns' | translate }}
-          </button>
+        <div *ngIf="unitCount > 0">
+          <p [innerHTML]="'result.load.introSimple' | translate"></p>
+          <div class="action-group">
+            <laji-download
+              *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
+              role="primary"
+              [showBackdrop]="false"
+              (download)="simpleDownload($event)"
+              [downloadLoading]="downloadLoading"
+              [progressPercent]="downloadProgressPercent"
+              [formats]="formats"
+            >
+              <i class="glyphicon glyphicon-download-alt"></i>
+              {{ 'haseka.submissions.download' | translate }}
+            </laji-download>
+            <laji-download
+              *lajiForTypes="['vir']"
+              role="primary"
+              [showReason]="true"
+              [showBackdrop]="false"
+              [(reasonEnum)]="reasonEnum"
+              [(reason)]="reason"
+              (download)="simpleDownload($event)"
+              [downloadLoading]="downloadLoading"
+              [progressPercent]="downloadProgressPercent"
+              [formats]="formats"
+            >
+              <i class="glyphicon glyphicon-download-alt"></i>
+              {{ 'haseka.submissions.download' | translate }}
+            </laji-download>
+            <button class="btn btn-default" style="margin-left: 15px" (click)="openColumnSelectModal()">
+              <i class="glyphicon glyphicon-cog"></i>
+              {{ 'iucn.results.selectColumns' | translate }}
+            </button>
+          </div>
         </div>
       </ng-template>
     </section>

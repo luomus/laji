@@ -20,6 +20,9 @@
       "@laji-form/*": [
         "projects/laji/src/app/+project-form/form/laji-form/*"
       ],
+      "@laji-form-builder/*": [
+        "projects/laji/src/app/+project-form-edit/laji-form-builder/*"
+      ],
       "laji-ui": [
         "dist/laji-ui"
       ],

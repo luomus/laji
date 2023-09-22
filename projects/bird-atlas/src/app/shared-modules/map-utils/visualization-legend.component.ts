@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { activityCategoryGradient, speciesCountGradient, VisualizationMode } from './visualization-mode';
+import { activityCategoryGradient, speciesCountGradient, VisualizationMode, visualizationModeTitles } from './visualization-mode';
 
 const speciesCountLegendLabels = [
-  '1-24 lajia',
+  '0-24 lajia',
   '25-49 lajia',
   '50-74 lajia',
   '75-99 lajia',
@@ -31,6 +31,7 @@ export const legends: Record<VisualizationMode, { color: string; label: string }
 @Component({
   selector: 'ba-visualization-legend',
   template: `
+    <h6>{{ visualizationModeTitles[visualization] }}</h6>
     <div class="legend-row" *ngFor="let row of legends[visualization]">
       <span class="legend-sq" [ngStyle]="{'background-color': '#' + row.color}"></span>{{ row.label }}
     </div>
@@ -40,4 +41,5 @@ export const legends: Record<VisualizationMode, { color: string; label: string }
 export class VisualizationLegendComponent {
   @Input() visualization: VisualizationMode;
   legends = legends;
+  visualizationModeTitles = visualizationModeTitles;
 }

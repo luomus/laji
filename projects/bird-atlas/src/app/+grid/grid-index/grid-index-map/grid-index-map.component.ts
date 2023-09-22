@@ -111,6 +111,7 @@ export class GridIndexMapComponent implements AfterViewInit, OnDestroy, OnChange
       data: {
         featureCollection: <any>getFeatureCollection(grid),
         getFeatureStyle: getGetFeatureStyle(grid, this.visualization),
+        maxFillOpacity: 0.8,
         on: {
           click: (e, d) => {
             this.selectYKJ.emit((<any>d.feature.geometry).coordinateVerbatim);
