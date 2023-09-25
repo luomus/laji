@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
-import { BaseChartDirective, Label, PluginServiceGlobalRegistrationAndOptions, SingleOrMultiDataSet } from 'ng2-charts';
-import { ChartOptions, ChartType, ChartDataset, CommonElementOptions, ChartEvent } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartOptions, ChartType, ChartDataset, CommonElementOptions, ChartEvent, ChartData, Plugin } from 'chart.js';
 import { WINDOW } from '@ng-toolkit/universal';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 
@@ -33,14 +33,14 @@ export class ChartComponent {
 
   @ViewChild(BaseChartDirective) public barChart: BaseChartDirective;
 
-  @Input() public data: SingleOrMultiDataSet;
+  @Input() public data: ChartData;
   @Input() public datasets: ChartDataset[];
-  @Input() public labels: Label[];
+  @Input() public labels: string[];
   @Input() public options: ChartOptions = {};
   @Input() public chartType: ChartType;
   @Input() public colors: Pick<CommonElementOptions, 'backgroundColor'>[];
   @Input() public legend: boolean;
-  @Input() public plugins: PluginServiceGlobalRegistrationAndOptions[];
+  @Input() public plugins: Plugin[];
 
   @Output() public barClick: EventEmitter<{ event?: ChartEvent; active?: any[]; index: number}> = new EventEmitter();
   @Output() public chartClick: EventEmitter<{ event?: ChartEvent; active?: any[] }> = new EventEmitter();
