@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input,
 ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
 import { Subscription } from 'rxjs';
@@ -40,21 +39,14 @@ export class IdentificationListComponent implements OnDestroy {
   destroyMouseupListener: () => void;
 
   private overlayRef: ComponentRef<ImageModalOverlayComponent>;
-  private overlayLoader: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
   private showOverlay = false;
 
   constructor(
     private renderer: Renderer2,
-    factory: ComponentLoaderFactory,
     elementRef: ElementRef,
     viewContainerRef: ViewContainerRef
   ) {
-    this.overlayLoader = factory.createLoader<ImageModalOverlayComponent>(
-      elementRef,
-      viewContainerRef,
-      renderer
-    );
   }
 
   discreteScroll(dir: number) {
@@ -88,51 +80,6 @@ export class IdentificationListComponent implements OnDestroy {
   }
 
   openImage(index?: number) {
-    this.overlayLoader
-      .attach(ImageModalOverlayComponent)
-      .to('body')
-      .show({isAnimated: false});
-    this.showOverlay = true;
-    this.overlayRef = this.overlayLoader._componentRef;
-
-    if (this?.taxon?.species) {
-      this.overlayRef.instance.modalImages = this.taxon.multimedia.map((media, i) => {
-        const image = <Image>{
-          ...this.taxon.multimedia[i],
-          taxonId: this.taxon.id,
-          vernacularName: this.taxon.vernacularName,
-          scientificName: this.taxon.scientificName
-        };
-        return image;
-      });
-      this.overlayRef.instance.showImage(index);
-    } else if (this.taxon.children?.length === 0) {
-      this.overlayRef.instance.modalImages = [<Image>{
-        ...this.taxon.multimedia[0],
-        taxonId: this.taxon.id,
-        vernacularName: this.taxon.vernacularName,
-        scientificName: this.taxon.scientificName
-      }];
-      this.overlayRef.instance.showImage(0);
-    } else if (this.taxon.children?.length > 0) {
-      const [filteredIndex, filteredChildren] = indexAndArrAfterFilter(
-        index, this.taxon.children,
-        taxonomy => taxonomy.multimedia && taxonomy.multimedia.length > 0
-      );
-      this.overlayRef.instance.modalImages = filteredChildren.map(taxonomy => <Image>{
-          ...taxonomy.multimedia[0],
-          taxonId: taxonomy.id,
-          vernacularName: taxonomy.vernacularName,
-          scientificName: taxonomy.scientificName
-        });
-      this.overlayRef.instance.showImage(filteredIndex);
-    }
-
-    if (this.showModalSub) { this.showModalSub.unsubscribe(); }
-    this.showModalSub = this.overlayRef.instance.showModal.subscribe(state => {
-      if (state === false) { this.closeImage(); }
-    });
-    this.overlayRef.instance.showLinkToSpeciesCard = true;
   }
 
   closeImage() {
@@ -140,13 +87,11 @@ export class IdentificationListComponent implements OnDestroy {
       return;
     }
     this.showOverlay = false;
-    this.overlayLoader.hide();
   }
 
   ngOnDestroy() {
     if (this.destroyMouseupListener) {
       this.destroyMouseupListener();
     }
-    this.overlayLoader.dispose();
   }
 }
