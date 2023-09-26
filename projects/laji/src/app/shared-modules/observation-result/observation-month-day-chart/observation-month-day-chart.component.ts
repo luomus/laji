@@ -88,6 +88,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   ) { }
 
   ngOnInit() {
+    // TODO does it work
     (Tooltip.positioners as any).cursor = (_, coords) => coords;
     this.facade.chartData$.pipe(takeUntil(this.unsubscribe$)).subscribe(chartData => {
       this.chartData = chartData;

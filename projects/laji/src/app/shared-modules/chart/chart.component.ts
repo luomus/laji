@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartOptions, ChartType, ChartDataset, CommonElementOptions, ChartEvent, ChartData, Plugin } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset, PointPrefixedOptions, ChartEvent, ChartData, Plugin, CommonElementOptions } from 'chart.js';
 import { WINDOW } from '@ng-toolkit/universal';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 
@@ -38,7 +38,7 @@ export class ChartComponent {
   @Input() public labels: string[];
   @Input() public options: ChartOptions = {};
   @Input() public chartType: ChartType;
-  @Input() public colors: Pick<CommonElementOptions, 'backgroundColor'>[];
+  @Input() public colors: (PointPrefixedOptions & CommonElementOptions)[];
   @Input() public legend: boolean;
   @Input() public plugins: Plugin[];
 

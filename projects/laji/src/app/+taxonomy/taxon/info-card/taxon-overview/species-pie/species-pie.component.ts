@@ -54,7 +54,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       legend: {
         display: false
       },
-      tooltips: {
+      tooltip: {
         mode: 'nearest',
         intersect: false,
         bodyAlign: 'center',

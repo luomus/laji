@@ -7,10 +7,10 @@ import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
-import { Chart, ChartDataset, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label, PluginServiceGlobalRegistrationAndOptions } from 'ng2-charts';
+import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip, Plugin, PointPrefixedOptions, PointPrefixedHoverOptions, CommonElementOptions } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import * as chartJs from 'chart.js';
+import { LineWithLineController } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 
 @Component({
   selector: 'laji-line-transect-result-chart',
@@ -52,7 +52,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   context: CanvasRenderingContext2D;
   public gradient: any;
   public lineChartData: ChartDataset[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
-  public lineChartLabels: Label[] = [];
+  public lineChartLabels: string[] = [];
   public lineChartOptions: ChartOptions = {
     responsive: true,
     elements: {
@@ -67,121 +67,121 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
         hitRadius: 6
       }
     },
-    tooltips: {
-      mode: 'index',
-      position: 'cursor',
-      intersect: false
-    },
     hover: {
       mode: 'index',
       intersect: false,
-      onHover(this, e, element) {
-        let indexChart;
-        if (element[0]) {
-         indexChart = Number(element[0]['_index']);
-        } else {
-          indexChart = -1;
-        }
+    },
+    onHover: function(this, e, element) {
+      let indexChart;
+      if (element[0]) {
+       indexChart = Number(element[0]['_index']);
+      } else {
+        indexChart = -1;
+      }
 
 
-        const dataset = this['tooltip']._data.datasets[0].data;
-        if (element[0]) {
-          element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem) {
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-            const activePoint = element[0]['_chart'].tooltip._active[0];
-            const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-            const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-            const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
-            let empty = 0;
-            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-              if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-                const diff = index - Number(indexChart);
-                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                  empty = -3 * diff;
-                }
-              }
-              if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
-                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                  const diff = Number(indexChart) - (Number(indexChart) - index);
-                    empty = 3 * diff;
-                }
+      const dataset = this['tooltip']._data.datasets[0].data;
+      if (element[0]) {
+        element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem) {
+          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          const activePoint = element[0]['_chart'].tooltip._active[0];
+          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
+          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+          const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
+          let empty = 0;
+          if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+            if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
+              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+              const diff = index - Number(indexChart);
+              if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                empty = -3 * diff;
               }
             }
-
-
-            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
-            / element[0]['_chart'].config.data.labels.length);
-
-          if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-          range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
-            return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
-          } else {
-            return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
-            }
-          };
-          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem) {
-            const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
-            const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
-            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-            const activePoint = element[0]['_chart'].tooltip._active[0];
-            const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-            const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-
-            let empty = 0;
-            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-              if ( !dataset[Number(indexChart) + 1]) {
-                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-                const diff = index - Number(indexChart);
-                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                    empty = -3 * diff;
-                }
-              }
-              if (!dataset[Number(indexChart) - 1]) {
-                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                  const diff = Number(indexChart) - (Number(indexChart) - index);
-                    empty = 3 * diff;
-                }
+            if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
+              if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                const diff = Number(indexChart) - (Number(indexChart) - index);
+                  empty = 3 * diff;
               }
             }
-
-
-            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
-            / element[0]['_chart'].config.data.labels.length);
-
-          if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
-          && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
-            return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
-          } else {
-            return '';
           }
-          };
+
+
+          const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+          / element[0]['_chart'].config.data.labels.length);
+
+        if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+        range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+        } else {
+          return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+          }
+        };
+        element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem) {
+          const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
+          const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
+          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+          const activePoint = element[0]['_chart'].tooltip._active[0];
+          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
+          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+
+          let empty = 0;
+          if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+            if ( !dataset[Number(indexChart) + 1]) {
+              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+              const diff = index - Number(indexChart);
+              if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                  empty = -3 * diff;
+              }
+            }
+            if (!dataset[Number(indexChart) - 1]) {
+              if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                const diff = Number(indexChart) - (Number(indexChart) - index);
+                  empty = 3 * diff;
+              }
+            }
+          }
+
+
+          const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+          / element[0]['_chart'].config.data.labels.length);
+
+        if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+        && range(y - (year + offset), y + (year - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+          return '' + tooltipItem[0].xLabel + ' · ' + 'Parim./Km';
+        } else {
+          return '';
         }
+        };
       }
     },
     scales: {
-      yAxes: [{
-        scaleLabel: {
-          display : true,
-          labelString: 'Parim./km'
+      y: {
+        title: {
+          display: true,
+          text: 'Parim./km'
         }
-      }],
-      xAxes: [{
-        scaleLabel: {
-          display : true,
-          labelString: 'Vuodet'
+      },
+      x: {
+        title: {
+          display: true,
+          text:  'Vuodet'
         }
-      }]
+      }
     },
     plugins: {
       datalabels: {
         display: false
-      }
+      },
+      tooltip: {
+        mode: 'index',
+        // position: 'cursor', // TOOD
+        intersect: false
+      },
     }
   };
-  public lineChartColors: Color[] = [
+  public lineChartColors: Partial<PointPrefixedOptions & PointPrefixedHoverOptions & CommonElementOptions>[]  = [
     { // grey
       backgroundColor: 'rgb(255,255,255,0)',
       borderColor: 'rgb(70,130,180)',
@@ -192,7 +192,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     }
   ];
   public lineChartPlugins = [
-    pluginDataLabels as PluginServiceGlobalRegistrationAndOptions
+    pluginDataLabels as unknown as Plugin
   ];
   chartType: ChartType = 'LineWithLine';
 
@@ -206,54 +206,10 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+    Chart.register(LineWithLineController);
+    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
     };
-
-    Chart.defaults.LineWithLine = Chart.defaults.line;
-    Chart.defaults.line.spanGaps = false;
-    Chart.controllers.LineWithLine = Chart.controllers.line.extend({
-      draw(ease) {
-        Chart.controllers.line.prototype.draw.call(this, ease);
-        if (this.chart.tooltip._active && this.chart.tooltip._active.length) {
-          const year = this.chart.tooltip._data.labels[0] === '2006' ? 15 : 6;
-          const offset = this.chart.tooltip._data.labels[0] === '2006' ? 6 : 0;
-          const colWidth = Math.ceil((this['chart'].chartArea['right'] - this['chart'].chartArea['left']) / this['chart'].config.data.labels.length);
-          const activePoint = this.chart.tooltip._active[0];
-
-          const ctx = this.chart.ctx;
-          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-          const topY = this.chart.legend.bottom;
-          const bottomY = this.chart.chartArea.bottom;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-          gradient.addColorStop(0, 'rgba(70,130,180,1)');
-          gradient.addColorStop(0.8, 'rgba(70,130,180,0.1)');
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-
-          if (range(x - (colWidth / 2), x + ((colWidth / 2) + offset), 1).indexOf(this.chart.tooltip._eventPosition.x === -1)  &&
-          range(y - (year + offset), y + (year - offset), 1).indexOf(this.chart.tooltip._eventPosition.y) === -1) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(x, topY);
-            ctx.lineTo(x, bottomY);
-            ctx.lineWidth = 0.5;
-            ctx.strokeStyle = '#000';
-            ctx.stroke();
-            ctx.restore();
-          } else {
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x, bottomY);
-            ctx.lineWidth = 9;
-            ctx.strokeStyle = gradient;
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-      }
-    });
 
     this.subQuery = this.route.queryParams.subscribe((params) => {
       const {taxonId, birdAssociationAreas, fromYear} = params;
