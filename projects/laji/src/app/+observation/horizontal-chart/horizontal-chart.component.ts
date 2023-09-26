@@ -5,7 +5,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Chart, ChartDataset } from 'chart.js';
+import { Chart, ChartDataset, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
@@ -78,7 +78,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
     };
     this.localSt.observe('onlycount')
