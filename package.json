@@ -201,6 +201,7 @@
     "jasmine-spec-reporter": "~6.0.0",
     "jszip": "^3.10.1",
     "ng-packagr": "^16.2.3",
+    "ngx-bootstrap": "^6.2.0",
     "patch-package": "^6.4.7",
     "postinstall-prepare": "^1.0.1",
     "protractor": "^7.0.0",

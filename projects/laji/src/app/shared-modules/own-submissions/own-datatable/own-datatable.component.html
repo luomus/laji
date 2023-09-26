@@ -144,9 +144,9 @@
                 class="template-button"
                 [role]="'warning'"
                 (click)="makeTemplate(row)"
-                
+
                 container="body"
-                
+
                 >
             <i class="glyphicon glyphicon-floppy-disk"></i>
         </lu-button>
@@ -196,10 +196,10 @@
           </div>
           <button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
             class="btn btn-danger btn-xs delete-button"
-            
-            
-            
-            
+
+
+
+
             (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
             <span class="text-button">{{ 'np.delete' | translate }}</span>
@@ -214,7 +214,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <button class="close pull-right" type="button" (click)="modal.hide()">
+        <button class="close pull-right" type="button">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
@@ -248,7 +248,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <button class="close pull-right" type="button" (click)="templateModal.hide()">
+        <button class="close pull-right" type="button">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <h4 class="modal-title">{{ 'template.formTitle' | translate }}</h4>
@@ -284,13 +284,13 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content datatable-delete-modal">
       <div class="modal-header">
-        <button class="close pull-right" type="button" (click)="deleteModal.hide()">
+        <button class="close pull-right" type="button">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
         <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success pull-left" [disabled]="deleting" (click)="deleteModal.hide()">
+        <button type="button" class="btn btn-success pull-left" [disabled]="deleting">
           <span>{{ "haseka.delete.cancel" | translate }}</span>
         </button>
         <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
