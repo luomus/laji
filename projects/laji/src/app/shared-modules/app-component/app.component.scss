@@ -16,13 +16,13 @@
 
 /** for embedded page */
 
-:host >>> .embedded laji-map-front .map-wrap {
+:host ::ng-deep .embedded laji-map-front .map-wrap {
   height: 100vh;
 }
 .embedded {
   margin-top: -50px;
 }
-:host >>> .embedded .container, .embedded .container {
+:host ::ng-deep .embedded .container, .embedded .container {
   width: 100% !important;
 }
 
