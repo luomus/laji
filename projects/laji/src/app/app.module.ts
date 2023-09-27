@@ -29,7 +29,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
 import { LajiApiInterceptor } from './shared/service/laji-api.interceptor';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
@@ -89,7 +89,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       deps: [LoggerApi],
       useFactory: createLoggerLoader
     },
-    {provide: Title, useClass: LajiTitle}
+    {provide: Title, useClass: LajiTitle},
+    provideClientHydration()
   ],
 })
 export class AppModule {

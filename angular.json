@@ -273,7 +273,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "server.ts",
+            "main": "projects/laji/server.ts",
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
               "includePaths": [
