@@ -15,15 +15,6 @@
   {{ 'observation.active.informalTaxonGroupAll'|translate }}
 </laji-observation-group-select>
 
-<label>{{ 'species.form.specimen' | translate }}:</label>
-<laji-taxon-select
-  (taxonIdChange)="onTaxonSelect($event)"
-  [taxonId]="formQuery.taxon"
-  [searchParams]="taxonSelectFilters"
-  
-  [convertIdToName]="false"
-></laji-taxon-select>
-
 <bSwitch
   name="onlyFinnish"
   [switch-off-text]="'species.form.all' | translate"
