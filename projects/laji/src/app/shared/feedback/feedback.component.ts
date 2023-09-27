@@ -1,6 +1,5 @@
 import { switchMap, take } from 'rxjs/operators';
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
@@ -10,6 +9,7 @@ import { Location } from '@angular/common';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { of } from 'rxjs';
 import { Person } from '../model/Person';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-feedback',
@@ -33,7 +33,8 @@ export class FeedbackComponent {
 
   @ViewChild('childModal', { static: true }) public modal: TemplateRef<any>;
 
-  constructor(@Inject(WINDOW) private window: Window,
+  constructor(
+		private platformService: PlatformService,
     public userService: UserService,
     public translate: TranslateService,
     private lajiApi: LajiApiService,
@@ -99,7 +100,7 @@ export class FeedbackComponent {
   private getMeta(): string {
     let agent = '';
     try {
-      agent = this.window.navigator.userAgent;
+      agent = this.platformService.window.navigator.userAgent;
     } catch (e) {
     }
     return this.location.prepareExternalUrl(this.location.path())

@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { BaseChartDirective, Color, Label, PluginServiceGlobalRegistrationAndOptions, SingleOrMultiDataSet } from 'ng2-charts';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { WINDOW } from '@ng-toolkit/universal';
 import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-chart',
@@ -47,7 +47,7 @@ export class ChartComponent {
   @Output() public chartHover: EventEmitter<{ event: MouseEvent; active: any[] }> = new EventEmitter();
 
   constructor(
-    @Inject(WINDOW) private window: Window
+    private platformService: PlatformService
   ) {
   }
 
@@ -84,8 +84,9 @@ export class ChartComponent {
   }
 
   private get windowVerticalOffset(): number {
-    return this.window.pageYOffset
-      || this.window.document.documentElement.scrollTop
-      || this.window.document.body.scrollTop || 0;
+    const window = this.platformService.window;
+    return window.pageYOffset
+      || window.document.documentElement.scrollTop
+      || window.document.body.scrollTop || 0;
   }
 }

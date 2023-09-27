@@ -97,7 +97,6 @@
     "@angular/router": "^16.2.5",
     "@apollo/client": "^3.6.9",
     "@ng-select/ng-select": "^11.1.1",
-    "@ng-toolkit/universal": "^8.1.0",
     "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^16.2.0",
     "@ngx-translate/core": "^15.0.0",
@@ -219,12 +218,6 @@
     "proj4": "2.3.16",
     "@types/leaflet-draw": "0.4.14",
     "typescript": "3.4.5"
-  },
-  "overrides": {
-    "@ng-toolkit/universal": {
-      "@angular/common": "16.2.5",
-      "@angular/core": "16.2.5"
-    }
   },
   "keywords": [
     "laji.fi"
