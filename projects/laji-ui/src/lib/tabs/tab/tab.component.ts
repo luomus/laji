@@ -44,7 +44,7 @@ export class TabComponent {
         this.platformService.window.dispatchEvent(new Event('resize'));
       } catch (e) {
         try {
-          const evt: any = this.window.document.createEvent('UIEvents');
+          const evt: any = this.platformService.window.document.createEvent('UIEvents');
           evt.initUIEvent('resize', true, false, this.platformService.window, 0);
           this.platformService.window.dispatchEvent(evt);
         } catch (error) {}
