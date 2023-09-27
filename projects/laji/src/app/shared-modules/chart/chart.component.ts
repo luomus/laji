@@ -38,7 +38,7 @@ export class ChartComponent {
   @Input() public labels: string[];
   @Input() public options: ChartOptions = {};
   @Input() public chartType: ChartType;
-  @Input() public colors: (PointPrefixedOptions & CommonElementOptions)[];
+  @Input() public colors: Partial<PointPrefixedOptions & CommonElementOptions>[];
   @Input() public legend: boolean;
   @Input() public plugins: Plugin[];
 
