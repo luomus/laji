@@ -37,21 +37,20 @@
     <input
       [ngClass]="{loading: typeaheadLoading}"
       type="text"
-      container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
-      
+
       [(ngModel)]="formQuery.taxon"
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
+
       (keyup)="onTaxonSelect($event)"
       autocomplete="off"
       autocorrect="off"

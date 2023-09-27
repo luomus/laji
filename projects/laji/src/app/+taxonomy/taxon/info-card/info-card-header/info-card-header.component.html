@@ -1,9 +1,4 @@
 <div class="taxon-select-bar">
-  <laji-taxon-select
-    [placeholder]="'taxonomy.card.search' | translate"
-    
-    (taxonIdChange)="taxonSelect.emit($event)"
-  ></laji-taxon-select>
 </div>
 
 <div class="d-flex items-end flex-wrap my-3 mx-5">
@@ -16,15 +11,6 @@
     </div>
   </laji-spinner>
   <div *ngIf="taxon.hasParent || taxon.hasChildren">
-    <select class="form-control input-sm" [ngModel]="taxon.id" (ngModelChange)="taxonSelect.emit($event)">
-      <option *ngFor="let sibling of siblings" [value]="sibling.id">
-        {{ sibling.vernacularName | multiLang:false | capitalize }}
-        <ng-container *ngIf="(sibling.vernacularName | multiLang:false ) && sibling.scientificName">
-          &ndash;
-        </ng-container>
-        {{ sibling.scientificName }}
-      </option>
-    </select>
   </div>
 </div>
 
