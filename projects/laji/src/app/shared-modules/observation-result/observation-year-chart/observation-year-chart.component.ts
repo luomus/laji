@@ -29,18 +29,19 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   @Input() enableOnlyCount = true;
   newData: ChartDataset[] = [{data: [], backgroundColor: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
-  _colors: Partial<PointPrefixedOptions & CommonElementOptions>[] = [
-    {backgroundColor: '#bd869e'},
-    {backgroundColor: '#50abcc'},
-    {backgroundColor: '#50abcc'},
-    {backgroundColor: '#9FABCD'},
-    {backgroundColor: '#BA7A82'},
-    {backgroundColor: '#ADCDED'},
-    {backgroundColor: '#BBE9F7'},
-    {backgroundColor: '#B598B9'},
-    {backgroundColor: '#95B5EA'},
-    {backgroundColor: '#B9607D'},
-  ];
+  // TODO what is this about... in the UI all the colors are the same.
+  // _colors: Partial<PointPrefixedOptions & CommonElementOptions>[] = [
+  //   {backgroundColor: '#bd869e'},
+  //   {backgroundColor: '#50abcc'},
+  //   {backgroundColor: '#50abcc'},
+  //   {backgroundColor: '#9FABCD'},
+  //   {backgroundColor: '#BA7A82'},
+  //   {backgroundColor: '#ADCDED'},
+  //   {backgroundColor: '#BBE9F7'},
+  //   {backgroundColor: '#B598B9'},
+  //   {backgroundColor: '#95B5EA'},
+  //   {backgroundColor: '#B9607D'},
+  // ];
 
   allSubData: number[];
   allDataNew: any[];
@@ -70,7 +71,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   ) { }
 
   @Input() set colors(colors: string[]) {
-    this._colors = colors.map(color => ({backgroundColor: color}));
+    // this._colors = colors.map(color => ({backgroundColor: color}));
   }
 
   ngOnInit() {
@@ -272,7 +273,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   createSubArrayChart() {
     this.initializeGraph();
-    this.allSubBackground = this.addColorsBackground(this._colors.map(c => c.backgroundColor), this.allSubData.length);
+    // this.allSubBackground = this.addColorsBackground(this._colors.map(c => c.backgroundColor), this.allSubData.length);
     this.allDataNew[0].data = this.allSubData;
     this.allDataNew[0].backgroundColor = this.allSubBackground;
     this.allBarChartsLabel = this.subBarChartLabels;

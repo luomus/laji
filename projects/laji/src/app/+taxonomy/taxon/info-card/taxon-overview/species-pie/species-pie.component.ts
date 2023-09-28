@@ -4,10 +4,9 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
 import { BaseChartDirective} from 'ng2-charts';
-// TODO tää on jo chart componentissa...
-import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
+import 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
-import { fontString } from 'chart.js/dist/helpers';
+import { fontString } from 'chart.js/helpers';
 
 
 @Component({
@@ -27,6 +26,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
   lineChartPlugins = [];
+  // TODO check after compiles
   lineChartColors: any[] = [];
   dataById: {[key: string]: Taxonomy} = {};
   colorPalette = ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5'];

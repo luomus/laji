@@ -1,20 +1,18 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartOptions, ChartType, ChartDataset, PointPrefixedOptions, ChartEvent, ChartData, Plugin, CommonElementOptions } from 'chart.js';
-import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
+import { ChartType, ChartDataset, ChartEvent, ChartData, Plugin, ChartOptions } from 'chart.js';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-chart',
   template: `
-    <canvas #myCanvas *lajiBrowserOnly baseChart
+    <canvas *lajiBrowserOnly baseChart
             [data]="data"
-            [colors]="colors"
             [datasets]="datasets"
             [labels]="labels"
             [options]="options"
             [legend]="legend"
-            [chartType]="chartType"
+            [type]="chartType"
             [plugins]="plugins"
             (chartClick)="onChartClick($event)"
             (chartHover)="chartHover.emit($event)"
@@ -36,11 +34,10 @@ export class ChartComponent {
   @Input() public data: ChartData;
   @Input() public datasets: ChartDataset[];
   @Input() public labels: string[];
-  @Input() public options: ChartOptions = {};
+  @Input() public options: ChartOptions<any> = {};
   @Input() public chartType: ChartType;
-  @Input() public colors: Partial<PointPrefixedOptions & CommonElementOptions>[];
   @Input() public legend: boolean;
-  @Input() public plugins: Plugin[];
+  @Input() public plugins: Plugin<any, any>[];
 
   @Output() public barClick: EventEmitter<{ event?: ChartEvent; active?: any[]; index: number}> = new EventEmitter();
   @Output() public chartClick: EventEmitter<{ event?: ChartEvent; active?: any[] }> = new EventEmitter();

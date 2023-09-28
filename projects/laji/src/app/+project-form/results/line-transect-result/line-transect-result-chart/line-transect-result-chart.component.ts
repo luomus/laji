@@ -181,16 +181,17 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       },
     }
   };
-  public lineChartColors: Partial<PointPrefixedOptions & PointPrefixedHoverOptions & CommonElementOptions>[]  = [
-    { // grey
-      backgroundColor: 'rgb(255,255,255,0)',
-      borderColor: 'rgb(70,130,180)',
-      pointBackgroundColor: 'rgb(70,130,180)',
-      pointBorderColor: 'rgb(70,130,180)',
-      pointHoverBackgroundColor: 'rgb(70,130,180)',
-      pointHoverBorderColor: 'rgb(70,130,180)'
-    }
-  ];
+  // TODO
+  // public lineChartColors: Partial<PointPrefixedOptions & PointPrefixedHoverOptions & CommonElementOptions>[]  = [
+  //   { // grey
+  //     backgroundColor: 'rgb(255,255,255,0)',
+  //     borderColor: 'rgb(70,130,180)',
+  //     pointBackgroundColor: 'rgb(70,130,180)',
+  //     pointBorderColor: 'rgb(70,130,180)',
+  //     pointHoverBackgroundColor: 'rgb(70,130,180)',
+  //     pointHoverBorderColor: 'rgb(70,130,180)'
+  //   }
+  // ];
   public lineChartPlugins = [
     pluginDataLabels as unknown as Plugin
   ];
