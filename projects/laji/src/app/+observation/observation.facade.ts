@@ -225,6 +225,10 @@ export class ObservationFacade {
     );
   }
 
+  setApiType(type: 'sample' | 'unit') {
+    this.observationDataService.setApiType(type);
+  }
+
   private updateState(state: IObservationState) {
     this.store.next(_state = state);
   }
