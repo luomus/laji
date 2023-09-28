@@ -294,7 +294,8 @@ export class SearchQueryService implements SearchQueryInterface {
 
   public getQuery(result, query: WarehouseQueryInterface) {
     ['coordinates'].forEach(key => {
-      if (result[key] && typeof query._coordinatesIntersection !== 'undefined') {
+      const last = query[key]?.[0]?.split(':').pop();
+      if (result[key] && typeof query._coordinatesIntersection !== 'undefined' && last !== undefined && isNaN(last)) {
         result[key] += ':' + query._coordinatesIntersection / 100;
       }
     });
