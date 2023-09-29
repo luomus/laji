@@ -52,7 +52,6 @@ import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { TaxonAutocompleteService } from '../shared/service/taxon-autocomplete.service';
 import { CheckLangService } from './taxon/service/check-lang.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
-import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
 import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
 import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
@@ -115,7 +114,6 @@ import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bol
     TaxonTaxonomyComponent,
     TaxonDescriptionSourceComponent,
     TaxonOccurrenceComponent,
-    TaxonObservationsComponent,
     InfoCardHeaderComponent,
     TaxonSpecimensComponent,
     TaxonEndangermentComponent,

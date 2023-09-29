@@ -1,4 +1,4 @@
-import {Apollo, ApolloModule} from 'apollo-angular';
+import { Apollo, ApolloModule } from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
 import {InMemoryCache, NormalizedCacheObject} from '@apollo/client/core';
 import { NgModule,  makeStateKey, TransferState } from '@angular/core';
