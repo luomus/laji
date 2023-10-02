@@ -202,24 +202,15 @@ export class ObservationFacade {
 
   private countUnits(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
-      map(data => data.units.total),
+      map(data => data.unitsCount),
       tap(countUnit => this.updateState({..._state, loadingUnits: false, countUnit})),
-      catchError(() => this.count(this.warehouseApi.warehouseQueryCountGet(query), 'loadingUnits', 'countUnit'))
     );
   }
 
   private countTaxa(query: WarehouseQueryInterface): Observable<number> {
     return this.observationDataService.getData(query).pipe(
-      map(data => data.species.total),
+      map(data => data.speciesCount),
       tap(countTaxa => this.updateState({..._state, loadingTaxa: false, countTaxa})),
-      catchError(() => this.count(
-        this.warehouseApi.warehouseQueryAggregateGet(
-          {...query},
-          ['unit.linkings.taxon.speciesId'], [], 1, 1
-        ),
-        'loadingTaxa',
-        'countTaxa'
-      )),
       tap(() => this.browserService.triggerResizeEvent())
     );
   }
@@ -232,6 +223,10 @@ export class ObservationFacade {
       tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
       share()
     );
+  }
+
+  setApiType(type: 'sample' | 'unit') {
+    this.observationDataService.setApiType(type);
   }
 
   private updateState(state: IObservationState) {

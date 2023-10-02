@@ -105,6 +105,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.observationFacade.setApiType(this.formType);
     this.vm$ = this.observationFacade.vm$;
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
 
