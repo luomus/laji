@@ -11,4 +11,7 @@ export class ModelViewerService {
   getTestGLB() {
     return this.http.get('https://cdn.laji.fi/test-data/european-honey-buzzard.glb', { responseType: 'blob' });
   }
+  getTestGLB2() {
+    return this.http.get('https://cdn.laji.fi/test-data/KX.1325.glb', { responseType: 'blob' });
+  }
 }
