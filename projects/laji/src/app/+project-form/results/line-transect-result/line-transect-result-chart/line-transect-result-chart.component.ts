@@ -1,17 +1,16 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as ObservableOf, Subscription } from 'rxjs';
-import { ObservationResultService } from '../../../../shared-modules/observation-result/service/observation-result.service';
 import { Logger } from '../../../../shared/logger';
 import { combineLatest, map, tap } from 'rxjs/operators';
 import { PagedResult } from '../../../../shared/model/PagedResult';
 import { WarehouseApi } from '../../../../shared/api/WarehouseApi';
 import { Area } from '../../../../shared/model/Area';
-import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip, Plugin, PointPrefixedOptions, PointPrefixedHoverOptions, CommonElementOptions } from 'chart.js';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import * as chartJs from 'chart.js';
-import { LineWithLineController } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
+import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
+import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 
+const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
+//
 @Component({
   selector: 'laji-line-transect-result-chart',
   templateUrl: './line-transect-result-chart.component.html',
@@ -41,9 +40,6 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   private yearLineLengths: any;
   minYear: number;
   maxYear: number;
-  colorScheme = {
-    domain: ['steelblue']
-  };
   line: {name: string; series: {name: string; value: number}[]}[] = [];
   private afterBothFetched: any;
   private subQuery: Subscription;
@@ -51,27 +47,29 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   @ViewChild('myCanvas') canvas: ElementRef;
   context: CanvasRenderingContext2D;
   public gradient: any;
-  public lineChartData: ChartDataset[] = [{data: [], label: 'Parim./km', backgroundColor: 'rgba(255,255,255,0)'}];
+  public lineChartData: ChartDataset[] = [{data: [], label: 'Parim./km'}];
   public lineChartLabels: string[] = [];
   public lineChartOptions: ChartOptions = {
     responsive: true,
+    maintainAspectRatio: true,
     elements: {
       line: {
-          tension: 0,
-          borderWidth: 1.5,
-          backgroundColor: 'rgb(70,130,180)',
-          borderColor: 'rgb(70,130,180)'
+        tension: 0,
+        borderWidth: 1.5,
+        backgroundColor: 'rgb(70,130,180)',
+        borderColor: 'rgb(70,130,180)',
       },
       point: {
         radius: 3,
-        hitRadius: 6
+        hitRadius: 6,
+        backgroundColor: 'rgb(70,130,180)'
       }
     },
     hover: {
       mode: 'index',
       intersect: false,
     },
-    onHover: function(this, e, element) {
+    onHover: function(a, e, element) {
       let indexChart;
       if (element[0]) {
        indexChart = Number(element[0]['_index']);
@@ -80,13 +78,14 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       }
 
 
-      const dataset = this['tooltip']._data.datasets[0].data;
+      const dataset = this.data.datasets[0].data;
       if (element[0]) {
-        element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem) {
+        this.options.plugins.tooltip.callbacks.label = function(tooltipItem) {
           const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
           const activePoint = element[0]['_chart'].tooltip._active[0];
-          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+          const tooltipPosition = element[0].tooltipPosition();
+          const x = Number((tooltipPosition.x).toFixed(0));
+          const y = Number((tooltipPosition.y).toFixed(0));
           const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
           let empty = 0;
           if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
@@ -117,13 +116,14 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
           return 'Parim./Km:' + ' ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
           }
         };
-        element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem) {
+        this.options.plugins.tooltip.callbacks.title = function(tooltipItem) {
           const year = element[0]['_chart'].config.data.labels[0] === '2006' ? 15 : 6;
           const offset = element[0]['_chart'].config.data.labels[0] === '2006' ? 6 : 0;
           const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
           const activePoint = element[0]['_chart'].tooltip._active[0];
-          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
+          const tooltipPosition = element[0].tooltipPosition();
+          const x = Number((tooltipPosition.x).toFixed(0));
+          const y = Number((tooltipPosition.y).toFixed(0));
 
           let empty = 0;
           if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
@@ -171,43 +171,25 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       }
     },
     plugins: {
-      datalabels: {
-        display: false
-      },
       tooltip: {
         mode: 'index',
-        // position: 'cursor', // TOOD
+        position: tooltipPosition,
         intersect: false
       },
     }
   };
-  // TODO
-  // public lineChartColors: Partial<PointPrefixedOptions & PointPrefixedHoverOptions & CommonElementOptions>[]  = [
-  //   { // grey
-  //     backgroundColor: 'rgb(255,255,255,0)',
-  //     borderColor: 'rgb(70,130,180)',
-  //     pointBackgroundColor: 'rgb(70,130,180)',
-  //     pointBorderColor: 'rgb(70,130,180)',
-  //     pointHoverBackgroundColor: 'rgb(70,130,180)',
-  //     pointHoverBorderColor: 'rgb(70,130,180)'
-  //   }
-  // ];
-  public lineChartPlugins = [
-    pluginDataLabels as unknown as Plugin
-  ];
   chartType: ChartType = 'LineWithLine';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resultService: ObservationResultService,
     private warehouseApi: WarehouseApi,
     private logger: Logger,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    Chart.register(LineWithLineController);
+    Chart.register(LineWithLine);
     (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
     };
@@ -223,9 +205,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
+    this.subQuery?.unsubscribe();
+    this.fetchSub?.unsubscribe();
   }
 
   private navigate(taxonId: string, birdAssociationAreas: string[], fromYear: number) {
@@ -246,6 +227,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
 
     const currentSearch = this.birdAssociationAreas.join(',');
 
+    this.fetchSub?.unsubscribe();
     this.fetchSub = this.warehouseApi.warehouseQueryStatisticsGet(
       {
         collectionId: [this.collectionId],

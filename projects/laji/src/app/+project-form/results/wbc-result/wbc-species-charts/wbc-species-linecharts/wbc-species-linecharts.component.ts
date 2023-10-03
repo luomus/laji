@@ -3,8 +3,9 @@ import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Chart, ChartOptions, ChartType, CommonElementOptions, Plugin, PointPrefixedHoverOptions, PointPrefixedOptions, Tooltip } from 'chart.js';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { LineWithLineController } from '../../../../../shared-modules/chart/line-with-line'
+import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line'
+//
+// Chart.register(LineWithLine);
 
 @Component({
   selector: 'laji-wbc-species-linecharts',
@@ -16,34 +17,16 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   @Input() taxonCensus = undefined;
   @Input() birdAssociationArea: string;
 
-
   counts: any;
 
   xScaleMin: number;
   xScaleMax: number;
   yScaleMin = 0;
   yScaleMax = 0;
-  colorScheme = {
-    domain: ['steelblue']
-  };
 
   public lineChartData: {[s: string]: any[]} = {};
   public lineChartLabels: {[s: string]: any[]} = {};
   public lineChartOptions: ChartOptions = {};
-  // TODO do these work as intented? Not found in the colors typings
-  public lineChartColors: Partial<PointPrefixedOptions & PointPrefixedHoverOptions & CommonElementOptions>[] = [
-    { // grey
-      backgroundColor: 'rgb(255,255,255,0)',
-      borderColor: 'rgb(70,130,180)',
-      pointBackgroundColor: 'rgb(70,130,180)',
-      pointBorderColor: 'rgb(70,130,180)',
-      pointHoverBackgroundColor: 'rgb(70,130,180)',
-      pointHoverBorderColor: 'rgb(70,130,180)'
-    }
-  ];
-  public lineChartPlugins = [
-    pluginDataLabels as unknown as Plugin
-  ];
   season: string;
   textCount: string;
   textSeasonCount: string;
@@ -58,129 +41,129 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    // TODO does it work
+    Chart.register(LineWithLine);
     (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
     };
 
-
+    const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
     this.lineChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
-    elements: {
-      line: {
+      elements: {
+        line: {
           tension: 0,
           borderWidth: 1.5,
           backgroundColor: 'rgb(70,130,180)',
           borderColor: 'rgb(70,130,180)'
-      },
-      point: {
-        radius: 3,
-        hitRadius: 6
-      }
-    },
-    hover: {
-      mode: 'index',
-      intersect: false,
-    },
-    onHover: function(this, e, element) {
-      let indexChart;
-      if (element[0]) {
-       indexChart = Number(element[0]['_index']);
-      } else {
-        indexChart = -1;
-      }
-
-
-      const dataset = this['tooltip']._data.datasets[0].data;
-      if (element[0]) {
-        element[0]['_chart'].tooltip._options.callbacks.label = function(tooltipItem, data) {
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-          const activePoint = element[0]['_chart'].tooltip._active[0];
-          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-          const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
-          let empty = 0;
-          const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
-          if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-            if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
-              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-              const diff = index - Number(indexChart);
-              if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                empty = -coeff * diff;
-              }
-            }
-            if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
-              if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                const diff = Number(indexChart) - (Number(indexChart) - index);
-                  empty = coeff * diff;
-              }
-            }
-          }
-
-
-          const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
-          / element[0]['_chart'].config.data.labels.length);
-
-        if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
-        range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
-          return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
-        } else {
-          return data['datasets'][0]['translations'][0]
-            + ': ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
-          }
-        };
-        element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem, data) {
-          const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
-          const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
-          const activePoint = element[0]['_chart'].tooltip._active[0];
-          const x = Number((activePoint.tooltipPosition().x).toFixed(0));
-          const y = Number((activePoint.tooltipPosition().y).toFixed(0));
-
-          let empty = 0;
-          const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
-          if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
-            if ( !dataset[Number(indexChart) + 1]) {
-              const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
-              const diff = index - Number(indexChart);
-              if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
-                  empty = -coeff * diff;
-              }
-            }
-            if (!dataset[Number(indexChart) - 1]) {
-              if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
-                const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
-                const diff = Number(indexChart) - (Number(indexChart) - index);
-                  empty = coeff * diff;
-              }
-            }
-          }
-
-
-          const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
-          / element[0]['_chart'].config.data.labels.length);
-          const title1 =  data['datasets'][0]['translations'][0] + ' · ' + tooltipItem[0].xLabel;
-          const title2 = data['datasets'][0]['translations'][1] + ': ' + data['datasets'][0]['count'][tooltipItem[0].index];
-          const title3 = data['datasets'][0]['translations'][2] + ': ' + data['datasets'][0]['censusCount'][tooltipItem[0].index];
-
-        if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
-        && range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
-          return [title1, title2, title3];
-        } else {
-          return '';
-        }
-        };
-      }
-    },
-    scales: {
-      y: {
-        title: {
-          display: true,
-          text: this.translate.instant('wbc.stats.abundanceGraphs.yAxis')
         },
-        beginAtZero: true,
-        ticks: {
+        point: {
+          radius: 3,
+          hitRadius: 6
+        }
+      },
+      hover: {
+        mode: 'index',
+        intersect: false,
+      },
+      onHover: function(a, b, element) {
+        let indexChart;
+        if (element[0]) {
+          indexChart = Number(element[0]['_index']);
+        } else {
+          indexChart = -1;
+        }
+
+        const dataset = this.data.datasets[0].data;
+        if (element[0]) {
+          this.options.plugins.tooltip.callbacks.label = function(tooltipItem, data) {
+            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            const activePoint = element[0]['_chart'].tooltip._active[0];
+            const tooltipPosition = element[0].tooltipPosition();
+            const x = Number((tooltipPosition.x).toFixed(0));
+            const y = Number((tooltipPosition.y).toFixed(0));
+            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
+            let empty = 0;
+            const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
+            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+              if ( !dataset[Number(indexChart) + 1] || (indexChart === 0 && !dataset[Number(indexChart) + 1])) {
+                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const diff = index - Number(indexChart);
+                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                  empty = -coeff * diff;
+                }
+              }
+              if ( !dataset[Number(indexChart) - 1] || (indexChart === (dataset.length - 1) && !dataset[Number(indexChart) - 1])) {
+                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const diff = Number(indexChart) - (Number(indexChart) - index);
+                  empty = coeff * diff;
+                }
+              }
+            }
+
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+              / element[0]['_chart'].config.data.labels.length);
+
+            if ( range(x - Math.ceil(colWidth / 2), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1 &&
+              range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+              return tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+            } else {
+              return data['datasets'][0]['translations'][0]
+                + ': ' + tooltipItem.yLabel.toString().substr(0, tooltipItem.yLabel.toString().indexOf('.') + 4).replace('.', ',');
+            }
+          };
+          element[0]['_chart'].tooltip._options.callbacks.title = function(tooltipItem, data) {
+            const offset = data['datasets'][0]['count'].length < 15 ? 6 : 1;
+            const range = (start, end, step) => Array.from(Array.from(Array(Math.ceil((end - start) / step)).keys()), el => start + el * step);
+            const activePoint = element[0]['_chart'].tooltip._active[0];
+            const tooltipPosition = element[0].tooltipPosition();
+            const x = Number((tooltipPosition.x).toFixed(0));
+            const y = Number((tooltipPosition.y).toFixed(0));
+
+            let empty = 0;
+            const coeff = Math.ceil(570 / element[0]['_chart'].config.data.labels.length);
+            if (indexChart !== -1 && indexChart + 1 > -1 && indexChart - 1 > -2) {
+              if ( !dataset[Number(indexChart) + 1]) {
+                const index = dataset.slice(indexChart + 1).findIndex(el => el) + indexChart;
+                const diff = index - Number(indexChart);
+                if (activePoint['_chart'].tooltip._eventPosition.x >= x) {
+                  empty = -coeff * diff;
+                }
+              }
+              if (!dataset[Number(indexChart) - 1]) {
+                if (activePoint['_chart'].tooltip._eventPosition.x <= x) {
+                  const index = dataset.slice(0, indexChart).reverse().findIndex(el => el);
+                  const diff = Number(indexChart) - (Number(indexChart) - index);
+                  empty = coeff * diff;
+                }
+              }
+            }
+
+
+            const colWidth = Math.ceil((element[0]['_chart'].chartArea['right'] - element[0]['_chart'].chartArea['left'])
+              / element[0]['_chart'].config.data.labels.length);
+            const title1 =  data['datasets'][0]['translations'][0] + ' · ' + tooltipItem[0].xLabel;
+            const title2 = data['datasets'][0]['translations'][1] + ': ' + data['datasets'][0]['count'][tooltipItem[0].index];
+            const title3 = data['datasets'][0]['translations'][2] + ': ' + data['datasets'][0]['censusCount'][tooltipItem[0].index];
+
+            if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+              && range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+              return [title1, title2, title3];
+            } else {
+              return '';
+            }
+          };
+        }
+      },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: this.translate.instant('wbc.stats.abundanceGraphs.yAxis')
+          },
+          beginAtZero: true,
+          ticks: {
             callback(value) {
               if (value as any % 1 === 0) {
                 return value;
@@ -188,28 +171,25 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
               return undefined;
             },
             stepSize: 2
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: this.translate.instant('wbc.stats.abundanceGraphs.xAxis')
+          }
         }
       },
-      x: {
-        title: {
-          display: true,
-          text: this.translate.instant('wbc.stats.abundanceGraphs.xAxis')
-        }
+      plugins: {
+        tooltip: {
+          mode: 'index',
+          position: tooltipPosition,
+          intersect: false,
+          titleAlign: 'center',
+          bodyAlign: 'center',
+          displayColors: false
+        },
       }
-    },
-    plugins: {
-      datalabels: {
-        display: false
-      },
-      tooltip: {
-        mode: 'index',
-        // position: 'cursor', // TODO
-        intersect: false,
-        titleAlign: 'center',
-        bodyAlign: 'center',
-        displayColors: false
-      },
-    }
     }
   }
 
@@ -245,9 +225,6 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
           censusCount: null,
           translations: [season, this.translate.instant('wbc.stats.individualCountSum'),
           this.translate.instant('wbc.stats.censusCount')],
-          spacing: 0,
-          borderWidth: 0,
-          borderColor: 'rgba(160,160,160,0.5)'
          }
         ]
     };

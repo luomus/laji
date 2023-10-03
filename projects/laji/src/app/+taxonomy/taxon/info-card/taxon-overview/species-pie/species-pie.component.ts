@@ -25,7 +25,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   lineChartData: any[] = [];
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
-  lineChartPlugins = [];
   // TODO check after compiles
   lineChartColors: any[] = [];
   dataById: {[key: string]: Taxonomy} = {};
@@ -69,11 +68,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             lajia;
             return data.datasets[0]['tree'][item['index']].value + ' ' + species;
           }
-        }
-      },
-      plugins: {
-        datalabels: {
-          display: false
         }
       },
       animation: {

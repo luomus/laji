@@ -5,7 +5,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Chart, ChartDataset, ChartOptions, Tooltip } from 'chart.js';
+import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
@@ -157,7 +157,6 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
       this.barChartData[0].data = this.subDataBarChart;
       this.barChartLabels = this.subLabelBarChart;
       this.barChartData[0].backgroundColor = this.subBackgroundColors;
-      console.log(this.barChartData);
     }
   }
 
@@ -194,10 +193,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
           enabled: true,
           mode: 'index',
           position: tooltipPosition
-        },
-        datalabels: {
-          display: false
-        },
+        }
       },
       animation: {
         duration: 700

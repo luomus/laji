@@ -12,12 +12,9 @@ import {
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { Chart, ChartDataset, ChartOptions, Tooltip } from 'chart.js';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import {LocalStorageService, LocalStorage} from 'ngx-webstorage';
-
-Chart.register(pluginDataLabels);
 
 @Component({
   selector: 'laji-observation-year-chart',
@@ -31,31 +28,20 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
   newData: ChartDataset[] = [{data: [],  label: this.translate.instant('all')}];
   splitIdx = 0;
 
-// #bd869e
-  // TODO what is this about... in the UI all the colors are the same.
-  _colors: any[] = [
-    {backgroundColor: '#bd869e'},
-    {backgroundColor: '#50abcc'},
-    {backgroundColor: '#50abcc'},
-    {backgroundColor: '#9FABCD'},
-    {backgroundColor: '#BA7A82'},
-    {backgroundColor: '#ADCDED'},
-    {backgroundColor: '#BBE9F7'},
-    {backgroundColor: '#B598B9'},
-    {backgroundColor: '#95B5EA'},
-    {backgroundColor: '#B9607D'},
-  ];
-
   allSubData: number[];
   allDataNew: any[];
   barChartLabels: string[];
-  barChartOptionsYear: ChartOptions;
+  barChartOptionsYear: ChartOptions = {
+    animation: {
+      duration: 500
+    }
+  };
+
 
   private allSubBackground: string[];
   private getDataSub: Subscription;
   private subBarChartLabels: string[];
   private allBarChartsLabel: string[];
-  private barChartPlugins: any;
   resultList: any[] = [];
   @LocalStorage('onlycount') onlyCount;
 
@@ -69,9 +55,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     private localSt: LocalStorageService
   ) { }
 
-  @Input() set colors(colors: string[]) {
-    // this._colors = colors.map(color => ({backgroundColor: color}));
-  }
 
   ngOnInit() {
       (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
@@ -98,9 +81,8 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   initializeGraph() {
     const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
-      this.barChartPlugins = [pluginDataLabels];
-      this.barChartOptionsYear = {
-        backgroundColor:  '#bd869e',
+    this.barChartOptionsYear = {
+      backgroundColor:  '#bd869e',
       responsive: true,
       maintainAspectRatio: false,
       scales: {
@@ -113,7 +95,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         y: {
           beginAtZero: true,
           ticks: {
-              callback(value: any) { return value % 1 === 0 ? value : ''; }
+            callback(value: any) { return value % 1 === 0 ? value : ''; }
           },
           grid: {
             color: 'rgba(171,171,171,0.5)',
@@ -122,9 +104,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
         }
       },
       plugins: {
-        datalabels: {
-          display: false
-        },
         tooltip: {
           enabled: true,
           position: tooltipPosition
@@ -161,7 +140,7 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.allBarChartsLabel = [];
       this.resultList = [];
 
-      this.allDataNew = [{data: [], backgroundColor: [], label: this.translate.instant('all') }];
+      this.allDataNew = [{data: [], label: this.translate.instant('all') }];
       let prevYear: number;
 
       res.map(r => {
@@ -204,34 +183,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
     return value.toLocaleString('fi');
   }
 
-  getRandomColor(): string {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  addColorsBackground(arr, total) {
-      let i = 0;
-      const background = [];
-
-      for (let j = 0 ; j < total; j++) {
-        if (i >= arr.length) {
-          i = 0;
-          background.push(arr[i]);
-          i++;
-        } else {
-          background.push(arr[i]);
-          i++;
-        }
-
-      }
-
-      return background;
-  }
-
   toggleShowAllData() {
     this.initializeGraph();
     (this.barChartOptionsYear.animation as any).duration = 0;
@@ -272,15 +223,12 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
 
   createSubArrayChart() {
     this.initializeGraph();
-    // this.allSubBackground = this.addColorsBackground(this._colors.map(c => c.backgroundColor), this.allSubData.length);
     this.allDataNew[0].data = this.allSubData;
-    // this.allDataNew[0].backgroundColor = this.allSubBackground;
     this.allBarChartsLabel = this.subBarChartLabels;
 
     this.allSubData = this.allSubData.slice(this.splitIdx, this.allSubData.length);
     this.allSubBackground = this.allSubBackground.slice(this.splitIdx, this.allSubBackground.length);
     this.newData[0].data = this.allSubData;
-    // this.newData[0].backgroundColor = this.allSubBackground;
     this.subBarChartLabels = this.subBarChartLabels.slice(this.splitIdx, this.subBarChartLabels.length);
     this.barChartLabels = this.subBarChartLabels;
 
@@ -288,7 +236,6 @@ export class ObservationYearChartComponent implements OnChanges, OnDestroy, OnIn
       this.newData = this.allDataNew;
       this.barChartLabels = this.allBarChartsLabel;
     }
-    console.log('year chart', this.newData);
   }
 
 
