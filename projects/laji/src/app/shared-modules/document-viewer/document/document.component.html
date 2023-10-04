@@ -76,7 +76,7 @@
             <i class="glyphicon" [ngClass]="{'glyphicon-eye-close': showFacts, 'glyphicon-eye-open': !showFacts}"></i>
           </button>
           <div style="margin-top: 35px;">
-            <alert [type]="document.secured ?  'warning' : 'info'">
+            <lu-alert [type]="document.secured ?  'warning' : 'info'">
               <span *ngIf="document.partial">
                 {{ 'viewer.secured.partial' | translate }}
               </span>
@@ -105,7 +105,7 @@
                   <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                 </ng-container>
               </div>
-            </alert>
+            </lu-alert>
           </div>
         </div>
       </div>

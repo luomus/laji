@@ -75,13 +75,13 @@
                   <div *ngIf="activeGathering">
                     <div *ngFor="let unit of activeGathering?.units">
                        <ng-container *ngIf="!document.secured && unit.unitId === highlight && unit.annotations && unit.annotations[0].occurrenceAtTimeOfAnnotation">
-                         <alert type="info">
+                         <lu-alert type="info">
                            {{ 'viewer.secured.none' | translate }}
-                         </alert>
+                         </lu-alert>
                        </ng-container>
                     </div>
                   </div>
-                  <alert *ngIf="document.secured" type="warning">
+                  <lu-alert *ngIf="document.secured" type="warning">
                     <span *ngIf="document.public">
                         <span *ngIf="document.secureLevel !== 'NONE' || (document.secureReasons && document.secureReasons.length > 0)">
                           {{ 'viewer.secured.secured' | translate }}
@@ -107,7 +107,7 @@
                           <br><a [routerLink]="'/about/709'" target="_blank">{{ 'information.more' | translate }}</a>
                         </ng-container>
                       </div>
-                  </alert>
+                  </lu-alert>
                 </div>
             <h5>{{ 'annotation.collectionEditor' | translate }}</h5>
             <laji-issues [data]="document"></laji-issues>

@@ -4,9 +4,9 @@
   </div>
   <ng-container *ngIf="vihkoSettings.showIntro">
     <ng-container *ngIf="!modal; else showModal">
-      <alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+      <lu-alert *ngIf="vihkoSettings.showIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
         <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
-      </alert>
+      </lu-alert>
     </ng-container>
 
     <ng-template #showModal>

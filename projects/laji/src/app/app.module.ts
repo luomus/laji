@@ -20,11 +20,9 @@ import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AlertModule } from 'ngx-bootstrap/alert';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -62,11 +60,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),

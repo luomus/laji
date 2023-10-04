@@ -6,10 +6,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger, ILogger } from '../../../laji/src/app/shared/logger';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
-import { AlertModule } from 'ngx-bootstrap/alert';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
@@ -56,11 +54,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),

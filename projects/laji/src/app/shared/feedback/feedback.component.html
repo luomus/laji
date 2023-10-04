@@ -28,9 +28,9 @@
         </ng-container>
       </div>
     </div>
-    <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+    <lu-alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
       {{ 'feedback.invalid' | translate }}
-    </alert>
+    </lu-alert>
     <div class="row email" *ngIf="!(userService.isLoggedIn$ | async)">
       <div class="col-sm-12">
         <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">

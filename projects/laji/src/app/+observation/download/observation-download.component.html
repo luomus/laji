@@ -12,9 +12,9 @@
     </p>
     <section>
       <h3>{{ 'result.load.titleSimple' | translate }}</h3>
-      <alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
+      <lu-alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
         <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
-      </alert>
+      </lu-alert>
       <ng-template #simpleDownloadTpl>
         <div *ngIf="unitCount > 0">
           <p [innerHTML]="'result.load.introSimple' | translate"></p>
@@ -56,27 +56,27 @@
     </section>
     <section>
       <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
-      <alert *lajiLoggedIn="false">
+      <lu-alert *lajiLoggedIn="false">
         {{ 'result.load.error.notLoggedIn' | translate }}
-      </alert>
-      <alert *ngIf="loadLimit < unitCount">
+      </lu-alert>
+      <lu-alert *ngIf="loadLimit < unitCount">
         <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
-      <alert *ngIf="unitCount == 0">
+      </lu-alert>
+      <lu-alert *ngIf="unitCount == 0">
         {{ 'observation.export.tooLittle' | translate }}
-      </alert>
+      </lu-alert>
       <ng-container *lajiLoggedIn="true">
         <div *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
           <p
             [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
           </p>
-          <alert *ngIf="hasPersonalData">
+          <lu-alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
-          </alert>
+          </lu-alert>
           <ng-container *lajiForTypes="['vir']">
-            <alert *ngIf="gisDownloadLimit < unitCount">
+            <lu-alert *ngIf="gisDownloadLimit < unitCount">
               <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
-            </alert>
+            </lu-alert>
           </ng-container>
           <laji-download
             *lajiForTypes="['vir']"
@@ -104,21 +104,21 @@
     </section>
     <section *lajiForTypes="['vir']; exclude: true">
       <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
-      <alert *lajiLoggedIn="false">
+      <lu-alert *lajiLoggedIn="false">
         {{ 'result.load.error.notLoggedIn' | translate }}
-      </alert>
-      <alert *ngIf="loadLimit < unitCount">
+      </lu-alert>
+      <lu-alert *ngIf="loadLimit < unitCount">
         <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
+      </lu-alert>
       <ng-container *lajiLoggedIn="true">
         <div *ngIf="loadLimit >= unitCount">
           <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
-          <alert *ngIf="hasPersonalData">
+          <lu-alert *ngIf="hasPersonalData">
             <strong>{{ 'result.load.personalData' | translate }}</strong>
-          </alert>
-          <alert *ngIf="gisDownloadLimit < unitCount">
+          </lu-alert>
+          <lu-alert *ngIf="gisDownloadLimit < unitCount">
             <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
-          </alert>
+          </lu-alert>
           <lu-button
             [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
             [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
@@ -131,12 +131,12 @@
     <ng-container>
       <section *lajiForTypes="['vir']">
         <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
-        <alert *lajiLoggedIn="false">
+        <lu-alert *lajiLoggedIn="false">
           {{ 'result.load.error.notLoggedIn' | translate }}
-        </alert>
-        <alert *ngIf="!queryHasFilters">
+        </lu-alert>
+        <lu-alert *ngIf="!queryHasFilters">
           {{ 'result.load.error.minQuery' | translate }}
-        </alert>
+        </lu-alert>
         <ng-container *lajiLoggedIn="true">
           <div *ngIf="queryHasFilters">
             <p [innerHtml]="'result.load.api' | translate"></p>
@@ -147,9 +147,9 @@
     </ng-container>
     <section>
       <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
-      <alert *ngIf="taxaLimit < speciesCount">
+      <lu-alert *ngIf="taxaLimit < speciesCount">
         <span [innerHTML]="'observation.export.tooManySpecies' | translate:{max: (taxaLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
+      </lu-alert>
       <div *ngIf="speciesCount == 0">
         {{ 'observation.export.tooLittle' | translate }}
       </div>

@@ -5,11 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AlertModule } from 'ngx-bootstrap/alert';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
@@ -63,11 +61,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    PaginationModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    AlertModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),

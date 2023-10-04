@@ -14,21 +14,21 @@
 
     <h2>{{ currentTitle }}</h2>
 
-    <alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
       <div [innerHtml]="sheetLoadErrorMsg"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
       <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
       <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
       <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
       <div [innerHtml]="'excel.import.error.invalidFormId' | translate: {formId: formID}"></div>
-    </alert>
+    </lu-alert>
 
     <ng-container *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf(vm.step) > -1">
        <div class="row data-container spacer">
@@ -176,9 +176,9 @@
           </p>
         </div>
       </div>
-      <alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
+      <lu-alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
         <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
-      </alert>
+      </lu-alert>
       <div class="row">
         <div class="col-sm-12 checkbox">
           <label class="pull-right">

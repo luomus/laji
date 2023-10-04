@@ -1,24 +1,24 @@
 <ng-container *ngIf="vm$ | async; let vm; else spinner">
   <div class="mt-5">
   <ng-container *ngIf="vm | typeGuard: isFormError as error" [ngSwitch]="error">
-    <alert type="danger" *ngSwitchCase="errors.notFoundForm">
+    <lu-alert type="danger" *ngSwitchCase="errors.notFoundForm">
       {{ 'haseka.form.formNotFound' | translate:{formId: formID} }}
-    </alert>
-    <alert type="danger" *ngSwitchCase="errors.notFoundDocument">
+    </lu-alert>
+    <lu-alert type="danger" *ngSwitchCase="errors.notFoundDocument">
       {{ 'haseka.form.documentNotFound' | translate:{documentId: documentID} }}
-    </alert>
-    <alert type="danger" *ngSwitchCase="errors.loadFailed">
+    </lu-alert>
+    <lu-alert type="danger" *ngSwitchCase="errors.loadFailed">
       {{ 'haseka.form.genericError' | translate }}
-    </alert>
-    <alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
+    </lu-alert>
+    <lu-alert type="danger" *ngSwitchCase="errors.noAccessToDocument">
       {{ 'haseka.form.noAccessToDocument' | translate }}
-    </alert>
-    <alert type="danger" *ngSwitchCase="errors.templateDisallowed">
+    </lu-alert>
+    <lu-alert type="danger" *ngSwitchCase="errors.templateDisallowed">
       {{ 'haseka.form.templateDisallowed' | translate }}
-    </alert>
-    <alert type="danger" *ngSwitchCase="errors.missingNamedPlace">
+    </lu-alert>
+    <lu-alert type="danger" *ngSwitchCase="errors.missingNamedPlace">
       {{ 'haseka.form.missingNamedPlace' | translate }}
-    </alert>
+    </lu-alert>
   </ng-container>
   <ng-container *ngIf="vm | typeGuard: isSaneViewModel as vm">
     <laji-project-form-header *ngIf="!vm.form.options?.mobile"
@@ -27,10 +27,10 @@
                               lajiFormOption="description logo title options.hideTES">
     </laji-project-form-header>
     <laji-named-place-linker-button [documentID]="documentID"></laji-named-place-linker-button>
-    <alert [type]="'danger'" *ngIf="vm.formData?.locked">
+    <lu-alert [type]="'danger'" *ngIf="vm.formData?.locked">
       {{ 'document.locked' | translate }}
-    </alert>
-    <alert *ngIf="vm.editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: vm.editingOldWarning} }}</alert>
+    </lu-alert>
+    <lu-alert *ngIf="vm.editingOldWarning" type="warning">{{ 'haseka.editingOldDocumentWarning' | translate: {date: vm.editingOldWarning} }}</lu-alert>
     <div class="row mt-3" *ngIf="vm.namedPlaceHeader.length">
       <div class="col-sm-12">
         <h3><span *ngFor="let field of vm.namedPlaceHeader; let i = index">
