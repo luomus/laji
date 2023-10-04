@@ -2,11 +2,11 @@
   <div class="active item carousel-item" *lajiServerOnly>
     <div [ngTemplateOutlet]="page1"></div>
   </div>
-  <carousel [interval]="0" *lajiBrowserOnly>
-    <slide>
+  <lu-carousel *lajiBrowserOnly>
+    <lu-slide>
       <div [ngTemplateOutlet]="page1"></div>
-    </slide>
-    <slide>
+    </lu-slide>
+    <lu-slide>
       <div class="carousel-caption">
         <div class="row hidden-xs">
           <div class="col-sm-12">
@@ -22,8 +22,8 @@
           </laji-stat-item>
         </div>
       </div>
-    </slide>
-  </carousel>
+    </lu-slide>
+  </lu-carousel>
 </div>
 <ng-template #page1>
   <div class="carousel-caption">
