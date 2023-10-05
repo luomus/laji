@@ -10,7 +10,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -66,7 +65,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
-    ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
     TransferHttpCacheModule,

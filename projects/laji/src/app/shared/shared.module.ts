@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -141,7 +140,7 @@ import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
         PaginatorModule,
         ScrollingModule,
         LajiUiModule,
-        TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
+        TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
         LayoutModule
@@ -151,7 +150,7 @@ import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
         CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
         TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
         ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
-        ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
+        ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule,
         FormattedNumber, ObservationCountComponent, GalleryComponent,
         PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,

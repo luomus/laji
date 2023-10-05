@@ -1,0 +1,5 @@
+@mixin loading($color-from, $color-to) {
+  background: linear-gradient(90deg, $color-from, $color-to, $color-from);
+  background-size: 200% 200%;
+  animation: LoadingAnimation 2s linear infinite;
+}

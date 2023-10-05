@@ -23,7 +23,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
@@ -63,7 +62,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
-    ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     LajiUiModule
   ],

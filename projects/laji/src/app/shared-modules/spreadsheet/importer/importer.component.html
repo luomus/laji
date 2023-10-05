@@ -95,7 +95,7 @@
       <div class="row">
         <div class="col-sm-12 spacer">
           <ng-container *ngIf="vm.step === step.validating">
-            <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+            <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
           </ng-container>
           <ng-container *ngIf="vm.step === step.invalidData">
             <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
@@ -162,7 +162,7 @@
 
     <ng-container *ngIf="vm.step === step.importing">
       <h4>{{ 'sending' | translate }}</h4>
-      <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+      <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
     </ng-container>
 
     <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
