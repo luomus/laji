@@ -647,7 +647,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     const cols = Object.keys(mapping);
     const result = {};
     cols.forEach((col) => {
-      if (!row[col]) {
+      if (row[col] === undefined) {
         return;
       }
       const field = fields[mapping[col]];

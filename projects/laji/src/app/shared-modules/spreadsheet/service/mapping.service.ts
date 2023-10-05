@@ -327,11 +327,9 @@ export class MappingService {
 
   mapPositiveInteger(value: unknown ): number {
     const num = Number(('' + value).toLowerCase());
-    console.log(num);
     if (isNaN(num)) {
       return null;
     }
-    console.log(num, Number.isInteger(num));
     if (Number.isInteger(num) && num > 0) {
       return num;
     }
