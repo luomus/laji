@@ -9,6 +9,7 @@ import { TableColumnService } from '../../shared-modules/datatable/service/table
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { SampleTableColumnService } from './sample-table-column.service';
 import { SearchQueryService } from '../../+observation/search-query.service';
+import { ObservationDataService } from '../../+observation/observation-data.service';
 
 @Component({
   selector: 'laji-genetic-resource',
@@ -17,6 +18,7 @@ import { SearchQueryService } from '../../+observation/search-query.service';
   providers: [
     ObservationFacade,
     WarehouseApi,
+    ObservationDataService,
     {provide: TableColumnService, useClass: SampleTableColumnService},
     ObservationResultService
   ],
