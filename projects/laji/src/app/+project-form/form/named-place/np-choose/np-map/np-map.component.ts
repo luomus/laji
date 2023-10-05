@@ -148,9 +148,7 @@ export class NpMapComponent implements OnInit, OnChanges {
             label: `Ilmoitettu ${counts.sent} / ${counts.all}`
           }
         ],
-        getFeatureStyle: undefined,
-        getClusterStyle: undefined,
-        getClusterClassName: undefined
+        getFeatureStyle: undefined
       }
     };
     this.cdr.markForCheck();

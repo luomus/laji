@@ -433,7 +433,7 @@ export class MappingService {
     if (typeof value === 'string') {
       value = value.trim();
       const valueWithoutSpaces = value.replace(/\s/g, '');
-      if (valueWithoutSpaces.match(/^[0-9]{3,7}:[0-9]{3,7}$/)) {
+      if (valueWithoutSpaces.match(/^[0-9]{3,7}(\.[0-9]+)?:[0-9]{3,7}(\.[0-9]+)?$/)) {
         const ykjParts = valueWithoutSpaces.split(':');
         if (ykjParts[0].length === ykjParts[1].length) {
           try {
