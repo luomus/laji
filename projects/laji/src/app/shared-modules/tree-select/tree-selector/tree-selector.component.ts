@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@circlon/angular-tree-component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -22,6 +22,7 @@ export class TreeSelectorComponent implements OnInit {
   @Input() includeLink = false;
   @Input() includeQualityIcon = false;
   @Input() openOnSelect = false;
+  @Input() useVirtualScroll = true;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitSelect = new EventEmitter<SelectedOption[]>();
 
@@ -77,9 +78,12 @@ export class TreeSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.checkboxType = this.tristate ? CheckboxType.excluded : CheckboxType.basic;
+    this.options.useVirtualScroll = this.useVirtualScroll;
+    this.cd.markForCheck();
   }
 
   constructor(
+    private cd: ChangeDetectorRef
   ) {
     this.filterDebounce$.pipe(
       debounceTime(500)

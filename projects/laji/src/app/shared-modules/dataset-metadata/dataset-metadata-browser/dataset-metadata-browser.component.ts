@@ -13,6 +13,7 @@ import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '.
 })
 export class DatasetMetadataBrowserComponent implements OnInit {
   @Input() selected: string;
+  @Input() isMobile: boolean;
   @Output() selectedChange = new EventEmitter<string>();
 
   collectionsCount = 0;
