@@ -1,0 +1,15 @@
+.nav {
+  display: inline-flex;
+  flex-grow: 1;
+}
+
+.metadata-browser {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 50px - 384px);
+}
+
+:host ::ng-deep .sidebar-content {
+  display: inline-flex;
+}

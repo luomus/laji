@@ -1,7 +1,7 @@
 <div style="display:flex; width: 100%; height: 100%;">
-  <lu-sidebar [staticWidth]="400" [open]="showBrowser" (toggled)="showBrowser = $event">
+  <lu-sidebar [staticWidth]="400" [open]="showBrowser" (toggled)="showBrowser = $event" >
     <nav>
-      <laji-dataset-metadata-browser [selected]="collectionId" (selectedChange)="changeCollection($event)"
+      <laji-dataset-metadata-browser [ngClass]="!isMobile ? 'metadata-browser' : ''" [isMobile]="isMobile" [selected]="collectionId" (selectedChange)="changeCollection($event)"
       >
       </laji-dataset-metadata-browser>
     </nav>
