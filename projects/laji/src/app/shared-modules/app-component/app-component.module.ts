@@ -13,7 +13,6 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { BetaPopupComponent } from './beta-popup/beta-popup.component';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
-console.log('load laji app component module');
 @NgModule({
   declarations: [
     NavbarComponent,

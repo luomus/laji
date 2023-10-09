@@ -2,13 +2,12 @@ import {DOCUMENT} from '@angular/common';
 import { Directive, ElementRef, HostBinding, HostListener, Inject } from '@angular/core';
 
 /**
- * Makes the target element to show a dropdown menu on click.
+ * Makes the target element to be show a dropdown menu on click.
  *
  * The dropdown menu must be a sibling element with `luDropdownMenu` attribute.
  *
- * The menu will close when any element on the document is clicked when the menu is visible. To exclude an element click from closing them menu,
- * use the attribute `luDropdownNoClose`.
- *
+ * The menu will close when any element on the document is clicked. To exclude an element click from closing them menu,
+ * use the attribute `luDropdownNoClose` on it.
  */
 @Directive({
   selector: '[luDropdownToggle]'
