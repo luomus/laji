@@ -41,7 +41,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
   @Input() expand = '';
   @Input() visible = true;
   @Output() visibleTaxon = new EventEmitter<any>();
-  @Output() searchClose = new EventEmitter<void>();
 
   public search = '';
   public searchControl = new UntypedFormControl();
@@ -93,7 +92,6 @@ export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.dropdownVisible = false;
     this.search = '';
     this.taxa = [];
-    this.searchClose.emit();
     this.changeDetector.markForCheck();
   }
 

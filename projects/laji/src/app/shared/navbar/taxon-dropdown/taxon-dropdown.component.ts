@@ -8,24 +8,6 @@ import { Component, ChangeDetectionStrategy, OnInit, Input, Renderer2, ElementRe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxonDropdownComponent implements OnInit, OnDestroy {
-  @Input() visible: boolean;
-  @Output() dropdownClose = new EventEmitter<void>();
-
-  private destroyListener;
-
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
-  ngOnInit() {
-    this.destroyListener = this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
-      e.stopPropagation();
-    });
-  }
-  onClose() {
-    this.dropdownClose.emit();
-  }
-  ngOnDestroy() {
-    if (this.destroyListener) {
-      this.destroyListener();
-    }
-  }
+export class TaxonDropdownComponent {
+  @Input() omniSearchVisible: boolean;
 }

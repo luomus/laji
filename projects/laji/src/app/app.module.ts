@@ -20,7 +20,6 @@ import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -58,7 +57,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),

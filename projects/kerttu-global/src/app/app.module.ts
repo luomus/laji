@@ -6,7 +6,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger, ILogger } from '../../../laji/src/app/shared/logger';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -28,6 +27,7 @@ import { LazyTranslateLoader } from './kerttu-global-shared/service/lazy-transla
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
 import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
+import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -54,7 +54,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
+    DropdownModule,
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),

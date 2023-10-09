@@ -8,7 +8,6 @@ import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -57,7 +56,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
