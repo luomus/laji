@@ -103,7 +103,7 @@
       <span class="ml-2"><i [popover]="audioInfoPopover" [placement]="'left'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
       <ng-template #audioInfoPopover>
         <div>
-          <label class="mb-0">File name: </label>
+          <label class="mb-0">{{ 'identification.fileName' | translate }}:</label>
           <br>
           <span class="audio-url">{{ audio.url | fileName }}</span>
         </div>
