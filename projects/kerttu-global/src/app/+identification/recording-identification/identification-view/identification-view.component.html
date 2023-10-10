@@ -100,6 +100,14 @@
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
       </span>
+      <span class="ml-2"><i [popover]="audioInfoPopover" [placement]="'left'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
+      <ng-template #audioInfoPopover>
+        <div>
+          <label class="mb-0">File name: </label>
+          <br>
+          <span class="audio-url">{{ audio.url | fileName }}</span>
+        </div>
+      </ng-template>
     </ng-template>
     <div *lajiIfWidthAboveBreakpoint="'sm'" class="dragbar" (mousedown)="onDragStart()"></div>
   </div>

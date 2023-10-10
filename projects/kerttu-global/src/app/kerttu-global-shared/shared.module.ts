@@ -7,6 +7,7 @@ import { SearchInputComponent } from './component/species-list-filters/search-in
 import { UserNameTemplateComponent } from './component/user-name-template.component';
 import { SpeciesNamePipe } from './pipe/species-name.pipe';
 import { SpeciesNameComponent } from './component/species-name.component';
+import { FileNamePipe } from './pipe/file-name.pipe';
 
 @NgModule({
   imports: [
@@ -19,14 +20,16 @@ import { SpeciesNameComponent } from './component/species-name.component';
     SearchInputComponent,
     UserNameTemplateComponent,
     SpeciesNamePipe,
-    SpeciesNameComponent
+    SpeciesNameComponent,
+    FileNamePipe
   ],
   exports: [
     SpeciesListFiltersComponent,
     SearchInputComponent,
     UserNameTemplateComponent,
     SpeciesNamePipe,
-    SpeciesNameComponent
+    SpeciesNameComponent,
+    FileNamePipe
   ]
 })
 export class KerttuGlobalSharedModule { }

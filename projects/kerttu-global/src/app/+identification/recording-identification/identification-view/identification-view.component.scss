@@ -26,6 +26,17 @@
     vertical-align: bottom;
   }
 
+  .info-sign {
+    color: $primary-5;
+    &:hover {
+      color: $primary-4;
+    }
+  }
+
+  .audio-url {
+    overflow-wrap: anywhere;
+  }
+
   .dragbar {
     position: absolute;
     height: 3px;
