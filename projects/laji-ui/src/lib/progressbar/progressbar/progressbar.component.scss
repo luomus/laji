@@ -1,0 +1,16 @@
+@import 'vars';
+@import 'projects/laji-ui/src/lib/mixins/_loading';
+
+:host {
+  display: flex;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+
+.lu-progressbar-fill {
+  @include loading($primary-2, $primary-4);
+  color: $primary-7;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  text-align: center;
+}

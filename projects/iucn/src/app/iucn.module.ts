@@ -8,10 +8,8 @@ import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
@@ -57,10 +55,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     IucnRoutingModule,
     TransferHttpCacheModule

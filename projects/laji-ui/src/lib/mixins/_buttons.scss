@@ -1,3 +1,5 @@
+@import 'mixins/loading';
+
 $btn-primary-hue-shift: -15deg !default;
 $btn-secondary-hue-shift: 0deg !default;
 $btn-success-hue-shift: -20deg !default;
@@ -75,14 +77,12 @@ $btn-border-radius: 5px !default;
   }
 }
 @mixin btnLoading {
+  @include loading($neutral-1, $primary-3);
+
   cursor: unset;
   border: 1px solid $primary-3;
   box-shadow: 0 0 0 rgba(0,0,0,0);
   color: rgba($primary-7, .8);
-
-  background: linear-gradient(90deg, $neutral-1, $primary-3, $neutral-1);
-  background-size: 200% 200%;
-  animation: LoadingAnimation 2s linear infinite;
 }
 
 /*

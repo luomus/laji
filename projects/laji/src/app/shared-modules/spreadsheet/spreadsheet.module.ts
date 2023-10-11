@@ -39,6 +39,7 @@ import { ImportMapComponent } from './importer/import-map/import-map.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { ErroneousFirstPipe } from './importer/erroneous-first.pipe';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
+import { ProgressbarModule } from 'projects/laji-ui/src/lib/progressbar/progressbar.module';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
     TypeaheadModule,
     TaxonAutocompleteModule,
     LajiUiModule,
-    PopoverModule
+    PopoverModule,
+    ProgressbarModule
   ],
   providers: [SpreadsheetService, MappingService, ImportService, GeneratorService, AugmentService, SpreadsheetFacade],
 })

@@ -1,7 +1,7 @@
 <button class="btn btn-default toggle-linked" [class.disabled]="!allCompleted" (click)="toggleLinkedVisible()">
   {{ (linkedVisible ? 'excel.import.hideMappings' : 'excel.import.showMappings') | translate }}
 </button><br>
-<progressbar *ngIf="!allCompleted" [max]="invalidValues?.length" [value]="completedCnt" [striped]="true" [animate]="true">{{ completedCnt }}/{{ invalidValues?.length }}</progressbar>
+<lu-progressbar *ngIf="!allCompleted" [max]="invalidValues?.length" [value]="completedCnt">{{ completedCnt }}/{{ invalidValues?.length }}</lu-progressbar>
 <table class="table">
   <thead>
     <tr>

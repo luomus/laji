@@ -10,6 +10,7 @@
 @import 'utils';
 @import 'pills';
 @import 'buttons';
+@import 'dropdown';
 
 @import 'publications';
 
@@ -656,15 +657,6 @@ body > .ui-select-bootstrap.open {
     font-size: $fs-3;
     letter-spacing: .5px;
   }
-}
-
-.dropdown-menu {
-  z-index: 1032;
-}
-
-.dropdown-menu.right {
-  right: 0 !important;
-  left: auto !important;
 }
 
 /** Fixed to view default css*/
@@ -1340,10 +1332,6 @@ typeahead-container ul {
   float: right;
   display: inline-block;
   margin-left: 5px;
-}
-
-.dropdown-menu>li>a {
-  width: 100%;
 }
 
 .responsive_container {

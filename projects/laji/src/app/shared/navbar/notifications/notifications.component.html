@@ -2,8 +2,8 @@
   <span class="notifications-title fs-2">
     {{ 'notification.title' | translate }}:
   </span>
-  <a class="fs-1" (click)="removeAll()" tabindex="0" role="button" luKeyboardClickable>{{ 'notification.deleteAll' | translate }}</a>
-  <a class="fs-1" (click)="markAllAsSeen()" tabindex="0" role="button" luKeyboardClickable>{{ 'notification.markAll' | translate }}</a>
+  <a class="fs-1" (click)="removeAll()" role="button" luDropdownNoClose>{{ 'notification.deleteAll' | translate }}</a>
+  <a class="fs-1" (click)="markAllAsSeen()" role="button" luDropdownNoClose>{{ 'notification.markAll' | translate }}</a>
 </header>
 
 <laji-spinner [spinning]="loading" [overlay]="true">
@@ -12,7 +12,7 @@
       <li laji-notification
           style="height: 50px"
           *cdkVirtualFor="let notification of notificationSource; trackBy: trackNotification"
-          (notificationSeen)="markAsSeen($event); onClose()"
+          (notificationSeen)="markAsSeen($event);"
           (removeNotification)="removeNotification($event)"
           [notification]="notification"></li>
     </ul>

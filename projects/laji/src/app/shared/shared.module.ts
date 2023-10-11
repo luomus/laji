@@ -2,9 +2,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -85,6 +83,7 @@ import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-brea
 import { DisableWheelDirective } from './directive/disable-wheel.directive';
 import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
+import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
 @NgModule({
     declarations: [
@@ -141,7 +140,7 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
         PaginatorModule,
         ScrollingModule,
         LajiUiModule,
-        TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
+        TooltipModule, DropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
         LayoutModule
@@ -151,7 +150,7 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
         CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
         TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
         ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
-        ToFullUriPipe, TooltipModule, BsDropdownModule, AlertModule, ModalModule, PopoverModule, ProgressbarModule,
+        ToFullUriPipe, TooltipModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
         FormattedNumber, ObservationCountComponent, GalleryComponent,
         PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,

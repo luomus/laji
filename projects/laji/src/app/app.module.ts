@@ -20,10 +20,8 @@ import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -58,10 +56,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
-    ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     LajiUiModule
   ],
