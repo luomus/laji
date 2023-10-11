@@ -1574,6 +1574,7 @@
   "saveObservations.dataBank": "Aineistopankki",
   "saveObservations.dataBank.desc": "Aineistopankki on Lajitietokeskuksen palvelu, johon voi tallentaa organisaatioiden havaintoaineistoja. Aineistopankkia voivat käyttää erilaiset organisaatiot, kuten kunnat, tutkimusryhmät, yhdistykset ja työryhmät. <strong><a href=\"https://laji.fi/theme/datasets\">Tutustu Aineistopankkiin</a></strong>.",
   "saveObservations.desc": "Tallentamalla lajihavaintosi johonkin Lajitietokeskuksen palveluun, tuot sen tutkijoiden ja muiden tiedontarvitsijoiden käytettäväksi ja valintasi mukaan Laji-fi portaaliin julkisesti nähtäväksi. Voit ilmoittaa yksittäisiä havaintoja, pitää omaa havaintopäiväkirjaa tai osallistua kansalaistiedehankkeisiin.",
+  "saveObservations.dataBank.link": "Tutustu Aineistopankkiin",
   "saveObservations.easy": "Avoin havaintolomake",
   "saveObservations.easy.1": "Ilmoita yksittäinen havainto kirjautumatta",
   "saveObservations.easy.2": "Havaintoa voi muokata viikon ajan tallentamisesta",
