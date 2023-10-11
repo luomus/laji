@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -85,6 +84,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
 import { DisableWheelDirective } from './directive/disable-wheel.directive';
 import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
+import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 
 @NgModule({
     declarations: [

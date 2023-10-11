@@ -54,7 +54,7 @@
             <laji-row [title]="'MZ.editor' | label" *ngIf="document.linkings && document.linkings.editors && document.linkings.editors[0] && document.linkings.editors[0].fullName">
               {{ document.linkings.editors | values:', ':'fullName' }}
             </laji-row>
-            <laji-row [title]="'MZ.dateCreated' | label" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
+            <laji-row [title]="'test title'" [value]="document.createdDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'MZ.dateEdited' | label" [value]="document.modifiedDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
             <laji-row [title]="'viewer.loadDate' | translate" [value]="document.loadDate | amDateFormat:'DD.MM.YYYY'"></laji-row>
           </ng-template>
@@ -65,9 +65,8 @@
               placement="left">
             <i class="glyphicon glyphicon-new-window small"></i>
           </a>
-          <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                  [popover]="docMeta"
-                  triggers="click:mouseleave mouseenter:mouseleave"
+          <button class="btn btn-default btn-xs pull-right popover-btn" style="margin-left: 10px;"
+                  [luPopover]="docMeta"
                   placement="left"><i class="glyphicon glyphicon-user"></i>
           </button>
           <button class="btn btn-default btn-xs pull-right"

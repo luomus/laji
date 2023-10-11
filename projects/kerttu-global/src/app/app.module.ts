@@ -9,7 +9,6 @@ import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
@@ -58,7 +57,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     TypeaheadModule.forRoot(),
-    PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
     AppRoutingModule,

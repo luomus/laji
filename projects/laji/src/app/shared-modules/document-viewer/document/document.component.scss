@@ -1,3 +1,5 @@
+@import 'vars';
+
 .tight {
   margin-top: 0;
 }
@@ -36,4 +38,14 @@
   background: #ffe455;
   font-size: 20px;
   font-weight: bold;
+}
+
+// Overwrite button styles
+:host ::ng-deep .popover-btn > ng-component {
+  cursor: default;
+  font-size: $fs-2;
+  white-space: initial;
+  text-align: initial;
+  user-select: initial;
+  min-width: 300px;
 }

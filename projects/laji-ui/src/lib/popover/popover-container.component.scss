@@ -1,0 +1,46 @@
+@import 'vars';
+
+:host {
+  position: absolute;
+  z-index: 1100;
+  
+  background: $neutral-1;
+  padding: $sp-4;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  border-radius: 4px;
+}
+
+:host.root-element-component {
+  &.left {
+    top: 0;
+    right: 100%;
+  }
+
+  &.right {
+    top: 0;
+    left: 100%;
+  }
+
+  &.top {
+    left: 0;
+    bottom: 100%;
+  }
+
+  &.bottom {
+    left: 0;
+    top: 100%;
+  }
+}
+
+:host.root-element-body {
+  top: 0;
+  left: 0;
+}
+
+:host > h5 {
+  border-bottom: 1px solid $neutral-3;
+}
+
+:host > div {
+
+}

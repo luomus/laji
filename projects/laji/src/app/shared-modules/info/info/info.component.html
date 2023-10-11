@@ -1,17 +1,11 @@
 <strong
-  (click)="toggle($event)"
-  (mouseenter)="mouseEnter()"
-  (mouseleave)="mouseLeave()"
+  [luPopover]="content"
+  [placement]="placement"
+  [mode]="useModal ? 'disabled' : showOnHover ? 'hover' : 'click'"
+  [rootElement]="'body'"
+  (click)="toggleModal()"
   tabindex="0"
   luKeyboardClickable
-  [popover]="content"
-  [adaptivePosition]="adaptivePosition"
-  [outsideClick]="true"
-  [placement]="placement"
-  triggers=""
-  #pop="bs-popover"
-  containerClass="popover-lg"
-  container="{{ container }}"
   [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph') + ' ' + (showOnHover ? 'hover-info' : 'link')"
 >
   <span [className]="'glyphicon glyphicon-' + glyphicon" *ngIf="glyphicon"></span>
@@ -19,7 +13,7 @@
 </strong>
 
 <div class="modal popover-modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
-  <div class="modal-dialog modal-sm" [ngStyle]="{'top': position}">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body">
         <ng-container *ngTemplateOutlet="content"></ng-container>
@@ -28,8 +22,5 @@
   </div>
 </div>
 <ng-template #content>
-  <button class="close pull-right" type="button" (click)="hide()" [ngClass]="{'d-sm-none': showOnHover}">
-    <i class="glyphicon glyphicon-remove"></i>
-  </button>
-  <div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content>
+  <div style="max-width: 500px;"><div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content></div>
 </ng-template>
