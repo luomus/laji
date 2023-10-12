@@ -72,7 +72,6 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   onCanvasResize(event: any) {
-    console.log(event);
     if (resizeCanvasToDisplaySize(this.canvasElem.nativeElement)) {
       this.glr.refreshEntity();
       this.glr.updateViewportSize();
