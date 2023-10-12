@@ -10,7 +10,8 @@
         *ngIf="img.mediaType === 'IMAGE'"
         id="openseadragon-wrapper"
         [src]="img.fullURL || img.largeURL"
-        class="effect"></laji-image>
+        class="effect"
+      ></laji-image>
       <laji-image-modal-video
         *ngIf="img.mediaType === 'VIDEO'"
         [source]="img"

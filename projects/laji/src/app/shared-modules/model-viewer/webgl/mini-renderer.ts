@@ -32,15 +32,17 @@ interface Mesh {
 
 type Transform = M4;
 
+const getDefaultCameraProjection = (canvasWidth: number, canvasHeight: number) => M4.perspective(
+  Math.PI / 2,
+  canvasWidth / canvasHeight,
+  1,
+  4000
+);
+
 const constructEmptyScene = (canvasWidth: number, canvasHeight: number): Scene => ({
   camera: {
     transform: M4.translation(0, 0, 50),
-    projection: M4.perspective(
-      Math.PI / 2,
-      canvasWidth / canvasHeight,
-      1,
-      4000
-    )
+    projection: getDefaultCameraProjection(canvasWidth, canvasHeight)
   },
   directionLights: [{
     direction: [-0.5, -0.7, -1],
@@ -96,7 +98,7 @@ export class MiniRenderer {
     this.scene = constructEmptyScene(this.gl.canvas.width, this.gl.canvas.height);
 
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-    this.gl.clearColor(.9, .9, .9, 1.0);
+    this.gl.clearColor(0, 0, 0, .8);
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -115,6 +117,8 @@ export class MiniRenderer {
 
   updateViewportSize() {
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    this.scene.camera.projection = getDefaultCameraProjection(this.gl.canvas.width, this.gl.canvas.height);
+    this.refreshCamera();
     this.render();
   }
 

@@ -9,10 +9,7 @@ export class ModelViewerService {
   constructor(private http: HttpClient) {}
 
   @cacheReturnObservable(1000000)
-  get(src: string): Observable<any> {
-    return this.http.get(src, { responseType: 'blob' }).pipe(tap(console.log));
-  }
-  getTestGLB2() {
-    return this.http.get('https://cdn.laji.fi/test-data/KX.1325.glb', { responseType: 'blob' });
+  getBlob(src: string): Observable<any> {
+    return this.http.get(src, { responseType: 'blob' });
   }
 }

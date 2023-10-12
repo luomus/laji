@@ -55,7 +55,7 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.glr = new MiniRenderer(this.canvasElem.nativeElement);
-    this.mvs.get(this.src).pipe(
+    this.mvs.getBlob(this.src).pipe(
       switchMap(b => from(GLB.parseBlob(b)))
     ).subscribe(([bufferData, jsonData]) => {
       this.glr.loadModel(bufferData[0], jsonData);
@@ -72,7 +72,9 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
   }
 
   onCanvasResize(event: any) {
+    console.log(event);
     if (resizeCanvasToDisplaySize(this.canvasElem.nativeElement)) {
+      this.glr.refreshEntity();
       this.glr.updateViewportSize();
     }
   }
