@@ -1,6 +1,7 @@
 import { M4, V3, V4 } from './math-3d';
-import { bufferPositions, bufferNormals, bufferIndices, glInitializeProgram } from './webgl-utils';
+import { bufferPositions, bufferNormals, bufferIndices, glInitializeProgram, getGlTypeFromArr } from './webgl-utils';
 import { GLB } from './glb-parser';
+import { generateFlatVertexNormals } from './generate-normals';
 
 interface Scene {
   camera: Camera;
@@ -26,7 +27,7 @@ interface Entity {
 interface Mesh {
   positions: Float32Array;
   normals: Float32Array;
-  indices: Uint32Array;
+  indices: Uint32Array | Uint16Array;
 }
 
 type Transform = M4;
@@ -54,7 +55,7 @@ const entityFromGLB = (bufferData: GLB.BufferData[], jsonData: GLB.JSONData): En
   const nodeScale: [number, number, number] = jsonData.nodes[0].scale;
   const T = M4.translation(nodeTranslation[0], nodeTranslation[0], nodeTranslation[0]);
   const R = M4.rotationFromQuaternion(...nodeRotation);
-  const S = M4.scaling(...nodeScale);
+  const S = nodeScale ? M4.scaling(...nodeScale) : M4.unit();
   const nodeTransform = M4.mult(
     T, M4.mult(
       R, S
@@ -64,12 +65,11 @@ const entityFromGLB = (bufferData: GLB.BufferData[], jsonData: GLB.JSONData): En
 
   // only supports a single mesh and primitive atm
   const primitive = jsonData.meshes[0].primitives[0];
+  const positions = <Float32Array>bufferData[primitive.attributes.POSITION].data;
+  const indices = <Uint32Array | Uint16Array>bufferData[primitive.indices].data;
 
-  const mesh: Mesh = {
-    positions: <Float32Array>bufferData[primitive.attributes.POSITION].data,
-    normals: <Float32Array>bufferData[primitive.attributes.NORMAL].data,
-    indices: <Uint32Array>bufferData[primitive.indices].data
-  };
+  const normals = primitive.attributes.NORMAL ? <Float32Array>bufferData[primitive.attributes.NORMAL].data : generateFlatVertexNormals(positions, indices);
+  const mesh: Mesh = { positions, normals, indices };
 
   return {
     mesh,
@@ -126,8 +126,15 @@ export class MiniRenderer {
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
+    if (!this.scene.entity) { return; }
+
     // TODO: if indices buffer doesn't exist, then use drawArrays
-    this.gl.drawElements(this.gl.TRIANGLES, this.scene.entity.mesh.indices.length, this.gl.UNSIGNED_INT, 0);
+    this.gl.drawElements(
+      this.gl.TRIANGLES,
+      this.scene.entity.mesh.indices.length,
+      getGlTypeFromArr(this.gl, this.scene.entity.mesh.indices),
+      0
+    );
   }
 
   refreshCamera() {

@@ -1,5 +1,9 @@
 import { fragmentShader, vertexShader } from './shaders';
 
+export const getGlTypeFromArr = (gl: WebGLRenderingContext, arr: Uint16Array | Uint32Array) => (
+  { 2: gl.UNSIGNED_SHORT, 4: gl.UNSIGNED_INT }[arr.BYTES_PER_ELEMENT]
+);
+
 export const createShader = (gl: WebGLRenderingContext, source: string, type: number): WebGLShader => {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
@@ -64,7 +68,7 @@ export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: numbe
   );
 };
 
-export const bufferIndices = (gl: WebGL2RenderingContext, indices: Uint32Array) => {
+export const bufferIndices = (gl: WebGL2RenderingContext, indices: Uint32Array | Uint16Array) => {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 };

@@ -12,4 +12,7 @@ export class ModelViewerService {
   get(src: string): Observable<any> {
     return this.http.get(src, { responseType: 'blob' }).pipe(tap(console.log));
   }
+  getTestGLB2() {
+    return this.http.get('https://cdn.laji.fi/test-data/KX.1325.glb', { responseType: 'blob' });
+  }
 }

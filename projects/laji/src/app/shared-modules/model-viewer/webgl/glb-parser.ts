@@ -27,8 +27,11 @@ export namespace GLB {
 
   export interface BufferData {
     type: 'VEC3' | 'SCALAR';
-    data: Float32Array | Uint32Array;
+    data: Float32Array | Uint32Array | Uint16Array;
+    target: Target;
   }
+
+  type Target = 'ARRAY_BUFFER' | 'ELEMENT_ARRAY_BUFFER';
 
   const readHeader = (d: DataView, offset: number): [Header, number] => {
     const magic = d.getUint32(offset, true);
@@ -101,20 +104,25 @@ export namespace GLB {
       if (!accessor) {
         throw new Error(`Malformed GLB: No accessor for bufferView ${i}.`);
       }
+
+      // the following error may be caused by bufferViews being out of order in the json array
+      // I'm not sure if the spec allows for this or not so I won't design the parser around it for the moment.
       console.assert(bufferByteOffset === bufferView.byteOffset, 'BufferView byteOffset mismatch.');
 
       /*
         Consume bufferView from the buffer
-
-        Note: bufferView.target denotes ARRAY_BUFFER / ELEMENT_ARRAY_BUFFER upon webgl buffer binding
-              we'll ignore this for now, since positions and normals are always ARRAY_BUFFER
-              and indices are always ELEMENT_ARRAY_BUFFER
       */
-      const arrConst = { 5126: Float32Array, 5125: Uint32Array }[accessor.componentType];
+      const arrConst = { 5126: Float32Array, 5125: Uint32Array, 5123: Uint16Array }[accessor.componentType];
       if (!arrConst) { throw new Error(`Unimplemented accessor.componentType: ${accessor.componentType}`); }
-      const dataGetter = { 5126: d.getFloat32.bind(d), 5125: d.getUint32.bind(d) }[accessor.componentType];
+      const dataGetter = { 5126: d.getFloat32.bind(d), 5125: d.getUint32.bind(d), 5123: d.getUint16.bind(d) }[accessor.componentType];
       const dimension = { VEC3: 3, SCALAR: 1 }[accessor.type];
       if (!dimension) { throw new Error(`Unimplemented accessor.type: ${accessor.type}`); }
+      /*
+        Note: bufferView.target denotes ARRAY_BUFFER / ELEMENT_ARRAY_BUFFER upon webgl buffer binding
+              we are not doing much with this for now, since positions and normals are always ARRAY_BUFFER
+              and indices are always ELEMENT_ARRAY_BUFFER
+      */
+      const target = { 34962: <Target>'ARRAY_BUFFER', 34963: <Target>'ELEMENT_ARRAY_BUFFER' }[bufferView.target];
 
       const arr = new arrConst(bufferView.byteLength / arrConst.BYTES_PER_ELEMENT);
       let k = 0;
@@ -122,15 +130,21 @@ export namespace GLB {
         arr[k] = dataGetter(j, true);
         k++;
       }
-      bufferData.push({ type: accessor.type, data: arr });
-      console.assert(arr.length / dimension === accessor.count, 'Accessor count and buffer array length mismatch.');
-      console.assert(arr.byteLength === bufferView.byteLength, 'BufferView byteLength mismatch.');
+      bufferData.push({ type: accessor.type, data: arr, target });
+      console.assert(arr.length / dimension === accessor.count, `Accessor count and buffer array length mismatch: ${arr.length/dimension} !== ${accessor.count}`);
+      console.assert(arr.byteLength === bufferView.byteLength, `BufferView byteLength mismatch: ${arr.byteLength} !== ${bufferView.byteLength}`);
 
       offset += bufferView.byteLength;
       bufferByteOffset += bufferView.byteLength;
     }
 
-    console.assert(bufferData.reduce((p, bd) => p += bd.data.byteLength, 0) === jsonData.buffers[bufferIdx].byteLength, 'Buffer byteLength mismatch.');
+    /*
+      Note: byte length mismatch is caused by padding bytes and should be ignored
+      https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_005_BuffersBufferViewsAccessors.md
+    */
+/*     const byteLength = bufferData.reduce((p, bd) => p += bd.data.byteLength, 0);
+    const expectedByteLength = jsonData.buffers[bufferIdx].byteLength;
+    console.warn(byteLength === expectedByteLength, `Buffer byteLength mismatch: ${byteLength} !== ${expectedByteLength}`); */
 
     return [bufferData, offset];
   };
@@ -149,7 +163,8 @@ export namespace GLB {
       bufferData.push(bd);
       i++;
     }
-    console.assert(header.dataLength === offset, 'Header byteLength mismatch with actual byteLength.');
+/*  As before, the bytelength mismatch is caused by padding bytes and should be ignored
+    console.assert(header.dataLength === offset, `Header byteLength mismatch with actual byteLength: ${header.dataLength} !== ${offset}`); */
 
     return [bufferData, jsonChunk.chunkData];
   };
