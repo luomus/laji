@@ -17,7 +17,8 @@ export namespace Form {
     lineTransect = 'MHL.resultServiceTypeLineTransect',
     winterbirdCount = 'MHL.resultServiceTypeWinterBirdCount',
     nafi = 'MHL.resultServiceTypeNafi',
-    sykeInsect = 'MHL.resultServiceTypeSykeInsectProjects'
+    sykeInsect = 'MHL.resultServiceTypeSykeInsectProjects',
+    invasiveSpeciesControl = 'MHL.resultServiceTypeInvasiveControl'
   }
   export enum RestrictAccess {
     restrictAccessStrict = 'MHL.restrictAccessStrict',

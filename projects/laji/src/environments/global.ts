@@ -214,6 +214,11 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
       quality: 'MMAN.typeAdmin',
       type: 'admin'
     },
+    'MMAN.53': {
+      value: 'MMAN.53',
+      quality: 'MMAN.typeCheck',
+      type: 'check'
+    },
     /*'MMAN.52': {
       value: 'MMAN.52',
       quality: 'MMAN.typePositiveQuality',
@@ -222,5 +227,7 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
   },
   limit: {
     simpleDownload: 10000
-  }
+  },
+  lajiMapSupportedLanguages: ['fi', 'en', 'sv'],
+  lajiAuthSupportedLanguages: ['fi', 'en', 'sv']
 };

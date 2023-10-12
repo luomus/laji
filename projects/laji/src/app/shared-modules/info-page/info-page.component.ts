@@ -12,9 +12,7 @@ import { Subscription } from 'rxjs';
   template: `
 <div *ngIf="!loadingContent else loading" [innerHtml]="content | safe:'html'" lajiRouteTransformer></div>
 <ng-template #loading>
-  <lu-ghost-paragraph [length]="10"></lu-ghost-paragraph>
-  <lu-ghost-paragraph [length]="300"></lu-ghost-paragraph>
-  <lu-ghost-paragraph [length]="200"></lu-ghost-paragraph>
+  <laji-info-page-loading></laji-info-page-loading>
 </ng-template>
 `
 })

@@ -13,7 +13,7 @@ export class ThemeObservationListComponent {
   @Input() query: WarehouseQueryInterface;
   @Input() height;
   @Input() showSettings = false;
-  @Input() selected = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'gathering.displayDateTime', 'gathering.team'];
+  @Input() selected = ['unit.linkings.taxon', 'unit.linkings.taxon.scientificName', 'unit.linkings.taxon.vernacularName', 'gathering.displayDateTime', 'gathering.team'];
   @Output() listClose = new EventEmitter<WarehouseQueryInterface>();
   @Output() selectChange = new EventEmitter();
 

@@ -5,17 +5,18 @@ import { environment } from '../../environments/environment';
 
 export const LAST_LANG_KEY = 'last-lang';
 
+export const DEFAULT_LANG = (environment as any).defaultLang ?? 'fi';
+export const LANGUAGES = (environment as any).languages ?? ['fi', 'en', 'sv'];
+
 @Injectable()
 export class LocalizeRouterService {
 
-  currentLang: string;
-  locales = ['fi', 'en', 'sv'];
-
   static translatePath(path: string, lang): string {
-    const defaultLang = (environment as any).defaultLang ?? 'fi';
-    if (path.match(/^\/(in|en|sv|fi)\b/)) {
-      return path.replace(/^\/(in|en|sv|fi)\b/, lang === defaultLang ? '' : `/${lang}`);
-    } else if (lang === defaultLang || path.startsWith('.')) {
+    const reg = new RegExp('^\/(in|' + LANGUAGES.join('|') + ')\\b'); // /^\/(in|en|sv|fi)\b/
+
+    if (path.match(reg)) {
+      return path.replace(reg, lang === DEFAULT_LANG ? '' : `/${lang}`);
+    } else if (lang === DEFAULT_LANG || path.startsWith('.')) {
       return path;
     } else if (path === '/') {
       path = '';
@@ -50,7 +51,7 @@ export class LocalizeRouterService {
   getPathWithoutLocale(path?: string) {
     const pathSlices = (path || this.location.path()).split('/');
 
-    if (pathSlices.length > 1 && this.locales.indexOf(pathSlices[1]) !== -1) {
+    if (pathSlices.length > 1 && LANGUAGES.indexOf(pathSlices[1]) !== -1) {
       return '/' + pathSlices.slice(2).join('/');
     } else if (pathSlices.length === 1) {
       return '/';
@@ -61,12 +62,12 @@ export class LocalizeRouterService {
   getLocationLang(path?: string): string {
     const pathSlices = (path || this.location.path()).split('/');
 
-    if (pathSlices.length > 1 && this.locales.indexOf(pathSlices[1]) !== -1) {
+    if (pathSlices.length > 1 && LANGUAGES.indexOf(pathSlices[1]) !== -1) {
       return pathSlices[1];
     }
-    if (pathSlices.length && this.locales.indexOf(pathSlices[0]) !== -1) {
+    if (pathSlices.length && LANGUAGES.indexOf(pathSlices[0]) !== -1) {
       return pathSlices[0];
     }
-    return (environment as any).defaultLang ?? 'fi';
+    return DEFAULT_LANG;
   }
 }

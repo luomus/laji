@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ObservationResultComponent } from '../result/observation-result.component';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { SidebarComponent } from 'projects/laji-ui/src/lib/sidebar/sidebar.component';
+import { ActiveToast } from 'ngx-toastr';
 
 export interface VisibleSections {
   finnish?: boolean;
@@ -28,10 +29,6 @@ export interface VisibleSections {
   annotations?: boolean;
   own?: boolean;
 }
-
-
-// The info should be shown only once per browser session, so we initialize it here for the whole runtime.
-let coordinateFilterInfoShown = false;
 
 @Component({
   selector: 'laji-observation-view',
@@ -66,7 +63,6 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   @ViewChild(SidebarComponent) sidebar: SidebarComponent;
   @ViewChild(ObservationResultComponent) results: ObservationResultComponent;
   showMobile: any;
-  subscription: any;
 
   showFilter = true;
   statusFilterMobile = false;
@@ -81,10 +77,12 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     'otherInvasiveSpeciesList',
   ];
 
-  subQueryUpdate: Subscription;
-
   vm$: Observable<IObservationViewModel>;
   settingsList$: Observable<ISettingResultList>;
+
+  private searchButtonInfoToast?: ActiveToast<any>;
+  private searchButtonInfoToastOnHiddenSub?: Subscription;
+  private mainSubscription = new Subscription();
 
   constructor(
     public translate: TranslateService,
@@ -109,32 +107,34 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
     this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
-    this.subscription = this.browserService.lgScreen$.subscribe(data => this.showMobile = data);
-    this.subQueryUpdate = this.observationFacade.activeQuery$.pipe(
-      tap((query) => {
-        if (this.results) {
-          this.results.reloadTabs();
-        }
-        if ((query.coordinates) && !coordinateFilterInfoShown) {
-          coordinateFilterInfoShown = true;
-          this.toastsService.showInfo(
-            this.translate.instant('observation.form.coordinatesInfo'),
-            undefined,
-            {disableTimeOut: true, closeButton: true}
-          );
+
+    this.mainSubscription.add(
+      this.browserService.lgScreen$.subscribe(data => this.showMobile = data)
+    );
+    this.mainSubscription.add(
+      this.observationFacade.activeQuery$.pipe(
+        tap((query) => {
+          if (this.results) {
+            this.results.reloadTabs();
+          }
+        })
+      ).subscribe()
+    );
+    this.mainSubscription.add(
+      combineLatest([
+        this.observationFacade.showSearchButtonInfo$,
+        this.observationFacade.tmpQueryHasChanges$]
+      ).subscribe(([show, hasChanges]) => {
+        if (show && hasChanges) {
+          this.showSearchButtonInfoToast();
         }
       })
-    ).subscribe();
+    );
   }
 
   ngOnDestroy() {
-    if (this.subQueryUpdate) {
-      this.subQueryUpdate.unsubscribe();
-    }
-
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.mainSubscription?.unsubscribe();
+    this.searchButtonInfoToastOnHiddenSub?.unsubscribe();
   }
 
   draw(type: string) {
@@ -148,15 +148,15 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   }
 
   updateTmpQuery(query: WarehouseQueryInterface, showSidebarOnMobile = false) {
+    this.observationFacade.updateTmpQuery({...query});
     if (showSidebarOnMobile) {
       this.sidebar.showOnMobile();
     }
-    this.observationFacade.updateTmpQuery({...query});
   }
 
   updateActiveQuery(query: WarehouseQueryInterface) {
-    this.sidebar.hideOnMobile();
     this.observationFacade.updateActiveQuery$(query).subscribe();
+    this.sidebar.hideOnMobile();
   }
 
   filterVisible(event: boolean) {
@@ -169,5 +169,22 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   toggleMobile() {
     this.statusFilterMobile = !this.statusFilterMobile;
+  }
+
+  private showSearchButtonInfoToast() {
+    if (!this.searchButtonInfoToast) {
+      this.searchButtonInfoToast = this.toastsService.showInfo(
+        this.translate.instant('observation.form.searchButtonInfo'),
+        undefined,
+        {
+          disableTimeOut: true,
+          closeButton: true,
+          positionClass: 'toast-center-center'
+        }
+      );
+      this.searchButtonInfoToastOnHiddenSub = this.searchButtonInfoToast.onHidden.subscribe(() => {
+        this.observationFacade.hideSearchButtonInfo();
+      });
+    }
   }
 }

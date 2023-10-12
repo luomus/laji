@@ -87,6 +87,7 @@ import { PdfButtonComponent } from './pdf-button/pdf-button.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
 import { ModelViewerModule } from '../shared-modules/model-viewer/model-viewer.module';
+import { DisableWheelDirective } from './directive/disable-wheel.directive';
 
 @NgModule({
     declarations: [
@@ -130,7 +131,8 @@ import { ModelViewerModule } from '../shared-modules/model-viewer/model-viewer.m
         PdfButtonComponent,
         IfWidthAboveBreakpointDirective,
         ImageModalVideoComponent,
-        ImageModalModelComponent
+        ImageModalModelComponent,
+        DisableWheelDirective
     ],
     imports: [
         FormsModule,
@@ -175,7 +177,8 @@ import { ModelViewerModule } from '../shared-modules/model-viewer/model-viewer.m
         ProjectFormOptionDirective,
         TypeGuardPipe,
         PdfButtonComponent,
-        IfWidthAboveBreakpointDirective
+        IfWidthAboveBreakpointDirective,
+        DisableWheelDirective,
     ]
 })
 export class SharedModule {

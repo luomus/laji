@@ -5,7 +5,7 @@ export const environment = {
   type: Global.type.kerttuGlobal,
   base: 'https://kerttu-global-dev.laji.fi',
   production: true,
-  forceLogin: true,
+  forceLogin: false,
   disableAnalytics: true,
   sourceKotka: 'KE.3',
   systemID: 'KE.1181',
@@ -17,5 +17,6 @@ export const environment = {
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
   geoserver: 'https://geoserver-dev.laji.fi',
   defaultLang: 'en',
+  languages: ['en', 'es', 'fr'],
   displayDevRibbon: true
 };

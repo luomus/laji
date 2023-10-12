@@ -1,6 +1,6 @@
 <div class="page">
   <div class="pager">
-    <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>1/{{ total }}</span></h2>
+    <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>1/{{ totalNbrOfPages }}</span></h2>
   </div>
   <div class="title">
     <h1>{{ namedPlace.name }}</h1>
@@ -151,17 +151,17 @@
 <div class="page">
   <div class="no-page-break page-break-after" [ngClass]="{'page-landscape': landscape}" *ngIf="lajiMapOptions">
     <div class="pager">
-      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>2/{{ total }}</span></h2>
+      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>2/{{ totalNbrOfPages }}</span></h2>
     </div>
     <div class="map-wrap">
       <laji-map [options]="lajiMapOptions" (loaded)="onMapLoad()"></laji-map>
     </div>
   </div>
 </div>
-<div *ngIf="pages">
+<div *ngIf="pages" [style.height]="(pageHeight * pages.length) + 'mm'">
   <div class="page no-page-break page-break-after table-page" *ngFor="let page of pages; let i = index">
     <div class="pager">
-      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>{{ i + 3 }}/{{ total + 2 }}</span></h2>
+      <h2>{{ namedPlace.name }}&nbsp;&nbsp;<span>{{ i + 3 }}/{{ totalNbrOfPages }}</span></h2>
     </div>
     <table class="line-table">
       <thead>

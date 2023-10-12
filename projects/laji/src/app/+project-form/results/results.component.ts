@@ -21,6 +21,9 @@ import { ActivatedRoute } from '@angular/router';
       <div *ngSwitchCase="ResultServiceType.sykeInsect">
         <laji-syke-insect-result [form]="(form$ | async)"></laji-syke-insect-result>
       </div>
+      <div *ngSwitchCase="ResultServiceType.invasiveSpeciesControl">
+        <laji-invasive-species-control-result [form]="(form$ | async)"></laji-invasive-species-control-result>
+      </div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

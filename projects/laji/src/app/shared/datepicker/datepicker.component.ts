@@ -36,6 +36,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { ENTER } from '@angular/cdk/keycodes';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -90,27 +91,32 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.el = viewContainerRef.element.nativeElement;
   }
 
+  keyEvent(e, value) {
+    if (e.keyCode === ENTER) {
+      this.onInputValueChange(value);
+    }
+  }
+
   onInputValueChange(viewFormatValue: string) {
-    const viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
+    if (viewFormatValue) {
+      // First try formatting with default view format.
+      let viewFormMoment = moment(viewFormatValue, VIEW_FORMAT, true);
 
-    if (this.validDate && viewFormatValue && !viewFormMoment.isValid()) {
+      if (viewFormMoment.isValid()) {
+        this.validDate = true;
+        return this.updateValue(viewFormMoment.format(FORMAT));
+      }
+
+      // Try formatting a value that is just a year.
+      viewFormMoment = moment(viewFormatValue, 'YYYY', true);
+      if (viewFormMoment.isValid()) {
+        this.validDate = true;
+        const momentValue = this.toLastOfYear ? viewFormMoment.endOf('year') : viewFormMoment.startOf('year');
+        return this.updateValue(momentValue.format(FORMAT));
+      }
+
       this.validDate = false;
-      return this.onInputValueChange(this.viewValue); // Restore prev value that is valid.
-    } else {
-      this.validDate = true;
-    }
-
-
-    // First try formatting with default view format.
-    if (viewFormMoment.isValid()) {
-      return this.updateValue(viewFormMoment.format(FORMAT));
-    }
-
-    // Try formatting a value that is just a year.
-    const yearMoment = moment(viewFormatValue, 'YYYY', true);
-    if (yearMoment.isValid()) {
-      const momentValue = this.toLastOfYear ? yearMoment.endOf('year') : yearMoment.startOf('year');
-      return this.updateValue(momentValue.format(FORMAT));
+      return this.onInputValueChange(this.viewValue);
     }
 
     this.updateValue('');
@@ -167,23 +173,27 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.days = [];
     const selectedDate = moment(this.value, FORMAT);
     for (let i = n; i <= date.endOf('month').date(); i += 1) {
-      const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
-      const today = moment().isSame(iteratedDate.format(), 'day');
-      const selected = selectedDate.isSame(iteratedDate, 'day');
+      if (i > 0) {
+        const iteratedDate = moment(`${year}-${month}-${i}`, 'YYYY-M-D');
+        const today = moment().isSame(iteratedDate.format(), 'day');
+        const selected = selectedDate.isSame(iteratedDate, 'day');
 
-      this.days.push(i > 0 ? {
-        day: '' + iteratedDate.format('DD'),
-        month: '' + iteratedDate.format('MM'),
-        year,
-        today,
-        selected
-      } : {
-        day: null,
-        month: null,
-        year: null,
-        today: false,
-        selected: false
-      });
+        this.days.push({
+          day: '' + iteratedDate.format('DD'),
+          month: '' + iteratedDate.format('MM'),
+          year,
+          today,
+          selected
+        });
+      } else {
+        this.days.push({
+          day: null,
+          month: null,
+          year: null,
+          today: false,
+          selected: false
+        });
+      }
     }
   }
 

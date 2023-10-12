@@ -103,7 +103,7 @@
       <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
     <div class="row">
       <div class="col-sm-12">
-        <input type="number" name="occurrenceCountFinlandMax"
+        <input lajiDisableWheel type="number" name="occurrenceCountFinlandMax"
                   class="form-control input-sm"
                   placeholder="{{'observation.form.countMax' | translate}}"
                   (ngModelChange)="onCountChange()"
@@ -180,6 +180,13 @@
     name="elyCentreId"
     [field]="areaType.ElyCentre"></laji-metadata-select>
   <laji-metadata-select
+    [(ngModel)]="query.birdAssociationAreaId"
+    (ngModelChange)="onQueryChange()"
+    [multiple]="true"
+    [placeholder]="'result.gathering.birdSociety'"
+    name="birdAssociationAreaId"
+    [field]="areaType.BirdAssociationArea"></laji-metadata-select>
+  <laji-metadata-select
     [info]="'observation.info.municipality' | translate"
     [(ngModel)]="query.finnishMunicipalityId"
     (ngModelChange)="onQueryChange()"
@@ -250,7 +257,7 @@
       <div>
         <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
         <div class="input-group" style="max-width: 110px;">
-          <input type="number"
+          <input lajiDisableWheel type="number"
                   name="coordinatesIntersection"
                   style="padding: 3px 7px;"
                   class="form-control input-sm"
@@ -304,7 +311,7 @@
         <laji-info>{{ 'observation.info.coordinateAccuracyMax' | translate }}</laji-info>
       </div>
       <div class="input-group" style="max-width: 110px;">
-        <input type="number" name="coordinateAccuracyMax"
+        <input lajiDisableWheel type="number" name="coordinateAccuracyMax"
                 style="padding: 3px 7px;"
                 class="form-control input-sm"
                 (change)="onAccuracyValueChange()"
@@ -485,14 +492,14 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <input type="number" name="individualCountMin"
+        <input lajiDisableWheel type="number" name="individualCountMin"
                 class="form-control input-sm"
                 placeholder="{{'observation.form.countMin' | translate}}"
                 (ngModelChange)="onCountChange()"
                 [(ngModel)]="query.individualCountMin">
       </div>
       <div class="col-sm-6">
-        <input type="number" name="individualCountMax"
+        <input lajiDisableWheel type="number" name="individualCountMax"
                 class="form-control input-sm"
                 placeholder="{{'observation.form.countMax' | translate}}"
                 (ngModelChange)="onCountChange()"
@@ -827,6 +834,13 @@
     {{ 'observation.form.virFilterShortcut' | translate }}
     </a>
     <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
+  </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="birdAtlasFilterShortcutQueryParams">
+    {{ 'observation.form.birdAtlasShortcut' | translate }}
+    </a>
   </div>
   <div>
     <a class="btn btn-default btn-sm"

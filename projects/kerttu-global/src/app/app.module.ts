@@ -30,6 +30,7 @@ import { GraphQLModule } from '../../../laji/src/app/graph-ql/graph-ql.module';
 import { LazyTranslateLoader } from './kerttu-global-shared/service/lazy-translate-loader';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppComponentModule } from '../../../laji/src/app/shared-modules/app-component/app-component.module';
+import { LajiUiModule } from '../../../laji-ui/src/lib/laji-ui.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -66,7 +67,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
     AppRoutingModule,
     TransferHttpCacheModule,
-    AppComponentModule
+    AppComponentModule,
+    LajiUiModule
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/'},

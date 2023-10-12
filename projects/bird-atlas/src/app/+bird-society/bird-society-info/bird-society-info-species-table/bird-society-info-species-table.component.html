@@ -1,0 +1,26 @@
+  <div class="d-flex justify-end mb-3">
+    <input class="form-control d-block mr-5"
+      #textfield
+      type='text'
+      placeholder="{{'haseka.submissions.filter' | translate}}"
+      (keyup)="onSearchKeyUp($event)">
+    <button class="btn btn-default" (click)="onDownloadCsv()">Lataa .csv</button>
+  </div>
+  <ngx-datatable
+    class="material"
+    [rowHeight]="35"
+    [rows]="filteredRows$ | async"
+    [columns]="cols"
+    [scrollbarH]="true"
+    [scrollbarV]="true"
+    [messages]="{ emptyMessage: '' }"
+    [luFillHeight]="{ minHeight: 300 }"
+    selectionType="single"
+    [selected]="selected"
+    [selectCheck]="selectCheck"
+    (activate)="onActivate($event)"
+  ></ngx-datatable>
+
+<ng-template #alignRight let-value="value">
+  <div style="text-align: right;">{{ value }}</div>
+</ng-template>

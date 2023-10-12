@@ -22,7 +22,7 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { getPointIconAsCircle, LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
 import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
@@ -33,7 +33,7 @@ import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L, { LeafletEvent, PathOptions } from 'leaflet';
+import { LeafletEvent } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
@@ -57,31 +57,6 @@ const getFeaturesFromQueryCoordinates$ = (coordinates: string[]): Observable<Fea
     ) : []
   )
 );
-
-const classNamesAsArr = (c?: string) => c?.split(' ') || [];
-
-const getPointIcon = (po: PathOptions, feature: Feature): L.DivIcon => {
-  let classNames = classNamesAsArr(po.className);
-  const icon: any = L.divIcon({
-    className: classNames.join(' '),
-    html: `<span>${feature.properties.count}</span>`
-  });
-  icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
-    const opacityAsHexCode = po2.opacity < 1 ? po2.opacity
-      .toString(16) // Convert to hex.
-      .padEnd(4, '0') // Pad with zeros to fix length.
-      .substr(2, 2) : ''; // Leave whole number our, pick the two first decimals.
-    iconDomElem.style['background-color'] = po2.color + opacityAsHexCode;
-    iconDomElem.style['height'] = '30px';
-    iconDomElem.style['width'] = '30px';
-    iconDomElem.style['border-radius'] = '100%';
-    const newClassNames = classNamesAsArr(po2.className);
-    classNames.forEach(c => iconDomElem.classList.remove(c));
-    newClassNames.forEach(c => iconDomElem.classList.add(c));
-    classNames = newClassNames;
-  };
-  return icon;
-};
 
 const BOX_QUERY_AGGREGATE_LEVELS = [
   ['gathering.conversions.wgs84Grid05.lat', 'gathering.conversions.wgs84Grid1.lon'],
@@ -540,7 +515,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
         click: this.onFeatureClick.bind(this)
       },
       marker: {
-        icon: getPointIcon
+        icon: getPointIconAsCircle
       },
       label: this.translate.instant('observation.map.dataOpacityControl.label'),
       visible: this.dataVisible,
