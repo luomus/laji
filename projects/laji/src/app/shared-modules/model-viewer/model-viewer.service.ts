@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { cacheReturnObservable } from 'projects/bird-atlas/src/app/core/api.service';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class ModelViewerService {
   constructor(private http: HttpClient) {}
-  getTestObj() {
-    return this.http.get('https://cdn.laji.fi/test-data/european-honey-buzzard.obj', { responseType: 'text' });
-  }
-  getTestGLB() {
-    return this.http.get('https://cdn.laji.fi/test-data/european-honey-buzzard.glb', { responseType: 'blob' });
+
+  @cacheReturnObservable(1000000)
+  get(src: string): Observable<any> {
+    return this.http.get(src, { responseType: 'blob' }).pipe(tap(console.log));
   }
 }

@@ -11,4 +11,4 @@ import { ModelViewerService } from './model-viewer.service';
   declarations: [ ModelViewerComponent ],
   exports: [ ModelViewerComponent ]
 })
-export class LajiModelViewerModule { }
+export class ModelViewerModule { }

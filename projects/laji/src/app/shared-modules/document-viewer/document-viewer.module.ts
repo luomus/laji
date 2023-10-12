@@ -51,7 +51,7 @@ import { IdentificationComponent } from './identifications/identification/identi
 import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
-import { LajiModelViewerModule } from '../model-viewer/model-viewer.module';
+import { ModelViewerModule } from '../model-viewer/model-viewer.module';
 
 @NgModule({
   imports: [
@@ -63,7 +63,7 @@ import { LajiModelViewerModule } from '../model-viewer/model-viewer.module';
     LicenseModule,
     InfoModule,
     NamedPlaceLinkerButtonModule,
-    LajiModelViewerModule
+    ModelViewerModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

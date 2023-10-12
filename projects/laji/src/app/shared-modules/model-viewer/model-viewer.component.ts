@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ModelViewerService } from './model-viewer.service';
@@ -38,6 +38,8 @@ const resizeCanvasToDisplaySize = (canvas: any): boolean => {
   styleUrls: ['./model-viewer.component.scss']
 })
 export class ModelViewerComponent implements AfterViewInit, OnDestroy {
+  @Input() src: string;
+
   @ViewChild('canvas') canvasElem: ElementRef;
 
   private glr: MiniRenderer;
@@ -53,7 +55,7 @@ export class ModelViewerComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.glr = new MiniRenderer(this.canvasElem.nativeElement);
-    this.mvs.getTestGLB().pipe(
+    this.mvs.get(this.src).pipe(
       switchMap(b => from(GLB.parseBlob(b)))
     ).subscribe(([bufferData, jsonData]) => {
       this.glr.loadModel(bufferData[0], jsonData);

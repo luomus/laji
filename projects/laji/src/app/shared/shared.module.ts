@@ -29,6 +29,8 @@ import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
 import { AreaNamePipe } from './pipe/area-name.pipe';
 import { ImageModalOverlayComponent } from './gallery/image-gallery/image-modal-overlay.component';
+import { ImageModalVideoComponent } from './gallery/video/video.component';
+import { ImageModalModelComponent } from './gallery/model/model.component';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { LocalizePipe } from '../locale/localize.pipe';
@@ -84,6 +86,7 @@ import { TypeGuardPipe } from './pipe/type-guard.pipe';
 import { PdfButtonComponent } from './pdf-button/pdf-button.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
+import { ModelViewerModule } from '../shared-modules/model-viewer/model-viewer.module';
 
 @NgModule({
     declarations: [
@@ -125,7 +128,9 @@ import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-brea
         ProjectFormOptionDirective,
         TypeGuardPipe,
         PdfButtonComponent,
-        IfWidthAboveBreakpointDirective
+        IfWidthAboveBreakpointDirective,
+        ImageModalVideoComponent,
+        ImageModalModelComponent
     ],
     imports: [
         FormsModule,
@@ -142,7 +147,8 @@ import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-brea
         TooltipModule, BsDropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule, ProgressbarModule,
         UtilitiesModule,
         InfoModule,
-        LayoutModule
+        LayoutModule,
+        ModelViewerModule
     ],
     providers: [],
     exports: [
