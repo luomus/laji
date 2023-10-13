@@ -18,7 +18,7 @@ import { InfoModule } from '../info/info.module';
     InfoModule
   ],
   declarations: [YkjMapComponent],
-  providers: [YkjService, WarehouseApi, TaxonomyApi],
+  providers: [YkjService, TaxonomyApi],
   exports: [YkjMapComponent]
 })
 export class YkjModule { }
