@@ -30,7 +30,6 @@ import { AugmentService } from './service/augment.service';
 import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { LajiMapModule } from '@laji-map/laji-map.module';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
 import { SpreadsheetFacade } from './spreadsheet.facade';
 import { FieldItemComponent } from './excel-generator/field-item/field-item.component';
@@ -74,7 +73,6 @@ import { ProgressbarModule } from 'projects/laji-ui/src/lib/progressbar/progress
     SharedModule,
     DatatableModule,
     LajiMapModule,
-    TypeaheadModule,
     TaxonAutocompleteModule,
     LajiUiModule,
     ProgressbarModule

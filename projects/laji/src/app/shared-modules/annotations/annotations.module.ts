@@ -5,11 +5,11 @@ import { AnnotationsComponent } from './annotations.component';
 import { AnnotationListComponent } from './annotation-list/annotation-list.component';
 import { AnnotationFormNewComponent } from './annotation-form-new/annotation-form-new.component';
 import { LangModule } from '../lang/lang.module';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurrence-at-time-of-annotation/occurrence-at-time-of-annotation.component';
 import { InfoModule } from '../info/info.module';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
   imports: [

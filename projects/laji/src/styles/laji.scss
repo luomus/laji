@@ -1214,13 +1214,13 @@ typeahead-container .active h5.autosuggest-value {
   color: $primary-1;
 }
 
-typeahead-container .dropdown-menu {
+typeahead-container {
   background-color: $neutral-1;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.2);
   border: none;
 }
 
-typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+typeahead-container .active {
   background-color: $primary-5;
   color: $primary-1;
 }
@@ -1229,6 +1229,7 @@ typeahead-container .active .informal-group-image {
   -webkit-filter: brightness(0) invert(1);
   filter: brightness(0) invert(1);
 }
+
 
 .alert-info {
   background-color: $primary-2;
@@ -1305,8 +1306,13 @@ typeahead-container .active .informal-group-image {
   background-image: url('/static/images/icons/flag_fi_small.png');
 }
 
-typeahead-container.dropdown ul li a {
-  display: inline-block
+
+typeahead-container button {
+    width: 100%;
+    padding: 3px 20px;
+    border: none;
+    background: white;
+    text-align: left;
 }
 
 typeahead-container {

@@ -16,7 +16,6 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import { SpeciesFormComponent } from './species/species-form/species-form.component';
 import { SpeciesComponent } from './species/species.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
 import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './species/service/taxonomy-search-query';
@@ -80,7 +79,7 @@ import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bol
 /* eslint-enable max-len */
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule,
+  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModalModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,

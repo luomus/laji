@@ -4,7 +4,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ObservationViewComponent } from './view/observation-view.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
@@ -42,6 +41,7 @@ import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-sele
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
   imports: [

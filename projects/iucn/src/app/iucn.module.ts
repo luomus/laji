@@ -12,7 +12,6 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -57,7 +56,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     SharedModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
     PopoverModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     IucnRoutingModule,
