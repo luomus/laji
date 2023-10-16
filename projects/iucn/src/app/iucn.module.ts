@@ -10,7 +10,6 @@ import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
@@ -56,7 +55,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     SharedModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    PopoverModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     IucnRoutingModule,
     TransferHttpCacheModule

@@ -33,7 +33,7 @@
             <lu-button (click)="editClick()" id="np-edit">{{ 'np.edit' | translate }}</lu-button>
             <div class="d-inline-block">
               <lu-button (click)="deleteClick()" [disabled]="!canDelete" id="np-delete">{{ 'np.delete' | translate }}</lu-button>
-              <laji-info *ngIf="!canDelete" [noShow]="true" [tooltip]="'np.delete.disabled.hasDocs' | translate"></laji-info>
+              <laji-info *ngIf="!canDelete">{{ 'np.delete.disabled.hasDocs' | translate }}</laji-info>
             </div>
           </ng-container>
         </div>

@@ -46,9 +46,8 @@
               <laji-row [title]="'MZ.dateEdited' | label" [value]="document.dateEdited | amDateFormat:'DD.MM.YYYY'"></laji-row>
             </ng-template>
             <button class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
-                    [popover]="docMeta"
-                    placement="left"
-                    triggers="click mouseenter:mouseleave"><i class="glyphicon glyphicon-user"></i>
+                    [luPopover]="docMeta"
+                    placement="left"><i class="glyphicon glyphicon-user"></i>
             </button>
             <button class="btn btn-default btn-xs pull-right"
                     (click)="toggleFacts()">

@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
@@ -83,6 +82,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
 import { DisableWheelDirective } from './directive/disable-wheel.directive';
 import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
+import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
 @NgModule({
