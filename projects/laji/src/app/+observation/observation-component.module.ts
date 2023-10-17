@@ -42,6 +42,7 @@ import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-sele
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { ObservationResultFrontComponent } from './result-front/observation-resu
     SelectModule,
     CollectionsSelectModule,
     ExtendedGroupSelectModule,
-    CommonModule
+    CommonModule,
+    TooltipModule
   ],
   declarations: [
     ObservationComponent,

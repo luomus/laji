@@ -16,7 +16,7 @@
                [routerLink]="['/view/print'] | localize"
                [queryParams]="{id: document.id, showFacts: showFacts}"
                target="_blank"
-               [tooltip]="'haseka.submissions.toPrint' | translate">
+               [luTooltip]="'haseka.submissions.toPrint' | translate">
               {{ 'print' | translate }}
               <img src="/static/images/icons/pdf_16x16.png">
             </a>

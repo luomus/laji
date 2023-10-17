@@ -15,7 +15,7 @@
                         <span>
                             {{ occurrence.taxonVerbatim }}
                             <a (click)="onTaxonLinkClick($event)" [routerLink]="['/taxon/' + (occurrence.taxonId | toQName)] | localize" target="_blank"
-                            [tooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
+                            [luTooltip]="'showSpeciesCard' | translate" placement="right" tabindex="-1">
                             <i class="glyphicon glyphicon-tag"></i>
                             </a>
                         </span>
@@ -34,11 +34,11 @@
                     <b>{{ 'result.gathering.locality' | translate }}: </b>
                     <span>
                         <ul class="separated-list">
-                            <li *ngIf="occurrence.countryVerbatim" [tooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
+                            <li *ngIf="occurrence.countryVerbatim" [luTooltip]="'MY.country' | label" [isDisabled]="hideTooltips">
                                 {{ occurrence.countryVerbatim }}</li>
-                            <li *ngIf="occurrence.municipalityVerbatim" [tooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
+                            <li *ngIf="occurrence.municipalityVerbatim" [luTooltip]="'MY.municipality' | label" [isDisabled]="hideTooltips">
                                 {{ occurrence.municipalityVerbatim }}</li>
-                            <li *ngIf="occurrence.locality" [tooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
+                            <li *ngIf="occurrence.locality" [luTooltip]="'MY.locality' | label" [isDisabled]="hideTooltips">
                                 {{ occurrence.locality }}
                             </li>
                         </ul>

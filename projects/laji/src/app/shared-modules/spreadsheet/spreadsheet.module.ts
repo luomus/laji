@@ -40,6 +40,7 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { ErroneousFirstPipe } from './importer/erroneous-first.pipe';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { ProgressbarModule } from 'projects/laji-ui/src/lib/progressbar/progressbar.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { ProgressbarModule } from 'projects/laji-ui/src/lib/progressbar/progress
     TaxonAutocompleteModule,
     LajiUiModule,
     PopoverModule,
-    ProgressbarModule
+    ProgressbarModule,
+    TooltipModule
   ],
   providers: [SpreadsheetService, MappingService, ImportService, GeneratorService, AugmentService, SpreadsheetFacade],
 })

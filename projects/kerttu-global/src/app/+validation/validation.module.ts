@@ -24,6 +24,7 @@ import { SpeciesSelectComponent } from './species-select/species-select.componen
 import { ValidationInstructionsComponent } from './validation-instructions/validation-instructions.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { LicenseComponent } from './species-validation/species-template-validation/audio-info/license.component';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { LicenseComponent } from './species-validation/species-template-validati
     AudioViewerModule,
     LajiUiModule,
     InfoPageModule,
-    ValidationRoutingModule
+    ValidationRoutingModule,
+    TooltipModule
   ],
   declarations: [
     ValidationComponent,

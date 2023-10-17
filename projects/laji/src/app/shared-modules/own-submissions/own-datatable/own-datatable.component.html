@@ -138,19 +138,6 @@
             </ng-template>
           </a>
         </div>
-
-        <!--<span *ngIf="showMakeTemplate(row)">
-          <lu-button
-                class="template-button"
-                [role]="'warning'"
-                (click)="makeTemplate(row)"
-                [tooltip]="'haseka.form.saveTemplate' | translate"
-                container="body"
-                [adaptivePosition]="false"
-                [placement]="'right'">
-            <i class="glyphicon glyphicon-floppy-disk"></i>
-        </lu-button>
-        </span>-->
       </ng-template>
     </ngx-datatable-column>
 
@@ -196,10 +183,8 @@
           </div>
           <button *ngIf="(actions | includes:'delete') && (admin || row.creator === usersId)"
             class="btn btn-danger btn-xs delete-button"
-            [tooltip]="'friend.remove' | translate"
+            [luTooltip]="'friend.remove' | translate"
             [placement]="'left'"
-            [adaptivePosition]="false"
-            [container]="'body'"
             (click)="deleteDialog(row)">
             <i class="glyphicon glyphicon-remove"></i>
             <span class="text-button">{{ 'np.delete' | translate }}</span>

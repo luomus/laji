@@ -24,6 +24,7 @@ import { FormPermissionModule } from '../../form-permission/form-permission.modu
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { ProjectFormHeaderModule } from '../../header/project-form-header.module';
 import { LajiLegendModule } from '../../../shared-modules/legend/legend.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   providers: [],
@@ -41,7 +42,8 @@ import { LajiLegendModule } from '../../../shared-modules/legend/legend.module';
     LajiUiModule,
     InfoModule,
     ProjectFormHeaderModule,
-    LajiLegendModule
+    LajiLegendModule,
+    TooltipModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,
