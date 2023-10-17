@@ -2,6 +2,9 @@
   "extends": [
     "../../.eslintrc.json"
   ],
+  "ignorePatterns": [
+    "src/lib/typeahead/**/*.ts"
+  ],
   "rules": {
     "@angular-eslint/component-selector": [
       "error",

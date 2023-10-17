@@ -21,7 +21,6 @@ import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -57,7 +56,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     SharedModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     LajiUiModule
   ],

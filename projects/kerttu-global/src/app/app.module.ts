@@ -9,7 +9,6 @@ import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -55,7 +54,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     ModalModule.forRoot(),
     DropdownModule,
     TooltipModule.forRoot(),
-    TypeaheadModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
     AppRoutingModule,
     TransferHttpCacheModule,
