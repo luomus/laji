@@ -12,6 +12,7 @@ export enum Step {
   fileAlreadyUploadedPartially,
   fileAlreadyUploaded,
   invalidFileType,
+  requiredFieldsNull,
   invalidFormId,
   importingFile,
   colMapping,
