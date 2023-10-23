@@ -13,11 +13,12 @@ import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { CarouselModule } from 'projects/laji-ui/src/lib/carousel/carousel.module';
 import { NewsListModule } from '../shared-modules/news-list/news-list.module';
 import { ObservationCountModule } from '../shared-modules/observation-count/observation-count.module';
+import { OmniSearchModule } from '../shared-modules/omni-search/omni-search.module';
 
 @NgModule({
   imports: [
     routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule,
-    TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule, NewsListModule, ObservationCountModule
+    TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule, NewsListModule, ObservationCountModule, OmniSearchModule
   ],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
 })

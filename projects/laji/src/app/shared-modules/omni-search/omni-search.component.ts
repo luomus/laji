@@ -13,12 +13,12 @@ import {
 } from '@angular/core';
 import { of as ObservableOf, Subscription } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
-import { WarehouseApi } from '../api/WarehouseApi';
-import { Logger } from '../logger/logger.service';
+import { WarehouseApi } from '../../shared/api/WarehouseApi';
+import { Logger } from '../../shared/logger/logger.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
-import { LajiApi, LajiApiService } from '../service/laji-api.service';
-import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../service/taxon-autocomplete.service';
+import { LajiApi, LajiApiService } from '../../shared/service/laji-api.service';
+import { TaxaWithAutocomplete, TaxonAutocompleteService } from '../../shared/service/taxon-autocomplete.service';
 import { TranslateService } from '@ngx-translate/core';
 
 

@@ -31,6 +31,7 @@ import { GlobalMessageComponent } from './component/global-message/global-messag
 import { FooterComponent } from './component/footer/footer.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { OmniSearchModule } from 'projects/laji/src/app/shared-modules/omni-search/omni-search.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -64,7 +65,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
     TransferHttpCacheModule,
-    DocumentViewerModule
+    DocumentViewerModule,
+    OmniSearchModule
   ],
   exports: [
     TranslateModule

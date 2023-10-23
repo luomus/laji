@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from '../../shared/navbar';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { FeedbackComponent } from '../../shared/feedback/feedback.component';
 import { ForumComponent } from '../../forum/forum.component';
@@ -12,10 +11,10 @@ import { DocumentViewerModule } from '../document-viewer/document-viewer.module'
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { BetaPopupComponent } from './beta-popup/beta-popup.component';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { NavbarModule } from '../navbar/navbar.module';
 
 @NgModule({
   declarations: [
-    NavbarComponent,
     FooterComponent,
     IucnFooterComponent,
     FeedbackComponent,
@@ -29,10 +28,10 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
     SharedModule,
     DocumentViewerModule,
     LajiUiModule,
-    DropdownModule
+    DropdownModule,
+    NavbarModule
   ],
   exports: [
-    NavbarComponent,
     FooterComponent,
     IucnFooterComponent,
     FeedbackComponent,

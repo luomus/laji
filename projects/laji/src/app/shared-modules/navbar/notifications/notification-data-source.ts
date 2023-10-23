@@ -1,7 +1,7 @@
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { NotificationsFacade } from './notifications.facade';
-import { Notification } from '../../model/Notification';
+import { Notification } from '../../../shared/model/Notification';
 import { takeUntil } from 'rxjs/operators';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';

@@ -3,10 +3,10 @@ import { BehaviorSubject, Observable, Subject, of, from, EMPTY } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap, take, concatMap, toArray, filter, catchError } from 'rxjs/operators';
 import { GraphQLService } from '../../../graph-ql/service/graph-ql.service';
 import gql from 'graphql-tag';
-import { PagedResult } from '../../model/PagedResult';
-import { UserService } from '../../service/user.service';
-import { LajiApi, LajiApiService } from '../../service/laji-api.service';
-import { Notification } from '../../model/Notification';
+import { PagedResult } from '../../../shared/model/PagedResult';
+import { UserService } from '../../../shared/service/user.service';
+import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
+import { Notification } from '../../../shared/model/Notification';
 
 interface State {
   notifications: PagedResult<Notification>;

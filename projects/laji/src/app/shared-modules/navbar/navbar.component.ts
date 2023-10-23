@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { UserService } from '../service/user.service';
+import { UserService } from '../../shared/service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
-import { BrowserService } from '../service/browser.service';
+import { BrowserService } from '../../shared/service/browser.service';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({

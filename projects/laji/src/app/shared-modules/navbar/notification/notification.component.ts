@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Notification } from '../../model/Notification';
-import { IdService } from '../../service/id.service';
+import { Notification } from '../../../shared/model/Notification';
+import { IdService } from '../../../shared/service/id.service';
 
 @Component({
   selector: '[laji-notification]',

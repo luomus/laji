@@ -8,7 +8,6 @@ import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
 import { PanelComponent } from './panel/panel.component';
-import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
 import { ImageModalComponent } from './gallery/image-gallery/image-modal.component';
 import { ToQNamePipe } from './pipe/to-qname.pipe';
@@ -25,7 +24,6 @@ import { ImageModalOverlayComponent } from './gallery/image-gallery/image-modal-
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { LocalizePipe } from '../locale/localize.pipe';
-import { NotificationComponent } from './navbar/notification/notification.component';
 import { HideScrollDirective } from './directive/hide-scroll';
 import { FixedBelowDirective } from './directive/fixed-below.directive';
 import { LangModule } from '../shared-modules/lang/lang.module';
@@ -58,15 +56,12 @@ import { TruncatePipe } from './pipe/truncate.pipe';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AfterIfDirective } from './directive/after-if.directive';
 import { FilterValuePipe } from './pipe/filter-value.pipe';
-import { NotificationsComponent } from './navbar/notifications/notifications.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 import { WarehousePipe } from './pipe/warehouse.pipe';
 import { DateCutoffFuturePipe } from './pipe/date-cutoff-future.pipe';
 import { UtilitiesModule } from '../shared-modules/utilities/utilities.module';
 import { IncludesPipe } from './pipe/includes.pipe';
 import { SsrDisableDirective } from './directive/ssr-disable.directive';
-import { TaxonDropdownComponent } from './navbar/taxon-dropdown/taxon-dropdown.component';
 import { QualityUrlPipe } from './pipe/quality-url.pipe';
 import { ConfirmModalComponent } from './service/confirm-modal.component';
 import { CheckboxValuePipe } from './pipe/checkbox-value.pipe';
@@ -85,12 +80,12 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
     declarations: [
-        LocalizePipe, NotificationComponent, NotificationsComponent, TaxonDropdownComponent,
+        LocalizePipe,
         ToQNamePipe, ToFullUriPipe, ValuesPipe,
         UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
         AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
         GalleryComponent,
-        PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
+        PanelComponent, ImageModalComponent, ImageModalOverlayComponent,
         AuthoritiesDirective, ImageComponent, NlToBrPipe,
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         ObservationGroupSelectComponent, IucnGroupSelectComponent,
@@ -136,22 +131,21 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         MomentModule,
         SpinnerModule,
         PaginatorModule,
-        ScrollingModule,
         LajiUiModule,
         DropdownModule, AlertModule, ModalModule, NgxWebstorageModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
         LayoutModule,
-        TooltipModule
+        TooltipModule,
     ],
     providers: [],
     exports: [
-        CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
-        TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
+        CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule,
+        AreaNamePipe, TaxonNamePipe, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
         ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
         ToFullUriPipe, TooltipModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
         FormattedNumber, GalleryComponent,
-        PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
+        PanelComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         IucnGroupSelectComponent,
         ObservationGroupSelectComponent,

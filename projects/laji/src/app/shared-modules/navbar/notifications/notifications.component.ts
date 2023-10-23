@@ -7,9 +7,9 @@ import { switchMap, takeUntil, filter, tap, map } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
 import { NotificationDataSource } from './notification-data-source';
 import { TranslateService } from '@ngx-translate/core';
-import { Notification } from '../../model/Notification';
+import { Notification } from '../../../shared/model/Notification';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { DialogService } from '../../service/dialog.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
   selector: 'laji-notifications',
