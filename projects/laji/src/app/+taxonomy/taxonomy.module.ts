@@ -76,6 +76,7 @@ import { IdentificationListComponent } from './taxon/info-card/taxon-identificat
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
 import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bold/taxon-bold.component';
+import { ObservationCountModule } from '../shared-modules/observation-count/observation-count.module';
 /* eslint-enable max-len */
 
 @NgModule({
@@ -83,7 +84,7 @@ import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bol
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModalModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
-    ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule
+    ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule, ObservationCountModule
   ],
   providers: [
     TaxonomyApi,

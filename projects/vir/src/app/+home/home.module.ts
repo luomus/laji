@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { LajiUiModule } from '../../../../laji-ui/src/public-api';
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
@@ -8,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { NavigationThumbnailModule } from '../../../../laji/src/app/shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TechnicalNewsModule } from 'projects/laji/src/app/shared-modules/technical-news/technical-news.module';
+import { ObservationCountModule } from 'projects/laji/src/app/shared-modules/observation-count/observation-count.module';
 
 
 @NgModule({
@@ -19,7 +19,8 @@ import { TechnicalNewsModule } from 'projects/laji/src/app/shared-modules/techni
     TranslateModule,
     NavigationThumbnailModule,
     SharedModule,
-    TechnicalNewsModule
+    TechnicalNewsModule,
+    ObservationCountModule
   ]
 })
 export class HomeModule { }

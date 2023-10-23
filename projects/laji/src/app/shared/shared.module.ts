@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
-import { ObservationCountComponent } from '../+observation/count/observation-count.component';
 import { PanelComponent } from './panel/panel.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 import { SafePipe } from './pipe/safe.pipe';
@@ -90,7 +89,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         ToQNamePipe, ToFullUriPipe, ValuesPipe,
         UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
         AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
-        ObservationCountComponent, GalleryComponent,
+        GalleryComponent,
         PanelComponent, OmniSearchComponent, ImageModalComponent, ImageModalOverlayComponent,
         AuthoritiesDirective, ImageComponent, NlToBrPipe,
         HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
@@ -151,7 +150,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
         ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
         ToFullUriPipe, TooltipModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
-        FormattedNumber, ObservationCountComponent, GalleryComponent,
+        FormattedNumber, GalleryComponent,
         PanelComponent, OmniSearchComponent, ImageModalComponent, NlToBrPipe, PaginatorModule,
         AuthoritiesDirective, MomentModule, LocalizePipe, HideScrollDirective, FixedBelowDirective, ClickOutSideDirective,
         IucnGroupSelectComponent,

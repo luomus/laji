@@ -5,7 +5,6 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 
-
 @Component({
   selector: 'laji-observation-count',
   templateUrl: './observation-count.component.html',

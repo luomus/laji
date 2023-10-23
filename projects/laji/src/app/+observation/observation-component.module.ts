@@ -43,6 +43,7 @@ import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
+import { ObservationCountModule } from '../shared-modules/observation-count/observation-count.module';
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     CollectionsSelectModule,
     ExtendedGroupSelectModule,
     CommonModule,
-    TooltipModule
+    TooltipModule,
+    ObservationCountModule
   ],
   declarations: [
     ObservationComponent,
