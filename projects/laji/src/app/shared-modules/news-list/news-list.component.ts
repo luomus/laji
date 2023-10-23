@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { News } from '../model/News';
-import { PagedResult } from '../model/PagedResult';
+import { News } from '../../shared/model/News';
+import { PagedResult } from '../../shared/model/PagedResult';
 import { Observable } from 'rxjs';
 import { NewsFacade } from '../../+news/news.facade';
 

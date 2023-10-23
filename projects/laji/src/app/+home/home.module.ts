@@ -11,9 +11,13 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { CarouselModule } from 'projects/laji-ui/src/lib/carousel/carousel.module';
+import { NewsListModule } from '../shared-modules/news-list/news-list.module';
 
 @NgModule({
-  imports: [routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule, TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule],
+  imports: [
+    routing, SharedModule, CarouselModule, ObservationMapModule, NavigationThumbnailModule,
+    TechnicalNewsModule, InfoModule, LajiUiModule, InfoPageModule, NewsListModule
+  ],
   declarations: [HomeComponent, ImageHeaderComponent, StatItemComponent]
 })
 export class HomeModule {}

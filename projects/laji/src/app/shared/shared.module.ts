@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
-import { NewsListComponent } from './news-list/news-list.component';
 import { UsersPipe } from './pipe/users.pipe';
 import { LabelPipe } from './pipe/label.pipe';
 import { FormattedNumber } from './pipe/formated-number.pipe';
@@ -87,7 +86,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
     declarations: [
-        NewsListComponent, LocalizePipe, NotificationComponent, NotificationsComponent, TaxonDropdownComponent,
+        LocalizePipe, NotificationComponent, NotificationsComponent, TaxonDropdownComponent,
         ToQNamePipe, ToFullUriPipe, ValuesPipe,
         UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, FormattedNumber,
         AreaNamePipe, TaxonNamePipe, CollectionNamePipe, FormNamePipe,
@@ -149,7 +148,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     providers: [],
     exports: [
         CommonModule, RouterModule, TranslateModule, FormsModule, ReactiveFormsModule, NotificationComponent, NotificationsComponent,
-        TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, NewsListComponent, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
+        TaxonDropdownComponent, AreaNamePipe, TaxonNamePipe, UsersPipe, LabelPipe, CollectionNamePipe, SafePipe, SpinnerModule,
         ToQNamePipe, ValuesPipe, CollectionNamePipe, FormNamePipe,
         ToFullUriPipe, TooltipModule, DropdownModule, AlertModule, ModalModule, PopoverModule,
         FormattedNumber, ObservationCountComponent, GalleryComponent,
