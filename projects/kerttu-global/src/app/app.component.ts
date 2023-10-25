@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HeaderService } from '../../../laji/src/app/shared/service/header.service';
 import { HistoryService } from '../../../laji/src/app/shared/service/history.service';
-import { setTheme } from 'ngx-bootstrap/utils';
 
 @Component({
   selector: 'bsg-app',
@@ -24,7 +23,6 @@ export class AppComponent {
     headerService: HeaderService,
     historyService: HistoryService
   ) {
-    setTheme('bs3');
     headerService.initialize();
     historyService.startRouteListener();
   }
