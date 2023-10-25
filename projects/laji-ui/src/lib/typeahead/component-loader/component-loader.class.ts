@@ -20,7 +20,7 @@ import {
 
 import { PositioningOptions, PositioningService } from '../positioning';
 
-import { listenToTriggersV2, registerEscClick, registerOutsideClick } from 'ngx-bootstrap/utils';
+import { listenToTriggersV2, registerEscClick, registerOutsideClick } from '../utils';
 import { Subscription } from 'rxjs';
 
 import { ContentRef } from './content-ref.class';
