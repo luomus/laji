@@ -15,7 +15,7 @@
              [routerLink]="['/view/print'] | localize"
              [queryParams]="(document.formId | toQName) === collectionContestFormId && own ? {id: (document.documentId | toQName), showFacts: showFacts} : {uri: document.documentId, own: own, showFacts: showFacts}"
              target="_blank"
-             [tooltip]="'haseka.submissions.toPrint' | translate">
+             [luTooltip]="'haseka.submissions.toPrint' | translate">
             {{ 'print' | translate }}
             <img src="/static/images/icons/pdf_16x16.png">
           </a>
@@ -61,7 +61,7 @@
           <a class="btn btn-default btn-xs pull-right" style="margin-left: 10px;"
              *ngIf="externalViewUrl"
              href="{{externalViewUrl}}" rel="noopener" target="_blank"
-              [tooltip]="'information.more' | translate"
+              [luTooltip]="'information.more' | translate"
               placement="left">
             <i class="glyphicon glyphicon-new-window small"></i>
           </a>

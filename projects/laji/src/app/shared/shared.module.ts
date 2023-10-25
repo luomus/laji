@@ -2,7 +2,6 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NewsListComponent } from './news-list/news-list.component';
 import { UsersPipe } from './pipe/users.pipe';
@@ -83,6 +82,7 @@ import { DisableWheelDirective } from './directive/disable-wheel.directive';
 import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
     declarations: [
@@ -139,10 +139,11 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
         PaginatorModule,
         ScrollingModule,
         LajiUiModule,
-        TooltipModule, DropdownModule, AlertModule, NgxWebstorageModule, PopoverModule,
+        DropdownModule, AlertModule, NgxWebstorageModule, PopoverModule,
         UtilitiesModule,
         InfoModule,
-        LayoutModule
+        LayoutModule,
+        TooltipModule
     ],
     providers: [],
     exports: [

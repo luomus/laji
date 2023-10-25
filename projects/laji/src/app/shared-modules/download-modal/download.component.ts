@@ -71,7 +71,7 @@ export interface DownloadParams {
           <div class="col-sm-12">
             <laji-spinner [spinning]="downloadLoading" [overlay]="true">
               <button type="button"
-                      [tooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
+                      [luTooltip]="showReason && disableDownLoad ? ('download.reason-required' | translate) : ''"
                       class="btn btn-default pull-right"
                       [disabled]="disableDownLoad"
                       (click)="onDownload()">

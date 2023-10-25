@@ -25,6 +25,7 @@ import { ValidationInstructionsComponent } from './validation-instructions/valid
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { LicenseComponent } from './species-validation/species-template-validation/audio-info/license.component';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     LajiUiModule,
     InfoPageModule,
     ValidationRoutingModule,
-    ModalModule
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     ValidationComponent,

@@ -41,6 +41,7 @@ import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-sele
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
@@ -69,7 +70,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     CollectionsSelectModule,
     ExtendedGroupSelectModule,
     CommonModule,
-    ModalModule
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     ObservationComponent,

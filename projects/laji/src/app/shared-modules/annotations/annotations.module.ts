@@ -9,6 +9,7 @@ import { SearchFiltersModule } from '../search-filters/search-filters.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { OccurrenceAtTimeOfAnnotationComponent } from './annotation-list/occurrence-at-time-of-annotation/occurrence-at-time-of-annotation.component';
 import { InfoModule } from '../info/info.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
@@ -19,7 +20,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     SharedModule,
     SearchFiltersModule,
     LajiUiModule,
-    InfoModule
+    InfoModule,
+    TooltipModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent,
     AnnotationFormNewComponent, OccurrenceAtTimeOfAnnotationComponent ],

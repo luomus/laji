@@ -11,6 +11,7 @@ import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { CountRoundingPipe } from './pipe/count-rounding.pipe';
 import { TreeSelectorComponent } from './tree-selector/tree-selector.component';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     TreeModule,
     SelectModule,
     LajiUiModule,
-    ModalModule
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     TreeSelectComponent,

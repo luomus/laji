@@ -10,10 +10,8 @@ import { TaxonNameComponent } from './taxon-name/taxon-name.component';
 import { AnnotationItemComponent } from './annotation-item/annotation-item.component';
 import { AnnotationItemStatusComponent } from './annotation-item/annotation-item-status/annotation-item-status.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
-
-
-
 
 @NgModule({
   imports: [
@@ -21,7 +19,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     TypeaheadModule,
     LangModule,
     SharedModule,
-    LajiUiModule
+    LajiUiModule,
+    TooltipModule
   ],
   declarations: [AnnotationsComponent, AnnotationListComponent,
   GatheringComponent, GatheringRowsComponent,

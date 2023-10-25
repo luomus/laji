@@ -33,6 +33,20 @@ const getPopoverBodyOffset = (d: Document, w: Window, el: HTMLElement, popover: 
   }
 };
 
+export const positionPopoverInBody = (
+  popoverEl: any, relativeEl: any, document: Document,
+  renderer: Renderer2, placement: PopoverPlacement
+) => {
+  renderer.appendChild(document.body, popoverEl);
+  // temporarily hide until the element is moved to the correct location
+  renderer.setStyle(popoverEl, 'opacity', '0');
+  setTimeout(() => { // we need to let angular render before the popover gets sane width/height values
+    const {x, y} = getPopoverBodyOffset(document, window, relativeEl, popoverEl, placement);
+    renderer.setStyle(popoverEl, 'transform', `translate(${x}px, ${y}px)`);
+    renderer.setStyle(popoverEl, 'opacity', '1');
+  });
+};
+
 @Directive({
   selector: '[luPopover]'
 })
@@ -138,14 +152,10 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     this.renderer.addClass(this.popoverRef.location.nativeElement, this.placement);
 
     if (this.rootElement === 'body') {
-      this.renderer.appendChild(this.document.body, this.popoverRef.location.nativeElement);
-      // temporarily hide until the element is moved to the correct location
-      this.renderer.setStyle(this.popoverRef.location.nativeElement, 'opacity', '0');
-      setTimeout(() => { // we need to let angular render before the popover gets sane width/height values
-        const {x, y} = getPopoverBodyOffset(this.document, window, this.el.nativeElement, this.popoverRef.location.nativeElement, this.placement);
-        this.renderer.setStyle(this.popoverRef.location.nativeElement, 'transform', `translate(${x}px, ${y}px)`);
-        this.renderer.setStyle(this.popoverRef.location.nativeElement, 'opacity', '1');
-      });
+      positionPopoverInBody(
+        this.popoverRef.location.nativeElement, this.el.nativeElement,
+        this.document, this.renderer, this.placement
+      );
     } else {
       this.renderer.appendChild(this.el.nativeElement, this.popoverRef.location.nativeElement);
     }

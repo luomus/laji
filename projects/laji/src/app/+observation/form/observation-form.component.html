@@ -232,13 +232,13 @@
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="lji-icon lji-polygon"></i>
       </button>
       {{ 'observation.form.map.polygon' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn" (click)="mapDraw.emit('CoordinatesImport')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="glyphicon glyphicon-floppy-open"></i>
       </button>

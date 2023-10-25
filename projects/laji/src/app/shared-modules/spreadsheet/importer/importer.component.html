@@ -120,7 +120,7 @@
                     <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="!this.form?.options?.hideDraftButton">
                       {{ buttonLabel('temp') | translate }}
                     </button>
-                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
                       <i class="glyphicon glyphicon-open"></i>
                     </div>
                   </div>
@@ -168,7 +168,7 @@
     <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
       <div class="row">
         <div class="col-sm-12">
-          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
             <i class="glyphicon glyphicon-save"></i>
           </div>
           <p *ngIf="vm.step === step.doneOk">

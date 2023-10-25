@@ -52,6 +52,7 @@ import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
     InfoModule,
     NamedPlaceLinkerButtonModule,
     PopoverModule,
-    ModalModule
+    ModalModule,
+    TooltipModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,
