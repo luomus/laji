@@ -19,7 +19,6 @@ export class ProjectFormPage {
   public readonly $disabled = $('laji-project-form-disabled');
   private mobileLabel = $('[dismisslabel="haseka.terms.mobileFormDismiss"]');
   private closeButton = $('.btn.btn-md.btn-primary.btn-block.use-button');
-  private modalBody = $('body.modal-open');
 
   public readonly documentFormView = new DocumentFormView();
   public readonly namedPlacesView = new NamedPlacesView();
@@ -54,10 +53,6 @@ export class ProjectFormPage {
     return this.mobileLabel.isPresent();
   }
 
-  isTermsModalOpen() {
-    return this.modalBody.isPresent();
-  }
-
   async closeTermsDialog() {
     await browser.waitForAngularEnabled(true);
     return this.closeButton.click();
@@ -86,8 +81,8 @@ export class NamedPlacesView {
   public readonly $addButton = this.$container.$('.choose-label .lu-btn.secondary');
   public readonly $deleteButton = this.$viewer.$('#np-delete');
   public readonly $editButton = this.$viewer.$('#np-edit');
-  public readonly $modal = this.$container.$('laji-np-info .modal.in');
-  public readonly $modalCloseButton = this.$modal.$('.modal-header lu-button');
+  public readonly $modal = $('.lu-modal-content');
+  public readonly $modalCloseButton = this.$modal.$('.lu-modal-close-button');
 
   async delete() {
     await this.$deleteButton.click();
