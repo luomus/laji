@@ -167,7 +167,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this._isShown = false;
-    this.overlay.destroy();
+    this.overlay?.destroy();
   }
 
   setView(viewType) {
