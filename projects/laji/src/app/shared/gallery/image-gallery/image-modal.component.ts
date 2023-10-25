@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentRef,
-  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -11,13 +10,15 @@ import {
   Renderer2,
   ViewContainerRef,
   HostListener,
-  OnChanges
+  OnChanges,
+  Inject,
+  EnvironmentInjector
 } from '@angular/core';
 import { IImageSelectEvent, Image } from './image.interface';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from './image-modal-overlay.component';
 import { QueryParamsHandling } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 /**
  * Originally from here https://github.com/vimalavinisha/angular2-image-popup
@@ -85,20 +86,18 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
-  private _overlay: ComponentLoader<ImageModalOverlayComponent>;
+  // private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
   private _isShown = false;
   index: number;
   tmpImg: any;
 
 
-  constructor(_viewContainerRef: ViewContainerRef,
-              _renderer: Renderer2,
-              _elementRef: ElementRef,
-              cis: ComponentLoaderFactory) {
-    this._overlay = cis
-      .createLoader<ImageModalOverlayComponent>(_elementRef, _viewContainerRef, _renderer);
-  }
+  constructor(private viewContainerRef: ViewContainerRef,
+              private _renderer: Renderer2,
+              @Inject(DOCUMENT) private document: Document,
+              private envInjector: EnvironmentInjector,
+              ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -122,7 +121,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     if (this.showModalSub) { this.showModalSub.unsubscribe(); }
-    this._overlay.dispose();
+    this.overlay?.destroy();
   }
 
   openMainPic(url, index) {
@@ -145,12 +144,12 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
 
-    this._overlay
-      .attach(ImageModalOverlayComponent)
-      .to('body')
-      .show({isAnimated: false});
+    this.overlay = this.viewContainerRef.createComponent(ImageModalOverlayComponent,
+      {
+        environmentInjector: this.envInjector
+      });
+    this._renderer.appendChild(this.document.body, this.overlay.location.nativeElement);
     this._isShown = true;
-    this.overlay = this._overlay._componentRef;
     this.overlay.instance.modalImages = this.modalImages;
     this.overlay.instance.showImage(index);
     if (this.showModalSub) { this.showModalSub.unsubscribe(); }
@@ -168,7 +167,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this._isShown = false;
-    this._overlay.hide();
+    this.overlay.destroy();
   }
 
   setView(viewType) {
