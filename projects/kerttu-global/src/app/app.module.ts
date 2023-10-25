@@ -6,8 +6,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LajiErrorHandler } from '../../../laji/src/app/shared/error/laji-error-handler';
 import { ConsoleLogger, HttpLogger, Logger, ILogger } from '../../../laji/src/app/shared/logger';
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -47,11 +45,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: LazyTranslateLoader
       }
     }),
-    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     DropdownModule,
-    TooltipModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'kerttu-global-', separator: ''}),
     AppRoutingModule,
     TransferHttpCacheModule,

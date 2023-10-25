@@ -4,8 +4,6 @@ import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } f
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -54,11 +52,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: LazyTranslateLoader
       }
     }),
-    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
     DropdownModule,
-    TooltipModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
     TransferHttpCacheModule,
