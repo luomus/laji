@@ -51,6 +51,7 @@ import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
     LicenseModule,
     InfoModule,
     NamedPlaceLinkerButtonModule,
-    PopoverModule
+    PopoverModule,
+    ModalModule
   ],
   providers: [ToQNamePipe],
   declarations: [DocumentComponent, LevelComponent, ImagesComponent, ViewerMapComponent, RowComponent,

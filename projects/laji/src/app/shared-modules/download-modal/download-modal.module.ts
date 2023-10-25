@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DownloadComponent } from './download.component';
 import { SpinnerModule } from '../spinner/spinner.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -13,6 +12,7 @@ import { ReasonComponent } from './reason/reason.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   declarations: [DownloadComponent, ApikeyModalComponent, ReasonComponent],

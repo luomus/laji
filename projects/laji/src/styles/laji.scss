@@ -73,7 +73,7 @@ laji-locale-sv > div,
   flex-direction: column;
 }
 
-.modal {
+.lu-modal {
   z-index: 1070;
 }
 
@@ -297,9 +297,6 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
-.modal-dialog {
-  z-index: 1070;
-}
 .popover-modal {
   z-index: 1080;
 }
@@ -727,66 +724,6 @@ body > .ui-select-bootstrap.open {
   border: 1px solid $neutral-3;
 }
 /** /scrollbar **/
-
-.modal-open-after {
-  overflow: hidden;
-}
-
-.modal-open-after .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.modal-content {
-  min-height: 100px;
-  background: $neutral-2;
-}
-
-/** make modal body scrollable **/
-.scrollable-modal.modal-dialog {
-  height: calc(100% - 20px);
-
-  .modal-content {
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    > *:not(.modal-header, .modal-body, .modal-footer) {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .modal-body {
-      flex: 1;
-      overflow: auto;
-    }
-  }
-}
-
-@media (min-width: 768px){
-  .modal-xl {
-      width: 90%;
-  }
-}
-
-
-@media (min-width: 1660px){
-  .modal-xl {
-      width: 1600px;
-  }
-}
-
-
-@media only screen and (min-width : 768px) {
-  .modal-dialog {
-    margin: 60px auto 30px auto;
-  }
-  .scrollable-modal.modal-dialog {
-    height: calc(100% - 90px);
-  }
-}
 
 /** print management */
 @media print

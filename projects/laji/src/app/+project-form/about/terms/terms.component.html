@@ -10,22 +10,14 @@
     </ng-container>
 
     <ng-template #showModal>
-      <div class="modal" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
-        <div class="modal-dialog modal-md">
-          <div class="modal-content">
-            <div class="modal-header">
-            </div>
-            <div class="modal-body">
+      <lu-modal [noClose]="true" #modal>
               <div [innerHtml]="'haseka.intro2' | translate" lajiRouteTransformer></div>
               <button type="button"
                       class="btn btn-md btn-primary btn-block use-button"
                       (click)="toggleInfo()">
                 {{ dismissLabel | translate }}
               </button>
-            </div>
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
+      </lu-modal>
     </ng-template>
   </ng-container>
 </ng-container>

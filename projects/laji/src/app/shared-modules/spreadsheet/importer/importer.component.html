@@ -194,21 +194,6 @@
   </div>
 </ng-container>
 
-<div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
-     aria-labelledby="column and value mapping" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-body mapping-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div [innerHtml]="'excel.userMapping.get' | translate"></div>
-        <textarea rows="10" class="form-control">{{ userMappings | json }}</textarea>
-      </div>
-    </div>
-  </div>
-</div>
-
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{ rowIndex + 2 }}
 </ng-template>
@@ -246,17 +231,10 @@
 </ng-template>
 
 <ng-template #mapModal>
-  <div class="modal-header">
-    <button type="button" class="close" (click)="closeMapModal()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
-  </div>
-  <div class="modal-body">
+  <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
     <laji-import-map
       [data]="mappedData | onlyErroneous:showOnlyErroneous"
       [colMap]="colMap"
       [height]="'50vh'"
     ></laji-import-map>
-  </div>
 </ng-template>

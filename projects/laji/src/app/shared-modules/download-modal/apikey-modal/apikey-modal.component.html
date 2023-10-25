@@ -1,32 +1,31 @@
-<button class="btn btn-default" (click)="openModal(modal)" [disabled]="disabled">
+<button class="btn btn-default" (click)="openModal()" [disabled]="disabled">
 	<i class="glyphicon glyphicon-download-alt"></i>
 	{{ 'observation.download.api' | translate }}
 </button>
 
-<ng-template #modal>
-	<div class="modal-header">
-		<button class="close pull-right" type="button" (click)="onClose()">
-			<i class="glyphicon glyphicon-remove"></i>
-		</button>
-		<h4>{{ 'observation.download.api' | translate }}</h4>
-	</div>
-	<div class="modal-body">
-		<laji-download-modal-reason
-			[reason]="reason" [reasonEnum]="reasonEnum"
-			(reasonChange)="reason = $event" (reasonEnumChange)="reasonEnum = $event">
-		</laji-download-modal-reason>
-		<div class="mt-4">
-			<strong>{{ 'observation.download.api.expiration' | translate }}</strong>
-			<div class="radio mt-2">
-				<label><input type="radio" name="expiration" value="90" [checked]="expiration === 90" (input)="onRadioInput($event, 90)"><span [innerHtml]="'observation.download.api.expiration.1' | translate"></span></label>
-			</div>
-			<div class="radio">
-				<label><input type="radio" name="expiration" value="365" [checked]="expiration === 365" (input)="onRadioInput($event, 365)"><span [innerHtml]="'observation.download.api.expiration.2' | translate"></span></label>
-			</div>
-			<div class="footnote" [innerHtml]="'observation.download.api.expiration.footnote' | translate"></div>
-		</div>
-	</div>
-	<div class="modal-footer">
+<lu-modal size="sm" #modal>
+  <ng-container *ngIf="modalShown">
+    <ng-container *ngTemplateOutlet="modalContent"></ng-container>
+  </ng-container>
+</lu-modal>
+
+<ng-template #modalContent>
+  <h4>{{ 'observation.download.api' | translate }}</h4>
+  <laji-download-modal-reason
+    [reason]="reason" [reasonEnum]="reasonEnum"
+    (reasonChange)="reason = $event" (reasonEnumChange)="reasonEnum = $event">
+  </laji-download-modal-reason>
+  <div class="mt-4">
+    <strong>{{ 'observation.download.api.expiration' | translate }}</strong>
+    <div class="radio mt-2">
+      <label><input type="radio" name="expiration" value="90" [checked]="expiration === 90" (input)="onRadioInput($event, 90)"><span [innerHtml]="'observation.download.api.expiration.1' | translate"></span></label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="expiration" value="365" [checked]="expiration === 365" (input)="onRadioInput($event, 365)"><span [innerHtml]="'observation.download.api.expiration.2' | translate"></span></label>
+    </div>
+    <div class="footnote" [innerHtml]="'observation.download.api.expiration.footnote' | translate"></div>
+  </div>
+	<div class="lu-modal-footer">
 		<laji-spinner [spinning]="loading" [overlay]="false" [hideContentWhileLoading]="true">
 			<div class="d-flex justify-end">
 				<div class="checkbox m-0">
@@ -42,7 +41,7 @@
 			</div>
 		</laji-spinner>
 	</div>
-	<div class="modal-footer mt-3" *ngIf="apiKey">
+	<div class="lu-modal-footer mt-3" *ngIf="apiKey">
 		<strong>{{ 'observation.download.api.clipboard' | translate }}</strong><br>
     <laji-copy-to-clipboard [value]="apiKey" [wrapText]="true"></laji-copy-to-clipboard>
 	</div>

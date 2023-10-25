@@ -12,15 +12,9 @@
   <ng-container *ngIf="!glyphicon">?</ng-container>
 </strong>
 
-<div class="modal popover-modal fade no-propagation" bsModal #modal="bs-modal" [config]="{backdrop: false}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-body">
-        <ng-container *ngTemplateOutlet="content"></ng-container>
-      </div>
-    </div>
-  </div>
-</div>
+<lu-modal size="sm" #modal>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</lu-modal>
 <ng-template #content>
   <div style="max-width: 500px;"><div style="word-break: break-word" *ngIf="html" [innerHTML]="html" lajiRouteTransformer></div><ng-content></ng-content></div>
 </ng-template>

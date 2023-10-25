@@ -2,35 +2,33 @@
   <ng-container *ngIf="rights$ | async as rights">
     <div class="row">
       <div class="col-sm-7">
-        <div class="page-header">
-          <h3 ngPreserveWhitespaces>
-            {{ 'viewer.document' | translate }}
-            <small>
-              <!--a [routerLink]="['/view']" [queryParams]="{uri: document.id}" target="_blank">
-                {{document.id}}
-              </a-->
-              {{ document.id }}
-            </small>
-            <a type="button"
-               class="btn btn-sm btn-default"
-               [routerLink]="['/view/print'] | localize"
-               [queryParams]="{id: document.id, showFacts: showFacts}"
-               target="_blank"
-               [tooltip]="'haseka.submissions.toPrint' | translate">
-              {{ 'print' | translate }}
-              <img src="/static/images/icons/pdf_16x16.png">
-            </a>
-            <div>
-              <laji-user-document-tools
-              [hasEditRights]="rights.hasEditRights"
-              [hasDeleteRights]="rights.hasDeleteRights"
-              [documentID]="document.id"
-              [formID]="document.formID"
-              (documentDeleted)="onDocumentDeleted($event)"
-            ></laji-user-document-tools>
-            </div>
-          </h3>
-        </div>
+        <h3 ngPreserveWhitespaces>
+          {{ 'viewer.document' | translate }}
+          <small>
+            <!--a [routerLink]="['/view']" [queryParams]="{uri: document.id}" target="_blank">
+              {{document.id}}
+            </a-->
+            {{ document.id }}
+          </small>
+          <a type="button"
+             class="btn btn-sm btn-default"
+             [routerLink]="['/view/print'] | localize"
+             [queryParams]="{id: document.id, showFacts: showFacts}"
+             target="_blank"
+             [tooltip]="'haseka.submissions.toPrint' | translate">
+            {{ 'print' | translate }}
+            <img src="/static/images/icons/pdf_16x16.png">
+          </a>
+          <div>
+            <laji-user-document-tools
+            [hasEditRights]="rights.hasEditRights"
+            [hasDeleteRights]="rights.hasDeleteRights"
+            [documentID]="document.id"
+            [formID]="document.formID"
+            (documentDeleted)="onDocumentDeleted($event)"
+          ></laji-user-document-tools>
+          </div>
+        </h3>
         <laji-row [title]="'MY.collectionID' | label" [value]="document.collectionID | collectionName" ngPreserveWhitespaces>
           <span *ngIf="showFacts"><a target="_blank" href="http://tun.fi/{{document.collectionID}}">http://tun.fi/{{ document.collectionID }}</a></span>
         </laji-row>

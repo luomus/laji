@@ -42,6 +42,7 @@ import { ConservationFilterComponent } from './form/conservation-filter/conserva
 import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     SelectModule,
     CollectionsSelectModule,
     ExtendedGroupSelectModule,
-    CommonModule
+    CommonModule,
+    ModalModule
   ],
   declarations: [
     ObservationComponent,

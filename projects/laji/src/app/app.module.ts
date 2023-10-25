@@ -19,7 +19,6 @@ import { TimeoutInterceptor } from './shared/interceptor/timeout.interceptor';
 import { LazyTranslateLoader } from './shared/translate/lazy-translate-loader';
 import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
@@ -54,7 +53,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     AppRoutingModule,
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    ModalModule.forRoot(),
     TooltipModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     LajiUiModule

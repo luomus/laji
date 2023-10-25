@@ -1,11 +1,6 @@
 <ng-template #downloadModal>
-  <div class="modal-header laji-page">
-    <button class="close pull-right" type="button" (click)="closeModal()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4 class="modal-title">{{ 'search.result.load' | translate }}</h4>
-  </div>
-  <div class="modal-body laji-page">
+  <h4 class="modal-title">{{ 'search.result.load' | translate }}</h4>
+  <div class="laji-page">
     <p
       *ngIf="!hasPersonalData"
       [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
@@ -22,7 +17,6 @@
             <laji-download
               *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
               role="primary"
-              [showBackdrop]="false"
               (download)="simpleDownload($event)"
               [downloadLoading]="downloadLoading"
               [progressPercent]="downloadProgressPercent"
@@ -35,7 +29,6 @@
               *lajiForTypes="['vir']"
               role="primary"
               [showReason]="true"
-              [showBackdrop]="false"
               [(reasonEnum)]="reasonEnum"
               [(reason)]="reason"
               (download)="simpleDownload($event)"
@@ -81,9 +74,7 @@
           <laji-download
             *lajiForTypes="['vir']"
             [showReason]="true"
-            [showBackdrop]="false"
             [showFileTypes]="false"
-            [closeModalOnDownloadStart]="true"
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
             (download)="makePublicRequest()"

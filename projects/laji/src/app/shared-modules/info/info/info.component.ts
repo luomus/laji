@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { PopoverPlacement, PopoverRootElement } from 'projects/laji-ui/src/lib/popover/popover.directive';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { PopoverPlacement } from 'projects/laji-ui/src/lib/popover/popover.directive';
 
 @Component({
   selector: 'laji-info',
@@ -15,7 +15,7 @@ export class InfoComponent {
   @Input() labelType = 'info';
   @Input() showOnHover = false;
 
-  @ViewChild('modal', {static: true}) modal: ModalDirective;
+  @ViewChild('modal', {static: true}) modal: ModalComponent;
 
   useModal: boolean;
 

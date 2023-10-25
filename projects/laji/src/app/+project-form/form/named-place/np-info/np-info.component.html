@@ -3,20 +3,9 @@
     <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: false}"></ng-template>
   </div>
 
-  <div class="modal" tabindex="-1" role="dialog" bsModal #infoModal="bs-modal">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content">
-        <div class="modal-header">
-          <lu-button (click)="modal.hide()">
-            <i class="glyphicon glyphicon-remove"></i>
-          </lu-button>
-        </div>
-        <div class="modal-body" *ngIf="modalIsVisible">
-          <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: true}"></ng-template>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+  <lu-modal #infoModal size="sm">
+    <ng-template *ngIf="modalIsVisible" [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{isModal: true}"></ng-template>
+  </lu-modal>
 
   <ng-template #contentTemplate let-isModal="isModal">
     <div class="np-info">

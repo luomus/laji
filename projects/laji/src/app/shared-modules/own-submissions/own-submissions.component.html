@@ -11,7 +11,6 @@
     <laji-own-datatable
       (documentClicked)="onDocumentClick($event)"
       (download)="download($event)"
-      (template)="saveTemplate($event)"
       (delete)="delete($event)"
       (label)="doLabels($event)"
       [actions]="actions"
@@ -23,7 +22,6 @@
       [loadError]="documentError"
       [onlyTemplates]="onlyTemplates"
       [year]="year"
-      [templateForm]="templateForm"
       [documents]="documents$ | async"></laji-own-datatable>
   </div>
 </ng-container>
