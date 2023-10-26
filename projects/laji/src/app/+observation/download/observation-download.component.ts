@@ -138,7 +138,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   openModal() {
-    this.modalRef = this.modalService.show(this.downloadModal, {size: 'lg'});
+    this.modalRef = this.modalService.show(this.downloadModal, {size: 'lg', contentClass: 'laji-page'});
   }
 
   closeModal() {
