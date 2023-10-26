@@ -27,13 +27,13 @@ export class ModalComponent implements OnDestroy {
   protected _size: ModalSize = 'md';
 
   /**
-   * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'
+   * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'.
    */
   @Input() set size(size: ModalSize) {
     this._size = size;
   }
 
-  // null becuase undefined in the template [class] causes error.
+  // null because undefined in the template [class] causes error.
   @Input() contentClass: string | null = null;
 
   /**
