@@ -74,7 +74,7 @@
   </div>
 </ng-container>
 
-<lu-modal #saveAsTemplate size="sm">
+<lu-modal #saveAsTemplate contentClass="template-form" size="sm">
   <h4>{{ 'template.formTitle' | translate }}</h4>
   <label for="templateName">{{ 'template.name' | translate }}: <span class="required">*</span></label>
   <input id="templateName" class="form-control" type="text" [(ngModel)]="templateForm.name" name="name">

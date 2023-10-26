@@ -72,9 +72,7 @@ describe('Project form when logged in', () => {
      });
 
      it('if modal is shown it can be closed', async(done) => {
-       const isModal = await projectFormPage.namedPlacesView.$modal.isPresent()
-         && await projectFormPage.namedPlacesView.$modal.isDisplayed();
-       if (isModal) {
+       if (await isDisplayed(projectFormPage.namedPlacesView.$modal)) {
          await projectFormPage.namedPlacesView.$modalCloseButton.click();
        }
        expect(await projectFormPage.namedPlacesView.$modal.isPresent()).toBe(false);

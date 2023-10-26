@@ -81,7 +81,7 @@ export class NamedPlacesView {
   public readonly $addButton = this.$container.$('.choose-label .lu-btn.secondary');
   public readonly $deleteButton = this.$viewer.$('#np-delete');
   public readonly $editButton = this.$viewer.$('#np-edit');
-  public readonly $modal = $('.lu-modal-content');
+  public readonly $modal = this.$container.$('.lu-modal-container');
   public readonly $modalCloseButton = this.$modal.$('.lu-modal-close-button');
 
   async delete() {

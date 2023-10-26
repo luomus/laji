@@ -195,7 +195,7 @@
   </ngx-datatable>
 </ng-container>
 
-<lu-modal #chooseFileTypeModal size="sm" contentClass="datatable-delete-modal">
+<lu-modal #chooseFileTypeModal size="sm">
   <h4>{{ 'haseka.submissions.chooseFormat' | translate }}</h4>
   <div>
     <div class="radio">
@@ -218,7 +218,7 @@
   </div>
 </lu-modal>
 
-<lu-modal #deleteModal size="sm">
+<lu-modal #deleteModal size="sm" contentClass="datatable-delete-modal">
   <h4 class="modal-title" [innerHtml]="(onlyTemplates ? 'haseka.delete.template' : 'haseka.delete.description') | translate:{id: deleteRow?.id, name: deleteRow?.templateName}"></h4>
   <div class="lu-modal-footer">
     <button type="button" class="btn btn-danger" [disabled]="deleting" (click)="deleteDocument()">
