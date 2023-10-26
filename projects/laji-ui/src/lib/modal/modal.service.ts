@@ -1,5 +1,6 @@
-import { ApplicationRef, createComponent, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
+import { ApplicationRef, createComponent, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
 import { ModalComponent, ModalSize } from './modal/modal.component';
+import { DOCUMENT } from '@angular/common';
 
 interface ModalOptions<T> {
   /**
@@ -22,7 +23,8 @@ export class ModalService {
   private renderer: Renderer2;
   constructor(
     private appRef: ApplicationRef,
-    private rendererFactory: RendererFactory2
+    private rendererFactory: RendererFactory2,
+    @Inject(DOCUMENT) private document: Document,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -32,6 +34,7 @@ export class ModalService {
   show<T>(componentClass: Type<T> | TemplateRef<T>, options: ModalOptions<T> = {}): ModalRef<T> {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
+		this.renderer.appendChild(document.body, modalComponent.location.nativeElement);
     Object.keys(options).forEach(option => {
       modalComponent.instance[option] = options[option];
     });

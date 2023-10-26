@@ -91,8 +91,6 @@ export class ModalComponent implements OnDestroy {
     this.originalBodyOverflow = this.document.body.style.overflow;
     this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
 
-    this.moveToBody();
-
     this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
     this.isShown = true;
     this.onShownChange.emit(true);
@@ -103,7 +101,6 @@ export class ModalComponent implements OnDestroy {
     if (!this.isShown) {
       return false;
     }
-    this.moveToOrigParent();
     this.hideElement();
 
     this.isShown = false;
@@ -115,18 +112,6 @@ export class ModalComponent implements OnDestroy {
   public getContentNode() {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
   }
-
-	private moveToBody() {
-		this.originalDomParent = this.elementRef.nativeElement.parentElement;
-		this.renderer.appendChild(this.document.body,	this.elementRef.nativeElement);
-	}
-
-	private moveToOrigParent() {
-    if (!this.originalDomParent) {
-      return;
-    }
-		this.renderer.appendChild(this.originalDomParent,	this.elementRef.nativeElement);
-	}
 
   private hideElement() {
     if (this.originalBodyOverflow) {

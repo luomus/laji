@@ -70,7 +70,6 @@ export class TreeSelectComponent {
       includeLink: this.includeLink,
     };
     this.modalRef = this.modalService.show(TreeSelectModalComponent, { size: 'lg', contentClass: 'tree-select-modal-content', initialState });
-    console.log(this.modalRef);
     this.modalRef.content.emitConfirm.subscribe(result => {
       const includeToReturn = [];
       const excludeToReturn = [];
