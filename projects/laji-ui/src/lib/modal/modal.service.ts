@@ -84,6 +84,7 @@ export class ModalService {
 
   hide() {
     this.modal.hide();
+    this.modal = undefined;
   }
 
   destroyOnHide() {
