@@ -109,7 +109,7 @@ export class ModalComponent implements OnDestroy {
     return true;
   }
 
-  public getContentNode() {
+  public getContentNode(): HTMLElement {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
   }
 

@@ -21,6 +21,8 @@ export type ModalRef<T = any>  = ModalComponent & { content?: T };
 export class ModalService {
 
   private renderer: Renderer2;
+  private modal: ModalRef<any>;
+
   constructor(
     private appRef: ApplicationRef,
     private rendererFactory: RendererFactory2,
@@ -29,43 +31,54 @@ export class ModalService {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  private modal: ModalRef<any>;
+  show<T>(componentClassOrTemplateRef: Type<T> | TemplateRef<T>, options?: ModalOptions<T>): ModalRef<T> {
+    const modalComponent = this.showModalComponent(options);
+    const contentNode = modalComponent.instance.getContentNode();
+    const contentHostNode = document.createElement('div');
+    this.renderer.appendChild(contentNode, contentHostNode);
+    this.modal = modalComponent.instance as any;
+    if (componentClassOrTemplateRef instanceof TemplateRef) {
+      this.showTemplate(componentClassOrTemplateRef, contentNode);
+    } else  {
+      this.showComponent(componentClassOrTemplateRef, contentNode, options);
+    }
 
-  show<T>(componentClass: Type<T> | TemplateRef<T>, options: ModalOptions<T> = {}): ModalRef<T> {
+    return this.modal as ModalRef<T>;
+  }
+
+  private showModalComponent<T>(options: ModalOptions<T> = {}) {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
-		this.renderer.appendChild(document.body, modalComponent.location.nativeElement);
+    this.renderer.appendChild(document.body, modalComponent.location.nativeElement);
     Object.keys(options).forEach(option => {
       modalComponent.instance[option] = options[option];
     });
     modalComponent.instance.show();
     modalComponent.changeDetectorRef.detectChanges();
-    const contentNode = modalComponent.instance.getContentNode();
-    const contentHostNode = document.createElement('div');
-		this.renderer.appendChild(contentNode, contentHostNode);
-    this.modal = modalComponent.instance as any;
-    if (componentClass instanceof TemplateRef) {
-      const embeddedViewRef = componentClass.createEmbeddedView(componentClass as any);
-      embeddedViewRef.rootNodes.forEach(node => {
-        this.renderer.appendChild(contentNode, node);
-      });
-      embeddedViewRef.detectChanges();
-      this.appRef.attachView(embeddedViewRef);
-    } else  {
-      const contentComponent = createComponent<T>((componentClass as any), {
-        environmentInjector: this.appRef.injector,
-      });
-      this.renderer.appendChild(contentNode, contentComponent.location.nativeElement);
+    return modalComponent;
+  }
 
-      Object.keys((options.initialState || {})).forEach(option => {
-        contentComponent.instance[option] = options.initialState[option];
-      });
-      contentComponent.changeDetectorRef.detectChanges();
-      this.appRef.attachView(contentComponent.hostView);
-      (this.modal as any).content = contentComponent.instance;
-    }
+  private showTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
+    const embeddedViewRef = templateRef.createEmbeddedView(templateRef as any);
+    embeddedViewRef.rootNodes.forEach(node => {
+      this.renderer.appendChild(contentNode, node);
+    });
+    embeddedViewRef.detectChanges();
+    this.appRef.attachView(embeddedViewRef);
+  }
 
-    return this.modal as ModalRef<T>;
+  private showComponent<T>(componentClass: Type<T>, contentNode: HTMLElement, options: ModalOptions<T> = {}) {
+    const contentComponent = createComponent<T>((componentClass as any), {
+      environmentInjector: this.appRef.injector,
+    });
+    this.renderer.appendChild(contentNode, contentComponent.location.nativeElement);
+
+    Object.keys((options.initialState || {})).forEach(option => {
+      contentComponent.instance[option] = options.initialState[option];
+    });
+    contentComponent.changeDetectorRef.detectChanges();
+    this.appRef.attachView(contentComponent.hostView);
+    (this.modal as any).content = contentComponent.instance;
   }
 
   hide() {
