@@ -55,6 +55,7 @@ export class ModalService {
     });
     modalComponent.instance.show();
     modalComponent.changeDetectorRef.detectChanges();
+    modalComponent.instance.onHide.subscribe(this.destroyOnHide.bind(this));
     return modalComponent;
   }
 
@@ -83,5 +84,9 @@ export class ModalService {
 
   hide() {
     this.modal.hide();
+  }
+
+  destroyOnHide() {
+    this.renderer.removeChild(document.body, (this.modal as any).elementRef.nativeElement);
   }
 }
