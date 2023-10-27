@@ -1,7 +1,7 @@
 @import 'projects/laji-ui/src/lib/vars';
 
 .lu-dropdown {
-  background: #fff;
+  background: $neutral-1;
   border: 1px solid rgba(0, 0, 0, .15);
   box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
   list-style: none;
@@ -14,13 +14,13 @@
     clear: both;
     font-weight: 400;
     line-height: 1.42857143;
-    color: #333;
+    color: $neutral-7;
     white-space: nowrap;
 
     &:hover {
-      color: #262626;
+      color: $neutral-8;
       text-decoration: none;
-      background-color: #f5f5f5;
+      background-color: $neutral-2;
     }
   }
 
