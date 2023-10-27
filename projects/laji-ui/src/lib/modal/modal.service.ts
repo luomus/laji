@@ -32,21 +32,21 @@ export class ModalService {
   }
 
   show<T>(componentClassOrTemplateRef: Type<T> | TemplateRef<T>, options?: ModalOptions<T>): ModalRef<T> {
-    const modalComponent = this.showModalComponent(options);
+    const modalComponent = this.showModalInBody(options);
     const contentNode = modalComponent.instance.getContentNode();
     const contentHostNode = document.createElement('div');
     this.renderer.appendChild(contentNode, contentHostNode);
     this.modal = modalComponent.instance as any;
     if (componentClassOrTemplateRef instanceof TemplateRef) {
-      this.showTemplate(componentClassOrTemplateRef, contentNode);
+      this.injectTemplate(componentClassOrTemplateRef, contentNode);
     } else  {
-      this.showComponent(componentClassOrTemplateRef, contentNode, options);
+      this.injectComponent(componentClassOrTemplateRef, contentNode, options);
     }
 
     return this.modal as ModalRef<T>;
   }
 
-  private showModalComponent<T>(options: ModalOptions<T> = {}) {
+  private showModalInBody<T>(options: ModalOptions<T> = {}) {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
     this.renderer.appendChild(document.body, modalComponent.location.nativeElement);
@@ -58,7 +58,7 @@ export class ModalService {
     return modalComponent;
   }
 
-  private showTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
+  private injectTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
     const embeddedViewRef = templateRef.createEmbeddedView(templateRef as any);
     embeddedViewRef.rootNodes.forEach(node => {
       this.renderer.appendChild(contentNode, node);
@@ -67,7 +67,7 @@ export class ModalService {
     this.appRef.attachView(embeddedViewRef);
   }
 
-  private showComponent<T>(componentClass: Type<T>, contentNode: HTMLElement, options: ModalOptions<T> = {}) {
+  private injectComponent<T>(componentClass: Type<T>, contentNode: HTMLElement, options: ModalOptions<T> = {}) {
     const contentComponent = createComponent<T>((componentClass as any), {
       environmentInjector: this.appRef.injector,
     });
