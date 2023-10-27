@@ -10,7 +10,7 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
   selector: 'lu-modal',
   template:`
     <div class="lu-backdrop"></div>
-    <div class="lu-modal-container" [class]="'lu-modal-' + _size" *ngIf="isShown" #container>
+    <div class="lu-modal-container" [class]="'lu-modal-' + size" *ngIf="isShown" #container>
       <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
         <lu-icon type="close"></lu-icon>
       </lu-button-round>
@@ -24,14 +24,10 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 })
 export class ModalComponent implements OnDestroy {
 
-  protected _size: ModalSize = 'md';
-
   /**
    * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'.
    */
-  @Input() set size(size: ModalSize) {
-    this._size = size;
-  }
+  @Input() size: ModalSize;
 
   // null because undefined in the template [class] causes error.
   @Input() contentClass: string | null = null;
@@ -53,7 +49,6 @@ export class ModalComponent implements OnDestroy {
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
   private originalBodyOverflow?: string;
-  private originalDomParent?: HTMLElement;
 
   constructor(
     private elementRef: ElementRef,
@@ -61,13 +56,12 @@ export class ModalComponent implements OnDestroy {
     @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef
   ) {
-    this.hide = this.hide.bind(this);
     this.hideElement();
   }
 
-	ngOnDestroy(): void {
+  ngOnDestroy() {
     this.hide();
-	}
+  }
 
   @HostListener('document:keydown.escape')
   private hideOnEsc() {
