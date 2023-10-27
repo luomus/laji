@@ -9,5 +9,5 @@ import { Component, ChangeDetectionStrategy, OnInit, Input, Renderer2, ElementRe
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaxonDropdownComponent {
-  @Input() omniSearchVisible: boolean;
+  @Input() omniSearchVisible = true;
 }
