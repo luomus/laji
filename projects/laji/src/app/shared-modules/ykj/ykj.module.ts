@@ -18,7 +18,7 @@ import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.modul
     InfoModule
   ],
   declarations: [YkjMapComponent],
-  providers: [YkjService, WarehouseApi, TaxonomyApi],
+  providers: [YkjService, TaxonomyApi],
   exports: [YkjMapComponent]
 })
 export class YkjModule { }
