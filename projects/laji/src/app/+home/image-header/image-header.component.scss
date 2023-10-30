@@ -5,7 +5,7 @@
   z-index: 1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-
+/* 
 .header-image::before {
   content: '';
   background: rgba(#000, .3);
@@ -14,13 +14,18 @@
   left: 0;
   height: 100%;
   width: 100%;
+} */
+
+.image-content-container {
+  max-width: 1300px;
+  flex-grow: 1;
 }
 
 .header-image-content {
-  max-width: 1200px;
-  flex-grow: 1;
   z-index: 100;
   color: $neutral-1;
+  padding: 0px 50px;
+  background: rgba(#000, .4);
 }
 
 .logo {
@@ -38,14 +43,15 @@ laji-omni-search {
 }
 
 .stats-container {
-  margin-right: $sp-6;
+  margin-right: $sp-8;
 
   laji-observation-count {
-    font-size: $fs-7;
+    font-size: $fs-8;
     color: $neutral-2;
   }
   .stats-label {
-    font-size: $fs-4;
+    margin-top: -10px;
+    font-size: $fs-5;
     color: $neutral-5;
   }
 }
