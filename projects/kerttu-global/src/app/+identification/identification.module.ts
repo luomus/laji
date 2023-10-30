@@ -32,6 +32,7 @@ import { IdentificationHistoryEditModalComponent } from './identification-histor
 import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { AudioCacheLoaderService } from './service/audio-cache-loader.service';
 import { RecordingLoaderService } from './service/recording-loader.service';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { RecordingLoaderService } from './service/recording-loader.service';
     TypeaheadModule,
     DatatableModule,
     LajiMapModule,
-    SelectModule
+    SelectModule,
+    JwBootstrapSwitchNg2Module
   ],
   declarations: [
     IdentificationComponent,

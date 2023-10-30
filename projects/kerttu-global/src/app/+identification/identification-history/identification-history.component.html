@@ -4,6 +4,28 @@
     <label for="search">{{ 'speciesList.filters.search' | translate }}</label>
     <bsg-search-input [(searchQuery)]="query.speciesSearchQuery" (searchQueryChange)="setNewQuery(query)" id="search"></bsg-search-input>
   </div>
+  <div class="col-sm-3">
+    <label>{{ 'siteSelection.site' | translate }}</label>
+    <select class="form-control input-sm" [ngModel]="query.site" (ngModelChange)="siteChange($event)">
+      <option [value]=""></option>
+      <option *ngFor="let site of sites$ | async" [value]="site.id">{{ site.id }} {{ site.name }}</option>
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <label for="includeSkipped">{{ 'identification.history.includeSkipped' | translate }}</label>
+    <div class="bswitch-wrapper">
+      <bSwitch
+        id="includeSkipped"
+        [switch-on-text]="'yes' | translate"
+        [switch-off-text]="'no' | translate"
+        [switch-on-color]="'primary'"
+        [switch-size]="'medium'"
+        [(ngModel)]="query.includeSkipped"
+        (ngModelChange)="setNewQuery(query)"
+        [switch-base-class]="'bootstrap-switch'">
+      </bSwitch>
+    </div>
+  </div>
 </div>
 <bsg-identification-history-table
   [data]="data$ | async"

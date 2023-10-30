@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
-import { IIdentificationHistoryQuery, IIdentificationHistoryResponse } from '../../kerttu-global-shared/models';
+import { IGlobalSite, IIdentificationHistoryQuery, IIdentificationHistoryResponse } from '../../kerttu-global-shared/models';
 import { KerttuGlobalApi } from '../../kerttu-global-shared/service/kerttu-global-api';
 import { UserService } from '../../../../../laji/src/app/shared/service/user.service';
 import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datatable/model/datatable-column';
@@ -22,7 +22,8 @@ export interface IIdentificationHistoryResponseWithIndex extends IIdentification
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IdentificationHistoryComponent {
-  query: IIdentificationHistoryQuery = { page: 1 };
+  query: IIdentificationHistoryQuery = { page: 1, includeSkipped: false };
+  sites$: Observable<IGlobalSite[]>;
   data$: Observable<PagedResult<IIdentificationHistoryResponseWithIndex>>;
   loading = false;
 
@@ -37,6 +38,11 @@ export class IdentificationHistoryComponent {
     private localizeRouterService: LocalizeRouterService,
     private modalService: BsModalService
   ) {
+    this.sites$ = this.userService.isLoggedIn$.pipe(
+      switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
+      map(result => result.results)
+    );
+
     this.data$ = this.queryChange.pipe(
       tap(() => this.loading = true),
       switchMap(query => this.kerttuGlobalApi.getIdentificationHistory(this.userService.getToken(), query)),
@@ -87,6 +93,11 @@ export class IdentificationHistoryComponent {
         recordingIdSubject.next(this.results[idx].recording.id);
       })
     );
+  }
+
+  siteChange(value: string) {
+    const site = parseInt(value, 10) || null;
+    this.setNewQuery({ ...this.query, site });
   }
 
   setNewQuery(newQuery: IIdentificationHistoryQuery) {

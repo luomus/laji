@@ -65,6 +65,7 @@
   "feedback.topic.good": "feature request",
   "feedback.topic.other": "other",
   "home.main-page.title": "Finnish Biodiversity Information Facility",
+  "identification.history.includeSkipped": "Include skipped",
   "identification.fileName": "File name",
   "identification.allContinents": "Filter by a continent",
   "identification.allRecordingsAnnotated": "You have identified all the recordings in this site! Thank you very much for your valuable input and improving automated bird sound identification!",

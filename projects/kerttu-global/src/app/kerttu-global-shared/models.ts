@@ -184,6 +184,8 @@ export interface IIdentificationHistoryQuery {
   pageSize?: number;
   orderBy?: string[];
   speciesSearchQuery?: string;
+  includeSkipped?: boolean;
+  site?: number;
 }
 
 export interface IIdentificationHistoryResponse {
