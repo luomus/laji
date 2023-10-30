@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
-  selector: 'lu-slide',
+  selector: 'lu-carousel-slide',
   template: `<ng-content></ng-content>`,
-  styleUrls: ['./slide.component.scss'],
+  styleUrls: ['./carousel-slide.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SlideComponent {
+export class CarouselSlideComponent {
   active = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
