@@ -20,11 +20,12 @@
   padding-top: 2px;
   border-radius: 100%;
   font-size: $fs-1;
-  color: $primary-1;
-  background-color: $primary-5;
-  box-shadow: 0 1px 2px 0 rgba($primary-8, 0.3);
+  color: $neutral-6;
+  background-color: $neutral-1;
+  box-shadow: 0 1px 2px 0 rgba($neutral-8, 0.3);
+  outline: 1px solid darken($neutral-1, 12%);
   &:hover {
-    background-color: $primary-4;
+    background-color: $neutral-3;
   }
 }
 
@@ -52,9 +53,10 @@
     margin:3px 3px 3px 5px;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
-    border-radius: 20px;
+    border-radius: 100%;
     padding: 6px 4px;
     font-size: 16px;
+    outline: 1px solid darken($neutral-1, 12%);
   }
 
   .laji-form-help-glyph strong {
@@ -63,10 +65,10 @@
   }
 
   .label-info {
-    color: $primary-6;
-    background-color: $neutral-2;
+    color: $neutral-6;
+    background-color: $neutral-1;
     &:hover {
-      background-color: $neutral-1;
+      background-color: $neutral-3;
     }
   }
 }
