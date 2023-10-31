@@ -44,7 +44,7 @@ export class ModalComponent implements OnDestroy {
   @Output() onShownChange = new EventEmitter<boolean>();
   @Output() onHide = this.onShownChange.pipe(filter(shown => shown === false));
   @Output() onShow = this.onShownChange.pipe(filter(shown => shown === true));
-  public isShown = false;
+  isShown = false;
 
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
@@ -78,7 +78,7 @@ export class ModalComponent implements OnDestroy {
     }
   }
 
-  public show() {
+  show() {
     if (this.isShown) {
       return;
     }
@@ -91,7 +91,7 @@ export class ModalComponent implements OnDestroy {
     this.cdr.markForCheck();
   }
 
-  public hide(): boolean {
+  hide(): boolean {
     if (!this.isShown) {
       return false;
     }
@@ -103,7 +103,7 @@ export class ModalComponent implements OnDestroy {
     return true;
   }
 
-  public getContentNode(): HTMLElement {
+  getContentNode(): HTMLElement {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
   }
 
