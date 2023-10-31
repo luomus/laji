@@ -9,8 +9,8 @@ import { Area } from '../../../../shared/model/Area';
 import { Chart, ChartDataset, ChartOptions, ChartType, Tooltip } from 'chart.js';
 import { LineWithLine } from 'projects/laji/src/app/shared-modules/chart/line-with-line';
 
-const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
-//
+const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
+
 @Component({
   selector: 'laji-line-transect-result-chart',
   templateUrl: './line-transect-result-chart.component.html',
@@ -69,6 +69,8 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
       mode: 'index',
       intersect: false,
     },
+    // Eslint disabled because it needs to be a function to have the correct 'this' reference.
+    // eslint-disable-next-line object-shorthand
     onHover: function(a, e, element) {
       let indexChart;
       if (element[0]) {
@@ -173,7 +175,7 @@ export class LineTransectResultChartComponent implements OnInit, OnDestroy {
     plugins: {
       tooltip: {
         mode: 'index',
-        position: tooltipPosition,
+        position: tooltipPositionCursor,
         intersect: false
       },
     }

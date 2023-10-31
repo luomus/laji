@@ -60,7 +60,6 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
         displayColors: false,
         callbacks: {
           title(item, data) {
-            console.log('!!', item);
             return data.datasets[0]['tree'][item[0]['index']].label;
           },
           label(item, data) {
@@ -72,6 +71,8 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       },
       animation: {
         duration: 1,
+        // Eslint disabled because it needs to be a function to have the correct 'this' reference.
+        // eslint-disable-next-line object-shorthand
         onComplete: function() {
             const chartInstance: Chart = ((this as any).chart as Chart),
             ctx = chartInstance.ctx;
@@ -81,16 +82,13 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'bottom';
-            console.log('//', (this.data.datasets[0] as any).tree);
             if ((this.data.datasets[0] as any).tree?.length < 200) {
               this.data.datasets.forEach(function(dataset, i) {
-                console.log('lolz', (chartInstance as any).controller);
                 const meta = (chartInstance as any).controller.getDatasetMeta(i);
                 meta.data.forEach(function(bar, index) {
                     const label = (dataset as any).tree[index].label;
                     const data = (dataset as any).tree[index].value;
                     const width = Math.ceil(ctx.measureText(label).width);
-                  console.log("!!!!!! aa", dataset['data'][index]);
                     const finalLabel = width < Math.ceil((dataset['data'][index] as any).w) ? label : '';
                     const finalData = width < Math.ceil((dataset['data'][index] as any).w) ? data : '';
                     ctx.fillText(finalLabel, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));

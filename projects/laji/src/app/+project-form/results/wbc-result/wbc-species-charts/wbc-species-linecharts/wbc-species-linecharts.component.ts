@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular
 import { SEASON, WbcResultService } from '../../wbc-result.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart, ChartOptions, ChartType, CommonElementOptions, Plugin, PointPrefixedHoverOptions, PointPrefixedOptions, Tooltip } from 'chart.js';
-import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line'
+import { Chart, ChartOptions, ChartType, Tooltip } from 'chart.js';
+import { LineWithLine } from '../../../../../shared-modules/chart/line-with-line';
 //
 // Chart.register(LineWithLine);
 
@@ -46,7 +46,7 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       return coordinates;
     };
 
-    const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
+    const tooltipPositionCursor = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
     this.lineChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
@@ -66,6 +66,8 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
         mode: 'index',
         intersect: false,
       },
+      // Eslint disabled because it needs to be a function to have the correct 'this' reference.
+      // eslint-disable-next-line object-shorthand
       onHover: function(a, b, element) {
         let indexChart;
         if (element[0]) {
@@ -147,8 +149,17 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
             const title2 = data['datasets'][0]['translations'][1] + ': ' + data['datasets'][0]['count'][tooltipItem[0].index];
             const title3 = data['datasets'][0]['translations'][2] + ': ' + data['datasets'][0]['censusCount'][tooltipItem[0].index];
 
-            if ( range(x - (Math.ceil(colWidth / 2)), x + (Math.ceil(colWidth / 2) + (offset)), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
-              && range(y - (Math.ceil(colWidth / 2) - offset), y + (Math.ceil(colWidth / 2) - offset), 1).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1) {
+            if (
+              range(x - (Math.ceil(colWidth / 2)),
+                x + (Math.ceil(colWidth / 2) + (offset)),
+                1
+              ).indexOf(activePoint['_chart'].tooltip._eventPosition.x + empty) !== -1
+              && range(
+                y - (Math.ceil(colWidth / 2) - offset),
+                y + (Math.ceil(colWidth / 2) - offset),
+                1
+              ).indexOf(activePoint['_chart'].tooltip._eventPosition.y) !== -1
+            ) {
               return [title1, title2, title3];
             } else {
               return '';
@@ -183,14 +194,14 @@ export class WbcSpeciesLinechartsComponent implements OnInit, OnChanges {
       plugins: {
         tooltip: {
           mode: 'index',
-          position: tooltipPosition,
+          position: tooltipPositionCursor,
           intersect: false,
           titleAlign: 'center',
           bodyAlign: 'center',
           displayColors: false
         },
       }
-    }
+    };
   }
 
   ngOnChanges() {

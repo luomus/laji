@@ -38,7 +38,7 @@ export class ValidationPieChartComponent {
   ) {
     const translationKeys = ['results.pie.group1', 'results.pie.group2', 'results.pie.group3'];
     this.translate.get(translationKeys).subscribe(translations => {
-      this._data.labels = translationKeys.map(key => translations[key]); 
+      this._data.labels = translationKeys.map(key => translations[key]);
       this.cd.markForCheck();
     });
   }
