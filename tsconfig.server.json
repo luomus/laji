@@ -8,6 +8,7 @@
     "paths": {
       "@laji-map/*": ["projects/laji/src/app/shared-modules/laji-map-noop/*"],
       "@laji-form/*": ["projects/laji/src/app/+project-form/form/laji-form-noop/*"],
+      "@laji-form-builder/*": ["projects/laji/src/app/+project-form-edit/laji-form-builder-noop/*"],
       "@swimlane/ngx-charts": ["projects/laji/src/app/shared-modules/ngx-charts-module-noop/ngx-charts.module"]
     }
   },

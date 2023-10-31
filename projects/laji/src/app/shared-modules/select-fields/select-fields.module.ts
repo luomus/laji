@@ -6,6 +6,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SharedModule } from '../../shared/shared.module';
 import { RemoveByListPipe } from './remove-by-list.pipe';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   declarations: [SelectFieldsComponent, SelectFieldsModalGearComponent, RemoveByListPipe],
@@ -13,7 +14,8 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
     CommonModule,
     DragDropModule,
     SharedModule,
-    LajiUiModule
+    LajiUiModule,
+    ModalModule
   ],
   exports: [SelectFieldsComponent, SelectFieldsModalGearComponent]
 })

@@ -17,12 +17,11 @@ import { DialogService } from '../../service/dialog.service';
   styleUrls: ['./notifications.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class NotificationsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
   notificationSource: NotificationDataSource;
 
-  @Output() notificationsClose = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll: CdkVirtualScrollViewport;
   loading: boolean;
 
@@ -31,8 +30,6 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
     private cdr: ChangeDetectorRef,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private renderer: Renderer2,
-    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -41,17 +38,6 @@ export class NotificationsComponent implements OnInit, OnDestroy, AfterViewInit 
       this.loading = loading;
       this.cdr.markForCheck();
     });
-  }
-
-  ngAfterViewInit() {
-    // Stop dropdown from closing when notifications are clicked
-    this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
-      e.stopPropagation();
-    });
-  }
-
-  onClose() {
-    this.notificationsClose.emit();
   }
 
   markAllAsSeen() {

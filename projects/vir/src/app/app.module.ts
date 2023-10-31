@@ -4,15 +4,6 @@ import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } f
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgtUniversalModule } from '@ng-toolkit/universal';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -36,6 +27,7 @@ import { LazyTranslateLoader } from './service/lazy-translate-loader';
 import { GlobalMessageComponent } from './component/global-message/global-message.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
+import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
 
 export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
   if (environment.production) {
@@ -60,17 +52,9 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: LazyTranslateLoader
       }
     }),
-    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    PaginationModule.forRoot(),
-    ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    TooltipModule.forRoot(),
-    AlertModule.forRoot(),
-    TypeaheadModule.forRoot(),
-    PopoverModule.forRoot(),
-    ProgressbarModule.forRoot(),
+    DropdownModule,
     NgxWebstorageModule.forRoot({prefix: 'vir-', separator: ''}),
     VirRoutingModule,
     TransferHttpCacheModule,

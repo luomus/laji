@@ -100,7 +100,7 @@
   letter-spacing: 2px;
 }
 
-.navbar-collapse .active a {
+.navbar-collapse .navbar-nav > .active > a {
   color: #ffffff;
   font-weight: 500;
   background-color: darken($color-main, 10%);
@@ -113,7 +113,7 @@
 
 .navbar-link, .navbar-profile .language-toggle {
   color: #ffffff;
-  background: none !important;
+  background: none;
 }
 
 .red-theme {
@@ -125,7 +125,7 @@
     color: $neutral-8;
   }
 
-  .navbar-collapse .active a {
+  .navbar-collapse .navbar-nav > .active > a {
     color: $neutral-7;
     background-color: $neutral-3;
   }
@@ -183,7 +183,7 @@
   }
 }
 
-.navbar-collapse .dropdown-menu a {
+.navbar-collapse .lu-dropdown a {
   color: #333;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
@@ -192,7 +192,7 @@
 
 @media only screen and (max-width: 900px) {
   .red-theme.navbar .navbar-collapse {
-    .dropdown-menu a {
+    .lu-dropdown a {
       color: $neutral-6;
     }
     .divider {
@@ -210,7 +210,7 @@
 
 @media only screen and (max-width: 900px) {
   .navbar-nav > li{
-    & > .dropdown-menu {
+    & > .lu-dropdown {
       position: static;
       float: none;
       width: auto;
@@ -221,11 +221,11 @@
     }
   }
 
-  .navbar-inverse .dropdown-menu li[role="menuitem"]:hover {
+  .navbar-inverse .lu-dropdown li[role="menuitem"]:hover {
     background-color: #dfdfdf;
   }
 
-  .navbar-inverse .dropdown-menu {
+  .navbar-inverse .lu-dropdown {
     background-color: #f5f5f5;
   }
 
@@ -246,10 +246,6 @@
   :host ::ng-deep .omni.expand {
     width: 200px !important;
   }
-}
-
-.dropdown-menu {
-  border: unset;
 }
 
 .link.user > .glyphicon-triangle-bottom {

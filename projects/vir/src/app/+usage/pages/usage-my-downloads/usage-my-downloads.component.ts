@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
 import { finalize, map, take } from 'rxjs/operators';
 import * as moment from 'moment';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'vir-usage-my-downloads',
@@ -59,10 +59,10 @@ export class UsageMyDownloadsComponent {
 
   selectedRequest?: DownloadRequest;
 
-  private modal: BsModalRef;
+  private modal: ModalRef;
 
   constructor(
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private virDownloadRequestsService: VirDownloadRequestsService,
     private cdr: ChangeDetectorRef
   ) {
@@ -89,7 +89,7 @@ export class UsageMyDownloadsComponent {
 
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.modal = this.modalService.show(this.downloadModal, {class: 'modal-md'});
+    this.modal = this.modalService.show(this.downloadModal);
   }
 
   closeDownloadModal() {

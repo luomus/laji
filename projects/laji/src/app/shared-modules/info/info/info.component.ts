@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, HostListener, Input, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { PlatformService } from '../../../root/platform.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, ViewChild } from '@angular/core';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { PopoverPlacement } from 'projects/laji-ui/src/lib/popover/popover.directive';
 
 @Component({
   selector: 'laji-info',
@@ -10,91 +9,26 @@ import { PlatformService } from '../../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoComponent {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' | 'auto' = 'left';
+  @Input() placement: PopoverPlacement = 'left';
   @Input() html: string;
   @Input() glyphicon: string;
   @Input() labelType = 'info';
   @Input() showOnHover = false;
-  @Input() container = 'body';
-  @Input() noShow = false;
-  @Input() adaptivePosition = false;
 
-  @ViewChild('modal', {static: true}) public modal: ModalDirective;
-  @ViewChild('pop', {static: true}) public popover: PopoverDirective;
+  @ViewChild('modal', {static: true}) modal: ModalComponent;
 
-  position: string;
+  useModal: boolean;
 
-  constructor(private platformService: PlatformService) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  @HostListener('window:resize')
+  toggleModal() {
+    if (!this.useModal) { return; }
+    if (this.modal.isShown) { this.modal.hide(); } else { this.modal.show(); }
+  }
+
+  @HostListener('window:resize', ['$event'])
   onResize() {
-    if (this.isVisible()) {
-      this.show();
-    }
-  }
-
-  @HostListener('mousemove', ['$event'])
-  onMousemove(event: MouseEvent) {
-    if (this.modal.isShown) {
-
-    } else {
-      if (this.container !== 'body') {
-        this.position = (event.pageY - event.clientY + 300) + 'px';
-      } else {
-        this.position = 'auto';
-      }
-    }
-  }
-
-  toggle(e?: any) {
-    this.isVisible() ? this.hide() : this.show(e);
-  }
-
-  show(e?: MouseEvent) {
-    if (this.platformService.isServer) {
-      return;
-    }
-    const useModal = this.useModal();
-    if (this.isVisible() && ((useModal && this.modal.isShown) || (!useModal && this.popover.isOpen))) {
-      return;
-    }
-    if (this.noShow) {
-      return;
-    }
-    this.hide();
-    if (useModal) {
-      this.modal.show();
-    } else {
-      this.popover.show();
-    }
-  }
-
-  hide() {
-    if (this.modal.isShown) {
-      this.modal.hide();
-    }
-    if (this.popover.isOpen) {
-      this.popover.hide();
-    }
-  }
-
-  mouseEnter() {
-    if (!this.useModal() && this.showOnHover) {
-      this.show();
-    }
-  }
-
-  mouseLeave() {
-    if (!this.useModal() && this.showOnHover) {
-      this.hide();
-    }
-  }
-
-  private isVisible() {
-    return this.modal.isShown || this.popover.isOpen;
-  }
-
-  private useModal() {
-    return this.platformService.isBrowser && window.innerWidth <= 767;
+    this.useModal = window.innerWidth <= 767;
+    this.cdr.markForCheck();
   }
 }

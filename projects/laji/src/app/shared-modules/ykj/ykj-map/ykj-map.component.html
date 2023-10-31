@@ -20,14 +20,14 @@
       <span class="map-color-legend-cnt capitalize">
         {{ 'theme.square' | translate }}
       </span>
-      <div dropdown style="position: relative">
+      <div style="position: relative">
         <ng-container *ngIf="types.length > 1">
-          <a class="link" dropdownToggle style="padding: 0">
+          <a class="link" luDropdownToggle style="padding: 0">
             <span>
               {{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}
             </span>
           </a>
-          <ul *dropdownMenu class="dropdown-menu" role="menu">
+          <ul luDropdownMenu class="dropdown-menu">
             <ng-container *ngFor="let type of types">
               <li><a (click)="changeType(type)"
                      class="link">{{ (typeLabels[type] ? typeLabels[type] : 'theme.' + type) | translate }}</a></li>

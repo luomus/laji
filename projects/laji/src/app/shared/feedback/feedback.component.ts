@@ -1,6 +1,5 @@
 import { switchMap, take } from 'rxjs/operators';
 import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
@@ -10,6 +9,7 @@ import { LajiApi, LajiApiService } from '../service/laji-api.service';
 import { of } from 'rxjs';
 import { Person } from '../model/Person';
 import { PlatformService } from '../../root/platform.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'laji-feedback',
@@ -29,7 +29,7 @@ export class FeedbackComponent {
     email: ''
   };
   public error = false;
-  private displayedModal: BsModalRef;
+  private displayedModal: ModalRef;
 
   @ViewChild('childModal', { static: true }) public modal: TemplateRef<any>;
 
@@ -40,7 +40,7 @@ export class FeedbackComponent {
     private lajiApi: LajiApiService,
     private toastsService: ToastsService,
     private location: Location,
-    private modalService: BsModalService
+    private modalService: ModalService
 ) {
   }
 

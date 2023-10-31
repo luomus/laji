@@ -28,9 +28,8 @@
           {{ value.linkings.taxon.scientificName }}
       </span>
       <a
-        [tooltip]="'showSpeciesCard' | translate"
+        [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
-        container="body"
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings.taxon.id || value.linkings.taxon.qname) | toQName)] | localize" (click)="onTaxonLinkClick($event)">
         <i class="glyphicon glyphicon-tag"></i>
       </a>
@@ -60,10 +59,9 @@
           {{ value.linkings[taxon].scientificName }}
         </span>
         <a
-          [tooltip]="'showSpeciesCard' | translate"
+          [luTooltip]="'showSpeciesCard' | translate"
           [placement]="'right'"
           (click)="onTaxonLinkClick($event)"
-          container="body"
           target="{{column.target || '_self'}}" [routerLink]="['/taxon', ((value.linkings[taxon].id || value.linkings[taxon].qname) | toQName)] | localize">
           <i class="glyphicon glyphicon-tag"></i>
         </a>
@@ -91,9 +89,8 @@
           {{ value.linkings.taxon.speciesScientificName }}
       </span>
       <a
-        [tooltip]="'showSpeciesCard' | translate"
+        [luTooltip]="'showSpeciesCard' | translate"
         [placement]="'right'"
-        container="body"
         (click)="onTaxonLinkClick($event)"
         target="{{column.target || '_self'}}" [routerLink]="['/taxon', (value.linkings.taxon.speciesId | toQName)] | localize">
         <i class="glyphicon glyphicon-tag"></i>
@@ -223,7 +220,7 @@
   <ng-container *ngTemplateOutlet="toSemicolon; context: {value: value | publication}"></ng-container>
 </ng-template>
 <ng-template let-value="value" #iucnStatus>
-  <div *ngIf="value" class="iucnStatus" tooltip="{{value.status | toQName | iucnStatus }} - {{ value.status | toQName | translatableIucn | translate }} ({{value.year}})">
+  <div *ngIf="value" class="iucnStatus" luTooltip="{{value.status | toQName | iucnStatus }} - {{ value.status | toQName | translatableIucn | translate }} ({{value.year}})">
     <div class="iucnStatusAll iucnStatus{{ value.status | toQName | iucnStatus }}" >
       {{ value.status | toQName | iucnStatus }}
     </div>
@@ -305,14 +302,14 @@
   </span>
 </ng-template>
 <ng-template let-value="value" #qualityIcon>
-  <span *ngIf="value" [tooltip]="value | label:'warehouse'">
+  <span *ngIf="value" [luTooltip]="value | label:'warehouse'">
     <img class="quality" src="{{ value | qualityUrl }}" alt="Image">
   </span>
 </ng-template>
 <ng-template let-value="value" #sensitiveIcon>
   <span *ngIf="value !== undefined && value !== null" [ngSwitch]="value" class="sensitive">
-    <i *ngSwitchCase="true" class="fa fa-lock" [tooltip]="'result.unit.sensitive.true' | translate"></i>
-    <i *ngSwitchDefault class="fa fa-unlock" [tooltip]="'result.unit.sensitive.false' | translate"></i>
+    <i *ngSwitchCase="true" class="fa fa-lock" [luTooltip]="'result.unit.sensitive.true' | translate"></i>
+    <i *ngSwitchDefault class="fa fa-unlock" [luTooltip]="'result.unit.sensitive.false' | translate"></i>
   </span>
 </ng-template>
 <ng-template let-row="row" #biogeographicalProvinceOccurrence>

@@ -9,15 +9,16 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ChartOptions, Tooltip } from 'chart.js';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
 const BAR_CHART_OPTIONS: ChartOptions = {
@@ -63,7 +64,7 @@ const BAR_CHART_OPTIONS: ChartOptions = {
 export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, OnInit {
   private unsubscribe$ = new Subject<void>();
 
-  @ViewChild('modal', { static: true }) public modal: ModalDirective;
+  @ViewChild('modal', { static: true }) public modal: ModalComponent;
   @Input() query: WarehouseQueryInterface;
   @Input() useIndividualCount = false;
   @Output() hasData = new EventEmitter<boolean>();

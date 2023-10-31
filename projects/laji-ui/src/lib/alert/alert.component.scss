@@ -1,0 +1,80 @@
+@import 'vars';
+
+:host {
+  display: block;
+  position: relative; // for the dismiss button
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  padding: $sp-4;
+  margin-bottom: $sp-4;
+}
+
+:host.success {
+  background-color: $success-2;
+  border-color: $success-3;
+  color: $success-8;
+}
+
+:host.info {
+  background-color: $info-2;
+  border-color: $info-3;
+  color: $info-8;
+}
+
+:host.warning {
+  background-color: $warning-2;
+  border-color: $warning-3;
+  color: $warning-8;
+}
+
+:host.danger {
+  background-color: $danger-2;
+  border-color: $danger-3;
+  color: $danger-8;
+}
+
+:host.dismissible {
+  padding-right: $sp-7;
+}
+
+.dismiss {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: $sp-3;
+  width: 25px;
+  height: 25px;
+  padding: 4px;
+  padding-top: 2px;
+
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+:host.success .dismiss {
+  background-color: $success-1;
+  &:hover {
+    background-color: $success-2;
+  }
+}
+:host.info .dismiss {
+  background-color: $info-1;
+  &:hover {
+    background-color: $info-2;
+  }
+}
+:host.warning .dismiss {
+  background-color: $warning-1;
+  &:hover {
+    background-color: $warning-2;
+  }
+}
+:host.danger .dismiss {
+  background-color: $danger-1;
+  &:hover {
+    background-color: $danger-2;
+  }
+}

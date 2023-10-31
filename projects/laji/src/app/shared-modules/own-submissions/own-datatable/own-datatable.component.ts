@@ -18,19 +18,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { DatatableComponent } from '@achimha/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
-import { Router } from '@angular/router';
-import { DocumentExportService } from '../service/document-export.service';
-import { LocalizeRouterService } from '../../../locale/localize-router.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
-import { DocumentService } from '../service/document.service';
-import { TemplateForm } from '../models/template-form';
-import { Logger } from '../../../shared/logger/logger.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../root/platform.service';
 import { Form } from '../../../shared/model/Form';
 import { SelectionType } from '@achimha/ngx-datatable';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 export interface RowDocument {
   creator: string;
@@ -107,12 +101,8 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   @Input() selected: RowDocument[] = [];
   @Input() columnNameMapping: any;
   @Input() onlyTemplates = false;
-  @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
+  @Input() actions: string[]|false = ['edit', 'view', 'download', 'stats', 'delete'];
   @Input() labels: string[] = [];
-  @Input() templateForm: TemplateForm = {
-    name: '',
-    description: ''
-  };
   @Output() documentClicked = new EventEmitter<string>();
   @Output() download = new EventEmitter<DownloadEvent>();
   @Output() template = new EventEmitter<TemplateEvent>();
@@ -121,7 +111,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
 
   deleteRow: any;
   deleting = false;
-  templateDocumentID: string;
   printState: 'none'|'select' = 'none';
 
   totalMessage = '';
@@ -165,9 +154,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   private lastSort: any;
 
   @ViewChild(DatatableComponent) table: DatatableComponent;
-  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalDirective;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
-  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalDirective;
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal: ModalComponent;
+  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalComponent;
+  @ViewChild('deleteModal', { static: true }) public deleteModal: ModalComponent;
 
   labelFilter$: Observable<LabelFilter>;
   forms$: Observable<{[id: string]: Form.List}>;
@@ -177,14 +166,9 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
   constructor(
     private platformService: PlatformService,
     private translate: TranslateService,
-    private router: Router,
     private userService: UserService,
     private formService: FormService,
-    private localizeRouterService: LocalizeRouterService,
-    private documentExportService: DocumentExportService,
-    private documentService: DocumentService,
     private toastService: ToastsService,
-    private logger: Logger,
     private cd: ChangeDetectorRef,
     private deleteOwnDocument: DeleteOwnDocumentService
   ) {
@@ -322,27 +306,6 @@ export class OwnDatatableComponent implements OnInit, AfterViewChecked, OnDestro
     this.cd.markForCheck();
     this.deleteModal.hide();
     this.delete.emit(this.deleteRow.id);
-  }
-
-  makeTemplate(row: RowDocument) {
-    if (!row.id) {
-      return;
-    }
-    this.templateDocumentID = row.id;
-    this.templateModal.show();
-  }
-
-  saveTemplate() {
-    this.templateModal.hide();
-    if (!this.templateDocumentID) {
-      this.translate.get('template.missingDocument')
-        .subscribe((value) => this.toastService.showError(value));
-      return;
-    }
-    this.template.emit({
-      ...this.templateForm,
-      documentID: this.templateDocumentID
-    });
   }
 
   openChooseFileTypeModal(docId?: string) {
