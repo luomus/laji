@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, Output, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges } from '@angular/core';
+
+export type AlertType = 'info' | 'warning' | 'success' | 'danger';
 
 @Component({
   selector: 'lu-alert',
@@ -6,14 +8,18 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, On
   styleUrls: ['./alert.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AlertComponent implements OnChanges {
-  @Input() type = 'info';
+export class AlertComponent implements OnInit, OnChanges {
+  @Input() type: AlertType = 'warning';
   @Input() dismissible = false;
   // for compat with ngx-bootstrap:
   // eslint-disable-next-line @angular-eslint/no-output-on-prefix
   @Output() onClose = new EventEmitter<void>();
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    this.renderer.addClass(this.el.nativeElement, this.type);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.type) {
