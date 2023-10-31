@@ -1,4 +1,4 @@
-import { ApplicationRef, createComponent, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
+import { ApplicationRef, ComponentRef, createComponent, EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
 import { ModalComponent, ModalSize } from './modal/modal.component';
 import { DOCUMENT } from '@angular/common';
 
@@ -21,7 +21,9 @@ export type ModalRef<T = any>  = ModalComponent & { content?: T };
 export class ModalService {
 
   private renderer: Renderer2;
-  private modal: ModalRef<any>;
+  private modal?: ModalRef<any>;
+  private modalComponent?: ComponentRef<ModalComponent>;
+  private content?: ComponentRef<any> | EmbeddedViewRef<any>;
 
   constructor(
     private appRef: ApplicationRef,
@@ -37,10 +39,11 @@ export class ModalService {
     const contentHostNode = document.createElement('div');
     this.renderer.appendChild(contentNode, contentHostNode);
     this.modal = modalComponent.instance as any;
+    this.modalComponent = modalComponent;
     if (componentClassOrTemplateRef instanceof TemplateRef) {
-      this.injectTemplate(componentClassOrTemplateRef, contentNode);
+      this.content = this.injectTemplate(componentClassOrTemplateRef, contentNode);
     } else  {
-      this.injectComponent(componentClassOrTemplateRef, contentNode, options);
+      this.content = this.injectComponent(componentClassOrTemplateRef, contentNode, options);
     }
 
     return this.modal as ModalRef<T>;
@@ -60,12 +63,13 @@ export class ModalService {
   }
 
   private injectTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
-    const embeddedViewRef = templateRef.createEmbeddedView(templateRef as any);
-    embeddedViewRef.rootNodes.forEach(node => {
+    const embeddedView= templateRef.createEmbeddedView(templateRef as any);
+    embeddedView.rootNodes.forEach(node => {
       this.renderer.appendChild(contentNode, node);
     });
-    embeddedViewRef.detectChanges();
-    this.appRef.attachView(embeddedViewRef);
+    embeddedView.detectChanges();
+    this.appRef.attachView(embeddedView);
+    return embeddedView;
   }
 
   private injectComponent<T>(componentClass: Type<T>, contentNode: HTMLElement, options: ModalOptions<T> = {}) {
@@ -80,14 +84,19 @@ export class ModalService {
     contentComponent.changeDetectorRef.detectChanges();
     this.appRef.attachView(contentComponent.hostView);
     (this.modal as any).content = contentComponent.instance;
+    return contentComponent;
   }
 
   hide() {
     this.modal.hide();
-    this.modal = undefined;
   }
 
   destroyOnHide() {
+    this.modalComponent.destroy();
+    this.modalComponent = undefined;
+    this.content.destroy();
+    this.content = undefined;
     this.renderer.removeChild(document.body, (this.modal as any).elementRef.nativeElement);
+    this.modal = undefined;
   }
 }
