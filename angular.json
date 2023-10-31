@@ -24,9 +24,11 @@
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
+              "node_modules/laji-form-builder/lib/client/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "projects/laji/src/styles/laji.scss"
             ],
             "stylePreprocessorOptions": {
@@ -1191,6 +1193,7 @@
               "projects/bird-atlas/src/assets"
             ],
             "styles": [
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "node_modules/laji-map/dist/styles.css",
               "projects/bird-atlas/src/styles.scss"
             ],
