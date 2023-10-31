@@ -1,20 +1,13 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  OnInit, ViewChild, ElementRef, AfterViewInit
-} from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   template: `
-    <div class="modal-body">
-      <p class="laji-dialog-message">{{ message | translate }}</p>
-      <input *ngIf="prompt" #prompt
-             class="form-control"
-             (keyup)="onPromptChange(prompt.value)"
-             (keyup.enter)="onConfirm()" />
-    </div>
-    <div class="modal-footer">
+    <p class="laji-dialog-message">{{ message | translate }}</p>
+    <input *ngIf="prompt" #prompt
+           class="form-control"
+           (keyup)="onPromptChange(prompt.value)"
+           (keyup.enter)="onConfirm()" />
+    <div class="lu-modal-footer">
       <button type="button" #confirm
               class="btn btn-primary laji-dialog-confirm"
               (click)="onConfirm()">{{ confirmLabel | translate }}</button>
@@ -25,7 +18,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmModalComponent implements OnInit, AfterViewInit {
+export class ConfirmModalComponent implements AfterViewInit {
 
   message!: string;
   confirmLabel = 'OK';
@@ -34,27 +27,22 @@ export class ConfirmModalComponent implements OnInit, AfterViewInit {
   promptValue = '';
   showCancel = true;
 
-  value!: boolean | string | null;
+  @Output() confirm = new EventEmitter<any>();
 
   @ViewChild('confirm') confirmElem!: ElementRef;
-
-  constructor(private modalRef: BsModalRef) { }
-
-  ngOnInit() {
-    this.value = this.prompt ? null : false;
-  }
 
   ngAfterViewInit() {
     setTimeout(() => this.confirmElem.nativeElement.focus());
   }
 
   onConfirm() {
-    this.value = this.prompt ? this.promptValue : true;
-    this.modalRef.hide();
+    this.confirm.emit(this.prompt ? this.promptValue : true);
+    this.confirm.complete();
   }
 
   onCancel() {
-    this.modalRef.hide();
+    this.confirm.emit(this.prompt ? null : false);
+    this.confirm.complete();
   }
 
   onPromptChange(value: string) {

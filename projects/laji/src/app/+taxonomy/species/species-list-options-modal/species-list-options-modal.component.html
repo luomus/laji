@@ -1,124 +1,116 @@
-<div bsModal #settingsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">{{ 'species.settings.list' | translate }}</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row" >
-          <div class="col-sm-6">
-            <laji-selected-field-group
-              header="species.list.basicInfo"
-              [fields]="[
-                'id',
-                'taxonRank',
-                'scientificName',
-                'scientificNameAuthorship',
-                'vernacularName'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="species.list.names"
-              [fields]="[
-                'synonymNames',
-                'misappliedListNames',
-                'vernacularName.fi',
-                'vernacularName.sv',
-                'vernacularName.en',
-                'alternativeVernacularName',
-                'obsoleteVernacularName',
-                'tradeName'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="species.list.statusInFinland"
-              [fields]="[
-                'finnish',
-                'typeOfOccurrenceInFinland',
-                'typeOfOccurrenceInFinlandNotes'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="species.list.publications"
-              [fields]="[
-                'occurrenceInFinlandPublications',
-                'originalPublications'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="species.list.attributes"
-              [fields]="[
-                'latestRedListStatusFinland',
-                'sensitive',
-                'informalTaxonGroups',
-                'invasiveSpecies',
-                'administrativeStatuses',
-                'habitats',
-                'biogeographicalProvinceOccurrence'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-          </div>
-          <div class="col-sm-6">
-            <laji-selected-field-group
-              header="species.list.observations"
-              [fields]="[
-                'observationCount',
-                'observationCountFinland'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-field-group
-              header="species.list.misc"
-              [fields]="[
-                'taxonExpert',
-                'notes'
-                ]"
-              [columnsLookup]="columnService.columnLookup"
-              [selected]="columnSelector.columns"
-              [required]="requiredFields"
-              [columnSelector]="columnSelector"
-            ></laji-selected-field-group>
-            <laji-selected-parents
-              header="species.list.parents"
-              [parents]="columnService.parents"
-              [columnSelector]="columnSelector"
-              [selected]="columnSelector.columns"
-            ></laji-selected-parents>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6"></div>
-          <div class="col-sm-6 clear-btn">
-            <div class="pull-right">
-              <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="resetFields()">{{ 'result.reset' | translate }}</button>
-              <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
-            </div>
-          </div>
-        </div>
+<lu-modal #settingsModal size="lg">
+  <h4>{{ 'species.settings.list' | translate }}</h4>
+  <div class="row" >
+    <div class="col-sm-6">
+      <laji-selected-field-group
+        header="species.list.basicInfo"
+        [fields]="[
+          'id',
+          'taxonRank',
+          'scientificName',
+          'scientificNameAuthorship',
+          'vernacularName'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-field-group
+        header="species.list.names"
+        [fields]="[
+          'synonymNames',
+          'misappliedListNames',
+          'vernacularName.fi',
+          'vernacularName.sv',
+          'vernacularName.en',
+          'alternativeVernacularName',
+          'obsoleteVernacularName',
+          'tradeName'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-field-group
+        header="species.list.statusInFinland"
+        [fields]="[
+          'finnish',
+          'typeOfOccurrenceInFinland',
+          'typeOfOccurrenceInFinlandNotes'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-field-group
+        header="species.list.publications"
+        [fields]="[
+          'occurrenceInFinlandPublications',
+          'originalPublications'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-field-group
+        header="species.list.attributes"
+        [fields]="[
+          'latestRedListStatusFinland',
+          'sensitive',
+          'informalTaxonGroups',
+          'invasiveSpecies',
+          'administrativeStatuses',
+          'habitats',
+          'biogeographicalProvinceOccurrence'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+    </div>
+    <div class="col-sm-6">
+      <laji-selected-field-group
+        header="species.list.observations"
+        [fields]="[
+          'observationCount',
+          'observationCountFinland'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-field-group
+        header="species.list.misc"
+        [fields]="[
+          'taxonExpert',
+          'notes'
+          ]"
+        [columnsLookup]="columnService.columnLookup"
+        [selected]="columnSelector.columns"
+        [required]="requiredFields"
+        [columnSelector]="columnSelector"
+      ></laji-selected-field-group>
+      <laji-selected-parents
+        header="species.list.parents"
+        [parents]="columnService.parents"
+        [columnSelector]="columnSelector"
+        [selected]="columnSelector.columns"
+      ></laji-selected-parents>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6 clear-btn">
+      <div class="pull-right">
+        <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="resetFields()">{{ 'result.reset' | translate }}</button>
+        <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeOkModal()">Ok</button>
       </div>
     </div>
   </div>
-</div>
+</lu-modal>

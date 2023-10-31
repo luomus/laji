@@ -1,7 +1,7 @@
 import { AfterViewChecked, ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, Renderer2, TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BugPath } from '../bug-animation';
 import { PdfModalComponent } from './pdf-modal.component';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 export interface ISlideData {
   title: string;
@@ -24,9 +24,9 @@ export class SlideComponent implements OnChanges, AfterViewChecked {
   @Input() data: ISlideData;
 
   private prevCheckedData;
-  private bsModalRef: BsModalRef;
+  private modalRef: ModalRef;
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private modalService: BsModalService) {}
+  constructor(private el: ElementRef, private renderer: Renderer2, private modalService: ModalService) {}
 
   ngOnChanges() {
     if (!this.data.bgIsVideo && this.data.bgSrc) {
@@ -49,8 +49,8 @@ export class SlideComponent implements OnChanges, AfterViewChecked {
       this.renderer.setAttribute(el, 'href', 'javascript:void(0)');
       this.renderer.listen(el, 'click', event => {
         event.stopImmediatePropagation();
-        this.bsModalRef = this.modalService.show(PdfModalComponent, {class: 'modal-lg'});
-        this.bsModalRef.content.url = href;
+        this.modalRef = this.modalService.show(PdfModalComponent, {size: 'lg'});
+        this.modalRef.content.url = href;
       });
     });
   }

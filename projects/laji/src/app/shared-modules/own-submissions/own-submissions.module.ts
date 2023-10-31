@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { YearSliderModule } from '../year-slider/year-slider.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -18,7 +20,9 @@ import { YearSliderModule } from '../year-slider/year-slider.module';
     NgxDatatableModule,
     DocumentViewerModule,
     LajiUiModule,
-    YearSliderModule
+    YearSliderModule,
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     OwnSubmissionsComponent,

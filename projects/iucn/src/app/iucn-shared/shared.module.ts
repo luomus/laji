@@ -16,6 +16,7 @@ import { DownloadModalModule } from '../../../../laji/src/app/shared-modules/dow
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { RedListSpeciesComponent } from '../iucn-shared/component/species-table/red-list-species/red-list-species.component';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/i
     SelectFieldsModule,
     DownloadModalModule,
     DatatableModule,
-    IucnCommonModule
+    IucnCommonModule,
+    TooltipModule
   ],
   declarations: [
     SimpleOmniComponent,

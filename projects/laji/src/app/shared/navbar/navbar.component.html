@@ -39,17 +39,12 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
-            <li class="d-none xs:d-block" [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a [routerLink]="['/taxon'] | localize">{{ 'navigation.taxonomy' | translate }}</a>
-            </li>
-            <li class="d-block xs:d-none" dropdown #taxonMenu="bs-dropdown" *lajiForTypes="['dev', 'prod', 'beta']">
-              <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
+            <li class="d-block xs:d-none" *lajiForTypes="['dev', 'prod', 'beta']">
+              <a luDropdownToggle class="link user">
                 {{ 'navigation.taxonomy' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
               </a>
-              <div *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu">
-                <laji-taxon-dropdown [visible]="taxonMenu.isOpen" (dropdownClose)="onCloseTaxonDropdown()"></laji-taxon-dropdown>
-              </div>
+              <laji-taxon-dropdown luDropdownMenu></laji-taxon-dropdown>
             </li>
             <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
               <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
@@ -77,13 +72,13 @@
             </li>
             <ng-container *lajiBrowserOnly>
               <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
-                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown #userMenu="bs-dropdown">
-                  <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
+                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async">
+                  <a luDropdownToggle class="link user">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
                   </a>
-                  <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+                  <ul luDropdownMenu class="right">
                     <li role="menuitem">
                       <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                     </li>
@@ -94,7 +89,7 @@
                       <ng-container *ngIf="(notificationsTotal$ | async) > 0">
                         <li role="separator" class="divider"></li>
                         <li>
-                          <laji-notifications (notificationsClose)="onClose()"></laji-notifications>
+                          <laji-notifications></laji-notifications>
                         </li>
                       </ng-container>
                     </ng-container>
@@ -112,8 +107,8 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li dropdown *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
-              <a dropdownToggle class="link language-toggle" tabindex="0" role="button" luKeyboardClickable>
+            <li *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
+              <a luDropdownToggle class="link language-toggle">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">
                   FI
@@ -125,7 +120,7 @@
                   EN
                 </span>
               </a>
-              <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+              <ul luDropdownMenu class="right">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
                   <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
                 </li>

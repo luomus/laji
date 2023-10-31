@@ -1,0 +1,87 @@
+@import 'vars';
+
+::ng-deep .lu-backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+
+:host {
+  position: absolute;
+  z-index: 1030;
+}
+
+.lu-modal-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1070;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+}
+
+.lu-modal-close-button {
+  position: fixed;
+  right: 30px;
+  top: 17px;
+}
+
+::ng-deep .lu-modal-close-button button {
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
+.lu-modal-content {
+  position: relative;
+  padding: 15px;
+  background: $neutral-2;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  margin: 55px 15px 15px 15px;
+}
+
+@media only screen and (min-width: 768px) {
+  .lu-modal-sm {
+    .lu-modal-content {
+      width: 300px;
+    }
+    > .lu-modal-close-button {
+      left: calc(50% + 155px);
+    }
+  }
+
+	.lu-modal-md, .lu-modal-lg {
+    .lu-modal-content {
+      width: 600px;
+    }
+
+    > .lu-modal-close-button {
+      left: calc(50% + 305px);
+    }
+	}
+
+  .lu-modal-content {
+    margin: 15px auto;
+  }
+}
+
+@media (min-width: 992px) {
+	.lu-modal-lg {
+    .lu-modal-content {
+			width: 900px;
+    }
+      > .lu-modal-close-button {
+        left: calc(50% + 455px);
+      }
+	}
+}
+
+::ng-deep .lu-modal-footer {
+  text-align: right;
+}

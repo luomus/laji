@@ -142,20 +142,20 @@
       [disabled]="unIdentifyable"
       [required]="expert && (personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin' ) && (annotation.addedTags.length > 0)"
       [(ngModel)]="annotation.identification.taxon"
-      [typeahead]="taxonAutocomplete"
-      [typeaheadOptionsLimit]="20"
-      [typeaheadWaitMs]="200"
-      [typeaheadMinLength]="3"
-      [typeaheadOptionField]="'autocompleteSelectedName'"
-      [typeaheadItemTemplate]="taxonItem"
+      [luTypeahead]="taxonAutocomplete"
+      [luTypeaheadOptionsLimit]="20"
+      [luTypeaheadWaitMs]="200"
+      [luTypeaheadMinLength]="3"
+      [luTypeaheadOptionField]="'autocompleteSelectedName'"
+      [luTypeaheadItemTemplate]="taxonItem"
       autocomplete="off"
       autocorrect="off"
       (change)="saveTaxon()"
-      (typeaheadOnSelect)="select($event)"
+      (luTypeaheadOnSelect)="select($event)"
       (focus)="onFocus($event)"
       (blur)="onBlur($event)"
       >
-      <div class="taxon-remove d-flex flex-col justify-center" [tooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" role="button" luKeyboardClickable>
+      <div class="taxon-remove d-flex flex-col justify-center" [luTooltip]="'annotation.delete' | translate" [class.disabled]="annotation.identification.taxon === undefined || annotation.identification.taxon === ''"  (click)="cleanTaxon()" tabindex="0" role="button" luKeyboardClickable>
         <i class="glyphicon glyphicon-remove d-block"></i>
       </div>
       <div class="taxon-agree d-flex flex-col justify-center" *ngIf="unit.linkings && (unit.linkings.originalTaxon || unit.linkings.taxon) && annotation.addedTags.indexOf('MMAN.3' | toQName) === -1" (click)="copyCurrentTaxon()" tabindex="0" role="button" luKeyboardClickable>
@@ -173,7 +173,7 @@
   </div>
 
   <div class="mb-4" *ngIf="(personRoleAnnotation===annotationRole.expert || personRoleAnnotation === 'MMAN.ictAdmin') && expert">
-    <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info [container]="'laji-document-annotation'">{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
+    <h5>{{ 'annotation.taxonSpecifier' | translate }} <laji-info>{{ 'annotation.taxonSpecifierInfo' | translate }}</laji-info></h5>
     <input
     type="text"
     class="form-control taxon-specifier-input"
