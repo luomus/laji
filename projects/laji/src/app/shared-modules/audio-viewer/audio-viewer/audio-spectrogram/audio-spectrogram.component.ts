@@ -110,7 +110,7 @@ export class AudioSpectrogramComponent implements AfterViewInit, OnChanges {
     this._height = this.height
       ? this.height
       : this.config
-        ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.targetWindowLengthInSeconds, this.config.sampleRate) / 2)
+        ? (AudioViewerUtils.getSpectrogramSegmentLength(this.config.tarwindowLengthInSeconds, this.config.sampleRate) / 2)
         : 0;
   }
 }

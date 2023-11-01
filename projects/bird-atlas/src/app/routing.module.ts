@@ -44,8 +44,7 @@ const allRoutes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(allRoutes, {
-    initialNavigation: 'enabledBlocking',
-    relativeLinkResolution: 'legacy'
+    initialNavigation: 'enabledBlocking'
 })],
   exports: [RouterModule]
 })

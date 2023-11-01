@@ -7,7 +7,9 @@
       "error",
       {
         "type": "element",
-        "prefix": ["iucn"],
+        "prefix": [
+          "iucn"
+        ],
         "style": "kebab-case"
       }
     ],
@@ -15,7 +17,9 @@
       "error",
       {
         "type": "attribute",
-        "prefix": ["iucn"],
+        "prefix": [
+          "iucn"
+        ],
         "style": "camelCase"
       }
     ]

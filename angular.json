@@ -24,9 +24,11 @@
             ],
             "styles": [
               "node_modules/laji-form/dist/styles.css",
+              "node_modules/laji-form-builder/lib/client/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "projects/laji/src/styles/laji.scss"
             ],
             "stylePreprocessorOptions": {
@@ -273,7 +275,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/server",
-            "main": "server.ts",
+            "main": "projects/laji/server.ts",
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -281,7 +283,8 @@
               ]
             },
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -295,7 +298,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "beta": {
               "outputHashing": "media",
@@ -308,14 +312,16 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.beta.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "dev": {
               "outputHashing": "media",
               "optimization": true,
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true
+              "extractLicenses": true,
+              "buildOptimizer": true
             },
             "embedded": {
               "outputHashing": "media",
@@ -328,7 +334,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.embedded.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             },
             "local": {
               "outputHashing": "media",
@@ -341,7 +348,8 @@
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.local.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -380,14 +388,14 @@
       "prefix": "ll",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/label-designer/tsconfig.lib.json",
             "project": "projects/label-designer/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/label-designer/tsconfig.lib.prod.json"
+              "tsConfig": "projects/label-designer/tsconfig.lib.json"
             }
           }
         },
@@ -777,14 +785,14 @@
       "prefix": "lu",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/laji-ui/tsconfig.lib.json",
             "project": "projects/laji-ui/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/laji-ui/tsconfig.lib.prod.json"
+              "tsConfig": "projects/laji-ui/tsconfig.lib.json"
             }
           }
         },
@@ -813,14 +821,14 @@
       "prefix": "la",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/laji-api-client/tsconfig.lib.json",
             "project": "projects/laji-api-client/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/laji-api-client/tsconfig.lib.prod.json"
+              "tsConfig": "projects/laji-api-client/tsconfig.lib.json"
             }
           }
         },
@@ -1185,6 +1193,7 @@
               "projects/bird-atlas/src/assets"
             ],
             "styles": [
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "node_modules/laji-map/dist/styles.css",
               "projects/bird-atlas/src/styles.scss"
             ],
@@ -1480,6 +1489,12 @@
     },
     "@schematics/angular:directive": {
       "prefix": "laji"
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
     }
   },
   "cli": {
