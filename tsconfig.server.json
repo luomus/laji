@@ -14,8 +14,7 @@
   },
   "files": [
     "projects/laji/src/main.server.ts",
-    "server.ts",
-    "server.ts"
+    "projects/laji/server.ts"
   ],
   "angularCompilerOptions": {
     "entryModule": "./projects/laji/src/app/app.server.module#AppServerModule"
