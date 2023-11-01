@@ -5,7 +5,7 @@
   z-index: 1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-/* 
+
 .header-image::before {
   content: '';
   background: rgba(#000, .3);
@@ -14,7 +14,7 @@
   left: 0;
   height: 100%;
   width: 100%;
-} */
+}
 
 .image-content-container {
   max-width: 1300px;
@@ -25,7 +25,7 @@
   z-index: 100;
   color: $neutral-1;
   padding: 0px 50px;
-  background: rgba(#000, .4);
+/*   background: rgba(#000, .4); */
 }
 
 .logo {
@@ -35,6 +35,10 @@
 .some-link svg {
   height: 20px;
   width: 20px;
+}
+
+.fmnh {
+  color: $neutral-5;
 }
 
 laji-omni-search {
@@ -52,7 +56,7 @@ laji-omni-search {
   .stats-label {
     margin-top: -10px;
     font-size: $fs-5;
-    color: $neutral-5;
+    color: $neutral-4;
   }
 }
 

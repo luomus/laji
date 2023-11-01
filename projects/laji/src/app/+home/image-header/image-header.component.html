@@ -1,7 +1,7 @@
 <div class="header-image d-flex justify-center" [ngStyle]="{'background-image': 'url(' + headerImage.imageUrl + ')'}" role="main">
   <div class="image-content-container d-flex">
     <div class="header-image-content d-flex flex-col justify-center">
-      <div class="d-flex mb-6">
+      <div class="d-flex mb-4">
         <img class="d-block logo mr-4" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
         <div class="d-flex flex-col">
           <a href="https://facebook.com/Lajitietokeskus" class="some-link">
@@ -15,6 +15,7 @@
           </a>
         </div>
       </div>
+      <div class="fmnh mb-5" translate>home.providedBy</div>
       <div class="stats d-flex mb-6">
         <div class="stats-container">
           <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.observations?.total"></laji-observation-count>
