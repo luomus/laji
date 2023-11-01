@@ -1,0 +1,166 @@
+@import 'vars';
+
+.omni-search {
+  margin-bottom: 0;
+  position: relative;
+}
+
+input::placeholder {
+  color: $neutral-6;
+}
+
+.omni-search-results {
+  position: fixed;
+  z-index: 1029;
+  width: 100%;
+  max-width: 800px;
+
+  display: flex;
+  gap: $sp-4;
+
+  padding: $sp-5 $sp-6;
+  border-radius: 8px;
+  color: $neutral-7;
+  background-color: $neutral-1;
+  border: 1px solid $neutral-4;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.taxon-matches {
+  width: 100%;
+  max-width: 300px;
+}
+
+.taxon-matches > div {
+  border-left: 4px solid rgba($primary-5,0);
+  padding: $sp-3;
+  margin-bottom: $sp-3;
+}
+
+.taxon-matches > div.active {
+  border-color: $primary-5;
+  background: $neutral-3;
+  color: $neutral-9;
+  font-weight: bold;
+}
+
+.taxon-matches ::ng-deep .flag-taxonRank {
+  display: block;
+  float: unset;
+  position: unset;
+  top: unset;
+  margin-left: unset;
+}
+
+.taxon-match {
+  max-width: 600px;
+  color: $neutral-8;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.taxon-match-first-col {
+  width: 100%;
+  max-width: 300px;
+}
+
+.taxon-match-second-col {
+  width: 100%;
+  max-width: 300px;
+}
+
+.informal-group-image {
+  width: 50px;
+  height: 50px;
+}
+
+/* vvvvv OLD STYLES vvvvv */
+
+.omni-search:after {
+  content: "\e003";
+  font-family: "Glyphicons Halflings";
+  line-height: 1;
+  position: absolute;
+  color: $neutral-6;
+  top: 10px;
+  right: 9px;
+}
+
+/* 
+.omni-search-results.right {
+  right: 0;
+  left: auto;
+}
+
+.omni-search-results .matches .active {
+  color: $neutral-8;
+  font-weight: bold;
+}
+
+.omni-search-results .scientificName.cursive {
+  font-style: italic;
+}
+
+.omni-search-results .match {
+  display: block;
+  width: 100%;
+}
+
+.omni-search-results .match {
+  display: block;
+  width: 100%;
+}
+
+.omni-search-results .informal-group-image {
+  display: inline-block;
+  max-width: 100%;
+  padding-right: 70px;
+  height: 65px;
+  background-size: 65px 65px;
+  background-position: top right;
+}
+
+::ng-deep .omni-search-results span.active div, ::ng-deep .omni-search-results span.link div {
+  display: block;
+  float: none;
+  margin-left: 0px;
+  position: relative;
+  top: -5px;
+}
+
+@media only screen and (min-width : 992px) {
+  .omni-search-results {
+    min-width: 727px;
+  }
+
+  .omni-search-results .taxon-list {
+    border-right: 1px solid $neutral-4;
+  }
+}
+
+.omni {
+  border-radius: 30px;
+
+  -webkit-transition: all .4s;
+  -moz-transition: all .4s;
+  transition: all .4s;
+}
+
+.omni.expandRight {
+  float: right;
+  padding-right: 20px;
+}
+
+.omni.expand {
+  width: 90px;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.omni.expand.open,
+.omni.expand:focus {
+  width: 100%;
+  background-color: $neutral-1;
+}
+ */

@@ -27,7 +27,7 @@ type InternalTaxon = TaxaWithAutocomplete & {count?: number; informalTaxonGroups
 @Component({
   selector: 'laji-omni-search',
   templateUrl: './omni-search.component.html',
-  styleUrls: ['./omni-search.component.css'],
+  styleUrls: ['./omni-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OmniSearchComponent implements OnInit, OnChanges, OnDestroy {
