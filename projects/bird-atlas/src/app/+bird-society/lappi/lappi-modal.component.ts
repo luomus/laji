@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 import { LappiStatsResponseGridsElement } from '../../core/atlas-api.service';
-import { TableColumn } from '@swimlane/ngx-datatable';
+import { TableColumn } from '@achimha/ngx-datatable';
 
 @Component({
   templateUrl: './lappi-modal.component.html',

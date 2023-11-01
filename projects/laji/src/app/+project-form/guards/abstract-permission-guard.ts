@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { flatMap, map, take, tap } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
 import { FormService } from '../../shared/service/form.service';
@@ -10,7 +10,7 @@ import { PlatformService } from '../../root/platform.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 @Injectable()
-export abstract class AbstractPermissionGuard implements CanActivate {
+export abstract class AbstractPermissionGuard  {
 
   constructor(private userService: UserService,
               private formService: FormService,

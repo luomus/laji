@@ -1,0 +1,35 @@
+@import 'projects/laji-ui/src/lib/vars';
+
+.lu-dropdown {
+  background: $neutral-1;
+  border: 1px solid rgba(0, 0, 0, .15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+  list-style: none;
+  padding: 5px 0;
+  z-index: 1032;
+
+  & > li > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: $neutral-7;
+    white-space: nowrap;
+
+    &:hover {
+      color: $neutral-8;
+      text-decoration: none;
+      background-color: $neutral-2;
+    }
+  }
+
+  & > .active > a {
+    background: $primary-5;
+  }
+
+  &.right {
+    right: 0 !important;
+    left: auto !important;
+  }
+}

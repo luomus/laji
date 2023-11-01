@@ -11,6 +11,8 @@ import { LangModule } from '../lang/lang.module';
 import { DocumentViewerModule } from '../document-viewer/document-viewer.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { BetaPopupComponent } from './beta-popup/beta-popup.component';
+import { DropdownModule } from 'projects/laji-ui/src/lib/dropdown/dropdown.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { BetaPopupComponent } from './beta-popup/beta-popup.component';
     CommonModule,
     SharedModule,
     DocumentViewerModule,
-    LajiUiModule
+    LajiUiModule,
+    DropdownModule,
+    ModalModule
   ],
   exports: [
     NavbarComponent,

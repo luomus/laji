@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DialogService } from 'projects/laji/src/app/shared/service/dialog.service';
 import { AudioViewerMode, IAudioViewerArea, ISpectrogramConfig } from 'projects/laji/src/app/shared-modules/audio-viewer/models';
 import { CommentType, IGlobalAudio, IGlobalComment, IGlobalTemplate } from '../../../../kerttu-global-shared/models';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'bsg-template',
@@ -38,11 +38,11 @@ export class TemplateComponent {
 
   private framedTemplate?: IGlobalTemplate;
   private commentType: CommentType = CommentType.reframe;
-  private modalRef?: BsModalRef;
+  private modalRef?: ModalRef<TemplateRef<any>>;
 
   constructor(
     private dialogService: DialogService,
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -100,7 +100,7 @@ export class TemplateComponent {
   }
 
   showCommentModal() {
-    this.modalRef = this.modalService.show(this.commentModal, { class: 'modal-md' });
+    this.modalRef = this.modalService.show(this.commentModal, { size: 'md' });
   }
 
   hideCommentModal() {

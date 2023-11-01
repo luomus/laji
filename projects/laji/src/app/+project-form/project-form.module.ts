@@ -26,6 +26,7 @@ import { DisabledComponent } from './disabled/disabled.component';
 import { BreadcrumbModule } from '../shared-modules/breadcrumb/breadcrumb.module';
 import { TechnicalNewsModule } from '../shared-modules/technical-news/technical-news.module';
 import { ProjectFormHeaderModule } from './header/project-form-header.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { ProjectFormHeaderModule } from './header/project-form-header.module';
     StatisticsModule,
     ProjectFormHeaderModule,
     BreadcrumbModule,
-    TechnicalNewsModule
+    TechnicalNewsModule,
+    ModalModule
   ],
   declarations: [
     ProjectFormComponent,

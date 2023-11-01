@@ -27,7 +27,6 @@ import { EditorGridComponent } from './label-designer/label-editor/editor-grid/e
 import { LabelItemFieldComponent } from './label-preview/label-item/label-item-field/label-item-field.component';
 import { LabelExcelFileComponent } from './label-designer/label-excel-file/label-excel-file.component';
 import { LabelPreviewPagerComponent } from './label-preview/label-preview-pager/label-preview-pager.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TranslatePipe } from './pipe/translate.pipe';
 import { TranslateService } from './translate/translate.service';
 import { LabelValueMapComponent } from './label-designer/label-value-map/label-value-map.component';
@@ -87,7 +86,6 @@ import { LabelBacksideSortPipe } from './pipe/label-backside-sort-pipe';
     DragDropModule,
     QRCodeModule,
     NgxWebstorageModule,
-    TypeaheadModule
   ],
   providers: [TranslateService, LabelMakerFacade],
   exports: [LabelDesignerComponent, LabelPreviewComponent, LabelPrintComponent]

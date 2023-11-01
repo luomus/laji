@@ -21,6 +21,7 @@ import { DownloadRequestModule } from '../../../../laji/src/app/shared-modules/d
 import { UsageAdminComponent } from './pages/usage-admin/usage-admin.component';
 import { FindPersonModule } from 'projects/laji/src/app/shared-modules/find-person/find-person.module';
 import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SelectModule } from 'projects/laji/src/app/shared-modules/select/select
     CopyToClipboardModule,
     DownloadRequestModule,
     FindPersonModule,
-    SelectModule
+    SelectModule,
+    ModalModule
   ]
 })
 export class UsageModule { }

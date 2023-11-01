@@ -14,7 +14,6 @@ import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInt
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { DatatableComponent } from '../../datatable/datatable/datatable.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -135,7 +134,6 @@ export class ObservationTableComponent implements OnInit, OnChanges {
   constructor(
     private resultService: ObservationResultService,
     private changeDetectorRef: ChangeDetectorRef,
-    private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,

@@ -1,171 +1,160 @@
 <ng-template #downloadModal>
-  <div class="modal-header laji-page">
-    <button class="close pull-right" type="button" (click)="closeModal()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4 class="modal-title">{{ 'search.result.load' | translate }}</h4>
-  </div>
-  <div class="modal-body laji-page">
-    <p
-      *ngIf="!hasPersonalData"
-      [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
-    </p>
-    <section>
-      <h3>{{ 'result.load.titleSimple' | translate }}</h3>
-      <alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
-        <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
-      </alert>
-      <ng-template #simpleDownloadTpl>
-        <div *ngIf="unitCount > 0">
-          <p [innerHTML]="'result.load.introSimple' | translate"></p>
-          <div class="action-group">
-            <laji-download
-              *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
-              role="primary"
-              [showBackdrop]="false"
-              (download)="simpleDownload($event)"
-              [downloadLoading]="downloadLoading"
-              [progressPercent]="downloadProgressPercent"
-              [formats]="formats"
-            >
-              <i class="glyphicon glyphicon-download-alt"></i>
-              {{ 'haseka.submissions.download' | translate }}
-            </laji-download>
-            <laji-download
-              *lajiForTypes="['vir']"
-              role="primary"
-              [showReason]="true"
-              [showBackdrop]="false"
-              [(reasonEnum)]="reasonEnum"
-              [(reason)]="reason"
-              (download)="simpleDownload($event)"
-              [downloadLoading]="downloadLoading"
-              [progressPercent]="downloadProgressPercent"
-              [formats]="formats"
-            >
-              <i class="glyphicon glyphicon-download-alt"></i>
-              {{ 'haseka.submissions.download' | translate }}
-            </laji-download>
-            <button class="btn btn-default" style="margin-left: 15px" (click)="openColumnSelectModal()">
-              <i class="glyphicon glyphicon-cog"></i>
-              {{ 'iucn.results.selectColumns' | translate }}
-            </button>
-          </div>
-        </div>
-      </ng-template>
-    </section>
-    <section>
-      <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
-      <alert *lajiLoggedIn="false">
-        {{ 'result.load.error.notLoggedIn' | translate }}
-      </alert>
-      <alert *ngIf="loadLimit < unitCount">
-        <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
-      <alert *ngIf="unitCount == 0">
-        {{ 'observation.export.tooLittle' | translate }}
-      </alert>
-      <ng-container *lajiLoggedIn="true">
-        <div *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
-          <p
-            [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
-          </p>
-          <alert *ngIf="hasPersonalData">
-            <strong>{{ 'result.load.personalData' | translate }}</strong>
-          </alert>
-          <ng-container *lajiForTypes="['vir']">
-            <alert *ngIf="gisDownloadLimit < unitCount">
-              <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
-            </alert>
-          </ng-container>
+  <h4>{{ 'search.result.load' | translate }}</h4>
+  <p
+    *ngIf="!hasPersonalData"
+    [innerHtml]="'result.load.intro' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;'), public: ((unitCount - privateCount) | formattedNumber:'&nbsp;'), species: (speciesCount | formattedNumber:'&nbsp;') }">
+  </p>
+  <section>
+    <h3>{{ 'result.load.titleSimple' | translate }}</h3>
+    <lu-alert *ngIf="maxSimpleDownload < unitCount || unitCount === 0; else simpleDownloadTpl">
+      <span [innerHTML]="(unitCount === 0 ? 'observation.export.tooLittle' : 'result.load.error.tooManySimple') | translate:{max: (maxSimpleDownload | formattedNumber:'&nbsp;')}"></span>
+    </lu-alert>
+    <ng-template #simpleDownloadTpl>
+      <div *ngIf="unitCount > 0">
+        <p [innerHTML]="'result.load.introSimple' | translate"></p>
+        <div class="action-group">
+          <laji-download
+            *lajiForTypes="['prod', 'dev', 'beta', 'embedded']"
+            role="primary"
+            (download)="simpleDownload($event)"
+            [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
+            [formats]="formats"
+          >
+            <i class="glyphicon glyphicon-download-alt"></i>
+            {{ 'haseka.submissions.download' | translate }}
+          </laji-download>
           <laji-download
             *lajiForTypes="['vir']"
+            role="primary"
             [showReason]="true"
-            [showBackdrop]="false"
-            [showFileTypes]="false"
-            [closeModalOnDownloadStart]="true"
             [(reasonEnum)]="reasonEnum"
             [(reason)]="reason"
-            (download)="makePublicRequest()"
-            [downloadLoading]="downloadLoading">
+            (download)="simpleDownload($event)"
+            [downloadLoading]="downloadLoading"
+            [progressPercent]="downloadProgressPercent"
+            [formats]="formats"
+          >
             <i class="glyphicon glyphicon-download-alt"></i>
-            {{ 'observation.download.loadPublic' | translate }}
+            {{ 'haseka.submissions.download' | translate }}
           </laji-download>
-          <lu-button
-            *lajiForTypes="['vir']; exclude: true"
-            [loading]="requests['download'] === requestStatus.loading"
-            [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
-            (click)="makePublicRequest()" luKeyboardClickable tabindex="0">
-            <i class="glyphicon glyphicon-download-alt"></i>
-            {{ 'observation.download.loadPublic' | translate }}
-          </lu-button>
+          <button class="btn btn-default" style="margin-left: 15px" (click)="openColumnSelectModal()">
+            <i class="glyphicon glyphicon-cog"></i>
+            {{ 'iucn.results.selectColumns' | translate }}
+          </button>
         </div>
-      </ng-container>
-    </section>
-    <section *lajiForTypes="['vir']; exclude: true">
-      <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
-      <alert *lajiLoggedIn="false">
-        {{ 'result.load.error.notLoggedIn' | translate }}
-      </alert>
-      <alert *ngIf="loadLimit < unitCount">
-        <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
-      <ng-container *lajiLoggedIn="true">
-        <div *ngIf="loadLimit >= unitCount">
-          <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
-          <alert *ngIf="hasPersonalData">
-            <strong>{{ 'result.load.personalData' | translate }}</strong>
-          </alert>
-          <alert *ngIf="gisDownloadLimit < unitCount">
-            <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
-          </alert>
-          <lu-button
-            [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
-            [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
-            (click)="makePrivateRequest()" luKeyboardClickable tabindex="0">
-            {{ 'observation.download.loadPrivate' | translate }}
-          </lu-button>
-        </div>
-      </ng-container>
-    </section>
-    <ng-container>
-      <section *lajiForTypes="['vir']">
-        <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
-        <alert *lajiLoggedIn="false">
-          {{ 'result.load.error.notLoggedIn' | translate }}
-        </alert>
-        <alert *ngIf="!queryHasFilters">
-          {{ 'result.load.error.minQuery' | translate }}
-        </alert>
-        <ng-container *lajiLoggedIn="true">
-          <div *ngIf="queryHasFilters">
-            <p [innerHtml]="'result.load.api' | translate"></p>
-            <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
-          </div>
-        </ng-container>
-      </section>
-    </ng-container>
-    <section>
-      <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
-      <alert *ngIf="taxaLimit < speciesCount">
-        <span [innerHTML]="'observation.export.tooManySpecies' | translate:{max: (taxaLimit | formattedNumber:'&nbsp;')}"></span>
-      </alert>
-      <div *ngIf="speciesCount == 0">
-        {{ 'observation.export.tooLittle' | translate }}
       </div>
-      <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
-        <p [innerHtml]="'result.load.introSpecies' | translate"></p>
-        <lu-button
-          [loading]="speciesCsvLoading"
-          (click)="downloadSpecies($event)"
-          luKeyboardClickable tabindex="0"
-          target="_self">
+    </ng-template>
+  </section>
+  <section>
+    <h3>{{ 'observation.download.publicTitle' | translate }}</h3>
+    <lu-alert *lajiLoggedIn="false">
+      {{ 'result.load.error.notLoggedIn' | translate }}
+    </lu-alert>
+    <lu-alert *ngIf="loadLimit < unitCount">
+      <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
+    </lu-alert>
+    <lu-alert *ngIf="unitCount == 0">
+      {{ 'observation.export.tooLittle' | translate }}
+    </lu-alert>
+    <ng-container *lajiLoggedIn="true">
+      <div *ngIf="loadLimit >= unitCount && unitCount > 0" style="margin-bottom: 15px;">
+        <p
+          [innerHtml]="'result.load.introPublic' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')} ">
+        </p>
+        <lu-alert *ngIf="hasPersonalData">
+          <strong>{{ 'result.load.personalData' | translate }}</strong>
+        </lu-alert>
+        <ng-container *lajiForTypes="['vir']">
+          <lu-alert *ngIf="gisDownloadLimit < unitCount">
+            <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+          </lu-alert>
+        </ng-container>
+        <laji-download
+          *lajiForTypes="['vir']"
+          [showReason]="true"
+          [showFileTypes]="false"
+          [(reasonEnum)]="reasonEnum"
+          [(reason)]="reason"
+          (download)="makePublicRequest()"
+          [downloadLoading]="downloadLoading">
           <i class="glyphicon glyphicon-download-alt"></i>
-          {{ 'observation.download.loadSpecies' | translate }}
+          {{ 'observation.download.loadPublic' | translate }}
+        </laji-download>
+        <lu-button
+          *lajiForTypes="['vir']; exclude: true"
+          [loading]="requests['download'] === requestStatus.loading"
+          [disabled]="requests['download'] === requestStatus.done || hasPersonalData"
+          (click)="makePublicRequest()" luKeyboardClickable tabindex="0">
+          <i class="glyphicon glyphicon-download-alt"></i>
+          {{ 'observation.download.loadPublic' | translate }}
         </lu-button>
       </div>
+    </ng-container>
+  </section>
+  <section *lajiForTypes="['vir']; exclude: true">
+    <h3>{{ 'observation.download.privateTitle' | translate }}</h3>
+    <lu-alert *lajiLoggedIn="false">
+      {{ 'result.load.error.notLoggedIn' | translate }}
+    </lu-alert>
+    <lu-alert *ngIf="loadLimit < unitCount">
+      <span [innerHTML]="'observation.export.tooMany' | translate:{max: (loadLimit | formattedNumber:'&nbsp;')}"></span>
+    </lu-alert>
+    <ng-container *lajiLoggedIn="true">
+      <div *ngIf="loadLimit >= unitCount">
+        <p [innerHtml]="'result.load.introPrivate' | translate:{private: (privateCount | formattedNumber:'&nbsp;'), count: (unitCount | formattedNumber:'&nbsp;')}"></p>
+        <lu-alert *ngIf="hasPersonalData">
+          <strong>{{ 'result.load.personalData' | translate }}</strong>
+        </lu-alert>
+        <lu-alert *ngIf="gisDownloadLimit < unitCount">
+          <span [innerHTML]="'observation.export.tooManyForGisDownload' | translate:{max: (gisDownloadLimit | formattedNumber:'&nbsp;')}"></span>
+        </lu-alert>
+        <lu-button
+          [loading]="requests['downloadApprovalRequest'] === requestStatus.loading"
+          [disabled]="requests['downloadApprovalRequest'] === requestStatus.done || hasPersonalData"
+          (click)="makePrivateRequest()" luKeyboardClickable tabindex="0">
+          {{ 'observation.download.loadPrivate' | translate }}
+        </lu-button>
+      </div>
+    </ng-container>
+  </section>
+  <ng-container>
+    <section *lajiForTypes="['vir']">
+      <h3>{{ 'observation.download.apiTitle' | translate }}</h3>
+      <lu-alert *lajiLoggedIn="false">
+        {{ 'result.load.error.notLoggedIn' | translate }}
+      </lu-alert>
+      <lu-alert *ngIf="!queryHasFilters">
+        {{ 'result.load.error.minQuery' | translate }}
+      </lu-alert>
+      <ng-container *lajiLoggedIn="true">
+        <div *ngIf="queryHasFilters">
+          <p [innerHtml]="'result.load.api' | translate"></p>
+          <laji-apikey-modal [apiKey]="apiKey" [loading]="apiKeyLoading" (request)="onApiKeyRequest($event)"></laji-apikey-modal>
+        </div>
+      </ng-container>
     </section>
-  </div>
+  </ng-container>
+  <section>
+    <h3>{{ 'observation.download.specimenTitle' | translate }}</h3>
+    <lu-alert *ngIf="taxaLimit < speciesCount">
+      <span [innerHTML]="'observation.export.tooManySpecies' | translate:{max: (taxaLimit | formattedNumber:'&nbsp;')}"></span>
+    </lu-alert>
+    <div *ngIf="speciesCount == 0">
+      {{ 'observation.export.tooLittle' | translate }}
+    </div>
+    <div *ngIf="taxaLimit >= speciesCount && speciesCount > 0">
+      <p [innerHtml]="'result.load.introSpecies' | translate"></p>
+      <lu-button
+        [loading]="speciesCsvLoading"
+        (click)="downloadSpecies($event)"
+        luKeyboardClickable tabindex="0"
+        target="_self">
+        <i class="glyphicon glyphicon-download-alt"></i>
+        {{ 'observation.download.loadSpecies' | translate }}
+      </lu-button>
+    </div>
+  </section>
 </ng-template>
 
 <laji-observation-table-settings

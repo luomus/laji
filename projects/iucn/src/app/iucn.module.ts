@@ -1,5 +1,5 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -8,15 +8,6 @@ import { ConsoleLogger, HttpLogger, Logger } from '../../../laji/src/app/shared/
 import { LoggerApi } from '../../../laji/src/app/shared/api/LoggerApi';
 import { ILogger } from '../../../laji/src/app/shared/logger/logger.interface';
 import { TranslateFileLoader } from '../../../laji/src/app/shared/translate/translate-file-loader';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { LocalizeRouterService } from '../../../laji/src/app/locale/localize-router.service';
 import { environment } from '../environments/environment';
@@ -46,7 +37,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     AppComponentModule,
     LocaleModule,
     BrowserAnimationsModule,
-    BrowserModule.withServerTransition({appId: 'laji-app'}),
+    BrowserModule,
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
@@ -56,17 +47,8 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
         useClass: TranslateFileLoader
       }
     }),
-    CarouselModule.forRoot(),
     ToastrModule.forRoot(),
     SharedModule.forRoot(),
-    PaginationModule.forRoot(),
-    ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    TooltipModule.forRoot(),
-    AlertModule.forRoot(),
-    TypeaheadModule.forRoot(),
-    PopoverModule.forRoot(),
-    ProgressbarModule.forRoot(),
     NgxWebstorageModule.forRoot({prefix: 'laji-', separator: ''}),
     IucnRoutingModule,
     TransferHttpCacheModule
@@ -75,6 +57,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
+    {provide: APP_ID, useValue: 'laji-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

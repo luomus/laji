@@ -38,7 +38,7 @@ import { DocumentPermissionService } from '../service/document-permission.servic
 @Component({
   selector: 'laji-document',
   templateUrl: './document.component.html',
-  styleUrls: ['./document.component.css'],
+  styleUrls: ['./document.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {

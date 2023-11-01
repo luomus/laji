@@ -13,7 +13,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DatatableColumn } from '../model/datatable-column';
-import { DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@swimlane/ngx-datatable';
+import { DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@achimha/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';

@@ -5,7 +5,7 @@ import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { Observable, Subscription } from 'rxjs';
 import { InformalTaxonGroupApi } from '../../shared/api/InformalTaxonGroupApi';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { Chart, ChartDataSets } from 'chart.js';
+import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
 import { ToQNamePipe } from '../../shared/pipe/to-qname.pipe';
 import { TranslateService } from '@ngx-translate/core';
 import { HorizontalChartDataService, MAX_TAXA_SIZE } from './horizontal-chart-data.service';
@@ -36,9 +36,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   taxa: string;
   componentHeight: number;
   loadLabels = false;
-  barChartOptions: any = {
-    legend: { display: false, labels: { fontColor: 'black' } }
-  };
+  barChartOptions: ChartOptions;
   subscription: Subscription;
   timer: Observable<any>;
   resultList: any[] = [];
@@ -55,7 +53,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   classificationValue = 'classId';
   @LocalStorage('onlycount') onlyCount;
 
-  public barChartData: ChartDataSets[] = [
+  public barChartData: ChartDataset[] = [
     { data: [], label: this.translate.instant('all') },
   ];
   public barChartLabels: string[] = [];
@@ -78,7 +76,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    Chart.Tooltip.positioners.cursor = function(chartElements, coordinates) {
+    (Tooltip.positioners as any).cursor = function(chartElements, coordinates) {
       return coordinates;
     };
     this.localSt.observe('onlycount')
@@ -167,40 +165,35 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
   }
 
   initializeGraph() {
+    const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
     this.barChartOptions = {
-      legend: { display: false, labels: { fontColor: 'black' } },
       responsive: true,
       maintainAspectRatio: false,
-      scaleShowValues: true,
-      tooltips: {
-      enabled: true,
-      mode: 'index',
-      position: 'cursor'
-      },
+      indexAxis: 'y',
+      // scaleShowValues: true, // TODO where has this option gone?
       scales: {
-        yAxes: [{
+        y: {
           display: true,
-          ticks: {
-            beginAtZero: true
-          },
-          gridLines: {
+          beginAtZero: true,
+          grid: {
             color: 'rgba(255,255,255,0)',
             lineWidth: 0.5
           }
-        }],
-        xAxes: [
-          {
+        },
+        x: {
+            beginAtZero: true,
             ticks: {
-              beginAtZero: true,
-              callback(value) { if (value % 1 === 0) { return value; } }
+              callback(value: any) { return value % 1 === 0 ? value : ''; }
             }
           }
-        ]
       },
       plugins: {
-        datalabels: {
-          display: false
-        },
+        legend: { display: false },
+        tooltip: {
+          enabled: true,
+          mode: 'index',
+          position: tooltipPosition
+        }
       },
       animation: {
         duration: 700

@@ -1,11 +1,6 @@
 <ng-container *ngIf="vm$ | async; let vm">
-  <ng-template #documentModal>
-    <div class="modal-content">
-      <div class="modal-body" *ngIf="vm.document">
-        <lu-button-round (click)="closeModal()" class="pull-right" role="neutral">
-          <lu-icon type="close"></lu-icon>
-        </lu-button-round>
-        <div class="clear"></div>
+  <lu-modal #documentModal [size]="vm.openAnnotation ? 'xl' : 'lg'">
+    <ng-container *ngIf="vm.document">
         <laji-document-annotation *ngIf="!vm.forceLocal && vm.openAnnotation; else normal"
                                   [highlight]="vm.highlight"
                                   [uri]="vm.document.id"
@@ -19,7 +14,7 @@
         </laji-document-annotation>
         <ng-template #normal>
           <laji-document
-            *ngIf="!vm.forceLocal && vm.document.publicityRestrictions === publicityRestrictionsPublic; else local"
+            *ngIf="!vm.forceLocal && vm.document?.publicityRestrictions === publicityRestrictionsPublic; else local"
             [highlight]="vm.highlight"
             [uri]="vm.document.id"
             [own]="vm.own"
@@ -34,7 +29,6 @@
           <laji-document-local [document]="vm.document" (documentClose)="closeModal()">
           </laji-document-local>
         </ng-template>
-      </div>
-    </div>
-  </ng-template>
+    </ng-container>
+  </lu-modal>
 </ng-container>

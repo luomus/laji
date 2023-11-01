@@ -1,8 +1,8 @@
 <ng-container *ngIf="vm$ | async as vm">
   <ng-container *ngIf="vm.isLinkable; else notLinkable">
-    <alert type="warning"  *ngIf="vm.isLinked && !_linked">
+    <lu-alert type="warning"  *ngIf="vm.isLinked && !_linked">
       {{ 'np.linker.hasAlreadyPlace' | translate }}
-    </alert>
+    </lu-alert>
     <h4>{{ 'np.linker.title' | translate }}</h4>
     <laji-named-places [documentForm]="vm.form"
                        [activeId]="activeNP"
@@ -24,7 +24,7 @@
 </ng-container>
 
 <ng-template #notLinkable>
-  <alert type="danger">
+  <lu-alert type="danger">
     {{ 'np.linker.noAccess' | translate }}
-  </alert>
+  </lu-alert>
 </ng-template>
