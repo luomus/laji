@@ -1,5 +1,5 @@
 # base image
-FROM node:16
+FROM node:14
 
 # set working directory & user
 USER node
