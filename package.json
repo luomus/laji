@@ -235,8 +235,5 @@
     "hooks": {
       "pre-push": "npm --silent run msg-a && npm --silent run lint:all"
     }
-  },
-  "volta": {
-    "node": "16.20.2"
   }
 }
