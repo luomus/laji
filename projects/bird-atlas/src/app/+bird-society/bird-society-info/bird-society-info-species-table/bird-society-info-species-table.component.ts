@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, TemplateRef, ViewChild
 } from '@angular/core';
-import { TableColumn } from '@achimha/ngx-datatable';
+import { TableColumn } from '@swimlane/ngx-datatable';
 import { AtlasTaxon } from '../../../core/atlas-api.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';

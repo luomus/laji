@@ -21,7 +21,7 @@ h5 {
     padding-top: 20px;
   }
 
-  :host ::ng-deep .popover {
+  :host >>> .popover {
     width: 430px;
     max-width: 430px;
   }

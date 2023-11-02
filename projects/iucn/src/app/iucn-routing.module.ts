@@ -50,7 +50,8 @@ const routesWithLang: Routes = [
   imports: [RouterModule.forRoot(routesWithLang, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
-    initialNavigation: 'enabledBlocking'
+    initialNavigation: 'enabledBlocking',
+    relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]

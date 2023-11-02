@@ -5,6 +5,7 @@
     "types": [
       "node"
     ],
+    "target": "es2016",
     "paths": {
       "@laji-map/*": ["projects/laji/src/app/shared-modules/laji-map-noop/*"],
       "@laji-form/*": ["projects/laji/src/app/+project-form/form/laji-form-noop/*"],
@@ -14,7 +15,7 @@
   },
   "files": [
     "projects/laji/src/main.server.ts",
-    "projects/laji/server.ts"
+    "server.ts"
   ],
   "angularCompilerOptions": {
     "entryModule": "./projects/laji/src/app/app.server.module#AppServerModule"

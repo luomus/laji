@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TableColumn } from '@achimha/ngx-datatable';
+import { TableColumn } from '@swimlane/ngx-datatable';
 import { TileLayerName, LajiMap } from 'laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';

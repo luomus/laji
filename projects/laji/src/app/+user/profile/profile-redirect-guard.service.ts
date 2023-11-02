@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { UserService } from '../../shared/service/user.service';
@@ -8,7 +8,7 @@ import { LocalizeRouterService } from '../../locale/localize-router.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileRedirectGuard  {
+export class ProfileRedirectGuard implements CanActivate {
 
   constructor(
     private userService: UserService,

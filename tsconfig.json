@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "es2020",
     "paths": {
       "@laji-map/*": [
         "projects/laji/src/app/shared-modules/laji-map/*"
@@ -45,8 +45,7 @@
     ],
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false
+    "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

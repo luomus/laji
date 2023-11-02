@@ -7,9 +7,7 @@
       "error",
       {
         "type": "element",
-        "prefix": [
-          "ll"
-        ],
+        "prefix": ["ll"],
         "style": "kebab-case"
       }
     ],
@@ -17,9 +15,7 @@
       "error",
       {
         "type": "attribute",
-        "prefix": [
-          "ll"
-        ],
+        "prefix": ["ll"],
         "style": "camelCase"
       }
     ]

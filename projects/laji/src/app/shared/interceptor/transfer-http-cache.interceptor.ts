@@ -15,7 +15,12 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import { ApplicationRef, Injectable, StateKey, TransferState, makeStateKey } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
+import {
+  StateKey,
+  TransferState,
+  makeStateKey
+} from '@angular/platform-browser';
 import { Observable, of, of as observableOf } from 'rxjs';
 import { catchError, filter, take, tap, timeout } from 'rxjs/operators';
 import { PlatformService } from '../../root/platform.service';

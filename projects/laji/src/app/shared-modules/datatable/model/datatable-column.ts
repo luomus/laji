@@ -1,4 +1,4 @@
-import { TableColumn } from '@achimha/ngx-datatable';
+import { TableColumn } from '@swimlane/ngx-datatable';
 
 export interface DatatableColumn extends TableColumn {
   label?: string | string[];

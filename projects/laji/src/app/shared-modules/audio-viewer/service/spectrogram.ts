@@ -169,8 +169,8 @@ function convertRange(input: number, inputRange: number[], outputRange: number[]
 }
 
 function getSegmentSizeAndOverlap(config: ISpectrogramConfig, sampleRate: number): {nperseg: number; noverlap: number} {
-  const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.tarwindowLengthInSeconds, sampleRate);
-  const noverlap = Math.round(config.tarwindowOverlapPercentage * nperseg);
+  const nperseg = AudioViewerUtils.getSpectrogramSegmentLength(config.targetWindowLengthInSeconds, sampleRate);
+  const noverlap = Math.round(config.targetWindowOverlapPercentage * nperseg);
   return {nperseg, noverlap};
 }
 
