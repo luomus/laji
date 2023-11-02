@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent } from './chart.component';
-import { NgChartsModule } from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { UtilitiesModule } from '../utilities/utilities.module';
 import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
 
@@ -11,7 +11,7 @@ import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-direc
   declarations: [ChartComponent],
   imports: [
     CommonModule,
-    NgChartsModule,
+    ChartsModule,
     UtilitiesModule,
     UtilitiesDumbDirectivesModule
   ],

@@ -6,6 +6,7 @@ import { Observable, merge, Subscription, BehaviorSubject, fromEvent, Subject } 
 import { map, switchMap, distinctUntilChanged, filter, startWith, take, tap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { CollectionViewer } from '@angular/cdk/collections';
+import { WINDOW } from '@ng-toolkit/universal';
 import { PlatformService } from '../../../../root/platform.service';
 
 const INFINITE_SCROLL_DISTANCE = 300;
@@ -107,7 +108,8 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     private facade: TaxonIdentificationFacade,
     private cdr: ChangeDetectorRef,
     private platformService: PlatformService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window
   ) { }
 
   ngAfterViewInit() {
@@ -150,7 +152,7 @@ export class TaxonIdentificationComponent implements OnChanges, AfterViewInit, O
     if (!this.platformService.isBrowser) { return false; }
     const rect = element.getBoundingClientRect();
     return (
-      this.platformService.window.innerHeight - rect.y > -px
+      this.window.innerHeight - rect.y > -px
       || this.document.documentElement.clientHeight - rect.y > -px
     );
   }

@@ -3,7 +3,7 @@ Input, NgZone, OnChanges, Output, TemplateRef, ViewChild } from '@angular/core';
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdService } from '../../../../../shared/service/id.service';
-import { ColumnMode } from '@achimha/ngx-datatable';
+import { ColumnMode } from '@swimlane/ngx-datatable';
 
 
 @Component({

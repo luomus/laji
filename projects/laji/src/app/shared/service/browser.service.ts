@@ -2,6 +2,7 @@ import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, fromEvent, Subject, Subscription } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
 import { DOCUMENT, Location } from '@angular/common';
+import { WINDOW } from '@ng-toolkit/universal';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { HistoryService } from './history.service';
 
@@ -36,6 +37,7 @@ export class BrowserService implements OnDestroy {
 
   constructor(
     @Inject(DOCUMENT) public readonly document: Document,
+    @Inject(WINDOW) public readonly window: Window,
     private zone: NgZone,
     private platformService: PlatformService,
     private historyService: HistoryService,
@@ -138,17 +140,17 @@ export class BrowserService implements OnDestroy {
       debounceTime(100)
     ).subscribe(() => {
       try {
-        this.platformService.window.dispatchEvent(new Event('resize'));
+        this.window.dispatchEvent(new Event('resize'));
       } catch (e) {
-        const evt: any = this.document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, this.platformService.window, 0);
-        this.platformService.window.dispatchEvent(evt);
+        const evt: any = this.window.document.createEvent('UIEvents');
+        evt.initUIEvent('resize', true, false, this.window, 0);
+        this.window.dispatchEvent(evt);
       }
     });
   }
 
   private updateScreenSize() {
-    this.updateState({..._state, lgScreen: this.platformService.window.innerWidth > lgScreenSize});
+    this.updateState({..._state, lgScreen: this.window.innerWidth > lgScreenSize});
   }
 
   private updateState(state: IBrowserState) {

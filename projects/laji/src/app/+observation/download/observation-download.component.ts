@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   Output,
@@ -37,9 +38,9 @@ import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
 import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
+import { WINDOW } from '@ng-toolkit/universal';
 import { DialogService } from '../../shared/service/dialog.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-import { PlatformService } from '../../root/platform.service';
 
 
 enum RequestStatus {
@@ -106,23 +107,22 @@ export class ObservationDownloadComponent implements OnDestroy {
   };
   private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
-  constructor(
-    private platformService: PlatformService,
-    public searchQuery: SearchQueryService,
-    public userService: UserService,
-    public translate: TranslateService,
-    private observationResultService: ObservationResultService,
-    private toastsService: ToastsService,
-    private warehouseService: WarehouseApi,
-    private logger: Logger,
-    private cd: ChangeDetectorRef,
-    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-    private exportService: ExportService,
-    private modalService: ModalService,
-    private observationDataService: ObservationDataService,
-    private downloadService: DownloadService,
-    private geoConvertService: GeoConvertService,
-    private dialogService: DialogService
+  constructor(@Inject(WINDOW) private window: Window,
+              public searchQuery: SearchQueryService,
+              public userService: UserService,
+              public translate: TranslateService,
+              private observationResultService: ObservationResultService,
+              private toastsService: ToastsService,
+              private warehouseService: WarehouseApi,
+              private logger: Logger,
+              private cd: ChangeDetectorRef,
+              private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
+              private exportService: ExportService,
+              private modalService: ModalService,
+              private observationDataService: ObservationDataService,
+              private downloadService: DownloadService,
+              private geoConvertService: GeoConvertService,
+              private dialogService: DialogService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -393,7 +393,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         first(response => response.status === 'complete'),
         map(response => {
-          this.platformService.window.location.href = response.outputLink;
+          this.window.location.href = response.outputLink;
         })
       );
     } else {

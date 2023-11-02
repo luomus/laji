@@ -65,7 +65,8 @@ const allRoutes: Routes = [
   imports: [RouterModule.forRoot(allRoutes, {
     enableTracing: false,
     preloadingStrategy: PreloadSelectedModulesList,
-    initialNavigation: 'enabledBlocking'
+    initialNavigation: 'enabledBlocking',
+    relativeLinkResolution: 'legacy'
 })],
   exports: [RouterModule],
   providers: [PreloadSelectedModulesList]

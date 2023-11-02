@@ -10,13 +10,12 @@
     ],
     "outDir": "./out-tsc/spec",
     "module": "es2020",
-    "target": "ES2022",
+    "target": "es2020",
     "baseUrl": "tsconfig.spec",
     "types": [
       "jasmine",
       "node"
-    ],
-    "useDefineForClassFields": false
+    ]
   },
   "files": [
     "projects/laji/src/test.ts",

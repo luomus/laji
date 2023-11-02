@@ -1,5 +1,5 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
-import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -37,7 +37,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     AppComponentModule,
     LocaleModule,
     BrowserAnimationsModule,
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'laji-app'}),
     CommonModule,
     HttpClientModule,
     NgtUniversalModule,
@@ -57,7 +57,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
-    {provide: APP_ID, useValue: 'laji-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

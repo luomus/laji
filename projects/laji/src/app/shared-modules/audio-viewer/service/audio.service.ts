@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, NgZone } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { PlatformService } from '../../../root/platform.service';
+import { WINDOW } from '@ng-toolkit/universal';
 import { AudioPlayer } from './audio-player';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AudioService {
   private cacheSize = 3;
 
   constructor(
-    private platformService: PlatformService,
+    @Inject(WINDOW) private window: Window,
     private httpClient: HttpClient,
     private ngZone: NgZone
   ) {}
@@ -225,8 +225,7 @@ export class AudioService {
   private getAudioContext(): AudioContext {
     if (!this.audioContext || this.defaultSampleRate !== this.audioContextInitSampleRate) {
       this.audioContextInitSampleRate = this.defaultSampleRate;
-      const window = this.platformService.window;
-      this.audioContext = new (window['AudioContext'] || window['webkitAudioContext'])({
+      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({
         sampleRate: this.defaultSampleRate
       });
     }

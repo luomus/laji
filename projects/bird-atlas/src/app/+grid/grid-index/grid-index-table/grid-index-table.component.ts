@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { TableColumn } from '@achimha/ngx-datatable';
+import { TableColumn } from '@swimlane/ngx-datatable';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';

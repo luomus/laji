@@ -4,7 +4,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { LangModule } from '../lang/lang.module';
 import { LajiMapModule } from '@laji-map/laji-map.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
-import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
 import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
 import { AudioSpectrogramComponent } from './audio-viewer/audio-spectrogram/audio-spectrogram.component';
 import { AudioNotSupportedErrorComponent } from './directive/audio-not-supported-error.component';

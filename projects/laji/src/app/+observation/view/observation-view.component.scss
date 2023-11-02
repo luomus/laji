@@ -23,7 +23,7 @@ laji-observation-form {
   flex-direction: column;
   margin-top: 10px;
 }
-:host ::ng-deep .alert.alert-info {
+:host >>> .alert.alert-info {
   margin-right: 10px;
 }
 .toggle-intro {
@@ -33,7 +33,7 @@ laji-observation-form {
   font-size: 13px;
   color: $color-main-dark;
 }
-:host ::ng-deep .alert-warning {
+:host >>> .alert-warning {
   margin-right: 10px;
 }
 
@@ -131,7 +131,7 @@ laji-observation-form {
     margin-top: 50px;
   }
 
-  :host ::ng-deep .navbar-collapse {
+  :host >>> .navbar-collapse {
     z-index: 9999;
   }
 

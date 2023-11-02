@@ -4,9 +4,8 @@ import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
 import { BaseChartDirective} from 'ng2-charts';
-import 'chartjs-chart-treemap';
+import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
-import { fontString } from 'chart.js/helpers';
 
 
 @Component({
@@ -25,7 +24,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   lineChartData: any[] = [];
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
-  // TODO check after compiles
+  lineChartPlugins = [];
   lineChartColors: any[] = [];
   dataById: {[key: string]: Taxonomy} = {};
   colorPalette = ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5'];
@@ -39,11 +38,9 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   ngOnInit() {
     const lajia = this.translate.instant('taxonomy.species');
     const laji = this.translate.instant('taxonomy.species.singular');
-    this.lineChartOptions = {
-      responsive: true,
+    this.lineChartOptions = {responsive: true,
       maintainAspectRatio : false,
-      // TODO ??!!
-      cutout: 50,
+      cutoutPercentage: 50,
       elements: {
         point: {
           radius: 5,
@@ -53,7 +50,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       legend: {
         display: false
       },
-      tooltip: {
+      tooltips: {
         mode: 'nearest',
         intersect: false,
         bodyAlign: 'center',
@@ -69,48 +66,46 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
           }
         }
       },
+      plugins: {
+        datalabels: {
+          display: false
+        }
+      },
       animation: {
         duration: 1,
-        // Eslint disabled because it needs to be a function to have the correct 'this' reference.
-        // eslint-disable-next-line object-shorthand
-        onComplete: function() {
-            const chartInstance: Chart = ((this as any).chart as Chart),
+        onComplete() {
+            const chartInstance = this.chart,
             ctx = chartInstance.ctx;
             const chartWidth = chartInstance['width'];
             const fontSize = Math.round(chartWidth / 80) > 10 ? Math.round(chartWidth / 80) : 10;
-            ctx.font = fontString(fontSize, Chart.defaults.font.style, Chart.defaults.font.family);
+            ctx.font = Chart.helpers.fontString(fontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             ctx.textBaseline = 'bottom';
-            if ((this.data.datasets[0] as any).tree?.length < 200) {
+            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 200) {
               this.data.datasets.forEach(function(dataset, i) {
-                const meta = (chartInstance as any).controller.getDatasetMeta(i);
+                const meta = chartInstance.controller.getDatasetMeta(i);
                 meta.data.forEach(function(bar, index) {
-                    const label = (dataset as any).tree[index].label;
-                    const data = (dataset as any).tree[index].value;
+                    const label = dataset.tree[index].label;
+                    const data = dataset.tree[index].value;
                     const width = Math.ceil(ctx.measureText(label).width);
-                    const finalLabel = width < Math.ceil((dataset['data'][index] as any).w) ? label : '';
-                    const finalData = width < Math.ceil((dataset['data'][index] as any).w) ? data : '';
+                    const finalLabel = width < Math.ceil(dataset['data'][index].w) ? label : '';
+                    const finalData = width < Math.ceil(dataset['data'][index].w) ? data : '';
                     ctx.fillText(finalLabel, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
                     ctx.fillText(finalData, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
                 });
             });
             }
-        },
-        // TODO asdf ei toimi?
-        // active: {
-        //   duration: 0
-        // }
+        }
       },
       events: ['mousemove', 'mouseout', 'click'],
-      onHover: (event, chartElement) => {
-        event['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
+      hover: {
+        animationDuration: 0,
+        onHover: (event, chartElement) => {
+          event['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
+        }
       }
-      // hover: {
-      //   // TODO asdf
-      //   // animationDuration: 0,
-      // }
-    } as any;
+    };
   }
 
   ngOnChanges() {
