@@ -3,12 +3,12 @@ node {
      stage('Prepare environment') {
       cleanWs()
       git branch: 'master', url: 'https://github.com/luomus/laji.git'
-      sh 'npm ci'
+      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm ci # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
     }
     stage('Build embedded') {
       milestone()
       sh 'rm -rf dist'
-      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm run --silent build:embedded # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
+      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm run --silent build:embedded'
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf embedded.tar.gz --strip-components=1 dist/browser'
     }
