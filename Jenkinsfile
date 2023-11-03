@@ -12,8 +12,7 @@ node {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         milestone()
         sh 'rm -rf dist'
-        sh 'source /home/node/enable_scl_libs_for_laji_builds.sh # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
-        sh 'npm run --silent build:dev'
+        sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm run --silent build:dev # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
         sh 'pre-compress-web-assets dist/browser'
       }
     }
