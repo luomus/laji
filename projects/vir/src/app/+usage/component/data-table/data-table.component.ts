@@ -3,7 +3,7 @@ import { DatatableColumn } from '../../../../../../laji/src/app/shared-modules/d
 import { DatatableHeaderComponent } from '../../../../../../laji/src/app/shared-modules/datatable/datatable-header/datatable-header.component';
 import { ExportService } from '../../../../../../laji/src/app/shared/service/export.service';
 import { BookType } from 'xlsx';
-import { SelectionType } from '@swimlane/ngx-datatable';
+import { SelectionType } from '@achimha/ngx-datatable';
 
 type TableType = 'downloads'|'people'|'user'|'userKeys'|'apiKeys'|'admin';
 

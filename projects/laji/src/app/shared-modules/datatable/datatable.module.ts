@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatatableComponent } from './datatable/datatable.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
 import { SharedModule } from '../../shared/shared.module';
