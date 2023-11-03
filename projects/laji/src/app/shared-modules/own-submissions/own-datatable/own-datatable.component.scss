@@ -31,11 +31,11 @@
   }
 }
 
-:host >>> .empty-header {
+:host ::ng-deep .empty-header {
   height: 38px;
 }
 
-:host >>> .center-text {
+:host ::ng-deep .center-text {
   text-align: center !important;
   padding: 0 !important;
 }

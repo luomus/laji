@@ -2,7 +2,7 @@ import { debounceTime, tap, map } from 'rxjs/operators';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DatatableColumn, DatatableSort } from '../model/datatable-column';
-import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@swimlane/ngx-datatable';
+import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@achimha/ngx-datatable';
 import { Observable, Subject, Subscription, of, forkJoin } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';

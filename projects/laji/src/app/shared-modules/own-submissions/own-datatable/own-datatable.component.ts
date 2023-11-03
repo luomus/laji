@@ -15,14 +15,14 @@ import {
 } from '@angular/core';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
-import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { DatatableComponent } from '@achimha/ngx-datatable';
 import { UserService } from '../../../shared/service/user.service';
 import { FormService } from '../../../shared/service/form.service';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PlatformService } from '../../../root/platform.service';
 import { Form } from '../../../shared/model/Form';
-import { SelectionType } from '@swimlane/ngx-datatable';
+import { SelectionType } from '@achimha/ngx-datatable';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 

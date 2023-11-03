@@ -9,10 +9,10 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Chart, ChartOptions } from 'chart.js';
+import { ChartOptions, Tooltip } from 'chart.js';
 import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ChartData, ObservationMonthDayChartFacade, getNbrOfDaysInMonth } from './observation-month-day-chart.facade';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
@@ -20,17 +20,13 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
+const tooltipPosition = 'cursor' as any; // chart.js typings broken for custom tooltip position so we define it as 'any'.
 const BAR_CHART_OPTIONS: ChartOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  tooltips: {
-  enabled: true,
-  mode: 'index',
-  position: 'cursor'
-  },
   scales: {
-    xAxes: [{
-      gridLines: {
+    x: {
+      grid: {
         color: 'rgba(230,230,230,0.5)',
         lineWidth: 0.2
       },
@@ -38,23 +34,23 @@ const BAR_CHART_OPTIONS: ChartOptions = {
         minRotation: 0,
         maxRotation: 300,
         autoSkip: false,
-        fontColor: '#23527c'
+        color: '#23527c'
       },
-    }],
-    yAxes: [{
-      ticks: {
-        beginAtZero: true
-      },
-      gridLines: {
+    },
+    y: {
+      beginAtZero: true,
+      grid: {
         color: 'rgba(171,171,171,0.5)',
         lineWidth: 0.5
       }
-    }]
+    }
   },
   plugins: {
-    datalabels: {
-      display: false
-    },
+    tooltip: {
+      enabled: true,
+      mode: 'index',
+      position: tooltipPosition
+    }
   }
 };
 
@@ -87,7 +83,7 @@ export class ObservationMonthDayChartComponent implements OnChanges, OnDestroy, 
   ) { }
 
   ngOnInit() {
-    Chart.Tooltip.positioners.cursor = (_, coords) => coords;
+    (Tooltip.positioners as any).cursor = (_, coords) => coords;
     this.facade.chartData$.pipe(takeUntil(this.unsubscribe$)).subscribe(chartData => {
       this.chartData = chartData;
       this.cdr.markForCheck();

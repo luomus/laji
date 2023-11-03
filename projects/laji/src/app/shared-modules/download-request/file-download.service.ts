@@ -1,9 +1,7 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { tap, first, map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../shared/service/user.service';
-import { WINDOW } from '@ng-toolkit/universal';
 import { DialogService } from '../../shared/service/dialog.service';
 import {
   FileFormat,
@@ -13,6 +11,7 @@ import {
   isGeoConvertError
 } from '../../shared/service/geo-convert.service';
 import { environment } from '../../../environments/environment';
+import { PlatformService } from '../../root/platform.service';
 
 export enum FileType {
   standard = 'standard',
@@ -32,8 +31,7 @@ export class FileDownloadService {
   fileDownloadStateChange = this.fileDownloadStateChangeSubject.asObservable();
 
   constructor(
-    @Inject(WINDOW) private window: Window,
-    private httpClient: HttpClient,
+    private platformService: PlatformService,
     private userService: UserService,
     private dialogService: DialogService,
     private geoConvertService: GeoConvertService
@@ -44,7 +42,7 @@ export class FileDownloadService {
     this.progressPercentage = undefined;
 
     this.getDownloadLink(id, isPublic, this.fileType, this.format, this.geometry, this.crs).subscribe(res => {
-      this.window.location.href = res;
+      this.platformService.window.location.href = res;
       this.loading = false;
       this.progressPercentage = undefined;
       this.fileDownloadStateChangeSubject.next();

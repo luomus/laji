@@ -26,6 +26,6 @@
   padding: 3px 20px;
 }
 
-:host >>> .leaflet-container {
+:host ::ng-deep .leaflet-container {
   background-color: #eee;
 }
