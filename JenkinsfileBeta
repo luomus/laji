@@ -18,7 +18,7 @@ node {
     stage('Build beta') {
       milestone()
       sh 'rm -rf dist'
-      sh 'source $HOME/enable_scl_libs_for_laji_builds.sh'
+      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
       sh 'npm run --silent build:ssr:beta'
       sh 'pre-compress-web-assets dist/browser'
       sh 'npm prune --silent --production'
