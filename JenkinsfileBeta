@@ -18,6 +18,7 @@ node {
     stage('Build beta') {
       milestone()
       sh 'rm -rf dist'
+      sh 'source $HOME/enable_scl_libs_for_laji_builds.sh'
       sh 'npm run --silent build:ssr:beta'
       sh 'pre-compress-web-assets dist/browser'
       sh 'npm prune --silent --production'

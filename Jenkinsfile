@@ -12,6 +12,7 @@ node {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         milestone()
         sh 'rm -rf dist'
+        sh 'source $HOME/enable_scl_libs_for_laji_builds.sh'
         sh 'npm run --silent build:dev'
         sh 'pre-compress-web-assets dist/browser'
       }

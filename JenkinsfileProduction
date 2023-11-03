@@ -8,6 +8,7 @@ node {
     stage('Build embedded') {
       milestone()
       sh 'rm -rf dist'
+      sh 'source $HOME/enable_scl_libs_for_laji_builds.sh'
       sh 'npm run --silent build:embedded'
       sh 'pre-compress-web-assets dist/browser'
       sh 'tar -cvzf embedded.tar.gz --strip-components=1 dist/browser'
@@ -15,6 +16,7 @@ node {
     stage('Build production') {
       milestone()
       sh 'rm -rf dist'
+      sh 'source $HOME/enable_scl_libs_for_laji_builds.sh'
       sh 'npm run --silent build:ssr:prod'
       sh 'cp -f projects/laji/src/robots.allow.txt dist/browser/robots.txt'
       sh 'pre-compress-web-assets dist/browser'
