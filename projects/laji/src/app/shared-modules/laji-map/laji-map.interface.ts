@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as LajiMap from 'laji-map';
+import * as LajiMap from '@luomus/laji-map';
 import * as L from 'leaflet';
 
 export type LajiMapOptions = LajiMap.Options;
@@ -27,3 +27,7 @@ export type LajiMapTileLayersOptions = LajiMap.TileLayersOptions;
 export type LajiMapDrawEvent = LajiMap.LajiMapEvent;
 
 export const Rectangle = L.Rectangle;
+
+export type PathOptions = L.PathOptions;
+
+export type DivIcon = L.DivIcon;

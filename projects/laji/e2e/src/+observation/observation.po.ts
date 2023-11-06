@@ -1,7 +1,7 @@
 // eslint-disable-next-line max-classes-per-file
 import { $, browser, ElementFinder, protractor } from 'protractor';
 import { EC, isDisplayed, waitForInvisibility } from '../../helper';
-import { MapPageObject, PointTraveller, SAFE_CLICK_WAIT } from 'laji-map/test-export/test-utils';
+import { MapPageObject, PointTraveller, SAFE_CLICK_WAIT } from '@luomus/laji-map/test-export/test-utils';
 import { ToastPO } from '../shared/toast';
 
 class LUTabPO {

@@ -1,0 +1,35 @@
+<!-- inject options list template -->
+<ng-template [ngTemplateOutlet]="optionsListTemplate || bs4Template"
+             [ngTemplateOutletContext]="{
+               matches: matches,
+               itemTemplate: itemTemplate || bsItemTemplate,
+               query: query,
+               $implicit: typeaheadTemplateMethods
+             }">
+</ng-template>
+
+<!-- default options item template -->
+<ng-template #bsItemTemplate let-match="match" let-query="query">
+  <span [innerHtml]="highlight(match, query)"></span>
+</ng-template>
+
+<!-- Bootstrap 4 options list template -->
+<ng-template #bs4Template>
+  <ng-template ngFor let-match let-i="index" [ngForOf]="matches">
+    <h6 *ngIf="match.isHeader()" class="dropdown-header">{{ match }}</h6>
+    <ng-template [ngIf]="!match.isHeader()">
+      <button #liElements
+              [id]="popupId + '-' + i"
+              role="option"
+              [@typeaheadAnimation]="animationState"
+              class="dropdown-item"
+              (click)="selectMatch(match, $event)"
+              (mouseenter)="selectActive(match)"
+              [class.active]="isActive(match)">
+        <ng-template [ngTemplateOutlet]="itemTemplate || bsItemTemplate"
+                     [ngTemplateOutletContext]="{item: match.item, index: i, match: match, query: query}">
+        </ng-template>
+      </button>
+    </ng-template>
+  </ng-template>
+</ng-template>

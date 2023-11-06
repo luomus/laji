@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { SpeciesListQueryService } from './species-list-query.service';
 
 @Injectable()
-export class SpeciesListQueryResetGuard implements CanActivate {
+export class SpeciesListQueryResetGuard  {
   constructor(
     private queryService: SpeciesListQueryService
   ) {}

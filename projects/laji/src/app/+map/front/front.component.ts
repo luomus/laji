@@ -3,10 +3,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { FooterService } from '../../shared/service/footer.service';
-import { geoJSONToISO6709, ISO6709ToGeoJSON } from 'laji-map/lib/utils';
+import { geoJSONToISO6709, ISO6709ToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
-import { latLngGridToGeoJSON } from 'laji-map/lib/utils';
+import { latLngGridToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { PlatformService } from '../../root/platform.service';
 
 @Component({

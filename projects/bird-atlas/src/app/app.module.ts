@@ -19,8 +19,7 @@ import { LocalizeRouterService } from 'projects/laji/src/app/locale/localize-rou
 import { TechnicalNewsDumbModule } from 'projects/laji/src/app/shared-modules/technical-news/technical-news-dumb/technical-news-dumb.module';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 
 @NgModule({
   imports: [
@@ -40,7 +39,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     LajiApiClientModule.forRoot(() => new Configuration({accessToken: undefined, apiKeys: {}, basePath: environment.lajiApiBasePath})),
     TechnicalNewsDumbModule,
     CoreModule,
-    ModalModule.forRoot(),
     NgxDatatableModule
   ],
   exports: [

@@ -12,6 +12,7 @@ import {
   DatasetMetadataViewerMultilangItemComponent
 } from './dataset-metadata-viewer/dataset-metadata-viewer-multilang-item/dataset-metadata-viewer-multilang-item.component';
 import { DatasetMetadataRoutingModule } from './dataset-metadata-routing.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { DatasetMetadataRoutingModule } from './dataset-metadata-routing.module'
     LajiUiModule,
     SelectModule,
     DocumentViewerModule,
-    DatasetMetadataRoutingModule
+    DatasetMetadataRoutingModule,
+    TooltipModule
   ],
   declarations: [
     DatasetMetadataComponent,

@@ -1,9 +1,9 @@
 node {
-   nvm('v14.16.0') {
+   nvm('v16.20.0') {
      stage('Prepare environment') {
       cleanWs()
       git branch: 'beta', url: 'https://github.com/luomus/laji.git'
-      sh 'npm ci'
+      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm ci # CI has too old python3 & g++ for node 16, so we load packages from Redhat SCL'
       sh 'mkdir test-results'
       sh 'rm -rf test-results/*'
     }
@@ -11,14 +11,14 @@ node {
       sh './node_modules/.bin/webdriver-manager clean'
       sh './node_modules/.bin/webdriver-manager update --versions.chrome=$(google-chrome --version | awk \'{print $3}\')'
       catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        sh 'npm run e2e:ci -- --webdriver-update=false'
+        sh 'export NODE_OPTIONS=--max-old-space-size=4096 && npm run e2e:ci -- --webdriver-update=false'
       }
       junit allowEmptyResults: true, testResults: '**/test-results/E2E/*.xml'
     }
     stage('Build beta') {
       milestone()
       sh 'rm -rf dist'
-      sh 'npm run --silent build:ssr:beta'
+      sh 'source /home/node/enable_scl_libs_for_laji_builds.sh && npm run --silent build:ssr:beta'
       sh 'pre-compress-web-assets dist/browser'
       sh 'npm prune --silent --production'
       sh 'tar -cvzf beta.tar.gz --strip-components=1 dist node_modules'

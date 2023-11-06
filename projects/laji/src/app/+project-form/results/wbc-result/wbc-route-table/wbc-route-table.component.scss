@@ -1,5 +1,5 @@
 @import 'projects/laji-ui/src/lib/vars';
-@import '../../../../../styles/variables';
+@import '../../../../../styles/_variables';
 
 :host ::ng-deep .datatable-body-row.last-rows,
 :host ::ng-deep .datatable-body-row.last-rows .datatable-row-left,
@@ -45,9 +45,9 @@
 :host ::ng-deep .ngx-datatable .datatable-header .datatable-row-left .datatable-header-cell {
   border-right: none;
 }
-:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active,
-:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
-:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
-:host ::ng-deep >>> .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row.active,
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-left,
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-center,
+:host ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row.active .datatable-row-right {
   background-color: #ddd !important;
 }

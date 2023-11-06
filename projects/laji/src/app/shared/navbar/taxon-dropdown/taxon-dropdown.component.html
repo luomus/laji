@@ -1,4 +1,4 @@
-<a [routerLink]="'/taxon/browse' | localize" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
+<a [routerLink]="'/taxon/browse' | localize" class="d-flex flex-nowrap mb-4 container-link" *lajiForTypes="['dev', 'prod', 'beta', 'embedded']">
   <div class="img-container">
     <img src="/static/images/icons/kotilo_1_sha.png">
   </div>
@@ -11,7 +11,7 @@
     </div>
   </div>
 </a>
-<a [routerLink]="'/taxon/list' | localize" [queryParams]="{ onlyFinnish: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+<a [routerLink]="'/taxon/list' | localize" [queryParams]="{ onlyFinnish: true }" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/table.png">
   </div>
@@ -24,7 +24,7 @@
     </div>
   </div>
 </a>
-<a [routerLink]="'/taxon/MX.37600/taxonomy' | localize" [queryParams]="{ showTree: true }" (click)="onClose()" class="d-flex flex-nowrap mb-4 container-link">
+<a [routerLink]="'/taxon/MX.37600/taxonomy' | localize" [queryParams]="{ showTree: true }" class="d-flex flex-nowrap mb-4 container-link">
   <div class="img-container">
     <img src="/static/images/icons/tree.png">
   </div>
@@ -38,5 +38,5 @@
   </div>
 </a>
 <div>
-  <laji-omni-search (searchClose)="onClose()" [visible]="visible" [placeholder]="'species.search' | translate"></laji-omni-search>
+  <laji-omni-search [visible]="omniSearchVisible" [placeholder]="'species.search' | translate" luDropdownNoClose></laji-omni-search>
 </div>

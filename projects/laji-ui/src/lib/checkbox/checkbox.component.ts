@@ -1,7 +1,4 @@
-import {
-  Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef, OnDestroy
-} from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Output, Input, EventEmitter, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'lu-checkbox',
@@ -9,8 +6,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./checkbox.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckboxComponent implements OnDestroy{
-  private unsubscribe$ = new Subject();
+export class CheckboxComponent {
   @ViewChild('checkbox', {static: true}) checkbox: ElementRef;
   isChecked = false;
 
@@ -33,10 +29,5 @@ export class CheckboxComponent implements OnDestroy{
   onInput(event: Event) {
     this.isChecked = event.target['checked'];
     this.checked.emit(event.target['checked']);
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

@@ -1,4 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PathOptions, DivIcon } from '@laji-map/laji-map.interface';
+import { Feature } from 'geojson';
+
+export const getPointIconAsCircle = (po: PathOptions, feature: Feature): DivIcon => null as DivIcon;
 
 @Component({
   selector: 'laji-map',

@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { VirDownloadRequestsService } from '../../../service/vir-download-requests.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DownloadRequest } from '../../../../../../laji/src/app/shared-modules/download-request/models';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'vir-usage-by-collection',
@@ -19,10 +19,10 @@ export class UsageDownloadsComponent {
 
   selectedRequest?: DownloadRequest;
 
-  private modal: BsModalRef;
+  private modal: ModalRef;
 
   constructor(
-      private modalService: BsModalService,
+      private modalService: ModalService,
       private virDownloadRequestsService: VirDownloadRequestsService
   ) {
     this.collectionSelect(undefined);
@@ -44,13 +44,16 @@ export class UsageDownloadsComponent {
     this.openDownloadModal(event.row);
   }
 
+  private closeSub: Subscription;
+
   openDownloadModal(request: DownloadRequest) {
     this.selectedRequest = request;
-    this.modal = this.modalService.show(this.downloadModal, {class: 'modal-md'});
+    this.closeSub?.unsubscribe();
+    this.modal = this.modalService.show(this.downloadModal);
+    this.closeSub = this.modal.onHide.subscribe(() => this.closeDownloadModal);
   }
 
   closeDownloadModal() {
-    this.modal?.hide();
     this.selectedRequest = null;
   }
 }
