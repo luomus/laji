@@ -1,0 +1,66 @@
+diff --git a/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js b/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js
+index 6dfbea5..42edb5e 100644
+--- a/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js
++++ b/node_modules/webdriver-manager/built/lib/binaries/chrome_xml.js
+@@ -58,10 +58,38 @@ class ChromeXml extends config_source_1.XmlConfigSource {
+     /**
+      * Gets the latest item from the XML.
+      */
+-    getLatestChromeDriverVersion() {
+-        const latestReleaseUrl = 'https://chromedriver.storage.googleapis.com/LATEST_RELEASE';
+-        return http_utils_1.requestBody(latestReleaseUrl).then(latestVersion => {
+-            return this.getSpecificChromeDriverVersion(latestVersion);
++getLatestChromeDriverVersion() {
++        const path = require('path')
++        const fs = require('fs')
++
++        const lastKnownGoodVersionsWithDownloads_Url = 'https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json';
++        return http_utils_1.requestBody(lastKnownGoodVersionsWithDownloads_Url).then(body => {
++            const latestVersion_Body = JSON.parse(body)['channels']['Stable']
++
++            const latestVersion = latestVersion_Body['version']
++            const latestVersion_Url = latestVersion_Body['downloads']['chromedriver'].find(obj => obj['platform'] == 'linux64')['url']
++
++            const latestMajorVersion = latestVersion.split('.')[0]
++
++            const localVersion_FileName = fs.readdirSync(path.resolve(__dirname, '..', '..', '..', 'selenium'))
++                .find(f => f.startsWith(`chromedriver_${latestMajorVersion}`)) || ''
++
++            const localVersion = localVersion_FileName.slice(13, -4)
++            const localVersion_Url = latestVersion_Url.replace(latestVersion, localVersion)
++
++            const localMajorVersion = localVersion.split('.')[0]
++
++            if (latestMajorVersion == localMajorVersion) {
++                return Promise.resolve({
++                    url: localVersion_Url,
++                    version: localVersion,
++                })
++            } else {
++                return Promise.resolve({
++                    url: latestVersion_Url,
++                    version: latestVersion,
++                })
++            }
+         });
+     }
+     /**
+diff --git a/node_modules/webdriver-manager/built/lib/cmds/update.js b/node_modules/webdriver-manager/built/lib/cmds/update.js
+index b98cdce..e2e8c10 100644
+--- a/node_modules/webdriver-manager/built/lib/cmds/update.js
++++ b/node_modules/webdriver-manager/built/lib/cmds/update.js
+@@ -236,8 +236,12 @@ function unzip(binary, outputDir, fileName) {
+         // We will only ever get .tar files on linux
+         child_process.spawnSync('tar', ['zxvf', path.resolve(outputDir, fileName), '-C', outputDir]);
+     }
+-    // rename
+-    fs.renameSync(path.resolve(outputDir, binary.zipContentName()), mv);
++	// rename
++	if (fileName.indexOf('chromedriver_') != -1) {
++		fs.renameSync(path.resolve(outputDir, 'chromedriver-linux64', binary.zipContentName()), mv)
++	} else {
++		fs.renameSync(path.resolve(outputDir, binary.zipContentName()), mv);
++	}
+     // set permissions
+     if (osType !== 'Windows_NT') {
+         logger.info(binary.name + ': setting permissions to 0755 for ' + mv);
