@@ -6,7 +6,7 @@ import { UserService } from '../../../shared/service/user.service';
 import { CollectionService } from '../../../shared/service/collection.service';
 import { FormService } from '../../../shared/service/form.service';
 import { TranslateService } from '@ngx-translate/core';
-import { geoJSONToISO6709 } from 'laji-map/lib/utils';
+import { geoJSONToISO6709 } from '@luomus/laji-map/lib/utils';
 import { BookType } from 'xlsx';
 import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';

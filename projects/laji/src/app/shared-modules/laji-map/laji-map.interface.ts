@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import * as LajiMap from 'laji-map';
+import * as LajiMap from '@luomus/laji-map';
 import * as L from 'leaflet';
 
 export type LajiMapOptions = LajiMap.Options;

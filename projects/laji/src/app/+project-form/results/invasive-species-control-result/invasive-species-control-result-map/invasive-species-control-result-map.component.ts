@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { getPointIconAsCircle } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions } from '@laji-map/laji-map.interface';
 import { TranslateService } from '@ngx-translate/core';
-import { GetFeatureStyleOptions } from 'laji-map';
+import { GetFeatureStyleOptions } from '@luomus/laji-map';
 import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legend/laji-map-visualization';
 import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/year-slider.component';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';

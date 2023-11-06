@@ -25,8 +25,8 @@ import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
 import { getPointIconAsCircle, LajiMapComponent } from '@laji-map/laji-map.component';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { PlatformService } from '../../../root/platform.service';
-import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
-import { combineColors } from 'laji-map/lib/utils';
+import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from '@luomus/laji-map';
+import { combineColors } from '@luomus/laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {

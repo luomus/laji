@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableColumn } from '@achimha/ngx-datatable';
-import { TileLayerName, LajiMap } from 'laji-map';
+import { TileLayerName, LajiMap } from '@luomus/laji-map';
 import { datatableClasses } from 'projects/bird-atlas/src/styles/datatable-classes';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';

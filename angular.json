@@ -23,8 +23,8 @@
               "projects/laji/src/robots.txt"
             ],
             "styles": [
-              "node_modules/laji-form/dist/styles.css",
-              "node_modules/laji-form-builder/lib/client/styles.css",
+              "node_modules/@luomus/laji-form/dist/styles.css",
+              "node_modules/@luomus/laji-form-builder/lib/client/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
@@ -250,7 +250,7 @@
             "tsConfig": "tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "node_modules/laji-form/dist/styles.css",
+              "node_modules/@luomus/laji-form/dist/styles.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/angular-tree-component/dist/angular-tree-component.css",
               "projects/laji/src/styles/ng2-toastr.min.css",
@@ -395,7 +395,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/label-designer/tsconfig.lib.json"
+              "tsConfig": "projects/label-designer/tsconfig.lib.prod.json"
             }
           }
         },
@@ -876,7 +876,7 @@
               }
             ],
             "styles": [
-              "node_modules/laji-form/dist/styles.css",
+              "node_modules/@luomus/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji/src/styles/laji.scss",
               "projects/vir/src/styles.scss"
@@ -1046,7 +1046,7 @@
               }
             ],
             "styles": [
-              "node_modules/laji-form/dist/styles.css",
+              "node_modules/@luomus/laji-form/dist/styles.css",
               "projects/vir/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -1194,7 +1194,7 @@
             ],
             "styles": [
               "node_modules/@achimha/ngx-datatable/themes/material.scss",
-              "node_modules/laji-map/dist/styles.css",
+              "node_modules/@luomus/laji-map/dist/styles.css",
               "projects/bird-atlas/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -1332,7 +1332,7 @@
               }
             ],
             "styles": [
-              "node_modules/laji-map/dist/styles.css",
+              "node_modules/@luomus/laji-map/dist/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
               "node_modules/ngx-toastr/toastr.css",
