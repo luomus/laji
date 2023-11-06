@@ -849,4 +849,12 @@
     {{ 'observation.form.onlyFinShortcut' | translate }}
     </a>
   </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="otsoFilterShortcutQueryParams">
+      {{ 'observation.form.otsoShortcut' | translate }}
+    </a>
+    <laji-info class="mt-2">{{ 'observation.form.otso-info' | translate }}</laji-info>
+  </div>
 </section>
