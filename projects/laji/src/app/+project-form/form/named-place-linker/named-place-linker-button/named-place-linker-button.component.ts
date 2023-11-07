@@ -20,13 +20,13 @@ interface ViewModel {
   selector: 'laji-named-place-linker-button',
   template: `
     <ng-container *ngIf="vm$ | async as vm">
-      <alert type="warning" *ngIf="vm.isLinkable">
+      <lu-alert type="warning" *ngIf="vm.isLinkable">
         {{ 'np.linker.npMissing' | translate }} <br>
         <lu-button
           [anchor]="['/project', vm.formID, 'form', vm.documentID, 'link'] | localize"
           id="link-to-np"
           (click)="this.link.emit($event)">{{ 'np.linker.start' | translate }}</lu-button>
-      </alert>
+      </lu-alert>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

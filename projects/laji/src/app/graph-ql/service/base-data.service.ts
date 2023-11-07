@@ -95,7 +95,7 @@ export class BaseDataService {
     private graphQLService: GraphQLService,
     private translationService: TranslateService
   ) {
-    this.query = this.graphQLService.watchQuery({
+    this.query = this.graphQLService.watchQuery<IBaseData>({
       query: BASE_QUERY,
       errorPolicy: 'ignore',
       fetchPolicy: 'cache-first'

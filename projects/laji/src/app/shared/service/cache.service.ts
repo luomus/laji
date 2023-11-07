@@ -1,5 +1,4 @@
-import { ApplicationRef, Injectable } from '@angular/core';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { ApplicationRef, Injectable, makeStateKey, TransferState  } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, take, timeout } from 'rxjs/operators';
 import { PlatformService } from '../../root/platform.service';

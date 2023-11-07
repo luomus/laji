@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ObservationActiveComponent } from './active/observation-active.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { ThreeStateMultiSwitchComponent } from './three-state-multi-switch/three-state-multi-switch.component';
 import { SwitchRowComponent } from './three-state-multi-switch/switch-row/switch-row.component';
 import { InfoModule } from '../info/info.module';

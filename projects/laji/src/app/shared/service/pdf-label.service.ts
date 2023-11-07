@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FieldType, ILabelField } from 'label-designer';
+import { FieldType, ILabelField } from '@luomus/label-designer';
 import { from, Observable, of } from 'rxjs';
 import { Document } from '../model/Document';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { FormService as ToolsFormService } from './form.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IdService } from './id.service';
 import { SessionStorage } from 'ngx-webstorage';
-import { SchemaService, ILabelData } from 'label-designer';
+import { SchemaService, ILabelData } from '@luomus/label-designer';
 import { TriplestoreLabelService } from './triplestore-label.service';
 import { LabelFilter } from '../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Units } from '../model/Units';

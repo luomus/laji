@@ -19,15 +19,15 @@ import { IUserSettings, UserService } from '../../../../shared/service/user.serv
 import { Logger } from '../../../../shared/logger/logger.service';
 import { ToastsService } from '../../../../shared/service/toasts.service';
 import { concatMap, map, take } from 'rxjs/operators';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import { Profile } from '../../../../shared/model/Profile';
-import LajiForm from 'laji-form/lib/index';
-import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
+import LajiForm from '@luomus/laji-form/lib/index';
+import { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
 import { environment } from 'projects/laji/src/environments/environment';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -100,7 +100,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   private reloadSub: Subscription;
 
 
-  @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
+  @ViewChild('errorModal', { static: true }) public errorModal: ModalComponent;
   @ViewChild('lajiForm', { static: true }) lajiFormRoot: ElementRef;
 
   ngOnInit() {
@@ -264,8 +264,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       return;
     }
     combineLatest(
-      import('laji-form'),
-      import('laji-form/lib/themes/bs3'),
+      import('@luomus/laji-form'),
+      import('@luomus/laji-form/lib/themes/bs3'),
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
           map(globalSettings => ({...globalSettings, ...settings}))

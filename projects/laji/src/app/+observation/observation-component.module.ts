@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { ObservationViewComponent } from './view/observation-view.component';
 import { ObservationResultComponent } from './result/observation-result.component';
 import { ObservationResultListComponent } from './result-list/observation-result-list.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ObservationDownloadComponent } from './download/observation-download.component';
 import { routing } from './observation.routes';
 import { ObservationComponent } from './observation.component';
@@ -19,7 +18,7 @@ import { InfoModule } from '../shared-modules/info/info.module';
 import { ObservationMapModule } from '../shared-modules/observation-map/observation-map.module';
 import { ObservationFormComponent } from './form/observation-form.component';
 import { SeasonComponent } from './form/season/season.component';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TeamComponent } from './form/team/team.component';
 import { MemberIdPillListComponent } from './form/team/member-id-pill-list/member-id-pill-list.component';
 import { RemoveLeadingPipe } from './pipe/remove-leading.pipe';
@@ -42,6 +41,9 @@ import { ExtendedGroupSelectModule } from '../shared-modules/extended-group-sele
 import { ConservationFilterComponent } from './form/conservation-filter/conservation-filter.component';
 import { CommonModule } from '@angular/common';
 import { ObservationResultFrontComponent } from './result-front/observation-result-front.component';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -67,7 +69,9 @@ import { ObservationResultFrontComponent } from './result-front/observation-resu
     SelectModule,
     CollectionsSelectModule,
     ExtendedGroupSelectModule,
-    CommonModule
+    CommonModule,
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     ObservationComponent,

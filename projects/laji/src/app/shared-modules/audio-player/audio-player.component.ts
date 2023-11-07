@@ -1,16 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef, Input,
 ChangeDetectorRef, ChangeDetectionStrategy, TemplateRef, HostListener } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DocumentViewerChildComunicationService } from '../document-viewer/document-viewer-child-comunication.service';
 import { Audio } from '../../shared/model/Audio';
 import { Image } from '../../shared/model/Image';
-
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'laji-audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
-  providers: [BsModalRef],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -41,10 +39,11 @@ export class AudioPlayerComponent implements OnInit {
   public popupSpectrum = false;
   public audioFile: Audio;
 
+  private modalRef: ModalRef;
+
   constructor(
     private cd: ChangeDetectorRef,
-    private modalService: BsModalService,
-    private modalRef: BsModalRef,
+    private modalService: ModalService,
     private childComunication: DocumentViewerChildComunicationService
   ) {}
 
@@ -117,7 +116,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   openModal() {
-    this.modalRef = this.modalService.show(this.modalSpectrum, {class: 'modal-lg'});
+    this.modalRef = this.modalService.show(this.modalSpectrum, {size: 'lg'});
     this.cd.markForCheck();
   }
 

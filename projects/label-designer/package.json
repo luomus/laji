@@ -1,6 +1,6 @@
 {
-  "name": "label-designer",
-  "version": "4.0.10",
+  "name": "@luomus/label-designer",
+  "version": "4.0.16",
   "author": "Ville-Matti Riihikoski",
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
@@ -24,11 +24,13 @@
     "@angular/common": ">=7.0.0",
     "@angular/core": ">=7.0.0",
     "@angular/cdk": ">=7.0.0",
-    "@types/node": "^10.0.0",
     "angularx-qrcode": ">=2.3.0",
     "jszip": ">=3.2.0",
     "file-saver": ">=2.0.0",
     "ngx-webstorage": ">=5.0.0",
-    "xlsx": "0.13.2"
+    "xlsx": ">=0.13.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

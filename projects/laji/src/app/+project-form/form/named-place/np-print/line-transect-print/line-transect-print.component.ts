@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import * as MapUtil from 'laji-map/lib/utils';
+import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
 import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
