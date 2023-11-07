@@ -17,4 +17,5 @@ export interface Image extends TaxonomyImage {
   mediaType?: 'IMAGE' | 'VIDEO' | 'MODEL';
   videoURL?: string;
   lowDetailModelURL?: string;
+  fullResolutionMediaAvailable?: boolean;
 }
