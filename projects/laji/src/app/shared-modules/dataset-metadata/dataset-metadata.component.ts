@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { zip, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 const mobileBreakpoint = 768;
 
@@ -13,17 +14,19 @@ const mobileBreakpoint = 768;
   styleUrls: ['./dataset-metadata.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataComponent implements OnInit, AfterViewInit {
+export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewInit {
   collectionId: string;
   _collectionId: string;
   collection$: Observable<Collection>;
   collectionCounts$: Observable<ICollectionCounts>;
+  paramSub$: Subscription;
   showBrowser = true;
   isMobile = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private localizeRouterService: LocalizeRouterService,
     private location: Location,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -46,6 +49,14 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
     if (this.isMobile) {
       this.showBrowser = false;
     }
+
+    this.paramSub$ = this.route.params.subscribe(params => {
+      this.updateCollection(params.collectionId);
+    });
+  }
+
+  ngOnDestroy() {
+    this.paramSub$?.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -60,20 +71,19 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
     if (this.collectionId && this.collectionId !== this._collectionId) {
       this.collection$ = this.collectionService.getById$(this.collectionId, 'multi');
       this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(this.collectionId);
-
+      this._collectionId = this.collectionId;
       this.cd.markForCheck();
     }
   }
 
   changeUrl(collectionId) {
+    const url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata']);
+
     if (collectionId) {
-      const url = this.router.createUrlTree(['theme', 'dataset-metadata', collectionId]).toString();
-      this.location.go(url);
-      this.route.params['collectionId'] = collectionId;
-    } else {
-      this.location.go('theme/dataset-metadata');
-      this.route.params['collectionId'] = undefined;
+      url.push(collectionId);
     }
+
+    this.router.navigate(url);
   }
 
   changeCollection(collectionId) {
@@ -81,11 +91,13 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
       this.changeUrl(collectionId);
     }
 
-    this.collectionId = collectionId;
-    this.getCollectionData();
-
     if(this.isMobile) {
       this.showBrowser = false;
     }
+  }
+
+  updateCollection(collectionId) {
+    this.collectionId = collectionId;
+    this.getCollectionData();
   }
 }
