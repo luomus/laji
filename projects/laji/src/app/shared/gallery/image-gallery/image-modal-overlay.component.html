@@ -51,10 +51,6 @@
       <a *ngIf="img.documentId" target="_blank" [routerLink]="'/view' | localize" [queryParams]="{'uri':img.documentId, highlight: img.unitId}">
         {{ 'more' | translate }}
       </a>
-      <a *ngIf="img.fullResolutionMediaAvailable" class="d-block" href="https://elomake.helsinki.fi/" target="_blank">
-        {{ 'image-modal.fullResolutionMedia' | translate }}
-        <i class="glyphicon glyphicon-save-file"></i>
-      </a>
      ({{ currentImageIndex + 1 }}/{{ modalImages.length }})
      </span>
   </div>
