@@ -204,7 +204,16 @@
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.dateEdited' | translate" [value]="collection.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'">
       </laji-dataset-metadata-viewer-item>
-    </div> 
+    </div>
+    <div class="panel panel-default description-panel"
+      laji-panel
+      [title]="'collection.metadata.info.title' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <div [innerHTML]="'collection.metadata.info' | translate">
+      </div>
+    </div>
   </div>
 </ng-container>
 <ng-template #loadingSpinner>
