@@ -20,6 +20,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
 import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-occurrences.component';
+import { ChartModule } from 'projects/laji/src/app/shared-modules/chart/chart.module';
 
 /* eslint-enable max-len */
 
@@ -29,6 +30,7 @@ import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-o
     CommonModule,
     SharedModule,
     IucnSharedModule,
+    ChartModule,
     NgSelectModule,
     IucnCommonModule
   ],
