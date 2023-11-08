@@ -8,8 +8,8 @@ import { DatatableSort } from '../../../../../laji/src/app/shared-modules/datata
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../../../../laji/src/app/locale/localize-router.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { IdentificationHistoryEditModalComponent } from './identification-history-edit-modal/identification-history-edit-modal.component';
+import { ModalService } from '../../../../../laji-ui/src/lib/modal/modal.service';
 
 export interface IIdentificationHistoryResponseWithIndex extends IIdentificationHistoryResponse {
   index: number;
@@ -36,7 +36,7 @@ export class IdentificationHistoryComponent {
     private userService: UserService,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private modalService: BsModalService
+    private modalService: ModalService
   ) {
     this.sites$ = this.userService.isLoggedIn$.pipe(
       switchMap(() => this.kerttuGlobalApi.getSites(this.userService.getToken())),
@@ -76,7 +76,7 @@ export class IdentificationHistoryComponent {
 
     const modalRef = this.modalService.show(
       IdentificationHistoryEditModalComponent,
-      { class: 'modal-xl scrollable-modal', initialState, backdrop: true, ignoreBackdropClick: true }
+      { size: 'xl', initialState }
     );
 
     this.modalSub = new Subscription();

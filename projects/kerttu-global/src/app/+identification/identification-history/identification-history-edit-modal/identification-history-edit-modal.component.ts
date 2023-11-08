@@ -9,12 +9,12 @@ import { UserService } from '../../../../../../laji/src/app/shared/service/user.
 import { TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { SpectrogramService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/spectrogram.service';
-import { BsModalRef } from 'ngx-bootstrap/modal';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
+import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'bsg-identification-history-edit-modal',
@@ -48,7 +48,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     private userService: UserService,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private modalRef: BsModalRef,
+    private modalService: ModalService,
     private dialogService: DialogService
   ) { }
 
@@ -108,7 +108,7 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.modalClose.emit(this.hasChanges);
-        this.modalRef.hide();
+        this.modalService.hide();
         this.cdr.markForCheck();
       }
     });
