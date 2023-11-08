@@ -2127,6 +2127,6 @@
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
-  "observation.form.otsoShortcut": "Aseta Osto-metsätalousrajaukset",
+  "observation.form.otsoShortcut": "Otso-metsätalousrajaukset",
   "observation.form.otso-info": "Default filters defined for forestry use. You can also view and optionally change the default filters for: Date, Place, Quality, Level of threat, and status. In addition, you can narrow your search otherwise."
 }
