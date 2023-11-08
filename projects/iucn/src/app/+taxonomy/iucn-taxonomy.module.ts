@@ -12,7 +12,6 @@ import { RedlistYearSelectComponent } from './info-card/redlist-year-select/redl
 import { ResultsComponent } from './list/results/results.component';
 import { RedListStatusComponent } from './list/results/red-list-status/red-list-status.component';
 import { RedListChartComponent } from './list/results/red-list-chart/red-list-chart.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { RedListEvaluationInfoComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info.component';
 import { RedListEvaluationInfoRowsetComponent } from './info-card/red-list-evaluation-info/red-list-evaluation-info-rowset/red-list-evaluation-info-rowset.component';
 import { RedListHabitatComponent } from './list/results/red-list-habitat/red-list-habitat.component';
@@ -30,7 +29,6 @@ import { TaxonOccurrencesComponent } from './info-card/taxon-occurrences/taxon-o
     CommonModule,
     SharedModule,
     IucnSharedModule,
-    NgxChartsModule,
     NgSelectModule,
     IucnCommonModule
   ],
