@@ -1,13 +1,15 @@
 import { switchMap, take } from 'rxjs/operators';
-import { WINDOW } from '@ng-toolkit/universal';
-import { Component, Inject, Input, ViewChild, TemplateRef } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { SessionStorage } from 'ngx-webstorage';
 import { ToastsService } from '../service/toasts.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 import { LajiApi, LajiApiService } from '../service/laji-api.service';
+import { of } from 'rxjs';
+import { Person } from '../model/Person';
+import { PlatformService } from '../../root/platform.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'laji-feedback',
@@ -27,17 +29,18 @@ export class FeedbackComponent {
     email: ''
   };
   public error = false;
-  private displayedModal: BsModalRef;
+  private displayedModal: ModalRef;
 
   @ViewChild('childModal', { static: true }) public modal: TemplateRef<any>;
 
-  constructor(@Inject(WINDOW) private window: Window,
+  constructor(
+		private platformService: PlatformService,
     public userService: UserService,
     public translate: TranslateService,
     private lajiApi: LajiApiService,
     private toastsService: ToastsService,
     private location: Location,
-    private modalService: BsModalService
+    private modalService: ModalService
 ) {
   }
 
@@ -61,39 +64,43 @@ export class FeedbackComponent {
       return;
     }
     const meta = this.getMeta();
-    this.userService.user$.pipe(
-      take(1),
-      switchMap(user => this.lajiApi.post(
+
+    (!this.userService.getToken() ?
+      of(undefined) :
+      this.userService.user$).pipe(
+        take(1)
+    ).pipe(
+      switchMap((user: (Person | undefined)) => this.lajiApi.post(
         LajiApi.Endpoints.feedback,
         {
           subject,
           message: this.feedback.message + '\n\n---\n' + this.feedback.email,
           meta
         },
-        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined})
+        {personToken: user && user.emailAddress ? this.userService.getToken() : undefined}
       ))
-      .subscribe(
-        () => {
-          this.feedback = {
-            subject: '',
-            other: '',
-            message: '',
-            meta: '',
-            email: ''
-          };
-          this.closeModal();
-          this.sendMessage('showSuccess', 'feedback.success');
-        },
-        () => {
-          this.sendMessage('showError', 'feedback.failure');
-        }
-      );
+    ).subscribe({
+      next: () => {
+        this.feedback = {
+          subject: '',
+          other: '',
+          message: '',
+          meta: '',
+          email: ''
+        };
+        this.closeModal();
+        this.sendMessage('showSuccess', 'feedback.success');
+      },
+      error: () => {
+        this.sendMessage('showError', 'feedback.failure');
+      }
+    });
   }
 
   private getMeta(): string {
     let agent = '';
     try {
-      agent = this.window.navigator.userAgent;
+      agent = this.platformService.window.navigator.userAgent;
     } catch (e) {
     }
     return this.location.prepareExternalUrl(this.location.path())

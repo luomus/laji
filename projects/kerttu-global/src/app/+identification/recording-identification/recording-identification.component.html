@@ -1,5 +1,5 @@
-<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</alert>
-<alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</alert>
+<lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ 'identification.genericError' | translate }}</lu-alert>
+<lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</lu-alert>
 
 <laji-spinner *ngIf="!hasError && !allRecordingsAnnotated" [spinning]="expertiseMissing == null">
   <ng-container *ngIf="expertiseMissing != null">

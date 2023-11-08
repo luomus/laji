@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   IListResult,
   IGlobalSpeciesQuery,
@@ -25,8 +25,8 @@ import {
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { WINDOW } from '@ng-toolkit/universal';
 import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResul
 export class KerttuGlobalApi {
 
   constructor(
-    @Inject(WINDOW) private window: Window,
+    private platformService: PlatformService,
     protected httpClient: HttpClient
   ) { }
 
@@ -77,7 +77,7 @@ export class KerttuGlobalApi {
   public unlockSpecies(personToken: string, speciesId: number): boolean {
     const path = this.basePath + '/species/unlock/' + speciesId + '?personToken=' + personToken;
 
-    return this.window.navigator.sendBeacon(path);
+    return this.platformService.window.navigator.sendBeacon(path);
   }
 
   public getSpeciesFilters(): Observable<IGlobalSpeciesFilters> {

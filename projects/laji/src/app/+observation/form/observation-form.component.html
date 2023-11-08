@@ -37,21 +37,21 @@
     <input
       [ngClass]="{loading: typeaheadLoading}"
       type="text"
-      container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
-      [adaptivePosition]="true"
+      [luTypeaheadAdaptivePosition]="true"
       [(ngModel)]="formQuery.taxon"
-      [typeahead]="dataSource"
-      [typeaheadOptionsLimit]="autocompleteLimit"
-      [typeaheadWaitMs]="200"
-      [typeaheadMinLength]="3"
-      [typeaheadSelectFirstItem]="false"
-      [typeaheadOptionField]="'autocompleteSelectedName'"
-      [typeaheadItemTemplate]="taxonItem"
-      [typeaheadIsFirstItemActive]="false"
-      (typeaheadLoading)="changeTypeaheadLoading($event)"
-      (typeaheadOnSelect)="onTaxonSelect($event)"
+      luTypeaheadContainer="{{containerTypeAhead}}"
+      [luTypeahead]="dataSource"
+      [luTypeaheadOptionsLimit]="autocompleteLimit"
+      [luTypeaheadWaitMs]="200"
+      [luTypeaheadMinLength]="3"
+      [luTypeaheadSelectFirstItem]="false"
+      [luTypeaheadOptionField]="'autocompleteSelectedName'"
+      [luTypeaheadItemTemplate]="taxonItem"
+      [luTypeaheadIsFirstItemActive]="false"
+      (luTypeaheadLoading)="changeTypeaheadLoading($event)"
+      (luTypeaheadOnSelect)="onTaxonSelect($event)"
       (keyup)="onTaxonSelect($event)"
       autocomplete="off"
       autocorrect="off"
@@ -103,7 +103,7 @@
       <laji-info>{{ 'observation.info.maxOccurrenceFinland' | translate }}</laji-info>  </div>
     <div class="row">
       <div class="col-sm-12">
-        <input type="number" name="occurrenceCountFinlandMax"
+        <input lajiDisableWheel type="number" name="occurrenceCountFinlandMax"
                   class="form-control input-sm"
                   placeholder="{{'observation.form.countMax' | translate}}"
                   (ngModelChange)="onCountChange()"
@@ -232,13 +232,13 @@
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="lji-icon lji-polygon"></i>
       </button>
       {{ 'observation.form.map.polygon' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn" (click)="mapDraw.emit('CoordinatesImport')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="glyphicon glyphicon-floppy-open"></i>
       </button>
@@ -257,7 +257,7 @@
       <div>
         <label class="small-label">{{ 'observation.form.coordinateIntersection' | translate }}</label><laji-info>{{ 'observation.info.coordinateIntersection' | translate }}</laji-info>
         <div class="input-group" style="max-width: 110px;">
-          <input type="number"
+          <input lajiDisableWheel type="number"
                   name="coordinatesIntersection"
                   style="padding: 3px 7px;"
                   class="form-control input-sm"
@@ -311,7 +311,7 @@
         <laji-info>{{ 'observation.info.coordinateAccuracyMax' | translate }}</laji-info>
       </div>
       <div class="input-group" style="max-width: 110px;">
-        <input type="number" name="coordinateAccuracyMax"
+        <input lajiDisableWheel type="number" name="coordinateAccuracyMax"
                 style="padding: 3px 7px;"
                 class="form-control input-sm"
                 (change)="onAccuracyValueChange()"
@@ -492,14 +492,14 @@
     </div>
     <div class="row">
       <div class="col-sm-6">
-        <input type="number" name="individualCountMin"
+        <input lajiDisableWheel type="number" name="individualCountMin"
                 class="form-control input-sm"
                 placeholder="{{'observation.form.countMin' | translate}}"
                 (ngModelChange)="onCountChange()"
                 [(ngModel)]="query.individualCountMin">
       </div>
       <div class="col-sm-6">
-        <input type="number" name="individualCountMax"
+        <input lajiDisableWheel type="number" name="individualCountMax"
                 class="form-control input-sm"
                 placeholder="{{'observation.form.countMax' | translate}}"
                 (ngModelChange)="onCountChange()"
@@ -834,6 +834,13 @@
     {{ 'observation.form.virFilterShortcut' | translate }}
     </a>
     <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
+  </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="birdAtlasFilterShortcutQueryParams">
+    {{ 'observation.form.birdAtlasShortcut' | translate }}
+    </a>
   </div>
   <div>
     <a class="btn btn-default btn-sm"

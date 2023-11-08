@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { filter } from 'rxjs/operators';
 import { Global } from '../../../environments/global';
-import { setTheme } from 'ngx-bootstrap/utils';
 import { RouteDataService } from '../../shared/service/route-data.service';
 import { HeaderService } from '../../shared/service/header.service';
 import { PlatformService } from '../../root/platform.service';
@@ -35,7 +34,6 @@ export class AppComponent {
     headerService: HeaderService,
     historyService: HistoryService
   ) {
-    setTheme('bs3');
     this.viewContainerRef = viewContainerRef;
     this.hasAnalytics = !environment.disableAnalytics;
     this.isEmbedded = environment.type === Global.type.embedded;

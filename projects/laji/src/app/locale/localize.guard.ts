@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../shared/service/history.service';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class LocalizeGuard implements CanActivate {
+export class LocalizeGuard  {
 
   constructor(
     private translateService: TranslateService,

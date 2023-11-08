@@ -16,13 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, forkJoin as ObservableForkJoin, from as ObservableFrom, Observable, of as ObservableOf, Subscription } from 'rxjs';
 import { LocalStorage } from 'ngx-webstorage';
 import { DocumentExportService } from './service/document-export.service';
-import { DownloadEvent, LabelEvent, RowDocument, TemplateEvent } from './own-datatable/own-datatable.component';
+import { DownloadEvent, LabelEvent, RowDocument } from './own-datatable/own-datatable.component';
 import { DocumentInfoService } from '../../shared/service/document-info.service';
 import * as moment from 'moment';
 import { FormService } from '../../shared/service/form.service';
 import { TriplestoreLabelService } from '../../shared/service/triplestore-label.service';
 import { Logger } from '../../shared/logger';
-import { TemplateForm } from './models/template-form';
 import { ToastsService } from '../../shared/service/toasts.service';
 import { DocumentService } from './service/document.service';
 import { PdfLabelService } from '../../shared/service/pdf-label.service';
@@ -57,7 +56,7 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
   @Input() showPrintLabels = false;
   @Input() admin = false;
   @Input() useInternalDocumentViewer = false;
-  @Input() actions: string[]|false = ['edit', 'view', 'template', 'download', 'stats', 'delete'];
+  @Input() actions: string[]|false = ['edit', 'view', 'download', 'stats', 'delete'];
   @Input() columns = ['dateEdited', 'dateObserved', 'locality', 'gatheringsCount', 'unitCount', 'observer', 'form', 'id', 'publicityRestrictions'];
   @Input() columnNameMapping: any;
   @Input() templateColumns = ['templateName', 'templateDescription', 'dateEdited', 'form', 'id'];
@@ -97,11 +96,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
     namedPlaceName: 'namedPlaceID,gatherings.namedPlaceID',
     taxon: 'gatherings.units.identifications.taxonID',
     publicityRestrictions: 'publicityRestrictions'
-  };
-
-  templateForm: TemplateForm = {
-    name: '',
-    description: ''
   };
 
   constructor(
@@ -164,33 +158,6 @@ export class OwnSubmissionsComponent implements OnChanges, OnInit, OnDestroy {
       own: true,
       forceLocal: this.forceLocalDocument
     });
-  }
-
-  saveTemplate(event: TemplateEvent) {
-    if (this.loading) {
-      return;
-    }
-    this.loading = true;
-    this.documentApi.findById(event.documentID, this.userService.getToken()).pipe(
-      switchMap(document => this.documentService.saveTemplate({...this.templateForm, document}))
-    ).subscribe(
-      () => {
-        this.translate.get('template.success')
-          .subscribe((value) => this.toastService.showSuccess(value));
-        this.templateForm = {
-          name: '',
-          description: ''
-        };
-        this.loading = false;
-        this.cd.markForCheck();
-      },
-      (err) => {
-        this.translate.get('template.error')
-          .subscribe((value) => this.toastService.showError(value));
-        this.logger.error('Template saving failed', err);
-        this.loading = false;
-        this.cd.markForCheck();
-      });
   }
 
   private initDocuments(onlyDocuments = false) {

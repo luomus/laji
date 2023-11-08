@@ -9,7 +9,7 @@ import {
   QRCodeErrorCorrectionLevel,
   LabelDesignerTranslationsInterface,
   ILabelPdf, IColumnMap
-} from 'label-designer';
+} from '@luomus/label-designer';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

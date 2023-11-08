@@ -280,14 +280,17 @@ export class SpreadsheetService {
     } = values;
     const suffix = (!N || !E) ? ` ${system}` : '';
 
+    const newN = ('' + N).replace(',', '.');
+    const newE = ('' + E).replace(',', '.');
+
     if (!system) {
-      return `${N} ${E}`;
-    } else if (system === ykj) {
-      return `${N}:${E}${suffix}`;
-    } else if (system === etrs) {
-      return `+${N}+${E}/CRSEPSG:3067`;
+      return `${newN} ${newE}`;
+    } else if (system.toLowerCase() === ykj.toLowerCase()) {
+      return `${newN}:${newE}${suffix}`;
+    } else if (system.toLowerCase() === etrs.toLowerCase()) {
+      return `+${newN}+${newE}/CRSEPSG:3067`;
     }
-    return `${('' + N).replace(',', '.')},${('' + E).replace(',', '.')}${suffix}`;
+    return `${newN},${newE}${suffix}`;
   }
 
   private getCombinedGroups(combines: IColCombine[]): {groupedCombines: IColCombine[][]; errors: string[]} {

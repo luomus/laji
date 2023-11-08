@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { NgModule } from '@angular/core';
 import { NavigationThumbnailModule } from '../../shared-modules/navigation-thumbnail/navigation-thumbnail.module';
 import { TaxonAutocompleteModule } from '../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
@@ -5,7 +6,7 @@ import { ObservationResultModule } from '../../shared-modules/observation-result
 import { DownloadModalModule } from '../../shared-modules/download-modal/download-modal.module';
 import { ChartModule } from '../../shared-modules/chart/chart.module';
 import { YkjModule } from '../../shared-modules/ykj/ykj.module';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { ResultsComponent } from './results.component';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { WbcRoutesMapComponent } from './wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
@@ -45,6 +46,14 @@ import { SykeInsectResultFiltersComponent } from './syke-insect-result/syke-inse
 import { SykeInsectRouteComponent } from './syke-insect-result/syke-insect-route/syke-insect-route.component';
 import { SykeInsectRouteTableComponent } from './syke-insect-result/syke-insect-route-table/syke-insect-route-table.component';
 import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-all-results/syke-insect-all-results.component';
+import { InvasiveSpeciesControlResultComponent } from './invasive-species-control-result/invasive-species-control-result.component';
+import { InvasiveSpeciesControlResultStatisticsComponent } from './invasive-species-control-result/invasive-species-control-result-statistics/invasive-species-control-result-statistics.component';
+import { InvasiveSpeciesControlResultMapComponent } from './invasive-species-control-result/invasive-species-control-result-map/invasive-species-control-result-map.component';
+import { ProjectFormHeaderModule } from '../header/project-form-header.module';
+import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
+import { LajiMapModule } from '@laji-map/laji-map.module';
+import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
+import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
 
 @NgModule({
   imports: [
@@ -61,7 +70,12 @@ import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-
     TranslateModule,
     CommonModule,
     SharedModule,
-    LajiUiModule
+    LajiUiModule,
+    ProjectFormHeaderModule,
+    TaxonSelectModule,
+    LajiMapModule,
+    LajiLegendModule,
+    YearSliderModule
   ],
   declarations: [
     ResultsComponent,
@@ -90,7 +104,10 @@ import { SykeInsectAllResultsComponent } from './syke-insect-result/syke-insect-
     SykeInsectResultFiltersComponent,
     SykeInsectRouteComponent,
     SykeInsectRouteTableComponent,
-    SykeInsectAllResultsComponent
+    SykeInsectAllResultsComponent,
+    InvasiveSpeciesControlResultComponent,
+    InvasiveSpeciesControlResultStatisticsComponent,
+    InvasiveSpeciesControlResultMapComponent
   ],
   providers: [
     WbcResultService,

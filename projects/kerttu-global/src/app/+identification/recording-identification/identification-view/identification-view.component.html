@@ -100,9 +100,9 @@
         {{ audio.dateTime | amDateFormat:'DD.MM.YYYY HH:mm' }}
         {{ audio.locality ? (audio.locality | titlecase) : audio.site.name }}<ng-container *ngIf="audio.site.country">, {{ audio.site.country }}</ng-container>
       </span>
-      <span class="ml-2"><i [popover]="audioInfoPopover" [placement]="'left'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
+      <span class="ml-2"><i [luPopover]="audioInfoPopover" [placement]="'left'" [mode]="'click'" [rootElement]="'body'" class="glyphicon glyphicon-info-sign info-sign"></i></span>
       <ng-template #audioInfoPopover>
-        <div>
+        <div (click)="$event.stopPropagation()">
           <label class="mb-0">{{ 'identification.fileName' | translate }}:</label>
           <br>
           <span class="audio-url">{{ audio.url | fileName }}</span>

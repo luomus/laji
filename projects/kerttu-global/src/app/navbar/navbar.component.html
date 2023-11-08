@@ -22,12 +22,12 @@
         </li>
       </ul>
       <ul class="nav navbar-nav pull-right">
-        <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" dropdown>
-          <a dropdownToggle class="link user" tabindex="0" role="button" luKeyboardClickable>
+        <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async">
+          <a luDropdownToggle class="link user">
             <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
             <i class="glyphicon glyphicon-user"></i>
           </a>
-          <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+          <ul luDropdownMenu class="right">
             <li role="menuitem">
               <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
             </li>
@@ -43,8 +43,8 @@
             </small>
           </a>
         </li>
-        <li dropdown>
-          <a dropdownToggle class="link language-toggle" tabindex="0" role="button" luKeyboardClickable>
+        <li>
+          <a luDropdownToggle class="link language-toggle">
             <i class="glyphicon glyphicon-globe"></i>
             <span *ngIf="'en' === translate.currentLang">
               EN
@@ -56,7 +56,7 @@
               FR
             </span>
           </a>
-          <ul *dropdownMenu role="menu" aria-labelledby="single-button" class="dropdown-menu right">
+          <ul luDropdownMenu class="right">
             <li *ngIf="'en' !== translate.currentLang" role="menuitem">
               <a rel="alternate" hreflang="en" class="navbar-link link" [routerLink]="[] | localize:'en'" queryParamsHandling="preserve">English</a>
             </li>

@@ -1,6 +1,3 @@
-@import '@swimlane/ngx-datatable/themes/material.scss';
-@import 'laji-form-builder/lib/client/styles.css';
-
 @import 'styles';
 @import 'bs_overwrites';
 @import 'projects/laji-ui/src/lib/mixins/base';
@@ -10,6 +7,7 @@
 @import 'utils';
 @import 'pills';
 @import 'buttons';
+@import 'dropdown';
 
 @import 'publications';
 
@@ -72,7 +70,7 @@ laji-locale-sv > div,
   flex-direction: column;
 }
 
-.modal {
+.lu-modal {
   z-index: 1070;
 }
 
@@ -296,9 +294,6 @@ treenode:last-child > .tree-node > .tree-children::after {
   min-width: 400px;
 }
 
-.modal-dialog {
-  z-index: 1070;
-}
 .popover-modal {
   z-index: 1080;
 }
@@ -658,15 +653,6 @@ body > .ui-select-bootstrap.open {
   }
 }
 
-.dropdown-menu {
-  z-index: 1032;
-}
-
-.dropdown-menu.right {
-  right: 0 !important;
-  left: auto !important;
-}
-
 /** Fixed to view default css*/
 .fixed-to-view {
   position: fixed;
@@ -735,66 +721,6 @@ body > .ui-select-bootstrap.open {
   border: 1px solid $neutral-3;
 }
 /** /scrollbar **/
-
-.modal-open-after {
-  overflow: hidden;
-}
-
-.modal-open-after .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.modal-content {
-  min-height: 100px;
-  background: $neutral-2;
-}
-
-/** make modal body scrollable **/
-.scrollable-modal.modal-dialog {
-  height: calc(100% - 20px);
-
-  .modal-content {
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    > *:not(.modal-header, .modal-body, .modal-footer) {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .modal-body {
-      flex: 1;
-      overflow: auto;
-    }
-  }
-}
-
-@media (min-width: 768px){
-  .modal-xl {
-      width: 90%;
-  }
-}
-
-
-@media (min-width: 1660px){
-  .modal-xl {
-      width: 1600px;
-  }
-}
-
-
-@media only screen and (min-width : 768px) {
-  .modal-dialog {
-    margin: 60px auto 30px auto;
-  }
-  .scrollable-modal.modal-dialog {
-    height: calc(100% - 90px);
-  }
-}
 
 /** print management */
 @media print
@@ -1222,13 +1148,13 @@ typeahead-container .active h5.autosuggest-value {
   color: $primary-1;
 }
 
-typeahead-container .dropdown-menu {
+typeahead-container {
   background-color: $neutral-1;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.2);
   border: none;
 }
 
-typeahead-container .dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+typeahead-container .active {
   background-color: $primary-5;
   color: $primary-1;
 }
@@ -1237,6 +1163,7 @@ typeahead-container .active .informal-group-image {
   -webkit-filter: brightness(0) invert(1);
   filter: brightness(0) invert(1);
 }
+
 
 .alert-info {
   background-color: $primary-2;
@@ -1297,108 +1224,108 @@ typeahead-container .active .informal-group-image {
   }
 }
 
-  /* autocomplete */
-  .taxon-select-bar .informal-group-image {
-    display: inline-block;
-    padding-right: 20px;
-    height: 20px;
-    background-size: 20px 20px;
-    background-position: center center;
-    position: relative;
-    padding: 5px 20px 5px 5px;
-    margin-left: 5px;
-  }
+/* autocomplete */
+.taxon-select-bar .informal-group-image {
+  display: inline-block;
+  padding-right: 20px;
+  height: 20px;
+  background-size: 20px 20px;
+  background-position: center center;
+  position: relative;
+  padding: 5px 20px 5px 5px;
+  margin-left: 5px;
+}
 
-  .finnish-flag {
-    background-image: url('/static/images/icons/flag_fi_small.png');
-  }
+.finnish-flag {
+  background-image: url('/static/images/icons/flag_fi_small.png');
+}
 
-  typeahead-container.dropdown ul li a {
-    display: inline-block
-  }
 
-  typeahead-container {
-    margin-left: -380px;
-    width: 600px;
-  }
-
-  typeahead-container ul{
-    width: 600px;
-  }
-
-  .autocomplete-small-flag {
-    display: inline-block;
-    width: 24px;
-    height: 14px;
-    margin-left: 5px;
-    background-position: center center;
-    position: relative;
-    border: 1px solid gray;
-    top: 2px;
-  }
-
-  .flag_icon {
-    float: right;
-    display: inline-block;
-    margin-left: 5px;
-  }
-
-  .dropdown-menu>li>a {
+typeahead-container button {
     width: 100%;
-  }
+    padding: 3px 20px;
+    border: none;
+    background: white;
+    text-align: left;
+}
 
-  .responsive_container {
-    display: inline-block;
-    float: right;
-    margin-left: 5px;
-  }
+typeahead-container {
+  width: 600px;
+}
 
-  .no-border {
-    border: 0;
-  }
+typeahead-container ul {
+  width: 600px;
+}
 
-  .container-taxon-group {
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    background-position: center center;
-    background-size: 80%;
-    position: relative;
-    top: 4px;
-  }
+.autocomplete-small-flag {
+  display: inline-block;
+  width: 24px;
+  height: 14px;
+  margin-left: 5px;
+  background-position: center center;
+  position: relative;
+  border: 1px solid gray;
+  top: 2px;
+}
 
-  .flag-taxonRank {
-    float: right;
-    position: relative;
-    top: -3px;
-    margin-left:10px;
-  }
+.flag_icon {
+  float: right;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.responsive_container {
+  display: inline-block;
+  float: right;
+  margin-left: 5px;
+}
+
+.no-border {
+  border: 0;
+}
+
+.container-taxon-group {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background-position: center center;
+  background-size: 80%;
+  position: relative;
+  top: 4px;
+}
+
+.flag-taxonRank {
+  float: right;
+  position: relative;
+  top: -3px;
+  margin-left:10px;
+}
 
 
-  .omni-search-results .match .flag-taxonRank {
-    float: left;
-    position: relative;
-    top: -8px;
-    margin-left: 0px;
-    display: block;
-    width: 100%;
-  }
+.omni-search-results .match .flag-taxonRank {
+  float: left;
+  position: relative;
+  top: -8px;
+  margin-left: 0px;
+  display: block;
+  width: 100%;
+}
 
-  .omni-search-results .match.active .informal-group-image {
-    -webkit-filter: none;
-    filter: none;
-  }
+.omni-search-results .match.active .informal-group-image {
+  -webkit-filter: none;
+  filter: none;
+}
 
-  .container-flag-taxonRank {
-    display:  inline-block;
-  }
+.container-flag-taxonRank {
+  display:  inline-block;
+}
 
-  typeahead-container ul li a ~ span{
-    display:inline-block
-  }
+typeahead-container ul li a ~ span{
+  display:inline-block
+}
 
-  span.autocomplete-container {
-    vertical-align: sub;
+span.autocomplete-container {
+  vertical-align: sub;
 }
 
 laji-form ul.rw-list>li.rw-list-option, .rw-selectlist>li.rw-list-option {

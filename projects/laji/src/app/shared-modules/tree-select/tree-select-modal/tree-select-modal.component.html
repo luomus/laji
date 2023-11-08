@@ -1,15 +1,10 @@
-<div class="modal-header">
-  <div class="modal-title pull-left">
-    <div class="vertical-align">
-      <h4>{{modalTitle}}</h4>
-      <laji-info class="vertical-align pull-left" [placement]="'bottom'">
-        <span [innerHtml]="'observation.info.collection.modal' | translate" lajiRouteTransformer></span>
-      </laji-info>
-    </div>
-  </div>
-  <button type="button" class="close" (click)="confirm()">&times;</button>
+<div class="vertical-align">
+  <h4>{{modalTitle}}</h4>
+  <laji-info class="vertical-align pull-left" [placement]="'bottom'">
+    <span [innerHtml]="'observation.info.collection.modal' | translate" lajiRouteTransformer></span>
+  </laji-info>
 </div>
-<div class="modal-body flex-container">
+<div class="flex-container">
   <div class="flex-container">
     <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
       <div class="row flex-container">
@@ -45,7 +40,7 @@
     </ng-template>
   </div>
 </div>
-<div class="modal-footer">
+<div class="lu-modal-footer">
   <lu-button role="secondary" (click)="clear()">{{clearButtonLabel}}</lu-button>
   <lu-button role="primary" (click)="confirm()">{{okButtonLabel}}</lu-button>
 </div>

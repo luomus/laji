@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, NgZone } from '@angular/core';
-import { EMPTY, from, Observable, of } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { WINDOW } from '@ng-toolkit/universal';
+import { PlatformService } from '../../../root/platform.service';
 import { AudioPlayer } from './audio-player';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AudioService {
   private cacheSize = 3;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
+    private platformService: PlatformService,
     private httpClient: HttpClient,
     private ngZone: NgZone
   ) {}
@@ -237,7 +237,8 @@ export class AudioService {
   private getAudioContext(): AudioContext {
     if (!this.audioContext || this.defaultSampleRate !== this.audioContextInitSampleRate) {
       this.audioContextInitSampleRate = this.defaultSampleRate;
-      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({
+      const window = this.platformService.window;
+      this.audioContext = new (window['AudioContext'] || window['webkitAudioContext'])({
         sampleRate: this.defaultSampleRate
       });
     }
@@ -245,6 +246,7 @@ export class AudioService {
   }
 
   private getNewOfflineAudioContext(sampleRate: number): OfflineAudioContext {
-    return new (this.window['OfflineAudioContext'] || this.window['webkitOfflineAudioContext'])(1, 1, sampleRate);
+    const window = this.platformService.window;
+    return new (window['OfflineAudioContext'] || window['webkitOfflineAudioContext'])(1, 1, sampleRate);
   }
 }

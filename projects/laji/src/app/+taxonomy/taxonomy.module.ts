@@ -16,10 +16,8 @@ import { LangModule } from '../shared-modules/lang/lang.module';
 import { DatatableModule } from '../shared-modules/datatable/datatable.module';
 import { SpeciesFormComponent } from './species/species-form/species-form.component';
 import { SpeciesComponent } from './species/species.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { SearchFiltersModule } from '../shared-modules/search-filters/search-filters.module';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TaxonomySearchQuery } from './species/service/taxonomy-search-query';
 import { ObservationResultModule } from '../shared-modules/observation-result/observation-result.module';
 import { SpeciesBrowseObservationsComponent } from './species/species-browse-observations/species-browse-observations.component';
@@ -52,7 +50,6 @@ import { TaxonTaxonomyService } from './taxon/service/taxon-taxonomy.service';
 import { TaxonAutocompleteService } from '../shared/service/taxon-autocomplete.service';
 import { CheckLangService } from './taxon/service/check-lang.service';
 import { GbifMapModule } from '../shared-modules/gbif-map/gbif-map.module';
-import { TaxonObservationsComponent } from './taxon/info-card/taxon-observations/taxon-observations.component';
 import { InfoCardHeaderComponent } from './taxon/info-card/info-card-header/info-card-header.component';
 import { TaxonSpecimensComponent } from './taxon/info-card/taxon-specimens/taxon-specimens.component';
 import { TaxonEndangermentComponent } from './taxon/info-card/taxon-endangerment/taxon-endangerment.component';
@@ -78,14 +75,16 @@ import { IdentificationListComponent } from './taxon/info-card/taxon-identificat
 import { LabelPipe } from '../shared/pipe/label.pipe';
 import { TaxonIdentificationFacade } from './taxon/info-card/taxon-identification/taxon-identification.facade';
 import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bold/taxon-bold.component';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 /* eslint-enable max-len */
 
 @NgModule({
-  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule, TypeaheadModule, ButtonsModule,
+  imports: [routing, SharedModule, RouterModule, LangModule, DatatableModule,
     SearchFiltersModule, JwBootstrapSwitchNg2Module, ObservationResultModule, YkjModule,
     InfoModule, NavigationThumbnailModule, TaxonSelectModule, DownloadModalModule, GbifMapModule,
     DocumentViewerModule, IucnCommonModule, BiogeographicalProvincesModule, LajiUiModule, LicenseModule, TechnicalNewsModule,
-    ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule
+    ChartModule, TechnicalNewsModule, InfoPageModule, SelectModule,
+    ModalModule
   ],
   providers: [
     TaxonomyApi,
@@ -115,7 +114,6 @@ import { TaxonBoldComponent } from './taxon/info-card/shared/component/taxon-bol
     TaxonTaxonomyComponent,
     TaxonDescriptionSourceComponent,
     TaxonOccurrenceComponent,
-    TaxonObservationsComponent,
     InfoCardHeaderComponent,
     TaxonSpecimensComponent,
     TaxonEndangermentComponent,

@@ -27,14 +27,10 @@
   }
 
   .info-sign {
-    color: $primary-5;
+    color: $neutral-6;
     &:hover {
-      color: $primary-4;
+      color: $neutral-5;
     }
-  }
-
-  .audio-url {
-    overflow-wrap: anywhere;
   }
 
   .dragbar {

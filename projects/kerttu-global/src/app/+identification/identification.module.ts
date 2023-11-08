@@ -13,7 +13,6 @@ import { IdentificationResultsComponent } from './identification-results/identif
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
 import { TaxonSelectComponent } from './recording-identification/identification-view/taxon-select/taxon-select.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { IdentificationTableComponent } from './recording-identification/identification-view/identification-table/identification-table.component';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { SiteSelectionViewComponent } from './recording-identification/site-selection-view/site-selection-view.component';
@@ -32,7 +31,8 @@ import { IdentificationHistoryEditModalComponent } from './identification-histor
 import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
 import { AudioCacheLoaderService } from './service/audio-cache-loader.service';
 import { RecordingLoaderService } from './service/recording-loader.service';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
   imports: [

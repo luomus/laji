@@ -13,7 +13,7 @@ export const environment = {
   forceLogin: false,
   disableAnalytics: true,
   systemID: 'KE.542',
-  apiBase: '/api',
+  apiBase: 'https://beta.laji.fi/api',
   loginCheck: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/loginInfo',
   loginUrl: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/login',
   selfPage: 'https://fmnh-ws-test.it.helsinki.fi/laji-auth/self',

@@ -11,3 +11,5 @@ export type LajiMapDataOptions = any;
 export type LajiMapTileLayersOptions = any;
 export type LajiMapDrawEvent = any;
 export class Rectangle {}
+export type PathOptions = any;
+export type DivIcon = any;

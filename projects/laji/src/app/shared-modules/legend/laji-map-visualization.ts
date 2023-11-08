@@ -1,12 +1,11 @@
-import { GetFeatureStyleOptions } from 'laji-map';
-import { MarkerCluster, PathOptions } from 'leaflet';
+import type { GetFeatureStyleOptions } from '@luomus/laji-map';
+import type { PathOptions } from 'leaflet';
 
 export interface LajiMapVisualizationItem {
   label: string;
   categories: LajiMapVisualizationCategory[];
   getFeatureStyle?: (opt: GetFeatureStyleOptions) => PathOptions;
-  getClusterStyle?: (childCount: number, featureIdxs: number[], cluster: MarkerCluster) => PathOptions;
-  getClusterClassName?: (childCount: number, featureIdxs: number[], cluster: MarkerCluster) => string;
+  getClusterColor?: (childMarkers: L.Marker[]) => string;
 }
 
 export interface LajiMapVisualizationCategory { color: string; label?: string };

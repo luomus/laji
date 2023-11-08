@@ -8,6 +8,7 @@ import { IucnStatusPipe } from './pipe/iucn-status.pipe';
 import { IucnHyphensPipe } from './pipe/iucn-hyphens.pipe';
 import { StatusMarkComponent } from './status-mark/status-mark.component';
 import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 /* eslint-enable max-len */
 
@@ -15,6 +16,7 @@ import { ExplainCriteriaPipe } from './pipe/explain-criteria.pipe';
   imports: [
     CommonModule,
     SharedModule,
+    TooltipModule
   ],
   declarations: [
     IucnClassComponent,

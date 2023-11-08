@@ -10,11 +10,12 @@
         ></laji-taxon-tree>
       </nav>
       <main>
+        <laji-technical-news></laji-technical-news>
         <ng-container *ngTemplateOutlet="infoCard"></ng-container>
       </main>
     </lu-sidebar>
   </ng-container>
-  <div class="container-fluid" *ngIf="taxon === false">
+  <div class="container-fluid" *ngIf="!taxon">
     <h1>
       {{ 'taxonomy.notFound' | translate }}
     </h1>

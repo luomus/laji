@@ -2,7 +2,7 @@ import { debounceTime, tap, map } from 'rxjs/operators';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input,
   NgZone, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DatatableColumn, DatatableSort } from '../model/datatable-column';
-import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@swimlane/ngx-datatable';
+import { ColumnMode, DatatableComponent as NgxDatatableComponent, SelectionType, SortType, orderByComparator } from '@achimha/ngx-datatable';
 import { Observable, Subject, Subscription, of, forkJoin } from 'rxjs';
 import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
@@ -287,10 +287,43 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   }
 
   onSort(event) {
-    this.sorts = event.sorts;
-    this.sortRows(event.sorts);
+    this.sorts = this.updateSorts(event);
+    this.sortRows(this.sorts);
     this.changeDetectorRef.detectChanges();
-    this.sortChange.emit(event);
+    this.sortChange.emit({
+      ...event,
+      sorts: this.sorts
+    });
+  }
+
+  //This changes the sorting so that the last column added to sorting gets priority, but probably only as long as the
+  //underlying ngx-datatable uses external sorting
+  private updateSorts(event) {
+    if (!event.newValue) {
+      return this.sorts.filter(sort => sort.prop !== event.column.prop);
+    }
+
+    const idx = this.sorts.findIndex(sort => sort.prop === event.column.prop);
+    if (idx > -1) {
+      return this.sorts.map(sort => {
+        if (sort.prop === event.column.prop) {
+          return {
+            prop: sort.prop,
+            dir: event.newValue
+          };
+        }
+
+        return sort;
+      });
+    }
+
+    return [
+      {
+        prop: event.column.prop,
+        dir: event.newValue
+      },
+      ...this.sorts
+    ];
   }
 
   private updateFilteredRows() {
