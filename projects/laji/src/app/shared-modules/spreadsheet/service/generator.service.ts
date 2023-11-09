@@ -34,11 +34,6 @@ export class GeneratorService {
     wgs84: 'wgs84',
     etrs: 'ETRS-TM35FIN',
   };
-  public static splitCoordinateSystems = [
-    GeneratorService.splitCoordinateSystem.ykj,
-    GeneratorService.splitCoordinateSystem.etrs,
-    GeneratorService.splitCoordinateSystem.wgs84
-  ];
 
   public static splittableFields: {[key: string]: SplitType} = {
     'gatheringEvent.dateBegin': 'date',
@@ -184,7 +179,7 @@ export class GeneratorService {
       } else if (field.splitType === 'coordinate') {
         idx += 2;
         dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
-        validValues = GeneratorService.splitCoordinateSystems;
+        validValues = GeneratorService.splitCoordinateSystem;
         addValidator();
         return;
       }

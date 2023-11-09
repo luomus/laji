@@ -109,7 +109,6 @@
     "@nguniversal/express-engine": "^16.2.0",
     "@ngx-translate/core": "^15.0.0",
     "@servoy/jw-bootstrap-switch-ng2": "^16.0.0",
-    "@swimlane/ngx-charts": "^17.0.1",
     "@types/deep-diff": "^1.0.1",
     "angularx-qrcode": "^16.0.2",
     "apollo-angular": "^5.0.1",

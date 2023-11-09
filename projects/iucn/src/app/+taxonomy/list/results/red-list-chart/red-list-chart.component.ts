@@ -1,14 +1,14 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import type { ActiveElement, ChartData, ChartEvent, ChartOptions } from 'chart.js';
 
-const BAR_HEIGHT = 20;
-
-export interface ChartData {
+export interface IUCNChartData {
   'id'?: string;
   'name': string;
   'series': {name: string; value: number}[];
 }
 
-export interface SimpleChartData {
+export interface IUCNSimpleChartData {
   'id': string;
   'name': string;
   'value': number;
@@ -20,11 +20,9 @@ export interface SimpleChartData {
   styleUrls: ['./red-list-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RedListChartComponent implements AfterViewInit {
+export class RedListChartComponent {
 
-  _data: ChartData[] = [];
-  view: [number, number];
-  height: number;
+  _data: ChartData;
 
   @Input() primaryColor = '#d62022';
   @Input() secondaryColor = '#888';
@@ -32,57 +30,55 @@ export class RedListChartComponent implements AfterViewInit {
   @Input()
   legend = true;
 
-  @Input()
-  label = '';
-
   @Output() valueSelect = new EventEmitter<string>();
 
-  colorSchema: {name: string; value: string}[] = [];
+  private ids: string[];
 
-  constructor(
-    private el: ElementRef
-  ) { }
+  options: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    onClick: this.itemSelect.bind(this),
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: this.translate.instant('taxonomy.species')
+        }
+      }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.resize();
-    }, 100);
-  }
+    }
+  };
+
+  constructor(private translate: TranslateService) { }
 
   @Input()
-  set data(data: ChartData[]) {
-    this._data = data;
-    if (data && data[0] && data[0].series) {
-      this.height = (data.length * Math.max(data[0].series.length * BAR_HEIGHT, 30)) + 70;
-      this.colorSchema = [
-        {
-          name: data[0].series[0].name,
-          value: this.primaryColor
-        },
-        {
-          name: data[0].series[1].name,
-          value: this.secondaryColor
-        }
-      ];
-    } else {
-      this.height = 0;
-    }
-    this.resize();
-  }
-
-  @HostListener('window:resize')
-  resize() {
-    this.view = [
-      this.el.nativeElement.offsetWidth,
-      this.height
-    ];
-  }
-
-  itemSelect(event) {
-    const idx = this._data.findIndex(val => val.name === event.series);
-    if (idx === -1) {
+  set data(data: IUCNChartData[]) {
+    if (!data) {
+      this._data = undefined;
       return;
     }
-    this.valueSelect.emit(this._data[idx].id);
+    const datasets = [
+      {
+        label: data[0].series[0].name,
+        data: data.map(item => item.series[0].value),
+        backgroundColor: this.primaryColor
+      },
+      {
+        label: data[0].series[1].name,
+        data: data.map(item => item.series[0].value),
+        backgroundColor: this.secondaryColor
+      }
+    ];
+    const labels = data.map(({name}) => name);
+    this._data =  {datasets, labels};
+    this.ids = data.map(({id}) => id);
+  }
+
+  itemSelect(event: ChartEvent, elements: ActiveElement[]) {
+    if (!elements[0]) {
+      return;
+    }
+    this.valueSelect.emit(this.ids[elements[0].index]);
   }
 }
