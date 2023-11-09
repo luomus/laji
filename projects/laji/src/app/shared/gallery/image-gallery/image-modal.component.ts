@@ -85,6 +85,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();
+  @Output() viewChange = new EventEmitter<'compact'|'annotation'|'full'|'full2'|'full3'>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   // private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
@@ -170,9 +171,10 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     this.overlay?.destroy();
   }
 
-  setView(viewType) {
+  setView(viewType: 'compact'|'annotation'|'full'|'full2'|'full3') {
     if (this.view !== viewType) {
       this.view = viewType;
+      this.viewChange.emit(viewType);
     }
   }
 

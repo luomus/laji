@@ -40,7 +40,7 @@ export class GalleryComponent implements OnChanges {
   @Input() shortcut: boolean;
   @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
-  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'compact';
+  @Input() view: 'compact'|'annotation'|'full'|'full2'|'full3' = 'compact';
   @Input() views = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();
