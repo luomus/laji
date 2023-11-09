@@ -94,7 +94,7 @@ export class ModalComponent implements OnDestroy {
       return false;
     }
     this.hideElement();
-    this.restoreBodyOverflow();
+    this.releaseBodyOverflow();
     this.isShown = false;
     this.onShownChange.emit(false);
     this.cdr.markForCheck();
@@ -114,7 +114,7 @@ export class ModalComponent implements OnDestroy {
     this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
   }
 
-  private restoreBodyOverflow() {
+  private releaseBodyOverflow() {
     if (this.originalBodyOverflow) {
       this.renderer.setStyle(this.document.body, 'overflow', this.originalBodyOverflow);
     } else {
