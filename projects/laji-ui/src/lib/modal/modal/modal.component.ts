@@ -82,10 +82,8 @@ export class ModalComponent implements OnDestroy {
     if (this.isShown) {
       return;
     }
-    this.originalBodyOverflow = this.document.body.style.overflow;
     this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
-
-    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+    this.hijackBodyOverflow();
     this.isShown = true;
     this.onShownChange.emit(true);
     this.cdr.markForCheck();
@@ -96,7 +94,7 @@ export class ModalComponent implements OnDestroy {
       return false;
     }
     this.hideElement();
-
+    this.restoreBodyOverflow();
     this.isShown = false;
     this.onShownChange.emit(false);
     this.cdr.markForCheck();
@@ -108,12 +106,19 @@ export class ModalComponent implements OnDestroy {
   }
 
   private hideElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+  }
+
+  private hijackBodyOverflow() {
+    this.originalBodyOverflow = this.document.body.style.overflow;
+    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+  }
+
+  private restoreBodyOverflow() {
     if (this.originalBodyOverflow) {
       this.renderer.setStyle(this.document.body, 'overflow', this.originalBodyOverflow);
     } else {
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
-
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
   }
 }
