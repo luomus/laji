@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content flex-container">
   <div class="modal-header">
     <button class="btn btn-default" [disabled]="saving || index === 0" (click)="previousClick()">
       <i class="glyphicon glyphicon-arrow-left"></i> {{ 'previous' | translate }}
@@ -11,10 +11,11 @@
       <button class="btn btn-success" [disabled]="saving || loading" (click)="saveAnnotation()">{{ 'save' | translate }}</button>
     </div>
   </div>
-  <div class="modal-body">
-    <div class="laji-page">
-      <laji-spinner [spinning]="loading" [overlay]="true">
+  <div class="modal-body flex-container">
+    <div class="laji-page flex-container">
+      <laji-spinner [spinning]="loading" [overlay]="true" class="flex-container">
         <bsg-identification-view
+          class="flex-container"
           *ngIf="recording"
           [showTopBar]="false"
           [recording]="recording"

@@ -76,7 +76,7 @@ export class IdentificationHistoryComponent {
 
     const modalRef = this.modalService.show(
       IdentificationHistoryEditModalComponent,
-      { size: 'xl', initialState }
+      { size: 'xl', initialState, noClose: true, contentClass: 'identification-history-edit-modal-content' }
     );
 
     this.modalSub = new Subscription();
