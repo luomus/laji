@@ -65,11 +65,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -90,11 +86,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -115,11 +107,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
@@ -139,11 +127,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -469,11 +453,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -596,11 +576,7 @@
                   "with": "projects/label-designer-electron/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -708,11 +684,7 @@
                   "with": "projects/label-designer-element/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -906,11 +878,7 @@
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
