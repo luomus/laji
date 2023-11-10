@@ -41,7 +41,7 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     const routeCollectionId = this.route.snapshot.paramMap.get('collectionId');
 
     if (routeCollectionId) {
-      this.setCollection(routeCollectionId)
+      this.setCollection(routeCollectionId);
     }
 
     if (this.isMobile) {
