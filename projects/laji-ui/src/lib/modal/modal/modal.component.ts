@@ -82,7 +82,7 @@ export class ModalComponent implements OnDestroy {
     if (this.isShown) {
       return;
     }
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
+    this.showElement();
     this.hijackBodyOverflow();
     this.isShown = true;
     this.onShownChange.emit(true);
@@ -103,6 +103,10 @@ export class ModalComponent implements OnDestroy {
 
   getContentNode(): HTMLElement {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
+  }
+
+  private showElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
   }
 
   private hideElement() {
