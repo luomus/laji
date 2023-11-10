@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input,
-ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy } from '@angular/core';
+ElementRef, ViewChild, Renderer2, ComponentRef, ViewContainerRef, OnDestroy, EnvironmentInjector, Inject } from '@angular/core';
 import { Taxonomy } from 'projects/laji/src/app/shared/model/Taxonomy';
-import { ComponentLoader, ComponentLoaderFactory } from 'ngx-bootstrap/component-loader';
 import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery/image-gallery/image-modal-overlay.component';
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
 import { Subscription } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 const SCROLL_SPEED = 500; // pixels per second
 
@@ -40,22 +41,17 @@ export class IdentificationListComponent implements OnDestroy {
   destroyMouseupListener: () => void;
 
   private overlayRef: ComponentRef<ImageModalOverlayComponent>;
-  private overlayLoader: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
   private showOverlay = false;
 
   constructor(
     private renderer: Renderer2,
-    factory: ComponentLoaderFactory,
-    elementRef: ElementRef,
-    viewContainerRef: ViewContainerRef
-  ) {
-    this.overlayLoader = factory.createLoader<ImageModalOverlayComponent>(
-      elementRef,
-      viewContainerRef,
-      renderer
-    );
-  }
+    private viewContainerRef: ViewContainerRef,
+    private _renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    private envInjector: EnvironmentInjector,
+    private platformService: PlatformService
+  ) { }
 
   discreteScroll(dir: number) {
     this.speciesContainer.nativeElement.scrollLeft += dir * .5 * this.speciesContainer.nativeElement.clientWidth;
@@ -71,15 +67,15 @@ export class IdentificationListComponent implements OnDestroy {
     }
     this.previousScrollTimestamp = timestamp;
     this.speciesContainer.nativeElement.scrollLeft += deltaTime * (SCROLL_SPEED / 1000) * this.scrollDirection;
-    window.requestAnimationFrame(this.scroll.bind(this));
+    this.platformService.window.requestAnimationFrame(this.scroll.bind(this));
   }
 
   scrollStart(scrollDirection: number) {
     this.scrollDirection = scrollDirection;
-    this.destroyMouseupListener = this.renderer.listen(window, 'mouseup', this.scrollEnd.bind(this));
+    this.destroyMouseupListener = this.renderer.listen(this.platformService.window, 'mouseup', this.scrollEnd.bind(this));
     this.scrolling = true;
     this.previousScrollTimestamp = undefined;
-    window.requestAnimationFrame(this.scroll.bind(this));
+    this.platformService.window.requestAnimationFrame(this.scroll.bind(this));
   }
 
   scrollEnd() {
@@ -88,12 +84,14 @@ export class IdentificationListComponent implements OnDestroy {
   }
 
   openImage(index?: number) {
-    this.overlayLoader
-      .attach(ImageModalOverlayComponent)
-      .to('body')
-      .show({isAnimated: false});
+
+    this.overlayRef = this.viewContainerRef.createComponent(ImageModalOverlayComponent,
+      {
+        environmentInjector: this.envInjector
+      });
+    this._renderer.appendChild(this.document.body, this.overlayRef.location.nativeElement);
+
     this.showOverlay = true;
-    this.overlayRef = this.overlayLoader._componentRef;
 
     if (this?.taxon?.species) {
       this.overlayRef.instance.modalImages = this.taxon.multimedia.map((media, i) => {
@@ -140,13 +138,13 @@ export class IdentificationListComponent implements OnDestroy {
       return;
     }
     this.showOverlay = false;
-    this.overlayLoader.hide();
+    this.overlayRef.destroy();
   }
 
   ngOnDestroy() {
     if (this.destroyMouseupListener) {
       this.destroyMouseupListener();
     }
-    this.overlayLoader.dispose();
+    this.overlayRef?.destroy();
   }
 }

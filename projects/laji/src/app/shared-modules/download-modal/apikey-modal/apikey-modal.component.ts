@@ -5,10 +5,11 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
-  TemplateRef
+  ViewChild
 } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 export interface ApiKeyRequest {
   reason: string;
@@ -22,10 +23,12 @@ export interface ApiKeyRequest {
   styleUrls: ['./apikey-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApikeyModalComponent implements OnChanges {
+export class ApikeyModalComponent implements OnChanges, OnInit {
   @Input() disabled = false;
   @Input() loading = false;
   @Input() apiKey = '';
+
+  @ViewChild('modal', {static: true}) modal: ModalComponent;
 
   private _reason = '';
   private _reasonEnum = '';
@@ -43,25 +46,22 @@ export class ApikeyModalComponent implements OnChanges {
   disableRequestBtn = true;
   termsAccepted = false;
   expiration = 90;
-
-  private modalRef: BsModalRef;
+  modalShown = false;
 
   @Output() request = new EventEmitter<ApiKeyRequest>();
 
-  constructor(private modalService: BsModalService, private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.modal.onShownChange.subscribe(shown => {this.modalShown = shown;});
+  }
 
   ngOnChanges() {
     this.updateDisableRequestBtn();
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {backdrop: false, class: 'modal-sm'});
-  }
-
-  onClose() {
-    if (this.modalRef) {
-      this.modalRef.hide();
-    }
+  openModal() {
+    this.modal.show();
   }
 
   onRadioInput(event, value: number) {

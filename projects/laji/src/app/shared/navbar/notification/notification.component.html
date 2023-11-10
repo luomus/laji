@@ -12,7 +12,7 @@
       <small *ngSwitchCase="'friendRequestAccepted'" [innerHtml]="'notification.friendRequestAccepted' | translate: {uri: target, person: (by | users:'fullName')}"></small>
     </ng-container>
   </a>
-  <button type="button" class="delete" (click)="onRemove(notification)"><i class="glyphicon glyphicon-remove"></i></button>
+  <button type="button" class="delete" (click)="onRemove(notification)" luDropdownNoClose><i class="glyphicon glyphicon-remove"></i></button>
 </div>
 <ng-template #ghost>
   <div class="notification-container">

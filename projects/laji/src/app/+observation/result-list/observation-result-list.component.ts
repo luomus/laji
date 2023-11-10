@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ISettingResultList } from '../../shared/service/user.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
@@ -18,7 +17,6 @@ const DEFAULT_PAGE_SIZE = 100;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ObservationResultListComponent implements OnInit, OnDestroy {
-  @ViewChild('documentModal', { static: true }) public modal: ModalDirective;
   @Input() query: WarehouseQueryInterface;
   @Input() visible: boolean;
   @Input() showDownloadMenu = false;

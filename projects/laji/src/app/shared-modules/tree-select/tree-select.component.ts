@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { Util } from '../../shared/service/util.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 
 export interface SelectedOption {
@@ -49,10 +49,10 @@ export class TreeSelectComponent {
   @Output() selectedOptionsChange = new EventEmitter<TreeOptionsChangeEvent>();
 
   lang: string;
-  modalRef: BsModalRef;
+  modalRef: ModalRef;
 
   constructor(
-    private modalService: BsModalService
+    private modalService: ModalService
   ) {}
 
   openModal() {
@@ -69,7 +69,7 @@ export class TreeSelectComponent {
       includeCount: this.includeCount,
       includeLink: this.includeLink,
     };
-    this.modalRef = this.modalService.show(TreeSelectModalComponent, { class: 'modal-lg scrollable-modal', initialState });
+    this.modalRef = this.modalService.show(TreeSelectModalComponent, { size: 'lg', contentClass: 'tree-select-modal-content', initialState });
     this.modalRef.content.emitConfirm.subscribe(result => {
       const includeToReturn = [];
       const excludeToReturn = [];

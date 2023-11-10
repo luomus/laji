@@ -14,27 +14,15 @@
   </div>
 </ng-container>
 
-<div class="modal fade" bsModal #modal="bs-modal"
-     tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" (click)="modal.hide()">
-          <i class="glyphicon glyphicon-remove"></i>
-        </button>
-        <h4 class="modal-title">{{ monthFormatting(activeMonthIdx + 1) | capitalize }}</h4>
-      </div>
-      <div class="modal-body" *ngIf="chartData?.monthChartDataArr?.[activeMonthIdx]?.length > 0">
-        <div class="info-card-chart day-chart">
-          <laji-chart
-            [datasets]="chartData.monthChartDataArr[activeMonthIdx]"
-            [labels]="monthChartLabels"
-            [options]="barChartOptions"
-            [legend]="true"
-            chartType="bar"
-          ></laji-chart>
-        </div>
-      </div>
-    </div>
+<lu-modal #modal size="lg">
+  <h4 class="modal-title">{{ monthFormatting(activeMonthIdx + 1) | capitalize }}</h4>
+  <div *ngIf="chartData?.monthChartDataArr?.[activeMonthIdx]?.length > 0" class="info-card-chart day-chart">
+    <laji-chart
+      [datasets]="chartData.monthChartDataArr[activeMonthIdx]"
+      [labels]="monthChartLabels"
+      [options]="barChartOptions"
+      [legend]="true"
+      chartType="bar"
+    ></laji-chart>
   </div>
-</div>
+</lu-modal>

@@ -1,10 +1,9 @@
-import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnDestroy,
   Output,
@@ -20,7 +19,6 @@ import { Logger } from '../../shared/logger/logger.service';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { HttpParams } from '@angular/common/http';
 import { Subscription, Observable } from 'rxjs';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ObservationResultService } from '../../shared-modules/observation-result/service/observation-result.service';
 import { IColumnGroup, TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { ExportFileType, ExportService } from '../../shared/service/export.service';
@@ -39,8 +37,9 @@ import { ApiKeyRequest } from '../../shared-modules/download-modal/apikey-modal/
 import { createActiveFiltersList } from '../../shared-modules/search-filters/active/observation-active.component';
 import { FORMAT } from '../../shared-modules/download-modal/download.component';
 import { GEO_CONVERT_LIMIT, FileFormat, GeoConvertService, isGeoConvertError } from '../../shared/service/geo-convert.service';
-import { WINDOW } from '@ng-toolkit/universal';
 import { DialogService } from '../../shared/service/dialog.service';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import { PlatformService } from '../../root/platform.service';
 
 
 enum RequestStatus {
@@ -96,7 +95,7 @@ export class ObservationDownloadComponent implements OnDestroy {
 
   private _originalSelected: string[];
   private _settings: ISettingResultList;
-  private modalRef: BsModalRef;
+  private modalRef: ModalRef;
   private cntSub: Subscription;
   private _query: WarehouseQueryInterface;
   private _originalQuery: WarehouseQueryInterface;
@@ -107,22 +106,23 @@ export class ObservationDownloadComponent implements OnDestroy {
   };
   private gisDownloadGeometryField = 'gathering.conversions.wgs84WKT';
 
-  constructor(@Inject(WINDOW) private window: Window,
-              public searchQuery: SearchQueryService,
-              public userService: UserService,
-              public translate: TranslateService,
-              private observationResultService: ObservationResultService,
-              private toastsService: ToastsService,
-              private warehouseService: WarehouseApi,
-              private logger: Logger,
-              private cd: ChangeDetectorRef,
-              private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
-              private exportService: ExportService,
-              private modalService: BsModalService,
-              private observationDataService: ObservationDataService,
-              private downloadService: DownloadService,
-              private geoConvertService: GeoConvertService,
-              private dialogService: DialogService
+  constructor(
+    private platformService: PlatformService,
+    public searchQuery: SearchQueryService,
+    public userService: UserService,
+    public translate: TranslateService,
+    private observationResultService: ObservationResultService,
+    private toastsService: ToastsService,
+    private warehouseService: WarehouseApi,
+    private logger: Logger,
+    private cd: ChangeDetectorRef,
+    private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
+    private exportService: ExportService,
+    private modalService: ModalService,
+    private observationDataService: ObservationDataService,
+    private downloadService: DownloadService,
+    private geoConvertService: GeoConvertService,
+    private dialogService: DialogService
   ) {
     this.columnGroups = tableColumnService.getColumnGroups();
     this.columnLookup = tableColumnService.getAllColumnLookup();
@@ -138,7 +138,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   }
 
   openModal() {
-    this.modalRef = this.modalService.show(this.downloadModal, {class: 'modal-lg'});
+    this.modalRef = this.modalService.show(this.downloadModal, {size: 'lg', contentClass: 'laji-page'});
   }
 
   closeModal() {
@@ -310,10 +310,7 @@ export class ObservationDownloadComponent implements OnDestroy {
       () => {
         this.downloadLoading = false;
         this.downloadProgressPercent = undefined;
-        // see https://github.com/valor-software/ngx-bootstrap/issues/2618
-        for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
-          this.modalService.hide(i);
-        }
+        this.modalRef.hide();
         this.cd.markForCheck();
       },
       (err) => {
@@ -396,7 +393,7 @@ export class ObservationDownloadComponent implements OnDestroy {
         }),
         first(response => response.status === 'complete'),
         map(response => {
-          this.window.location.href = response.outputLink;
+          this.platformService.window.location.href = response.outputLink;
         })
       );
     } else {

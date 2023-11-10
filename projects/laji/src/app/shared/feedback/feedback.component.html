@@ -1,7 +1,5 @@
 <lu-button class="no-print" [class.fixed-icon]="fixed" (click)="openModal()" *ngIf="iconOnly; else label">
-  <i class="fa fa-envelope-o" placement="left" [tooltip]="'feedback' | translate"
-     container="body"
-     [adaptivePosition]="false"></i>
+  <i class="fa fa-envelope-o" placement="left" [luTooltip]="'feedback' | translate"></i>
 </lu-button>
 <ng-template #label>
   <a class="link" (click)="openModal()">
@@ -9,57 +7,50 @@
   </a>
 </ng-template>
 <ng-template #childModal>
-  <div class="modal-header">
-    <button type="button" class="close" (click)="closeModal()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4 class="modal-title">{{ 'feedback' | translate }}</h4>
-  </div>
-  <div class="modal-body">
-    <div class="row">
-      <div class="col-sm-12">
-        <ng-container *lajiLoggedIn="true">
-          <p *lajiForTypes="['dev', 'prod', 'beta', 'vir']">{{ 'feedback.intro' | translate }}</p>
-          <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
-        </ng-container>
-        <ng-container *lajiLoggedIn="false">
-          <p *lajiForTypes="['dev', 'prod', 'beta', 'vir']">{{ 'feedback.intro.notLogged' | translate }}</p>
-          <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
-        </ng-container>
-      </div>
-    </div>
-    <alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
-      {{ 'feedback.invalid' | translate }}
-    </alert>
-    <div class="row email" *ngIf="!(userService.isLoggedIn$ | async)">
-      <div class="col-sm-12">
-        <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">
-      </div>
-    </div>
-    <div class="row subject">
-      <div class="col-sm-12">
-        {{ 'feedback.topic' | translate }}:
-        <select [(ngModel)]="feedback.subject" class="form-control">
-          <option value="">{{ 'feedback.topic.empty' | translate }}</option>
-          <option value="{{'feedback.topic.good' | translate}}">{{ 'feedback.topic.good' | translate }}</option>
-          <option value="{{'feedback.topic.bad' | translate}}">{{ 'feedback.topic.bad' | translate }}</option>
-          <option value="other">{{ 'feedback.topic.other' | translate }}</option>
-        </select>
-      </div>
-    </div>
-    <div class="row other">
-      <div class="col-sm-12">
-        <input [(ngModel)]="feedback.other" type="text" placeholder="{{'feedback.topic.description' | translate}}" class="form-control">
-      </div>
-    </div>
-    <div class="row message">
-      <div class="col-sm-12">
-        {{ 'feedback.message' | translate }}:
-        <textarea class="form-control feedback-text" [(ngModel)]="feedback.message"></textarea>
-      </div>
+  <h4 class="modal-title">{{ 'feedback' | translate }}</h4>
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-container *lajiLoggedIn="true">
+        <p *lajiForTypes="['dev', 'prod', 'beta', 'vir']">{{ 'feedback.intro' | translate }}</p>
+        <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
+      </ng-container>
+      <ng-container *lajiLoggedIn="false">
+        <p *lajiForTypes="['dev', 'prod', 'beta', 'vir']">{{ 'feedback.intro.notLogged' | translate }}</p>
+        <p *lajiForTypes="['iucn']">{{ 'iucn.feedback.intro' | translate }}</p>
+      </ng-container>
     </div>
   </div>
-  <div class="modal-footer">
+  <lu-alert *ngIf="error" type="danger" [dismissible]="true" (onClose)="closeError()">
+    {{ 'feedback.invalid' | translate }}
+  </lu-alert>
+  <div class="row email" *ngIf="!(userService.isLoggedIn$ | async)">
+    <div class="col-sm-12">
+      <input [(ngModel)]="feedback.email" type="text" placeholder="{{'email' | translate}}" class="form-control">
+    </div>
+  </div>
+  <div class="row subject">
+    <div class="col-sm-12">
+      {{ 'feedback.topic' | translate }}:
+      <select [(ngModel)]="feedback.subject" class="form-control">
+        <option value="">{{ 'feedback.topic.empty' | translate }}</option>
+        <option value="{{'feedback.topic.good' | translate}}">{{ 'feedback.topic.good' | translate }}</option>
+        <option value="{{'feedback.topic.bad' | translate}}">{{ 'feedback.topic.bad' | translate }}</option>
+        <option value="other">{{ 'feedback.topic.other' | translate }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row other">
+    <div class="col-sm-12">
+      <input [(ngModel)]="feedback.other" type="text" placeholder="{{'feedback.topic.description' | translate}}" class="form-control">
+    </div>
+  </div>
+  <div class="row message">
+    <div class="col-sm-12">
+      {{ 'feedback.message' | translate }}:
+      <textarea class="form-control feedback-text" [(ngModel)]="feedback.message"></textarea>
+    </div>
+  </div>
+  <div class="lu-modal-footer">
     <lu-button (click)="closeModal()">{{ 'feedback.cancel' | translate }}</lu-button>
     <lu-button role="primary" (click)="sendFeedback()">{{ 'feedback.send' | translate }}</lu-button>
   </div>

@@ -3,7 +3,7 @@ import { IGlobalSite } from '../../../../kerttu-global-shared/models';
 import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
 import { LajiMapComponent } from '@laji-map/laji-map.component';
 import { Polygon } from 'geojson';
-import {GetPopupOptions, LajiMapCreateEvent} from 'laji-map';
+import {GetPopupOptions, LajiMapCreateEvent} from '@luomus/laji-map';
 import { TranslateService } from '@ngx-translate/core';
 import { DivIcon, Point } from 'leaflet';
 

@@ -4,10 +4,8 @@
       [downloadText]="'haseka.submissions.download' | translate"
       [downloadLoading]="downloadLoading"
       [showDownloadMenu]="showDownloadMenu"
-      [showSettingsMenu]="showSettingsMenu"
       [count]="result.total"
       [maxDownload]="maxDownload"
-      (openSettingsMenu)="openModal()"
       (download)="download($event)"
     ></laji-datatable-header>
     <laji-datatable-own-submissions
@@ -34,17 +32,3 @@
 <div *ngIf="result.results.length === 0 && !loading">
  {{ 'result.notOwnDocuments' | translate}}
 </div>
-
-  <laji-own-observation-table-settings
-    [allAggregateFields]="allAggregateFields"
-    [columnSelector]="columnSelector"
-    [numberColumnSelector]="numberColumnSelector"
-    [columnGroups]="columnGroups"
-    [columnLookup]="columnLookup"
-    [isAggregate]="isAggregate"
-    [pageSize]="pageSize"
-    (pageSizeChange)="onPageSizeChange($event)"
-    (settingsClose)="onCloseSettingsModal($event)"
-    (resetColumns)="resetColumns.emit()"
-  ></laji-own-observation-table-settings>
-

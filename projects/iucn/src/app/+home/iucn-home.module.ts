@@ -6,9 +6,9 @@ import { HomeComponent } from './home.component';
 import { IucnSharedModule } from '../iucn-shared/shared.module';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { IucnResultPieComponent } from './iucn-result-pie/iucn-result-pie.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LangModule } from '../../../../laji/src/app/shared-modules/lang/lang.module';
 import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/iucn.module';
+import { ChartModule } from 'projects/laji/src/app/shared-modules/chart/chart.module';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { IucnCommonModule } from '../../../../laji/src/app/shared-modules/iucn/i
     HomeRoutingModule,
     IucnSharedModule,
     SharedModule,
-    NgxChartsModule,
+    ChartModule,
     LangModule,
     IucnCommonModule
   ],

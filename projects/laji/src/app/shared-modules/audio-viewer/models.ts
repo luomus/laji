@@ -6,8 +6,8 @@ export interface IAudio {
 
 export interface ISpectrogramConfig {
   sampleRate: number;
-  targetWindowLengthInSeconds: number;
-  targetWindowOverlapPercentage: number;
+  tarwindowLengthInSeconds: number;
+  tarwindowOverlapPercentage: number;
   nbrOfRowsRemovedFromStart?: number;
   maxNbrOfColsForNoiseEstimation?: number;
   noiseReductionParam?: number;

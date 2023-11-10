@@ -33,7 +33,7 @@ import { Util } from '../service/util.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
 import { EMPTY } from 'rxjs';
-import { geoJSONToWKT } from 'laji-map/lib/utils';
+import { geoJSONToWKT } from '@luomus/laji-map/lib/utils';
 import G from 'geojson';
 
 /* eslint-disable no-unused-vars member-ordering */

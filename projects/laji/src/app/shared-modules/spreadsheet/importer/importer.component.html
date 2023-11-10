@@ -14,21 +14,21 @@
 
     <h2>{{ currentTitle }}</h2>
 
-    <alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.sheetLoadError">
       <div [innerHtml]="sheetLoadErrorMsg"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploadedPartially">
       <div [innerHtml]="'excel.import.error.alreadyUploadedPartially' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.fileAlreadyUploaded">
       <div [innerHtml]="'excel.import.error.alreadyUploaded' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFileType">
       <div [innerHtml]="'excel.import.error.invalidFileType' | translate"></div>
-    </alert>
-    <alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
+    </lu-alert>
+    <lu-alert [type]="'danger'" *ngIf="vm.step === step.invalidFormId">
       <div [innerHtml]="'excel.import.error.invalidFormId' | translate: {formId: formID}"></div>
-    </alert>
+    </lu-alert>
 
     <ng-container *ngIf="[step.empty, step.importingFile, step.sheetLoadError, step.fileAlreadyUploaded, step.fileAlreadyUploadedPartially, step.invalidFileType, step.invalidFormId].indexOf(vm.step) > -1">
        <div class="row data-container spacer">
@@ -95,7 +95,7 @@
       <div class="row">
         <div class="col-sm-12 spacer">
           <ng-container *ngIf="vm.step === step.validating">
-            <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+            <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
           </ng-container>
           <ng-container *ngIf="vm.step === step.invalidData">
             <p>{{ 'excel.import.step4.invalidData' | translate }}</p>
@@ -120,7 +120,7 @@
                     <button type="button" (click)="save(priv)" class="btn btn-warning pull-right action no-public" *ngIf="!this.form?.options?.hideDraftButton">
                       {{ buttonLabel('temp') | translate }}
                     </button>
-                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+                    <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
                       <i class="glyphicon glyphicon-open"></i>
                     </div>
                   </div>
@@ -162,13 +162,13 @@
 
     <ng-container *ngIf="vm.step === step.importing">
       <h4>{{ 'sending' | translate }}</h4>
-      <progressbar [max]="total" [value]="current" [striped]="true" [animate]="true">{{ current }}/{{ total }}</progressbar>
+      <lu-progressbar [max]="total" [value]="current">{{ current }}/{{ total }}</lu-progressbar>
     </ng-container>
 
     <ng-container *ngIf="vm.step === step.doneOk || vm.step === step.doneWithErrors">
       <div class="row">
         <div class="col-sm-12">
-          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [tooltip]="'excel.import.step4.userMapping' | translate" placement="left">
+          <div class="btn btn-default pull-right" [class.disabled]="!vm.hasUserMapping" (click)="saveUserMapping()" [luTooltip]="'excel.import.step4.userMapping' | translate" placement="left">
             <i class="glyphicon glyphicon-save"></i>
           </div>
           <p *ngIf="vm.step === step.doneOk">
@@ -176,9 +176,9 @@
           </p>
         </div>
       </div>
-      <alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
+      <lu-alert [type]="'danger'"  *ngIf="vm.step === step.doneWithErrors">
         <div [innerHtml]="'excel.import.error.doneWithErrors' | translate"></div>
-      </alert>
+      </lu-alert>
       <div class="row">
         <div class="col-sm-12 checkbox">
           <label class="pull-right">
@@ -193,21 +193,6 @@
     </ng-container>
   </div>
 </ng-container>
-
-<div class="modal fade" bsModal #currentUserMapModal="bs-modal" tabindex="-1" role="dialog"
-     aria-labelledby="column and value mapping" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      <div class="modal-body mapping-body">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="currentUserMapModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <div [innerHtml]="'excel.userMapping.get' | translate"></div>
-        <textarea rows="10" class="form-control">{{ userMappings | json }}</textarea>
-      </div>
-    </div>
-  </div>
-</div>
 
 <ng-template let-rowIndex="rowIndex" #rowNumber>
   {{ rowIndex + 2 }}
@@ -246,17 +231,10 @@
 </ng-template>
 
 <ng-template #mapModal>
-  <div class="modal-header">
-    <button type="button" class="close" (click)="closeMapModal()">
-      <i class="glyphicon glyphicon-remove"></i>
-    </button>
-    <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
-  </div>
-  <div class="modal-body">
+  <h4 class="modal-title">{{ 'excel.import.observationMap' | translate }}</h4>
     <laji-import-map
       [data]="mappedData | onlyErroneous:showOnlyErroneous"
       [colMap]="colMap"
       [height]="'50vh'"
     ></laji-import-map>
-  </div>
 </ng-template>

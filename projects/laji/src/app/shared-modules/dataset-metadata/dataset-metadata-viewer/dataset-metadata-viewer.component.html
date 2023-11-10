@@ -134,10 +134,9 @@
           {{ collectionCounts.specimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
-          container="body"
           target="_blank">
           <i 
             id="selectionLink"
@@ -148,10 +147,9 @@
           {{ collectionCounts.typeSpecimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
-          container="body"
           target="_blank">
           <i 
             id="selectionLink"
@@ -162,10 +160,9 @@
           {{ collectionCounts.observation }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id}"
-          container="body"
           target="_blank">
           <i 
             id="selectionLink"

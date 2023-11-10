@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaxonAutocompleteComponent } from './taxon-autocomplete.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SharedModule } from '../../shared/shared.module';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
   imports: [

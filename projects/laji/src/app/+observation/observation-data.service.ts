@@ -4,7 +4,7 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { WarehouseQueryInterface } from '../shared/model/WarehouseQueryInterface';
 import { SearchQueryService } from './search-query.service';
-import { WarehouseApi, WarehouseSubPath } from '../shared/api/WarehouseApi';
+import { WarehouseApi } from '../shared/api/WarehouseApi';
 import { PlatformService } from '../root/platform.service';
 import deepEqual from 'deep-equal';
 
@@ -30,10 +30,6 @@ export class ObservationDataService {
     private platformService: PlatformService,
     private warehouseService: WarehouseApi
   ) { }
-
-  setApiType(type: 'sample' | 'unit') {
-    this.warehouseService.subPath = type === 'sample' ? WarehouseSubPath.sample : WarehouseSubPath.default;
-  }
 
   getData(query: WarehouseQueryInterface): Observable<IObservationData> {
     if (this.platformService.isServer) {
