@@ -303,6 +303,13 @@
           {
             "selector": "typeProperty",
             "format": null
+          },
+          {
+            "selector": "import",
+            "format": [
+              "camelCase",
+              "PascalCase"
+            ]
           }
         ],
         "jsdoc/newline-after-description": "off",
