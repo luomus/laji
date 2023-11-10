@@ -485,10 +485,9 @@ export class TypeaheadDirective implements OnInit, OnDestroy {
               return EMPTY;
             }
 
-            const typeahead = isObservable(this.typeahead) ? this.typeahead : from(this.typeahead);
+            const typeahead: Observable<TypeaheadOption[] | TypeaheadOption> = isObservable(this.typeahead) ? this.typeahead : from(this.typeahead);
 
-            return typeahead
-              .pipe(
+            return typeahead.pipe(
                 filter((option: TypeaheadOption) => {
                   return !!option && this.testMatch(this.normalizeOption(option), normalizedQuery);
                 }),
