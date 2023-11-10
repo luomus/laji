@@ -217,41 +217,41 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "laji:build"
+            "buildTarget": "laji:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "laji:build:production"
+              "buildTarget": "laji:build:production"
             },
             "dev-embedded": {
-              "browserTarget": "laji:build:dev-embedded"
+              "buildTarget": "laji:build:dev-embedded"
             },
             "beta": {
-              "browserTarget": "laji:build:beta"
+              "buildTarget": "laji:build:beta"
             },
             "embedded": {
-              "browserTarget": "laji:build:embedded"
+              "buildTarget": "laji:build:embedded"
             },
             "local": {
-              "browserTarget": "laji:build:local",
               "proxyConfig": "proxy.conf.js",
-              "port": 3000
+              "port": 3000,
+              "buildTarget": "laji:build:local"
             },
             "local-beta": {
-              "browserTarget": "laji:build:local-beta",
-              "port": 3000
+              "port": 3000,
+              "buildTarget": "laji:build:local-beta"
             },
             "strict": {
-              "browserTarget": "laji:build:strict",
               "proxyConfig": "proxy.conf.js",
-              "port": 3000
+              "port": 3000,
+              "buildTarget": "laji:build:strict"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "laji:build"
+            "buildTarget": "laji:build"
           }
         },
         "test": {
@@ -382,7 +382,7 @@
           "defaultConfiguration": ""
         },
         "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
             "browserTarget": "laji:build",
             "serverTarget": "laji:server"
@@ -541,21 +541,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "iucn:build"
+            "buildTarget": "iucn:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "iucn:build:production"
+              "buildTarget": "iucn:build:production"
             },
             "dev": {
-              "browserTarget": "iucn:build:dev"
+              "buildTarget": "iucn:build:dev"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "iucn:build"
+            "buildTarget": "iucn:build"
           }
         },
         "test": {
@@ -648,18 +648,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "label-designer-electron:build"
+            "buildTarget": "label-designer-electron:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "label-designer-electron:build:production"
+              "buildTarget": "label-designer-electron:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "label-designer-electron:build"
+            "buildTarget": "label-designer-electron:build"
           }
         },
         "test": {
@@ -756,18 +756,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "label-designer-element:build"
+            "buildTarget": "label-designer-element:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "label-designer-element:build:production"
+              "buildTarget": "label-designer-element:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "label-designer-element:build"
+            "buildTarget": "label-designer-element:build"
           }
         },
         "test": {
@@ -1024,24 +1024,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vir:build"
+            "buildTarget": "vir:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "vir:build:production"
+              "buildTarget": "vir:build:production"
             },
             "dev": {
-              "browserTarget": "vir:build:dev"
+              "buildTarget": "vir:build:dev"
             },
             "local": {
-              "browserTarget": "vir:build:local"
+              "buildTarget": "vir:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vir:build"
+            "buildTarget": "vir:build"
           }
         },
         "test": {
@@ -1163,17 +1163,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "exhibition-screen:build"
+            "buildTarget": "exhibition-screen:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "exhibition-screen:build:production"
+              "buildTarget": "exhibition-screen:build:production"
             },
             "dev": {
-              "browserTarget": "exhibition-screen:build:dev"
+              "buildTarget": "exhibition-screen:build:dev"
             },
             "local": {
-              "browserTarget": "exhibition-screen:build:local"
+              "buildTarget": "exhibition-screen:build:local"
             }
           }
         },
@@ -1306,17 +1306,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "bird-atlas:build"
+            "buildTarget": "bird-atlas:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "bird-atlas:build:production"
+              "buildTarget": "bird-atlas:build:production"
             },
             "dev": {
-              "browserTarget": "bird-atlas:build:dev"
+              "buildTarget": "bird-atlas:build:dev"
             },
             "local": {
-              "browserTarget": "bird-atlas:build:local"
+              "buildTarget": "bird-atlas:build:local"
             }
           }
         }
@@ -1444,24 +1444,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "kerttu-global:build"
+            "buildTarget": "kerttu-global:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "kerttu-global:build:production"
+              "buildTarget": "kerttu-global:build:production"
             },
             "dev": {
-              "browserTarget": "kerttu-global:build:dev"
+              "buildTarget": "kerttu-global:build:dev"
             },
             "local": {
-              "browserTarget": "kerttu-global:build:local"
+              "buildTarget": "kerttu-global:build:local"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "kerttu-global:build"
+            "buildTarget": "kerttu-global:build"
           }
         },
         "test": {

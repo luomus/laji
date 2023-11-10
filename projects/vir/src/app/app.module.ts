@@ -4,7 +4,7 @@ import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } f
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { TransferHttpCacheModule } from '@nguniversal/common';
+import { TransferHttpCacheModule } from '@angular/ssr';
 import { ToastrModule } from 'ngx-toastr';
 
 import { VirRoutingModule } from './vir-routing.module';
