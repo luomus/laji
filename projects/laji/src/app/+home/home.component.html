@@ -160,7 +160,7 @@
       </a>
     </div>
     <div class="d-flex flex-wrap row">
-      <a [href]="({'fi': 'https://dashboard.laji.fi', 'en': 'https://dashboard.laji.fi/#en-lang', 'sv': 'https://dashboard.laji.fi/#en-lang'} | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+      <a [href]="({'fi': dashboardUrl + '/#fi-lang', 'en': dashboardUrl + '/#en-lang', 'sv': dashboardUrl + '/#en-lang'} | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dashboard.svg)'"></div>
         <div *ngIf="(homeData$ | async)?.unitsLastWeek?.total > 0">
           <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>

@@ -10,6 +10,7 @@ import { Global } from '../../environments/global';
 import { LajiApi, LajiApiService } from '../shared/service/laji-api.service';
 import { Information } from '../shared/model/Information';
 import { NewsFacade } from '../+news/news.facade';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   mapStartDate: string;
   mapQueryParams: Record<string, string>;
+  dashboardUrl: string;
   images$: Observable<Image[]>;
   homeData$: Observable<IHomeData>;
   publications$: Observable<Information>;
@@ -43,6 +45,7 @@ export class HomeComponent implements OnInit {
     this.newsFacade.loadPage(1);
     this.mapStartDate = HomeDataService.getRecentDate();
     this.mapQueryParams = {firstLoadedSameOrAfter: this.mapStartDate, countryId: 'ML.206'};
+    this.dashboardUrl = environment.dashboardUrl;
     this.homeData$ = this.homeDataService.getHomeData();
     this.images$ = this.homeData$.pipe(
       map(data => data.identify && data.identify.results || []),
