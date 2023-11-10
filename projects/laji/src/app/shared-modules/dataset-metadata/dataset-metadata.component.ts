@@ -50,7 +50,6 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
 
     this.paramSub$ = this.route.params.subscribe(params => {
       this.setCollection(params.collectionId);
-      console.log('PING')
       this.cd.markForCheck();
     });
   }
@@ -68,15 +67,12 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private setCollection(collectionId: string) {
-    console.log(collectionId)
     if (collectionId && this.collectionId !== collectionId) {
       this.collection$ = this.collectionService.getById$(collectionId, 'multi');
       this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(collectionId);
     }
 
     this.collectionId = collectionId;
-
-    console.log(this.collection$)
   }
 
   private changeUrl(collectionId: string) {
