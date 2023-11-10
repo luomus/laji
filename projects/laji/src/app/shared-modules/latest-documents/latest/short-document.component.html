@@ -1,6 +1,6 @@
 <div [ngStyle]="{'width': (staticWidth - 50) ? (staticWidth - 50) +'px': undefined}" class="fixedDimension">
 
-  <div *ngIf="unsaved" class="unsaved" [tooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
+  <div *ngIf="unsaved" class="unsaved" [luTooltip]="'haseka.users.unsaved.doc' | translate" [placement]="'left'">
     <div>!</div>
   </div>
 
@@ -45,7 +45,7 @@
 
   <section class="d-flex flex-row flex-nowrap justify-end">
     <button class="btn btn-default btn-sm ml-2"
-         [tooltip]="'result.showViewer' | translate"
+         [luTooltip]="'result.showViewer' | translate"
          [placement]="'bottom'"
          (click)="onShowViewer($event)"
          role="button" tabindex="0" luKeyboardClickable>
@@ -54,7 +54,7 @@
     </button>
     <a class="btn btn-default btn-sm ml-2"
          [routerLink]="editDocumentRoute"
-         [tooltip]="'result.editDocument' | translate"
+         [luTooltip]="'result.editDocument' | translate"
          [placement]="'bottom'"
          role="button" tabindex="0" luKeyboardClickable>
       <span class="glyphicon glyphicon-edit"></span>

@@ -1,5 +1,5 @@
 <laji-spinner [spinning]="loading" [overlay]="true">
-  <alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "audioViewer.audioError" | translate }}</alert>
+  <lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "audioViewer.audioError" | translate }}</lu-alert>
   <div class="spectrogram-container">
     <laji-audio-spectrogram
       [buffer]="buffer"

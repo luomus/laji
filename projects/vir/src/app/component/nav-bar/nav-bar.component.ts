@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavbarComponent as LajiNavBarComponent } from '../../../../../laji/src/app/shared/navbar';
 import { NotificationsFacade } from '../../../../../laji/src/app/shared/navbar/notifications/notifications.facade';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 @Component({
   selector: 'vir-nav-bar',
@@ -14,10 +13,4 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
   providers: [NotificationsFacade]
 })
 export class NavBarComponent extends LajiNavBarComponent {
-  @ViewChild('usageMenu') private usageDropdown: BsDropdownDirective;
-
-  onCloseUsageDropdown() {
-    this.usageDropdown.hide();
-    this.changeDetector.markForCheck();
-  }
 }

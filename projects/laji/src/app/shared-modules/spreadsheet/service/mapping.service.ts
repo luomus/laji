@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IColMap, IFormField, IUserMappings, IValueMap, TUserValueMap, VALUE_IGNORE } from '../model/excel';
-import { convertAnyToWGS84GeoJSON } from 'laji-map/lib/utils';
+import { convertAnyToWGS84GeoJSON } from '@luomus/laji-map/lib/utils';
 import { convertYkjToGeoJsonFeature } from '../../../root/coordinate-utils';
 import { InformalTaxonGroup } from '../../../shared/model/InformalTaxonGroup';
 import { SpreadsheetFacade } from '../spreadsheet.facade';

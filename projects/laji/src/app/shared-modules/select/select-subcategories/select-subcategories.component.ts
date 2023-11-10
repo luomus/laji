@@ -406,7 +406,7 @@ export class SelectSubcategoriesComponent implements OnChanges {
         let countNoGlobal = 0;
         categoriesExcludeGlobal.forEach(cat => {
           if (this.selectedOptions[cat]?.indexOf(option.id) > -1 &&
-            this.selectedOptions['GLOBAL'] !== undefined && this.selectedOptions['GLOBAL'] !== [] &&
+            this.selectedOptions['GLOBAL'] !== undefined && !this.selectedOptions['GLOBAL'].length &&
             this.selectedOptions['GLOBAL'].findIndex((x: SelectOptions | string) => !(typeof x === 'string') && x.id === option.id) === -1
           ) {
             countNoGlobal++;

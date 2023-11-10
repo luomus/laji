@@ -1,5 +1,5 @@
 <h4 *ngIf="header">{{ header | translate }}</h4>
-<alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</alert>
+<lu-alert *ngIf="yearInfoError" type="danger">{{ yearInfoError }}</lu-alert>
 <ng-container *ngIf="!yearInfoError">
   <ng-container *ngIf="!onlyTemplates && !namedPlace">
     <laji-year-slider [year]="year" [showCounts]="!formID"
@@ -11,7 +11,6 @@
     <laji-own-datatable
       (documentClicked)="onDocumentClick($event)"
       (download)="download($event)"
-      (template)="saveTemplate($event)"
       (delete)="delete($event)"
       (label)="doLabels($event)"
       [actions]="actions"
@@ -23,7 +22,6 @@
       [loadError]="documentError"
       [onlyTemplates]="onlyTemplates"
       [year]="year"
-      [templateForm]="templateForm"
       [documents]="documents$ | async"></laji-own-datatable>
   </div>
 </ng-container>

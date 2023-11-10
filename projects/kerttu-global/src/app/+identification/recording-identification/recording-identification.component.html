@@ -1,4 +1,4 @@
-<alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "identification.genericError" | translate }}</alert>
+<lu-alert type="danger" [dismissible]="false" *ngIf="hasError">{{ "identification.genericError" | translate }}</lu-alert>
 
 <laji-spinner *ngIf="!hasError" [spinning]="expertiseMissing == null">
   <ng-container *ngIf="expertiseMissing != null">

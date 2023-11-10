@@ -1,5 +1,5 @@
 import { browser, $ } from 'protractor';
-import { MapPageObject } from 'laji-map/test-export/test-utils';
+import { MapPageObject } from '@luomus/laji-map/test-export/test-utils';
 
 export class MapPage {
 

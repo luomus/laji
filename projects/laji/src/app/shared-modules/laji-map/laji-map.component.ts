@@ -16,7 +16,7 @@ import {
 import { IUserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { Options, Lang, TileLayersOptions } from 'laji-map';
+import { Options, Lang, TileLayersOptions } from '@luomus/laji-map';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
@@ -168,7 +168,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   initMap() {
-    import('laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
+    import('@luomus/laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
       this.zone.runOutsideAngular(() => {
         if (this.map) {
           this.map.destroy();

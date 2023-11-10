@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
-import * as MapUtil from 'laji-map/lib/utils';
+import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Units } from '../../../../shared/model/Units';

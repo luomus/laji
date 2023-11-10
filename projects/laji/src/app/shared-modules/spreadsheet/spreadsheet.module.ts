@@ -30,7 +30,6 @@ import { AugmentService } from './service/augment.service';
 import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
 import { LajiMapModule } from '@laji-map/laji-map.module';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { UserMappingButtonComponent } from './importer/load-file/user-mapping-button.component';
 import { SpreadsheetFacade } from './spreadsheet.facade';
 import { FieldItemComponent } from './excel-generator/field-item/field-item.component';
@@ -38,6 +37,10 @@ import { OnlyErroneousPipe } from './importer/only-erroneous.pipe';
 import { ImportMapComponent } from './importer/import-map/import-map.component';
 import { LajiUiModule } from 'projects/laji-ui/src/public-api';
 import { ErroneousFirstPipe } from './importer/erroneous-first.pipe';
+import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
+import { ProgressbarModule } from 'projects/laji-ui/src/lib/progressbar/progressbar.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   declarations: [
@@ -73,9 +76,12 @@ import { ErroneousFirstPipe } from './importer/erroneous-first.pipe';
     SharedModule,
     DatatableModule,
     LajiMapModule,
-    TypeaheadModule,
     TaxonAutocompleteModule,
-    LajiUiModule
+    LajiUiModule,
+    PopoverModule,
+    ProgressbarModule,
+    ModalModule,
+    TooltipModule
   ],
   providers: [SpreadsheetService, MappingService, ImportService, GeneratorService, AugmentService, SpreadsheetFacade],
 })

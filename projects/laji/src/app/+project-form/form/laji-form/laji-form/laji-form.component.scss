@@ -1,3 +1,5 @@
+@import 'projects/laji-ui/src/lib/vars';
+
 :host ::ng-deep {
   .input-group-btn span.btn {
     margin-top: -1px;
@@ -7,4 +9,13 @@
       transform: initial;
     }
   }
+
+  .laji-form-help-glyph {
+    background-color: $neutral-1;
+    box-shadow: 0 1px 2px 0 rgba($neutral-8, 0.3), 0px 0px 2px 0px rgba(20, 27, 31, 0.3);
+    border: none;
+  }
+
+
+  color: $neutral-8;
 }

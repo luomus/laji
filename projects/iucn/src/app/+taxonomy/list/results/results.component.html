@@ -23,14 +23,14 @@
   <ng-container *ngSwitchCase="'reasons'">
     <div class="row">
       <div class="col-sm-10">
-        <iucn-red-list-chart (valueSelect)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async" [label]="'taxonomy.species' | translate"></iucn-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('reasons', $event)" [data]="reasonsQuery$ | async"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'threats'">
     <div class="row">
       <div class="col-sm-10">
-        <iucn-red-list-chart (valueSelect)="changeQuery('threats', $event)" [data]="threadQuery$ | async" [label]="'taxonomy.species' | translate"></iucn-red-list-chart>
+        <iucn-red-list-chart (valueSelect)="changeQuery('threats', $event)" [data]="threadQuery$ | async"></iucn-red-list-chart>
       </div>
     </div>
   </ng-container>
@@ -42,12 +42,11 @@
     </div>
     <div class="row">
       <div class="col-sm-8" style="height: 400px">
-        <ngx-charts-pie-chart
-          (select)="habitatPieSelect($event)"
-          [results]="habitatChartQuery$ | async"
-          [tooltipDisabled]="false"
-          [trimLabels]="false"
-          [labels]="true" [customColors]="colorSchema"></ngx-charts-pie-chart>
+        <laji-chart
+          chartType="pie"
+          [data]="habitatChartQuery$ | async"
+          [options]="options"
+          ></laji-chart>
       </div>
     </div>
   </ng-container>
