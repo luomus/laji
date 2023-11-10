@@ -169,7 +169,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   initMap() {
-    console.log('is browser', this.platformService.isBrowser);
     // laji-map depends on Leaflet, which doesn't work on SSR because it uses 'window'
     if (!this.platformService.isBrowser) {
       return;
