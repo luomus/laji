@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapOptions } from '@laji-map/laji-map.interface';
+import type { Options } from '@luomus/laji-map';
 import { TranslateService } from '@ngx-translate/core';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 
 @Component({
   selector: 'laji-viewer-map',
@@ -32,7 +32,7 @@ export class ViewerMapComponent implements OnInit, OnChanges {
   @Input() zoomToData = false;
 
   _data: any;
-  mapOptions: LajiMapOptions;
+  mapOptions: Options;
 
   constructor(
     public translate: TranslateService

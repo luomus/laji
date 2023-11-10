@@ -13,8 +13,9 @@ import { combineLatest, take } from 'rxjs/operators';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
 import { UserService } from '../../../../../shared/service/user.service';
 import { FormPermissionService } from '../../../../../shared/service/form-permission.service';
-import { LajiMapLineTransectGeometry, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import type { LineTransectGeometry, Options } from '@luomus/laji-map';
+import { TileLayerName } from '@luomus/laji-map/lib/defs';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { Document } from '../../../../../shared/model/Document';
 import { ToastsService } from '../../../../../shared/service/toasts.service';
 import equals from 'deep-equal';
@@ -41,7 +42,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
 
   @ViewChild(LajiMapComponent, { static: false }) lajiMap: LajiMapComponent;
 
-  lajiMapOptions: LajiMapOptions;
+  lajiMapOptions: Options;
   data: any;
   placesDiff: false | any = false;
   geometriesDiff: false | any = false;
@@ -95,8 +96,8 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   private initMapOptions() {
-    const options: LajiMapOptions = {
-      tileLayerName: LajiMapTileLayerName.maastokartta,
+    const options: Options = {
+      tileLayerName: TileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       zoomToData: {paddingInMeters: 100},
       controls: true
@@ -120,16 +121,16 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     }
   }
 
-  getLineTransectOption(documentName: 'document' | 'acceptedDocument'): LajiMapOptions['lineTransect'] {
+  getLineTransectOption(documentName: 'document' | 'acceptedDocument'): Options['lineTransect'] {
     const document = documentName === 'document'
       ? this.document
       : this.namedPlace.acceptedDocument;
 
-    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LajiMapLineTransectGeometry;
+    const geometry = {type: 'MultiLineString', coordinates: document.gatherings?.map(item => item.geometry.coordinates) || []} as LineTransectGeometry;
     return {feature: {type: 'Feature', properties: {}, geometry}, editable: false};
   }
 
-  getDataOption(documentName: 'document' | 'acceptedDocument'): LajiMapOptions['data'] {
+  getDataOption(documentName: 'document' | 'acceptedDocument'): Options['data'] {
     const document = documentName === 'document'
       ? this.document
       : this.namedPlace.acceptedDocument;

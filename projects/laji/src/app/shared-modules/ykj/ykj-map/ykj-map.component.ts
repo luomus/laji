@@ -14,10 +14,10 @@ import {
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
 import { forkJoin, Observable, of, Subscription } from 'rxjs';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { YkjService } from '../service/ykj.service';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import type { Lang, Options } from '@luomus/laji-map';
 import { map } from 'rxjs/operators';
 
 export type MapBoxTypes = 'count'|'individualCount'|'individualCountSum'|'individualCountMax'|'oldest'|'newest'|'pairCount'|
@@ -51,7 +51,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() countLabel: string[] = ['1-', '10-', '100-', '1 000-', '10 000-', '100 000-'];
   @Input() timeLabel: string[] = ['2020', '2015-', '2010-', '2005-', '2000-', '1990-'];
   @Input() maxBounds: [[number, number], [number, number]] = [[58.0, 19.0], [72.0, 35.0]];
-  @Input() set mapOptions(mapOptions: LajiMapOptions) {
+  @Input() set mapOptions(mapOptions: Options) {
     this._mapOptions = {
       ...this._mapOptions,
       ...(mapOptions || {})
@@ -75,7 +75,7 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
   private current;
   private subQuery: Subscription;
   private subLang: Subscription;
-  private _mapOptions: LajiMapOptions = {
+  private _mapOptions: Options = {
     center: [64.709804, 25],
     zoom: 2,
     tileLayerOpacity: 0.5,
@@ -100,10 +100,10 @@ export class YkjMapComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     this.subLang = this.translate.onLangChange.subscribe(() => {
-      this._mapOptions = {...this._mapOptions, lang: <LajiMapLang> this.translate.currentLang};
+      this._mapOptions = {...this._mapOptions, lang: <Lang> this.translate.currentLang};
       this.cd.markForCheck();
     });
-    this._mapOptions['lang'] = <LajiMapLang> this.translate.currentLang;
+    this._mapOptions['lang'] = <Lang> this.translate.currentLang;
     this.onlyCount = this.types.includes('count') && this.types.length === 1;
   }
 

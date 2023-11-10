@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchQueryService } from '../../+observation/search-query.service';
 import { FooterService } from '../../shared/service/footer.service';
 import { geoJSONToISO6709, ISO6709ToGeoJSON } from '@luomus/laji-map/lib/utils';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapLang, LajiMapOptions, LajiMapOverlayName, LajiMapTileLayerName, LajiMapTileLayersOptions } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import { Lang, Options, OverlayName, TileLayerName, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { latLngGridToGeoJSON } from '@luomus/laji-map/lib/utils';
 import { PlatformService } from '../../root/platform.service';
 
@@ -20,11 +20,11 @@ export class FrontComponent implements OnInit, OnDestroy {
   @ViewChild('printControlWell') printControlsWell: {nativeElement: HTMLDivElement};
   @ViewChild('printControl') printControls: {nativeElement: HTMLDivElement};
 
-  mapOptions: LajiMapOptions = {
+  mapOptions: Options = {
     center: [64.209802, 24.912872],
     zoom: 3,
-    tileLayerName: LajiMapTileLayerName.maastokartta,
-    availableOverlayNameBlacklist: [LajiMapOverlayName.kiinteistojaotus, LajiMapOverlayName.kiinteistotunnukset, LajiMapOverlayName.barentsRegion],
+    tileLayerName: TileLayerName.maastokartta,
+    availableOverlayNameBlacklist: [OverlayName.kiinteistojaotus, OverlayName.kiinteistotunnukset, OverlayName.barentsRegion],
     controls: {
       draw: {
         marker: true,
@@ -73,13 +73,13 @@ export class FrontComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.footerService.footerVisible = false;
-    let options: LajiMapOptions = {lang: <LajiMapLang> this.translate.currentLang};
+    let options: Options = {lang: <Lang> this.translate.currentLang};
     const {layers = '', overlayNames = '', world, coordinates, print} = this.route.snapshot.queryParams;
     const _layers = (`${layers},${overlayNames}`.split(',') as string[])
       .filter(s => s)
-      .reduce<LajiMapTileLayersOptions['layers']>(
+      .reduce<TileLayersOptions['layers']>(
         (lrs, layerName) => ({...lrs, [layerName]: true}),
-        {maastokartta: true} as LajiMapTileLayersOptions['layers']
+        {maastokartta: true} as TileLayersOptions['layers']
       );
     if (typeof coordinates !== 'undefined') {
       this.drawData = {...this.drawData, featureCollection: ISO6709ToGeoJSON(coordinates)};
