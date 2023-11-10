@@ -13,8 +13,3 @@
   display: flex;
   flex-direction: column;
 }
-
-.selector-empty-height {
-  min-height: calc(100vh - 384px - 50px);
-  max-height: calc(100vh - 150px);
-}

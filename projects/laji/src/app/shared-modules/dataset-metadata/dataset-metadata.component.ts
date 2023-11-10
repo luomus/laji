@@ -27,12 +27,11 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     private route: ActivatedRoute,
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
-    private location: Location,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
   ) { }
 
-  checkScreenWidth() {
+  private checkScreenWidth() {
     this.isMobile = window.innerWidth < mobileBreakpoint;
   }
 
@@ -42,8 +41,7 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     const routeCollectionId = this.route.snapshot.paramMap.get('collectionId');
 
     if (routeCollectionId) {
-      this.collectionId = routeCollectionId;
-      this.getCollectionData();
+      this.setCollection(routeCollectionId)
     }
 
     if (this.isMobile) {
@@ -51,7 +49,9 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     this.paramSub$ = this.route.params.subscribe(params => {
-      this.updateCollection(params.collectionId);
+      this.setCollection(params.collectionId);
+      console.log('PING')
+      this.cd.markForCheck();
     });
   }
 
@@ -67,16 +67,19 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
-  getCollectionData() {
-    if (this.collectionId && this.collectionId !== this._collectionId) {
-      this.collection$ = this.collectionService.getById$(this.collectionId, 'multi');
-      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(this.collectionId);
-      this._collectionId = this.collectionId;
-      this.cd.markForCheck();
+  private setCollection(collectionId: string) {
+    console.log(collectionId)
+    if (collectionId && this.collectionId !== collectionId) {
+      this.collection$ = this.collectionService.getById$(collectionId, 'multi');
+      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(collectionId);
     }
+
+    this.collectionId = collectionId;
+
+    console.log(this.collection$)
   }
 
-  changeUrl(collectionId) {
+  private changeUrl(collectionId: string) {
     const url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata']);
 
     if (collectionId) {
@@ -94,10 +97,5 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     if(this.isMobile) {
       this.showBrowser = false;
     }
-  }
-
-  updateCollection(collectionId) {
-    this.collectionId = collectionId;
-    this.getCollectionData();
   }
 }

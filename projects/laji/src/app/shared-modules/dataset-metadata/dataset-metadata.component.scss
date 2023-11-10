@@ -1,24 +1,12 @@
-.nav {
-  display: inline-flex;
-  flex-grow: 1;
-}
-
-.metadata-browser {
+:host, :host > div {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
 .sidebar {
-  min-height: calc(100vh - 50px - 384px);
-}
-
-:host ::ng-deep .sidebar-content {
-  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
 }
