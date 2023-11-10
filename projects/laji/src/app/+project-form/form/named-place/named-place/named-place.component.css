@@ -1,4 +1,4 @@
-:host >>> .hidden {
+:host ::ng-deep .hidden {
   display: none !important;
 }
 
