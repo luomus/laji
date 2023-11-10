@@ -161,6 +161,26 @@
                 }
               ]
             },
+            "local-beta": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
+                }
+              ]
+            },
             "strict": {
               "tsConfig": "tsconfig.app-strict.json",
               "budgets": [
@@ -339,6 +359,20 @@
                 }
               ],
               "buildOptimizer": true
+            },
+            "local-beta": {
+              "outputHashing": "media",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
+                }
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -353,6 +387,10 @@
             "local": {
               "browserTarget": "laji:build:local",
               "serverTarget": "laji:server:local"
+            },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
+              "serverTarget": "laji:server:local-beta"
             }
           }
         },
