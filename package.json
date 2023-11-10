@@ -7,6 +7,7 @@
     "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
     "ng": "ng",
     "start": "npm run ng-high-memory -- serve laji --configuration=local",
+    "start:local-beta": "npm run ng-high-memory -- serve  laji --configuration=local-beta",
     "start:strict": "npm run ng-high-memory -- serve laji --configuration=strict",
     "start:local:prod": "NODE_ENV=development ng serve laji --configuration=local --proxy-config proxy.conf.js --aot=false --build-optimizer=false --host 0.0.0.0 --port 3000",
     "start:ssr:local": "npm run ng-high-memory -- run laji:serve-ssr:local --port 3000",

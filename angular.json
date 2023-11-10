@@ -237,6 +237,10 @@
               "proxyConfig": "proxy.conf.js",
               "port": 3000
             },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
+              "port": 3000
+            },
             "strict": {
               "browserTarget": "laji:build:strict",
               "proxyConfig": "proxy.conf.js",
