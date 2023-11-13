@@ -59,6 +59,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/laji/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -494,6 +498,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/iucn/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -1221,6 +1229,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/bird-atlas/src/index.prod.html",
+                "output": "index.html"
+              },
               "fileReplacements": [
                 {
                   "replace": "projects/bird-atlas/src/env/environment.ts",
@@ -1372,6 +1384,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/kerttu-global/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
