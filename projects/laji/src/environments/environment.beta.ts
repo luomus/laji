@@ -21,6 +21,7 @@ export const environment = {
   kerttuApi: 'https://staging-kerttu-backend.laji.fi',
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
   geoserver: 'https://geoserver-dev.laji.fi',
+  dashboardUrl: 'https://dashboard-dev.laji.fi',
   defaultLang: 'fi',
   displayDevRibbon: true
 };

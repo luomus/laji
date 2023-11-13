@@ -7,10 +7,10 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { IFormField, VALUE_IGNORE } from '../../../model/excel';
 import { TranslateService } from '@ngx-translate/core';
-import { LajiMapLang, LajiMapOptions } from '@laji-map/laji-map.interface';
+import { Lang, Options } from '@luomus/laji-map/lib/defs';
 import { getFeatureCollectionFromGeometry, getGeometryFromFeatureCollection } from 'projects/laji/src/app/root/coordinate-utils';
 
 @Component({
@@ -29,7 +29,7 @@ export class SpecialGeometryComponent {
   @ViewChild(LajiMapComponent) lajiMapComponent: LajiMapComponent;
 
   ignore = VALUE_IGNORE;
-  lajiMapOptions: LajiMapOptions = {
+  lajiMapOptions: Options = {
     draw: {
       marker: true,
       polyline: true,
@@ -55,7 +55,7 @@ export class SpecialGeometryComponent {
         coordinateInput: true
       } as any
     },
-    lang: LajiMapLang.fi
+    lang: Lang.fi
   };
   active: number;
   last: number;
@@ -65,7 +65,7 @@ export class SpecialGeometryComponent {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
-    this.lajiMapOptions.lang = <LajiMapLang> this.translateService.currentLang;
+    this.lajiMapOptions.lang = <Lang> this.translateService.currentLang;
   }
 
   onMapLoad() {

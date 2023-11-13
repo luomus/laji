@@ -1,4 +1,4 @@
-:host >>> .issue .key:before {
+:host ::ng-deep .issue .key:before {
   color: #d9534f;
   font-family:FontAwesome;
   font-style:normal;

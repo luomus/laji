@@ -17,7 +17,7 @@ import { FactsComponent } from './facts/facts.component';
 import { LangModule } from '../lang/lang.module';
 import { AnnotationsModule } from '../annotations/annotations.module';
 import { UserDocumentToolsComponent } from './user-document-tools/user-document-tools.component';
-import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { DocumentLocalComponent } from './document-local/document-local.component';
 import { DocumentObjectComponent } from './document-local/document-object/document-object.component';
 import { DocumentLocalViewerViewComponent } from './document-local/document-local-viewer-view/document-local-viewer-view.component';
@@ -50,6 +50,7 @@ import { IdentificationComponent } from './identifications/identification/identi
 import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
+import { ModelViewerModule } from '../model-viewer/model-viewer.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
@@ -63,6 +64,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     LicenseModule,
     InfoModule,
     NamedPlaceLinkerButtonModule,
+    ModelViewerModule,
     PopoverModule,
     ModalModule,
     TooltipModule

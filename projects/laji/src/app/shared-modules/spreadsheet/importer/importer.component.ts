@@ -35,6 +35,33 @@ import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
 import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
 
+/*
+  Check that required columns have a non-empty cell at each row.
+
+  Example data:
+  [
+    { "B": "data2", "C": "data3", "D": "data4" },
+    { "A": "data1", "B": "data2", "C": "data3", "D": "data4" }
+  ]
+  Example columnMap:
+    { "A": "gatheringEvent.leg[*]", "B": "gatheringEvent.dateBegin",
+      "C": "gatherings[*].geometry", "D": "gatherings[*].units[*].identifications[*].taxon" }
+ */
+const checkEarlyValidation = (data: {[key: string]: string}[], columnMap: {[key: string]: string}) => (
+  data.every(row => {
+    const entries = Object.entries(row);
+    const legIsPresent = entries.some(([k,v]) =>
+         columnMap[k] === 'gatheringEvent.leg[*]');
+    const placeIsPresent = entries.some(([k,v]) =>
+         columnMap[k] === 'namedPlaceID'
+      || columnMap[k] === 'gatherings[*].namedPlaceID' // nimetty paikka
+      || columnMap[k] === 'gatherings[*].geometry' // koordinaatit
+      || columnMap[k] === 'gatherings[*].locality' // paikannimet
+    );
+    return legIsPresent && placeIsPresent;
+  })
+);
+
 @Component({
   selector: 'laji-importer',
   templateUrl: './importer.component.html',
@@ -289,8 +316,13 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   colMappingDone(mapping) {
-    this.spreadsheetFacade.goToStep(Step.dataMapping);
-    this.colMap = mapping;
+    if (checkEarlyValidation(this.data, mapping)) {
+      this.spreadsheetFacade.goToStep(Step.dataMapping);
+      this.colMap = mapping;
+    } else {
+      this.spreadsheetFacade.clear();
+      this.spreadsheetFacade.goToStep(Step.requiredFieldsNull);
+    }
     this.cdr.markForCheck();
   }
 

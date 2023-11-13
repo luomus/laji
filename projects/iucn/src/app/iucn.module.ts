@@ -1,4 +1,3 @@
-import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { SharedModule } from '../../../laji/src/app/shared/shared.module';
@@ -40,7 +39,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     BrowserModule,
     CommonModule,
     HttpClientModule,
-    NgtUniversalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -1,13 +1,12 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
 import { IGlobalSite } from '../../../../kerttu-global-shared/models';
-import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { Polygon } from 'geojson';
-import {GetPopupOptions, LajiMapCreateEvent} from '@luomus/laji-map';
+import { GetPopupOptions, LajiMapCreateEvent, DataOptions, Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
 import { DivIcon, Point } from 'leaflet';
 
-interface LajiMapData extends LajiMapDataOptions {
+interface LajiMapData extends DataOptions {
   groupContainer: any;
 }
 
@@ -23,8 +22,8 @@ export class SiteSelectionMapComponent implements OnChanges {
   @Input() selectedSites: number[] = [];
   @Input() height = '100%';
 
-  mapOptions: LajiMapOptions = {
-    tileLayerName: LajiMapTileLayerName.openStreetMap,
+  mapOptions: Options = {
+    tileLayerName: TileLayerName.openStreetMap,
     controls: { draw: false, location: false, layer: false },
     draw: {},
     popupOnHover: true
@@ -84,7 +83,7 @@ export class SiteSelectionMapComponent implements OnChanges {
     }
   }
 
-  private getData(sites: IGlobalSite[]): LajiMapDataOptions {
+  private getData(sites: IGlobalSite[]): DataOptions {
     return {
       on: {
         click: (event, data) => {
