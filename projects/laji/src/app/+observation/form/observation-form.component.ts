@@ -357,6 +357,12 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     this.onFormQueryChange();
   }
 
+  onAsEditorOrObserverChange(value: boolean) {
+    this.formQuery.asObserver = value;
+    this.formQuery.asEditor = value;
+    this.onFormQueryChange();
+  }
+
   onOwnQualityIssuesFilterChange(value: string) {
     this.query.qualityIssues = value;
     this.onQueryChange();
