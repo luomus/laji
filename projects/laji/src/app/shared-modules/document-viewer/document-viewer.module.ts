@@ -50,6 +50,7 @@ import { IdentificationComponent } from './identifications/identification/identi
 import { TypesComponent } from './types/types.component';
 import { TypeComponent } from './types/type/type.component';
 import { AbundanceRowComponent } from './abundance-row/abundance-row.component';
+import { ModelViewerModule } from '../model-viewer/model-viewer.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
@@ -63,6 +64,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     LicenseModule,
     InfoModule,
     NamedPlaceLinkerButtonModule,
+    ModelViewerModule,
     PopoverModule,
     ModalModule,
     TooltipModule
