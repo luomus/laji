@@ -5,15 +5,15 @@
   padding-right: 15px;
   padding-left: 15px;
 }
-:host >>> .panel-heading, .form-title {
+:host ::ng-deep .panel-heading, .form-title {
   background-color: #ECF0F1;
   border-bottom: 1px solid #e1e1e1;
 }
-:host >>> .panel-body {
+:host ::ng-deep .panel-body {
   background-color: #ffffff;
 }
 
-:host >>> .form-filters .btn {
+:host ::ng-deep .form-filters .btn {
   white-space: normal;
   text-align: left;
 }
@@ -43,16 +43,16 @@
   font-size: 16px;
 }
 
-:host >>> .panel-heading a:hover {
+:host ::ng-deep .panel-heading a:hover {
   text-decoration: none;
 }
 
-:host >>> .panel-body {
+:host ::ng-deep .panel-body {
   padding-top: 6px;
   margin-top: 0;
 }
 
-:host >>> .panel-body .close {
+:host ::ng-deep .panel-body .close {
   margin: 0 -2px 0 0;
 }
 .lj-filter-wrap {

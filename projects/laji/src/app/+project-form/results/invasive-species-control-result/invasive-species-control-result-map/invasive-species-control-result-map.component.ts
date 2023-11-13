@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { getPointIconAsCircle } from '@laji-map/laji-map.component';
-import { LajiMapDataOptions } from '@laji-map/laji-map.interface';
+import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import type { DataOptions } from '@luomus/laji-map';
 import { TranslateService } from '@ngx-translate/core';
-import { GetFeatureStyleOptions } from 'laji-map';
+import { GetFeatureStyleOptions } from '@luomus/laji-map';
 import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legend/laji-map-visualization';
 import { YearInfoItem } from 'projects/laji/src/app/shared-modules/year-slider/year-slider.component';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
@@ -62,7 +62,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
   @Output() yearChange = new EventEmitter<string>();
   @Output() taxonChange = new EventEmitter<string>();
 
-  mapData$: Observable<LajiMapDataOptions>;
+  mapData$: Observable<DataOptions>;
   years$: Observable<YearInfoItem[]>;
   loading = true;
 
@@ -140,7 +140,7 @@ export class InvasiveSpeciesControlResultMapComponent implements OnInit {
     ));
   }
 
-  getDataOptions(): Omit<LajiMapDataOptions, 'featureCollection'> {
+  getDataOptions(): Omit<DataOptions, 'featureCollection'> {
     return {
       label: this.translate.instant('invasiveSpeciesControl.stats.map.dataLayerLabel'),
       marker: {

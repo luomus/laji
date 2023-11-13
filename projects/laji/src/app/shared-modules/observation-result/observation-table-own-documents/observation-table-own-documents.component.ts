@@ -18,14 +18,11 @@ import { Document } from '../../../shared/model/Document';
 import { ObservationResultService } from '../service/observation-result.service';
 import { PagedResult } from '../../../shared/model/PagedResult';
 import { ObservationTableColumn } from '../model/observation-table-column';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subscription, forkJoin, of as ObservableOf } from 'rxjs';
 import { DatatableOwnSubmissionsComponent } from '../../datatable/datatable-own-submissions/datatable-own-submissions.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
-import { UserService } from '../../../shared/service/user.service';
-import { DocumentApi } from '../../../shared/api/DocumentApi';
 import {
   IColumnGroup,
   TableColumnService
@@ -35,13 +32,10 @@ import { ExportService } from '../../../shared/service/export.service';
 import { BookType } from 'xlsx';
 import { Global } from '../../../../environments/global';
 import { IColumns } from '../../datatable/service/observation-table-column.service';
-import { OwnObservationTableSettingsComponent } from './own-observation-table-settings.component';
 import { WarehouseApi } from '../../../shared/api/WarehouseApi';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { RowDocument } from '../../own-submissions/own-datatable/own-datatable.component';
-import { DocumentInfoService } from '../../../shared/service/document-info.service';
-import { TriplestoreLabelService } from '../../../shared/service/triplestore-label.service';
 import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-document.service';
 
 
@@ -54,7 +48,6 @@ import { DeleteOwnDocumentService } from '../../../shared/service/delete-own-doc
 })
 export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dataTableOwn', { static: true }) public datatable: DatatableOwnSubmissionsComponent;
-  @ViewChild(OwnObservationTableSettingsComponent, { static: true }) public settingsModalOwn: OwnObservationTableSettingsComponent;
 
   @Input() query: WarehouseQueryInterface;
   @Input() overrideInQuery: WarehouseQueryInterface;
@@ -62,7 +55,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   @Input() page = 1;
   @Input() isAggregate = true;
   @Input() height = '100%';
-  @Input() showSettingsMenu = false;
   @Input() showDownloadMenu = false;
   @Input() showPageSize = true;
   @Input() showHeader = true;
@@ -141,7 +133,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
 
   private fetchSub: Subscription;
   private queryKey: string;
-  private aggregateBy: string[] = [];
   templateForm: TemplateForm = {
     name: '',
     description: ''
@@ -152,7 +143,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   constructor(
     private resultService: ObservationResultService,
     private changeDetectorRef: ChangeDetectorRef,
-    private modalService: BsModalService,
     private logger: Logger,
     private translate: TranslateService,
     private tableColumnService: TableColumnService<ObservationTableColumn, IColumns>,
@@ -160,10 +150,6 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
     private warehouseApi: WarehouseApi,
     private toQName: ToQNamePipe,
     private formService: FormService,
-    private documentInfoService: DocumentInfoService,
-    private labelService: TriplestoreLabelService,
-    private userService: UserService,
-    private documentApi: DocumentApi,
     private deleteOwnDocument: DeleteOwnDocumentService,
   ) {
     this.allColumns = tableColumnService.getAllColumns();
@@ -243,18 +229,12 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
         return prev;
       }, {});
 
-    this.aggregateBy = [];
-
     // this.columns.push({name: 'buttons', label: 'Buttons', sortable: false})
     this.allColumnsNew.map(col => {
       if (this.newColumns.indexOf(col['prop']) > -1) {
         this.columns.push(col);
       }
     });
-  }
-
-  openModal() {
-    this.settingsModalOwn.openModal();
   }
 
   onCloseSettingsModal(ok: boolean) {

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TaxonomySearchQuery } from '../service/taxonomy-search-query';
 import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 import { TaxonomyColumns } from '../service/taxonomy-columns';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
   selector: 'laji-species-list-options-modal',
@@ -10,7 +10,7 @@ import { TaxonomyColumns } from '../service/taxonomy-columns';
   styleUrls: ['./species-list-options-modal.component.css']
 })
 export class SpeciesListOptionsModalComponent {
-  @ViewChild('settingsModal', { static: true }) modalRef: ModalDirective;
+  @ViewChild('settingsModal', { static: true }) modalRef: ModalComponent;
 
   @Input() searchQuery: TaxonomySearchQuery;
   @Input() requiredFields: string[] = [];

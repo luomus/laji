@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasApiService } from '../../core/atlas-api.service';
-import { TableColumn } from '@swimlane/ngx-datatable';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { TableColumn } from '@achimha/ngx-datatable';
 import { map } from 'rxjs/operators';
 import { LappiModalComponent } from './lappi-modal.component';
 import { Subscription } from 'rxjs';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'ba-society-lappi',
@@ -31,12 +31,12 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
   cols: TableColumn[];
   round = Math.round;
 
-  private bsModalRef: BsModalRef;
+  private modalRef: ModalRef;
   private hideModalSubscription: Subscription;
 
   constructor(
     private atlasApi: AtlasApiService,
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private headerService: HeaderService,
     private translate: TranslateService
   ) {}
@@ -88,11 +88,11 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
 
   onTableRowSelect(e) {
     this.hideModalSubscription?.unsubscribe();
-    this.bsModalRef = this.modalService.show(LappiModalComponent, {class: 'modal-lg'});
-    this.bsModalRef.content.rows = e.selected[0].grids;
-    this.bsModalRef.content.index = e.selected[0].index;
-    this.hideModalSubscription = this.bsModalRef.content.hideModal.subscribe(() => {
-      this.bsModalRef.hide();
+    this.modalRef = this.modalService.show(LappiModalComponent, {size: 'lg'});
+    this.modalRef.content.rows = e.selected[0].grids;
+    this.modalRef.content.index = e.selected[0].index;
+    this.hideModalSubscription = this.modalRef.content.hideModal.subscribe(() => {
+      this.modalRef.hide();
       this.hideModalSubscription?.unsubscribe();
     });
   }

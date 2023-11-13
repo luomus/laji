@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { UserService } from '../service/user.service';
 import { Observable, of } from 'rxjs';
 import { Location } from '@angular/common';
@@ -11,7 +11,7 @@ import { PersonApi } from '../api/PersonApi';
 @Injectable({
   providedIn: 'root'
 })
-export class CheckLoginGuard implements CanActivate {
+export class CheckLoginGuard  {
 
   private isChecked = false;
 

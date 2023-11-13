@@ -1,7 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import {DOCUMENT, isPlatformBrowser} from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
-import {WINDOW} from '@ng-toolkit/universal';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +9,14 @@ export class PlatformService {
 
   private _canUseWebWorkerLogin = true;
 
+  public window: Window;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object, // eslint-disable-line @typescript-eslint/ban-types
-    @Inject(WINDOW) private window: Window,
     @Inject(DOCUMENT) private document: Document,
-  ) { }
+  ) {
+    this.window = document.defaultView;
+  }
 
   get isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
@@ -25,7 +27,7 @@ export class PlatformService {
   }
 
   get canUseWebWorker(): boolean {
-    return typeof this.window !== 'undefined' && 'Worker' in this.window;
+    return 'Worker' in this.window;
   }
 
   get canUseWebWorkerLogin(): boolean {
@@ -39,12 +41,14 @@ export class PlatformService {
   }
 
   get webAudioApiIsSupported(): boolean {
-    return typeof this.window !== 'undefined' && ('AudioContext' in this.window || 'webkitAudioContext' in this.window);
+    const window = this.window;
+    return 'AudioContext' in window || 'webkitAudioContext' in window;
   }
 
   get isIOS(): boolean {
-    return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(this.window.navigator.platform)
+    const window = this.window;
+    return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(window.navigator.platform)
       // iPad on iOS 13
-      || (this.window.navigator.userAgent.includes('MAC') && 'ontouchend' in this.document);
+      || (window.navigator.userAgent.includes('MAC') && 'ontouchend' in this.document);
   }
 }

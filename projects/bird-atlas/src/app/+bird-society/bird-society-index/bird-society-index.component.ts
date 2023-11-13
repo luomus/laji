@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { AtlasActivityCategory, AtlasActivityCategoryElement, AtlasApiService, AtlasSocietyStatsResponseElement } from '../../core/atlas-api.service';
-import { TableColumn } from '@swimlane/ngx-datatable';
+import { TableColumn } from '@achimha/ngx-datatable';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

@@ -12,7 +12,6 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NpInfoRow } from './np-info-row/np-info-row.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { ToastrService } from 'ngx-toastr';
@@ -27,6 +26,7 @@ import { UserService } from '../../../../shared/service/user.service';
 import { RowDocument } from '../../../../shared-modules/own-submissions/own-datatable/own-datatable.component';
 import { Observable } from 'rxjs';
 import { LajiFormUtil } from '@laji-form/laji-form-util.service';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
   selector: 'laji-np-info',
@@ -56,9 +56,8 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() reserveButtonClick = new EventEmitter();
   @Output() releaseButtonClick = new EventEmitter();
 
-  @ViewChild('infoModal', { static: true }) public modal: ModalDirective;
+  @ViewChild('infoModal', { static: true }) public modal: ModalComponent;
   @ViewChild('infoBox', { static: true }) infoBox;
-  @ViewChild('documentModal') public documentModal: ModalDirective;
 
   publicity = Document.PublicityRestrictionsEnum;
 
@@ -144,8 +143,9 @@ export class NpInfoComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.modal.onShown.subscribe(() => { this.modalIsVisible = true; this.cdRef.markForCheck(); });
-    this.modal.onHidden.subscribe(() => { this.modalIsVisible = false; this.cdRef.markForCheck(); });
+    this.modal.onShownChange.subscribe(shown => {
+      this.modalIsVisible = shown;
+    });
     if (this.windowReadyForModal()) {
       this.modal.show();
     }

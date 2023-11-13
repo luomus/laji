@@ -159,5 +159,17 @@
         </div>
       </a>
     </div>
+    <div class="d-flex flex-wrap row">
+      <a [href]="(dashboardLink | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+        <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dashboard.svg)'"></div>
+        <div *ngIf="(homeData$ | async)?.unitsLastWeek?.total > 0">
+          <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>
+          <span translate>home.dashboard-sub-intro-1</span>
+        </div>
+        <div>
+          <span translate>home.dashboard-sub-intro-2</span>
+        </div>
+      </a>
+    </div>
   </div>
 </ng-template>

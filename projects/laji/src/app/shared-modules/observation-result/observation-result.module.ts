@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ObservationTableComponent } from './observation-table/observation-table.component';
 import { ObservationTableOwnDocumentsComponent } from './observation-table-own-documents/observation-table-own-documents.component';
 import { ObservationResultService } from './service/observation-result.service';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SharedModule } from '../../shared/shared.module';
 import { DatatableModule } from '../datatable/datatable.module';
@@ -13,9 +13,9 @@ import { SelectedFieldItemComponent } from './selected-field-item/selected-field
 import { ObservationYearChartComponent } from './observation-year-chart/observation-year-chart.component';
 import { ObservationMonthDayChartComponent } from './observation-month-day-chart/observation-month-day-chart.component';
 import { ObservationTableSettingsComponent } from './observation-table/observation-table-settings.component';
-import { OwnObservationTableSettingsComponent } from './observation-table-own-documents/own-observation-table-settings.component';
 import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { ChartModule } from '../chart/chart.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -25,7 +25,8 @@ import { ChartModule } from '../chart/chart.module';
     SharedModule,
     DatatableModule,
     LajiUiModule,
-    ChartModule
+    ChartModule,
+    ModalModule
   ],
   declarations: [
     ObservationTableComponent,
@@ -35,7 +36,6 @@ import { ChartModule } from '../chart/chart.module';
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent,
     ObservationTableSettingsComponent,
-    OwnObservationTableSettingsComponent,
     ObservationTableOwnDocumentsComponent
   ],
   providers: [ObservationResultService],
@@ -43,7 +43,6 @@ import { ChartModule } from '../chart/chart.module';
     ObservationTableComponent,
     ObservationTableOwnDocumentsComponent,
     ObservationTableSettingsComponent,
-    OwnObservationTableSettingsComponent,
     SelectedFieldGroupComponent,
     ObservationYearChartComponent,
     ObservationMonthDayChartComponent

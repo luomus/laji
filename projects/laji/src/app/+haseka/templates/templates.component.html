@@ -4,7 +4,7 @@
     <i class="link glyphicon glyphicon-info-sign"></i>
   </div>
 </div>
-<alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
+<lu-alert *ngIf="showTemplateIntro" [dismissible]="true" (onClose)="toggleInfo()" [type]="'info'">
   <p>{{ 'haseka.templates.intro' | translate }}</p>
-</alert>
+</lu-alert>
 <laji-own-submissions [onlyTemplates]="true"></laji-own-submissions>

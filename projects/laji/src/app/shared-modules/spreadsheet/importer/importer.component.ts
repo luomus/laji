@@ -17,7 +17,6 @@ import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
-import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -34,6 +33,7 @@ import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
+import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
 
 /*
   Check that required columns have a non-empty cell at each row.
@@ -70,8 +70,6 @@ const checkEarlyValidation = (data: {[key: string]: string}[], columnMap: {[key:
 })
 export class ImporterComponent implements OnInit, OnDestroy {
 
-  @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
-  @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
@@ -140,7 +138,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   showOnlyErroneous = false;
   sheetLoadErrorMsg = '';
 
-  private modal: BsModalRef;
+  private modal: ModalRef;
 
   constructor(
     private formService: FormService,
@@ -158,7 +156,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     private spreadsheetFacade: SpreadsheetFacade,
     private fileService: FileService,
     private logger: Logger,
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private translate: TranslateService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
@@ -617,7 +615,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   openMapModal() {
-    this.modal = this.modalService.show(this.mapModal, {class: 'modal-lg'});
+    this.modal = this.modalService.show(this.mapModal, {size: 'lg'});
   }
 
   closeMapModal() {

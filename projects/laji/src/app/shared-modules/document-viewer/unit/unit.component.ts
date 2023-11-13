@@ -95,4 +95,7 @@ export class UnitComponent implements OnInit {
     this.annotationVisible = false;
   }
 
+  mediaHasFullResolutionAvailable(media: any[]) {
+    return media.some(m => m.fullResolutionMediaAvailable);
+  }
 }

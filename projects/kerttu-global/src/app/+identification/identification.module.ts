@@ -13,12 +13,11 @@ import { IdentificationResultsComponent } from './identification-results/identif
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { AudioViewerModule } from '../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer.module';
 import { TaxonSelectComponent } from './recording-identification/identification-view/taxon-select/taxon-select.component';
-import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { IdentificationTableComponent } from './recording-identification/identification-view/identification-table/identification-table.component';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
 import { SiteSelectionViewComponent } from './recording-identification/site-selection-view/site-selection-view.component';
 import { SiteSelectionMapComponent } from './recording-identification/site-selection-view/site-selection-map/site-selection-map.component';
-import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { ExpertiseByContinentComponent } from './expertise/expertise-by-continent/expertise-by-continent.component';
 import { SiteTableComponent } from './recording-identification/site-selection-view/site-table/site-table.component';
 import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
@@ -26,6 +25,7 @@ import { IdentificationUserTableComponent } from './identification-results/ident
 import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
 import { IdentificationPanelComponent } from './recording-identification/identification-view/identification-table/identification-panel/identification-panel.component';
 import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
+import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
   imports: [

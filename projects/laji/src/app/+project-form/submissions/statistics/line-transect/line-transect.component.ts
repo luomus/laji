@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import { Document } from '../../../../shared/model/Document';
-import * as MapUtil from 'laji-map/lib/utils';
+import * as MapUtil from '@luomus/laji-map/lib/utils';
 import { LineTransectChartTerms } from './line-transect-chart/line-transect-chart.component';
 import { NamedPlace } from '../../../../shared/model/NamedPlace';
 import { Units } from '../../../../shared/model/Units';
@@ -16,7 +16,7 @@ import { LajiApi, LajiApiService } from '../../../../shared/service/laji-api.ser
 import { Observable, of as ObservableOf } from 'rxjs';
 import { UserService } from '../../../../shared/service/user.service';
 import { FormService } from '../../../../shared/service/form.service';
-import { LajiMapLineTransectGeometry } from '@laji-map/laji-map.interface';
+import { LineTransectGeometry } from '@luomus/laji-map/lib/defs';
 
 interface LineTransectCount {
   psCouples: number;
@@ -202,7 +202,7 @@ export class LineTransectComponent implements OnChanges {
     }
   }
 
-  private getGeometry(documentName = 'document'): LajiMapLineTransectGeometry {
+  private getGeometry(documentName = 'document'): LineTransectGeometry {
     const document = documentName === 'document'
         ? this.document
         : this.namedPlace.acceptedDocument;

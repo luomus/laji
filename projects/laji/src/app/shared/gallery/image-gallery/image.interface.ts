@@ -8,16 +8,14 @@ export interface IImageSelectEvent {
 }
 
 export interface Image extends TaxonomyImage {
-
   taxonId?: string;
-
   documentId?: string;
-
   unitId?: string;
-
   vernacularName?: string;
-
   scientificName?: string;
-
   caption?: string;
+  mediaType?: 'IMAGE' | 'VIDEO' | 'MODEL';
+  videoURL?: string;
+  lowDetailModelURL?: string;
+  fullResolutionMediaAvailable?: boolean;
 }

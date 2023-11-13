@@ -6,7 +6,7 @@ import { ObservationResultModule } from '../../shared-modules/observation-result
 import { DownloadModalModule } from '../../shared-modules/download-modal/download-modal.module';
 import { ChartModule } from '../../shared-modules/chart/chart.module';
 import { YkjModule } from '../../shared-modules/ykj/ykj.module';
-import { JwBootstrapSwitchNg2Module } from 'jw-bootstrap-switch-ng2';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { ResultsComponent } from './results.component';
 import { DatatableModule } from '../../shared-modules/datatable/datatable.module';
 import { WbcRoutesMapComponent } from './wbc-result/wbc-routes/wbc-routes-map/wbc-routes-map.component';
@@ -51,7 +51,7 @@ import { InvasiveSpeciesControlResultStatisticsComponent } from './invasive-spec
 import { InvasiveSpeciesControlResultMapComponent } from './invasive-species-control-result/invasive-species-control-result-map/invasive-species-control-result-map.component';
 import { ProjectFormHeaderModule } from '../header/project-form-header.module';
 import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-select.module';
-import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
 import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
 

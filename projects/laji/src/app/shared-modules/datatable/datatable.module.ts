@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatatableComponent } from './datatable/datatable.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { LangModule } from '../lang/lang.module';
 import { SpinnerModule } from '../spinner/spinner.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -15,6 +15,7 @@ import { DatatableOwnSubmissionsComponent } from './datatable-own-submissions/da
 import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module';
 import { IucnStatusPipe } from './pipes/iucn-status.pipe';
 import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.mo
     DownloadModalModule,
     LajiUiModule,
     OwnSubmissionsModule,
-    CopyToClipboardModule
+    CopyToClipboardModule,
+    TooltipModule
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent, IucnStatusPipe],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent,
