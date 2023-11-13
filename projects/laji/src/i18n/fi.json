@@ -101,6 +101,7 @@
   "close": "Sulje",
   "closed.intro": "Vihko on suljettu huoltotöiden ajaksi. Ilmoitamme <a href=\"/\">etusivulla</a>, kun se on jälleen käytettävissä.",
   "closed.title": "Suljettu",
+  "closeTable": "Sulje taulukko",
   "collection.abbreviation": "Aineiston lyhenne",
   "collection.citation": "Suositeltu viittaus",
   "collection.collectionLocation": "Aineiston sijainti",
