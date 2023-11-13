@@ -122,6 +122,15 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     atlasClass: 'MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'
   };
 
+  otsoFilterShortcutQueryParams = {
+    administrativeStatusId: 'MX.finnishEnvironmentInstitute20192021forestSpecies',
+    time: '1990-01-01%2F',
+    onlyNonStateLands: true,
+    coordinateAccuracyMax: 100,
+    // eslint-disable-next-line max-len
+    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;HOBBYIST:COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED'
+  };
+
   constructor(
     private observationFacade: ObservationFacade,
     private taxonAutocompleteService: TaxonAutocompleteService,

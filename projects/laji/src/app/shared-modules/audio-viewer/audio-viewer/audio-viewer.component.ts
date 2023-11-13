@@ -3,13 +3,15 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   Output,
   SimpleChanges,
-  TemplateRef
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 import { Subscription } from 'rxjs';
@@ -17,7 +19,8 @@ import { AudioViewerMode, IAudio, IAudioViewerArea, IAudioViewerRectangle, ISpec
 import { AudioPlayer } from '../service/audio-player';
 import { AudioViewerUtils } from '../service/audio-viewer-utils';
 import { defaultSpectrogramConfig } from '../variables';
-import {delay} from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
+import { AudioSpectrogramComponent } from './audio-spectrogram/audio-spectrogram.component';
 
 @Component({
   selector: 'laji-audio-viewer',
@@ -42,6 +45,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() autoplay = false;
   @Input() autoplayRepeat = 1;
 
+  @Input() playbackRate = 1;
+
   @Input() showControls = true;
   @Input() showZoomControl = false; // zoom control allows the user to zoom into the spectrogram
   @Input() showLoopControl = true; // loop control allows the user to loop the recording
@@ -50,14 +55,15 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Input() playOnlyOnSingleClick = false; // play the recording only when the user clicks once and not double-clicks
 
   @Input() showPregeneratedSpectrogram = false;
-
   @Input() spectrogramConfig: ISpectrogramConfig = defaultSpectrogramConfig;
-
-  @Input() mode: AudioViewerMode = 'default';
 
   @Input() spectrogramWidth: number;
   @Input() spectrogramHeight: number;
   @Input() spectrogramMargin: { top: number; bottom: number; left: number; right: number };
+
+  @Input() adaptToContainerHeight = false;
+
+  @Input() mode: AudioViewerMode = 'default';
 
   @Input() audioInfoTpl: TemplateRef<any>;
   @Input() customControlsTpl: TemplateRef<any>;
@@ -75,6 +81,12 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
   @Output() drawEnd = new EventEmitter<IAudioViewerArea>();
   @Output() spectrogramDblclick = new EventEmitter<number>();
   @Output() modeChange = new EventEmitter<AudioViewerMode>();
+
+  @ViewChild(AudioSpectrogramComponent) spectrogramComponent: AudioSpectrogramComponent;
+
+  @HostBinding('class.audio-viewer-responsive') get audioViewerResponsiveClass() {
+    return this.adaptToContainerHeight;
+  }
 
   private audioSub: Subscription;
   private clicks = 0;
@@ -122,6 +134,8 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
         changes.spectrogramConfig
       ) {
         this.setDefaultView();
+      } else if (changes.playbackRate) {
+        this.audioPlayer.setPlayBackRate(this.playbackRate || 1);
       } else if (changes.mode) {
         this.audioPlayer.stop();
       }
@@ -188,6 +202,10 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
     this.audioPlayer.setPlayArea(this.getPlayArea());
   }
 
+  resize() {
+    this.spectrogramComponent.resize();
+  }
+
   private clear() {
     if (this.audioSub) {
       this.audioSub.unsubscribe();
@@ -195,20 +213,23 @@ export class AudioViewerComponent implements OnChanges, OnDestroy {
 
     this.buffer = undefined;
     this.view = undefined;
+    this.defaultView = undefined;
     this.hasError = false;
     this.audioPlayer.clear();
   }
 
   private setDefaultView() {
+    const minTime = 0;
     const maxTime = this.buffer.duration;
+    const minFreq = this.spectrogramConfig.minFrequency || 0;
     const maxFreq = AudioViewerUtils.getMaxFreq(this.spectrogramConfig.sampleRate);
 
     this.defaultView = {
       xRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.xRange, this.zoomTime ? this.timePaddingOnZoom : undefined, 0, maxTime
+        this.focusArea?.xRange, this.zoomTime ? this.timePaddingOnZoom : undefined, minTime, maxTime
       ),
       yRange: AudioViewerUtils.getPaddedRange(
-        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, 0, maxFreq
+        this.focusArea?.yRange, this.zoomFrequency ? this.frequencyPaddingOnZoom : undefined, minFreq, maxFreq
       )
     };
     this.setView(this.defaultView);

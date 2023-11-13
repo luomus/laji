@@ -58,6 +58,8 @@ import { DOCUMENT } from '@angular/common';
  * This is modified to out needs
  */
 
+export type ViewType = 'compact'|'annotation'|'full'|'full2'|'full3';
+
 @Component({
   selector: 'laji-image-gallery',
   styleUrls: ['./image-modal.component.css'],
@@ -70,8 +72,8 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   public loading = false;
   public showRepeat = false;
   @Input() eventOnClick = false;
-  @Input() view: 'compact'|'annotation'|'full'|'full2'|'full3' = 'compact';
-  @Input() views = ['compact', 'full'];
+  @Input() view: ViewType = 'compact';
+  @Input() views: ViewType[] = ['compact', 'full'];
   @Input() showExtraInfo = true;
   @Input() modalImages: Image[];
   @Input() imagePointer: number;
@@ -85,6 +87,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   @Output() cancelEvent = new EventEmitter<any>();
   @Output() imageSelect = new EventEmitter<IImageSelectEvent>();
   @Output() showModal = new EventEmitter<boolean>();
+  @Output() viewChange = new EventEmitter<'compact'|'annotation'|'full'|'full2'|'full3'>();
   public overlay: ComponentRef<ImageModalOverlayComponent>;
   // private _overlay: ComponentLoader<ImageModalOverlayComponent>;
   private showModalSub: Subscription;
@@ -170,9 +173,10 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     this.overlay?.destroy();
   }
 
-  setView(viewType) {
+  setView(viewType: ViewType) {
     if (this.view !== viewType) {
       this.view = viewType;
+      this.viewChange.emit(viewType);
     }
   }
 

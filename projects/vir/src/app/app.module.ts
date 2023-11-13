@@ -3,7 +3,6 @@ import { APP_ID, ErrorHandler, NgModule } from '@angular/core';
 import { APP_BASE_HREF, CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { TransferHttpCacheModule } from '@nguniversal/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -45,7 +44,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     BrowserModule,
     CommonModule,
     HttpClientModule,
-    NgtUniversalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -64,7 +62,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
-    {provide: APP_ID, useValue: 'laji-app'},,
+    {provide: APP_ID, useValue: 'vir-app'},,
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

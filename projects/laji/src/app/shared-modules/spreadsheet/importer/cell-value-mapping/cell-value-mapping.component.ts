@@ -68,7 +68,7 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
     const invalidValues = {};
     const analyzed = {};
     this.data.map(row => {
-      if (!row[current] || analyzed[row[current]]) {
+      if (row[current] === undefined || analyzed[row[current]]) {
         return;
       }
       analyzed[row[current]] = true;
@@ -88,7 +88,12 @@ export class CellValueMappingComponent implements OnInit, OnChanges {
       this.analyseNextColumn();
       return;
     }
-    this.allMapped = false;
+
+    if (this.field.required) {
+      this.allMapped = false;
+    } else {
+      this.allMapped = true;
+    }
     this.currentKey = current;
     this.valueMap[this.field.key] = {};
   }

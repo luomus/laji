@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { KerttuGlobalSharedModule } from '../kerttu-global-shared/shared.module';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
@@ -59,7 +59,8 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
   ],
   providers: [
     SpeciesListQueryService,
-    SpeciesListQueryResetGuard
+    SpeciesListQueryResetGuard,
+    DatePipe
   ]
 })
 export class ValidationModule { }

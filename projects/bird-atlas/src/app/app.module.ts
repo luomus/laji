@@ -8,7 +8,6 @@ import { NotFoundComponent } from 'projects/laji/src/app/shared/not-found/not-fo
 import { LocaleModule } from 'projects/laji/src/app/locale/locale.module';
 import { LocalizePipe } from 'projects/laji/src/app/locale/localize.pipe';
 import { BaRoutingModule } from './routing.module';
-import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
@@ -26,7 +25,6 @@ import { NgxDatatableModule } from '@achimha/ngx-datatable';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgtUniversalModule,
     NgxWebstorageModule.forRoot({prefix: 'ba-', separator: ''}),
     TranslateModule.forRoot({
       loader: {

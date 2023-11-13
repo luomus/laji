@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { LangModule } from '../lang/lang.module';
-import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { LajiUiModule } from '../../../../../laji-ui/src/public-api';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { AudioViewerComponent } from './audio-viewer/audio-viewer.component';
@@ -13,21 +13,22 @@ import { AudioService } from './service/audio.service';
 import { SpectrogramService } from './service/spectrogram.service';
 import { RequiresAudioSupportDirective } from './directive/requires-audio-support.directive';
 import { AudioViewerSettingsComponent } from './audio-viewer-settings/audio-viewer-settings.component';
-import { DatePipe } from '@angular/common';
 import { SpectrogramComponent } from './audio-viewer/audio-spectrogram/spectrogram/spectrogram.component';
 import { SpectrogramChartComponent } from './audio-viewer/audio-spectrogram/spectrogram-chart/spectrogram-chart.component';
 import { SmallAudioViewerComponent } from './small-audio-viewer/small-audio-viewer.component';
 import { UtilitiesDumbDirectivesModule } from '../utilities/directive/dumb-directives/utilities-dumb-directives.module';
 import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settings/audio-viewer-simple-settings.component';
+import { AudioViewerBatSettingsComponent } from './audio-viewer-bat-settings/audio-viewer-bat-settings.component';
 
 @NgModule({
   declarations: [AudioViewerComponent, AudioSpectrogramComponent,
     AudioNotSupportedErrorComponent, AudioIosWarningComponent,
     RequiresAudioSupportDirective, AudioViewerSettingsComponent,
     SpectrogramComponent, SpectrogramChartComponent, SmallAudioViewerComponent,
-    AudioViewerSimpleSettingsComponent
+    AudioViewerSimpleSettingsComponent,
+    AudioViewerBatSettingsComponent
   ],
-  providers: [AudioService, SpectrogramService, DatePipe],
+  providers: [AudioService, SpectrogramService],
   imports: [
     CommonModule,
     SharedModule,
@@ -42,6 +43,7 @@ import { AudioViewerSimpleSettingsComponent } from './audio-viewer-simple-settin
     RequiresAudioSupportDirective,
     AudioViewerSettingsComponent,
     AudioViewerSimpleSettingsComponent,
+    AudioViewerBatSettingsComponent,
     SmallAudioViewerComponent
   ]
 })

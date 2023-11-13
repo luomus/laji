@@ -1,4 +1,4 @@
-<div>
+<div [ngClass]="!isMobile ? 'selector-container' : 'mobile-selector-container'">
   <ng-container *ngIf="!loading; else loadingSpinner">
     <div>
       <label>
@@ -13,6 +13,7 @@
       </label>
     </div>
     <laji-tree-selector
+      [ngClass]="!isMobile ? 'selector' : 'mobile-selector'"
       [selectedOptions]="selectedOption"
       [optionsTree]="optionsTree"
       [includeCheckbox]="false"
@@ -20,6 +21,7 @@
       [includeCount]="true"
       [includeQualityIcon]="true"
       [openOnSelect]="true"
+      [useVirtualScroll]="false"
       (emitSelect)="changeSelected($event)"
     >
     </laji-tree-selector>

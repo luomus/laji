@@ -19,7 +19,8 @@ export enum SpecialTypes {
   date = 'date',
   time = 'time',
   keywords = 'keywords',
-  atlasCode = 'atlasCode'
+  atlasCode = 'atlasCode',
+  positiveInteger = 'positiveInteger'
 }
 
 @Injectable()
@@ -67,7 +68,8 @@ export class MappingService {
     'gatherings[*].units[*].identifications[*].detDate': SpecialTypes.dateOptionalTime,
     'gatherings[*].units[*].identifications[*].taxon': SpecialTypes.unitTaxon,
     'gatherings[*].units[*].identifications[*].taxonID': SpecialTypes.taxonID,
-    'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode
+    'gatherings[*].units[*].atlasCode': SpecialTypes.atlasCode,
+    'gatherings[*].observationMinutes': SpecialTypes.positiveInteger
   };
 
   static informalTaxonGroupsToList(groups: InformalTaxonGroup[], result = [], parent = ''): string[] {
@@ -323,6 +325,17 @@ export class MappingService {
     return null;
   }
 
+  mapPositiveInteger(value: unknown ): number {
+    const num = Number(('' + value).toLowerCase());
+    if (isNaN(num)) {
+      return null;
+    }
+    if (Number.isInteger(num) && num > 0) {
+      return num;
+    }
+    return null;
+  }
+
   mapDateOptionalTime(value: unknown): string {
     if (typeof value === 'string' && value.match(/^[0-9-.]+[\s,T]*[0-9-.:+Z]*$/)) {
       const parts = value.split(/[\s,T]+/);
@@ -356,7 +369,6 @@ export class MappingService {
 
   private _map(value: any, field: IFormField, allowUnMapped = false, convertToArray = true): TUserValueMap|TUserValueMap[]|null {
     const fieldType = this.getSpecial(field);
-
     if (Array.isArray(value)) {
       value = value.map(val => this._map(val, field, allowUnMapped, false));
       if (!field.isArray) {
@@ -397,6 +409,9 @@ export class MappingService {
         break;
       case SpecialTypes.keywords:
         targetValue = this.mapKeywords(targetValue || value);
+        break;
+      case SpecialTypes.positiveInteger:
+        targetValue = this.mapPositiveInteger(targetValue || value);
         break;
       default:
         if (targetValue === null) {
