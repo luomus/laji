@@ -16,6 +16,7 @@ import { Logger } from '../../logger/logger.service';
 import {catchError, delay, map, tap} from 'rxjs/operators';
 import { IImageSelectEvent } from '../image-gallery/image.interface';
 import { QueryParamsHandling } from '@angular/router';
+import { ViewType } from '../image-gallery';
 
 @Component({
   selector: 'laji-gallery',
@@ -40,8 +41,8 @@ export class GalleryComponent implements OnChanges {
   @Input() shortcut: boolean;
   @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
-  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'compact';
-  @Input() views = ['compact', 'full'];
+  @Input() view: ViewType = 'compact';
+  @Input() views: ViewType[] = ['compact', 'full'];
   @Output() selected = new EventEmitter<IImageSelectEvent>();
   @Output() hasData = new EventEmitter<boolean>();
   @Output() images = new EventEmitter<TaxonomyImage[]>();
