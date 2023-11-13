@@ -10,7 +10,9 @@
       "error",
       {
         "type": "element",
-        "prefix": ["lu"],
+        "prefix": [
+          "lu"
+        ],
         "style": "kebab-case"
       }
     ],
@@ -18,7 +20,9 @@
       "error",
       {
         "type": "attribute",
-        "prefix": ["lu"],
+        "prefix": [
+          "lu"
+        ],
         "style": "camelCase"
       }
     ]

@@ -22,8 +22,8 @@ import { concatMap, map, take } from 'rxjs/operators';
 import { Global } from '../../../../../environments/global';
 import { combineLatest, Subscription } from 'rxjs';
 import { Profile } from '../../../../shared/model/Profile';
-import LajiForm from 'laji-form/lib/index';
-import { Theme as LajiFormTheme } from 'laji-form/lib/themes/theme';
+import LajiForm from '@luomus/laji-form/lib/index';
+import { Theme as LajiFormTheme } from '@luomus/laji-form/lib/themes/theme';
 import { Form } from 'projects/laji/src/app/shared/model/Form';
 import { environment } from 'projects/laji/src/environments/environment';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
@@ -264,8 +264,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
       return;
     }
     combineLatest(
-      import('laji-form'),
-      import('laji-form/lib/themes/bs3'),
+      import('@luomus/laji-form'),
+      import('@luomus/laji-form/lib/themes/bs3'),
       this.userService.getUserSetting<any>(this.settingsKey).pipe(
         concatMap(settings => this.userService.getUserSetting<any>(GLOBAL_SETTINGS).pipe(
           map(globalSettings => ({...globalSettings, ...settings}))

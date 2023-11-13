@@ -1,4 +1,4 @@
-import * as MapUtil from 'laji-map/lib/utils';
+import * as MapUtil from '@luomus/laji-map/lib/utils';
 import G from 'geojson';
 
 export const convertYkjToGeoJsonFeature = (origLat: string | number, origLng: string | number, properties: {[k: string]: any} = {}): G.Feature<G.Polygon> => {

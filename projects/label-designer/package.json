@@ -1,6 +1,6 @@
 {
-  "name": "label-designer",
-  "version": "4.0.15",
+  "name": "@luomus/label-designer",
+  "version": "4.0.16",
   "author": "Ville-Matti Riihikoski",
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
@@ -29,5 +29,8 @@
     "file-saver": ">=2.0.0",
     "ngx-webstorage": ">=5.0.0",
     "xlsx": ">=0.13.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,6 +1,6 @@
-import LajiFormBuilder from 'laji-form-builder';
+import LajiFormBuilder from '@luomus/laji-form-builder';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
-import lajiFormBuilderBs3Theme from 'laji-form-builder/lib/client/themes/bs3';
+import lajiFormBuilderBs3Theme from '@luomus/laji-form-builder/lib/client/themes/bs3';
 import { FormApiClient } from '../../shared/api/FormApiClient';
 import { TranslateService } from '@ngx-translate/core';
 import { Form } from '../../shared/model/Form';
@@ -10,7 +10,7 @@ import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Global } from '../../../environments/global';
-import { Lang } from 'laji-form-builder/lib/model';
+import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
 
 @Component({

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef, 
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdService } from '../../../../../shared/service/id.service';
-import { ColumnMode } from '@swimlane/ngx-datatable';
+import { ColumnMode } from '@achimha/ngx-datatable';
 
 @Component({
   selector: 'laji-wbc-routes-list',

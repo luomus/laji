@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, QueryList } from '@angular/core';
-import { SlideComponent } from './slide/slide.component';
+import { CarouselSlideComponent } from './slide/carousel-slide.component';
 
 @Component({
   selector: 'lu-carousel',
@@ -10,7 +10,7 @@ import { SlideComponent } from './slide/slide.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarouselComponent implements AfterViewInit {
-  @ContentChildren(SlideComponent) slides!: QueryList<SlideComponent>;
+  @ContentChildren(CarouselSlideComponent) slides!: QueryList<CarouselSlideComponent>;
 
   private currentSlideIdx = 0;
 

@@ -13,3 +13,11 @@
   left: unset;
   bottom: unset;
 }
+
+:host ::ng-deep .marker-cluster-purple {
+  background-color: rgba(179, 136, 255, 0.6);
+
+  > div {
+    background-color: rgba(137, 94, 213, 0.6);
+  }
+}

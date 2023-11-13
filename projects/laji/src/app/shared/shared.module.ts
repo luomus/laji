@@ -23,6 +23,8 @@ import { ValuesPipe } from './pipe/values.pipe';
 import { CollectionNamePipe } from './pipe/collection-name.pipe';
 import { AreaNamePipe } from './pipe/area-name.pipe';
 import { ImageModalOverlayComponent } from './gallery/image-gallery/image-modal-overlay.component';
+import { ImageModalVideoComponent } from './gallery/video/video.component';
+import { ImageModalModelComponent } from './gallery/model/model.component';
 import { FormNamePipe } from './pipe/form-name.pipe';
 import { NlToBrPipe } from './pipe/nl-to-br.pipe';
 import { LocalizePipe } from '../locale/localize.pipe';
@@ -78,6 +80,7 @@ import { TypeGuardPipe } from './pipe/type-guard.pipe';
 import { PdfButtonComponent } from './pdf-button/pdf-button.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { IfWidthAboveBreakpointDirective } from './directive/if-width-above-breakpoint.directive';
+import { ModelViewerModule } from '../shared-modules/model-viewer/model-viewer.module';
 import { DisableWheelDirective } from './directive/disable-wheel.directive';
 import { AlertModule } from 'projects/laji-ui/src/lib/alert/alert.module';
 import { PopoverModule } from 'projects/laji-ui/src/lib/popover/popover.module';
@@ -125,7 +128,9 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         TypeGuardPipe,
         PdfButtonComponent,
         IfWidthAboveBreakpointDirective,
-        DisableWheelDirective,
+        ImageModalVideoComponent,
+        ImageModalModelComponent,
+        DisableWheelDirective
     ],
     imports: [
         FormsModule,
@@ -143,6 +148,7 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
         UtilitiesModule,
         InfoModule,
         LayoutModule,
+        ModelViewerModule,
         TooltipModule
     ],
     providers: [],

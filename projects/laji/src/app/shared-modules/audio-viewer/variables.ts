@@ -7,5 +7,6 @@ export const defaultSpectrogramConfig: ISpectrogramConfig = {
   nbrOfRowsRemovedFromStart: 0,
   maxNbrOfColsForNoiseEstimation: 6000,
   noiseReductionParam: 2,
-  logRange: 3
+  logRange: 3,
+  minFrequency: 0
 };

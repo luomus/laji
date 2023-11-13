@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { NamedPlace } from '../../../../../shared/model/NamedPlace';
-import * as MapUtil from 'laji-map/lib/utils';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import * as MapUtil from '@luomus/laji-map/lib/utils';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { convertWgs84ToYkj } from '../../../../../root/coordinate-utils';
-import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 
 @Component({
   selector: 'laji-line-transect-print',
@@ -18,7 +18,7 @@ export class LineTransectPrintComponent implements OnChanges {
   @Input()
   public namedPlace: NamedPlace;
 
-  public lajiMapOptions: LajiMapOptions;
+  public lajiMapOptions: Options;
   public biotopes: {[distRow: number]: string[]};
   public pages: number[][] = [];
   public totalNbrOfPages: number;
@@ -171,7 +171,7 @@ export class LineTransectPrintComponent implements OnChanges {
     const geometry = this.getGeometry();
     this.checkOrientation(geometry);
     this.lajiMapOptions = {
-      tileLayerName: LajiMapTileLayerName.maastokartta,
+      tileLayerName: TileLayerName.maastokartta,
       tileLayerOpacity: 0.5,
       lineTransect: {
         printMode: true,

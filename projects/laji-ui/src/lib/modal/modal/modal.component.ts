@@ -10,7 +10,7 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
   selector: 'lu-modal',
   template:`
     <div class="lu-backdrop"></div>
-    <div class="lu-modal-container" [class]="'lu-modal-' + _size" *ngIf="isShown" #container>
+    <div class="lu-modal-container" [class]="'lu-modal-' + size" *ngIf="isShown" #container>
       <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
         <lu-icon type="close"></lu-icon>
       </lu-button-round>
@@ -24,16 +24,12 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 })
 export class ModalComponent implements OnDestroy {
 
-  protected _size: ModalSize = 'md';
-
   /**
-   * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'
+   * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'.
    */
-  @Input() set size(size: ModalSize) {
-    this._size = size;
-  }
+  @Input() size: ModalSize;
 
-  // null becuase undefined in the template [class] causes error.
+  // null because undefined in the template [class] causes error.
   @Input() contentClass: string | null = null;
 
   /**
@@ -48,12 +44,11 @@ export class ModalComponent implements OnDestroy {
   @Output() onShownChange = new EventEmitter<boolean>();
   @Output() onHide = this.onShownChange.pipe(filter(shown => shown === false));
   @Output() onShow = this.onShownChange.pipe(filter(shown => shown === true));
-  public isShown = false;
+  isShown = false;
 
   @ViewChild('container', {static: false}) containerRef?: ElementRef;
 
   private originalBodyOverflow?: string;
-  private originalDomParent?: HTMLElement;
 
   constructor(
     private elementRef: ElementRef,
@@ -61,13 +56,12 @@ export class ModalComponent implements OnDestroy {
     @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef
   ) {
-    this.hide = this.hide.bind(this);
     this.hideElement();
   }
 
-	ngOnDestroy(): void {
+  ngOnDestroy() {
     this.hide();
-	}
+  }
 
   @HostListener('document:keydown.escape')
   private hideOnEsc() {
@@ -84,42 +78,51 @@ export class ModalComponent implements OnDestroy {
     }
   }
 
-  public show() {
+  show() {
     if (this.isShown) {
       return;
     }
-    this.originalBodyOverflow = this.document.body.style.overflow;
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
-
-    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+    this.showElement();
+    this.hijackBodyOverflow();
     this.isShown = true;
     this.onShownChange.emit(true);
     this.cdr.markForCheck();
   }
 
-  public hide(): boolean {
+  hide(): boolean {
     if (!this.isShown) {
       return false;
     }
     this.hideElement();
-
+    this.releaseBodyOverflow();
     this.isShown = false;
     this.onShownChange.emit(false);
     this.cdr.markForCheck();
     return true;
   }
 
-  public getContentNode() {
+  getContentNode(): HTMLElement {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
   }
 
+  private showElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
+  }
+
   private hideElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+  }
+
+  private hijackBodyOverflow() {
+    this.originalBodyOverflow = this.document.body.style.overflow;
+    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+  }
+
+  private releaseBodyOverflow() {
     if (this.originalBodyOverflow) {
       this.renderer.setStyle(this.document.body, 'overflow', this.originalBodyOverflow);
     } else {
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
-
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
   }
 }

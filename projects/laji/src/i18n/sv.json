@@ -264,7 +264,7 @@
   "excel.import.error.doneWithErrors": "<strong>No every observation was successfully saved!</strong> From table bellow you can find the rows that failed. You can remove the rows that where successfully uploaded from the file and try again. If the problem persist please contact support and if possible send the failed file along.",
   "excel.import.error.invalidFileType": "<strong>Invalid file format.</strong> At the moment supported formats are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Text (odt), and comma separated values ​​file (csv).",
   "excel.import.error.invalidFormId": "Du kan inte spara filer med namnet {{formId}} här, eftersom detta skulle spara data till ett annat dataset. Ta bort koden från filnamnet och försök igen.",
-  "excel.import.error.missingSplitColumn": "Det gick inte att slå ihop kolumner i ett flerkolumnfält <strong>{{field}}</strong>! Avsnittet <strong>{{column}}</strong> saknas.",
+  "excel.import.error.missingSplitColumn": "Fält(en) <strong>{{column}}</strong> saknas i filen. Dessa fält är obligatoriska om fältet <strong>{{field}}</strong> finns.",
   "excel.import.failed": "Failed to save some of the data!",
   "excel.import.hideMappings": "Dölj länkad",
   "excel.import.intro": "On this page, you can bring observations to Notebook. You can bring your own templates also as long as the first row of the file is a tittle row. The recognized file extensions are Microsoft Excel Open XML Spreadsheets (xlsx), OpenDocument Text (odt), and comma separated values ​​file (csv). One observation batch must have a maximum of {{maxUnits}} individual observations.",

@@ -1,9 +1,9 @@
-:host >>> .bootstrap-switch {
+:host ::ng-deep .bootstrap-switch {
   display: block;
   margin-right: auto;
   margin-left: auto;
 }
-:host >>> .form-filters {
+:host ::ng-deep .form-filters {
   border-top: 1px solid #e1e1e1;
   z-index: 1 !important;
 }

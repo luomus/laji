@@ -1,4 +1,4 @@
-import {DOCUMENT} from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Directive, ElementRef, HostBinding, HostListener, Inject } from '@angular/core';
 
 /**

@@ -48,7 +48,7 @@ $btn-border-radius: 5px !default;
   background-color: rgba(0,0,0,0);
   background: unset;
   color: $neutral-6;
-  border: 1px solid $neutral-4;
+  outline: 1px solid $neutral-4;
   box-shadow: 0 0 0 rgba(0,0,0,0);
 
   cursor: not-allowed;
@@ -80,7 +80,7 @@ $btn-border-radius: 5px !default;
   @include loading($neutral-1, $primary-3);
 
   cursor: unset;
-  border: 1px solid $primary-3;
+  outline: 1px solid $primary-3;
   box-shadow: 0 0 0 rgba(0,0,0,0);
   color: rgba($primary-7, .8);
 }
@@ -92,7 +92,7 @@ $btn-border-radius: 5px !default;
 @mixin btnSecondary {
   background-color: $neutral-1;
   color: $neutral-7;
-  box-shadow: 0 1px 2px 0px rgba($neutral-9, .3), inset 0 1px 6px rgba($neutral-9, 0);
+  box-shadow: 0 1px 2px 0px rgba(20, 27, 31, 0.3), 0px 0px 2px 0px rgba(20, 27, 31, 0.3), inset 0 1px 6px rgba(20, 27, 31, 0);
   &:hover, &:focus {
     background-color: $neutral-3;
     color: $neutral-7;

@@ -1,6 +1,5 @@
-import { Feature } from 'geojson';
-import { GetFeatureStyleOptions } from 'laji-map';
-import { MarkerCluster, PathOptions } from 'leaflet';
+import type { GetFeatureStyleOptions } from '@luomus/laji-map';
+import type { PathOptions } from 'leaflet';
 
 export interface LajiMapVisualizationItem {
   label: string;

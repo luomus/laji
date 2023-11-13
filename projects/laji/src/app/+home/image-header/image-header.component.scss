@@ -75,7 +75,7 @@ laji-omni-search {
   height: 300px;
 }
 
-:host >>> .carousel .item {
+:host ::ng-deep .carousel .item {
   height: 300px;
 }
 
@@ -95,7 +95,7 @@ laji-omni-search {
     height: 400px;
   }
 
-  :host >>> .carousel .item {
+  :host ::ng-deep .carousel .item {
     height: 400px;
   }
 }

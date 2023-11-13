@@ -22,7 +22,9 @@ export class TooltipDirective implements OnDestroy {
 
   @HostListener('mouseenter')
   load() {
-    if (this.compRef || !this.luTooltip || this.isDisabled) { return; }
+    if (this.compRef || !this.luTooltip || this.isDisabled) {
+      return;
+    }
     this.compRef = this.viewContainerRef.createComponent(TooltipComponent);
     this.compRef.instance.content = this.luTooltip;
 

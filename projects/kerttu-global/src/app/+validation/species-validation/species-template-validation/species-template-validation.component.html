@@ -1,13 +1,13 @@
 <ng-container *ngIf="activeTemplateIdx == null else templateView">
   <div id="species-template-validation-header">
     <h1 *ngIf="species" class="d-inline-block">
-      {{ species.commonName }} - <i>{{ species.scientificName }}</i>
+      <bsg-species-name [species]="species"></bsg-species-name>
     </h1>
     <div class="gray" *ngIf="subSpecies.length > 0">
       {{ 'validation.includingSubspecies' | translate }}:
       <ng-container *ngFor="let sub of subSpecies">
         <br>
-        {{ sub.commonName }} - <i>{{ sub.scientificName }}</i>
+        <bsg-species-name [species]="sub"></bsg-species-name>
       </ng-container>
     </div>
   </div>
@@ -78,7 +78,7 @@
 
 <ng-template #templateView>
   <h1 *ngIf="activeAudio" class="d-inline-block">
-    {{ activeAudio.species.commonName }} - <i>{{ activeAudio.species.scientificName }}</i>
+    <bsg-species-name [species]="activeAudio.species"></bsg-species-name>
   </h1>
   <bsg-template
     [audio]="activeAudio"

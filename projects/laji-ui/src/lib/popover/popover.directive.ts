@@ -93,7 +93,7 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
       distinctUntilChanged(),
       debounceTime(10)
     ).subscribe(
-      b => { if (b) { this.loadContainer(); } else { this.unloadContainer(); } }
+      hovering => hovering ? this.loadContainer() : this.unloadContainer()
     );
   }
 
@@ -122,11 +122,11 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
   }
 
   private updateHoverState(state: 'mouseenter' | 'mouseleave', target: 'component' | 'popover') {
-    const b = { mouseenter: true, mouseleave: false }[state];
+    const hovering = { mouseenter: true, mouseleave: false }[state];
     if (target === 'component') {
-      this.hoveringComponent = b;
+      this.hoveringComponent = hovering;
     } else {
-      this.hoveringPopover = b;
+      this.hoveringPopover = hovering;
     }
     this.hovering$.next(this.hoveringComponent || this.hoveringPopover);
   }

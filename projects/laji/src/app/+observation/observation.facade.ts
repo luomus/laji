@@ -107,7 +107,6 @@ export class ObservationFacade {
     private translateService: TranslateService,
     private userService: UserService,
     private footerService: FooterService,
-    private warehouseApi: WarehouseApi,
     private observationDataService: ObservationDataService
   ) {
     this.updateState({..._state, ...this.persistentState});
@@ -223,10 +222,6 @@ export class ObservationFacade {
       tap((cnt) => this.updateState({..._state, [loadingKey]: false, [countKey]: cnt})),
       share()
     );
-  }
-
-  setApiType(type: 'sample' | 'unit') {
-    this.observationDataService.setApiType(type);
   }
 
   private updateState(state: IObservationState) {

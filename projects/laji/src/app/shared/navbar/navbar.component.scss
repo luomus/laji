@@ -241,7 +241,7 @@ $text-color: $primary-2;
     max-width: 200px;
   }
 
-  :host >>> .omni.expand {
+  :host ::ng-deep .omni.expand {
     width: 200px !important;
   }
 }

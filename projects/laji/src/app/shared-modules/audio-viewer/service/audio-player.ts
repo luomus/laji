@@ -21,6 +21,8 @@ export class AudioPlayer {
   private autoplayRepeat = 1;
   private autoplayCounter = 0;
 
+  private playBackRate = 1;
+
   private timeupdateInterval = interval(20);
   private timeupdateIntervalSub: Subscription;
 
@@ -44,6 +46,11 @@ export class AudioPlayer {
     this.stop();
     this.playArea = playArea;
     this.currentTime = this.getStartTime();
+  }
+
+  setPlayBackRate(playBackRate: number) {
+    this.stop();
+    this.playBackRate = playBackRate;
   }
 
   toggle() {
@@ -110,7 +117,7 @@ export class AudioPlayer {
       }
       this.startOffset = this.currentTime;
 
-      this.source = this.audioService.playAudio(this.buffer, this.playArea?.yRange, this.currentTime, this);
+      this.source = this.audioService.playAudio(this.buffer, this.playBackRate, this.playArea?.yRange, this.currentTime, this);
       this.startAudioContextTime = this.audioService.getAudioContextTime();
 
       this.source.onended = () => {
