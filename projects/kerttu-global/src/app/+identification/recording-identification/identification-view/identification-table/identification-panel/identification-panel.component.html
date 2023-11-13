@@ -1,7 +1,7 @@
 <ng-template #headingTemplate>
   <div class="identification-heading">
     <strong class="panel-title">
-      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container>{{ identification.commonName }} - {{ identification.scientificName }}
+      <ng-container *ngIf="idx != null">{{ idx + 1 }}. </ng-container><bsg-species-name [species]="identification"></bsg-species-name>
     </strong>
     <div class="pull-right">
       <div class="d-inline mr-3" *ngIf="identification.hasAudio">
@@ -28,7 +28,7 @@
         <input type="radio" name="{{ componentId }}_occurrence" [checked]="identification.annotation.occurrence === value" [disabled]="buttonsDisabled" (change)="annotationTypeChange(value)"/>
         {{ 'identification.' + (value === speciesAnnotationEnum.occurs ? 'occurs' : 'possiblyOccurs') | translate }}
       </label>
-      <laji-info [placement]="'right'" [html]="'identification.possiblyOccurs.info' | translate" [showOnHover]="true"></laji-info>
+      <laji-info [placement]="'right'" [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.possiblyOccursInsect.info' : 'identification.possiblyOccurs.info') | translate" [showOnHover]="true"></laji-info>
     </div>
     <div class="mt-4">
       <label>{{ 'identification.boxes' | translate }}</label>
@@ -44,6 +44,7 @@
               [area]="box.area"
               [spectrogramWidth]="130"
               [spectrogramHeight]="50"
+              [spectrogramConfig]="spectrogramConfig"
               [areaColor]="box.overlapsWithOtherSpecies ? overlappingBirdRectangleColor: birdRectangleColor"
             ></laji-small-audio-viewer>
           </td>

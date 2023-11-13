@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { IValidationStat } from '../../../kerttu-global-shared/models';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartData } from 'chart.js';
+import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'bsg-validation-pie-chart',
@@ -10,6 +10,9 @@ import { ChartData } from 'chart.js';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ValidationPieChartComponent {
+  options: ChartOptions = {
+    aspectRatio: 2
+  };
 
   _data: ChartData = {
     labels: ['', '', ''],
@@ -20,8 +23,10 @@ export class ValidationPieChartComponent {
   };
 
   @Input() set data(data: IValidationStat[]) {
+    this._data = { ...this._data };
+
     if (!data) {
-      this._data.datasets = [];
+      this._data.datasets[0].data = [];
       return;
     }
 

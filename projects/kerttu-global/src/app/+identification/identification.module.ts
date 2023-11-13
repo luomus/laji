@@ -25,6 +25,13 @@ import { IdentificationUserTableComponent } from './identification-results/ident
 import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
 import { IdentificationPanelComponent } from './recording-identification/identification-view/identification-table/identification-panel/identification-panel.component';
 import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
+import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
+import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
+import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
+import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
+import { AudioCacheLoaderService } from './service/audio-cache-loader.service';
+import { RecordingLoaderService } from './service/recording-loader.service';
+import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 
 @NgModule({
@@ -39,7 +46,8 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     TypeaheadModule,
     DatatableModule,
     LajiMapModule,
-    SelectModule
+    SelectModule,
+    JwBootstrapSwitchNg2Module
   ],
   declarations: [
     IdentificationComponent,
@@ -58,6 +66,14 @@ import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.mo
     IdentificationUserTableComponent,
     IdentificationPanelComponent,
     IdentificationSpeciesTableComponent,
+    IdentificationHistoryComponent,
+    IdentificationHistoryTableComponent,
+    IdentificationHistoryEditModalComponent,
+  ],
+  providers: [
+    AudioService,
+    AudioCacheLoaderService,
+    RecordingLoaderService
   ]
 })
 export class IdentificationModule { }
