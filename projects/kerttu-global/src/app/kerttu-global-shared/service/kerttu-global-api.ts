@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   IListResult,
   IGlobalSpeciesQuery,
@@ -14,15 +14,18 @@ import {
   IGlobalTemplateVersion,
   IGlobalSpeciesListResult,
   KerttuGlobalErrorEnum,
-  IGlobalRecordingResponse,
   IGlobalRecordingAnnotation,
   IGlobalSite,
   IIdentificationSiteStat,
   IIdentificationUserStatResult,
-  IIdentificationSpeciesStat
+  IIdentificationSpeciesStat,
+  IIdentificationHistoryResponse,
+  IIdentificationHistoryQuery,
+  IGlobalRecordingWithAnnotation
 } from '../models';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { PagedResult } from '../../../../../laji/src/app/shared/model/PagedResult';
 import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 @Injectable({
@@ -119,33 +122,32 @@ export class KerttuGlobalApi {
     return this.httpClient.get<IListResult<IUserStat>>(path, { params });
   }
 
-  public getRecording(personToken: string, lang: string, siteIds: number[]): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording';
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
-
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
-  }
-
-  public getNextRecording(personToken: string, lang: string, recordingId: number, siteIds: number[], skipCurrent = false): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording/next/' + recordingId;
+  public getNewIdentificationRecording(
+    personToken: string, lang: string, siteIds: number[], previousRecordingId?: number, excludeRecordingIds?: number[]
+  ): Observable<IGlobalRecordingWithAnnotation> {
+    const path = this.basePath + '/identification/recordings/new';
     let params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
-    if (skipCurrent) {
-      params = params.set('skipCurrent', skipCurrent);
+
+    if (previousRecordingId != null) {
+      params = params.set('previousRecording', '' + previousRecordingId);
+    }
+    if (excludeRecordingIds) {
+      params = params.set('excludeRecordings', '' + excludeRecordingIds);
     }
 
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
-  public getPreviousRecording(personToken: string, lang: string, recordingId: number, siteIds: number[]): Observable<IGlobalRecordingResponse> {
-    const path = this.basePath + '/identification/recording/previous/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang).set('sites', '' + siteIds);
+  public getIdentificationRecording(personToken: string, lang: string, recordingId: number): Observable<IGlobalRecordingWithAnnotation> {
+    const path = this.basePath + '/identification/recordings/' + recordingId;
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
-    return this.httpClient.get<IGlobalRecordingResponse>(path, { params });
+    return this.httpClient.get<IGlobalRecordingWithAnnotation>(path, { params });
   }
 
-  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation) {
-    const path = this.basePath + '/identification/recording/annotation/' + recordingId;
-    const params = new HttpParams().set('personToken', personToken);
+  public saveRecordingAnnotation(personToken: string, recordingId: number, annotation: IGlobalRecordingAnnotation, isDraft = false, skipRecording = false) {
+    const path = this.basePath + '/identification/recordings/' + recordingId + '/annotation';
+    const params = new HttpParams().set('personToken', personToken).set('isDraft', isDraft).set('skipRecording', skipRecording);
 
     return this.httpClient.post(path, annotation, { params });
   }
@@ -178,12 +180,20 @@ export class KerttuGlobalApi {
 
   public getIdentificationOwnSpeciesStats(personToken: string, lang: string): Observable<IListResult<IIdentificationSpeciesStat>> {
     const path = this.basePath + '/identification/statistics/ownSpecies';
-    const params = new HttpParams().set('personToken', personToken).set('lang', lang);;
+    const params = new HttpParams().set('personToken', personToken).set('lang', lang);
 
     return this.httpClient.get<IListResult<IIdentificationSpeciesStat>>(path, { params });
   }
 
-  private queryToParams(query: IGlobalSpeciesQuery, params: HttpParams) {
+  public getIdentificationHistory(personToken: string, query: IIdentificationHistoryQuery): Observable<PagedResult<IIdentificationHistoryResponse>> {
+    const path = this.basePath + '/identification/history';
+    let params = new HttpParams().set('personToken', personToken);
+    params = this.queryToParams(query, params);
+
+    return this.httpClient.get<PagedResult<IIdentificationHistoryResponse>>(path, { params });
+  }
+
+  private queryToParams(query: Record<string, any>, params: HttpParams) {
     Object.keys(query).forEach(key => {
       const value = query[key];
       if (value == null || (Array.isArray(value) && value.length === 0)) {

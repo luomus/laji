@@ -59,6 +59,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/laji/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -161,6 +165,26 @@
                 }
               ]
             },
+            "local-beta": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
+                }
+              ]
+            },
             "strict": {
               "tsConfig": "tsconfig.app-strict.json",
               "budgets": [
@@ -215,6 +239,10 @@
             "local": {
               "browserTarget": "laji:build:local",
               "proxyConfig": "proxy.conf.js",
+              "port": 3000
+            },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
               "port": 3000
             },
             "strict": {
@@ -339,6 +367,20 @@
                 }
               ],
               "buildOptimizer": true
+            },
+            "local-beta": {
+              "outputHashing": "media",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
+                }
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -353,6 +395,10 @@
             "local": {
               "browserTarget": "laji:build:local",
               "serverTarget": "laji:server:local"
+            },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
+              "serverTarget": "laji:server:local-beta"
             }
           }
         },
@@ -452,6 +498,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/iucn/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -1179,6 +1229,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/bird-atlas/src/index.prod.html",
+                "output": "index.html"
+              },
               "fileReplacements": [
                 {
                   "replace": "projects/bird-atlas/src/env/environment.ts",
@@ -1308,6 +1362,7 @@
               "node_modules/@luomus/laji-map/dist/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji/src/styles/laji.scss",
               "projects/kerttu-global/src/styles.scss"
@@ -1330,6 +1385,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/kerttu-global/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",

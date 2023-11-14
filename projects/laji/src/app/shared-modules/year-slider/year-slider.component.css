@@ -1,4 +1,4 @@
-:host >>> .noUi-connect {
+:host ::ng-deep .noUi-connect {
   background: #337ab7;
 }
 
@@ -21,21 +21,21 @@
   }
 }
 
-/*:host >>> .noUi-horizontal {
+/*:host ::ng-deep .noUi-horizontal {
   height: 18px;
 }
 
-:host >>> .noUi-horizontal .noUi-handle {
+:host ::ng-deep .noUi-horizontal .noUi-handle {
   width: 34px;
   height: 28px;
   left: -17px;
   top: -6px
 }
 
-:host >>> .noUi-horizontal.noUi-extended {
+:host ::ng-deep .noUi-horizontal.noUi-extended {
   padding: 0 15px;
 }
 
-:host >>> .noUi-horizontal.noUi-extended .noUi-origin {
+:host ::ng-deep .noUi-horizontal.noUi-extended .noUi-origin {
   right: -15px;
 }*/

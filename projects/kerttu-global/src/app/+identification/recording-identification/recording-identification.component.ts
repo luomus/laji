@@ -2,8 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, HostList
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
-  IGlobalRecordingStatusInfo,
-  IGlobalRecordingResponse,
+  IGlobalRecordingWithAnnotation,
   KerttuGlobalErrorEnum,
   IGlobalSite
 } from '../../kerttu-global-shared/models';
@@ -17,20 +16,19 @@ import { Observable, of, Subscription } from 'rxjs';
 import equals from 'deep-equal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PersonApi } from '../../../../../laji/src/app/shared/api/PersonApi';
-import { defaultAudioSampleRate } from '../../kerttu-global-shared/variables';
+import { RecordingLoaderService } from '../service/recording-loader.service';
 
 @Component({
   selector: 'bsg-recording-identification',
   templateUrl: './recording-identification.component.html',
   styleUrls: ['./recording-identification.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   sites$: Observable<IGlobalSite[]>;
 
   recording: IGlobalRecording;
   annotation: IGlobalRecordingAnnotation;
-  statusInfo: IGlobalRecordingStatusInfo;
 
   expertiseMissing?: boolean;
   loading = false;
@@ -40,14 +38,13 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   selectedSites?: number[];
 
-  audioSampleRate = defaultAudioSampleRate;
-
   private originalAnnotation: IGlobalRecordingAnnotation;
 
   private expertiseMissingSub: Subscription;
   private siteIdsSub: Subscription;
 
   constructor(
+    public recordingLoaderService: RecordingLoaderService,
     private kerttuGlobalApi: KerttuGlobalApi,
     private personService: PersonApi,
     private userService: UserService,
@@ -70,19 +67,19 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
     this.siteIdsSub = this.route.queryParams.pipe(
       map(data => (
-        data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id))
-      ),
+        (data['siteId'] || '').split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id)))
+      )
     ).subscribe(siteIds => {
       this.selectedSites = siteIds;
 
-      this.hasUnsavedChanges = false;
-      this.allRecordingsAnnotated = false;
-      this.hasError = false;
+      this.clearIdentificationState();
 
       if (this.selectedSites?.length > 0) {
+        this.recordingLoaderService.setSelectedSites(this.selectedSites);
+
         this.loading = true;
-        this.kerttuGlobalApi.getRecording(this.userService.getToken(), this.translate.currentLang, siteIds).subscribe((result) => {
-          this.onGetRecordingSuccess(result);
+        this.recordingLoaderService.getCurrentRecording().subscribe((result) => {
+          this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
         });
@@ -129,12 +126,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   getNextRecording(skipCurrent = false) {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).pipe(
-      switchMap(() => this.kerttuGlobalApi.getNextRecording(
-        this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites, skipCurrent
-      ))
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, false, skipCurrent).pipe(
+      switchMap(() => this.recordingLoaderService.getNextRecording())
     ).subscribe(result => {
-      this.onGetRecordingSuccess(result);
+      this.onGetRecordingsSuccess(result);
     }, (err) => {
       this.handleError(err);
     });
@@ -144,8 +139,8 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.loading = true;
-        this.kerttuGlobalApi.getPreviousRecording(this.userService.getToken(), this.translate.currentLang, this.recording.id, this.selectedSites).subscribe(result => {
-          this.onGetRecordingSuccess(result);
+        this.recordingLoaderService.getPreviousRecording().subscribe(result => {
+          this.onGetRecordingsSuccess(result);
         }, (err) => {
           this.handleError(err);
         });
@@ -165,7 +160,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
 
   save() {
     this.loading = true;
-    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation).subscribe(() => {
+    this.kerttuGlobalApi.saveRecordingAnnotation(this.userService.getToken(), this.recording.id, this.annotation, true).subscribe(() => {
       this.loading = false;
       this.originalAnnotation = Util.clone(this.annotation);
       this.hasUnsavedChanges = false;
@@ -176,6 +171,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   }
 
   onAnnotationChange() {
+    this.recordingLoaderService.setCurrentAnnotation(this.annotation);
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
   }
 
@@ -202,13 +198,12 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onGetRecordingSuccess(data: IGlobalRecordingResponse) {
+  private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
     this.loading = false;
 
     if (data.recording) {
       this.recording = data.recording;
       this.annotation = data.annotation || {};
-      this.statusInfo = data.statusInfo;
 
       this.originalAnnotation = Util.clone(this.annotation);
       this.hasUnsavedChanges = false;
@@ -230,5 +225,14 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
     }
 
     this.cdr.markForCheck();
+  }
+
+  private clearIdentificationState() {
+    this.recording = undefined;
+    this.annotation = undefined;
+
+    this.hasUnsavedChanges = false;
+    this.allRecordingsAnnotated = false;
+    this.hasError = false;
   }
 }

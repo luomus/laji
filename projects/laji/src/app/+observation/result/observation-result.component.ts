@@ -11,7 +11,7 @@ import { LoadedElementsStore } from '../../../../../laji-ui/src/lib/tabs/tab-uti
 import { EMPTY } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 import { ActivatedRoute } from '@angular/router';
-import { LajiMapDrawEvent, Rectangle } from '@laji-map/laji-map.interface';
+import type { LajiMapEvent } from '@luomus/laji-map';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { catchError, map } from 'rxjs/operators';
 import { ToastsService } from '../../shared/service/toasts.service';
@@ -149,7 +149,7 @@ export class ObservationResultComponent implements OnChanges {
     this.loadedTabs.load(this.activeTab);
   }
 
-  pickLocation(events: LajiMapDrawEvent[]) {
+  pickLocation(events: LajiMapEvent[]) {
     let value: Pick<WarehouseQueryInterface, 'coordinates' | 'polygonId'>;
 
     events.forEach(e => {
@@ -187,7 +187,7 @@ export class ObservationResultComponent implements OnChanges {
           polygonId: undefined
         };
       } else if (geometry.type === 'Polygon') {
-        if (layer instanceof Rectangle) {
+        if (layer instanceof (window as any).L.Rectangle) {
           value = {
             coordinates: [
               geometry.coordinates[0][0][1] + ':' + geometry.coordinates[0][2][1] + ':' +

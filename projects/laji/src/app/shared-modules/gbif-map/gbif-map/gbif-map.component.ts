@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
+import { Options, TileLayerName } from '@luomus/laji-map/lib/defs';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
 
   @Input() taxon: Taxonomy;
   @Input() height = '605px';
-  @Input() set mapOptions(mapOptions: LajiMapOptions) {
+  @Input() set mapOptions(mapOptions: Options) {
     this._mapOptions = {
       ...this._mapOptions,
       ...(mapOptions || {})
@@ -28,7 +28,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
 
   loading = false;
 
-  private _mapOptions: LajiMapOptions = {
+  private _mapOptions: Options = {
     controls: {
       draw: false,
       layer: false
@@ -36,10 +36,10 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
     zoom: -1,
     draw: false,
     center: [40, 25],
-    tileLayerName: LajiMapTileLayerName.openStreetMap,
+    tileLayerName: TileLayerName.openStreetMap,
     availableTileLayerNamesWhitelist: [
-      LajiMapTileLayerName.openStreetMap,
-      LajiMapTileLayerName.googleSatellite
+      TileLayerName.openStreetMap,
+      TileLayerName.googleSatellite
     ],
     availableOverlayNameWhitelist: []
   };

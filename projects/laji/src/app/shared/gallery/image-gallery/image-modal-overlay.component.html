@@ -5,11 +5,22 @@
     </a>
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
     <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <laji-image
-      id="openseadragon-wrapper"
-      *ngIf="img"
-      [src]="img.fullURL || img.largeURL"
-      class="effect"></laji-image>
+    <ng-container *ngIf="img">
+      <laji-image
+        *ngIf="img.mediaType === 'IMAGE'"
+        id="openseadragon-wrapper"
+        [src]="img.fullURL || img.largeURL"
+        class="effect"
+      ></laji-image>
+      <laji-image-modal-video
+        *ngIf="img.mediaType === 'VIDEO'"
+        [source]="img"
+      ></laji-image-modal-video>
+      <laji-image-modal-model
+        *ngIf="img.mediaType === 'MODEL'"
+        [src]="img.lowDetailModelURL"
+      ></laji-image-modal-model>
+    </ng-container>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
       <ng-container *ngIf="showLinkToSpeciesCard && img.taxonId; else name">

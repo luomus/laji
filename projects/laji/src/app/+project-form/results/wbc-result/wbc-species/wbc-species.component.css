@@ -1,4 +1,4 @@
-:host >>> .bootstrap-switch {
+:host ::ng-deep .bootstrap-switch {
   white-space: nowrap;
 }
 .show-statistics-wrapper {

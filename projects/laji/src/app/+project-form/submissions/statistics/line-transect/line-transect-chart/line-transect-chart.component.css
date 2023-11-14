@@ -4,16 +4,16 @@
   width: 100%;
 }
 
-:host >>> .axis path,
-:host >>> .axis line {
+:host ::ng-deep .axis path,
+:host ::ng-deep .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
-:host >>> .axis text {
+:host ::ng-deep .axis text {
   font: 10px sans-serif;
 }
 
-:host >>> .title {
+:host ::ng-deep .title {
   font-weight: bold;
 }

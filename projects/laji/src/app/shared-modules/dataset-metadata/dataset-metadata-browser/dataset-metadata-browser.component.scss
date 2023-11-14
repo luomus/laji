@@ -1,0 +1,15 @@
+.selector {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-selector-container {
+  max-height: calc(100vh - 50px);
+}
+
+.selector-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

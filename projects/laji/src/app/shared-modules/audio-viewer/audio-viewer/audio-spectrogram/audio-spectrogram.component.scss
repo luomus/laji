@@ -9,3 +9,14 @@
 .spectrogram-chart {
   position: relative;
 }
+
+:host(.audio-spectrogram-responsive) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .spectrogram-container {
+    flex: 1 1 0;
+    overflow: hidden;
+  }
+}
