@@ -16,16 +16,12 @@
   width: 100%;
 }
 
-.image-content-container {
-  max-width: 1300px;
-  flex-grow: 1;
-}
-
 .header-image-content {
+  max-width: 1200px;
+  flex-grow: 1;
   z-index: 100;
   color: $neutral-1;
-  padding: 0px 50px;
-/*   background: rgba(#000, .4); */
+  padding: $sp-5 $sp-3;
 }
 
 .logo {
@@ -71,37 +67,10 @@ laji-omni-search {
   background-size: cover;
 }
 
-.header-image, .carousel .item {
-  height: 300px;
-}
-
-:host ::ng-deep .carousel .item {
-  height: 300px;
+.header-image {
+  min-height: 300px;
 }
 
 .text-container {
   margin-top: 20px;
-}
-
-@media (min-width: 1200px) {
-  /*
-  .header-image {
-    background-clip: border-box;
-    background: url(/static/images/bg1.jpg) center / cover;
-  }
-  */
-
-  .header-image, .carousel .item {
-    height: 400px;
-  }
-
-  :host ::ng-deep .carousel .item {
-    height: 400px;
-  }
-}
-
-@media only screen and (max-width:768px) {
-  .carousel-caption {
-    padding-bottom: 0px;
-  }
 }
