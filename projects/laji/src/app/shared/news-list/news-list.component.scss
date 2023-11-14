@@ -1,3 +1,5 @@
+@import 'vars';
+
 h3 {
   margin-top: 0;
 }
@@ -22,4 +24,12 @@ h3 {
 
 .media-heading {
   font-size: 15px;
+}
+
+.some-link svg {
+  height: 26px;
+  width: 26px;
+  path {
+    fill: $neutral-7;
+  }
 }
