@@ -120,8 +120,8 @@ export class SiteResultMapComponent implements OnChanges {
       c += 'purple'; // purple
     }
 
-    return new DivIcon({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
-      className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
+    return new (window.L.DivIcon)({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
+      className: 'marker-cluster' + c, iconSize: new (window.L.Point)(40, 40) });
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {
