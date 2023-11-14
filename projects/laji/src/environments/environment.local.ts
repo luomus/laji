@@ -22,6 +22,7 @@ export const environment = {
   protaxApi: 'https://protax-api-protax-api-staging.rahtiapp.fi',
   // protaxApi: 'http://localhost:8080',
   geoserver: 'https://geoserver-dev.laji.fi',
+  dashboardUrl: 'https://dashboard-dev.laji.fi',
   defaultLang: 'fi',
   displayDevRibbon: true
 };

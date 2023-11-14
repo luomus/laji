@@ -16,6 +16,9 @@ export interface IHomeData {
   today: {
     total: number;
   };
+  unitsLastWeek: {
+    total: number;
+  };
   speciesToday: {
     total: number;
   };
@@ -47,11 +50,14 @@ export interface IHomeData {
 
 /* eslint-disable max-len */
 const HOME_QUERY = gql`
-  query($pageSize: Int = 5, $after: String = "") {
+  query($pageSize: Int = 5, $after: String = "", $week: String = "") {
     observations: units(cache: true) {
       total
     }
     today: units(cache: true, countryId: "ML.206", firstLoadedSameOrAfter: $after) {
+      total
+    }
+    unitsLastWeek: units(cache: true, countryId: "ML.206", firstLoadedSameOrAfter: $week) {
       total
     }
     speciesToday: units(cache: true, aggregateBy: "unit.linkings.taxon.id", countryId: "ML.206", firstLoadedSameOrAfter: $after) {
@@ -111,11 +117,19 @@ export class HomeDataService {
     return start.format('YYYY-MM-DD');
   }
 
+    public static getLastWeek(): string {
+    const start = moment();
+    start.subtract(7, 'd');
+
+    return start.format('YYYY-MM-DD');
+  }
+
   getHomeData(): Observable<IHomeData> {
     return this.graphQLService.query<IHomeData>({
       query: HOME_QUERY,
       variables: {
-        after: HomeDataService.getRecentDate()
+        after: HomeDataService.getRecentDate(),
+        week: HomeDataService.getLastWeek()
       },
       // On first load we want to use the cached data from the server. On following loads we want to load the each time.
       fetchPolicy: this.historyService.isFirstLoad() ? 'cache-first' : 'no-cache',
