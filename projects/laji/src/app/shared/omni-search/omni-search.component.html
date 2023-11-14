@@ -25,13 +25,13 @@
 
       <div class="d-flex flex-gap-3">
         <div class="taxon-match-first-col">
-          <div>
+          <div class="mb-3">
             <a [routerLink]="['/taxon/' + taxon.key] | localize" (click)="onClose()">
               {{ 'omniSearch.taxonCard' | translate }}
               <i class="glyphicon glyphicon-tag"></i>
             </a>
           </div>
-          <div class="mb-3">
+          <div class="mb-4">
             <a [routerLink]="['/taxon/' + taxon.key + '/taxonomy'] | localize" [queryParams]="{ showTree: true }" (click)="onClose()">
               {{ 'omniSearch.taxonList' | translate }}
             </a>
