@@ -60,6 +60,16 @@ import { DOCUMENT } from '@angular/common';
 
 export type ViewType = 'compact'|'annotation'|'full'|'full2'|'full3';
 
+const getAnnotationTmpFullImgUrl = (img: Image): string => {
+  switch (img.mediaType) {
+    case 'MODEL':
+    case 'VIDEO':
+      return img.thumbnailURL;
+    default:
+      return img.fullURL || img.thumbnailURL;
+  }
+};
+
 @Component({
   selector: 'laji-image-gallery',
   styleUrls: ['./image-modal.component.css'],
@@ -93,8 +103,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
   private showModalSub: Subscription;
   private _isShown = false;
   index: number;
-  tmpImg: any;
-
+  annotationTmpSelectedImg: { url: string; index: number };
 
   constructor(private viewContainerRef: ViewContainerRef,
               private _renderer: Renderer2,
@@ -114,12 +123,11 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges() {
     if (this.modalImages && this.modalImages.length > 0) {
-      this.tmpImg = {
-        mainURL: this.modalImages[0].fullURL,
+      this.annotationTmpSelectedImg = {
+        url: getAnnotationTmpFullImgUrl(this.modalImages[0]),
         index: 0
       };
     }
-
   }
 
   ngOnDestroy() {
@@ -127,11 +135,11 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
     this.overlay?.destroy();
   }
 
-  openMainPic(url, index) {
-   this.tmpImg = {
-     mainURL: url,
-     index
-   };
+  onClickAnnotationTmpThumb(img: Image, index: number) {
+    this.annotationTmpSelectedImg = {
+      url: getAnnotationTmpFullImgUrl(img),
+      index
+    };
   }
 
   openImage(index) {
@@ -187,7 +195,7 @@ export class ImageModalComponent implements OnInit, OnDestroy, OnChanges {
       if (e.keyCode === 73 && e.altKey) { // openImage
         if (this.shortcut) {
           e.stopImmediatePropagation();
-          this.openImage(this.tmpImg['index']);
+          this.openImage(this.annotationTmpSelectedImg['index']);
         }
       }
   }
