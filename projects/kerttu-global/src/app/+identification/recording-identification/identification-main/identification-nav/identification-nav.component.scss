@@ -1,0 +1,24 @@
+@import '../../../../../../../laji-ui/src/lib/vars';
+
+.top-bar {
+  overflow: auto;
+
+  .button-container {
+    div {
+      display: inline-block;
+      margin-left: 0.5em;
+    }
+
+    .btn-default .badge {
+      background-color: $neutral-7;
+    }
+  }
+}
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  .top-bar {
+    padding: $sp-3 40px 0;
+    background-color: #dde1e3;
+    z-index: 1;
+  }
+}

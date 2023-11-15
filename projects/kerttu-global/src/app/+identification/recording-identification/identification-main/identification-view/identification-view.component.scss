@@ -1,20 +1,5 @@
 @import '../../../../../../../laji-ui/src/lib/vars';
 
-.top-bar {
-  overflow: auto;
-
-  .button-container {
-    div {
-      display: inline-block;
-      margin-left: 0.5em;
-    }
-
-    .btn-default .badge {
-      background-color: $neutral-7;
-    }
-  }
-}
-
 .top-content {
   display: flex;
   flex-direction: column;
@@ -63,15 +48,7 @@
   :host {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 50px);
-    margin: -20px -40px;
-
-    .top-bar {
-      flex: 0 0 auto;
-      padding: $sp-3 40px 0;
-      background-color: #dde1e3;
-      z-index: 1;
-    }
+    height: 100%;
 
     .top-content {
       flex: 0 0 auto;

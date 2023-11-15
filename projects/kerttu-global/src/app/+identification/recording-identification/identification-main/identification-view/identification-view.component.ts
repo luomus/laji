@@ -45,7 +45,7 @@ import {
 } from '../../../../kerttu-global-shared/variables';
 import { DOCUMENT } from '@angular/common';
 import { AudioViewerComponent } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/audio-viewer/audio-viewer.component';
-import { ModalRef, ModalService } from '../../../../../../../laji-ui/src/lib/modal/modal.service';
+import { ModalRef } from '../../../../../../../laji-ui/src/lib/modal/modal.service';
 
 
 @Component({
@@ -58,15 +58,10 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
   @ViewChild('topContent') topContent: ElementRef;
   @ViewChild(AudioViewerComponent) audioViewer: AudioViewerComponent;
   @ViewChild(IdentificationTableComponent) identificationTable: IdentificationTableComponent;
-  @ViewChild('filterModal', { static: true }) filterModal: TemplateRef<any>;
 
   @Input() recording: IGlobalRecording;
   @Input() annotation: IGlobalRecordingAnnotation;
-  @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
-  @Input() showTopBar = true;
-  @Input() fileNameFilter = '';
-  _fileNameFilter = '';
 
   selectedSpecies: IGlobalSpeciesWithAnnotation[] = [];
   loadingSpecies = false;
@@ -92,15 +87,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
 
   topContentHeight = 265;
 
-  @Output() nextRecordingClick = new EventEmitter();
-  @Output() previousRecordingClick = new EventEmitter();
-  @Output() saveClick = new EventEmitter();
-  @Output() skipClick = new EventEmitter();
   @Output() annotationChange = new EventEmitter<IGlobalRecordingAnnotation>();
-  @Output() backToSiteSelectionClick = new EventEmitter();
-  @Output() fileNameFilterChange = new EventEmitter<string>();
-
-  private filterModalRef: ModalRef<any>;
 
   private selectedSpeciesSub: Subscription;
   private nonBirdLabel = '';
@@ -112,8 +99,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     private kerttuGlobalApi: KerttuGlobalApi,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private renderer: Renderer2,
-    private modalService: ModalService
+    private renderer: Renderer2
   ) {
     this.updateSpectrogramConfig();
   }
@@ -249,19 +235,6 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
     this.destroyDragListeners();
     this.destroyDragMoveListener = this.renderer.listen(this.document, 'mousemove', this.onDrag.bind(this));
     this.destroyDragEndListener = this.renderer.listen(this.document, 'mouseup', this.onDragEnd.bind(this));
-  }
-
-  onFilterButtonClick() {
-    this._fileNameFilter = this.fileNameFilter;
-    this.filterModalRef = this.modalService.show(this.filterModal, { size: 'md' });
-  }
-
-  onFilterModalOkButtonClick() {
-    if (this._fileNameFilter !== this.fileNameFilter) {
-      this.fileNameFilter = this._fileNameFilter;
-      this.fileNameFilterChange.emit(this.fileNameFilter);
-    }
-    this.filterModalRef.hide();
   }
 
   private clearDrawMode() {

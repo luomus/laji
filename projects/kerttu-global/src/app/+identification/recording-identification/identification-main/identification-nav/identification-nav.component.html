@@ -1,0 +1,75 @@
+<div class="top-bar">
+  <div class="pull-right button-container">
+    <div>
+      <button
+        class="btn btn-default"
+        [disabled]="buttonsDisabled"
+        (click)="backToSiteSelectionClick.emit()"
+      >
+        {{ 'identification.backToSiteSelection' | translate }}
+      </button>
+    </div>
+    <div>
+      <button
+        class="btn btn-default"
+        [disabled]="buttonsDisabled"
+        (click)="skipClick.emit()"
+      >
+        {{ 'identification.skip' | translate }}
+      </button>
+    </div>
+    <div>
+      <button
+        class="btn btn-default"
+        [disabled]="!hasPreviousRecording || buttonsDisabled"
+        (click)="previousRecordingClick.emit()"
+      >
+        {{ 'identification.previousRecording' | translate }}
+      </button>
+      <laji-info [html]="'identification.previousRecording.info' | translate" [showOnHover]="true"></laji-info>
+    </div>
+    <div>
+      <button
+        class="btn btn-default"
+        [disabled]="buttonsDisabled"
+        (click)="saveClick.emit()"
+      >
+        {{ 'save' | translate }}
+      </button>
+      <laji-info [html]="'identification.saveRecording.info' | translate" [showOnHover]="true"></laji-info>
+    </div>
+    <div>
+      <button
+        class="btn btn-success"
+        [disabled]="buttonsDisabled"
+        (click)="nextRecordingClick.emit()"
+      >
+        {{ 'identification.nextRecording' | translate }}
+      </button>
+      <laji-info [html]="(taxonType === taxonTypeEnum.insect ? 'identification.nextRecordingInsect.info' : 'identification.nextRecording.info') | translate" [showOnHover]="true"></laji-info>
+    </div>
+    <div>
+      <button
+        class="btn btn-default"
+        [disabled]="buttonsDisabled"
+        (click)="onFilterButtonClick()"
+      >
+        {{ 'identification.filter' | translate }} <span *ngIf="fileNameFilter" class="badge">1</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #filterModal>
+  <h3>{{ 'identification.filter.title' | translate }}</h3>
+  <div class="mb-3">
+    <label for="fileNameFilter">{{ 'identification.filter.fileName' | translate }}:</label>
+    <input [(ngModel)]="_fileNameFilter" class="form-control" id="fileNameFilter">
+  </div>
+  <div class="lu-modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onFilterModalOkButtonClick()">
+      <span>{{ 'OK' | translate }}</span>
+    </button>
+  </div>
+</ng-template>
+

@@ -163,13 +163,13 @@ export class IdentificationMainComponent {
 
   private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
     this.loading = false;
+    this.hasUnsavedChanges = false;
 
     if (data.recording) {
       this.recording = data.recording;
       this.annotation = data.annotation || {};
 
       this.originalAnnotation = Util.clone(this.annotation);
-      this.hasUnsavedChanges = false;
     } else {
       this.allRecordingsAnnotated = true;
     }

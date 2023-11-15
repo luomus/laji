@@ -1,0 +1,19 @@
+@import '../../../../../../laji-ui/src/lib/vars';
+
+@media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
+  .identification-view-container {
+    margin: -20px -40px;
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+
+    bsg-identification-nav {
+      flex: 0 0 auto;
+    }
+
+    bsg-identification-view {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+  }
+}

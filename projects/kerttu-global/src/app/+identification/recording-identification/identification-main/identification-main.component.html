@@ -2,19 +2,25 @@
 <lu-alert type="success" [dismissible]="false" *ngIf="allRecordingsAnnotated">{{ 'identification.allRecordingsAnnotated' | translate }}</lu-alert>
 
 <laji-spinner [spinning]="loading" [overlay]="true" *ngIf="!hasError && !allRecordingsAnnotated" >
-  <bsg-identification-view
-    *ngIf="recording && annotation"
-    [recording]="recording"
-    [(annotation)]="annotation"
-    [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
-    [buttonsDisabled]="loading"
-    [fileNameFilter]="fileNameFilter"
-    (nextRecordingClick)="getNextRecording()"
-    (previousRecordingClick)="getPreviousRecording()"
-    (saveClick)="save()"
-    (skipClick)="skipRecording()"
-    (annotationChange)="onAnnotationChange()"
-    (backToSiteSelectionClick)="onBackToSiteSelectionClick()"
-    (fileNameFilterChange)="onFileNameFilterChange($event)"
-  ></bsg-identification-view>
+  <div class="identification-view-container">
+    <bsg-identification-nav
+      [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
+      [buttonsDisabled]="loading"
+      [taxonType]="recording?.taxonType"
+      [fileNameFilter]="fileNameFilter"
+      (nextRecordingClick)="getNextRecording()"
+      (previousRecordingClick)="getPreviousRecording()"
+      (saveClick)="save()"
+      (skipClick)="skipRecording()"
+      (backToSiteSelectionClick)="onBackToSiteSelectionClick()"
+      (fileNameFilterChange)="onFileNameFilterChange($event)"
+    ></bsg-identification-nav>
+    <bsg-identification-view
+      *ngIf="recording && annotation"
+      [recording]="recording"
+      [(annotation)]="annotation"
+      [buttonsDisabled]="loading"
+      (annotationChange)="onAnnotationChange()"
+    ></bsg-identification-view>
+  </div>
 </laji-spinner>

@@ -32,6 +32,7 @@ import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 import { SiteSelectionComponent } from './recording-identification/site-selection/site-selection.component';
 import { IdentificationMainComponent } from './recording-identification/identification-main/identification-main.component';
+import { IdentificationNavComponent } from './recording-identification/identification-main/identification-nav/identification-nav.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,8 @@ import { IdentificationMainComponent } from './recording-identification/identifi
     IdentificationHistoryTableComponent,
     IdentificationHistoryEditModalComponent,
     SiteSelectionComponent,
-    IdentificationMainComponent
+    IdentificationMainComponent,
+    IdentificationNavComponent
   ]
 })
 export class IdentificationModule { }
