@@ -1,6 +1,7 @@
 import { ApplicationRef, ComponentRef, createComponent, EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
 import { ModalComponent, ModalSize } from './modal/modal.component';
 import { DOCUMENT } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 interface ModalOptions<T> {
   /**
@@ -49,6 +50,8 @@ export class ModalService {
     return this.modal as ModalRef<T>;
   }
 
+  private modalHideSub: Subscription;
+
   private showModalInBody<T>(options: ModalOptions<T> = {}) {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
@@ -58,7 +61,8 @@ export class ModalService {
     });
     modalComponent.instance.show();
     modalComponent.changeDetectorRef.detectChanges();
-    modalComponent.instance.onHide.subscribe(this.destroyOnHide.bind(this));
+    this.modalHideSub?.unsubscribe();
+    this.modalHideSub = modalComponent.instance.onHide.subscribe(this.destroyOnHide.bind(this));
     return modalComponent;
   }
 
