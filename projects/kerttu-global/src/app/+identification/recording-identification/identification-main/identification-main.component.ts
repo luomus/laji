@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
 import {
   IGlobalRecording,
   IGlobalRecordingAnnotation,
@@ -24,7 +24,7 @@ import { AudioCacheLoaderService } from '../../service/audio-cache-loader.servic
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
-export class IdentificationMainComponent {
+export class IdentificationMainComponent implements OnChanges {
   @Input() selectedSites: number[];
 
   recording: IGlobalRecording;

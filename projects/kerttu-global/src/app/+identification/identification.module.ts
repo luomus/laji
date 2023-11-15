@@ -23,7 +23,9 @@ import { SiteTableComponent } from './recording-identification/site-selection/si
 import { SiteResultMapComponent } from './identification-results/site-result-map/site-result-map.component';
 import { IdentificationUserTableComponent } from './identification-results/identification-user-table/identification-user-table.component';
 import { SelectModule } from '../../../../laji/src/app/shared-modules/select/select.module';
-import { IdentificationPanelComponent } from './recording-identification/identification-main/identification-view/identification-table/identification-panel/identification-panel.component';
+import {
+  IdentificationPanelComponent
+} from './recording-identification/identification-main/identification-view/identification-table/identification-panel/identification-panel.component';
 import { IdentificationSpeciesTableComponent } from './identification-results/identification-species-table/identification-species-table.component';
 import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
 import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
