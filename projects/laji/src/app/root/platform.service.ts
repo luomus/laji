@@ -13,7 +13,7 @@ export class PlatformService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object, // eslint-disable-line @typescript-eslint/ban-types
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) public document: Document,
   ) {
     this.window = document.defaultView;
   }

@@ -3,6 +3,7 @@ import { Form } from '../../../../shared/model/Form';
 import { LajiFormComponent } from '../laji-form/laji-form.component';
 import { LajiFormUtil } from '../laji-form-util.service';
 import { Readonly } from '../../../../shared-modules/own-submissions/service/document.service';
+import { PlatformService } from '../../../../root/platform.service';
 
 export type LajiFormFooterStatus = '' | 'success' | 'error' | 'unsaved';
 
@@ -39,6 +40,8 @@ export class LajiFormFooterComponent {
   _touchedCounter: number;
   _touchedCounterOnErrors: number;
 
+  constructor(private platformService: PlatformService) { }
+
   @Input()
   set form(form: Form.SchemaForm) {
     if (!form) {
@@ -66,7 +69,7 @@ export class LajiFormFooterComponent {
 
   @Input()
   set errors(errors: any) {
-    this.hasOnlyWarnings = document.querySelector('.warning-panel') && this._hasOnlyWarnings(errors);
+    this.hasOnlyWarnings = this.platformService.document.querySelector('.warning-panel') && this._hasOnlyWarnings(errors);
     this._touchedCounterOnErrors = this._touchedCounter;
   }
 
@@ -95,6 +98,6 @@ export class LajiFormFooterComponent {
 
   highlightErrorContainer() {
     this.lajiForm.popErrorListIfNeeded();
-    LajiFormUtil.scrollIntoViewIfNeeded(document.querySelector('.laji-form-error-list'));
+    LajiFormUtil.scrollIntoViewIfNeeded(this.platformService.document.querySelector('.laji-form-error-list'));
   }
 }
