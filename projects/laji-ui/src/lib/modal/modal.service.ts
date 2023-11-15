@@ -37,7 +37,7 @@ export class ModalService {
   show<T>(componentClassOrTemplateRef: Type<T> | TemplateRef<T>, options?: ModalOptions<T>): ModalRef<T> {
     const modalComponent = this.showModalInBody(options);
     const contentNode = modalComponent.instance.getContentNode();
-    const contentHostNode = document.createElement('div');
+    const contentHostNode = this.document.createElement('div');
     this.renderer.appendChild(contentNode, contentHostNode);
     this.modal = modalComponent.instance as any;
     this.modalComponent = modalComponent;
@@ -55,7 +55,7 @@ export class ModalService {
   private showModalInBody<T>(options: ModalOptions<T> = {}) {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
     this.appRef.attachView(modalComponent.hostView);
-    this.renderer.appendChild(document.body, modalComponent.location.nativeElement);
+    this.renderer.appendChild(this.document.body, modalComponent.location.nativeElement);
     Object.keys(options).forEach(option => {
       modalComponent.instance[option] = options[option];
     });
@@ -100,7 +100,7 @@ export class ModalService {
     this.modalComponent = undefined;
     this.content.destroy();
     this.content = undefined;
-    this.renderer.removeChild(document.body, (this.modal as any).elementRef.nativeElement);
+    this.renderer.removeChild(this.document.body, (this.modal as any).elementRef.nativeElement);
     this.modal = undefined;
   }
 }
