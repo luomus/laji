@@ -28,9 +28,6 @@ import { IdentificationSpeciesTableComponent } from './identification-results/id
 import { IdentificationHistoryComponent } from './identification-history/identification-history.component';
 import { IdentificationHistoryTableComponent } from './identification-history/identification-history-table/identification-history-table.component';
 import { IdentificationHistoryEditModalComponent } from './identification-history/identification-history-edit-modal/identification-history-edit-modal.component';
-import { AudioService } from '../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
-import { AudioCacheLoaderService } from './service/audio-cache-loader.service';
-import { RecordingLoaderService } from './service/recording-loader.service';
 import { JwBootstrapSwitchNg2Module } from '@servoy/jw-bootstrap-switch-ng2';
 import { TypeaheadModule } from 'projects/laji-ui/src/lib/typeahead/typeahead.module';
 import { SiteSelectionComponent } from './recording-identification/site-selection/site-selection.component';
@@ -73,11 +70,6 @@ import { IdentificationMainComponent } from './recording-identification/identifi
     IdentificationHistoryEditModalComponent,
     SiteSelectionComponent,
     IdentificationMainComponent
-  ],
-  providers: [
-    AudioService,
-    AudioCacheLoaderService,
-    RecordingLoaderService
   ]
 })
 export class IdentificationModule { }

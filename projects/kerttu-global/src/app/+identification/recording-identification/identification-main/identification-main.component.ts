@@ -14,12 +14,15 @@ import { RecordingLoaderService } from '../../service/recording-loader.service';
 import { UserService } from '../../../../../../laji/src/app/shared/service/user.service';
 import { DialogService } from '../../../../../../laji/src/app/shared/service/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AudioService } from '../../../../../../laji/src/app/shared-modules/audio-viewer/service/audio.service';
+import { AudioCacheLoaderService } from '../../service/audio-cache-loader.service';
 
 @Component({
   selector: 'bsg-identification-main',
   templateUrl: './identification-main.component.html',
   styleUrls: ['./identification-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AudioService, AudioCacheLoaderService, RecordingLoaderService]
 })
 export class IdentificationMainComponent {
   @Input() selectedSites: number[];
