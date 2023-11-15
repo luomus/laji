@@ -241,5 +241,8 @@
   "yes": "yes",
   "previous": "Previous",
   "next": "Next",
-  "close": "Close"
+  "close": "Close",
+  "identification.filter": "Filter",
+  "identification.filter.title": "Filter recordings",
+  "identification.filter.fileName": "File name contains"
 }

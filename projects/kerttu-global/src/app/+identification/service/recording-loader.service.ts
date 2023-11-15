@@ -22,8 +22,10 @@ export class RecordingLoaderService implements OnDestroy {
 
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
 
+  private fileNameFilter = '';
+
   private preloadNextRecordingIsActive = false;
-  private preloadNextRecordingSubject = new Subject<number>();
+  private preloadNextRecordingSubject = new Subject<number|null>();
   private preloadNextRecording$: Observable<IGlobalRecordingWithAnnotation>;
   private preloadNextRecordingSub: Subscription;
   private preloadAudioSub?: Subscription;
@@ -52,6 +54,18 @@ export class RecordingLoaderService implements OnDestroy {
       this.pruneCache();
     }
     this.selectedSites = selectedSites;
+  }
+
+  changeFileNameFilter(fileNameFilter: string) {
+    if (this.fileNameFilter !== fileNameFilter) {
+      this.preloadAudioSub?.unsubscribe();
+
+      this.next = [];
+      this.pruneCache();
+
+      this.fileNameFilter = fileNameFilter;
+      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
+    }
   }
 
   hasPreviousRecording(): boolean {
@@ -131,7 +145,7 @@ export class RecordingLoaderService implements OnDestroy {
       switchMap(previousId => {
         const excludedIds = this.current != null ? [this.current, ...this.next] : [...this.next];
         return this.kerttuGlobalApi.getNewIdentificationRecording(
-          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds
+          this.userService.getToken(), this.translate.currentLang, this.selectedSites, previousId, excludedIds, this.fileNameFilter
         );
       }),
       tap(result => {
@@ -164,8 +178,7 @@ export class RecordingLoaderService implements OnDestroy {
 
   private startPreloadingRecordings() {
     if (!this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
-      const previousRecordingId = this.current === null ? this.previous[this.previous.length - 1] :
-        (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
+      const previousRecordingId = this.getPreviousRecordingId();
       this.preloadNextRecordingSubject.next(previousRecordingId);
       this.preloadNextRecordingIsActive = true;
     }
@@ -182,6 +195,13 @@ export class RecordingLoaderService implements OnDestroy {
         delete this.dataByRecordingId[unusedId];
       }
     }
+  }
+
+  private getPreviousRecordingId(): number|null {
+    const recordingId = this.current === null ? this.previous[this.previous.length - 1] :
+      (this.next.length === 0 ? this.current : this.next[this.next.length - 1]);
+
+    return this.undefinedToNull(recordingId);
   }
 
   private undefinedToNull(value?: number) {

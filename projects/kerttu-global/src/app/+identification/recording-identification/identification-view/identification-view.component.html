@@ -49,6 +49,15 @@
         </button>
         <laji-info [html]="(recording.taxonType === taxonTypeEnum.insect ? 'identification.nextRecordingInsect.info' : 'identification.nextRecording.info') | translate" [showOnHover]="true"></laji-info>
       </div>
+      <div>
+        <button
+          class="btn btn-default"
+          [disabled]="buttonsDisabled || loadingSpecies"
+          (click)="onFilterButtonClick()"
+        >
+          {{ 'identification.filter' | translate }} <span *ngIf="fileNameFilter" class="badge">1</span>
+        </button>
+      </div>
     </div>
   </div>
   <div class="top-content" [style.height]="topContentHeight + 'px'" #topContent>
@@ -220,3 +229,16 @@
     </div>
   </div>
 </ng-container>
+
+<ng-template #filterModal>
+  <h3>{{ 'identification.filter.title' | translate }}</h3>
+  <div class="mb-3">
+    <label for="fileNameFilter">{{ 'identification.filter.fileName' | translate }}:</label>
+    <input [(ngModel)]="_fileNameFilter" class="form-control" id="fileNameFilter">
+  </div>
+  <div class="lu-modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onFilterModalOkButtonClick()">
+      <span>{{ 'OK' | translate }}</span>
+    </button>
+  </div>
+</ng-template>

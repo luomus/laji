@@ -37,6 +37,7 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   hasError = false;
 
   selectedSites?: number[];
+  fileNameFilter = '';
 
   private originalAnnotation: IGlobalRecordingAnnotation;
 
@@ -173,6 +174,10 @@ export class RecordingIdentificationComponent implements OnInit, OnDestroy {
   onAnnotationChange() {
     this.recordingLoaderService.setCurrentAnnotation(this.annotation);
     this.hasUnsavedChanges = !equals(this.annotation, this.originalAnnotation);
+  }
+
+  onFileNameFilterChange(fileNameFilter: string) {
+    this.recordingLoaderService.changeFileNameFilter(fileNameFilter);
   }
 
   private canSkip(): Observable<boolean> {

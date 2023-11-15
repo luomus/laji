@@ -18,12 +18,14 @@
             [(annotation)]="annotation"
             [hasPreviousRecording]="recordingLoaderService.hasPreviousRecording()"
             [buttonsDisabled]="loading"
+            [fileNameFilter]="fileNameFilter"
             (nextRecordingClick)="getNextRecording()"
             (previousRecordingClick)="getPreviousRecording()"
             (saveClick)="save()"
             (skipClick)="skipRecording()"
             (annotationChange)="onAnnotationChange()"
             (backToSiteSelectionClick)="goBackToSiteSelection()"
+            (fileNameFilterChange)="onFileNameFilterChange($event)"
           ></bsg-identification-view>
         </laji-spinner>
       </ng-template>
