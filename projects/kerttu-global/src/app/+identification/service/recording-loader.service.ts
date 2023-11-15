@@ -15,14 +15,13 @@ export class RecordingLoaderService implements OnDestroy {
   private nextLimit = 5; // how many next recordings are loaded to memory
 
   @LocalStorage('selected_sites') private selectedSites: number[];
+  private fileNameFilter = '';
 
   @LocalStorage('previous_recordings') private previous: number[];
   @LocalStorage('current_recording') private current: number|null;
   private next: number[] = [];
 
   private dataByRecordingId: Record<number, IGlobalRecordingWithAnnotation> = {};
-
-  private fileNameFilter = '';
 
   private preloadNextRecordingIsActive = false;
   private preloadNextRecordingSubject = new Subject<number|null>();
@@ -48,23 +47,15 @@ export class RecordingLoaderService implements OnDestroy {
 
   setSelectedSites(selectedSites: number[]) {
     if (!Util.equalsArray(this.selectedSites, selectedSites)) {
-      this.previous = [];
-      this.current = null;
-      this.next = [];
-      this.pruneCache();
+      this.selectedSites = selectedSites;
+      this.clearLoadedRecordings(true);
     }
-    this.selectedSites = selectedSites;
   }
 
-  changeFileNameFilter(fileNameFilter: string) {
+  setFileNameFilter(fileNameFilter: string) {
     if (this.fileNameFilter !== fileNameFilter) {
-      this.preloadAudioSub?.unsubscribe();
-
-      this.next = [];
-      this.pruneCache();
-
       this.fileNameFilter = fileNameFilter;
-      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
+      this.clearLoadedRecordings(false);
     }
   }
 
@@ -178,10 +169,28 @@ export class RecordingLoaderService implements OnDestroy {
 
   private startPreloadingRecordings() {
     if (!this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
-      const previousRecordingId = this.getPreviousRecordingId();
-      this.preloadNextRecordingSubject.next(previousRecordingId);
+      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
       this.preloadNextRecordingIsActive = true;
     }
+  }
+
+  private restartPreloadingRecordingsIfActive() {
+    if (this.preloadNextRecordingIsActive && this.next.length < this.nextLimit) {
+      this.preloadAudioSub?.unsubscribe();
+      this.preloadNextRecordingSubject.next(this.getPreviousRecordingId());
+    }
+  }
+
+  private clearLoadedRecordings(clearAll = false) {
+    if (clearAll) {
+      this.previous = [];
+      this.current = null;
+    }
+
+    this.next = [];
+    this.pruneCache();
+
+    this.restartPreloadingRecordingsIfActive();
   }
 
   private pruneCache() {

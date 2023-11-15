@@ -135,7 +135,7 @@ export class IdentificationMainComponent {
   }
 
   onFileNameFilterChange(fileNameFilter: string) {
-    this.recordingLoaderService.changeFileNameFilter(fileNameFilter);
+    this.recordingLoaderService.setFileNameFilter(fileNameFilter);
   }
 
   private canSkip(): Observable<boolean> {
