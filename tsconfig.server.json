@@ -4,10 +4,7 @@
     "outDir": "./out-tsc/app-server",
     "types": [
       "node"
-    ],
-    "paths": {
-      "@laji-form-builder/*": ["projects/laji/src/app/+project-form-edit/laji-form-builder-noop/*"]
-    }
+    ]
   },
   "files": [
     "projects/laji/src/main.server.ts",
