@@ -17,7 +17,7 @@
 
 @media only screen and (min-width: map-get($map: $breakpoints, $key: "sm")) {
   .top-bar {
-    padding: $sp-3 40px 0;
+    padding: $sp-3 40px;
     background-color: #dde1e3;
     z-index: 1;
   }

@@ -53,13 +53,7 @@ export class IdentificationMainComponent {
   ngOnChanges() {
     this.clearIdentificationState();
     this.recordingLoaderService.setSelectedSites(this.selectedSites);
-
-    this.loading = true;
-    this.recordingLoaderService.getCurrentRecording().subscribe((result) => {
-      this.onGetRecordingsSuccess(result);
-    }, (err) => {
-      this.handleError(err);
-    });
+    this.loadCurrentRecording();
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -136,6 +130,18 @@ export class IdentificationMainComponent {
 
   onFileNameFilterChange(fileNameFilter: string) {
     this.recordingLoaderService.setFileNameFilter(fileNameFilter);
+    if (this.allRecordingsAnnotated) {
+      this.loadCurrentRecording();
+    }
+  }
+
+  private loadCurrentRecording() {
+    this.loading = true;
+    this.recordingLoaderService.getCurrentRecording().subscribe((result) => {
+      this.onGetRecordingsSuccess(result);
+    }, (err) => {
+      this.handleError(err);
+    });
   }
 
   private canSkip(): Observable<boolean> {
@@ -163,7 +169,7 @@ export class IdentificationMainComponent {
 
   private onGetRecordingsSuccess(data: IGlobalRecordingWithAnnotation) {
     this.loading = false;
-    this.hasUnsavedChanges = false;
+    this.clearIdentificationState();
 
     if (data.recording) {
       this.recording = data.recording;

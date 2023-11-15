@@ -12,7 +12,7 @@
     <div>
       <button
         class="btn btn-default"
-        [disabled]="buttonsDisabled"
+        [disabled]="buttonsDisabled || saveDisabled"
         (click)="skipClick.emit()"
       >
         {{ 'identification.skip' | translate }}
@@ -31,7 +31,7 @@
     <div>
       <button
         class="btn btn-default"
-        [disabled]="buttonsDisabled"
+        [disabled]="buttonsDisabled || saveDisabled"
         (click)="saveClick.emit()"
       >
         {{ 'save' | translate }}
@@ -41,7 +41,7 @@
     <div>
       <button
         class="btn btn-success"
-        [disabled]="buttonsDisabled"
+        [disabled]="buttonsDisabled || saveDisabled"
         (click)="nextRecordingClick.emit()"
       >
         {{ 'identification.nextRecording' | translate }}

@@ -11,7 +11,12 @@
       flex: 0 0 auto;
     }
 
+    .identification-alert-container {
+      margin: 20px 40px;
+    }
+
     bsg-identification-view {
+      margin-top: -$sp-3;
       flex: 1 1 auto;
       min-height: 0;
     }

@@ -13,6 +13,7 @@ export class IdentificationNavComponent {
 
   @Input() hasPreviousRecording = false;
   @Input() buttonsDisabled = false;
+  @Input() saveDisabled = false;
   @Input() taxonType: TaxonTypeEnum = TaxonTypeEnum.bird;
   @Input() fileNameFilter = '';
   _fileNameFilter = '';
