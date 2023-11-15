@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgZone, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
-import { IGlobalSite } from '../../../../kerttu-global-shared/models';
-import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import { IGlobalSite } from '../../../../../kerttu-global-shared/models';
+import { LajiMapComponent } from '../../../../../../../../laji/src/app/shared-modules/laji-map/laji-map.component';
 import { Polygon } from 'geojson';
 import { GetPopupOptions, LajiMapCreateEvent, DataOptions, Options, TileLayerName } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
