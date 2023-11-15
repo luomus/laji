@@ -40,7 +40,7 @@ export class DropdownToggleDirective {
     const clickedInside = this.elementRef.nativeElement.contains(target);
 
     let iteratedElem = target;
-    while (iteratedElem !== this.document.body) {
+    while (iteratedElem && iteratedElem !== this.document.body) {
       if (iteratedElem.hasAttribute('luDropdownNoClose')) {
         return;
       }
