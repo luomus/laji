@@ -52,7 +52,7 @@ $padding: 5px;
   margin: 55px 15px 15px 15px;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: map-get($breakpoints, sm)) {
   .lu-modal-sm {
     .lu-modal-content {
       width: $sm-width;
@@ -83,7 +83,7 @@ $padding: 5px;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: map-get($breakpoints, md)) {
 	.lu-modal-lg {
     .lu-modal-content {
 			width: $lg-width;
@@ -94,8 +94,7 @@ $padding: 5px;
 	}
 }
 
-
-@media (min-width: 1660px) {
+@media (min-width: map-get($breakpoints, xl)) {
   .lu-modal-xl {
     .lu-modal-content {
       width: $xl-width;
