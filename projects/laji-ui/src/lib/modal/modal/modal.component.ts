@@ -14,7 +14,7 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
       <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
         <lu-icon type="close"></lu-icon>
       </lu-button-round>
-      <div [class]="['lu-modal-content', contentClass]" role="dialog">
+      <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
         <ng-content></ng-content>
       </div>
     </div>
@@ -27,7 +27,7 @@ export class ModalComponent implements OnDestroy {
   /**
    * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'.
    */
-  @Input() size: ModalSize;
+  @Input() size: ModalSize = 'md';
 
   // null because undefined in the template [class] causes error.
   @Input() contentClass: string | null = null;
