@@ -51,7 +51,7 @@ export class ModalComponent implements OnDestroy {
   private originalBodyOverflow?: string;
 
   constructor(
-    private elementRef: ElementRef,
+    public elementRef: ElementRef,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef

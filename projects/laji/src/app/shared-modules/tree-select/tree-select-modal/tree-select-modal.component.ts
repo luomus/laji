@@ -34,10 +34,6 @@ export class TreeSelectModalComponent {
     this.treeSelectorComponent.deselect(id);
   }
 
-  close() {
-    this.modalService.hide();
-  }
-
   clear() {
     this.treeSelectorComponent.clear();
   }
@@ -47,8 +43,6 @@ export class TreeSelectModalComponent {
   }
 
   confirm() {
-    this.modalService.hide();
-
     this.emitConfirm.emit(this.selectedOptions);
   }
 }
