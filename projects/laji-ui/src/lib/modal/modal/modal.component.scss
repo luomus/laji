@@ -5,6 +5,7 @@ $lm-width: 600px;
 $lg-width: 900px;
 $xl-width: 1600px;
 $padding: 5px;
+$margin: 15px;
 
 ::ng-deep .lu-backdrop {
   position: fixed;
@@ -33,9 +34,12 @@ $padding: 5px;
 
 }
 
+$close-btn-width: 30px;
+$close-btn-right: 30px;
 .lu-modal-close-button {
   position: fixed;
-  right: 30px;
+  width: $close-btn-width;
+  right: $close-btn-right;
   top: 17px;
 }
 
@@ -49,7 +53,7 @@ $padding: 5px;
   background: $neutral-2;
   border-radius: 5px;
   box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  margin: 55px 15px 15px 15px;
+  margin: 55px $margin $margin $margin;
 }
 
 @media only screen and (min-width: map-get($breakpoints, sm)) {
@@ -79,7 +83,7 @@ $padding: 5px;
   }
 
   .lu-modal-content {
-    margin: 15px auto;
+    margin: $margin auto;
   }
 }
 
@@ -94,7 +98,7 @@ $padding: 5px;
 	}
 }
 
-@media (min-width: map-get($breakpoints, xl)) {
+@media (min-width: $xl-width + $margin + $close-btn-width + $close-btn-right) {
   .lu-modal-xl {
     .lu-modal-content {
       width: $xl-width;
