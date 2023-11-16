@@ -1,30 +1,23 @@
 import { ApplicationRef, ComponentRef, createComponent, EmbeddedViewRef, Inject, Injectable, Renderer2, RendererFactory2, TemplateRef, Type } from '@angular/core';
 import { ModalComponent, ModalSize } from './modal/modal.component';
 import { DOCUMENT } from '@angular/common';
-import { Subscription } from 'rxjs';
 
 interface ModalOptions<T> {
-  /**
-   * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'
-   */
+  /** One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md' */
   size?: ModalSize;
   contentClass?: string;
   noClose?: boolean;
-  /**
-   * Content component's initial state
-   */
+
+  /** Content component's initial state */
   initialState?: Partial<T>;
 }
 
-export type ModalRef<T = any>  = ModalComponent & { content?: T };
+export type ModalRef<T = any> = ModalComponent & { content?: T };
 
 @Injectable({providedIn: 'root'})
 export class ModalService {
 
   private renderer: Renderer2;
-  private modal?: ModalRef<any>;
-  private modalComponent?: ComponentRef<ModalComponent>;
-  private content?: ComponentRef<any> | EmbeddedViewRef<any>;
 
   constructor(
     private appRef: ApplicationRef,
@@ -39,18 +32,23 @@ export class ModalService {
     const contentNode = modalComponent.instance.getContentNode();
     const contentHostNode = this.document.createElement('div');
     this.renderer.appendChild(contentNode, contentHostNode);
-    this.modal = modalComponent.instance as any;
-    this.modalComponent = modalComponent;
+
+    const modal = modalComponent.instance as ModalRef<EmbeddedViewRef<T> | ComponentRef<T>>;
+    let content: EmbeddedViewRef<T> | ComponentRef<T>;
     if (componentClassOrTemplateRef instanceof TemplateRef) {
-      this.content = this.injectTemplate(componentClassOrTemplateRef, contentNode);
+      content = this.injectTemplate(componentClassOrTemplateRef, contentNode);
     } else  {
-      this.content = this.injectComponent(componentClassOrTemplateRef, contentNode, options);
+       content = this.injectComponent(componentClassOrTemplateRef as Type<T>, contentNode, options);
     }
+    // Make content accessible for destroyOnHide() through modalComponent.
+    (modalComponent as any).contentRef = content;
 
-    return this.modal as ModalRef<T>;
+    // Make content accessible for client using this service.
+    (modal as any).content = (content as any).instance;
+
+    modal.onHide.subscribe(() => this.destroyOnHide(modalComponent));
+    return modal as ModalRef<T>;
   }
-
-  private modalHideSub: Subscription;
 
   private showModalInBody<T>(options: ModalOptions<T> = {}) {
     const modalComponent = createComponent(ModalComponent, { environmentInjector: this.appRef.injector });
@@ -61,13 +59,11 @@ export class ModalService {
     });
     modalComponent.instance.show();
     modalComponent.changeDetectorRef.detectChanges();
-    this.modalHideSub?.unsubscribe();
-    this.modalHideSub = modalComponent.instance.onHide.subscribe(this.destroyOnHide.bind(this));
     return modalComponent;
   }
 
   private injectTemplate<T>(templateRef: TemplateRef<T>, contentNode: HTMLElement) {
-    const embeddedView= templateRef.createEmbeddedView(templateRef as any);
+    const embeddedView = templateRef.createEmbeddedView(templateRef as any);
     embeddedView.rootNodes.forEach(node => {
       this.renderer.appendChild(contentNode, node);
     });
@@ -87,20 +83,12 @@ export class ModalService {
     });
     contentComponent.changeDetectorRef.detectChanges();
     this.appRef.attachView(contentComponent.hostView);
-    (this.modal as any).content = contentComponent.instance;
     return contentComponent;
   }
 
-  hide() {
-    this.modal.hide();
-  }
-
-  destroyOnHide() {
-    this.modalComponent.destroy();
-    this.modalComponent = undefined;
-    this.content.destroy();
-    this.content = undefined;
-    this.renderer.removeChild(this.document.body, (this.modal as any).elementRef.nativeElement);
-    this.modal = undefined;
+  destroyOnHide(modalComponent: ComponentRef<ModalComponent>) {
+    (modalComponent as any).contentRef.destroy();
+    modalComponent.destroy();
+    this.renderer.removeChild(this.document.body, modalComponent.instance.elementRef.nativeElement);
   }
 }

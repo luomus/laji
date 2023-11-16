@@ -86,6 +86,7 @@ export class IdentificationHistoryComponent {
           this.setNewQuery({ ...this.query });
         }
         this.modalSub?.unsubscribe();
+        modalRef.hide();
       })
     );
     this.modalSub.add(
