@@ -179,7 +179,7 @@ export class GeneratorService {
       } else if (field.splitType === 'coordinate') {
         idx += 2;
         dataRange = XLSX.utils.encode_range({r: 1, c: idx}, {r: 1000, c: idx});
-        validValues = GeneratorService.splitCoordinateSystem;
+        validValues = Object.values(GeneratorService.splitCoordinateSystem);
         addValidator();
         return;
       }
