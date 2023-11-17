@@ -7,7 +7,7 @@
   "navigation.taxonomy": "Artdata",
   "navigation.title": "MYNDIGHETSPORTAL",
   "navigation.usage": "Användning av data",
-  "observation.download.api": "Begär en API-nyckel",
+  "observation.download.api": "Begära en API-nyckel",
   "observation.download.api.btn": "Sänd",
   "observation.download.api.clipboard": "Kopiera nyckel till urklipp:",
   "observation.download.api.expiration": "Tillståndet att söka i materialet är begränsat till:",
