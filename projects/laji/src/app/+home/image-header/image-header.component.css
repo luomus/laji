@@ -13,7 +13,7 @@
   height: 300px;
 }
 
-:host >>> .carousel .item {
+:host ::ng-deep .carousel .item {
   height: 300px;
 }
 
@@ -33,7 +33,7 @@
     height: 400px;
   }
 
-  :host >>> .carousel .item {
+  :host ::ng-deep .carousel .item {
     height: 400px;
   }
 }

@@ -22,6 +22,7 @@ export class TreeSelectorComponent implements OnInit {
   @Input() includeLink = false;
   @Input() includeQualityIcon = false;
   @Input() openOnSelect = false;
+  @Input() useVirtualScroll = true;
   @ViewChild('tree') treeComponent: TreeComponent;
   @Output() emitSelect = new EventEmitter<SelectedOption[]>();
 
@@ -77,6 +78,7 @@ export class TreeSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.checkboxType = this.tristate ? CheckboxType.excluded : CheckboxType.basic;
+    this.options.useVirtualScroll = this.useVirtualScroll;
   }
 
   constructor(

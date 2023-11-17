@@ -27,7 +27,7 @@ export class SpectrogramComponent implements OnChanges {
 
   @Input() pregeneratedSpectrogramUrl?: string;
 
-  @Output() spectrogramReady = new EventEmitter();
+  @Output() spectrogramLoading = new EventEmitter<boolean>();
 
   private imageData?: ImageData;
   private imageDataSub?: Subscription;
@@ -54,11 +54,14 @@ export class SpectrogramComponent implements OnChanges {
         const observable = this.pregeneratedSpectrogramUrl ? of(null) : this.createSpectrogram(
           this.buffer, this.startTime, this.endTime
         );
-        // has a delay because otherwise the changes caused by this.spectrogramReady.emit() are not always detected
-        this.imageDataSub = observable.pipe(delay(0)).subscribe(() => {
-          this.spectrogramReady.emit();
-          this.cdr.markForCheck();
-        });
+        // has a timeout because otherwise the changes caused by this.spectrogramLoading.emit() are not always detected
+        setTimeout(() => {
+          this.spectrogramLoading.emit(true);
+          this.imageDataSub = observable.subscribe(() => {
+            this.spectrogramLoading.emit(false);
+            this.cdr.markForCheck();
+          });
+        }, 0);
       }
     } else if (changes.view) {
       if (this.imageData) {

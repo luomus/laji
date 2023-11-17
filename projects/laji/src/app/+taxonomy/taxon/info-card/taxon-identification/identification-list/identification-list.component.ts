@@ -5,6 +5,7 @@ import { ImageModalOverlayComponent } from 'projects/laji/src/app/shared/gallery
 import { Image } from 'projects/laji/src/app/shared/gallery/image-gallery/image.interface';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 const SCROLL_SPEED = 500; // pixels per second
 
@@ -49,6 +50,7 @@ export class IdentificationListComponent implements OnDestroy {
     private _renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private envInjector: EnvironmentInjector,
+    private platformService: PlatformService
   ) { }
 
   discreteScroll(dir: number) {
@@ -65,15 +67,15 @@ export class IdentificationListComponent implements OnDestroy {
     }
     this.previousScrollTimestamp = timestamp;
     this.speciesContainer.nativeElement.scrollLeft += deltaTime * (SCROLL_SPEED / 1000) * this.scrollDirection;
-    window.requestAnimationFrame(this.scroll.bind(this));
+    this.platformService.window.requestAnimationFrame(this.scroll.bind(this));
   }
 
   scrollStart(scrollDirection: number) {
     this.scrollDirection = scrollDirection;
-    this.destroyMouseupListener = this.renderer.listen(window, 'mouseup', this.scrollEnd.bind(this));
+    this.destroyMouseupListener = this.renderer.listen(this.platformService.window, 'mouseup', this.scrollEnd.bind(this));
     this.scrolling = true;
     this.previousScrollTimestamp = undefined;
-    window.requestAnimationFrame(this.scroll.bind(this));
+    this.platformService.window.requestAnimationFrame(this.scroll.bind(this));
   }
 
   scrollEnd() {

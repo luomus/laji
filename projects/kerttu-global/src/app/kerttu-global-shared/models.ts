@@ -24,6 +24,7 @@ export interface IGlobalSpeciesQuery {
   pageSize?: number;
   orderBy?: string[];
   includeSpeciesWithoutAudio?: boolean;
+  taxonType?: TaxonTypeEnum;
 }
 
 export interface IGlobalSpecies {
@@ -110,6 +111,7 @@ export interface IGlobalRecording extends IAudio {
   site: IGlobalSite;
   locality?: string;
   targetSpecies?: IGlobalSpecies;
+  taxonType: TaxonTypeEnum;
 }
 
 export interface IGlobalRecordingAnnotation {
@@ -136,14 +138,9 @@ export interface IGlobalSpeciesAnnotationBox {
   overlapsWithOtherSpecies?: boolean;
 }
 
-export interface IGlobalRecordingStatusInfo {
-  hasPreviousRecording: boolean;
-}
-
-export interface IGlobalRecordingResponse {
-  statusInfo: IGlobalRecordingStatusInfo;
-  annotation: IGlobalRecordingAnnotation;
+export interface IGlobalRecordingWithAnnotation {
   recording: IGlobalRecording;
+  annotation: IGlobalRecordingAnnotation;
 }
 
 export interface IGlobalSpeciesWithAnnotation extends IGlobalSpecies {
@@ -182,6 +179,27 @@ export interface IIdentificationSpeciesStat extends IGlobalSpecies {
   drawnBoxesCount: number;
 }
 
+export interface IIdentificationHistoryQuery {
+  page?: number;
+  pageSize?: number;
+  orderBy?: string[];
+  speciesSearchQuery?: string;
+  includeSkipped?: boolean;
+  site?: number;
+}
+
+export interface IIdentificationHistoryResponse {
+  recording: {
+    id: number;
+    site: IGlobalSite;
+  };
+  annotation: {
+    created: string;
+    species: IGlobalSpecies[];
+    status: AnnotationStatusEnum;
+  };
+}
+
 export enum CommentType {
   replace = 0,
   reframe = 1
@@ -196,4 +214,16 @@ export enum KerttuGlobalErrorEnum {
   speciesLocked = 'SpeciesLockedError',
   invalidRecordingId = 'InvalidRecordingIdError',
   invalidRecordingAnnotation = 'InvalidRecordingAnnotationError'
+}
+
+export enum TaxonTypeEnum {
+  bird = 0,
+  bat = 1,
+  insect = 2
+}
+
+export enum AnnotationStatusEnum {
+  skipped = -1,
+  notReady = 0,
+  ready = 1
 }

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding } from '@angular/core';
+import { Directive, HostBinding } from '@angular/core';
 
 /**
  * Makes the target element to be shown as dropdown menu content.

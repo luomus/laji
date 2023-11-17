@@ -14,6 +14,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         <lu-sidebar-link [link]="['recordings'] | localize" routerLinkActive>
           {{ 'identification.mainSection' | translate }}
         </lu-sidebar-link>
+        <lu-sidebar-link [link]="['history'] | localize" routerLinkActive>
+          {{ 'identification.history' | translate }}
+        </lu-sidebar-link>
         <lu-sidebar-link [link]="['results'] | localize" routerLinkActive>
           {{ 'results.title' | translate }}
         </lu-sidebar-link>

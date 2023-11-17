@@ -3,7 +3,7 @@
   width: 100%;
   margin-bottom: 20px;
 }
-:host >>> svg:not(:root) {
+:host ::ng-deep svg:not(:root) {
   overflow: visible;
 }
 

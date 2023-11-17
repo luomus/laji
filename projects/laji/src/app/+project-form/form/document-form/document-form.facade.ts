@@ -23,7 +23,7 @@ import { Person } from '../../../shared/model/Person';
 import { Annotation } from '../../../shared/model/Annotation';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import { Logger } from '../../../shared/logger';
-import { LajiFormUtil } from '@laji-form/laji-form-util.service';
+import { LajiFormUtil } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-util.service';
 import equals from 'deep-equal';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 

@@ -1,9 +1,8 @@
 import { Component, OnChanges, ChangeDetectionStrategy, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { IGlobalSite, IIdentificationSiteStat } from '../../../kerttu-global-shared/models';
-import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { DivIcon, Point } from 'leaflet';
-import { GetPopupOptions } from '@luomus/laji-map';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import type { DivIcon, Point } from 'leaflet';
+import { DataOptions, Options, TileLayerName, GetPopupOptions } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -17,8 +16,8 @@ export class SiteResultMapComponent implements OnChanges {
   @Input() sites: IGlobalSite[] = [];
   @Input() siteStats: IIdentificationSiteStat[] = [];
 
-  mapOptions: LajiMapOptions = {
-    tileLayerName: LajiMapTileLayerName.openStreetMap,
+  mapOptions: Options = {
+    tileLayerName: TileLayerName.openStreetMap,
     controls: { draw: false, location: false, layer: false },
     draw: {},
     popupOnHover: true
@@ -27,9 +26,9 @@ export class SiteResultMapComponent implements OnChanges {
   legendList: { label: string; color: string }[];
   countByLegend: Record<string, number> = {};
 
-  private legendThresholds = [0, 1, 10, 100];
-  private legendLabels = ['0', '1-', '10-', '100-'];
-  private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(241, 128, 23, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(110, 204, 57, 0.6)'];
+  private legendThresholds = [0, 1, 10, 100, 1000];
+  private legendLabels = ['0', '1-', '10-', '100-', '1000-'];
+  private legendColors = ['rgb(169, 169, 169, 0.6)', 'rgba(241, 128, 23, 0.6)', 'rgba(240, 194, 12, 0.6)', 'rgba(110, 204, 57, 0.6)', 'rgba(137, 94, 213, 0.6)'];
 
   constructor(
     private translate: TranslateService
@@ -74,7 +73,7 @@ export class SiteResultMapComponent implements OnChanges {
     return countByLegend;
   }
 
-  private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): LajiMapDataOptions {
+  private getData(sites: IGlobalSite[], siteStats: IIdentificationSiteStat[]): DataOptions {
     const countBySite = {};
     (siteStats || []).forEach(stat => {
       countBySite[stat.siteId] = stat.count;
@@ -115,12 +114,14 @@ export class SiteResultMapComponent implements OnChanges {
       c += 'large'; // red
     } else if (count < 100) {
       c += 'medium'; // yellow
-    } else {
+    } else if (count < 1000) {
       c += 'small'; // green
+    } else {
+      c += 'purple'; // purple
     }
 
-    return new DivIcon({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
-      className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
+    return new (window.L.DivIcon)({ html: '<div><span style="white-space: nowrap">' + count + '</span></div>',
+      className: 'marker-cluster' + c, iconSize: new (window.L.Point)(40, 40) });
   }
 
   private getPopup(options: GetPopupOptions, callback: (content: (string | HTMLElement)) => void): string {

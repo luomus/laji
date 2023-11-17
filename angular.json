@@ -59,17 +59,17 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/laji/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -90,11 +90,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -115,11 +111,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
@@ -139,11 +131,7 @@
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -164,11 +152,36 @@
                   "maximumWarning": "6kb"
                 }
               ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
               "vendorChunk": false,
               "fileReplacements": [
                 {
                   "replace": "projects/laji/src/environments/environment.ts",
                   "with": "projects/laji/src/environments/environment.local.ts"
+                }
+              ]
+            },
+            "local-beta": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
                 }
               ]
             },
@@ -226,6 +239,10 @@
             "local": {
               "browserTarget": "laji:build:local",
               "proxyConfig": "proxy.conf.js",
+              "port": 3000
+            },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
               "port": 3000
             },
             "strict": {
@@ -350,6 +367,20 @@
                 }
               ],
               "buildOptimizer": true
+            },
+            "local-beta": {
+              "outputHashing": "media",
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/laji/src/environments/environment.ts",
+                  "with": "projects/laji/src/environments/environment.local-beta.ts"
+                }
+              ],
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -364,6 +395,10 @@
             "local": {
               "browserTarget": "laji:build:local",
               "serverTarget": "laji:server:local"
+            },
+            "local-beta": {
+              "browserTarget": "laji:build:local-beta",
+              "serverTarget": "laji:server:local-beta"
             }
           }
         },
@@ -463,17 +498,17 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/iucn/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -596,11 +631,7 @@
                   "with": "projects/label-designer-electron/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -708,11 +739,7 @@
                   "with": "projects/label-designer-element/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -878,6 +905,7 @@
             "styles": [
               "node_modules/@luomus/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "projects/laji/src/styles/laji.scss",
               "projects/vir/src/styles.scss"
             ],
@@ -906,11 +934,7 @@
                   "with": "projects/vir/src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": {
-                "styles": {
-                  "inlineCritical": false
-                }
-              },
+              "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -1206,6 +1230,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/bird-atlas/src/index.prod.html",
+                "output": "index.html"
+              },
               "fileReplacements": [
                 {
                   "replace": "projects/bird-atlas/src/env/environment.ts",
@@ -1335,6 +1363,7 @@
               "node_modules/@luomus/laji-map/dist/styles.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "node_modules/ngx-toastr/toastr.css",
               "projects/laji/src/styles/laji.scss",
               "projects/kerttu-global/src/styles.scss"
@@ -1357,6 +1386,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "projects/kerttu-global/src/index.prod.html",
+                "output": "index.html"
+              },
               "budgets": [
                 {
                   "type": "anyComponentStyle",

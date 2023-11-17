@@ -14,7 +14,7 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
       <lu-button-round *ngIf="!noClose" (click)="hide()" role="neutral" class="lu-modal-close-button">
         <lu-icon type="close"></lu-icon>
       </lu-button-round>
-      <div [class]="['lu-modal-content', contentClass]" role="dialog">
+      <div [class]="['lu-modal-content', contentClass === null ? '' : contentClass]" role="dialog">
         <ng-content></ng-content>
       </div>
     </div>
@@ -27,7 +27,7 @@ export class ModalComponent implements OnDestroy {
   /**
    * One of 'sm', 'md', 'lg', 'xl'. Defaults to 'md'.
    */
-  @Input() size: ModalSize;
+  @Input() size: ModalSize = 'md';
 
   // null because undefined in the template [class] causes error.
   @Input() contentClass: string | null = null;
@@ -51,7 +51,7 @@ export class ModalComponent implements OnDestroy {
   private originalBodyOverflow?: string;
 
   constructor(
-    private elementRef: ElementRef,
+    public elementRef: ElementRef,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document,
     private cdr: ChangeDetectorRef
@@ -82,10 +82,8 @@ export class ModalComponent implements OnDestroy {
     if (this.isShown) {
       return;
     }
-    this.originalBodyOverflow = this.document.body.style.overflow;
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
-
-    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+    this.showElement();
+    this.hijackBodyOverflow();
     this.isShown = true;
     this.onShownChange.emit(true);
     this.cdr.markForCheck();
@@ -96,7 +94,7 @@ export class ModalComponent implements OnDestroy {
       return false;
     }
     this.hideElement();
-
+    this.releaseBodyOverflow();
     this.isShown = false;
     this.onShownChange.emit(false);
     this.cdr.markForCheck();
@@ -107,13 +105,24 @@ export class ModalComponent implements OnDestroy {
     return this.elementRef.nativeElement.querySelector('.lu-modal-content');
   }
 
+  private showElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'block');
+  }
+
   private hideElement() {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
+  }
+
+  private hijackBodyOverflow() {
+    this.originalBodyOverflow = this.document.body.style.overflow;
+    this.renderer.setStyle(this.document.body, 'overflow', 'hidden');
+  }
+
+  private releaseBodyOverflow() {
     if (this.originalBodyOverflow) {
       this.renderer.setStyle(this.document.body, 'overflow', this.originalBodyOverflow);
     } else {
       this.renderer.removeStyle(this.document.body, 'overflow');
     }
-
-    this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'none');
   }
 }

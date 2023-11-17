@@ -236,29 +236,39 @@ export class SpectrogramChartComponent implements OnChanges {
         .attr('fill', 'black')
         .attr('opacity', 0.4);
 
-      group.append('rect')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', rectX)
-        .attr('height', this.height);
+      if (rectX > 0) {
+        group.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', rectX)
+          .attr('height', this.height);
+      }
 
-      group.append('rect')
-        .attr('x', rectX + rectWidth)
-        .attr('y', 0)
-        .attr('width', this.width - (rectX + rectWidth))
-        .attr('height', this.height);
+      const rightRectWidth = this.width - (rectX + rectWidth);
+      if (rightRectWidth > 0) {
+        group.append('rect')
+          .attr('x', rectX + rectWidth)
+          .attr('y', 0)
+          .attr('width', rightRectWidth)
+          .attr('height', this.height);
+      }
 
-      group.append('rect')
-        .attr('x', 0)
-        .attr('y', 0)
-        .attr('width', this.width)
-        .attr('height', rectY);
+      if (rectY > 0) {
+        group.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .attr('width', this.width)
+          .attr('height', rectY);
+      }
 
-      group.append('rect')
-        .attr('x', 0)
-        .attr('y', rectY + rectHeight)
-        .attr('width', this.width)
-        .attr('height', this.height - (rectY + rectHeight));
+      const bottomRectHeight = this.height - (rectY + rectHeight);
+      if (bottomRectHeight > 0) {
+        group.append('rect')
+          .attr('x', 0)
+          .attr('y', rectY + rectHeight)
+          .attr('width', this.width)
+          .attr('height', bottomRectHeight);
+      }
     }
 
     // draw focus area with a rectangle

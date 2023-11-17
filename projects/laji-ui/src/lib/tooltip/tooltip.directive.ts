@@ -1,4 +1,4 @@
-import { AfterViewInit, ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2, ViewContainerRef, Inject } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2, ViewContainerRef, Inject, ChangeDetectorRef } from '@angular/core';
 import { TooltipComponent } from './tooltip.component';
 import { DOCUMENT } from '@angular/common';
 import { PopoverPlacement, positionPopoverInBody } from '../popover/popover.directive';
@@ -17,6 +17,7 @@ export class TooltipDirective implements OnDestroy {
     private el: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -39,6 +40,7 @@ export class TooltipDirective implements OnDestroy {
     if (!this.compRef) { return; }
     this.compRef.destroy();
     this.compRef = undefined;
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {

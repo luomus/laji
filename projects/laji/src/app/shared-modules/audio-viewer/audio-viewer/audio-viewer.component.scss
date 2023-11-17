@@ -42,3 +42,19 @@ alert {
     margin-right: 0.5em;
   }
 }
+
+:host(.audio-viewer-responsive) {
+  laji-spinner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .spectrogram-container {
+      flex: 1 1 100%;
+    }
+
+    .audio-controls {
+      flex: 0 0 auto;
+    }
+  }
+}

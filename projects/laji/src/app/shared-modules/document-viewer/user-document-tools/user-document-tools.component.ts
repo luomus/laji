@@ -78,20 +78,12 @@ export class UserDocumentToolsComponent implements OnInit {
 
   ngOnInit() {
     this.onModalHide.subscribe(() => {
-      console.log('hide');
       if (!this.router.url.includes('view')) {
         this.modalIsOpen = false;
         this.documentToolsService.emitChildEvent(false);
         this.cd.detectChanges();
       }
     });
-    // this.modalService.onHide.subscribe((e) => {
-    //   if (!this.router.url.includes('view')) {
-    //     this.modalIsOpen = false;
-    //     this.documentToolsService.emitChildEvent(false);
-    //     this.cd.detectChanges();
-    //   }
-    // });
   }
 
   modalHideSub: Subscription;
