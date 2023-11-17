@@ -13,8 +13,8 @@ import { map, mergeMap, switchMap, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NamedPlacesQuery, NamedPlacesRouteData, ProjectFormService } from '../../../../shared/service/project-form.service';
 import { AreaService } from '../../../../shared/service/area.service';
-import { LajiFormFooterStatus } from '@laji-form/laji-form-footer/laji-form-footer.component';
-import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormFooterStatus } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form-footer/laji-form-footer.component';
+import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
 
 interface ViewModel extends NamedPlacesRouteData {
   placeForm: Form.SchemaForm;

@@ -1,4 +1,4 @@
-import LajiFormBuilder from '@luomus/laji-form-builder';
+import type LajiFormBuilder from '@luomus/laji-form-builder';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import lajiFormBuilderBs3Theme from '@luomus/laji-form-builder/lib/client/themes/bs3';
 import { FormApiClient } from '../../shared/api/FormApiClient';
@@ -8,10 +8,11 @@ import SchemaForm = Form.SchemaForm;
 import { ToastsService } from '../../shared/service/toasts.service';
 import { ProjectFormService } from '../../shared/service/project-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, Subscription, from, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
+import {map, shareReplay, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'laji-form-builder',
@@ -45,7 +46,10 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.unmount();
+    this.lajiFormBuilderUpdateSub?.unsubscribe();
   }
+
+  lajiFormBuilderImport = from(import('@luomus/laji-form-builder')).pipe(tap(() => console.log('mport')), map(p => (p as any).default), shareReplay()) as Observable<any>;
 
   private mount() {
     this.ngZone.runOutsideAngular(() => {
@@ -55,25 +59,31 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  lajiFormBuilderUpdateSub: Subscription;
+
   updateLajiFormBuilder() {
-    this.lajiFormBuilder = new LajiFormBuilder({
-      id: this.id,
-      rootElem: this.lajiFormBuilderRoot.nativeElement,
-      theme: lajiFormBuilderBs3Theme,
-      apiClient: this.apiClient,
-      lang: this.translate.currentLang as Lang,
-      onLangChange: this.onLangChange.bind(this),
-      primaryDataBankFormID: Global.forms.databankPrimary,
-      secondaryDataBankFormID: Global.forms.databankSecondary,
-      onChange: this.onChange.bind(this),
-      onRemountLajiForm: this.onRemountLajiForm.bind(this),
-      onSelected: this.onSelected.bind(this),
-      notifier: {
-        success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
-        info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
-        warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
-        error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
-      }
+    this.lajiFormBuilderUpdateSub?.unsubscribe();
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    this.lajiFormBuilderUpdateSub = this.lajiFormBuilderImport.subscribe((LajiFormBuilder) =>  {
+      this.lajiFormBuilder = new LajiFormBuilder({
+        id: this.id,
+        rootElem: this.lajiFormBuilderRoot.nativeElement,
+        theme: lajiFormBuilderBs3Theme,
+        apiClient: this.apiClient,
+        lang: this.translate.currentLang as Lang,
+        onLangChange: this.onLangChange.bind(this),
+        primaryDataBankFormID: Global.forms.databankPrimary,
+        secondaryDataBankFormID: Global.forms.databankSecondary,
+        onChange: this.onChange.bind(this),
+        onRemountLajiForm: this.onRemountLajiForm.bind(this),
+        onSelected: this.onSelected.bind(this),
+        notifier: {
+          success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
+          info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
+          warning: msg => this.ngZone.run(() => this.toastsService.showWarning(msg)),
+          error: msg => this.ngZone.run(() => this.toastsService.showError(msg)),
+        }
+      });
     });
   }
 

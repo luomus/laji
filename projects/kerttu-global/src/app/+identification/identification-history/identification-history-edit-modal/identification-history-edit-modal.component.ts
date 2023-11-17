@@ -14,7 +14,6 @@ import { Observable, of, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import equals from 'deep-equal';
-import { ModalService } from '../../../../../../laji-ui/src/lib/modal/modal.service';
 
 @Component({
   selector: 'bsg-identification-history-edit-modal',
@@ -48,7 +47,6 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     private userService: UserService,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private modalService: ModalService,
     private dialogService: DialogService
   ) { }
 
@@ -108,7 +106,6 @@ export class IdentificationHistoryEditModalComponent implements OnInit, OnDestro
     this.canDeactivate().subscribe(canDeactivate => {
       if (canDeactivate) {
         this.modalClose.emit(this.hasChanges);
-        this.modalService.hide();
         this.cdr.markForCheck();
       }
     });

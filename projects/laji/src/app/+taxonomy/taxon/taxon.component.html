@@ -15,7 +15,7 @@
       </main>
     </lu-sidebar>
   </ng-container>
-  <div class="container-fluid" *ngIf="!taxon">
+  <div class="container-fluid" *ngIf="taxon === null">
     <h1>
       {{ 'taxonomy.notFound' | translate }}
     </h1>

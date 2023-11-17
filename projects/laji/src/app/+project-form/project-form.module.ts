@@ -8,7 +8,7 @@ import { LatestDocumentsModule } from '../shared-modules/latest-documents/latest
 import { AboutComponent } from './about/about.component';
 import { InfoPageModule } from '../shared-modules/info-page/info-page.module';
 import { DatasetAboutComponent } from './about/dataset-about/dataset-about.component';
-import { LajiFormModule } from '@laji-form/laji-form.module';
+import { LajiFormModule } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form.module';
 import { InstructionsComponent } from './instructions/instructions.component';
 import { FormPermissionModule } from './form-permission/form-permission.module';
 import { SubmissionsComponent } from './submissions/submissions.component';

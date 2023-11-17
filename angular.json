@@ -905,6 +905,7 @@
             "styles": [
               "node_modules/@luomus/laji-form/dist/styles.css",
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@achimha/ngx-datatable/themes/material.scss",
               "projects/laji/src/styles/laji.scss",
               "projects/vir/src/styles.scss"
             ],
