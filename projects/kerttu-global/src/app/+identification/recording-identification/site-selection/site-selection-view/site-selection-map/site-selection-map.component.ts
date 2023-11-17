@@ -42,7 +42,7 @@ export class SiteSelectionMapComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.sites) {
       if (this.lajiMap?.map) {
-        this.updateData();
+        this.updateMapData();
         this.dataInitialized = true;
       }
     } else if (changes.selectedSites) {
@@ -72,12 +72,12 @@ export class SiteSelectionMapComponent implements OnChanges {
 
   onMapLoaded() {
     if (!this.dataInitialized) {
-      this.updateData();
+      this.updateMapData();
       this.dataInitialized = true;
     }
   }
 
-  private updateData() {
+  private updateMapData() {
     const data = this.getData(this.sites);
     this.lajiMap?.setData(data || {});
     this.lajiMap?.map?.zoomToData({ padding: [40, 40] });
