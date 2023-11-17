@@ -69,7 +69,9 @@ const cacheMiddleware: RequestHandler = (req, res, next) => {
 
     // We hijack the `res.render()`, because:
     // 1. We want to send a cached result, and prevent the `next()` from trying to send it again.
-    // 2. We want to call `next()` because we need to get the rendered HTML so we can cache it on TTL bust.
+    // 2. We want to call `next()` even though we've already sent a response (in Express we really shouldn't call next()
+    //    that sends a response if we've sent the response), because we need to get the rendered HTML so we can cache it
+    //    on TTL bust.
     const resRender = res.render.bind(res);
     res.render = (view: string, options?: object, callback?: (err: Error, html: string) => void) => {
       resRender(view, options, (err, html) => {
