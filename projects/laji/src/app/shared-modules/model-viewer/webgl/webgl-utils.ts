@@ -40,8 +40,9 @@ export const glInitializeProgram = (canvas: HTMLCanvasElement): [WebGL2Rendering
   return [gl, program];
 };
 
-export const bufferPositions = (gl: WebGL2RenderingContext, positionsLocation: number, positions: Float32Array) => {
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+export const bufferPositions = (gl: WebGL2RenderingContext, positionsLocation: number, positions: Float32Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
+  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  gl.bindBuffer(gl.ARRAY_BUFFER, ref);
   gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
   gl.enableVertexAttribArray(positionsLocation);
   gl.vertexAttribPointer(
@@ -52,10 +53,12 @@ export const bufferPositions = (gl: WebGL2RenderingContext, positionsLocation: n
     0,
     0
   );
+  return ref;
 };
 
-export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: number, normals: Float32Array) => {
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: number, normals: Float32Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
+  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  gl.bindBuffer(gl.ARRAY_BUFFER, ref);
   gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
   gl.enableVertexAttribArray(normalsLocation);
   gl.vertexAttribPointer(
@@ -66,30 +69,12 @@ export const bufferNormals = (gl: WebGL2RenderingContext, normalsLocation: numbe
     0,
     0
   );
+  return ref;
 };
 
-export const bufferIndices = (gl: WebGL2RenderingContext, indices: Uint32Array | Uint16Array) => {
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+export const bufferIndices = (gl: WebGL2RenderingContext, indices: Uint32Array | Uint16Array, bufferRef: WebGLBuffer | void): WebGLBuffer => {
+  const ref = bufferRef === null ? gl.createBuffer() : <WebGLBuffer>bufferRef;
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ref);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-};
-
-export const bufferTexCoords = (gl: WebGL2RenderingContext, texCoordLocation: number, texCoords: number[]) => {
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
-  gl.enableVertexAttribArray(texCoordLocation);
-  gl.vertexAttribPointer(
-    texCoordLocation,
-    2,
-    gl.FLOAT,
-    true,
-    0,
-    0
-  );
-};
-
-export const setTexture = (gl: WebGL2RenderingContext, textureLocation: WebGLUniformLocation, image: any) => {
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image);
-  gl.generateMipmap(gl.TEXTURE_2D);
+  return ref;
 };
