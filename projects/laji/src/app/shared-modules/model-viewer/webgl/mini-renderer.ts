@@ -79,6 +79,22 @@ const entityFromGLB = (bufferData: GLB.BufferData[], jsonData: GLB.JSONData): En
   };
 };
 
+const executeInAnimationFrame = (
+  target: object,
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
+): PropertyDescriptor => {
+  const originalMethod = descriptor.value;
+
+  descriptor.value = function(...args: any[]) {
+    window.requestAnimationFrame(() => {
+      originalMethod.apply(this, args);
+    });
+  };
+
+  return descriptor;
+};
+
 export class MiniRenderer {
   scene: Scene;
 
@@ -87,7 +103,10 @@ export class MiniRenderer {
   private gl: WebGL2RenderingContext;
   private program: WebGLProgram;
   private positionLocation: number;
+  private positionBuffer: WebGLBuffer | null = null;
   private normalLocation: number;
+  private normalBuffer: WebGLBuffer | null = null;
+  private indexBuffer: WebGLBuffer | null = null;
   private worldViewProjectionLocation: WebGLUniformLocation;
   private worldInverseTransposeLocation: WebGLUniformLocation;
   private lightCountLocation: WebGLUniformLocation;
@@ -126,6 +145,7 @@ export class MiniRenderer {
     this.scene.entity = entityFromGLB(bufferData, jsonData);
   }
 
+  @executeInAnimationFrame
   render() {
     // eslint-disable-next-line no-bitwise
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -164,9 +184,9 @@ export class MiniRenderer {
 
     const vertexArr = this.gl.createVertexArray();
     this.gl.bindVertexArray(vertexArr);
-    bufferPositions(this.gl, this.positionLocation, this.scene.entity.mesh.positions);
-    bufferNormals(this.gl, this.normalLocation, this.scene.entity.mesh.normals);
-    bufferIndices(this.gl, this.scene.entity.mesh.indices);
+    this.positionBuffer = bufferPositions(this.gl, this.positionLocation, this.scene.entity.mesh.positions, this.positionBuffer);
+    this.normalBuffer = bufferNormals(this.gl, this.normalLocation, this.scene.entity.mesh.normals, this.normalBuffer);
+    this.indexBuffer = bufferIndices(this.gl, this.scene.entity.mesh.indices, this.indexBuffer);
 
     this.gl.uniformMatrix4fv(this.worldViewProjectionLocation, false, M4.mult(this.projectionMatrix, this.scene.entity.transform));
     this.gl.uniformMatrix4fv(this.worldInverseTransposeLocation, false, M4.transpose(M4.inverse(this.scene.entity.transform)));
