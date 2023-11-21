@@ -3,6 +3,9 @@
   <img class="d-block mb-4" src="https://cdn.laji.fi/images/bird-society-lappi.png" alt="Suurruudut">
   <p>Lintuatlaksessa tavoitteena on, että Pohjois-Lapin (YKJ 740 ja siitä pohjoiseen) jokaisen 50 km × 50 km suurruudun atlasruuduista vähintään 75 % tutkitaan tyydyttävästi.</p>
   <p>Lapissa tarvitaan koko maan lintuharrastajien apua. Käy kesällä Lapissa, pysähtele usein ja ilmoita kaikista lajeista atlashavainto. Tärkeimmät puutealueet mainitaan <a href='https://www.birdlife.fi/suojelu/seuranta/lintuatlas/lapin-suurruutujen-retkeily/' target="_blank">Lapin suurruutujen retkeilysivulla</a>.</p>
+  <div class="d-flex justify-end">
+    <button class="btn btn-default mb-3" (click)="onExportCsv(stats)">Lataa .csv</button>
+  </div>
   <ngx-datatable
     class="material mb-8"
     [rows]="stats"
