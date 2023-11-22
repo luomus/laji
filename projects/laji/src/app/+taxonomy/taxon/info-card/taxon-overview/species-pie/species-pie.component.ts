@@ -108,7 +108,7 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
           id,
           count,
           label
-        })
+        });
       }
 
       return accData;
