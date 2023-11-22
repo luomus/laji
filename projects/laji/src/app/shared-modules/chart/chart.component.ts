@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartType, ChartDataset, ChartEvent, ChartData, Plugin, ChartOptions } from 'chart.js';
-import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-chart',
@@ -43,11 +42,6 @@ export class ChartComponent {
   @Output() public chartClick: EventEmitter<{ event?: ChartEvent; active?: any[] }> = new EventEmitter();
   @Output() public chartHover: EventEmitter<{ event: ChartEvent; active: any[] }> = new EventEmitter();
 
-  constructor(
-    private platformService: PlatformService
-  ) {
-  }
-
   onChartClick(event: { event?: ChartEvent; active?: object[] }) {
     this.chartClick.emit(event);
     try {
@@ -60,12 +54,5 @@ export class ChartComponent {
     if (barIndex >= 0) {
       this.barClick.emit({...event, index: barIndex});
     }
-  }
-
-  private get windowVerticalOffset(): number {
-    const window = this.platformService.window;
-    return window.pageYOffset
-      || window.document.documentElement.scrollTop
-      || window.document.body.scrollTop || 0;
   }
 }
