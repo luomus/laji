@@ -154,15 +154,9 @@ export class AudioService {
     gainNode.gain.value = 0.5;
     source.connect(gainNode);
 
-    if (frequencyRange && (frequencyRange[0] > 0 || frequencyRange[1] < buffer.sampleRate / 2)) {
-      const highpassFilter = this.createFilter('highpass', frequencyRange[0] * playbackRate);
-      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1] * playbackRate);
-      gainNode.connect(highpassFilter);
-      highpassFilter.connect(lowpassFilter);
-      lowpassFilter.connect(audioCtx.destination);
-    } else {
-      gainNode.connect(audioCtx.destination);
-    }
+    const lastNode = this.addFrequencyFilters(gainNode, frequencyRange, buffer.sampleRate, playbackRate);
+    lastNode.connect(audioCtx.destination);
+
     source.start(0, startTime);
     this.activePlayer = player;
     return source;
@@ -181,6 +175,27 @@ export class AudioService {
 
   public getPlayedTime(startTime: number, playbackRate: number) {
     return (this.getAudioContextTime() - startTime) * playbackRate;
+  }
+
+  private addFrequencyFilters(audioNode: AudioNode, frequencyRange: number[], sampleRate: number, playbackRate: number): AudioNode {
+    const nbrOfFilters = 7; // the more filters there are the greater effect they have
+
+    if (frequencyRange?.[0] > 0) {
+      for (let i = 0; i < nbrOfFilters; i++) {
+        const filter = this.createFilter('highpass', frequencyRange[0] * playbackRate);
+        audioNode.connect(filter);
+        audioNode = filter;
+      }
+    }
+    if (frequencyRange?.[1] < sampleRate / 2) {
+      for (let i = 0; i < nbrOfFilters; i++) {
+        const filter = this.createFilter('lowpass', frequencyRange[1] * playbackRate);
+        audioNode.connect(filter);
+        audioNode = filter;
+      }
+    }
+
+    return audioNode;
   }
 
   private createFilter(type: 'highpass'|'lowpass', frequency: number) {
