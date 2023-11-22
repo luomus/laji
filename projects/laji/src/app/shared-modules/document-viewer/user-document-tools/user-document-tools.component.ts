@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, Output, ViewChild, HostListener, EventEmitter, ChangeDetectorRef, OnInit, TemplateRef } from '@angular/core';
 import { IdService } from '../../../shared/service/id.service';
 import { FormService } from '../../../shared/service/form.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { TemplateForm } from '../../own-submissions/models/template-form';
 import { DocumentToolsService } from '../document-tools.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,9 +11,11 @@ import { DocumentService } from '../../own-submissions/service/document.service'
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Logger } from '../../../shared/logger';
 import { ReloadObservationViewService } from '../../../shared/service/reload-observation-view.service';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { Global } from '../../../../environments/global';
 import { DocumentViewerFacade } from '../document-viewer.facade';
+import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
+import {Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'laji-user-document-tools',
@@ -41,7 +42,7 @@ export class UserDocumentToolsComponent implements OnInit {
 
   loading = false;
 
-  modalRef: any;
+  modalRef: ModalRef;
   modalIsOpen = false;
 
   @ViewChild('saveAsTemplate', { static: true }) public templateModal: TemplateRef<any>;
@@ -51,7 +52,7 @@ export class UserDocumentToolsComponent implements OnInit {
     private formService: FormService,
     private documentToolsService: DocumentToolsService,
     private translate: TranslateService,
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private cd: ChangeDetectorRef,
     private router: Router,
     private documentApi: DocumentApi,
@@ -76,7 +77,7 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.modalService.onHide.subscribe((e) => {
+    this.onModalHide.subscribe(() => {
       if (!this.router.url.includes('view')) {
         this.modalIsOpen = false;
         this.documentToolsService.emitChildEvent(false);
@@ -85,14 +86,21 @@ export class UserDocumentToolsComponent implements OnInit {
     });
   }
 
+  modalHideSub: Subscription;
+  onModalHide = new Subject<void>();
+
   makeTemplate() {
-    this.modalRef = this.modalService.show(this.templateModal, {class: 'modal-sm tools', backdrop: true});
+    this.modalRef = this.modalService.show(this.templateModal, {size: 'sm'});
+    this.modalHideSub?.unsubscribe();
+    this.modalHideSub = this.modalRef.onShownChange.pipe(filter(v => v === false)).subscribe(() => this.onModalHide.next());
     this.documentToolsService.emitChildEvent(true);
     this.modalIsOpen = true;
   }
 
   makeDelete() {
-    this.modalRef = this.modalService.show(this.deleteModal, {class: 'modal-sm tools', backdrop: true});
+    this.modalRef = this.modalService.show(this.deleteModal, {size: 'sm'});
+    this.modalHideSub?.unsubscribe();
+    this.modalHideSub = this.modalRef.onShownChange.pipe(filter(v => v === false)).subscribe(() => this.onModalHide.next());
     this.documentToolsService.emitChildEvent(true);
     this.modalIsOpen = true;
   }
@@ -102,9 +110,7 @@ export class UserDocumentToolsComponent implements OnInit {
   }
 
   closeModal() {
-    if (this.modalRef) {
-      this.modalRef.hide();
-    }
+    this.modalRef?.hide();
   }
 
   saveTemplate() {

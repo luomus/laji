@@ -14,10 +14,10 @@
     <div class="image-container" *ngFor ="let img of modalImages; let index = index" (click)="openImage(index)" tabindex="0" role="button" luKeyboardClickable>
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-             [popover]="info"
-             [popoverContext]="{$implicit: img}"
+             [luPopover]="info"
+             [templateContext]="{$implicit: img}"
+             rootElement="body"
              placement="bottom"
-             triggers="mouseenter:mouseleave"
              class="ng-thumb compact"
              alt="Image {{ index + 1 }}" />
       </ng-container>
@@ -35,8 +35,9 @@
     <div class="image-container annotation">
       <ng-container *ngIf="showPopover else onlyImage">
         <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-             [popover]="info"
-             [popoverContext]="{$implicit: img}"
+             [luPopover]="info"
+             [templateContext]="{$implicit: img}"
+             rootElement="body"
              tabindex="0" luKeyboardClickable
              placement="bottom"
              triggers="mouseenter:mouseleave"
@@ -44,17 +45,17 @@
              alt="Image {{ index + 1 }}" />
       </ng-container>
       <ng-template #onlyImage>
-        <img class="main-annotation-image" src="{{ tmpImg.mainURL }}" (click)="openImage(tmpImg.index)" tabindex="0" luKeyboardClickable>
-        <span class="hover-click alert-info" (click)="openImage(tmpImg.index)" tabindex="0" luKeyboardClickable></span>
+        <img class="main-annotation-image" src="{{ annotationTmpSelectedImg.url}}" (click)="openImage(annotationTmpSelectedImg.index)" tabindex="0" luKeyboardClickable>
+        <span class="hover-click alert-info" (click)="openImage(annotationTmpSelectedImg.index)" tabindex="0" luKeyboardClickable></span>
       </ng-template>
     </div>
     <div *ngFor ="let img of modalImages; let index = index">
-        <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
-        class="ng-thumb compact"
-        alt="Image {{ index + 1 }}"
-        (click)="openMainPic(img.fullURL, index)"
-        tabindex="0" luKeyboardClickable
-        />
+      <img lajiLazyImage src="{{ img.thumbnailURL || img.largeURL || img.fullURL }}"
+      class="ng-thumb compact"
+      alt="Image {{ index + 1 }}"
+      (click)="onClickAnnotationTmpThumb(img, index)"
+      tabindex="0" luKeyboardClickable
+      />
     </div>
   </ng-container>
 </ng-template>

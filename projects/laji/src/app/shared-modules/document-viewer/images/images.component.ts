@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { QueryParamsHandling } from '@angular/router';
+import { ViewType } from '../../../shared/gallery/image-gallery';
 
 @Component({
   selector: 'laji-images',
@@ -20,8 +21,8 @@ export class ImagesComponent implements OnChanges {
   @Input() linkOptions: {tab: string; queryParams: any; queryParamsHandling: QueryParamsHandling};
   @Input() sort: string[];
   @Input() shortcut = true;
-  @Input() view: 'compact'|'annotation'|'full'|'full2' = 'annotation';
-  @Input() views = ['compact', 'full'];
+  @Input() view: ViewType = 'annotation';
+  @Input() views: ViewType[] = ['compact', 'full'];
 
   documentImages;
   gatheringImages;

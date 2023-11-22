@@ -323,29 +323,17 @@ export interface TaxonomyDescription {
 }
 
 export interface TaxonomyImage {
-
   author?: string;
-
   copyrightOwner?: string;
-
   largeURL?: string;
-
   fullURL?: string;
-
   keywords?: string[];
-
   licenseId?: string;
-
   licenseAbbreviation?: string;
-
   licenseDescription?: string;
-
   source?: string;
-
   taxonDescriptionCaption?: MultiLanguage;
-
   thumbnailURL?: string;
-
 }
 
 export interface  Habitat {

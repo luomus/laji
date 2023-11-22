@@ -15,7 +15,8 @@ import { NamedPlaceLinkerModule } from './named-place-linker/named-place-linker.
 import { InfoPageModule } from '../../shared-modules/info-page/info-page.module';
 import { NamedPlaceLinkerButtonModule } from './named-place-linker/named-place-linker-button/named-place-linker-button.module';
 import { ProjectFormHeaderModule } from '../header/project-form-header.module';
-import { LajiFormModule } from '@laji-form/laji-form.module';
+import { LajiFormModule } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { LajiFormModule } from '@laji-form/laji-form.module';
     InfoPageModule,
     ProjectFormHeaderModule,
     NamedPlaceLinkerButtonModule,
+    ModalModule
   ],
   declarations: [
     FormComponent,

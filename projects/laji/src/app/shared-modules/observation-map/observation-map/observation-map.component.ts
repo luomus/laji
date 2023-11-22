@@ -22,18 +22,18 @@ import { LabelPipe } from '../../../shared/pipe/label.pipe';
 import { ToQNamePipe } from '../../../shared/pipe/to-qname.pipe';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { CollectionNamePipe } from '../../../shared/pipe/collection-name.pipe';
-import { getPointIconAsCircle, LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapDataOptions, LajiMapOptions, LajiMapTileLayerName } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { PlatformService } from '../../../root/platform.service';
-import { DataOptions, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from 'laji-map';
-import { combineColors } from 'laji-map/lib/utils';
+import type { DataOptions, Options, DataWrappedLeafletEventData, GetFeatureStyleOptions, TileLayersOptions } from '@luomus/laji-map';
+import { TileLayerName } from '@luomus/laji-map/lib/defs';
+import { combineColors } from '@luomus/laji-map/lib/utils';
 import { environment } from '../../../../environments/environment';
 import { convertLajiEtlCoordinatesToGeometry, convertWgs84ToYkj, getFeatureFromGeometry } from '../../../root/coordinate-utils';
 import {
   lajiMapObservationVisualization,
   ObservationVisualizationMode
 } from 'projects/laji/src/app/shared-modules/observation-map/observation-map/observation-visualization';
-import L, { LeafletEvent, MarkerCluster, PathOptions } from 'leaflet';
+import type { DivIcon, LeafletEvent, MarkerCluster, PathOptions } from 'leaflet';
 import { Feature, GeoJsonProperties, Geometry, FeatureCollection, Polygon } from 'geojson';
 import { Coordinates } from './observation-map-table/observation-map-table.component';
 import { BoxCache } from './box-cache';
@@ -92,8 +92,8 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     this.mapOptions = {
       ...this.mapOptions,
       tileLayerName: world
-        ? LajiMapTileLayerName.openStreetMap
-        : LajiMapTileLayerName.taustakartta
+        ? TileLayerName.openStreetMap
+        : TileLayerName.taustakartta
     };
   }
   @Input() set draw(draw: any) {
@@ -143,13 +143,13 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   mapData: any[] = [];
   loading = false;
   showingIndividualPoints = false;
-  mapOptions: LajiMapOptions;
+  mapOptions: Options;
 
   tableViewHeightOverride = -1;
   selectedObservationCoordinates: Coordinates;
 
   private useFinnishMap = false;
-  private drawData: LajiMapDataOptions = {
+  private drawData: DataOptions = {
     featureCollection: {type: 'FeatureCollection', features: []},
     getFeatureStyle: () => ({
       weight: 2,
@@ -188,7 +188,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       },
       zoom: 1.5,
       draw: false,
-      tileLayerName: LajiMapTileLayerName.openStreetMap,
+      tileLayerName: TileLayerName.openStreetMap,
       clickBeforeZoomAndPan: true
     };
     if ((environment as any).observationMapOptions) {
@@ -464,7 +464,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
       : ObservableOf([]);
   }
 
-  private getDrawData$(query: WarehouseQueryInterface): Observable<LajiMapDataOptions> {
+  private getDrawData$(query: WarehouseQueryInterface): Observable<DataOptions> {
     return forkJoin([
       getFeaturesFromQueryCoordinates$(query.coordinates),
       this.getFeaturesFromQueryPolygonId(query.polygonId)
@@ -558,7 +558,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private getDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<LajiMapDataOptions> {
+  private getDataOptions$(query: WarehouseQueryInterface, bounds?: any): Observable<DataOptions> {
     this.loading = true;
     this.cdr.markForCheck();
 
@@ -599,7 +599,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
     let classNames = ['coordinate-accuracy-cluster'];
     const childMarkers = cluster.getAllChildMarkers();
     const count = childMarkers.reduce((prev, marker) => prev + marker.feature.properties.count, 0);
-    const icon: L.DivIcon = L.divIcon({
+    const icon: DivIcon = (window.L).divIcon({
       className: classNames.join(' '),
       html: `<span>${count}</span>`
     });

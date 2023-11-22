@@ -3,9 +3,9 @@
     <h3>Laskennan tulokset reitiltä {{ namedPlace.name }}</h3>
   </div>
 </div>
-<alert *ngIf="missingNS" [type]="'danger'">
+<lu-alert *ngIf="missingNS" [type]="'danger'">
   Havaintoerässä käytettyä nimettyä paikkaa ei löytynyt!
-</alert>
+</lu-alert>
 <div class="edit-container">
   <a [routerLink]="path | localize" class="btn btn-primary">Siirry muokkaamaan <i class="glyphicon glyphicon-edit"></i></a>
 </div>

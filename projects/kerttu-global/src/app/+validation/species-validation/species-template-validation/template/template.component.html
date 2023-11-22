@@ -103,20 +103,16 @@
 </div>
 
 <ng-template #commentModal>
-  <div class="modal-content">
-    <div class="modal-body">
-      <p>{{ 'validation.template.confirmAndComment' | translate }}</p>
-      <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" (click)="hideCommentModal()">
-        <span>{{ 'validation.cancel' | translate }}</span>
-      </button>
-      <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
-        <span>{{ 'validation.template.confirm' | translate }}</span>
-      </button>
-    </div>
-  </div><!-- /.modal-content -->
+  <p>{{ 'validation.template.confirmAndComment' | translate }}</p>
+  <textarea id="comment" class="form-control" [(ngModel)]="commentText" name="comment" rows="7"></textarea>
+  <div class="lu-modal-footer">
+    <button type="button" class="btn btn-default" (click)="hideCommentModal()">
+      <span>{{ 'validation.cancel' | translate }}</span>
+    </button>
+    <button type="button" class="btn btn-success" [disabled]="!commentText" (click)="this.confirmComment()">
+      <span>{{ 'validation.template.confirm' | translate }}</span>
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #audioInfo let-audio="audio">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -11,11 +11,13 @@ import { CollectionService, ICollectionAggregate, ICollectionsTreeNode } from '.
   styleUrls: ['./dataset-metadata-browser.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataBrowserComponent implements OnInit {
+export class DatasetMetadataBrowserComponent implements OnChanges {
   @Input() selected: string;
+  @Input() isMobile: boolean;
   @Output() selectedChange = new EventEmitter<string>();
 
   collectionsCount = 0;
+  _selected: string;
   selectedOption: SelectedOption[] = [];
   optionsTree: TreeOptionsNode[] = [];
   lang: string;
@@ -37,8 +39,11 @@ export class DatasetMetadataBrowserComponent implements OnInit {
     this.lang = this.translate.currentLang;
   }
 
-  ngOnInit() {
-    this.setupTree();
+  ngOnChanges() {
+    if (!this._selected || this.selected !== this._selected) {
+      this.setupTree();
+      this._selected = this.selected;
+    }
   }
 
   toggleShowEmpty() {
@@ -180,6 +185,7 @@ export class DatasetMetadataBrowserComponent implements OnInit {
 
   changeSelected(value) {
     this.selected = value[0]?.id;
+    this._selected = this.selected;
     this.selectedChange.emit(this.selected);
   }
 }

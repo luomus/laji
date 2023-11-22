@@ -3,10 +3,9 @@ Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { Taxonomy } from '../../../../../shared/model/Taxonomy';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, Chart } from 'chart.js';
-import { BaseChartDirective} from 'ng2-charts';
-import 'chartjs-chart-treemap/dist/chartjs-chart-treemap.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { TreemapController, TreemapElement } from 'chartjs-chart-treemap';
 import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/service/multi-lang.service';
-
 
 @Component({
   selector: 'laji-species-pie',
@@ -17,16 +16,12 @@ import { MultiLangService } from 'projects/laji/src/app/shared-modules/lang/serv
 export class SpeciesPieComponent implements OnInit, OnChanges {
   @Input() children: Taxonomy[];
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-  data: any;
   total = 0;
 
   chartType: any = 'treemap';
-  lineChartData: any[] = [];
+  lineChartData: any;
   lineChartOptions: ChartOptions = {};
   lineChartLabels = [];
-  lineChartPlugins = [];
-  lineChartColors: any[] = [];
-  dataById: {[key: string]: Taxonomy} = {};
   colorPalette = ['#A8385D', '#7AA3E5', '#A27EA8', '#7ED3ED', '#50ABCC', '#AD6886', '#8796C0', '#ADCDED', '#ABD1F0', '#AAE3F5'];
 
   @Output() taxonSelect = new EventEmitter<string>();
@@ -36,11 +31,13 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    const lajia = this.translate.instant('taxonomy.species');
-    const laji = this.translate.instant('taxonomy.species.singular');
-    this.lineChartOptions = {responsive: true,
+    Chart.register(TreemapController, TreemapElement);
+    const pluralSpeciesLabel = this.translate.instant('taxonomy.species');
+    const singularSpeciesLabel = this.translate.instant('taxonomy.species.singular');
+    this.lineChartOptions = {
+      responsive: true,
       maintainAspectRatio : false,
-      cutoutPercentage: 50,
+      cutout: 50,
       elements: {
         point: {
           radius: 5,
@@ -50,103 +47,75 @@ export class SpeciesPieComponent implements OnInit, OnChanges {
       legend: {
         display: false
       },
-      tooltips: {
-        mode: 'nearest',
-        intersect: false,
-        bodyAlign: 'center',
-        displayColors: false,
-        callbacks: {
-          title(item, data) {
-            return data.datasets[0]['tree'][item[0]['index']].label;
-          },
-          label(item, data) {
-            const species = (data.datasets[0]['tree'][item['index']].value < 2) ? laji :
-            lajia;
-            return data.datasets[0]['tree'][item['index']].value + ' ' + species;
+      plugins: {
+        tooltip: {
+          intersect: false,
+          bodyAlign: 'center',
+          displayColors: false,
+          callbacks: {
+            title(item) {
+              return item[0].dataset['tree'][item[0]['dataIndex']].label;
+            },
+            label(item) {
+              const {count} = item.dataset['tree'][item['dataIndex']];
+              const species = (count < 2) ? singularSpeciesLabel : pluralSpeciesLabel;
+              return count + ' ' + species;
+            }
           }
         }
       },
-      plugins: {
-        datalabels: {
-          display: false
-        }
-      },
-      animation: {
-        duration: 1,
-        onComplete() {
-            const chartInstance = this.chart,
-            ctx = chartInstance.ctx;
-            const chartWidth = chartInstance['width'];
-            const fontSize = Math.round(chartWidth / 80) > 10 ? Math.round(chartWidth / 80) : 10;
-            ctx.font = Chart.helpers.fontString(fontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#000';
-            ctx.textBaseline = 'bottom';
-            if (this.data.datasets[0].tree && this.data.datasets[0].tree.length < 200) {
-              this.data.datasets.forEach(function(dataset, i) {
-                const meta = chartInstance.controller.getDatasetMeta(i);
-                meta.data.forEach(function(bar, index) {
-                    const label = dataset.tree[index].label;
-                    const data = dataset.tree[index].value;
-                    const width = Math.ceil(ctx.measureText(label).width);
-                    const finalLabel = width < Math.ceil(dataset['data'][index].w) ? label : '';
-                    const finalData = width < Math.ceil(dataset['data'][index].w) ? data : '';
-                    ctx.fillText(finalLabel, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2));
-                    ctx.fillText(finalData, bar['_model']['x'], bar['_model']['y'] - (bar['_model']['height'] / 2) + 20);
-                });
-            });
-            }
-        }
-      },
       events: ['mousemove', 'mouseout', 'click'],
+      onHover: (event, chartElement) => {
+        event.native['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
+      },
       hover: {
         animationDuration: 0,
-        onHover: (event, chartElement) => {
-          event['target']['style']['cursor'] = chartElement[0] ? 'pointer' : 'default';
-        }
-      }
-    };
+      },
+      animation: false
+    } as any;
   }
 
   ngOnChanges() {
-    this.dataById = {};
     this.total = 0;
-    this.lineChartColors = [{backgroundColor: []}];
-    this.lineChartData = [{
-      data: [
-      {
-        data: null,
-        key: 'value',
+    this.lineChartData = {
+      datasets: [{
+        tree: [],
+        key: 'count',
         groups: [],
-        spacing: 0,
-        borderWidth: 0,
-        borderColor: 'rgba(160,160,160,0.5)'
-       }
-      ]
-    }
-    ];
-    this.lineChartLabels = [];
-    const tmpArray = [];
-    (this.children || []).forEach((child, index) => {
+        backgroundColor: '#8D9DC6',
+        labels: {
+          display: true,
+          color: 'black',
+          formatter: (ctx: any) => {
+            const {label, count} = ctx.raw._data;
+            return [label, count];
+          }
+        }
+      }]
+    } as any;
+    (this.lineChartData.datasets[0] as any).tree = (this.children || []).reduce((accData, child, index) => {
       const id = child.id;
       const count = child.countOfFinnishSpecies;
       this.total += count;
 
-
       if (count > 0) {
-        this.dataById[id] = child;
-        tmpArray.push({value: count,
-        label: (child.vernacularName) ?
-        ( typeof child.vernacularName  === 'object' ?
-        MultiLangService.getValue(child.vernacularName, this.translate.currentLang) : child.vernacularName)  : child.scientificName, id});
-        this.lineChartLabels.push(child.vernacularName || child.scientificName);
-        this.lineChartColors[0]['backgroundColor'].push(this.colorPalette[index % this.colorPalette.length]);
+        const label = child.vernacularName
+          ? (typeof child.vernacularName  === 'object'
+            ? MultiLangService.getValue(child.vernacularName, this.translate.currentLang)
+            : child.vernacularName)
+          : child.scientificName;
+        accData.push({
+          id,
+          count,
+          label
+        });
       }
-    });
 
-    tmpArray.sort((a, b) => (a.value > b.value) ? -1 : 1);
-    this.lineChartData[0]['data'][0]['data'] = tmpArray;
-
+      return accData;
+    }, []).sort((a, b) => (a.count > b.count) ? -1 : 1);
   }
 
+  onChartClick(e: any) {
+    this.taxonSelect.emit((this.lineChartData.datasets[0] as any).tree[e.active[0].index].id);
+  }
 }

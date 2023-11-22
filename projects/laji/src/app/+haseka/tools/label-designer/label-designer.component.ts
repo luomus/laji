@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from 'label-designer';
+import { ILabelField, ILabelPdf, ISetup, IViewSettings, Presets } from '@luomus/label-designer';
 import { LajiApi, LajiApiService } from '../../../shared/service/laji-api.service';
 import * as FileSaver from 'file-saver';
 import { PdfLabelService } from '../../../shared/service/pdf-label.service';

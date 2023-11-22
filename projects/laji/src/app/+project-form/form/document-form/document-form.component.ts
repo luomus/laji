@@ -7,15 +7,15 @@ import { BrowserService } from '../../../shared/service/browser.service';
 import { TemplateForm } from '../../../shared-modules/own-submissions/models/template-form';
 import { FooterService } from '../../../shared/service/footer.service';
 import { DialogService } from '../../../shared/service/dialog.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
 import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewModel, ViewModel } from './document-form.facade';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
 
 @Component({
   selector: 'laji-document-form',
@@ -28,7 +28,7 @@ import { ProjectFormService } from '../../../shared/service/project-form.service
 })
 export class DocumentFormComponent implements OnInit, OnDestroy {
   @ViewChild(LajiFormComponent) lajiForm: LajiFormComponent;
-  @ViewChild('saveAsTemplate', { static: true }) public templateModal: ModalDirective;
+  @ViewChild('saveAsTemplate') public templateModal: ModalComponent;
 
   @Input() formID: string;
   @Input() documentID: string;

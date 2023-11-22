@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { Observable } from 'rxjs';
 import { TreeOptionsNode, SelectedOption } from '../tree-select.component';
 import { TreeSelectorComponent } from '../tree-selector/tree-selector.component';
@@ -27,15 +27,11 @@ export class TreeSelectModalComponent {
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 
   constructor(
-    private modalRef: BsModalRef,
+    private modalService: ModalService,
   ) { }
 
   deselect(id: string) {
     this.treeSelectorComponent.deselect(id);
-  }
-
-  close() {
-    this.modalRef.hide();
   }
 
   clear() {
@@ -47,8 +43,6 @@ export class TreeSelectModalComponent {
   }
 
   confirm() {
-    this.modalRef.hide();
-
     this.emitConfirm.emit(this.selectedOptions);
   }
 }

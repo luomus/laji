@@ -37,21 +37,21 @@
     <input
       [ngClass]="{loading: typeaheadLoading}"
       type="text"
-      container="{{containerTypeAhead}}"
       class="form-control input-sm"
       name="target"
-      [adaptivePosition]="true"
+      [luTypeaheadAdaptivePosition]="true"
       [(ngModel)]="formQuery.taxon"
-      [typeahead]="dataSource"
-      [typeaheadOptionsLimit]="autocompleteLimit"
-      [typeaheadWaitMs]="200"
-      [typeaheadMinLength]="3"
-      [typeaheadSelectFirstItem]="false"
-      [typeaheadOptionField]="'autocompleteSelectedName'"
-      [typeaheadItemTemplate]="taxonItem"
-      [typeaheadIsFirstItemActive]="false"
-      (typeaheadLoading)="changeTypeaheadLoading($event)"
-      (typeaheadOnSelect)="onTaxonSelect($event)"
+      luTypeaheadContainer="{{containerTypeAhead}}"
+      [luTypeahead]="dataSource"
+      [luTypeaheadOptionsLimit]="autocompleteLimit"
+      [luTypeaheadWaitMs]="200"
+      [luTypeaheadMinLength]="3"
+      [luTypeaheadSelectFirstItem]="false"
+      [luTypeaheadOptionField]="'autocompleteSelectedName'"
+      [luTypeaheadItemTemplate]="taxonItem"
+      [luTypeaheadIsFirstItemActive]="false"
+      (luTypeaheadLoading)="changeTypeaheadLoading($event)"
+      (luTypeaheadOnSelect)="onTaxonSelect($event)"
       (keyup)="onTaxonSelect($event)"
       autocomplete="off"
       autocorrect="off"
@@ -232,13 +232,13 @@
       </button>
       {{ 'observation.form.map.rectangle' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn draw-polygon" (click)="mapDraw.emit('Polygon')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="lji-icon lji-polygon"></i>
       </button>
       {{ 'observation.form.map.polygon' | translate }}
     </div>
-    <div [tooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
+    <div [luTooltip]="!(isLoggedIn$ | async) ? ('disabled.feature' | translate) : null" [style.cursor]="!(isLoggedIn$ | async) ? 'not-allowed' : null">
       <button type="button" class="btn btn-default btn-small obs-form-draw-btn" (click)="mapDraw.emit('CoordinatesImport')" [disabled]="!(isLoggedIn$ | async)" [style.pointer-events]="!(isLoggedIn$ | async) ? 'none' : null">
         <i class="glyphicon glyphicon-floppy-open"></i>
       </button>
@@ -826,7 +826,7 @@
       ]"></laji-select>
 </section>
 
-<section *lajiForTypes="['vir']; exclude: true" class="laji-panel" laji-panel [title]="'observation.form.presetPanel' | translate" [autoToggle]="true">
+<section class="laji-panel" laji-panel [title]="'observation.form.presetPanel' | translate" [autoToggle]="true">
   <div>
     <a class="btn btn-default btn-sm"
       [routerLink]="['/observation/map'] | localize"
@@ -834,6 +834,14 @@
     {{ 'observation.form.virFilterShortcut' | translate }}
     </a>
     <laji-info>{{ 'observation.form.virva-info' | translate }} <a [routerLink]="['/about', '6461'] | localize">{{ 'readMore' | translate }}</a></laji-info>
+  </div>
+  <div>
+    <a class="btn btn-default btn-sm"
+      [routerLink]="['/observation/map'] | localize"
+      [queryParams]="otsoFilterShortcutQueryParams">
+      {{ 'observation.form.otsoShortcut' | translate }}
+    </a>
+    <laji-info>{{ 'observation.form.otso-info' | translate }}</laji-info>
   </div>
   <div>
     <a class="btn btn-default btn-sm"

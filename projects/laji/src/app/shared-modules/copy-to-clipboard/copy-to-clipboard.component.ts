@@ -1,5 +1,5 @@
-import { Component, Input, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { WINDOW } from '@ng-toolkit/universal';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { PlatformService } from '../../root/platform.service';
 
 @Component({
   selector: 'laji-copy-to-clipboard',
@@ -24,11 +24,11 @@ export class CopyToClipboardComponent {
   @Input() wrapText = false;
 
   constructor(
-    @Inject(WINDOW) private window: Window
+    private platformService: PlatformService
   ) { }
 
   onCopyToClipboard(str: string, event: MouseEvent) {
-    this.window.navigator.clipboard.writeText(str);
+    this.platformService.window.navigator.clipboard.writeText(str);
     event.stopPropagation();
   }
 }

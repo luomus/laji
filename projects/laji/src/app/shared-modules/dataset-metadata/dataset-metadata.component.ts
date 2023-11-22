@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { zip, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
+import { LocalizeRouterService } from '../../locale/localize-router.service';
 
 const mobileBreakpoint = 768;
 
@@ -13,23 +14,24 @@ const mobileBreakpoint = 768;
   styleUrls: ['./dataset-metadata.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetMetadataComponent implements OnInit, AfterViewInit {
+export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewInit {
   collectionId: string;
   _collectionId: string;
   collection$: Observable<Collection>;
   collectionCounts$: Observable<ICollectionCounts>;
+  paramSub$: Subscription;
   showBrowser = true;
   isMobile = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location,
+    private localizeRouterService: LocalizeRouterService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
   ) { }
 
-  checkScreenWidth() {
+  private checkScreenWidth() {
     this.isMobile = window.innerWidth < mobileBreakpoint;
   }
 
@@ -39,13 +41,21 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
     const routeCollectionId = this.route.snapshot.paramMap.get('collectionId');
 
     if (routeCollectionId) {
-      this.collectionId = routeCollectionId;
-      this.getCollectionData();
+      this.setCollection(routeCollectionId);
     }
 
     if (this.isMobile) {
       this.showBrowser = false;
     }
+
+    this.paramSub$ = this.route.params.subscribe(params => {
+      this.setCollection(params.collectionId);
+      this.cd.markForCheck();
+    });
+  }
+
+  ngOnDestroy() {
+    this.paramSub$?.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -56,33 +66,29 @@ export class DatasetMetadataComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getCollectionData() {
-    if (this.collectionId && this.collectionId !== this._collectionId) {
-      this.collection$ = this.collectionService.getById$(this.collectionId, 'multi');
-      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(this.collectionId);
-
-      this.cd.markForCheck();
+  private setCollection(collectionId: string) {
+    if (collectionId && this.collectionId !== collectionId) {
+      this.collection$ = this.collectionService.getById$(collectionId, 'multi');
+      this.collectionCounts$ = this.collectionService.getCollectionSpecimenCounts$(collectionId);
     }
+
+    this.collectionId = collectionId;
   }
 
-  changeUrl(collectionId) {
+  private changeUrl(collectionId: string) {
+    const url = this.localizeRouterService.translateRoute(['/theme', 'dataset-metadata']);
+
     if (collectionId) {
-      const url = this.router.createUrlTree(['theme', 'dataset-metadata', collectionId]).toString();
-      this.location.go(url);
-      this.route.params['collectionId'] = collectionId;
-    } else {
-      this.location.go('theme/dataset-metadata');
-      this.route.params['collectionId'] = undefined;
+      url.push(collectionId);
     }
+
+    this.router.navigate(url);
   }
 
   changeCollection(collectionId) {
     if (!collectionId || collectionId !== this.collectionId) {
       this.changeUrl(collectionId);
     }
-
-    this.collectionId = collectionId;
-    this.getCollectionData();
 
     if(this.isMobile) {
       this.showBrowser = false;

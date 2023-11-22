@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ChartData } from 'chart.js';
 
 @Component({
   selector: 'iucn-iucn-result-pie',
@@ -8,7 +9,7 @@ import { Component, Input } from '@angular/core';
 export class IucnResultPieComponent {
 
   @Input() year;
-  _data: {name: string; value: number}[];
+  _data: ChartData;
   total = 0;
   _colors = {
     'MX.iucnRE': '#000',
@@ -20,21 +21,23 @@ export class IucnResultPieComponent {
     'MX.iucnLC': '#8fcc00'
   };
   colorSchema = [];
+  options = {responsive: true, maintainAspectRatio: false};
 
   @Input()
   set data(data: {name: string; value: number; key: string}[]) {
     if (!data) {
       return;
     }
-    this._data = data;
-    const colors = [];
     let cumulative = 0;
-    data.forEach(row => {
-      cumulative += row.value;
-      colors.push({name: row.name, value: this._colors[row.key]});
-    });
+    this._data = data.reduce((_data, item) => {
+      _data.labels.push(item.name);
+      _data.datasets[0].labels.push(item.name);
+      _data.datasets[0].data.push(item.value);
+      _data.datasets[0].backgroundColor.push(this._colors[item.key]);
+      cumulative += item.value;
+      return _data;
+    }, {labels: [], datasets: [{labels: [], data: [], backgroundColor: []}]});
     this.total = cumulative;
-    this.colorSchema = colors;
   }
 
   valueFormat(value) {

@@ -134,42 +134,45 @@
           {{ collectionCounts.specimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN'}"
-          container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.typeSpecimen" [title]="'collection.count.typeSpecimen' | translate">
           {{ collectionCounts.typeSpecimen }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id, superRecordBasis: 'PRESERVED_SPECIMEN', typeSpecimen: 'true'}"
-          container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
         <laji-dataset-metadata-viewer-item *ngIf="collectionCounts.observation" [title]="'collection.count.allObservation' | translate">
           {{ collectionCounts.observation }}
           <a
           id="selectionLink"
-          [tooltip]="'collection.viewObservations' | translate"
+          [luTooltip]="'collection.viewObservations' | translate"
           [routerLink]="['/observation/list'] | localize"
           [queryParams]="{collectionId: collection.id}"
-          container="body"
           target="_blank">
+          {{ "collection.viewObservations" | translate }}
           <i 
             id="selectionLink"
-            class="glyphicon glyphicon-eye-open selection-link"></i>
+            class="glyphicon glyphicon-eye-open selection-link">
+          </i>
         </a>
         </laji-dataset-metadata-viewer-item>
       </div>
@@ -207,7 +210,16 @@
       </laji-dataset-metadata-viewer-item>
       <laji-dataset-metadata-viewer-item [title]="'collection.dateEdited' | translate" [value]="collection.dateEdited | amDateFormat:'DD.MM.YYYY HH:mm'">
       </laji-dataset-metadata-viewer-item>
-    </div> 
+    </div>
+    <div class="panel panel-default description-panel"
+      laji-panel
+      [title]="'collection.metadata.info.title' | translate"
+      [open]="true"
+      [autoToggle]="true"
+    >
+      <div [innerHTML]="'collection.metadata.info' | translate">
+      </div>
+    </div>
   </div>
 </ng-container>
 <ng-template #loadingSpinner>

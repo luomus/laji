@@ -17,7 +17,6 @@ import { IFormField, VALUE_IGNORE } from '../model/excel';
 import { CombineToDocument, IDocumentData, ImportService } from '../service/import.service';
 import { MappingService } from '../service/mapping.service';
 import { SpreadsheetService } from '../service/spreadsheet.service';
-import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastsService } from '../../../shared/service/toasts.service';
 import { AugmentService } from '../service/augment.service';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -34,6 +33,34 @@ import { Form } from '../../../shared/model/Form';
 import { Logger } from '../../../shared/logger';
 import { DocumentJobPayload } from '../../../shared/api/DocumentApi';
 import { toHtmlSelectElement } from '../../../shared/service/html-element.service';
+import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.service';
+
+/*
+  Check that required columns have a non-empty cell at each row.
+
+  Example data:
+  [
+    { "B": "data2", "C": "data3", "D": "data4" },
+    { "A": "data1", "B": "data2", "C": "data3", "D": "data4" }
+  ]
+  Example columnMap:
+    { "A": "gatheringEvent.leg[*]", "B": "gatheringEvent.dateBegin",
+      "C": "gatherings[*].geometry", "D": "gatherings[*].units[*].identifications[*].taxon" }
+ */
+const checkEarlyValidation = (data: {[key: string]: string}[], columnMap: {[key: string]: string}) => (
+  data.every(row => {
+    const entries = Object.entries(row);
+    const legIsPresent = entries.some(([k,v]) =>
+         columnMap[k] === 'gatheringEvent.leg[*]');
+    const placeIsPresent = entries.some(([k,v]) =>
+         columnMap[k] === 'namedPlaceID'
+      || columnMap[k] === 'gatherings[*].namedPlaceID' // nimetty paikka
+      || columnMap[k] === 'gatherings[*].geometry' // koordinaatit
+      || columnMap[k] === 'gatherings[*].locality' // paikannimet
+    );
+    return legIsPresent && placeIsPresent;
+  })
+);
 
 @Component({
   selector: 'laji-importer',
@@ -43,8 +70,6 @@ import { toHtmlSelectElement } from '../../../shared/service/html-element.servic
 })
 export class ImporterComponent implements OnInit, OnDestroy {
 
-  @ViewChild('currentUserMapModal', { static: true }) currentUserMapModal: ModalDirective;
-  @ViewChild('userMapModal', { static: true }) userMapModal: ModalDirective;
   @ViewChild('rowNumber', { static: true }) rowNumberTpl: TemplateRef<any>;
   @ViewChild('statusCol', { static: true }) statusColTpl: TemplateRef<any>;
   @ViewChild('valueCol', { static: true }) valueColTpl: TemplateRef<any>;
@@ -113,7 +138,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   showOnlyErroneous = false;
   sheetLoadErrorMsg = '';
 
-  private modal: BsModalRef;
+  private modal: ModalRef;
 
   constructor(
     private formService: FormService,
@@ -131,7 +156,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     private spreadsheetFacade: SpreadsheetFacade,
     private fileService: FileService,
     private logger: Logger,
-    private modalService: BsModalService,
+    private modalService: ModalService,
     private translate: TranslateService
   ) {
     this.vm$ = spreadsheetFacade.vm$;
@@ -291,8 +316,13 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   colMappingDone(mapping) {
-    this.spreadsheetFacade.goToStep(Step.dataMapping);
-    this.colMap = mapping;
+    if (checkEarlyValidation(this.data, mapping)) {
+      this.spreadsheetFacade.goToStep(Step.dataMapping);
+      this.colMap = mapping;
+    } else {
+      this.spreadsheetFacade.clear();
+      this.spreadsheetFacade.goToStep(Step.requiredFieldsNull);
+    }
     this.cdr.markForCheck();
   }
 
@@ -342,6 +372,37 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.rowMappingDone();
   }
 
+  pathToField(path) {
+    if (path.substring(0, 1) === '.') {
+      path = path.substring(1);
+    }
+    return path.replace(/\[[0-9]+]/g, '[*]');
+  }
+
+  removeInvalidFromUserMapping(errors) {
+    const userMappings = this.mappingService.getUserMappings();
+
+    if (Object.keys(userMappings.value).length === 0) {
+      return;
+    }
+
+    const newValues = Object.keys(errors).reduce((values, path) => {
+      const field = this.pathToField(path);
+      if (!values[field]) {
+        return values;
+      }
+
+      const { [field]: removed, ...rest } = values;
+
+      return rest;
+    }, userMappings.value);
+
+    this.mappingService.setUserMapping({
+      ...userMappings,
+      value: newValues,
+    });
+  }
+
   validate() {
     const userDataMap = Hash(this.mappingService.getUserMappings(), {algorithm: 'sha1'});
     const rowData = this.parsedData.filter(data => data.document !== null);
@@ -388,6 +449,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
                 status: 'invalid',
                 error: data.result._error
               });
+
+              this.removeInvalidFromUserMapping(data.result._error);
             }
           }
           this.mappedData = [...this.mappedData];
@@ -585,7 +648,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
   }
 
   openMapModal() {
-    this.modal = this.modalService.show(this.mapModal, {class: 'modal-lg'});
+    this.modal = this.modalService.show(this.mapModal, {size: 'lg'});
   }
 
   closeMapModal() {
@@ -614,7 +677,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     const cols = Object.keys(mapping);
     const result = {};
     cols.forEach((col) => {
-      if (!row[col]) {
+      if (row[col] === undefined) {
         return;
       }
       const field = fields[mapping[col]];

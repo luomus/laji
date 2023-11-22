@@ -12,17 +12,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "paths": {
-      "@laji-map/*": [
-        "projects/laji/src/app/shared-modules/laji-map/*"
-      ],
-      "@laji-form/*": [
-        "projects/laji/src/app/+project-form/form/laji-form/*"
-      ],
-      "@laji-form-builder/*": [
-        "projects/laji/src/app/+project-form-edit/laji-form-builder/*"
-      ],
       "laji-ui": [
         "dist/laji-ui"
       ],
@@ -45,7 +36,8 @@
     ],
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

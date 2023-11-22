@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { LajiMapComponent } from '@laji-map/laji-map.component';
-import { LajiMapOptions } from '@laji-map/laji-map.interface';
+import { LajiMapComponent } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
+import type { Options } from '@luomus/laji-map';
 
 @Component({
   selector: 'laji-print-map',
@@ -12,7 +12,7 @@ export class PrintMapComponent implements OnChanges {
   @Input() data: any;
 
   _data: any;
-  mapOptions: LajiMapOptions = {viewLocked: true};
+  mapOptions: Options = {viewLocked: true};
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {

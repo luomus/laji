@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { ListType } from '../list.component';
 import { FilterQuery, ResultService } from '../../../iucn-shared/service/result.service';
 import { TaxonomyApi } from '../../../../../../laji/src/app/shared/api/TaxonomyApi';
-import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf, of } from 'rxjs';
+import { forkJoin as ObservableForkJoin, Observable, of as ObservableOf} from 'rxjs';
 import { RedListStatusData } from './red-list-status/red-list-status.component';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 import { Util } from '../../../../../../laji/src/app/shared/service/util.service';
 import { Taxonomy } from '../../../../../../laji/src/app/shared/model/Taxonomy';
-import { ChartData, SimpleChartData } from './red-list-chart/red-list-chart.component';
 import { TriplestoreLabelService } from '../../../../../../laji/src/app/shared/service/triplestore-label.service';
 import { TaxonService } from '../../../iucn-shared/service/taxon.service';
 import { RedListHabitatData } from './red-list-habitat/red-list-habitat.component';
@@ -16,6 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ISelectFields } from '../../../../../../laji/src/app/shared-modules/select-fields/select-fields/select-fields.component';
 import { Params } from '@angular/router';
 import { IucnTaxonExportService } from '../../../iucn-shared/service/iucn-taxon-export.service';
+import { IUCNChartData } from './red-list-chart/red-list-chart.component';
+import {ActiveElement, ChartData, ChartEvent, ChartOptions} from 'chart.js';
 
 @Component({
   selector: 'iucn-results',
@@ -33,12 +34,12 @@ export class ResultsComponent implements OnChanges {
   year: string;
   redListStatusQuery$: Observable<RedListStatusData[]>;
   speciesQuery$: Observable<Taxonomy[]>;
-  threadQuery$: Observable<ChartData[]>;
+  threadQuery$: Observable<IUCNChartData[]>;
   habitatQuery$: Observable<RedListHabitatData[]>;
-  habitatChartQuery$: Observable<SimpleChartData[]>;
-  reasonsQuery$: Observable<ChartData[]>;
+  habitatChartQuery$: Observable<ChartData>;
+  reasonsQuery$: Observable<IUCNChartData[]>;
 
-  habitats: SimpleChartData[] = [];
+  habitatIds: string[] = [];
 
   cache: any = {};
   baseQuery = {};
@@ -89,6 +90,9 @@ export class ResultsComponent implements OnChanges {
     'vernacularName.en': 'iucn.results.column.vernacularName',
     'vernacularName.sv': 'iucn.results.column.vernacularName',
   };
+  options: ChartOptions = {
+    onClick: this.habitatPieSelect.bind(this),
+  };
 
   downloadLoading = false;
   init = false;
@@ -118,12 +122,11 @@ export class ResultsComponent implements OnChanges {
     this.initQueries();
   }
 
-  habitatPieSelect(event) {
-    const idx = this.habitats.findIndex(val => val.name === event.name);
-    if (idx === -1) {
+  habitatPieSelect(event: ChartEvent, elements: ActiveElement[]) {
+    if (!elements[0]) {
       return;
     }
-    this.changeQuery('habitat', this.habitats[idx].id);
+    this.changeQuery('habitat', this.habitatIds[elements[0].index]);
   }
 
   private initQueries() {
@@ -186,7 +189,7 @@ export class ResultsComponent implements OnChanges {
     );
   }
 
-  private getGraph(cacheKey, baseQuery, primaryField, allField, primaryLabel, allLabel, lastKeys: string[] = []): Observable<ChartData[]> {
+  private getGraph(cacheKey, baseQuery, primaryField, allField, primaryLabel, allLabel, lastKeys: string[] = []): Observable<IUCNChartData[]> {
     const query = {
       ...baseQuery,
       aggregateBy: primaryField + ';' + allField,
@@ -336,15 +339,16 @@ export class ResultsComponent implements OnChanges {
   private initHabitatChart() {
     this.colorSchema = [];
     this.habitatChartQuery$ = this.habitatQuery$.pipe(
-      map(habitat => habitat
-        .filter(h => !h.isTotal)
-        .map((h, index) => {
-          const color = this.colors[index % this.colors.length];
-          this.colorSchema.push({name: h.name, value: color});
-          return {name: h.name, value: h.primary.total, id: h.id};
-        })
-      ),
-      tap(val => this.habitats = val)
+      tap(habitats => this.habitatIds = habitats.map(({id}) => id)),
+      map(habitats => (
+        {
+          labels: habitats.map(h => h.name),
+          datasets: [{
+            data: habitats.map(h => h.primary.total),
+            backgroundColor: this.colors
+          }]
+        }
+      )),
     );
   }
 

@@ -12,6 +12,7 @@ export interface ISpectrogramConfig {
   maxNbrOfColsForNoiseEstimation?: number;
   noiseReductionParam?: number;
   logRange?: number;
+  minFrequency?: number;
 }
 
 export interface IAudioViewerRectangle {

@@ -7,6 +7,9 @@
         <laji-image-gallery *ngIf="unit.media" [modalImages]="unit.media" [showOverlay]="true"></laji-image-gallery>
       </div>
     </laji-row>
+    <laji-row *ngIf="unit.media && mediaHasFullResolutionAvailable(unit.media)" [title]="'document.fullResolutionMedia' | translate">
+      <div [innerHTML]="'media.fullResolutionMedia' | translate"></div>
+    </laji-row>
     <laji-facts [show]="showFacts" [facts]="unit.facts | factNotIn:['http://tun.fi/MY.autocompleteSelectedTaxonID']"></laji-facts>
   </div>
 

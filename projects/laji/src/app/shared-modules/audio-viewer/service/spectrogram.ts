@@ -104,15 +104,18 @@ function getMeanNoiseColumn(data: Float32Array[], sumByColumn: number[], config:
 
 function filterNoiseAndFindMaxValue(data: Float32Array[], meanNoise: Float32Array, config: ISpectrogramConfig): number {
   let maxValue = 0;
+  const columnLength = data[0].length;
+  const minColumn = Math.floor(config.minFrequency / ((config.sampleRate / 2) / columnLength));
+  const nbrOfRowsRemovedFromStart = Math.max(minColumn, config.nbrOfRowsRemovedFromStart);
 
   for (const item of data) {
-    for (let j = 0; j < data[0].length; j++) {
+    for (let j = 0; j < columnLength; j++) {
       item[j] = item[j] - config.noiseReductionParam * meanNoise[j];
       if (item[j] < 0) {
         item[j] = 0;
       }
       // first rows are usually very noisy
-      if (j < config.nbrOfRowsRemovedFromStart) {
+      if (j < nbrOfRowsRemovedFromStart) {
         item[j] = 0;
       }
 

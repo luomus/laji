@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { IGlobalRecording, IGlobalSpeciesWithAnnotation } from '../../../../kerttu-global-shared/models';
 import { IdentificationPanelComponent } from './identification-panel/identification-panel.component';
+import { ISpectrogramConfig } from '../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-table',
@@ -29,6 +30,7 @@ export class IdentificationTableComponent implements OnChanges {
   @Input() drawActive = false;
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
+  @Input() spectrogramConfig: ISpectrogramConfig;
 
   drawBoxClickedByIdx = [];
   panelOpenById: Record<string, boolean> = {};

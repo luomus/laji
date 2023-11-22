@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
-import { LajiMapOptions, LajiMapTileLayerName, LajiMapDataOptions } from '@laji-map/laji-map.interface';
+import { Options, TileLayerName, DataOptions } from '@luomus/laji-map/lib/defs';
 import { TranslateService } from '@ngx-translate/core';
 import * as Hash from 'object-hash';
 
@@ -17,15 +17,15 @@ export class ImportMapComponent implements OnChanges {
   @Input() height = '100%';
   @Input() popupFields = ['gatheringEvent.dateBegin', 'gatherings[*].units[*].identifications[*].taxon'];
 
-  mapOptions: LajiMapOptions = {
-    tileLayerName: LajiMapTileLayerName.maastokartta,
+  mapOptions: Options = {
+    tileLayerName: TileLayerName.maastokartta,
     tileLayerOpacity: 0.5,
     controls: { location: false },
     zoomToData: { maxZoom: 13 },
     popupOnHover: true
   };
 
-  mapData: LajiMapDataOptions;
+  mapData: DataOptions;
 
   private groupedData: {[key: string]: any}[][] = [];
   private popupColumns: string[] = [];
@@ -39,7 +39,7 @@ export class ImportMapComponent implements OnChanges {
     this.mapData = this.getMapData();
   }
 
-  getMapData(): LajiMapDataOptions {
+  getMapData(): DataOptions {
     const geometryCol = this.getColumn(this.geometryField);
     if (!geometryCol) {
       return {};

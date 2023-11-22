@@ -1,4 +1,4 @@
-<select class="form-control d-inline continent-select" [(ngModel)]="continent">
+<select class="form-control d-inline continent-select" [(ngModel)]="continent" *ngIf="taxonType === taxonTypeEnum.bird">
   <option [ngValue]="null">{{ 'identification.allContinents' | translate }}</option>
   <option *ngFor="let continent of (filters$ | async)?.continent" [ngValue]="continent.id">{{ ('continents.' + continent.name) | translate }}</option>
 </select>
@@ -9,15 +9,15 @@
   name="target"
   [placeholder]="placeholder"
   [(ngModel)]="value"
-  [typeahead]="dataSource"
-  [typeaheadOptionsLimit]="limit"
-  [typeaheadWaitMs]="200"
-  [typeaheadMinLength]="0"
-  [typeaheadOptionField]="'commonName'"
-  [typeaheadItemTemplate]="taxonItem"
-  (typeaheadOnSelect)="onTaxonSelect($event)"
-  [typeaheadSelectFirstItem]="true"
-  [typeaheadIsFirstItemActive]="true"
+  [luTypeahead]="dataSource"
+  [luTypeaheadOptionsLimit]="limit"
+  [luTypeaheadWaitMs]="200"
+  [luTypeaheadMinLength]="0"
+  [luTypeaheadOptionField]="'commonName'"
+  [luTypeaheadItemTemplate]="taxonItem"
+  (luTypeaheadOnSelect)="onTaxonSelect($event)"
+  [luTypeaheadSelectFirstItem]="true"
+  [luTypeaheadIsFirstItemActive]="true"
   autocomplete="off"
   autocorrect="off"
 >

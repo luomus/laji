@@ -11,7 +11,7 @@
     [width]="_width"
     [height]="_height"
     [pregeneratedSpectrogramUrl]="pregeneratedSpectrogramUrl"
-    (spectrogramReady)="spectrogramReady.emit()"
+    (spectrogramLoading)="spectrogramLoading.emit($event)"
   ></laji-spectrogram>
   <laji-spectrogram-chart
     class="spectrogram-chart"

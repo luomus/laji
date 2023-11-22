@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SharedModule } from '../../../../laji/src/app/shared/shared.module';
 import { KerttuGlobalSharedModule } from '../kerttu-global-shared/shared.module';
 import { DatatableModule } from '../../../../laji/src/app/shared-modules/datatable/datatable.module';
@@ -24,7 +24,8 @@ import { SpeciesSelectComponent } from './species-select/species-select.componen
 import { ValidationInstructionsComponent } from './validation-instructions/validation-instructions.component';
 import { InfoPageModule } from '../../../../laji/src/app/shared-modules/info-page/info-page.module';
 import { LicenseComponent } from './species-validation/species-template-validation/audio-info/license.component';
-
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   imports: [
@@ -35,7 +36,9 @@ import { LicenseComponent } from './species-validation/species-template-validati
     AudioViewerModule,
     LajiUiModule,
     InfoPageModule,
-    ValidationRoutingModule
+    ValidationRoutingModule,
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     ValidationComponent,
@@ -56,7 +59,8 @@ import { LicenseComponent } from './species-validation/species-template-validati
   ],
   providers: [
     SpeciesListQueryService,
-    SpeciesListQueryResetGuard
+    SpeciesListQueryResetGuard,
+    DatePipe
   ]
 })
 export class ValidationModule { }

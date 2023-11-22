@@ -1,4 +1,4 @@
-:host >>> .ng-thumb {
+:host ::ng-deep .ng-thumb {
   object-fit: cover;
   width:100px;
   height:100px;

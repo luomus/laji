@@ -13,7 +13,6 @@ import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable } from 'rxjs';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
@@ -28,9 +27,6 @@ import { PlatformService } from '../../root/platform.service';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<null>();
-
-  @ViewChild('userMenu') public dropDown: BsDropdownDirective;
-  @ViewChild('taxonMenu') private taxonDropdown: BsDropdownDirective;
 
   openMenu = false;
   redTheme = false;
@@ -85,15 +81,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.ngZone.run(() => this.notificationsFacade.checkForNewNotifications());
       });
     });
-  }
-
-  onClose() {
-    this.dropDown.hide();
-  }
-
-  onCloseTaxonDropdown() {
-    this.taxonDropdown.hide();
-    this.changeDetector.markForCheck();
   }
 
   ngOnDestroy() {

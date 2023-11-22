@@ -4,12 +4,25 @@
       <i class="glyphicon glyphicon-download-alt"></i>
     </a>
     <a class="close-popup" (click)="closeGallery()"><i class="glyphicon glyphicon-remove"></i></a>
-    <a class="nav-left" *ngIf="modalImages.length >1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
-    <laji-image
-      id="openseadragon-wrapper"
-      *ngIf="img"
-      [src]="img.fullURL || img.largeURL"
-      class="effect"></laji-image>
+    <a class="nav-left" *ngIf="modalImages.length > 1" (click)="prevImage()"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    <ng-container *ngIf="img">
+      <ng-container [ngSwitch]="img.mediaType">
+        <laji-image-modal-video
+          *ngSwitchCase="'VIDEO'"
+          [source]="img"
+        ></laji-image-modal-video>
+        <laji-image-modal-model
+          *ngSwitchCase="'MODEL'"
+          [src]="img.lowDetailModelURL"
+        ></laji-image-modal-model>
+        <laji-image
+          *ngSwitchDefault
+          id="openseadragon-wrapper"
+          [src]="img.fullURL || img.largeURL"
+          class="effect"
+        ></laji-image>
+      </ng-container>
+    </ng-container>
     <a class="nav-right" *ngIf="modalImages.length > 1" (click)="nextImage()"><i class="glyphicon glyphicon-chevron-right"></i></a>
     <span class="info-text" *ngIf="img">
       <ng-container *ngIf="showLinkToSpeciesCard && img.taxonId; else name">

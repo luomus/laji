@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { LocalStorage, SessionStorage } from 'ngx-webstorage';
-import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from 'label-designer';
+import { FieldType, ILabelPdf, ILabelField, ISetup, IViewSettings, Presets, IColumnMap } from '@luomus/label-designer';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { LajiApi, LajiApiService } from '../../../laji/src/app/shared/service/laji-api.service';

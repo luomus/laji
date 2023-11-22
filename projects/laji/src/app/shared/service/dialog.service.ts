@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 import { PlatformService } from '../../root/platform.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from './confirm-modal.component';
-import { map, take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 
 interface DialogConfig {
   message: string;
@@ -35,7 +35,7 @@ export class DialogService {
 
   constructor(
     private platformService: PlatformService,
-    private modalService: BsModalService,
+    private modalService: ModalService,
   ) { }
 
   alert(message: string, onServer = true): Observable<boolean> {
@@ -63,21 +63,17 @@ export class DialogService {
     if (options.promptValue === undefined) {
       delete options.promptValue;
     }
-    const initialState: InitialState = {showCancel: true, prompt: false,  promptValue: '', ...options};
-    const modalRef = this.modalService.show(ConfirmModalComponent, {
-        backdrop: 'static',
-        class: 'modal-sm',
+    const confirm = new EventEmitter<any>();
+    const initialState: InitialState = {showCancel: true, prompt: false, promptValue: '', confirm, ...options};
+    const modal = this.modalService.show(ConfirmModalComponent, {
+        noClose: true,
+        size: 'sm',
         initialState
     });
 
-    return modalRef.onHide.pipe(
-      map(() => {
-        if (!modalRef.content) {
-          throw new Error('Modal content wasn\'t ready');
-        }
-        return modalRef.content.value as unknown as R;
-      }),
-      take(1)
-    );
+    // subscribe so that the client of this method doesn't have to if they don't care about the result.
+    const confirmPipe = confirm.pipe(tap(() => modal.hide()));
+    confirmPipe.subscribe();
+    return confirmPipe;
   }
 }

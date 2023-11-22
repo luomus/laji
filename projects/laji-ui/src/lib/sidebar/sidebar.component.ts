@@ -1,11 +1,11 @@
 import {
-  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, Inject, PLATFORM_ID, ContentChildren, QueryList, Output, EventEmitter
+  Component, Input, Renderer2, OnDestroy, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, ContentChildren, QueryList, Output, EventEmitter
 } from '@angular/core';
 import { trigger, state, style, transition, animate, group, query, animateChild } from '@angular/animations';
-import { isPlatformBrowser } from '@angular/common';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { SidebarLinkComponent } from './sidebar-link/sidebar-link.component';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 const mobileBreakpoint = 768;
 
@@ -87,9 +87,13 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
 
   destroyCloseOnClickListener: () => void;
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: any) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.open = !(window.innerWidth < mobileBreakpoint);
+  constructor(
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private platformService: PlatformService
+  ) {
+    if (this.platformService.isBrowser) {
+      this.open = !(this.platformService.window.innerWidth < mobileBreakpoint);
     } else {
       this.open = false;
     }
@@ -99,7 +103,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     this.checkScreenWidth();
     this.preCheckScreenWidth = false;
     this.cdr.detectChanges();
-    fromEvent(window, 'resize').pipe(
+    fromEvent(this.platformService.window, 'resize').pipe(
       debounceTime(500),
       distinctUntilChanged(),
       takeUntil(this.unsubscribe$)
@@ -122,7 +126,7 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     if (event && event['ignore-sidebar']) {
       return;
     }
-    const isMobile = window.innerWidth < mobileBreakpoint;
+    const isMobile = this.platformService.window.innerWidth < mobileBreakpoint;
     if (this.mobile !== isMobile) {
       if (isMobile) {
         this.sidebarMinWidth = 0;
@@ -155,11 +159,11 @@ export class SidebarComponent implements OnDestroy, AfterViewInit {
     try {
       const event = new Event('resize');
       event['ignore-sidebar'] = true;
-      window.dispatchEvent(event);
+      this.platformService.window.dispatchEvent(event);
     } catch (e) {
-      const evt: any = window.document.createEvent('UIEvents');
-      evt.initUIEvent('resize', true, false, window, 0);
-      window.dispatchEvent(evt);
+      const evt: any = this.platformService.window.document.createEvent('UIEvents');
+      evt.initUIEvent('resize', true, false, this.platformService.window, 0);
+      this.platformService.window.dispatchEvent(evt);
     }
   }
 

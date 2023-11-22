@@ -11,7 +11,7 @@ import { NpInfoMapComponent } from './np-info/np-info-map/np-info-map.component'
 import { NpPrintComponent } from './np-print/np-print.component';
 import { LineTransectPrintComponent } from './np-print/line-transect-print/line-transect-print.component';
 import { AreaSelectComponent } from './area-select/area-select.component';
-import { LajiMapModule } from '@laji-map/laji-map.module';
+import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import { ClipboardModule } from 'ngx-clipboard';
 import { LajiUiModule } from '../../../../../../laji-ui/src/public-api';
 import { TaxonAutocompleteModule } from '../../../shared-modules/taxon-autocomplete/taxon-autocomplete.module';
@@ -24,6 +24,8 @@ import { FormPermissionModule } from '../../form-permission/form-permission.modu
 import { NamedPlaceWrapperComponent } from './named-place-wrapper/named-place-wrapper.component';
 import { ProjectFormHeaderModule } from '../../header/project-form-header.module';
 import { LajiLegendModule } from '../../../shared-modules/legend/legend.module';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
+import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
 
 @NgModule({
   providers: [],
@@ -41,7 +43,9 @@ import { LajiLegendModule } from '../../../shared-modules/legend/legend.module';
     LajiUiModule,
     InfoModule,
     ProjectFormHeaderModule,
-    LajiLegendModule
+    LajiLegendModule,
+    ModalModule,
+    TooltipModule
   ],
   declarations: [
     NamedPlaceComponent, NpListComponent, NpMapComponent, NpChooseComponent,

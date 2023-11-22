@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ApplicationRef, DoBootstrap, Injector, NgModule } from '@angular/core';
 
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { LabelDesignerModule } from 'label-designer';
+import { LabelDesignerModule } from '@luomus/label-designer';
 import { LabelDesignerComponent } from './label-designer/label-designer.component';
 import { createCustomElement } from '@angular/elements';
 

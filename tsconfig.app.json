@@ -13,7 +13,7 @@
   ],
   "include": [
     "projects/laji/src/**/*.d.ts",
-    "node_modules/laji-form/**/*.d.ts"
+    "node_modules/@luomus/laji-form/**/*.d.ts"
   ],
   "exclude": [
     "projects/laji/src/test.ts",

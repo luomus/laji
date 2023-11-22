@@ -16,25 +16,25 @@ import {
 import { IUserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
-import { Options, Lang, TileLayersOptions } from 'laji-map';
+import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
-import { PathOptions, DivIcon } from '@laji-map/laji-map.interface';
+import type  { PathOptions, DivIcon } from 'leaflet';
 import { Feature } from 'geojson';
-import L from 'leaflet';
+import {PlatformService} from '../../root/platform.service';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
 export const getPointIconAsCircle = (po: PathOptions, feature: Feature): DivIcon => {
   let classNames = classNamesAsArr(po.className);
-  const icon: any = L.divIcon({
+  const icon: DivIcon = (window as any).L.divIcon({
     className: ['laji-circle-marker-icon', ...classNames].join(' '),
     html: `<span>${feature.properties.count}</span>`
   });
-  icon.setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
+  (icon as any).setStyle = (iconDomElem: HTMLElement, po2: PathOptions) => {
     const opacityAsHexCode = po2.opacity < 1 ? po2.opacity
       .toString(16) // Convert to hex.
       .padEnd(4, '0') // Pad with zeros to fix length.
@@ -92,7 +92,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     private cd: ChangeDetectorRef,
     private logger: Logger,
     private translate: TranslateService,
-    private zone: NgZone
+    private zone: NgZone,
+    private platformService: PlatformService
   ) {}
 
   @Input()
@@ -168,7 +169,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   initMap() {
-    import('laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
+    // laji-map depends on Leaflet, which doesn't work on SSR because it uses 'window'
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    import('@luomus/laji-map').then(({ LajiMap }) => { // eslint-disable-line @typescript-eslint/naming-convention
       this.zone.runOutsideAngular(() => {
         if (this.map) {
           this.map.destroy();

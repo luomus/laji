@@ -1,5 +1,5 @@
-import { schemaJSONPointer as schemaJSONPointerFunc, scrollIntoViewIfNeeded, removeLajiFormIds } from 'laji-form/lib/utils';
-import { createTmpIdTree } from 'laji-form/lib/services/id-service';
+import { schemaJSONPointer as schemaJSONPointerFunc, scrollIntoViewIfNeeded, removeLajiFormIds } from '@luomus/laji-form/lib/utils';
+import { createTmpIdTree } from '@luomus/laji-form/lib/services/id-service';
 import { LajiFormComponent } from './laji-form/laji-form.component';
 
 export class LajiFormUtil {

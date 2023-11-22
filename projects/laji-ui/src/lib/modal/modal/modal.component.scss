@@ -1,0 +1,114 @@
+@import 'vars';
+
+$sm-width: 300px;
+$lm-width: 600px;
+$lg-width: 900px;
+$xl-width: 1600px;
+$padding: 5px;
+$margin: 15px;
+
+::ng-deep .lu-backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+
+:host {
+  position: absolute;
+  z-index: 1030;
+}
+
+.lu-modal-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1070;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+
+}
+
+$close-btn-width: 30px;
+$close-btn-right: 30px;
+.lu-modal-close-button {
+  position: fixed;
+  width: $close-btn-width;
+  right: $close-btn-right;
+  top: 17px;
+}
+
+::ng-deep .lu-modal-close-button button {
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
+.lu-modal-content {
+  position: relative;
+  padding: 15px;
+  background: $neutral-2;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  margin: 55px $margin $margin $margin;
+}
+
+@media only screen and (min-width: map-get($breakpoints, sm)) {
+  .lu-modal-sm {
+    .lu-modal-content {
+      width: $sm-width;
+    }
+    > .lu-modal-close-button {
+      left: calc(50% + $sm-width / 2 + $padding);
+    }
+  }
+
+	.lu-modal-md, .lu-modal-lg {
+    .lu-modal-content {
+      width: $lm-width;
+    }
+
+    > .lu-modal-close-button {
+      left: calc(50% + $lm-width / 2 + $padding);
+    }
+	}
+
+  .lu-modal-xl {
+    .lu-modal-content {
+      width: 90%;
+    }
+  }
+
+  .lu-modal-content {
+    margin: $margin auto;
+  }
+}
+
+@media (min-width: map-get($breakpoints, md)) {
+	.lu-modal-lg {
+    .lu-modal-content {
+			width: $lg-width;
+    }
+    > .lu-modal-close-button {
+      left: calc(50% + $lg-width / 2 + $padding);
+    }
+	}
+}
+
+@media (min-width: $xl-width + $margin + $close-btn-width + $close-btn-right) {
+  .lu-modal-xl {
+    .lu-modal-content {
+      width: $xl-width;
+    }
+    > .lu-modal-close-button {
+      left: calc(50% + $xl-width / 2 + $padding);
+    }
+  }
+}
+
+::ng-deep .lu-modal-footer {
+  text-align: right;
+}

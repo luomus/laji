@@ -7,8 +7,14 @@ import {
   ViewChild,
   ElementRef
 } from '@angular/core';
-import { IGlobalRecording, IGlobalSpeciesWithAnnotation, SpeciesAnnotationEnum } from '../../../../../kerttu-global-shared/models';
+import {
+  IGlobalRecording,
+  IGlobalSpeciesWithAnnotation,
+  SpeciesAnnotationEnum,
+  TaxonTypeEnum
+} from '../../../../../kerttu-global-shared/models';
 import { KerttuGlobalUtil } from '../../../../../kerttu-global-shared/service/kerttu-global-util.service';
+import { ISpectrogramConfig } from '../../../../../../../../laji/src/app/shared-modules/audio-viewer/models';
 
 @Component({
   selector: 'bsg-identification-panel',
@@ -28,8 +34,11 @@ export class IdentificationPanelComponent {
   @Input() componentId = '';
   @Input() birdRectangleColor = 'white';
   @Input() overlappingBirdRectangleColor = 'orange';
+  @Input() spectrogramConfig: ISpectrogramConfig;
 
   speciesAnnotationEnum = SpeciesAnnotationEnum;
+  taxonTypeEnum = TaxonTypeEnum;
+
   numberToLetter = KerttuGlobalUtil.numberToLetter;
 
   @Output() identificationChange = new EventEmitter<IGlobalSpeciesWithAnnotation>();

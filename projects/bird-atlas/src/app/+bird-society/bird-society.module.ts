@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { routing } from './bird-society.routes';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgxDatatableModule } from '@achimha/ngx-datatable';
 import { SpinnerModule } from 'projects/laji/src/app/shared-modules/spinner/spinner.module';
 import { RouterModule } from '@angular/router';
 import { BirdSocietyIndexComponent } from './bird-society-index/bird-society-index.component';
@@ -15,6 +15,7 @@ import { BirdSocietyInfoSpeciesTableComponent } from './bird-society-info/bird-s
 import { LappiSocietyComponent } from './lappi/lappi.component';
 import { LappiModalComponent } from './lappi/lappi-modal.component';
 import { BirdSocietySpeciesLegendComponent } from './bird-society-info/bird-society-species-legend/bird-society-species-legend';
+import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { BirdSocietySpeciesLegendComponent } from './bird-society-info/bird-soci
     RouterModule,
     MapUtilsModule,
     GridSquareModule,
-    LajiUiModule
+    LajiUiModule,
+    ModalModule
   ],
   declarations: [
     BirdSocietyIndexComponent,

@@ -4,25 +4,17 @@
     <i class="glyphicon glyphicon-cog"></i>
   </span>
 </lu-button>
-<div bsModal #fieldsModal="bs-modal" (onHide)="selectedFieldsChange.emit(selectedCache)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" *ngIf="modalTitle">
-        <h4 class="modal-title pull-left">{{ modalTitle }}</h4>
-      </div>
-      <div class="modal-body">
-        <laji-select-fields
-          [selectedFieldsTitle]="selectedFieldsTitle"
-          [allSelectableFieldsTitle]="allSelectableFieldsTitle"
-          [allSelectableFields]="allSelectableFields"
-          [selectedFields]="selectedFields"
-          (selectedFieldsChange)="updateSelected($event)"
-        ></laji-select-fields>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="defaultFields" type="button" class="btn btn-default" (click)="reset()">{{ labelReset }}</button>
-        <button type="button" class="btn btn-default" (click)="fieldsModal.hide()">{{ labelClose }}</button>
-      </div>
-    </div>
+<lu-modal #modal (onHide)="selectedFieldsChange.emit(selectedCache)" size="lg">
+  <h4 *ngIf="modalTitle" class="modal-title pull-left">{{ modalTitle }}</h4>
+  <laji-select-fields
+    [selectedFieldsTitle]="selectedFieldsTitle"
+    [allSelectableFieldsTitle]="allSelectableFieldsTitle"
+    [allSelectableFields]="allSelectableFields"
+    [selectedFields]="selectedFields"
+    (selectedFieldsChange)="updateSelected($event)"
+  ></laji-select-fields>
+  <div class="lu-modal-footer">
+    <button *ngIf="defaultFields" type="button" class="btn btn-default" (click)="reset()">{{ labelReset }}</button>
+    <button type="button" class="btn btn-default" (click)="fieldsModal.hide()">{{ labelClose }}</button>
   </div>
-</div>
+</lu-modal>

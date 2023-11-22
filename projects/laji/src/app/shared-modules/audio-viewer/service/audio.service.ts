@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
-import { WINDOW } from '@ng-toolkit/universal';
+import { PlatformService } from '../../../root/platform.service';
 import { AudioPlayer } from './audio-player';
 
 @Injectable()
@@ -21,21 +21,32 @@ export class AudioService {
   private cacheSize = 3;
 
   constructor(
-    @Inject(WINDOW) private window: Window,
+    private platformService: PlatformService,
     private httpClient: HttpClient,
     private ngZone: NgZone
   ) {}
 
-  public setDefaultSampleRate(sampleRate: number) {
+  public setDefaultSampleRate(sampleRate: number): boolean {
     this.defaultSampleRate = sampleRate;
+    try {
+      this.getAudioContext();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   public setCacheSize(cacheSize: number) {
     this.cacheSize = cacheSize;
   }
 
-  public getAudioBuffer(url: string, actualDuration?: number): Observable<AudioBuffer> {
-    const audioCtx = this.getAudioContext();
+  public removeFromCache(url: string) {
+    delete this.buffer$[url];
+    delete this.buffer[url];
+  }
+
+  public getAudioBuffer(url: string, actualDuration?: number, sampleRate = this.defaultSampleRate): Observable<AudioBuffer> {
+    const audioCtx = this.getNewOfflineAudioContext(sampleRate);
 
     if (this.buffer[url]) {
       this.buffer[url]['time'] = Date.now();
@@ -43,6 +54,7 @@ export class AudioService {
     }
 
     if (!this.buffer$[url]) {
+      const isWav = url.endsWith('.wav');
       this.buffer$[url] = (this.httpClient.get(url, {responseType: 'arraybuffer'}))
         .pipe(
           switchMap((response: ArrayBuffer) => {
@@ -60,7 +72,7 @@ export class AudioService {
               return audioCtx.decodeAudioData(response);
             }
           }),
-          map((buffer: AudioBuffer) => this.removeEmptySamplesAtStart(buffer, actualDuration)),
+          map((buffer: AudioBuffer) => isWav ? buffer : this.removeEmptySamplesAtStart(buffer, actualDuration)),
           map(buffer => this.normaliseAudio(buffer)),
           tap(buffer => {
             this.buffer[url] = {
@@ -127,7 +139,7 @@ export class AudioService {
     return this.resumeContext$;
   }
 
-  public playAudio(buffer: AudioBuffer, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
+  public playAudio(buffer: AudioBuffer, playbackRate: number, frequencyRange: number[], startTime: number, player: AudioPlayer): AudioBufferSourceNode {
     const audioCtx = this.getAudioContext();
 
     if (this.activePlayer && this.activePlayer !== player) {
@@ -136,14 +148,15 @@ export class AudioService {
 
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
+    source.playbackRate.value = playbackRate;
 
     const gainNode = audioCtx.createGain();
     gainNode.gain.value = 0.5;
     source.connect(gainNode);
 
     if (frequencyRange && (frequencyRange[0] > 0 || frequencyRange[1] < buffer.sampleRate / 2)) {
-      const highpassFilter = this.createFilter('highpass', frequencyRange[0]);
-      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1]);
+      const highpassFilter = this.createFilter('highpass', frequencyRange[0] * playbackRate);
+      const lowpassFilter = this.createFilter('lowpass', frequencyRange[1] * playbackRate);
       gainNode.connect(highpassFilter);
       highpassFilter.connect(lowpassFilter);
       lowpassFilter.connect(audioCtx.destination);
@@ -215,8 +228,7 @@ export class AudioService {
       const removed = times.indexOf(Math.min(...times));
       const removedKey = keys[removed];
 
-      delete this.buffer$[removedKey];
-      delete this.buffer[removedKey];
+      this.removeFromCache(removedKey);
 
       keys.splice(removed, 1);
     }
@@ -225,10 +237,16 @@ export class AudioService {
   private getAudioContext(): AudioContext {
     if (!this.audioContext || this.defaultSampleRate !== this.audioContextInitSampleRate) {
       this.audioContextInitSampleRate = this.defaultSampleRate;
-      this.audioContext = new (this.window['AudioContext'] || this.window['webkitAudioContext'])({
+      const window = this.platformService.window;
+      this.audioContext = new (window['AudioContext'] || window['webkitAudioContext'])({
         sampleRate: this.defaultSampleRate
       });
     }
     return this.audioContext;
+  }
+
+  private getNewOfflineAudioContext(sampleRate: number): OfflineAudioContext {
+    const window = this.platformService.window;
+    return new (window['OfflineAudioContext'] || window['webkitOfflineAudioContext'])(1, 1, sampleRate);
   }
 }
