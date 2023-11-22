@@ -66,7 +66,7 @@ export class RedListChartComponent {
       },
       {
         label: data[0].series[1].name,
-        data: data.map(item => item.series[0].value),
+        data: data.map(item => item.series[1].value),
         backgroundColor: this.secondaryColor
       }
     ];

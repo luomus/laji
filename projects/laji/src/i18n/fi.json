@@ -609,7 +609,7 @@
   "identify.requiresAuthentication": "vaatii sisäänkirjautumisen",
   "identify.selectIntro": "Voit rajata kuvia eliöryhmittäin. Huomaathan, että eliöryhmään voidaan liittää ne havainnot, jotka on ilmoitettu tunnistettavalla nimellä: esim. nimellä \"sieni\" ilmoitetut havainnot liitetään Sienet-eliöryhmään, mutta \"jokin sieni\" -nimeä ilmoitettua havaintoa ei.",
   "identify.toQualityPage": "Selaa kaikkia määrityksiä ja laatumerkintöjä",
-  "ignore": "jätä huomiomatta",
+  "ignore": "jätä huomioimatta",
   "information.more": "Lisätietoa",
   "instructions": "Ohjeet",
   "invasive.alerted": "Hälytys tehty",
