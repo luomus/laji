@@ -216,7 +216,7 @@ export class IdentificationViewComponent implements OnInit, OnChanges, OnDestroy
         ...defaultSpectrogramConfig,
         sampleRate: defaultBatAudioSampleRate,
         targetWindowLengthInSeconds: 0.004,
-        minFrequency: 14000
+        minFrequency: this.showWholeFrequencyRange ? 0 : 14000
       };
     } else if (this.recording?.taxonType === TaxonTypeEnum.insect) {
       this.spectrogramConfig = {

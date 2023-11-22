@@ -101,6 +101,8 @@
   "identification.hasBoxesForAllInsectSounds": "I have drawn boxes for all insect sounds for the clip",
   "identification.highFrequencies": "High frequencies",
   "identification.highFrequencies.info": "Scale the spectrogram to show higher frequencies up to 16 kHz.",
+  "identification.lowFrequencies": "Low frequencies",
+  "identification.lowFrequencies.info": "Scale the spectrogram to show lower frequencies from 0 kHz.",
   "identification.identify": "Identify species occurring in the recording",
   "identification.identify.info": "Listen to the 10 second sound recording and enter all the bird species you can identify. Indicate, by selecting the appropriate check boxes, if the recording is of such low quality that it impairs identification, if you can hear human voices in the recording, if you have drawn boxes for all bird sounds for the clip, if there are no birds vocalizing, or if there is a bird you cannot identify. When you have completed these tasks, click \"Save and move to the next recording\".",
   "identification.isLowQuality": "Recording is of poor quality (disturbing noise, rain etc.)",
