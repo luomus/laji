@@ -1270,7 +1270,7 @@
   "observation.form.onlyNonStateLands.true": "LajiGIS-aineistot yksityismailla",
   "observation.form.onlyZeroObservations": "Vain nollahavainnot",
   "observation.form.other": "Muut hakuehdot",
-  "observation.form.otso-info": "Metsätalouskäyttöön määritellyt oletushakurajaukset. Voit tarkastella ja halutessasi muuttaa seuraavia oletusrajauksia: havaintoaika, paikka, aineiston laatu, ja hallinnollinen asema. Lisäksi voit rajata hakuasi muuten.",
+  "observation.form.otso-info": "Metsätalouskäyttöön määritellyt oletushakurajaukset. Voit tarkastella ja halutessasi muuttaa seuraavia oletusrajauksia: havaintoaika, paikka, aineiston laatu, ja hallinnollinen asema. Lisäksi voit määritellä lisärajauksia, esimerkiksi alueellisesti polygonilla tai kuntaluettelona.",
   "observation.form.otsoShortcut": "Otso-metsätalousrajaukset",
   "observation.form.own": "Omat havainnot",
   "observation.form.place": "Paikka",
