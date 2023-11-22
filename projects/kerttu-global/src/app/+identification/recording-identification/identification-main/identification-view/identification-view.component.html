@@ -22,7 +22,7 @@
       <laji-audio-viewer-simple-settings
         [enableSlowDownAudioSetting]="recording.taxonType === taxonTypeEnum.bat || recording.taxonType === taxonTypeEnum.insect"
         [enableShowWholeFrequencyRangeSetting]="recording.taxonType === taxonTypeEnum.bird || recording.taxonType === taxonTypeEnum.bat"
-        [enableShowWholeTimeRangeSetting]="true"
+        [enableShowWholeTimeRangeSetting]="recording.taxonType !== taxonTypeEnum.bat"
         [(slowDownAudio)]="slowDownAudio"
         [(showWholeFrequencyRange)]="showWholeFrequencyRange"
         [(showWholeTimeRange)]="showWholeTimeRange"
