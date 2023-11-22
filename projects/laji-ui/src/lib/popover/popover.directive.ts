@@ -71,6 +71,7 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
   private hoveringPopover = false;
   private componentListenerDestructors: (() => void)[] = [];
   private popoverListenerDestructors: (() => void)[] = [];
+  private closeSubscription: Subscription;
 
   constructor(
     private el: ElementRef,
@@ -102,6 +103,7 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     this.componentListenerDestructors.forEach(d => d());
     this.popoverListenerDestructors.forEach(d => d());
     this.hoveringSubscription?.unsubscribe();
+    this.closeSubscription?.unsubscribe();
   }
 
   @HostListener('click')
@@ -148,6 +150,10 @@ export class PopoverDirective implements AfterViewInit, OnDestroy {
     );
 
     this.popoverRef.instance.title = this.popoverTitle;
+    if (this.mode === 'click') {
+      this.popoverRef.instance.displayCloseBtn = true;
+      this.closeSubscription = this.popoverRef.instance.closePopover.subscribe(() => this.unloadContainer());
+    }
     this.renderer.addClass(this.popoverRef.location.nativeElement, `root-element-${this.rootElement}`);
     this.renderer.addClass(this.popoverRef.location.nativeElement, this.placement);
 
