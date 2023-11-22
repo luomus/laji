@@ -256,8 +256,8 @@ export const lajiMapObservationVisualization: ObservationVisualization = {
     getClusterColor: (markers) =>
       // display color based on the newest record
       getRecordAgeColor(markers.reduce((p, curr) => {
-        const nr = curr.feature.properties.newestRecord;
+        const nr = curr.feature.properties.newestRecord || '0001-01-01';
         return sliceYear(p) < sliceYear(nr) ? nr : p;
-      }, '01-01-0001'))
+      }, '0001-01-01'))
   }
 };
