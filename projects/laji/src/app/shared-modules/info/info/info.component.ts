@@ -32,6 +32,10 @@ export class InfoComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
+    // window.innerWidth is undefined for node env, we don't want to show the modal for server-side rendered version.
+    if (!this.platformService.isBrowser) {
+      return;
+    }
     this.useModal = this.platformService.window.innerWidth <= 767;
     this.cdr.markForCheck();
   }

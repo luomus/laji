@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { Taxonomy } from '../../../shared/model/Taxonomy';
+import { PlatformService } from '../../../root/platform.service';
 
 @Component({
   selector: 'laji-gbif-map',
@@ -45,6 +46,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
   };
 
   private layer: any;
+  private mapLoaded = false;
 
   private layerUrl = 'https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?' +
     'style=classic.poly&bin=hex&taxonKey=';
@@ -54,19 +56,19 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private platformService: PlatformService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.taxon) {
+    if (changes.taxon && this.mapLoaded) {
       this.updateData();
     }
   }
 
   onMapLoad() {
-    if (this.layer) {
-      this.addLayerToMap();
-    }
+    this.mapLoaded = true;
+    this.updateData();
   }
 
   ngOnDestroy() {
@@ -76,6 +78,10 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
   }
 
   private updateData() {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+
     if (this.getTaxonKeySub) {
       this.getTaxonKeySub.unsubscribe();
     }
@@ -136,7 +142,7 @@ export class GbifMapComponent implements OnChanges, OnDestroy {
   }
 
   private addLayerToMap() {
-    if (!this.mapComponent || !this.mapComponent.map || !this.mapComponent.map.map) {
+    if (!this.platformService.isBrowser || !this.mapComponent || !this.mapComponent.map || !this.mapComponent.map.map) {
       return;
     }
 
