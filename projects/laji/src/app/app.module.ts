@@ -20,7 +20,7 @@ import { LajiUiModule } from '../../../laji-ui/src/public-api';
 import { GraphQLModule } from './graph-ql/graph-ql.module';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { TransferHttpCacheInterceptor } from './shared/interceptor/transfer-http-cache.interceptor';
-import { BrowserModule, provideClientHydration, Title } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { LajiApiInterceptor } from './shared/service/laji-api.interceptor';
 import { LajiTitle } from './shared/service/laji-title';
 import { LocaleModule } from './locale/locale.module';
@@ -72,7 +72,6 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
       useFactory: createLoggerLoader
     },
     {provide: Title, useClass: LajiTitle},
-    provideClientHydration()
   ],
 })
 export class AppModule {
