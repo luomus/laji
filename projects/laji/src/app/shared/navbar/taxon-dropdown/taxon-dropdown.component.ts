@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, Input, Renderer2, ElementRef, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'laji-taxon-dropdown',
