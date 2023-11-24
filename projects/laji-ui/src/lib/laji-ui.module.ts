@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ButtonComponent } from './button/button.component';
 import { CommonModule } from '@angular/common';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-import { DropdownComponent } from './dropdown/dropdown.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tabs/tab/tab.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -22,7 +21,7 @@ import { CloseOnEscDirective } from './directives/close-on-esc.directive';
 
 @NgModule({
   declarations: [
-    ButtonComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
+    ButtonComponent, CheckboxComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, ButtonRoundComponent, MessageComponent,
     ComboCheckboxComponent, ComboCheckboxRowComponent, ClickOutsideDirective, KeyboardClickableDirective, CloseOnEscDirective
   ],
@@ -31,7 +30,7 @@ import { CloseOnEscDirective } from './directives/close-on-esc.directive';
     RouterModule
   ],
   exports: [
-    ButtonComponent, ButtonRoundComponent, CheckboxComponent, DropdownComponent, TabsComponent, TabComponent, SidebarComponent,
+    ButtonComponent, ButtonRoundComponent, CheckboxComponent, TabsComponent, TabComponent, SidebarComponent,
     SidebarLinkComponent, GhostParagraphComponent, FillHeightDirective, GhostTextContentDirective, IconComponent, MessageComponent,
     ComboCheckboxComponent, ComboCheckboxRowComponent, KeyboardClickableDirective, CloseOnEscDirective
   ]
