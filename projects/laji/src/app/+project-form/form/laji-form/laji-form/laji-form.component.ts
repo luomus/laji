@@ -28,6 +28,7 @@ import { Form } from 'projects/laji/src/app/shared/model/Form';
 import { environment } from 'projects/laji/src/environments/environment';
 import { ProjectFormService } from 'projects/laji/src/app/shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { PlatformService } from 'projects/laji/src/app/root/platform.service';
 
 const GLOBAL_SETTINGS = '_global_form_settings_';
 
@@ -54,7 +55,8 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
               private ngZone: NgZone,
               private cd: ChangeDetectorRef,
               private toastsService: ToastsService,
-              private projectFormService: ProjectFormService
+              private projectFormService: ProjectFormService,
+              private platformService: PlatformService
   ) {
     this._onError = this._onError.bind(this);
   }
@@ -260,7 +262,7 @@ export class LajiFormComponent implements OnDestroy, OnChanges, AfterViewInit, O
   }
 
   private mount() {
-    if (!this.form || !this.formData) {
+    if (!this.form || !this.formData || !this.platformService.isBrowser) {
       return;
     }
     combineLatest(
