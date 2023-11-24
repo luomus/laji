@@ -41,6 +41,8 @@ settings.json
 /projects/kerttu-global/generate-spectrograms/input*
 /projects/kerttu-global/generate-spectrograms/output*
 
+projects/laji-api-client-b/node_modules
+
 # Don't include script with this repo!
 **/*.sh
 

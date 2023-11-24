@@ -17,6 +17,9 @@
       "laji-ui": [
         "dist/laji-ui"
       ],
+      "laji-api-client-b": [
+        "dist/laji-api-client-b"
+      ],
       "laji-ui/*": [
         "dist/laji-ui/*"
       ],

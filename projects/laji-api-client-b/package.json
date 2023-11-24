@@ -1,0 +1,19 @@
+{
+  "name": "laji-api-client-b",
+  "version": "0.0.1",
+  "scripts": {
+    "updateOld": "openapi-typescript https://apitest.laji.fi/explorer/swagger.json -o ./generated/api.d.ts",
+    "updateNew": "openapi-typescript https://apitest.laji.fi/explorer-json -o ./generated/api.d.ts"
+  },
+  "peerDependencies": {
+    "@angular/common": "^16.2.0",
+    "@angular/core": "^16.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "openapi-typescript": "6.7.1"
+  }
+}

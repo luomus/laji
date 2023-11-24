@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "projects/laji/src/test.ts"
+    "projects/laji/src/test.ts",
+		"projects/laji-api-client-b/generated/*"
   ],
   "overrides": [
     {
