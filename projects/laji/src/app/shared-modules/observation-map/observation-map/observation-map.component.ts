@@ -316,7 +316,7 @@ export class ObservationMapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private queryIsInsideViewport(query: WarehouseQueryInterface): boolean {
-    if (!query.coordinates)  {
+    if (!query.coordinates || !this.platformService.isBrowser)  {
       return false;
     }
 

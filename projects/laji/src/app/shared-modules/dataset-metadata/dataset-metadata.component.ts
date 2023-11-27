@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Collection } from '../../shared/model/Collection';
 import { CollectionService, ICollectionCounts } from '../../shared/service/collection.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
+import {PlatformService} from '../../root/platform.service';
 
 const mobileBreakpoint = 768;
 
@@ -28,11 +29,12 @@ export class DatasetMetadataComponent implements OnInit, OnDestroy, AfterViewIni
     private router: Router,
     private localizeRouterService: LocalizeRouterService,
     private collectionService: CollectionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private platformService: PlatformService
   ) { }
 
   private checkScreenWidth() {
-    this.isMobile = window.innerWidth < mobileBreakpoint;
+    this.isMobile = this.platformService.isBrowser && window.innerWidth < mobileBreakpoint;
   }
 
   ngOnInit() {
