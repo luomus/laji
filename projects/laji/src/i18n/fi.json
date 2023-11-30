@@ -1753,7 +1753,7 @@
   "taxonomy.multimedia.taxonDescriptionCaption": "Kuvateksti",
   "taxonomy.nameAccordingTo": "Lajiluettelo",
   "taxonomy.notes": "Huomautuksia taksonomiasta",
-  "taxonomy.notFound": "Lajia ei löytynyt",
+  "taxonomy.notFound": "Taksonia ei löytynyt",
   "taxonomy.observation.yearChart.filter": "Klikkaa selitetekstejä suodattaaksesi tuloksia.",
   "taxonomy.observationCount": "Havaintomäärä",
   "taxonomy.observationCountFinland": "Havaintomäärä Suomesta",
