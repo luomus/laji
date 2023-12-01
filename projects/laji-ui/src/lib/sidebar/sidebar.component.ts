@@ -19,6 +19,7 @@ const mobileBreakpoint = 768;
         width: '{{sidebarMinWidth}}px'
       }), {params: {sidebarMinWidth: 0}}),
       state('open', style({
+        width: 'unset'
       })),
       transition('open=>closed', group([
         query('@sidebarOpen_content', [
@@ -40,6 +41,7 @@ const mobileBreakpoint = 768;
       })),
       state('open', style({
         opacity: 1,
+        display: 'block'
       })),
       transition('closed<=>open', animate('300ms ease')),
     ]),
