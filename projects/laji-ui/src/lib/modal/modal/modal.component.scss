@@ -98,7 +98,7 @@ $close-btn-right: 30px;
 	}
 }
 
-@media (min-width: $xl-width + $margin + $close-btn-width + $close-btn-right) {
+@media (min-width: ($xl-width + $margin + $close-btn-width + $close-btn-right)) {
   .lu-modal-xl {
     .lu-modal-content {
       width: $xl-width;

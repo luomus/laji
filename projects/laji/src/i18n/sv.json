@@ -1580,7 +1580,7 @@
   "saveObservations.completeLists": "Kompletta listor",
   "saveObservations.completeLists.desc": "Med kompletta listor kan du ange vilka alla arter från en viss lista du observerat på din resa. I det här fallet får man korrekt information inte bara om vilka arter man observerads, utan också om vilka arter som inte observerades under resan. Observationer sparas i Laji.fi:s Skrivbok. För fullständiga listor har Mobiiliviho även egna formulär.",
   "saveObservations.dataBank": "Databank",
-  "saveObservations.dataBank.desc": "Databank är en tjänst från Artdatacentret, där du kan lagra observationsdataseten från organisationer. Databanken kan användas av olika organisationer, såsom kommuner, forskargrupper, föreningar och arbetsgrupper. <strong><a href=\"https://laji.fi/theme/datasets\">Lär känna Databanken</a></strong>.",
+  "saveObservations.dataBank.desc": "Databank är en tjänst från Artdatacentret, där du kan lagra observationsdataseten från organisationer. Databanken kan användas av olika organisationer, såsom kommuner, forskargrupper, föreningar och arbetsgrupper. <strong><a href=\"/sv/theme/datasets\">Lär känna Databanken</a></strong>.",
   "saveObservations.desc": "Genom att spara dina observationer i några av FinBIFs tjänster kan de användas av forskare och andra människor. Observationerna publiceras också på Laji.fi om du väljer det. Du kan lämna in enstaka observationer, underhålla din egen observationsskrivbok eller delta i medborgarvetenskapliga projekt.",
   "saveObservations.easy": "Öppen observationsform",
   "saveObservations.easy.1": "Skicka enstaka observationer",
