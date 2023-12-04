@@ -92,9 +92,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   keyEvent(e, value) {
-    if (e.keyCode === ENTER) {
-      this.onInputValueChange(value);
-    }
+    this.onInputValueChange(value);
   }
 
   onInputValueChange(viewFormatValue: string) {
