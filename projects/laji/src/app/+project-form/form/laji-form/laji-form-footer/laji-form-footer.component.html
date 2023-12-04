@@ -7,10 +7,10 @@
       <button type="button" [disabled]="saving" class="btn btn-success" (click)="lock.emit(true)"><i class="fa fa-unlock"></i></button>
     </ng-template>
   </div>
-  <button *ngIf="show.save && !template" class="btn btn-success" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
-  <button *ngIf="show.temp && !template" class="btn btn-default" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
+  <button *ngIf="show.save && !template" class="btn btn-success whitespace-nowrap" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPublic.emit()">{{ buttonLabel('save') | translate }}</button>
+  <button *ngIf="show.temp && !template" class="btn btn-default whitespace-nowrap" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitPrivate.emit()">{{ buttonLabel('temp') | translate }}</button>
   <button *ngIf="template" class="btn btn-success" [disabled]="saving || disableIfOnlyWarnings()" type="submit" (click)="submitTemplate.emit()">{{ 'haseka.form.saveTemplate' | translate }}</button>
-  <div [ngSwitch]="status" class="flex-grow status">
+  <ng-container [ngSwitch]="status" class="status">
     <div *ngSwitchCase="'success'" class="success">
       {{ 'haseka.form.success' | translate }}
     </div>
@@ -31,7 +31,7 @@
     <span *ngIf="readonly === readonlyStates.noEdit">
         {{ 'haseka.form.readonly' | translate }}
     </span>
-  </div>
-  <button *ngIf="show.cancel" class="btn btn-danger pull-right" [disabled]="saving" type="submit" (click)="leave.emit()">{{ buttonLabel('cancel') | translate }}</button>
+  </ng-container>
+  <button *ngIf="show.cancel" class="btn btn-danger whitespace-nowrap" [disabled]="saving" type="submit" (click)="leave.emit()">{{ buttonLabel('cancel') | translate }}</button>
   <laji-feedback *ngIf="displayFeedback" [iconOnly]="true" [fixed]="false"></laji-feedback>
 </div>
