@@ -92,7 +92,11 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   keyEvent(e, value) {
-    this.onInputValueChange(value);
+    const viewFormMoment = moment(value, VIEW_FORMAT, true);
+    if (viewFormMoment.isValid()) {
+      this.validDate = true;
+      this.onInputValueChange(value);
+    }
   }
 
   onInputValueChange(viewFormatValue: string) {
