@@ -26,7 +26,7 @@ npm start
 ```
 
 ## Running end-to-end tests
-1. Get a permanent person token via https://fmnh-ws-test.it.helsinki.fi/laji-auth/login?target=KE.389&redirectMethod=GET&locale=fi&next=&offerPermanent=true
+1. Get a permanent test user person token from another developer (the tests assume that this user is being used)
 2. Create a `.env` file at the root of the repository
 3. Insert the token `PERSON_TOKEN=<your_token>`
 4. run `npm start`
