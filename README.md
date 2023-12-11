@@ -25,22 +25,12 @@ npm start
 # Go with your browser to http://localhost:3000/
 ```
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
 ## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+1. Get a permanent person token via https://fmnh-ws-test.it.helsinki.fi/laji-auth/login?target=KE.389&redirectMethod=GET&locale=fi&next=&offerPermanent=true
+2. Create a `.env` file at the root of the repository
+3. Insert the token `PERSON_TOKEN=<your_token>`
+4. run `npm start`
+5. run `npx playwright test --ui`
 
 ## Further help
 
