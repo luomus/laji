@@ -1,15 +1,5 @@
 import test, { Page, expect } from '@playwright/test';
-
-const LOGIN_URL_WITH_TOKEN = `http://localhost:3000/user/login?token=${process.env.PERSON_TOKEN}&next=`;
-
-export const login = async (page: Page) => {
-  await page.goto(LOGIN_URL_WITH_TOKEN);
-};
-
-export const logout = async (page: Page) => {
-  await page.locator('#logged-in-user').click();
-  await page.locator('a[href="/user/logout"]').click();
-};
+import { login, logout } from './user.po';
 
 test.describe('User page', () => {
   test.describe.configure({ mode: 'serial' });
@@ -37,3 +27,8 @@ test.describe('User page', () => {
     expect(await page.locator('#login-link').isVisible()).toBe(true);
   });
 });
+
+class ObservationPage {
+  $occurrenceCountFinlandMax = this.page.locator('input[name=occurrenceCountFinlandMax]');
+  constructor(private page: Page) {}
+}
