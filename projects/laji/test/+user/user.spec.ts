@@ -27,8 +27,3 @@ test.describe('User page', () => {
     expect(await page.locator('#login-link').isVisible()).toBe(true);
   });
 });
-
-class ObservationPage {
-  $occurrenceCountFinlandMax = this.page.locator('input[name=occurrenceCountFinlandMax]');
-  constructor(private page: Page) {}
-}
