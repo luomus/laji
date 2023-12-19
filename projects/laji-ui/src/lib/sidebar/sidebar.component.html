@@ -53,7 +53,7 @@
 </ng-template>
 
 <ng-template #closeBtn>
-  <div class="close-wrapper">
+  <div class="close-wrapper" [ngClass]="{'mobile': mobile}">
     <lu-button-round (click)="onSwitchOpen()" role="neutral" tabindex="0" luKeyboardClickable>
       <lu-icon type="close"></lu-icon>
     </lu-button-round>

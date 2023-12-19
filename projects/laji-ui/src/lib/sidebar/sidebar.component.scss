@@ -104,6 +104,9 @@ $mobileBreakpoint: 768px;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
+  &.mobile {
+    justify-content: flex-start;
+  }
 }
 
 // SIDEBAR NAV
