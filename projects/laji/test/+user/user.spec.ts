@@ -10,7 +10,7 @@ test.describe('User page', () => {
   });
 
   test.afterEach(async () => {
-    expect(await page.locator('.toast-error').isVisible(), 'Error dialog is present.').toBe(false);
+    expect(page.locator('.toast-error'), 'Error dialog is present.').not.toBeVisible();
   });
 
   test('should login user', async () => {
