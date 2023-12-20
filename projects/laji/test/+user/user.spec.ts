@@ -15,14 +15,11 @@ test.describe('User page', () => {
 
   test('should login user', async () => {
     await login(page);
-
-    const usernameElem = page.locator('#logged-in-user');
-    expect(await usernameElem.isVisible()).toBe(true);
+    expect(page.locator('#logged-in-user')).toBeVisible();
   });
 
   test('should logout user', async () => {
     await logout(page);
-
     await page.locator('#logged-in-user').waitFor({ state: 'detached' });
     expect(await page.locator('#login-link').isVisible()).toBe(true);
   });
