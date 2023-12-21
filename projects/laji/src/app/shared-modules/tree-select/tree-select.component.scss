@@ -1,5 +1,10 @@
+$mobileBreakpoint: 1080px;
+
 ::ng-deep .tree-select-modal-content {
-  max-height: calc(100% - 30px);
   display: flex;
   flex-direction: column;
+  max-height: calc(100% - 30px);
+  @media only screen and (max-width: $mobileBreakpoint) {
+    max-height: none;
+  }
 }
