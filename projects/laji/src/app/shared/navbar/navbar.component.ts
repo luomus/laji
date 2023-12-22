@@ -2,7 +2,7 @@ import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, NgZone,
+  Component, ElementRef, HostListener, NgZone,
   OnDestroy,
   OnInit,
   ViewChild
@@ -47,12 +47,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private elementRef: ElementRef
   ) {
     this.navId = environment.type + '-nav';
     this.devRibbon = environment.displayDevRibbon || environment.production === false;
     this.redTheme = environment.type === Global.type.vir || environment.type === Global.type.iucn;
     this.containerClass = environment.type === Global.type.iucn ? 'container' : 'container-fluid';
+  }
+
+  @HostListener('document:click', ['$event'])
+  click(event) {
+    if (this.openMenu && !this.elementRef.nativeElement.contains(event.target)) {
+      this.toggleMenu();
+    }
   }
 
   ngOnInit() {
