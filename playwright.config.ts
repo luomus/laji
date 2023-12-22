@@ -28,6 +28,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    permissions: ['geolocation'],
+    geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 } // fmnh geolocation
   },
 
   /* Configure projects for major browsers */

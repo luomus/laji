@@ -10,17 +10,17 @@ test.describe('User page', () => {
   });
 
   test.afterEach(async () => {
-    expect(page.locator('.toast-error'), 'Error dialog is present.').not.toBeVisible();
+    await expect(page.locator('.toast-error'), 'Error dialog is present.').toBeHidden();
   });
 
   test('should login user', async () => {
     await login(page);
-    expect(page.locator('#logged-in-user')).toBeVisible();
+    await expect(page.locator('#logged-in-user')).toBeVisible();
   });
 
   test('should logout user', async () => {
     await logout(page);
     await page.locator('#logged-in-user').waitFor({ state: 'detached' });
-    expect(await page.locator('#login-link').isVisible()).toBe(true);
+    await expect(page.locator('#login-link')).toBeVisible();
   });
 });

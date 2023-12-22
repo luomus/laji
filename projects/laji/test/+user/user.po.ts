@@ -12,9 +12,25 @@ export const login = async (page: Page) => {
   }
 
   // fallback to manual login
-  await page.goto('/');
-  await page.locator('#login-link').click(); // laji.fi login link
-  await page.locator('#local-login').click(); // laji-auth
+
+  // there are three cases:
+  //  not yet in app -> navigate to the app
+  //  in the app -> click login link -> external login
+  //  in external login -> continue login process
+
+  // first navigate to the app on a fresh page instance
+  // eg. a fresh page instance has url "about:blank" in chromium
+  if (!page.url().match(/http.*/)) {
+    await page.goto('/');
+  }
+
+  // in the app -> navigate to external login
+  await page.waitForLoadState();
+  if (await page.locator('#login-link').isVisible()) {
+    await page.locator('#login-link').click(); // laji.fi login link
+  }
+
+  await page.locator('#local-login').click(); // laji-auth login
   await page.locator('[name="email"]').fill(process.env.E2E_USER);
   await page.locator('[name="password"]').fill(process.env.E2E_PASS);
   await page.locator('button.submit').click();
