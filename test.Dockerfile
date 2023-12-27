@@ -24,4 +24,6 @@ RUN volta install node
 
 RUN npm ci
 
+ENV PLAYWRIGHT_JUNIT_OUTPUT_NAME test-results.xml
+
 ENTRYPOINT ["npx", "playwright", "test"]
