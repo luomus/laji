@@ -5,14 +5,23 @@ WORKDIR /app
 # Copy application files (see .dockerignore for what's excluded)
 COPY . .
 
-RUN mkdir /usr/local/nvm
-ENV NVM_DIR /usr/local/nvm
+# The volta setup is taken from https://dev.to/michalbryxi/volta-in-docker-162a
 
-# nvm pulls correct node version with 'nvm use' from .nvmrc
-RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
-    && . $NVM_DIR/nvm.sh \
-    && nvm use \
-    && node --version \
-    && npm ci
+# bash will load volta() function via .bashrc
+# using $VOLTA_HOME/load.sh
+SHELL ["/bin/bash", "-c"]
+
+# since we're starting non-interactive shell,
+# we wil need to tell bash to load .bashrc manually
+ENV BASH_ENV ~/.bashrc
+# needed by volta() function
+ENV VOLTA_HOME /root/.volta
+# make sure packages managed by volta will be in PATH
+ENV PATH $VOLTA_HOME/bin:$PATH
+# install volta
+RUN curl https://get.volta.sh | bash
+RUN volta install node
+
+RUN npm ci
 
 ENTRYPOINT ["npx", "playwright", "test"]
