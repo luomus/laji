@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export const login = async (page: Page) => {
   const currentPath = new URL(page.url()).pathname;
@@ -39,4 +39,8 @@ export const login = async (page: Page) => {
 export const logout = async (page: Page) => {
   await page.locator('#logged-in-user').click();
   await page.locator('a[href="/user/logout"]').click();
+};
+
+export const expectToBeOnExternalLoginPage = async (page: Page) => {
+  await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
 };

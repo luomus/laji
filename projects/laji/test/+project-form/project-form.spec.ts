@@ -1,5 +1,5 @@
 import test, { Page, expect, Locator } from '@playwright/test';
-import { login } from '../+user/user.po';
+import { expectToBeOnExternalLoginPage, login } from '../+user/user.po';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -44,13 +44,13 @@ test.describe('Project form', () =>  {
     test.describe('and has named places and strict access restriction', () => {
       test('/form page redirects to login', async ({ page }) => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION, '/form'));
-        await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
+        await expectToBeOnExternalLoginPage(page);
       });
     });
     test.describe('and has simple option,', () => {
       test('form page redirects to login', async ({ page }) => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY));
-        await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
+        await expectToBeOnExternalLoginPage(page);
       });
     });
 
@@ -69,14 +69,14 @@ test.describe('Project form', () =>  {
 
       test('navigating to /form redirects to login', async ({ page }) => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, '/form'));
-        await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
+        await expectToBeOnExternalLoginPage(page);
       });
     });
 
     test.describe('not simple not mobile no places no multiform', () => {
       test('/form page redirects to login', async ({ page }) => {
         await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
-        await expect(page.locator('#local-login'), 'Wasn\'t on external login page').toBeVisible();
+        await expectToBeOnExternalLoginPage(page);
       });
 
       test('after login is on form page', async ({ page }) => {
