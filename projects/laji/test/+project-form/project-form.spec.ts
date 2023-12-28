@@ -29,64 +29,72 @@ const getLang = async (page: Page): Promise<('fi' | 'sv' | 'en')> => {
 
 test.describe('Project form', () =>  {
   test.describe('when logged out', () => {
+    test.describe.configure({ mode: 'serial' });
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      page = await browser.newPage();
+      await page.goto('/');
+    });
+
     test.describe('and has named places and no access restriction', () => {
-      test('/form page redirects to named places view', async ({ page }) => {
+      test('/form page redirects to named places view', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_NO_ACCESS_RESTRICTION, '/form'));
         await expect(page.locator('laji-named-places')).toBeVisible();
       });
     });
     test.describe('and has named places and loose access restriction', () => {
-      test('/form page redirects to named places view', async ({ page }) => {
+      test('/form page redirects to named places view', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_LOOSE_ACCESS_RESTRICTION, '/form'));
         await expect(page.locator('laji-named-places')).toBeVisible();
       });
     });
     test.describe('and has named places and strict access restriction', () => {
-      test('/form page redirects to login', async ({ page }) => {
+      test('/form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION, '/form'));
         await expectToBeOnExternalLoginPage(page);
       });
     });
     test.describe('and has simple option,', () => {
-      test('form page redirects to login', async ({ page }) => {
+      test('form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY));
         await expectToBeOnExternalLoginPage(page);
       });
     });
 
     test.describe('and has mobile option,', () => {
-      test.beforeEach(async ({ page }) => {
+      test.beforeEach(async () => {
         await page.goto(getProjectFormUrl(FORM_WITH_MOBILE));
       });
 
-      test('doesn\'t display terms', async ({ page }) => {
+      test('doesn\'t display terms', async () => {
         await expect(page.locator('laji-project-form-terms')).toBeHidden();
       });
 
-      test('shows login button', async ({ page }) => {
+      test('shows login button', async () => {
         await expect(page.locator('.login-button')).toBeVisible();
       });
 
-      test('navigating to /form redirects to login', async ({ page }) => {
+      test('navigating to /form redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, '/form'));
         await expectToBeOnExternalLoginPage(page);
       });
     });
 
     test.describe('not simple not mobile no places no multiform', () => {
-      test('/form page redirects to login', async ({ page }) => {
+      test('/form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
         await expectToBeOnExternalLoginPage(page);
       });
 
-      test('after login is on form page', async ({ page }) => {
+      test('after login is on form page', async () => {
         await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
         await login(page);
         await expect(page.locator('laji-project-form-form')).toBeVisible();
       });
     });
 
-    test('disabled form is displayed as disabled', async ({ page }) => {
+    test('disabled form is displayed as disabled', async () => {
       await page.goto(getProjectFormUrl(FORM_DISABLED));
       await expect(page.locator('laji-project-form-disabled')).toBeVisible();
       await expect(page.locator('.sidebar')).toBeHidden();
