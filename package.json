@@ -82,7 +82,10 @@
     "dev:ssr": "ng run laji:serve-ssr",
     "serve:ssr": "node dist/server/main.js",
     "build:ssr": "ng build && ng run laji:server",
-    "prerender": "ng run laji:prerender"
+    "prerender": "ng run laji:prerender",
+    "docker:npm-run": "npm run docker:npm-run:build && npm run docker:npm-run:run --",
+    "docker:npm-run:build": "docker build -t laji-npm-run -f npm-run.Dockerfile .",
+    "docker:npm-run:run": "docker run laji-npm-run:latest"
   },
   "contributors": [
     "Ville-Matti Riihikoski <ville-matti.riihikoski@helsinki.fi>",
