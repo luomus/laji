@@ -32,7 +32,7 @@ PERSON_TOKEN=
 E2E_USER=
 E2E_PASS=
 ```
-2. get the credentials to the e2e user from a colleague
+2. get the credentials to the e2e user from another developer
 3. run `npm start` to start laji.fi dev server
 4. run `npx playwright test` (for headless mode), `npx playwright test --ui` (for headful mode) or [use the playwright vscode plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
 
