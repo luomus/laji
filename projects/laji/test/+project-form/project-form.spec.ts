@@ -14,17 +14,15 @@ const FORM_ALLOW_TEMPLATES = 'MHL.6';
 const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS = 'MHL.45';
 const FORM_MULTIPLE_FORMS_OWN_SUBMISSONS_DOC = 'JX.282874';
 
-export const getAddressWithLang = (page: string, lang?: 'fi' | 'sv' | 'en'): string =>
+type Lang = 'fi' | 'en' | 'sv';
+
+export const getAddressWithLang = (page: string, lang?: Lang): string =>
   ((lang && lang !== 'fi') ? '/' + lang : '') + page;
-const getProjectFormUrl = (id: string, subPage = '', lang?: 'fi' | 'en' | 'sv') =>
+const getProjectFormUrl = (id: string, subPage = '', lang?: Lang) =>
   getAddressWithLang(`/project/${id}${subPage}`, lang);
 
-const getLang = async (page: Page): Promise<('fi' | 'sv' | 'en')> => {
-  const text = (await page.locator('.language-toggle span').textContent()).trim().toLowerCase();
-  if (!['fi', 'sv', 'en'].includes(text)) {
-    throw new Error('Couldn\'t get lang');
-  }
-  return text as ('fi' | 'sv' | 'en');
+const expectLangToBe = async (lang: Lang, page: Page) => {
+  await expect(page.locator('.language-toggle span')).toHaveText(new RegExp(lang, 'i'));
 };
 
 test.describe('Project form', () =>  {
@@ -127,7 +125,7 @@ test.describe('Project form', () =>  {
       test('and has no category, canceling document save redirects to Vihko home page if no history and keeps lang', async () => {
         await page.locator('laji-form-footer .btn-danger').click(); // cancel
         await expect(page.locator('.haseka-home')).toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
 
       test('back navigate navigates away from form and keeps lang', async () => {
@@ -140,7 +138,7 @@ test.describe('Project form', () =>  {
         await page.goBack();
 
         await expect(page.locator('.haseka-home'), 'user wasn\'t on vihko page after back navigation').toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
     });
 
@@ -149,7 +147,7 @@ test.describe('Project form', () =>  {
       await page.locator('laji-form-footer .btn-danger').click(); // cancel
 
       await expect(page.locator('.survey-box').first()).toBeVisible();
-      expect(await getLang(page)).toBe('en');
+      await expectLangToBe('en', page);
     });
 
     test.describe('and has mobile option,', () => {
@@ -177,7 +175,7 @@ test.describe('Project form', () =>  {
       test('use button goes to document form page with correct lang', async () => {
         await page.locator('.use-button').click();
         await expect(page.locator('laji-project-form-form')).toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
 
       test('canceling document save redirects to about page and keeps lang if no history', async () => {
@@ -186,7 +184,7 @@ test.describe('Project form', () =>  {
         await page.locator('laji-form-footer .btn-danger').click();
 
         await expect(page.locator('laji-about')).toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
     });
 
@@ -208,7 +206,7 @@ test.describe('Project form', () =>  {
         await page.locator('laji-form-footer .btn-danger').click();
 
         await expect(page.locator('laji-about')).toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
 
       test.describe(', and has multiple forms', () => {
@@ -271,7 +269,7 @@ test.describe('Project form', () =>  {
       test('/form page redirects to about and keeps lang', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION_NO_PERMISSION, '/form', 'en'));
         await expect(page.locator('laji-about')).toBeVisible();
-        expect(await getLang(page)).toBe('en');
+        await expectLangToBe('en', page);
       });
     });
   });
