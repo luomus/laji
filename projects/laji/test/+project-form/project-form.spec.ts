@@ -104,7 +104,6 @@ test.describe('Project form', () =>  {
 
     test.beforeAll(async ({ browser }) => {
       page = await browser.newPage();
-      await page.goto('/');
       await login(page);
     });
 
