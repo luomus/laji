@@ -1,5 +1,5 @@
 import test, { Page, expect, Locator } from '@playwright/test';
-import { expectToBeOnExternalLoginPage, login } from '../+user/user.po';
+import { expectToBeOnLajiAuthLogin, lajiFiLogin, login } from '../+user/user.po';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -50,13 +50,13 @@ test.describe('Project form', () =>  {
     test.describe('and has named places and strict access restriction', () => {
       test('/form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_NAMED_PLACES_STRICT_ACCESS_RESTRICTION, '/form'));
-        await expectToBeOnExternalLoginPage(page);
+        await expectToBeOnLajiAuthLogin(page);
       });
     });
     test.describe('and has simple option,', () => {
       test('form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY));
-        await expectToBeOnExternalLoginPage(page);
+        await expectToBeOnLajiAuthLogin(page);
       });
     });
 
@@ -75,19 +75,19 @@ test.describe('Project form', () =>  {
 
       test('navigating to /form redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_WITH_SIMPLE_HAS_NO_CATEGORY, '/form'));
-        await expectToBeOnExternalLoginPage(page);
+        await expectToBeOnLajiAuthLogin(page);
       });
     });
 
     test.describe('not simple not mobile no places no multiform', () => {
       test('/form page redirects to login', async () => {
         await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
-        await expectToBeOnExternalLoginPage(page);
+        await expectToBeOnLajiAuthLogin(page);
       });
 
       test('after login is on form page', async () => {
         await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
-        await login(page);
+        await lajiFiLogin(page);
         await expect(page.locator('laji-project-form-form')).toBeVisible();
       });
     });
