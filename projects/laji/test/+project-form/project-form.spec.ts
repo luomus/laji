@@ -1,5 +1,5 @@
 import test, { Page, expect, Locator } from '@playwright/test';
-import { expectToBeOnLajiAuthLogin, lajiFiLogin, login } from '../+user/user.po';
+import { expectToBeOnLajiAuthLogin, lajiAuthLogin, lajiFiLogin, login } from '../+user/user.po';
 
 const FORM_WITH_SIMPLE_HAS_NO_CATEGORY = 'JX.519';
 const FORM_WITH_SIMPLE_HAS_CATEGORY = 'MHL.25';
@@ -86,8 +86,7 @@ test.describe('Project form', () =>  {
       });
 
       test('after login is on form page', async () => {
-        await page.goto(getProjectFormUrl(FORM_NO_SIMPLE_NO_NAMED_PLACES, '/form'));
-        await lajiFiLogin(page);
+        await lajiAuthLogin(page);
         await expect(page.locator('laji-project-form-form')).toBeVisible();
       });
     });
