@@ -111,7 +111,7 @@
     "@luomus/label-designer": "^4.0.16",
     "@luomus/laji-form": "^14.3.7",
     "@luomus/laji-form-builder": "^1.0.29",
-    "@luomus/laji-map": "^3.23.0",
+    "@luomus/laji-map": "^4.0.2",
     "@ng-select/ng-select": "^11.1.1",
     "@nguniversal/common": "^16.2.0",
     "@nguniversal/express-engine": "^16.2.0",
