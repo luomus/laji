@@ -1,15 +1,6 @@
 import test, { Page, expect } from '@playwright/test';
-
-const LOGIN_URL_WITH_TOKEN = `http://localhost:3000/user/login?token=${process.env.PERSON_TOKEN}&next=`;
-
-export const login = async (page: Page) => {
-  await page.goto(LOGIN_URL_WITH_TOKEN);
-};
-
-export const logout = async (page: Page) => {
-  await page.locator('#logged-in-user').click();
-  await page.locator('a[href="/user/logout"]').click();
-};
+import { login, logout } from './user.po';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('User page', () => {
   test.describe.configure({ mode: 'serial' });
@@ -20,20 +11,17 @@ test.describe('User page', () => {
   });
 
   test.afterEach(async () => {
-    expect(await page.locator('.toast-error').isVisible(), 'Error dialog is present.').toBe(false);
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should login user', async () => {
     await login(page);
-
-    const usernameElem = page.locator('#logged-in-user');
-    expect(await usernameElem.isVisible()).toBe(true);
+    await expect(page.locator('#logged-in-user')).toBeVisible();
   });
 
   test('should logout user', async () => {
     await logout(page);
-
     await page.locator('#logged-in-user').waitFor({ state: 'detached' });
-    expect(await page.locator('#login-link').isVisible()).toBe(true);
+    await expect(page.locator('#login-link')).toBeVisible();
   });
 });
