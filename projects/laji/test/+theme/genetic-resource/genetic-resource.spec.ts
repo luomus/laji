@@ -1,11 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { ErrorPage } from '../../+error/error.page';
 import { GeneticResourcePage } from './genetic-resource.po';
+import { ERROR_DIALOG_SELECTOR } from '../../+error/error.po';
 
 test.describe('Genetic Resource page', () => {
   test.afterEach(async ({page}) => {
-    const error = new ErrorPage(page);
-    await expect(error.errorDialog).not.toBeVisible();
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should not have non-graphql api errors', async ({page}) => {
