@@ -1,5 +1,6 @@
 import test, { Page, expect } from '@playwright/test';
 import { login, logout } from './user.po';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('User page', () => {
   test.describe.configure({ mode: 'serial' });
@@ -10,17 +11,17 @@ test.describe('User page', () => {
   });
 
   test.afterEach(async () => {
-    expect(await page.locator('.toast-error').isVisible(), 'Error dialog is present.').toBe(false);
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should login user', async () => {
     await login(page);
-    expect(page.locator('#logged-in-user')).toBeVisible();
+    await expect(page.locator('#logged-in-user')).toBeVisible();
   });
 
   test('should logout user', async () => {
     await logout(page);
     await page.locator('#logged-in-user').waitFor({ state: 'detached' });
-    expect(await page.locator('#login-link').isVisible()).toBe(true);
+    await expect(page.locator('#login-link')).toBeVisible();
   });
 });
