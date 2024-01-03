@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from './home.po';
-import { ErrorPage } from '../+error/error.page';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('Home page', () => {
 
   test.afterEach(async ({page}) => {
-    const error = new ErrorPage(page);
-    await expect(error.errorDialog).not.toBeVisible();
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should display title in finnish', async ({page}) => {
