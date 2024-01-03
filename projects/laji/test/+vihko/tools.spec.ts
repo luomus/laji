@@ -1,10 +1,10 @@
 import * as path from 'path';
-import { ErrorPage } from '../+error/error.page';
 import { SpreadsheetPage } from '../shared/spreadsheet.po';
 import { ToolsPage } from './tools.po';
 import { expect, test } from '@playwright/test';
 import { login } from '../+user/user.po';
 import { DocumentFormView, TripFormPage } from './trip-form.po';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('Trip form page', () => {
   let toolsPage: ToolsPage;
@@ -23,8 +23,7 @@ test.describe('Trip form page', () => {
   });
 
   test.afterEach(async ({page}) => {
-    const error = new ErrorPage(page);
-    await expect(error.errorDialog).not.toBeVisible();
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
 

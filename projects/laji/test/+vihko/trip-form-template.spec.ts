@@ -1,29 +1,28 @@
-import { ErrorPage } from '../+error/error.page';
 import { TripFormPage } from './trip-form.po';
 import { TemplatesView } from './tools.po';
-import { expect, test } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 import { login } from '../+user/user.po';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('Trip form template page', () => {
   test.describe.configure({ mode: 'serial' });
 
+  let page: Page;
   let tripFormPage: TripFormPage;
-  let error: ErrorPage;
   let templatesView: TemplatesView;
 
   test.beforeAll(async ({ browser }) => {
-    const page = await browser.newPage();
+    page = await browser.newPage();
     await login(page);
 
     tripFormPage = new TripFormPage(page);
-    error = new ErrorPage(page);
     templatesView = new TemplatesView(page);
 
     await tripFormPage.navigateToTemplate();
   });
 
   test.afterEach(async () => {
-    await expect(error.errorDialog).not.toBeVisible();
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('template form is shown', async () => {

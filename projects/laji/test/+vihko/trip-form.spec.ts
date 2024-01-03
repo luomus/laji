@@ -1,14 +1,15 @@
-import { expect, test } from '@playwright/test';
-import { ErrorPage } from '../+error/error.page';
+import { expect, Page, test } from '@playwright/test';
 import { login } from '../+user/user.po';
 import { VihkoHomePage } from './home.po';
 import { TripFormPage } from './trip-form.po';
 import { NavPage } from '../shared/nav.po';
 import { ConfirmPO } from '../shared/dialogs.po';
+import { ERROR_DIALOG_SELECTOR } from '../+error/error.po';
 
 test.describe('Trip form page', () => {
   test.describe.configure({ mode: 'serial' });
 
+  let page: Page;
   let tripFormPage: TripFormPage;
   let vihkoHome: VihkoHomePage;
   let confirm: ConfirmPO;
@@ -17,7 +18,7 @@ test.describe('Trip form page', () => {
   let latestUnsavedDocEditLink: string;
 
   test.beforeAll(async ({ browser }) => {
-    const page = await browser.newPage();
+    page = await browser.newPage();
     await login(page);
 
     tripFormPage = new TripFormPage(page);
@@ -41,8 +42,7 @@ test.describe('Trip form page', () => {
   });
 
   test.afterEach(async ({page}) => {
-    const error = new ErrorPage(page);
-    await expect(error.errorDialog).not.toBeVisible();
+    await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should be able to fill in form with simple data', async () => {
