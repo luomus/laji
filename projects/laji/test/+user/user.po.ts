@@ -38,6 +38,8 @@ export const login = async (page: Page) => {
   } else {
     await lajiAuthLogin(page);
   }
+
+  await page.locator('#logged-in-user').waitFor({timeout: 15000});
 };
 
 export const logout = async (page: Page) => {
