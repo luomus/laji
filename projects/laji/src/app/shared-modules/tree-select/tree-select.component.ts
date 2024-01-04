@@ -1,11 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output, Type, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { Util } from '../../shared/service/util.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
 import { PlatformService } from '../../root/platform.service';
-
-const mobileBreakpoint = 1080;
 
 export interface SelectedOption {
   id: string;
@@ -33,7 +31,7 @@ export interface TreeOptionsChangeEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TreeSelectComponent implements OnInit {
+export class TreeSelectComponent {
   @Input() includedOptions: string[] = [];
   @Input() excludedOptions: string[] = [];
   @Input() optionsTree$: Observable<TreeOptionsNode[]>;
@@ -52,20 +50,10 @@ export class TreeSelectComponent implements OnInit {
 
   lang: string;
   modalRef: ModalRef<TreeSelectModalComponent>;
-  mobile = false;
 
   constructor(
     private modalService: ModalService,
-    private platformService: PlatformService
   ) {}
-
-  private checkScreenWidth() {
-    this.mobile = this.platformService.isBrowser && window.innerWidth <= mobileBreakpoint;
-  }
-
-  ngOnInit() {
-    this.checkScreenWidth();
-  }
 
   openModal() {
     const initialState = {
@@ -80,7 +68,6 @@ export class TreeSelectComponent implements OnInit {
       clearButtonLabel: this.clearButtonLabel,
       includeCount: this.includeCount,
       includeLink: this.includeLink,
-      useVirtualScroll: !this.mobile,
     };
     this.modalRef = this.modalService.show(TreeSelectModalComponent, { size: 'lg', contentClass: 'tree-select-modal-content', initialState });
     this.modalRef.content.emitConfirm.subscribe(result => {

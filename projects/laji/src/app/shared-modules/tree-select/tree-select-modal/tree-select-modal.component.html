@@ -7,33 +7,64 @@
 <div class="flex-container">
   <div class="flex-container">
     <ng-container *ngIf="optionsTree$ | async; let optionsTree; else loading">
-      <div class="row flex-container">
-        <div class="col-md-8 flex-container">
-          <h5>{{browseTitle}}</h5>
-          <laji-tree-selector
-            class="flex-container"
-            [selectedOptions]="selectedOptions"
-            [optionsTree]="optionsTree"
-            [multiselect]="true"
-            [tristate]="true"
-            [includeCheckbox]="true"
-            [includeCount]="includeCount"
-            [includeLink]="includeLink"
-            [useVirtualScroll]="useVirtualScroll"
-            (emitSelect)="changeSelected($event)" #treeSelector>
-          </laji-tree-selector>
-        </div>
-        <div class="col-md-4 flex-container">
-          <h5>{{selectedTitle}}</h5>
-          <div class="scrollable-selection-list">
-            <laji-selected-tree-nodes
+      <ng-container *lajiIfWidthAboveBreakpoint="'md' else mobileModal;">
+        <div class="row flex-container">
+          <div class="col-md-8 flex-container">
+            <h5>{{browseTitle}}</h5>
+            <laji-tree-selector
+              class="flex-container"
               [selectedOptions]="selectedOptions"
-              [includedTitle]="includedTitle"
-              [excludedTitle]="excludedTitle"
-              (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+              [optionsTree]="optionsTree"
+              [multiselect]="true"
+              [tristate]="true"
+              [includeCheckbox]="true"
+              [includeCount]="includeCount"
+              [includeLink]="includeLink"
+              [useVirtualScroll]="true"
+              (emitSelect)="changeSelected($event)" #treeSelector>
+            </laji-tree-selector>
+          </div>
+          <div class="col-md-4 flex-container">
+            <h5>{{selectedTitle}}</h5>
+            <div class="scrollable-selection-list">
+              <laji-selected-tree-nodes
+                [selectedOptions]="selectedOptions"
+                [includedTitle]="includedTitle"
+                [excludedTitle]="excludedTitle"
+                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #mobileModal>
+        <div class="flex-container">
+          <div class="flex-container">
+            <h5>{{browseTitle}}</h5>
+            <laji-tree-selector
+              class="flex-container"
+              [selectedOptions]="selectedOptions"
+              [optionsTree]="optionsTree"
+              [multiselect]="true"
+              [tristate]="true"
+              [includeCheckbox]="true"
+              [includeCount]="includeCount"
+              [includeLink]="includeLink"
+              [useVirtualScroll]="false"
+              (emitSelect)="changeSelected($event)" #treeSelector>
+            </laji-tree-selector>
+          </div>
+          <div class="flex-container">
+            <h5>{{selectedTitle}}</h5>
+            <div class="scrollable-selection-list">
+              <laji-selected-tree-nodes
+                [selectedOptions]="selectedOptions"
+                [includedTitle]="includedTitle"
+                [excludedTitle]="excludedTitle"
+                (selectedOptionsChange)="deselect($event)"></laji-selected-tree-nodes>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </ng-container>
     <ng-template #loading>
       <laji-spinner [overlay]="true">
