@@ -37,11 +37,10 @@
         </div>
       </ng-container>
       <ng-template #mobileModal>
-        <div class="flex-container">
-          <div class="flex-container">
+        <div>
+          <div>
             <h5>{{browseTitle}}</h5>
             <laji-tree-selector
-              class="flex-container"
               [selectedOptions]="selectedOptions"
               [optionsTree]="optionsTree"
               [multiselect]="true"
@@ -53,9 +52,9 @@
               (emitSelect)="changeSelected($event)" #treeSelector>
             </laji-tree-selector>
           </div>
-          <div class="flex-container">
+          <div>
             <h5>{{selectedTitle}}</h5>
-            <div class="scrollable-selection-list">
+            <div>
               <laji-selected-tree-nodes
                 [selectedOptions]="selectedOptions"
                 [includedTitle]="includedTitle"
