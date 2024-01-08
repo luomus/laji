@@ -119,6 +119,12 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     this.openMenu = false;
   }
 
+  scroll(target: HTMLElement) {
+    if (this.mobile) {
+      target.scrollIntoView({behavior: 'smooth'});
+    }
+  }
+
   doLogin(event: Event) {
     event.preventDefault();
     this.userService.redirectToLogin();
