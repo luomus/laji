@@ -1,5 +1,6 @@
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component, NgZone,
@@ -12,7 +13,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
-import { timer, Subject, Observable } from 'rxjs';
+import { timer, Subject, Observable, fromEvent } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
@@ -25,9 +26,10 @@ import { PlatformService } from '../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NotificationsFacade]
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   unsubscribe$ = new Subject<null>();
 
+  mobile = false;
   openMenu = false;
   redTheme = false;
   devRibbon = false;
@@ -39,6 +41,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   notificationsTotal$: Observable<number>;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private platformService: PlatformService,
     public userService: UserService,
     private router: Router,
@@ -81,6 +84,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.ngZone.run(() => this.notificationsFacade.checkForNewNotifications());
       });
     });
+  }
+
+  ngAfterViewInit() {
+    this.checkScreenWidth();
+    this.cdr.detectChanges();
+    fromEvent(this.platformService.window, 'resize').pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(this.checkScreenWidth.bind(this));
+  }
+
+  checkScreenWidth(event?) {
+    const isMobile = this.platformService.window.innerWidth < 900;
+    this.mobile = isMobile;
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
