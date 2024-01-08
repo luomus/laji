@@ -224,16 +224,12 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     return this._highlight;
   }
 
-  setActive(i) {
+  setActive(i: number) {
     this.active = i;
     if (this.document && this.document.gatherings) {
       this.activeGathering = this.document.gatherings[i] || {};
     }
-    this.useWorldMap = !(
-      this.activeGathering.interpretations &&
-      this.activeGathering.interpretations.country &&
-      this.activeGathering.interpretations.country === 'http://tun.fi/ML.206'
-    );
+    this.useWorldMap = !(this.activeGathering?.interpretations?.country === 'http://tun.fi/ML.206');
 
     if (this.map) {
       this.map.setActiveIndex(i);
