@@ -32,6 +32,7 @@ export class SelectComponent<T extends IdType|SelectOption = string> implements 
   @Input() title: string;
   @Input() filterPlaceHolder = 'Search...';
   @Input() useFilter = true;
+  @Input() filterProperties: (keyof SelectOption)[] | undefined;
   @Input() selected: T[] = [];
   @Input() open = false;
   @Input() disabled = false;
