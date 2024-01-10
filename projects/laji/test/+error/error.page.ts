@@ -1,6 +1,4 @@
-// import { by, element } from 'protractor';
-
-import {Locator, Page} from "@playwright/test";
+import {Locator, Page} from '@playwright/test';
 
 export class ErrorPage {
 
@@ -10,10 +8,7 @@ export class ErrorPage {
     this.errorDialog = page.locator('.toast-error');
   }
 
-
-  // private errorDialog = element(by.css('.toast-error'));
-  //
   isPresentErrorDialog() {
-    return this.errorDialog.isPresent() as Promise<boolean>;
+    return this.errorDialog.isVisible() as Promise<boolean>;
   }
 }
