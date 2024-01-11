@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf, throwError as observableThrowError } from 'rxjs';
-import { LocalStorage } from 'ngx-webstorage';
 import { environment } from '../../../environments/environment';
 import { LajiApi, LajiApiService } from './laji-api.service';
 import { Global } from '../../../environments/global';
@@ -19,12 +18,15 @@ export interface Participant {
   lastDoc?: number;
 }
 
+function getCacheKey(formId: string, lang: string, format?: string) {
+  return [formId, lang, format].join(':');
+}
+
 @Injectable({providedIn: 'root'})
 export class FormService {
 
   static readonly tmpNs = 'T';
 
-  @LocalStorage() private formDataStorage: any;
   private currentLang?: string;
   private formCache: {[key: string]: Observable<Form.SchemaForm | null>} = {};
   private jsonFormCache: {[key: string]: Observable<Form.JsonForm>} = {};
@@ -37,48 +39,50 @@ export class FormService {
     private http: HttpClient,
     private userService: UserService,
     private translate: TranslateService
-  ) {}
+  ) {
+    this.translate.onLangChange.subscribe(this.setLang);
+  }
 
   static isTmpId(id: string): boolean {
     return id?.indexOf(FormService.tmpNs + ':') === 0;
   }
 
-  getForm(formId: string, lang = this.translate.currentLang): Observable<Form.SchemaForm | null> {
+  getForm(formId: string): Observable<Form.SchemaForm | null> {
     if (!formId) {
       return ObservableOf(null);
     }
-    this.setLang(lang);
-    if (!this.formCache[formId]) {
-      this.formCache[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang}).pipe(
+    const cacheKey = getCacheKey(formId, this.translate.currentLang);
+    if (!this.formCache[cacheKey]) {
+      this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.currentLang}).pipe(
         catchError(error => error.status === 404 ? ObservableOf(null) : observableThrowError(error)),
         retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
         shareReplay(1)
       );
     }
-    return this.formCache[formId];
+    return this.formCache[cacheKey];
   }
 
-  getFormInJSONFormat(formId: string, lang: string): Observable<Form.JsonForm> {
+  getFormInJSONFormat(formId: string): Observable<Form.JsonForm> {
     if (!formId) {
       return ObservableOf({} as Form.JsonForm);
     }
-    this.setLang(lang);
-    if (!this.jsonFormCache[formId]) {
-      this.jsonFormCache[formId] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
+    const lang = this.translate.currentLang;
+    const cacheKey = getCacheKey(formId, lang, 'json');
+    if (!this.jsonFormCache[cacheKey]) {
+      this.jsonFormCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
         shareReplay(1)
       );
     }
-    return this.jsonFormCache[formId];
+    return this.jsonFormCache[cacheKey];
   }
 
   getFormInListFormat(formId: string): Observable<Form.List> {
     return this.getAllForms().pipe(map(forms => forms.find(f => f.id === formId) as Form.List));
   }
 
-  getAllForms(lang = this.translate.currentLang): Observable<Form.List[]> {
-    this.setLang(lang);
+  getAllForms(): Observable<Form.List[]> {
     if (!this.allForms) {
-      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.currentLang}).pipe(
+      this.allForms = this.lajiApi.getList(LajiApi.Endpoints.forms, {lang: this.translate.currentLang}).pipe(
         map(data => data.results),
         shareReplay(1)
       );
@@ -87,7 +91,7 @@ export class FormService {
   }
 
   getSpreadsheetForms(): Observable<Form.List[]> {
-    return this.getAllForms(this.currentLang).pipe(map(forms => forms.filter(form => form.options?.allowExcel)));
+    return this.getAllForms().pipe(map(forms => forms.filter(form => form.options?.allowExcel)));
   }
 
   getGloballyAllowedSpreadsheetForms() {
@@ -111,8 +115,6 @@ export class FormService {
 
   private setLang(lang = this.translate.currentLang) {
     if (this.currentLang !== lang) {
-      this.formCache = {};
-      this.jsonFormCache = {};
       this.allForms = undefined;
       this.currentLang = lang;
     }
@@ -120,6 +122,6 @@ export class FormService {
 
   getPlaceForm(documentForm: Form.SchemaForm) {
     const id = documentForm.options?.namedPlaceOptions?.namedPlaceFormID || Global.forms.namedPlace;
-    return this.getForm(id, this.translate.currentLang);
+    return this.getForm(id);
   }
 }

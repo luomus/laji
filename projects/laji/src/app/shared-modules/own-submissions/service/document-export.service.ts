@@ -91,7 +91,7 @@ export class DocumentExportService {
       return this.getJsonForms(docs, jsonForms, idx + 1);
     }
 
-    return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+    return this.formService.getFormInJSONFormat(formId)
       .pipe(
         switchMap((jsonForm) => {
           jsonForms[formId] = jsonForm;

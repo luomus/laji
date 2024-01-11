@@ -7,7 +7,6 @@ import { Form } from '../model/Form';
 import { UserService } from './user.service';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormService } from './form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { PlatformService } from '../../root/platform.service';
 import RestrictAccess = Form.RestrictAccess;
 import { HttpErrorResponse } from '@angular/common/http';
@@ -30,7 +29,6 @@ export class FormPermissionService {
     private formPermissionApi: FormPermissionApi,
     private formService: FormService,
     private userService: UserService,
-    private translateService: TranslateService,
     private platformService: PlatformService
   ) {}
 
@@ -44,7 +42,7 @@ export class FormPermissionService {
       switchMap(permission => of(permission.admins.includes(collectionID) || permission.editors.includes(collectionID)))
     );
 
-    return this.formService.getAllForms(this.translateService.currentLang).pipe(
+    return this.formService.getAllForms().pipe(
       map(forms => forms.find(f => f.id === formID)),
       switchMap(form => (!form || !form.collectionID || !form.options?.restrictAccess)
         ? of(true)

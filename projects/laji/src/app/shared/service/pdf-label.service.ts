@@ -115,7 +115,7 @@ export class PdfLabelService {
   }
 
   allPossibleFields(): Observable<ILabelField[]> {
-    return this.formService.getForm(Global.forms.default, this.translateService.currentLang).pipe(
+    return this.formService.getForm(Global.forms.default).pipe(
       map(form => form
         ? this.schemaService.schemaToAvailableFields(form.schema, [...this.defaultFields], { skip: this.skipFields, special: this.specialFields })
         : []

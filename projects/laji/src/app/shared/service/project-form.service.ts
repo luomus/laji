@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
 import { ActivatedRoute } from '@angular/router';
@@ -37,14 +37,16 @@ export class ProjectFormService {
     private formService: FormService,
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService
-  ) { }
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      this.currentFormID = undefined;
+    });
+  }
 
   private currentFormID: string;
   private form$: ReplaySubject<Form.SchemaForm>;
 
-  /**
-   * LajiFormBuilder can change the language of the form, without changing the lang of the whole page.
-   */
+  /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
   public remountLajiForm$ = new Subject<void>();
 
@@ -59,7 +61,7 @@ export class ProjectFormService {
     this.currentFormID = id;
     this.form$?.complete();
     this.form$ = new ReplaySubject<Form.SchemaForm>(1);
-    this.formService.getForm(id).pipe(take(1)).subscribe(form => {
+    this.formService.getForm(id).subscribe(form => {
       this.form$.next(form);
     });
     return this.form$;
@@ -80,7 +82,7 @@ export class ProjectFormService {
     return form$.pipe(
       mergeMap(form =>
         (form?.options?.forms
-            ? this.formService.getAllForms(this.translate.currentLang).pipe(map(forms => forms.filter(f => form.options.forms.indexOf(f.id) > -1)))
+            ? this.formService.getAllForms().pipe(map(forms => forms.filter(f => form.options.forms.indexOf(f.id) > -1)))
             : of([])
         ).pipe(
           map(forms => ({form, subForms: forms}))
@@ -126,7 +128,7 @@ export class ProjectFormService {
               const form = [projectForm.form, ...projectForm.subForms].find(f => f.id === formID);
               return form === projectForm.form
                 ? of(form as Form.SchemaForm)
-                : this.formService.getForm(form.id, this.translate.currentLang);
+                : this.formService.getForm(form.id);
             })
           )
           : this.getFormFromRoute$(route);

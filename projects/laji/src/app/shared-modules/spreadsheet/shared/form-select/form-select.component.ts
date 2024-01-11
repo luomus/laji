@@ -36,7 +36,6 @@ export class FormSelectComponent {
 
   constructor(
     private formService: FormService,
-    private translateService: TranslateService,
     private formPermissionService: FormPermissionService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -57,7 +56,7 @@ export class FormSelectComponent {
       return;
     }
     this.forms$ = from(this.forms).pipe(
-      mergeMap(id => this.formService.getForm(id, this.translateService.currentLang).pipe(
+      mergeMap(id => this.formService.getForm(id).pipe(
         switchMap(form => this.formPermissionService.hasAccessToForm(id).pipe(
           catchError(() => of(false)),
           map(permission => ({
