@@ -5,7 +5,8 @@
     "types": [],
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "strict": true
   },
   "files": [
     "projects/laji/src/main.ts",
@@ -20,7 +21,8 @@
     "**/*.spec.ts"
   ],
   "angularCompilerOptions": {
-    "strictTemplates": true,
-    "strictInputAccessModifiers": true
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   }
 }

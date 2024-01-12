@@ -1,7 +1,4 @@
-import {
-  Component, ChangeDetectionStrategy, OnDestroy, OnInit, Output,
-  ChangeDetectorRef, Renderer2, ElementRef, AfterViewInit, EventEmitter, ViewChild
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { switchMap, takeUntil, filter, tap, map } from 'rxjs/operators';
 import { NotificationsFacade } from './notifications.facade';
@@ -20,10 +17,10 @@ import { DialogService } from '../../service/dialog.service';
 export class NotificationsComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
-  notificationSource: NotificationDataSource;
+  notificationSource!: NotificationDataSource;
 
-  @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll: CdkVirtualScrollViewport;
-  loading: boolean;
+  @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll!: CdkVirtualScrollViewport;
+  loading!: boolean;
 
   constructor(
     private notificationsFacade: NotificationsFacade,
@@ -74,12 +71,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.translate.get('notification.delete.confirm').pipe(
       switchMap(translation => notification.seen ? of(true) : this.dialogService.confirm(translation)),
       filter(result => !!(result && notification.id)),
-      tap(() => this.notificationSource.removeNotificationFromCache(notification.id)),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      tap(() => this.notificationSource.removeNotificationFromCache(notification.id!)),
       tap(() => this.notificationsFacade.remove(notification))
     ).subscribe();
 }
 
-  trackNotification(idx, notification) {
+  trackNotification(idx: number, notification: Notification) {
     return notification ? notification.id : undefined;
   }
 
