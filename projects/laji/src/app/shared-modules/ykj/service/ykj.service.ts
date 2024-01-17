@@ -139,7 +139,7 @@ export class YkjService {
   }
 
   private convertYkjLatLngToWgsLngLat(latLng: [any, any]): [number, number] {
-    return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse();
+    return MapUtil.convertLatLng(latLng, 'EPSG:2393', 'WGS84').reverse() as [number, number];
   }
 
   private pad(value) {
