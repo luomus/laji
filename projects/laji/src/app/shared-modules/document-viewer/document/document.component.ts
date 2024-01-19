@@ -229,7 +229,7 @@ export class DocumentComponent implements AfterViewInit, OnChanges, OnInit, OnDe
     if (this.document && this.document.gatherings) {
       this.activeGathering = this.document.gatherings[i] || {};
     }
-    this.useWorldMap = !(this.activeGathering?.interpretations?.country === 'http://tun.fi/ML.206');
+    this.useWorldMap = this.activeGathering?.interpretations?.country !== 'http://tun.fi/ML.206';
 
     if (this.map) {
       this.map.setActiveIndex(i);
