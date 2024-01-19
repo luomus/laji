@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 
-const mediaGroupProps = ['hasUnitImages', 'hasUnitAudio', 'hasUnitModel'] as const;
-type MediaGroupProp = typeof mediaGroupProps[number];
+type MediaGroupProp = keyof Pick<WarehouseQueryInterface, 'hasUnitImages' | 'hasUnitAudio' | 'hasUnitModel'>;
+const mediaGroupProps: MediaGroupProp[] = ['hasUnitImages', 'hasUnitAudio', 'hasUnitModel'];
 
 const allMediaGroupPropsActive = (query: WarehouseQueryInterface) =>
   mediaGroupProps.reduce((p, v) => p && query[v], true);
