@@ -18,8 +18,8 @@ export interface Participant {
   lastDoc?: number;
 }
 
-function getCacheKey(formId: string, lang: string, format?: string) {
-  return [formId, lang, format].join(':');
+function getCacheKey(formId: string, lang: string) {
+  return [formId, lang].join(':');
 }
 
 @Injectable({providedIn: 'root'})
@@ -40,7 +40,7 @@ export class FormService {
     private userService: UserService,
     private translate: TranslateService
   ) {
-    this.translate.onLangChange.subscribe(this.setLang);
+    this.translate.onLangChange.subscribe(e => this.setLang(e.lang));
   }
 
   static isTmpId(id: string): boolean {
@@ -67,7 +67,7 @@ export class FormService {
       return ObservableOf({} as Form.JsonForm);
     }
     const lang = this.translate.currentLang;
-    const cacheKey = getCacheKey(formId, lang, 'json');
+    const cacheKey = getCacheKey(formId, lang);
     if (!this.jsonFormCache[cacheKey]) {
       this.jsonFormCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang, format: 'json'}).pipe(
         shareReplay(1)
