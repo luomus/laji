@@ -9,7 +9,7 @@ module.exports = {
         "*.ts"
       ],
       "parserOptions": {
-        tsconfigRootDir: __dirname,
+        "tsconfigRootDir": __dirname,
         "project": [
           "tsconfig.json",
           "projects/laji/e2e/tsconfig.e2e.json"
