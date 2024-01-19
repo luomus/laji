@@ -128,7 +128,8 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     onlyNonStateLands: true,
     coordinateAccuracyMax: 100,
     // eslint-disable-next-line max-len
-    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;HOBBYIST:COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED'
+    collectionAndRecordQuality: 'PROFESSIONAL:EXPERT_VERIFIED,COMMUNITY_VERIFIED,NEUTRAL;AMATEUR:EXPERT_VERIFIED,COMMUNITY_VERIFIED;HOBBYIST:COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED',
+    countryId: 'ML.206'
   };
 
   constructor(

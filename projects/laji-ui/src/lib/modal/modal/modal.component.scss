@@ -1,5 +1,12 @@
 @import 'vars';
 
+$sm-width: 300px;
+$lm-width: 600px;
+$lg-width: 900px;
+$xl-width: 1600px;
+$padding: 5px;
+$margin: 15px;
+
 ::ng-deep .lu-backdrop {
   position: fixed;
   width: 100%;
@@ -27,9 +34,12 @@
 
 }
 
+$close-btn-width: 30px;
+$close-btn-right: 30px;
 .lu-modal-close-button {
   position: fixed;
-  right: 30px;
+  width: $close-btn-width;
+  right: $close-btn-right;
   top: 17px;
 }
 
@@ -43,43 +53,60 @@
   background: $neutral-2;
   border-radius: 5px;
   box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  margin: 55px 15px 15px 15px;
+  margin: 55px $margin $margin $margin;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: map-get($breakpoints, sm)) {
   .lu-modal-sm {
     .lu-modal-content {
-      width: 300px;
+      width: $sm-width;
     }
     > .lu-modal-close-button {
-      left: calc(50% + 155px);
+      left: calc(50% + $sm-width / 2 + $padding);
     }
   }
 
 	.lu-modal-md, .lu-modal-lg {
     .lu-modal-content {
-      width: 600px;
+      width: $lm-width;
     }
 
     > .lu-modal-close-button {
-      left: calc(50% + 305px);
+      left: calc(50% + $lm-width / 2 + $padding);
     }
 	}
 
+  .lu-modal-xl {
+    .lu-modal-content {
+      width: 90%;
+    }
+  }
+
   .lu-modal-content {
-    margin: 15px auto;
+    margin: $margin auto;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: map-get($breakpoints, md)) {
 	.lu-modal-lg {
     .lu-modal-content {
-			width: 900px;
+			width: $lg-width;
     }
-      > .lu-modal-close-button {
-        left: calc(50% + 455px);
-      }
+    > .lu-modal-close-button {
+      left: calc(50% + $lg-width / 2 + $padding);
+    }
 	}
+}
+
+@media (min-width: ($xl-width + $margin + $close-btn-width + $close-btn-right)) {
+  .lu-modal-xl {
+    .lu-modal-content {
+      width: $xl-width;
+    }
+    > .lu-modal-close-button {
+      left: calc(50% + $xl-width / 2 + $padding);
+    }
+  }
 }
 
 ::ng-deep .lu-modal-footer {

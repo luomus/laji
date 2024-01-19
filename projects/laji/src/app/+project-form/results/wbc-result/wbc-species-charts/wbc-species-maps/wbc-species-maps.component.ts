@@ -52,11 +52,7 @@ export class WbcSpeciesMapsComponent implements OnChanges {
     private ykjService: YkjService,
     private cd: ChangeDetectorRef,
     private platformService: PlatformService
-  ) {
-    if (this.platformService.isBrowser) {
-      require('leaflet.sync');
-    }
-  }
+  ) { }
 
   ngOnChanges() {
     if (this.taxonId && this.year) {
@@ -65,8 +61,12 @@ export class WbcSpeciesMapsComponent implements OnChanges {
   }
 
   mapLoaded() {
+    if (!this.platformService.isBrowser) {
+      return;
+    }
+    require('leaflet.sync');
     const maps = this.mapComponents.map(mapComponent => mapComponent.mapComponent.map);
-    if (this.platformService.isBrowser && maps.every(mapComponents => mapComponents)) {
+    if (maps.every(mapComponents => mapComponents)) {
       this.maps = maps;
       maps.forEach(m => this.initEventListeners(m));
     }

@@ -62,7 +62,7 @@ export function createLoggerLoader(loggerApi: LoggerApi): ILogger {
     TranslateModule
   ],
   providers: [
-    {provide: APP_ID, useValue: 'vir-app'},,
+    {provide: APP_ID, useValue: 'vir-app'},
     {provide: APP_BASE_HREF, useValue: '/'},
     DocumentService,
     {provide: ErrorHandler, useClass: LajiErrorHandler},

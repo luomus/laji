@@ -117,7 +117,7 @@ export class HomeDataService {
     return start.format('YYYY-MM-DD');
   }
 
-  public static getLastWeek(): string {
+    public static getLastWeek(): string {
     const start = moment();
     start.subtract(7, 'd');
 

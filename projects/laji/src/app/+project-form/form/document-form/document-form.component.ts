@@ -12,7 +12,7 @@ import { Document } from '../../../shared/model/Document';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../shared/service/user.service';
 import { DocumentStorage } from '../../../storage/document.storage';
-import { LajiFormComponent } from '@laji-form/laji-form/laji-form.component';
+import { LajiFormComponent } from 'projects/laji/src/app/+project-form/form/laji-form/laji-form/laji-form.component';
 import { DocumentFormFacade, FormError, isFormError, SaneViewModel, isSaneViewModel, ViewModel } from './document-form.facade';
 import { ProjectFormService } from '../../../shared/service/project-form.service';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';

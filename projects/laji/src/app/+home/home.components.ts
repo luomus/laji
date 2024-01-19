@@ -47,9 +47,9 @@ export class HomeComponent implements OnInit {
     this.mapStartDate = HomeDataService.getRecentDate();
     this.mapQueryParams = {firstLoadedSameOrAfter: this.mapStartDate, countryId: 'ML.206'};
     this.dashboardLink = {
-      fi: environment.dashboardUrl + '/#fi-lang',
-      en: environment.dashboardUrl + '/#en-lang',
-      sv: environment.dashboardUrl + '/#en-lang'
+      fi: environment.dashboardUrl + '?_input_&lang="fi"',
+      en: environment.dashboardUrl + '?_input_&lang="en"',
+      sv: environment.dashboardUrl + '?_input_&lang="en"'
     };
     this.homeData$ = this.homeDataService.getHomeData();
     this.images$ = this.homeData$.pipe(

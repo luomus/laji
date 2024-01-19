@@ -372,6 +372,37 @@ export class ImporterComponent implements OnInit, OnDestroy {
     this.rowMappingDone();
   }
 
+  pathToField(path) {
+    if (path.substring(0, 1) === '.') {
+      path = path.substring(1);
+    }
+    return path.replace(/\[[0-9]+]/g, '[*]');
+  }
+
+  removeInvalidFromUserMapping(errors) {
+    const userMappings = this.mappingService.getUserMappings();
+
+    if (Object.keys(userMappings.value).length === 0) {
+      return;
+    }
+
+    const newValues = Object.keys(errors).reduce((values, path) => {
+      const field = this.pathToField(path);
+      if (!values[field]) {
+        return values;
+      }
+
+      const { [field]: removed, ...rest } = values;
+
+      return rest;
+    }, userMappings.value);
+
+    this.mappingService.setUserMapping({
+      ...userMappings,
+      value: newValues,
+    });
+  }
+
   validate() {
     const userDataMap = Hash(this.mappingService.getUserMappings(), {algorithm: 'sha1'});
     const rowData = this.parsedData.filter(data => data.document !== null);
@@ -418,6 +449,8 @@ export class ImporterComponent implements OnInit, OnDestroy {
                 status: 'invalid',
                 error: data.result._error
               });
+
+              this.removeInvalidFromUserMapping(data.result._error);
             }
           }
           this.mappedData = [...this.mappedData];
@@ -644,7 +677,7 @@ export class ImporterComponent implements OnInit, OnDestroy {
     const cols = Object.keys(mapping);
     const result = {};
     cols.forEach((col) => {
-      if (!row[col]) {
+      if (row[col] === undefined) {
         return;
       }
       const field = fields[mapping[col]];

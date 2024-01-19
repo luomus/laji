@@ -27,50 +27,37 @@
 <ng-template #map>
   <div class="d-flex flex-wrap content-max-width">
     <div class="map-desc-container flex-grow">
-<!--           {{ 'home.main-page.recent' | translate }} -->
+      <!--           {{ 'home.main-page.recent' | translate }} -->
       <h2 class="mt-0" translate>
-          home.identify
+        home.identify
       </h2>
       <a [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
         <div class="identification-images">
-          <laji-image-gallery
-            [showPopover]="false"
-            [showViewSwitch]="false"
-            [showOverlay]="false"
-            [showExtraInfo]="false"
-            [showLinkToSpeciesCard]="false"
-            [view]="'compact'"
-            [modalImages]="images$ | async"
-            [shortcut]="false"
-          ></laji-image-gallery>
+          <laji-image-gallery [showPopover]="false" [showViewSwitch]="false" [showOverlay]="false"
+            [showExtraInfo]="false" [showLinkToSpeciesCard]="false" [view]="'compact'" [modalImages]="images$ | async"
+            [shortcut]="false"></laji-image-gallery>
         </div>
       </a>
       <p translate>home.identify-help-intro</p>
-      <a class="btn btn-primary btn-lg" [routerLink]="['/theme/identify'] | localize" [queryParams]="{time: mapStartDate + '/'}">
+      <a class="btn btn-primary btn-lg" [routerLink]="['/theme/identify'] | localize"
+        [queryParams]="{time: mapStartDate + '/'}">
         {{ 'home.identify-help-title' | translate }}
       </a>
     </div>
     <div class="map-container">
       <a [routerLink]="['/observation/map'] | localize" [queryParams]="mapQueryParams">
-        <laji-observation-map
-          [settingsKey]="'frontMap'"
-          [height]="438"
-          [showControls]="false"
-          [initWithWorldMap]="false"
-          [clickBeforeZoomAndPan]="false"
-          [viewLocked]="true"
-          [noClick]="true"
-          [draw]="false"
-          [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}"
-          [hideLegend]="true"
-          [pointModeBreakpoint]="0"
-        ></laji-observation-map>
+        <laji-observation-map [settingsKey]="'frontMap'" [height]="438" [showControls]="false"
+          [initWithWorldMap]="false" [clickBeforeZoomAndPan]="false" [viewLocked]="true" [noClick]="true" [draw]="false"
+          [query]="{firstLoadedSameOrAfter: mapStartDate, countryId: 'ML.206', cache: true}" [hideLegend]="true"
+          [pointModeBreakpoint]="0"></laji-observation-map>
       </a>
       <div>
         <div>
-          <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
+          <strong><laji-observation-count [lightLoader]="true"
+              [value]="(homeData$ | async)?.today?.total"></laji-observation-count></strong>
           {{ 'viewer.unit' | translate }}
-          <strong><laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.speciesToday?.total" ></laji-observation-count></strong>
+          <strong><laji-observation-count [lightLoader]="true"
+              [value]="(homeData$ | async)?.speciesToday?.total"></laji-observation-count></strong>
           {{ 'observation.results.species' | translate }}
         </div>
         <a [routerLink]="['/observation/map'] | localize" [queryParams]="mapQueryParams">
