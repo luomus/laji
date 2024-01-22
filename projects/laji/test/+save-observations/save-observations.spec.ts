@@ -20,13 +20,12 @@ test.describe('Save observations page', () => {
   });
 
   test('should show list of forms', async () => {
-    saveObservationsPage.navigateTo();
-    expect(await saveObservationsPage.countSimpleForms()).toBeGreaterThan(5);
+    await expect(saveObservationsPage.simpleForms).toHaveCount(27);
   });
 
   test('should open form when clicking form button', async ({ page }) => {
     const fungiAtlasID = 'JX.652';
     await saveObservationsPage.clickFormById(fungiAtlasID);
-    expect(page.locator('.sidebar')).toBeVisible();
+    await expect(page.locator('.sidebar')).toBeVisible();
   });
 });

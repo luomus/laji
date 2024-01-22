@@ -36,14 +36,14 @@ class DatePicker {
   public $container: Locator;
 
   calendar = {
-    toggle: () => this.$container.locator('.calendar-toggle').click(),
+    toggle: async () => await this.$container.locator('.calendar-toggle').click(),
     $getContainer: () => this.$container.locator('.ng-datepicker'),
     getDate: () => this.calendar.$getContainer().locator('.date'),
     getYear: async () => (await this.calendar.$getContainer().locator('.date').textContent()).match(/\d+/)[0],
     getMonth: async () => (await this.calendar.$getContainer().locator('.date').textContent()).match(/[^ ]+/)[0],
     selectToday: async () => {
-      await this.$container.locator('.day').getByText('09').scrollIntoViewIfNeeded();
-      this.$container.locator('.day').getByText('09').click();
+      await this.$container.locator('.today').scrollIntoViewIfNeeded();
+      await this.$container.locator('.today').click();
     }
   };
 
@@ -103,7 +103,7 @@ export class ObservationPage {
   public $drawPolygonBtn = this.page.locator('.draw-polygon');
   public $coordinateIntersectMinBtn = this.page.locator('.coordinate-intersect-min');
   public $coordinateIntersectMaxBtn = this.page.locator('.coordinate-intersect-max');
-
+  public $mapSpinner = this.page.locator('.loading-map');
   public $searchBtn = this.page.locator('.observation-search-btn');
 
   private $activeFiltersBtn = this.page.locator('.active-filters-btn');
@@ -132,7 +132,6 @@ export class ObservationPage {
   async search() {
     await this.toast.closeAll();
     if (await this.page.locator('.observation-search-btn').isVisible()) {
-      // await this.page.locator('.observation-search-btn').scrollIntoViewIfNeeded();
       await this.page.locator('.observation-search-btn').click();
     }
   }
@@ -144,14 +143,6 @@ export class ObservationPage {
   private async getCoordinateFilter() {
     const url = new URL(this.page.url());
     return url.searchParams.get('coordinates');
-  }
-
-  async hasWGS84CoordinatesFilter() {
-    return !!(await this.getCoordinateFilter())?.match(/^(\d{2}\.\d+:){4,}WGS84:(0|1)(\.\d)?$/);
-  }
-
-  async hasYKjCoordinatesFilter() {
-    return !!(await this.getCoordinateFilter())?.match(/^(\d{3,6}:){2}YKJ:(0|1)(\.\d)?$/);
   }
 
   async getCoordinateIntersect() {
@@ -168,17 +159,16 @@ export class ObservationPage {
   async zoomClose() {
     const $geosearch = this.page.locator('.leaflet-control-geosearch');
     await $geosearch.click();
-    await $geosearch.locator('input').fill('luomus');
-    await $geosearch.locator('input').press('ArrowDown');
-    await $geosearch.locator('input').press('Enter');
+    await $geosearch.locator('input').pressSequentially('luomus');
+    await this.page.locator('.results').first().click();
   }
 
   async drawPolygon() {
     const traveller = new PointTraveller();
     const coordinates: [number, number][] = [
       traveller.travel(0, 0),
-      traveller.travel(0, -20),
-      traveller.travel(20, 0),
+      traveller.travel(0, -100),
+      traveller.travel(100, 0),
       traveller.initial()
     ];
 
@@ -205,35 +195,14 @@ export class ObservationPage {
     return this.map.controls.coordinateInput.$container;
   }
 
-
   async enterYKJToOpenedModal() {
     const control = this.map.controls.coordinateInput;
     await control.enterLatLng(666, 333);
     await control.$submit.click();
   }
 
-  private async getTimeFilter() {
-    const url = new URL(this.page.url());
-    return url.searchParams.get('time') || '';
-  }
-
-  async getTimeStart() {
-    return (await this.getTimeFilter()).match(/^([^/]+)\//)?.[1] || '';
-  }
-
-  async getTimeEnd() {
-    return (await this.getTimeFilter()).match(/\/(.+)$/)?.[1] || '';
-  }
-
-  async getOccurrenceCountFinlandMax() {
-    const url = new URL(this.page.url());
-    return url.searchParams.get('occurrenceCountFinlandMax') || '';
-  }
-
   async removeFromActiveFilters(field: string) {
     await this.$activeFiltersBtn.click();
-    if (await this.page.locator(`#observation-active-${field}-remove-btn`).isVisible()) {
-      await this.page.locator(`#observation-active-${field}-remove-btn`).click();
-    }
+    await this.page.locator(`#observation-active-${field}-remove-btn`).click();
   }
 }

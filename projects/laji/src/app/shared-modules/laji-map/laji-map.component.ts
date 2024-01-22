@@ -1,4 +1,4 @@
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { IUserSettings, UserService } from '../../shared/service/user.service';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -86,6 +86,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   private subSet: Subscription;
   private userSettings: Options = {};
   private mapData: any;
+  private drawToMapType: any;
 
   constructor(
     private userService: UserService,
@@ -96,56 +97,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     private platformService: PlatformService
   ) {}
 
-  @Input()
-  set options(options: Options) {
-    if (!options.on) {
-      options = {...options, on: {
-        tileLayersChange: (event) => {
-          this.zone.run(() => {
-            this.tileLayersChange.emit((event as any).tileLayers);
-          });
-
-          if (this._settingsKey) {
-            this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
-            this.userService.setUserSetting(this._settingsKey, this.userSettings);
-          }
-        }
-        } as any};
-    }
-    if (typeof options.draw === 'object' && !options.draw.onChange) {
-      options = {
-        ...options,
-        draw: {
-          ...options.draw,
-          onChange: e => this.onChange(e)
-        }
-      };
-    }
-    if ((environment as any).geoserver) {
-      options.lajiGeoServerAddress = (environment as any).geoserver;
-    }
-    this._options = options;
-    this.initMap();
-  }
-
-  @Input() set settingsKey(key: keyof IUserSettings) {
-    this._settingsKey = key;
-    if (this.subSet) {
-      this.subSet.unsubscribe();
-    }
-    if (key) {
-      this.subSet = this.userService.getUserSetting<Options>(this._settingsKey)
-        .pipe(take(1))
-        .subscribe(settings => {
-          this.userSettings = settings || {};
-          if (this.userSettings.tileLayers) {
-            this.tileLayersChange.emit(this.userSettings.tileLayers);
-          }
-          this.initMap();
-          this.cd.markForCheck();
-        });
-    }
-  }
+  @Input() options: Options;
+  @Input() settingsKey: keyof IUserSettings;
 
   ngOnDestroy() {
     try {
@@ -165,6 +118,69 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
     if (changes.data) {
       this.setData(this.data);
+    }
+
+    if (changes.options || changes.settingsKey) {
+      if (this.subSet) {
+        this.subSet.unsubscribe();
+      }
+
+      if (changes.options) {
+        let options = this.options;
+        if (!options.on) {
+          options = {
+            ...options, on: {
+              tileLayersChange: (event) => {
+                this.zone.run(() => {
+                  this.tileLayersChange.emit((event as any).tileLayers);
+                });
+
+                if (this._settingsKey) {
+                  this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
+                  this.userService.setUserSetting(this._settingsKey, this.userSettings);
+                }
+              }
+            } as any
+          };
+        }
+        if (typeof options.draw === 'object' && !options.draw.onChange) {
+          options = {
+            ...options,
+            draw: {
+              ...options.draw,
+              onChange: e => this.onChange(e)
+            }
+          };
+        }
+        if ((environment as any).geoserver) {
+          options.lajiGeoServerAddress = (environment as any).geoserver;
+        }
+        this._options = options;
+      }
+
+      let settings$ = of(this.userSettings);
+
+      if (changes.settingsKey) {
+        const key = this.settingsKey;
+        this._settingsKey = key;
+
+        if (key) {
+          settings$ = this.userService.getUserSetting<Options>(this._settingsKey).pipe(
+            take(1),
+            tap(settings => {
+              this.userSettings = settings || {};
+              if (this.userSettings.tileLayers) {
+                this.tileLayersChange.emit(this.userSettings.tileLayers);
+              }
+            })
+          );
+        }
+      }
+
+      this.subSet = settings$.subscribe(() => {
+        this.initMap();
+        this.cd.markForCheck();
+      });
     }
   }
 
@@ -198,7 +214,10 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
           if (this.mapData) {
             this.setData(this.mapData);
             this.mapData = undefined;
-          } else {
+          }
+          if (this.drawToMapType) {
+            this.drawToMap(this.drawToMapType);
+            this.drawToMapType = undefined;
           }
           this.zone.run(() => {
             this.loaded.emit();
@@ -238,6 +257,10 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   }
 
   drawToMap(type: string) {
+    if (!this.map) {
+      this.drawToMapType = type;
+      return;
+    }
     if (type === 'Coordinates') {
       this.map.openCoordinatesInputDialog();
     } else if (type === 'CoordinatesImport') {
