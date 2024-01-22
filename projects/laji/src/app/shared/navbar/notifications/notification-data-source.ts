@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 
-export class NotificationDataSource extends DataSource<Notification> {
+export class NotificationDataSource extends DataSource<Notification | undefined> {
   private unsubscribe$ = new Subject<void>();
 
   private cachedData: (Notification | undefined)[] = [];
@@ -17,7 +17,7 @@ export class NotificationDataSource extends DataSource<Notification> {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<Notification[]> {
+  connect(collectionViewer: CollectionViewer): Observable<(Notification | undefined)[]> {
     this.facade.notifications$.pipe(
       takeUntil(this.unsubscribe$)
     ).subscribe((notifications) => {
