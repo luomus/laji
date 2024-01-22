@@ -215,6 +215,9 @@ $text-color: $primary-2;
       margin-top: 0;
       border: 0;
       box-shadow: none;
+      & > li > a:hover {
+        background-color: darken($color-main, 10%);
+      }
     }
   }
 
