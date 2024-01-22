@@ -23,6 +23,7 @@ export class OwnObservationsFilterComponent {
   @Output() asObserverChange = new EventEmitter<boolean>();
   @Output() asEditorChange = new EventEmitter<boolean>();
   @Output() asNotEditorOrObserverChange = new EventEmitter<boolean>();
+  @Output() asEditorOrObserverChange = new EventEmitter<boolean>();
   @Output() qualityIssuesFilterChange = new EventEmitter<string>();
 
   private observerEditorSideEffects(value) {
@@ -54,8 +55,7 @@ export class OwnObservationsFilterComponent {
     if (value) {
       this.asEditor = false;
       this.asObserver = false;
-      this.asEditorChange.emit(false);
-      this.asObserverChange.emit(false);
+      this.asEditorOrObserverChange.emit(false);
     }
   }
 

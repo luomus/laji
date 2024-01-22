@@ -71,7 +71,7 @@ export class FormPermissionService {
     return this.formPermissionApi.findByCollectionID(collectionID, personToken).pipe(
       catchError((err: HttpErrorResponse) => {
         if (err.status === 404) {
-          return of({ id: undefined, collectionID, admins: [], editors: [], permissionRequests: [] });
+          return of({ id: '', collectionID, admins: [], editors: [], permissionRequests: [] });
         }
         return throwError(err);
       }),

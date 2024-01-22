@@ -23,6 +23,7 @@ export class TreeSelectModalComponent {
   @Input() clearButtonLabel: string;
   @Input() includeCount: boolean;
   @Input() includeLink: boolean;
+  @Input() useVirtualScroll: boolean;
   @ViewChild('treeSelector') treeSelectorComponent: TreeSelectorComponent;
   @Output() emitConfirm = new EventEmitter<SelectedOption[]>();
 

@@ -28,7 +28,7 @@ export class FormService {
   static readonly tmpNs = 'T';
 
   private currentLang?: string;
-  private formCache: {[key: string]: Observable<Form.SchemaForm | null>} = {};
+  private formCache: {[key: string]: Observable<Form.SchemaForm | undefined>} = {};
   private jsonFormCache: {[key: string]: Observable<Form.JsonForm>} = {};
   private allForms?: Observable<Form.List[]>;
 
@@ -47,14 +47,14 @@ export class FormService {
     return id?.indexOf(FormService.tmpNs + ':') === 0;
   }
 
-  getForm(formId: string): Observable<Form.SchemaForm | null> {
+  getForm(formId: string): Observable<Form.SchemaForm | undefined> {
     if (!formId) {
-      return ObservableOf(null);
+      return ObservableOf(undefined);
     }
     const cacheKey = getCacheKey(formId, this.translate.currentLang);
     if (!this.formCache[cacheKey]) {
       this.formCache[cacheKey] = this.lajiApi.get(LajiApi.Endpoints.forms, formId, {lang: this.translate.currentLang}).pipe(
-        catchError(error => error.status === 404 ? ObservableOf(null) : observableThrowError(error)),
+        catchError(error => error.status === 404 ? ObservableOf(undefined) : observableThrowError(error)),
         retryWhen(errors => errors.pipe(delay(1000), take(2), concat(observableThrowError(errors)))),
         shareReplay(1)
       );

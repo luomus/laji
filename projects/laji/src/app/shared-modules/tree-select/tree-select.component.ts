@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output, Type } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TreeSelectModalComponent } from './tree-select-modal/tree-select-modal.component';
 import { Util } from '../../shared/service/util.service';
 import { ModalRef, ModalService } from 'projects/laji-ui/src/lib/modal/modal.service';
-
+import { PlatformService } from '../../root/platform.service';
 
 export interface SelectedOption {
   id: string;
@@ -52,7 +52,7 @@ export class TreeSelectComponent {
   modalRef: ModalRef<TreeSelectModalComponent>;
 
   constructor(
-    private modalService: ModalService
+    private modalService: ModalService,
   ) {}
 
   openModal() {
