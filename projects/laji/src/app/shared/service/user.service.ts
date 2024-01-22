@@ -97,13 +97,9 @@ export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
   return (url + params.join('&')).replace('%lang%', lang);
 };
 
-export const isIctAdmin = (person: Person): boolean => {
-  return person?.role?.includes('MA.admin') ?? false;
-};
+export const isIctAdmin = (person: Person): boolean => person?.role?.includes('MA.admin') ?? false;
 
-const personsCacheKey = (personID: string): string => {
-  return `users-${ personID || 'global' }-settings`;
-};
+const personsCacheKey = (personID: string): string => `users-${ personID || 'global' }-settings`;
 
 const defaultPersistentState: PersistentState = {
   token: ''
@@ -183,7 +179,7 @@ export class UserService {
   /**
    * checks if token is valid and logs in the user
    * returns true upon succesful login, false otherwise
-  */
+   */
   login(userToken?: string): Observable<boolean> {
     const token = userToken ?? this.persistentState.token;
     if (!token) {
