@@ -39,7 +39,7 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
-            <li class="d-block xs:d-none" *lajiForTypes="['dev', 'prod', 'beta']">
+            <li *lajiForTypes="['dev', 'prod', 'beta']">
               <a luDropdownToggle class="link user">
                 {{ 'navigation.taxonomy' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
