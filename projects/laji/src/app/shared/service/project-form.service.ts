@@ -1,4 +1,4 @@
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -37,14 +37,16 @@ export class ProjectFormService {
     private formService: FormService,
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService
-  ) { }
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      this.currentFormID = undefined;
+    });
+  }
 
   private currentFormID?: string;
   private form$?: ReplaySubject<Form.SchemaForm>;
 
-  /**
-   * LajiFormBuilder can change the language of the form, without changing the lang of the whole page.
-   */
+  /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
   public remountLajiForm$ = new Subject<void>();
 
@@ -60,7 +62,7 @@ export class ProjectFormService {
     this.currentFormID = id;
     this.form$?.complete();
     this.form$ = new ReplaySubject(1);
-    this.formService.getForm(id).pipe(take(1)).subscribe(form => {
+    this.formService.getForm(id).subscribe(form => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.form$!.next(form);
     });
@@ -83,7 +85,7 @@ export class ProjectFormService {
     return form$.pipe(
       mergeMap(form =>
         (form?.options?.forms
-            ? this.formService.getAllForms(this.translate.currentLang).pipe(map(forms => forms.filter(f =>
+            ? this.formService.getAllForms().pipe(map(forms => forms.filter(f =>
                 form!.options.forms!.indexOf(f.id) > -1)) // eslint-disable-line @typescript-eslint/no-non-null-assertion
             )
             : of([])
@@ -136,7 +138,7 @@ export class ProjectFormService {
               if (!subForm) {
                 throw new Error('Route sub form isn\'t part of the form');
               }
-              return this.formService.getForm(subForm.id, this.translate.currentLang).pipe(map(f => {
+              return this.formService.getForm(subForm.id).pipe(map(f => {
                 if (!f) {
                 throw new Error('Form had nonexistent sub form');
                 }

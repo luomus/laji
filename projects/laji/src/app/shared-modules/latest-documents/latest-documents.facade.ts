@@ -1,15 +1,13 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
-import { BehaviorSubject, from, Observable, of, Subscription, zip } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, map, mergeMap, take, tap, toArray } from 'rxjs/operators';
 import { Document } from '../../shared/model/Document';
 import { hotObjectObserver } from '../../shared/observable/hot-object-observer';
 import { UserService } from '../../shared/service/user.service';
-import { LajiApiService } from '../../shared/service/laji-api.service';
 import { DocumentStorage } from '../../storage/document.storage';
 import { DocumentApi } from '../../shared/api/DocumentApi';
 import { Form } from '../../shared/model/Form';
 import { FormService } from '../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { Util } from '../../shared/service/util.service';
 
 export interface ILatestDocument {
@@ -54,11 +52,9 @@ export class LatestDocumentsFacade implements OnDestroy {
 
   constructor(
     private documentApi: DocumentApi,
-    private lajiApi: LajiApiService,
     private userService: UserService,
     private documentStorage: DocumentStorage,
     private formService: FormService,
-    private translateService: TranslateService,
     private ngZone: NgZone
   ) {
     this.localUpdateSub = this.documentStorage.deletes$.subscribe(() => {
@@ -138,7 +134,7 @@ export class LatestDocumentsFacade implements OnDestroy {
   }
 
   private getAllForms(): Observable<{[id: string]: Form.List}> {
-    return this.formService.getAllForms(this.translateService.currentLang).pipe(
+    return this.formService.getAllForms().pipe(
       take(1),
       map(forms => forms.reduce((cumulative, form) => {
         cumulative[form.id] = form;

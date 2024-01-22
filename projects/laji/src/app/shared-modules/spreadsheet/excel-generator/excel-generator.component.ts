@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormService } from '../../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { IFormField } from '../model/excel';
 import { SpreadsheetService } from '../service/spreadsheet.service';
 import { GeneratorService } from '../service/generator.service';
@@ -47,7 +46,6 @@ export class ExcelGeneratorComponent {
 
   constructor(
     private formService: FormService,
-    private translateService: TranslateService,
     private spreadSheetService: SpreadsheetService,
     private generatorService: GeneratorService,
     private cdr: ChangeDetectorRef
@@ -56,7 +54,7 @@ export class ExcelGeneratorComponent {
   formSelected(event) {
     const selected: string[] = [];
     this.formID = event;
-    this.formService.getForm(this.formID, this.translateService.currentLang)
+    this.formService.getForm(this.formID)
       .subscribe((form) => {
         this.formTitle = form.title;
         this.parents = [];

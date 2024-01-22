@@ -21,7 +21,6 @@ import { ToastsService } from '../../../../../shared/service/toasts.service';
 import equals from 'deep-equal';
 import { diff, DiffNew } from 'deep-diff';
 import { FormService } from '../../../../../shared/service/form.service';
-import { TranslateService } from '@ngx-translate/core';
 import { GeometryCollection } from 'geojson';
 import { NamedPlacesService } from '../../../../../shared/service/named-places.service';
 import { DocumentService } from '../../../../../shared-modules/own-submissions/service/document.service';
@@ -56,7 +55,6 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
     private namedPlacesService: NamedPlacesService,
     private toastsService: ToastsService,
     private formService: FormService,
-    private translate: TranslateService,
     private documentService: DocumentService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -215,7 +213,7 @@ export class AcceptedDocumentApprovalComponent implements OnChanges {
   }
 
   initDocumentDiff() {
-    this.formService.getForm(this.document.formID, this.translate.currentLang).subscribe(form => {
+    this.formService.getForm(this.document.formID).subscribe(form => {
       const [differs, geometriesDiff, otherDiff] = this.checkDiff(form.excludeFromCopy);
       this.placesDiff = differs;
       this.geometriesDiff = geometriesDiff;

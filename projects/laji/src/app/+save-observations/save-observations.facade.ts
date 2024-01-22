@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../shared/service/form.service';
 import { Form } from '../shared/model/Form';
 import { Global } from '../../environments/global';
@@ -27,9 +26,7 @@ export class SaveObservationsFacade {
   completeListForms$ = this.store$.asObservable().pipe(map(state => state.completeListForms), distinctUntilChanged());
   researchProjectForms$ = this.store$.asObservable().pipe(map(state => state.researchProjectForms), distinctUntilChanged());
 
-  constructor(private formService: FormService, private translate: TranslateService) {
-
-  }
+  constructor(private formService: FormService) {}
 
   reducer(forms) {
     this.store$.next({
@@ -41,7 +38,7 @@ export class SaveObservationsFacade {
   }
 
   loadAll() {
-    this.formService.getAllForms(this.translate.currentLang).pipe(
+    this.formService.getAllForms().pipe(
       map((forms) => {
         const citizen = [];
         const birdMon = [];

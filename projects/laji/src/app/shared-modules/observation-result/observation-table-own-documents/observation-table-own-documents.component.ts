@@ -389,7 +389,7 @@ export class ObservationTableOwnDocumentsComponent implements OnInit, OnChanges,
   }
 
   private getForm(formId: string): Observable<any> {
-    return this.formService.getForm(formId, this.translate.currentLang).pipe(
+    return this.formService.getForm(formId).pipe(
       map(form => form || {id: formId}),
       catchError((err) => {
         this.logger.error('Failed to load form ' + formId, err);
