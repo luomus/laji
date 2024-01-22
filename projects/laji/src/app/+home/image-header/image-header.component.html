@@ -1,29 +1,44 @@
-<div class="header-image" [ngStyle]="{'background-image': 'url(' + headerImage.imageUrl + ')'}" role="main">
-  <div class="active item carousel-item" *lajiServerOnly>
-    <div [ngTemplateOutlet]="page1"></div>
-  </div>
-  <lu-carousel *lajiBrowserOnly>
-    <lu-carousel-slide>
-      <div [ngTemplateOutlet]="page1"></div>
-    </lu-carousel-slide>
-    <lu-carousel-slide>
-      <div class="carousel-caption">
-        <div class="row hidden-xs">
-          <div class="col-sm-12">
-            <img class="pull-left" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
-          </div>
-        </div>
-        <div class="row text-container">
-          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.preserved' | translate" colClass="col-sm-4">
-            <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimens?.total"></laji-observation-count>
-          </laji-stat-item>
-          <laji-stat-item [colClass]="'col-lg-4 col-md-5 col-sm-6'" [description]="'home.carousel.digitized' | translate" colClass="col-sm-4">
-            <laji-observation-count [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimensWithImage?.total"></laji-observation-count>
-          </laji-stat-item>
+<div class="header-image d-flex justify-center" [ngStyle]="{'background-image': 'url(' + headerImage.imageUrl + ')'}" role="main">
+  <div class="header-image-content d-flex flex-col justify-center">
+    <div class="d-flex mb-4">
+      <img class="d-block logo mr-4" src="https://cdn.laji.fi/images/logos/LAJI_FI_valk.png"/>
+    </div>
+    <div class="stats d-flex flex-wrap mb-6">
+      <div class="stats-container">
+        <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.observations?.total"></laji-observation-count>
+        <div class="stats-label">
+          {{ 'home.carousel.observations' | translate }}
         </div>
       </div>
-    </lu-carousel-slide>
-  </lu-carousel>
+      <div class="stats-container">
+        <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.species?.total"></laji-observation-count>
+        <div class="stats-label">
+          {{ 'home.carousel.species' | translate }}
+        </div>
+      </div>
+      <div class="stats-container">
+        <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.sources?.total"></laji-observation-count>
+        <div class="stats-label">
+          {{ 'home.carousel.collections' | translate }}
+        </div>
+      </div>
+    </div>
+<!--     <div class="stats d-flex mb-4">
+      <div class="stats-container">
+        <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimens?.total"></laji-observation-count>
+        <div class="stats-label">
+          {{ 'home.carousel.preserved' | translate }}
+        </div>
+      </div>
+      <div class="stats-container">
+        <laji-observation-count class="d-block" [lightLoader]="true" [value]="(homeData$ | async)?.preservedSpecimensWithImage?.total"></laji-observation-count>
+        <div class="stats-label">
+          {{ 'home.carousel.digitized' | translate }}
+        </div>
+      </div>
+    </div> -->
+    <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
+  </div>
 </div>
 <ng-template #page1>
   <div class="carousel-caption">
