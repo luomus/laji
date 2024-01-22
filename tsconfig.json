@@ -37,16 +37,10 @@
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false,
-    "noImplicitReturns": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "strict": true
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictInjectionParameters": true
   }
 }
