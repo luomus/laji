@@ -2136,5 +2136,7 @@
   "wholeYear": "Koko vuosi {{year}}",
   "yes": "Kyllä",
   "observation.form.media.hasUnitModel": "3D-Malli",
-  "observation.form.media.group": "Havainto/näyte"
+  "observation.form.media.group": "Havainto/näyte",
+  "navigation.bsg": "Bird Sounds Global",
+  "theme.bsg.intro": "Mikä lintu lauloi? Kerro tunnistuksesi ja auta tietokonetta oppimaan lintujen äänet"
 }
