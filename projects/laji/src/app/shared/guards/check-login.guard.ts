@@ -13,7 +13,7 @@ import { PersonApi } from '../api/PersonApi';
 })
 export class CheckLoginGuard  {
 
-  private isChecked = false;
+  private isLoginChecked = false;
 
   constructor(
     private personApi: PersonApi,
@@ -23,11 +23,27 @@ export class CheckLoginGuard  {
     private platformService: PlatformService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): UrlTree|boolean|Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): UrlTree | boolean | Observable<boolean> {
+    // queryparams removed in SSR
     if (this.platformService.isServer) {
       this.location.replaceState(this.location.path().split('?')[0], '');
       return true;
     }
+
+    // continue normally if login has already been checked
+    if (this.isLoginChecked) {
+      return true;
+    }
+
+    this.isLoginChecked = true;
+
+    // store in localstorage
+    return this.userService.login(route.queryParams['token']).pipe(map(_ => true));
+
+    // go to return url
+    return this.router.parseUrl(this.userService.getReturnUrl());
+
+    /*
     if (!this.isChecked && route.queryParams['token']) {
       this.isChecked = true;
       this.location.replaceState(this.location.path().split('?')[0], '');
@@ -56,5 +72,6 @@ export class CheckLoginGuard  {
     }
 
     return this.userService.checkLogin();
+    */
   }
 }

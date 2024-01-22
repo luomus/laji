@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../shared/service/user.service';
+import { getLoginUrl, UserService } from '../../shared/service/user.service';
 import { Router } from '@angular/router';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
@@ -26,7 +26,7 @@ export class UserLogoutComponent implements OnInit {
       if (login) {
         this.userService.logout(() => {
           if (environment.forceLogin) {
-            this.platformService.window.location.href = UserService.getLoginUrl();
+            this.platformService.window.location.href = getLoginUrl();
           } else {
             this.router.navigate(this.localizeRouterService.translateRoute(['/']), {queryParams: {}});
           }

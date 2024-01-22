@@ -1,7 +1,7 @@
 import { forkJoin, Observable, of, Subject, throwError } from 'rxjs';
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { UserService } from './user.service';
+import { getLoginUrl, UserService } from './user.service';
 import {
   HttpErrorResponse,
   HttpEvent,
@@ -46,7 +46,7 @@ export class LajiApiInterceptor implements HttpInterceptor {
 
     this.worker.postMessage({
       key: this.rnd,
-      loginUrl: UserService.getLoginUrl('/', this.translate.currentLang, environment.loginCheck)
+      loginUrl: getLoginUrl('/', this.translate.currentLang, environment.loginCheck)
     });
     this.worker.onmessage = ({data}) => {
       if (!data || typeof data !== 'object') {

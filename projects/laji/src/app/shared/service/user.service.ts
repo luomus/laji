@@ -10,7 +10,7 @@ import {
   tap,
   timeout
 } from 'rxjs/operators';
-import { combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
@@ -29,15 +29,15 @@ import { PERSON_TOKEN } from './laji-api-worker-common';
 import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
 
-export interface ISettingResultList {
+export interface UserSettingsResultList {
   aggregateBy?: string[];
   selected?: string[];
   pageSize?: number;
 }
 
-export interface IUserSettings {
-  resultList?: string[];
-  taxonomyList?: string[];
+export interface UserSettings {
+  resultList?: UserSettingsResultList;
+  taxonomyList?: string[] | { selected: string[] };
   observationMap?: any;
   frontMap?: any;
   formDefault?: any;
@@ -45,75 +45,98 @@ export interface IUserSettings {
   [key: string]: any;
 }
 
-interface IPersistentState {
-  isLoggedIn: boolean;
+interface PersistentState {
+  token: string;
 }
 
-export interface IUserServiceState extends IPersistentState {
-  token: string;
+export interface UserServiceState extends PersistentState {
   user: Person | null;
-  settings: IUserSettings;
+  settings: UserSettings;
   allUsers: {[id: string]: Person|Observable<Person>};
 }
 
-const _persistentState: IPersistentState = {
-  isLoggedIn: false
+export const createProfile = (profile: Profile | null, user: Person | null): Profile => {
+  if (!profile) {
+    profile = {};
+  }
+  if (!user) {
+    user = {};
+  }
+  return {
+    ...profile,
+    settings: {
+      ...(profile.settings || {}),
+      defaultMediaMetadata: {
+        capturerVerbatim: user?.fullName ?? '',
+        intellectualOwner: user?.fullName ?? '',
+        intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
+        ...(profile.settings?.defaultMediaMetadata || {}),
+      }
+    }
+  };
 };
 
-let _state: IUserServiceState = {
-  ..._persistentState,
-  token: '',
-  user: null,
-  settings: {},
-  allUsers: {}
+export const getLoginUrl = (next = '', lang = DEFAULT_LANG, base = '') => {
+  if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
+    lang = DEFAULT_LANG;
+  }
+
+  let url = (base || environment.loginUrl);
+  url += url.includes('?') ? '&' : '?';
+
+  const params: string[] = [
+    `target=${environment.systemID}`,
+    'redirectMethod=GET',
+    'locale=%lang%'
+  ];
+
+  if (!url.includes('next=')) {
+    params.push(`next=${next}`);
+  }
+
+  return (url + params.join('&')).replace('%lang%', lang);
 };
+
+export const isIctAdmin = (person: Person): boolean => {
+  return person?.role?.includes('MA.admin') ?? false;
+};
+
+const personsCacheKey = (personID: string): string => {
+  return `users-${ personID || 'global' }-settings`;
+};
+
+const defaultPersistentState: PersistentState = {
+  token: ''
+};
+
 
 @Injectable({providedIn: 'root'})
 export class UserService {
 
-  private subLogout: Subscription | undefined;
-  private init = false;
-
   // Do not write to this variable in the server!
-  @LocalStorage('userState', _persistentState) private persistentState: IPersistentState | undefined;
+  @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: PersistentState | undefined;
+  private inMemoryPersistentState: PersistentState | undefined;
+
   @SessionStorage() private returnUrl: string | undefined;
   @SessionStorage('retry', 0) private retry: number | undefined;
 
-  private _persistent: IPersistentState | undefined;
-  // This needs to be replaySubject because login needs to be reflecting accurate situation all the time!
-  private store = new ReplaySubject<IUserServiceState>(1);
+  private subLogout: Subscription | undefined;
+  private init = false;
+
+  private store = new BehaviorSubject<UserServiceState>({
+    ...defaultPersistentState,
+    token: '',
+    user: null,
+    settings: {},
+    allUsers: {}
+  });
   private state$ = this.store.asObservable();
   private currentRouteData = new ReplaySubject<any>(1);
   private currentRouteData$ = this.currentRouteData.asObservable();
 
-  isLoggedIn$ = this.state$.pipe(map((state) => state.isLoggedIn), distinctUntilChanged());
+  isLoggedIn$ = this.state$.pipe(map((state) => !!state.token), distinctUntilChanged());
   settings$   = this.state$.pipe(map((state) => state.settings), distinctUntilChanged());
   user$       = this.state$.pipe(map((state) => state.user), distinctUntilChanged());
-
-  static getLoginUrl(next = '', lang = DEFAULT_LANG, base = '') {
-    if (!Global.lajiAuthSupportedLanguages.includes(lang)) {
-      lang = DEFAULT_LANG;
-    }
-
-    let url = (base || environment.loginUrl);
-    url += url.includes('?') ? '&' : '?';
-
-    const params: string[] = [
-      `target=${environment.systemID}`,
-      'redirectMethod=GET',
-      'locale=%lang%'
-    ];
-
-    if (!url.includes('next=')) {
-      params.push(`next=${next}`);
-    }
-
-    return (url + params.join('&')).replace('%lang%', lang);
-  }
-
-  static isIctAdmin(person: Person): boolean {
-    return person?.role?.includes('MA.admin') ?? false;
-  }
 
   constructor(
     private personApi: PersonApi,
@@ -127,8 +150,14 @@ export class UserService {
     private storage: LocalStorageService
   ) {
     if (!this.platformService.isBrowser) {
-      this.doServiceSideLoginState();
+      //this.doServiceSideLoginState();
+      // TODO: initialize server side state
     }
+    /*
+     * All of this is probably unnecessary:
+     * login should only occur through check-login.guard
+     * so that's what should trigger change in isLoggedIn
+     *
     this.router.events.pipe(
       filter((event): event is ActivationEnd => event instanceof ActivationEnd && event.snapshot.children.length === 0)
     ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
@@ -140,25 +169,59 @@ export class UserService {
       filter(visible => visible),
       switchMap(() => this._checkLogin())
     ).subscribe();
+    */
   }
 
+  /*
+   * Unnecessary, no longer used in check-login.guard
+   *
   checkLogin(): Observable<boolean> {
     return this._checkLogin();
   }
+  */
 
-  login(userToken: string): Observable<boolean> {
-    if (_state.token === userToken || !this.platformService.isBrowser) {
+  /**
+   * checks if token is valid and logs in the user
+   * returns true upon succesful login, false otherwise
+  */
+  login(userToken?: string): Observable<boolean> {
+    const token = userToken ?? this.persistentState.token;
+    if (!token) {
+      return of(false);
+    }
+    if (this.store.value.token === token || !this.platformService.isBrowser) {
       return of(true);
     }
-    return this._checkLogin(userToken);
+    return this.personApi.personFindByToken(token).pipe(
+      tap(person => {
+        // if person is valid, we have succesfully logged in
+        this.persistentState = { ...this.persistentState, token};
+        this.store.next({
+          ...this.store.value, ...this.persistentState, user: person,
+          settings: this.storage.retrieve(personsCacheKey(person.id))
+        });
+        console.log(person);
+      }),
+      map(_ => true),
+      httpOkError(404, false),
+      retryWithBackoff(300),
+      catchError(_ => of(false))
+    );
   }
 
   logout(cb?: () => void): void {
+    this.persistentState = { ...this.persistentState, token: '' };
+    this.store.next({
+      ...this.store.value, ...this.persistentState, user: {}, settings: {}
+    });
+    cb?.();
+
+    /*
     if (this.subLogout) {
       return;
     }
-    if (_state.token) {
-      this.subLogout = this.personApi.removePersonToken(_state.token).pipe(
+    if (this.state.token) {
+      this.subLogout = this.personApi.removePersonToken(this.state.token).pipe(
         httpOkError([404, 400], false),
         retryWithBackoff(300),
         catchError((err) => {
@@ -174,10 +237,12 @@ export class UserService {
       this.doLogoutState();
       cb?.();
     }
+    */
   }
 
   getToken(): string {
-    return _state.token;
+    return this.store.value.token;
+    // return this.state.token;
   }
 
   getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
@@ -194,22 +259,22 @@ export class UserService {
       )
     );
 
-    if (_state.allUsers[id]) {
-      return pickValue(isObservable(_state.allUsers[id]) ? _state.allUsers[id] as Observable<Person> : of(_state.allUsers[id] as Person));
+    if (this.store.value.allUsers[id]) {
+      return pickValue(isObservable(this.store.value.allUsers[id]) ? this.store.value.allUsers[id] as Observable<Person> : of(this.store.value.allUsers[id] as Person));
     }
-    if (_state.user && id === _state.user.id) {
-      return pickValue(of(_state.user));
+    if (this.store.value.user && id === this.store.value.user.id) {
+      return pickValue(of(this.store.value.user));
     }
 
-    _state.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
+    this.store.value.allUsers[id] = this.personApi.personFindByUserId(id).pipe(
       catchError(() => of({
         id,
         fullName: id
       })),
-      tap(person => _state.allUsers[id] = person as Person),
+      tap(person => this.store.value.allUsers[id] = person as Person),
       share()
     );
-    return pickValue(_state.allUsers[id] as Observable<Person>);
+    return pickValue(this.store.value.allUsers[id] as Observable<Person>);
   }
 
   redirectToLogin(returnUrl?: string, routeData?: any): void {
@@ -220,7 +285,7 @@ export class UserService {
         take(1),
       ).subscribe(data => {
         this.returnUrl = data.loginLanding || returnUrl || this.location.path(true);
-        window.location.href = UserService.getLoginUrl(this.returnUrl, this.translate.currentLang);
+        window.location.href = getLoginUrl(this.returnUrl, this.translate.currentLang);
       });
     }
   }
@@ -234,32 +299,39 @@ export class UserService {
     );
   }
 
-  getUserSetting<T>(key: keyof IUserSettings): Observable<T> {
+  getUserSetting<T>(key: keyof UserSettings): Observable<T> {
     return this.settings$.pipe(map(settings => settings[key]));
   }
 
-  setUserSetting(key: keyof IUserSettings, value: any): void {
-    const personID = _state.user && _state.user.id || '';
-    const settings = {..._state.settings, [key]: value};
-    this.updateState({..._state, settings});
-    this.storage.store(this.personsCacheKey(personID), settings);
+  setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]): void {
+    const personID = this.store.value.user?.id ?? '';
+    const settings = {...this.store.value.settings, [key]: value};
+    this.store.next({ ...this.store.value, settings });
+    this.storage.store(personsCacheKey(personID), settings);
   }
 
-  private personsCacheKey(personID: string): string {
-    return `users-${ personID || 'global' }-settings`;
+  getProfile(): Observable<Profile> {
+    return combineLatest([
+      this.personApi.personFindProfileByToken(this.getToken()),
+      this.user$
+    ]).pipe(
+      map(([profile, user]) => createProfile(profile, user)),
+      take(1)
+    );
   }
 
   /**
    * Checks that user status is correct and return true when status check is done
    * It's considered to be done when no other actions are needed
    */
+  /*
   private _checkLogin(rawToken?: string): Observable<boolean> {
     if (!this.platformService.isBrowser) {
       this.doServiceSideLoginState();
       return of(true);
     }
-    const token = rawToken || _state.token;
-    if (_state.token && (!this.persistent || this.persistent.isLoggedIn === false)) {
+    const token = rawToken || this.state.token;
+    if (this.state.token && (!this.persistent || this.persistent.isLoggedIn === false)) {
       this.doLogoutState();
     } else if (token) {
       return this.personApi.personFindByToken(token).pipe(
@@ -312,80 +384,51 @@ export class UserService {
   }
 
   private doLoginState(user: Person, token: string) {
-    if (user && user.id && _state.user && _state.user.id === user.id) {
+    if (user && user.id && this.state.user && this.state.user.id === user.id) {
       return;
     }
     this.init = true;
     this.persistent = {...this.persistent, isLoggedIn: !!user};
-    this.updateState({..._state, ...this.persistent, token: user ? token : '', user: user || {}, settings: {}});
+    this.updateState({...this.state, ...this.persistent, token: user ? token : '', user: user || {}, settings: {}});
     if (user.id) {
       this.doUserSettingsState(user.id);
     }
   }
 
   private doLogoutState() {
-    if (!_state.isLoggedIn && this.init) {
+    if (!this.state.isLoggedIn && this.init) {
       return;
     }
     this.init = true;
 
     this.persistent = {...this.persistent, isLoggedIn: false};
-    this.updateState({..._state, ...this.persistent, token: '', user: {}, settings: {}});
+    this.updateState({...this.state, ...this.persistent, token: '', user: {}, settings: {}});
     this.retry = 0;
   }
 
   private doUserSettingsState(id: string) {
-    this.updateState({..._state, settings: this.storage.retrieve(this.personsCacheKey(id)) || {}});
+    this.updateState({...this.state, settings: this.storage.retrieve(personsCacheKey(id)) || {}});
   }
 
-  private updateState(state: IUserServiceState) {
-    this.store.next(_state = state);
+  private updateState(state: UserServiceState) {
+    this.store.next(this.state = state);
   }
+  */
 
-  set persistent(state: IPersistentState | undefined) {
+  private set persistentState(state: PersistentState | undefined) {
     if (this.platformService.isBrowser) {
-      this.persistentState = state;
+      this.localStoragePersistentState = state;
     } else {
-      this._persistent = state;
+      this.inMemoryPersistentState = state;
     }
   }
 
-  get persistent() {
+  private get persistentState() {
     if (this.platformService.isBrowser) {
-      return this.persistentState;
+      return this.localStoragePersistentState;
     } else {
-      return this._persistent;
+      return this.inMemoryPersistentState;
     }
-  }
-
-  getProfile(): Observable<Profile> {
-    return combineLatest([
-      this.personApi.personFindProfileByToken(this.getToken()),
-      this.user$
-    ]).pipe(
-      map(([profile, user]) => this.prepareProfile(profile, user)),
-      take(1)
-    );
-  }
-
-  prepareProfile(profile: Profile | null, user: Person | null): Profile {
-    if (!profile) {
-      profile = {};
-    }
-    if (!user) {
-      user = {};
-    }
-    return {
-      ...profile,
-      settings: {
-        ...(profile.settings || {}),
-        defaultMediaMetadata: {
-          capturerVerbatim: user?.fullName ?? '',
-          intellectualOwner: user?.fullName ?? '',
-          intellectualRights: Profile.IntellectualRights.intellectualRightsARR,
-          ...(profile.settings?.defaultMediaMetadata || {}),
-        }
-      }
-    };
   }
 }
+
