@@ -163,7 +163,7 @@ export class CollectionService extends AbstractCachedHttpService<ICollectionRang
     return this.warehouseApi.warehouseQueryAggregateGet({cache: true, collectionId: [id]}, ['unit.superRecordBasis', 'unit.typeSpecimen'], undefined, 1000).pipe(
       map(data => (data.results || []) as any[]),
       map(data => {
-        const toReturn = {};
+        const toReturn: ICollectionCounts = {};
 
         data.forEach(d => {
           if (d.aggregateBy['unit.superRecordBasis'] === 'PRESERVED_SPECIMEN') {

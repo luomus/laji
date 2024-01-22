@@ -123,15 +123,15 @@ export class PdfLabelService {
     );
   }
 
-  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string[]> {
+  private getTransformGeometryDataFunction(path: string): (data: any) => Record<string, string | string[]> {
     return (geometryData) => {
-      const result = {};
+      const result: Record<string, string | string[]> = {};
 
       const coordinateVerbatim = [];
       if (geometryData.coordinateVerbatim) {
         coordinateVerbatim.push(geometryData.coordinateVerbatim);
       }
-      geometryData.geometries?.forEach(geometry => {
+      geometryData.geometries?.forEach((geometry: any) => {
         if (geometry.coordinateVerbatim) {
           coordinateVerbatim.push(geometry.coordinateVerbatim);
         }

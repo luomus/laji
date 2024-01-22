@@ -41,7 +41,7 @@ const mobileBreakpoint = 768;
       })),
       state('open', style({
         opacity: 1,
-        display: 'block'
+        display: 'flex'
       })),
       transition('closed<=>open', animate('300ms ease')),
     ]),

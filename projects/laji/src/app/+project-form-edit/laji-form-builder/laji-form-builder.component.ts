@@ -12,7 +12,8 @@ import { Observable, Subscription, from, of } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { Lang } from '@luomus/laji-form-builder/lib/model';
 import { UserService } from '../../shared/service/user.service';
-import {map, shareReplay, tap} from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { environment } from 'projects/laji/src/environments/environment';
 
 @Component({
   selector: 'laji-form-builder',
@@ -77,6 +78,7 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
         onChange: this.onChange.bind(this),
         onRemountLajiForm: this.onRemountLajiForm.bind(this),
         onSelected: this.onSelected.bind(this),
+        idToUri: this.idToUri.bind(this),
         notifier: {
           success: msg => this.ngZone.run(() => this.toastsService.showSuccess(msg)),
           info: msg => this.ngZone.run(() => this.toastsService.showInfo(msg)),
@@ -120,5 +122,9 @@ export class LajiFormBuilderComponent implements AfterViewInit, OnDestroy {
     of(this.router.navigate(['./' + id], {replaceUrl: true, relativeTo: this.route})).subscribe(() => {
       this.updateLajiFormBuilder();
     });
+  }
+
+  idToUri(id: string) {
+    return `${environment.base}/project-edit/${id}`;
   }
 }

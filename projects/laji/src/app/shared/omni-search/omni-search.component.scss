@@ -1,0 +1,90 @@
+@import 'vars';
+
+.omni-search {
+  margin-bottom: 0;
+  position: relative;
+}
+
+input::placeholder {
+  color: $neutral-6;
+}
+
+.omni-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1029;
+  max-width: calc(100vw - 16px);
+  width: max-content;
+  overflow: auto;
+
+  display: flex;
+  gap: $sp-4;
+
+  padding: $sp-5 $sp-6;
+  border-radius: 8px;
+  color: $neutral-7;
+  background-color: $neutral-1;
+  border: 1px solid $neutral-4;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.taxon-matches {
+  width: 100%;
+  max-width: 300px;
+}
+
+.taxon-matches > div {
+  border-left: 4px solid rgba($primary-5,0);
+  padding: $sp-3;
+  margin-bottom: $sp-3;
+}
+
+.taxon-matches > div.active {
+  border-color: $primary-5;
+  background: $neutral-3;
+  color: $neutral-9;
+  font-weight: bold;
+}
+
+.taxon-matches ::ng-deep .flag-taxonRank {
+  display: block;
+  float: unset;
+  position: unset;
+  top: unset;
+  margin-left: unset;
+}
+
+.taxon-match {
+  max-width: 600px;
+  color: $neutral-8;
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.taxon-match-first-col {
+  width: 100%;
+  max-width: 300px;
+}
+
+.taxon-match-second-col {
+  width: 100%;
+  max-width: 300px;
+}
+
+.informal-group-image {
+  width: 50px;
+  height: 50px;
+}
+
+.omni-search:after {
+  content: "\e003";
+  font-family: "Glyphicons Halflings";
+  line-height: 1;
+  position: absolute;
+  color: $neutral-6;
+  top: 10px;
+  right: 9px;
+}

@@ -11,6 +11,7 @@
 
 <laji-metadata-select
   [info]="'observation.info.adminStatus' | translate"
+  [filterProperties]="['value']"
   [(ngModel)]="administrativeStatus"
   (ngModelChange)="administrativeStatusChange.emit($event)"
   [multiple]="true"
