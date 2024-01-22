@@ -20,7 +20,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   notificationSource!: NotificationDataSource;
 
   @ViewChild(CdkVirtualScrollViewport, {static: true}) virtualScroll!: CdkVirtualScrollViewport;
-  loading!: boolean;
+  loading = true;
 
   constructor(
     private notificationsFacade: NotificationsFacade,
