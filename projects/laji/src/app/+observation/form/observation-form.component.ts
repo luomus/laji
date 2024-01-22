@@ -50,7 +50,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
   formQuery: ObservationFormQuery;
 
   showPlace = false;
-  mediaStatutes: string[] = [];
 
   areaType = Area.AreaType;
   dataSource: Observable<any>;
@@ -88,7 +87,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     features: ['administrativeStatusId', 'redListStatusId', 'typeOfOccurrenceId', 'typeOfOccurrenceIdNot', 'taxonRankId', 'higherTaxon',
       'invasive', 'finnish', 'sensitive'],
     invasive: [],
-    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio'],
+    image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio', 'hasUnitModel'],
     secure: ['secured', 'secureLevel'],
   };
 
@@ -263,45 +262,6 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
       const value = this.query[field];
       this.query[field] = typeof value === 'undefined' ||  value !==  selectValue ? selectValue : undefined;
     }
-    this.onQueryChange();
-  }
-
-  onMediaCheckBoxToggle(field, selectValue: any = true) {
-    this.mediaStatutes = this.query.hasUnitMedia ? ['hasUnitImages', 'hasUnitAudio'] :
-                        (this.query.hasUnitAudio ? ['hasUnitAudio'] : (this.query.hasUnitImages ? ['hasUnitImages'] : []));
-      if (Array.isArray(field)) {
-          if (selectValue === true) {
-            this.query.hasUnitImages = undefined;
-            this.query.hasUnitAudio = undefined;
-            this.query.hasUnitMedia = this.query.hasUnitMedia === undefined ? true : (this.query.hasUnitMedia === false) ? true : undefined;
-            this.mediaStatutes = this.mediaStatutes.length === 2 ? [] : ['hasUnitImages', 'hasUnitAudio'];
-          } else {
-            this.query.hasUnitImages = undefined;
-            this.query.hasUnitAudio = undefined;
-            this.query.hasUnitMedia = this.query.hasUnitMedia === undefined ? false : (this.query.hasUnitMedia === true) ? false : undefined;
-            this.mediaStatutes = selectValue ? this.mediaStatutes : [] ;
-          }
-      } else {
-        if (this.mediaStatutes.length === 0) {
-          this.query.hasUnitAudio = undefined;
-          this.query.hasUnitImages = undefined;
-        }
-        if (this.mediaStatutes.indexOf(field) === -1) {
-          this.mediaStatutes.push(field);
-        } else {
-          const index = this.mediaStatutes.indexOf(field);
-          this.mediaStatutes.splice(index, 1);
-        }
-        this.mediaStatutes.forEach(element => {
-          this.query[element] = true;
-        });
-
-        if (this.mediaStatutes.length === 2 || this.mediaStatutes.length === 0) {
-          this.query.hasUnitAudio = undefined;
-          this.query.hasUnitImages = undefined;
-        }
-        this.query.hasUnitMedia = this.mediaStatutes.length === 2 ? true : undefined;
-      }
     this.onQueryChange();
   }
 
