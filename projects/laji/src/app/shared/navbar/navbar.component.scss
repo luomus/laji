@@ -166,9 +166,7 @@ $text-color: $primary-2;
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-left-color: $neutral-3;
-  border-right-color: $neutral-3;
-  border-bottom-color: $neutral-3;
+  border-color: $neutral-3;
 }
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);

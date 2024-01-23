@@ -6,7 +6,7 @@ export type FilterByType<
   T extends FilterBaseType = FilterBaseType,
   K extends string[] = string[]
 > = T | SearchRecordQuery<T, K>;
-export type SearchRecord<K extends string[]> = { [P in K[number]] } & Record<string, any>;
+export type SearchRecord<K extends string[]> = { [P in K[number]]? } & Record<string, any>;
 
 @Injectable({
   providedIn: 'root'
