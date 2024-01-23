@@ -940,6 +940,7 @@
   "nafi.stats.title": "Päiväperhosseuranta",
   "nafi.stats.year": "Vuosi",
   "navigation.birdPointCount": "Pistelaskenta",
+  "navigation.bsg": "Bird Sounds Global",
   "navigation.checklist": "Suomen lajien luettelo",
   "navigation.collection": "Aineistot",
   "navigation.emk": "Eliömaakunnat",
@@ -1245,6 +1246,8 @@
   "observation.form.map.rectangle": "Piirrä suorakulmio kartalle",
   "observation.form.mapLink": "Rajaa alue kartalta",
   "observation.form.max.finland": "Taksonin max havaintolkm Suomesta",
+  "observation.form.media.group": "Havainto/näyte",
+  "observation.form.media.hasUnitModel": "3D-Malli",
   "observation.form.menuTitle": "Rajaukset",
   "observation.form.modeAdvanced": "Edistynyt",
   "observation.form.modeBasic": "Perus",
@@ -1831,6 +1834,7 @@
   "template.success": "Esitäytetyn lomakkeen tallennus onnistui.",
   "template.use": "Käytä tätä esitäytettyä lomakeltta",
   "theme.birdPointCount.intro": "Pesivien maalintujen pistelaskenta",
+  "theme.bsg.intro": "Mikä lintu lauloi? Kerro tunnistuksesi ja auta tietokonetta oppimaan lintujen äänet",
   "theme.census.title": "Seurantatutkimukset",
   "theme.checklist.intro": "Lajitietokeskuksen ylläpitämän kansallisen lajiluettelon vuosiversiot.",
   "theme.cnt": "kpl",
@@ -2134,9 +2138,5 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä",
-  "observation.form.media.hasUnitModel": "3D-Malli",
-  "observation.form.media.group": "Havainto/näyte",
-  "navigation.bsg": "Bird Sounds Global",
-  "theme.bsg.intro": "Mikä lintu lauloi? Kerro tunnistuksesi ja auta tietokonetta oppimaan lintujen äänet"
+  "yes": "Kyllä"
 }
