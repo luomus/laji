@@ -30,9 +30,9 @@ export class PlacementService {
   constructor(private renderer: Renderer2, private window: Window, private document: Document) {}
 
   /**
-  * Places the element in the document body relative to the target element
-  * Assumes that the element is not attached to any parent in DOM
-  */
+   * Places the element in the document body relative to the target element
+   * Assumes that the element is not attached to any parent in DOM
+   */
   attach(element: HTMLElement, target: HTMLElement, placement: Placement) {
     this.renderer.appendChild(this.document.body, element);
 
@@ -56,20 +56,20 @@ export class PlacementService {
 
     this.attachedElements[id] = {
       element, target, placement, mutationObserver, resizeObserver
-    }
+    };
 
     this.place(element, target, placement);
   }
 
   /**
-  * Updates the placement of an element relative to its target. Note that not all
-  * renderer changes can be easily tracked. Use this if the position of the target
-  * element has changed, but the placement of the element did not automatically update.
-  */
+   * Updates the placement of an element relative to its target. Note that not all
+   * renderer changes can be easily tracked. Use this if the position of the target
+   * element has changed, but the placement of the element did not automatically update.
+   */
   update(element: HTMLElement) {
     const id = element.getAttribute('data-placement-service-id');
     if (!id || !this.attachedElements[id]) {
-      console.warn('PlacementService attempted to update an unattached element.')
+      console.warn('PlacementService attempted to update an unattached element.');
       return;
     }
     const a = this.attachedElements[id];
@@ -79,7 +79,7 @@ export class PlacementService {
   detach(element: HTMLElement, target: HTMLElement) {
     const id = element.getAttribute('data-placement-service-id');
     if (!id || !this.attachedElements[id]) {
-      console.warn('PlacementService attempted to detach an unattached element.')
+      console.warn('PlacementService attempted to detach an unattached element.');
       return;
     }
     const a = this.attachedElements[id];
