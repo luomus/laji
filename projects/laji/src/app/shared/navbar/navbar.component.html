@@ -78,7 +78,7 @@
                     <i class="glyphicon glyphicon-user"></i>
                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
                   </a>
-                  <ul luDropdownMenu class="right">
+                  <ul luDropdownMenu class="user-dropdown" [ngClass]="{'right': !mobile}">
                     <li role="menuitem">
                       <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                     </li>
@@ -120,7 +120,7 @@
                   EN
                 </span>
               </a>
-              <ul luDropdownMenu [ngClass]="{'right': !mobile}">
+              <ul luDropdownMenu class="lang-dropdown" [ngClass]="{'right': !mobile}">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
                   <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
                 </li>
