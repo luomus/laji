@@ -74,7 +74,7 @@ export class FilterService {
   ) {
     switch (typeof haystack) {
       case 'string':
-        return haystack.toLocaleLowerCase().indexOf(needle as string) > -1;
+        return haystack.toLocaleLowerCase().indexOf((needle as string).toLocaleLowerCase()) > -1;
       case 'number':
         return haystack === needle;
       case 'boolean':
