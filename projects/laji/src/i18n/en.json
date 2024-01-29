@@ -1121,6 +1121,7 @@
   "observation.active.sampleType": "Preparation/Sample type",
   "observation.active.samplingMethod": "Sampling method",
   "observation.active.season": "Season",
+  "observation.active.secured": "Salaus",
   "observation.active.secureLevel": "Secure level",
   "observation.active.sex": "Sex",
   "observation.active.sourceId": "Source system",
