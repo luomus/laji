@@ -213,6 +213,9 @@ export class AudioService {
       return buffer;
     }
     const emptySamplesAtStart = buffer.length - actualDuration * buffer.sampleRate;
+    if (emptySamplesAtStart <= 0) {
+      return buffer;
+    }
     return this.extract(buffer, emptySamplesAtStart, buffer.length - 1);
   }
 
