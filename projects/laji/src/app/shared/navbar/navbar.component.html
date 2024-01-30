@@ -39,7 +39,7 @@
                 <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
               </li>
             </ng-container>
-            <li class="d-block xs:d-none" *lajiForTypes="['dev', 'prod', 'beta']">
+            <li *lajiForTypes="['dev', 'prod', 'beta']">
               <a luDropdownToggle class="link user">
                 {{ 'navigation.taxonomy' | translate }}
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -72,13 +72,13 @@
             </li>
             <ng-container *lajiBrowserOnly>
               <ng-container *lajiForTypes="['dev', 'prod', 'beta']">
-                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async">
-                  <a luDropdownToggle class="link user">
+                <li [routerLinkActive]="['active']" *ngIf="userService.isLoggedIn$ | async" #loginElem>
+                  <a luDropdownToggle class="link user" (click)="scroll(loginElem)">
                     <span class="hidden-sm name"><small id="logged-in-user">{{ (userService.user$ | async)?.id | users:'fullName' }}</small></span>
                     <i class="glyphicon glyphicon-user"></i>
                     <span class="badge badge-danger" *ngIf="notificationsNotSeen > 0">{{ notificationsNotSeen }}</span>
                   </a>
-                  <ul luDropdownMenu class="right">
+                  <ul luDropdownMenu class="user-dropdown" [ngClass]="{'right': !mobile}">
                     <li role="menuitem">
                       <a [routerLink]="['/user'] | localize" class="navbar-link link">{{ 'navigation.user.profile' | translate }}</a>
                     </li>
@@ -107,8 +107,8 @@
                 </li>
               </ng-container>
             </ng-container>
-            <li *lajiForTypes="['dev', 'prod', 'iucn', 'beta']">
-              <a luDropdownToggle class="link language-toggle">
+            <li *lajiForTypes="['dev', 'prod', 'iucn', 'beta']" #lang>
+              <a luDropdownToggle class="link language-toggle" (click)="scroll(lang)">
                 <i class="glyphicon glyphicon-globe"></i>
                 <span *ngIf="'fi' === translate.currentLang">
                   FI
@@ -120,7 +120,7 @@
                   EN
                 </span>
               </a>
-              <ul luDropdownMenu class="right">
+              <ul luDropdownMenu class="lang-dropdown" [ngClass]="{'right': !mobile}">
                 <li *ngIf="'fi' !== translate.currentLang" role="menuitem">
                   <a rel="alternate" hreflang="fi" class="navbar-link link" [routerLink]="[] | localize:'fi'" queryParamsHandling="preserve">Suomeksi</a>
                 </li>

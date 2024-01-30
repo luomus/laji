@@ -1,7 +1,7 @@
-import { map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FormService } from './form.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Form } from '../model/Form';
 import { BehaviorSubject, combineLatest, Observable, of, ReplaySubject, Subject } from 'rxjs';
@@ -20,9 +20,9 @@ export interface NamedPlacesQuery {
   activeNP?: string;
 }
 export interface NamedPlacesQueryModel {
-  tags: string[];
-  birdAssociationArea: string;
-  municipality: string;
+  tags?: string[];
+  birdAssociationArea?: string;
+  municipality?: string;
   activeNP?: string;
 }
 
@@ -37,14 +37,16 @@ export class ProjectFormService {
     private formService: FormService,
     private translate: TranslateService,
     private namedPlacesService: NamedPlacesService
-  ) { }
+  ) {
+    this.translate.onLangChange.subscribe(() => {
+      this.currentFormID = undefined;
+    });
+  }
 
-  private currentFormID: string;
-  private form$: ReplaySubject<Form.SchemaForm>;
+  private currentFormID?: string;
+  private form$?: ReplaySubject<Form.SchemaForm>;
 
-  /**
-   * LajiFormBuilder can change the language of the form, without changing the lang of the whole page.
-   */
+  /** LajiFormBuilder can change the language of the form, without changing the lang of the whole page. */
   public localLang$ = new BehaviorSubject<string>(this.translate.currentLang);
   public remountLajiForm$ = new Subject<void>();
 
@@ -54,13 +56,15 @@ export class ProjectFormService {
 
   getForm$(id: string): Observable<Form.SchemaForm> {
     if (this.currentFormID === id) {
-      return this.form$;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return this.form$!;
     }
     this.currentFormID = id;
     this.form$?.complete();
-    this.form$ = new ReplaySubject<Form.SchemaForm>(1);
-    this.formService.getForm(id).pipe(take(1)).subscribe(form => {
-      this.form$.next(form);
+    this.form$ = new ReplaySubject(1);
+    this.formService.getForm(id).subscribe(form => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.form$!.next(form);
     });
     return this.form$;
   }
@@ -70,9 +74,10 @@ export class ProjectFormService {
     if (this.currentFormID !== id) {
       this.currentFormID = id;
       this.form$?.complete();
-      this.form$ = new ReplaySubject<Form.SchemaForm>(1);
+      this.form$ = new ReplaySubject(1);
     }
-    this.form$.next(form);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.form$!.next(form);
   }
 
   getProjectFormFromRoute$(route: ActivatedRoute): Observable<ProjectForm> {
@@ -80,7 +85,9 @@ export class ProjectFormService {
     return form$.pipe(
       mergeMap(form =>
         (form?.options?.forms
-            ? this.formService.getAllForms(this.translate.currentLang).pipe(map(forms => forms.filter(f => form.options.forms.indexOf(f.id) > -1)))
+            ? this.formService.getAllForms().pipe(map(forms => forms.filter(f =>
+                form!.options.forms!.indexOf(f.id) > -1)) // eslint-disable-line @typescript-eslint/no-non-null-assertion
+            )
             : of([])
         ).pipe(
           map(forms => ({form, subForms: forms}))
@@ -93,7 +100,8 @@ export class ProjectFormService {
     return route.params.pipe(switchMap(params => {
       const formID = params['projectID'];
       if (!formID) {
-        return this.getProjectRootRoute$(route.parent);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return this.getProjectRootRoute$(route.parent!);
       }
       return of(route);
     }));
@@ -105,7 +113,7 @@ export class ProjectFormService {
 
   getExcelFormIDs(projectForm: ProjectForm): string[] {
     const allowsExcel = (form: Form.SchemaForm | Form.List) => form.options?.allowExcel && form.id;
-    return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f);
+    return [allowsExcel(projectForm.form), ...projectForm.subForms.map(allowsExcel)].filter(f => f) as string[];
   }
 
   getSubmissionsPageTitle(form: Form.SchemaForm, isAdmin: boolean) {
@@ -123,10 +131,19 @@ export class ProjectFormService {
         const documentForm$ = formID
           ? this.getProjectFormFromRoute$(route).pipe(
             switchMap(projectForm => {
-              const form = [projectForm.form, ...projectForm.subForms].find(f => f.id === formID);
-              return form === projectForm.form
-                ? of(form as Form.SchemaForm)
-                : this.formService.getForm(form.id, this.translate.currentLang);
+              if (projectForm.form.id === formID) {
+                return of(projectForm.form);
+              }
+              const subForm = projectForm.subForms.find(f => f.id === formID);
+              if (!subForm) {
+                throw new Error('Route sub form isn\'t part of the form');
+              }
+              return this.formService.getForm(subForm.id).pipe(map(f => {
+                if (!f) {
+                throw new Error('Form had nonexistent sub form');
+                }
+                return f;
+              }));
             })
           )
           : this.getFormFromRoute$(route);
@@ -139,7 +156,7 @@ export class ProjectFormService {
     );
   }
 
-  queryToModelFormat(queryParams): NamedPlacesQueryModel {
+  queryToModelFormat(queryParams: Params): NamedPlacesQueryModel {
     return {
       ...queryParams,
       tags: queryParams['tags']?.split(',')
