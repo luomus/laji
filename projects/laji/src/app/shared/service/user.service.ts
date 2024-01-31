@@ -11,7 +11,7 @@ import {
   timeout
 } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
@@ -25,7 +25,6 @@ import { PlatformService } from '../../root/platform.service';
 import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
-import { PERSON_TOKEN } from './laji-api-worker-common';
 import { Profile } from '../model/Profile';
 import { Global } from '../../../environments/global';
 
@@ -107,7 +106,7 @@ const defaultPersistentState: PersistentState = {
 
 
 @Injectable({providedIn: 'root'})
-export class UserService {
+export class UserService implements OnDestroy {
 
   // Do not write to this variable in the server!
   @LocalStorage('userState', defaultPersistentState) private localStoragePersistentState: PersistentState | undefined;
@@ -117,7 +116,6 @@ export class UserService {
   @SessionStorage('retry', 0) private retry: number | undefined;
 
   private subLogout: Subscription | undefined;
-  private init = false;
 
   private store = new BehaviorSubject<UserServiceState>({
     ...defaultPersistentState,
@@ -144,37 +142,7 @@ export class UserService {
     private platformService: PlatformService,
     private browserService: BrowserService,
     private storage: LocalStorageService
-  ) {
-    if (!this.platformService.isBrowser) {
-      //this.doServiceSideLoginState();
-      // TODO: initialize server side state
-    }
-    /*
-     * All of this is probably unnecessary:
-     * login should only occur through check-login.guard
-     * so that's what should trigger change in isLoggedIn
-     *
-    this.router.events.pipe(
-      filter((event): event is ActivationEnd => event instanceof ActivationEnd && event.snapshot.children.length === 0)
-    ).subscribe((event: ActivationEnd) => this.currentRouteData.next(event.snapshot.data));
-
-    this.isLoggedIn$.pipe(
-      switchMap(() => this.currentRouteData$),
-      take(1),
-      switchMap(() => this.browserService.visibility$),
-      filter(visible => visible),
-      switchMap(() => this._checkLogin())
-    ).subscribe();
-    */
-  }
-
-  /*
-   * Unnecessary, no longer used in check-login.guard
-   *
-  checkLogin(): Observable<boolean> {
-    return this._checkLogin();
-  }
-  */
+  ) {}
 
   /**
    * checks if token is valid and logs in the user
@@ -206,39 +174,26 @@ export class UserService {
   }
 
   logout(cb?: () => void): void {
-    this.persistentState = { ...this.persistentState, token: '' };
-    this.store.next({
-      ...this.store.value, ...this.persistentState, user: {}, settings: {}
-    });
-    cb?.();
-
-    /*
-    if (this.subLogout) {
-      return;
-    }
-    if (this.state.token) {
-      this.subLogout = this.personApi.removePersonToken(this.state.token).pipe(
-        httpOkError([404, 400], false),
-        retryWithBackoff(300),
-        catchError((err) => {
-          this.logger.warn('Failed to logout', err);
-          return of(false);
-        })
-      ).subscribe(() => {
-        this.subLogout = undefined;
-        this.doLogoutState();
-        cb?.();
+    // TODO: remove this call once the endpoint is removed from API
+    this.subLogout = this.personApi.removePersonToken(this.store.value.token).pipe(
+      httpOkError([404, 400], false),
+      retryWithBackoff(300),
+      catchError((err) => {
+        this.logger.warn('Failed to logout', err);
+        return of(false);
+      })
+    ).subscribe(() => {
+      this.subLogout = undefined;
+      this.persistentState = { ...this.persistentState, token: '' };
+      this.store.next({
+        ...this.store.value, ...this.persistentState, user: {}, settings: {}
       });
-    } else {
-      this.doLogoutState();
       cb?.();
-    }
-    */
+    });
   }
 
   getToken(): string {
     return this.store.value.token;
-    // return this.state.token;
   }
 
   getPersonInfo(id: string, info?: 'fullName' | 'fullNameWithGroup'): Observable<string>;
@@ -316,100 +271,9 @@ export class UserService {
     );
   }
 
-  /**
-   * Checks that user status is correct and return true when status check is done
-   * It's considered to be done when no other actions are needed
-   */
-  /*
-  private _checkLogin(rawToken?: string): Observable<boolean> {
-    if (!this.platformService.isBrowser) {
-      this.doServiceSideLoginState();
-      return of(true);
-    }
-    const token = rawToken || this.state.token;
-    if (this.state.token && (!this.persistent || this.persistent.isLoggedIn === false)) {
-      this.doLogoutState();
-    } else if (token) {
-      return this.personApi.personFindByToken(token).pipe(
-        tap(user => this.doLoginState(user, token)),
-        map(user => !!user),
-        httpOkError(404, false),
-        retryWithBackoff(300),
-        catchError(() => of(false)),
-        tap(loggedIn => { if (!loggedIn) { this.doLogoutState(); } }),
-        map(() => true),
-        share()
-      );
-    } else if (this.persistent?.isLoggedIn) {
-      return this.doBackgroundCheck().pipe(
-        switchMap(t => t ? this._checkLogin(t) : of(false)),
-        timeout(10000),
-        catchError(() => {
-          this.doLogoutState();
-          return of(true);
-        })
-      );
-    } else {
-      this.doLogoutState();
-    }
-    return of(true);
+  ngOnDestroy() {
+    this.subLogout?.unsubscribe();
   }
-
-  private doBackgroundCheck(): Observable<string> {
-    if (!this.platformService.canUseWebWorkerLogin || (this.retry && this.retry > 0)) {
-      this.redirectToLogin();
-      return of('');
-    }
-    return this.personApi.personFindByToken(PERSON_TOKEN).pipe(
-      tap(() => this.retry = 0),
-      map(() => PERSON_TOKEN),
-      catchError((e) => {
-        if (e && e.status === 0) {
-          this.retry = 1;
-          this.redirectToLogin();
-          this.platformService.canUseWebWorkerLogin = false;
-          return of('');
-        }
-        return throwError('Logout');
-      })
-    );
-  }
-
-  private doServiceSideLoginState() {
-    this.doLoginState({}, '');
-  }
-
-  private doLoginState(user: Person, token: string) {
-    if (user && user.id && this.state.user && this.state.user.id === user.id) {
-      return;
-    }
-    this.init = true;
-    this.persistent = {...this.persistent, isLoggedIn: !!user};
-    this.updateState({...this.state, ...this.persistent, token: user ? token : '', user: user || {}, settings: {}});
-    if (user.id) {
-      this.doUserSettingsState(user.id);
-    }
-  }
-
-  private doLogoutState() {
-    if (!this.state.isLoggedIn && this.init) {
-      return;
-    }
-    this.init = true;
-
-    this.persistent = {...this.persistent, isLoggedIn: false};
-    this.updateState({...this.state, ...this.persistent, token: '', user: {}, settings: {}});
-    this.retry = 0;
-  }
-
-  private doUserSettingsState(id: string) {
-    this.updateState({...this.state, settings: this.storage.retrieve(personsCacheKey(id)) || {}});
-  }
-
-  private updateState(state: UserServiceState) {
-    this.store.next(this.state = state);
-  }
-  */
 
   private set persistentState(state: PersistentState | undefined) {
     if (this.platformService.isBrowser) {
