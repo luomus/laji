@@ -77,11 +77,6 @@ $text-color: $primary-2;
   padding-bottom: 3px;
 }
 
-.navbar-inverse .lu-dropdown.user-dropdown, .navbar-inverse .lu-dropdown.lang-dropdown {
-  background-color: $primary-6;
-  position: relative;
-}
-
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:focus,
 .navbar-inverse .navbar-nav > .active > a:hover {
@@ -185,11 +180,19 @@ $text-color: $primary-2;
 }
 
 .navbar-collapse .lu-dropdown a {
-  color: #333;
+  color: $neutral-8;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .navbar-collapse .lu-dropdown.user-dropdown, .navbar-collapse .lu-dropdown.lang-dropdown {
+    background-color: $primary-6;
+    position: relative;
+  }
+}
+
 
 @media only screen and (max-width: 900px) {
   .red-theme.navbar .navbar-collapse {
