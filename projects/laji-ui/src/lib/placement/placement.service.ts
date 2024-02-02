@@ -1,9 +1,14 @@
 import { Injectable, Renderer2 } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
 
-interface Placement {
-  x: 'left' | 'right';
-  y: 'top' | 'bottom';
-};
+export type Placement = 'top' | 'bottom' | 'left' | 'right';
+
+interface RenderingContext {
+  renderer: Renderer2;
+  window: Window;
+  document: Document;
+}
 
 interface AttachedElement {
   element: HTMLElement;
@@ -11,6 +16,8 @@ interface AttachedElement {
   placement: Placement;
   mutationObserver: MutationObserver;
   resizeObserver: ResizeObserver;
+  change$: Subject<void>;
+  renderingContext: RenderingContext;
 }
 
 const getAbsoluteOffset = (d: Document, w: Window, el: HTMLElement) => {
@@ -22,43 +29,64 @@ const getAbsoluteOffset = (d: Document, w: Window, el: HTMLElement) => {
   return { x, y };
 };
 
-@Injectable()
+const addScrollListenerToAllParents = (target: HTMLElement, { renderer, document }: RenderingContext, cb: () => void): (() => void)[] => {
+  const destructors: (() => void)[] = [];
+  let currentNode = <ParentNode>target;
+  while (currentNode !== document.body && currentNode !== null) {
+    destructors.push(renderer.listen(currentNode, 'scroll', () => cb()));
+    currentNode = renderer.parentNode(currentNode);
+  }
+  return destructors;
+};
+
+@Injectable({ providedIn: 'root' })
 export class PlacementService {
   private nextElementId = 0;
   private attachedElements: Record<string, AttachedElement> = {};
 
-  constructor(private renderer: Renderer2, private window: Window, private document: Document) {}
+  constructor() {}
 
   /**
    * Places the element in the document body relative to the target element
    * Assumes that the element is not attached to any parent in DOM
    */
-  attach(element: HTMLElement, target: HTMLElement, placement: Placement) {
-    this.renderer.appendChild(this.document.body, element);
+  attach(element: HTMLElement, target: HTMLElement, placement: Placement, renderingContext: RenderingContext) {
+    renderingContext.renderer.appendChild(renderingContext.document.body, element);
 
-    // assign an unique identifier for each element
+    // assign a unique identifier for each element
     const id = this.nextElementId+'';
     this.nextElementId++;
     if (this.nextElementId === Number.MAX_SAFE_INTEGER) {
       this.nextElementId = 0;
     }
-    this.renderer.setAttribute(element, 'data-placement-service-id', id);
+    renderingContext.renderer.setAttribute(element, 'data-placement-service-id', id);
 
-    const mutationObserver = new MutationObserver(_ => {
-      this.place(element, target, placement);
-    });
+    const change$ = new Subject<void>();
+    const mutationObserver = new MutationObserver(_ => change$.next());
+    const resizeObserver = new ResizeObserver(_ => change$.next());
+
+    const attached: AttachedElement = { element, target, placement, mutationObserver, resizeObserver, change$, renderingContext };
+    this.attachedElements[id] = attached;
+
+    const destructors = addScrollListenerToAllParents(target, renderingContext, () => change$.next());
+    // unsubscribe unnecessary, because scrolled completes on detach
+    change$.pipe(
+      // because we are listening to all the parents at once, multiple scroll events
+      // might occur during a single event loop iteration. 0ms throttle should help
+      // with this, although I didn't test the difference in practice.
+      throttleTime(0)
+    ).subscribe(
+      () => this.place(attached),
+      e => { throw e; },
+      () => destructors.forEach(d => d())
+    );
+
+    mutationObserver.observe(element, { attributes: true, childList: true, subtree: true });
     mutationObserver.observe(target, { attributes: true, childList: true, subtree: true });
-    const resizeObserver = new ResizeObserver(_ => {
-      this.place(element, target, placement);
-    });
     resizeObserver.observe(element);
     resizeObserver.observe(target);
 
-    this.attachedElements[id] = {
-      element, target, placement, mutationObserver, resizeObserver
-    };
-
-    this.place(element, target, placement);
+    setTimeout(() => change$.next(), 100);
   }
 
   /**
@@ -72,36 +100,54 @@ export class PlacementService {
       console.warn('PlacementService attempted to update an unattached element.');
       return;
     }
-    const a = this.attachedElements[id];
-    this.place(a.element, a.target, a.placement);
+    this.place(this.attachedElements[id]);
   }
 
-  detach(element: HTMLElement, target: HTMLElement) {
+  /**
+   * Not detaching on component destroy causes a memory leak.
+   */
+  detach(element: HTMLElement) {
     const id = element.getAttribute('data-placement-service-id');
     if (!id || !this.attachedElements[id]) {
       console.warn('PlacementService attempted to detach an unattached element.');
       return;
     }
-    const a = this.attachedElements[id];
-    a.resizeObserver.disconnect();
-    a.mutationObserver.disconnect();
+    const attached = this.attachedElements[id];
+    attached.resizeObserver.disconnect();
+    attached.mutationObserver.disconnect();
+    attached.change$.complete();
     delete this.attachedElements[id];
   }
 
-  private place(element: HTMLElement, target: HTMLElement, placement: Placement) {
+  private place({ element, target, renderingContext: { renderer, window, document }, placement }: AttachedElement) {
     const elementRect = element.getBoundingClientRect();
     const targetRect = target.getBoundingClientRect();
-    const {x: targetX, y: targetY} = getAbsoluteOffset(this.document, this.window, target);
+    const {x: targetX, y: targetY} = getAbsoluteOffset(document, window, target);
 
-    const x = placement.x === 'left'
-      ? Math.min(targetX, this.window.innerWidth - elementRect.width)
-      : Math.min(targetX + targetRect.width, this.window.innerWidth - elementRect.width);
+    let x = 0;
+    let y = 0;
 
-    const y = placement.y === 'top'
-      ? Math.max(targetY - elementRect.height, 0)
-      : Math.min(targetY + targetRect.height, this.window.innerHeight- elementRect.height);
+    switch (placement) {
+      case 'left':
+        x = Math.max(targetX - elementRect.width, 0);
+        y = Math.min(targetY, window.innerHeight - elementRect.height);
+        break;
+      case 'right':
+        x = Math.min(targetX + targetRect.width, window.innerWidth - elementRect.width);
+        y = Math.min(targetY, window.innerHeight - elementRect.height);
+        break;
+      case 'top':
+        x = Math.min(targetX, window.innerWidth - elementRect.width);
+        y = Math.max(targetY - elementRect.height, 0);
+        break;
+      case 'bottom':
+      default:
+        x = Math.min(targetX, window.innerWidth - elementRect.width);
+        y = Math.min(targetY + targetRect.height, window.innerHeight - elementRect.height);
+        break;
+    }
 
-    this.renderer.setStyle(element, 'transform', `translate(${x}px, ${y}px)`);
+    renderer.setStyle(element, 'transform', `translate(${x}px, ${y}px)`);
   }
 }
 
