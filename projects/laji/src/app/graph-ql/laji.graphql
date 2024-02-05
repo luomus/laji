@@ -1657,6 +1657,7 @@ type Query {
       hasMedia: Boolean,
       hasSample: Boolean,
       hasUnitAudio: Boolean,
+      hasUnitModel: Boolean,
       hasUnitImages: Boolean,
       hasUnitMedia: Boolean,
       higherTaxon: Boolean,

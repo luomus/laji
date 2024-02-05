@@ -7,7 +7,7 @@ import { NewsFacade } from '../../+news/news.facade';
 @Component({
   selector: 'laji-news-list',
   templateUrl: './news-list.component.html',
-  styleUrls: ['./news-list.component.css'],
+  styleUrls: ['./news-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewsListComponent {

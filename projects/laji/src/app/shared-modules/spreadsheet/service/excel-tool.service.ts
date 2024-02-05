@@ -3,7 +3,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { FormService } from '../../../shared/service/form.service';
 import { NamedPlacesService } from '../../../shared/service/named-places.service';
 import { UserService } from '../../../shared/service/user.service';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { CombineToDocument } from './import.service';
 import { Form } from '../../../shared/model/Form';
@@ -17,8 +16,7 @@ export class ExcelToolService {
   constructor(
     private namedPlacesService: NamedPlacesService,
     private userService: UserService,
-    private formService: FormService,
-    private translateService: TranslateService
+    private formService: FormService
   ) {}
 
 
@@ -51,7 +49,7 @@ export class ExcelToolService {
       );
     };
 
-    return this.formService.getForm(formID, this.translateService.currentLang).pipe(
+    return this.formService.getForm(formID).pipe(
       switchMap(form => form.options?.useNamedPlaces ? collection$(form) : usersNS$),
       map(places => places.sort())
     );

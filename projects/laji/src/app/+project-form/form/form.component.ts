@@ -72,7 +72,7 @@ export class FormComponent implements OnInit {
               const documentID = paramsStack.pop();
               return (_usedSubForm === form
                 ? of(form)
-                : this.formService.getForm(_usedSubForm.id, this.translate.currentLang)
+                : this.formService.getForm(_usedSubForm.id)
               ).pipe(
                 switchMap(usedSubForm => {
                   const namedPlaceID = usedSubForm.options?.useNamedPlaces && routeParams['namedPlace'];
@@ -117,7 +117,7 @@ export class FormComponent implements OnInit {
       if (form.options?.forms?.length) {
         return of(navigateToForm(form.id, form.id));
       }
-      return this.formService.getAllForms(this.translate.currentLang).pipe(
+      return this.formService.getAllForms().pipe(
         take(1),
         map(forms => {
             const parent = forms.find(f => f.options?.forms?.includes(form.id));
