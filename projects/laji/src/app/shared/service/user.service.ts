@@ -164,7 +164,6 @@ export class UserService implements OnDestroy {
           ...this.store.value, ...this.persistentState, user: person,
           settings: this.storage.retrieve(personsCacheKey(person.id))
         });
-        console.log(person);
       }),
       map(_ => true),
       httpOkError(404, false),
@@ -251,7 +250,7 @@ export class UserService implements OnDestroy {
   }
 
   getUserSetting<T>(key: keyof UserSettings): Observable<T> {
-    return this.settings$.pipe(map(settings => settings[key]));
+    return this.settings$.pipe(map(settings => settings?.[key]));
   }
 
   setUserSetting<K extends keyof UserSettings>(key: K, value: UserSettings[K]): void {
