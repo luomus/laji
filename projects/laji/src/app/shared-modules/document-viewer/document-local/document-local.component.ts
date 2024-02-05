@@ -128,7 +128,7 @@ export class DocumentLocalComponent implements OnChanges {
   }
 
   private getForm(formId: string): Observable<any> {
-    return this.formService.getFormInJSONFormat(formId, this.translate.currentLang)
+    return this.formService.getFormInJSONFormat(formId)
       .pipe(tap((form: Form.JsonForm) => {
         this.setAllFields(
           form.fields,

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 
-type FilterBaseType = number|boolean|string;
-
-interface FilterObjType {by: FilterBaseType; properties: string[] }
-
-export type FilterByType = FilterBaseType|FilterObjType;
+export type FilterBaseType = number | boolean | string;
+export interface SearchRecordQuery<T, K> { by: T; properties: K };
+export type FilterByType<
+  T extends FilterBaseType = FilterBaseType,
+  K extends string[] = string[]
+> = T | SearchRecordQuery<T, K>;
+export type SearchRecord<K extends string[]> = { [P in K[number]]? } & Record<string, any>;
 
 @Injectable({
   providedIn: 'root'
@@ -13,26 +15,44 @@ export class FilterService {
 
   /**
    * Filters the given value
-   * @param value array of values
+   * @param arr array of values
    * @param filterBy filter by these values
    * @param matching if true returns matching if false returns those not matching
    */
-  filter(value: any, filterBy: FilterByType, matching = true): any {
-    if (!Array.isArray(value) || !filterBy) {
-      return value;
+  filter<
+    T extends FilterBaseType,
+    K extends string[],
+    S extends SearchRecord<K>,
+    Element extends T | S
+  >(
+    arr: Element[], filterBy: FilterByType<T, K>, matching = true
+  ): Element[] {
+    if (!Array.isArray(arr)) {
+      return [arr];
     }
-    let needle: any = filterBy;
-    let properties: any = null;
+    if (!filterBy && typeof filterBy !== 'boolean') {
+      return arr;
+    }
+
+    let needle: T;
+    let properties: K | undefined;
     switch (typeof filterBy) {
       case 'object':
-        needle = (filterBy as FilterObjType).by;
-        properties = (filterBy as FilterObjType).properties;
+        needle = filterBy.by;
+        if (!needle) {
+          return arr;
+        }
+        properties = filterBy.properties;
         break;
       case 'string':
-        needle = (needle as string).toLocaleLowerCase();
+        needle = <T>(filterBy as string).toLocaleLowerCase();
+        break;
+      default:
+        needle = filterBy;
         break;
     }
-    return value.filter(val => {
+
+    return arr.filter(val => {
       const contains = this.contains(needle as FilterBaseType, val, properties);
 
       return matching ? contains : !contains;
@@ -45,10 +65,16 @@ export class FilterService {
    * @param haystack search from these values
    * @param properties check for match only from these properties
    */
-  private contains(needle: FilterBaseType, haystack: any, properties: string[]) {
+  private contains<
+    HaystackObj extends Record<HaystackKey, HaystackValue>,
+    HaystackKey extends string,
+    HaystackValue extends FilterBaseType
+  >(
+    needle: HaystackValue, haystack: HaystackValue | HaystackObj, properties: HaystackKey[]
+  ) {
     switch (typeof haystack) {
       case 'string':
-        return haystack.toLocaleLowerCase().indexOf(needle as string) > -1;
+        return haystack.toLocaleLowerCase().indexOf((needle as string).toLocaleLowerCase()) > -1;
       case 'number':
         return haystack === needle;
       case 'boolean':
@@ -60,7 +86,9 @@ export class FilterService {
     }
   }
 
-  private objectContains(needle: FilterBaseType, obj: Record<string, unknown>, properties: string[]): boolean {
+  private objectContains<T extends FilterBaseType, U extends string, V extends Record<U, T>>(
+    needle: T, obj: V, properties: U[]
+  ): boolean {
     for (const i of properties) {
       if (typeof obj[i] === 'undefined') {
         continue;

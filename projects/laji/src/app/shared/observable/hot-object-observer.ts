@@ -2,7 +2,7 @@ import { combineLatest, Observable, ObservableInput } from 'rxjs';
 import { debounceTime, map, shareReplay } from 'rxjs/operators';
 
 export function hotObjectObserver<T>(obj: { [K in keyof T]: ObservableInput<T[K]> }): Observable<T> {
-  const keys = Object.keys(obj);
+  const keys = Object.keys(obj) as (keyof T)[];
 
   return combineLatest(keys.map((key) => obj[key])).pipe(
     map<any, T>((values) => {

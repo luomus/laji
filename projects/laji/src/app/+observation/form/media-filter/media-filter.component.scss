@@ -1,0 +1,25 @@
+@import 'vars';
+
+.media-group-label {
+  text-transform: capitalize;
+}
+
+fieldset {
+  padding-left: $sp-4;
+  border-left: 2px solid $primary-5;
+}
+
+.media-group-all {
+  border-bottom: 1px solid $neutral-4;
+  padding-bottom: $sp-2;
+  margin-bottom: $sp-3;
+}
+
+label {
+  display: inline;
+}
+
+hr {
+  margin: $sp-4 0;
+  border-color: $neutral-4;
+}

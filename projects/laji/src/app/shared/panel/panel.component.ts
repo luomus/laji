@@ -16,7 +16,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class PanelComponent {
   @Input() title?: string;
-  @Input() headingTemplate: TemplateRef<any>;
+  @Input() headingTemplate?: TemplateRef<any>;
   @Input() index?: number;
   @Input() open = false;
   @Input() autoToggle = false;

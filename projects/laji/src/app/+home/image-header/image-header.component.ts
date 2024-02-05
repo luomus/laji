@@ -6,7 +6,7 @@ import { HeaderImage, HeaderImageService } from '../../shared/service/header-ima
 @Component({
   selector: 'laji-image-header',
   templateUrl: './image-header.component.html',
-  styleUrls: ['./image-header.component.css']
+  styleUrls: ['./image-header.component.scss']
 })
 export class ImageHeaderComponent implements OnInit {
   headerImage: HeaderImage;

@@ -1,8 +1,11 @@
 <div>
   <span>
-     {{type.status | toQName | label}}
+     {{type.status | toQName | label}}
     <i>{{type.taxon}}</i> 
     {{type.author}}
+    <span *ngIf="type.taxonSpecifier || type.taxonSpecifierAuthor">
+      <i>{{type.taxonSpecifier}}</i> {{type.taxonSpecifierAuthor}}
+    </span>
     <span *ngIf="type.linkings">
       <a
         [luTooltip]="'showSpeciesCard' | translate"

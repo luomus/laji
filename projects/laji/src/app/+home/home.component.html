@@ -1,32 +1,4 @@
 <laji-image-header></laji-image-header>
-<div class="searchBar d-flex justify-between">
-  <div class="omnisearch-container d-flex justify-center">
-    <div class="omnisearch">
-      <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
-    </div>
-  </div>
-  <div class="some-links d-flex justify-end">
-    <a href="https://facebook.com/Lajitietokeskus">
-      <svg viewBox="0 0 24 24">
-        <path fill="#f1f1f1"
-          d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" />
-      </svg>
-    </a>
-    <a href="https://twitter.com/lajitieto">
-      <svg viewBox="0 0 24 24">
-        <path fill="#f1f1f1"
-          d="M17.71,9.33C17.64,13.95 14.69,17.11 10.28,17.31C8.46,17.39 7.15,16.81 6,16.08C7.34,16.29 9,15.76 9.9,15C8.58,14.86 7.81,14.19 7.44,13.12C7.82,13.18 8.22,13.16 8.58,13.09C7.39,12.69 6.54,11.95 6.5,10.41C6.83,10.57 7.18,10.71 7.64,10.74C6.75,10.23 6.1,8.38 6.85,7.16C8.17,8.61 9.76,9.79 12.37,9.95C11.71,7.15 15.42,5.63 16.97,7.5C17.63,7.38 18.16,7.14 18.68,6.86C18.47,7.5 18.06,7.97 17.56,8.33C18.1,8.26 18.59,8.13 19,7.92C18.75,8.45 18.19,8.93 17.71,9.33M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" />
-      </svg>
-    </a>
-
-    <a rel="me" href="https://mastodo.fi/@lajitieto">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 32 32" style="filter: invert(1)">
-        <path
-          d="M 15.9375 4.03125 C 12.917 4.0435 9.9179219 4.4269844 8.3574219 5.1464844 C 8.3574219 5.1464844 5 6.6748594 5 11.880859 C 5 18.077859 4.9955 25.860234 10.5625 27.365234 C 12.6945 27.938234 14.527953 28.061562 16.001953 27.976562 C 18.676953 27.825562 20 27.005859 20 27.005859 L 19.910156 25.029297 C 19.910156 25.029297 18.176297 25.640313 16.029297 25.570312 C 13.902297 25.495313 11.6615 25.335688 11.3125 22.679688 C 11.2805 22.432688 11.264625 22.182594 11.265625 21.933594 C 15.772625 23.052594 19.615828 22.420969 20.673828 22.292969 C 23.627828 21.933969 26.199344 20.081672 26.527344 18.388672 C 27.041344 15.720672 26.998047 11.880859 26.998047 11.880859 C 26.998047 6.6748594 23.646484 5.1464844 23.646484 5.1464844 C 22.000984 4.3779844 18.958 4.019 15.9375 4.03125 z M 12.705078 8.0019531 C 13.739953 8.0297031 14.762578 8.4927031 15.392578 9.4707031 L 16.001953 10.505859 L 16.609375 9.4707031 C 17.874375 7.5037031 20.709594 7.6264375 22.058594 9.1484375 C 23.302594 10.596438 23.025391 11.531 23.025391 18 L 23.025391 18.001953 L 20.578125 18.001953 L 20.578125 12.373047 C 20.578125 9.7380469 17.21875 9.6362812 17.21875 12.738281 L 17.21875 16 L 14.787109 16 L 14.787109 12.738281 C 14.787109 9.6362812 11.429688 9.7360938 11.429688 12.371094 L 11.429688 18 L 8.9765625 18 C 8.9765625 11.526 8.7043594 10.585438 9.9433594 9.1484375 C 10.622859 8.3824375 11.670203 7.9742031 12.705078 8.0019531 z" />
-      </svg>
-    </a>
-  </div>
-</div>
 <div class="d-flex justify-between xs:flex-wrap">
   <div class="sections-container width-0 laji-page">
     <div class="d-flex justify-center home-content-container section-1">
@@ -103,8 +75,7 @@
     </div>
     <div class="inat-desc-container">
       <p translate>home.inat.desc</p>
-      <a class="btn btn-primary btn-lg" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' |
-        translate }}</a>
+      <a class="btn btn-primary btn-lg inat-link" href="https://inaturalist.laji.fi/" target="_blank">{{ 'home.inat.btn' | translate }}</a>
     </div>
   </div>
 </ng-template>
@@ -125,38 +96,37 @@
 </ng-template>
 
 <ng-template #navigationThumbnails>
-  <div class="my-7 col">
-    <div class="d-flex flex-wrap row">
-      <a routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+  <div class="my-7">
+    <div class="d-flex flex-wrap">
+      <a routerLink="taxon" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/species.svg)'"></div>
         <div>
           <span translate>home.taxon-sub-intro</span>
         </div>
       </a>
-      <a routerLink="observation" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+      <a routerLink="observation" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/observations.svg)'"></div>
         <div>
           <span translate>home.observation-sub-intro</span>
         </div>
       </a>
     </div>
-    <div class="d-flex flex-wrap row">
-      <a routerLink="save-observations" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+    <div class="d-flex flex-wrap">
+      <a routerLink="save-observations" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/vihko.svg)'"></div>
         <div>
           <span translate>home.notebook-sub-intro</span>
         </div>
       </a>
-      <a routerLink="theme/dataset-metadata" class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+      <a routerLink="theme/dataset-metadata" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dataset.svg)'"></div>
         <div>
           <span translate>home.dataset-metadata</span>
         </div>
       </a>
     </div>
-    <div class="d-flex flex-wrap row">
-      <a [href]="(dashboardLink | multiLang)" target="_blank"
-        class="home-card d-flex flex-col items-center mr-3 mb-3 col">
+    <div class="d-flex flex-wrap">
+      <a [href]="(dashboardLink | multiLang)" target="_blank" class="home-card d-flex flex-col items-center mr-3 mb-3">
         <div class="nav-thumbnail-img" [style.background-image]="'url(/static/images/icons/dashboard.svg)'"></div>
         <div *ngIf="(homeData$ | async)?.unitsLastWeek?.total > 0">
           <span>{{(homeData$ | async)?.unitsLastWeek?.total}} </span>
