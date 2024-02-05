@@ -173,7 +173,6 @@ export class UserService implements OnDestroy {
   }
 
   logout(cb?: () => void): void {
-    // TODO: remove this call once the endpoint is removed from API
     this.subLogout = this.personApi.removePersonToken(this.store.value.token).pipe(
       httpOkError([404, 400], false),
       retryWithBackoff(300),
