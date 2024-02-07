@@ -49,22 +49,12 @@ test.describe('Trip form template page', () => {
     await expect(templatesView.$container).toBeVisible();
   });
 
-  let row;
-
   test('template is shown in table', async () => {
-    for (let idx = 0; idx <  await templatesView.datatable.$rows.count(); idx++) {
-      const iteratedRow = templatesView.datatable.getRow(idx);
-      const cell = iteratedRow.$container.locator(`span[title="${name}"]`);
-      if (await cell.isVisible()) {
-        row = iteratedRow;
-        break;
-      }
-    }
-    expect(!!row).toBe(true);
+    await expect(templatesView.datatable.getRow(name).$container).toBeVisible();
   });
 
   test('template delete confirms', async () => {
-    await row.$deleteButton.click();
+    await templatesView.datatable.getRow(name).$deleteButton.click();
     await expect(templatesView.datatable.getDeleteModal().$container).toBeVisible();
   });
 

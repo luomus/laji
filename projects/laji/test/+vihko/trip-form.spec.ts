@@ -41,7 +41,7 @@ test.describe('Trip form page', () => {
     await tripFormPage.navigateTo();
   });
 
-  test.afterEach(async ({page}) => {
+  test.afterEach(async () => {
     await expect(page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 

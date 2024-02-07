@@ -16,8 +16,10 @@ export class SubmissionsPage {
     $container: this.$datatable,
     $rows: this.$datatable.locator('datatable-row-wrapper'),
     waitUntilLoaded: () => this.$datatable.locator('.spinner').waitFor({state: 'hidden'}),
-    getRow: (idx: number) => {
-      const $container = this.$datatable.locator('datatable-row-wrapper').nth(idx);
+    getRow: (name: string) => {
+      const $container = this.$datatable.locator('datatable-row-wrapper').filter({
+        has: this.page.locator(`span[title="${name}"]`)
+      });
       return {
         $container,
         $buttons: $container.locator('.btn'),
@@ -26,12 +28,12 @@ export class SubmissionsPage {
         $templateButton: $container.locator('.template-button'),
         $downloadButton: $container.locator('.download-button'),
         $deleteButton: $container.locator('.delete-button'),
-      }
+      };
     },
     $deleteModalContainer: this.page.locator('.datatable-delete-modal'),
     getDeleteModal: () => ({
       $container: this.datatable.$deleteModalContainer,
       $confirm: this.datatable.$deleteModalContainer.locator('.btn-danger')
     })
-  }
+  };
 }
