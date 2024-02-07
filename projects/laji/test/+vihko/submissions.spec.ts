@@ -20,26 +20,26 @@ test.describe('Trip form page', () => {
   });
 
   test('displays view button', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$viewButton).toBeVisible();
+    await expect(submissionsPage.datatable.getRowByIdx(0).$viewButton).toBeVisible();
   });
 
   test('displays edit button', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$editButton).toBeVisible();
+    await expect(submissionsPage.datatable.getRowByIdx(0).$editButton).toBeVisible();
   });
 
   test('displays download button', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$downloadButton).toBeVisible();
+    await expect(submissionsPage.datatable.getRowByIdx(0).$downloadButton).toBeVisible();
   });
 
   test('displays delete button', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$deleteButton).toBeVisible();
+    await expect(submissionsPage.datatable.getRowByIdx(0).$deleteButton).toBeVisible();
   });
 
   test('doesn\'t display template button', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$templateButton).toBeHidden();
+    await expect(submissionsPage.datatable.getRowByIdx(0).$templateButton).toBeHidden();
   });
 
   test('displays only 4 buttons', async () => {
-    await expect(submissionsPage.datatable.getRow(0).$buttons).toHaveCount(4);
+    await expect(submissionsPage.datatable.getRowByIdx(0).$buttons).toHaveCount(4);
   });
 });

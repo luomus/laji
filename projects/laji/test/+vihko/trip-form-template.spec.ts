@@ -50,11 +50,11 @@ test.describe('Trip form template page', () => {
   });
 
   test('template is shown in table', async () => {
-    await expect(templatesView.datatable.getRow(name).$container).toBeVisible();
+    await expect(templatesView.datatable.getRowByCellContent(name).$container).toBeVisible();
   });
 
   test('template delete confirms', async () => {
-    await templatesView.datatable.getRow(name).$deleteButton.click();
+    await templatesView.datatable.getRowByCellContent(name).$deleteButton.click();
     await expect(templatesView.datatable.getDeleteModal().$container).toBeVisible();
   });
 

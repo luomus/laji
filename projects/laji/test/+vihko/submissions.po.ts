@@ -16,19 +16,15 @@ export class SubmissionsPage {
     $container: this.$datatable,
     $rows: this.$datatable.locator('datatable-row-wrapper'),
     waitUntilLoaded: () => this.$datatable.locator('.spinner').waitFor({state: 'hidden'}),
-    getRow: (name: string) => {
+    getRowByIdx: (idx: number) => {
+      const $container = this.$datatable.locator('datatable-row-wrapper').nth(idx);
+      return this.getDatatableRow($container);
+    },
+    getRowByCellContent: (content: string) => {
       const $container = this.$datatable.locator('datatable-row-wrapper').filter({
-        has: this.page.locator(`span[title="${name}"]`)
+        has: this.page.locator(`span[title="${content}"]`)
       });
-      return {
-        $container,
-        $buttons: $container.locator('.btn'),
-        $viewButton: $container.locator('.view-button'),
-        $editButton: $container.locator('.edit-button'),
-        $templateButton: $container.locator('.template-button'),
-        $downloadButton: $container.locator('.download-button'),
-        $deleteButton: $container.locator('.delete-button'),
-      };
+      return this.getDatatableRow($container);
     },
     $deleteModalContainer: this.page.locator('.datatable-delete-modal'),
     getDeleteModal: () => ({
@@ -36,4 +32,16 @@ export class SubmissionsPage {
       $confirm: this.datatable.$deleteModalContainer.locator('.btn-danger')
     })
   };
+
+  private getDatatableRow($container: Locator) {
+    return {
+      $container,
+      $buttons: $container.locator('.btn'),
+      $viewButton: $container.locator('.view-button'),
+      $editButton: $container.locator('.edit-button'),
+      $templateButton: $container.locator('.template-button'),
+      $downloadButton: $container.locator('.download-button'),
+      $deleteButton: $container.locator('.delete-button'),
+    };
+  }
 }

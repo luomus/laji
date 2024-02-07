@@ -92,23 +92,23 @@ test.describe('Trip form page', () => {
 
     test('at least one template shown', async () => {
       await toolsPage.templatesDatatable.waitUntilLoaded();
-      await expect(toolsPage.templatesDatatable.getRow(0).$container).toBeVisible();
+      await expect(toolsPage.templatesDatatable.getRowByIdx(0).$container).toBeVisible();
     });
 
     test('displays template button', async () => {
-      await expect(toolsPage.templatesDatatable.getRow(0).$templateButton).toBeVisible();
+      await expect(toolsPage.templatesDatatable.getRowByIdx(0).$templateButton).toBeVisible();
     });
 
     test('displays delete button', async () => {
-      await expect(toolsPage.templatesDatatable.getRow(0).$deleteButton).toBeVisible();
+      await expect(toolsPage.templatesDatatable.getRowByIdx(0).$deleteButton).toBeVisible();
     });
 
     test('displays only two buttons', async () => {
-      await expect(toolsPage.templatesDatatable.getRow(0).$buttons).toHaveCount(2);
+      await expect(toolsPage.templatesDatatable.getRowByIdx(0).$buttons).toHaveCount(2);
     });
 
     test('template button directs to form page', async () => {
-      await toolsPage.templatesDatatable.getRow(0).$templateButton.click();
+      await toolsPage.templatesDatatable.getRowByIdx(0).$templateButton.click();
       await expect(formPage.$container).toBeVisible();
     });
   });
