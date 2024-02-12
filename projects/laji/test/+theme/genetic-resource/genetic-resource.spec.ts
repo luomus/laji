@@ -13,6 +13,6 @@ test.describe('Genetic Resource page', () => {
     await geneticResourcePage.navigateToMollusca();
     await geneticResourcePage.waitUntilLoaded();
 
-    expect(geneticResourcePage.hasNonGQLApiErrors).toBe(false);
+    expect(geneticResourcePage.pageHasNonGQLApiErrors()).toBe(false);
   });
 });

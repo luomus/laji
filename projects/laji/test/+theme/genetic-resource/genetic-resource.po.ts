@@ -1,14 +1,14 @@
-import { Page } from '@playwright/test';
+import { Page, Response } from '@playwright/test';
 
 export class GeneticResourcePage {
   public $spinners = this.page.locator('laji-observation-result').locator('.spinner');
 
-  public hasNonGQLApiErrors = false;
+  private hasNonGQLApiErrors = false;
 
   constructor(
     private page: Page
   ) {
-    this.page.on('response', resp => {
+    this.page.on('response', (resp: Response) => {
       if (resp.url().match(/.*api\/(?!graphql).*/) && [400, 404, 500].includes(resp.status())) {
         this.hasNonGQLApiErrors = true;
       }
@@ -22,5 +22,9 @@ export class GeneticResourcePage {
   async waitUntilLoaded() {
     const $spinners = await this.$spinners.all();
     await Promise.all($spinners.map($spinner => $spinner.waitFor({state: 'hidden'})));
+  }
+
+  pageHasNonGQLApiErrors(): boolean {
+    return this.hasNonGQLApiErrors;
   }
 }
