@@ -7,7 +7,7 @@ import { Taxon } from 'projects/laji-api-client/src/public-api';
 import { HeaderService } from 'projects/laji/src/app/shared/service/header.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { AtlasApiService, AtlasTaxon } from '../../core/atlas-api.service';
+import { AtlasApiService, AtlasTaxon, TaxonStatsResponse } from '../../core/atlas-api.service';
 import { BreadcrumbId, BreadcrumbService } from '../../core/breadcrumb.service';
 
 const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.substring(1);
@@ -15,6 +15,7 @@ const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.su
 interface SpeciesInfoData {
   taxon: AtlasTaxon;
   map: SafeHtml;
+  stats: TaxonStatsResponse;
 }
 
 @Component({
