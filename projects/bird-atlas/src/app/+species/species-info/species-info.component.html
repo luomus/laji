@@ -14,9 +14,38 @@
     Tämä laji on määritelty sensitiiviseksi, eikä sen kaikkia havaintoja näytetä atlaskartoilla, tai havainnot voivat tulla näkyviin viiveellä.
     <a href="https://lintuatlas.fi/sensitiiviset/" target="_blank">Lue tarkemmin eri lajien sensitiivisten havaintojen käsittelystä</a>.
   </div>
-  <div class="map-container" [innerHtml]="data.map"></div>
-  <a class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
-  <a class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'" target="_blank" rel="noopener noreferrer">
-    {{ 'ba.species-info.lajiMap' | translate }} <span class="glyphicon glyphicon-link"></span>
-  </a>
+  <div class="d-flex flex-wrap flex-gap-6">
+    <div class="map-container">
+      <div [innerHtml]="data.map"></div>
+      <a class="d-block" [href]="getMapDownloadUrl(data.taxon.id)" target="_blank">{{ 'ba.species-info.downloadSvg' | translate }} <span class="glyphicon glyphicon-link"></span></a>
+      <a class="d-block" [href]="'https://laji.fi/observation/list?target=' + data.taxon.id + '&countryId=ML.206&time=2022-01-01%2F2025-12-31&recordQuality=COMMUNITY_VERIFIED,NEUTRAL,EXPERT_VERIFIED&atlasClass=MY.atlasClassEnumB,MY.atlasClassEnumC,MY.atlasClassEnumD'" target="_blank" rel="noopener noreferrer">
+        {{ 'ba.species-info.lajiMap' | translate }} <span class="glyphicon glyphicon-link"></span>
+      </a>
+    </div>
+    <div>
+      Number of squares in each breeding class:
+      <table>
+        <tr>
+          <th>Breeding class</th>
+          <th>Number of squares</th>
+        </tr>
+        <tr>
+          <td>Unlikely</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Possible</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>Probable</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>Confirmed</td>
+          <td>5</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
