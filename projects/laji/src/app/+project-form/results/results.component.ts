@@ -24,6 +24,9 @@ import { ActivatedRoute } from '@angular/router';
       <div *ngSwitchCase="ResultServiceType.invasiveSpeciesControl">
         <laji-invasive-species-control-result [form]="(form$ | async)"></laji-invasive-species-control-result>
       </div>
+      <div *ngSwitchCase="ResultServiceType.completeLists">
+        <laji-complete-lists-result [form]="(form$ | async)"></laji-complete-lists-result>
+      </div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

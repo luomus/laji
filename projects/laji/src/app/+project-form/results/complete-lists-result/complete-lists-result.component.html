@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <laji-project-form-header [form]="form"></laji-project-form-header>
+  <div class="row">
+    <laji-navigation-thumbnail name="completeLists.stats.statistics.title" icon="table" iconType="png"
+      [query]="{tab: Tabs.statistics}"></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail name="completeLists.stats.map.title" icon="wb_icon_map_2" iconType="png"
+      [query]="{tab: Tabs.map}"></laji-navigation-thumbnail>
+  </div>
+  <ng-container *ngIf="state$ | async as state">
+    <div *ngIf="isStatisticsState(state)">
+      <laji-complete-lists-result-statistics [taxon]="state.taxon" [municipality]="state.municipality"
+        (taxonChange)="onTaxonChange($event)"
+        (municipalityChange)="onMunicipalityChange($event)"></laji-complete-lists-result-statistics>
+    </div>
+    <div *ngIf="isMapState(state)">
+      <laji-complete-lists-result-map
+        [collection]="form.collectionID"
+        [taxon]="state.taxon"
+        (taxonChange)="onTaxonChange($event)"
+        (collectionChange)="onCollectionChange($event)"></laji-complete-lists-result-map>
+    </div>
+  </ng-container>
+</div>

@@ -54,6 +54,9 @@ import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-selec
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
 import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
+import { CompleteListsResultComponent } from './complete-lists-result/complete-lists-result.component';
+import { CompleteListsResultStatisticsComponent } from './complete-lists-result/complete-lists-result-statistics/complete-lists-result-statistics.component';
+import { CompleteListsResultMapComponent } from './complete-lists-result/complete-lists-result-map/complete-lists-result-map.component';
 
 @NgModule({
   imports: [
@@ -107,7 +110,10 @@ import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.mod
     SykeInsectAllResultsComponent,
     InvasiveSpeciesControlResultComponent,
     InvasiveSpeciesControlResultStatisticsComponent,
-    InvasiveSpeciesControlResultMapComponent
+    InvasiveSpeciesControlResultMapComponent,
+    CompleteListsResultComponent,
+    CompleteListsResultStatisticsComponent,
+    CompleteListsResultMapComponent
   ],
   providers: [
     WbcResultService,
