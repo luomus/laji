@@ -23,27 +23,22 @@
       </a>
     </div>
     <div>
-      Number of squares in each breeding class:
       <table>
         <tr>
-          <th>Breeding class</th>
-          <th>Number of squares</th>
+          <th>Pesinnän todennäköisyys</th>
+          <th>Ruutujen määrä</th>
         </tr>
         <tr>
-          <td>Unlikely</td>
-          <td>5</td>
+          <td>Mahdollinen</td>
+          <td>{{ data.stats['MY.atlasClassEnumB'] }}</td>
         </tr>
         <tr>
-          <td>Possible</td>
-          <td>10</td>
+          <td>Todennäköinen</td>
+          <td>{{ data.stats['MY.atlasClassEnumC'] }}</td>
         </tr>
         <tr>
-          <td>Probable</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td>Confirmed</td>
-          <td>5</td>
+          <td>Varma</td>
+          <td>{{ data.stats['MY.atlasClassEnumD'] }}</td>
         </tr>
       </table>
     </div>

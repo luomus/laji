@@ -42,15 +42,22 @@ export class SpeciesInfoComponent {
         this.loading = true;
         this.cdr.markForCheck();
       }),
-      switchMap(params => forkJoin({
-        taxon: this.atlasApi.getTaxon(params.get('id')).pipe(
+      map(params => params.get('id')),
+      switchMap(id => forkJoin({
+        taxon: this.atlasApi.getTaxon(id).pipe(
           catchError(err => {
             console.error(err);
             return of(undefined);
           })
         ),
-        map: this.atlasApi.getSpeciesMap(params.get('id')).pipe(
+        map: this.atlasApi.getSpeciesMap(id).pipe(
           map(html => this.sanitizer.bypassSecurityTrustHtml(html)),
+          catchError(err => {
+            console.error(err);
+            return of(undefined);
+          })
+        ),
+        stats: this.atlasApi.getTaxonStats(id).pipe(
           catchError(err => {
             console.error(err);
             return of(undefined);
