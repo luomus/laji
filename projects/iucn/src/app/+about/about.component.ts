@@ -21,6 +21,7 @@ import { Title } from '@angular/platform-browser';
           <laji-info-page
             [rootPage]="{'fi': 'r-19', 'en': 'r-21', 'sv': 'r-23'}"
             [page]="activePage"
+            [excludeParentIds]="['r-5', 'r-9', 'r-7']"
             (title)="setTitle($event)"
             (parents)="parents = $event"
             (subPages)="children = $event"
