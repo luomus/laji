@@ -132,18 +132,16 @@ export class CompleteListsResultMapComponent implements OnInit {
     );
 
     this.collectionOptions$ = this.collectionApi.findChildren(
-        this.parentCollectionID,
-        this.translate.currentLang,
-        undefined,
-        '10000'
-      ).pipe(
+      this.parentCollectionID,
+      this.translate.currentLang,
+      undefined,
+      '10000'
+    ).pipe(
       map(res => res.results),
       map(collections => collections.map(c => ({ label: c.collectionName, value: c.id })))
     );
 
-    this.taxonOptions$ = this.formApi.getAllForms(
-      this.translate.currentLang
-    ).pipe(
+    this.taxonOptions$ = this.formApi.getAllForms().pipe(
       map(forms =>
         forms
           .filter(f => (f.collectionID !== undefined && f.options.prepopulateWithTaxonSets !== undefined))

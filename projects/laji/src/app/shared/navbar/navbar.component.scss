@@ -166,9 +166,7 @@ $text-color: $primary-2;
 .red-theme.navbar-inverse .navbar-form,
 .red-theme.navbar-inverse .navbar-collapse,
 .red-theme.navbar-inverse .navbar-form {
-  border-left-color: $neutral-3;
-  border-right-color: $neutral-3;
-  border-bottom-color: $neutral-3;
+  border-color: $neutral-3;
 }
 .red-theme.navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
@@ -182,11 +180,19 @@ $text-color: $primary-2;
 }
 
 .navbar-collapse .lu-dropdown a {
-  color: #333;
+  color: $neutral-8;
   @media only screen and (max-width: 900px) {
     color: $neutral-1;
   }
 }
+
+@media only screen and (max-width: 900px) {
+  .navbar-collapse .lu-dropdown.user-dropdown, .navbar-collapse .lu-dropdown.lang-dropdown {
+    background-color: $primary-6;
+    position: relative;
+  }
+}
+
 
 @media only screen and (max-width: 900px) {
   .red-theme.navbar .navbar-collapse {
@@ -213,9 +219,11 @@ $text-color: $primary-2;
       float: none;
       width: auto;
       margin-top: 0;
-      background-color: transparent;
       border: 0;
       box-shadow: none;
+      & > li > a:hover {
+        background-color: darken($color-main, 10%);
+      }
     }
   }
 

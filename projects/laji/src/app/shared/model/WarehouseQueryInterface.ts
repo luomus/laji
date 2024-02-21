@@ -194,6 +194,7 @@ export interface WarehouseQueryInterface {
   hasUnitMedia?: boolean;
   hasUnitImages?: boolean;
   hasUnitAudio?: boolean;
+  hasUnitModel?: boolean;
   hasMedia?: boolean;
   hasSample?: boolean;
   secureReason?: Array<string>;
