@@ -12,14 +12,13 @@ enum Tabs {
 
 interface StatisticsState {
   tab: Tabs.statistics;
-  municipality: string;
-  taxon: string;
+  collection: string | undefined;
 }
 
 interface MapState {
   tab: Tabs.map;
-  collection: string;
-  taxon: string;
+  collection: string | undefined;
+  taxon: string | undefined;
 }
 
 type State = StatisticsState | MapState;
@@ -77,6 +76,6 @@ export class CompleteListsResultComponent implements OnInit, OnDestroy {
   }
 
   onCollectionChange(collection: any) {
-    this.updateState({ collection, taxon: '' });
+    this.updateState({ collection, taxon: undefined });
   }
 }

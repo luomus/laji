@@ -7,7 +7,8 @@
 <div class="mb-4">
   <label>{{ 'completeLists.stats.map.taxon.label' | translate }}</label>
   <laji-spinner class="d-block" [spinning]="taxonLoading">
-    <select class="form-control" (change)="onTaxonChange($event.target.value)" [disabled]="taxonLoading">
+    <select class="form-control" (change)="onTaxonChange($event.target.value)" [(ngModel)]="defaultTaxon"
+      [disabled]="taxonLoading">
       <option *ngFor="let option of taxonOptions$ | async" [value]="option.value">{{ option.label }}</option>
     </select>
   </laji-spinner>

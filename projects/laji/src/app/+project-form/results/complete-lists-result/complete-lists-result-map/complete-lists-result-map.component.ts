@@ -69,6 +69,7 @@ export class CompleteListsResultMapComponent implements OnInit {
   collectionOptions$: Observable<Array<any>>;
   taxonOptions$: Observable<Array<any>>;
   defaultCollection: string;
+  defaultTaxon: string;
   taxonSetLookup: Array<{ collectionID: string; taxonSet: Array<string> }>;
   parentCollectionID = 'HR.5615';
   loading = true;
@@ -94,6 +95,7 @@ export class CompleteListsResultMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.defaultCollection = this.collection$.getValue();
+    this.defaultTaxon = this.taxon$.getValue();
 
     const query$ = combineLatest([this.collection$, this.taxon$]).pipe(switchMap(([collection, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
       {
