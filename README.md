@@ -26,11 +26,15 @@ npm start
 ```
 
 ## Running end-to-end tests
-1. Get a permanent test user person token from another developer (the tests assume that this user is being used)
-2. Create a `.env` file at the root of the repository
-3. Insert the token `PERSON_TOKEN=<your_token>`
-4. run `npm start`
-5. run `npx playwright test --ui`
+1. Create an empty `.env` file at the root of the repository:
+```
+PERSON_TOKEN=
+E2E_USER=
+E2E_PASS=
+```
+2. get the credentials to the e2e user from another developer
+3. run `npm start` to start laji.fi dev server
+4. run `npx playwright test` (for headless mode), `npx playwright test --ui` (for headful mode) or [use the playwright vscode plugin](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
 
 ## Further help
 
