@@ -14,7 +14,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { IUserSettings, UserService } from '../../shared/service/user.service';
-import { of, Subscription } from 'rxjs';
+import { of, Observable, Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
 import { Global } from '../../../environments/global';
@@ -83,10 +83,10 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
 
   private _settingsKey: keyof IUserSettings;
-  private subSet: Subscription;
+  private updateSettingsSub: Subscription;
   private userSettings: Options = {};
   private mapData: any;
-  private drawToMapType: any;
+  private drawToMapType: string;
 
   constructor(
     private userService: UserService,
@@ -105,8 +105,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
       this.map.destroy();
       this.map = undefined;
     } catch (e) {}
-    if (this.subSet) {
-      this.subSet.unsubscribe();
+    if (this.updateSettingsSub) {
+      this.updateSettingsSub.unsubscribe();
     }
   }
 
@@ -121,41 +121,12 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     }
 
     if (changes.options || changes.settingsKey) {
-      if (this.subSet) {
-        this.subSet.unsubscribe();
+      if (this.updateSettingsSub) {
+        this.updateSettingsSub.unsubscribe();
       }
 
       if (changes.options) {
-        let options = this.options;
-        if (!options.on) {
-          options = {
-            ...options, on: {
-              tileLayersChange: (event) => {
-                this.zone.run(() => {
-                  this.tileLayersChange.emit((event as any).tileLayers);
-                });
-
-                if (this._settingsKey) {
-                  this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
-                  this.userService.setUserSetting(this._settingsKey, this.userSettings);
-                }
-              }
-            } as any
-          };
-        }
-        if (typeof options.draw === 'object' && !options.draw.onChange) {
-          options = {
-            ...options,
-            draw: {
-              ...options.draw,
-              onChange: e => this.onChange(e)
-            }
-          };
-        }
-        if ((environment as any).geoserver) {
-          options.lajiGeoServerAddress = (environment as any).geoserver;
-        }
-        this._options = options;
+        this.updateOptions();
       }
 
       let settings$ = of(this.userSettings);
@@ -165,19 +136,11 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
         this._settingsKey = key;
 
         if (key) {
-          settings$ = this.userService.getUserSetting<Options>(this._settingsKey).pipe(
-            take(1),
-            tap(settings => {
-              this.userSettings = settings || {};
-              if (this.userSettings.tileLayers) {
-                this.tileLayersChange.emit(this.userSettings.tileLayers);
-              }
-            })
-          );
+          settings$ = this.updateSettings();
         }
       }
 
-      this.subSet = settings$.subscribe(() => {
+      this.updateSettingsSub = settings$.subscribe(() => {
         this.initMap();
         this.cd.markForCheck();
       });
@@ -268,5 +231,50 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     } else if (['Rectangle', 'Polygon'].includes(type)) {
       this.map.triggerDrawing(type);
     }
+  }
+
+  updateOptions() {
+    let options = this.options;
+        if (!options.on) {
+          options = {
+            ...options, on: {
+              tileLayersChange: (event) => {
+                this.zone.run(() => {
+                  this.tileLayersChange.emit((event as any).tileLayers);
+                });
+
+                if (this._settingsKey) {
+                  this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
+                  this.userService.setUserSetting(this._settingsKey, this.userSettings);
+                }
+              }
+            } as any
+          };
+        }
+        if (typeof options.draw === 'object' && !options.draw.onChange) {
+          options = {
+            ...options,
+            draw: {
+              ...options.draw,
+              onChange: e => this.onChange(e)
+            }
+          };
+        }
+        if ((environment as any).geoserver) {
+          options.lajiGeoServerAddress = (environment as any).geoserver;
+        }
+        this._options = options;
+  }
+
+  updateSettings(): Observable<Options> {
+    return this.userService.getUserSetting<Options>(this._settingsKey).pipe(
+      take(1),
+      tap(settings => {
+        this.userSettings = settings || {};
+        if (this.userSettings.tileLayers) {
+          this.tileLayersChange.emit(this.userSettings.tileLayers);
+        }
+      })
+    );
   }
 }

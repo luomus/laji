@@ -23,9 +23,9 @@ test.describe('Save observations page', () => {
     await expect(saveObservationsPage.simpleForms).toHaveCount(27);
   });
 
-  test('should open form when clicking form button', async ({ page }) => {
+  test('should open form when clicking form button', async () => {
     const fungiAtlasID = 'JX.652';
     await saveObservationsPage.clickFormById(fungiAtlasID);
-    await expect(page.locator('.sidebar')).toBeVisible();
+    await expect(saveObservationsPage._page.locator('.sidebar')).toBeVisible();
   });
 });

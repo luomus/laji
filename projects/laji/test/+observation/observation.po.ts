@@ -54,7 +54,6 @@ class DatePicker {
   async type(date: string) {
     await this.$container.locator('input').fill(date);
     await this.$container.locator('input').press('Tab');
-    return;
   }
 
   getInputValue() {
@@ -81,6 +80,7 @@ export class ObservationPage {
     &includeSubTaxa=false&annotated=true&individualCountMin=0&individualCountMax=1000&occurrenceCountFinlandMax=1000&coordinateAccuracyMax=1000
     &qualityIssues=BOTH&firstLoadedSameOrAfter=2022-01-01&loadedSameOrAfter=2022-01-01&season=0101%2F1218
   `;
+  public _page = this.page;
   public map = new MapPageObject(this.page, this.page.getByTestId('observation-map'));
   public tabs: Record<string, LUTabPO> = {
     list: new LUTabPO(this.page, 'list'),
@@ -105,11 +105,18 @@ export class ObservationPage {
   public $coordinateIntersectMaxBtn = this.page.locator('.coordinate-intersect-max');
   public $mapSpinner = this.page.locator('.loading-map');
   public $searchBtn = this.page.locator('.observation-search-btn');
+  public hasGraphQLApiErrors = false;
 
   private $activeFiltersBtn = this.page.locator('.active-filters-btn');
   private toast = new ToastPO(this.page);
 
-  constructor(private page: Page) { }
+  constructor(private page: Page) {
+    this.page.on('response', res => {
+      if (res.url().match(/.*api\/graphql.*/) && [400].includes(res.status())) {
+        this.hasGraphQLApiErrors = true;
+      }
+    });
+  }
 
   async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {
     await this.page.goto(`observation/${sub}?${new URLSearchParams(query || {}).toString()}`);
@@ -117,16 +124,6 @@ export class ObservationPage {
 
   async navigateToViewWithAllFilters() {
     await this.page.goto(this.pathWithAllFilters);
-  }
-
-  async hasGraphqlErrors() {
-    let hasGraphQLApiErrors = false;
-    this.page.on('response', res => {
-      if (res.url().match(/.*api\/graphql.*/) && [400].includes(res.status())) {
-        hasGraphQLApiErrors = true;
-      }
-    });
-    return hasGraphQLApiErrors;
   }
 
   async search() {
@@ -138,17 +135,6 @@ export class ObservationPage {
 
   async drawRectangle() {
     await this.map.drag([0, 0], [10, 10]);
-  }
-
-  private async getCoordinateFilter() {
-    const url = new URL(this.page.url());
-    return url.searchParams.get('coordinates');
-  }
-
-  async getCoordinateIntersect() {
-    const coordFilter = await this.getCoordinateFilter();
-    console.log(coordFilter);
-    return +(await this.getCoordinateFilter()).split(':').pop();
   }
 
   async updateCoordinateIntersectControlValue(value: number) {
