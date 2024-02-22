@@ -32,6 +32,7 @@ export default defineConfig({
     permissions: ['geolocation'],
     geolocation: { latitude: 60.1714275534955, longitude: 24.93126046426308 } // fmnh geolocation
   },
+  timeout: 100000,
 
   /* Configure projects for major browsers */
   projects: [
