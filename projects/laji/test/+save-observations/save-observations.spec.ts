@@ -14,7 +14,7 @@ test.describe('Save observations page', () => {
   });
 
   test.afterEach(async () => {
-    await expect(saveObservationsPage._page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
+    await expect(saveObservationsPage.page.locator(ERROR_DIALOG_SELECTOR)).not.toBeVisible();
   });
 
   test('should show list of forms', async () => {
@@ -24,6 +24,6 @@ test.describe('Save observations page', () => {
   test('should open form when clicking form button', async () => {
     const fungiAtlasID = 'JX.652';
     await saveObservationsPage.clickFormById(fungiAtlasID);
-    await expect(saveObservationsPage._page.locator('.sidebar')).toBeVisible();
+    await expect(saveObservationsPage.page.locator('.sidebar')).toBeVisible();
   });
 });

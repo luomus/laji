@@ -80,7 +80,6 @@ export class ObservationPage {
     &includeSubTaxa=false&annotated=true&individualCountMin=0&individualCountMax=1000&occurrenceCountFinlandMax=1000&coordinateAccuracyMax=1000
     &qualityIssues=BOTH&firstLoadedSameOrAfter=2022-01-01&loadedSameOrAfter=2022-01-01&season=0101%2F1218
   `;
-  public _page = this.page;
   public map = new MapPageObject(this.page, this.page.getByTestId('observation-map'));
   public tabs: Record<string, LUTabPO> = {
     list: new LUTabPO(this.page, 'list'),
@@ -105,17 +104,21 @@ export class ObservationPage {
   public $coordinateIntersectMaxBtn = this.page.locator('.coordinate-intersect-max');
   public $mapSpinner = this.page.locator('.loading-map');
   public $searchBtn = this.page.locator('.observation-search-btn');
-  public hasGraphQLApiErrors = false;
 
   private $activeFiltersBtn = this.page.locator('.active-filters-btn');
   private toast = new ToastPO(this.page);
+  private hasGraphQLApiErrors = false;
 
-  constructor(private page: Page) {
+  constructor(public page: Page) {
     this.page.on('response', res => {
       if (res.url().match(/.*api\/graphql.*/) && [400].includes(res.status())) {
         this.hasGraphQLApiErrors = true;
       }
     });
+  }
+
+  pageHasGraphQLApiErrors(): boolean {
+    return this.hasGraphQLApiErrors;
   }
 
   async navigateTo(sub: 'list' | '' = '', query?: Record<string, string>) {

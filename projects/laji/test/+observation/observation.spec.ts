@@ -12,7 +12,7 @@ test.describe('Observation list', () => {
 
   test('graphql works with all filters', async () => {
     await observationPage.navigateToViewWithAllFilters();
-    expect(observationPage.hasGraphQLApiErrors).toBe(false);
+    expect(observationPage.pageHasGraphQLApiErrors()).toBe(false);
   });
 
   test.describe('search button', () => {
@@ -31,17 +31,17 @@ test.describe('Observation list', () => {
 
     test('does not update filters before it is clicked', async () => {
       await observationPage.$occurrenceCountFinlandMax.fill((2).toString());
-      await expect(observationPage._page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
+      await expect(observationPage.page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
     });
 
     test('clicking it updates the filters', async () => {
       await observationPage.$occurrenceCountFinlandMax.fill((2).toString());
       await observationPage.search();
-      await expect(observationPage._page).toHaveURL(/.*occurrenceCountFinlandMax=2.*/);
+      await expect(observationPage.page).toHaveURL(/.*occurrenceCountFinlandMax=2.*/);
     });
 
     test('and changes tab to list', async () => {
-      await expect(observationPage._page.locator('.obs-filter-list')).toHaveAttribute('class', /.*active.*/);
+      await expect(observationPage.page.locator('.obs-filter-list')).toHaveAttribute('class', /.*active.*/);
     });
   });
 
@@ -54,7 +54,7 @@ test.describe('Observation list', () => {
       await observationPage.$occurrenceCountFinlandMax.fill((2).toString());
       await observationPage.search();
       await observationPage.removeFromActiveFilters('occurrenceCountFinlandMax');
-      await expect(observationPage._page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
+      await expect(observationPage.page).toHaveURL(/^(?:(?!occurrenceCountFinlandMax).)*$/);
     });
 
     test('removes a coordinate filter that have not been applied yet', async () => {
@@ -80,21 +80,21 @@ test.describe('Observation list', () => {
       });
 
       test('changes tab to map', async () => {
-        await expect(observationPage._page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
+        await expect(observationPage.page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
       });
 
       test('and drawing adds coordinates filter to query', async () => {
         await observationPage.$mapSpinner.waitFor({ state: 'hidden' });
         await observationPage.drawRectangle();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*WGS84:.*/);
+        await expect(observationPage.page).toHaveURL(/.*WGS84:.*/);
       });
 
       test('coordinate intersect 0 by default', async () => {
         await observationPage.$mapSpinner.waitFor({ state: 'hidden' });
         await observationPage.drawRectangle();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*WGS84:0.*/);
+        await expect(observationPage.page).toHaveURL(/.*WGS84:0.*/);
       });
 
       test('coordinate intersect can be updated', async () => {
@@ -103,7 +103,7 @@ test.describe('Observation list', () => {
         await observationPage.search();
         await observationPage.$coordinateIntersectMaxBtn.click();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*WGS84:1.*/);
+        await expect(observationPage.page).toHaveURL(/.*WGS84:1.*/);
       });
 
       test.afterEach(async () => {
@@ -118,29 +118,29 @@ test.describe('Observation list', () => {
       });
 
       test('enabled when logged in', async () => {
-        await login(observationPage._page);
-        await observationPage._page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
+        await login(observationPage.page);
+        await observationPage.page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
         await observationPage.placePanel.open();
         await expect(observationPage.$drawPolygonBtn).not.toBeDisabled();
       });
 
       test.describe('click', () => {
         test.beforeEach(async () => {
-          await login(observationPage._page);
-          await observationPage._page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
+          await login(observationPage.page);
+          await observationPage.page.locator('#navbar').getByRole('link', { name: 'Selaa havaintoja' }).click();
           await observationPage.placePanel.open();
           await observationPage.$drawPolygonBtn.click();
         });
 
         test('changes tab to map', async () => {
-          await expect(observationPage._page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
+          await expect(observationPage.page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
         });
 
         test('and drawing adds polygon filter to query', async () => {
           await observationPage.zoomClose();
           await observationPage.drawPolygon();
           await observationPage.search();
-          await expect(observationPage._page).toHaveURL(/.*?.*polygonId=\d+/);
+          await expect(observationPage.page).toHaveURL(/.*?.*polygonId=\d+/);
         });
       });
 
@@ -159,7 +159,7 @@ test.describe('Observation list', () => {
       });
 
       test('changes tab to map', async () => {
-        await expect(observationPage._page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
+        await expect(observationPage.page.locator('.obs-filter-map')).toHaveAttribute('class', /.*active.*/);
       });
 
       test('opens YKJ modal', async () => {
@@ -172,7 +172,7 @@ test.describe('Observation list', () => {
         await control.enterLatLng(666, 333);
         await control.$submit.click();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*YKJ:.*/);
+        await expect(observationPage.page).toHaveURL(/.*YKJ:.*/);
       });
 
       test('coordinate intersect 1 by default', async () => {
@@ -181,7 +181,7 @@ test.describe('Observation list', () => {
         await control.enterLatLng(666, 333);
         await control.$submit.click();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*YKJ:1.*/);
+        await expect(observationPage.page).toHaveURL(/.*YKJ:1.*/);
       });
 
       test('coordinate intersect can be updated', async () => {
@@ -192,7 +192,7 @@ test.describe('Observation list', () => {
         await observationPage.search();
         await observationPage.$coordinateIntersectMinBtn.click();
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*YKJ:0.*/);
+        await expect(observationPage.page).toHaveURL(/.*YKJ:0.*/);
       });
     });
 
@@ -204,7 +204,7 @@ test.describe('Observation list', () => {
         await control.$submit.click();
         await observationPage.updateCoordinateIntersectControlValue(0.3);
         await observationPage.search();
-        await expect(observationPage._page).toHaveURL(/.*YKJ:0.3.*/);
+        await expect(observationPage.page).toHaveURL(/.*YKJ:0.3.*/);
       });
     });
   });
@@ -220,19 +220,19 @@ test.describe('Observation list', () => {
     test('time start accepts date without zeros and updates query', async () => {
       await observationPage.dateBegin.type('1.1.2022');
       await observationPage.search();
-      await expect(observationPage._page).toHaveURL(/.*time=2022-01-01%2F*/);
+      await expect(observationPage.page).toHaveURL(/.*time=2022-01-01%2F*/);
     });
 
     test('time start accepts date with zeros and updates query', async () => {
       await observationPage.dateBegin.type('01.01.2022');
       await observationPage.search();
-      await expect(observationPage._page).toHaveURL(/.*time=2022-01-01%2F*/);
+      await expect(observationPage.page).toHaveURL(/.*time=2022-01-01%2F*/);
     });
 
     test('time end updates query', async () => {
       await observationPage.dateEnd.type('1.1.2023');
       await observationPage.search();
-      await expect(observationPage._page).toHaveURL(/.*time=%2F2023-01-01*/);
+      await expect(observationPage.page).toHaveURL(/.*time=%2F2023-01-01*/);
     });
 
 
@@ -260,7 +260,7 @@ test.describe('Observation list', () => {
         await observationPage.dateEnd.calendar.selectToday();
         await observationPage.search();
         const regex = new RegExp(`.*time=%2F${dateAsISO8601(new Date())}*`);
-        await expect(observationPage._page).toHaveURL(regex);
+        await expect(observationPage.page).toHaveURL(regex);
       });
     });
 
@@ -270,7 +270,7 @@ test.describe('Observation list', () => {
       yesterday.setDate(yesterday.getDate() - 1);
       await observationPage.search();
       const regex = new RegExp(`.*time=${dateAsISO8601(yesterday)}%2F*`);
-      await expect(observationPage._page).toHaveURL(regex);
+      await expect(observationPage.page).toHaveURL(regex);
     });
 
     test.describe('preselected value', () => {
@@ -279,7 +279,7 @@ test.describe('Observation list', () => {
       });
 
       test('causes time panel to be open', async () => {
-        await expect(observationPage._page.locator('.laji-panel-time .is-open')).toBeVisible();
+        await expect(observationPage.page.locator('.laji-panel-time .is-open')).toBeVisible();
       });
 
       test('shows value from input properties', async () => {

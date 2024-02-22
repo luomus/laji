@@ -22,9 +22,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { LocalStorage } from 'ngx-webstorage';
 import { environment } from 'projects/laji/src/environments/environment';
 import { DEFAULT_LANG } from '../../locale/localize-router.service';
-import type  { PathOptions, DivIcon } from 'leaflet';
+import type { PathOptions, DivIcon } from 'leaflet';
 import { Feature } from 'geojson';
-import {PlatformService} from '../../root/platform.service';
+import { PlatformService } from '../../root/platform.service';
 
 const classNamesAsArr = (c?: string) => c?.split(' ') || [];
 
@@ -73,7 +73,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @Output() loaded = new EventEmitter();
   @Output() create = new EventEmitter();
   @Output() move = new EventEmitter();
-  @Output() tileLayersChange =  new EventEmitter();
+  @Output() tileLayersChange = new EventEmitter();
   @ViewChild('lajiMap', { static: true }) elemRef: ElementRef;
 
   lang: string;
@@ -81,8 +81,6 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   _options: Options = {};
   @LocalStorage('onlycount') onlyCount;
 
-
-  private _settingsKey: keyof IUserSettings;
   private updateSettingsSub: Subscription;
   private userSettings: Options = {};
   private mapData: any;
@@ -95,7 +93,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     private translate: TranslateService,
     private zone: NgZone,
     private platformService: PlatformService
-  ) {}
+  ) { }
 
   @Input() options: Options;
   @Input() settingsKey: keyof IUserSettings;
@@ -104,7 +102,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     try {
       this.map.destroy();
       this.map = undefined;
-    } catch (e) {}
+    } catch (e) { }
     if (this.updateSettingsSub) {
       this.updateSettingsSub.unsubscribe();
     }
@@ -131,13 +129,8 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
       let settings$ = of(this.userSettings);
 
-      if (changes.settingsKey) {
-        const key = this.settingsKey;
-        this._settingsKey = key;
-
-        if (key) {
-          settings$ = this.updateSettings();
-        }
+      if (this.settingsKey && changes.settingsKey) {
+        settings$ = this.updateSettings();
       }
 
       this.updateSettingsSub = settings$.subscribe(() => {
@@ -235,39 +228,39 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
 
   updateOptions() {
     let options = this.options;
-        if (!options.on) {
-          options = {
-            ...options, on: {
-              tileLayersChange: (event) => {
-                this.zone.run(() => {
-                  this.tileLayersChange.emit((event as any).tileLayers);
-                });
+    if (!options.on) {
+      options = {
+        ...options, on: {
+          tileLayersChange: (event) => {
+            this.zone.run(() => {
+              this.tileLayersChange.emit((event as any).tileLayers);
+            });
 
-                if (this._settingsKey) {
-                  this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
-                  this.userService.setUserSetting(this._settingsKey, this.userSettings);
-                }
-              }
-            } as any
-          };
-        }
-        if (typeof options.draw === 'object' && !options.draw.onChange) {
-          options = {
-            ...options,
-            draw: {
-              ...options.draw,
-              onChange: e => this.onChange(e)
+            if (this.settingsKey) {
+              this.userSettings.tileLayers = (event as any).tileLayers as TileLayersOptions;
+              this.userService.setUserSetting(this.settingsKey, this.userSettings);
             }
-          };
+          }
+        } as any
+      };
+    }
+    if (typeof options.draw === 'object' && !options.draw.onChange) {
+      options = {
+        ...options,
+        draw: {
+          ...options.draw,
+          onChange: e => this.onChange(e)
         }
-        if ((environment as any).geoserver) {
-          options.lajiGeoServerAddress = (environment as any).geoserver;
-        }
-        this._options = options;
+      };
+    }
+    if ((environment as any).geoserver) {
+      options.lajiGeoServerAddress = (environment as any).geoserver;
+    }
+    this._options = options;
   }
 
   updateSettings(): Observable<Options> {
-    return this.userService.getUserSetting<Options>(this._settingsKey).pipe(
+    return this.userService.getUserSetting<Options>(this.settingsKey).pipe(
       take(1),
       tap(settings => {
         this.userSettings = settings || {};
