@@ -9,9 +9,7 @@ import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.servi
   selector: 'laji-observation-table-settings',
   template: `
     <ng-template #settingsModal>
-        <h4>
-          {{ isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate) }}
-        </h4>
+      <h4>{{ isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate) }}</h4>
       <div class="row" *ngIf="isAggregate && !!columnSelector && !!numberColumnSelector">
         <div class="col-sm-6 col-md-4">
           <laji-selected-field-group
@@ -54,23 +52,20 @@ import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.servi
           </div>
         </ng-container>
       </div>
-      <div class="row">
-        <div class="col-sm-6">
+      <div class="d-flex justify-between gap-4">
+        <div>
           <div *ngIf="showPageSize">
             <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="pageSizeChange.emit($event)"></laji-page-size-select>
           </div>
         </div>
-        <div class="col-sm-6 clear-btn">
-          <div class="pull-right">
-            <button type="button" tabindex="-1" class="btn btn-default btn-sm" (click)="resetColumns.emit()">
-              {{ 'result.reset' | translate }}
-            </button>
-            <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="closeModal(true)">Ok</button>
-          </div>
+        <div class="modal-footer-top-offset">
+          <button type="button" class="btn btn-default mr-3" (click)="resetColumns.emit()">{{ 'result.reset' | translate }}</button>
+          <button type="button" class="btn btn-primary" (click)="closeModal(true)">Ok</button>
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  styleUrls: ['./observation-table-settings.component.scss']
 })
 export class ObservationTableSettingsComponent<T extends IGenericColumn<DatatableColumn> = IGenericColumn<DatatableColumn>> {
 

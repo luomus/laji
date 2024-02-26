@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'laji-selected-field-item',
   templateUrl: './selected-field-item.component.html',
-  styleUrls: ['./selected-field-item.component.css'],
+  styleUrls: ['./selected-field-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedFieldItemComponent {
+export class SelectedFieldItemComponent implements OnInit {
 
   @Input() field: string[];
   @Input() label: string;
@@ -17,6 +17,10 @@ export class SelectedFieldItemComponent {
   @Output() toggle = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string[]>();
   @Output() moveDown = new EventEmitter<string[]>();
+
+  ngOnInit() {
+    console.log(this.field, this.label, this.idx, this.len, this.required);
+  }
 
   moveFieldDown(field, event) {
     event.stopPropagation();
