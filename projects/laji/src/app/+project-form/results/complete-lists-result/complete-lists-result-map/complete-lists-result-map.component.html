@@ -15,6 +15,6 @@
 </div>
 <div [style.position]="'relative'">
   <laji-map [ngStyle]="{display: 'block', height: '80vh'}" [loading]="loading" [options]="{controls: true}"
-    [data]="mapData$ | async"></laji-map>
+    [data]="mapData$ | async" [options]="mapOptions"></laji-map>
   <laji-legend [visualization]="visualization" [mode]="'completeListPrevalence'"></laji-legend>
 </div>

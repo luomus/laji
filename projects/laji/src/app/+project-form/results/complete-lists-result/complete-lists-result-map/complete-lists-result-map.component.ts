@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DataOptions, GetFeatureStyleOptions } from '@luomus/laji-map';
+import { DataOptions, GetFeatureStyleOptions, Options } from '@luomus/laji-map';
 import { TranslateService } from '@ngx-translate/core';
 import { getPointIconAsCircle } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.component';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
@@ -72,6 +72,7 @@ export class CompleteListsResultMapComponent implements OnInit {
   defaultTaxon: string;
   taxonSetLookup: Array<{ collectionID: string; taxonSet: Array<string> }>;
   parentCollectionID = 'HR.5615';
+  mapOptions: Options;
   loading = true;
   taxonLoading = true;
 
@@ -91,7 +92,11 @@ export class CompleteListsResultMapComponent implements OnInit {
     private formApi: FormService,
     private taxonApi: TaxonomyApi,
     private translate: TranslateService
-  ) { }
+  ) {
+    this.mapOptions = {
+      clickBeforeZoomAndPan: true
+    };
+  }
 
   ngOnInit(): void {
     this.defaultCollection = this.collection$.getValue();
