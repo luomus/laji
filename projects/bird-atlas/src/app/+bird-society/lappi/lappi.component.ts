@@ -118,7 +118,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
       bigSquare.grids.forEach(smallSquare => {
         rows.push(
           [
-            bigSquare.index, bigSquare.targetPercentage, smallSquare.coordinates,
+            bigSquare.index, Math.round(bigSquare.targetPercentage * 10) / 10, smallSquare.coordinates,
             `"${smallSquare.name}"`, smallSquare.atlasClassSum, smallSquare.activityCategory.value
           ].join(',')
         );
