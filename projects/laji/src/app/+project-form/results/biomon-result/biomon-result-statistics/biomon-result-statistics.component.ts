@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { TranslateService } from '@ngx-translate/core';
 import { CollectionApi } from 'projects/laji/src/app/shared/api/CollectionApi';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
+import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -30,6 +31,8 @@ export class BiomonResultStatisticsComponent implements OnInit {
   @Input() set collection(v: string) { this.collection$.next(v); };
 
   @Output() collectionChange = new EventEmitter<string>();
+
+  toHtmlSelectElement = toHtmlSelectElement;
 
   collectionOptions$: Observable<Array<any>>;
   rows$: Observable<Row[]>;

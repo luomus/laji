@@ -11,6 +11,7 @@ import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { CollectionApi } from 'projects/laji/src/app/shared/api/CollectionApi';
 import { FormService } from 'projects/laji/src/app/shared/service/form.service';
 import { CompleteListPrevalence } from '../biomon-result.component';
+import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 
 interface QueryResult {
   results: {
@@ -64,6 +65,8 @@ export class BiomonResultMapComponent implements OnInit {
 
   @Output() collectionChange = new EventEmitter<string>();
   @Output() taxonChange = new EventEmitter<string>();
+
+  toHtmlSelectElement = toHtmlSelectElement;
 
   mapData$: Observable<DataOptions>;
   collectionOptions$: Observable<Array<any>>;

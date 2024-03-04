@@ -1,6 +1,6 @@
 <div class="mb-4">
   <label>{{ 'completeLists.stats.statistics.collection.label' | translate }}</label>
-  <select class="form-control" (change)="onCollectionChange($event.target.value)" [(ngModel)]="defaultCollection">
+  <select class="form-control" (change)="onCollectionChange(toHtmlSelectElement($event.target).value)" [(ngModel)]="defaultCollection">
     <option *ngFor="let option of collectionOptions$ | async" [value]="option.value">{{ option.label }}</option>
   </select>
 </div>
