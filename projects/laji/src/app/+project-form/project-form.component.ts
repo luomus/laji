@@ -243,7 +243,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         label: 'instructions',
         lajiFormOption: 'options.instructions'
       },
-      form.options?.resultServiceType && {
+      {
         link: ['stats'],
         label: 'nafi.stats',
         children: ProjectFormComponent.getResultServiceRoutes(form.options?.resultServiceType, queryParams),
