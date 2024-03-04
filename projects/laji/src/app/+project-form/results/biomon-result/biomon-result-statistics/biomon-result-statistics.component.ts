@@ -20,12 +20,12 @@ interface QueryResult {
 }
 
 @Component({
-  selector: 'laji-complete-lists-result-statistics',
-  templateUrl: './complete-lists-result-statistics.component.html',
-  styleUrls: ['./complete-lists-result-statistics.component.scss'],
+  selector: 'laji-biomon-result-statistics',
+  templateUrl: './biomon-result-statistics.component.html',
+  styleUrls: ['./biomon-result-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CompleteListsResultStatisticsComponent implements OnInit {
+export class BiomonResultStatisticsComponent implements OnInit {
   readonly collection$ = new BehaviorSubject<string>('');
   @Input() set collection(v: string) { this.collection$.next(v); };
 

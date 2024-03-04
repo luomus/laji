@@ -24,12 +24,12 @@ interface MapState {
 type State = StatisticsState | MapState;
 
 @Component({
-  selector: 'laji-complete-lists-result',
-  templateUrl: './complete-lists-result.component.html',
-  styleUrls: ['./complete-lists-result.component.scss'],
+  selector: 'laji-biomon-result',
+  templateUrl: './biomon-result.component.html',
+  styleUrls: ['./biomon-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CompleteListsResultComponent implements OnInit, OnDestroy {
+export class BiomonResultComponent implements OnInit, OnDestroy {
 
   @Input() form: Form.SchemaForm;
 

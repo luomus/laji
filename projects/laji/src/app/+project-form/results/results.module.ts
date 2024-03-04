@@ -54,9 +54,9 @@ import { TaxonSelectModule } from '../../shared-modules/taxon-select/taxon-selec
 import { LajiMapModule } from 'projects/laji/src/app/shared-modules/laji-map/laji-map.module';
 import {LajiLegendModule} from '../../shared-modules/legend/legend.module';
 import {YearSliderModule} from '../../shared-modules/year-slider/year-slider.module';
-import { CompleteListsResultComponent } from './complete-lists-result/complete-lists-result.component';
-import { CompleteListsResultStatisticsComponent } from './complete-lists-result/complete-lists-result-statistics/complete-lists-result-statistics.component';
-import { CompleteListsResultMapComponent } from './complete-lists-result/complete-lists-result-map/complete-lists-result-map.component';
+import { BiomonResultComponent } from './biomon-result/biomon-result.component';
+import { BiomonResultStatisticsComponent } from './biomon-result/biomon-result-statistics/biomon-result-statistics.component';
+import { BiomonResultMapComponent } from './biomon-result/biomon-result-map/biomon-result-map.component';
 
 @NgModule({
   imports: [
@@ -111,9 +111,9 @@ import { CompleteListsResultMapComponent } from './complete-lists-result/complet
     InvasiveSpeciesControlResultComponent,
     InvasiveSpeciesControlResultStatisticsComponent,
     InvasiveSpeciesControlResultMapComponent,
-    CompleteListsResultComponent,
-    CompleteListsResultStatisticsComponent,
-    CompleteListsResultMapComponent
+    BiomonResultComponent,
+    BiomonResultStatisticsComponent,
+    BiomonResultMapComponent
   ],
   providers: [
     WbcResultService,

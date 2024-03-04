@@ -10,7 +10,7 @@ import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legen
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
 import { CollectionApi } from 'projects/laji/src/app/shared/api/CollectionApi';
 import { FormService } from 'projects/laji/src/app/shared/service/form.service';
-import { CompleteListPrevalence } from '../complete-lists-result.component';
+import { CompleteListPrevalence } from '../biomon-result.component';
 
 interface QueryResult {
   results: {
@@ -50,12 +50,12 @@ const prevalenceToVisCategory: Record<CompleteListPrevalence, { color: string; l
 };
 
 @Component({
-  selector: 'laji-complete-lists-result-map',
-  templateUrl: './complete-lists-result-map.component.html',
-  styleUrls: ['./complete-lists-result-map.component.scss'],
+  selector: 'laji-biomon-result-map',
+  templateUrl: './biomon-result-map.component.html',
+  styleUrls: ['./biomon-result-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CompleteListsResultMapComponent implements OnInit {
+export class BiomonResultMapComponent implements OnInit {
 
   readonly collection$ = new BehaviorSubject<string>('');
   readonly taxon$ = new BehaviorSubject<string>('');

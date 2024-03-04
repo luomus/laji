@@ -8,16 +8,16 @@
   </div>
   <ng-container *ngIf="state$ | async as state">
     <div *ngIf="isStatisticsState(state)">
-      <laji-complete-lists-result-statistics
+      <laji-biomon-result-statistics
         [collection]="state.collection ? state.collection : form.collectionID"
-        (collectionChange)="onCollectionChange($event)"></laji-complete-lists-result-statistics>
+        (collectionChange)="onCollectionChange($event)"></laji-biomon-result-statistics>
     </div>
     <div *ngIf="isMapState(state)">
-      <laji-complete-lists-result-map
+      <laji-biomon-result-map
         [collection]="state.collection ? state.collection : form.collectionID"
         [taxon]="state.taxon"
         (collectionChange)="onCollectionChange($event)"
-        (taxonChange)="onTaxonChange($event)"></laji-complete-lists-result-map>
+        (taxonChange)="onTaxonChange($event)"></laji-biomon-result-map>
     </div>
   </ng-container>
 </div>

@@ -25,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
         <laji-invasive-species-control-result [form]="(form$ | async)"></laji-invasive-species-control-result>
       </div>
       <div *ngSwitchCase="ResultServiceType.completeLists">
-        <laji-complete-lists-result [form]="(form$ | async)"></laji-complete-lists-result>
+        <laji-biomon-result [form]="(form$ | async)"></laji-biomon-result>
       </div>
     </div>
   `,
