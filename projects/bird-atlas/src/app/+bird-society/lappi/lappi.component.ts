@@ -119,7 +119,7 @@ export class LappiSocietyComponent implements AfterViewInit, OnDestroy {
         rows.push(
           [
             bigSquare.index, bigSquare.targetPercentage, smallSquare.coordinates,
-            smallSquare.name, smallSquare.atlasClassSum, smallSquare.activityCategory.value
+            `"${smallSquare.name}"`, smallSquare.atlasClassSum, smallSquare.activityCategory.value
           ].join(',')
         );
       });
