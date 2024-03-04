@@ -39,8 +39,8 @@ export class BiomonResultStatisticsComponent implements OnInit {
   loading$ = new BehaviorSubject(true);
 
   columns = [
-    { name: 'observer', label: 'completeLists.stats.statistics.table.cols.observer' },
-    { name: 'gatherings', label: 'completeLists.stats.statistics.table.cols.gatherings' },
+    { name: 'observer', label: 'biomon.stats.statistics.table.cols.observer' },
+    { name: 'gatherings', label: 'biomon.stats.statistics.table.cols.gatherings' },
   ];
   parentCollectionID = 'HR.5615';
   defaultCollection: string;

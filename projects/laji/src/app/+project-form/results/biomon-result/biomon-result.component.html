@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <laji-project-form-header [form]="form"></laji-project-form-header>
   <div class="row">
-    <laji-navigation-thumbnail name="completeLists.stats.statistics.title" icon="table" iconType="png"
+    <laji-navigation-thumbnail name="biomon.stats.statistics.title" icon="table" iconType="png"
       [query]="{tab: Tabs.statistics}"></laji-navigation-thumbnail>
-    <laji-navigation-thumbnail name="completeLists.stats.map.title" icon="wb_icon_map_2" iconType="png"
+    <laji-navigation-thumbnail name="biomon.stats.map.title" icon="wb_icon_map_2" iconType="png"
       [query]="{tab: Tabs.map}"></laji-navigation-thumbnail>
   </div>
   <ng-container *ngIf="state$ | async as state">

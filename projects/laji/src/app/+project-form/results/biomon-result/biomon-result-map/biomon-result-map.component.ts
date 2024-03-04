@@ -81,7 +81,7 @@ export class BiomonResultMapComponent implements OnInit {
 
   visualization: LajiMapVisualization<'completeListPrevalence'> = {
     completeListPrevalence: {
-      label: 'completeLists.stats.map.legend.title',
+      label: 'biomon.stats.map.legend.title',
       categories: Object.keys(prevalenceToVisCategory).reduce((_categories, prevalence) => ([
         ..._categories,
         prevalenceToVisCategory[prevalence]
@@ -165,7 +165,7 @@ export class BiomonResultMapComponent implements OnInit {
 
   getDataOptions(): Omit<DataOptions, 'featureCollection'> {
     return {
-      label: this.translate.instant('completeLists.stats.map.dataLayerLabel'),
+      label: this.translate.instant('biomon.stats.map.dataLayerLabel'),
       marker: {
         icon: getPointIconAsCircle
       },
