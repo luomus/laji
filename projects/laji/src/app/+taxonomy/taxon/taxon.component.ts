@@ -28,7 +28,6 @@ export class TaxonComponent implements OnInit, OnDestroy {
   canShowTree = true;
   showHidden = false;
   loading = false;
-  errorWas404 = false;
 
   private initTaxonSub: Subscription;
   private subParam: Subscription;
