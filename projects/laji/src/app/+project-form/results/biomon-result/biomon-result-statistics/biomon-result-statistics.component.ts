@@ -34,7 +34,7 @@ export class BiomonResultStatisticsComponent implements OnInit {
 
   toHtmlSelectElement = toHtmlSelectElement;
 
-  collectionOptions$: Observable<Array<any>>;
+  collectionOptions$: Observable<{label: string; value: string }[]>;
   rows$: Observable<Row[]>;
   loading$ = new BehaviorSubject(true);
 

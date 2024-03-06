@@ -68,13 +68,14 @@ export class BiomonResultMapComponent implements OnInit {
 
   toHtmlSelectElement = toHtmlSelectElement;
 
+  private taxonSetLookup: Array<{ collectionID: string; taxonSet: Array<string> }>;
+  private parentCollectionID = 'HR.5615';
+
   mapData$: Observable<DataOptions>;
-  collectionOptions$: Observable<Array<any>>;
-  taxonOptions$: Observable<Array<any>>;
+  collectionOptions$: Observable<{label: string; value: string }[]>;
+  taxonOptions$: Observable<{label: string; value: string }[]>;
   defaultCollection: string;
   defaultTaxon: string;
-  taxonSetLookup: Array<{ collectionID: string; taxonSet: Array<string> }>;
-  parentCollectionID = 'HR.5615';
   mapOptions: Options;
   loading = true;
   taxonLoading = true;
@@ -163,7 +164,7 @@ export class BiomonResultMapComponent implements OnInit {
     );
   }
 
-  getDataOptions(): Omit<DataOptions, 'featureCollection'> {
+  private getDataOptions(): Omit<DataOptions, 'featureCollection'> {
     return {
       label: this.translate.instant('biomon.stats.map.dataLayerLabel'),
       marker: {
@@ -173,7 +174,7 @@ export class BiomonResultMapComponent implements OnInit {
     };
   }
 
-  getFeatureStyle({ feature }: GetFeatureStyleOptions) {
+  private getFeatureStyle({ feature }: GetFeatureStyleOptions) {
     const { gatheringCount } = feature.properties;
 
     let prevalence: CompleteListPrevalence;
@@ -197,7 +198,7 @@ export class BiomonResultMapComponent implements OnInit {
     };
   }
 
-  getTaxaObservable$(taxonSet: string[]): Observable<any> {
+  getTaxaObservable$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
     this.taxonLoading = true;
     return this.taxonApi.taxonomyList(
       this.translate.currentLang,
