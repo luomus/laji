@@ -7,7 +7,7 @@ import {ModalRef, ModalService} from 'projects/laji-ui/src/lib/modal/modal.servi
 
 @Component({
   selector: 'laji-observation-table-settings',
-  templateUrl: './observation-table-settings.component.ts',
+  templateUrl: './observation-table-settings.component.html',
   styleUrls: ['./observation-table-settings.component.scss']
 })
 export class ObservationTableSettingsComponent<T extends IGenericColumn<DatatableColumn> = IGenericColumn<DatatableColumn>> {
