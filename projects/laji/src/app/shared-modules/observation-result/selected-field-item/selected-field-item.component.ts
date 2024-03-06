@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
   styleUrls: ['./selected-field-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedFieldItemComponent implements OnInit {
+export class SelectedFieldItemComponent {
 
   @Input() field: string[];
   @Input() label: string;
@@ -17,10 +17,6 @@ export class SelectedFieldItemComponent implements OnInit {
   @Output() toggle = new EventEmitter<string>();
   @Output() moveUp = new EventEmitter<string[]>();
   @Output() moveDown = new EventEmitter<string[]>();
-
-  ngOnInit() {
-    console.log(this.field, this.label, this.idx, this.len, this.required);
-  }
 
   moveFieldDown(field, event) {
     event.stopPropagation();
