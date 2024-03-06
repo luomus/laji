@@ -50,7 +50,7 @@ export interface UserServiceState extends PersistentState {
   allUsers: {[id: string]: Person|Observable<Person>};
 }
 
-export const createProfile = (profile: Profile | null, user: Person | null): Profile => {
+export const prepareProfile = (profile: Profile | null, user: Person | null): Profile => {
   if (!profile) {
     profile = {};
   }
@@ -261,7 +261,7 @@ export class UserService implements OnDestroy {
       this.personApi.personFindProfileByToken(this.getToken()),
       this.user$
     ]).pipe(
-      map(([profile, user]) => createProfile(profile, user)),
+      map(([profile, user]) => prepareProfile(profile, user)),
       take(1)
     );
   }

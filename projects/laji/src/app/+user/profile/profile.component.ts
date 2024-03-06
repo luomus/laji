@@ -1,6 +1,6 @@
 import { catchError, concatMap, map, take } from 'rxjs/operators';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { createProfile, UserService } from '../../shared/service/user.service';
+import { prepareProfile, UserService } from '../../shared/service/user.service';
 import { PersonApi } from '../../shared/api/PersonApi';
 import { Profile } from '../../shared/model/Profile';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -84,8 +84,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.isCurrentUser = id === currentUser.id;
           this.userId = id;
           this.isCreate = !userProfile;
-          this.currentProfile = createProfile(currentProfile, currentUser);
-          this.userProfile = createProfile(userProfile, currentUser);
+          this.currentProfile = prepareProfile(currentProfile, currentUser);
+          this.userProfile = prepareProfile(userProfile, currentUser);
           this.loading = false;
           this.editing = false;
           this.cdr.detectChanges();
