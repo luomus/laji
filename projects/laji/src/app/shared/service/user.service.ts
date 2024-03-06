@@ -5,14 +5,11 @@ import {
   map,
   share,
   startWith,
-  switchMap,
   take,
-  tap,
-  timeout
+  tap
 } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject, Subscription, throwError } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
-import { ActivationEnd, Router } from '@angular/router';
 import { Person } from '../model/Person';
 import { PersonApi } from '../api/PersonApi';
 import { LocalStorage, LocalStorageService, SessionStorage } from 'ngx-webstorage';
@@ -22,7 +19,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { DEFAULT_LANG, LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { PlatformService } from '../../root/platform.service';
-import { BrowserService } from './browser.service';
 import { retryWithBackoff } from '../observable/operators/retry-with-backoff';
 import { httpOkError } from '../observable/operators/http-ok-error';
 import { Profile } from '../model/Profile';
@@ -113,7 +109,6 @@ export class UserService implements OnDestroy {
   private inMemoryPersistentState: PersistentState | undefined;
 
   @SessionStorage() private returnUrl: string | undefined;
-  @SessionStorage('retry', 0) private retry: number | undefined;
 
   private subLogout: Subscription | undefined;
 
@@ -134,13 +129,11 @@ export class UserService implements OnDestroy {
 
   constructor(
     private personApi: PersonApi,
-    private router: Router,
     private location: Location,
     private logger: Logger,
     private translate: TranslateService,
     private localizeRouterService: LocalizeRouterService,
     private platformService: PlatformService,
-    private browserService: BrowserService,
     private storage: LocalStorageService
   ) {}
 
@@ -237,6 +230,10 @@ export class UserService implements OnDestroy {
         window.location.href = getLoginUrl(this.returnUrl, this.translate.currentLang);
       });
     }
+  }
+
+  hasReturnUrl(): boolean {
+    return !!this.returnUrl;
   }
 
   getReturnUrl(): string {

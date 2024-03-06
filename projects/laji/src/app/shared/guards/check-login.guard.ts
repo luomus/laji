@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { UserService } from '../service/user.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { PlatformService } from '../../root/platform.service';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { PersonApi } from '../api/PersonApi';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +13,6 @@ export class CheckLoginGuard  {
   private isLoginChecked = false;
 
   constructor(
-    private personApi: PersonApi,
     private router: Router,
     private userService: UserService,
     private location: Location,
@@ -33,13 +30,14 @@ export class CheckLoginGuard  {
     if (this.isLoginChecked) {
       return true;
     }
-
     this.isLoginChecked = true;
 
-    // store in localstorage
-    return this.userService.login(route.queryParams['token']).pipe(map(_ => true));
+    this.userService.login(route.queryParams['token']).subscribe();
 
-    // TODO go to return url
-    return this.router.parseUrl(this.userService.getReturnUrl());
+    if (this.userService.hasReturnUrl()) {
+      return this.router.parseUrl(this.userService.getReturnUrl());
+    }
+
+    return true;
   }
 }
