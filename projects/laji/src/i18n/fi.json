@@ -2050,6 +2050,7 @@
   "viewer.secured.own1": "Tämä on havaintoerän salaamaton näkymä. Julkinen näkymä voi näyttää toisenlaiselta",
   "viewer.secured.own2": "Siirry julkiseen näkymään",
   "viewer.secured.partial": "Havaintoerästä on poistettu salattuja havaintoja.",
+  "viewer.secured.removed": "Havaintoerästä on poistettu salattuja havaintoja, joten tässä havaintoerässä ei ole enää salattua tietoa.",
   "viewer.secured.secured": "Tätä havaintoerää on karkeistettu. Karkeistus voi tarkoittaa, että havainnon sijaintia tai havaintoaikaa on karkeistettu, havainnoijan nimi on piilotettu tai havaintoon liittyy tietoja, joita ei näytetä avoimessa portaalissa.",
   "viewer.showFacts": "Näytä lisätiedot",
   "viewer.taxonVerbatim": "Kirjattu nimi",
@@ -2146,6 +2147,5 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä",
-  "viewer.secured.removed": "Havaintoerästä on poistettu salattuja havaintoja, joten tässä havaintoerässä ei ole enää salattua tietoa."
+  "yes": "Kyllä"
 }
