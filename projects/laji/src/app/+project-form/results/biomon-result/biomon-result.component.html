@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <laji-project-form-header [form]="form"></laji-project-form-header>
+  <div class="row">
+    <laji-navigation-thumbnail name="biomon.stats.statistics.title" icon="table" iconType="png"
+      [query]="{tab: Tabs.statistics}"></laji-navigation-thumbnail>
+    <laji-navigation-thumbnail name="biomon.stats.map.title" icon="wb_icon_map_2" iconType="png"
+      [query]="{tab: Tabs.map}"></laji-navigation-thumbnail>
+  </div>
+  <ng-container *ngIf="state$ | async as state">
+    <div *ngIf="isStatisticsState(state)">
+      <laji-biomon-result-statistics
+        [collection]="state.collection ? state.collection : form.collectionID">
+      </laji-biomon-result-statistics>
+    </div>
+    <div *ngIf="isMapState(state)">
+      <laji-biomon-result-map
+        [collection]="state.collection ? state.collection : form.collectionID"
+        [taxon]="state.taxon" (taxonChange)="onTaxonChange($event)">
+      </laji-biomon-result-map>
+    </div>
+  </ng-container>
+</div>

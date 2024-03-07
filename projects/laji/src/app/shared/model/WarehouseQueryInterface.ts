@@ -204,6 +204,7 @@ export interface WarehouseQueryInterface {
   ykj10kmCenter?: string;
   unidentified?: boolean;
   needsCheck?: boolean;
+  completeListType?: Array<string>;
   cache?: boolean;
   reliable?: boolean;
   observerPersonToken?: string;
@@ -218,6 +219,7 @@ export interface WarehouseQueryInterface {
   typeOfOccurrenceId?: Array<string>;
   typeOfOccurrenceIdNot?: Array<string>;
   taxonCounts?: boolean;
+  gatheringCounts?: boolean;
   pairCounts?: boolean;
   birdAssociationAreaId?: Array<string>;
   butterflyAssociationAreaId?: Array<string>;
