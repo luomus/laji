@@ -74,8 +74,4 @@ export class BiomonResultComponent implements OnInit, OnDestroy {
   onTaxonChange(taxon: any) {
     this.updateState({ taxon });
   }
-
-  onCollectionChange(collection: any) {
-    this.updateState({ collection, taxon: undefined });
-  }
 }

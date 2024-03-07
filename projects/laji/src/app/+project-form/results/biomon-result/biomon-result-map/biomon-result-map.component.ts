@@ -8,7 +8,6 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { LajiMapVisualization } from 'projects/laji/src/app/shared-modules/legend/laji-map-visualization';
 import { TaxonomyApi } from 'projects/laji/src/app/shared/api/TaxonomyApi';
-import { CollectionApi } from 'projects/laji/src/app/shared/api/CollectionApi';
 import { FormService } from 'projects/laji/src/app/shared/service/form.service';
 import { CompleteListPrevalence } from '../biomon-result.component';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
@@ -63,18 +62,13 @@ export class BiomonResultMapComponent implements OnInit {
   @Input() set collection(v: string) { this.collection$.next(v); };
   @Input() set taxon(v: string) { this.taxon$.next(v); };
 
-  @Output() collectionChange = new EventEmitter<string>();
   @Output() taxonChange = new EventEmitter<string>();
 
   toHtmlSelectElement = toHtmlSelectElement;
 
   mapData$: Observable<DataOptions>;
-  collectionOptions$: Observable<Array<any>>;
-  taxonOptions$: Observable<Array<any>>;
-  defaultCollection: string;
+  taxonOptions$: Observable<{label: string; value: string }[]>;
   defaultTaxon: string;
-  taxonSetLookup: Array<{ collectionID: string; taxonSet: Array<string> }>;
-  parentCollectionID = 'HR.5615';
   mapOptions: Options;
   loading = true;
   taxonLoading = true;
@@ -91,7 +85,6 @@ export class BiomonResultMapComponent implements OnInit {
 
   constructor(
     private warehouseApi: WarehouseApi,
-    private collectionApi: CollectionApi,
     private formApi: FormService,
     private taxonApi: TaxonomyApi,
     private translate: TranslateService
@@ -102,7 +95,6 @@ export class BiomonResultMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.defaultCollection = this.collection$.getValue();
     this.defaultTaxon = this.taxon$.getValue();
 
     const query$ = combineLatest([this.collection$, this.taxon$]).pipe(switchMap(([collection, taxon]) => this.warehouseApi.warehouseQueryAggregateGet(
@@ -139,16 +131,6 @@ export class BiomonResultMapComponent implements OnInit {
       tap(() => { this.loading = false; })
     );
 
-    this.collectionOptions$ = this.collectionApi.findChildren(
-      this.parentCollectionID,
-      this.translate.currentLang,
-      undefined,
-      '10000'
-    ).pipe(
-      map(res => res.results),
-      map(collections => collections.map(c => ({ label: c.collectionName, value: c.id })))
-    );
-
     this.taxonOptions$ = this.formApi.getAllForms().pipe(
       map(forms =>
         forms
@@ -156,14 +138,13 @@ export class BiomonResultMapComponent implements OnInit {
           .map(f => ({ collectionID: f.collectionID, taxonSet: f.options.prepopulateWithTaxonSets }))
       ),
       switchMap(pairs => {
-        this.taxonSetLookup = pairs;
         const taxonSet = pairs.find(p => p.collectionID === this.collection$.getValue()).taxonSet;
         return this.getTaxaObservable$(taxonSet);
       })
     );
   }
 
-  getDataOptions(): Omit<DataOptions, 'featureCollection'> {
+  private getDataOptions(): Omit<DataOptions, 'featureCollection'> {
     return {
       label: this.translate.instant('biomon.stats.map.dataLayerLabel'),
       marker: {
@@ -173,7 +154,7 @@ export class BiomonResultMapComponent implements OnInit {
     };
   }
 
-  getFeatureStyle({ feature }: GetFeatureStyleOptions) {
+  private getFeatureStyle({ feature }: GetFeatureStyleOptions) {
     const { gatheringCount } = feature.properties;
 
     let prevalence: CompleteListPrevalence;
@@ -197,7 +178,7 @@ export class BiomonResultMapComponent implements OnInit {
     };
   }
 
-  getTaxaObservable$(taxonSet: string[]): Observable<any> {
+  getTaxaObservable$(taxonSet: string[]): Observable<{ label: string; value: string }[]> {
     this.taxonLoading = true;
     return this.taxonApi.taxonomyList(
       this.translate.currentLang,
@@ -214,13 +195,6 @@ export class BiomonResultMapComponent implements OnInit {
       map(pairs => [{ label: '', value: '' }].concat(pairs)),
       finalize(() => { this.taxonLoading = false; })
     );
-  }
-
-  onCollectionChange(collection: string) {
-    this.collectionChange.emit(collection);
-    this.collection$.next(collection);
-    const taxonSet = this.taxonSetLookup.find(pair => pair.collectionID === this.collection$.getValue()).taxonSet;
-    this.taxonOptions$ = this.getTaxaObservable$(taxonSet);
   }
 
   onTaxonChange(taxon: string) {

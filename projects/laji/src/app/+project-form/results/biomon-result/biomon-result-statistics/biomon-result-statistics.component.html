@@ -1,9 +1,3 @@
-<div class="mb-4">
-  <label>{{ 'biomon.stats.statistics.collection.label' | translate }}</label>
-  <select class="form-control" (change)="onCollectionChange(toHtmlSelectElement($event.target).value)" [(ngModel)]="defaultCollection">
-    <option *ngFor="let option of collectionOptions$ | async" [value]="option.value">{{ option.label }}</option>
-  </select>
-</div>
 <div class="mt-5">
   <laji-datatable [rows]="rows$ | async" [loading]="loading$ | async" [columns]="columns" [clientSideSorting]="true"
     [virtualScrolling]="false">

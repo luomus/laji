@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { CollectionApi } from 'projects/laji/src/app/shared/api/CollectionApi';
 import { WarehouseApi } from 'projects/laji/src/app/shared/api/WarehouseApi';
 import { toHtmlSelectElement } from 'projects/laji/src/app/shared/service/html-element.service';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -30,11 +28,8 @@ export class BiomonResultStatisticsComponent implements OnInit {
   readonly collection$ = new BehaviorSubject<string>('');
   @Input() set collection(v: string) { this.collection$.next(v); };
 
-  @Output() collectionChange = new EventEmitter<string>();
-
   toHtmlSelectElement = toHtmlSelectElement;
 
-  collectionOptions$: Observable<Array<any>>;
   rows$: Observable<Row[]>;
   loading$ = new BehaviorSubject(true);
 
@@ -42,18 +37,12 @@ export class BiomonResultStatisticsComponent implements OnInit {
     { name: 'observer', label: 'biomon.stats.statistics.table.cols.observer' },
     { name: 'gatherings', label: 'biomon.stats.statistics.table.cols.gatherings' },
   ];
-  parentCollectionID = 'HR.5615';
-  defaultCollection: string;
 
   constructor(
-    private warehouseApi: WarehouseApi,
-    private collectionApi: CollectionApi,
-    private translate: TranslateService
+    private warehouseApi: WarehouseApi
   ) { }
 
   ngOnInit(): void {
-    this.defaultCollection = this.collection$.getValue();
-
     const query$ = this.collection$.pipe(
       tap(() => { this.loading$.next(true); }),
       switchMap((collection) => this.warehouseApi.warehouseQueryGatheringAggregateGet(
@@ -75,20 +64,5 @@ export class BiomonResultStatisticsComponent implements OnInit {
       ),
       tap(() => { this.loading$.next(false); })
     );
-
-    this.collectionOptions$ = this.collectionApi.findChildren(
-      this.parentCollectionID,
-      this.translate.currentLang,
-      undefined,
-      '10000'
-    ).pipe(
-      map(res => res.results),
-      map(collections => collections.map(c => ({ label: c.collectionName, value: c.id })))
-    );
-  }
-
-  onCollectionChange(collection: string) {
-    this.collectionChange.emit(collection);
-    this.collection$.next(collection);
   }
 }
