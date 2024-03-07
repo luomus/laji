@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Input, ViewChild } from '@angular/core';
 import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
-import { PopoverPlacement } from 'projects/laji-ui/src/lib/popover/popover.directive';
+import { Placement } from 'projects/laji-ui/src/lib/placement/placement.service';
 import { PlatformService } from '../../../root/platform.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { PlatformService } from '../../../root/platform.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InfoComponent {
-  @Input() placement: PopoverPlacement = 'left';
+  @Input() placement: Placement = 'bottom';
   @Input() html: string;
   @Input() glyphicon: string;
   @Input() labelType = 'info';

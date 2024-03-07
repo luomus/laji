@@ -128,6 +128,12 @@ export interface BirdSocietyTaxaResponseElem {
   atlasClass?: KeyValueObject<AtlasClass, string>;
 }
 
+export interface TaxonStatsResponse {
+  'MY.atlasClassEnumB': number;
+  'MY.atlasClassEnumC': number;
+  'MY.atlasClassEnumD': number;
+}
+
 const BASE_URL = environment.atlasApiBasePath;
 
 @Injectable()
@@ -192,5 +198,11 @@ export class AtlasApiService {
   getTaxon(id: string): Observable<AtlasTaxon> {
     const url = `${BASE_URL}/taxon/${id}`;
     return <Observable<AtlasTaxon>>this.http.get(url);
+  }
+
+  @cacheReturnObservable(60000) // 1 minute
+  getTaxonStats(id: string): Observable<TaxonStatsResponse> {
+    const url = `${BASE_URL}/taxon/${id}/gridStats`;
+    return <Observable<TaxonStatsResponse>>this.http.get(url);
   }
 }

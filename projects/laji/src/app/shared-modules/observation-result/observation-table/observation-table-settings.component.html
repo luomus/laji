@@ -1,0 +1,56 @@
+<ng-template #settingsModal>
+  <h4>{{ isAggregate ? ('result.settings.aggregate' | translate) : ('result.settings.list' | translate) }}</h4>
+  <div class="row" *ngIf="isAggregate && !!columnSelector && !!numberColumnSelector">
+    <div class="col-sm-6 col-md-4">
+      <laji-selected-field-group
+        header="result.aggregate.fields"
+        [fields]="allAggregateFields"
+        [columnsLookup]="columnLookup"
+        [columnSelector]="columnSelector"
+        [selected]="columnSelector.columns"
+      ></laji-selected-field-group>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <laji-selected-field-group
+        header="result.aggregate.numbers"
+        [fields]="[
+          'individualCountSum',
+          'individualCountMax',
+          'oldestRecord',
+          'newestRecord'
+          ]"
+        [columnsLookup]="columnLookup"
+        [columnSelector]="numberColumnSelector"
+        [selected]="numberColumnSelector.columns"
+      ></laji-selected-field-group>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!isAggregate && !!columnGroups">
+    <ng-container *ngFor="let col of columnGroups ">
+      <div class="col-sm-6 col-md-4">
+        <ng-container *ngFor="let group of col">
+          <laji-selected-field-group
+            [header]="group.header"
+            [fields]="$any(group.fields)"
+            [columnsLookup]="columnLookup"
+            [columnSelector]="columnSelector"
+            [required]="columnSelector.required"
+            [selected]="columnSelector.columns"
+          ></laji-selected-field-group>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+  <div class="d-flex justify-between gap-4">
+    <div>
+      <div *ngIf="showPageSize">
+        <laji-page-size-select [pageSize]="pageSize" (pageSizeChange)="pageSizeChange.emit($event)"></laji-page-size-select>
+      </div>
+    </div>
+    <div class="modal-footer-top-offset">
+      <button type="button" class="btn btn-default mr-3" (click)="resetColumns.emit()">{{ 'result.reset' | translate }}</button>
+      <button type="button" class="btn btn-primary" (click)="closeModal(true)">Ok</button>
+    </div>
+  </div>
+</ng-template>

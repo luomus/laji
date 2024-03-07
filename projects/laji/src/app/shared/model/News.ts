@@ -40,7 +40,7 @@ export interface News {
 
   author?: string;
 
-  featuredImage?: string;
+  featuredImage?: string | { alt: string; caption: string; url: string };
 
   /**
    * timestamp for when the news was posted

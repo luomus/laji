@@ -1,5 +1,4 @@
-<label><h5>{{ 'result.pageSize' | translate }}:</h5>
-  <select class="form-control input-sm" (change)="pageSizeChanged(toHtmlSelectElement($event.target).value)">
-    <option *ngFor="let size of pageSizes" [value]="size" [selected]="size === _pageSize">{{ size }}</option>
-  </select>
-</label>
+<label class="page-size-label" for="page-size-select-input">{{ 'result.pageSize' | translate }}:</label>
+<select id="page-size-select-input" class="form-control input-md" (change)="pageSizeChanged(toHtmlSelectElement($event.target).value)">
+  <option *ngFor="let size of pageSizes" [value]="size" [selected]="size === _pageSize">{{ size }}</option>
+</select>

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
+import { WarehouseQueryInterface } from '../../../shared/model/WarehouseQueryInterface';
 import { ObservationFormQuery } from '../observation-form-query.interface';
 
 const relativeDateFormat = /^-?\d+\/-?\d+$/;
@@ -17,7 +18,7 @@ export function isRelativeDate(date: string): boolean {
 export class DateFormComponent implements OnDestroy {
   private unsubscribe$ = new Subject();
 
-  @Input() query;
+  @Input() query: WarehouseQueryInterface;
   @Input() formQuery: ObservationFormQuery;
 
   @Output() formQueryChange = new EventEmitter<void>();

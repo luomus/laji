@@ -89,6 +89,13 @@
   "audioViewer.timeBuffer.info": "Aikapuskurilla voit muuttaa toistettavan ajan pituutta ennen ehdokasta ja sen jälkeen. Suurenna aikaa jos haluat kuunnella pidemmän pätkän ehdokkaasta. Valinta vaikuttaa myös malliäänen äänitteeseen.",
   "bats.navLinks.form": "Kirjaa tietoja",
   "betapopup.desc": "Tämä on Laji.fi-portaalin testiversio, eikä sitä pidä käyttää muuhuin kuin sivuston testaamiseen. Varsinainen portaali on osoitteessa https://laji.fi",
+  "biomon.stats.map.dataLayerLabel": "Täydelliset listat",
+  "biomon.stats.map.legend.title": "Täydelliset listat - Määrä",
+  "biomon.stats.map.taxon.label": "Rajaa lajilla",
+  "biomon.stats.map.title": "Kartta",
+  "biomon.stats.statistics.table.cols.gatherings": "Listat",
+  "biomon.stats.statistics.table.cols.observer": "Havainnoija",
+  "biomon.stats.statistics.title": "Tilastot",
   "cancel": "Peruuta",
   "checkAll": "Valitse kaikki",
   "checked": "valittu",
@@ -2139,5 +2146,6 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "viewer.secured.removed": "Havaintoerästä on poistettu salattuja havaintoja, joten tässä havaintoerässä ei ole enää salattua tietoa."
 }

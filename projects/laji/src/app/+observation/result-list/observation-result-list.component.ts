@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
-import { ISettingResultList } from '../../shared/service/user.service';
+import { UserSettingsResultList } from '../../shared/service/user.service';
 import { DocumentViewerFacade } from '../../shared-modules/document-viewer/document-viewer.facade';
 import { TableColumnService } from '../../shared-modules/datatable/service/table-column.service';
 import { DeleteOwnDocumentService } from '../../shared/service/delete-own-document.service';
@@ -22,7 +22,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   @Input() showDownloadMenu = false;
   @Input() resultBase: 'unit' | 'sample' = 'unit';
 
-  @Output() settingsChange = new EventEmitter<ISettingResultList>();
+  @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
   selectedFields: string[];
   requiredFields: string[];
@@ -42,7 +42,7 @@ export class ObservationResultListComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set settings(settings: ISettingResultList) {
+  set settings(settings: UserSettingsResultList) {
     if (!settings) {
       settings = {};
     }

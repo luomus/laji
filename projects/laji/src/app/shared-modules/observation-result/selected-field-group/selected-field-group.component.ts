@@ -4,7 +4,7 @@ import { ColumnSelector } from '../../../shared/columnselector/ColumnSelector';
 @Component({
   selector: 'laji-selected-field-group',
   templateUrl: './selected-field-group.component.html',
-  styleUrls: ['./selected-field-group.component.css'],
+  styleUrls: ['./selected-field-group.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectedFieldGroupComponent {
