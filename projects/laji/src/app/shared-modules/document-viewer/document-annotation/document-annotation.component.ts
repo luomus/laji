@@ -20,7 +20,7 @@ import { interval as ObservableInterval, Subscription, throwError as observableT
 import { ViewerMapComponent } from '../viewer-map/viewer-map.component';
 import { SessionStorage } from 'ngx-webstorage';
 import { IdService } from '../../../shared/service/id.service';
-import { UserService } from '../../../shared/service/user.service';
+import { isIctAdmin, UserService } from '../../../shared/service/user.service';
 import { Global } from '../../../../environments/global';
 import { Annotation } from '../../../shared/model/Annotation';
 import { Person } from '../../../shared/model/Person';
@@ -137,7 +137,7 @@ export class DocumentAnnotationComponent implements AfterViewInit, OnChanges, On
     this.metaFetch = this.userService.user$.subscribe((person: Person) => {
       this.personID = person.id;
 
-      if (UserService.isIctAdmin(person)) {
+      if (isIctAdmin(person)) {
         this.personRoleAnnotation = Annotation.AnnotationRoleEnum.expert;
       } else {
         if (person.roleAnnotation) {

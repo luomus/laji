@@ -13,7 +13,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { IUserSettings, UserService } from '../../shared/service/user.service';
+import { UserSettings, UserService } from '../../shared/service/user.service';
 import { Subscription } from 'rxjs';
 import { Logger } from '../../shared/logger/logger.service';
 import type { Options, Lang, TileLayersOptions } from '@luomus/laji-map/lib/defs';
@@ -82,7 +82,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
   @LocalStorage('onlycount') onlyCount;
 
 
-  private _settingsKey: keyof IUserSettings;
+  private _settingsKey: keyof UserSettings;
   private subSet: Subscription;
   private userSettings: Options = {};
   private mapData: any;
@@ -128,7 +128,7 @@ export class LajiMapComponent implements OnDestroy, OnChanges {
     this.initMap();
   }
 
-  @Input() set settingsKey(key: keyof IUserSettings) {
+  @Input() set settingsKey(key: keyof UserSettings) {
     this._settingsKey = key;
     if (this.subSet) {
       this.subSet.unsubscribe();

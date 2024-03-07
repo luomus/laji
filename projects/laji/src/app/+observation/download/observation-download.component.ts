@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { SearchQueryService } from '../search-query.service';
-import { ISettingResultList, UserService } from '../../shared/service/user.service';
+import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WarehouseApi } from '../../shared/api/WarehouseApi';
 import { ToastsService } from '../../shared/service/toasts.service';
@@ -66,7 +66,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   @Input() loadLimit = 2000000;
   @Input() maxSimpleDownload = Global.limit.simpleDownload;
 
-  @Output() settingsChange = new EventEmitter<ISettingResultList>();
+  @Output() settingsChange = new EventEmitter<UserSettingsResultList>();
 
   privateCount: number;
   hasPersonalData = false;
@@ -94,7 +94,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   gisDownloadLimit = GEO_CONVERT_LIMIT;
 
   private _originalSelected: string[];
-  private _settings: ISettingResultList;
+  private _settings: UserSettingsResultList;
   private modalRef: ModalRef;
   private cntSub: Subscription;
   private _query: WarehouseQueryInterface;
@@ -147,7 +147,7 @@ export class ObservationDownloadComponent implements OnDestroy {
     }
   }
 
-  @Input() set settings(settings: ISettingResultList) {
+  @Input() set settings(settings: UserSettingsResultList) {
     this._settings = settings;
     if (settings && settings.selected) {
       this._originalSelected = [...settings.selected];

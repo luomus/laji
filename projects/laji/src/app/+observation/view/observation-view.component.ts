@@ -7,7 +7,7 @@ import { IObservationViewModel, ObservationFacade } from '../observation.facade'
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { tap } from 'rxjs/operators';
 import { BrowserService } from '../../shared/service/browser.service';
-import { ISettingResultList, UserService } from '../../shared/service/user.service';
+import { UserSettingsResultList, UserService } from '../../shared/service/user.service';
 import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { environment } from '../../../environments/environment';
 import { Global } from '../../../environments/global';
@@ -78,7 +78,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
   ];
 
   vm$: Observable<IObservationViewModel>;
-  settingsList$: Observable<ISettingResultList>;
+  settingsList$: Observable<UserSettingsResultList>;
 
   private searchButtonInfoToast?: ActiveToast<any>;
   private searchButtonInfoToastOnHiddenSub?: Subscription;
@@ -106,7 +106,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.vm$ = this.observationFacade.vm$;
-    this.settingsList$ = this.userService.getUserSetting<ISettingResultList>(this.settingsKeyList);
+    this.settingsList$ = this.userService.getUserSetting<UserSettingsResultList>(this.settingsKeyList);
 
     this.mainSubscription.add(
       this.browserService.lgScreen$.subscribe(data => this.showMobile = data)
@@ -163,7 +163,7 @@ export class ObservationViewComponent implements OnInit, OnDestroy {
     this.observationFacade.filterVisible(event);
   }
 
-  onListSettingsChange(settings: ISettingResultList) {
+  onListSettingsChange(settings: UserSettingsResultList) {
     this.userService.setUserSetting(this.settingsKeyList, settings);
   }
 
